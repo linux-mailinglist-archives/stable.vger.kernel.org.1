@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258394-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDb4GPcuG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258999-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:51 +0200
+	id oOE8BRAnG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258394-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D41612314
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83DCE610FB7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E8D8E303B538
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:37:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B8F5F306C58C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0906F33E36A;
-	Sat, 30 May 2026 18:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB4029B78B;
+	Sat, 30 May 2026 18:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3cJAMAz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnSZNA1a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC8E39A7FE;
-	Sat, 30 May 2026 18:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC48D39A4A4;
+	Sat, 30 May 2026 18:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166256; cv=none; b=GfuIP635KL528FW+UGh6DXRM5aGs7Gs3luqFxe2UyoIHQoJMwJTXVhM2afJ3vqYyvf0YAuqu5LzMHI/6Gn7BVnt+hWbQnqQA/ZTTtGkqCuR5bc+/lCxCGA9Sp39YdKaOW5ZTzazWtSomKrvcWEuG6i04kZIOcXZ0esVMP48gzjU=
+	t=1780164205; cv=none; b=tm514e0ygwp10O8J5cJjD/vw/3DSi1H3jkYIcdl23zhf8YXexw7ToJRh6wARKLIAiYLynaik8pyGl3MfeF7MU6uXQ5Cjy9ETPrhF3WarxNntTU5Dze6eeZP1lLxwrgzDIgm0+PiQ1ochrzLODZg1DfNqxDJWaAIYOrs98Xj2pwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166256; c=relaxed/simple;
-	bh=wU7tZwWMOKCXhiFWm1ZlcvLJY6d+ksDv04YHK3be9Ks=;
+	s=arc-20240116; t=1780164205; c=relaxed/simple;
+	bh=E9j6N06N5SGYh3d8dmfI6msvTwe2EKIjKhgwc8MC43k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s/JMCgBFVHhYmb4ieMDcGpawpLqq9WQB+7totxaldqbtSFVgT4W/XamzTvzSUA70DJlXRuFyVRBac7FQwoSaKtbcFxMIVCFGabP5tCjJqn9RBicUZO6hnGSlq7tft3FIHAoOC/pMCB8ok+mSEaDwfI5zzm0+FSTI8ncOkUSCHwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3cJAMAz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870171F00893;
-	Sat, 30 May 2026 18:37:34 +0000 (UTC)
+	 MIME-Version; b=L+FyHJPJEl1nDH7eB8Awy4yHlBpRl+XssleQ5eDUfyMa+aXxIUozLdLPUcTTASXUm/mJALTvvi9PzfAhfwGc+3lmN3rXR99vet1eVg/klwsfxF/74HiulVCETo3vm9ZaeKyRU+TzU+uPU9YQVAHvyg8nOZCqJsadkmuQy7OC1tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YnSZNA1a; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC871F00893;
+	Sat, 30 May 2026 18:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166255;
-	bh=gyCxHEgJ68IvjlF/qFz7UyhpgElbq4MLJFjbElwRNoU=;
+	s=korg; t=1780164204;
+	bh=JDYoJXONz+iS4/8wfE4Qrv+tmr+7g+IFKKEhnYy77ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g3cJAMAzRvZZDPiaIsUmGkKhT3c2FYk5u7EPkLm9Bivm8kN7kW1kQ5a99xtliUyPC
-	 UqqdUWWJjsfWAiYK6AYe01sq4w74ehUK6QIZJXfPF8znGJBc2fmrHYec16j4AxIWOH
-	 ANENKI0yGvH+Dq0uPrsfxQssb2KT/fIuwbJMuUBw=
+	b=YnSZNA1atsEOVLeG9Xl8uW9+WfmHin1Q7Yw7eAuYAjODdMqoUc2LemFbV8osh1Ahw
+	 DOkSKvv0zCTmNvJsJoF0cnUsGuVC0UpPOrra9ky/1qBHOFnjZk0d/VhJ0XAcc1PgeL
+	 vC3J7HzZC6fUUDPNxfrio3jZrYxsItlOChbpvMh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Joshua Klinesmith <joshuaklinesmith@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 317/589] Bluetooth: fix locking in hci_conn_request_evt() with HCI_PROTO_DEFER
-Date: Sat, 30 May 2026 18:03:18 +0200
-Message-ID: <20260530160233.268244054@linuxfoundation.org>
+Subject: [PATCH 5.15 485/776] ksmbd: fix use-after-free from async crypto on Qualcomm crypto engine
+Date: Sat, 30 May 2026 18:03:19 +0200
+Message-ID: <20260530160252.866148887@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +69,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-258394-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258999-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,iki.fi:email]
-X-Rspamd-Queue-Id: 04D41612314
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 83DCE610FB7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
 
-[ Upstream commit 5c7209a341ff2ac338b2b0375c34a307b37c9ac2 ]
+[ Upstream commit 3e298897f41c61450c2e7a4f457e8b2485eb35b3 ]
 
-When protocol sets HCI_PROTO_DEFER, hci_conn_request_evt() calls
-hci_connect_cfm(conn) without hdev->lock. Generally hci_connect_cfm()
-assumes it is held, and if conn is deleted concurrently -> UAF.
+ksmbd_crypt_message() sets a NULL completion callback on AEAD requests
+and does not handle the -EINPROGRESS return code from async hardware
+crypto engines like the Qualcomm Crypto Engine (QCE). When QCE returns
+-EINPROGRESS, ksmbd treats it as an error and immediately frees the
+request while the hardware DMA operation is still in flight. The DMA
+completion callback then dereferences freed memory, causing a NULL
+pointer crash:
 
-Only SCO and ISO set HCI_PROTO_DEFER and only for defer setup listen,
-and HCI_EV_CONN_REQUEST is not generated for ISO.  In the non-deferred
-listening socket code paths, hci_connect_cfm(conn) is called with
-hdev->lock held.
+  pc : qce_skcipher_done+0x24/0x174
+  lr : vchan_complete+0x230/0x27c
+  ...
+  el1h_64_irq+0x68/0x6c
+  ksmbd_free_work_struct+0x20/0x118 [ksmbd]
+  ksmbd_exit_file_cache+0x694/0xa4c [ksmbd]
 
-Fix by holding the lock.
+Use the standard crypto_wait_req() pattern with crypto_req_done() as
+the completion callback, matching the approach used by the SMB client
+in fs/smb/client/smb2ops.c. This properly handles both synchronous
+engines (immediate return) and async engines (-EINPROGRESS followed
+by callback notification).
 
-Fixes: 70c464256310 ("Bluetooth: Refactor connection request handling")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Link: https://github.com/openwrt/openwrt/issues/21822
+Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/ksmbd/auth.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 6310f4f9890eb..a2995dcb0ffeb 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2786,8 +2786,6 @@ static void hci_conn_request_evt(struct hci_dev *hdev, struct sk_buff *skb)
+diff --git a/fs/ksmbd/auth.c b/fs/ksmbd/auth.c
+index 647692ca78a28..8fc7a1fffd55a 100644
+--- a/fs/ksmbd/auth.c
++++ b/fs/ksmbd/auth.c
+@@ -1108,6 +1108,7 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
+ 	struct smb2_transform_hdr *tr_hdr = smb2_get_msg(iov[0].iov_base);
+ 	unsigned int assoc_data_len = sizeof(struct smb2_transform_hdr) - 20;
+ 	int rc;
++	DECLARE_CRYPTO_WAIT(wait);
+ 	struct scatterlist *sg;
+ 	u8 sign[SMB2_SIGNATURE_SIZE] = {};
+ 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
+@@ -1194,12 +1195,12 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
  
- 	memcpy(conn->dev_class, ev->dev_class, 3);
+ 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
+ 	aead_request_set_ad(req, assoc_data_len);
+-	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_SLEEP, NULL, NULL);
++	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
++				  CRYPTO_TFM_REQ_MAY_SLEEP,
++				  crypto_req_done, &wait);
  
--	hci_dev_unlock(hdev);
--
- 	if (ev->link_type == ACL_LINK ||
- 	    (!(flags & HCI_PROTO_DEFER) && !lmp_esco_capable(hdev))) {
- 		struct hci_cp_accept_conn_req cp;
-@@ -2821,7 +2819,6 @@ static void hci_conn_request_evt(struct hci_dev *hdev, struct sk_buff *skb)
- 		hci_connect_cfm(conn, 0);
- 	}
+-	if (enc)
+-		rc = crypto_aead_encrypt(req);
+-	else
+-		rc = crypto_aead_decrypt(req);
++	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req) :
++			     crypto_aead_decrypt(req), &wait);
+ 	if (rc)
+ 		goto free_iv;
  
--	return;
- unlock:
- 	hci_dev_unlock(hdev);
- }
 -- 
 2.53.0
 
