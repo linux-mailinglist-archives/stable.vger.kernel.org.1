@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-257551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gHJQDdwbG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:20 +0200
+	id ILLWH9EtG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:34:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B9460F58E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BF061203E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:34:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4616B3038B9F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:16:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E1447303F9AA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ACC6263F44;
-	Sat, 30 May 2026 17:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12A93242BA;
+	Sat, 30 May 2026 18:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2ppIrWy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmuEYMqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694F4350A05;
-	Sat, 30 May 2026 17:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE394313E34;
+	Sat, 30 May 2026 18:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161375; cv=none; b=ZXwjbVTCRVsMBlb5GX6C3ceCZsa8I+7Ir/6w172PxlEC5rJAf5FP5Hty5pGxLHnW8qSW3WDRuDSjVj+Op7zp31/5pXhRAfUVFvgkySqTUKmQA0cx+90NpFg6STngRkweA0EY3Z7DPaV4J3e2qjZQ/Aek9LUt7dI0U5LijydSBDA=
+	t=1780166011; cv=none; b=f3yshDYrjXo2qKx7aWye8vqj/c6e3vnGDrYg/jaOylYGbTS7VpXXNSWEGXluH1dMfnZ/vY463qrQ54DGM3IuzjV8fFL/D6Ka/RKf3snuOsVpKVYYycDxZyoPStqTLr3lHfH5822eB6ePfS8rzlMCKeJv0nWCJo61vUudShFg2Tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161375; c=relaxed/simple;
-	bh=5F1GJcDDMf1DDpe+EjyGhWm43LtippPszM+Jj+ocYXk=;
+	s=arc-20240116; t=1780166011; c=relaxed/simple;
+	bh=g1UNX3TRNPXaJd7jjjI3NBOJtfzJ/wgQsoZeg/4ajNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CPL5XqU5C2lnON8tMckM1IiLSxnClYzJkAzJDS2izAb5Ndvzcz5AUvxAtnCegjGZkITLKohSykE89l5vbDTCuvZoc4Oh8YeprZlsZJ3cAAFNux3EONWHqYUdGuJlGYGkSmmnPNW7R+OL4Ir9eEUQYr0nNxGJtvkr2qDo3TisoeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2ppIrWy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBFA1F00893;
-	Sat, 30 May 2026 17:16:13 +0000 (UTC)
+	 MIME-Version; b=OK0tcLsva04g2JeQ+Dmck+mYGckeAlQe0bjirne+vL1L/Nc9dopMi7fh0chbC3swKaVtLlfpLMXQaAHfrqfz7WktiozsO/vtpEPGiqzdKYeOq/sBzarzNnXq3wpstPMuVWY2DaSVdrzqJYCEhF9ltrbaqDQ5eVNUeGghK0H3PjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmuEYMqm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8CF1F00893;
+	Sat, 30 May 2026 18:33:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161374;
-	bh=8qS1VrhKIwKQvcKk+0Mh4CIgZyQobi227iuJc1Viz0w=;
+	s=korg; t=1780166010;
+	bh=NfokzXqhml0YHlCxz9WD4Wzb829sP76NNa43NgqTWPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S2ppIrWy+RQwIIEUoqN+GhBHbsmg2Nz9oup01nwyWr1xXV4OSKxnTSA84wcrYycbI
-	 ywznIa7CrGEf3TRIXM3PPALBVqawZWGxMMpabVpy088CNeF6N4nLQCbd+vzA35CigY
-	 SyTQ2KGk+rf/yxRDb1DVcNlr1W7ORqyErfZVJWPU=
+	b=CmuEYMqm54qJNYPAXr6Dfd2B2Ix0GQrp6IpFRgvg5fDFdRz6c6NbA6GLaIY3qMaU/
+	 DL7njwDZYAKAgF3NwEFqHeD0uKIFJXk01+rWOUHNiqU3Nn521HkU0fJ4DaoFxnacaC
+	 oa4dSaoaiuJ0s9AcJIQ/d3RvpSMNqXlCEiidKGrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hawley <warthog9@eaglescrag.net>,
-	Andrea Righi <arighi@nvidia.com>,
-	Marcos Paulo de Souza <mpdesouza@suse.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 565/969] ktest: Honor empty per-test option overrides
-Date: Sat, 30 May 2026 18:01:29 +0200
-Message-ID: <20260530160315.994487480@linuxfoundation.org>
+	Shivam Kalra <shivamkalra98@zohomail.in>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.10 209/589] ACPI: video: force native backlight on HP OMEN 16 (8A44)
+Date: Sat, 30 May 2026 18:01:30 +0200
+Message-ID: <20260530160230.448273916@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,112 +62,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257551-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258927-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: C9B9460F58E
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,zohomail.in:email]
+X-Rspamd-Queue-Id: 30BF061203E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Shivam Kalra <shivamkalra98@zohomail.in>
 
-[ Upstream commit a2de57a3c8192dcd67cccaff6c341b93748d799b ]
+commit 4b506ea5351a1f5937ac632a4a5c35f6f796cc41 upstream.
 
-A per-test override can clear an inherited default option by assigning an
-empty value, but __set_test_option() still used option_defined() to decide
-whether a per-test key existed. That turned an empty per-test assignment
-back into "fall back to the default", so tests still could not clear
-inherited settings.
+The HP OMEN 16 Gaming Laptop (board name 8A44) has a mux-less hybrid
+GPU configuration with AMD Rembrandt (Radeon 680M) and NVIDIA GA104
+(RTX 3070 Ti). The internal eDP panel is wired to the AMD iGPU.
 
-For example:
+When Nouveau loads without GSP firmware, the ACPI video backlight
+device (acpi_video0) gets registered alongside the native AMD
+backlight (amdgpu_bl2). In this state, writes to amdgpu_bl2 update
+the software brightness value but fail to change the physical panel
+brightness.
 
-  DEFAULTS
-  (...)
-  LOG_FILE = /tmp/ktest-empty-override.log
-  CLEAR_LOG = 1
-  ADD_CONFIG = /tmp/.config
+Force native backlight to prevent acpi_video0 from registering.
+Confirmed that booting with acpi_backlight=native resolves the
+issue.
 
-  TEST_START
-  TEST_TYPE = build
-  BUILD_TYPE = nobuild
-  ADD_CONFIG =
-
-This would run the test with ADD_CONFIG[1] = /tmp/.config
-
-Fix by checking whether the per-test key exists before falling back. If it
-does exist but is empty, treat it as unset for that test and stop the
-fallback chain there.
-
-Cc: John Hawley <warthog9@eaglescrag.net>
-Cc: Andrea Righi <arighi@nvidia.com>
-Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Link: https://patch.msgid.link/20260307-ktest-fixes-v1-4-565d412f4925@suse.com
-Fixes: 22c37a9ac49d ("ktest: Allow tests to undefine default options")
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+Link: https://patch.msgid.link/20260426-omen-16-backlight-fix-v1-1-62364f268ea6@zohomail.in
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/ktest.pl | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/acpi/video_detect.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index d752c4bd0d8b3..28eebfa32621d 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -4106,7 +4106,8 @@ sub __set_test_option {
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -154,6 +154,14 @@ static const struct dmi_system_id video_
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "VPCEH3U1E"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* HP OMEN Gaming Laptop 16-n0xxx */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16-n0xxx"),
++		},
++	},
  
-     my $option = "$name\[$i\]";
- 
--    if (option_defined($option)) {
-+    if (exists($opt{$option})) {
-+	return undef if (!option_defined($option));
- 	return $opt{$option};
-     }
- 
-@@ -4114,7 +4115,8 @@ sub __set_test_option {
- 	if ($i >= $test &&
- 	    $i < $test + $repeat_tests{$test}) {
- 	    $option = "$name\[$test\]";
--	    if (option_defined($option)) {
-+	    if (exists($opt{$option})) {
-+		return undef if (!option_defined($option));
- 		return $opt{$option};
- 	    }
- 	}
--- 
-2.53.0
-
+ 	/*
+ 	 * These models have a working acpi_video backlight control, and using
 
 
 
