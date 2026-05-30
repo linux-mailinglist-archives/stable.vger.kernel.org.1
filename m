@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-259213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258606-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MwzJgMzG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259213-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:07 +0200
+	id cEBPCowpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258606-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F01612D15
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5AF861167E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83D7130315F2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2CC6A307A1DC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF120231A21;
-	Sat, 30 May 2026 18:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CADD73AB26B;
+	Sat, 30 May 2026 18:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIMWfGTZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKEKDu4v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2631A9F90;
-	Sat, 30 May 2026 18:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5129241C8C;
+	Sat, 30 May 2026 18:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166986; cv=none; b=RyK7S/JjocvWLNsTX5abMAZq54KSZAqBoeQdfakAANMitRWSIW12mtEPSRQJv+MeHqHiUOxQUXDrvPXSL4x/Ww/f8exp5MTCEZgkuf2D+u1CdAottHv8qxXj1D+WzXTUszY9wPG68alDptMsooGPTS+jg+QIAYWN912VVmc0Rss=
+	t=1780164916; cv=none; b=H7TcjwQnCdmr0sc/UFZXlqp+GsjYeXT0ooBK0UtUIfeFjyhuBnJWC0RhaJVoYu4hGBYDvjfx00V3b9JcpMUAjwN8/acO6nkRjO9Kwt1Mffty9lBZeMJJqIeoikp6+OSYwu1MQsiVVR1Gx3MOz+RcSmSOZ0YWjuzUmYofySF2z3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166986; c=relaxed/simple;
-	bh=UEFBKSwECs9gHZVDQz7+ezdQWUP2tvj+xsJrWLRKSoA=;
+	s=arc-20240116; t=1780164916; c=relaxed/simple;
+	bh=2pRKD7MfPuOP6+hcXVnXs4RuQ7cXGAeEUCciTJjhkhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QgQTFAdbmmyuy4XBqx3txSeQHy9OfT7qk/c4CeA7oU4cPwOFiCb9JgCL6EGpcjTKkpYgo0YBdZBqK6M8vYxP8A7FcwImY4L7vfUhvqDEwArzzqgkMk0xbmxp5MOhferPAPMxZn3Giw2jU/7aylycNfFOgzsXAkGV9TYpZq/qGl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIMWfGTZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172831F00893;
-	Sat, 30 May 2026 18:49:44 +0000 (UTC)
+	 MIME-Version; b=qbr3y9c0DuGkc3xwYwq9x/2eYCRhPpYBZHmklAfVYabsD+JgtUuZVzEOrCxtiCngfeoBVpcH9QZiEk1OlAx2RWOJu7cUyc9b7jdJNidcCkKQ2YSFWjmrOoVslwpHczlC//Z6UV6QUUYMiwVgQvvDAiz9bmhtIY9sLxeIRDKSS3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKEKDu4v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AB01F00893;
+	Sat, 30 May 2026 18:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166985;
-	bh=N5YIrPBPBBHNzEKHfVd9pkjKeekcUlUAgeamKcIfNHY=;
+	s=korg; t=1780164915;
+	bh=UKtfvryWV6SM4s7lGemhPGqToLR2zamU11pXCAv27Co=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AIMWfGTZMQH8bWMQlbV0l/23ydrW6R6mXqHl2u9fhbdb7P2fj2SXtvG3xjUoXv5yg
-	 IkZ02RLQhKOsh3Vi7HodebUY4M/SAQY8FzGJX6ouVEvEB+oyepa3HO4z75Zglq/Pcf
-	 2xn94HKK8uelClACcGG82ZzKFuZkYDaNcTlc/7bY=
+	b=NKEKDu4vnZ89kaj1H8W3obGVAqo/3Xy2SCgiKh7YFL0UuW+zGS0ANRyqSEPySb+4T
+	 UztnMJmdOuPcot09lihbc2SbGROUMKKqqwRblQFvE97bNVAaGlALpNEhCFrHrx2geo
+	 4FxAiDstev2oU0TAJfnx5ebni/uHPPn/8YPKKCCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 530/589] ALSA: asihpi: Fix potential OOB array access at reading cache
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 697/776] scsi: isci: Fix use-after-free in device removal path
 Date: Sat, 30 May 2026 18:06:51 +0200
-Message-ID: <20260530160238.640325469@linuxfoundation.org>
+Message-ID: <20260530160257.843869179@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259213-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258606-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,suse.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: F1F01612D15
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,oracle.com:email]
+X-Rspamd-Queue-Id: B5AF861167E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 7b7d6572145c1dab2dd9bfb550b188e5f0ff3c3f upstream.
+commit b52a8d52c3125ec9a93106ed816582368de34426 upstream.
 
-find_control() to retrieve a cached info accesses the array with the
-given index blindly, which may lead to an OOB array access.
-Add a sanity check for avoiding it.
+The ISCI completion tasklet is initialized in isci_host_alloc()
+(drivers/scsi/isci/init.c:496) and scheduled from both MSI-X and legacy
+interrupt handlers (drivers/scsi/isci/host.c:223,613).
 
-Link: https://sashiko.dev/#/patchset/20260511230121.28606-1-rosenp%40gmail.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260515085606.242284-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+isci_host_deinit() stops the controller and waits for stop completion,
+but it never kills completion_tasklet before teardown continues. A
+top-of-function tasklet_kill() is not sufficient here: interrupts are
+only disabled when isci_host_stop_complete() runs, so until
+wait_for_stop() returns the IRQ handlers can still requeue the
+tasklet. The tasklet callback also re-enables interrupts after draining
+completions, so killing the tasklet before the source is quiesced leaves
+the same race open.
+
+Once wait_for_stop() returns, no further IRQ-driven scheduling can
+occur. Kill completion_tasklet there so teardown cannot race a queued
+tasklet running on a dead ihost. On remove or unload, the stale callback
+can otherwise dereference ihost and touch ihost->smu_registers after the
+host lifetime ends.
+
+A UML + KASAN analogue reproduced the failure class both with no
+tasklet_kill() and with tasklet_kill() placed before source quiesce, and
+stayed clean once the kill happened after quiescing the scheduling
+source.
+
+This mirrors commit f6ab594672d4 ("scsi: aic94xx: fix use-after-free in
+device removal path"), but ISCI needs the kill after wait_for_stop().
+
+Fixes: 6f231dda6808 ("isci: Intel(R) C600 Series Chipset Storage Control Unit Driver")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260419210420.2134639-1-michael.bommarito@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/asihpi/hpicmn.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/scsi/isci/host.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/sound/pci/asihpi/hpicmn.c
-+++ b/sound/pci/asihpi/hpicmn.c
-@@ -276,6 +276,12 @@ static short find_control(u16 control_in
- 		return 0;
- 	}
+--- a/drivers/scsi/isci/host.c
++++ b/drivers/scsi/isci/host.c
+@@ -1252,6 +1252,9 @@ void isci_host_deinit(struct isci_host *
  
-+	if (control_index >= p_cache->control_count) {
-+		HPI_DEBUG_LOG(VERBOSE, "control_index out of bounce %d\n",
-+			control_index);
-+		return 0;
-+	}
+ 	wait_for_stop(ihost);
+ 
++	/* No further IRQ-driven scheduling can happen past wait_for_stop(). */
++	tasklet_kill(&ihost->completion_tasklet);
 +
- 	*pI = p_cache->p_info[control_index];
- 	if (!*pI) {
- 		HPI_DEBUG_LOG(VERBOSE, "Uncached Control %d\n",
+ 	/* phy stop is after controller stop to allow port and device to
+ 	 * go idle before shutting down the phys, but the expectation is
+ 	 * that i/o has been shut off well before we reach this
 
 
 
