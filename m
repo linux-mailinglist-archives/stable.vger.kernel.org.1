@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-257250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MgADJcZG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:39 +0200
+	id mKN+MZ4hG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A240E60EF4D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0662461036F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44D2330C554C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:59:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 807DD3009F1A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D629C332EA7;
-	Sat, 30 May 2026 16:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF563438AE;
+	Sat, 30 May 2026 17:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YoSBmxmF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQErMkaJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F962E92B3;
-	Sat, 30 May 2026 16:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8145B2E7379;
+	Sat, 30 May 2026 17:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160340; cv=none; b=IWSCj5GmV1Jam6urTfnEqANnINFyVi6dN23XdQfTkGdiVpkYilz9PAX3dS/8qBPL4UuJvK4/0C5QmbQ01Ixgc7WOR/yRAyfORFYVnRIGvLcX5GYKqabMxqrZ08DwUOR0VMmErRZRazTJk23rGXsXtcvXFBYiluVFQgMrfrZcINo=
+	t=1780162839; cv=none; b=uytHADSYoDqTAPsSYF4xp2AnxhuTk6F7LyRwBMxYQihv0LOPATW6tMmRGogwVjdpdKF0Q/tFOkHEyH0uJkB+XQwQIqm7acG2t4MZG8wis5wE3okmR4O2CKGyjGBB2KzKReMnC8qKBuSKKy4S+iof6W83bsIyLkeKq/s1dmhjejw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160340; c=relaxed/simple;
-	bh=zdTJvt4VVvFXBip6idBRbTSQLBlkjrj8r/R4bWAqDAw=;
+	s=arc-20240116; t=1780162839; c=relaxed/simple;
+	bh=gCFpX7l7zAH4PbyCjh1S12QLc+a760i0e5R3SLK7wSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bNHRReuUS8FCVMr2C9aCG6abRPDVr/fu3jEuD4WOUKoK5HiQtYhxFpp+MpxqMPbdfctEkViLqq8GcSWh3rx559uXkFoMnoTNNKXfDx82XKxmaJ/qz2IuWNdkdpMHzAtZPnXQABLTU0GIGfIzeHA3JeMEaqWK6bvi+L8sP0YGwdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YoSBmxmF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A9C1F00893;
-	Sat, 30 May 2026 16:58:58 +0000 (UTC)
+	 MIME-Version; b=jk/yvTQEKlwRrNfaHMiyzLucTSy3CLPP4Osy54VHiik8DOG7Y+HLE3Ljxf4brv8JVKg7LNDifKgEgidZdL9ebcZyIYSV1YNI8yEh0Me+efplsn/SjCc1Inow1KlIOA2VFDlzaEzUFsa3craQ8vbc1uMLpes+j2PIsCtapcwLQmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQErMkaJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77601F00893;
+	Sat, 30 May 2026 17:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160339;
-	bh=VVITNZ7vdHqbhcRjETj8K5aw5043cG7TRdypecz2FC0=;
+	s=korg; t=1780162838;
+	bh=wTkXDkar3iBpIv57uI2EeKyGKzzsX1SR2cL4R1/Fsh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YoSBmxmF/vxOBlFJbSGhzF66CT1HoNkTp8cc1gNiYg9VX/iMNtLLbmipaNEQvETjV
-	 IVm6MheEP8qxevPrUVg7Yug3lXPX7QUyCoAnebxWmY4i9zq/zGKYaD8fgSBxfbH31X
-	 ePjYObJC5qpFB7x6uiPAWhCbed7PS+hAUR1JlH7Q=
+	b=CQErMkaJjDlbtJfaXOD4WxYYnxUppsgfWdFypIcAp/cU0LInll2/Mylu2mx3OwlpV
+	 WLgqU4dkTzi3gRYfFcwJkZ+24x6o0l7Ic40xJA+DTIr84Oc0uEyKylDJr9ZNIvnhwu
+	 xR30WCLncU0TXcJVGj72gHnZG8GTq+bueJpYhWbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	Yang Xiuwei <yangxiuwei@kylinos.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 268/969] scsi: sd: fix missing put_disk() when device_add(&disk_dev) fails
-Date: Sat, 30 May 2026 17:56:32 +0200
-Message-ID: <20260530160307.873402146@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Joe Perches <joe@perches.com>,
+	Andy Whitcroft <apw@canonical.com>,
+	Dwaipayan Ray <dwaipayanray1@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 079/776] checkpatch: add support for Assisted-by tag
+Date: Sat, 30 May 2026 17:56:33 +0200
+Message-ID: <20260530160242.370538201@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +69,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257250-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257985-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,acm.org,perches.com,canonical.com,gmail.com,lwn.net,linux-foundation.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A240E60EF4D
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,acm.org:email,canonical.com:email,perches.com:email,checkpatch.pl:url]
+X-Rspamd-Queue-Id: 0662461036F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Xiuwei <yangxiuwei@kylinos.cn>
+From: Sasha Levin <sashal@kernel.org>
 
-commit 1e111c4b3a726df1254670a5cc4868cedb946d37 upstream.
+commit d1db4118489fffd2b2f612140b7acbb477880839 upstream.
 
-If device_add(&sdkp->disk_dev) fails, put_device() runs
-scsi_disk_release(), which frees the scsi_disk but leaves the gendisk
-referenced. The device_add_disk() error path in sd_probe() calls
-put_disk(gd); call put_disk(gd) here to mirror that cleanup.
+The Assisted-by tag was introduced in
+Documentation/process/coding-assistants.rst for attributing AI tool
+contributions to kernel patches.  However, checkpatch.pl did not recognize
+this tag, causing two issues:
 
-Fixes: 265dfe8ebbab ("scsi: sd: Free scsi_disk device via put_device()")
-Cc: stable@vger.kernel.org
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Yang Xiuwei <yangxiuwei@kylinos.cn>
-Link: https://patch.msgid.link/20260330014952.152776-1-yangxiuwei@kylinos.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+  WARNING: Non-standard signature: Assisted-by:
+  ERROR: Unrecognized email address: 'AGENT_NAME:MODEL_VERSION'
+
+Fix this by:
+1. Adding Assisted-by to the recognized $signature_tags list
+2. Skipping email validation for Assisted-by lines since they use the
+   AGENT_NAME:MODEL_VERSION format instead of an email address
+3. Warning when the Assisted-by value doesn't match the expected format
+
+Link: https://lkml.kernel.org/r/20260311215818.518930-1-sashal@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Bart Van Assche <bvanassche@acm.org>
+Acked-by: Joe Perches <joe@perches.com>
+Cc: Andy Whitcroft <apw@canonical.com>
+Cc: Dwaipayan Ray <dwaipayanray1@gmail.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sd.c |    1 +
- 1 file changed, 1 insertion(+)
+ scripts/checkpatch.pl |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3607,6 +3607,7 @@ static int sd_probe(struct device *dev)
- 	error = device_add(&sdkp->disk_dev);
- 	if (error) {
- 		put_device(&sdkp->disk_dev);
-+		put_disk(gd);
- 		goto out;
- 	}
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -588,6 +588,7 @@ our $signature_tags = qr{(?xi:
+ 	Reviewed-by:|
+ 	Reported-by:|
+ 	Suggested-by:|
++	Assisted-by:|
+ 	To:|
+ 	Cc:
+ )};
+@@ -3000,6 +3001,15 @@ sub process {
+ 				}
+ 			}
  
++			# Assisted-by uses AGENT_NAME:MODEL_VERSION format, not email
++			if ($sign_off =~ /^Assisted-by:/i) {
++				if ($email !~ /^\S+:\S+/) {
++					WARN("BAD_SIGN_OFF",
++					     "Assisted-by expects 'AGENT_NAME:MODEL_VERSION [TOOL1] [TOOL2]' format\n" . $herecurr);
++				}
++				next;
++			}
++
+ 			my ($email_name, $name_comment, $email_address, $comment) = parse_email($email);
+ 			my $suggested_email = format_email(($email_name, $name_comment, $email_address, $comment));
+ 			if ($suggested_email eq "") {
 
 
 
