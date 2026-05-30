@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-257697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259077-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMGKHo4eG2q4/QgAu9opvQ
-	(envelope-from <stable+bounces-257697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:50 +0200
+	id OMINOXQvG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259077-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E412F60FCB5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EBA0612456
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E2A0630CA906
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:24:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A9C4F300F5DC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744B6340293;
-	Sat, 30 May 2026 17:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0472029E11A;
+	Sat, 30 May 2026 18:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tp5tdqDi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j15k1Pgq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B66D263F44;
-	Sat, 30 May 2026 17:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634433AB26B;
+	Sat, 30 May 2026 18:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161870; cv=none; b=GamRm1lHKNEC7A6MbfzwSMkor0qyMsP8zRKI7joN3PB7Ay5v3APW+jKy++FKPM6L7IrfM/dcNqsNgYdvPdZlBms1/CuLzjeUUBrY4bVULuLh5SAFpbVdIyyjlGF5pPmDeK8P9Sp9bJX8IKYSDXAiAp895kmOvsjEX0/QAHoyVVA=
+	t=1780166514; cv=none; b=pY73U9hb35CManHd1QeJFgEhZsSRkQtXxVEa8FDqPYrxNe3ljbOcz0NPUdqoiHcW98dPkeTZTk3i2Y1AZjwGePtv54quu99PigptxNPItw0qJ1Z62sPQ2aD4Sck2OXpGBoowhJd9Ti4WJeDMepUVkhxBU+Ha6pp6V/IvFxMo0vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161870; c=relaxed/simple;
-	bh=OBlybWGgiWzcgbxwESb6RcbWbq1XUZLWGVFkEpFpTlE=;
+	s=arc-20240116; t=1780166514; c=relaxed/simple;
+	bh=711tM16cQT1zH9bIvsh9xgHA0nH/geET11cdShpVBnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4mDUYjNGoWoiS+tEM/RCx9/iRH5rt3bh6MZxfsKc7MlyQroB1EAia7kAQzTeo2lRmNkb5beaHIsgagRzTNgnIqmz+6eTQAPRlnDcItpyGygkH/Hh0fGRsyG5b3X79lZHhNOVqpFwWWBj3q8lTb9j5GIyPSN/JlzVy9ari8q6QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tp5tdqDi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F471F00893;
-	Sat, 30 May 2026 17:24:28 +0000 (UTC)
+	 MIME-Version; b=l2BRywxOnu0E6pWCepd8kxtGDQl/CjF9mcRop9nrtxIO+i/Ovb3JLjWGt+H4I6Pxh/O1O9GKpE3toEG2ax2Lqt2ILxAgAKxwy4mKT1KZnL4upKpeUQtzHx4WOngkPE2HIiMIEyVpK0yrhdKqxgxDdzGAx1fuxSVzmk4GQNagaEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j15k1Pgq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E29A1F00899;
+	Sat, 30 May 2026 18:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161869;
-	bh=VktmHB12vOZ2Mp6d0F7j+lM8K2tZsuHBunE4sQYZP30=;
+	s=korg; t=1780166512;
+	bh=u6VxJKyAMcXFt3wvSGjQ0+nrKvOVZvWN47lBLZkoIM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tp5tdqDig2fVyTFVBSrWttzlTQEqQtItQqTGkMA3shwVsSgmVYlUIDtVtJaXq2GyF
-	 HB9a7VQE6dE6al4bxzV7U0C8lewCHFF+BKDSO7I3nCBOTTLkSLNetRBvwTEkC/rHFE
-	 QnL44qlh5w5csBCTKGxBEDvC/tpaWWHMS5BhRTPE=
+	b=j15k1PgqQcJogkmRk/WrMiUamV1+pS8w4tX0cqXpKnuv3VWbCOGtXqCg1IAyAGxm2
+	 izmNGFAZeXUoBhybx5i3kOzHyTaLxycSLg1ywfEwuwDSEdmxSveQmqQT84Y948ATZC
+	 jbFg1KRMu+J2fcUS4Uc0xn5xzv668tqGdEG5zDGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Anna Schumaker <anna.schumkaer@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 751/969] net/sched: sch_fq_pie: annotate data-races in fq_pie_dump_stats()
+Subject: [PATCH 5.10 394/589] nfs/blocklayout: Fix compilation error (`make W=1`) in bl_write_pagelist()
 Date: Sat, 30 May 2026 18:04:35 +0200
-Message-ID: <20260530160321.300971656@linuxfoundation.org>
+Message-ID: <20260530160235.144316340@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257697-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259077-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,74 +87,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E412F60FCB5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: 8EBA0612456
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 59b145771c7982cfe9020d4e9e22da92d6b5ae31 ]
+[ Upstream commit f83c8dda456ce4863f346aa26d88efa276eda35d ]
 
-fq_codel_dump_stats() acquires the qdisc spinlock a bit too late.
+Clang compiler is not happy about set but unused variable
+(when dprintk() is no-op):
 
-Move this acquisition before we fill tc_fq_pie_xstats with live data.
+.../blocklayout/blocklayout.c:384:9: error: variable 'count' set but not used [-Werror,-Wunused-but-set-variable]
 
-Alternative would be to add READ_ONCE() and WRITE_ONCE() annotations,
-but the spinlock is needed anyway to scan q->new_flows and q->old_flows.
+Remove a leftover from the previous cleanup.
 
-Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260423063527.2568262-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3a6fd1f004fc ("pnfs/blocklayout: remove read-modify-write handling in bl_write_pagelist")
+Acked-by: Anna Schumaker <anna.schumkaer@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_fq_pie.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ fs/nfs/blocklayout/blocklayout.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
-index 607c580d75e4b..4bd5ca9acc53f 100644
---- a/net/sched/sch_fq_pie.c
-+++ b/net/sched/sch_fq_pie.c
-@@ -498,18 +498,19 @@ static int fq_pie_dump(struct Qdisc *sch, struct sk_buff *skb)
- static int fq_pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- {
- 	struct fq_pie_sched_data *q = qdisc_priv(sch);
--	struct tc_fq_pie_xstats st = {
--		.packets_in	= q->stats.packets_in,
--		.overlimit	= q->stats.overlimit,
--		.overmemory	= q->overmemory,
--		.dropped	= q->stats.dropped,
--		.ecn_mark	= q->stats.ecn_mark,
--		.new_flow_count = q->new_flow_count,
--		.memory_usage   = q->memory_usage,
--	};
-+	struct tc_fq_pie_xstats st = { 0 };
- 	struct list_head *pos;
+diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
+index a853711bcad27..145608a373193 100644
+--- a/fs/nfs/blocklayout/blocklayout.c
++++ b/fs/nfs/blocklayout/blocklayout.c
+@@ -404,14 +404,13 @@ bl_write_pagelist(struct nfs_pgio_header *header, int sync)
+ 	sector_t isect, extent_length = 0;
+ 	struct parallel_io *par = NULL;
+ 	loff_t offset = header->args.offset;
+-	size_t count = header->args.count;
+ 	struct page **pages = header->args.pages;
+ 	int pg_index = header->args.pgbase >> PAGE_SHIFT;
+ 	unsigned int pg_len;
+ 	struct blk_plug plug;
+ 	int i;
  
- 	sch_tree_lock(sch);
-+
-+	st.packets_in	= q->stats.packets_in;
-+	st.overlimit	= q->stats.overlimit;
-+	st.overmemory	= q->overmemory;
-+	st.dropped	= q->stats.dropped;
-+	st.ecn_mark	= q->stats.ecn_mark;
-+	st.new_flow_count = q->new_flow_count;
-+	st.memory_usage   = q->memory_usage;
-+
- 	list_for_each(pos, &q->new_flows)
- 		st.new_flows_len++;
+-	dprintk("%s enter, %zu@%lld\n", __func__, count, offset);
++	dprintk("%s enter, %u@%lld\n", __func__, header->args.count, offset);
  
+ 	/* At this point, header->page_aray is a (sequential) list of nfs_pages.
+ 	 * We want to write each, and if there is an error set pnfs_error
+@@ -453,7 +452,6 @@ bl_write_pagelist(struct nfs_pgio_header *header, int sync)
+ 		}
+ 
+ 		offset += pg_len;
+-		count -= pg_len;
+ 		isect += (pg_len >> SECTOR_SHIFT);
+ 		extent_length -= (pg_len >> SECTOR_SHIFT);
+ 	}
 -- 
 2.53.0
 
