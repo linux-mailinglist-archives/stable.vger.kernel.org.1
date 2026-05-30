@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-257419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AK2RJR8aG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257419-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:55 +0200
+	id WD0WLNgjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5FD60F0CB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39FDD6108CF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7F8503060D56
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:09:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3568C30058D4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DBC3AEB5C;
-	Sat, 30 May 2026 17:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFD43546EA;
+	Sat, 30 May 2026 17:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYns5O91"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFvfbM2M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968543AB26B;
-	Sat, 30 May 2026 17:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1083A261B9E;
+	Sat, 30 May 2026 17:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160932; cv=none; b=CSaskEJ0tFgaeuU4yXvX2W7MbZxlv03+bTS+hNb0N7wTXlFDmIj48IHwvyjO5C+XIkM3AYnv13CZL3hUwtcpqbhIDsiuddDbrwF8hPK/97DdOkl8YEPrvFi/hV/vCADuMlZFarw0pmJ+qxYA0/lYQPm0yS4ZvkhH34hNoJmUI6Q=
+	t=1780163536; cv=none; b=qNbAVZYQccZ2rXRSy9uAWCQpieGqeK2t6x93wHgC62oLxpYxq4FGYmQySrA4CUWh4M6CyDbQSn856jmn3xTd4cMLmFCO5ZCzMXikBtNaqUSimnXPADZQBHhgcog0yFTRXRNfGz0Vo76lwmumaOWi60hV6QUPkxabNAh7gje6bfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160932; c=relaxed/simple;
-	bh=Dp42CdlRpuVBEFrz1YmggdOg+vFJb6C5/mb7fRgTXIU=;
+	s=arc-20240116; t=1780163536; c=relaxed/simple;
+	bh=vYb5OM1hllZsEVasZfn+2uvLenyoT7mZlOrFDwQsAhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N81UM6oYoW3mrdmaqvhQ+QBQq3/yP87YmZOYHG0KL8ngiuSfGxmymFZzQN4X2IPKSIMTRpLucj+0UN/fougCvCTZf40tSVg1sxOBdHOSRPLjo3SopHMnwU6cJ9gkG/SSPMHrEw0IjZMI/Ixd2LcKl8DqeMICKwF1YWuLmkmGzNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYns5O91; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C111F00893;
-	Sat, 30 May 2026 17:08:50 +0000 (UTC)
+	 MIME-Version; b=DzBfWb0MPlaL5PhBAoikppBiE7l/2r0DFOLH93x4z58zuVxiuBYBmn7f3ywaOKsxKQ/zxiFP66aREXyJbcTsP0vryHJX9YJ8bFzNhco8sAEt/XpUNt0mm6rVjgMRG97y2RhUweq5/BkMtORvkxNecrBvDf38hkQermSUse0FeWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFvfbM2M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AF71F00893;
+	Sat, 30 May 2026 17:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160931;
-	bh=iwZwngi1ouS8OBTM0gAFQTD1TsGO7+ICFjC4TS2rLaM=;
+	s=korg; t=1780163535;
+	bh=eKBZSZ6gnD3xEjrNkWH2l0QE+h2/7lEZwpbu3AbuHz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yYns5O91NfBM1KOJ0BwTLwk1caIIs8uM+FVHRTDvhfS3NHmcFT0jVyxEjLYWcrrMP
-	 zOZq6Iy2V6201rpHUHqA7bK3fxgRgrp6Yhv81etxNKPwX0oco9zrPUs8awimz2Qo7f
-	 hbN7oFEOrmgixNleXkdaBZgG5vkqzfZGtoZ4D4DI=
+	b=SFvfbM2M2bFrpkannyBZm9wcqFdWJAOF7qSbn0Xw4KcHAjEO/aUGHiefxMsjtZovf
+	 gxmII5yPSrUzixSRaz7UYhRENExzijQyNTbAazdHAqW8ptQRCWoPMit6OZBOEBm5LJ
+	 KnG1oxEhuQI6wQyNQaXt/nN3y7zWCY2YjXkYIv6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 477/969] netfilter: nft_fwd_netdev: check ttl/hl before forwarding
+Subject: [PATCH 5.15 287/776] ipmi:ssif: Remove unnecessary indention
 Date: Sat, 30 May 2026 18:00:01 +0200
-Message-ID: <20260530160313.469308958@linuxfoundation.org>
+Message-ID: <20260530160247.974990025@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,18 +68,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257419-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258196-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -89,55 +89,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6A5FD60F0CB
+X-Rspamd-Queue-Id: 39FDD6108CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Corey Minyard <corey@minyard.net>
 
-[ Upstream commit 1dfd95bdf4d18d263aa8fad06bfb9f4d9c992b18 ]
+commit 91eb7ec7261254b6875909df767185838598e21e upstream.
 
-Drop packets if their ttl/hl is too small for forwarding.
+A section was in {} that didn't need to be, move the variable
+definition to the top and set th eindentino properly.
 
-Fixes: d32de98ea70f ("netfilter: nft_fwd_netdev: allow to forward packets via neighbour layer")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_fwd_netdev.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/char/ipmi/ipmi_ssif.c | 28 ++++++++++++----------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
-diff --git a/net/netfilter/nft_fwd_netdev.c b/net/netfilter/nft_fwd_netdev.c
-index 7c5876dc9ff2b..6f6b355134625 100644
---- a/net/netfilter/nft_fwd_netdev.c
-+++ b/net/netfilter/nft_fwd_netdev.c
-@@ -115,6 +115,11 @@ static void nft_fwd_neigh_eval(const struct nft_expr *expr,
- 			goto out;
- 		}
- 		iph = ip_hdr(skb);
-+		if (iph->ttl <= 1) {
-+			verdict = NF_DROP;
-+			goto out;
-+		}
-+
- 		ip_decrease_ttl(iph);
- 		neigh_table = NEIGH_ARP_TABLE;
- 		break;
-@@ -131,6 +136,11 @@ static void nft_fwd_neigh_eval(const struct nft_expr *expr,
- 			goto out;
- 		}
- 		ip6h = ipv6_hdr(skb);
-+		if (ip6h->hop_limit <= 1) {
-+			verdict = NF_DROP;
-+			goto out;
-+		}
-+
- 		ip6h->hop_limit--;
- 		neigh_table = NEIGH_ND_TABLE;
- 		break;
+diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
+index 55ebe1d31766b..e93846f8f2352 100644
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -1694,6 +1694,7 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 	int               len;
+ 	int               i;
+ 	u8		  slave_addr = 0;
++	unsigned int      thread_num;
+ 	struct ssif_addr_info *addr_info = NULL;
+ 
+ 	mutex_lock(&ssif_infos_mutex);
+@@ -1902,22 +1903,17 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 	ssif_info->handlers.request_events = request_events;
+ 	ssif_info->handlers.set_need_watch = ssif_set_need_watch;
+ 
+-	{
+-		unsigned int thread_num;
+-
+-		thread_num = ((i2c_adapter_id(ssif_info->client->adapter)
+-			       << 8) |
+-			      ssif_info->client->addr);
+-		init_completion(&ssif_info->wake_thread);
+-		ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
+-					       "kssif%4.4x", thread_num);
+-		if (IS_ERR(ssif_info->thread)) {
+-			rv = PTR_ERR(ssif_info->thread);
+-			dev_notice(&ssif_info->client->dev,
+-				   "Could not start kernel thread: error %d\n",
+-				   rv);
+-			goto out;
+-		}
++	thread_num = ((i2c_adapter_id(ssif_info->client->adapter) << 8) |
++		      ssif_info->client->addr);
++	init_completion(&ssif_info->wake_thread);
++	ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
++					"kssif%4.4x", thread_num);
++	if (IS_ERR(ssif_info->thread)) {
++		rv = PTR_ERR(ssif_info->thread);
++		dev_notice(&ssif_info->client->dev,
++			   "Could not start kernel thread: error %d\n",
++			   rv);
++		goto out;
+ 	}
+ 
+ 	dev_set_drvdata(&ssif_info->client->dev, ssif_info);
 -- 
 2.53.0
 
