@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-257583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFZqIcQdG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257583-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:28 +0200
+	id 2HJvE3wdG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C5F60FA88
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B43F660F98E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD944307DFE7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:18:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 15F303019838
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB6330E847;
-	Sat, 30 May 2026 17:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDA2395AEA;
+	Sat, 30 May 2026 17:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7yauQjx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZkE1DnW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597B1263F44;
-	Sat, 30 May 2026 17:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CF7350A05;
+	Sat, 30 May 2026 17:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161486; cv=none; b=IXwPp4RbO2+mFIH28SVMdrX5fWuh+38l9urWnf8mc93aCicPQ11CftlGgpV5fgQ3f2qaedXg4HifoAMoXL+K66aIuqdoEJ1croc8N5w5PxU4Di2+J5mppkTc07rAZbLkxxa/RITWSTnxBMa8Mo4EplJ9v5OqUSXKAljoKMoRlW8=
+	t=1780161382; cv=none; b=eGyO8+/qnV0vcnzSCsR+nPmewDY5bXv4t8OD3NhZ8sqCimjXs+lnSFMVGTlrbhNn92SpExoqdt1Cz26NFKRqggmcNuZ/ygfCWX6DVHw966bsDgyVSXsKhtYmBPUidOdRBsT7+/VfpVK2mQ/HdINgbBw1Oj6g47csG8xmhVr6/E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161486; c=relaxed/simple;
-	bh=MPoVRjhy9Ul9zx0mPSulR9vwBuP28OwM4hKnywpABBo=;
+	s=arc-20240116; t=1780161382; c=relaxed/simple;
+	bh=CW9R31PE9c2XL7ZbFjKMhG19u93sbi97Gcz0KMWnIEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4+g6ryULsRze9zGHuKCnONT+CHKEtyt1Kp6md1T18MCqnx/CQLPc7x5n0GHU1ncDRN1YujsYe9a4zHjtEalhOamVcVL7w3ZxjkkUSXGzroKR9j+ilWdHaspDSPmYcyoUoxptv9aPJ2VBvv4OmxlwB47Tm1aErmNOFqK+0QCLmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7yauQjx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589921F00893;
-	Sat, 30 May 2026 17:18:04 +0000 (UTC)
+	 MIME-Version; b=C8/dvtFqNvr/nEBnka1fCXsTs7eQTF4GGY6WbFC1ZxZs31zx+pfBSvAS6MQc6o2QJql+IXlI53L9MTTP2BnjzBOAnOrA5rBBtnfl9z1Na7Xn3GpKC1BfhmfvBPzGE1L9H2rQmuWQdVqhdNCM02rMfvOS/auOTMRIieSt95iZhxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZkE1DnW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD521F00893;
+	Sat, 30 May 2026 17:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161485;
-	bh=4jWHuuehYrX5Wq4ZGl+FYmIM7BPYW8SvxswT1LMJG+Q=;
+	s=korg; t=1780161381;
+	bh=EDBkhVrGWDiD9gK0oyHdReowacaDc/WEI1TMo0Atk1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D7yauQjxeEdtsc7/3fJdbBH5yhnIhoGQt6RQBBQ3Tvp/eJ1Bb7hA4giFD85Qg0Zk4
-	 HOwd9ilWFg1lMlqMDQ/OrJmhHPSuvw+YRzI6XXUs+vAfqydpzGyOODx/oKKlD40tAi
-	 1l3aHqtFKK4mqUQZl2HDwCqOYTQJj3VqwxwLdcMo=
+	b=KZkE1DnWTrJ6NTWBQyy/FZTzaN4qjCyh4WKTwzskXPS5czMXmAaiU4jD8L3fdiCGs
+	 6b0Bt4ndJr+qNUFvsXaitsKFX8qrGS6+8x75/wMUnw7rFjo+8FCK0zELYQINV+F1My
+	 thvzm7bF8KfbpxdU0ZGRH4TO+ZYIG+pzpp+hjQKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
 	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 607/969] mtd: spi-nor: spansion: Make RD_ANY_REG_OP macro take number of dummy bytes
-Date: Sat, 30 May 2026 18:02:11 +0200
-Message-ID: <20260530160317.193347721@linuxfoundation.org>
+Subject: [PATCH 6.1 608/969] mtd: spi-nor: spansion: Add support for Infineon S25FS256T
+Date: Sat, 30 May 2026 18:02:12 +0200
+Message-ID: <20260530160317.219749752@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257583-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257553-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,7 +90,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E6C5F60FA88
+X-Rspamd-Queue-Id: B43F660F98E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,67 +100,114 @@ X-Rspamd-Server: lfdr
 
 From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
 
-[ Upstream commit d628783c46d3c317deb0671ceb986be358fbaf69 ]
+[ Upstream commit 6afcc84080c415df81765c6d773edcba8fc30f6c ]
 
-Currently Read Any Register op is used to read volatile registers without
-any dummy cycles, but the op requires dummy cycles depending on register
-type (volatiler or non-volatile), device family, and device configuration.
-Add 'ndummy' argument to RD_ANY_REG_OP macro to support other use cases.
+Infineon S25FS256T is 256Mbit Quad SPI NOR flash. The key features and
+differences comparing to other Spansion/Cypress flash familes are:
+  - 4-byte address mode by factory default
+  - Quad mode is enabled by factory default
+  - OP_READ_FAST_4B(0Ch) is not supported
+  - Supports mixture of 128KB and 64KB sectors by OTP configuration
+    (this patch supports uniform 128KB only due to complexity of
+     non-uniform layout)
 
-Suggested-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Tested on Xilinx Zynq-7000 FPGA board.
+
+Link: https://www.infineon.com/dgdlac/Infineon-S25FS256T_256Mb_SEMPER_Nano_Flash_Quad_SPI_1.8V-DataSheet-v12_00-EN.pdf?fileId=8ac78c8c80027ecd0180740c5a46707a
 Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Link: https://lore.kernel.org/r/03756e9e3ac41d2016a71d2afb702398dd0b19ed.1677557525.git.Takahiro.Kuwano@infineon.com
+Link: https://lore.kernel.org/r/097ef04484966593ba1326d0a99462753d7d1073.1677557525.git.Takahiro.Kuwano@infineon.com
 Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/spansion.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/mtd/spi-nor/spansion.c | 60 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
 diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
-index faa8a49545be7..3ae59c7822039 100644
+index 3ae59c7822039..5914a6074a11e 100644
 --- a/drivers/mtd/spi-nor/spansion.c
 +++ b/drivers/mtd/spi-nor/spansion.c
-@@ -37,10 +37,10 @@
- 		   SPI_MEM_OP_NO_DUMMY,					\
- 		   SPI_MEM_OP_DATA_OUT(ndata, buf, 0))
+@@ -29,6 +29,7 @@
+ 	 SPINOR_REG_CYPRESS_CFR5_OPI)
+ #define SPINOR_REG_CYPRESS_CFR5V_OCT_DTR_DS	SPINOR_REG_CYPRESS_CFR5_BIT6
+ #define SPINOR_OP_CYPRESS_RD_FAST		0xee
++#define SPINOR_REG_CYPRESS_ARCFN		0x00000006
  
--#define CYPRESS_NOR_RD_ANY_REG_OP(naddr, addr, buf)			\
-+#define CYPRESS_NOR_RD_ANY_REG_OP(naddr, addr, ndummy, buf)		\
- 	SPI_MEM_OP(SPI_MEM_OP_CMD(SPINOR_OP_RD_ANY_REG, 0),		\
- 		   SPI_MEM_OP_ADDR(naddr, addr, 0),			\
--		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_OP_DUMMY(ndummy, 0),				\
- 		   SPI_MEM_OP_DATA_IN(1, buf, 0))
+ /* Cypress SPI NOR flash operations. */
+ #define CYPRESS_NOR_WR_ANY_REG_OP(naddr, addr, ndata, buf)		\
+@@ -229,6 +230,62 @@ static void cypress_nor_ecc_init(struct spi_nor *nor)
+ 	nor->flags |= SNOR_F_ECC;
+ }
  
- #define SPANSION_CLSR_OP						\
-@@ -148,7 +148,7 @@ static int cypress_nor_quad_enable_volatile(struct spi_nor *nor)
- 
- 	op = (struct spi_mem_op)
- 		CYPRESS_NOR_RD_ANY_REG_OP(addr_mode_nbytes,
--					  SPINOR_REG_CYPRESS_CFR1V,
-+					  SPINOR_REG_CYPRESS_CFR1V, 0,
- 					  nor->bouncebuf);
- 
- 	ret = spi_nor_read_any_reg(nor, &op, nor->reg_proto);
-@@ -173,7 +173,7 @@ static int cypress_nor_quad_enable_volatile(struct spi_nor *nor)
- 	/* Read back and check it. */
- 	op = (struct spi_mem_op)
- 		CYPRESS_NOR_RD_ANY_REG_OP(addr_mode_nbytes,
--					  SPINOR_REG_CYPRESS_CFR1V,
-+					  SPINOR_REG_CYPRESS_CFR1V, 0,
- 					  nor->bouncebuf);
- 	ret = spi_nor_read_any_reg(nor, &op, nor->reg_proto);
- 	if (ret)
-@@ -202,7 +202,7 @@ static int cypress_nor_set_page_size(struct spi_nor *nor)
- {
- 	struct spi_mem_op op =
- 		CYPRESS_NOR_RD_ANY_REG_OP(nor->params->addr_mode_nbytes,
--					  SPINOR_REG_CYPRESS_CFR3V,
-+					  SPINOR_REG_CYPRESS_CFR3V, 0,
- 					  nor->bouncebuf);
- 	int ret;
- 
++static int
++s25fs256t_post_bfpt_fixup(struct spi_nor *nor,
++			  const struct sfdp_parameter_header *bfpt_header,
++			  const struct sfdp_bfpt *bfpt)
++{
++	struct spi_mem_op op;
++	int ret;
++
++	/* 4-byte address mode is enabled by default */
++	nor->params->addr_nbytes = 4;
++	nor->params->addr_mode_nbytes = 4;
++
++	/* Read Architecture Configuration Register (ARCFN) */
++	op = (struct spi_mem_op)
++		CYPRESS_NOR_RD_ANY_REG_OP(nor->params->addr_mode_nbytes,
++					  SPINOR_REG_CYPRESS_ARCFN, 1,
++					  nor->bouncebuf);
++	ret = spi_nor_read_any_reg(nor, &op, nor->reg_proto);
++	if (ret)
++		return ret;
++
++	/* ARCFN value must be 0 if uniform sector is selected  */
++	if (nor->bouncebuf[0])
++		return -ENODEV;
++
++	return cypress_nor_set_page_size(nor);
++}
++
++static void s25fs256t_post_sfdp_fixup(struct spi_nor *nor)
++{
++	struct spi_nor_flash_parameter *params = nor->params;
++
++	/* PP_1_1_4_4B is supported but missing in 4BAIT. */
++	params->hwcaps.mask |= SNOR_HWCAPS_PP_1_1_4;
++	spi_nor_set_pp_settings(&params->page_programs[SNOR_CMD_PP_1_1_4],
++				SPINOR_OP_PP_1_1_4_4B,
++				SNOR_PROTO_1_1_4);
++}
++
++static void s25fs256t_late_init(struct spi_nor *nor)
++{
++	/*
++	 * Programming is supported only in 16-byte ECC data unit granularity.
++	 * Byte-programming, bit-walking, or multiple program operations to the
++	 * same ECC data unit without an erase are not allowed. See chapter
++	 * 5.3.1 and 5.6 in the datasheet.
++	 */
++	nor->params->writesize = 16;
++}
++
++static struct spi_nor_fixups s25fs256t_fixups = {
++	.post_bfpt = s25fs256t_post_bfpt_fixup,
++	.post_sfdp = s25fs256t_post_sfdp_fixup,
++	.late_init = s25fs256t_late_init,
++};
++
+ static int
+ s25hx_t_post_bfpt_fixup(struct spi_nor *nor,
+ 			const struct sfdp_parameter_header *bfpt_header,
+@@ -454,6 +511,9 @@ static const struct flash_info spansion_nor_parts[] = {
+ 	{ "s25fl256l",  INFO(0x016019,      0,  64 * 1024, 512)
+ 		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ)
+ 		FIXUP_FLAGS(SPI_NOR_4B_OPCODES) },
++	{ "s25fs256t",  INFO6(0x342b19, 0x0f0890, 0, 0)
++		PARSE_SFDP
++		.fixups = &s25fs256t_fixups },
+ 	{ "s25hl512t",  INFO6(0x342a1a, 0x0f0390, 256 * 1024, 256)
+ 		PARSE_SFDP
+ 		MFR_FLAGS(USE_CLSR)
 -- 
 2.53.0
 
