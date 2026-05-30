@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-259118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258477-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIGCNBMwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:35 +0200
+	id UAmbFd0nG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258477-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D53C61260F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E912C6111CE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D56453014A88
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C235E3013859
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD82344DB9;
-	Sat, 30 May 2026 18:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700753AFD11;
+	Sat, 30 May 2026 18:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1zoVkiP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLvLzBzV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14FA2773DE;
-	Sat, 30 May 2026 18:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA533BFE3B;
+	Sat, 30 May 2026 18:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166671; cv=none; b=QFFJvqum6XEwPIUeogFACcoY5hjtTlvkgKssFgwKnfB6yjgubH6DT2ui4shZMEEB3cXmnbknCGZ7dpO7Aurkte8Nq6kohn+D0mst416gf1EHL5Afq0nbz0vTzUvZa6cV75yCHrcjg1ihIpqIkBDQNYUHiewp3pZE0XUOv+mbbGk=
+	t=1780164481; cv=none; b=tcsB9zUTqLOWWipMxXbBw7utoD/aFCuNXGzpwKuNIW9V9SjGwLBwfKaR5aQBtRou+cuYqfeUnt8r0N/HxzTglJlXz7DIn7TN5O35wlZA8gBszkNKBLoz/5E8+CRdJtu30jXGAh9FniCteWd8IJsIPTDpShVzgUYC8Wf3oF1O7+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166671; c=relaxed/simple;
-	bh=dO4bIMw0XlByIDbgwNcbDax6qOiKzLEQxm4Jhl143tE=;
+	s=arc-20240116; t=1780164481; c=relaxed/simple;
+	bh=PQkSIbyr77vLPwdOrUiedXwp/MLuGDQV3fun7HNz1U0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OmNOuUDbNZIYL7jDh8SYx/a35BIcKCc+UkE5i/TCADlWPDQ+6tzB4AoP4Y+UPhSDxugvCNPALz6pqfHFf8KDXHes1VNVQbUcjo8W2VWn1x54oSBETbdbsQXUjG6wZvczLETI/spTEKHzMSTI6Hfd1jhnaQAPY5yCKKPhMvRBFvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1zoVkiP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F5D1F00893;
-	Sat, 30 May 2026 18:44:29 +0000 (UTC)
+	 MIME-Version; b=ru0Z+WcsaSNWLRutReddfQjcxA/Aa5s+wy2IB6McugH5n0lqfVEVUhm3SSdvkgn1yTBuvpRITtGG+4qYGF1gXY4b46hf3wZq+4VD+qhTJEb0KI0dNMi/+Jgbu18aML1ojIOxAflyGOb/zjAtsr9dkmDWshCsiUfsse5v6TEEfwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLvLzBzV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7824E1F00893;
+	Sat, 30 May 2026 18:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166670;
-	bh=2UwK8UBrRklZP29I+ctg2EhLseAMOYzygonUfidAL4c=;
+	s=korg; t=1780164480;
+	bh=5iZPiV5JU2EWWQiskW60zpW29oA84Y2ZMK4ME9E41kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=v1zoVkiPBziOorr7zjCVl49oyT1NKwibFkdbK/J/PQfnG0+jwNFF+wIE4Lk5ttJQM
-	 Fj2YWtiF29wce16mABWL9JNIDOl2z7mHo0JPwIffzyiFY/4GFYWNcJ7C92GYJk1gv7
-	 l44VSwWBK2BXifVxPoy/5zqpMzwPrdvSlQg2sHUE=
+	b=wLvLzBzV4We6zpuqtKwc6QoHMXulzlOQj+NEt5TwPky31IG9yRcg6uaShXGesKirj
+	 0CPzZnETgQtU/ifr0VxTaPm6ZVHj4hYkKCimHAhmYGP1zxSe2merroDF4FTTCDFqAc
+	 tgq8PckrMH+YUymmgxQ7rZ9xjlFPtmlI1Xo88XgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Boris Sukholitko <boris.sukholitko@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 401/589] clk: imx: imx6q: Fix device node reference leak in pll6_bypassed()
+Subject: [PATCH 5.15 568/776] flow_dissector: Add number of vlan tags dissector
 Date: Sat, 30 May 2026 18:04:42 +0200
-Message-ID: <20260530160235.315571572@linuxfoundation.org>
+Message-ID: <20260530160254.796878614@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +64,151 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-259118-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,oss.qualcomm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258477-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
-X-Rspamd-Queue-Id: 6D53C61260F
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E912C6111CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Boris Sukholitko <boris.sukholitko@broadcom.com>
 
-[ Upstream commit 4b84d496c804b470124cd3a08e928df6801d8eae ]
+[ Upstream commit 34951fcf26c59e78ae430fba1fce7c08b1871249 ]
 
-The function pll6_bypassed() calls of_parse_phandle_with_args()
-but never calls of_node_put() to release the reference, causing
-a memory leak.
+Our customers in the fiber telecom world have network configurations
+where they would like to control their traffic according to the number
+of tags appearing in the packet.
 
-Fix this by adding proper cleanup calls on all exit paths.
+For example, TR247 GPON conformance test suite specification mostly
+talks about untagged, single, double tagged packets and gives lax
+guidelines on the vlan protocol vs. number of vlan tags.
 
-Fixes: 3cc48976e9763 ("clk: imx6q: handle ENET PLL bypass")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Link: https://patch.msgid.link/20260203-clk-imx6q-v3-1-6cd2696bb371@gmail.com
-Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+This is different from the common IT networks where 802.1Q and 802.1ad
+protocols are usually describe single and double tagged packet. GPON
+configurations that we work with have arbitrary mix the above protocols
+and number of vlan tags in the packet.
+
+The goal is to make the following TC commands possible:
+
+tc filter add dev eth1 ingress flower \
+  num_of_vlans 1 vlan_prio 5 action drop
+
+>From our logs, we have redirect rules such that:
+
+tc filter add dev $GPON ingress flower num_of_vlans $N \
+     action mirred egress redirect dev $DEV
+
+where N can range from 0 to 3 and $DEV is the function of $N.
+
+Also there are rules setting skb mark based on the number of vlans:
+
+tc filter add dev $GPON ingress flower num_of_vlans $N vlan_prio \
+    $P action skbedit mark $M
+
+This new dissector allows extracting the number of vlan tags existing in
+the packet.
+
+Signed-off-by: Boris Sukholitko <boris.sukholitko@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: cc1ff87bce1c ("pppoe: drop PFC frames")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx6q.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/net/flow_dissector.h |  9 +++++++++
+ net/core/flow_dissector.c    | 20 ++++++++++++++++++++
+ 2 files changed, 29 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
-index 7d07dd92a7b44..1a262b9b56e53 100644
---- a/drivers/clk/imx/clk-imx6q.c
-+++ b/drivers/clk/imx/clk-imx6q.c
-@@ -233,8 +233,11 @@ static bool pll6_bypassed(struct device_node *node)
- 			return false;
+diff --git a/include/net/flow_dissector.h b/include/net/flow_dissector.h
+index 8d0d0cf93a785..7d154c3f90d14 100644
+--- a/include/net/flow_dissector.h
++++ b/include/net/flow_dissector.h
+@@ -269,6 +269,14 @@ struct flow_dissector_key_hash {
+ 	u32 hash;
+ };
  
- 		if (clkspec.np == node &&
--		    clkspec.args[0] == IMX6QDL_PLL6_BYPASS)
-+		    clkspec.args[0] == IMX6QDL_PLL6_BYPASS) {
-+			of_node_put(clkspec.np);
- 			break;
-+		}
-+		of_node_put(clkspec.np);
++/**
++ * struct flow_dissector_key_num_of_vlans:
++ * @num_of_vlans: num_of_vlans value
++ */
++struct flow_dissector_key_num_of_vlans {
++	u8 num_of_vlans;
++};
++
+ enum flow_dissector_key_id {
+ 	FLOW_DISSECTOR_KEY_CONTROL, /* struct flow_dissector_key_control */
+ 	FLOW_DISSECTOR_KEY_BASIC, /* struct flow_dissector_key_basic */
+@@ -298,6 +306,7 @@ enum flow_dissector_key_id {
+ 	FLOW_DISSECTOR_KEY_META, /* struct flow_dissector_key_meta */
+ 	FLOW_DISSECTOR_KEY_CT, /* struct flow_dissector_key_ct */
+ 	FLOW_DISSECTOR_KEY_HASH, /* struct flow_dissector_key_hash */
++	FLOW_DISSECTOR_KEY_NUM_OF_VLANS, /* struct flow_dissector_key_num_of_vlans */
+ 
+ 	FLOW_DISSECTOR_KEY_MAX,
+ };
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index 537dbd7fc5438..c599bc81dfa76 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -1042,6 +1042,16 @@ bool __skb_flow_dissect(const struct net *net,
+ 		memcpy(key_eth_addrs, &eth->h_dest, sizeof(*key_eth_addrs));
  	}
  
- 	/* PLL6 bypass is not part of the assigned clock list */
-@@ -244,6 +247,9 @@ static bool pll6_bypassed(struct device_node *node)
- 	ret = of_parse_phandle_with_args(node, "assigned-clock-parents",
- 					 "#clock-cells", index, &clkspec);
- 
-+	if (!ret)
-+		of_node_put(clkspec.np);
++	if (dissector_uses_key(flow_dissector,
++			       FLOW_DISSECTOR_KEY_NUM_OF_VLANS)) {
++		struct flow_dissector_key_num_of_vlans *key_num_of_vlans;
 +
- 	if (clkspec.args[0] != IMX6QDL_CLK_PLL6)
- 		return true;
++		key_num_of_vlans = skb_flow_dissector_target(flow_dissector,
++							     FLOW_DISSECTOR_KEY_NUM_OF_VLANS,
++							     target_container);
++		key_num_of_vlans->num_of_vlans = 0;
++	}
++
+ proto_again:
+ 	fdret = FLOW_DISSECT_RET_CONTINUE;
  
+@@ -1165,6 +1175,16 @@ bool __skb_flow_dissect(const struct net *net,
+ 			nhoff += sizeof(*vlan);
+ 		}
+ 
++		if (dissector_uses_key(flow_dissector,
++				       FLOW_DISSECTOR_KEY_NUM_OF_VLANS)) {
++			struct flow_dissector_key_num_of_vlans *key_nvs;
++
++			key_nvs = skb_flow_dissector_target(flow_dissector,
++							    FLOW_DISSECTOR_KEY_NUM_OF_VLANS,
++							    target_container);
++			key_nvs->num_of_vlans++;
++		}
++
+ 		if (dissector_vlan == FLOW_DISSECTOR_KEY_MAX) {
+ 			dissector_vlan = FLOW_DISSECTOR_KEY_VLAN;
+ 		} else if (dissector_vlan == FLOW_DISSECTOR_KEY_VLAN) {
 -- 
 2.53.0
 
