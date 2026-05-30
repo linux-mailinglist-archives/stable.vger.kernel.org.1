@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-258188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258792-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOqVONElG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258188-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:49 +0200
+	id kEN1JSksG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258792-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F27610CEF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13388611C88
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6874230BE5C3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D59030435B7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62BE5342CA7;
-	Sat, 30 May 2026 17:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F385F25B0B3;
+	Sat, 30 May 2026 18:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcUnzxnj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8BJG1db"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374771A680F;
-	Sat, 30 May 2026 17:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2409217704;
+	Sat, 30 May 2026 18:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163509; cv=none; b=jokgVoFFrwtnhEzX8UfibrenEtBY3L9c5uRA3ynwfeKksUrRJR9eZqxRN77p17qZhYAgjy/3sk0BuouUUCrPbQq6H7tn7z+puobVRVS4y7WAjTKGZOs4a37B6FfgKOBXnvj0tQDrO8Z5zibuchCQKj6Z9kRShEUt/GWvvnK5cPA=
+	t=1780165553; cv=none; b=E4rU38xQVyS/EpXsR5K9gSSdL+XIRHDtJuoPS5loJdqHDzk5IUGppxubGUxBRWdfWclbqtErkK8Old/1Fyf+Y5zlQZojgNSrFuIuZ36qLVni5UttVh0L68BdpIUgakJKzX8zeJ3lk7BY1Ym1hcCqz88l+zYvzaf2Z/JQwumHL24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163509; c=relaxed/simple;
-	bh=DkKaNEiux0yBRtb2Li4SxUqDzmGnaEPI+MJY1ABTkYg=;
+	s=arc-20240116; t=1780165553; c=relaxed/simple;
+	bh=ZiFc8loYAX/OjX5Yki/z862+xsJfsdcn59QPBgAcPIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0cxy09g+pJ0ymhV2lZYCV4Cg/ssiiGZz9aAJgsHL/eOyEYCs+uQ8cu7sZI8DlgnqxLjJIoKT5DGZzd2HRQDlnaccTVhrDxML8fVQnvCQKzs8XRift/xDvAF2f3GTtEwo3RS/VbyyF4JIUv9Js5bkBx/36focbDWqRRT6wi4umc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcUnzxnj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEBB1F00893;
-	Sat, 30 May 2026 17:51:47 +0000 (UTC)
+	 MIME-Version; b=avjWBt+iJmRKG9tjJZq0BmXdvimDAvwsasG6V1qMXc6xHQhTgBzVpCS0muiEtgXlBLAbuYwK3nk3xEF+AFAaha8smDfoT5S0jYGawJ93i7Y/iER3zcfRmqLIwDH3TdDE2om+Vs1FzN+t9uUInoMqAromE1fniUb9E8w8rqSmXYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8BJG1db; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140801F00893;
+	Sat, 30 May 2026 18:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163508;
-	bh=AFWCrG4Jas/4FyLA4tNPt3H+d9eYw/ngt1RT1YY1P/M=;
+	s=korg; t=1780165552;
+	bh=lpBdBQ6Wh520vq/vICYgUPd7VRG4sx2lyYIc8v24ZPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rcUnzxnjtftRLCNFnvK3IWeM3zc4IatT4vOTpj19MRSwA7x/bJN13mYkVBCPGiume
-	 A4DMj/M4pAwWnlWs3I1MDCvKzgm00Halt4q8vTd88MjW0BspR5UBGIF5F4gaw+Y8K9
-	 yWt7FWiOKcvcai+wRWT79Mw3vA3UNnP7U+O8EzKQ=
+	b=q8BJG1db8tBReQ9uNTGh+pj7RIgOkHWbZDRrNwiC8+C+79Sq2luLNs/g1APbLl8hR
+	 uzd+fZmYGyyjgixYGQLw/5Vwy6Hiu9jZAqvcjA5pCPZ7MMrCg3Bw64Yc3CNSNkGrkz
+	 pCkHFzl7i+CQ/xf+4q3W3LODGK1fHwZaJd+2gW6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuhang Zheng <z1652074432@gmail.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Yucheng Lu <kanolyc@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.15 262/776] crypto: authencesn - reject short ahash digests during instance creation
+	Chengfeng Ye <cyeaa@connect.ust.hk>,
+	Takashi Iwai <tiwai@suse.de>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 095/589] ALSA: usb-audio: fix null pointer dereference on pointer cs_desc
 Date: Sat, 30 May 2026 17:59:36 +0200
-Message-ID: <20260530160247.311823761@linuxfoundation.org>
+Message-ID: <20260530160227.194081368@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,94 +67,87 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258188-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,gondor.apana.org.au];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258792-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 55F27610CEF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[altlinux.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ust.hk:email]
+X-Rspamd-Queue-Id: 13388611C88
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yucheng Lu <kanolyc@gmail.com>
+From: Chengfeng Ye <cyeaa@connect.ust.hk>
 
-commit 5db6ef9847717329f12c5ea8aba7e9f588a980c0 upstream.
+commit b97053df0f04747c3c1e021ecbe99db675342954 upstream.
 
-authencesn requires either a zero authsize or an authsize of at least
-4 bytes because the ESN encrypt/decrypt paths always move 4 bytes of
-high-order sequence number data at the end of the authenticated data.
+The pointer cs_desc return from snd_usb_find_clock_source could
+be null, so there is a potential null pointer dereference issue.
+Fix this by adding a null check before dereference.
 
-While crypto_authenc_esn_setauthsize() already rejects explicit
-non-zero authsizes in the range 1..3, crypto_authenc_esn_create()
-still copied auth->digestsize into inst->alg.maxauthsize without
-validating it.  The AEAD core then initialized the tfm's default
-authsize from that value.
-
-As a result, selecting an ahash with digest size 1..3, such as
-cbcmac(cipher_null), exposed authencesn instances whose default
-authsize was invalid even though setauthsize() would have rejected the
-same value.  AF_ALG could then trigger the ESN tail handling with a
-too-short tag and hit an out-of-bounds access.
-
-Reject authencesn instances whose ahash digest size is in the invalid
-non-zero range 1..3 so that no tfm can inherit an unsupported default
-authsize.
-
-Fixes: f15f05b0a5de ("crypto: ccm - switch to separate cbcmac driver")
-Cc: stable@kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Yuhang Zheng <z1652074432@gmail.com>
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Yucheng Lu <kanolyc@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chengfeng Ye <cyeaa@connect.ust.hk>
+Link: https://lore.kernel.org/r/20211024111736.11342-1-cyeaa@connect.ust.hk
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 1dc669fed61a ("ALSA: usb-audio: UAC2: support read-only freq control")
+[ kovalev: bp to fix CVE-2021-47211; added Fixes tag; the null
+  check was added into both UAC2 and UAC3 branches since the
+  older kernel still has the clock source lookup split between
+  snd_usb_find_clock_source() and snd_usb_find_clock_source_v3()
+  (see upstream commit 9ec730052fa2) ]
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/authencesn.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ sound/usb/clock.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/crypto/authencesn.c
-+++ b/crypto/authencesn.c
-@@ -400,6 +400,11 @@ static int crypto_authenc_esn_create(str
- 	auth = crypto_spawn_ahash_alg(&ctx->auth);
- 	auth_base = &auth->base;
+diff --git a/sound/usb/clock.c b/sound/usb/clock.c
+index 197a6b7d8ad6f..3d5d4f3aafce4 100644
+--- a/sound/usb/clock.c
++++ b/sound/usb/clock.c
+@@ -646,11 +646,17 @@ static int set_sample_rate_v2v3(struct snd_usb_audio *chip, int iface,
+ 		struct uac3_clock_source_descriptor *cs_desc;
  
-+	if (auth->digestsize > 0 && auth->digestsize < 4) {
-+		err = -EINVAL;
-+		goto err_free_inst;
-+	}
+ 		cs_desc = snd_usb_find_clock_source_v3(chip->ctrl_intf, clock);
 +
- 	err = crypto_grab_skcipher(&ctx->enc, aead_crypto_instance(inst),
- 				   crypto_attr_alg_name(tb[2]), 0, mask);
- 	if (err)
++		if (!cs_desc)
++			return 0;
+ 		bmControls = le32_to_cpu(cs_desc->bmControls);
+ 	} else {
+ 		struct uac_clock_source_descriptor *cs_desc;
+ 
+ 		cs_desc = snd_usb_find_clock_source(chip->ctrl_intf, clock);
++
++		if (!cs_desc)
++			return 0;
+ 		bmControls = cs_desc->bmControls;
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
