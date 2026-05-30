@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-257534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6EQrOesbG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257534-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:35 +0200
+	id cIxwM/8nG2rM/ggAu9opvQ
+	(envelope-from <stable+bounces-258309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08C260F5A4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 538B7611235
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4F703300E33E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5C3730E26DD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0673998B1;
-	Sat, 30 May 2026 17:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F52329C6D;
+	Sat, 30 May 2026 17:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbWO6iYs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cG5HYePg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B489E33FE15;
-	Sat, 30 May 2026 17:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B4934041A;
+	Sat, 30 May 2026 17:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161327; cv=none; b=a7ePzh4B26WaoAePHDznwXFAfinoGIb9SYR+RKMc+jxHCoIQAw3U0G9F5lDUA1E9gTdXQL2tAJ8+yRCGrVJt8nNlHtsf4o12YTu3mDVDg11mkPA4mI6awBfwH/d7ojpT996tXVRrf7b+ayeaTrjK6G7Mj05ePGTh23JzFDhiuWE=
+	t=1780163917; cv=none; b=KKt0w45BAdBQ62g87EUdA7WePY6Hhsz7BYQQBmEZBTZWTtr34fiFnR9u2LWI+iYjvzeLAWVOBRrYe4DicfPrl3XAQg10qua7Q1ukjB6kjVnudTA0GdPM99vzc1EoU/5exWHgxlP3JMANQrVob1eI+QucCgd4vBlgtEPOZJCEC8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161327; c=relaxed/simple;
-	bh=DC+F9dLHvjarE5PEk3gjxmT7Z+juzicEKbsJnvfoG4M=;
+	s=arc-20240116; t=1780163917; c=relaxed/simple;
+	bh=Ddx/Ko1RYXDnhu6URiWOydC/dMAEcNKw1bGVABGl3lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/R+n/f7BsLbISPdkCaeKIsyQ9T63BTXVJzRAfw0+GuupqzQe/X3r5VNwTjR/0C2a/B075IxVu+zELWRf3fddw/7+9mG9jbtUXgxzORj/R1keyEtDDeLYYD5crmSfS/NHG6ywCQU2gO1xg1Ie3/pZ9RKoorInSXbIT9GLRMimWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbWO6iYs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1591F00898;
-	Sat, 30 May 2026 17:15:25 +0000 (UTC)
+	 MIME-Version; b=RNSLI0v+FP4XP3X7NQ/uGvKMjSL8ZmYJxc3oAQ43CuQ+p/3+KuuQNBpZdO/DchjYv348HdZTmjsieGMrrLlQoEYkPCDZorTgY/KL7nRi0PdLBNJC1m3Thso307c2spttoZ/XG00oMHcUUKmS7LcIvWa3SCiXm3EMLawV1yhIi00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cG5HYePg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D95F1F00893;
+	Sat, 30 May 2026 17:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161326;
-	bh=hVb/AdBgLDnB33PBNV5KaWuJKdYDzAow9RXAYZlx4HE=;
+	s=korg; t=1780163916;
+	bh=8uao0kM0N3h3gSPGDnKuWp0PDpaOFwgmT7+oRE+sjCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZbWO6iYsmTB6XUc5GYbShBn3WT9rYGrfN4tmVdHDYmGK4qY2mYiYlpF7BJBN7HRhv
-	 GanNJsrFQI3clKCDRlsgeSsRkkP5PCd8mwjm6BiygwmNH0aeUmc/+L0OhzJhuZF6TG
-	 3iWMYnsgTyYT7W6kIexHBD2ntTauiaNmyKxy7EKQ=
+	b=cG5HYePgPqw00aw1wtqseFBDkGtv2tTy8vZmqutnTwWpgkWARRaN3gxiRH5lw2g21
+	 nbwIfVtKBifcSVeI1RjwfIxI1mAXRpE5j95zgQ1qQ+oXtNt/K5GerVG7JVshINglZQ
+	 2Sv1l4I/t1uVOp/TKpVvz7913pmQV6Ber8tFkc0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 591/969] ARM: OMAP1: Fix DEBUG_LL and earlyprintk on OMAP16XX
+Subject: [PATCH 5.15 401/776] params: Replace __modinit with __init_or_module
 Date: Sat, 30 May 2026 18:01:55 +0200
-Message-ID: <20260530160316.736703116@linuxfoundation.org>
+Message-ID: <20260530160250.870413196@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,70 +68,97 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257534-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258309-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E08C260F5A4
+X-Rspamd-Queue-Id: 538B7611235
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 7e74b606dd39c46d4378d6f6563f560a00ab8694 ]
+[ Upstream commit 3cb0c3bdea5388519bc1bf575dca6421b133302b ]
 
-On OMAP16XX, the UART enable bit shifts are written instead of the actual
-bits. This breaks the boot when DEBUG_LL and earlyprintk is enabled;
-the UART gets disabled and some random bits get enabled. Fix that.
+Remove the custom __modinit macro from kernel/params.c and instead use the
+common __init_or_module macro from include/linux/module.h. Both provide the
+same functionality.
 
-Fixes: 34c86239b184 ("ARM: OMAP1: clock: Fix early UART rate issues")
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Link: https://patch.msgid.link/aca7HnXZ-aCSJPW7@darkstar.musicnaut.iki.fi
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Stable-dep-of: deffe1edba62 ("module: Fix freeing of charp module parameters when CONFIG_SYSFS=n")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap1/clock_data.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/params.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/mach-omap1/clock_data.c b/arch/arm/mach-omap1/clock_data.c
-index 96d846c37c432..0b08aef5b3677 100644
---- a/arch/arm/mach-omap1/clock_data.c
-+++ b/arch/arm/mach-omap1/clock_data.c
-@@ -700,8 +700,8 @@ int __init omap1_clk_init(void)
- 	/* Make sure UART clocks are enabled early */
- 	if (cpu_is_omap16xx())
- 		omap_writel(omap_readl(MOD_CONF_CTRL_0) |
--			    CONF_MOD_UART1_CLK_MODE_R |
--			    CONF_MOD_UART3_CLK_MODE_R, MOD_CONF_CTRL_0);
-+			    (1 << CONF_MOD_UART1_CLK_MODE_R) |
-+			    (1 << CONF_MOD_UART3_CLK_MODE_R), MOD_CONF_CTRL_0);
+diff --git a/kernel/params.c b/kernel/params.c
+index cedda487df96b..9a76f556b898a 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -592,12 +592,6 @@ static ssize_t param_attr_store(struct module_attribute *mattr,
+ }
  #endif
  
- 	/* USB_REQ_EN will be disabled later if necessary (usb_dc_ck) */
+-#ifdef CONFIG_MODULES
+-#define __modinit
+-#else
+-#define __modinit __init
+-#endif
+-
+ #ifdef CONFIG_SYSFS
+ void kernel_param_lock(struct module *mod)
+ {
+@@ -622,9 +616,9 @@ EXPORT_SYMBOL(kernel_param_unlock);
+  * create file in sysfs.  Returns an error on out of memory.  Always cleans up
+  * if there's an error.
+  */
+-static __modinit int add_sysfs_param(struct module_kobject *mk,
+-				     const struct kernel_param *kp,
+-				     const char *name)
++static __init_or_module int add_sysfs_param(struct module_kobject *mk,
++					    const struct kernel_param *kp,
++					    const char *name)
+ {
+ 	struct module_param_attrs *new_mp;
+ 	struct attribute **new_attrs;
+@@ -758,7 +752,8 @@ void destroy_params(const struct kernel_param *params, unsigned num)
+ 			params[i].ops->free(params[i].arg);
+ }
+ 
+-struct module_kobject __modinit * lookup_or_create_module_kobject(const char *name)
++struct module_kobject * __init_or_module
++lookup_or_create_module_kobject(const char *name)
+ {
+ 	struct module_kobject *mk;
+ 	struct kobject *kobj;
 -- 
 2.53.0
 
