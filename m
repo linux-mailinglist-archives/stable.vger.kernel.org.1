@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-257684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONJeMkMeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257684-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:35 +0200
+	id CCoFIxcwG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D6860FBF8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA88612624
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8691530AB9C0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:23:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B4B793012C9A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 168B1332EA7;
-	Sat, 30 May 2026 17:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6B7351C2F;
+	Sat, 30 May 2026 18:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4NAIPMd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7POL6gN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D337D33E36A;
-	Sat, 30 May 2026 17:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8F92F3C3E;
+	Sat, 30 May 2026 18:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161826; cv=none; b=FpBPHRFUZ3pUr17czLmITqosEh1GKMRJT8aFdRatcmTRIYRGDolktz2OUvqtYRsNJNTf6JSwb6CLdVgrjfF1qgFs9J/ezmfx9QHYdg55CQTvjEW6sgEkPXI6jQ8DqY8zFmwmJEsTK+KXifmzFcRMEw/gI0lss4F2Q/HVBb4Hod8=
+	t=1780166472; cv=none; b=XbHjwQPeIWm+8f0utcErX2RFl3pbe3uMa8jVXuq9As/rvqDnPjjQ6d0ui8TR7WFgLdzad8aStpLiXlhmPmEK6cad65Bc4bIjebWlzd14So5yl0Tp4hFHq9z124g4tRqYUGPPdUqrnSUlD/eP0MVH9wD2h6QEp/36gH9/790XsP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161826; c=relaxed/simple;
-	bh=Yp9oXmhQ/0eiWQFs4VtugDu2BC4ezIlzhyDxdxB2xCg=;
+	s=arc-20240116; t=1780166472; c=relaxed/simple;
+	bh=avWouDphLSLl3QRzJsjXaQkw/Gneh6dmejGZOkqjLxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICWqxLE49w9Ff4LicqeP0k3TirLQjQFneqsWgS25xV9W9hFWmyNk7dpAZG2kns3TFvHFekmrbiYY6AvaBqe3xfE4Bwf53Z9L0xAcbW6k+rx12ohCtEHCYifBUGLU9w2e9rfWEvKYDQnH/evZijSmVZr4RptV3g7WiLRyCGmzspE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4NAIPMd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245D91F00893;
-	Sat, 30 May 2026 17:23:44 +0000 (UTC)
+	 MIME-Version; b=nDN7p3fVCyznmCoNGAAJwz6BsOzQKjaOQCw9ukJT8oB1ieuV3oE2W5+p488SPS8XE2UhpV+t9qOJQgkBCJAv5S7o30MAcBfW7+qv0PIgxwrQaiBM/0C4Uc5w5EPvCBqtQwcXFhzR4XQd+Q8S9PfTuSe5JPO5S3wHrLbZGXseLEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7POL6gN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EEC1F00893;
+	Sat, 30 May 2026 18:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161825;
-	bh=bHFi3QHOP4LiyCEK/FA6JS/W9ShNPNIgpd/s4N956LY=;
+	s=korg; t=1780166471;
+	bh=UomlxWQQ37qoVqtdYxFTvJk1ugCuLSkb5+I/t/mqDis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T4NAIPMdljVEeaHzjrd34a5a4NFGfiutZeLU9nTGsmndyGqFoStpl/SHwnQkiTJGC
-	 J87l7oXyUhVu/+wFkOmEmyFzXwosOWc36JmHfqOac5KjN81wlSa56hQ7ceYmZ05qEv
-	 rCUAjeRhdOOfVIeLR56XlTi6bCPjYvPXKMK0jcaU=
+	b=v7POL6gN2Q4c2OA9wmIYaRfUz9oeadjp4NSvm5A3rWzGHBv6x4p+gVnU44QAh/NZ0
+	 eeEyq0qH9TkVZwCWEVKfAe2dH+vOKCPrzz/VM9DmBOuK9qK6ibdf1vAm03I1Z4iBlv
+	 7GYP1rMLvv7pWArldT2A7JGQ4x7Fk/QWGaPBqt/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 739/969] netfilter: xt_policy: fix strict mode inbound policy matching
-Date: Sat, 30 May 2026 18:04:23 +0200
-Message-ID: <20260530160320.959530950@linuxfoundation.org>
+Subject: [PATCH 5.10 383/589] pinctrl: abx500: Fix type of argument variable
+Date: Sat, 30 May 2026 18:04:24 +0200
+Message-ID: <20260530160234.868513242@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,16 +73,16 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257684-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-259066-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -97,54 +91,45 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,strlen.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
-X-Rspamd-Queue-Id: 47D6860FBF8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4BA88612624
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit 4b2b4d7d4e203c92db8966b163edfacb1f0e1e29 ]
+[ Upstream commit 34006f77890d050e6d80cbee365b5d703c1140b4 ]
 
-match_policy_in() walks sec_path entries from the last transform to the
-first one, but strict policy matching needs to consume info->pol[] in
-the same forward order as the rule layout.
+The argument variable is assigned the return value of
+pinconf_to_config_argument(), which returns a u32. Change its type from
+enum pin_config_param to unsigned int to correctly store the configuration
+argument.
 
-Derive the strict-match policy position from the number of transforms
-already consumed so that multi-element inbound rules are matched
-consistently.
-
-Fixes: c4b885139203 ("[NETFILTER]: x_tables: replace IPv4/IPv6 policy match by address family independant version")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Acked-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 03b054e9696c ("pinctrl: Pass all configs to driver on pin_config_set()")
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_policy.c | 2 +-
+ drivers/pinctrl/nomadik/pinctrl-abx500.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/xt_policy.c b/net/netfilter/xt_policy.c
-index cb6e8279010a4..b5fa65558318f 100644
---- a/net/netfilter/xt_policy.c
-+++ b/net/netfilter/xt_policy.c
-@@ -63,7 +63,7 @@ match_policy_in(const struct sk_buff *skb, const struct xt_policy_info *info,
- 		return 0;
+diff --git a/drivers/pinctrl/nomadik/pinctrl-abx500.c b/drivers/pinctrl/nomadik/pinctrl-abx500.c
+index 7aa534576a459..609313d93e31a 100644
+--- a/drivers/pinctrl/nomadik/pinctrl-abx500.c
++++ b/drivers/pinctrl/nomadik/pinctrl-abx500.c
+@@ -850,7 +850,7 @@ static int abx500_pin_config_set(struct pinctrl_dev *pctldev,
+ 	int ret = -EINVAL;
+ 	int i;
+ 	enum pin_config_param param;
+-	enum pin_config_param argument;
++	unsigned int argument;
  
- 	for (i = sp->len - 1; i >= 0; i--) {
--		pos = strict ? i - sp->len + 1 : 0;
-+		pos = strict ? sp->len - i - 1 : 0;
- 		if (pos >= info->len)
- 			return 0;
- 		e = &info->pol[pos];
+ 	for (i = 0; i < num_configs; i++) {
+ 		param = pinconf_to_config_param(configs[i]);
 -- 
 2.53.0
 
