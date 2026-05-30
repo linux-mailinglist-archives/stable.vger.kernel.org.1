@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-257655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259036-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIkkNXYdG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257655-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:10 +0200
+	id mEYmIyEvG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259036-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9E860F970
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C166612397
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3651A301D032
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:22:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 25A5E301D5B9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2603242D7;
-	Sat, 30 May 2026 17:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983E539478D;
+	Sat, 30 May 2026 18:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGS0JktR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ruxwiDoe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E881263F44;
-	Sat, 30 May 2026 17:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FF03AB26B;
+	Sat, 30 May 2026 18:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161729; cv=none; b=mQt49rEM5Xp+QPp/6RZpodzdasJDClyWbfXW8l2WOCgATZAPlKAADQZZsfw2OZfsq2ZiedR+SvJBdZltfBtuBKaNWWWSSQxzCYAH58yy96BMnuvppy2aOQ19y7HIsjHlI310hssdNmKRiAiX9dTZl2E2DVUZz1kFG6A8TTUQwQc=
+	t=1780166375; cv=none; b=kqlQlpIEx73quDoOZvHgjoiVi5z2IdVHnee6psWG3TWz3NE/fmv28dqIriRg6V+ya+LX1XKkreeIGh2j3PyR7iFSzUOLOd9iVYZpbMdgJo3U42tgEjVyaHYh+6TAt1B9I+iCdf/ClooXirshavn+WrSu75X/+WREh1/SwdVolJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161729; c=relaxed/simple;
-	bh=sZ1bqXZ8FAkS5/JDR4VTQ+JX4eUhndmEPUsDiK90uKY=;
+	s=arc-20240116; t=1780166375; c=relaxed/simple;
+	bh=bn/MBHM4Qg11luQmNo+nS1B36bgt2JGZyXvQHnpFpc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AyRcvjjNitKKEJkNtPvGfVFT5/lM181cvmyt+Ha3gPQ9FGx10z8lbqTHZIGTU8pF4gmvoB3LlgvSDOPzq6+s1rcazVJFqYrt7/hBa7adThPiLhJkvsWY+tJdNbsFGjCUmBm+wBPrOSBvqKtRzzhxshbZxEwI1OceN6xNZmyIpzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGS0JktR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729EB1F00893;
-	Sat, 30 May 2026 17:22:07 +0000 (UTC)
+	 MIME-Version; b=MHO9gqxzS0NePU3pUiOaaeo+vBVkWm2aQyXqKWnyqZjGVvUTplKWpkYCEllKXStHRGi9rLQbKibXnCgPE87gIc2wZ5hMJ9EmBa45aZYuKetFES0vsGIXrDb3ay/HTENiT5+LAgmEvOJuE3NLXsAfwU+ZhjRvfGgVX1S+Srj45W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruxwiDoe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930491F00893;
+	Sat, 30 May 2026 18:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161728;
-	bh=7ko/OY42WBS7u4N8COLJDh9MLz6Yb6hg6hb0xt8A6tg=;
+	s=korg; t=1780166374;
+	bh=3Q9gYBEIXBYnAp83GMLGLvIoOorDmgCP8GqDwgicvPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xGS0JktR00kB93HdE1LlBEtV4VU/dk4hAjPpvqwBzL84NF8ut82mYw+xwvUWBB2sR
-	 nng+lC0fyjTfexTxIu+uRArhA1KXuNhq+Ij1QkCRp2M76t7jz4D40IG7zLiwZZLE3e
-	 xLB2u+YCAmY6Hz57RJC9ho5PO7KNTelbjzETArNU=
+	b=ruxwiDoeZ2DzFP1ZMj68q+jEv3dh16m4zThOtAOaNNbWMXQNQTfpIAjq13s9K02OW
+	 9aHtiS1KwldK6/CdcJSrWBqOaWOyf/BW7AltNlaiKIWMt6J0oi0pfGPasIW/HRsw1G
+	 27O0s+o41xOlws1JWeJvY4KGv1idCrmKBOqbuR5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	DaeMyung Kang <charsyam@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 710/969] ksmbd: destroy tree_conn_ida in ksmbd_session_destroy()
+Subject: [PATCH 5.10 353/589] PCI: tegra194: Use devm_gpiod_get_optional() to parse "nvidia,refclk-select"
 Date: Sat, 30 May 2026 18:03:54 +0200
-Message-ID: <20260530160320.137840890@linuxfoundation.org>
+Message-ID: <20260530160234.142279878@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,100 +71,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257655-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259036-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7E9E860F970
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: 5C166612397
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DaeMyung Kang <charsyam@gmail.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit c049ee14eb4343b69b6f7755563f961f5e153423 ]
+[ Upstream commit f62bc7917de1374dce86a852ffba8baf9cb7a56a ]
 
-When per-session tree_conn_ida was converted from a dynamically
-allocated ksmbd_ida to an embedded struct ida, ksmbd_ida_free() was
-removed from ksmbd_session_destroy() but no matching ida_destroy()
-was added.  The session is therefore freed with the IDA's backing
-xarray still intact.
+The GPIO DT property "nvidia,refclk-select", to select the PCIe reference
+clock is optional. Use devm_gpiod_get_optional() to get it.
 
-The kernel IDA API expects ida_init() and ida_destroy() to be paired
-over an object's lifetime, so add the missing cleanup before the
-enclosing session is freed.
-
-Also move ida_init() to right after the session is allocated so that
-it is always paired with the destroy call even on the early error
-paths of __session_create() (ksmbd_init_file_table() or
-__init_smb2_session() failures), both of which jump to the error
-label and invoke ksmbd_session_destroy() on a partially initialised
-session.
-
-No leak has been observed in testing; this is a pairing fix to match
-the IDA lifetime rules, not a response to a reproduced regression.
-
-Fixes: d40012a83f87 ("cifsd: declare ida statically")
-Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-7-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/mgmt/user_session.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
-index 1b5ac28d7e66c..f7ba243c854e2 100644
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -168,6 +168,7 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
- 	free_channel_list(sess);
- 	kfree(sess->Preauth_HashValue);
- 	ksmbd_release_id(&session_ida, sess->id);
-+	ida_destroy(&sess->tree_conn_ida);
- 	kfree(sess);
- }
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index ba9fcb39ca90d..ee8f25c07f2e1 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1135,9 +1135,9 @@ static int tegra_pcie_dw_parse_dt(struct tegra_pcie_dw *pcie)
+ 		return err;
+ 	}
  
-@@ -404,6 +405,8 @@ static struct ksmbd_session *__session_create(int protocol)
- 	if (!sess)
- 		return NULL;
- 
-+	ida_init(&sess->tree_conn_ida);
-+
- 	if (ksmbd_init_file_table(&sess->file_table))
- 		goto error;
- 
-@@ -422,8 +425,6 @@ static struct ksmbd_session *__session_create(int protocol)
- 	if (ret)
- 		goto error;
- 
--	ida_init(&sess->tree_conn_ida);
--
- 	down_write(&sessions_table_lock);
- 	hash_add(sessions_table, &sess->hlist, sess->id);
- 	up_write(&sessions_table_lock);
+-	pcie->pex_refclk_sel_gpiod = devm_gpiod_get(pcie->dev,
+-						    "nvidia,refclk-select",
+-						    GPIOD_OUT_HIGH);
++	pcie->pex_refclk_sel_gpiod = devm_gpiod_get_optional(pcie->dev,
++							     "nvidia,refclk-select",
++							     GPIOD_OUT_HIGH);
+ 	if (IS_ERR(pcie->pex_refclk_sel_gpiod)) {
+ 		int err = PTR_ERR(pcie->pex_refclk_sel_gpiod);
+ 		const char *level = KERN_ERR;
 -- 
 2.53.0
 
