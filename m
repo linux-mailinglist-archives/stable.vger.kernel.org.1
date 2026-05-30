@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-257477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GxRHygcG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257477-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:36 +0200
+	id uPnKMiMnG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7C860F64B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF962611008
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F8383071CA4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:12:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D129305E348
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD21481DD;
-	Sat, 30 May 2026 17:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5CE341AC7;
+	Sat, 30 May 2026 17:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8yWF10O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkSMSEmt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A39534389B;
-	Sat, 30 May 2026 17:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BBA320CAD;
+	Sat, 30 May 2026 17:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161131; cv=none; b=P4xZdkb/oLgWKapVjcuC6QYiOGbEBPl5cjrLW0HISFBStP6yUo7ihS+WWy4ocM/FGGffY3WxiD50/aYHTduI/hg3gvUF3jtj8eodM3hlWVNRAMNCF59arPKk2FMQhi5aJYPTIl/Dukej3uvUVCrYYHrXLnhzEt+rJ+lbLkAigsI=
+	t=1780163627; cv=none; b=imSyVAEBpcpI9dwRBUy7djzgJ61ZqBjAiDnCLsewT4+ov4V6d+8RZ3ejqf0GvNJ13lacr3JK/S1rJ5I6eHp7+SN4sOkbEc4RGFAzXGbZ+Ms3dQ8fJCGg5SB/FZR8/cLAr2KdG69OuRXIdxXn852clQ5Y8EuZEuNEQz2ng5ilmpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161131; c=relaxed/simple;
-	bh=HjW2M/z+2EvvgPvs264eB2jiBTXKUqCDGBPFqxYYCWQ=;
+	s=arc-20240116; t=1780163627; c=relaxed/simple;
+	bh=nwgrrCyOW5Qa9SfByWM0kmDM9o7iA8mZkpB8ap4CrSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VvKs8yWVuIfegBDEyYEJ4Hs9kJ2ITXHPWCXuSA+8+EywHIwa3bY5xpgSvjsBR5dU2lkkV2kR+AQ5vWVjfmubxcN6QDkcQIvJuftRHdjkQ+iOrJeVk5oUbF032JKAj8rD5IZeKmWj6IAhWpX192szh7NdivtXthu7CNukbBSC/nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8yWF10O; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9D11F00893;
-	Sat, 30 May 2026 17:12:09 +0000 (UTC)
+	 MIME-Version; b=tM0EOCllnsmVdW6IUKQaeoUQks2jDfqf1UsBuSKaZRy01U+0gbKhdZ2edmu+X+mUV8lRgX/IImHMX0D6Ez9uHvw9y7kcHkSJuXEUgB+lKm1cSUxu68Ej78Y2O8BJE7MlbCW1k0I3YYwyJ/A+0iAhmfQ/36cV/hAROK0PDqmsuDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkSMSEmt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689A91F00893;
+	Sat, 30 May 2026 17:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161130;
-	bh=mnwTO2vQG0lICWdXM+RiDvqfsVoe3/Z+ZRMPx31cW9U=;
+	s=korg; t=1780163626;
+	bh=citVyiVQXZAXSkg0fp0w11Y0m26hGSF1XBz1htDLMjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D8yWF10Ov82NH6xoezTsnlV6g/dlujMB25JqueokDfdnUUxpCz2HJTpdPRueaZsgL
-	 BYTQyGvCm920FEQYSopfZAiCmxJobtmH1z6cZFj9y1kunIZ/dFheaAaxj30OKypuvm
-	 RNwJ0MV9S/t6rNY5eG+Q451ot+iTRCk3YukpsAbc=
+	b=qkSMSEmtfflZjxVvHxi/9Y2jo9aaRUXTYz1lrUftO88k12Udt5DA7wNk8wscT9EXk
+	 VygyVxuSrHU3FVNGABHX5iEF9eqAaFYrfxKlmPMzkCQq7KZjKrq5oF095T18Pa3SdE
+	 0gSlJfliyFZhiZZjm1zOThOZpt9haP4Kiyk1PvpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 504/969] spi: fsl-qspi: Use reinit_completion() for repeated operations
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.15 314/776] hwmon: (ltc2992) Clamp threshold writes to hardware range
 Date: Sat, 30 May 2026 18:00:28 +0200
-Message-ID: <20260530160314.247219636@linuxfoundation.org>
+Message-ID: <20260530160248.684159488@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +63,151 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257477-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258223-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0C7C860F64B
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email]
+X-Rspamd-Queue-Id: DF962611008
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit 981b080a79724738882b0af1c5bb7ade30d94f24 ]
+commit d6cc7c99bf1f73eda7d565d224d791d16239bb41 upstream.
 
-The driver currently calls init_completion() during every spi_mem_op.
-Tchnically it may work, but it's not the recommended pattern.
+ltc2992_set_voltage(), ltc2992_set_current(), and ltc2992_set_power()
+do not validate the user-supplied value before converting it to a
+register value. This can result in:
 
-According to the kernel documentation: Calling init_completion() on
-the same completion object twice is most likely a bug as it
-re-initializes the queue to an empty queue and enqueued tasks could
-get "lost" - use reinit_completion() in that case, but be aware of
-other races.
+1. Negative input values wrapping to large positive register values.
+   For power, the negative long is implicitly cast to u64 in
+   mul_u64_u32_div(), producing an incorrect value. For voltage and
+   current, the negative converted value wraps when passed to
+   ltc2992_write_reg() as a u32.
 
-So moves the initial initialization to probe function and uses
-reinit_completion() for subsequent operations.
+2. Intermediate arithmetic exceeding the range representable in u64 on
+   64-bit platforms. In ltc2992_set_voltage(), (u64)val * 1000 can
+   exceed U64_MAX when val is a large positive long. In
+   ltc2992_set_current(), (u64)val * r_sense_uohm can overflow
+   similarly. In ltc2992_set_power(), the computed value may not fit
+   in u64.
 
-Fixes: 84d043185dbe ("spi: Add a driver for the Freescale/NXP QuadSPI controller")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20260304-spi-nxp-v2-3-cd7d7726a27e@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+3. Register values exceeding the hardware field width. Voltage and
+   current threshold registers are 12-bit (stored left-justified in
+   16 bits), and power threshold registers are 24-bit. Without
+   clamping, bits above the field width are truncated in
+   ltc2992_write_reg().
+
+Fix by clamping negative values to zero, clamping positive values to
+the rounded hardware-representable maximum (the value returned by the
+read path for a full-scale register) to prevent intermediate overflow,
+and clamping the converted register value to the hardware field width
+before writing. The existing conversion formula and rounding behavior
+are preserved.
+
+In the power write path, cancel the factor of 1000 from both the
+numerator (r_sense_uohm * 1000) and the denominator
+(VADC_UV_LSB * IADC_NANOV_LSB) to also eliminate a u32 overflow of
+r_sense_uohm * 1000 when r_sense_uohm exceeds about 4.29 ohms.
+
+Fixes: b0bd407e94b03 ("hwmon: (ltc2992) Add support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260416215904.101969-2-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-qspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hwmon/ltc2992.c |   35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index 85cc71ba624a9..aee9993fe09db 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -607,7 +607,7 @@ static int fsl_qspi_do_op(struct fsl_qspi *q, const struct spi_mem_op *op)
- 	void __iomem *base = q->iobase;
- 	int err = 0;
+--- a/drivers/hwmon/ltc2992.c
++++ b/drivers/hwmon/ltc2992.c
+@@ -422,10 +422,16 @@ static int ltc2992_get_voltage(struct lt
  
--	init_completion(&q->c);
-+	reinit_completion(&q->c);
+ static int ltc2992_set_voltage(struct ltc2992_state *st, u32 reg, u32 scale, long val)
+ {
+-	val = DIV_ROUND_CLOSEST(val * 1000, scale);
+-	val = val << 4;
++	u32 reg_val;
++	long vmax;
++
++	vmax = DIV_ROUND_CLOSEST_ULL(0xFFFULL * scale, 1000);
++	val = max(val, 0L);
++	val = min(val, vmax);
++	reg_val = min(DIV_ROUND_CLOSEST_ULL((u64)val * 1000, scale),
++		      0xFFFULL) << 4;
  
- 	/*
- 	 * Always start the sequence at the same index since we update
-@@ -912,6 +912,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		goto err_disable_clk;
+-	return ltc2992_write_reg(st, reg, 2, val);
++	return ltc2992_write_reg(st, reg, 2, reg_val);
+ }
  
-+	init_completion(&q->c);
- 	ret = devm_request_irq(dev, ret,
- 			fsl_qspi_irq_handler, 0, pdev->name, q);
- 	if (ret) {
--- 
-2.53.0
-
+ static int ltc2992_read_gpio_alarm(struct ltc2992_state *st, int nr_gpio, u32 attr, long *val)
+@@ -550,9 +556,15 @@ static int ltc2992_get_current(struct lt
+ static int ltc2992_set_current(struct ltc2992_state *st, u32 reg, u32 channel, long val)
+ {
+ 	u32 reg_val;
++	long cmax;
+ 
+-	reg_val = DIV_ROUND_CLOSEST(val * st->r_sense_uohm[channel], LTC2992_IADC_NANOV_LSB);
+-	reg_val = reg_val << 4;
++	cmax = DIV_ROUND_CLOSEST_ULL(0xFFFULL * LTC2992_IADC_NANOV_LSB,
++				     st->r_sense_uohm[channel]);
++	val = max(val, 0L);
++	val = min(val, cmax);
++	reg_val = min(DIV_ROUND_CLOSEST_ULL((u64)val * st->r_sense_uohm[channel],
++					    LTC2992_IADC_NANOV_LSB),
++		      0xFFFULL) << 4;
+ 
+ 	return ltc2992_write_reg(st, reg, 2, reg_val);
+ }
+@@ -625,9 +637,18 @@ static int ltc2992_get_power(struct ltc2
+ static int ltc2992_set_power(struct ltc2992_state *st, u32 reg, u32 channel, long val)
+ {
+ 	u32 reg_val;
++	u64 pmax, uval;
+ 
+-	reg_val = mul_u64_u32_div(val, st->r_sense_uohm[channel] * 1000,
+-				  LTC2992_VADC_UV_LSB * LTC2992_IADC_NANOV_LSB);
++	uval = max(val, 0L);
++	pmax = mul_u64_u32_div(0xFFFFFFULL,
++			       LTC2992_VADC_UV_LSB / 1000 *
++			       LTC2992_IADC_NANOV_LSB,
++			       st->r_sense_uohm[channel]);
++	uval = min(uval, pmax);
++	reg_val = min(mul_u64_u32_div(uval, st->r_sense_uohm[channel],
++				      LTC2992_VADC_UV_LSB / 1000 *
++				      LTC2992_IADC_NANOV_LSB),
++		      0xFFFFFFULL);
+ 
+ 	return ltc2992_write_reg(st, reg, 3, reg_val);
+ }
 
 
 
