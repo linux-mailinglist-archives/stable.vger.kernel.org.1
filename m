@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-257221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258000-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOldFPUYG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257221-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:57 +0200
+	id KJ2MCMchG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258000-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69C960EE28
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C4DB6103E3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2BD130EA05E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:57:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8E6463016D8E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924F633FE15;
-	Sat, 30 May 2026 16:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC16534A3C4;
+	Sat, 30 May 2026 17:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWnUwW7j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9I1nsqF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD3132BF24;
-	Sat, 30 May 2026 16:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D2C21B191;
+	Sat, 30 May 2026 17:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160235; cv=none; b=SrLLMZsvxzEH0fOpOXP84ZFOULAWHDaqJiLpFIrfC05QOZ8+wUaFFf0ZJT2kmlxUPz7rKc0cTyAzsGpgCl+ifQqRv67eZ5VOmfLzQS9XJRMKBLJvoDWMAfn78/2cqhez6PhTG0Z9Z5eIe7U9oG9SMTs9C5F5Pt4WJBhWFzzJqHk=
+	t=1780162889; cv=none; b=buDeAgLtabKuc5S4WDJEQ1vi3E/piCjd+7juu2q6cGADW0enlrJm1qDq8yjzjmC3UsRpWA/WYoo/MogOmTXWikmF3/GDj2cjI/XBYiPLEvTTyTtqY1drg1K4HkFncPAtgEActb4m/jHx3VjvrxyXMomxHMC4/wWxtqK11Tps//g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160235; c=relaxed/simple;
-	bh=MG5jG0+zo0cCFfqrDIt77myETbOkdNAORf3bEfoYSYk=;
+	s=arc-20240116; t=1780162889; c=relaxed/simple;
+	bh=ZijNb7dlgXREm/aZKwJAChrJXb86qNB1y/3125dNM1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRJdHbJSF5cEImzOEITrcwz+h5tXOj0O1LnkqDqTf35BIjyqmKLObPhAKSeEQ4UnZvi4x6Zu4J9qk4mnJKynZrGYgokf13gjNFG4Hlal1veHnoZYKWajpRPWA+zWoebl4HgUmmOTbfuG+lNT74+shhhYdkWTOIKrVOrzpa0QXtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWnUwW7j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D161F00893;
-	Sat, 30 May 2026 16:57:13 +0000 (UTC)
+	 MIME-Version; b=NidbLKeQWDx7ol+4onJqvID3mCnhAdPVG+Q6qmflneBn7FK1pGlqZeJXuce4lklU02xkafYBI56/KEyf70LX0+L1+1uItuk5zmD9/trv6ytDQXMxXFWjjU7hJAsTR0e4mmgHLoglMEJaKXfC/6/SrHZHXZCG6+06+TU9MTNwg24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9I1nsqF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C281F00893;
+	Sat, 30 May 2026 17:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160234;
-	bh=whWWNG7L8gUt5sI0btk/FjFmgAfjKf67HZ4KjOLPT4E=;
+	s=korg; t=1780162888;
+	bh=5UnZX/VrxzLagLBMcaqNX7E1Ck0r9vJO/sW0D77XArI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nWnUwW7jsj5PNenC0X4b6UteecngvRfOauzQygwFP3IuKQj6McXnNLHoPE766iw0p
-	 Ox/7JGK1Y9JluerUChJCW+MtCNczXlzbuRRR736h1C8Mf8up9c0WqAaLyvooBjmUbm
-	 tQVrex4tlRehO/lwGtQqIMOKtmh2vh7xz7uZFUls=
+	b=u9I1nsqFyVGhxji3FWqJBPiDMOB3BCU3wB6NgwzejVDXKrHJOldugUKRd/xxV8ANY
+	 9BT/jTlZeQYKa9dPvyknFGuZYJ2Nt7cytxS89VRrffDYUt0WR6SoVfNhDwOcodGxKN
+	 YLfsleqeqgVGlWmLfQXoxUO+CCgJSiGrbk8+oNf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rajat Gupta <rajgupt@qti.qualcomm.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 283/969] fbdev: udlfb: add vm_ops to dlfb_ops_mmap to prevent use-after-free
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 093/776] Revert "net: ixp4xx_eth: convert to ndo_hwtstamp_get() and ndo_hwtstamp_set()"
 Date: Sat, 30 May 2026 17:56:47 +0200
-Message-ID: <20260530160308.280953007@linuxfoundation.org>
+Message-ID: <20260530160242.740931263@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,145 +64,182 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257221-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qti.qualcomm.com,gmx.de];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-258000-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A69C960EE28
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1C4DB6103E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rajat Gupta <rajgupt@qti.qualcomm.com>
+This reverts commit 612c622ab8efe9033a33eaad874ae69c090a53e1.
 
-commit 8de779dc40d35d39fa07387b6f921eb11df0f511 upstream.
-
-dlfb_ops_mmap() uses remap_pfn_range() to map vmalloc framebuffer pages
-to userspace but sets no vm_ops on the VMA. This means the kernel cannot
-track active mmaps. When dlfb_realloc_framebuffer() replaces the backing
-buffer via FBIOPUT_VSCREENINFO, existing mmap PTEs are not invalidated.
-On USB disconnect, dlfb_ops_destroy() calls vfree() on the old pages
-while userspace PTEs still reference them, resulting in a use-after-free:
-the process retains read/write access to freed kernel pages.
-
-Add vm_operations_struct with open/close callbacks that maintain an
-atomic mmap_count on struct dlfb_data. In dlfb_realloc_framebuffer(),
-check mmap_count and return -EBUSY if the buffer is currently mapped,
-preventing buffer replacement while userspace holds stale PTEs.
-
-Tested with PoC using dummy_hcd + raw_gadget USB device emulation.
-
-Signed-off-by: Rajat Gupta <rajgupt@qti.qualcomm.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/udlfb.c |   31 ++++++++++++++++++++++++++++++-
- include/video/udlfb.h       |    1 +
- 2 files changed, 31 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/xscale/ixp4xx_eth.c | 61 +++++++++++++-----------
+ 1 file changed, 32 insertions(+), 29 deletions(-)
 
---- a/drivers/video/fbdev/udlfb.c
-+++ b/drivers/video/fbdev/udlfb.c
-@@ -321,12 +321,32 @@ static int dlfb_set_video_mode(struct dl
- 	return retval;
+diff --git a/drivers/net/ethernet/xscale/ixp4xx_eth.c b/drivers/net/ethernet/xscale/ixp4xx_eth.c
+index 9951006f1bc77..931494cc1c39e 100644
+--- a/drivers/net/ethernet/xscale/ixp4xx_eth.c
++++ b/drivers/net/ethernet/xscale/ixp4xx_eth.c
+@@ -371,20 +371,16 @@ static void ixp_tx_timestamp(struct port *port, struct sk_buff *skb)
+ 	__raw_writel(TX_SNAPSHOT_LOCKED, &regs->channel[ch].ch_event);
  }
  
-+static void dlfb_vm_open(struct vm_area_struct *vma)
-+{
-+	struct dlfb_data *dlfb = vma->vm_private_data;
-+
-+	atomic_inc(&dlfb->mmap_count);
-+}
-+
-+static void dlfb_vm_close(struct vm_area_struct *vma)
-+{
-+	struct dlfb_data *dlfb = vma->vm_private_data;
-+
-+	atomic_dec(&dlfb->mmap_count);
-+}
-+
-+static const struct vm_operations_struct dlfb_vm_ops = {
-+	.open  = dlfb_vm_open,
-+	.close = dlfb_vm_close,
-+};
-+
- static int dlfb_ops_mmap(struct fb_info *info, struct vm_area_struct *vma)
+-static int ixp4xx_hwtstamp_set(struct net_device *netdev,
+-			       struct kernel_hwtstamp_config *cfg,
+-			       struct netlink_ext_ack *extack)
++static int hwtstamp_set(struct net_device *netdev, struct ifreq *ifr)
  {
- 	unsigned long start = vma->vm_start;
- 	unsigned long size = vma->vm_end - vma->vm_start;
- 	unsigned long offset = vma->vm_pgoff << PAGE_SHIFT;
- 	unsigned long page, pos;
-+	struct dlfb_data *dlfb = info->par;
++	struct hwtstamp_config cfg;
+ 	struct ixp46x_ts_regs *regs;
+ 	struct port *port = netdev_priv(netdev);
+ 	int ret;
+ 	int ch;
  
- 	if (info->fbdefio)
- 		return fb_deferred_io_mmap(info, vma);
-@@ -356,6 +376,9 @@ static int dlfb_ops_mmap(struct fb_info
- 			size = 0;
+-	if (!cpu_is_ixp46x())
+-		return -EOPNOTSUPP;
+-
+-	if (!netif_running(netdev))
+-		return -EINVAL;
++	if (copy_from_user(&cfg, ifr->ifr_data, sizeof(cfg)))
++		return -EFAULT;
+ 
+ 	if (cfg.flags) /* reserved for future extensions */
+ 		return -EINVAL;
+@@ -396,10 +392,10 @@ static int ixp4xx_hwtstamp_set(struct net_device *netdev,
+ 	ch = PORT2CHANNEL(port);
+ 	regs = port->timesync_regs;
+ 
+-	if (cfg->tx_type != HWTSTAMP_TX_OFF && cfg->tx_type != HWTSTAMP_TX_ON)
++	if (cfg.tx_type != HWTSTAMP_TX_OFF && cfg.tx_type != HWTSTAMP_TX_ON)
+ 		return -ERANGE;
+ 
+-	switch (cfg->rx_filter) {
++	switch (cfg.rx_filter) {
+ 	case HWTSTAMP_FILTER_NONE:
+ 		port->hwts_rx_en = 0;
+ 		break;
+@@ -415,45 +411,39 @@ static int ixp4xx_hwtstamp_set(struct net_device *netdev,
+ 		return -ERANGE;
  	}
  
-+	vma->vm_ops = &dlfb_vm_ops;
-+	vma->vm_private_data = dlfb;
-+	atomic_inc(&dlfb->mmap_count);
- 	return 0;
+-	port->hwts_tx_en = cfg->tx_type == HWTSTAMP_TX_ON;
++	port->hwts_tx_en = cfg.tx_type == HWTSTAMP_TX_ON;
+ 
+ 	/* Clear out any old time stamps. */
+ 	__raw_writel(TX_SNAPSHOT_LOCKED | RX_SNAPSHOT_LOCKED,
+ 		     &regs->channel[ch].ch_event);
+ 
+-	return 0;
++	return copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg)) ? -EFAULT : 0;
  }
  
-@@ -1219,7 +1242,6 @@ static void dlfb_deferred_vfree(struct d
- 
- /*
-  * Assumes &info->lock held by caller
-- * Assumes no active clients have framebuffer open
-  */
- static int dlfb_realloc_framebuffer(struct dlfb_data *dlfb, struct fb_info *info, u32 new_len)
+-static int ixp4xx_hwtstamp_get(struct net_device *netdev,
+-			       struct kernel_hwtstamp_config *cfg)
++static int hwtstamp_get(struct net_device *netdev, struct ifreq *ifr)
  {
-@@ -1231,6 +1253,13 @@ static int dlfb_realloc_framebuffer(stru
- 	new_len = PAGE_ALIGN(new_len);
++	struct hwtstamp_config cfg;
+ 	struct port *port = netdev_priv(netdev);
  
- 	if (new_len > old_len) {
-+		if (atomic_read(&dlfb->mmap_count) > 0) {
-+			dev_warn(info->dev,
-+				"refusing realloc: %d active mmaps\n",
-+				atomic_read(&dlfb->mmap_count));
-+			return -EBUSY;
-+		}
+-	if (!cpu_is_ixp46x())
+-		return -EOPNOTSUPP;
+-
+-	if (!netif_running(netdev))
+-		return -EINVAL;
+-
+-	cfg->flags = 0;
+-	cfg->tx_type = port->hwts_tx_en ? HWTSTAMP_TX_ON : HWTSTAMP_TX_OFF;
++	cfg.flags = 0;
++	cfg.tx_type = port->hwts_tx_en ? HWTSTAMP_TX_ON : HWTSTAMP_TX_OFF;
+ 
+ 	switch (port->hwts_rx_en) {
+ 	case 0:
+-		cfg->rx_filter = HWTSTAMP_FILTER_NONE;
++		cfg.rx_filter = HWTSTAMP_FILTER_NONE;
+ 		break;
+ 	case PTP_SLAVE_MODE:
+-		cfg->rx_filter = HWTSTAMP_FILTER_PTP_V1_L4_SYNC;
++		cfg.rx_filter = HWTSTAMP_FILTER_PTP_V1_L4_SYNC;
+ 		break;
+ 	case PTP_MASTER_MODE:
+-		cfg->rx_filter = HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ;
++		cfg.rx_filter = HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ;
+ 		break;
+ 	default:
+ 		WARN_ON_ONCE(1);
+ 		return -ERANGE;
+ 	}
+ 
+-	return 0;
++	return copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg)) ? -EFAULT : 0;
+ }
+ 
+ static int ixp4xx_mdio_cmd(struct mii_bus *bus, int phy_id, int location,
+@@ -975,6 +965,21 @@ static void eth_set_mcast_list(struct net_device *dev)
+ }
+ 
+ 
++static int eth_ioctl(struct net_device *dev, struct ifreq *req, int cmd)
++{
++	if (!netif_running(dev))
++		return -EINVAL;
 +
- 		/*
- 		 * Alloc system memory for virtual framebuffer
- 		 */
---- a/include/video/udlfb.h
-+++ b/include/video/udlfb.h
-@@ -56,6 +56,7 @@ struct dlfb_data {
- 	spinlock_t damage_lock;
- 	struct work_struct damage_work;
- 	struct fb_ops ops;
-+	atomic_t mmap_count;
- 	/* blit-only rendering path metrics, exposed through sysfs */
- 	atomic_t bytes_rendered; /* raw pixel-bytes driver asked to render */
- 	atomic_t bytes_identical; /* saved effort with backbuffer comparison */
++	if (cpu_is_ixp46x()) {
++		if (cmd == SIOCSHWTSTAMP)
++			return hwtstamp_set(dev, req);
++		if (cmd == SIOCGHWTSTAMP)
++			return hwtstamp_get(dev, req);
++	}
++
++	return phy_mii_ioctl(dev->phydev, req, cmd);
++}
++
+ /* ethtool support */
+ 
+ static void ixp4xx_get_drvinfo(struct net_device *dev,
+@@ -1360,11 +1365,9 @@ static const struct net_device_ops ixp4xx_netdev_ops = {
+ 	.ndo_stop = eth_close,
+ 	.ndo_start_xmit = eth_xmit,
+ 	.ndo_set_rx_mode = eth_set_mcast_list,
+-	.ndo_eth_ioctl = phy_do_ioctl_running,
++	.ndo_eth_ioctl = eth_ioctl,
+ 	.ndo_set_mac_address = eth_mac_addr,
+ 	.ndo_validate_addr = eth_validate_addr,
+-	.ndo_hwtstamp_get = ixp4xx_hwtstamp_get,
+-	.ndo_hwtstamp_set = ixp4xx_hwtstamp_set,
+ };
+ 
+ #ifdef CONFIG_OF
+-- 
+2.53.0
+
 
 
 
