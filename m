@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-258531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259108-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPHjHpsoG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258531-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:43 +0200
+	id eCEoJfIvG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259108-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A6F6113B0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8CEB6125D4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A617D3008620
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C8C0430095CA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935203B9D80;
-	Sat, 30 May 2026 18:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA192F3C3E;
+	Sat, 30 May 2026 18:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLDAqdYm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9E7MC+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B6C31F98D;
-	Sat, 30 May 2026 18:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4752F6184;
+	Sat, 30 May 2026 18:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164662; cv=none; b=j+K7QH2REsnc4Aqwy07CYX++rpTCi/E4iV09qCPpXiHDv6A/sr7z+KBPXD7UnIYMOG7inT7DrghfQc/rstUV6uE2YqL47T9N+LVkmUsJrRWF2xU5cJBEO2dLYD8+hNnQ5MNZbFBRargCxloL8MhKU2t2vr36JBtLE75eVSuo9h4=
+	t=1780166638; cv=none; b=eKUeO9pghEsj0W3A4EDL8NiUVa6hw9w1VFnl/xWoNkmKhlNJDvYkM89CLeenrlzpgn8UlokGOQScDWfoPvcrPfLSE+t6qlH3fWlXRB9EAdeumE7yNiF3Jz2eaBDhEcQEIUtT8TgvhL7YTfteNPMDZvH0rc2seez5rWkmXNnMdPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164662; c=relaxed/simple;
-	bh=rJNgLILPo0IUEaLMcL8CAtbB/93DAwZ1rhIjpBBoSY4=;
+	s=arc-20240116; t=1780166638; c=relaxed/simple;
+	bh=o/y9YV2fWscdt5cXFT+C9uoFTmXQdVvyMVCzbTYQq6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2wQktszpzMFqDnrxMg0A2D9cNd0CIe0ZnZwsyUq7VIgMXp98Bp3L0Cyk9YSnrBPbk4C55xi52pS8U2ejM6W7i7HT9GjrgeTTrOMcM+/fKRdMDRb2TxydXg1P5uD1pjQSRzN7eM4rcZGL+AoCfGejum5oQNT82h8SYNP27Rj6k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLDAqdYm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BC31F00893;
-	Sat, 30 May 2026 18:11:00 +0000 (UTC)
+	 MIME-Version; b=qSu8mz8Ji/xOjDtmAALhQod3q1ARXpxB6vBTotbQrxVZ0+L6jKHDWSq2bfLbtJfpgarQP17A+bEbYojrTm6JPq/+kCb4Z7BLzGOM7CO9ylmgS+gRU/ujkJyZ8mYJayVLwc7G/YDeR8mvOqVZ/8OHci3LPG7VRl3RfAG1vWVMomM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9E7MC+J; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7661F00893;
+	Sat, 30 May 2026 18:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164661;
-	bh=qblLaRqnpdGaVsACcnDYCVGvXfdTjc8gmle28wlVD24=;
+	s=korg; t=1780166636;
+	bh=x7xDhp13WdsUAr18ECb1RAvkjofdp73Fbu/5YDRu8U8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FLDAqdYmP2cBJyx7PKpRRTYIg5FtK8RUPsK/u7K31T5Vu8gL5a5CETPzhaUp5UtUx
-	 2zW6I4W5AcU2hX/BwvbwjNecCkuPo5T4LBeNL/PD3lSkCJsbFrKm4e1QhUZZ9sRMIX
-	 smRM777R/oFJ1BK3p+nSD4he1lLWRVeRGoT2as64=
+	b=W9E7MC+Jszt6ug5DlJz4JOHvz8/gsvjVPj6OyIV2QgZ4vhgIGLrryowjIxnd5weV6
+	 il3KEn8UXHPd43g1EApsFBQ5FwYhJdJkDw2hE58WyyD/K7EmTdh3SvgFRv2vN0WTxa
+	 SK+Leuj3X+Tr1rLAtG5igICT/7RnVTrKfExX+nCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Lee Jones <lee@kernel.org>,
+	Matt Vollrath <tactii@gmail.com>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 592/776] tipc: fix double-free in tipc_buf_append()
+Subject: [PATCH 5.10 425/589] e1000e: Unroll PTP in probe error handling
 Date: Sat, 30 May 2026 18:05:06 +0200
-Message-ID: <20260530160255.354429630@linuxfoundation.org>
+Message-ID: <20260530160235.897494333@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +70,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-259108-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258531-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 82A6F6113B0
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B8CEB6125D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Matt Vollrath <tactii@gmail.com>
 
-[ Upstream commit d293ca716e7d5dffdaecaf6b9b2f857a33dc3d3a ]
+[ Upstream commit aa3f7fe409350857c25d050482a2eef2cfd69b58 ]
 
-tipc_msg_validate() can potentially reallocate the skb it is validating,
-freeing the old one.  In tipc_buf_append(), it was being called with a
-pointer to a local variable which was a copy of the caller's skb
-pointer.
+If probe fails after registering the PTP clock and its delayed work,
+these resources must be released.
 
-If the skb was reallocated and validation subsequently failed, the error
-handling path would free the original skb pointer, which had already
-been freed, leading to double-free.
+This was not an issue until a 2016 fix moved the e1000e_ptp_init() call
+before the jump to err_register.
 
-Fix this by checking if head now points to a newly allocated reassembled
-skb.  If it does, reassign *headbuf for later freeing operations.
-
-Fixes: d618d09a68e4 ("tipc: enforce valid ratio between skb truesize and contents")
-Suggested-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Fixes: aa524b66c5ef ("e1000e: don't modify SYSTIM registers during SIOCSHWTSTAMP ioctl")
+Signed-off-by: Matt Vollrath <tactii@gmail.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-12-686c33c9828d@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/msg.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/e1000e/netdev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/tipc/msg.c b/net/tipc/msg.c
-index 76284fc538ebd..b0bba0feef564 100644
---- a/net/tipc/msg.c
-+++ b/net/tipc/msg.c
-@@ -177,8 +177,20 @@ int tipc_buf_append(struct sk_buff **headbuf, struct sk_buff **buf)
- 
- 	if (fragid == LAST_FRAGMENT) {
- 		TIPC_SKB_CB(head)->validated = 0;
--		if (unlikely(!tipc_msg_validate(&head)))
-+
-+		/* If the reassembled skb has been freed in
-+		 * tipc_msg_validate() because of an invalid truesize,
-+		 * then head will point to a newly allocated reassembled
-+		 * skb, while *headbuf points to freed reassembled skb.
-+		 * In such cases, correct *headbuf for freeing the newly
-+		 * allocated reassembled skb later.
-+		 */
-+		if (unlikely(!tipc_msg_validate(&head))) {
-+			if (head != *headbuf)
-+				*headbuf = head;
- 			goto err;
-+		}
-+
- 		*buf = head;
- 		TIPC_SKB_CB(head)->tail = NULL;
- 		*headbuf = NULL;
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 902ada6a3b06c..8f1c6f08be00e 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -7642,6 +7642,7 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ err_register:
+ 	if (!(adapter->flags & FLAG_HAS_AMT))
+ 		e1000e_release_hw_control(adapter);
++	e1000e_ptp_remove(adapter);
+ err_eeprom:
+ 	if (hw->phy.ops.check_reset_block && !hw->phy.ops.check_reset_block(hw))
+ 		e1000_phy_hw_reset(&adapter->hw);
 -- 
 2.53.0
 
