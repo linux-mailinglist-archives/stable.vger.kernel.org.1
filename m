@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-257125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257127-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPGzFBoXG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:58:02 +0200
+	id iBcpAC0XG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257127-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:58:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A08B260EAA6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:58:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F61960EAAD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7CD1930078C0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:51:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C73430C69B5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03543332EA7;
-	Sat, 30 May 2026 16:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99AEA380FEC;
+	Sat, 30 May 2026 16:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9n88X8E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfobC43V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5123403F3;
-	Sat, 30 May 2026 16:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637AE3AA195;
+	Sat, 30 May 2026 16:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159890; cv=none; b=oysU0VkvwXZ1flOY0BbupeSSmZLl1Dis6mx+twF33X/1z2NlmIMvBkVwKlF8yaL2g825f7I4PZeQkzjoHyvuJQuF/QHkzt5VrGJNt8YyTOUMQFYg9utgccNdb4IZzUl4JARWWt4UYPrGG7TGRWWJNLxgjIdghI4il39k9n0Ulsg=
+	t=1780159899; cv=none; b=AdxYUgzzLyixS82DVnMtA7KVOeHI9/DcOYwqhN3wMpHOn5W3vnuRWPHLgpFoM69V7Vacy0RAZrtZ1dgMuPhoRMZpOss4s7X0lOagyelNhTJ5OxvvBMI4+5w5XukQYpFlSHcE9lyQF6ZwpD7yDKtqKYaFXYz9R3jStKHcYpaWmbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159890; c=relaxed/simple;
-	bh=8PjcShNmOGKV1A6YLqRtcV7nm3eGhGNoHGgfEtuiBJM=;
+	s=arc-20240116; t=1780159899; c=relaxed/simple;
+	bh=8jO1huyxHK/4A2KBLGeOnuT0Jy6x4H9pbO3KoaysS54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=StUUjuU0zo6VxLJ60PGJyPsx3riVx43KstlgEXPdLV0HClCGp0ICWIL1AIDhugIkfGmqeMCKhyMgFPOrVhF/0cN+5mpWqm8lYzcoKYaAzlc3a9a0uU64unif1P3HRge8JAUDw+NZcH7Sncb8LAROXlnTbpFJtBJ7xpr3xSCJaLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9n88X8E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952111F00893;
-	Sat, 30 May 2026 16:51:28 +0000 (UTC)
+	 MIME-Version; b=uMp2vjIWbxnUg3jhS9u2kmDl+k6fnEQZ+4+0GWnXe/LCNWLJhlYw9tHwPPBjoHIUj0xhtPLvfRKR7Rw6SnQYyCrKfCpY+5V7ChVEP3nuwMXyjjVFdArrmG1r7YiK3CUZ5xMyjKeusXurfFt84MYSNhDpjZ2Ch7v28pVqY6QUet4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfobC43V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADC01F00898;
+	Sat, 30 May 2026 16:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159889;
-	bh=th9yYOp1wFc3A95w0vm9HmTbxAgmgEIq0PlF8RvBycQ=;
+	s=korg; t=1780159898;
+	bh=vh4FiVHY0tXPIpa2Cpy31FRugAPXLc4J8PfxErOT7uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=v9n88X8ENMUU1+rN/Fr8br4RoqSvtumi+SCB/DrijTsvV1CHRHkPbw8OsOJZAdbIH
-	 zY0NaA0vw1Vq5Q/g9Q9BcCXjN2uYMwbDplTz1nteyjzJo0aCGMULlYwFDF8E5AOjsB
-	 RrsPXbDjT7lToUxYk/jHCRHeimKGKLeobHP9QzwU=
+	b=dfobC43V7HUWiBMK59TuxELmgBfGSVZNZy/Zu+KedohXWIwFBisxULaN2usamTQTw
+	 JTcNy1jQtrrBE/a4AQ/teYsK4xRDuslulyu/TmExdwB5Cv4VChMqAHMJjw2JGsW99J
+	 UUE8YTxU++FkxKQntxauKBW7+W/FMGgqChXoUD6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.1 188/969] PCI: endpoint: pci-epf-ntb: Remove duplicate resource teardown
-Date: Sat, 30 May 2026 17:55:12 +0200
-Message-ID: <20260530160305.673710555@linuxfoundation.org>
+	Rong Zhang <i@rong.moe>,
+	Arun Raghavan <arunr@valvesoftware.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 189/969] Revert "ALSA: usb: Increase volume range that triggers a warning"
+Date: Sat, 30 May 2026 17:55:13 +0200
+Message-ID: <20260530160305.702680720@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257125-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257127-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,7 +90,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A08B260EAA6
+X-Rspamd-Queue-Id: 4F61960EAAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,122 +98,48 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Rong Zhang <i@rong.moe>
 
-commit 3446beddba450c8d6f9aca2f028712ac527fead3 upstream.
+commit 41d78cb724f4b40b7548af420ccfe524b14023bb upstream.
 
-epf_ntb_epc_destroy() duplicates the teardown that the caller is
-supposed to do later. This leads to an oops when .allow_link fails or
-when .drop_link is performed. Remove the helper.
+UAC uses 2 bytes to store volume values, so the maximum volume range is
+0xFFFF (65535, val = -32768/32767/1).
 
-Also drop pci_epc_put(). EPC device refcounting is tied to configfs EPC
-group lifetime, and pci_epc_put() in the .drop_link path is sufficient.
+The reverted commit bumpped the range of triggering the warning to >
+65535, effectively making the range check a no-op. It didn't fix
+anything but covered any potential problems and deviated from the
+original intention of the range check.
 
-Fixes: 8b821cf76150 ("PCI: endpoint: Add EP function driver to provide NTB functionality")
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+This reverts commit 6b971191fcfc9e3c2c0143eea22534f1f48dbb62.
+
+Fixes: 6b971191fcfc ("ALSA: usb: Increase volume range that triggers a warning")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260226084142.2226875-3-den@valinux.co.jp
+Signed-off-by: Rong Zhang <i@rong.moe>
+Acked-by: Arun Raghavan <arunr@valvesoftware.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260303194805.266158-2-i@rong.moe
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-ntb.c |   56 ---------------------------
- 1 file changed, 2 insertions(+), 54 deletions(-)
+ sound/usb/mixer.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/pci/endpoint/functions/pci-epf-ntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-ntb.c
-@@ -1495,47 +1495,6 @@ err_alloc_peer_mem:
- }
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1814,10 +1814,11 @@ static void __build_feature_ctl(struct u
  
- /**
-- * epf_ntb_epc_destroy_interface() - Cleanup NTB EPC interface
-- * @ntb: NTB device that facilitates communication between HOST1 and HOST2
-- * @type: PRIMARY interface or SECONDARY interface
-- *
-- * Unbind NTB function device from EPC and relinquish reference to pci_epc
-- * for each of the interface.
-- */
--static void epf_ntb_epc_destroy_interface(struct epf_ntb *ntb,
--					  enum pci_epc_interface_type type)
--{
--	struct epf_ntb_epc *ntb_epc;
--	struct pci_epc *epc;
--	struct pci_epf *epf;
--
--	if (type < 0)
--		return;
--
--	epf = ntb->epf;
--	ntb_epc = ntb->epc[type];
--	if (!ntb_epc)
--		return;
--	epc = ntb_epc->epc;
--	pci_epc_remove_epf(epc, epf, type);
--	pci_epc_put(epc);
--}
--
--/**
-- * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
-- * @ntb: NTB device that facilitates communication between HOST1 and HOST2
-- *
-- * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
-- */
--static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
--{
--	enum pci_epc_interface_type type;
--
--	for (type = PRIMARY_INTERFACE; type <= SECONDARY_INTERFACE; type++)
--		epf_ntb_epc_destroy_interface(ntb, type);
--}
--
--/**
-  * epf_ntb_epc_create_interface() - Create and initialize NTB EPC interface
-  * @ntb: NTB device that facilitates communication between HOST1 and HOST2
-  * @epc: struct pci_epc to which a particular NTB interface should be associated
-@@ -1614,15 +1573,8 @@ static int epf_ntb_epc_create(struct epf
- 
- 	ret = epf_ntb_epc_create_interface(ntb, epf->sec_epc,
- 					   SECONDARY_INTERFACE);
--	if (ret) {
-+	if (ret)
- 		dev_err(dev, "SECONDARY intf: Fail to create NTB EPC\n");
--		goto err_epc_create;
--	}
--
--	return 0;
--
--err_epc_create:
--	epf_ntb_epc_destroy_interface(ntb, PRIMARY_INTERFACE);
- 
- 	return ret;
- }
-@@ -1887,7 +1839,7 @@ static int epf_ntb_bind(struct pci_epf *
- 	ret = epf_ntb_init_epc_bar(ntb);
- 	if (ret) {
- 		dev_err(dev, "Failed to create NTB EPC\n");
--		goto err_bar_init;
-+		return ret;
- 	}
- 
- 	ret = epf_ntb_config_spad_bar_alloc_interface(ntb);
-@@ -1909,9 +1861,6 @@ static int epf_ntb_bind(struct pci_epf *
- err_bar_alloc:
- 	epf_ntb_config_spad_bar_free(ntb);
- 
--err_bar_init:
--	epf_ntb_epc_destroy(ntb);
--
- 	return ret;
- }
- 
-@@ -1927,7 +1876,6 @@ static void epf_ntb_unbind(struct pci_ep
- 
- 	epf_ntb_epc_cleanup(ntb);
- 	epf_ntb_config_spad_bar_free(ntb);
--	epf_ntb_epc_destroy(ntb);
- }
- 
- #define EPF_NTB_R(_name)						\
+ 	range = (cval->max - cval->min) / cval->res;
+ 	/*
+-	 * There are definitely devices with a range of ~20,000, so let's be
+-	 * conservative and allow for a bit more.
++	 * Are there devices with volume range more than 255? I use a bit more
++	 * to be sure. 384 is a resolution magic number found on Logitech
++	 * devices. It will definitively catch all buggy Logitech devices.
+ 	 */
+-	if (range > 65535) {
++	if (range > 384) {
+ 		usb_audio_warn(mixer->chip,
+ 			       "Warning! Unlikely big volume range (=%u), cval->res is probably wrong.",
+ 			       range);
 
 
 
