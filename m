@@ -1,186 +1,272 @@
-Return-Path: <stable+bounces-259250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259282-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHORG4cyG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:55:03 +0200
+	id sG+sAWIzG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259282-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:58:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E393F612C92
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:55:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA74612E55
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:58:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54AAC302A4F1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D4A6C3007521
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FA62571A9;
-	Sat, 30 May 2026 18:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0509025D527;
+	Sat, 30 May 2026 18:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="YuIGeCEa";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WFiXfchG";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="YuIGeCEa";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WFiXfchG"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC946238D52;
-	Sat, 30 May 2026 18:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFEB2343BE
+	for <stable@vger.kernel.org>; Sat, 30 May 2026 18:57:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167112; cv=none; b=fKTg8MLoVFWhg7pfsVcRPw/MMvK7DcPwIttN4nj2TDRP62tz6uIhjRgodbiLNFlkyLyeAkQ17gIoCCIQPlOr1joMZTYlNTqFIGarUqnhWgWWXLvki6mFSZzyjbjIT7ouQCO8/AJnEjDnSPFLSwN2W1l/bRYT4gkoDtaFGT8O6Zs=
+	t=1780167442; cv=none; b=UT6Se/Xw4vo/IpRoBLKaiZmejdaSCWH/NjqnhmWX2mitnkuOb8RrB0BNQadDof0ZoDIm41bZVi7R8ItwZjo4xzPK5NeelFodRPhTxgY7x4HOx4jPP5GwEn9U7RgJRSyeKIqMZ48jSRcDQtTGUV3ZW/2kxkmVXxbAtn2JrlwHuk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167112; c=relaxed/simple;
-	bh=N2rchIoT/K1mOXHHopOunsYkePQS+akHZbhMnp1Jvoc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jvHtHGs/mNg1DHp1LQbK9PU7uyQkBjI6XWtVplk1UB4rYkSrGVzXBGH6QqzZIypStOXX+GV1YRpQOO8m5bmODjtUwkLeTbHt6LN0/s1lE/Kd9w1fEH9I+tr2pNc/+bgfzgHc6Qh50nkvl/xqZ63WDV7qYfgC4YQGx2U9giTo/6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wTOmc-000Jq8-0Q;
-	Sat, 30 May 2026 18:51:42 +0000
-Received: from ben by deadeye with local (Exim 4.99.2)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wTOma-0000000ExTl-3vQA;
-	Sat, 30 May 2026 20:51:40 +0200
-Message-ID: <daa0df3788560bd8759418d9c333e09c45368aa4.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 002/589] ASoC: SOF: topology: reject invalid vendor
- array size in token parser
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, =?ISO-8859-1?Q?C=E1ssio?= Gabriel	
- <cassiogabrielcontato@gmail.com>, Peter Ujfalusi	
- <peter.ujfalusi@linux.intel.com>, Mark Brown <broonie@kernel.org>, Sasha
- Levin	 <sashal@kernel.org>
-Date: Sat, 30 May 2026 20:51:35 +0200
-In-Reply-To: <20260530160224.642881938@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
-	 <20260530160224.642881938@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-0ZyOMxjVi0hOzYtnadpg"
-User-Agent: Evolution 3.56.2-9 
+	s=arc-20240116; t=1780167442; c=relaxed/simple;
+	bh=OMdq6DcdL40XMgkjllqdLF0EynRVjgvdLMAsdwSKI9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QNKaVRArGM8FTBm1UCs2FxjsmfZcDL69qCoa9kEee9UI2DKKPWikobbooS6PHB/rKYd1Ow3O2YCH9+1PQbMgGGZuPe1aEC6I/QuZyLbCNsiTM0gUZmJc40SAcgrVLfqRIKF3L8DlcJCcxhEvj0lID8MJrBZeA7ly5Ly1UkLTImg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=YuIGeCEa; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WFiXfchG; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=YuIGeCEa; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WFiXfchG; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0E9516B4BB;
+	Sat, 30 May 2026 18:57:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780167439; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hl/6Hzud/qMAEKC5HoBcZ2QJGJfPgZbaNL6g80kRCHI=;
+	b=YuIGeCEaAF6DXSEV9p+bzu2xWrP2fbBeqfMTGFC0z1xqwdcnrNCpHQQ0dynNqZ40HMJxe1
+	iFoHKN+LmX3eNKz9U+yt7f8JxG6T0fXu01BdkE9Wor7twmfxxg9TkFgbrd+M+capiHBkFN
+	903mZE+p0Fz+J3SdAEyf76HqZLeGpYg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780167439;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hl/6Hzud/qMAEKC5HoBcZ2QJGJfPgZbaNL6g80kRCHI=;
+	b=WFiXfchGAIswK0jbtZnq+9xxyJg0fco5nwMZHi7HeaVnHZckbpLnn5SXtCErvLrwm22/Hs
+	0+aEDGqU24vSJlAg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780167439; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hl/6Hzud/qMAEKC5HoBcZ2QJGJfPgZbaNL6g80kRCHI=;
+	b=YuIGeCEaAF6DXSEV9p+bzu2xWrP2fbBeqfMTGFC0z1xqwdcnrNCpHQQ0dynNqZ40HMJxe1
+	iFoHKN+LmX3eNKz9U+yt7f8JxG6T0fXu01BdkE9Wor7twmfxxg9TkFgbrd+M+capiHBkFN
+	903mZE+p0Fz+J3SdAEyf76HqZLeGpYg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780167439;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hl/6Hzud/qMAEKC5HoBcZ2QJGJfPgZbaNL6g80kRCHI=;
+	b=WFiXfchGAIswK0jbtZnq+9xxyJg0fco5nwMZHi7HeaVnHZckbpLnn5SXtCErvLrwm22/Hs
+	0+aEDGqU24vSJlAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7DF6F779A8;
+	Sat, 30 May 2026 18:57:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id iOCSHQ4zG2rXUwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Sat, 30 May 2026 18:57:18 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: mripard@kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	airlied@redhat.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	admin@kodeit.net,
+	gargaditya08@proton.me,
+	paul@crapouillou.net,
+	jani.nikula@linux.intel.com,
+	mhklinux@outlook.com,
+	zack.rusin@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-hyperv@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	linux-mips@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v4 01/10] drm/damage-helper: Do not alter damage clips on modeset, but ignore them
+Date: Sat, 30 May 2026 20:53:14 +0200
+Message-ID: <20260530185716.65688-2-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260530185716.65688-1-tzimmermann@suse.de>
+References: <20260530185716.65688-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Spamd-Result: default: False [-3.56 / 15.00];
-	SIGNED_PGP(-2.00)[];
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spam-Score: -6.79
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DMARC_NA(0.00)[decadent.org.uk];
-	TAGGED_FROM(0.00)[bounces-259250-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-259282-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[kernel.org,linux.intel.com,redhat.com,gmail.com,ffwll.ch,kodeit.net,proton.me,crapouillou.net,outlook.com,broadcom.com];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.541];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[decadent.org.uk:mid,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: E393F612C92
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,lists.freedesktop.org:email,suse.de:email,suse.de:mid,suse.de:dkim]
+X-Rspamd-Queue-Id: 9CA74612E55
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+User space supplies rectangles for damage clipping in a plane property.
+For full mode sets, drivers still require a full plane update. In this
+case, leave the information as-is and set the ignore_damage_clips flag
+instead. The damage iterator will later ignore any damage information.
 
---=-0ZyOMxjVi0hOzYtnadpg
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Also fixes a bug where ignore_damage_clips was not cleared across plane-
+state duplications.
 
-On Sat, 2026-05-30 at 17:58 +0200, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me kn=
-ow.
->=20
-> ------------------
->=20
-> From: C=C3=A1ssio Gabriel <cassiogabrielcontato@gmail.com>
->=20
-> [ Upstream commit 215e5fe75881a7e2425df04aeeed47a903d5cd5d ]
->=20
-> sof_parse_token_sets() accepts array->size values that can be invalid
-> for a vendor tuple array header. In particular, a zero size does not
-> advance the parser state and can lead to non-progress parsing on
-> malformed topology data.
->=20
-> Validate array->size against the minimum header size and reject values
-> smaller than sizeof(*array) before parsing. This preserves behavior for
-> valid topologies and hardens malformed-input handling.
->=20
-> Signed-off-by: C=C3=A1ssio Gabriel <cassiogabrielcontato@gmail.com>
-> Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-> Link: https://patch.msgid.link/20260319-sof-topology-array-size-fix-v1-1-=
-f9191b16b1b7@gmail.com
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  sound/soc/sof/topology.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
-> index e3aa9fa0f112f..b1682879253f6 100644
-> --- a/sound/soc/sof/topology.c
-> +++ b/sound/soc/sof/topology.c
-> @@ -941,7 +941,7 @@ static int sof_parse_token_sets(struct snd_soc_compon=
-ent *scomp,
->  		asize =3D le32_to_cpu(array->size);
-> =20
->  		/* validate asize */
-> -		if (asize < 0) { /* FIXME: A zero-size array makes no sense */
-> +		if (asize < sizeof(*array)) {
+Leaving the damage information as-is might be helpful to drivers that
+benefit from this information even on full modesets (e.g., for cache
+management). It will also help with consolidating the damage-handling
+logic.
 
-asize is signed and this=C2=A0comparison coerces it to be unsigned.  So non=
--
-negative values of asize that are too small will be correctly rejected
-here, but negative values will now be accepted.
+Also add a new unit test that evaluates the ignore_damage_clips flag. It
+sets two damage clips plus the flag and tests if the reported damage
+covers the entire framebuffer.
 
-I think this creates a worse security problem than it solves.
+v4:
+- slightly reword the commit description
 
-Ben.
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 35ed38d58257 ("drm: Allow drivers to indicate the damage helpers to ignore damage clips")
+Acked-by: Zack Rusin <zack.rusin@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.10+
+---
+ drivers/gpu/drm/drm_atomic_state_helper.c     |  1 +
+ drivers/gpu/drm/drm_damage_helper.c           |  6 ++--
+ .../gpu/drm/tests/drm_damage_helper_test.c    | 28 +++++++++++++++++++
+ 3 files changed, 31 insertions(+), 4 deletions(-)
 
->  			dev_err(scomp->dev, "error: invalid array size 0x%x\n",
->  				asize);
->  			return -EINVAL;
+diff --git a/drivers/gpu/drm/drm_atomic_state_helper.c b/drivers/gpu/drm/drm_atomic_state_helper.c
+index cc70508d4fdb..84d5231ccac1 100644
+--- a/drivers/gpu/drm/drm_atomic_state_helper.c
++++ b/drivers/gpu/drm/drm_atomic_state_helper.c
+@@ -359,6 +359,7 @@ void __drm_atomic_helper_plane_duplicate_state(struct drm_plane *plane,
+ 	state->fence = NULL;
+ 	state->commit = NULL;
+ 	state->fb_damage_clips = NULL;
++	state->ignore_damage_clips = false;
+ 	state->color_mgmt_changed = false;
+ }
+ EXPORT_SYMBOL(__drm_atomic_helper_plane_duplicate_state);
+diff --git a/drivers/gpu/drm/drm_damage_helper.c b/drivers/gpu/drm/drm_damage_helper.c
+index 74a7f4252ecf..945fac8dc27b 100644
+--- a/drivers/gpu/drm/drm_damage_helper.c
++++ b/drivers/gpu/drm/drm_damage_helper.c
+@@ -78,10 +78,8 @@ void drm_atomic_helper_check_plane_damage(struct drm_atomic_commit *state,
+ 		if (WARN_ON(!crtc_state))
+ 			return;
+ 
+-		if (drm_atomic_crtc_needs_modeset(crtc_state)) {
+-			drm_property_blob_put(plane_state->fb_damage_clips);
+-			plane_state->fb_damage_clips = NULL;
+-		}
++		if (drm_atomic_crtc_needs_modeset(crtc_state))
++			plane_state->ignore_damage_clips = true;
+ 	}
+ }
+ EXPORT_SYMBOL(drm_atomic_helper_check_plane_damage);
+diff --git a/drivers/gpu/drm/tests/drm_damage_helper_test.c b/drivers/gpu/drm/tests/drm_damage_helper_test.c
+index 0df2e1a54b0d..64f038a62ffe 100644
+--- a/drivers/gpu/drm/tests/drm_damage_helper_test.c
++++ b/drivers/gpu/drm/tests/drm_damage_helper_test.c
+@@ -603,6 +603,33 @@ static void drm_test_damage_iter_damage_not_visible(struct kunit *test)
+ 	KUNIT_EXPECT_EQ_MSG(test, num_hits, 0, "Should not return any damage.");
+ }
+ 
++static void drm_test_damage_iter_damage_ignore(struct kunit *test)
++{
++	struct drm_damage_mock *mock = test->priv;
++	struct drm_atomic_helper_damage_iter iter;
++	struct drm_property_blob damage_blob;
++	struct drm_mode_rect damage[2];
++	struct drm_rect clip;
++	u32 num_hits = 0;
++
++	set_plane_src(&mock->old_state, 0, 0, 1024 << 16, 768 << 16);
++	set_plane_src(&mock->state, 0, 0, 1024 << 16, 768 << 16);
++	/* 2 damage clips, but ignore them. */
++	set_damage_clip(&damage[0], 20, 30, 200, 180);
++	set_damage_clip(&damage[1], 240, 200, 280, 250);
++	set_damage_blob(&damage_blob, &damage[0], sizeof(damage));
++	set_plane_damage(&mock->state, &damage_blob);
++	mock->state.ignore_damage_clips = true;
++	drm_atomic_helper_damage_iter_init(&iter, &mock->old_state, &mock->state);
++	drm_atomic_for_each_plane_damage(&iter, &clip) {
++		if (num_hits == 0)
++			check_damage_clip(test, &clip, 0, 0, 1024, 768);
++		num_hits++;
++	}
++
++	KUNIT_EXPECT_EQ_MSG(test, num_hits, 1, "Should return full-framebuffer damage.");
++}
++
+ static struct kunit_case drm_damage_helper_tests[] = {
+ 	KUNIT_CASE(drm_test_damage_iter_no_damage),
+ 	KUNIT_CASE(drm_test_damage_iter_no_damage_fractional_src),
+@@ -625,6 +652,7 @@ static struct kunit_case drm_damage_helper_tests[] = {
+ 	KUNIT_CASE(drm_test_damage_iter_damage_one_outside),
+ 	KUNIT_CASE(drm_test_damage_iter_damage_src_moved),
+ 	KUNIT_CASE(drm_test_damage_iter_damage_not_visible),
++	KUNIT_CASE(drm_test_damage_iter_damage_ignore),
+ 	{ }
+ };
+ 
+-- 
+2.54.0
 
---=20
-Ben Hutchings
-The Peter principle: In a hierarchy, every employee tends to rise to
-their level of incompetence.
-
---=-0ZyOMxjVi0hOzYtnadpg
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmobMbcACgkQ57/I7JWG
-EQna9A/8Crm+0wLpzW6c7QRnqabvdmeLMsy6hU0XgplUQjlJN9jNX1Ai7sjwtrS1
-goE+L/6GCuak+T5BDfGvFHkWp4f6W51InGZ3cs5RfxDNwpdYsjlrRhiRPkRSU8yT
-YxqTG5tCTiP/UOzn5/JEsm16ZIbgGZRnRelt9CS0JufYDXvVavDMkfstcQEjKnKp
-GJHnt5l40r8afeSj2g3AI7hq4kqpeIM+U4ng49AMxXbogQBlyzOwJ4y9G18qyJiq
-j416J+XhrdB8s3PE+ObElfuZtfNDtxeZ4IkenIwlqf2hn8IwlfiNjm+Th0iTWfqc
-4d/fKxiNWUPVMN87rcbmNIimm2zpjvxGxLbkbeGqvZtXa2DRWEM/OVBegK6eJ3/v
-r6FnT3ByIRoO7voeByD8dji0oEKDqJYI5XbJwAIX7LlRo+BK4SMpMSjIKCkExgEM
-qiYt8bJcde4RuapAeU/PNPq76P7+rXEpsoGh1Ftzs4TuJWenwhtsv77HJ9FH9o3l
-Jz3K8QzYWPFwU3p/tr8Sf2yQjSMP8CZM3KEDy1Lr0I/PGL2NwLyYPanQS/9PVwlB
-WmD5omoAnLKmjDFMpU7HO1RBXh5cHQNcwC3gOTvqyrjUXs7/kO9LDQQpHQqwH9xC
-WCGsW2bSKBN8uZ+KhbpHD0C2eys26GrpIXOH48gPAV1AN+XXljk=
-=7F1W
------END PGP SIGNATURE-----
-
---=-0ZyOMxjVi0hOzYtnadpg--
 
