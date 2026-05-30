@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-258898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LL3MpotG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:34:02 +0200
+	id gARhKasnG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779CA611FD4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:34:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 139B6611114
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E91F83017AEE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 59DD2304C121
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5812FDC5E;
-	Sat, 30 May 2026 18:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113C436EAB1;
+	Sat, 30 May 2026 17:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGSj6bWv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BouWSTOE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDB62EF652;
-	Sat, 30 May 2026 18:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B3F320CAD;
+	Sat, 30 May 2026 17:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165912; cv=none; b=L4zFVs5c71B4bkh3yo1Rye9fHULYRTbC8Yk9cbzj1eTSrcbw+bT5WSAO1aFORxXeF6hjJTox2n2zJLziXtErup+Bs7G/3gyn4YFhzE+LS9QAku246UnW8lLaditJ/xRhCIdi2DxRxitirO3lhez3tLX+B+SjW2bSrTC7gQ1kTN0=
+	t=1780163872; cv=none; b=l60duCyad4Hkjxg4m6TB3dJgkjBqmbAzWM6eVjH87mt73pHjkTBr9gavb571nJ56OrVtzyEK1Sx/tYuzY6T+X+/VOR5MnLd0NMjfP2lKTxGfpX71N3WypRZSuG/YMuB2HcmqfHiEehSyaqO7O/1mXUHPEaneLuxQ/sIeeZ5TMCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165912; c=relaxed/simple;
-	bh=vwXViF96yiaPfzlHg1dl4o4kOKeXUOSJQlJgPuvBg7g=;
+	s=arc-20240116; t=1780163872; c=relaxed/simple;
+	bh=dVK6fRvS9Y/7iF8u0bIKM2cNr7T9Q3TCb3qjx0avZyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gluK7NUUC5x50OkG72IZLQyI5EkBsNNdZuyWE3xnXQ6efjeN/L/2WYNVdUh9Hg6NTgouyVBkCUjHx4g25qCTAiDpMWp4ID2Jhgi3r27uGCjPrY8cmDkDw69B0z5RpdZG4k1FXEBf/sB9uFX3Hvc9DuRHooZc0r/0BDJkRdi+EI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGSj6bWv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA461F00893;
-	Sat, 30 May 2026 18:31:50 +0000 (UTC)
+	 MIME-Version; b=U7zEttAvCT9m8kNiu1HOzlh3ClddoeKnzDnx6WrXXzaSP9dCyJ1lFH3gDhkG56U+yghL2iXDYfl5bbUpO75ICGcsXMe5O5fiAX1YdyuRDlQEBWXjAl4BF9PQ+zyFmVO73cVp4u4aJe8oTdSvr5GBpLTXTMEEdHTo0i6+RfG+eOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BouWSTOE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A5C1F00893;
+	Sat, 30 May 2026 17:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165911;
-	bh=TJY7PIj72R8/qgb0pIpoD5c2likr3r9wjN9BWeMkiB4=;
+	s=korg; t=1780163871;
+	bh=VziR8lAYdY9JiCcR4xiFIzydivVo0vpWR0/SB3OtdRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iGSj6bWvHM1Wsyj83l9ZvV/vE/cHWvMek0yErbwym01/pWmGzLxA7jyTA14/I2bXZ
-	 FNzEn7XaONiFoHG43DCKlkFPL205l4JcfcMvjVb/BMQgsTmqzgjPbfN3068m7U7d+u
-	 cre+E8RQmW8FPTXA/+lsh+XnodCSgaa1O1Q9S++s=
+	b=BouWSTOEybaQzALEaJ60+2r5LKKfIWxNcBYyXWtuontbzdqKQfEi5/Olm3132Zx9O
+	 x0ppClFG40+7qln33HXLbrnkpEwXxgPpPVTM/zEXca46a9IpiFhk/opkOhufZwLWSO
+	 pkresX15uOr176V9o3StGAOLw+HbwfF/nEc8Uo9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	=?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.10 219/589] wifi: b43: enforce bounds check on firmware key index in b43_rx()
-Date: Sat, 30 May 2026 18:01:40 +0200
-Message-ID: <20260530160230.738034934@linuxfoundation.org>
+	syzbot+98a040252119df0506f8@syzkaller.appspotmail.com,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Deepanshu Kartikey <Kartikey406@gmail.com>,
+	syzbot+466a45fcfb0562f5b9a0@syzkaller.appspotmail.com,
+	Junjie Cao <junjie.cao@linux.dev>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 387/776] nilfs2: reject zero bd_oblocknr in nilfs_ioctl_mark_blocks_dirty()
+Date: Sat, 30 May 2026 18:01:41 +0200
+Message-ID: <20260530160250.505310752@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +67,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bues.ch,talencesecurity.com,intel.com];
-	TAGGED_FROM(0.00)[bounces-258898-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,linux.dev,dubeyko.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258296-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable,98a040252119df0506f8,466a45fcfb0562f5b9a0];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,intel.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bues.ch:email]
-X-Rspamd-Queue-Id: 779CA611FD4
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 139B6611114
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit 1f4f78bf8549e6ac4f04fba4176854f3a6e0c332 upstream.
+[ Upstream commit be3e5d10643d3be1cbac9d9939f220a99253f980 ]
 
-The firmware-controlled key index in b43_rx() can exceed the dev->key[]
-array size (58 entries). The existing B43_WARN_ON is non-enforcing in
-production builds, allowing an out-of-bounds read.
+nilfs_ioctl_mark_blocks_dirty() uses bd_oblocknr to detect dead blocks
+by comparing it with the current block number bd_blocknr. If they differ,
+the block is considered dead and skipped.
 
-Make the B43_WARN_ON check enforcing by dropping the frame when the
-firmware returns an invalid key index.
+However, bd_oblocknr should never be 0 since block 0 typically stores the
+primary superblock and is never a valid GC target block. A corrupted ioctl
+request with bd_oblocknr set to 0 causes the comparison to incorrectly
+match when the lookup returns -ENOENT and sets bd_blocknr to 0, bypassing
+the dead block check and calling nilfs_bmap_mark() on a non-existent
+block. This causes nilfs_btree_do_lookup() to return -ENOENT, triggering
+the WARN_ON(ret == -ENOENT).
 
-Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-Acked-by: Michael Büsch <m@bues.ch>
-Fixes: e4d6b7951812 ("[B43]: add mac80211-based driver for modern BCM43xx devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Link: https://patch.msgid.link/20260417111145.2694196-1-tristmd@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by rejecting ioctl requests with bd_oblocknr set to 0 at the
+beginning of each iteration.
+
+[ryusuke: slightly modified the commit message and comments for accuracy]
+
+Fixes: 7942b919f732 ("nilfs2: ioctl operations")
+Reported-by: syzbot+98a040252119df0506f8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=98a040252119df0506f8
+Suggested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+Reported-by: syzbot+466a45fcfb0562f5b9a0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=466a45fcfb0562f5b9a0
+Cc: Junjie Cao <junjie.cao@linux.dev>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/b43/xmit.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nilfs2/ioctl.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/wireless/broadcom/b43/xmit.c
-+++ b/drivers/net/wireless/broadcom/b43/xmit.c
-@@ -702,7 +702,8 @@ void b43_rx(struct b43_wldev *dev, struc
- 		 * key index, but the ucode passed it slightly different.
- 		 */
- 		keyidx = b43_kidx_to_raw(dev, keyidx);
--		B43_WARN_ON(keyidx >= ARRAY_SIZE(dev->key));
-+		if (B43_WARN_ON(keyidx >= ARRAY_SIZE(dev->key)))
-+			goto drop;
+diff --git a/fs/nilfs2/ioctl.c b/fs/nilfs2/ioctl.c
+index 6a2f779e0bad4..77e6bae7d5c97 100644
+--- a/fs/nilfs2/ioctl.c
++++ b/fs/nilfs2/ioctl.c
+@@ -751,6 +751,12 @@ static int nilfs_ioctl_mark_blocks_dirty(struct the_nilfs *nilfs,
+ 	int ret, i;
  
- 		if (dev->key[keyidx].algorithm != B43_SEC_ALGO_NONE) {
- 			wlhdr_len = ieee80211_hdrlen(fctl);
+ 	for (i = 0; i < nmembs; i++) {
++		/*
++		 * bd_oblocknr must never be 0 as block 0
++		 * is never a valid GC target block
++		 */
++		if (unlikely(!bdescs[i].bd_oblocknr))
++			return -EINVAL;
+ 		/* XXX: use macro or inline func to check liveness */
+ 		ret = nilfs_bmap_lookup_at_level(bmap,
+ 						 bdescs[i].bd_offset,
+-- 
+2.53.0
+
 
 
 
