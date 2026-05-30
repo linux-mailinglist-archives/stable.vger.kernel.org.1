@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBZWL2wwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-258894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:04 +0200
+	id 2KaQE64cG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A852612727
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C73D760F7D3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10A84301CA6F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 184AA30A4B3A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A0A329E79;
-	Sat, 30 May 2026 18:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCD3395AD8;
+	Sat, 30 May 2026 17:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHyZzGEH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8u1Tdn6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782852FDC5E;
-	Sat, 30 May 2026 18:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878783016E1;
+	Sat, 30 May 2026 17:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165899; cv=none; b=ujnA+Gnb+ZZOVwSixI6U4vm17tAhdw+q3kLmsyG4tL6IyCFkfsrB9Bcq9BUo7pAQihomiaIrcrl7ByfGFiKCYdmicJ/sTlhsO+LWBMrFS1l7PQH7kYVDIky9UlEESpMrSPRVdhfU0NrwUzil6ByHYUrOmrLvnKkf7OWcKMaooSA=
+	t=1780161252; cv=none; b=qGKn/s9bcD1IJGdhpwOvLKeOOAko3+74lhiuddZqVFjHbmHG3aRKdzUP672tVYKvGBYle7L8AmoU8KaPor7DCsIS+ebmzrVY0eofze2jZJTRJv036BO9CC4+DF5AJ1P14OpVdAK51R48N60V0caUd19QWn0/m/3SNy5AN7RETQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165899; c=relaxed/simple;
-	bh=BnyjMCAAwabDy1hnGDhrLXkSSwu7S/tbSYptzXftJKY=;
+	s=arc-20240116; t=1780161252; c=relaxed/simple;
+	bh=ZWJ3yFWbgKCj/fexS6yonrc5yWQRU0Hma8FlxvwOmQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RVkw7gnTymcEMbiaUL5tvGI+3AfzRpX2Pgk0BzChNvBS9Ht7Ft4nISrQJitbQSpEokVv5f9ODJRDiCP1+XrSmcYfk8y+NzGhOUdxPQufVO1rN8BkI6eo8JYavLtzjmwTxdkB0UmkviSgRzNzox5ynGTLj5cUAlXRwI5gmHBx+So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHyZzGEH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758C71F00893;
-	Sat, 30 May 2026 18:31:37 +0000 (UTC)
+	 MIME-Version; b=CaERam8HEKhnntXGVI6DkAcZz/Ip+flLjhlVpVVCgc2l3AIMHNCP8/S7ATPzgB5091J2pVXbMXCg3RKJbhHCh9FvQUBy0sNZQqpYFoQks6D+lzWBtVWO1yppyUvAeSy0ySMcxPvcHRcdpkEq7OGIpLLfEBvo1Ef9DMDCNfwOlgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8u1Tdn6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAF11F00893;
+	Sat, 30 May 2026 17:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165898;
-	bh=MKd1Z+WozyWvO8/NSGLTx9GuIYw0A7Gphy5TMfTFUG4=;
+	s=korg; t=1780161251;
+	bh=93xGpV2frRoBL2W5W+Zc4hAGatRRJcN87tc+kaHZGEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PHyZzGEHNT/RnQMjEV1CConx8I8tsTB+DH8plpUIILrbnz5KPTe8e21Y70rUmHp9J
-	 uDvvo5YcgKem/RaVxkaeZqm3ZLvDW/HxvktdKlKT0hOAzrhlNQXy/VBZsi6vuUt541
-	 xJsIMxm3cBk9bSwdELS8zRAb3K4DzrsRFUeQD5+k=
+	b=u8u1Tdn6+3AcUFXqxM3RIucs0SHrJgdto3kXxr8pO9h7kAJuIuDP1Bk0W2TG6YQhp
+	 WqdmssHgvg3o3gPFjrRXIdS1MNtszrLR02NJdTRUW6aWQU26fxJT7j9ICJ+CL+VcDd
+	 v2qWpiVarIMd3fIoWbn/lxS1Y0O4Eknp2NVsKrXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 181/589] io_uring/poll: fix EPOLL_URING_WAKE sometimes not being honored
-Date: Sat, 30 May 2026 18:01:02 +0200
-Message-ID: <20260530160229.644724641@linuxfoundation.org>
+Subject: [PATCH 6.1 539/969] PCI: mediatek-gen3: Prevent leaking IRQ domains when IRQ not found
+Date: Sat, 30 May 2026 18:01:03 +0200
+Message-ID: <20260530160315.254786551@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +66,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257512-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258894-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3A852612727
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C73D760F7D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-Rather than do the masking  only when we jump straight to execution,
-mark it as EPOLLONESHOT regardless. This ensures it doesn't get lost.
-And just kill the poll entry upfront, if marked. This is an optimization
-in later kernels, but it's actually required on the older kernels to
-note the EPOLL_URING_WAKE mask correctly.
+[ Upstream commit 5573c44cb3fd01a9f62d569ae9ac870ef5f0e0ba ]
 
-Fixes: ccf06b5a981c ("io_uring: pass in EPOLL_URING_WAKE for eventfd signaling and wakeups")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+In mtk_pcie_setup_irq(), the IRQ domains are allocated before the
+controller's IRQ is fetched. If the latter fails, the function
+directly returns an error, without cleaning up the allocated domains.
+
+Hence, reverse the order so that the IRQ domains are allocated after the
+controller's IRQ is found.
+
+This was flagged by Sashiko during a review of "[PATCH v6 0/7] PCI:
+mediatek-gen3: add power control support".
+
+Fixes: 814cceebba9b ("PCI: mediatek-gen3: Add INTx support")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://sashiko.dev/#/patchset/20260324052002.4072430-1-wenst%40chromium.org
+Link: https://patch.msgid.link/20260324093542.18523-1-wenst@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/pci/controller/pcie-mediatek-gen3.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index dea1fb22c0efb..7cb4eeefd3cf4 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -5647,14 +5647,19 @@ static int io_poll_wake(struct wait_queue_entry *wait, unsigned mode, int sync,
- 	if (mask && !(mask & poll->events))
- 		return 0;
+diff --git a/drivers/pci/controller/pcie-mediatek-gen3.c b/drivers/pci/controller/pcie-mediatek-gen3.c
+index 40c38ca5a42e2..b7d87827b5f23 100644
+--- a/drivers/pci/controller/pcie-mediatek-gen3.c
++++ b/drivers/pci/controller/pcie-mediatek-gen3.c
+@@ -760,14 +760,14 @@ static int mtk_pcie_setup_irq(struct mtk_gen3_pcie *pcie)
+ 	struct platform_device *pdev = to_platform_device(dev);
+ 	int err;
  
-+	/*
-+	 * If we trigger a multishot poll off our own wakeup path,
-+	 * disable multishot as there is a circular dependency between
-+	 * CQ posting and triggering the event.
-+	 */
-+	if (mask & EPOLL_URING_WAKE)
-+		poll->events |= EPOLLONESHOT;
+-	err = mtk_pcie_init_irq_domains(pcie);
+-	if (err)
+-		return err;
+-
+ 	pcie->irq = platform_get_irq(pdev, 0);
+ 	if (pcie->irq < 0)
+ 		return pcie->irq;
+ 
++	err = mtk_pcie_init_irq_domains(pcie);
++	if (err)
++		return err;
 +
- 	if (io_poll_get_ownership(req)) {
--		/*
--		 * If we trigger a multishot poll off our own wakeup path,
--		 * disable multishot as there is a circular dependency between
--		 * CQ posting and triggering the event.
--		 */
--		if (mask & EPOLL_URING_WAKE)
--			poll->events |= EPOLLONESHOT;
-+		if (mask && poll->events & EPOLLONESHOT) {
-+			list_del_init(&poll->wait.entry);
-+			smp_store_release(&poll->head, NULL);
-+		}
+ 	irq_set_chained_handler_and_data(pcie->irq, mtk_pcie_irq_handler, pcie);
  
- 		__io_poll_execute(req, mask);
- 	}
+ 	return 0;
 -- 
 2.53.0
 
