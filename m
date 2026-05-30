@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JqvFZEtG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258891-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:33:53 +0200
+	id OC8kGoMcG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00F62611FAE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:33:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D768D60F76E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4103B3028085
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 051B3301F782
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886DA329E79;
-	Sat, 30 May 2026 18:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C70C34BA42;
+	Sat, 30 May 2026 17:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+8It/Y7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzPxINTT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685B141A8F;
-	Sat, 30 May 2026 18:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086E43148DA;
+	Sat, 30 May 2026 17:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165889; cv=none; b=knc6EaOVlBFVpfHm/ZH8FaOH8YB/wKyyocjsJjsRGyoQ2uoV+b9X6W7U1hvwn9rsJUS8htx+HsIC+xQJO6i8aiSiN8wTkAlAdf0FtVzm95m8TuGG7mkjz2CRL5mR2taBtXRsq60MxSUb+YUJV2ETdKPUatsxhB+Fc7Ys+fn1EOQ=
+	t=1780161227; cv=none; b=IqyqIRp9K37WS6bbFTPgkKCqqdR9xRr28CrKupDegV6nwj9I+KYMnnCTOO6AhIIhkI0tSXZTJg32Tpkp7kX4GFLl9i01aEsc6preYuiDJEaZqfZ16cuBu2R7vNIM+RmPMPIIS0GeC8qCkY1vVmrk8VJ2E7JJrBLHPjao2aQMTlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165889; c=relaxed/simple;
-	bh=/AI6DJ0aWUvqAC5FmFuNZvpJXCtFiYOTUijGE/nqTOg=;
+	s=arc-20240116; t=1780161227; c=relaxed/simple;
+	bh=t2jDMXcwilPtuJt4SLEw6USoM4rtGPhy+bZj7iU/oJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n2TTWfWP8EQN/gIfNbfiA3GV+3w9oWTjZS/LpqUA9hVQDU3kxOSgzgtwaYnfJV/OtwCdpNlgt64e7kJ465j2RiQsjsFKgsf1Xz9EpAjRIdYsimonRonilbSlfjDBmE4yBOHLucijhshzzYe9VZzZ00fhwPZfrVSyAQEYXGXgeB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+8It/Y7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B121F00893;
-	Sat, 30 May 2026 18:31:27 +0000 (UTC)
+	 MIME-Version; b=n8w4GpYThBAFn+luAJEtXD3m/xW1jqdEY9dX9MzgabcOFo/QzEdBQgfWMlQT5YJ+H04EMHReTQ8wShh8/MF9n95t+2/1ik1DCPhv23pYvoaQSboYiSIjl385zlJqMN4VzSsFhXJXUvHd+17J8pbontsW1T/KDKm9CgelMhshiTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzPxINTT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48EEB1F00898;
+	Sat, 30 May 2026 17:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165888;
-	bh=E/DLPq0LZnGruNJTsSUXyN9dmEOq7CVn8vt7nDCpkao=;
+	s=korg; t=1780161226;
+	bh=1BHOxmurWVDJExdCMJz5owPrrJGZdyJkUv7P3zKs39M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H+8It/Y7qbYasLYj9fMT1HS6rQa22i+Tq5fUVrF16GSKrufC+JMYdOGK7w0d40aiH
-	 ml4w+//9RDhIh7sn1J6B9Q+LXB5S+RnvQxE7F0Z68HEy0CYeXQ0utadvKteRTR/7FC
-	 ch2bnQVBaozAD848Y7OstvQ0t0Lar7uKKfeJVOOI=
+	b=LzPxINTTmmbW87xs/j4iidKG+W385kYAhAaL6qI7xX7wdCtYdGCZH0tdO8ReNCoHv
+	 QaAyNWvHirnN5r7niMKaFeD+Kyz+50dNIOqrhb7fmz3kIOw/MyDFnv4P8YP2vRd8Xu
+	 icNnwpuMCXaWMP4JMjYOYIRpblZULUI218mk/Be4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.10 178/589] KVM: nSVM: Sync interrupt shadow to cached vmcb12 after VMRUN of L2
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 535/969] ASoC: fsl_easrc: Fix value type in fsl_easrc_iec958_get_bits()
 Date: Sat, 30 May 2026 18:00:59 +0200
-Message-ID: <20260530160229.565861677@linuxfoundation.org>
+Message-ID: <20260530160315.140971795@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +66,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257505-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258891-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 00F62611FAE
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D768D60F76E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-commit 03bee264f8ebfd39e0254c98e112d033a7aa9055 upstream.
+[ Upstream commit aa21fe4a81458cf469c2615b08cbde5997dde25a ]
 
-After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
-fields written by the CPU from vmcb02 to the cached vmcb12. This is
-because the cached vmcb12 is used as the authoritative copy of some of
-the controls, and is the payload when saving/restoring nested state.
+The value type of controls "Context 0 IEC958 Bits Per Sample" should be
+integer, not enumerated, the issue is found by the mixer-test.
 
-int_state is also written by the CPU, specifically bit 0 (i.e.
-SVM_INTERRUPT_SHADOW_MASK) for nested VMs, but it is not sync'd to
-cached vmcb12. This does not cause a problem if KVM_SET_NESTED_STATE
-preceeds KVM_SET_VCPU_EVENTS in the restore path, as an interrupt shadow
-would be correctly restored to vmcb02 (KVM_SET_VCPU_EVENTS overwrites
-what KVM_SET_NESTED_STATE restored in int_state).
-
-However, if KVM_SET_VCPU_EVENTS preceeds KVM_SET_NESTED_STATE, an
-interrupt shadow would be restored into vmcb01 instead of vmcb02. This
-would mostly be benign for L1 (delays an interrupt), but not for L2. For
-L2, the vCPU could hang (e.g. if a wakeup interrupt is delivered before
-a HLT that should have been in an interrupt shadow).
-
-Sync int_state to the cached vmcb12 in nested_sync_control_from_vmcb02()
-to avoid this problem. With that, KVM_SET_NESTED_STATE restores the
-correct interrupt shadow state, and if KVM_SET_VCPU_EVENTS follows it
-would overwrite it with the same value.
-
-Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
-CC: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260225005950.3739782-3-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20260401094226.2900532-11-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/fsl/fsl_easrc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -308,6 +308,7 @@ void sync_nested_vmcb_control(struct vcp
- 	u32 mask;
- 	svm->nested.ctl.event_inj      = svm->vmcb->control.event_inj;
- 	svm->nested.ctl.event_inj_err  = svm->vmcb->control.event_inj_err;
-+	svm->nested.ctl.int_state	= svm->vmcb->control.int_state;
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index bb8bad04fb47d..05aacebee884f 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -73,7 +73,7 @@ static int fsl_easrc_iec958_get_bits(struct snd_kcontrol *kcontrol,
+ 	struct soc_mreg_control *mc =
+ 		(struct soc_mreg_control *)kcontrol->private_value;
  
- 	/* Only a few fields of int_ctl are written by the processor.  */
- 	mask = V_IRQ_MASK | V_TPR_MASK;
+-	ucontrol->value.enumerated.item[0] = easrc_priv->bps_iec958[mc->regbase];
++	ucontrol->value.integer.value[0] = easrc_priv->bps_iec958[mc->regbase];
+ 
+ 	return 0;
+ }
+-- 
+2.53.0
+
 
 
 
