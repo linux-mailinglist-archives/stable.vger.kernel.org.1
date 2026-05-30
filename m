@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-258819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPpuALUsG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258819-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:13 +0200
+	id OILXJ8YaG2pR/QgAu9opvQ
+	(envelope-from <stable+bounces-257402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89965611DA9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FBF060F2D1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 87C273018776
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:27:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1E2E430A5D79
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9963B388B;
-	Sat, 30 May 2026 18:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D37F395AEA;
+	Sat, 30 May 2026 17:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTjWnwIJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="de5HoV8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190DD32F770;
-	Sat, 30 May 2026 18:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584D835200B;
+	Sat, 30 May 2026 17:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165645; cv=none; b=bpRzhzjitbe3K0/kKW5UBeE2C0yqN2WV7VPBS5BpyJZLj/VVdKCGCMlzxul0nR0F6WvOYdEbnhNw2I9/HR72du2tYC/+OxRSv1eVuLvh6k2Vh1VTRkEcybLbh8D2jGYOorG23szHtqQq9OxK4QT4AQu0rDeAYQ9R9KP8yJdhWqA=
+	t=1780160874; cv=none; b=KRH7F2yZCrGvZp9bRFzVAH4yRJ6X0x1tzOUE/ggtScugiOi79WycRS1K/R1b3kJEAkz8QZyividqx+BtmiD/R2F4lhyIOd9NjHif+cr/tQ9JWk7rzgfphSQYoMJRU8RYtZ5GgyNdEC68p+KSWpIWYTlgIkxLQWXeKzvWc1cQAV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165645; c=relaxed/simple;
-	bh=Q2VmVXcubRTelGNuFKNDggD6Lc11fpnswtee5pvz/Zs=;
+	s=arc-20240116; t=1780160874; c=relaxed/simple;
+	bh=GRDrdGvO0CnEpyWqbi8SoeFESuQ8SSCrDSQoIvW1iZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yt37rmvdin42IiQ7j3gNRzA4JKsMzDJ80Po3Yd6ZCeNUyy3wUMv5xtmX7TajKnlNGJcDz7JSZEOj1NVNzzyMvtIvRTlDrRL9NLH3jc9JZYGXUvHJzd1sKND74KQcLKuuB9UgqkPfGInudx2t3jKwH0k6xI7Uvc0py19le0UDIGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTjWnwIJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7CA1F00893;
-	Sat, 30 May 2026 18:27:23 +0000 (UTC)
+	 MIME-Version; b=Fabwf9nPoKasVOFvPDhmobxpNMAX2ex47CIZ/pYoJMWAJDH+1JEJUQZtknGWV5lmffsN9+l8BZPXFYmkteE01GJE1umUtgoDWhXLcIIK/M3vGhn+aDojmgd738F2YlliHTaYiUD/co0h131xCB54WOyYdG56e4i1ejE1VMu4I5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=de5HoV8G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1BD1F00893;
+	Sat, 30 May 2026 17:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165644;
-	bh=+Q2opuzckbnOG6haB4YKUptlfqJVFUA9/zCaxgPskZ0=;
+	s=korg; t=1780160873;
+	bh=7bANKQV9Ct1qShfa+zQctdYFuJGvJQKlGrkMFpsuGbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aTjWnwIJcVGT0pm/MhAq89VSgbnYv9Tx6d2NAibskoQJFh/vDY2dIgKCFAHanL4dA
-	 kh7P+6yncDJLJvw6tHjjtIr+P7pgM1kAyoTnCWNHN6q5FFwNH5QuHZJixePLc3+d9q
-	 IYuCRMcfWW8Hg1Ls4gag2VvITNfZTCF3L1iNRxW4=
+	b=de5HoV8G6X2Sj//bHnr4oLD6ASr9iqd7KPwt/egRCrUtrQCS+5/4rjgcMh8NQJrD7
+	 VRV/9HgZkR3VZYVexeBdQnS2GlcMPoYrh5HECAYKpMWdf9cn4JCZyBwsQ6wlmZI9ge
+	 utKiP3wwUrxnf60LeoOJ+tOhZeixRDX0N1EI5VNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chih Kai Hsu <hsu.chih.kai@realtek.com>,
+	Hayes Wang <hayeswang@realtek.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 101/589] rxrpc: Fix key quota calculation for multitoken keys
-Date: Sat, 30 May 2026 17:59:42 +0200
-Message-ID: <20260530160227.359961685@linuxfoundation.org>
+Subject: [PATCH 6.1 459/969] r8152: fix incorrect register write to USB_UPHY_XTAL
+Date: Sat, 30 May 2026 17:59:43 +0200
+Message-ID: <20260530160312.955333108@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,92 +69,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257402-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258819-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[auristor.com:email,msgid.link:url,sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,infradead.org:email]
-X-Rspamd-Queue-Id: 89965611DA9
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2FBF060F2D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 
-[ Upstream commit bdbfead6d38979475df0c2f4bad2b19394fe9bdc ]
+[ Upstream commit 48afd5124fd6129c46fd12cb06155384b1c4a0c4 ]
 
-In the rxrpc key preparsing, every token extracted sets the proposed quota
-value, but for multitoken keys, this will overwrite the previous proposed
-quota, losing it.
+The old code used ocp_write_byte() to clear the OOBS_POLLING bit
+(BIT(8)) in the USB_UPHY_XTAL register, but this doesn't correctly
+clear a bit in the upper byte of the 16-bit register.
 
-Fix this by adding to the proposed quota instead.
+Fix this by using ocp_write_word() instead.
 
-Fixes: 8a7a3eb4ddbe ("KEYS: RxRPC: Use key preparsing")
-Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-2-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ dropped hunk for rxrpc_preparse_xdr_yfs_rxgk() ]
+Fixes: 195aae321c82 ("r8152: support new chips")
+Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+Reviewed-by: Hayes Wang <hayeswang@realtek.com>
+Link: https://patch.msgid.link/20260326073925.32976-454-nic_swsd@realtek.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/key.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/usb/r8152.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rxrpc/key.c
-+++ b/net/rxrpc/key.c
-@@ -108,7 +108,7 @@ static int rxrpc_preparse_xdr_rxkad(stru
- 		return -EKEYREJECTED;
- 
- 	plen = sizeof(*token) + sizeof(*token->kad) + tktlen;
--	prep->quotalen = datalen + plen;
-+	prep->quotalen += datalen + plen;
- 
- 	plen -= sizeof(*token);
- 	token = kzalloc(sizeof(*token), GFP_KERNEL);
-@@ -718,6 +718,7 @@ static int rxrpc_preparse(struct key_pre
- 	memcpy(&kver, prep->data, sizeof(kver));
- 	prep->data += sizeof(kver);
- 	prep->datalen -= sizeof(kver);
-+	prep->quotalen = 0;
- 
- 	_debug("KEY I/F VERSION: %u", kver);
- 
-@@ -755,7 +756,7 @@ static int rxrpc_preparse(struct key_pre
- 		goto error;
- 
- 	plen = sizeof(*token->kad) + v1->ticket_length;
--	prep->quotalen = plen + sizeof(*token);
-+	prep->quotalen += plen + sizeof(*token);
- 
- 	ret = -ENOMEM;
- 	token = kzalloc(sizeof(*token), GFP_KERNEL);
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 15979cd7d15ae..98e30291b0500 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -3748,7 +3748,7 @@ static void r8156_ups_en(struct r8152 *tp, bool enable)
+ 		case RTL_VER_15:
+ 			ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_UPHY_XTAL);
+ 			ocp_data &= ~OOBS_POLLING;
+-			ocp_write_byte(tp, MCU_TYPE_USB, USB_UPHY_XTAL, ocp_data);
++			ocp_write_word(tp, MCU_TYPE_USB, USB_UPHY_XTAL, ocp_data);
+ 			break;
+ 		default:
+ 			break;
+-- 
+2.53.0
+
 
 
 
