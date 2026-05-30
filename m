@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-257024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257025-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHanHQATG2rz+wgAu9opvQ
-	(envelope-from <stable+bounces-257024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:40:32 +0200
+	id LoOkLuIRG2rM+wgAu9opvQ
+	(envelope-from <stable+bounces-257025-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:35:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D66B60E579
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:40:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9FF60E480
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5AF2A304A93F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:35:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AF39A3003348
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B6D33A9D6;
-	Sat, 30 May 2026 16:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C0D33031C;
+	Sat, 30 May 2026 16:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zf4fv4Hi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kumwHFln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8B11DE4EF;
-	Sat, 30 May 2026 16:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953B41DE4EF;
+	Sat, 30 May 2026 16:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780158928; cv=none; b=lskqIuBIufT22K1FyNhNhEL+CIcksAm7+uC6BGZWh5tRDzQBzMjCy0/xBz+PaeZnrAopuPMPb0fHL1wxpFo7qKKddvdV2DBlzQ0eO/lZlWnfYD8alSo/z2P1rZPyS7duLbwanRiWPmYJutREh2OBSzrymhY9ef705mvAMNawodM=
+	t=1780158944; cv=none; b=VSRXCsKjOgDmY99EZKCtFe/Y/+MwdQiQ1ZmzytmBySpGtUff4ppDlEfg/0GSdIoWYVhVoBioutKfzX5c4fDeJevYq/cLpqz6DYcNE5rMTZKtayRGUNvEXqNccsWsUpZLap8JuvTaEbTCFc+I+WhDIbXVjfZFpN8vH3BNLqcCzWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780158928; c=relaxed/simple;
-	bh=Ev4b2uFekUMtBlzPcv6/0iu6pARIG4i0BYYRwOT/jtM=;
+	s=arc-20240116; t=1780158944; c=relaxed/simple;
+	bh=9nqPJRc6ib7N8fo7or3biPxvIfTNZ0hfbQsq9fLatT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tnGa0JzxaFVk2O/gnSskHIofWOn8SwTV4PK5WohXB9q27+ZnY4LGtTWUuAacd80PrJXKILUpj4PaQ1vkCOokUJpznKNNSzwdWxO5XpAjFzZNqIWD7grfhJlt+PtSlS59KnCiA9GOUQnTmiGgNQ+YwHwc/VZi6sBsRM+r0eNvbOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zf4fv4Hi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FACB1F00893;
-	Sat, 30 May 2026 16:35:24 +0000 (UTC)
+	 MIME-Version; b=D7zMHPxdggaC6Q1iA1HfE9sdSqPWQmkUUvIjfUu2154yzCT62sAB38Ni4am9yoqrcKGzEkt5dyQCIP2my1i+r9R6UachLupTecXcOmX6g7hyEO6YWfXUaNNu4dcMhPmW54rbqEHR44ENe1JI+UZPGiLqivn+bd+/jdFCJpqBbO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kumwHFln; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF581F00893;
+	Sat, 30 May 2026 16:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780158927;
-	bh=KvmDCl3o2/32Wt8QcEQidPjGBTf4wGvKEXcYACeTB+U=;
+	s=korg; t=1780158943;
+	bh=sJfCLpvEz4rmxYta4AE+aCQ5Ej4DU+yYMuQzQyWL4R8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zf4fv4HiA5d4xjGjh4idchxNLodkzPZsE9gWpSgbR/MLD9p67L7+CPjAVMkwQzHxA
-	 XggNDYvjopj4gOZs1+p0VCm80a8VFuzFZwxXJ5BONnlhU8MJx/iWkREnngjZZxQelF
-	 WtnhJzQfpCwewClXgG0hmk641WQnsGWpm5Y0OpFw=
+	b=kumwHFlnXhufTCLE1HB+bK52FjoPB+palJkd4tbvz0HttrHEQNxuq6V3BRUVWLqgt
+	 ZkETeXvae6TMm1vqxC835l0vbJbcFduYLjJXWzaVD664Jq/bxzOd6St5Fn6ptpZ2or
+	 Xh0ETFZxlEqq5ClfDgpjDM6+SqR+aDvwYlS+P/ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	syzbot+f02665daa2abeef4a947@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Wenshan Lan <jetlan9@163.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/969] Revert "dmaengine: idxd: Fix not releasing workqueue on .release()"
-Date: Sat, 30 May 2026 17:53:32 +0200
-Message-ID: <20260530160302.768063527@linuxfoundation.org>
+Subject: [PATCH 6.1 089/969] ALSA: usb-audio: fix race condition to UAF in snd_usbmidi_free
+Date: Sat, 30 May 2026 17:53:33 +0200
+Message-ID: <20260530160302.793700936@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -62,34 +66,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257024-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257025-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,suse.de,163.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,f02665daa2abeef4a947];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0D66B60E579
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,suse.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 5A9FF60E480
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -97,25 +103,58 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-This reverts commit fd4cb61bbd0fc3a749a8da6145cbb56d8f6dba35.
+From: Jeongjun Park <aha310510@gmail.com>
 
+[ Upstream commit 9f2c0ac1423d5f267e7f1d1940780fc764b0fee3 ]
+
+The previous commit 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at
+removal") patched a UAF issue caused by the error timer.
+
+However, because the error timer kill added in this patch occurs after the
+endpoint delete, a race condition to UAF still occurs, albeit rarely.
+
+Additionally, since kill-cleanup for urb is also missing, freed memory can
+be accessed in interrupt context related to urb, which can cause UAF.
+
+Therefore, to prevent this, error timer and urb must be killed before
+freeing the heap memory.
+
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+f02665daa2abeef4a947@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f02665daa2abeef4a947
+Fixes: 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at removal")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idxd/sysfs.c | 1 -
- 1 file changed, 1 deletion(-)
+ sound/usb/midi.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
-index ea222e1654ab9..0689464c4816a 100644
---- a/drivers/dma/idxd/sysfs.c
-+++ b/drivers/dma/idxd/sysfs.c
-@@ -1663,7 +1663,6 @@ static void idxd_conf_device_release(struct device *dev)
+diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+index 08dd0f0b19a3f..49a11e517e785 100644
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -1522,15 +1522,14 @@ static void snd_usbmidi_free(struct snd_usb_midi *umidi)
  {
- 	struct idxd_device *idxd = confdev_to_idxd(dev);
+ 	int i;
  
--	destroy_workqueue(idxd->wq);
- 	kfree(idxd->groups);
- 	bitmap_free(idxd->wq_enable_map);
- 	kfree(idxd->wqs);
++	if (!umidi->disconnected)
++		snd_usbmidi_disconnect(&umidi->list);
++
+ 	for (i = 0; i < MIDI_MAX_ENDPOINTS; ++i) {
+ 		struct snd_usb_midi_endpoint *ep = &umidi->endpoints[i];
+-		if (ep->out)
+-			snd_usbmidi_out_endpoint_delete(ep->out);
+-		if (ep->in)
+-			snd_usbmidi_in_endpoint_delete(ep->in);
++		kfree(ep->out);
+ 	}
+ 	mutex_destroy(&umidi->mutex);
+-	timer_shutdown_sync(&umidi->error_timer);
+ 	kfree(umidi);
+ }
+ 
 -- 
 2.53.0
 
