@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-258825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257476-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJ7OLn0vG2paAAkAu9opvQ
-	(envelope-from <stable+bounces-258825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:05 +0200
+	id gCCvN94aG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257476-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F44661246B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 499A960F30D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8FF3030FD021
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:27:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B7C723033CFB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34AEF2EF652;
-	Sat, 30 May 2026 18:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FE8481DD;
+	Sat, 30 May 2026 17:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMYRbkFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZ2kBjeT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7A427E05E;
-	Sat, 30 May 2026 18:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3971EEA8;
+	Sat, 30 May 2026 17:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165665; cv=none; b=djj5ScBjUcOTRKjJXrl2jFsf4FLcOBGenVbX+DgVjt+xwfhuFqfMo1q3EZp6dDkzjxxoWWKsAgeHVMcfaGqsYEO8qiMZZY9bxAPFx0nOSqHz90XJXhzFS5EDiRT5CTjdt8J71/oef35d+QoFgr1RF8KwZECaX6pUfoovorzT1Qo=
+	t=1780161127; cv=none; b=FtOIQY0fm5HnVv30IGn7M+T0ZpjAzFwYlgDIh3yD65iRbljeXFxY2QyeTalfqBwJ6RH57TSu9crOc2V0e7gr9cHKBbT9JnurYOc+Itl/Dcdl7asTfcu+NTsNa+M2ZQhvB7t2E7wRDDDakHUlZKRT8pfpbh/ZcmGIYjh19pscOkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165665; c=relaxed/simple;
-	bh=kdVhWMwnXC7owqkUhBvUk4fH2fC9VvAFSyqYc7GxOvU=;
+	s=arc-20240116; t=1780161127; c=relaxed/simple;
+	bh=FLBdZUR2hiJPhDdBTOXmOczSVEYmfrTyoO6MuwLxeJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/ZLEq9WfHR60jtZ050kyG3MP0QSqXDk/rPxZN5ne4RIiPROVmgsMbYv+V/MM0bNRq9J0KVQLCh60NZe51uVBjYPPRVU4wS6H7uQIlaiZGBM8/JFAevttE+9Ppl2Wvq+8RWSGJ2dNBVXDgWxqTfRQRVeDBNHeFzjtbOLmSnRLN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMYRbkFP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFC61F00893;
-	Sat, 30 May 2026 18:27:42 +0000 (UTC)
+	 MIME-Version; b=pZbk+A0xOCKelO5oOk4e7i2J2zI+o1cgBJTBqUehZCuuAzhRrgz18JuiWNroWYwroV35g48Z3bAKzHcBWiBDhNYgcZWggJTQuOnr5qaH5YzUMvP1inUPB1Jgp/gLAlauX8pEDsCq4Ws+AUS+LPEeGiWKwBZKPmEoCTqLne4Tw64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZ2kBjeT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F7B1F00893;
+	Sat, 30 May 2026 17:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165663;
-	bh=wHeUSwHfKgm6jTPXKz9IDQmYvJpmMSWhrk6uVEYyqpE=;
+	s=korg; t=1780161126;
+	bh=EnpRNyQPQLP0/7ZNdwPwjUgQT5hGlhEnElgLql5q8JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SMYRbkFPfPYUXMOV9vnrm4PAadP2v8ZNe7h2lpUMAds0mZV0nvClCHVO57CexW4Uz
-	 Zz/goKm/8i5Ga680Q15ZpFFkFzx8UCu16bzz9sGeYnBSZVIft+5Hr+rvH+UZI1LLte
-	 4YymTOdrIT1O1KM0jakfXRfYGsICWLjAFn+wPwiU=
+	b=nZ2kBjeTOP24PI+kLjHFjIKpOr0r6lYsj1tlVHdAmsnWaRiqNHpqo40GSrx8PZuiW
+	 TVRYliky/qJ4FuhMemXjg86Uu88DQl8cJFProNWGdb817O1OmGddy2EoPxQyWzGWyB
+	 IudAwg7gzL8rf16FQYfZsnag7C55KD5lw0xNA6dY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	Jan Kara <jack@suse.cz>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 146/589] ocfs2: split transactions in dio completion to avoid credit exhaustion
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 503/969] dm log: fix out-of-bounds write due to region_count overflow
 Date: Sat, 30 May 2026 18:00:27 +0200
-Message-ID: <20260530160228.623878943@linuxfoundation.org>
+Message-ID: <20260530160314.218578354@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,215 +67,115 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258825-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,suse.cz,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257476-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,redhat.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email]
-X-Rspamd-Queue-Id: 1F44661246B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 499A960F30D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit d647c5b2fbf81560818dacade360abc8c00a9665 upstream.
+[ Upstream commit c20e36b7631d83e7535877f08af8b0af72c44b1a ]
 
-During ocfs2 dio operations, JBD2 may report warnings via following
-call trace:
-ocfs2_dio_end_io_write
- ocfs2_mark_extent_written
-  ocfs2_change_extent_flag
-   ocfs2_split_extent
-    ocfs2_try_to_merge_extent
-     ocfs2_extend_rotate_transaction
-      ocfs2_extend_trans
-       jbd2__journal_restart
-        start_this_handle
-         output: JBD2: kworker/6:2 wants too many credits credits:5450 rsv_credits:0 max:5449
+The local variable region_count in create_log_context() is declared as
+unsigned int (32-bit), but dm_sector_div_up() returns sector_t (64-bit).
+When a device-mapper target has a sufficiently large ti->len with a small
+region_size, the division result can exceed UINT_MAX. The truncated
+value is then used to calculate bitset_size, causing clean_bits,
+sync_bits, and recovering_bits to be allocated far smaller than needed
+for the actual number of regions.
 
-To prevent exceeding the credits limit, modify ocfs2_dio_end_io_write() to
-handle extents in a batch of transaction.
+Subsequent log operations (log_set_bit, log_clear_bit, log_test_bit) use
+region indices derived from the full untruncated region space, causing
+out-of-bounds writes to kernel heap memory allocated by vmalloc.
 
-Additionally, relocate ocfs2_del_inode_from_orphan().  The orphan inode
-should only be removed from the orphan list after the extent tree update
-is complete.  This ensures that if a crash occurs in the middle of extent
-tree updates, we won't leave stale blocks beyond EOF.
+This can be reproduced by creating a mirror target whose region_count
+overflows 32 bits:
 
-This patch also changes the logic for updating the inode size and removing
-orphan, making it similar to ext4_dio_write_end_io().  Both operations are
-performed only when everything looks good.
+  dmsetup create bigzero --table '0 8589934594 zero'
+  dmsetup create mymirror --table '0 8589934594 mirror \
+    core 2 2 nosync 2 /dev/mapper/bigzero 0 \
+    /dev/mapper/bigzero 0'
 
-Finally, thanks to Jans and Joseph for providing the bug fix prototype and
-suggestions.
+The status output confirms the truncation (sync_count=1 instead of
+4294967297, because 0x100000001 was truncated to 1):
 
-Link: https://lkml.kernel.org/r/20260402134328.27334-2-heming.zhao@suse.com
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Suggested-by: Jan Kara <jack@suse.cz>
-Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  $ dmsetup status mymirror
+  0 8589934594 mirror 2 254:1 254:1 1/4294967297 ...
+
+This leads to a kernel crash in core_in_sync:
+
+  BUG: scheduling while atomic: (udev-worker)/9150/0x00000000
+  RIP: 0010:core_in_sync+0x14/0x30 [dm_log]
+  CR2: 0000000000000008
+  Fixing recursive fault but reboot is needed!
+
+Fix by widening the local region_count to sector_t and adding an
+explicit overflow check before the value is assigned to lc->region_count.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/aops.c |   74 ++++++++++++++++++++++++++++++++++----------------------
- 1 file changed, 45 insertions(+), 29 deletions(-)
+ drivers/md/dm-log.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/ocfs2/aops.c
-+++ b/fs/ocfs2/aops.c
-@@ -39,6 +39,8 @@
- #include "namei.h"
- #include "sysfile.h"
+diff --git a/drivers/md/dm-log.c b/drivers/md/dm-log.c
+index da77878cb2c02..32a3cb131e578 100644
+--- a/drivers/md/dm-log.c
++++ b/drivers/md/dm-log.c
+@@ -366,7 +366,7 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
  
-+#define OCFS2_DIO_MARK_EXTENT_BATCH 200
-+
- static int ocfs2_symlink_get_block(struct inode *inode, sector_t iblock,
- 				   struct buffer_head *bh_result, int create)
- {
-@@ -2308,7 +2310,7 @@ static int ocfs2_dio_end_io_write(struct
- 	struct ocfs2_alloc_context *meta_ac = NULL;
- 	handle_t *handle = NULL;
- 	loff_t end = offset + bytes;
--	int ret = 0, credits = 0;
-+	int ret = 0, credits = 0, batch = 0;
- 
- 	ocfs2_init_dealloc_ctxt(&dealloc);
- 
-@@ -2325,18 +2327,6 @@ static int ocfs2_dio_end_io_write(struct
- 		goto out;
+ 	struct log_c *lc;
+ 	uint32_t region_size;
+-	unsigned int region_count;
++	sector_t region_count;
+ 	size_t bitset_size, buf_size;
+ 	int r;
+ 	char dummy;
+@@ -394,6 +394,10 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
  	}
  
--	/* Delete orphan before acquire i_rwsem. */
--	if (dwc->dw_orphaned) {
--		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
--
--		end = end > i_size_read(inode) ? end : 0;
--
--		ret = ocfs2_del_inode_from_orphan(osb, inode, di_bh,
--				!!end, end);
--		if (ret < 0)
--			mlog_errno(ret);
--	}
--
- 	down_write(&oi->ip_alloc_sem);
- 	di = (struct ocfs2_dinode *)di_bh->b_data;
- 
-@@ -2357,24 +2347,25 @@ static int ocfs2_dio_end_io_write(struct
- 
- 	credits = ocfs2_calc_extend_credits(inode->i_sb, &di->id2.i_list);
- 
--	handle = ocfs2_start_trans(osb, credits);
--	if (IS_ERR(handle)) {
--		ret = PTR_ERR(handle);
--		mlog_errno(ret);
--		goto unlock;
--	}
--	ret = ocfs2_journal_access_di(handle, INODE_CACHE(inode), di_bh,
--				      OCFS2_JOURNAL_ACCESS_WRITE);
--	if (ret) {
--		mlog_errno(ret);
--		goto commit;
--	}
--
- 	list_for_each_entry(ue, &dwc->dw_zero_list, ue_node) {
-+		if (!handle) {
-+			handle = ocfs2_start_trans(osb, credits);
-+			if (IS_ERR(handle)) {
-+				ret = PTR_ERR(handle);
-+				mlog_errno(ret);
-+				goto unlock;
-+			}
-+			ret = ocfs2_journal_access_di(handle, INODE_CACHE(inode), di_bh,
-+					OCFS2_JOURNAL_ACCESS_WRITE);
-+			if (ret) {
-+				mlog_errno(ret);
-+				goto commit;
-+			}
-+		}
- 		ret = ocfs2_assure_trans_credits(handle, credits);
- 		if (ret < 0) {
- 			mlog_errno(ret);
--			break;
-+			goto commit;
- 		}
- 		ret = ocfs2_mark_extent_written(inode, &et, handle,
- 						ue->ue_cpos, 1,
-@@ -2382,19 +2373,44 @@ static int ocfs2_dio_end_io_write(struct
- 						meta_ac, &dealloc);
- 		if (ret < 0) {
- 			mlog_errno(ret);
--			break;
-+			goto commit;
-+		}
-+
-+		if (++batch == OCFS2_DIO_MARK_EXTENT_BATCH) {
-+			ocfs2_commit_trans(osb, handle);
-+			handle = NULL;
-+			batch = 0;
- 		}
- 	}
- 
- 	if (end > i_size_read(inode)) {
-+		if (!handle) {
-+			handle = ocfs2_start_trans(osb, credits);
-+			if (IS_ERR(handle)) {
-+				ret = PTR_ERR(handle);
-+				mlog_errno(ret);
-+				goto unlock;
-+			}
-+		}
- 		ret = ocfs2_set_inode_size(handle, inode, di_bh, end);
- 		if (ret < 0)
- 			mlog_errno(ret);
- 	}
-+
- commit:
--	ocfs2_commit_trans(osb, handle);
-+	if (handle)
-+		ocfs2_commit_trans(osb, handle);
- unlock:
- 	up_write(&oi->ip_alloc_sem);
-+
-+	/* everything looks good, let's start the cleanup */
-+	if (!ret && dwc->dw_orphaned) {
-+		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
-+
-+		ret = ocfs2_del_inode_from_orphan(osb, inode, di_bh, 0, 0);
-+		if (ret < 0)
-+			mlog_errno(ret);
+ 	region_count = dm_sector_div_up(ti->len, region_size);
++	if (region_count > UINT_MAX) {
++		DMWARN("region count exceeds limit of %u", UINT_MAX);
++		return -EINVAL;
 +	}
- 	ocfs2_inode_unlock(inode, 1);
- 	brelse(di_bh);
- out:
+ 
+ 	lc = kmalloc(sizeof(*lc), GFP_KERNEL);
+ 	if (!lc) {
+-- 
+2.53.0
+
 
 
 
