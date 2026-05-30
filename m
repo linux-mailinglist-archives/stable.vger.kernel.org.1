@@ -1,64 +1,65 @@
-Return-Path: <stable+bounces-258284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257516-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJtpAJEnG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258284-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:17 +0200
+	id 0IsFOmUbG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257516-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632926110B8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0AE60F478
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE52630DB5B7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 92B28301955F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F77341AC7;
-	Sat, 30 May 2026 17:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F5E34A79D;
+	Sat, 30 May 2026 17:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oow8SvSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwQGvqrQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF9B30E0DC;
-	Sat, 30 May 2026 17:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B2F3016E1;
+	Sat, 30 May 2026 17:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163833; cv=none; b=Gb2aKxEA3dM85Dc+MQl1UcLmPu21aQ81QTYc+x1T2BmZlvqM2C3QQE52z2nZwyuzNouWXKpNMX+MklOosomLs+6dHWszEShbfYTrSLykmHW4jYoHa7L7TvXQIB66JidI9HOByCFTqS7WK5RPNlCOoroNcum3e6fSInkXMQjVAoI=
+	t=1780161266; cv=none; b=H3/ZpJVJc2vvi9Wu+M2pNhkjAuG0Q4dtq1hJavfB3ptVxY6Ql6Hwje4lyjTSRcbM4fPCfe4XdmdsldijuqLW3/B1b5cYXORTw0zhups0qRH9gT4/HnY5IRwQZ1so9n1yhE8FhsY9K7bwF50+vkdkwLDboP1DcuGQ3PocwIUSK/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163833; c=relaxed/simple;
-	bh=gVyXqYOSR3Q2Un4ggeFDuzkqx5HiIdNJ31tLvON/oPA=;
+	s=arc-20240116; t=1780161266; c=relaxed/simple;
+	bh=o/BQ1O0uKcbgueY/r3Wt2YHPiaOFXUyb7OlJQz2QOK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NxczQ4fDGH8mFbR6zSZ2UaXoxqZv8m/u9A/RNRz1c9u9vUhu50sYvuc1OklckTVuVaTAH1WFl22iUb9Cy9czV1H2fANSuCxAB1fsNGHHMgWbvytFp/WIHc5FQRCapuDmWSMWud5A1QRlQAdeR9fbkl6yR7pD7Owg/kn8a7kyn70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oow8SvSJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8311F00893;
-	Sat, 30 May 2026 17:57:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DQxgWxq1nAAfwM2tTszVhajq6iLn9fltD3RznsT5C23RzGkk3c/Hqq6hjT78O4sOHTFwiecu0SZrLEDV0ZbJzh8i7aGI091KuHHwLySO1v5BK0WbWg/5ilkuJm1lvLe/4dzrgtK5xzHgvf2eWw6/RJ59CukEUGwOXx2nhmBdkdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwQGvqrQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D1B51F00893;
+	Sat, 30 May 2026 17:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163831;
-	bh=WqMbRXRqtZXeJfB6YN7IVSPLfE1wA1fiWW/Kc3UYea8=;
+	s=korg; t=1780161265;
+	bh=s3Kp7gh3FNgfds3Yb1wao5v8wl6Uf5/P4k9nXMxtKgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oow8SvSJowbQtHBg8wDs+htbR2zgVJGQ6stRZLMtSMdpq22a6ph2+5gWgmTMz1Lru
-	 wMnUYNCZWtJpfLbPjNi9s24WIkiUR9owB4mtQCYEVkHuq2lAkkhA7+YWdAVY8rLTbq
-	 Rks0WkqbJONdB2jHQ8YGIBz7tsxRrpmm4VZrRSX0=
+	b=kwQGvqrQzAO3QNeXWCLg3kO2+Mej+G/YsxVqMWfbhlSod/D6fM3u88xg9I1+x7OpJ
+	 1gME6D5RkLqrVQloPNfKXUE0gcoOLbIia1kJQmcd/H97PcbQUWwfsK1RlW/p45vOIP
+	 9QxRWLH8Q65fytrDeE3sYs5jzt/8AHmgDsVjawfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.15 376/776] batman-adv: stop caching unowned originator pointers in BAT IV
+	John Hawley <warthog9@eaglescrag.net>,
+	Andrea Righi <arighi@nvidia.com>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 566/969] ktest: Run POST_KTEST hooks on failure and cancellation
 Date: Sat, 30 May 2026 18:01:30 +0200
-Message-ID: <20260530160250.246221302@linuxfoundation.org>
+Message-ID: <20260530160316.022170611@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,212 +69,138 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-257516-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-258284-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 632926110B8
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 8B0AE60F478
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-commit f03e8583532941b07761c5429de7d50766fa3110 upstream.
+[ Upstream commit bc6e165a452da909cef0efbc286e6695624db372 ]
 
-BAT IV keeps the last-hop neighbor address in each neigh_node, but some
-paths also cache an originator pointer derived from a temporary lookup.
-That pointer is not owned by the neigh_node and may no longer refer to a
-live originator entry after purge handling runs.
+PRE_KTEST can be useful for setting up the environment and POST_KTEST to
+tear it down, however POST_KTEST only runs on the normal end-of-run path.
+It is skipped when ktest exits through dodie() or cancel_test(). Final
+cleanup hooks are skipped.
 
-Stop storing the auxiliary originator pointer in the BAT IV neighbor
-state. When BAT IV needs the neighbor originator data, resolve it from
-the stored neighbor address and drop the reference again after use.
+Factor the final hook execution into run_post_ktest(), call it from the
+normal exit path and from the early exit paths, and guard it so the hook
+runs at most once.
 
-Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-[sven: avoid bonding logic for outgoing OGM]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: John Hawley <warthog9@eaglescrag.net>
+Cc: Andrea Righi <arighi@nvidia.com>
+Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Link: https://patch.msgid.link/20260307-ktest-fixes-v1-8-565d412f4925@suse.com
+Fixes: 921ed4c7208e ("ktest: Add PRE/POST_KTEST and TEST options")
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bat_iv_ogm.c |   83 +++++++++++++++++++++++++++++++-------------
- 1 file changed, 59 insertions(+), 24 deletions(-)
+ tools/testing/ktest/ktest.pl | 27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -173,19 +173,12 @@ free_orig_node_hash:
- static struct batadv_neigh_node *
- batadv_iv_ogm_neigh_new(struct batadv_hard_iface *hard_iface,
- 			const u8 *neigh_addr,
--			struct batadv_orig_node *orig_node,
--			struct batadv_orig_node *orig_neigh)
-+			struct batadv_orig_node *orig_node)
- {
- 	struct batadv_neigh_node *neigh_node;
- 
- 	neigh_node = batadv_neigh_node_get_or_create(orig_node,
- 						     hard_iface, neigh_addr);
--	if (!neigh_node)
--		goto out;
--
--	neigh_node->orig_node = orig_neigh;
--
--out:
- 	return neigh_node;
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 28eebfa32621d..df8588dadc2ca 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -98,6 +98,7 @@ my $test_type;
+ my $build_type;
+ my $build_options;
+ my $final_post_ktest;
++my $post_ktest_done = 0;
+ my $pre_ktest;
+ my $post_ktest;
+ my $pre_test;
+@@ -1530,6 +1531,24 @@ sub get_test_name() {
+     return $name;
  }
  
-@@ -902,6 +895,31 @@ static u8 batadv_iv_orig_ifinfo_sum(stru
- }
- 
- /**
-+ * batadv_iv_ogm_neigh_ifinfo_sum() - Get bcast_own sum for a last-hop neighbor
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @neigh_node: last-hop neighbor of an originator
-+ *
-+ * Return: Number of replied (rebroadcasted) OGMs for the originator currently
-+ * announced by the neighbor. Returns 0 if the neighbor's originator entry is
-+ * not available anymore.
-+ */
-+static u8 batadv_iv_ogm_neigh_ifinfo_sum(struct batadv_priv *bat_priv,
-+					 const struct batadv_neigh_node *neigh_node)
-+{
-+	struct batadv_orig_node *orig_neigh;
-+	u8 sum;
++sub run_post_ktest {
++    my $cmd;
 +
-+	orig_neigh = batadv_orig_hash_find(bat_priv, neigh_node->addr);
-+	if (!orig_neigh)
-+		return 0;
++    return if ($post_ktest_done);
 +
-+	sum = batadv_iv_orig_ifinfo_sum(orig_neigh, neigh_node->if_incoming);
-+	batadv_orig_node_put(orig_neigh);
++    if (defined($final_post_ktest)) {
++	$cmd = $final_post_ktest;
++    } elsif (defined($post_ktest)) {
++	$cmd = $post_ktest;
++    } else {
++	return;
++    }
 +
-+	return sum;
++    my $cp_post_ktest = eval_kernel_version($cmd);
++    run_command $cp_post_ktest;
++    $post_ktest_done = 1;
 +}
 +
-+/**
-  * batadv_iv_ogm_orig_update() - use OGM to update corresponding data in an
-  *  originator
-  * @bat_priv: the bat priv with all the soft interface information
-@@ -970,17 +988,9 @@ batadv_iv_ogm_orig_update(struct batadv_
- 	}
+ sub dodie {
+     # avoid recursion
+     return if ($in_die);
+@@ -1589,6 +1608,7 @@ sub dodie {
+     if (defined($post_test)) {
+ 	run_command $post_test;
+     }
++    run_post_ktest;
  
- 	if (!neigh_node) {
--		struct batadv_orig_node *orig_tmp;
--
--		orig_tmp = batadv_iv_ogm_orig_get(bat_priv, ethhdr->h_source);
--		if (!orig_tmp)
--			goto unlock;
--
- 		neigh_node = batadv_iv_ogm_neigh_new(if_incoming,
- 						     ethhdr->h_source,
--						     orig_node, orig_tmp);
--
--		batadv_orig_node_put(orig_tmp);
-+						     orig_node);
- 		if (!neigh_node)
- 			goto unlock;
- 	} else {
-@@ -1032,10 +1042,9 @@ batadv_iv_ogm_orig_update(struct batadv_
- 	 */
- 	if (router_ifinfo &&
- 	    neigh_ifinfo->bat_iv.tq_avg == router_ifinfo->bat_iv.tq_avg) {
--		sum_orig = batadv_iv_orig_ifinfo_sum(router->orig_node,
--						     router->if_incoming);
--		sum_neigh = batadv_iv_orig_ifinfo_sum(neigh_node->orig_node,
--						      neigh_node->if_incoming);
-+		sum_orig = batadv_iv_ogm_neigh_ifinfo_sum(bat_priv, router);
-+		sum_neigh = batadv_iv_ogm_neigh_ifinfo_sum(bat_priv,
-+							   neigh_node);
- 		if (sum_orig >= sum_neigh)
- 			goto out;
- 	}
-@@ -1101,7 +1110,6 @@ static bool batadv_iv_ogm_calc_tq(struct
- 	if (!neigh_node)
- 		neigh_node = batadv_iv_ogm_neigh_new(if_incoming,
- 						     orig_neigh_node->orig,
--						     orig_neigh_node,
- 						     orig_neigh_node);
- 
- 	if (!neigh_node)
-@@ -1298,6 +1306,32 @@ out:
+     die @_, "\n";
+ }
+@@ -4223,6 +4243,7 @@ sub cancel_test {
+ 	send_email("KTEST: Your [$name] test was cancelled",
+ 	    "Your test started at $script_start_time was cancelled: sig int");
+     }
++    run_post_ktest;
+     die "\nCaught Sig Int, test interrupted: $!\n"
  }
  
- /**
-+ * batadv_orig_to_direct_router() - get direct next hop neighbor to an orig address
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @orig_addr: the originator MAC address to search the best next hop router for
-+ * @if_outgoing: the interface where the OGM should be sent to
-+ *
-+ * Return: A neighbor node which is the best router towards the given originator
-+ * address. Bonding candidates are ignored.
-+ */
-+static struct batadv_neigh_node *
-+batadv_orig_to_direct_router(struct batadv_priv *bat_priv, u8 *orig_addr,
-+			     struct batadv_hard_iface *if_outgoing)
-+{
-+	struct batadv_neigh_node *neigh_node;
-+	struct batadv_orig_node *orig_node;
-+
-+	orig_node = batadv_orig_hash_find(bat_priv, orig_addr);
-+	if (!orig_node)
-+		return NULL;
-+
-+	neigh_node = batadv_orig_router_get(orig_node, if_outgoing);
-+	batadv_orig_node_put(orig_node);
-+
-+	return neigh_node;
-+}
-+
-+/**
-  * batadv_iv_ogm_process_per_outif() - process a batman iv OGM for an outgoing
-  *  interface
-  * @skb: the skb containing the OGM
-@@ -1367,8 +1401,9 @@ batadv_iv_ogm_process_per_outif(const st
+@@ -4533,11 +4554,7 @@ for (my $i = 1; $i <= $opt{"NUM_TESTS"}; $i++) {
+     success $i;
+ }
  
- 	router = batadv_orig_router_get(orig_node, if_outgoing);
- 	if (router) {
--		router_router = batadv_orig_router_get(router->orig_node,
--						       if_outgoing);
-+		router_router = batadv_orig_to_direct_router(bat_priv,
-+							     router->addr,
-+							     if_outgoing);
- 		router_ifinfo = batadv_neigh_ifinfo_get(router, if_outgoing);
- 	}
+-if (defined($final_post_ktest)) {
+-
+-    my $cp_final_post_ktest = eval_kernel_version $final_post_ktest;
+-    run_command $cp_final_post_ktest;
+-}
++run_post_ktest;
  
+ if ($opt{"POWEROFF_ON_SUCCESS"}) {
+     halt;
+-- 
+2.53.0
+
 
 
 
