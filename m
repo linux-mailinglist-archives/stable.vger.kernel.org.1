@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-258408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257594-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UA17NvgoG2rg/ggAu9opvQ
-	(envelope-from <stable+bounces-258408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:16 +0200
+	id QMtfHI4cG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257594-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40AFD6114B7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 455E360F77C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0E4E30D7791
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:04:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1CF4B305A7BD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8302C2FDC5E;
-	Sat, 30 May 2026 18:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D8F340293;
+	Sat, 30 May 2026 17:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWqMc7GG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdqlUVGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62ECC33F5A0;
-	Sat, 30 May 2026 18:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE714332EA7;
+	Sat, 30 May 2026 17:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164250; cv=none; b=k2g4CS/lseooh8LxM5qJcJt0U+GSnUA5Exmj9O4nlDxlg0Yw6AhSt+And2DhVAYct8+maCzTEY5qmn6h/ksOVrdFcTD6x1XAsUFEVCRD4i5o13/2ZaZXm9Ezgrl/2UT9BGCBNaq1hWC0UOv4kp4n0RafqiapOWcgV9U7ZKvUZts=
+	t=1780161522; cv=none; b=K6bL2VDk5IQ77vxyxNYww5Zmo3yZzc4LIzBa4se8TLoLY2I2nIwzikpiE7gUghHUhJ/6JsG4T92QHFqSfrsdrBg/8kNcMVSx6XegobW2+gSumGNOhL9T4w7AI6gC6gfs+JckSGLFPPxiYRROq4nr3D38bphiwowOGuzuS14ilGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164250; c=relaxed/simple;
-	bh=nl+HaN7GLpyFzsSf11fPomb2hQ/4amJ2vNirXo/QLV8=;
+	s=arc-20240116; t=1780161522; c=relaxed/simple;
+	bh=MJUxGvldcDn8ptCZuIxmZef5PPmA9uAGU+40HSxPy/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WoM4bnfWSa05n3UJjLBeKH0zpG9//sy/p4FI6TfzfCyWs6g2aBtvHOB9huMFGwzpnMvs+0ESh0rRAcIrgWGKf1Af6k+RiSf6kk5IIldUcjOQ3JJWSdfKon+jQ2oOjnGlAbuI8gPngvfcmd37IQXnLJ70ccL0KxWhVPq0Np+h9Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWqMc7GG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F471F00893;
-	Sat, 30 May 2026 18:04:08 +0000 (UTC)
+	 MIME-Version; b=KPFzmRhTclMOIVFCjSxmfc5eRUBDYXoqCBNGYri676XJGZ0mqOrF8VlFx8io58dS5fErug68jJvEwjJrVT2qvVZ7y3OmaKLorYccPBb4V8FMLl/9YtZkg40kuGGqSgMv5Qg/wfNtznwT2wAJ1Pukvhvq3hDC0vBj7JDY3oaCLHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdqlUVGn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2B51F00893;
+	Sat, 30 May 2026 17:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164249;
-	bh=mYDc60rwqD+yd4+6PHcrIS6FaspFQeNXVlJB1119+cA=;
+	s=korg; t=1780161521;
+	bh=sJCrK+dIrxxvPjW9lGPOfuExo0yiyZPK02Gnjuy/9EI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yWqMc7GG/1nD/EowX7RI0ZWxpQl029nVESNUiFjFRy/W3aIFXkEDt8G/KRnel25ay
-	 Xt4gk4EbBEeZ2SJQ6njLfGy70Gm8gy39EsI0RhDi+hKCkVY9YeO+PvuXujNgyJ0hqQ
-	 bNPqjkXFA01WxZe1R5nEzRhIAvH7xhkjNWXD6gHg=
+	b=pdqlUVGnkKks0x06z1/OII7SAU4sSUlexaUcgMLB5KTYWfDELE7SFEhDxo3Jq1X0q
+	 SthwJlgzLl43S6Pp6aohBb87HfcZfzlFfAeVLlbQaK4rk5XAKtnVcz3fCSeJ1goryR
+	 93TJfeboSv9IMOdkW07b5jj+Dy3HxtPASj+Ja7uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 459/776] drm/msm/a6xx: Use barriers while updating HFI Q headers
+Subject: [PATCH 6.1 649/969] clk: qcom: dispcc-sm8450: use RCG2 ops for DPTX1 AUX clock source
 Date: Sat, 30 May 2026 18:02:53 +0200
-Message-ID: <20260530160252.228349327@linuxfoundation.org>
+Message-ID: <20260530160318.382887641@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,101 +71,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257594-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258408-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url]
-X-Rspamd-Queue-Id: 40AFD6114B7
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 455E360F77C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit dc78b35d5ec09d1b0b8a937e6e640d2c5a030915 ]
+[ Upstream commit 141af1be817c42c7f1e1605348d4b1983d319bea ]
 
-To avoid harmful compiler optimizations and IO reordering in the HW, use
-barriers and READ/WRITE_ONCE helpers as necessary while accessing the HFI
-queue index variables.
+The clk_dp_ops are supposed to be used for DP-related clocks with a
+proper MND divier. Use standard RCG2 ops for dptx1_aux_clk_src, the same
+as all other DPTX AUX clocks in this driver.
 
-Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714653/
-Message-ID: <20260327-a8xx-gpu-batch2-v2-1-2b53c38d2101@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: 16fb89f92ec4 ("clk: qcom: Add support for Display Clock Controller on SM8450")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260112-dp-aux-clks-v1-2-456b0c11b069@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_hfi.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/clk/qcom/dispcc-sm8450.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-index a40ad74877623..8f1a02e199681 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-@@ -29,7 +29,7 @@ static int a6xx_hfi_queue_read(struct a6xx_gmu *gmu,
- 	struct a6xx_hfi_queue_header *header = queue->header;
- 	u32 i, hdr, index = header->read_index;
+diff --git a/drivers/clk/qcom/dispcc-sm8450.c b/drivers/clk/qcom/dispcc-sm8450.c
+index e7dd45a2058c1..e7fab9d38f85e 100644
+--- a/drivers/clk/qcom/dispcc-sm8450.c
++++ b/drivers/clk/qcom/dispcc-sm8450.c
+@@ -364,7 +364,7 @@ static struct clk_rcg2 disp_cc_mdss_dptx1_aux_clk_src = {
+ 		.parent_data = disp_cc_parent_data_1,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_dp_ops,
++		.ops = &clk_rcg2_ops,
+ 	},
+ };
  
--	if (header->read_index == header->write_index) {
-+	if (header->read_index == READ_ONCE(header->write_index)) {
- 		header->rx_request = 1;
- 		return 0;
- 	}
-@@ -55,7 +55,10 @@ static int a6xx_hfi_queue_read(struct a6xx_gmu *gmu,
- 	if (!gmu->legacy)
- 		index = ALIGN(index, 4) % header->size;
- 
--	header->read_index = index;
-+	/* Ensure all memory operations are complete before updating the read index */
-+	dma_mb();
-+
-+	WRITE_ONCE(header->read_index, index);
- 	return HFI_HEADER_SIZE(hdr);
- }
- 
-@@ -67,7 +70,7 @@ static int a6xx_hfi_queue_write(struct a6xx_gmu *gmu,
- 
- 	spin_lock(&queue->lock);
- 
--	space = CIRC_SPACE(header->write_index, header->read_index,
-+	space = CIRC_SPACE(header->write_index, READ_ONCE(header->read_index),
- 		header->size);
- 	if (space < dwords) {
- 		header->dropped++;
-@@ -86,7 +89,10 @@ static int a6xx_hfi_queue_write(struct a6xx_gmu *gmu,
- 			queue->data[index] = 0xfafafafa;
- 	}
- 
--	header->write_index = index;
-+	/* Ensure all memory operations are complete before updating the write index */
-+	dma_mb();
-+
-+	WRITE_ONCE(header->write_index, index);
- 	spin_unlock(&queue->lock);
- 
- 	gmu_write(gmu, REG_A6XX_GMU_HOST2GMU_INTR_SET, 0x01);
 -- 
 2.53.0
 
