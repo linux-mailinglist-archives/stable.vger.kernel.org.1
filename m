@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-258288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258919-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EJ0LfkmG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258288-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:45 +0200
+	id sF4+OqouG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258919-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFF1610F76
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6A1612299
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6701631326DC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 025FF30031CA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2205630E0DC;
-	Sat, 30 May 2026 17:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C543242BA;
+	Sat, 30 May 2026 18:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2JHXW4n7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKNq2dEc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFF5352027;
-	Sat, 30 May 2026 17:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B1841A8F;
+	Sat, 30 May 2026 18:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163845; cv=none; b=iW0Bth6tk2Un97gEc7bhOm4+xW6gq3YbXlJV7rPM4ZW5nJ7qcAaKEQ7uv5xCHB/9pYLS4yDaiWqNJzlYrSJSPR3zi4NA4hvyAVdxwkf1PSMPdm89TV1NAJyuzKqyOOm+FwE2+2HKIkc7pG8a68v7HtL9qY1YLO1UfolBPXeenNA=
+	t=1780165985; cv=none; b=VwxyT/Rz3lWnymF1nRaWKOGBQ1uDz9C3vD/EaDuipQWv4nOEhLwgPCq5ybJr4UBkMdUmckH3Y87MS2FXv74J3pvZDdmo9m8uaOm9LEi5JIzCpMlgAxAY1Z3LwE7uGypcfiPXoafdfrd/2EXdZK4/lWENAokrMWT8rZb04onQFgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163845; c=relaxed/simple;
-	bh=60kPNovVwQEnCAI5jbRNHixt9cPUEPlYhe6FBgEr96A=;
+	s=arc-20240116; t=1780165985; c=relaxed/simple;
+	bh=YNa7/OVthe1/wPHFguGNMqTr0MGYQHVjhAbxgxaAOFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ksq/XucuQfCg6p5erfM7wTKPT/DEY1M2TumSE+tjg3bACyzpucSAcO9skQra59C89jz47ZkHj3wO5FYjAw6JBRq9RmruP4CImjWfqbq/txifGHDbo8VMhhWUB41jwd2hcRJ1RS5dgX/LRsVPxuEVFyUqTIYDgJdjplm+ehuWx8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2JHXW4n7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F86D1F00893;
-	Sat, 30 May 2026 17:57:24 +0000 (UTC)
+	 MIME-Version; b=c9Nt3aGkD+083G+epPZdAUSLCFHz6MC7jRGBAhnMuJJgQjwD4ZVmlUsM/uphr9kNoxV81rw/yETEU9PMrqkY6Y/8pjWntvgIjX0+Zw7Ka2jjxsoBd0ervDmZy9RQUnX3yTu6Oqr1806vEUvJhR3hDbfmpl2KS2xcx9ZLwqxL5gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKNq2dEc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B251F00893;
+	Sat, 30 May 2026 18:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163844;
-	bh=E4YC+nIBGWpO6uPFY2wNVxjzyDtAXqseyZpN/KjKFcA=;
+	s=korg; t=1780165983;
+	bh=+r/PgIhIYEf0M+T24hcYrBmkPjTmXRUIDq/TMdOEcts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2JHXW4n7mELEzJPEfSk+cC16lqzZFLZKK9UoFZxKrzKdFztxQiW//BtRyIFxPPvNo
-	 QuqvZ5qYYSwzEcSF3rbCkWopelyFRxKB51pT9ho+p46deAnS91rmNMlI6hWIU8oBi9
-	 hTteZnLzsCpFwDe67dSifnwnQCbk+ivfWVgJzpYM=
+	b=CKNq2dEcUgvAGUJmgPACB/Qp4DMiUmlV9pzQ6lzukk2yGP9c1uTAq8nDZeStC+pjM
+	 wlj+zbdEdYlBGijo/60ght5VNa2ODWUJbTIos/wQXmtOVuwWYx3FjoL2gXQMQ/Jcy/
+	 0fj/iEL3CN22KU9UX5LYdzqX0PjmahLssfXrs+Y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.15 379/776] batman-adv: bla: put backbone reference on failed claim hash insert
+	Corey Minyard <cminyard@mvista.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 212/589] ipmi:ssif: Fix a shutdown race
 Date: Sat, 30 May 2026 18:01:33 +0200
-Message-ID: <20260530160250.317756239@linuxfoundation.org>
+Message-ID: <20260530160230.538936285@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258288-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258919-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,43 +88,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email]
-X-Rspamd-Queue-Id: 4CFF1610F76
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,minyard.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mvista.com:email]
+X-Rspamd-Queue-Id: 6A6A1612299
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Corey Minyard <corey@minyard.net>
 
-commit ba9d20ee9076dac32c371116bacbe72480eb356c upstream.
+It was possible for the SSIF thread to stop and quit before the
+kthread_stop() call because ssif->stopping was set before the
+stop.  So only exit the SSIF thread is kthread_should_stop()
+returns true.
 
-When batadv_bla_add_claim() fails to insert a new claim into the hash, it
-leaked a reference to the backbone_gw for which the claim was intended.
-Call batadv_backbone_gw_put() on the error path to release the reference
-and avoid leaking the backbone_gw object.
+In the mainstream kernel this was fixed in 6bd0eb6d759b ("ipmi:ssif:
+Fix a shutdown race").  However, that requires a fix in kernel
+version 6.1 has a fix to kthread stop to cause interruptible waits
+to return -ERESTARTSYS on a stop.  This has not been backported to
+older kernels, and that would probably be a bad idea.  But it means
+that the mainstrem kernel fix for this will not work.
 
-Cc: stable@kernel.org
-Fixes: 3db0decf1185 ("batman-adv: Fix non-atomic bla_claim::backbone_gw access")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead, wait for kthread_should_stop() to return true before exiting
+the thread.
+
+Signed-off-by: Corey Minyard <cminyard@mvista.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/char/ipmi/ipmi_ssif.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -722,6 +722,7 @@ static void batadv_bla_add_claim(struct
- 
- 		if (unlikely(hash_added != 0)) {
- 			/* only local changes happened. */
-+			batadv_backbone_gw_put(backbone_gw);
- 			kfree(claim);
- 			return;
+diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
+index a811b5bdba259..42cbf761fa749 100644
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -522,6 +522,16 @@ static int ipmi_ssif_thread(void *data)
  		}
+ 	}
+ 
++	/*
++	 * The thread can break out of the loop if stopping is set,
++	 * and this can be before kthread_stop() gets called and thus
++	 * kthread_should_stop() will not be set.  This can cause
++	 * spinning calling this function and other bad things.  So
++	 * wait for kthread_should_stop() to be set.
++	 */
++	while (!kthread_should_stop())
++		msleep_interruptible(1);
++
+ 	return 0;
+ }
+ 
+-- 
+2.53.0
+
 
 
 
