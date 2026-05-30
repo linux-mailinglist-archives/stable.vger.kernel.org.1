@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257272-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFlTKIAjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:56 +0200
+	id 0FZ8ObcXG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257272-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DC9610831
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC44360EB5F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB27630B5F59
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8546B3008093
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BC2344DB9;
-	Sat, 30 May 2026 17:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9675B34B40F;
+	Sat, 30 May 2026 17:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFUho3iM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gBdAktM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9AB21B191;
-	Sat, 30 May 2026 17:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3909330E853;
+	Sat, 30 May 2026 17:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163060; cv=none; b=n7uLJ9/GLuY+ERXJeNv9Eibd2KNpjkX5QkPLCd0pSn8wTOuTigMG4NmJy4Fqi7kLPQlTTSWKFps6BJ744qeUG8w1C6YQjfLVSp+2PYt7TXNLxq40UrUN3jA6ZEMMKOCYId/pKUlpWbPQgPdACSOU3wSx3sKkU2noikSFLKlWcRY=
+	t=1780160422; cv=none; b=avYHIkp4kFZDkMbHv+O1cLvXNr4OSXA0v2YKsJBNjC8thQ3ecw3CKIA+17sYV5SK8zAn9wfez4LLnRlwyXJWlqpq7w25FFQ6/+mYFFoYzlludsPvMlRG+dAJCDbj4vMfWeFxDuvRBt48tcLbtY6HALqNaqEOAS1OQak3NQmKY1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163060; c=relaxed/simple;
-	bh=Weluhycljw0VGEGhZnf7Kz5KzVr+pqexgJog9ARCHXo=;
+	s=arc-20240116; t=1780160422; c=relaxed/simple;
+	bh=N43d8DGrPX0fwdjgocG35L7dBAzJKk/Xsi0wc+S8x9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A93gGVkunV/wm8XjIl0ZbXKq6UkVE9RzslDB2mEFy2q+XYEH+2dnbObkeUvjZSjFdWFnMNRrQ0yW5RNpm/V39v5fLRf9wWQlrfkbbBqxWgRoct6GxWGELY/p5Fu8hyopNOUE1cvMGXuiAAuwpMgBlJtmXTOEKCFxgZlg0I4voeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFUho3iM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7475E1F00898;
-	Sat, 30 May 2026 17:44:18 +0000 (UTC)
+	 MIME-Version; b=UxZxgH0JJUQpyi7gupdcYE1YqcnahgEm3VPJoEEp46J8jWDO/WMabJolKvei8z7JtRFYghn0V6v2PJa4eZDYj8CbX9HBZZkO8uyJgaR+tEMkAyGVbW9BoAm9lwjo6LAI1oMU6fwOK1NN+NBZ5BGIPe+sOFUNH2CPl14cmNmLpP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gBdAktM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DBB1F00893;
+	Sat, 30 May 2026 17:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163059;
-	bh=qenQfVn0kGyPeSV+OwEfrxoC4cfwBt6C4HDuvBMMK8M=;
+	s=korg; t=1780160421;
+	bh=hfev8xv0+1rFF1XHOLCwQ2gYgr1Btv2VMd0EjuoG1B0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wFUho3iMk0oPf6PKYC154Mmq1GAjEa1gM366oWBQMY6VfTDUwEgwdx7h9Kpitb6Ht
-	 JkXw/+/jlhLb3ow/VFKF3sRBmXesVqlVBjI6nbFCANtKlCLEexTGSntCTYeVuT7M0Z
-	 sgu6T487L9SG/t6uH/eeUDUhFL0eaJ9OIQE03LZs=
+	b=1gBdAktMWikzZ6VDDPNGdbSEhlho0Sz5z2Vp46cFodWvcx2Vf71Ee3s1lJluawq7B
+	 bGO94G8WFD85Cj0PDr/+32eSQ4HFvXDyIWvu3lgqU50ODuSaIQIKGWdVVDcWZEJMHK
+	 7ERokPpVGmGkBo3WNw5OFZvpe0BqSRMEY9Ehy5bQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	"stable@vger.kernel.org, Chao Yu" <chao@kernel.org>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Robert Garcia <rob_garcia@163.com>
-Subject: [PATCH 5.15 143/776] f2fs: fix to wait on block writeback for post_read case
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>
+Subject: [PATCH 6.1 333/969] extcon: ptn5150: handle pending IRQ events during system resume
 Date: Sat, 30 May 2026 17:57:37 +0200
-Message-ID: <20260530160244.116025093@linuxfoundation.org>
+Message-ID: <20260530160309.571170188@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,102 +67,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258052-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,163.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257272-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 46DC9610831
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: EC44360EB5F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 55fdc1c24a1d6229fe0ecf31335fb9a2eceaaa00 ]
+commit 4652fefcda3c604c83d1ae28ede94544e2142f06 upstream.
 
-If inode is compressed, but not encrypted, it missed to call
-f2fs_wait_on_block_writeback() to wait for GCed page writeback
-in IPU write path.
+When the system is suspended and ptn5150 wakeup interrupt is disabled,
+any changes on ptn5150 will only be record in interrupt status
+registers and won't fire an IRQ since its trigger type is falling
+edge. So the HW interrupt line will keep at low state and any further
+changes won't trigger IRQ anymore. To fix it, this will schedule a
+work to check whether any IRQ are pending and handle it accordingly.
 
-Thread A				GC-Thread
-					- f2fs_gc
-					 - do_garbage_collect
-					  - gc_data_segment
-					   - move_data_block
-					    - f2fs_submit_page_write
-					     migrate normal cluster's block via
-					     meta_inode's page cache
-- f2fs_write_single_data_page
- - f2fs_do_write_data_page
-  - f2fs_inplace_write_data
-   - f2fs_submit_page_bio
-
-IRQ
-- f2fs_read_end_io
-					IRQ
-					old data overrides new data due to
-					out-of-order GC and common IO.
-					- f2fs_read_end_io
-
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ Minor context change fixed. ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Fixes: 4ed754de2d66 ("extcon: Add support for ptn5150 extcon driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: MyungJoo Ham <myungjoo.ham@samsung.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Link: https://lore.kernel.org/lkml/20251115025905.1395347-1-xu.yang_2@nxp.com/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/extcon/extcon-ptn5150.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -2537,9 +2537,6 @@ int f2fs_encrypt_one_page(struct f2fs_io
+--- a/drivers/extcon/extcon-ptn5150.c
++++ b/drivers/extcon/extcon-ptn5150.c
+@@ -331,6 +331,19 @@ static int ptn5150_i2c_probe(struct i2c_
+ 	return 0;
+ }
  
- 	page = fio->compressed_page ? fio->compressed_page : fio->page;
- 
--	/* wait for GCed page writeback via META_MAPPING */
--	f2fs_wait_on_block_writeback(inode, fio->old_blkaddr);
--
- 	if (fscrypt_inode_uses_inline_crypto(inode))
- 		return 0;
- 
-@@ -2718,6 +2715,11 @@ got_it:
- 		err = -EFSCORRUPTED;
- 		goto out_writepage;
- 	}
++static int ptn5150_resume(struct device *dev)
++{
++	struct i2c_client *i2c = to_i2c_client(dev);
++	struct ptn5150_info *info = i2c_get_clientdata(i2c);
 +
-+	/* wait for GCed page writeback via META_MAPPING */
-+	if (fio->post_read)
-+		f2fs_wait_on_block_writeback(inode, fio->old_blkaddr);
++	/* Need to check possible pending interrupt events */
++	schedule_work(&info->irq_work);
 +
- 	/*
- 	 * If current allocation needs SSR,
- 	 * it had better in-place writes for updated data.
++	return 0;
++}
++
++static DEFINE_SIMPLE_DEV_PM_OPS(ptn5150_pm_ops, NULL, ptn5150_resume);
++
+ static const struct of_device_id ptn5150_dt_match[] = {
+ 	{ .compatible = "nxp,ptn5150" },
+ 	{ },
+@@ -346,6 +359,7 @@ MODULE_DEVICE_TABLE(i2c, ptn5150_i2c_id)
+ static struct i2c_driver ptn5150_i2c_driver = {
+ 	.driver		= {
+ 		.name	= "ptn5150",
++		.pm = pm_sleep_ptr(&ptn5150_pm_ops),
+ 		.of_match_table = ptn5150_dt_match,
+ 	},
+ 	.probe_new	= ptn5150_i2c_probe,
 
 
 
