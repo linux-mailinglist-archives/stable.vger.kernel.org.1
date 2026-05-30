@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-259025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258419-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GIKIMokvG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259025-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:17 +0200
+	id eDuVIBAnG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258419-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EBB7612496
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 839D2610FB6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CE08530C9A36
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1FAAB300FB3A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CD4331200;
-	Sat, 30 May 2026 18:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94DB2FDC5E;
+	Sat, 30 May 2026 18:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E61KnKHg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HutV+PZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562623AB285;
-	Sat, 30 May 2026 18:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A857A29B78B;
+	Sat, 30 May 2026 18:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166338; cv=none; b=bMYWO86w+HgyA541Ax9ZkAPoqmQtOXM4F7x1aOrihkLRuAfV6/NhIhOLq9AXOtQco0UxkIxFmJRYpU4pIMONroMHe13VM407X3lszACERTTFs0j8kxopn0KQQeVQDT+DvaODrrjVX1Eoo/PzM+P9APPdYjIpPElhJS3mBCIRPY0=
+	t=1780164288; cv=none; b=FO6td5mNP+jNN8/w2lIqcbLZ2LnavknSvd5r/tzPZPR0B34VOYZfFNoJ6m6bvHUsjHxX2VYHtOuY9m5hsF6A+2uo6MhSfmfq/Zfe3sPOc4fp9Z29ZukWXsjowncm471A0wVV0krgAbd+toguV48WyiukMvzmxgVw+h/+4Bm0a1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166338; c=relaxed/simple;
-	bh=4XSO+x9znw/EXfVYV2vOXNl9l9W95Q3U4TnPd47+UtE=;
+	s=arc-20240116; t=1780164288; c=relaxed/simple;
+	bh=dZ2G64nK6AUxIxCpx2VfFqhL3mxTpaiTx0CAwlEW3yM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UYYuuL+zRbdlnIDroawRo7IfO+0l59jKZWR6Vm6MB1+t1+BEj+q+rqDcKKQVgekpgl2I5O4DtDZFJ0Z0mywBpfz87MhT8M6RZqiZlWr3C3QQFLFHCIAle3lNTXsM9OX0krE1YyKjvA3lQy/IkQ4ukHxDGGO0njuOOVBEFnfjAKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E61KnKHg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933241F00893;
-	Sat, 30 May 2026 18:38:56 +0000 (UTC)
+	 MIME-Version; b=PbQUcxQPV5QEDu+sJbPwYZyNwVwZ8bltLQrvyogieVS46MR/CqRYEt61BiVNdndJnP3gCkJ0Vbrf1IxUd5PEJtoaWkgWtyn0W2GDSVogVUCGZ2PGm0oEh55enw+R76T7LYigxaRxYH2DGt8GaaY6qqeR38SS3UpOa95IP9+SZEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HutV+PZ4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDBE1F00893;
+	Sat, 30 May 2026 18:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166337;
-	bh=RhjUlBIiQouKCfV7pSLFComhQj2amm6/1t92h4pCBuA=;
+	s=korg; t=1780164287;
+	bh=swATJNOUrFs8qtri9Ku4yYkF40hthu6kuTG+vq23geg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E61KnKHg0WqpZZIGsI2oMSgnutb9UJTfSOS2YkF6+YksDIh/IquJE+HRxw7ezN9W2
-	 IL4LjVVR0l1aQHeTEBxwPDYHCiWY526ddEel7FgBUIcr3ce1PRnNOTtxqS8YhV7RjE
-	 VMdSSLGdd0W9mAR7vC87HkBzPYPDOsatLSbG5d1g=
+	b=HutV+PZ4IC07DDMikuwdEXd9qm/Rh+uSv0I1/d+FNZ4NKgXbZQThDuh2SBTfQjvKN
+	 qfsi80KxJ0uYPtQMJBTMMjOvp+/lyyxvb915gtvOuaovCxmnFOfxPda2M+9d1Hy3H4
+	 8i/uFpY9IV7H2G6vQnOrYZZaWSYjZ/BgY42Ly9ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lei Huang <huanglei@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 343/589] ALSA: hda/realtek: fix code style (ERROR: else should follow close brace })
+Subject: [PATCH 5.15 510/776] mtd: parsers: ofpart: call of_node_get() for dedicated subpartitions
 Date: Sat, 30 May 2026 18:03:44 +0200
-Message-ID: <20260530160233.903091982@linuxfoundation.org>
+Message-ID: <20260530160253.444827939@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +67,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259025-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258419-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,kylinos.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
-X-Rspamd-Queue-Id: 5EBB7612496
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_PROHIBIT(0.00)[0.0.0.0:email];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,renesas.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,4.196.207.88:email]
+X-Rspamd-Queue-Id: 839D2610FB6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lei Huang <huanglei@kylinos.cn>
+From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 
-[ Upstream commit d1888bf848ade6a9e71c7ba516fd215aa1bd8d65 ]
+[ Upstream commit e882626c1747653f1f01ea9d12e278e613b11d0f ]
 
-Fix checkpatch code style errors:
+In order to parse sub-partitions, add_mtd_partitions() calls
+parse_mtd_partitions() for all previously found partitions.
 
-  ERROR: else should follow close brace '}'
-  #2300: FILE: sound/hda/codecs/realtek/alc269.c:2300:
-  +       }
-  +       else
+Each partition will end up being passed to parse_fixed_partitions(), and
+its of_node will be treated as the ofpart_node.
 
-Fixes: 31278997add6 ("ALSA: hda/realtek - Add headset quirk for Dell DT")
-Signed-off-by: Lei Huang <huanglei@kylinos.cn>
-Link: https://patch.msgid.link/20260331075405.78148-1-huanglei814@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Commit 7cce81df7d26 ("mtd: parsers: ofpart: fix OF node refcount leak in
+parse_fixed_partitions()") added of_node_put() calls for ofpart_node on
+all exit paths.
+
+In the case where the partition passed to parse_fixed_partitions() has a
+parent, it is treated as a dedicated partitions node, and of_node_put()
+is wrongly called for it, even if of_node_get() was not called
+explicitly.
+
+On repeated bind / unbinds of the MTD, the extra of_node_put() ends up
+decrementing the refcount down to 0, which should never happen,
+resulting in the following error:
+
+OF: ERROR: of_node_release() detected bad of_node_put() on
+/soc/spi@80007000/flash@0/partitions/partition@0
+
+Call of_node_get() to balance the call to of_node_put() done for
+dedicated partitions nodes.
+
+Fixes: 7cce81df7d26 ("mtd: parsers: ofpart: fix OF node refcount leak in parse_fixed_partitions()")
+Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+Tested-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/parsers/ofpart_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 4eddc032b3d9a..31cf426f026c9 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -5954,9 +5954,9 @@ static void alc_fixup_headset_mode_alc255_no_hp_mic(struct hda_codec *codec,
- 		struct alc_spec *spec = codec->spec;
- 		spec->parse_flags |= HDA_PINCFG_HEADSET_MIC;
- 		alc255_set_default_jack_type(codec);
--	}
--	else
-+	} else {
- 		alc_fixup_headset_mode(codec, fix, action);
-+	}
- }
+diff --git a/drivers/mtd/parsers/ofpart_core.c b/drivers/mtd/parsers/ofpart_core.c
+index 7ac5ba6edd63d..c024346df0c59 100644
+--- a/drivers/mtd/parsers/ofpart_core.c
++++ b/drivers/mtd/parsers/ofpart_core.c
+@@ -71,7 +71,7 @@ static int parse_fixed_partitions(struct mtd_info *master,
+ 			dedicated = false;
+ 		}
+ 	} else { /* Partition */
+-		ofpart_node = mtd_node;
++		ofpart_node = of_node_get(mtd_node);
+ 	}
  
- static void alc288_update_headset_jack_cb(struct hda_codec *codec,
+ 	of_id = of_match_node(parse_ofpart_match_table, ofpart_node);
 -- 
 2.53.0
 
