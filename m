@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-259099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257719-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPg3G9UvG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259099-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:33 +0200
+	id UNkmADQfG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257719-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4B3612588
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFE760FDF1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6F8083013B92
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:43:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AD203019522
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA4B331A56;
-	Sat, 30 May 2026 18:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 617D433F5A0;
+	Sat, 30 May 2026 17:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBEFuEsP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbiUQPtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244332F6184;
-	Sat, 30 May 2026 18:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1D6334695;
+	Sat, 30 May 2026 17:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166609; cv=none; b=ugtpYcL6AKyWmlIy9BJ/RKeJPB4k0PgamlGPS2tFNN/K6z+Osw963rwkt+e2b9cF+aNKqKn4cBCwJRlFDYaQynq9DCraCsm3XdZ1JPYFIYn49s7MzYpa1veP4eyuNVyG9TmSCQ04d2GGObIgtwSIAqUeEFk1hIvxtAZ0F4tjmCU=
+	t=1780161943; cv=none; b=S4pnM6yKvzr2Pk0eoXCN7VTyL19IkWY9xrKLWz+FKOdEbDmUJeJZqq/OhqKc9xWdgRUHPWj4UiiuNHN0wXsYXfdl4tdJTxLvwLFu41HmPy2nCCOHpm/VvcgRVormF30dCDCqYBtJS6/zaDPhM6ehWK2AjehSnsele2gPJQDwp/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166609; c=relaxed/simple;
-	bh=f/QGURznALl3Et2/eBv88PWf/dGNamZzpbhjd3+DlxE=;
+	s=arc-20240116; t=1780161943; c=relaxed/simple;
+	bh=NdIxStAn4ioEe9YwG25o8Z9CK/AcltMXKO9F8gqISKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lyShUNr1+k5RB3bPLbDFk0VXpC9JAhvqnkjLnKTLsyEPC9jH9ns8qQwzrXDzVjkcPyxuY1YNLiYl8ofOfbDE4AKFtEt4HR62bhawE6sKJVVj5YuGUvNKuYc6Z9/mFsYu7X+QwjjTA2/Lvp9F3L1UMOcqBEhyEmkbHIrL3nVNAxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBEFuEsP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298111F00893;
-	Sat, 30 May 2026 18:43:26 +0000 (UTC)
+	 MIME-Version; b=ZgnWrXmzlx4UdZpXRClUF45+Pf6PNb8/G3LQUF0YAOCZCkt4H7opPMduJvJzP8sQHUkvf58CNz01WYSVXrcdYIhkq1vulS3Ayd910VhehFwoxgIp70fLc3DGH/MALGU8NU/SPaUBC+hI2F13X7FdQcFEclW7uylFNM3pfMMmst4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbiUQPtD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819761F00898;
+	Sat, 30 May 2026 17:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166607;
-	bh=AgedMDAmjdG7Jx6U86VE3t11YX/JaD/3+Fa3z4IhL88=;
+	s=korg; t=1780161942;
+	bh=B+H3DzcoPFvodWmFobDWnueXUwHFEUAOsxqG2l3ffl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nBEFuEsPKYtbbVufVMa1BUzDKhwUppaAptVRIaHCh1WOsGU8TiYehqqzmk/0Kx6db
-	 ZlLhQ80DmDNSCnPZTuGUl0rLMYwkHuZcpWhyIUq8KrivFNozk9JN2I/a+8qYN+YfFC
-	 mOFLnTDa+Dy4ceSx5j9eJfWV+tH0kc8mK8XvcfSs=
+	b=cbiUQPtDxnrCyYlkNVcwaBXoGIO4A/A5Pp4cRZFlFpWEQdPp8dfJsOf4Yj9SzBWHx
+	 7Py7zZ2hDaknXgxtlAWF9V1mKfZt2ELp0qzvqw2C9SVgt+VwUJsJbt1IjvZBnGHbjV
+	 64ZwN2JbPRT10xUF/1GejNPObdLSmfME2WXsn1TI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yannick Vignon <yannick.vignon@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	wangdicheng <wangdicheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 416/589] net: taprio offload: enforce qdisc to netdev queue mapping
-Date: Sat, 30 May 2026 18:04:57 +0200
-Message-ID: <20260530160235.683662456@linuxfoundation.org>
+Subject: [PATCH 6.1 774/969] ALSA: hda/conexant: Fix missing error check for jack detection
+Date: Sat, 30 May 2026 18:04:58 +0200
+Message-ID: <20260530160321.956661481@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259099-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257719-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,178 +89,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,nxp.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2D4B3612588
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email]
+X-Rspamd-Queue-Id: 8FFE760FDF1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yannick Vignon <yannick.vignon@nxp.com>
+From: wangdicheng <wangdicheng@kylinos.cn>
 
-[ Upstream commit 13511704f8d7591faf19fdb84f0902dff0535ccb ]
+[ Upstream commit b0e2333a231107adedd38c6fcfe1adc6162716fc ]
 
-Even though the taprio qdisc is designed for multiqueue devices, all the
-queues still point to the same top-level taprio qdisc. This works and is
-probably required for software taprio, but at least with offload taprio,
-it has an undesirable side effect: because the whole qdisc is run when a
-packet has to be sent, it allows packets in a best-effort class to be
-processed in the context of a task sending higher priority traffic. If
-there are packets left in the qdisc after that first run, the NET_TX
-softirq is raised and gets executed immediately in the same process
-context. As with any other softirq, it runs up to 10 times and for up to
-2ms, during which the calling process is waiting for the sendmsg call (or
-similar) to return. In my use case, that calling process is a real-time
-task scheduled to send a packet every 2ms, so the long sendmsg calls are
-leading to missed timeslots.
+In cx_probe(), the return value of snd_hda_jack_detect_enable_callback()
+is ignored. This function returns a pointer, and if it fails (e.g., due
+to memory allocation failure), it returns an error pointer which must
+be checked using IS_ERR().
 
-By attaching each netdev queue to its own qdisc, as it is done with
-the "classic" mq qdisc, each traffic class can be processed independently
-without touching the other classes. A high-priority process can then send
-packets without getting stuck in the sendmsg call anymore.
+If the registration fails, the driver continues to probe, but the jack
+detection callback will not be registered. This can lead to a kernel
+crash later when the driver attempts to handle jack events or accesses
+the uninitialized structure.
 
-Signed-off-by: Yannick Vignon <yannick.vignon@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 105425b1969c ("net/sched: taprio: fix use-after-free in advance_sched() on schedule switch")
+Check the return value using IS_ERR() and propagate the error via
+PTR_ERR() to the probe caller.
+
+Fixes: 7aeb25908648 ("ALSA: hda/conexant: Fix headset auto detect fail in cx8070 and SN6140")
+Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
+Link: https://patch.msgid.link/20260428080450.108801-1-wangdich9700@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 85 ++++++++++++++++++++++--------------------
- 1 file changed, 45 insertions(+), 40 deletions(-)
+ sound/pci/hda/patch_conexant.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 66348b1083ed5..a92dab2fa6ff4 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -443,6 +443,11 @@ static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct Qdisc *child;
- 	int queue;
- 
-+	if (unlikely(FULL_OFFLOAD_IS_ENABLED(q->flags))) {
-+		WARN_ONCE(1, "Trying to enqueue skb into the root of a taprio qdisc configured with full offload\n");
-+		return qdisc_drop(skb, sch, to_free);
-+	}
-+
- 	queue = skb_get_queue_mapping(skb);
- 
- 	child = q->qdiscs[queue];
-@@ -534,23 +539,7 @@ static struct sk_buff *taprio_peek_soft(struct Qdisc *sch)
- 
- static struct sk_buff *taprio_peek_offload(struct Qdisc *sch)
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index 7aeaccc9189c8..82186c4364c9b 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -1199,6 +1199,7 @@ static void add_cx5051_fake_mutes(struct hda_codec *codec)
+ static int patch_conexant_auto(struct hda_codec *codec)
  {
--	struct taprio_sched *q = qdisc_priv(sch);
--	struct net_device *dev = qdisc_dev(sch);
--	struct sk_buff *skb;
--	int i;
--
--	for (i = 0; i < dev->num_tx_queues; i++) {
--		struct Qdisc *child = q->qdiscs[i];
--
--		if (unlikely(!child))
--			continue;
--
--		skb = child->ops->peek(child);
--		if (!skb)
--			continue;
--
--		return skb;
--	}
-+	WARN_ONCE(1, "Trying to peek into the root of a taprio qdisc configured with full offload\n");
+ 	struct conexant_spec *spec;
++	struct hda_jack_callback *callback;
+ 	int err;
  
- 	return NULL;
- }
-@@ -659,27 +648,7 @@ static struct sk_buff *taprio_dequeue_soft(struct Qdisc *sch)
- 
- static struct sk_buff *taprio_dequeue_offload(struct Qdisc *sch)
- {
--	struct taprio_sched *q = qdisc_priv(sch);
--	struct net_device *dev = qdisc_dev(sch);
--	struct sk_buff *skb;
--	int i;
--
--	for (i = 0; i < dev->num_tx_queues; i++) {
--		struct Qdisc *child = q->qdiscs[i];
--
--		if (unlikely(!child))
--			continue;
--
--		skb = child->ops->dequeue(child);
--		if (unlikely(!skb))
--			continue;
--
--		qdisc_bstats_update(sch, skb);
--		qdisc_qstats_backlog_dec(sch, skb);
--		sch->q.qlen--;
--
--		return skb;
--	}
-+	WARN_ONCE(1, "Trying to dequeue from the root of a taprio qdisc configured with full offload\n");
- 
- 	return NULL;
- }
-@@ -1774,6 +1743,37 @@ static int taprio_init(struct Qdisc *sch, struct nlattr *opt,
- 	return taprio_change(sch, opt, extack);
- }
- 
-+static void taprio_attach(struct Qdisc *sch)
-+{
-+	struct taprio_sched *q = qdisc_priv(sch);
-+	struct net_device *dev = qdisc_dev(sch);
-+	unsigned int ntx;
-+
-+	/* Attach underlying qdisc */
-+	for (ntx = 0; ntx < dev->num_tx_queues; ntx++) {
-+		struct Qdisc *qdisc = q->qdiscs[ntx];
-+		struct Qdisc *old;
-+
-+		if (FULL_OFFLOAD_IS_ENABLED(q->flags)) {
-+			qdisc->flags |= TCQ_F_ONETXQUEUE | TCQ_F_NOPARENT;
-+			old = dev_graft_qdisc(qdisc->dev_queue, qdisc);
-+			if (ntx < dev->real_num_tx_queues)
-+				qdisc_hash_add(qdisc, false);
-+		} else {
-+			old = dev_graft_qdisc(qdisc->dev_queue, sch);
-+			qdisc_refcount_inc(sch);
+ 	codec_info(codec, "%s: BIOS auto-probing.\n", codec->core.chip_name);
+@@ -1215,7 +1216,12 @@ static int patch_conexant_auto(struct hda_codec *codec)
+ 	case 0x14f11f86:
+ 	case 0x14f11f87:
+ 		spec->is_cx11880_sn6140 = true;
+-		snd_hda_jack_detect_enable_callback(codec, 0x19, cx_update_headset_mic_vref);
++		callback = snd_hda_jack_detect_enable_callback(codec, 0x19,
++				cx_update_headset_mic_vref);
++		if (IS_ERR(callback)) {
++			err = PTR_ERR(callback);
++			goto error;
 +		}
-+		if (old)
-+			qdisc_put(old);
-+	}
-+
-+	/* access to the child qdiscs is not needed in offload mode */
-+	if (FULL_OFFLOAD_IS_ENABLED(q->flags)) {
-+		kfree(q->qdiscs);
-+		q->qdiscs = NULL;
-+	}
-+}
-+
- static struct netdev_queue *taprio_queue_get(struct Qdisc *sch,
- 					     unsigned long cl)
- {
-@@ -1800,8 +1800,12 @@ static int taprio_graft(struct Qdisc *sch, unsigned long cl,
- 	if (dev->flags & IFF_UP)
- 		dev_deactivate(dev);
+ 		break;
+ 	}
  
--	*old = q->qdiscs[cl - 1];
--	q->qdiscs[cl - 1] = new;
-+	if (FULL_OFFLOAD_IS_ENABLED(q->flags)) {
-+		*old = dev_graft_qdisc(dev_queue, new);
-+	} else {
-+		*old = q->qdiscs[cl - 1];
-+		q->qdiscs[cl - 1] = new;
-+	}
- 
- 	if (new)
- 		new->flags |= TCQ_F_ONETXQUEUE | TCQ_F_NOPARENT;
-@@ -2035,6 +2039,7 @@ static struct Qdisc_ops taprio_qdisc_ops __read_mostly = {
- 	.change		= taprio_change,
- 	.destroy	= taprio_destroy,
- 	.reset		= taprio_reset,
-+	.attach		= taprio_attach,
- 	.peek		= taprio_peek,
- 	.dequeue	= taprio_dequeue,
- 	.enqueue	= taprio_enqueue,
 -- 
 2.53.0
 
