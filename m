@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-257230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UN/6G/YYG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:58 +0200
+	id 8BLYCxIjG2pa/ggAu9opvQ
+	(envelope-from <stable+bounces-258009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3EF60EE2F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D0861070E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52F8830EEFA3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:57:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B20D307762A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9195733F5A3;
-	Sat, 30 May 2026 16:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6553469FC;
+	Sat, 30 May 2026 17:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/6zy6pi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OF4Mqe/9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDF632D42B;
-	Sat, 30 May 2026 16:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A0E344DB9;
+	Sat, 30 May 2026 17:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160268; cv=none; b=BDhEupkia14jpmnhTZVMcpVqNu+UitGCVADrjvaEsy/DFYl2Q32Lw6roCSDNeYsmj1g1Ghmhns+WqbUorvL66V9g9O+MhvJ3kRTavz1IYF3vObk+l+VXCLegXrTDTJIeuZhOOSheB7BtYouWV2DqqWwh3hXtUY6cUmfGdsUP/VE=
+	t=1780162919; cv=none; b=CKmfQqmJM1eKmb/wVQvuYsKgaFPdkCZ0eVubTeVANo5QV/lVstuXIctZFskwOq99RkewKM7xZNZmEFZoCSvZJjBjLYVDzwtbcG79o4EvNdjdVY06HbtE2hyKhrZLuS1S1uNafR+OL5qGuEVR3ZTVQJsjrHedfRISc8Zev0/61Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160268; c=relaxed/simple;
-	bh=YPfjjEcapclR9D3pczH5ijzQXDoHTowgtdYsLvo4dxw=;
+	s=arc-20240116; t=1780162919; c=relaxed/simple;
+	bh=GKC1fRcx+uyciryTwZivVjT0DntpB7znw2fsXqgy7F8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fefXGv4Ok6lVUugs3Ca+OFJJoaOnpdUDLwknf7Zi1Jy3vcW7rcjsoBZeQtpKcu/8vX4uR+IA7fUTc33ho0Psu2Jq7pz6izeJp0fX6Nb52dRXtFQD8TzF98catwhzOoFjjITl9RiNNZaZcLgPE7Q6TWafClM476iUpSTrbKBsu6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/6zy6pi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E7B1F00893;
-	Sat, 30 May 2026 16:57:46 +0000 (UTC)
+	 MIME-Version; b=u0KBcvZxn0Oku/+6veH5ySux+qk0EeX+txjgB+xwtrJ756SISw/Z8s7GOIxt2iVF54eWNDpke4ZGApIPELeyI+qQQiwkpoL2krWSzCSuWLQ+p86pcgIYLbJH4E5jTtI1odOvdRqbklPkB8P+hICC9vXM6DXzuoRsdu0RiS18Nu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OF4Mqe/9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F91C1F00893;
+	Sat, 30 May 2026 17:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160267;
-	bh=nmuKJn/EzJXXvHzvVzQXSWaLjAPReb8yFGnZWGa+tek=;
+	s=korg; t=1780162918;
+	bh=1yf4VnxMTF+wZdboUtVHKLKglx5ZelTGQMHqgGZfRz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=a/6zy6pi/Cj0KDhlbJMkl7A6tCh5bSB9bD1yfWIZbSjti187iQ1V4OUFS5uLlD0lG
-	 POj50BzMVLSxU8WReSzryigCtH21SgTo55D7e4Chym6gPjjeQzIZUxVhitIgCJ4K7t
-	 f3JfS/zM/gZkApEW9+I3NGuDIV/mGcw12Y05Yp5w=
+	b=OF4Mqe/9gnRYO1Dyk0ietci4+a65W2OeFa9erahdyUuxUKsflQrhR32T4H63F2xzB
+	 E7SVDb2pyum76biJYv9fM3jDzMXnj/3YMdDGpiJ0TU0m2X38aDvDOf80tiiDO0xv2g
+	 Y4gpLwaMaFJBE7JrENh0rSboShMJg00lH94Zgn+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com,
-	Tejas Bharambe <tejas.bharambe@outlook.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org,
-	Jianqiang kang <jianqkang@sina.cn>,
+	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+	Martin Kepplinger <martin.kepplinger@puri.sm>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 291/969] ext4: validate p_idx bounds in ext4_ext_correct_indexes
+Subject: [PATCH 5.15 101/776] arm64: dts: imx8mq-librem5: Set the DVS voltages lower
 Date: Sat, 30 May 2026 17:56:55 +0200
-Message-ID: <20260530160308.488147866@linuxfoundation.org>
+Message-ID: <20260530160242.953415553@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,111 +65,149 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,outlook.com,mit.edu,kernel.org,sina.cn];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258009-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257230-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,04c4e65cab786a2e5b7e];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CD3EF60EE2F
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[puri.sm:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,i.mx:url]
+X-Rspamd-Queue-Id: 99D0861070E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejas Bharambe <tejas.bharambe@outlook.com>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-[ Upstream commit 2acb5c12ebd860f30e4faf67e6cc8c44ddfe5fe8 ]
+[ Upstream commit c24a9b698fb02cd0723fa8375abab07f94b97b10 ]
 
-ext4_ext_correct_indexes() walks up the extent tree correcting
-index entries when the first extent in a leaf is modified. Before
-accessing path[k].p_idx->ei_block, there is no validation that
-p_idx falls within the valid range of index entries for that
-level.
+They're still in the operating range according to i.MX 8M Quad
+datasheet. There's some headroom added over minimal values to
+account for voltage drop.
 
-If the on-disk extent header contains a corrupted or crafted
-eh_entries value, p_idx can point past the end of the allocated
-buffer, causing a slab-out-of-bounds read.
+Operational ranges (min - typ - max [selected]):
+ - VDD_SOC (BUCK1): 0.81 - 0.9 - 0.99 [0.88]
+ - VDD_ARM (BUCK2): 0.81 - 0.9 - 1.05 [0.84] (1000MHz)
+                    0.90 - 1.0 - 1.05 [0.93] (1500MHz)
+ - VDD_GPU (BUCK3): 0.81 - 0.9 - 1.05 [0.85] (800MHz)
+                    0.90 - 1.0 - 1.05 [ -- ] (1000MHz)
+ - VDD_VPU (BUCK4): 0.81 - 0.9 - 1.05 [ -- ] (550/500/588MHz)
+                    0.90 - 1.0 - 1.05 [0.93] (660/600/800MHz)
 
-Fix this by validating path[k].p_idx against EXT_LAST_INDEX() at
-both access sites: before the while loop and inside it. Return
--EFSCORRUPTED if the index pointer is out of range, consistent
-with how other bounds violations are handled in the ext4 extent
-tree code.
+Idle power consumption doesn't appear to be influenced much,
+but a simple load test (`cat /dev/urandom | pigz - > /dev/null`
+combined with running Animatch) seems to show about 0.3W of
+difference.
 
-Reported-by: syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=04c4e65cab786a2e5b7e
-Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
-Link: https://patch.msgid.link/JH0PR06MB66326016F9B6AD24097D232B897CA@JH0PR06MB6632.apcprd06.prod.outlook.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ Minor conflict resolved. ]
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+Care is advised, as there may be differences between each
+units in how low can they be undervolted - in my experience,
+reaching that point usually makes the phone fail to boot.
+In my case, it appears that my Birch phone can go down the most.
+
+This is a somewhat conservative set of values that I've seen
+working well on all my devices; I haven't tried very hard to
+optimize it, so more experiments are welcome.
+
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: 511f76bf1dce ("arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts |    2 -
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi   |   22 ++++++++++++++------
+ 2 files changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 1df7174774694..6d95dab538475 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1740,6 +1740,13 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
- 	err = ext4_ext_get_access(handle, inode, path + k);
- 	if (err)
- 		return err;
-+	if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
-+		EXT4_ERROR_INODE(inode,
-+				 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
-+				 k, path[k].p_idx,
-+				 EXT_LAST_INDEX(path[k].p_hdr));
-+		return -EFSCORRUPTED;
-+	}
- 	path[k].p_idx->ei_block = border;
- 	err = ext4_ext_dirty(handle, inode, path + k);
- 	if (err)
-@@ -1752,6 +1759,14 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
- 		err = ext4_ext_get_access(handle, inode, path + k);
- 		if (err)
- 			break;
-+		if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
-+			EXT4_ERROR_INODE(inode,
-+					 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
-+					 k, path[k].p_idx,
-+					 EXT_LAST_INDEX(path[k].p_hdr));
-+			err = -EFSCORRUPTED;
-+			break;
-+		}
- 		path[k].p_idx->ei_block = border;
- 		err = ext4_ext_dirty(handle, inode, path + k);
- 		if (err)
--- 
-2.53.0
-
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
+@@ -12,7 +12,7 @@
+ 
+ &a53_opp_table {
+ 	opp-1000000000 {
+-		opp-microvolt = <1000000>;
++		opp-microvolt = <950000>;
+ 	};
+ };
+ 
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+@@ -704,8 +704,8 @@
+ 				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+ 				regulator-ramp-delay = <1250>;
+-				rohm,dvs-run-voltage = <900000>;
+-				rohm,dvs-idle-voltage = <850000>;
++				rohm,dvs-run-voltage = <880000>;
++				rohm,dvs-idle-voltage = <820000>;
+ 				rohm,dvs-suspend-voltage = <800000>;
+ 				regulator-always-on;
+ 			};
+@@ -716,8 +716,8 @@
+ 				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+ 				regulator-ramp-delay = <1250>;
+-				rohm,dvs-run-voltage = <1000000>;
+-				rohm,dvs-idle-voltage = <900000>;
++				rohm,dvs-run-voltage = <950000>;
++				rohm,dvs-idle-voltage = <850000>;
+ 				regulator-always-on;
+ 			};
+ 
+@@ -726,14 +726,14 @@
+ 				regulator-min-microvolt = <700000>;
+ 				regulator-max-microvolt = <1300000>;
+ 				regulator-boot-on;
+-				rohm,dvs-run-voltage = <900000>;
++				rohm,dvs-run-voltage = <850000>;
+ 			};
+ 
+ 			buck4_reg: BUCK4 {
+ 				regulator-name = "buck4";
+ 				regulator-min-microvolt = <700000>;
+ 				regulator-max-microvolt = <1300000>;
+-				rohm,dvs-run-voltage = <1000000>;
++				rohm,dvs-run-voltage = <930000>;
+ 			};
+ 
+ 			buck5_reg: BUCK5 {
+@@ -1214,3 +1214,13 @@
+ 	fsl,ext-reset-output;
+ 	status = "okay";
+ };
++
++&a53_opp_table {
++	opp-1000000000 {
++		opp-microvolt = <850000>;
++	};
++
++	opp-1500000000 {
++		opp-microvolt = <950000>;
++	};
++};
 
 
 
