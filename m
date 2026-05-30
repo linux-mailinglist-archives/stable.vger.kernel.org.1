@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-257065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uORIKSYUG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257065-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:26 +0200
+	id YAqKCzkUG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D7760E635
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C328260E63C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F190E3010251
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:45:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1100C300B477
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEA5332EA7;
-	Sat, 30 May 2026 16:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560DC33F5B4;
+	Sat, 30 May 2026 16:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jpw0DINe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/9dbsU6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0481726F288;
-	Sat, 30 May 2026 16:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FF126C385;
+	Sat, 30 May 2026 16:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159524; cv=none; b=V06vT3iyRJJmPyn8+2zfO+JnrCe8CKDYciVctHKmTbrRzufrD8fBKYbgz1CZrCuT4EfVRX9IwunD1l1Y+dXfYNZY11+COgOeP4cYZ+iqiBqlzZsXvPbmNsS29SshcRGqTXBvywbyjqtlrCX85KMoOa9UlisatzmJUUrGLfNFnn0=
+	t=1780159542; cv=none; b=WhT6a9sXTUVfKuXsVF47tx+XA7Ll2jOuRB4eW25Gu7JvXUqd5UlCjte6ItrVF9RfSn/WczIozeb2rmRTPdSTOdFNkVg/yBrI1aszvpxyZ3mQGXmJSd3CXZzzicKD3mS1PL7lgDAHB3hn8a5Vy2LBEzYfVBWkDBCo9GfiuuNVV7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159524; c=relaxed/simple;
-	bh=bzkT/7dAklLoEBUs7gws91C9i3pVRca+cDIpdUNSKjo=;
+	s=arc-20240116; t=1780159542; c=relaxed/simple;
+	bh=9RoA2EhVVO3y9Yf+wa9sm190LfzEkO0l6zQMv7A3FeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PD23GAKelZ/CuCYuAYjCd2M8AIaNxnqgbFFZt+XTrxMFRlzXFojwsHIhuwCSa9r/5MILOTMu79cVfXdgUFx2+B10KtRkp7dqHk1vqFUlz2L6b0kDFZs0yqNjhWUm159uiRkmUK//RhSR4OroQQPBIJMXydVBlJK0MG447oJdlcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jpw0DINe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E07A1F00893;
-	Sat, 30 May 2026 16:45:19 +0000 (UTC)
+	 MIME-Version; b=L1IdhhySfui6d79YJI4gNuhY/AUXXxoNaKNM5RnKS/ffL1FeWG6N1rjma4on7nkRDbZb0bGM26zCsTQD6OP0DLfUfyAzAgUaU4/VDnzn2ywtfy0zOCJZTSXf0njK4xVfwbqhJAMArNoEibe/5P8ihmY+vP5G+5v050sCNsrU/wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/9dbsU6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1A81F00893;
+	Sat, 30 May 2026 16:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159522;
-	bh=wCunCpVIVbiLuXPcu80EPg6Tsrc09lbLxmzhcFOh8PI=;
+	s=korg; t=1780159541;
+	bh=/KFVT/MpCTfxo4cIPQpX4KHkDmXAas62s4gz10EeZcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jpw0DINeuERYE38BTglQBzHM0DZQ/2CELH9RVwsTy4PK9zlw7P0WetyrvsVDOOXFI
-	 Xi/kr+0at49wLjrxmsPW1LFbYDBh8+D5f7tyBhAyOcDJv+J7614B4xETzZonC7C22h
-	 lEIIQImGM35l+9UQO8EE1uHsCd8aFEvU/B/gP8so=
+	b=p/9dbsU6OLB6+tszYsisAE61biWkKN2QW1rJzg8E3gmCsB8kxiL+xpMzZ5EXU2Bbt
+	 0/3yWA9iOXL/Di3k5JhQbdMK++ECfgWFLmoEaXC50PMA38T5tdb5KWA5kisQ2CEhpt
+	 iI8yPvcg72Wa6neqFpkItHCGx+hc5Kq6Df1+eP1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+639ebc6ec75e96674741@syzkaller.appspotmail.com,
-	Ruslan Valiyev <linuxoid@gmail.com>,
+	syzbot+c025d34b8eaa54c571b8@syzkaller.appspotmail.com,
+	Abhishek Kumar <abhishek_sts8@yahoo.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 101/969] media: vidtv: fix nfeeds state corruption on start_streaming failure
-Date: Sat, 30 May 2026 17:53:45 +0200
-Message-ID: <20260530160303.116463010@linuxfoundation.org>
+Subject: [PATCH 6.1 102/969] media: em28xx: fix use-after-free in em28xx_v4l2_open()
+Date: Sat, 30 May 2026 17:53:46 +0200
+Message-ID: <20260530160303.142185904@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -69,31 +69,31 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257065-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257066-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,yahoo.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,639ebc6ec75e96674741,cisco];
+	TAGGED_RCPT(0.00)[stable,c025d34b8eaa54c571b8,cisco];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 20D7760E635
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,appspotmail.com:email]
+X-Rspamd-Queue-Id: C328260E63C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,63 +101,69 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ruslan Valiyev <linuxoid@gmail.com>
+From: Abhishek Kumar <abhishek_sts8@yahoo.com>
 
-commit a0e5a598fe9a4612b852406b51153b881592aede upstream.
+commit a66485a934c7187ae8e36517d40615fa2e961cff upstream.
 
-syzbot reported a memory leak in vidtv_psi_service_desc_init [1].
+em28xx_v4l2_open() reads dev->v4l2 without holding dev->lock,
+creating a race with em28xx_v4l2_init()'s error path and
+em28xx_v4l2_fini(), both of which free the em28xx_v4l2 struct
+and set dev->v4l2 to NULL under dev->lock.
 
-When vidtv_start_streaming() fails inside vidtv_start_feed(), the
-nfeeds counter is left incremented even though no feed was actually
-started. This corrupts the driver state: subsequent start_feed calls
-see nfeeds > 1 and skip starting the mux, while stop_feed calls
-eventually try to stop a non-existent stream.
+This race leads to two issues:
+ - use-after-free in v4l2_fh_init() when accessing vdev->ctrl_handler,
+   since the video_device is embedded in the freed em28xx_v4l2 struct.
+ - NULL pointer dereference in em28xx_resolution_set() when accessing
+   v4l2->norm, since dev->v4l2 has been set to NULL.
 
-This state corruption can also lead to memory leaks, since the mux
-and channel resources may be partially allocated during a failed
-start_streaming but never cleaned up, as the stop path finds
-dvb->streaming == false and returns early.
+Fix this by moving the mutex_lock() before the dev->v4l2 read and
+adding a NULL check for dev->v4l2 under the lock.
 
-Fix by decrementing nfeeds back when start_streaming fails, keeping
-the counter in sync with the actual number of active feeds.
-
-[1]
-BUG: memory leak
-unreferenced object 0xffff888145b50820 (size 32):
- comm "syz.0.17", pid 6068, jiffies 4294944486
- backtrace (crc 90a0c7d4):
-  vidtv_psi_service_desc_init+0x74/0x1b0 drivers/media/test-drivers/vidtv/vidtv_psi.c:288
-  vidtv_channel_s302m_init+0xb1/0x2a0 drivers/media/test-drivers/vidtv/vidtv_channel.c:83
-  vidtv_channels_init+0x1b/0x40 drivers/media/test-drivers/vidtv/vidtv_channel.c:524
-  vidtv_mux_init+0x516/0xbe0 drivers/media/test-drivers/vidtv/vidtv_mux.c:518
-  vidtv_start_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:194 [inline]
-  vidtv_start_feed+0x33e/0x4d0 drivers/media/test-drivers/vidtv/vidtv_bridge.c:239
-
-Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
+Reported-by: syzbot+c025d34b8eaa54c571b8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c025d34b8eaa54c571b8
+Fixes: 8139a4d583ab ("[media] em28xx: move v4l2 user counting fields from struct em28xx to struct v4l2")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+639ebc6ec75e96674741@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=639ebc6ec75e96674741
-Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
+Signed-off-by: Abhishek Kumar <abhishek_sts8@yahoo.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_bridge.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/usb/em28xx/em28xx-video.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-@@ -237,8 +237,10 @@ static int vidtv_start_feed(struct dvb_d
+--- a/drivers/media/usb/em28xx/em28xx-video.c
++++ b/drivers/media/usb/em28xx/em28xx-video.c
+@@ -2126,7 +2126,7 @@ static int em28xx_v4l2_open(struct file
+ {
+ 	struct video_device *vdev = video_devdata(filp);
+ 	struct em28xx *dev = video_drvdata(filp);
+-	struct em28xx_v4l2 *v4l2 = dev->v4l2;
++	struct em28xx_v4l2 *v4l2;
+ 	enum v4l2_buf_type fh_type = 0;
+ 	int ret;
  
- 	if (dvb->nfeeds == 1) {
- 		ret = vidtv_start_streaming(dvb);
--		if (ret < 0)
-+		if (ret < 0) {
-+			dvb->nfeeds--;
- 			rc = ret;
-+		}
+@@ -2143,13 +2143,19 @@ static int em28xx_v4l2_open(struct file
+ 		return -EINVAL;
  	}
  
- 	mutex_unlock(&dvb->feed_lock);
++	if (mutex_lock_interruptible(&dev->lock))
++		return -ERESTARTSYS;
++
++	v4l2 = dev->v4l2;
++	if (!v4l2) {
++		mutex_unlock(&dev->lock);
++		return -ENODEV;
++	}
++
+ 	em28xx_videodbg("open dev=%s type=%s users=%d\n",
+ 			video_device_node_name(vdev), v4l2_type_names[fh_type],
+ 			v4l2->users);
+ 
+-	if (mutex_lock_interruptible(&dev->lock))
+-		return -ERESTARTSYS;
+-
+ 	ret = v4l2_fh_open(filp);
+ 	if (ret) {
+ 		dev_err(&dev->intf->dev,
 
 
 
