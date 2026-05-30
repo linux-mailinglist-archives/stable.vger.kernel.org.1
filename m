@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-259239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FAPNMAxG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259239-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:44 +0200
+	id EDwnLXQfG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D673C612A43
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0848560FECC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 812703016B1A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D5669300AD7C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D954C2E7398;
-	Sat, 30 May 2026 18:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8503469FC;
+	Sat, 30 May 2026 17:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfrMkAM6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvVbp5Pv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA0E2566E9;
-	Sat, 30 May 2026 18:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82732E7379;
+	Sat, 30 May 2026 17:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167075; cv=none; b=HdJk92nu7k3QJo18NLSvV4Rwr2j/NXMHH+25ddpFrYDAcTR0NzZ1cqwCGz/ujunV0KbWw+9pMASR798Emjuk6Hc6JLybkAIgxbD0BgfFgGQCjum/5X9E9NZiQFG72jiZEr2kwUWnoOuWsxTTPqHRvqFJ7/GHApPwuBqLojml+nc=
+	t=1780162363; cv=none; b=phz/hI0hWXQEUmpalf1P18h0cECQoTcDvy+NX+QiZNzeg3SbZb5pehfdizSUUcOYIKULJchE22jHlHv0MlxfSpnLWX+pCt3Hq+YgUhSa4UH2P7U/f+qpW9hZum8KLgyfLxyNSiX0iZeNg0y7k5rjNXSoeuc/P+MHcR310TYbaeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167075; c=relaxed/simple;
-	bh=LV4rVyo5OgRgqFBgwnXeVO8nAX/pLN/LXrVlDyUMNoM=;
+	s=arc-20240116; t=1780162363; c=relaxed/simple;
+	bh=Gg2v05oG4ncMhXt/+hZy1MuYZLjzy1tADmRQ43febT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+w9CFtpwuw4tWuBP9ZBFwMJ1ddgnH8iZLHAyUwxw4b/790r5XS2oc02p5VQdTEc2+9jCO5adWUgg0Pfq2FUMUPhD0R3wzJUC78qoKay0BwGnkZ4gYADF8w4BNmolxeboEcTGFV/598ouiK8+9BDSc7uyUJtQpksb9+88U+jIXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfrMkAM6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96E21F00893;
-	Sat, 30 May 2026 18:51:13 +0000 (UTC)
+	 MIME-Version; b=EFKyjd/XpC1HrKRdeZzjmJDkwSijiyLCe/1Z2R0/Yq5CJOJ/dmT3iEFK0ZN/jvOYnkHAdmlzuumW1u1NxRe2l+jKLBfbt+tmTMldR6td9j6d10bwxltQ8COKALSvIvlGfm18C//oExnmTIOiJCvRqXmZ7a2zRFCiGzvdMINI4AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvVbp5Pv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A95C1F00893;
+	Sat, 30 May 2026 17:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167074;
-	bh=Tyk650q4bzcVL6ynTRTqbGgIsQ1E4CuzXPjQJW6af8s=;
+	s=korg; t=1780162362;
+	bh=YP9IzbTG2ZcMSfS/JXs9t15tadv5Krzj8K83IAw97EM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jfrMkAM6hzSP7OnrNhP7JtPU+tQFgUf23GrsnqieU63t/G2fi369U8NJKS6MMt0Mp
-	 9oXZkEHBOI2lYUZZlwz02X5a0zsIksiTVYmt585U+dCtLT0AOnC3FJfTpbqKS2i62w
-	 DdPpdcIiCIn1hGPrhTIKmnyKxRPRUjGNtqT99XVg=
+	b=lvVbp5Pvjm1uw0C+p8686I8UnbcJo5tNCLdZt0gDPGl5g5E3EvUha6JGmC2P8xWW4
+	 9Dwwij/zmx5TtbYX+mRd92ANNqOzuGQiAX+NvWJqANZVSVtEc7RogYEKA/+8NYQcbZ
+	 nP1CYE1yXkdULZGp8/+bDjEbw2FwQ+AFD9p+lDNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Farnung <kfarnung@gmail.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 5.10 539/589] wifi: ath11k: clear shared SRNG pointer state on restart
-Date: Sat, 30 May 2026 18:07:00 +0200
-Message-ID: <20260530160238.855730521@linuxfoundation.org>
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.1 897/969] hwmon: (pmbus/adm1266) register the nvmem device after pmbus_do_probe()
+Date: Sat, 30 May 2026 18:07:01 +0200
+Message-ID: <20260530160325.477378362@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,88 +72,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
-	TAGGED_FROM(0.00)[bounces-259239-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-257845-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D673C612A43
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,roeck-us.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0848560FECC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Farnung <kfarnung@gmail.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-commit f51e4b3b5574ad8cb5b16b11f8a1452147ece87a upstream.
+commit 6af713af91d5c34ec049eb3cc2c5b3f5eba953b8 upstream.
 
-LMAC rings reuse the shared rdp/wrp pointer buffers without going
-through the normal SRNG hw-init path that zeros non-LMAC ring
-pointers. After restart, ath11k_hal_srng_clear() can therefore hand
-stale hp/tp state from the previous firmware instance back to the new
-one.
+adm1266_probe() calls adm1266_config_nvmem() -- which goes on to
+devm_nvmem_register() and exposes adm1266_nvmem_read() to userspace --
+before pmbus_do_probe() has initialised the per-client PMBus state.
 
-Clear the shared pointer buffers while keeping the allocations in
-place so restart still avoids reallocating SRNG DMA memory, but starts
-with fresh ring-pointer state.
+Same latent hazard as the gpio_chip one fixed in the previous patch:
+once the nvmem device is registered, gpiolib's nvmem char-dev / sysfs
+interface is reachable, and any concurrent read triggers
+adm1266_nvmem_read() -> adm1266_nvmem_read_blackbox(), which issues
+PMBus traffic that races pmbus_do_probe()'s own device accesses with
+no serialisation.
 
-Fixes: 32be3ca4cf78b ("wifi: ath11k: HAL SRNG: don't deinitialize and re-initialize again")
+Move adm1266_config_nvmem() down past pmbus_do_probe() so the nvmem
+device isn't reachable from userspace until the PMBus state the
+nvmem accessors depend on is fully initialised.
+
+Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
 Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/CAOPSVF04q6uvVdq8GTRLHBrVMdpt9=o9wVcFMc6f-yhmSBcZqQ@mail.gmail.com/
-Signed-off-by: Kyle Farnung <kfarnung@gmail.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260513-kfarnung-ath11k-srng-clear-pointer-state-v1-1-bc700dd8b333@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-5-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/hal.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/hwmon/pmbus/adm1266.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1319,14 +1319,22 @@ EXPORT_SYMBOL(ath11k_hal_srng_deinit);
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -472,14 +472,14 @@ static int adm1266_probe(struct i2c_clie
+ 	if (ret < 0)
+ 		return ret;
  
- void ath11k_hal_srng_clear(struct ath11k_base *ab)
- {
--	/* No need to memset rdp and wrp memory since each individual
--	 * segment would get cleared in ath11k_hal_srng_src_hw_init()
--	 * and ath11k_hal_srng_dst_hw_init().
-+	/*
-+	 * Preserve the shared pointer buffers, but clear the previous
-+	 * firmware instance's hp/tp state before handing them back to FW.
-+	 * LMAC rings reuse this shared memory without going through the
-+	 * normal SRNG hw-init path that zeros non-LMAC ring pointers.
- 	 */
- 	memset(ab->hal.srng_list, 0,
- 	       sizeof(ab->hal.srng_list));
- 	memset(ab->hal.shadow_reg_addr, 0,
- 	       sizeof(ab->hal.shadow_reg_addr));
-+	if (ab->hal.rdp.vaddr)
-+		memset(ab->hal.rdp.vaddr, 0,
-+		       sizeof(*ab->hal.rdp.vaddr) * HAL_SRNG_RING_ID_MAX);
-+	if (ab->hal.wrp.vaddr)
-+		memset(ab->hal.wrp.vaddr, 0,
-+		       sizeof(*ab->hal.wrp.vaddr) * HAL_SRNG_NUM_LMAC_RINGS);
- 	ab->hal.avail_blk_resource = 0;
- 	ab->hal.current_blk_index = 0;
- 	ab->hal.num_shadow_reg_configured = 0;
+-	ret = adm1266_config_nvmem(data);
+-	if (ret < 0)
+-		return ret;
+-
+ 	ret = pmbus_do_probe(client, &data->info);
+ 	if (ret)
+ 		return ret;
+ 
++	ret = adm1266_config_nvmem(data);
++	if (ret < 0)
++		return ret;
++
+ 	ret = adm1266_config_gpio(data);
+ 	if (ret < 0)
+ 		return ret;
 
 
 
