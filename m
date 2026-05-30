@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258285-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJoiBoUbG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:53 +0200
+	id uJMjJ5MnG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258285-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD3460F4B9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 003E96110BF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2DF16300CE8B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C1C6430DB6DC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0A1350A05;
-	Sat, 30 May 2026 17:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821B8341AC7;
+	Sat, 30 May 2026 17:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjkb7NgD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNb2QHBV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250F5362157;
-	Sat, 30 May 2026 17:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A459320CAD;
+	Sat, 30 May 2026 17:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161304; cv=none; b=nQfDDHG2Ehj4j3FnR89NN0Qzhl/LcMeebff2GZJpYGWD/j/iWvNlrqKZL7HfPaOkoZ9lAaiVxNZY8MD9WLCT+n7PYqThHmbf5rKzegKhKdhTM7zb8WIPLstfMQ9sHg9CfZLhnVwBF1/Jfn+ZtFrxtBp/crQ78QK7YmApHwbvRCo=
+	t=1780163836; cv=none; b=uxG//CJkaM+aamf2o2P+7/3KXG5XkF0J4g8t36ndEaUg5vBQNHpXTsgeiqUzpKPBiPzkf+fDDoD08ENIyW2MonR9exU9XnV2rBh1uhRHBe/+4UGZAjsNnGob41PEQNSGLS+q7KQpjfcKqsC2XiGn7REv4GYxtv+G2cGxQ1N1eXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161304; c=relaxed/simple;
-	bh=L2MNm3kR8Zl81Oj8uCLGgt0T8HvdMAJeHCs/k56INus=;
+	s=arc-20240116; t=1780163836; c=relaxed/simple;
+	bh=lOrTRytc/JyO8CJhQ9K+M5EfZltPqQGQ4og6MzUPLBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JUM8Qq4809asSQQlzqiaYMwD0iXiKmoxD65bw/AjCZ0pmLwgvgciFA5BMhPLx23a0RsUNrrRsqUfnr1tkfb6j/PSXO+2T5rP3dNfypuj/ayomufB3uMmVN6A6dpK8o0TR1bTW8QDyRrmwQ66yioVft2Zh+GpE7vu6VEbq8/EC+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjkb7NgD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1731F00893;
-	Sat, 30 May 2026 17:15:02 +0000 (UTC)
+	 MIME-Version; b=An4TUybqumG8bn93yzJFpSqfkecWoM1ZMIhfi2DxKPSRSxT0fEW+SmTSVxfjJ1aPUZy4hk79uotbA2jFHaUqkFRtpFbO3SmO+UZZB5WFVD72910sW/HCnBcNmZ0ATGD4afSdDkuDS0ME+bCWQK3Qzpmru2MmCDBO1we1EgGDgnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNb2QHBV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FCC1F00893;
+	Sat, 30 May 2026 17:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161302;
-	bh=IQJBCfMEvvz6eXBYDoisMw3fmdEoXfI/dBZPdGg8k/A=;
+	s=korg; t=1780163835;
+	bh=7na267rn0YpjKccYbukGkjwC3vivoAz7x4AYG/eoChw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pjkb7NgDOWI9UhY4LPEKeNmUbl/gGmuKj/SbbkBgOt1P053hzYdRoCN0H6xQbBw8Y
-	 iq8+MvQD2iSFn0juXR8K46UfmFPuU0i/MKpM+8USWmPiL7eqLAjIhoenjlgThC0PzQ
-	 DHC+dRKLL2WUG7IvK7kmVrOVH3zj4s1TT8U9OOAw=
+	b=VNb2QHBVRbUkkAf1m2Nd9Xl+Ea0x1RQOYzp+0pZeTsfRy3chJHI7ovjKprONdPPJW
+	 4chPood/qqM7R6dtNznJUEgjV1kGn172gym2TDQJ7+O+NkliXl6NTMJZSp608KRm23
+	 P5/0VKIeKbpEkD63/QUb67A2HlGtMbKupE1iuFYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Sun <samsun1006219@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 567/969] quota: Fix race of dquot_scan_active() with quota deactivation
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.15 377/776] batman-adv: bla: prevent use-after-free when deleting claims
 Date: Sat, 30 May 2026 18:01:31 +0200
-Message-ID: <20260530160316.050473512@linuxfoundation.org>
+Message-ID: <20260530160250.270477879@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,182 +65,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257527-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258285-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CCD3460F4B9
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 003E96110BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit e93ab401da4b2e2c1b8ef2424de2f238d51c8b2d ]
+commit 4ae1709a314060a196981b344610d023ea841e57 upstream.
 
-dquot_scan_active() can race with quota deactivation in
-quota_release_workfn() like:
+When batadv_bla_del_backbone_claims() removes all claims for a backbone, it
+does this by dropping the link entry in the hash list. This list entry
+itself was one of the references which need to be dropped at the same time
+via batadv_claim_put().
 
-  CPU0 (quota_release_workfn)         CPU1 (dquot_scan_active)
-  ==============================      ==============================
-  spin_lock(&dq_list_lock);
-  list_replace_init(
-    &releasing_dquots, &rls_head);
-    /* dquot X on rls_head,
-       dq_count == 0,
-       DQ_ACTIVE_B still set */
-  spin_unlock(&dq_list_lock);
-  synchronize_srcu(&dquot_srcu);
-                                      spin_lock(&dq_list_lock);
-                                      list_for_each_entry(dquot,
-                                          &inuse_list, dq_inuse) {
-                                        /* finds dquot X */
-                                        dquot_active(X) -> true
-                                        atomic_inc(&X->dq_count);
-                                      }
-                                      spin_unlock(&dq_list_lock);
-  spin_lock(&dq_list_lock);
-  dquot = list_first_entry(&rls_head);
-  WARN_ON_ONCE(atomic_read(&dquot->dq_count));
+But the batadv_claim_put() must not be done before the last access to the
+claim object in this function. Otherwise the claim might be freed already
+by the batadv_claim_release() function before the list entry was dropped.
 
-The problem is not only a cosmetic one as under memory pressure the
-caller of dquot_scan_active() can end up working on freed dquot.
-
-Fix the problem by making sure the dquot is removed from releasing list
-when we acquire a reference to it.
-
-Fixes: 869b6ea1609f ("quota: Fix slow quotaoff")
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Link: https://lore.kernel.org/all/CAEkJfYPTt3uP1vAYnQ5V2ZWn5O9PLhhGi5HbOcAzyP9vbXyjeg@mail.gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/quota/dquot.c         | 38 ++++++++++++++++++++++++++++++--------
- include/linux/quotaops.h |  9 +--------
- 2 files changed, 31 insertions(+), 16 deletions(-)
+ net/batman-adv/bridge_loop_avoidance.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 0f82db69d2d86..0aa0ed754f2e0 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -362,6 +362,31 @@ static inline int dquot_active(struct dquot *dquot)
- 	return test_bit(DQ_ACTIVE_B, &dquot->dq_flags);
- }
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -317,8 +317,8 @@ batadv_bla_del_backbone_claims(struct ba
+ 			if (claim->backbone_gw != backbone_gw)
+ 				continue;
  
-+static struct dquot *__dqgrab(struct dquot *dquot)
-+{
-+	lockdep_assert_held(&dq_list_lock);
-+	if (!atomic_read(&dquot->dq_count))
-+		remove_free_dquot(dquot);
-+	atomic_inc(&dquot->dq_count);
-+	return dquot;
-+}
-+
-+/*
-+ * Get reference to dquot when we got pointer to it by some other means. The
-+ * dquot has to be active and the caller has to make sure it cannot get
-+ * deactivated under our hands.
-+ */
-+struct dquot *dqgrab(struct dquot *dquot)
-+{
-+	spin_lock(&dq_list_lock);
-+	WARN_ON_ONCE(!dquot_active(dquot));
-+	dquot = __dqgrab(dquot);
-+	spin_unlock(&dq_list_lock);
-+
-+	return dquot;
-+}
-+EXPORT_SYMBOL_GPL(dqgrab);
-+
- static inline int dquot_dirty(struct dquot *dquot)
- {
- 	return test_bit(DQ_MOD_B, &dquot->dq_flags);
-@@ -640,15 +665,14 @@ int dquot_scan_active(struct super_block *sb,
- 			continue;
- 		if (dquot->dq_sb != sb)
- 			continue;
--		/* Now we have active dquot so we can just increase use count */
--		atomic_inc(&dquot->dq_count);
-+		__dqgrab(dquot);
- 		spin_unlock(&dq_list_lock);
- 		dqput(old_dquot);
- 		old_dquot = dquot;
- 		/*
- 		 * ->release_dquot() can be racing with us. Our reference
--		 * protects us from new calls to it so just wait for any
--		 * outstanding call and recheck the DQ_ACTIVE_B after that.
-+		 * protects us from dquot_release() proceeding so just wait for
-+		 * any outstanding call and recheck the DQ_ACTIVE_B after that.
- 		 */
- 		wait_on_dquot(dquot);
- 		if (dquot_active(dquot)) {
-@@ -716,7 +740,7 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
- 			/* Now we have active dquot from which someone is
-  			 * holding reference so we can safely just increase
- 			 * use count */
--			dqgrab(dquot);
-+			__dqgrab(dquot);
- 			spin_unlock(&dq_list_lock);
- 			err = dquot_write_dquot(dquot);
- 			if (err && !ret)
-@@ -971,9 +995,7 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
- 		spin_unlock(&dq_list_lock);
- 		dqstats_inc(DQST_LOOKUPS);
- 	} else {
--		if (!atomic_read(&dquot->dq_count))
--			remove_free_dquot(dquot);
--		atomic_inc(&dquot->dq_count);
-+		__dqgrab(dquot);
- 		spin_unlock(&dq_list_lock);
- 		dqstats_inc(DQST_CACHE_HITS);
- 		dqstats_inc(DQST_LOOKUPS);
-diff --git a/include/linux/quotaops.h b/include/linux/quotaops.h
-index 3abd249ec3373..7078e6f2429af 100644
---- a/include/linux/quotaops.h
-+++ b/include/linux/quotaops.h
-@@ -44,14 +44,7 @@ int dquot_initialize(struct inode *inode);
- bool dquot_initialize_needed(struct inode *inode);
- void dquot_drop(struct inode *inode);
- struct dquot *dqget(struct super_block *sb, struct kqid qid);
--static inline struct dquot *dqgrab(struct dquot *dquot)
--{
--	/* Make sure someone else has active reference to dquot */
--	WARN_ON_ONCE(!atomic_read(&dquot->dq_count));
--	WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags));
--	atomic_inc(&dquot->dq_count);
--	return dquot;
--}
-+struct dquot *dqgrab(struct dquot *dquot);
- 
- static inline bool dquot_is_busy(struct dquot *dquot)
- {
--- 
-2.53.0
-
+-			batadv_claim_put(claim);
+ 			hlist_del_rcu(&claim->hash_entry);
++			batadv_claim_put(claim);
+ 		}
+ 		spin_unlock_bh(list_lock);
+ 	}
 
 
 
