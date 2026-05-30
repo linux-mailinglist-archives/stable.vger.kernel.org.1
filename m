@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-257925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257147-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHDiL/ohG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257925-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:26 +0200
+	id GPsALfgWG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257147-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:57:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492B261046E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CAD560EA81
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:57:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D40ED30E3855
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:37:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 460BF3058E68
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBE33AEB5C;
-	Sat, 30 May 2026 17:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D369348C72;
+	Sat, 30 May 2026 16:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKoC3vm7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eX6usT7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7D93AA182;
-	Sat, 30 May 2026 17:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0991CAA6C;
+	Sat, 30 May 2026 16:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162631; cv=none; b=tSHV155uyX9XxginoOuZNajj7AOKduuq6LdqHkrK6y1Ic4wfbVZfJ8BOfv6arZ7Uh4t2JMXak6yy4I+XncZyz4vqHzI/TT2+eMZHSzXS/wjooMy0bQKwJjCv+m21DOdG1o17X9898ICWwp91si2dBfWECiuY7yXqLoNUAaxlf0Q=
+	t=1780159966; cv=none; b=G0OBk9ikkOMHR6HRU80X4oprwFfQ1e4Nfpzcjgma6F/8JTZG+62Db+FrjNcrw8YY4UPOKTRleKTssidujCJdC1/gV/bDfgkQzBq4U7apqSUr8SXgpuVUviHqktz180AVtX/d1iFl9Uva6THB9E/S80DNAukRQQjONS8RueHdW4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162631; c=relaxed/simple;
-	bh=Cr/Ytsi5kDMnl0l79wH7seCcnbox1dP6sEjY2CHECSg=;
+	s=arc-20240116; t=1780159966; c=relaxed/simple;
+	bh=luif0YMAL5DuJ+MeeeDd6Jj8uCGTT/O5rciAbgdUev4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFAj0XsDZOXv9v2V+/yYQXVRzGyXBwhwVhrqUrOj9cJtqalnh4jaXyIUo3l8ZViFcfrtQ+0eR9T2hEpv1wlMvOUYvZAvxNnBJvwcHUBrW4qEFg7TZBkvArkdvXENuWAv8dg6DssLvjvo7rqtzM5Q0iFnC/xWWupgs0MNiDeppFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKoC3vm7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9B31F00893;
-	Sat, 30 May 2026 17:37:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ha4AYPAU7gc7mNKXuvZh0LOcOuyXCqi5fwr4lq1UEheiMhTCakOT42J1T/nmAITBm46Ni5tJodjgQ/+IUQSyJal4YakUWGjFEjDasokmlvjkTO70UawXN729MAnhgpBffv2MlpFf5q4bSy7qW/pmxshKMmh2DP7WIwyyffnG3Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eX6usT7F; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34161F00893;
+	Sat, 30 May 2026 16:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162629;
-	bh=Vgkd4CKvMeed8LhN+8EVVU7Oz9Ml6+UMKq1GTQdvAxY=;
+	s=korg; t=1780159964;
+	bh=j5shZnP0Y9ljbd8x22Z99JUc3+MzavxDveFMczmnACc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hKoC3vm7aXHSxyc9TDNsgLoSZQmosqTfMN4sEPkOnCzIsMtVb0wKlW5j5r8ZQnRsn
-	 OkzGVl34kbEfllHY1CMc73K723q1pJqWAPm/XcKnQw+aFKaXAQvKCfdAZ2So5yssry
-	 f/HEbR7S4nn3Uv1Nf3WEavxr35oKxffb6+zgght8=
+	b=eX6usT7FRnUr/xR2HfOV7du93HfmBZ2Q6KZjrFzORRDfcPisIlTwSmAyinWBdxt+7
+	 ZouSVt5wd7mCfGh36g0QXUhEcloiJDjYDUixTR9wnfHhRUyByd+2TlxMaQWuis3iX5
+	 QgmShQdWr/YA9IrfjIjhKOyNgl9rBhMZcNZb62Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-	Peng Fan <peng.fan@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 018/776] arm64: dts: imx8mq: Set the correct gpu_ahb clock frequency
-Date: Sat, 30 May 2026 17:55:32 +0200
-Message-ID: <20260530160240.735311284@linuxfoundation.org>
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 209/969] ALSA: caiaq: Fix control_put() result and cache rollback
+Date: Sat, 30 May 2026 17:55:33 +0200
+Message-ID: <20260530160306.238709515@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +62,158 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,puri.sm,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-257925-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257147-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,i.mx:url,2.67.213.128:email]
-X-Rspamd-Queue-Id: 492B261046E
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 5CAD560EA81
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit 1f99b5d93d99ca17d50b386a674d0ce1f20932d8 ]
+commit a3542d1b30f92307f545f2def14e8d988dffdff0 upstream.
 
-According to i.MX 8M Quad Reference Manual, GPU_AHB_CLK_ROOT's maximum
-frequency is 400MHz.
+control_put() always returns 1 and updates cdev->control_state[]
+before sending the USB command. It also ignores transport errors
+from usb_bulk_msg(), snd_usb_caiaq_send_command(), and
+snd_usb_caiaq_send_command_bank().
 
-Fixes: 45d2c84eb3a2 ("arm64: dts: imx8mq: add GPU node")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That breaks the ALSA .put() contract and can leave control_get()
+reporting a cached value the device never accepted.
+
+Return 0 for unchanged values, propagate transport failures,
+and restore the cached byte when the write fails.
+
+Fixes: 8e3cd08ed8e59 ("[ALSA] caiaq - add control API and more input features")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260417-caiaq-control-put-v1-1-c37826e92447@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mq.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/caiaq/control.c |   54 +++++++++++++++++++++++++++++++---------------
+ 1 file changed, 37 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-index e41e1c553bd37..12a33ac9e7543 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-@@ -1362,7 +1362,7 @@ gpu: gpu@38000000 {
- 			                         <&clk IMX8MQ_GPU_PLL_OUT>,
- 			                         <&clk IMX8MQ_GPU_PLL>;
- 			assigned-clock-rates = <800000000>, <800000000>,
--			                       <800000000>, <800000000>, <0>;
-+			                       <800000000>, <400000000>, <0>;
- 			power-domains = <&pgc_gpu>;
- 		};
+--- a/sound/usb/caiaq/control.c
++++ b/sound/usb/caiaq/control.c
+@@ -87,6 +87,7 @@ static int control_put(struct snd_kcontr
+ 	struct snd_usb_caiaqdev *cdev = caiaqdev(chip->card);
+ 	int pos = kcontrol->private_value;
+ 	int v = ucontrol->value.integer.value[0];
++	int ret;
+ 	unsigned char cmd;
  
--- 
-2.53.0
-
+ 	switch (cdev->chip.usb_id) {
+@@ -103,6 +104,10 @@ static int control_put(struct snd_kcontr
+ 
+ 	if (pos & CNT_INTVAL) {
+ 		int i = pos & ~CNT_INTVAL;
++		unsigned char old = cdev->control_state[i];
++
++		if (old == v)
++			return 0;
+ 
+ 		cdev->control_state[i] = v;
+ 
+@@ -113,10 +118,11 @@ static int control_put(struct snd_kcontr
+ 			cdev->ep8_out_buf[0] = i;
+ 			cdev->ep8_out_buf[1] = v;
+ 
+-			usb_bulk_msg(cdev->chip.dev,
+-				     usb_sndbulkpipe(cdev->chip.dev, 8),
+-				     cdev->ep8_out_buf, sizeof(cdev->ep8_out_buf),
+-				     &actual_len, 200);
++			ret = usb_bulk_msg(cdev->chip.dev,
++					   usb_sndbulkpipe(cdev->chip.dev, 8),
++					   cdev->ep8_out_buf,
++					   sizeof(cdev->ep8_out_buf),
++					   &actual_len, 200);
+ 		} else if (cdev->chip.usb_id ==
+ 			USB_ID(USB_VID_NATIVEINSTRUMENTS, USB_PID_MASCHINECONTROLLER)) {
+ 
+@@ -128,21 +134,36 @@ static int control_put(struct snd_kcontr
+ 				offset = MASCHINE_BANK_SIZE;
+ 			}
+ 
+-			snd_usb_caiaq_send_command_bank(cdev, cmd, bank,
+-					cdev->control_state + offset,
+-					MASCHINE_BANK_SIZE);
++			ret = snd_usb_caiaq_send_command_bank(cdev, cmd, bank,
++							      cdev->control_state + offset,
++							      MASCHINE_BANK_SIZE);
+ 		} else {
+-			snd_usb_caiaq_send_command(cdev, cmd,
+-					cdev->control_state, sizeof(cdev->control_state));
++			ret = snd_usb_caiaq_send_command(cdev, cmd,
++							 cdev->control_state,
++							 sizeof(cdev->control_state));
+ 		}
+-	} else {
+-		if (v)
+-			cdev->control_state[pos / 8] |= 1 << (pos % 8);
+-		else
+-			cdev->control_state[pos / 8] &= ~(1 << (pos % 8));
+ 
+-		snd_usb_caiaq_send_command(cdev, cmd,
+-				cdev->control_state, sizeof(cdev->control_state));
++		if (ret < 0) {
++			cdev->control_state[i] = old;
++			return ret;
++		}
++	} else {
++		int idx = pos / 8;
++		unsigned char mask = 1 << (pos % 8);
++		unsigned char old = cdev->control_state[idx];
++		unsigned char val = v ? (old | mask) : (old & ~mask);
++
++		if (old == val)
++			return 0;
++
++		cdev->control_state[idx] = val;
++		ret = snd_usb_caiaq_send_command(cdev, cmd,
++						 cdev->control_state,
++						 sizeof(cdev->control_state));
++		if (ret < 0) {
++			cdev->control_state[idx] = old;
++			return ret;
++		}
+ 	}
+ 
+ 	return 1;
+@@ -640,4 +661,3 @@ int snd_usb_caiaq_control_init(struct sn
+ 
+ 	return ret;
+ }
+-
 
 
 
