@@ -1,67 +1,59 @@
-Return-Path: <stable+bounces-259047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBMGIBMvG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:19 +0200
+	id KE5HLuMpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A24A612366
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EED9611701
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 80751300AD48
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:40:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 274CC30CFA01
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCA3351C2F;
-	Sat, 30 May 2026 18:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509953AB291;
+	Sat, 30 May 2026 18:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CH7fFImt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bD4aTfR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710D7331A56;
-	Sat, 30 May 2026 18:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65903C1406;
+	Sat, 30 May 2026 18:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166412; cv=none; b=K7n0qS8H5FZqN1K2LY2Ch3CswJs6LZ8iqjXpcyEl2PkKiIL4NAPzh4HobhZ6qomihTn6rrRun8JEyAObxXYT7isHaGOPy0x2vTTPcg1dlKw0gBvoumEqpp2DI7SRcogv8vlU4qO/1J68pY7QewmmU7c+/iw5pXdOEKjdPlZCmg4=
+	t=1780164366; cv=none; b=B5cQIDPrQCcqMI79W0jTv0oxaAn4lvPfco87UXm2ZKRhZAm6HplbyxTJEgAOkrR/rL3WiblSlP6SALLfqlYzQDT6up3DrPghbyl47tExqQrkXWduOhNKhqFE07E72PVTgr2Y3/CGmE3WWrqxlX/6oRp65JnKyS2qtxqm7nNNlLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166412; c=relaxed/simple;
-	bh=Pcn86e/yApeS3X7PAUrKdI7vkhPwkWz9GheIlgTSsxQ=;
+	s=arc-20240116; t=1780164366; c=relaxed/simple;
+	bh=PPA8iy6i1VLqUCskBOR0SscW2ga40EJQS7T9YW1aoHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=soSRSjm0ncT4G9MA7F3d3uG8w65f9ajbGf2tcli2HNu8uzvZRksjuxtjwWR1HuylUS5PYrCcPeaMiHpH9ogFdh6Mfiu4lYuCAFmLJliSEhctH1qTTpbm4cCzatsuV0BABuXtqZfe+vH1kgpBpZ3FP86bUcqJxFTiUC49o08Wst0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CH7fFImt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98AD1F00893;
-	Sat, 30 May 2026 18:40:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BQPlfuDlGe2jRpoFYDbqP9G8jPcWccjj27IQmNt9k3VZ9DtP+9jnNdByhEZvErl+L/zi0STB/Q+rAMyBaF91l3KX2rDkxIpd3Cf71kYU1b0yS8npzZDgSz36N37N0K4ZVJZN+qGiI5eWpcFmgfGekzq4gymmpQvorBx80e06u68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bD4aTfR/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88A31F00893;
+	Sat, 30 May 2026 18:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166411;
-	bh=DsV75k3ZvgU4btU9k3NSDMB+axcTgGPGnSrl0OlXAWk=;
+	s=korg; t=1780164363;
+	bh=qNQGoGYd26PUWC6yN3n2GBn/4YWO47d6yPpQvh/EM1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CH7fFImtX1+q30LEOdCkBnXqTm0tzeerHuS5uHaMpsD3DcytM875VQoPynwQxWpNd
-	 3rVAeqW+C+B7FMsMkvNnrChN9wHWXqI7TP268sc3RAPfp6oZaAJ27KoNHyASJnvhDQ
-	 xP8QGsrOSGd7bIpkXUP/O9XVR5R1aH9zIYFUjFcU=
+	b=bD4aTfR/IHRHdB3Jmz+T9U63hl6M/LLFt/LtpAbDzarSw4j94xTo9sIDEBFq0MI1Z
+	 LWu2pmqNRC4/8hzGCROIwaQZYN0mDuTMPkUjVVYK8IchKzngtciH3Hz1eQQUnXoaaK
+	 0KIoj6vBX5wTYbl2VeHAxVWA/Dpe78nWfhZwxEDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 366/589] ocfs2/dlm: validate qr_numregions in dlm_match_regions()
+Subject: [PATCH 5.15 533/776] platform/x86: dell-wmi-sysman: bound enumeration string aggregation
 Date: Sat, 30 May 2026 18:04:07 +0200
-Message-ID: <20260530160234.455367815@linuxfoundation.org>
+Message-ID: <20260530160253.976944574@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,110 +63,130 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259047-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-258442-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8A24A612366
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,iscas.ac.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 1EED9611701
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit 7ab3fbb01bc6d79091bc375e5235d360cd9b78be ]
+[ Upstream commit 3c34471c26abc52a37f5ad90949e2e4b8027eb14 ]
 
-Patch series "ocfs2/dlm: fix two bugs in dlm_match_regions()".
+populate_enum_data() aggregates firmware-provided value-modifier
+and possible-value strings into fixed 512-byte struct members.
+The current code bounds each individual source string but then
+appends every string and separator with raw strcat() and no
+remaining-space check.
 
-In dlm_match_regions(), the qr_numregions field from a DLM_QUERY_REGION
-network message is used to drive loops over the qr_regions buffer without
-sufficient validation.  This series fixes two issues:
+Switch the aggregation loops to a bounded append helper and
+reject enumeration packages whose combined strings do not fit
+in the destination buffers.
 
-- Patch 1 adds a bounds check to reject messages where qr_numregions
-  exceeds O2NM_MAX_REGIONS. The o2net layer only validates message
-  byte length; it does not constrain field values, so a crafted message
-  can set qr_numregions up to 255 and trigger out-of-bounds reads past
-  the 1024-byte qr_regions buffer.
-
-- Patch 2 fixes an off-by-one in the local-vs-remote comparison loop,
-  which uses '<=' instead of '<', reading one entry past the valid range
-  even when qr_numregions is within bounds.
-
-This patch (of 2):
-
-The qr_numregions field from a DLM_QUERY_REGION network message is used
-directly as loop bounds in dlm_match_regions() without checking against
-O2NM_MAX_REGIONS.  Since qr_regions is sized for at most O2NM_MAX_REGIONS
-(32) entries, a crafted message with qr_numregions > 32 causes
-out-of-bounds reads past the qr_regions buffer.
-
-Add a bounds check for qr_numregions before entering the loops.
-
-Link: https://lkml.kernel.org/r/SYBPR01MB7881A334D02ACEE5E0645801AF7BA@SYBPR01MB7881.ausprd01.prod.outlook.com
-Link: https://lkml.kernel.org/r/SYBPR01MB788166F524AD04E262E174BEAF7BA@SYBPR01MB7881.ausprd01.prod.outlook.com
-Fixes: ea2034416b54 ("ocfs2/dlm: Add message DLM_QUERY_REGION")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Link: https://patch.msgid.link/20260408084501.1-dell-wmi-sysman-v2-pengpeng@iscas.ac.cn
+[ij: add include]
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/dlm/dlmdomain.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../dell/dell-wmi-sysman/enum-attributes.c    | 34 +++++++++++++++----
+ 1 file changed, 28 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
-index 357cfc702ce36..6881961dbde87 100644
---- a/fs/ocfs2/dlm/dlmdomain.c
-+++ b/fs/ocfs2/dlm/dlmdomain.c
-@@ -982,6 +982,14 @@ static int dlm_match_regions(struct dlm_ctxt *dlm,
- 		goto bail;
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
+index fc2f58b4cbc6e..7e44ba3015627 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
+@@ -6,10 +6,32 @@
+  *  Copyright (c) 2020 Dell Inc.
+  */
+ 
++#include <linux/bug.h>
++
+ #include "dell-wmi-sysman.h"
+ 
+ get_instance_id(enumeration);
+ 
++static int append_enum_string(char *dest, const char *src)
++{
++	size_t dest_len = strlen(dest);
++	ssize_t copied;
++
++	if (WARN_ON_ONCE(dest_len >= MAX_BUFF))
++		return -EINVAL;
++
++	copied = strscpy(dest + dest_len, src, MAX_BUFF - dest_len);
++	if (copied < 0)
++		return -EINVAL;
++
++	dest_len += copied;
++	copied = strscpy(dest + dest_len, ";", MAX_BUFF - dest_len);
++	if (copied < 0)
++		return -EINVAL;
++
++	return 0;
++}
++
+ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
+ {
+ 	int instance_id = get_enumeration_instance_id(kobj);
+@@ -176,9 +198,9 @@ int populate_enum_data(union acpi_object *enumeration_obj, int instance_id,
+ 			return -EINVAL;
+ 		if (check_property_type(enumeration, next_obj, ACPI_TYPE_STRING))
+ 			return -EINVAL;
+-		strcat(wmi_priv.enumeration_data[instance_id].dell_value_modifier,
+-			enumeration_obj[next_obj++].string.pointer);
+-		strcat(wmi_priv.enumeration_data[instance_id].dell_value_modifier, ";");
++		if (append_enum_string(wmi_priv.enumeration_data[instance_id].dell_value_modifier,
++				       enumeration_obj[next_obj++].string.pointer))
++			return -EINVAL;
  	}
  
-+	if (qr->qr_numregions > O2NM_MAX_REGIONS) {
-+		mlog(ML_ERROR, "Domain %s: Joining node %d has invalid "
-+		     "number of heartbeat regions %u\n",
-+		     qr->qr_domain, qr->qr_node, qr->qr_numregions);
-+		status = -EINVAL;
-+		goto bail;
-+	}
-+
- 	r = remote;
- 	for (i = 0; i < qr->qr_numregions; ++i) {
- 		mlog(0, "Region %.*s\n", O2HB_MAX_REGION_NAME_LEN, r);
+ 	if (next_obj >= enum_property_count)
+@@ -193,9 +215,9 @@ int populate_enum_data(union acpi_object *enumeration_obj, int instance_id,
+ 			return -EINVAL;
+ 		if (check_property_type(enumeration, next_obj, ACPI_TYPE_STRING))
+ 			return -EINVAL;
+-		strcat(wmi_priv.enumeration_data[instance_id].possible_values,
+-			enumeration_obj[next_obj++].string.pointer);
+-		strcat(wmi_priv.enumeration_data[instance_id].possible_values, ";");
++		if (append_enum_string(wmi_priv.enumeration_data[instance_id].possible_values,
++				       enumeration_obj[next_obj++].string.pointer))
++			return -EINVAL;
+ 	}
+ 
+ 	return sysfs_create_group(attr_name_kobj, &enumeration_attr_group);
 -- 
 2.53.0
 
