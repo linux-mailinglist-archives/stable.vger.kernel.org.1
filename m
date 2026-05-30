@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-259246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJCRMJszG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259246-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:59:39 +0200
+	id gM0kOI8qG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34DBC612EA5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:59:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB9E6118C8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF4D930AEA70
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 38D29307D741
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6671F2367DF;
-	Sat, 30 May 2026 18:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965CD241C8C;
+	Sat, 30 May 2026 18:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsDbrbr3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dzo9rKkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219AB248F66;
-	Sat, 30 May 2026 18:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D095284690;
+	Sat, 30 May 2026 18:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167100; cv=none; b=UpusPG7vR0Scz9UMc0xINVslCbcV/5xi9vUdTjHmGStjwDVZ9n72nIgHoQUhPnnem1YjBgneoMB7DHyqBrpojeyfuawMHjsCJ/soSGDtCa4vaQAWgoeG9VqQmh7KvIJjsd0wXrO/PLMrbA8TEXmRBUvDp+9Vnu2jcS8uBtcsQ2s=
+	t=1780165033; cv=none; b=P+acv/q5ORTsodexY/siCjnt3kFfF1T+2+ObQyJnKtps9LRBsol2GWfylZNHZY+pksJRA2bKGcigadfVhFskTA8GJ3H/tJNHtjHdT1t4Jmt+q0a/u0tXoGSWheGdsdFRGAv3eVgYaEA0ERKnFlTgxaBscRgdyE5H8Fr3YHY3dUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167100; c=relaxed/simple;
-	bh=cgm/pys4Q8qz0ObWWY6mWoz97bO97dEgTRMpP0MMEJA=;
+	s=arc-20240116; t=1780165033; c=relaxed/simple;
+	bh=c344TKKQT2U0WbEpIaKs86AxSrEspQpyRN/OqLEg7BQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mpemkvqmUr/DmFEiD1TPUNer6MobhPQzgpvMpNiigCixWXsOf0FfxgDPVRzrAvn8gfjzbzvkdCOlj4W1ZlAapTwabuNlp7WH+WqfzFv/f83FyJIcQ3JIro1rmf5lVI0pSzdebKJxIEOl74ty9B3TmrjHPMr3KZzGqicOFMM9At0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsDbrbr3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D0B1F00893;
-	Sat, 30 May 2026 18:51:38 +0000 (UTC)
+	 MIME-Version; b=sLJK8g2uOlVT3QbM60pgZ3HCGekq9ZRlObOTZxJlkQ4Biu0mMxBn1z81ZkxSpIKyAFbUvWHQL3Td7+4BognslMsjnvLolUEA4nmyEG5pRrHEOFEeqMSA9Mq/GBEau3vI/KmCaIiVwgQKWWg37649p0856+rtoJyVKNnkvTjUdLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dzo9rKkX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8749F1F00893;
+	Sat, 30 May 2026 18:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167099;
-	bh=w7eDVZKjJ5fbUaFcTQao0qAHzG6UTRvY9+VpSht6Gg4=;
+	s=korg; t=1780165032;
+	bh=9xb1rN7yoHA/4gaU8biZJBI25eNxCQZx0XrVX3NaGiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XsDbrbr3Y53N3tx3SxW4a0kWsBwdqyxMUELnVnxGENxV/ZtBCQY1f10FZOz23nL/b
-	 fEBeGfhEc0aj86sE0EK0IKm5nuQvMMgOPGREmrnBZB9/+Ucz4/Mzs56mLXWOej1zzx
-	 H85zLVz865Pbwr9Tw/rWflqZHFg2LDjJo/LMjgKc=
+	b=Dzo9rKkXb+2ssHjReUkgJV4vAq3hmp2IHgTUi0eb3bL+WumCWnX5jlXwhhbGbAnKS
+	 ux3XEg1NDLW+j7USYclR43W1FpsftVMkzMmvzi5c2hkE+JG8iK/dqJktQnqXakCjzV
+	 dLnBZxhxNtN0XAQpQRKUkPtTm2VmXdqnvUPfbCYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.10 563/589] hwmon: (pmbus/adm1266) bounce blackbox records through a protocol-sized buffer
-Date: Sat, 30 May 2026 18:07:24 +0200
-Message-ID: <20260530160239.438270679@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 731/776] netfilter: arp_tables: allow use of arpt_do_table as hookfn
+Date: Sat, 30 May 2026 18:07:25 +0200
+Message-ID: <20260530160258.707703705@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,91 +78,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259246-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258640-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 34DBC612EA5
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,netfilter.org:email]
+X-Rspamd-Queue-Id: 6CB9E6118C8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Florian Westphal <fw@strlen.de>
 
-commit 43cae21424ff8e33894a0f86c6b80b840c049fd7 upstream.
+[ Upstream commit e8d225b6002673366abc2e40e30c991bdc8d62ca ]
 
-adm1266_pmbus_block_xfer() copies the device-supplied block payload
-into the caller-provided buffer using the device-supplied length:
+This is possible now that the xt_table structure is passed in via *priv.
 
-	memcpy(data_r, &msgs[1].buf[1], msgs[1].buf[0]);
-
-The helper does not know how large data_r is and trusts the device to
-return at most one record's worth of bytes.  adm1266_nvmem_read_blackbox()
-violates that contract: it advances read_buff inside data->dev_mem in
-ADM1266_BLACKBOX_SIZE (64-byte) strides while the helper is willing to
-write up to ADM1266_PMBUS_BLOCK_MAX (255) bytes.  A device that returns
-more than 64 bytes on the trailing record (read_buff offset 1984 in
-the 2048-byte dev_mem allocation) overflows dev_mem by up to 191 bytes
-before the post-call
-
-	if (ret != ADM1266_BLACKBOX_SIZE)
-		return -EIO;
-
-can reject the response.
-
-Contain the fix in the caller without changing the helper signature:
-read each record into a 255-byte local bounce buffer that matches the
-helper's maximum output, validate the returned length, and only then
-copy exactly ADM1266_BLACKBOX_SIZE bytes into the dev_mem slot.
-
-Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-5-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: b4597d5fd7d2 ("netfilter: x_tables: add and use xtables_unregister_table_exit")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/netfilter_arp/arp_tables.h |  5 ++---
+ net/ipv4/netfilter/arp_tables.c          |  7 ++++---
+ net/ipv4/netfilter/arptable_filter.c     | 10 +---------
+ 3 files changed, 7 insertions(+), 15 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -350,6 +350,7 @@ static void adm1266_init_debugfs(struct
+diff --git a/include/linux/netfilter_arp/arp_tables.h b/include/linux/netfilter_arp/arp_tables.h
+index 4f9a4b3c58926..a40aaf645fa47 100644
+--- a/include/linux/netfilter_arp/arp_tables.h
++++ b/include/linux/netfilter_arp/arp_tables.h
+@@ -54,9 +54,8 @@ int arpt_register_table(struct net *net, const struct xt_table *table,
+ 			const struct nf_hook_ops *ops);
+ void arpt_unregister_table(struct net *net, const char *name);
+ void arpt_unregister_table_pre_exit(struct net *net, const char *name);
+-extern unsigned int arpt_do_table(struct sk_buff *skb,
+-				  const struct nf_hook_state *state,
+-				  struct xt_table *table);
++extern unsigned int arpt_do_table(void *priv, struct sk_buff *skb,
++				  const struct nf_hook_state *state);
  
- static int adm1266_nvmem_read_blackbox(struct adm1266_data *data, u8 *read_buff)
+ #ifdef CONFIG_NETFILTER_XTABLES_COMPAT
+ #include <net/compat.h>
+diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
+index 92bc90ee76748..564054123772a 100644
+--- a/net/ipv4/netfilter/arp_tables.c
++++ b/net/ipv4/netfilter/arp_tables.c
+@@ -191,10 +191,11 @@ struct arpt_entry *arpt_next_entry(const struct arpt_entry *entry)
+ 	return (void *)entry + entry->next_offset;
+ }
+ 
+-unsigned int arpt_do_table(struct sk_buff *skb,
+-			   const struct nf_hook_state *state,
+-			   struct xt_table *table)
++unsigned int arpt_do_table(void *priv,
++			   struct sk_buff *skb,
++			   const struct nf_hook_state *state)
  {
-+	u8 record[ADM1266_PMBUS_BLOCK_MAX];
- 	int record_count;
- 	char index;
- 	u8 buf[I2C_SMBUS_BLOCK_MAX];
-@@ -367,13 +368,14 @@ static int adm1266_nvmem_read_blackbox(s
- 		return -EIO;
++	const struct xt_table *table = priv;
+ 	unsigned int hook = state->hook;
+ 	static const char nulldevname[IFNAMSIZ] __attribute__((aligned(sizeof(long))));
+ 	unsigned int verdict = NF_DROP;
+diff --git a/net/ipv4/netfilter/arptable_filter.c b/net/ipv4/netfilter/arptable_filter.c
+index 771eec4629352..359d00d74095b 100644
+--- a/net/ipv4/netfilter/arptable_filter.c
++++ b/net/ipv4/netfilter/arptable_filter.c
+@@ -26,14 +26,6 @@ static const struct xt_table packet_filter = {
+ 	.priority	= NF_IP_PRI_FILTER,
+ };
  
- 	for (index = 0; index < record_count; index++) {
--		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, read_buff);
-+		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, record);
- 		if (ret < 0)
- 			return ret;
+-/* The work comes in here from netfilter.c */
+-static unsigned int
+-arptable_filter_hook(void *priv, struct sk_buff *skb,
+-		     const struct nf_hook_state *state)
+-{
+-	return arpt_do_table(skb, state, priv);
+-}
+-
+ static struct nf_hook_ops *arpfilter_ops __read_mostly;
  
- 		if (ret != ADM1266_BLACKBOX_SIZE)
- 			return -EIO;
+ static int arptable_filter_table_init(struct net *net)
+@@ -72,7 +64,7 @@ static int __init arptable_filter_init(void)
+ 	if (ret < 0)
+ 		return ret;
  
-+		memcpy(read_buff, record, ADM1266_BLACKBOX_SIZE);
- 		read_buff += ADM1266_BLACKBOX_SIZE;
- 	}
- 
+-	arpfilter_ops = xt_hook_ops_alloc(&packet_filter, arptable_filter_hook);
++	arpfilter_ops = xt_hook_ops_alloc(&packet_filter, arpt_do_table);
+ 	if (IS_ERR(arpfilter_ops)) {
+ 		xt_unregister_template(&packet_filter);
+ 		return PTR_ERR(arpfilter_ops);
+-- 
+2.53.0
+
 
 
 
