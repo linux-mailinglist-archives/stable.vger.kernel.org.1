@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-259292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258171-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2JvpOH5CG2o4AgkAu9opvQ
-	(envelope-from <stable+bounces-259292-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:03:10 +0200
+	id YF3pJn8jG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258171-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2B0613290
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:03:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 622E161082A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4EFD300B857
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B09A83004931
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC49288C81;
-	Sat, 30 May 2026 20:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6B1341AC7;
+	Sat, 30 May 2026 17:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkiAJqHZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFNtd3B5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12612F39CE;
-	Sat, 30 May 2026 20:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19370342CA7;
+	Sat, 30 May 2026 17:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780171303; cv=none; b=hc1hg7cX3YX8XrkhEdQFSxg+q69wl3AmucUz6NkQeUOwkS2a+bMmvjmnDRpnf/r107AYpJ7k26QeSO4jdBhYSM387FhJ8eUTtA2a2R11i0w6itd/TI0e0WdDm6xIrUJHcvfpcTOkG0cgEGkDbbvLyowlyka90rP+HN7eSB06STc=
+	t=1780163453; cv=none; b=KqeZt3kk2D7Mr/0q5yKEcW/smf7Ifv8xFDbelB/DmjNy4X5XY5WAjTbAXMSgwl9oKL0HSqVn1DVFxZiFQN7+FXJT9RlqUhywfwDQCZVxMqvlNbZYfhA1LdMY2TgX/v4Nq44nd9+FY7ruA+dZBq+2sc8X/14pUMFTtGuEGENrqI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780171303; c=relaxed/simple;
-	bh=HIEvJ2qJpV+v3lmH+po/ztUdbX+ryxZj6uRZAqZ2bYM=;
+	s=arc-20240116; t=1780163453; c=relaxed/simple;
+	bh=Ol3ZyhnnDF3KCGydRZQSHB6ySK6uIJM9EunO6zDsL08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CBVxnttBP4c5ttTas0fUqaO18UfrK9JviyFY1RfzFlSNkdpZmbuFQypNZ7aO1g7TZJeEufwBzbgYsNc/ENrl4ymYLmaAVVUg0W/SkSW+TyOhKrTCGpg/Do/9G6OBYiwF4prZjJTExTZ3smdKo0k3seSwSFa+yw/7FEXXRVCgd6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkiAJqHZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DDF1F00893;
-	Sat, 30 May 2026 20:01:40 +0000 (UTC)
+	 MIME-Version; b=otYtCP6Dv0xPwH5eqca0iyO4nx+SrRrhP1Anp8iz5SnKtiPPPXJEXx7FqoNFHvRBY+yA3Jx/9jS+DjxuCvMftF3wwcbemeE6e/tu/7HO9XcH4fKkoxEBnNnLxCaYAXTLWxrozeH2wFCfeB0WG4zyr1Jt+GQJc7qf/ZBLZ4jOyJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFNtd3B5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9FB1F00893;
+	Sat, 30 May 2026 17:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780171301;
-	bh=feobJL59YA0cT6xnoIJFcL/ZwU5Y1toxOQs8vWxYEuQ=;
+	s=korg; t=1780163451;
+	bh=cN/drgxB8ag2j07dfx52rbXYN0hCjqbMMTnNssKwzXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zkiAJqHZliV4OjF4eLox64yfBjcr8j19Mv+Xftj1a2E+kZgQx5vPcDQeinC7/MSLe
-	 F6s9EBLvYLQOH8v7k0hTXXuRjXYnBvOaZ3nUp1wJoQ4uIncClIl0kfT0n35Yh05Hem
-	 vQiXusVa2xcM8nw/3+CfBc1OfBjYkwu+jg6jqRWQ=
+	b=FFNtd3B5w8hBp28IS70ox0bmbJ1nCR4OVfBvYMEHzG0th6xmE8cUWcECd8MtsRPaO
+	 Q35RMGncQcn0hahy3rVpO1L2RCPCgpZyDIDkatc7g66UZEsN7Db9CRFlrwiFW2Ovmh
+	 ZZ9G5VOa5Ecso5BWpwq2ONKKSE0UaYo+xeEUpNrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=20Bence?= <csokas.bence@prolan.hu>,
-	Pratyush Yadav <pratyush@kernel.org>
-Subject: [PATCH 6.1 423/969] mtd: spi-nor: sst: Factor out common write operation to `sst_nor_write_data()`
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.15 233/776] KVM: nSVM: Sync interrupt shadow to cached vmcb12 after VMRUN of L2
 Date: Sat, 30 May 2026 17:59:07 +0200
-Message-ID: <20260530160311.944332517@linuxfoundation.org>
+Message-ID: <20260530160246.552303201@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,141 +62,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259292-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258171-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,prolan.hu:email]
-X-Rspamd-Queue-Id: 5D2B0613290
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 622E161082A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bence Csókás <csokas.bence@prolan.hu>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit 18bcb4aa54eab75dce41e5c176a1c2bff94f0f79 upstream.
+commit 03bee264f8ebfd39e0254c98e112d033a7aa9055 upstream.
 
-Writing to the Flash in `sst_nor_write()` is a 3-step process:
-first an optional one-byte write to get 2-byte-aligned, then the
-bulk of the data is written out in vendor-specific 2-byte writes.
-Finally, if there's a byte left over, another one-byte write.
-This was implemented 3 times in the body of `sst_nor_write()`.
-To reduce code duplication, factor out these sub-steps to their
-own function.
+After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
+fields written by the CPU from vmcb02 to the cached vmcb12. This is
+because the cached vmcb12 is used as the authoritative copy of some of
+the controls, and is the payload when saving/restoring nested state.
 
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-[pratyush@kernel.org: fixup whitespace, use %zu instead of %i in WARN()]
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Link: https://lore.kernel.org/r/20240710091401.1282824-1-csokas.bence@prolan.hu
+int_state is also written by the CPU, specifically bit 0 (i.e.
+SVM_INTERRUPT_SHADOW_MASK) for nested VMs, but it is not sync'd to
+cached vmcb12. This does not cause a problem if KVM_SET_NESTED_STATE
+preceeds KVM_SET_VCPU_EVENTS in the restore path, as an interrupt shadow
+would be correctly restored to vmcb02 (KVM_SET_VCPU_EVENTS overwrites
+what KVM_SET_NESTED_STATE restored in int_state).
+
+However, if KVM_SET_VCPU_EVENTS preceeds KVM_SET_NESTED_STATE, an
+interrupt shadow would be restored into vmcb01 instead of vmcb02. This
+would mostly be benign for L1 (delays an interrupt), but not for L2. For
+L2, the vCPU could hang (e.g. if a wakeup interrupt is delivered before
+a HLT that should have been in an interrupt shadow).
+
+Sync int_state to the cached vmcb12 in nested_sync_control_from_vmcb02()
+to avoid this problem. With that, KVM_SET_NESTED_STATE restores the
+correct interrupt shadow state, and if KVM_SET_VCPU_EVENTS follows it
+would overwrite it with the same value.
+
+Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
+CC: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260225005950.3739782-3-yosry@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/sst.c |   39 +++++++++++++++++++--------------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
+ arch/x86/kvm/svm/nested.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mtd/spi-nor/sst.c
-+++ b/drivers/mtd/spi-nor/sst.c
-@@ -117,6 +117,21 @@ static const struct flash_info sst_nor_p
- 		.fixups = &sst26vf_nor_fixups },
- };
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -336,6 +336,7 @@ void nested_sync_control_from_vmcb02(str
+ 	u32 mask;
+ 	svm->nested.ctl.event_inj      = svm->vmcb->control.event_inj;
+ 	svm->nested.ctl.event_inj_err  = svm->vmcb->control.event_inj_err;
++	svm->nested.ctl.int_state	= svm->vmcb->control.int_state;
  
-+static int sst_nor_write_data(struct spi_nor *nor, loff_t to, size_t len,
-+			      const u_char *buf)
-+{
-+	u8 op = (len == 1) ? SPINOR_OP_BP : SPINOR_OP_AAI_WP;
-+	int ret;
-+
-+	nor->program_opcode = op;
-+	ret = spi_nor_write_data(nor, to, 1, buf);
-+	if (ret < 0)
-+		return ret;
-+	WARN(ret != len, "While writing %zu byte written %i bytes\n", len, ret);
-+
-+	return spi_nor_wait_till_ready(nor);
-+}
-+
- static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
- 			 size_t *retlen, const u_char *buf)
- {
-@@ -138,16 +153,10 @@ static int sst_nor_write(struct mtd_info
- 
- 	/* Start write from odd address. */
- 	if (to % 2) {
--		nor->program_opcode = SPINOR_OP_BP;
--
- 		/* write one byte. */
--		ret = spi_nor_write_data(nor, to, 1, buf);
-+		ret = sst_nor_write_data(nor, to, 1, buf);
- 		if (ret < 0)
- 			goto out;
--		WARN(ret != 1, "While writing 1 byte written %i bytes\n", ret);
--		ret = spi_nor_wait_till_ready(nor);
--		if (ret)
--			goto out;
- 
- 		to++;
- 		actual++;
-@@ -155,16 +164,11 @@ static int sst_nor_write(struct mtd_info
- 
- 	/* Write out most of the data here. */
- 	for (; actual < len - 1; actual += 2) {
--		nor->program_opcode = SPINOR_OP_AAI_WP;
--
- 		/* write two bytes. */
--		ret = spi_nor_write_data(nor, to, 2, buf + actual);
-+		ret = sst_nor_write_data(nor, to, 2, buf + actual);
- 		if (ret < 0)
- 			goto out;
--		WARN(ret != 2, "While writing 2 bytes written %i bytes\n", ret);
--		ret = spi_nor_wait_till_ready(nor);
--		if (ret)
--			goto out;
-+
- 		to += 2;
- 		nor->sst_write_second = true;
- 	}
-@@ -184,14 +188,9 @@ static int sst_nor_write(struct mtd_info
- 		if (ret)
- 			goto out;
- 
--		nor->program_opcode = SPINOR_OP_BP;
--		ret = spi_nor_write_data(nor, to, 1, buf + actual);
-+		ret = sst_nor_write_data(nor, to, 1, buf + actual);
- 		if (ret < 0)
- 			goto out;
--		WARN(ret != 1, "While writing 1 byte written %i bytes\n", ret);
--		ret = spi_nor_wait_till_ready(nor);
--		if (ret)
--			goto out;
- 
- 		actual += 1;
- 
+ 	/* Only a few fields of int_ctl are written by the processor.  */
+ 	mask = V_IRQ_MASK | V_TPR_MASK;
 
 
 
