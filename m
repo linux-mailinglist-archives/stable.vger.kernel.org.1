@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258249-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAEjMiQuG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:20 +0200
+	id APCcCU8lG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258249-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD51612120
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0270610BD3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B7A4630AA49A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3DB6E301C963
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A733C37BD;
-	Sat, 30 May 2026 18:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B908349CCF;
+	Sat, 30 May 2026 17:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17noawzL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTL5mAja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41CE279DC9;
-	Sat, 30 May 2026 18:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A5A2628D;
+	Sat, 30 May 2026 17:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165786; cv=none; b=kWfpNMy2Ig5hTpWv/DW0fwThoPGkUzeEGtfV03AZT3weTSGoA6op85NACn945lci0ynZd7QDM4WfduLmNuks3tQb01QwE1chMcqMidFBTcsa8/VQpiT24kn68SV/8GKAr8ozvhGi5NVqTZwmLogXc6yqIb/GBMZyyxboK72ZAeA=
+	t=1780163716; cv=none; b=oRhiN6j+4fQhOcwPtUS6iJ/ZgGS4h21letVjAz7wLgzGGy9+8dTnKizuvSKbEtD2Ma2yQTb9/6cPIVQ5T0kIiyoodlTTOaO/dsW4lyItCM0htULLEN4eoQpSqlG4GwR4BYv0Gd5Z8g2hiobhabd/y8ejPWg7i0bD6oiG+MWZMCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165786; c=relaxed/simple;
-	bh=r3fIfky1uukGMgfcjxAuyyW+ZTJjOfFb90RIYCXRYBU=;
+	s=arc-20240116; t=1780163716; c=relaxed/simple;
+	bh=wlnt/m9u1h3TRO3/xpxnif5fT0rDQlB1DL319C/B8NQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZMggsAVQdEqPsLXwiUhDdr3CV6VjY1AI47g1w6gjHJKSjOVcYC4ARvi7Y50Eaw74T+le9cc4GjerJBke/VgSqOXO5V7kwJ5UcFx0DFcWAViKnal+kCEdYCljhv6wqROmfslXKcf300WUkesamGRtHTwQstLbRy44Ko7wbXSZZIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17noawzL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E001F00893;
-	Sat, 30 May 2026 18:29:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r6n7g1+b8hZ0xjz8tX6kSC02sK/2lhtJ6WuYsikobJwe46CU+/XFBWM8Ro7kxybFA65UPfoPXEWd7G6xRGG7vB6f25THTV4pfaIkAix7kJPzccSNt4j9wpHKxkras3OMgou0Oi8GyaXrGFfHtlHE30wabEydbcTacqcNeLXL3VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTL5mAja; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A20E1F00893;
+	Sat, 30 May 2026 17:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165785;
-	bh=2zzV9Y8+JC+QYc0uCPGm15nxWo2P+U3WaaSrt79NQOA=;
+	s=korg; t=1780163714;
+	bh=sQ7jDue8iBxFWjWu+2D25fpk1vg7lh9kZUJNVxkgSXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=17noawzLks3cXsA1v5+9VgibJxPTz1Zj15djKGuVxRt7VrBeDskw6s5D4H9Q/U9g0
-	 0deFVqo0wQMf85jpXun2JTxnh1tZFP1EZ0U7ac+llSPx3j13fnOL3m24rSUGKQ1me2
-	 2Uqpl+tG6X7bSo6fJmWKHSOfoXRaYTDWUPbEOI4M=
+	b=eTL5mAjatBjcuNhOzWalPlEmnMDmUNPQpc9dq3yWeeW4UsDXfe2vu1GbFyZfUGVqd
+	 P7sI6NbgJB5dgQMNNKR3WikLVYHpECNlQTyg/nnDeUANKbh1NaE+m8eSab7YxHSt4k
+	 LhwS5G8ZcvGIUXX+W4eK/1j/n7jZxAaucj1yTodI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacqueline Wong <jacqwong@google.com>,
-	Jordan Hand <jhand@google.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 5.10 174/589] tpm: tpm_tis: add error logging for data transfer
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 5.15 341/776] power: supply: max17042: avoid overflow when determining health
 Date: Sat, 30 May 2026 18:00:55 +0200
-Message-ID: <20260530160229.388820723@linuxfoundation.org>
+Message-ID: <20260530160249.389103343@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-258249-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258861-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4FD51612120
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: A0270610BD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacqueline Wong <jacqwong@google.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-commit 0471921e2d1043dcc6de5cffb49dd37709521abe upstream.
+commit 9a44949da669708f19d29141e65b3ac774d08f5a upstream.
 
-Add logging to more easily determine reason for transmit failure
+If vmax has the default value of INT_MAX (e.g. because not specified in
+DT), battery health is reported as over-voltage. This is because adding
+any value to vmax (the vmax tolerance in this case) causes it to wrap
+around, making it negative and smaller than the measured battery
+voltage.
 
-Cc: stable@vger.kernel.org # v6.6+
-Fixes: 280db21e153d8 ("tpm_tis: Resend command to recover from data transfer errors")
-Signed-off-by: Jacqueline Wong <jacqwong@google.com>
-Signed-off-by: Jordan Hand <jhand@google.com>
-Link: https://lore.kernel.org/r/20260415160006.2275325-2-jacqwong@google.com
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Avoid that by using size_add().
+
+Fixes: edd4ab055931 ("power: max17042_battery: add HEALTH and TEMP_* properties support")
+Cc: stable@vger.kernel.org
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://patch.msgid.link/20260302-max77759-fg-v3-6-3c5f01dbda23@linaro.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_tis_core.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/power/supply/max17042_battery.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -410,6 +410,8 @@ static int tpm_tis_send_data(struct tpm_
- 		status = tpm_tis_status(chip);
- 		if (!itpm && (status & TPM_STS_DATA_EXPECT) == 0) {
- 			rc = -EIO;
-+			dev_err(&chip->dev, "TPM_STS_DATA_EXPECT should be set. sts = 0x%08x\n",
-+				status);
- 			goto out_err;
- 		}
- 	}
-@@ -427,6 +429,8 @@ static int tpm_tis_send_data(struct tpm_
- 	status = tpm_tis_status(chip);
- 	if (!itpm && (status & TPM_STS_DATA_EXPECT) != 0) {
- 		rc = -EIO;
-+		dev_err(&chip->dev, "TPM_STS_DATA_EXPECT should be unset. sts = 0x%08x\n",
-+			status);
- 		goto out_err;
+--- a/drivers/power/supply/max17042_battery.c
++++ b/drivers/power/supply/max17042_battery.c
+@@ -198,7 +198,7 @@ static int max17042_get_battery_health(s
+ 		goto out;
  	}
  
+-	if (vbatt > chip->pdata->vmax + MAX17042_VMAX_TOLERANCE) {
++	if (vbatt > size_add(chip->pdata->vmax, MAX17042_VMAX_TOLERANCE)) {
+ 		*health = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+ 		goto out;
+ 	}
 
 
 
