@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-257937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257159-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OMbGI4gG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:22 +0200
+	id 8F11DwgXG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257159-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:57:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FAF5610131
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C5460EA8F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:57:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D9A74301B271
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 656903051582
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FCB2E7379;
-	Sat, 30 May 2026 17:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F19332EA7;
+	Sat, 30 May 2026 16:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ticZcsTu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cqqMrmC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFCB33F590;
-	Sat, 30 May 2026 17:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CDD33FE15;
+	Sat, 30 May 2026 16:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162677; cv=none; b=XU5IFKCR7D9dFH57HIIwNBYI1HJjPQ3PKDQE93fFrJt7M6pjvXeWo3QQj9C5bf1eau+QcIf2aoK5O1nhCFKOuyFwGo0Q8ZLzmKwuGAtoRDXOFWMf/ZFKNLOtEgpndFiFU8AHUFAs8Gt9VgfoiigAjQr3HKb10Co/0TnUKxujPkE=
+	t=1780160010; cv=none; b=Ndv6UvrXcp6z0+XsJQIYVtP07zFOIBnD5jjWVuFW0NimDxwogOXJRGn1J0u0JD1+HRDVlnCygozr6kTA9oJqsz0IyNW4Tm0pElt6tDKImrTj/KF7MSzwpi6HwusNUyROXXIKl4el30muWYoWKqzsHuFDh9gu2dq+LZh8i/hLca8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162677; c=relaxed/simple;
-	bh=tf4Mzbj4SvfmaWGSoBJHOTrtfNwUPdvb8LOz7T62sIo=;
+	s=arc-20240116; t=1780160010; c=relaxed/simple;
+	bh=6n0kMUETNy05k4utu+WQE7IKsdaKJq1VhR0l8BLtrYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=slOvzlVkF7dYDy3iJR/lsXMX5Z/dqNG4Kaga7T3gw7V5HyhXMuocoBvFzSigzkE3UfK+6SnEBY2524w3+ObxjMgT1d+6L6tp6aa3w/wv32hXPoaks7JL+4dedxLh2xVvWYK/4h3cVVCUiKMxiTcq1sL4XLIu7XuvTWOfy18Hbug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ticZcsTu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DDF1F00893;
-	Sat, 30 May 2026 17:37:55 +0000 (UTC)
+	 MIME-Version; b=TFNqhIrMLAvYjl1zY53Di2+uOlQYfFyRDX0Ge51T5FO9XhEaMtVQnJB55xY9pPj4pFsI+qoSfZNOiKA53VBnOUnxV+ohT2Mquc+aGoVZzHPwv7vFk5dSbFoDNsg8DThxH0WaaANaGqQAfxfPks1n2Ve55VX6yV5atM/gG99xgSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cqqMrmC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FF71F00893;
+	Sat, 30 May 2026 16:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162676;
-	bh=wjQhOQaua4B5FHilpJpQvBnBFQfGnrrcjAPWkxdMzUM=;
+	s=korg; t=1780160009;
+	bh=f23F60fMXRFnk+SIk4jSgiXl8Jrd87k4dumH1Ob3VZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ticZcsTuAAoLkRnaRdmXM1aASM3dJI3czGVNpzhCmaE66UCj1FYniFn2AtKh6KfHA
-	 nS7pGFJ6h+2I2GnIFVswdHQ2Nbgx/FoTucZdO7TDYArf+WjWp+pjny5WHLXcSPq1/a
-	 QBkLAi447N6u7bGZkBZzG+MLkHyY9heOUfi3Qxt4=
+	b=0cqqMrmCWmK3tOKj9QV7G6+Ry//gFYoS2Wrrkz5iv9OdKqblq7z7xJDUxzJuJbcTC
+	 AcBncMHIOQltcv+rq+8Qijnt0CgkESuVh/6ht3oAObtc6ukZ7bwJcMc5X7qOxXSyQa
+	 6iPs+4ZfKRBeQiMKA5FeA79DGAMruUt/P1Dp8Z5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iskhakov Daniil <dish@amicon.ru>,
-	Agalakov Daniil <ade@amicon.ru>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 030/776] e1000: check return value of e1000_read_eeprom
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruide Cao <caoruide123@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 220/969] ipv4: icmp: validate reply type before using icmp_pointers
 Date: Sat, 30 May 2026 17:55:44 +0200
-Message-ID: <20260530160241.049747997@linuxfoundation.org>
+Message-ID: <20260530160306.527669104@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,110 +70,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [7.84 / 15.00];
-	URIBL_BLACK(7.50)[linuxtesting.org:url];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257159-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-257937-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	GREYLIST(0.00)[pass,meta];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.962];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxtesting.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 0FAF5610131
-X-Rspamd-Action: add header
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A6C5460EA8F
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Agalakov Daniil <ade@amicon.ru>
+From: Ruide Cao <caoruide123@gmail.com>
 
-[ Upstream commit d3baa34a470771399c1495bc04b1e26ac15d598e ]
+commit 67bf002a2d7387a6312138210d0bd06e3cf4879b upstream.
 
-[Why]
-e1000_set_eeprom() performs a read-modify-write operation when the write
-range is not word-aligned. This requires reading the first and last words
-of the range from the EEPROM to preserve the unmodified bytes.
+Extended echo replies use ICMP_EXT_ECHOREPLY as the outbound reply type.
+That value is outside the range covered by icmp_pointers[], which only
+describes the traditional ICMP types up to NR_ICMP_TYPES.
 
-However, the code does not check the return value of e1000_read_eeprom().
-If the read fails, the operation continues using uninitialized data from
-eeprom_buff. This results in corrupted data being written back to the
-EEPROM for the boundary words.
+Avoid consulting icmp_pointers[] for reply types outside that range, and
+use array_index_nospec() for the remaining in-range lookup. Normal ICMP
+replies keep their existing behavior unchanged.
 
-Add the missing error checks and abort the operation if reading fails.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Iskhakov Daniil <dish@amicon.ru>
-Signed-off-by: Iskhakov Daniil <dish@amicon.ru>
-Signed-off-by: Agalakov Daniil <ade@amicon.ru>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d329ea5bd884 ("icmp: add response to RFC 8335 PROBE messages")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruide Cao <caoruide123@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/0dace90c01a5978e829ca741ef684dbd7304ce62.1776628519.git.caoruide123@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/e1000/e1000_ethtool.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/ipv4/icmp.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-index 0a57172dfcbc4..631165b895b61 100644
---- a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-+++ b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-@@ -496,14 +496,19 @@ static int e1000_set_eeprom(struct net_device *netdev,
- 		 */
- 		ret_val = e1000_read_eeprom(hw, first_word, 1,
- 					    &eeprom_buff[0]);
-+		if (ret_val)
-+			goto out;
-+
- 		ptr++;
- 	}
--	if (((eeprom->offset + eeprom->len) & 1) && (ret_val == 0)) {
-+	if ((eeprom->offset + eeprom->len) & 1) {
- 		/* need read/modify/write of last changed EEPROM word
- 		 * only the first byte of the word is being modified
- 		 */
- 		ret_val = e1000_read_eeprom(hw, last_word, 1,
- 					    &eeprom_buff[last_word - first_word]);
-+		if (ret_val)
-+			goto out;
- 	}
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -64,6 +64,7 @@
+ #include <linux/jiffies.h>
+ #include <linux/kernel.h>
+ #include <linux/fcntl.h>
++#include <linux/nospec.h>
+ #include <linux/socket.h>
+ #include <linux/in.h>
+ #include <linux/inet.h>
+@@ -359,7 +360,9 @@ static int icmp_glue_bits(void *from, ch
+ 				      to, len);
  
- 	/* Device's eeprom is always little-endian, word addressable */
-@@ -522,6 +527,7 @@ static int e1000_set_eeprom(struct net_device *netdev,
- 	if ((ret_val == 0) && (first_word <= EEPROM_CHECKSUM_REG))
- 		e1000_update_eeprom_checksum(hw);
- 
-+out:
- 	kfree(eeprom_buff);
- 	return ret_val;
+ 	skb->csum = csum_block_add(skb->csum, csum, odd);
+-	if (icmp_pointers[icmp_param->data.icmph.type].error)
++	if (icmp_param->data.icmph.type <= NR_ICMP_TYPES &&
++	    icmp_pointers[array_index_nospec(icmp_param->data.icmph.type,
++					     NR_ICMP_TYPES + 1)].error)
+ 		nf_ct_attach(skb, icmp_param->skb);
+ 	return 0;
  }
--- 
-2.53.0
-
 
 
 
