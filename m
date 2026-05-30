@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-259248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257868-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDUHMfIxG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:34 +0200
+	id uMrVLtogG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257868-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8730D612AF3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634A3610205
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3395530357E1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AE197308AD44
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17924241C8C;
-	Sat, 30 May 2026 18:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589D43403F9;
+	Sat, 30 May 2026 17:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFrAXGJd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+Ho/uEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F65238D52;
-	Sat, 30 May 2026 18:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F411C5799;
+	Sat, 30 May 2026 17:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167106; cv=none; b=DFcqXJKb691CG74RQr6fVzACk+t9e8y791duJVOMbejBc2815m3xuwmVxtN7JuS8TaxZbTlD9NPqMWPvtdiHnVoPsCuWtHcxkrBU6vzlIlGji1FwUVWRdroe4MCyMIMJrkO1Ky8Z4C48CoLviObglW3X7ikPbsS9hFJkVak4hQ8=
+	t=1780162442; cv=none; b=B2StvnTqtDKeiMWuTLhhJ0B0v0hGMnTmAgLP2cOVVZ3wxKroLYu5N39iWEjXI7BuBRntgJ5qsQaMAjjFVJY3YrZcLwHzIe8I//Uf5Yj7MVQ1zP8TRakA1nq/BjYD8j3BKnZqE90+OE0OLxrv9gylIA8OIZfWniGdOsICJ6BLDM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167106; c=relaxed/simple;
-	bh=U4PgtDgNyeybPmAcL0mRj8CiWB3VN916iAQGZXT8cNg=;
+	s=arc-20240116; t=1780162442; c=relaxed/simple;
+	bh=hVHy76nG71WmhhufeDl5F9atimkXycmAe3G4/BPv0MA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OO2plYVs6D3sASqt/ElI+2iHL9IH4vFTERrRbiNIk+l/tVRrSl/S/5AX1xtX+ACQNqasDz3IHIBllXQRgO3jq26YtQZzI+xz5JmwbRcqL+lpDSaCMfQK8WZ408gISn6q7V2XI2RxOiv8JLxh17gyAcDW+E4cG1y/1xPKGca8Dyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFrAXGJd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8311F00893;
-	Sat, 30 May 2026 18:51:45 +0000 (UTC)
+	 MIME-Version; b=Vf+FBjc1ZMyppmGxXx/3u/bH8c/M4oOlHYETD87U7hXlb/uQd8avrMxAXQ5Ktp78ggBFgV0bbCD8StkgXndXZJHxTaCcm9q+8Iy0vNVeHs+uummw2thYnca47DUMchU3r2Dl9m8rXNTAqfphMbdmSclBueg2/zRq09UQd5wmjsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+Ho/uEQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D9C1F00893;
+	Sat, 30 May 2026 17:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167105;
-	bh=78nJwNY6AWO867+PbCGBktCEYlXR2YA3sXp+2w4by1k=;
+	s=korg; t=1780162440;
+	bh=UtL25NPcYiqOFpgJ0oPI0LSZNPpFV80S3fkJtuuJVbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EFrAXGJdTTyfTqvnmQN1T4dyu3KtdsrP0j2o6+mDhCcvd/X9XMlukldnBy4+IAT2P
-	 leM1bGwpjwVe1C/hfFsla6vm+/OKadJk8ddAUArjRluGtwXQ7Jx3qywPKEzLqDdg+U
-	 4xi/nK1ro2WYkF7WbdXnareH8AwnEckf36gQ21lc=
+	b=Z+Ho/uEQI1QUH2YLPdV8zNuKEoOPx3XEojWSFOZ9ZUM8WpPAmtQR7qr8O8qOwvwzJ
+	 pi7+BDXfa/bLzjx6NNkm5sDLDpy8kVY3mrXi9oOVJpdJljQmimoJduKEEMneHHsB0S
+	 uUmNkIiBpz6gYGfUor3KARi36GQagkN9TsuAvNTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.10 565/589] hwmon: (pmbus/adm1266) dont clobber GPIO bits before PDIO read in get_multiple
+	Ijae Kim <ae878000@gmail.com>,
+	Myeonghun Pak <mhun512@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 922/969] net: lan966x: avoid unregistering netdev on register failure
 Date: Sat, 30 May 2026 18:07:26 +0200
-Message-ID: <20260530160239.483872569@linuxfoundation.org>
+Message-ID: <20260530160326.198411345@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,87 +69,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257868-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259248-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 8730D612AF3
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 634A3610205
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Myeonghun Pak <mhun512@gmail.com>
 
-commit 3327a12aee9e10ffa903e28b8445dfd1af5307c0 upstream.
+[ Upstream commit c4f3d6eb1fcf6cd9ce4644f604d5aad1ce594dfc ]
 
-adm1266_gpio_get_multiple() zeroes *bits before the GPIO_STATUS loop
-and then a second time before the PDIO_STATUS loop:
+lan966x_probe_port() stores the newly allocated net_device in the
+port before calling register_netdev(). If register_netdev() fails,
+the probe error path calls lan966x_cleanup_ports(), which sees
+port->dev and calls unregister_netdev() for a device that was never
+registered.
 
-	*bits = 0;
-	for_each_set_bit(gpio_nr, mask, ADM1266_GPIO_NR) {
-		...
-		set_bit(gpio_nr, bits);
-	}
+Destroy the phylink instance created for this port and clear port->dev
+before returning the registration error. The common cleanup path now skips
+ports without port->dev before reaching the registered netdev cleanup, so
+it only handles ports that reached the registered-netdev lifetime.
 
-	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, ...);
-	...
-	*bits = 0;
-	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
-		...
-		set_bit(gpio_nr, bits);
-	}
+This also avoids treating an uninitialized FDMA netdev and the failed port
+as a NULL == NULL match in the common cleanup path.
 
-The second *bits = 0 throws away every GPIO bit the first loop just
-populated, so callers asking for any combination of GPIO and PDIO
-pins always see the GPIO portion of the returned bits as zero.
-
-Drop the redundant second assignment so both halves of the result
-survive.
-
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-2-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d28d6d2e37d1 ("net: lan966x: add port module support")
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+Link: https://patch.msgid.link/20260506124331.31945-1-mhun512@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/microchip/lan966x/lan966x_main.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -211,7 +211,6 @@ static int adm1266_gpio_get_multiple(str
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+index 8c048ffde23d6..8347def40f9d4 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+@@ -688,11 +688,10 @@ static void lan966x_cleanup_ports(struct lan966x *lan966x)
  
- 	status = read_buf[0] + (read_buf[1] << 8);
+ 	for (p = 0; p < lan966x->num_phys_ports; p++) {
+ 		port = lan966x->ports[p];
+-		if (!port)
++		if (!port || !port->dev)
+ 			continue;
  
--	*bits = 0;
- 	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
- 		if (test_bit(gpio_nr - ADM1266_GPIO_NR, &status))
- 			set_bit(gpio_nr, bits);
+-		if (port->dev)
+-			unregister_netdev(port->dev);
++		unregister_netdev(port->dev);
+ 
+ 		if (lan966x->fdma && lan966x->fdma_ndev == port->dev)
+ 			lan966x_fdma_netdev_deinit(lan966x, port->dev);
+@@ -805,6 +804,9 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
+ 	err = register_netdev(dev);
+ 	if (err) {
+ 		dev_err(lan966x->dev, "register_netdev failed\n");
++		phylink_destroy(phylink);
++		port->phylink = NULL;
++		port->dev = NULL;
+ 		return err;
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
