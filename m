@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-257661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257672-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHF9IFUdG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:37 +0200
+	id SPbBLCQeG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257672-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B421C60F8FF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312C660FB8E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 19B793012C64
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:22:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC3C4309CBF5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDA0332EA7;
-	Sat, 30 May 2026 17:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8530B14A62B;
+	Sat, 30 May 2026 17:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzT7SlIm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/89cwQO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68336263F44;
-	Sat, 30 May 2026 17:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423A530E847;
+	Sat, 30 May 2026 17:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161749; cv=none; b=epvqvfmTqcL0dBvV3KAbubrOVu9NxPhANoF0iTQEOQC96xaQCcTm/UgrkKrBhjIQk5v0JmzGHDquTZGr/FvrhShb1nVOe5POQDvub5/1VAMYyC4D96LDwatb/OFsRGnzPfm66PyRPFyYlBtZbW38XYrfM+F7SJKB/fiPXLqetUw=
+	t=1780161787; cv=none; b=HsqYGS/bvTEm9uB2JRKCDkSI1Drzx+4ACy97tCXSLBHk4FQVi8BfNsAw3tgCSS4z/rh1BgVinpKe/pdvAsQbawacXCNg72dDv6u3iyWlYWt5M6qKrHE2WMwaDd5bcb8T18ccLgEYcwXCXvEyJ0eBOKSDwy2IXgTeniTRMYENhHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161749; c=relaxed/simple;
-	bh=hqZRCYNSE+9VGnMyIr2Uu+vD8WvVbrnQn/SU1nAq35w=;
+	s=arc-20240116; t=1780161787; c=relaxed/simple;
+	bh=1zNXTDncpTegznBflBkvXr2OFMwpeRo7Nb56+tT0cjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kjn9eXVdcwEnikUXgB06HfePksXNDJuh52Yfz4W4oEwFtPWff0ULAjzVHQjznNl3cZZfOzU8PPIp7+8upOKon0b5Ic+YdNatpH0zYfGgfT1eumJKhYyAZ/hzPzzhRmIYsrEm/CkNLHwSE9hH0TI1Yt2udjcQ/8LhQD2ymbMJSqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzT7SlIm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9711F00893;
-	Sat, 30 May 2026 17:22:27 +0000 (UTC)
+	 MIME-Version; b=GUitP3CWy3akKlZHsJebzNNjmKY0FViSYi4+1Rz8pl/qmdaymjHaDfYr2lUAQ0m//Q3XT1rDJAEc/WezEA3VeS52XB8CakPxx3tlZd1evz9PVi0ULc2wzEVHMAhKFzWlt5sU63kYEYBWn6bfoCYjBaEk2nTruvsyRxBOioSyA3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/89cwQO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CC71F00893;
+	Sat, 30 May 2026 17:23:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161748;
-	bh=E6/qUz0wNbyQPJOCCJwdxrFRhu1vMOT2+otwisa1DiQ=;
+	s=korg; t=1780161786;
+	bh=3HqhPQeeaayeEFGmMxpcamun1NQjIOsMHhNdZ8oLm54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lzT7SlImc+X7ayguAmBTT7RX+2QAvkxAOMTKTmEYZGoocbnaJkH0bT8A/7G/PRqt6
-	 UvLeHhWB7GQG3QuUxtYVtdsazGCcJHAPfrr5GRM3Qd4JToUIiVbrONBoJziTr5qvYN
-	 jAqzdOEzNzIlBNMPCn/nGSysskSx4llIJp/wt/Ec=
+	b=C/89cwQOdLkjKwUn10rO+vYBKXGagPj8hHGuwYPGTN09ikqUFLorjhCqaiLpvoarT
+	 PHDNL6+mRYflYUxn+O0a6Yal3NZlVWy379cpMbxmj2/OVeL+Lw42eFjS/ws3PgINqX
+	 PH8x2FhUcq2iDoaG8d7hriTwde9g/1NkykjGtAFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Simon Horman <horms@kernel.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 698/969] pppoe: drop PFC frames
-Date: Sat, 30 May 2026 18:03:42 +0200
-Message-ID: <20260530160319.792051098@linuxfoundation.org>
+Subject: [PATCH 6.1 699/969] openvswitch: cap upcall PID array size and pre-size vport replies
+Date: Sat, 30 May 2026 18:03:43 +0200
+Message-ID: <20260530160319.817651700@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -69,29 +70,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257661-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,ovn.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257672-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B421C60F8FF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,asu.edu:email]
+X-Rspamd-Queue-Id: 312C660FB8E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,110 +102,130 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Qingfang Deng <qingfang.deng@linux.dev>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit cc1ff87bce1ccd38410ab10960f576dcd17db679 ]
+[ Upstream commit 2091c6aa0df6aba47deb5c8ab232b1cb60af3519 ]
 
-RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
-RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
-PFC for PPPoE sessions, and the current PPPoE driver assumes an
-uncompressed (2-byte) protocol field. However, the generic PPP layer
-function ppp_input() is not aware of the negotiation result, and still
-accepts PFC frames.
+The vport netlink reply helpers allocate a fixed-size skb with
+nlmsg_new(NLMSG_DEFAULT_SIZE, ...) but serialize the full upcall PID
+array via ovs_vport_get_upcall_portids().  Since
+ovs_vport_set_upcall_portids() accepts any non-zero multiple of
+sizeof(u32) with no upper bound, a CAP_NET_ADMIN user can install a PID
+array large enough to overflow the reply buffer, causing nla_put() to
+fail with -EMSGSIZE and hitting BUG_ON(err < 0).  On systems with
+unprivileged user namespaces enabled (e.g., Ubuntu default), this is
+reachable via unshare -Urn since OVS vport mutation operations use
+GENL_UNS_ADMIN_PERM.
 
-If a peer with a broken implementation or an attacker sends a frame with
-a compressed (1-byte) protocol field, the subsequent PPP payload is
-shifted by one byte. This causes the network header to be 4-byte
-misaligned, which may trigger unaligned access exceptions on some
-architectures.
+ kernel BUG at net/openvswitch/datapath.c:2414!
+ Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+ CPU: 1 UID: 0 PID: 65 Comm: poc Not tainted 7.0.0-rc7-00195-geb216e422044 #1
+ RIP: 0010:ovs_vport_cmd_set+0x34c/0x400
+ Call Trace:
+  <TASK>
+  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1116)
+  genl_rcv_msg (net/netlink/genetlink.c:1194)
+  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+  genl_rcv (net/netlink/genetlink.c:1219)
+  netlink_unicast (net/netlink/af_netlink.c:1344)
+  netlink_sendmsg (net/netlink/af_netlink.c:1894)
+  __sys_sendto (net/socket.c:2206)
+  __x64_sys_sendto (net/socket.c:2209)
+  do_syscall_64 (arch/x86/entry/syscall_64.c:63)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+  </TASK>
+ Kernel panic - not syncing: Fatal exception
 
-To reduce the attack surface, drop PPPoE PFC frames. Introduce
-ppp_skb_is_compressed_proto() helper function to be used in both
-ppp_generic.c and pppoe.c to avoid open-coding.
+Reject attempts to set more PIDs than nr_cpu_ids in
+ovs_vport_set_upcall_portids(), and pre-compute the worst-case reply
+size in ovs_vport_cmd_msg_size() based on that bound, similar to the
+existing ovs_dp_cmd_msg_size().  nr_cpu_ids matches the cap already
+used by the per-CPU dispatch configuration on the datapath side
+(ovs_dp_cmd_fill_info() serialises at most nr_cpu_ids PIDs), so the
+two sides stay consistent.
 
-Fixes: 7fb1b8ca8fa1 ("ppp: Move PFC decompression to PPP generic layer")
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260415022456.141758-2-qingfang.deng@linux.dev
+Fixes: 5cd667b0a456 ("openvswitch: Allow each vport to have an array of 'port_id's.")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Link: https://patch.msgid.link/20260416024653.153456-2-bestswngs@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_generic.c |  2 +-
- drivers/net/ppp/pppoe.c       |  8 +++++++-
- include/linux/ppp_defs.h      | 16 ++++++++++++++++
- 3 files changed, 24 insertions(+), 2 deletions(-)
+ net/openvswitch/datapath.c | 35 +++++++++++++++++++++++++++++++++--
+ net/openvswitch/vport.c    |  3 +++
+ 2 files changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 89973d0959a68..df72070a3879d 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -2245,7 +2245,7 @@ ppp_do_recv(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
-  */
- static void __ppp_decompress_proto(struct sk_buff *skb)
- {
--	if (skb->data[0] & 0x01)
-+	if (ppp_skb_is_compressed_proto(skb))
- 		*(u8 *)skb_push(skb, 1) = 0x00;
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index a2d8b1b4c83e5..c751d6b36febd 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -2128,9 +2128,40 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
+ 	return err;
  }
  
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index c6f44af35889d..1744a3e3ae2cf 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -425,7 +425,7 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
- 	if (skb_mac_header_len(skb) < ETH_HLEN)
- 		goto drop;
- 
--	if (!pskb_may_pull(skb, sizeof(struct pppoe_hdr)))
-+	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
- 		goto drop;
- 
- 	ph = pppoe_hdr(skb);
-@@ -435,6 +435,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
- 	if (skb->len < len)
- 		goto drop;
- 
-+	/* skb->data points to the PPP protocol header after skb_pull_rcsum.
-+	 * Drop PFC frames.
-+	 */
-+	if (ppp_skb_is_compressed_proto(skb))
-+		goto drop;
-+
- 	if (pskb_trim_rcsum(skb, len))
- 		goto drop;
- 
-diff --git a/include/linux/ppp_defs.h b/include/linux/ppp_defs.h
-index b7e57fdbd4139..b1d1f46d7d3be 100644
---- a/include/linux/ppp_defs.h
-+++ b/include/linux/ppp_defs.h
-@@ -8,6 +8,7 @@
- #define _PPP_DEFS_H_
- 
- #include <linux/crc-ccitt.h>
-+#include <linux/skbuff.h>
- #include <uapi/linux/ppp_defs.h>
- 
- #define PPP_FCS(fcs, c) crc_ccitt_byte(fcs, c)
-@@ -25,4 +26,19 @@ static inline bool ppp_proto_is_valid(u16 proto)
- 	return !!((proto & 0x0101) == 0x0001);
- }
- 
-+/**
-+ * ppp_skb_is_compressed_proto - checks if PPP protocol in a skb is compressed
-+ * @skb: skb to check
-+ *
-+ * Check if the PPP protocol field is compressed (the least significant
-+ * bit of the most significant octet is 1). skb->data must point to the PPP
-+ * protocol header.
-+ *
-+ * Return: Whether the PPP protocol field is compressed.
-+ */
-+static inline bool ppp_skb_is_compressed_proto(const struct sk_buff *skb)
++static size_t ovs_vport_cmd_msg_size(void)
 +{
-+	return unlikely(skb->data[0] & 0x01);
++	size_t msgsize = NLMSG_ALIGN(sizeof(struct ovs_header));
++
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_PORT_NO */
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_TYPE */
++	msgsize += nla_total_size(IFNAMSIZ);    /* OVS_VPORT_ATTR_NAME */
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_IFINDEX */
++	msgsize += nla_total_size(sizeof(s32)); /* OVS_VPORT_ATTR_NETNSID */
++
++	/* OVS_VPORT_ATTR_STATS */
++	msgsize += nla_total_size_64bit(sizeof(struct ovs_vport_stats));
++
++	/* OVS_VPORT_ATTR_UPCALL_STATS(OVS_VPORT_UPCALL_ATTR_SUCCESS +
++	 *                             OVS_VPORT_UPCALL_ATTR_FAIL)
++	 */
++	msgsize += nla_total_size(nla_total_size_64bit(sizeof(u64)) +
++				  nla_total_size_64bit(sizeof(u64)));
++
++	/* OVS_VPORT_ATTR_UPCALL_PID */
++	msgsize += nla_total_size(nr_cpu_ids * sizeof(u32));
++
++	/* OVS_VPORT_ATTR_OPTIONS(OVS_TUNNEL_ATTR_DST_PORT +
++	 *                        OVS_TUNNEL_ATTR_EXTENSION(OVS_VXLAN_EXT_GBP))
++	 */
++	msgsize += nla_total_size(nla_total_size(sizeof(u16)) +
++				  nla_total_size(nla_total_size(0)));
++
++	return msgsize;
 +}
 +
- #endif /* _PPP_DEFS_H_ */
+ static struct sk_buff *ovs_vport_cmd_alloc_info(void)
+ {
+-	return nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	return genlmsg_new(ovs_vport_cmd_msg_size(), GFP_KERNEL);
+ }
+ 
+ /* Called with ovs_mutex, only via ovs_dp_notify_wq(). */
+@@ -2140,7 +2171,7 @@ struct sk_buff *ovs_vport_cmd_build_info(struct vport *vport, struct net *net,
+ 	struct sk_buff *skb;
+ 	int retval;
+ 
+-	skb = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	skb = ovs_vport_cmd_alloc_info();
+ 	if (!skb)
+ 		return ERR_PTR(-ENOMEM);
+ 
+diff --git a/net/openvswitch/vport.c b/net/openvswitch/vport.c
+index 82a74f9989667..5d7af559a20be 100644
+--- a/net/openvswitch/vport.c
++++ b/net/openvswitch/vport.c
+@@ -342,6 +342,9 @@ int ovs_vport_set_upcall_portids(struct vport *vport, const struct nlattr *ids)
+ 	if (!nla_len(ids) || nla_len(ids) % sizeof(u32))
+ 		return -EINVAL;
+ 
++	if (nla_len(ids) / sizeof(u32) > nr_cpu_ids)
++		return -EINVAL;
++
+ 	old = ovsl_dereference(vport->upcall_portids);
+ 
+ 	vport_portids = kmalloc(sizeof(*vport_portids) + nla_len(ids),
 -- 
 2.53.0
 
