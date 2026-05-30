@@ -1,153 +1,156 @@
-Return-Path: <stable+bounces-259290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259294-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCyTBB1AG2oMAgkAu9opvQ
-	(envelope-from <stable+bounces-259290-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:53:01 +0200
+	id GJ1BCZhDG2o4AgkAu9opvQ
+	(envelope-from <stable+bounces-259294-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:07:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C686131D7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:53:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2586132E4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E12683051D58
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DEBA5303FFE8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4F51A680F;
-	Sat, 30 May 2026 19:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E072DCBF8;
+	Sat, 30 May 2026 20:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="TvYThmxg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RyXeoHwA"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38ED0233952
-	for <stable@vger.kernel.org>; Sat, 30 May 2026 19:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3168329AAFA
+	for <stable@vger.kernel.org>; Sat, 30 May 2026 20:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780170697; cv=none; b=biFYMtz1DDQVzqMOEXT1lRvUCfqj+zDAkWTNHUEFcTp86hiWL70pmngFplS/wiasFCGghYqwjl7d81awEGlOo2XK9qJY1+iAHY/KYn6VpEAbkU2E7xWL6YAqPNSr2rLoHNU691YPggSN9MoxvdB3jSHqawtOCHp62sFK++4iBUk=
+	t=1780171631; cv=none; b=oFdx900OgNV/XTlFBs+DbfAt3hPT7Q6+sjUce0Vp9/KzPWOdPmFpFa2epxppWwU4aLvrr6KtFMV4E2tGZph9JuBuEIOGsaXuXtPfAhK2K9KSisrREgn0Ug/SWNlGufve8dPQzoaW0lPqMWCwQk5X8MJnt199t/9KK6J7RNDAwJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780170697; c=relaxed/simple;
-	bh=zz4yKtIHiFbQtzHhRtVH3Ox6Ch3mFjD9O51wlHTO2EQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gi/uS9cQ3q7b+3rfQQBlmWqZYz9dmSA5Xqlu6xWqJX4IwjZ+LVXMJp64U1NRRTwJ3EnLf/Hkt5bPDpl7paLEhximhjhfKOS/hmnw1816pNvFhOPIfGGsb9m+3zLtUevMQE7owtXZA6h86GKPoNLcXvWqtvDhcCSMGvxrjgtBucc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=TvYThmxg; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=drIE03WxnvuBWwmjQgqCTITEr7QPi+8WtF/vwrBmG7Y=; b=TvYThmxgAhKr2ZtnmPr439YGYc
-	2XP3tbqJmX86L6QcVBMVL8n6iT274b2WXxOOMeflJmtLoAvRlEiIhl35s2aKkSrViFic4nnUreCEc
-	q9bg8HHqJWPI1RjR0Z6IBKycF2oclNABeGjLPrYR6dszlQYvsHwStGgBJ8UIgZyAcqaKjLfMKWEcs
-	jd+WcmOb4newmRfdnHO2a1TniQmszKFpq1EWpAif/SGJbjLyXUxeDZuoAzbkfNqrDD68e+bLsjg9J
-	bBvE+0Sy3UTY5znoCO24UvLp+z/IpII7hIJNNoFeHj4n9Zy42dc5UhBKjC0/gRnKq2+nZBeQ9WOuh
-	8SOc0mBA==;
-Received: from [189.7.87.67] (helo=[10.0.0.1])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wTPiV-00AMOG-TD; Sat, 30 May 2026 21:51:32 +0200
-From: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Date: Sat, 30 May 2026 16:51:19 -0300
-Subject: [PATCH 2/2] drm/v3d: Skip CSD when it has zeroed workgroups
+	s=arc-20240116; t=1780171631; c=relaxed/simple;
+	bh=k7qYrTueet8Ot8QgnS3W/+Ti20S7QXBzIUW2awUJwYA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uENyMByL9ngLe6zDbTpIVCz0g42rr7/EiQ+h3JY44QhmKKB4FcyQQa+1VBf6dzOGgSy9DxsJO4jdm43umewTCgBFqguNJ6xbhr3+OgnYa9HuKV3a8l1ZXcdUVLd4CKTFA/gJDyAb5Zq2lyz6avlJIQjDshKSQITdENsAEuooYzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RyXeoHwA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAA51F00893;
+	Sat, 30 May 2026 20:07:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780171629;
+	bh=TJ8yuhn/o6hrj+jWuPOmlWfg8OCp8yD80Jso2dwQm3s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=RyXeoHwAuXomtWkDj7Bf9jE5Mn+MYf3ivVop1Mo6hLJdxyOTwSPoQKLws8iiyaRbu
+	 MehPy0BkUtKIxwCmLzzlNo0gtU2myMJmfBRnRH5SmQUJDGynonjk4BByVPXvcosCno
+	 ikU1pdBbDmafHHY0LdzVHn3EjMoqurgALrgj/wOdqpfFOiZbYMWx3c0V7QBYmRY6mK
+	 0BA3TASSZUULSugpG2uoNA7TcbzcTsI8uvw5FptMyn2o93gK75jA1Wp3R4R6wOeGI+
+	 PUdYGjUB9luwuAbLJZ88b8x+N3dvrDRfeXNr4KZJ94jlFI3mlTR/nW2OjttjZWraLC
+	 FSuxx1oa+yYqg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Dawei Feng <dawei.feng@seu.edu.cn>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] octeontx2-pf: avoid double free of pool->stack on AQ init failure
+Date: Sat, 30 May 2026 16:07:07 -0400
+Message-ID: <20260530200707.3281847-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026052845-zoology-ceremony-67cd@gregkh>
+References: <2026052845-zoology-ceremony-67cd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260530-v3d-fix-indirect-csd-v1-2-15533948663f@igalia.com>
-References: <20260530-v3d-fix-indirect-csd-v1-0-15533948663f@igalia.com>
-In-Reply-To: <20260530-v3d-fix-indirect-csd-v1-0-15533948663f@igalia.com>
-To: Melissa Wen <mwen@igalia.com>, Iago Toral Quiroga <itoral@igalia.com>, 
- Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Cc: kernel-dev@igalia.com, dri-devel@lists.freedesktop.org, 
- stable@vger.kernel.org, =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1497; i=mcanal@igalia.com;
- h=from:subject:message-id; bh=zz4yKtIHiFbQtzHhRtVH3Ox6Ch3mFjD9O51wlHTO2EQ=;
- b=owEBbQGS/pANAwAKAT/zDop2iPqqAcsmYgBqGz+7kNkIbRto43ZxsAC7n/lHZOKriy0HSvcnJ
- J7Unqk3sHuJATMEAAEKAB0WIQT45F19ARZ3Bymmd9E/8w6Kdoj6qgUCahs/uwAKCRA/8w6Kdoj6
- qghvB/wMYOL7CyUR7chDG2i3hBym3o8mfhSRKmtdVnc6D/Nje9nViuBvWJK+t7zhl2MJ/CLbSwM
- cS/YnzAk0pK80G1qL4KhcknDc3+4HCPxBTSXdmepaS8En5QgllmAgOEbkgsNASMC0wS2vrXBHej
- PoTStJq7/Nb+Tlo9sVDrLDGV+pBpE4q05uHMV47/1nmcqRemVxpIcGy+gyScgXcgD+xmZRjeo0D
- KDVKLTJuV+ICMdOdnC5+3ZvNX3AFs8H1Uikw/KhfqkNc0bCIlOZI+Z3eKRSLzkKpwwkUzRuca+h
- FpzEFY0rHTWIB7uLtXe3zivKsIXxbV4SHqP642WEHS2Xb4ae
-X-Developer-Key: i=mcanal@igalia.com; a=openpgp;
- fpr=F8E45D7D0116770729A677D13FF30E8A7688FAAA
-X-Spamd-Result: default: False [-0.36 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259290-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[igalia.com:-];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-259294-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_SPAM(0.00)[0.023];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:mid,igalia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 89C686131D7
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,seu.edu.cn:email]
+X-Rspamd-Queue-Id: 7F2586132E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-A compute shader dispatch encodes its workgroup counts in the CFG0..CFG2
-registers. Kicking off a dispatch with a zero count in any of the three
-dimensions is invalid. First, the hardware will process 0 as 65536,
-causing an illegitimate submission. But over that, a submission with a
-zeroed workgroup dimension should be a no-op.
+From: Dawei Feng <dawei.feng@seu.edu.cn>
 
-These zeroed counts can reach the dispatch path through an indirect CSD
-job, whose workgroup counts are only known once the indirect buffer is
-read and may legitimately be zero, but such scenario should only result in
-a no-op.
+[ Upstream commit 9b244c242bec48b37e82b89787afd6a4c43457e1 ]
 
-Don't submit the job to the hardware when any of the workgroup counts is
-zero, so the job completes immediately instead of running the shader.
+otx2_pool_aq_init() frees pool->stack when mailbox sync or retry
+allocation fails, but leaves the pointer unchanged. Later,
+otx2_sq_aura_pool_init() unwinds the partial setup through
+otx2_aura_pool_free(), which frees pool->stack again. The CN20K-specific
+cn20k_pool_aq_init() implementation has the same bug in
+its corresponding error path.
 
+Set pool->stack to NULL immediately after the local free so the shared
+cleanup path does not free the same stack again while cleaning up
+partially initialized pool state.
+
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still present in
+v7.1-rc3.
+
+Runtime validation was not performed because reproducing this path
+requires OcteonTX2/CN20K hardware.
+
+Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
+Fixes: d322fbd17203 ("octeontx2-pf: Initialize cn20k specific aura and pool contexts")
 Cc: stable@vger.kernel.org
-Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
-Suggested-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260515151826.1005397-1-dawei.feng@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index 47f83936cd73..5476fcf43793 100644
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -352,6 +352,9 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
- 		return NULL;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index 4fc73ac721b05..3e1cd8af080e3 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -1374,11 +1374,13 @@ int otx2_pool_init(struct otx2_nic *pfvf, u16 pool_id,
+ 		err = otx2_sync_mbox_msg(&pfvf->mbox);
+ 		if (err) {
+ 			qmem_free(pfvf->dev, pool->stack);
++			pool->stack = NULL;
+ 			return err;
+ 		}
+ 		aq = otx2_mbox_alloc_msg_npa_aq_enq(&pfvf->mbox);
+ 		if (!aq) {
+ 			qmem_free(pfvf->dev, pool->stack);
++			pool->stack = NULL;
+ 			return -ENOMEM;
+ 		}
  	}
- 
-+	if (!job->args.cfg[0] || !job->args.cfg[1] || !job->args.cfg[2])
-+		return NULL;
-+
- 	v3d->queue[V3D_CSD].active_job = &job->base;
- 
- 	v3d_invalidate_caches(v3d);
-
 -- 
-2.54.0
+2.53.0
 
 
