@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-259097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258492-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPxlD88vG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259097-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:27 +0200
+	id oJXhOE4qG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258492-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D14E9612573
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5756117F1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 26AA93013B92
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:43:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C631F30959CF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11AF21B191;
-	Sat, 30 May 2026 18:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2073AFD11;
+	Sat, 30 May 2026 18:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JimzXUVv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bi2HUb6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A810F29E11A;
-	Sat, 30 May 2026 18:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025ED3112C1;
+	Sat, 30 May 2026 18:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166602; cv=none; b=WqhfZh+kDQzcSJdGUstl1fuGfT77BrGB69tq9kpTtX+cCT9W/Z6qiqVswPmxz40cfuxcwscEQeb26f28DzTwOiXUA3pFp9QsKawAm56GdKRpZOQ2SL2Ym6tVPxkQq092SpA6xI3vAdt/XQJgNNIaoOHBN2YvgkFc1xioQrc5gX4=
+	t=1780164532; cv=none; b=JqQtEEx9U5cSbAD2p/6BpFhu/aStGnNbbh+j6PDgI0kmlFP/Qh6LkkFIXOAqjPiELzbCVcXjS1421BsvKNXSHbmAmKJJDwisi5aIyVZvcFsxj8CHGKZHQ0kzFdSSwgyfKni9MrCey0B3oleJz/xJT9oJtZ3mkU7DLe8xYV3BA3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166602; c=relaxed/simple;
-	bh=R5bABUT/j1sbuP9ilZyPZxRXzC4mgZSyv7R/tgqTaco=;
+	s=arc-20240116; t=1780164532; c=relaxed/simple;
+	bh=Ug4mMcHjI4sK5EmgznIzJ/BSgjSpfbYffrs5igO1VO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ESwQcke5ZhcCXKvUYt3rsNNifH/1AaRz4oO316sj3k7NRsmMbsJ7OPNwHcTgpAX1awnK4kOjmjxzaskIYve9/2z2O/vr6sGyc1GbHPfkSXWVxPD2wXSCHmjhMORRtbaYO7gAQGfDzObpoLpWBTdFHuGktYAbJZTIgt5IYVtU9Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JimzXUVv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78381F00893;
-	Sat, 30 May 2026 18:43:20 +0000 (UTC)
+	 MIME-Version; b=k/a5tj5wF9vVAT3KyA9C1csblnKhQnrYG3pnbsvkHzmH6jSs4KVhcyBE/8zB7W8jMO9TYGe47Fy5uakw5DSiDEiDZUPB/YpiQ0qJc1JvjxvK1hdqA3OJUBHywFw6WiBZWgTgFKfR/kOiSFzoJBQOHPgUu6WZzR7+BV7TPMAEv40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bi2HUb6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A0B1F00893;
+	Sat, 30 May 2026 18:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166601;
-	bh=aYDu3QzJWxmQLsQQu/qjkQ+piFR0WVj5lH+l9iD7vJA=;
+	s=korg; t=1780164530;
+	bh=znEzxapq7vlFKktfBDIGeGU9lNo5r1sGctN1FAffqsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JimzXUVvVY8ho0ox+5gQHOaO6o2j5STxKRi7rf1d77VTHfQ173a0AsOKnYz5aspB5
-	 +U/9dKWVUIEnOZEuKUU+niNnTP+k3fH2HSU7MSoJ1FRS11/DtsDDB/m+cWXaXuMB+j
-	 75UNvwELKFEIQF2P6Slgl9OPcI59bUGpD9TKr0AA=
+	b=0bi2HUb6eo9ggXijg/xWBTM0G/JEGrqfUl3KaRsnR8IuLUmWbsDoUTClgiXVmQApO
+	 m3OiEcF76jtYseCy4UuYn1Qk/E+da/I7Sp8V8nnatLQ7P3nyikLWOrOJC9iQjJEVRr
+	 2d9LODH81UTqIB/dSfPozoM/Qdxs9DY/r+6pWzIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Kanzenbach <kurt@linutronix.de>,
-	"David S. Miller" <davem@davemloft.net>,
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 415/589] taprio: Handle short intervals and large packets
+Subject: [PATCH 5.15 582/776] ksmbd: destroy tree_conn_ida in ksmbd_session_destroy()
 Date: Sat, 30 May 2026 18:04:56 +0200
-Message-ID: <20260530160235.657559624@linuxfoundation.org>
+Message-ID: <20260530160255.125688803@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,180 +69,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-258492-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259097-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D14E9612573
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6E5756117F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Kanzenbach <kurt@linutronix.de>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-[ Upstream commit 497cc00224cfaff89282ec8bfdfb8b797415f72a ]
+[ Upstream commit c049ee14eb4343b69b6f7755563f961f5e153423 ]
 
-When using short intervals e.g. below one millisecond, large packets won't be
-transmitted at all. The software implementations checks whether the packet can
-be fit into the remaining interval. Therefore, it takes the packet length and
-the transmission speed into account. That is correct.
+When per-session tree_conn_ida was converted from a dynamically
+allocated ksmbd_ida to an embedded struct ida, ksmbd_ida_free() was
+removed from ksmbd_session_destroy() but no matching ida_destroy()
+was added.  The session is therefore freed with the IDA's backing
+xarray still intact.
 
-However, for large packets it may be that the transmission time exceeds the
-interval resulting in no packet transmission. The same situation works fine with
-hardware offloading applied.
+The kernel IDA API expects ida_init() and ida_destroy() to be paired
+over an object's lifetime, so add the missing cleanup before the
+enclosing session is freed.
 
-The problem has been observed with the following schedule and iperf3:
+Also move ida_init() to right after the session is allocated so that
+it is always paired with the destroy call even on the early error
+paths of __session_create() (ksmbd_init_file_table() or
+__init_smb2_session() failures), both of which jump to the error
+label and invoke ksmbd_session_destroy() on a partially initialised
+session.
 
-|tc qdisc replace dev lan1 parent root handle 100 taprio \
-|   num_tc 8 \
-|   map 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 \
-|   queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 \
-|   base-time $base \
-|   sched-entry S 0x40 500000 \
-|   sched-entry S 0xbf 500000 \
-|   clockid CLOCK_TAI \
-|   flags 0x00
+No leak has been observed in testing; this is a pairing fix to match
+the IDA lifetime rules, not a response to a reproduced regression.
 
-[...]
-
-|root@tsn:~# iperf3 -c 192.168.2.105
-|Connecting to host 192.168.2.105, port 5201
-|[  5] local 192.168.2.121 port 52610 connected to 192.168.2.105 port 5201
-|[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
-|[  5]   0.00-1.00   sec  45.2 KBytes   370 Kbits/sec    0   1.41 KBytes
-|[  5]   1.00-2.00   sec  0.00 Bytes  0.00 bits/sec    0   1.41 KBytes
-
-After debugging, it seems that the packet length stored in the SKB is about
-7000-8000 bytes. Using a 100 Mbit/s link the transmission time is about 600us
-which larger than the interval of 500us.
-
-Therefore, segment the SKB into smaller chunks if the packet is too big. This
-yields similar results than the hardware offload:
-
-|root@tsn:~# iperf3 -c 192.168.2.105
-|Connecting to host 192.168.2.105, port 5201
-|- - - - - - - - - - - - - - - - - - - - - - - - -
-|[ ID] Interval           Transfer     Bitrate         Retr
-|[  5]   0.00-10.00  sec  48.9 MBytes  41.0 Mbits/sec    0             sender
-|[  5]   0.00-10.02  sec  48.7 MBytes  40.7 Mbits/sec                  receiver
-
-Furthermore, the segmentation can be skipped for the full offload case, as the
-driver or the hardware is expected to handle this.
-
-Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 105425b1969c ("net/sched: taprio: fix use-after-free in advance_sched() on schedule switch")
+Fixes: d40012a83f87 ("cifsd: declare ida statically")
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 64 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 54 insertions(+), 10 deletions(-)
+ fs/ksmbd/mgmt/user_session.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 16ab7b1480661..66348b1083ed5 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -415,18 +415,10 @@ static long get_packet_txtime(struct sk_buff *skb, struct Qdisc *sch)
- 	return txtime;
+diff --git a/fs/ksmbd/mgmt/user_session.c b/fs/ksmbd/mgmt/user_session.c
+index 8bd18610547d9..23a0662bbfd32 100644
+--- a/fs/ksmbd/mgmt/user_session.c
++++ b/fs/ksmbd/mgmt/user_session.c
+@@ -153,6 +153,7 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
+ 	free_channel_list(sess);
+ 	kfree(sess->Preauth_HashValue);
+ 	ksmbd_release_id(&session_ida, sess->id);
++	ida_destroy(&sess->tree_conn_ida);
+ 	kfree(sess);
  }
  
--static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
--			  struct sk_buff **to_free)
-+static int taprio_enqueue_one(struct sk_buff *skb, struct Qdisc *sch,
-+			      struct Qdisc *child, struct sk_buff **to_free)
- {
- 	struct taprio_sched *q = qdisc_priv(sch);
--	struct Qdisc *child;
--	int queue;
--
--	queue = skb_get_queue_mapping(skb);
--
--	child = q->qdiscs[queue];
--	if (unlikely(!child))
--		return qdisc_drop(skb, sch, to_free);
+@@ -382,6 +383,8 @@ static struct ksmbd_session *__session_create(int protocol)
+ 	if (!sess)
+ 		return NULL;
  
- 	/* sk_flags are only safe to use on full sockets. */
- 	if (skb->sk && sk_fullsock(skb->sk) && sock_flag(skb->sk, SOCK_TXTIME)) {
-@@ -444,6 +436,58 @@ static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	return qdisc_enqueue(skb, child, to_free);
- }
++	ida_init(&sess->tree_conn_ida);
++
+ 	if (ksmbd_init_file_table(&sess->file_table))
+ 		goto error;
  
-+static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
-+			  struct sk_buff **to_free)
-+{
-+	struct taprio_sched *q = qdisc_priv(sch);
-+	struct Qdisc *child;
-+	int queue;
-+
-+	queue = skb_get_queue_mapping(skb);
-+
-+	child = q->qdiscs[queue];
-+	if (unlikely(!child))
-+		return qdisc_drop(skb, sch, to_free);
-+
-+	/* Large packets might not be transmitted when the transmission duration
-+	 * exceeds any configured interval. Therefore, segment the skb into
-+	 * smaller chunks. Skip it for the full offload case, as the driver
-+	 * and/or the hardware is expected to handle this.
-+	 */
-+	if (skb_is_gso(skb) && !FULL_OFFLOAD_IS_ENABLED(q->flags)) {
-+		unsigned int slen = 0, numsegs = 0, len = qdisc_pkt_len(skb);
-+		netdev_features_t features = netif_skb_features(skb);
-+		struct sk_buff *segs, *nskb;
-+		int ret;
-+
-+		segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
-+		if (IS_ERR_OR_NULL(segs))
-+			return qdisc_drop(skb, sch, to_free);
-+
-+		skb_list_walk_safe(segs, segs, nskb) {
-+			skb_mark_not_on_list(segs);
-+			qdisc_skb_cb(segs)->pkt_len = segs->len;
-+			slen += segs->len;
-+
-+			ret = taprio_enqueue_one(segs, sch, child, to_free);
-+			if (ret != NET_XMIT_SUCCESS) {
-+				if (net_xmit_drop_count(ret))
-+					qdisc_qstats_drop(sch);
-+			} else {
-+				numsegs++;
-+			}
-+		}
-+
-+		if (numsegs > 1)
-+			qdisc_tree_reduce_backlog(sch, 1 - numsegs, len - slen);
-+		consume_skb(skb);
-+
-+		return numsegs > 0 ? NET_XMIT_SUCCESS : NET_XMIT_DROP;
-+	}
-+
-+	return taprio_enqueue_one(skb, sch, child, to_free);
-+}
-+
- static struct sk_buff *taprio_peek_soft(struct Qdisc *sch)
- {
- 	struct taprio_sched *q = qdisc_priv(sch);
+@@ -399,8 +402,6 @@ static struct ksmbd_session *__session_create(int protocol)
+ 	if (ret)
+ 		goto error;
+ 
+-	ida_init(&sess->tree_conn_ida);
+-
+ 	down_write(&sessions_table_lock);
+ 	hash_add(sessions_table, &sess->hlist, sess->id);
+ 	up_write(&sessions_table_lock);
 -- 
 2.53.0
 
