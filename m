@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-257275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YP+SMPcZG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257275-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:15 +0200
+	id qEztIo0jG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BAAC60F053
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E3E610840
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A171030097E0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:00:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6217308A95D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC3A3A7848;
-	Sat, 30 May 2026 17:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9888344DB9;
+	Sat, 30 May 2026 17:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XE4HdYrz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFnbvhSZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE58B39DBEF;
-	Sat, 30 May 2026 17:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C318B27A477;
+	Sat, 30 May 2026 17:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160434; cv=none; b=GrooqX5H7IzztJb2meFJk1D2rmoi+TqF/N+4CbQDLCAUayXqSHGeCgavXJ4Wc/i74OiTEl56JpVQL5I8vTq3syvxPnazvD37ZNMjL9nT27VWLz3fixDY/LttWVId3GS/qN/+Zqu50++JU+KhG3W1iQbRzoM/YZISTae2DH1aoRU=
+	t=1780163066; cv=none; b=FuH1y63bwio6pEWvLflCfD6HyG7fcdt6SzbAeZrpuqy5dum7I1v44DmA2nmpfsZj6BKhjFnC0t5pr3vYNKdjHMLPKpUgKDdMsa2O6n20bCJ+0PmXL+/dWvqdB2RjDIgdo8EI/o2y4rIQPCoByctCs0lLmMcv2Se06+8vI0kjzxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160434; c=relaxed/simple;
-	bh=bDULNx+wBkQufG3AJ9zd2gSgn46eSQMn2oo7joph0M0=;
+	s=arc-20240116; t=1780163066; c=relaxed/simple;
+	bh=xSUkoqDHqr4PTTAfV790H/F7HGLx1XAihjhoKsACGi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZW6V6bHbEayrGDkN9W4Ov+2QICGdatTP96fh2IO5uCzHPxPW7egd4HrgBDi7IQf4CD79nriBUCTqQVMhJyg/XupR2Zz4dl3On7Y0vQ311C9OESut46BsVsmd91P7DqgI+AqNAx/Z31fP8nRwNTyiwBCtyceo0Ym1Wxd9kxVuvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XE4HdYrz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84541F00893;
-	Sat, 30 May 2026 17:00:30 +0000 (UTC)
+	 MIME-Version; b=FXZyzr2fehbAjPVnbtTfMyRCyRXxtlJZo/avI71FDkrvytZGvojp37pgvrWSpzBrdzhx0X5CLOTpWlhzhZ3s1dewJ/xBgarI4P6VrpDfjufRxN7DDi7NOJl0xfhSoqBASXK4HMj6jgAGT/+TPeyTcQr5nGZqdNcnjTss97kxUoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFnbvhSZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F641F00893;
+	Sat, 30 May 2026 17:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160431;
-	bh=48etZwhXOquiC95u3oXWf+dNjeVahC/nvnJrYmKFWNI=;
+	s=korg; t=1780163065;
+	bh=8V4GqtH9xPbfbUY9bODOetdviVCGuIVMfZkIpP4d5aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XE4HdYrzKqayUMrlHQWG2RVNZUMjnklOg47EvGB3ZjWleejbt3/ZeaKUYszcNzmRT
-	 Nwl1alrhhyQwYBkdvu6zxTFETELxylUHXiadxtRaZtUn/YHWGnPSIWmk8xIzZXUyVu
-	 2GDj37mthE8pjL7eJDP9F49NCj0f7cNyxumoWVMo=
+	b=IFnbvhSZ56xx3Xp2n99AwwR04Kl2HNY56bLaLgwv1T0wgpJl7orpBB+sgVYJc7Ygk
+	 zs1b62mtbpIAM5gxgvMHnFzlbagynNFEJ4Fyi+AhQbjiC6zYZAUWnQqfSQEcN8R7mo
+	 W98npesoP5H4QIa7B92Mx1sUD2lAOqweNIkoeje4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian King <bjking1@linux.ibm.com>,
-	Shaik Abdulla <shaik.abdulla1@ibm.com>,
-	Naveed Ahmed <naveedaus@in.ibm.com>,
-	Mingming Cao <mmc@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 335/969] ibmveth: Disable GSO for packets with small MSS
+	syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 5.15 145/776] ALSA: usb-audio: Kill timer properly at removal
 Date: Sat, 30 May 2026 17:57:39 +0200
-Message-ID: <20260530160309.620931196@linuxfoundation.org>
+Message-ID: <20260530160244.170232546@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,134 +64,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257275-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2BAAC60F053
+	TAGGED_FROM(0.00)[bounces-258054-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,suse.de,sina.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,d8f72178ab6783a7daea];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,appspotmail.com:email,msgid.link:url,sina.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 03E3E610840
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingming Cao <mmc@linux.ibm.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit cc427d24ac6442ffdeafd157a63c7c5b73ed4de4 upstream.
+[ Upstream commit 0718a78f6a9f04b88d0dc9616cc216b31c5f3cf1 ]
 
-Some physical adapters on Power systems do not support segmentation
-offload when the MSS is less than 224 bytes. Attempting to send such
-packets causes the adapter to freeze, stopping all traffic until
-manually reset.
+The USB-audio MIDI code initializes the timer, but in a rare case, the
+driver might be freed without the disconnect call.  This leaves the
+timer in an active state while the assigned object is released via
+snd_usbmidi_free(), which ends up with a kernel warning when the debug
+configuration is enabled, as spotted by fuzzer.
 
-Implement ndo_features_check to disable GSO for packets with small MSS
-values. The network stack will perform software segmentation instead.
+For avoiding the problem, put timer_shutdown_sync() at
+snd_usbmidi_free(), so that the timer can be killed properly.
+While we're at it, replace the existing timer_delete_sync() at the
+disconnect callback with timer_shutdown_sync(), too.
 
-The 224-byte minimum matches ibmvnic
-commit <f10b09ef687f> ("ibmvnic: Enforce stronger sanity checks
-on GSO packets")
-which uses the same physical adapters in SEA configurations.
-
-The issue occurs specifically when the hardware attempts to perform
-segmentation (gso_segs > 1) with a small MSS. Single-segment GSO packets
-(gso_segs == 1) do not trigger the problematic LSO code path and are
-transmitted normally without segmentation.
-
-Add an ndo_features_check callback to disable GSO when MSS < 224 bytes.
-Also call vlan_features_check() to ensure proper handling of VLAN packets,
-particularly QinQ (802.1ad) configurations where the hardware parser may
-not support certain offload features.
-
-Validated using iptables to force small MSS values. Without the fix,
-the adapter freezes. With the fix, packets are segmented in software
-and transmission succeeds. Comprehensive regression testing completedd
-(MSS tests, performance, stability).
-
-Fixes: 8641dd85799f ("ibmveth: Add support for TSO")
-Cc: stable@vger.kernel.org
-Reviewed-by: Brian King <bjking1@linux.ibm.com>
-Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
-Tested-by: Naveed Ahmed <naveedaus@in.ibm.com>
-Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-Link: https://patch.msgid.link/20260424162917.65725-1-mmc@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/681c70d7.050a0220.a19a9.00c6.GAE@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250519212031.14436-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ The context change is due to the commit 8fa7292fee5c
+("treewide: Switch/rename to timer_delete[_sync]()")
+in v6.15 which is irrelevant to the logic of this patch. ]
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmveth.c |   22 ++++++++++++++++++++++
- drivers/net/ethernet/ibm/ibmveth.h |    1 +
- 2 files changed, 23 insertions(+)
+ sound/usb/midi.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -1637,6 +1637,27 @@ static int ibmveth_set_mac_addr(struct n
- 	return 0;
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -1530,6 +1530,7 @@ static void snd_usbmidi_free(struct snd_
+ 			snd_usbmidi_in_endpoint_delete(ep->in);
+ 	}
+ 	mutex_destroy(&umidi->mutex);
++	timer_shutdown_sync(&umidi->error_timer);
+ 	kfree(umidi);
  }
  
-+static netdev_features_t ibmveth_features_check(struct sk_buff *skb,
-+						struct net_device *dev,
-+						netdev_features_t features)
-+{
-+	/* Some physical adapters do not support segmentation offload with
-+	 * MSS < 224. Disable GSO for such packets to avoid adapter freeze.
-+	 * Note: Single-segment packets (gso_segs == 1) don't need this check
-+	 * as they bypass the LSO path and are transmitted without segmentation.
-+	 */
-+	if (skb_is_gso(skb)) {
-+		if (skb_shinfo(skb)->gso_size < IBMVETH_MIN_LSO_MSS) {
-+			netdev_warn_once(dev,
-+					 "MSS %u too small for LSO, disabling GSO\n",
-+					 skb_shinfo(skb)->gso_size);
-+			features &= ~NETIF_F_GSO_MASK;
-+		}
-+	}
-+
-+	return vlan_features_check(skb, features);
-+}
-+
- static const struct net_device_ops ibmveth_netdev_ops = {
- 	.ndo_open		= ibmveth_open,
- 	.ndo_stop		= ibmveth_close,
-@@ -1648,6 +1669,7 @@ static const struct net_device_ops ibmve
- 	.ndo_set_features	= ibmveth_set_features,
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_set_mac_address    = ibmveth_set_mac_addr,
-+	.ndo_features_check	= ibmveth_features_check,
- #ifdef CONFIG_NET_POLL_CONTROLLER
- 	.ndo_poll_controller	= ibmveth_poll_controller,
- #endif
---- a/drivers/net/ethernet/ibm/ibmveth.h
-+++ b/drivers/net/ethernet/ibm/ibmveth.h
-@@ -36,6 +36,7 @@
- #define IBMVETH_ILLAN_IPV4_TCP_CSUM		0x0000000000000002UL
- #define IBMVETH_ILLAN_ACTIVE_TRUNK		0x0000000000000001UL
+@@ -1553,7 +1554,7 @@ void snd_usbmidi_disconnect(struct list_
+ 	spin_unlock_irq(&umidi->disc_lock);
+ 	up_write(&umidi->disc_rwsem);
  
-+#define IBMVETH_MIN_LSO_MSS		224	/* Minimum MSS for LSO */
- /* hcall macros */
- #define h_register_logical_lan(ua, buflst, rxq, fltlst, mac) \
-   plpar_hcall_norets(H_REGISTER_LOGICAL_LAN, ua, buflst, rxq, fltlst, mac)
+-	del_timer_sync(&umidi->error_timer);
++	timer_shutdown_sync(&umidi->error_timer);
+ 
+ 	for (i = 0; i < MIDI_MAX_ENDPOINTS; ++i) {
+ 		struct snd_usb_midi_endpoint *ep = &umidi->endpoints[i];
 
 
 
