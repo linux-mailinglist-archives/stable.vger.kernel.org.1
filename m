@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-259245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPyJEoczG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:59:19 +0200
+	id CH9eOIwqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF513612E9E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:59:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5556118BA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51B5D309B532
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D1668303EB8A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BD024468C;
-	Sat, 30 May 2026 18:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B10C284690;
+	Sat, 30 May 2026 18:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vlb9XnbV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsJ4iXJa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE10623C4F2;
-	Sat, 30 May 2026 18:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF5D21E098;
+	Sat, 30 May 2026 18:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167095; cv=none; b=kUCpSPcLaxhlwx7iKOr5PFk6yW+7MvxAJrrs2EpgLIiJ03ecLYkd1KJkvsZE0I9CBHLe3JEwMtbDMVaK28l5VMVcH/Ga+srAZRTP4e7myQyQYpNkuDXxWaiF9Dvt6vwsUyS82Y6JMZBD4HYHNDh5EVwscrsZkYyBk/67GUrXfjU=
+	t=1780165027; cv=none; b=mat18p2Bbvh6WPLIRhcJljmRpdG0PkpNYdmXLXu4b88ytDWgOiE47ccAWbHETyJEOoGMfSWTk/ut6GdVgjbZ2Rd9tfqZ0Rx1Fvd1yJx2j1u9+ICFwW3c4VdwrurP7lYPfanrNOl2/RBOor5v1vqdyc7zHaCgxdl1pSv2lJeSBf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167095; c=relaxed/simple;
-	bh=hXx/1BfuAeYNm7pUQWkj+w0glE92Y4NvNvs/VBtT+Rg=;
+	s=arc-20240116; t=1780165027; c=relaxed/simple;
+	bh=CNdItfQxiwwDpXsfrr04JxRVDcLNF3gOCiPaa94K5tI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mAQoD/O3tb5TXUuhP+UO4xjQHu6gSVr0Dbz45DFrrzZJXFn+cc2rv0bJIOUUGMmizylDZaoOjJSgqqRrKJkqEX7M6g17w1IrmqUQcV79iyJk1oJXpEK8CkVHUEwHX5tptIOHvnPcSzIdb7spDNVWGb6T52+Gc6tgvnGHrS5s9Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vlb9XnbV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA041F00893;
-	Sat, 30 May 2026 18:51:33 +0000 (UTC)
+	 MIME-Version; b=pkfXLQWmIVq8ntH3eKxaflEOdhxnXoPIswuFOovHwXu79d0yaoZuieawGGJGZX0qDJ+6UJ/g1IpLx2nhqeQ95i4qfxK3cZnm7ySNUv+dI0FVzLie1cVElrto4nde2kJqN2Qai2EIMjzbeZPqP+MxUxtE5HSpHz+HczOZO0Gc8G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsJ4iXJa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59B91F00893;
+	Sat, 30 May 2026 18:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167094;
-	bh=2bjoxR4kq8egti2ekMZ621PRA0ACtBE4omU5X8Kbfyw=;
+	s=korg; t=1780165025;
+	bh=jFiC3hKrDtyvCbX5igkvTVcQ0fTusdMXXxMN4OhoVhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Vlb9XnbVnBHaepCMfGi8CvfOX1kehtTOBfdb4ECrGtU+dLWT1S4ZBCuQtzQ+YYpBm
-	 IISIorc7CS7wjykHkEQ41HcC+8MzoFvB6YNiqJ9m3sT1H2jPqPoiWSFTk5LsAKNdSz
-	 Y00CZropndaqtrf1NemEofxPd7qdyEYLI4ToR5uI=
+	b=WsJ4iXJaECnYprj3jxmR+9bYmf+Zdb6TLcbsncfxc+6ACZ+YSq+p7QMshjW3D89UU
+	 8GshO864/YF7Rpf7/PZODngsak2X7AAqTXCyrhvGBkXlRbdnGc/Q7AGtvpnxwmQS+g
+	 haiUdBUMQn+fhFMdRtgfNoRD2v2chlHvW/bfyoHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.10 562/589] hwmon: (pmbus/adm1266) include PEC byte in pmbus_block_xfer read buffer
+	Linus Walleij <linus.walleij@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 729/776] ARM: integrator: Fix early initialization
 Date: Sat, 30 May 2026 18:07:23 +0200
-Message-ID: <20260530160239.414198134@linuxfoundation.org>
+Message-ID: <20260530160258.661543783@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,84 +69,128 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258638-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259245-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: AF513612E9E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arndb.de:email,roeck-us.net:email,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6E5556118BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit 487566cb1ccdf3756fdd7bf8d875e612ff3169bb upstream.
+[ Upstream commit 90d77b30a666049ad24df463f52e5d529c44e8cd ]
 
-adm1266_pmbus_block_xfer() sets up the read transaction with
+Starting with commit bdb249fce9ad4 ("ARM: integrator: read counter using
+syscon/regmap"), intcp_init_early calls syscon_regmap_lookup_by_compatible
+which in turn calls of_syscon_register. This function allocates memory.
+Since the memory management code has not been initialized at that time,
+the call always fails. It either returns -ENOMEM or crashes as follows.
 
-	.buf = data->read_buf,
-	.len = ADM1266_PMBUS_BLOCK_MAX + 2,
+Unable to handle kernel NULL pointer dereference at virtual address 0000000c when read
+[0000000c] *pgd=00000000
+Internal error: Oops: 5 [#1] ARM
+Modules linked in:
+CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.15.0-rc5-00026-g5fcc9bf84ee5 #1 PREEMPT
+Hardware name: ARM Integrator/CP (Device Tree)
+PC is at __kmalloc_cache_noprof+0xec/0x39c
+LR is at __kmalloc_cache_noprof+0x34/0x39c
+...
+Call trace:
+ __kmalloc_cache_noprof from of_syscon_register+0x7c/0x310
+ of_syscon_register from device_node_get_regmap+0xa4/0xb0
+ device_node_get_regmap from intcp_init_early+0xc/0x40
+ intcp_init_early from start_kernel+0x60/0x688
+ start_kernel from 0x0
 
-but read_buf in struct adm1266_data is declared as
+The crash is seen due to a dereferenced pointer which is not supposed to be
+NULL but is NULL if the memory management subsystem has not been
+initialized. The crash is not seen with all versions of gcc. Some versions
+such as gcc 9.x apparently do not dereference the pointer, presumably if
+tracing is disabled. The problem has been reproduced with gcc 10.x, 11.x,
+and 13.x. Either case, if the crash is not seen, the call to
+syscon_regmap_lookup_by_compatible returns -ENOMEM, and
+sched_clock_register is never called.
 
-	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 1];
+Fix the problem by moving the early initialization code into the standard
+machine initialization code.
 
-For a max-length block response (length byte = 255 + up to 1 PEC
-byte), the i2c controller is told to write 257 bytes into a 256-byte
-buffer, putting one byte past the end of read_buf.  The same response
-also makes the subsequent PEC compare
-
-	if (crc != msgs[1].buf[msgs[1].buf[0] + 1])
-
-read a byte beyond the array.
-
-Bump the read_buf declaration to ADM1266_PMBUS_BLOCK_MAX + 2 so the
-buffer can hold the length byte, up to 255 payload bytes, and the PEC
-byte the i2c_msg length already accounts for.
-
-Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-4-1c1ea1349cfe@nexthop.ai
+Fixes: bdb249fce9ad4 ("ARM: integrator: read counter using syscon/regmap")
+Cc: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/20250518164118.3859567-1-linux@roeck-us.net
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20260505-integrator-fixes-v1-1-56ab9aac59db@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-integrator/integrator_cp.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -61,7 +61,7 @@ struct adm1266_data {
- 	u8 *dev_mem;
- 	struct mutex buf_mutex;
- 	u8 write_buf[ADM1266_PMBUS_BLOCK_MAX + 1] ____cacheline_aligned;
--	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 1] ____cacheline_aligned;
-+	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 2] ____cacheline_aligned;
- };
+diff --git a/arch/arm/mach-integrator/integrator_cp.c b/arch/arm/mach-integrator/integrator_cp.c
+index b7eb4038798b6..b6d54cee5b792 100644
+--- a/arch/arm/mach-integrator/integrator_cp.c
++++ b/arch/arm/mach-integrator/integrator_cp.c
+@@ -88,14 +88,6 @@ static u64 notrace intcp_read_sched_clock(void)
+ 	return val;
+ }
  
- static const struct nvmem_cell_info adm1266_nvmem_cells[] = {
+-static void __init intcp_init_early(void)
+-{
+-	cm_map = syscon_regmap_lookup_by_compatible("arm,core-module-integrator");
+-	if (IS_ERR(cm_map))
+-		return;
+-	sched_clock_register(intcp_read_sched_clock, 32, 24000000);
+-}
+-
+ static void __init intcp_init_irq_of(void)
+ {
+ 	cm_init();
+@@ -121,6 +113,10 @@ static void __init intcp_init_of(void)
+ {
+ 	struct device_node *cpcon;
+ 
++	cm_map = syscon_regmap_lookup_by_compatible("arm,core-module-integrator");
++	if (!IS_ERR(cm_map))
++		sched_clock_register(intcp_read_sched_clock, 32, 24000000);
++
+ 	cpcon = of_find_matching_node(NULL, intcp_syscon_match);
+ 	if (!cpcon)
+ 		return;
+@@ -140,7 +136,6 @@ static const char * intcp_dt_board_compat[] = {
+ DT_MACHINE_START(INTEGRATOR_CP_DT, "ARM Integrator/CP (Device Tree)")
+ 	.reserve	= integrator_reserve,
+ 	.map_io		= intcp_map_io,
+-	.init_early	= intcp_init_early,
+ 	.init_irq	= intcp_init_irq_of,
+ 	.init_machine	= intcp_init_of,
+ 	.dt_compat      = intcp_dt_board_compat,
+-- 
+2.53.0
+
 
 
 
