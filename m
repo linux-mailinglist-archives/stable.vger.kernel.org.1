@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-258982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OP4WIdQuG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258982-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:16 +0200
+	id aNJNBJgdG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 279D06122D3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78DC360F9CD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1A8A73014AA0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4DD683023316
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95019349CCF;
-	Sat, 30 May 2026 18:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E710C30E847;
+	Sat, 30 May 2026 17:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVt2KCRw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgVtB4hW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624C539478D;
-	Sat, 30 May 2026 18:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F091C5799;
+	Sat, 30 May 2026 17:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166198; cv=none; b=tjerPvCF8OnvjJcOCzUm8ZPPyXxRZXBYzl6ZBPYuBOVAuOHKcHJcRImUz91PSP1OUlnjwlB4lvAjlEb4e14NlbF/krCpUUXNRB8Jo9cC9tt9v03AvO/tKb4cu4qgZ3VZxqagRjXccdga0gtNI6n7gdrjLH2ti5rEVq2GAr4qRl4=
+	t=1780161559; cv=none; b=AdN11qEJVQTK/4hldToe0qOn9HPTHfuQGkz6ST5SIaQ1Hk3/0oTX4GR3mH+Mi5C69VVByIbEOgsHfphj+VayDZTsuMLny/e3RoYR02UUOtl3wLQQxDXTLKnkhWQwibIP33cU7Z3X8+XOCF+l5xjaLKgryLR53TVCaWzHugDfLx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166198; c=relaxed/simple;
-	bh=NiLWoK/paNlpaxqAA5Ff7/id3zG9PNjHB3IIUM0+Tb8=;
+	s=arc-20240116; t=1780161559; c=relaxed/simple;
+	bh=qUxAR7gr3uwpS1Wskn8cMANmCgJyq4HZzhpl3NS5/N0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tQiaGSLy6unn3kwmrggz9pPW7tkiwXpV4kWLqKr1vVEZU7pMgVmUKxZU83Ph5tzJVCbxpyKcXpe9Qxd6NxMC3CFZ8DOlSMay3RKB0jkU6HElRusq+vbqA+7R3c7mjh8aqqK+aasJ7cJ0xOK+HGpV7LMfe1krUN7ugcWEYyyrwOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVt2KCRw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FBD1F00893;
-	Sat, 30 May 2026 18:36:36 +0000 (UTC)
+	 MIME-Version; b=bTz7w1vPl3/hIvtO+G5KlBpDHIHDG9INWTjGlzAWZ5OlY3nwETJtkc7bb7dBN/o7AeqNrk4w7JWk3mevs08SQvLfLahdHzDNoUdCkNVQMYe55CZRDK8CHELgL7YvuV3xXOYOaz9pqrvJU1hjwhAZVzBSgjF1hVwedVjyDemc0nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgVtB4hW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DE21F00893;
+	Sat, 30 May 2026 17:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166197;
-	bh=me7mO47Hq7Y3Ox4KLZvEK08m4bN4+gU1LYHMYujVAdk=;
+	s=korg; t=1780161558;
+	bh=W402Wa8oX2OJftE3tAozYCNLbGicqRPrhqUG9Ju1eCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uVt2KCRwvpcARfhYM6sZT2migwSN9RWqQXMYh5GYHdkmDTwXfGQAp6LKSQznHkDGs
-	 rhyinjsV5S/bKMghYGuyidT4O/DY2VJV/8O393D20XtHKEvZEI8KcslEGLi4Z7/dZn
-	 wLHFM3w51cYdB7pE1cvCPY9h87K1Iyq0xRxSGslo=
+	b=rgVtB4hW6Uc8H3Ixt+R8qXEf1nPLlScP4d7/fBNDD5cWf27bCKYI0m8sVjJVy53M/
+	 trLgP+tEJ/LX12LqUiF9PrSmeikJx10eStOOsy3G8eyfmBuGBzxuII2xbm/fSX8B3p
+	 jKUeEfqZW3YJvaWpg7ZpMvi3GtqGnVYS/p2HxYhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Gupta <adityag@linux.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 302/589] powerpc/crash: fix backup region offset update to elfcorehdr
+Subject: [PATCH 6.1 659/969] clk: imx: imx6q: Fix device node reference leak in of_assigned_ldb_sels()
 Date: Sat, 30 May 2026 18:03:03 +0200
-Message-ID: <20260530160232.898204808@linuxfoundation.org>
+Message-ID: <20260530160318.674315631@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +65,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258982-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,oss.qualcomm.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257605-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 279D06122D3
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 78DC360F9CD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 789335cacdf37da93bb7c70322dff8c7e82881df ]
+[ Upstream commit 9faf207208951460f3f7eefbc112246c8d28ff1b ]
 
-update_backup_region_phdr() in file_load_64.c iterates over all the
-program headers in the kdump kernel’s elfcorehdr and updates the
-p_offset of the program header whose physical address starts at 0.
+The function of_assigned_ldb_sels() calls of_parse_phandle_with_args()
+but never calls of_node_put() to release the reference, causing a memory
+leak.
 
-However, the loop logic is incorrect because the program header pointer
-is not updated during iteration. Since elfcorehdr typically contains
-PT_NOTE entries first, the PT_LOAD program header with physical address
-0 is never reached. As a result, its p_offset is not updated to point to
-the backup region.
+Fix this by adding proper cleanup calls on all exit paths.
 
-Because of this behavior, the capture kernel exports the first 64 KB of
-the crashed kernel’s memory at offset 0, even though that memory
-actually lives in the backup region. When a crash happens, purgatory
-copies the first 64 KB of the crashed kernel’s memory into the backup
-region so the capture kernel can safely use it.
-
-This has not caused problems so far because the first 64 KB is usually
-identical in both the crashed and capture kernels. However, this is
-just an assumption and is not guaranteed to always hold true.
-
-Fix update_backup_region_phdr() to correctly update the p_offset of the
-program header with a starting physical address of 0 by correcting the
-logic used to iterate over the program headers.
-
-Fixes: cb350c1f1f86 ("powerpc/kexec_file: Prepare elfcore header for crashing kernel")
-Reviewed-by: Aditya Gupta <adityag@linux.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260312083051.1935737-2-sourabhjain@linux.ibm.com
+Fixes: 5d283b083800 ("clk: imx6: Fix procedure to switch the parent of LDB_DI_CLK")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://patch.msgid.link/20260203-clk-imx6q-v3-2-6cd2696bb371@gmail.com
+Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/file_load_64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk-imx6q.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index cb3fc0042cc25..9b4fdb47b9ba6 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -766,7 +766,7 @@ static void update_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr)
- 	unsigned int i;
+diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
+index b14c1606466d7..a95f07718b653 100644
+--- a/drivers/clk/imx/clk-imx6q.c
++++ b/drivers/clk/imx/clk-imx6q.c
+@@ -183,9 +183,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
+ 		}
+ 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
+ 			pr_err("ccm: parent clock %d not in ccm\n", index);
++			of_node_put(clkspec.np);
+ 			return;
+ 		}
+ 		parent = clkspec.args[0];
++		of_node_put(clkspec.np);
  
- 	phdr = (Elf64_Phdr *)(ehdr + 1);
--	for (i = 0; i < ehdr->e_phnum; i++) {
-+	for (i = 0; i < ehdr->e_phnum; i++, phdr++) {
- 		if (phdr->p_paddr == BACKUP_SRC_START) {
- 			phdr->p_offset = image->arch.backup_start;
- 			pr_debug("Backup region offset updated to 0x%lx\n",
+ 		rc = of_parse_phandle_with_args(node, "assigned-clocks",
+ 				"#clock-cells", index, &clkspec);
+@@ -193,9 +195,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
+ 			return;
+ 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
+ 			pr_err("ccm: child clock %d not in ccm\n", index);
++			of_node_put(clkspec.np);
+ 			return;
+ 		}
+ 		child = clkspec.args[0];
++		of_node_put(clkspec.np);
+ 
+ 		if (child != IMX6QDL_CLK_LDB_DI0_SEL &&
+ 		    child != IMX6QDL_CLK_LDB_DI1_SEL)
 -- 
 2.53.0
 
