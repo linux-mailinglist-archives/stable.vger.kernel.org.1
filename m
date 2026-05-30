@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-257599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258975-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNdgHsAcG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:08 +0200
+	id 4Jv0OT8uG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258975-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1FA60F807
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81D1612172
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7E6B9301FC16
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:19:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6779430095ED
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25C630E847;
-	Sat, 30 May 2026 17:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F120D39A7FE;
+	Sat, 30 May 2026 18:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A67+/EgM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eoHu/kwP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94B61C5799;
-	Sat, 30 May 2026 17:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D5D32F770;
+	Sat, 30 May 2026 18:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161539; cv=none; b=tJRekavPOzUESQfBu4mK358wntXcRNNrkCCm0kUj0WKX/cJr7XKDowyE1HnTng+WheBgFa6bF0YoSx5F8RHs8MiQhQHj4SG96DLb4BX1oQ+CaPyQqqJ24Mh2BjsJmvVrxOXM4X1nI7JrGfsGM7Q7fY58kBGQY40Ts1Duo9Oj2kc=
+	t=1780166173; cv=none; b=qQSVQL0LDTm81EoLHvGcWjK7BswsfH6glFHD06YSbFSkKDIrXPnCKENAjp8S90xhCCiANfH9otfvov8P3ig4dCaivtdF40DG9Hl1cxq120JQZ0Mhr1EllxIdin0bF9iInDk49tDG309Uzk4zsx2x7pNCqh1NSyLpHUaHX+KBNhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161539; c=relaxed/simple;
-	bh=+qmN1yVMaxnhN3cNMxorj/7b7Pr47ZS27iZtNIVsG8E=;
+	s=arc-20240116; t=1780166173; c=relaxed/simple;
+	bh=NpfiIGHkC28c4/TYcuXaLFT+fKMJOyBBeay4SLefoF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HprQovlTm1/cXp7LMmxrfXZc6LLKqNevGsg63W6bU/M7YQyCmD9OhbkoAE1WG6ALHetzimj5zcMAywsdMh5KL2ZnALzrYrI2G/EoE5EuC23hMGj4WO8w6KEgNBnC8T8NI/QlxwRn1Nr6cIRnWocW4LLg9RYex8+gWw3WXGYg6wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A67+/EgM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2201F00893;
-	Sat, 30 May 2026 17:18:57 +0000 (UTC)
+	 MIME-Version; b=mpPQjbKog891pABP4G4ngEdvC4QFBwYNwBh2x5sbFBROiTYTUuWOTIkjy4WccDdsSrkMpk1x293t1Miv50pFuh35OcR54ZAO/b1tfb29QoEc/WynHuVivYPw3n735kZb4Fmy0rrwS9K4wk1C+FIj2jW4Swfzz1c9qqTFi+MSMYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eoHu/kwP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95901F00893;
+	Sat, 30 May 2026 18:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161538;
-	bh=wwYCrvblut0KuyY2I8xpDhY0hbZjeuPHuiFtCJywSWE=;
+	s=korg; t=1780166172;
+	bh=MiQui6zzxP5DsUMI56BpW01ZeyicnRqyRN8+gr81jC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=A67+/EgM9LW/wIqCPoNj1unYw08cD2FgcaqFGdhm10hIskIi42zagdPD6XeXj7EcJ
-	 ItgjX+XnbvHDJX6KwD/9/HCWB+v0oaarGzruk/JzCUmZYAo+oJkGIHnrQf074a2tpq
-	 pcL5gq3ALQM7fMHwloxhtYeGZSVWOpjp1iuLs9Fk=
+	b=eoHu/kwPNrAQG+RJPcV485tp7fRvNTy1ke79Kh1ILgxNWn9j5qnyk8mxI2vZSp1bW
+	 McRyPJyxiEYhqMXN92bNgvZzixVYo/K+6l9Bp/ha55sUK9Bhv0hccS/yucybmLEgsL
+	 mvllzLb/IIb5MeVNfkVr1a2KjkfaJk+B3GHG1RzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Val Packett <val@packett.cool>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Gopi Krishna Menon <krishnagopi487@gmail.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 653/969] clk: qcom: gcc-sc8180x: Add missing GDSCs
+Subject: [PATCH 5.10 296/589] thermal/drivers/spear: Fix error condition for reading st,thermal-flags
 Date: Sat, 30 May 2026 18:02:57 +0200
-Message-ID: <20260530160318.502268468@linuxfoundation.org>
+Message-ID: <20260530160232.720127339@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,122 +70,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257599-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nxp.com,arm.com];
+	TAGGED_FROM(0.00)[bounces-258975-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8F1FA60F807
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,arm.com:email,msgid.link:url,nxp.com:email]
+X-Rspamd-Queue-Id: E81D1612172
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Gopi Krishna Menon <krishnagopi487@gmail.com>
 
-[ Upstream commit 3565741eb985a8a7cc6656eb33496195468cb99e ]
+[ Upstream commit da2c4f332a0504d9c284e7626a561d343c8d6f57 ]
 
-There are 5 more GDSCs that we were ignoring and not putting to sleep,
-which are listed in downstream DTS. Add them.
+of_property_read_u32 returns 0 on success. The current check returns
+-EINVAL if the property is read successfully.
 
-Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Val Packett <val@packett.cool>
-Link: https://lore.kernel.org/r/20260312112321.370983-3-val@packett.cool
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fix the check by removing ! from of_property_read_u32
+
+Fixes: b9c7aff481f1 ("drivers/thermal/spear_thermal.c: add Device Tree probing capability")
+Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
+Suggested-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/20260327090526.59330-1-krishnagopi487@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8180x.c | 50 ++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ drivers/thermal/spear_thermal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
-index ba004281f2944..00e2e22a14175 100644
---- a/drivers/clk/qcom/gcc-sc8180x.c
-+++ b/drivers/clk/qcom/gcc-sc8180x.c
-@@ -4200,6 +4200,51 @@ static struct gdsc usb30_mp_gdsc = {
- 	.flags = POLL_CFG_GDSCR,
- };
+diff --git a/drivers/thermal/spear_thermal.c b/drivers/thermal/spear_thermal.c
+index ee33ed692e4f7..42d8736d5ba49 100644
+--- a/drivers/thermal/spear_thermal.c
++++ b/drivers/thermal/spear_thermal.c
+@@ -94,7 +94,7 @@ static int spear_thermal_probe(struct platform_device *pdev)
+ 	struct resource *res;
+ 	int ret = 0, val;
  
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc = {
-+	.gdscr = 0x7d050,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc = {
-+	.gdscr = 0x7d058,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf_gdsc = {
-+	.gdscr = 0x7d054,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_sf_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu0_gdsc = {
-+	.gdscr = 0x7d05c,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu0_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu1_gdsc = {
-+	.gdscr = 0x7d060,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
- static struct clk_regmap *gcc_sc8180x_clocks[] = {
- 	[GCC_AGGRE_NOC_PCIE_TBU_CLK] = &gcc_aggre_noc_pcie_tbu_clk.clkr,
- 	[GCC_AGGRE_UFS_CARD_AXI_CLK] = &gcc_aggre_ufs_card_axi_clk.clkr,
-@@ -4500,6 +4545,11 @@ static struct gdsc *gcc_sc8180x_gdscs[] = {
- 	[USB30_MP_GDSC] = &usb30_mp_gdsc,
- 	[USB30_PRIM_GDSC] = &usb30_prim_gdsc,
- 	[USB30_SEC_GDSC] = &usb30_sec_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_SF_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU0_GDSC] = &hlos1_vote_turing_mmu_tbu0_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU1_GDSC] = &hlos1_vote_turing_mmu_tbu1_gdsc,
- };
- 
- static const struct regmap_config gcc_sc8180x_regmap_config = {
+-	if (!np || !of_property_read_u32(np, "st,thermal-flags", &val)) {
++	if (!np || of_property_read_u32(np, "st,thermal-flags", &val)) {
+ 		dev_err(&pdev->dev, "Failed: DT Pdata not passed\n");
+ 		return -EINVAL;
+ 	}
 -- 
 2.53.0
 
