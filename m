@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gO5AKEouG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:58 +0200
+	id 8FfUKVAcG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206A561218F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B2B60F6CC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DCE3230AC5FB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60FEF308010F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B246D3C871D;
-	Sat, 30 May 2026 18:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095FCEEA8;
+	Sat, 30 May 2026 17:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiOSWn9u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mu0508GE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8159D340298;
-	Sat, 30 May 2026 18:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4575481DD;
+	Sat, 30 May 2026 17:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165803; cv=none; b=rqK9dGcDQ+mYHLKf7ZwmXKHZ7L+mdDAhwUcfMDIaBvFnc65E+0G81i2c4TqbHMYaZg2/wjNQfU7y0uy1wWAYXn9MaUh1oKxxgW59xws3EXHu/YKVBZrgVofUZd6FpqffvLyez3GysFhCnz8Q3awuBAf2E3O/79klJTCaZAyZhZc=
+	t=1780161161; cv=none; b=mErDzo0ZWZl2x+UUAsFfzYNMLbJHgd9TQ5hPtdjamxTWVw4WEmSOm4soxEmRJeKACpKA9XvfhmJjhXs8ngaKM3sm6sUZPaAd5NFDcWhU/jsqebJ2lnu9jyEwzCmqv/liw9VizKPHV8CplrwVblCPjRgXzv8/E8au/MoBK4hkuEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165803; c=relaxed/simple;
-	bh=9gei/AP9OxzLMBrXkpZb9xkN0F81DXxTWnXquFEqlag=;
+	s=arc-20240116; t=1780161161; c=relaxed/simple;
+	bh=OqjKkIxnfb3pt6RFQ+OfP7U5T/lYojDnVIPp/evMZJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WqqGfX2h4PDIiN6oYOegae7UXvsAtfFzavW96GimGcuS112orfo1lzIYwWjk89x+w2v7AWGwhlQ+W/4FyKceqfX8+EAXZNlc8R3TMdG4Q0IT/ltJEfC9HlDqf6c/yO4+OPFJdD3XscYV+5z/63nlZApuQEh1GshjJ9gYJzRY9xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fiOSWn9u; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0494C1F00893;
-	Sat, 30 May 2026 18:30:01 +0000 (UTC)
+	 MIME-Version; b=TH584qx7sVa42zeaAL3NePqmS6GzhLyRcNtCGpc4U6w3cXhHSAeVuYk4sXPxLf6ILiXKmZ3IrOaJxmFS6MT9LBSLtItjnMM1KZdYiljfwIqOYumoYf9QesfkwVU/gsEe58HQ6jLXYKdGdAmM9tMw7eAlxd9HYczRPoWWaUzO52g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mu0508GE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138831F00893;
+	Sat, 30 May 2026 17:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165802;
-	bh=FDl9A3hi/YIDng5Ql8PJjyrv0tjVjQqvdeZ5BWRdSk4=;
+	s=korg; t=1780161160;
+	bh=54y7Xkm0TMuTc4TatSifThrfkcyS2ZdoaH1MR8XAblk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fiOSWn9uN+j4CvZj5CKzYL/nETLf4vUwmmaRk9zMtSMpZFtKBH2pkAVXOZ6l7BY1L
-	 THkd6onkyNQiZiP5Zx8wsNeN2m7+tBXSxKbnGi6/ang0qJR3vXNP2JW+8XjHY8Ztxj
-	 TntNYUBssbUhytxDZTZuT89fSmbFrk/DeeimC0/M=
+	b=Mu0508GEikEcF64r1vu0jeTEuAe4tuGpn1O+ynaTYWPw3b0L7jQA40oHdOm5UD+pO
+	 ZHCIO/W3Vf6KTx1QxbeYjisH2F8mtjtLjGipW0F1ymNT475VOhZ5HKQuJBTqMetQVy
+	 dnmlL/VHBD4U273uKPH2YgN0fq/toQrXFZwf+JXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chia-Ming Chang <chiamingc@synology.com>,
-	robbieko <robbieko@synology.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.10 187/589] inotify: fix watch count leak when fsnotify_add_inode_mark_locked() fails
+	V sujith kumar Reddy <Vsujithkumar.Reddy@amd.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 544/969] ASoC: SOF: amd: Fix for reading position updates from stream box.
 Date: Sat, 30 May 2026 18:01:08 +0200
-Message-ID: <20260530160229.803988125@linuxfoundation.org>
+Message-ID: <20260530160315.393594011@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,79 +66,141 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258866-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257486-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.995];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,suse.com:email,suse.cz:email]
-X-Rspamd-Queue-Id: 206A561218F
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 42B2B60F6CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Ming Chang <chiamingc@synology.com>
+From: V sujith kumar Reddy <Vsujithkumar.Reddy@amd.com>
 
-commit 6a320935fa4293e9e599ec9f85dc9eb3be7029f8 upstream.
+[ Upstream commit aae7e412b0ec0378e392b18c50b612dae09cdb74 ]
 
-When fsnotify_add_inode_mark_locked() fails in inotify_new_watch(),
-the error path calls inotify_remove_from_idr() but does not call
-dec_inotify_watches() to undo the preceding inc_inotify_watches().
-This leaks a watch count, and repeated failures can exhaust the
-max_user_watches limit with -ENOSPC even when no watches are active.
+By default the position updates are read from dsp box when streambox
+size is not defined.if the streambox size is defined to some value
+then position updates can be read from the streambox.
 
-Prior to commit 1cce1eea0aff ("inotify: Convert to using per-namespace
-limits"), the watch count was incremented after fsnotify_add_mark_locked()
-succeeded, so this path was not affected. The conversion moved
-inc_inotify_watches() before the mark insertion without adding the
-corresponding rollback.
-
-Add the missing dec_inotify_watches() call in the error path.
-
-Fixes: 1cce1eea0aff ("inotify: Convert to using per-namespace limits")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chia-Ming Chang <chiamingc@synology.com>
-Signed-off-by: robbieko <robbieko@synology.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://patch.msgid.link/20260224093442.3076294-1-chiamingc@synology.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: V sujith kumar Reddy <Vsujithkumar.Reddy@amd.com>
+Link: https://lore.kernel.org/r/20221123121911.3446224-2-vsujithkumar.reddy@amd.corp-partner.google.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 2c4fdd055f92 ("ASoC: SOF: compress: return the configured codec from get_params")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/inotify/inotify_user.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/sof/amd/acp-common.c |  1 +
+ sound/soc/sof/amd/acp-ipc.c    | 30 +++++++++++++++++++++++++++++-
+ sound/soc/sof/amd/acp.h        |  4 ++++
+ 3 files changed, 34 insertions(+), 1 deletion(-)
 
---- a/fs/notify/inotify/inotify_user.c
-+++ b/fs/notify/inotify/inotify_user.c
-@@ -609,6 +609,7 @@ static int inotify_new_watch(struct fsno
- 	if (ret) {
- 		/* we failed to get on the inode, get off the idr */
- 		inotify_remove_from_idr(group, tmp_i_mark);
-+		dec_inotify_watches(group->inotify_data.ucounts);
- 		goto out_err;
- 	}
+diff --git a/sound/soc/sof/amd/acp-common.c b/sound/soc/sof/amd/acp-common.c
+index 27b95187356e5..150e042e40392 100644
+--- a/sound/soc/sof/amd/acp-common.c
++++ b/sound/soc/sof/amd/acp-common.c
+@@ -76,6 +76,7 @@ struct snd_sof_dsp_ops sof_acp_common_ops = {
+ 	/*IPC */
+ 	.send_msg		= acp_sof_ipc_send_msg,
+ 	.ipc_msg_data		= acp_sof_ipc_msg_data,
++	.set_stream_data_offset = acp_set_stream_data_offset,
+ 	.get_mailbox_offset	= acp_sof_ipc_get_mailbox_offset,
+ 	.get_window_offset      = acp_sof_ipc_get_window_offset,
+ 	.irq_thread		= acp_sof_ipc_irq_thread,
+diff --git a/sound/soc/sof/amd/acp-ipc.c b/sound/soc/sof/amd/acp-ipc.c
+index dd030566e3725..dd6e53c63407f 100644
+--- a/sound/soc/sof/amd/acp-ipc.c
++++ b/sound/soc/sof/amd/acp-ipc.c
+@@ -192,13 +192,41 @@ int acp_sof_ipc_msg_data(struct snd_sof_dev *sdev, struct snd_pcm_substream *sub
+ {
+ 	unsigned int offset = sdev->dsp_box.offset;
  
+-	if (!substream || !sdev->stream_box.size)
++	if (!substream || !sdev->stream_box.size) {
+ 		acp_mailbox_read(sdev, offset, p, sz);
++	} else {
++		struct acp_dsp_stream *stream = substream->runtime->private_data;
++
++		if (!stream)
++			return -ESTRPIPE;
++
++		acp_mailbox_read(sdev, stream->posn_offset, p, sz);
++	}
+ 
+ 	return 0;
+ }
+ EXPORT_SYMBOL_NS(acp_sof_ipc_msg_data, SND_SOC_SOF_AMD_COMMON);
+ 
++int acp_set_stream_data_offset(struct snd_sof_dev *sdev,
++			       struct snd_pcm_substream *substream,
++			       size_t posn_offset)
++{
++	struct acp_dsp_stream *stream = substream->runtime->private_data;
++
++	/* check for unaligned offset or overflow */
++	if (posn_offset > sdev->stream_box.size ||
++	    posn_offset % sizeof(struct sof_ipc_stream_posn) != 0)
++		return -EINVAL;
++
++	stream->posn_offset = sdev->stream_box.offset + posn_offset;
++
++	dev_dbg(sdev->dev, "pcm: stream dir %d, posn mailbox offset is %zu",
++		substream->stream, stream->posn_offset);
++
++	return 0;
++}
++EXPORT_SYMBOL_NS(acp_set_stream_data_offset, SND_SOC_SOF_AMD_COMMON);
++
+ int acp_sof_ipc_get_mailbox_offset(struct snd_sof_dev *sdev)
+ {
+ 	const struct sof_amd_acp_desc *desc = get_chip_info(sdev->pdata);
+diff --git a/sound/soc/sof/amd/acp.h b/sound/soc/sof/amd/acp.h
+index b1414ac1ea985..b5bbdedb66697 100644
+--- a/sound/soc/sof/amd/acp.h
++++ b/sound/soc/sof/amd/acp.h
+@@ -144,6 +144,7 @@ struct acp_dsp_stream {
+ 	int stream_tag;
+ 	int active;
+ 	unsigned int reg_offset;
++	size_t posn_offset;
+ };
+ 
+ struct sof_amd_acp_desc {
+@@ -205,6 +206,9 @@ int acp_dsp_block_read(struct snd_sof_dev *sdev, enum snd_sof_fw_blk_type blk_ty
+ irqreturn_t acp_sof_ipc_irq_thread(int irq, void *context);
+ int acp_sof_ipc_msg_data(struct snd_sof_dev *sdev, struct snd_pcm_substream *substream,
+ 			 void *p, size_t sz);
++int acp_set_stream_data_offset(struct snd_sof_dev *sdev,
++			       struct snd_pcm_substream *substream,
++			       size_t posn_offset);
+ int acp_sof_ipc_send_msg(struct snd_sof_dev *sdev,
+ 			 struct snd_sof_ipc_msg *msg);
+ int acp_sof_ipc_get_mailbox_offset(struct snd_sof_dev *sdev);
+-- 
+2.53.0
+
 
 
 
