@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCZaDp0fG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257797-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:21 +0200
+	id uCJdHZ0yG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:55:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A5C60FF41
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6EF4612CA0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:55:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E52EE3073491
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:30:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3947302974D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708BE3998B1;
-	Sat, 30 May 2026 17:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE4C15E5BB;
+	Sat, 30 May 2026 18:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lm2G+oTX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjZXhN03"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45762C11D9;
-	Sat, 30 May 2026 17:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E432318FDBD;
+	Sat, 30 May 2026 18:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162204; cv=none; b=R/UzfRRVb73AM36uSHi8Q7ZYRFES4qG6MIY/tE277fbJatupI04Kl9bsp9TcSCce/5OHarlR/M7ZzWtWlzNikiEYhpId/gXutxSa4VTZgePFhI3bz73AXlH0WiPnnZMeZ58Jv7UY5c1HrbepWIxcyJKZ9/ClenphjOwfc3QmDYA=
+	t=1780166864; cv=none; b=rQ1le+e0v3jsnTaRFlzq3YazqqznglF+K1Gm4caDJr6HA/YizWquuA1NLNvO3eLATUsCDBVa1Z8gFIpojzaqFHqCF81vf+ZHVBvp3pcKU4AN5OUUbRWXpGo9nfqMquGK2pxcoJvv0zElXu1uh8ivBNCLsv2+DdcZ7B8AGhgKkTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162204; c=relaxed/simple;
-	bh=Bg+HTRqKVo7qmykY5EQqeAu403xe582u03Tg73NWyU0=;
+	s=arc-20240116; t=1780166864; c=relaxed/simple;
+	bh=RNNRmwe6ucmmLt3hz+fhT0wBc24gOi0xtAa6P2MoXu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dm2vEf4zm1Rlv97Rye+YQ4WEauYP24s5HuGLez8y8ES28Bbrb6CM9mnNho0lvdg0Psh+DU0FqTnUMnCKkE1TO1U0ri26ARwwMytZO8OIkiJItAoAtFhiLVQ+LBDvTVyTPWcepuzmmqgheRPeNIZww6WOp1i3doCx/+VqlBMmg7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lm2G+oTX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12491F00893;
-	Sat, 30 May 2026 17:30:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rVEHfO2DXSrpo3xDc11P5+BcCR/zHlLfKnxX8bivzQabWe/kxm1wG/1KyiVYNh4vUcw9FG2+rYxR8KJDv7iasWQQ9nF/oD59YOtEVi/F6sqODttHQVy6DL+7+1M6LhcmVFNBqKaaSk9deywm+vJGBI8zIn/nYmC0M5cSNOXKL14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjZXhN03; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3506B1F00893;
+	Sat, 30 May 2026 18:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162202;
-	bh=7Sl/KZ+D4dqpirqtGdvP5NGJn1oLs7rMeBEomjILHcs=;
+	s=korg; t=1780166863;
+	bh=v4VY3YUDadFKcO47Rt9wgDmW6rz/xKUIZfcHYrk3AVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Lm2G+oTXv5U0IjU1DMIFORBE8kSz753vMyx40923Y2N2A46WadJs5g3rBtRElJPmW
-	 6e6dMMzZ2e01YWtu9270BGyDCf6Qc9C2YqzwJxVjOSlUQlhEI28o7/FgMYz5zdEaG2
-	 wq0Uns7E4233tGs+20edDfobU/jgUNdaR0GC5nh4=
+	b=tjZXhN03i+zI9sr50nN5kVlnRS2LVEzPWkCH11Lfo0VBqpCerp/CiHN5jra5c2pUU
+	 gU5ZHIMmODr2844EJBB5mOGs2HCwChvWGgaUHjvs9S9dc1nqH/WTmYqYbJfvrLQDri
+	 BSIAilHdukL+JNG0O8T6atuUQY1IxH/le1Z87thw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 851/969] net: ifb: report ethtool stats over num_tx_queues
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 494/589] drm/amd/display: Allow DCE link encoder without AUX registers
 Date: Sat, 30 May 2026 18:06:15 +0200
-Message-ID: <20260530160324.165517855@linuxfoundation.org>
+Message-ID: <20260530160237.609486251@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257797-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259177-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D6A5C60FF41
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,gitlab.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C6EF4612CA0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 5db89c99566fc4728cc92e941d8e1975711e24b5 upstream.
+[ Upstream commit ac27e3f99035f132f23bc0409d0e57f11f054c70 ]
 
-ifb_dev_init() allocates dp->tx_private to dev->num_tx_queues
-entries via kzalloc_objs(*txp, dev->num_tx_queues). Both IFB
-per-queue RX and TX stats live in those entries: ifb_xmit() updates
-txp->rx_stats using the skb queue mapping, ifb_ri_tasklet() updates
-txp->tx_stats, and ifb_stats64() aggregates both over
-dev->num_tx_queues.
+Allow constructing the DCE link encoder without DDC,
+which means the AUX registers array will be NULL.
 
-The ethtool stats callbacks instead size and walk the per-queue
-stats with dev->real_num_rx_queues and dev->real_num_tx_queues. With
-an asymmetric device where the RX queue count exceeds the TX queue
-count, for example:
+This is necessary to support embedded connectors without DDC.
 
-    ip link add name ifb10 numtxqueues 1 numrxqueues 8 type ifb
-    ethtool -S ifb10
-
-ifb_get_ethtool_stats() indexes past the tx_private allocation and
-copies adjacent slab data through ETHTOOL_GSTATS.
-
-Use dev->num_tx_queues consistently for the stats strings, the
-stats count, and the stats data walks. This reports one RX stats
-group and one TX stats group for each backing ifb_q_private entry,
-which is the queue set IFB can actually populate.
-
-Reproduced under UML+KASAN at v7.1-rc2:
-
-  BUG: KASAN: slab-out-of-bounds in ifb_fill_stats_data+0x3c/0xae
-  Read of size 8 at addr 0000000062dbd228 by task ethtool/36
-  ifb_fill_stats_data+0x3c/0xae
-  ifb_get_ethtool_stats+0xc0/0x129
-  __dev_ethtool+0x1ca5/0x363c
-  dev_ethtool+0x123/0x1b3
-  dev_ioctl+0x56c/0x744
-  sock_do_ioctl+0x15f/0x1b2
-  sock_ioctl+0x4d5/0x50a
-  sys_ioctl+0xd8b/0xde9
-
-With the patch applied, the same UML+KASAN repro is silent and
-ethtool -S ifb10 reports only the stats backed by the single
-allocated tx_private entry.
-
-Fixes: a21ee5b2fcb8 ("net: ifb: support ethtools stats")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260514013739.3549624-1-michael.bommarito@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 87f30b101af62590faf6020d106da07efdda199b)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ifb.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ifb.c
-+++ b/drivers/net/ifb.c
-@@ -211,12 +211,12 @@ static void ifb_get_strings(struct net_d
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+index 48bc459009547..f9d30fcfd052c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+@@ -994,7 +994,9 @@ void dce110_link_encoder_hw_init(
+ 		ASSERT(result == BP_RESULT_OK);
  
- 	switch (stringset) {
- 	case ETH_SS_STATS:
--		for (i = 0; i < dev->real_num_rx_queues; i++)
-+		for (i = 0; i < dev->num_tx_queues; i++)
- 			for (j = 0; j < IFB_Q_STATS_LEN; j++)
- 				ethtool_sprintf(&p, "rx_queue_%u_%.18s",
- 						i, ifb_q_stats_desc[j].desc);
- 
--		for (i = 0; i < dev->real_num_tx_queues; i++)
-+		for (i = 0; i < dev->num_tx_queues; i++)
- 			for (j = 0; j < IFB_Q_STATS_LEN; j++)
- 				ethtool_sprintf(&p, "tx_queue_%u_%.18s",
- 						i, ifb_q_stats_desc[j].desc);
-@@ -229,8 +229,7 @@ static int ifb_get_sset_count(struct net
- {
- 	switch (sset) {
- 	case ETH_SS_STATS:
--		return IFB_Q_STATS_LEN * (dev->real_num_rx_queues +
--					  dev->real_num_tx_queues);
-+		return IFB_Q_STATS_LEN * dev->num_tx_queues * 2;
- 	default:
- 		return -EOPNOTSUPP;
  	}
-@@ -262,12 +261,12 @@ static void ifb_get_ethtool_stats(struct
- 	struct ifb_q_private *txp;
- 	int i;
+-	aux_initialize(enc110);
++
++	if (enc110->aux_regs)
++		aux_initialize(enc110);
  
--	for (i = 0; i < dev->real_num_rx_queues; i++) {
-+	for (i = 0; i < dev->num_tx_queues; i++) {
- 		txp = dp->tx_private + i;
- 		ifb_fill_stats_data(&data, &txp->rx_stats);
- 	}
- 
--	for (i = 0; i < dev->real_num_tx_queues; i++) {
-+	for (i = 0; i < dev->num_tx_queues; i++) {
- 		txp = dp->tx_private + i;
- 		ifb_fill_stats_data(&data, &txp->tx_stats);
- 	}
+ 	/* reinitialize HPD.
+ 	 * hpd_initialize() will pass DIG_FE id to HW context.
+-- 
+2.53.0
+
 
 
 
