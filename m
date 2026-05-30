@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258028-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDumEj4ZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:10 +0200
+	id oH0iGiQjG2pa/ggAu9opvQ
+	(envelope-from <stable+bounces-258028-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E5D60EE95
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0543610750
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 35BDD305685C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:00:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80D2A309B2AC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11B7481DD;
-	Sat, 30 May 2026 17:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27352348C5E;
+	Sat, 30 May 2026 17:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0rz6FIU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5kAeB8O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904F22690D5;
-	Sat, 30 May 2026 17:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE92C267B05;
+	Sat, 30 May 2026 17:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160455; cv=none; b=pMmyBuxLuD+bsyBqQENNI543X+hMQUQ1cB+yb7Tqoxsk2f3+e2+ZkXm3BZiaG1PSNbQvo5I4SibX0oIJkl37Qg1K/abmb9gLioXfwhLDLsLtcHPSiQidAHrXt6BpNRWuMg8c3aJ28XgUWwn/5czDLTDz+tBtThhhUlcS+pd/NPw=
+	t=1780162982; cv=none; b=XvXPm3iN9fHRLei9CoWSo8tG2P9y2b/IKm4QwcZi0dDAaAMGhz4o4QdFAgi1CQvhC29O0cHYuUURgcbGnymkzWeic9ybiald1RHvRGE6O7l0Tf1J392fHbbhvNva2eiu5a4jzf75bS2yTIB907N+Keg4xzzC7PJ8a9qox0IUVGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160455; c=relaxed/simple;
-	bh=GsyXctFylgGr6aqrg1UIh9Jqrqr81qPi45ihQriatSQ=;
+	s=arc-20240116; t=1780162982; c=relaxed/simple;
+	bh=B/9nb6FM0ZDCI8GAWgeLoqU3pKRV3sCJ2qgcvV9CeDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PVk1DYgSZs1EFDjcE7VGxvKt4E4IYzr0wLw3zacIqDK0Y5+/sipGg+tO+/pnI9UfniJsin868Qx/Aj3Q3tXKdJ5qBmZG0hxsUW2VuFGsUETmu1mkyUHcGipxC1L7DQ8KM41hJAnTD7IdKnnIoKVUXySXpmDni0r2V+r413o7z4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0rz6FIU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0F71F00893;
-	Sat, 30 May 2026 17:00:53 +0000 (UTC)
+	 MIME-Version; b=UYbc80Oqe9qGYZQzot4XIY8VohZNVUX+ZOagH8T0sssMP50YStKgGjq3ekAI1YvEDzyDhXPMotbpPD1BWnMkg9bVQz8TAJ25OYmILQisZRuumE5plHGEvTk7hwH37rVGH2Lhl5sx6dUZifTinlfzG2cAGCGe3uHW0UnESKzXGVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5kAeB8O; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F10D1F00893;
+	Sat, 30 May 2026 17:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160454;
-	bh=cvXicJNhpT6skuxq2wUPKdvKRN8baWdB/zq1iVfIhV0=;
+	s=korg; t=1780162981;
+	bh=ci4GkJtiLaxe9bFaabNjScvZ6Vlf6zGUUt5v5/uqeEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=z0rz6FIUIIET9zafG0qr7pKzKLK1tVCHd4e3k05IiUlyIx/pHwiTERgp1SRZpbWeU
-	 XxB/aGfStAVNuDjaINGm31LHUNDs//m614F8Fz4pSHHof5vhC/9yBlLQqlLTCWQJPG
-	 R/1BSI/mvbTWq8RnIRC8H4n0SOFw6cyLyLPoBoo4=
+	b=M5kAeB8OupeWpt8BrAQF5xeJWu5BP8BSdBL7SssHwqZNnWEBuZNxa1ToJUUrpTbG3
+	 BXUfDQVa9+48XPkWOa7wISZr/FR7nJ5vtdi1wyjeq1kkM2wEuaWj0Tjb0RKXKfCCr9
+	 fHDyjC5TqgqCmP39L4DEGYrPkgL2KeyQABhzOqQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 312/969] ALSA: firewire-tascam: Do not drop unread control events
+	Ye Bin <yebin10@huawei.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Bin Lan <lanbincn@139.com>
+Subject: [PATCH 5.15 122/776] f2fs: fix null-ptr-deref in f2fs_submit_page_bio()
 Date: Sat, 30 May 2026 17:57:16 +0200
-Message-ID: <20260530160309.031371710@linuxfoundation.org>
+Message-ID: <20260530160243.528920947@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +64,130 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257281-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sakamocchi.jp,gmail.com,suse.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,kernel.org,139.com];
+	TAGGED_FROM(0.00)[bounces-258028-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: B6E5D60EE95
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,139.com:email]
+X-Rspamd-Queue-Id: E0543610750
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 0749daa8eb5ab90334aaad3b0671efd7150d43b1 upstream.
+commit b7d0a97b28083084ebdd8e5c6bccd12e6ec18faa upstream.
 
-tscm_hwdep_read_queue() copies as many queued control events as fit in
-the userspace buffer. When the buffer is smaller than the current
-contiguous queue segment, length is rounded down to the number of bytes
-that can be copied.
+There's issue as follows when concurrently installing the f2fs.ko
+module and mounting the f2fs file system:
+KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
+RIP: 0010:__bio_alloc+0x2fb/0x6c0 [f2fs]
+Call Trace:
+ <TASK>
+ f2fs_submit_page_bio+0x126/0x8b0 [f2fs]
+ __get_meta_page+0x1d4/0x920 [f2fs]
+ get_checkpoint_version.constprop.0+0x2b/0x3c0 [f2fs]
+ validate_checkpoint+0xac/0x290 [f2fs]
+ f2fs_get_valid_checkpoint+0x207/0x950 [f2fs]
+ f2fs_fill_super+0x1007/0x39b0 [f2fs]
+ mount_bdev+0x183/0x250
+ legacy_get_tree+0xf4/0x1e0
+ vfs_get_tree+0x88/0x340
+ do_new_mount+0x283/0x5e0
+ path_mount+0x2b2/0x15b0
+ __x64_sys_mount+0x1fe/0x270
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-However, after copying that shortened length, the code advances pull_pos
-to the original tail_pos, marking the whole contiguous segment as
-consumed. Any events between the copied portion and tail_pos are lost.
+Above issue happens as the biset of the f2fs file system is not
+initialized before register "f2fs_fs_type".
+To address above issue just register "f2fs_fs_type" at the last in
+init_f2fs_fs(). Ensure that all f2fs file system resources are
+initialized.
 
-Limit tail_pos to the position after the entries actually copied before
-updating pull_pos. When the whole segment fits, this is equivalent to the
-old tail_pos update; when the buffer is smaller, the remaining events
-stay queued for the next read.
-
-Fixes: a8c0d13267a4 ("ALSA: firewire-tascam: notify events of change of state for userspace applications")
-Cc: stable@vger.kernel.org
-Suggested-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Co-developed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260503-alsa-firewire-tascam-read-queue-v2-1-126c6efd7642@gmail.com
+Fixes: f543805fcd60 ("f2fs: introduce private bioset")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ Minor context conflict resolved. ]
+Signed-off-by: Bin Lan <lanbincn@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/firewire/tascam/tascam-hwdep.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/super.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/sound/firewire/tascam/tascam-hwdep.c
-+++ b/sound/firewire/tascam/tascam-hwdep.c
-@@ -73,6 +73,7 @@ static long tscm_hwdep_read_queue(struct
- 			length = rounddown(remained, sizeof(*entries));
- 		if (length == 0)
- 			break;
-+		tail_pos = head_pos + length / sizeof(*entries);
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4634,9 +4634,6 @@ static int __init init_f2fs_fs(void)
+ 	err = register_shrinker(&f2fs_shrinker_info);
+ 	if (err)
+ 		goto free_sysfs;
+-	err = register_filesystem(&f2fs_fs_type);
+-	if (err)
+-		goto free_shrinker;
+ 	f2fs_create_root_stats();
+ 	err = f2fs_init_post_read_processing();
+ 	if (err)
+@@ -4660,6 +4657,7 @@ static int __init init_f2fs_fs(void)
+ 	if (err)
+ 		goto free_compress_cache;
+ 	err = f2fs_init_xattr_cache();
++	err = register_filesystem(&f2fs_fs_type);
+ 	if (err)
+ 		goto free_casefold_cache;
+ 	return 0;
+@@ -4679,8 +4677,6 @@ free_post_read:
+ 	f2fs_destroy_post_read_processing();
+ free_root_stats:
+ 	f2fs_destroy_root_stats();
+-	unregister_filesystem(&f2fs_fs_type);
+-free_shrinker:
+ 	unregister_shrinker(&f2fs_shrinker_info);
+ free_sysfs:
+ 	f2fs_exit_sysfs();
+@@ -4704,6 +4700,7 @@ fail:
  
- 		spin_unlock_irq(&tscm->lock);
- 		if (copy_to_user(pos, &entries[head_pos], length))
+ static void __exit exit_f2fs_fs(void)
+ {
++	unregister_filesystem(&f2fs_fs_type);
+ 	f2fs_destroy_xattr_cache();
+ 	f2fs_destroy_casefold_cache();
+ 	f2fs_destroy_compress_cache();
+@@ -4713,7 +4710,6 @@ static void __exit exit_f2fs_fs(void)
+ 	f2fs_destroy_iostat_processing();
+ 	f2fs_destroy_post_read_processing();
+ 	f2fs_destroy_root_stats();
+-	unregister_filesystem(&f2fs_fs_type);
+ 	unregister_shrinker(&f2fs_shrinker_info);
+ 	f2fs_exit_sysfs();
+ 	f2fs_destroy_garbage_collection_cache();
 
 
 
