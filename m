@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258003-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FKYOT4ZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257223-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:10 +0200
+	id SKw/IW8hG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258003-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4977560EE97
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE486102FB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C998E30EB9F1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:57:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6D6A3301878A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523D533FE15;
-	Sat, 30 May 2026 16:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A594934C9AF;
+	Sat, 30 May 2026 17:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0l4Kn3+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrPDD5uo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4D132BF24;
-	Sat, 30 May 2026 16:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6BD34389F;
+	Sat, 30 May 2026 17:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160243; cv=none; b=rBvq/dNjln8ccEWyrZpMOzVAHRcwYb1RNPr5m9gnyVWpXsA2sTD0Sxro3Rp+6k/LLLb+Y1GlLwrFNt7Q0rDjwt/5G1+ifwQpq8MvvjMM0azJH6UKW0zNLxS92V0viJw2OlUEBpdzkTI4GOVJWdcA42sBJFx4DBULXKM+JDL1vvM=
+	t=1780162899; cv=none; b=jxIjZd21MDv692zhq1iH1WoByRtijwJ9pVZgv8y7yHrnt5NSRGEwKYridutZ/XsjDc6Tdjt8vKMmh6gpMjtzjSKd+KRc8Z6IXqkZWPrRnpflqW7+kvcdqg5hXM4/89Qo9uvTiE5jISy9+/rPN9K3SAV8Yvz2rljgHIg4H9AzFxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160243; c=relaxed/simple;
-	bh=FRTtf9CNaXlUO0DnGJmZU3ajOjKat77fjV3n6Z0ne98=;
+	s=arc-20240116; t=1780162899; c=relaxed/simple;
+	bh=pfNyOPXeKK6wTGPh2/eJksXInvzRRwj/3L3V24Kiahs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NsEh1mUI5pWPSxbqzpp6fgBbnpikcD0VKy/2b9gMYLOkM8GaukKUOGN0wQM6VBvm3cW+UW4buB5Hafd6iwf+J5IAxYIAK/DiRIPC/5RXt0Ta9pr4JokKey9WtQDyyWubMWiWn18r5HzBuNVoi6mLFQYg81bei+mZDc6Q+46ALjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0l4Kn3+B; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB12C1F00893;
-	Sat, 30 May 2026 16:57:20 +0000 (UTC)
+	 MIME-Version; b=HFuODv/8eL9CbGgQglK+5amYEh8SGjzw663zNKVxmEhX3oP4iKYVQAu7fzdn4TzchX5OYdLyN0r391ym/PcDv/wPInEIG9XlrKqk2KoTTS0or9CF8+GG6Hq1RPAesvFT2h1TWEPEVyshF0jcXwhUq1Mhec8CbBZUtJlaYPHeiyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrPDD5uo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A01E61F00893;
+	Sat, 30 May 2026 17:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160241;
-	bh=8JXOG2Y/B6FVwtBN06ZcJsXmgOgEH7C1l0hWpY1y8rg=;
+	s=korg; t=1780162898;
+	bh=fQXO8/tkzC29ElRQesAGyqeoPsqDUEezh47dgif2FEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0l4Kn3+BDrLqbrO+fesUKzsrTU9w5uO6khnsD5Oessx1vkQ1UEv99k92OlIaKKoj0
-	 kuW7bfKolsgr7P8ogDvN0oTOhAqjE+B8Mx/8w/CqstemYf4zF/5gFfXyX8plgXIjvX
-	 c7Vkr6x2LBnD+MaINyiM9cuFZNsRkkOZdTnY9+7M=
+	b=PrPDD5uoiheNwdKEsqESOO8pXk4katQWxpd/gdXxdflJUm0Qachhv8bQgs0AoQKeP
+	 pWGVQL0EzxjLIFoEFMdQKGHnPZuTQ8pGC+bf9cIEpZ5d4T6wVEcpUsBoaQJiaPVfEs
+	 GUYKUqIlMXnJ+Vv8cB+WMUbY/Fglbo1RbiNh8SLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Kelley <skelley@nvidia.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 285/969] ACPI: CPPC: Fix related_cpus inconsistency during CPU hotplug
+	Andrew Price <anprice@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Ruohan Lan <ruohanlan@aliyun.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 095/776] gfs2: Improve gfs2_consist_inode() usage
 Date: Sat, 30 May 2026 17:56:49 +0200
-Message-ID: <20260530160308.333123050@linuxfoundation.org>
+Message-ID: <20260530160242.791668233@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,173 +67,248 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257223-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,aliyun.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258003-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4977560EE97
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[aliyun.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3CE486102FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Andrew Price <anprice@redhat.com>
 
-commit 75141a770f4f8225d316f6c7e146723a32e9720e upstream.
+[ Upstream commit 10398ef57aa189153406c110f5957145030f08fe ]
 
-When concurrently bringing up and down two SMT threads of a physical
-core, many warning call traces occur as below:
+gfs2_consist_inode() logs an error message with the source file and line
+number. When we jump before calling it, the line number becomes less
+useful as it no longer relates to the source of the error. To aid
+troubleshooting, replace the gotos with the gfs2_consist_inode() calls
+so that the error messages are more informative.
 
-The issue timeline is as follows:
-
- 1. When the system starts,
-    cpufreq: CPU: 220, policy->related_cpus: 220-221, policy->cpus: 220-221
-
- 2. Offline CPU 220 and CPU 221.
-
- 3. Online CPU 220
-    - CPU 221 is now offline, as acpi_get_psd_map() use
-      for_each_online_cpu(), so the cpu_data->shared_cpu_map,
-      policy->cpus, and related_cpus has only CPU 220.
-
-    cpufreq: CPU: 220, policy->related_cpus: 220, policy->cpus: 220
-
- 4. Offline CPU 220
-
- 5. Online CPU 221, the below call trace occurs:
-    - Since CPU 220 and CPU 221 share one policy, and
-      policy->related_cpus = 220 after step 3, so CPU 221
-      is not in policy->related_cpus but
-      per_cpu(cpufreq_cpu_data, cpu221) is not NULL.
-
-After reverting commit 56eb0c0ed345 ("ACPI: CPPC: Fix remaining
-for_each_possible_cpu() to use online CPUs"), the issue disappeared.
-
-The _PSD (P-State Dependency) defines the hardware-level dependency of
-frequency control across CPU cores. Since this relationship is a physical
-attribute of the hardware topology, it remains constant regardless of the
-online or offline status of the CPUs.
-
-Using for_each_online_cpu() in acpi_get_psd_map() is problematic. If a
-CPU is offline, it will be excluded from the shared_cpu_map.
-Consequently, if that CPU is brought online later, the kernel will fail
-to recognize it as part of any shared frequency domain.
-
-Switch back to for_each_possible_cpu() to ensure that all cores defined
-in the ACPI tables are correctly mapped into their respective performance
-domains from the start. This aligns with the logic of policy->related_cpus,
-which must encompass all potentially available cores in the domain to
-prevent logic gaps during CPU hotplug operations.
-
-To resolve the original issue regarding the "nosmt" or "nosmt=force"
-boot parameter, as send_pcc_cmd() function already does if (!desc)
-continue, so reverting that loop back to for_each_possible_cpu() is ok,
-only need to change the match_cpc_ptr NULL case in acpi_get_psd_map() to
-continue as Sean suggested.
-
-How to reproduce, on arm64 machine with SMT support which use acpi cppc
-cpufreq driver:
-
-	bash test.sh 220 & bash test.sh 221 &
-
-	The test.sh is as below:
-		while true
-			do
-			echo 0 > /sys/devices/system/cpu/cpu${1}/online
-			sleep 0.5
-			cat /sys/devices/system/cpu/cpu${1}/cpufreq/related_cpus
-			echo 1 >  /sys/devices/system/cpu/cpu${1}/online
-			cat /sys/devices/system/cpu/cpu${1}/cpufreq/related_cpus
-		done
-
-	CPU: 221 PID: 1119 Comm: cpuhp/221 Kdump: loaded Not tainted 6.6.0debug+ #5
-	Hardware name: To be filled by O.E.M. S920X20/BC83AMDA01-7270Z, BIOS 20.39 09/04/2024
-	pstate: a1400009 (NzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-	pc : cpufreq_online+0x8ac/0xa90
-	lr : cpuhp_cpufreq_online+0x18/0x30
-	sp : ffff80008739bce0
-	x29: ffff80008739bce0 x28: 0000000000000000 x27: ffff28400ca32200
-	x26: 0000000000000000 x25: 0000000000000003 x24: ffffd483503ff000
-	x23: ffffd483504051a0 x22: ffffd48350024a00 x21: 00000000000000dd
-	x20: 000000000000001d x19: ffff28400ca32000 x18: 0000000000000000
-	x17: 0000000000000020 x16: ffffd4834e6a3fc8 x15: 0000000000000020
-	x14: 0000000000000008 x13: 0000000000000001 x12: 00000000ffffffff
-	x11: 0000000000000040 x10: ffffd48350430728 x9 : ffffd4834f087c78
-	x8 : 0000000000000001 x7 : ffff2840092bdf00 x6 : ffffd483504264f0
-	x5 : ffffd48350405000 x4 : ffff283f7f95cc60 x3 : 0000000000000000
-	x2 : ffff53bc2f94b000 x1 : 00000000000000dd x0 : 0000000000000000
-	Call trace:
-	 cpufreq_online+0x8ac/0xa90
-	 cpuhp_cpufreq_online+0x18/0x30
-	 cpuhp_invoke_callback+0x128/0x580
-	 cpuhp_thread_fun+0x110/0x1b0
-	 smpboot_thread_fn+0x140/0x190
-	 kthread+0xec/0x100
-	 ret_from_fork+0x10/0x20
-	---[ end trace 0000000000000000 ]---
-
-Cc: All applicable <stable@vger.kernel.org>
-Fixes: 56eb0c0ed345 ("ACPI: CPPC: Fix remaining for_each_possible_cpu() to use online CPUs")
-Co-developed-by: Sean Kelley <skelley@nvidia.com>
-Signed-off-by: Sean Kelley <skelley@nvidia.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-[ rjw: Changelog edits ]
-Link: https://patch.msgid.link/20260417040112.3727756-1-ruanjinjie@huawei.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrew Price <anprice@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/gfs2/dir.c   | 31 +++++++++++++++++--------------
+ fs/gfs2/glops.c | 34 ++++++++++++++++++++--------------
+ fs/gfs2/xattr.c | 28 ++++++++++++++++------------
+ 3 files changed, 53 insertions(+), 40 deletions(-)
 
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -342,7 +342,7 @@ static int send_pcc_cmd(int pcc_ss_id, u
- end:
- 	if (cmd == CMD_WRITE) {
- 		if (unlikely(ret)) {
--			for_each_online_cpu(i) {
-+			for_each_possible_cpu(i) {
- 				struct cpc_desc *desc = per_cpu(cpc_desc_ptr, i);
+diff --git a/fs/gfs2/dir.c b/fs/gfs2/dir.c
+index 42b7dfffb5e7e..e1bdc4b0608c2 100644
+--- a/fs/gfs2/dir.c
++++ b/fs/gfs2/dir.c
+@@ -562,15 +562,18 @@ static struct gfs2_dirent *gfs2_dirent_scan(struct inode *inode, void *buf,
+ 	int ret = 0;
  
- 				if (!desc)
-@@ -504,13 +504,13 @@ int acpi_get_psd_map(unsigned int cpu, s
- 	else if (pdomain->coord_type == DOMAIN_COORD_TYPE_SW_ANY)
- 		cpu_data->shared_type = CPUFREQ_SHARED_TYPE_ANY;
+ 	ret = gfs2_dirent_offset(GFS2_SB(inode), buf);
+-	if (ret < 0)
+-		goto consist_inode;
+-
++	if (ret < 0) {
++		gfs2_consist_inode(GFS2_I(inode));
++		return ERR_PTR(-EIO);
++	}
+ 	offset = ret;
+ 	prev = NULL;
+ 	dent = buf + offset;
+ 	size = be16_to_cpu(dent->de_rec_len);
+-	if (gfs2_check_dirent(GFS2_SB(inode), dent, offset, size, len, 1))
+-		goto consist_inode;
++	if (gfs2_check_dirent(GFS2_SB(inode), dent, offset, size, len, 1)) {
++		gfs2_consist_inode(GFS2_I(inode));
++		return ERR_PTR(-EIO);
++	}
+ 	do {
+ 		ret = scan(dent, name, opaque);
+ 		if (ret)
+@@ -582,8 +585,10 @@ static struct gfs2_dirent *gfs2_dirent_scan(struct inode *inode, void *buf,
+ 		dent = buf + offset;
+ 		size = be16_to_cpu(dent->de_rec_len);
+ 		if (gfs2_check_dirent(GFS2_SB(inode), dent, offset, size,
+-				      len, 0))
+-			goto consist_inode;
++				      len, 0)) {
++			gfs2_consist_inode(GFS2_I(inode));
++			return ERR_PTR(-EIO);
++		}
+ 	} while(1);
  
--	for_each_online_cpu(i) {
-+	for_each_possible_cpu(i) {
- 		if (i == cpu)
- 			continue;
+ 	switch(ret) {
+@@ -597,10 +602,6 @@ static struct gfs2_dirent *gfs2_dirent_scan(struct inode *inode, void *buf,
+ 		BUG_ON(ret > 0);
+ 		return ERR_PTR(ret);
+ 	}
+-
+-consist_inode:
+-	gfs2_consist_inode(GFS2_I(inode));
+-	return ERR_PTR(-EIO);
+ }
  
- 		match_cpc_ptr = per_cpu(cpc_desc_ptr, i);
- 		if (!match_cpc_ptr)
--			goto err_fault;
-+			continue;
+ static int dirent_check_reclen(struct gfs2_inode *dip,
+@@ -609,14 +610,16 @@ static int dirent_check_reclen(struct gfs2_inode *dip,
+ 	const void *ptr = d;
+ 	u16 rec_len = be16_to_cpu(d->de_rec_len);
  
- 		match_pdomain = &(match_cpc_ptr->domain_info);
- 		if (match_pdomain->domain != pdomain->domain)
+-	if (unlikely(rec_len < sizeof(struct gfs2_dirent)))
+-		goto broken;
++	if (unlikely(rec_len < sizeof(struct gfs2_dirent))) {
++		gfs2_consist_inode(dip);
++		return -EIO;
++	}
+ 	ptr += rec_len;
+ 	if (ptr < end_p)
+ 		return rec_len;
+ 	if (ptr == end_p)
+ 		return -ENOENT;
+-broken:
++
+ 	gfs2_consist_inode(dip);
+ 	return -EIO;
+ }
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index 5a4b3550d833f..fdbae357727b2 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -405,10 +405,14 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 	struct inode *inode = &ip->i_inode;
+ 	bool is_new = inode->i_state & I_NEW;
+ 
+-	if (unlikely(ip->i_no_addr != be64_to_cpu(str->di_num.no_addr)))
+-		goto corrupt;
+-	if (unlikely(!is_new && inode_wrong_type(inode, mode)))
+-		goto corrupt;
++	if (unlikely(ip->i_no_addr != be64_to_cpu(str->di_num.no_addr))) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
++	if (unlikely(!is_new && inode_wrong_type(inode, mode))) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_no_formal_ino = be64_to_cpu(str->di_num.no_formal_ino);
+ 	inode->i_mode = mode;
+ 	if (is_new) {
+@@ -444,26 +448,28 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 	/* i_diskflags and i_eattr must be set before gfs2_set_inode_flags() */
+ 	gfs2_set_inode_flags(inode);
+ 	height = be16_to_cpu(str->di_height);
+-	if (unlikely(height > sdp->sd_max_height))
+-		goto corrupt;
++	if (unlikely(height > sdp->sd_max_height)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_height = (u8)height;
+ 
+ 	depth = be16_to_cpu(str->di_depth);
+-	if (unlikely(depth > GFS2_DIR_MAX_DEPTH))
+-		goto corrupt;
++	if (unlikely(depth > GFS2_DIR_MAX_DEPTH)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_depth = (u8)depth;
+ 	ip->i_entries = be32_to_cpu(str->di_entries);
+ 
+-	if (gfs2_is_stuffed(ip) && inode->i_size > gfs2_max_stuffed_size(ip))
+-		goto corrupt;
+-
++	if (gfs2_is_stuffed(ip) && inode->i_size > gfs2_max_stuffed_size(ip)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	if (S_ISREG(inode->i_mode))
+ 		gfs2_set_aops(inode);
+ 
+ 	return 0;
+-corrupt:
+-	gfs2_consist_inode(ip);
+-	return -EIO;
+ }
+ 
+ /**
+diff --git a/fs/gfs2/xattr.c b/fs/gfs2/xattr.c
+index 0c5650fe1fd18..2b0fe8cf2173a 100644
+--- a/fs/gfs2/xattr.c
++++ b/fs/gfs2/xattr.c
+@@ -96,30 +96,34 @@ static int ea_foreach_i(struct gfs2_inode *ip, struct buffer_head *bh,
+ 		return -EIO;
+ 
+ 	for (ea = GFS2_EA_BH2FIRST(bh);; prev = ea, ea = GFS2_EA2NEXT(ea)) {
+-		if (!GFS2_EA_REC_LEN(ea))
+-			goto fail;
++		if (!GFS2_EA_REC_LEN(ea)) {
++			gfs2_consist_inode(ip);
++			return -EIO;
++		}
+ 		if (!(bh->b_data <= (char *)ea && (char *)GFS2_EA2NEXT(ea) <=
+-						  bh->b_data + bh->b_size))
+-			goto fail;
+-		if (!gfs2_eatype_valid(sdp, ea->ea_type))
+-			goto fail;
++						  bh->b_data + bh->b_size)) {
++			gfs2_consist_inode(ip);
++			return -EIO;
++		}
++		if (!gfs2_eatype_valid(sdp, ea->ea_type)) {
++			gfs2_consist_inode(ip);
++			return -EIO;
++		}
+ 		error = ea_call(ip, bh, ea, prev, data);
+ 		if (error)
+ 			return error;
+ 
+ 		if (GFS2_EA_IS_LAST(ea)) {
+ 			if ((char *)GFS2_EA2NEXT(ea) !=
+-			    bh->b_data + bh->b_size)
+-				goto fail;
++			    bh->b_data + bh->b_size) {
++				gfs2_consist_inode(ip);
++				return -EIO;
++			}
+ 			break;
+ 		}
+ 	}
+ 
+ 	return error;
+-
+-fail:
+-	gfs2_consist_inode(ip);
+-	return -EIO;
+ }
+ 
+ static int ea_foreach(struct gfs2_inode *ip, ea_call_t ea_call, void *data)
+-- 
+2.53.0
+
 
 
 
