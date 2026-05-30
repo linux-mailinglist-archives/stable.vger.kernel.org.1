@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-257963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBD+Fp8iG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257963-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:11 +0200
+	id wOpJJFIYG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B166105FD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E14FF60ECE0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 82C4C3054F63
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:39:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 699BA3089E59
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E65B349CCF;
-	Sat, 30 May 2026 17:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0256A33FE15;
+	Sat, 30 May 2026 16:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diT7wAZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0eyp84M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9790D34389F;
-	Sat, 30 May 2026 17:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1B533F5A3;
+	Sat, 30 May 2026 16:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162766; cv=none; b=tZKtTVN6vCYr2qdoig+OFLNhrhHf4uK1O+Y6I2r0ve6YaIIDqwsZnArIWia1nOWzukqfsOjVrcWBuP/PnMTCPxhbhHevXmg8ZMNA4TcmlbknaNEkQRQTHISVrf+0ETKwIRyHvlhY7ZlW+cMcM+G0cxRkAY9eIpagMnDGSVAq7gU=
+	t=1780160110; cv=none; b=LqkGpL7Vu839gidXXY9UAzyNm1Af4QWd6IayBf8rgbuQXB3SfXn7zKLJWxEubroDqHxhDrVZmbXh+2xMp/JaqP2LmM0gK1qk17fteqvgisoJ/ChRU8ULMNJqrtABg22rIXlpsErrgciRoJuXIrEoOOAFKnY2ht46At89ZcuX9f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162766; c=relaxed/simple;
-	bh=vAoyYDztNTtSSED5jIKqo+y6hLpfX3nde+5Pak/6OV4=;
+	s=arc-20240116; t=1780160110; c=relaxed/simple;
+	bh=F3hm1FVLbI3vgMAWUunpe2/kbwSUthaeushk+3gNbbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCTsLUjzdGPQRz7eII+IHs2JsH4ZgzarKg7hDR/ul0bE+JsRXjFCA2dYG85kcY7fTLJpABtjbktF9s8kIWpnlrNqgCBEHhqqeVfD1u9ydd85AZbtbCOyOVNpyHxsQK7wdr9TMziTDvFayiNwKD5JfRAgA39pbLaPHBavyJTEWRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diT7wAZR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD401F00893;
-	Sat, 30 May 2026 17:39:23 +0000 (UTC)
+	 MIME-Version; b=QrkYxTlVF17bDJmAcYEXwnaCbnWSVNNehbb53aDj4uAn2MKO/Lok0QaaQ6Uamtp+aVuTnoz7py0S7dx32cnlNoSPtAMStpT+4kg14zil62hq4fOdZ+9Ef46vcdKKV3ZN/TCL5mPg4XlpObgBlWZGUMC6ofgOH1zCVQFVrxhC8uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0eyp84M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B5F1F00893;
+	Sat, 30 May 2026 16:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162764;
-	bh=PjtiooSNFHoHgQrU2Y0NjFM63Fl1RGLI3tDDi6SQCDo=;
+	s=korg; t=1780160109;
+	bh=Hq3ITEbRiLGnpQ2QcDunhy7Rv/sje2A6jZIozubA+0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=diT7wAZR2fBlb+euTkjHCLrmYRCXmLRBE+JoSD/hK+2l9T+1T8qXflgjWaufYXq5S
-	 aYebqlMJbCRfeu+d92f/KHZxfq6pgvdu6qu3V6GDZtFzUtPTPRnsr0dxeKtIDBBEM2
-	 PUgjZyvKwSzPKap3XMoQJ5R3w8UAKyDTlmb6cdYI=
+	b=F0eyp84MZ9MIfajk09K5POnH/RbVgeFUUUIsf5QTUo8IbktkXIAgXrYIjF/Uj5lRY
+	 9QH3Bs1/zPSHyqpCeGeUmDW6RpPh8yHIufP6qoUSiJC35vcjg0OwmxTL5f70EkmFT7
+	 6t686hGv4SFCb9FxUt4CfU48w5+i+HUmBdQfFQWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Masaki Ota <masaki.ota@jp.alps.com>,
-	linux-input@vger.kernel.org,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.15 056/776] HID: alps: fix NULL pointer dereference in alps_raw_event()
-Date: Sat, 30 May 2026 17:56:10 +0200
-Message-ID: <20260530160241.762132673@linuxfoundation.org>
+	Sohei Koyama <skoyama@ddn.com>,
+	Andreas Dilger <adilger@dilger.ca>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 247/969] ext4: fix missing brelse() in ext4_xattr_inode_dec_ref_all()
+Date: Sat, 30 May 2026 17:56:11 +0200
+Message-ID: <20260530160307.286911835@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,80 +67,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ddn.com,dilger.ca,gmail.com,huawei.com,linux.alibaba.com,mit.edu];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257963-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257186-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alps.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 13B166105FD
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E14FF60ECE0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Sohei Koyama <skoyama@ddn.com>
 
-commit 1badfc4319224820d5d890f8eab6aa52e4e83339 upstream.
+commit 77d059519382bd66283e6a4e83ee186e87e7708f upstream.
 
-Commit ecfa6f34492c ("HID: Add HID_CLAIMED_INPUT guards in raw_event
-callbacks missing them") attempted to fix up the HID drivers that had
-missed the previous fix that was done in 2ff5baa9b527 ("HID: appleir:
-Fix potential NULL dereference at raw event handle"), but the alps
-driver was missed.
+The commit c8e008b60492 ("ext4: ignore xattrs past end")
+introduced a refcount leak in when block_csum is false.
 
-Fix this up by properly checking in the hid-alps driver that it had been
-claimed correctly before attempting to process the raw event.
+ext4_xattr_inode_dec_ref_all() calls ext4_get_inode_loc() to
+get iloc.bh, but never releases it with brelse().
 
-Fixes: 73196ebe134d ("HID: alps: add support for Alps T4 Touchpad device")
-Cc: stable <stable@kernel.org>
-Cc: Jiri Kosina <jikos@kernel.org>
-Cc: Benjamin Tissoires <bentiss@kernel.org>
-Cc: Masaki Ota <masaki.ota@jp.alps.com>
-Cc: linux-input@vger.kernel.org
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: c8e008b60492 ("ext4: ignore xattrs past end")
+Signed-off-by: Sohei Koyama <skoyama@ddn.com>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
+Link: https://patch.msgid.link/20260406074830.8480-1-skoyama@ddn.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-alps.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/ext4/xattr.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/hid-alps.c
-+++ b/drivers/hid/hid-alps.c
-@@ -437,6 +437,9 @@ static int alps_raw_event(struct hid_dev
- 	int ret = 0;
- 	struct alps_dev *hdata = hid_get_drvdata(hdev);
- 
-+	if (!(hdev->claimed & HID_CLAIMED_INPUT) || !hdata->input)
-+		return 0;
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1112,7 +1112,7 @@ ext4_xattr_inode_dec_ref_all(handle_t *h
+ {
+ 	struct inode *ea_inode;
+ 	struct ext4_xattr_entry *entry;
+-	struct ext4_iloc iloc;
++	struct ext4_iloc iloc = { .bh = NULL };
+ 	bool dirty = false;
+ 	unsigned int ea_ino;
+ 	int err;
+@@ -1207,6 +1207,8 @@ ext4_xattr_inode_dec_ref_all(handle_t *h
+ 			ext4_warning_inode(parent,
+ 					   "handle dirty metadata err=%d", err);
+ 	}
 +
- 	switch (hdev->product) {
- 	case HID_PRODUCT_ID_T4_BTNLESS:
- 		ret = t4_raw_event(hdata, data, size);
++	brelse(iloc.bh);
+ }
+ 
+ /*
 
 
 
