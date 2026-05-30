@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-258837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257456-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MdaDEkuG2oLAAkAu9opvQ
-	(envelope-from <stable+bounces-258837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:57 +0200
+	id 0NrCAL0aG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257456-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7890E612181
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 011E260F2AA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 182673136479
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:28:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 542E1300F254
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40293C416A;
-	Sat, 30 May 2026 18:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC8734104B;
+	Sat, 30 May 2026 17:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQ0/q8OK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTYO94Qv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986F03BD646;
-	Sat, 30 May 2026 18:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD7F481DD;
+	Sat, 30 May 2026 17:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165705; cv=none; b=HVcdiEywzXqYJVUuMeghRHnmTMOTlNIpg7DnYTkmoIMxULWp6n6opMsQ5vYTxYayxlnLK4Eu9nI5/iiS2G6Esz2puvd4cxRxlekUARFHxUPlSMU0aUpFDsK2jJoezHWM0bdIDM/kY37w+E9qosAJ2geWOAOMU1y9JgwsfRpryZU=
+	t=1780161060; cv=none; b=YGoSOIzdTPVih7q20hsHeOsFO67UcYymno+vVn+qoZ9T7OFdcOYwL/gUThxcOJf3jm3uhxQmTT0unIvOr+nPk6kfxzREq439mPTJvD0CbDysZsykTIuehxu1R/3b37osJPYt7GDeGoXuiDiWtRrzMfMh3eWvoHnRPxwuL5b1hD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165705; c=relaxed/simple;
-	bh=8gmpeLG7v9D/6u0OE63Ehz0DE+QgxE6aclUt7DHRbOs=;
+	s=arc-20240116; t=1780161060; c=relaxed/simple;
+	bh=qv5EZXkzAd2SZvGPgFWm9nNbl/7fyTpv2P/j8a8e5j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tqPI5tyFGaMptWm8TaCSN2kiXkk7LOsk1Q6B7XP0rilAOzCzxuccgYsafWz21QCF4SEN3/2cWPCuFfcZeAj2E2fJ32Jk7zh/3YxyYk0Ia2vYUex8Hl2n/4uZ5YxxqOz5Ahfhb3/ayUUvgW3cH5fBCUeToHpwhKJhByFLflUrgpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQ0/q8OK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A120D1F00893;
-	Sat, 30 May 2026 18:28:23 +0000 (UTC)
+	 MIME-Version; b=NZ/0xBCxFQ2P2gwTtlpGavR8X1AzYjtvATZe9qqX6oOS75CJECDb5z15aMNyQ3uBUMM7xDKufa6mf1Z/Jy+/TkFkbSRBkp02KVsLjIdJdpDZl46g8Aq/0NbOLWx6g2HwPBZvkKE8spzO6ySjk/5kY7MK/CGuvV8lEtvqCv7qWvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTYO94Qv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C987B1F00893;
+	Sat, 30 May 2026 17:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165704;
-	bh=2Mol8x8mTiKR5RO0QCFqZ9HzbmYmh4206a+L5RrQj+k=;
+	s=korg; t=1780161059;
+	bh=ywqzY1sHld65+B5O8bTk1TsAi/2cnhcnsqzxWtrjds0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yQ0/q8OKB0YagyaGUyeaxOpHqA33L8/M96IW69srQ+Gbs+QuUhtQAQ/hiL/A0IJpS
-	 iyv2g/is2RF4j0v+b7t9EJhja17DnkblEKwvRp7OiKssaMqsP3PpCNdzRZ17rLgxMp
-	 /kOWi8B5oIZ7MaGVEKyqBk33GkT92/FVZp1tDuqg=
+	b=LTYO94Qvbc5+k2AR0VaozkGOvtKKEfQOnRj776p6O5a8I4CubGK3Ih3U1W4Be5oiy
+	 xJ/Gxe1hFaE6ZGno9fwATaqpEeL91lfgimG4pgeGr0LoNmjUqqO42C7Q/CEqu7PKR/
+	 SsjYVE4SAtLA3IFcqg7onVGDpRX8QHdar04zwxeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.10 157/589] media: i2c: imx219: Check return value of devm_gpiod_get_optional() in imx219_probe()
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Alexander Koskovich <akoskovich@pm.me>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 514/969] drm/msm/dsi: rename MSM8998 DSI version from V2_2_0 to V2_0_0
 Date: Sat, 30 May 2026 18:00:38 +0200
-Message-ID: <20260530160228.912465720@linuxfoundation.org>
+Message-ID: <20260530160314.532489092@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +65,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258837-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257456-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,raspberrypi.com:email,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 7890E612181
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 011E260F2AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Alexander Koskovich <akoskovich@pm.me>
 
-commit 943b1f27a3eead21b22e2531a5432ea5910b60eb upstream.
+[ Upstream commit 913a709dea0eff9c7b2e9470f8c8594b9a0114ab ]
 
-The devm_gpiod_get_optional() function may return an error pointer
-(ERR_PTR) in case of a genuine failure during GPIO acquisition,
-not just NULL which indicates the legitimate absence of an optional
-GPIO.
+The MSM8998 DSI controller is v2.0.0 as stated in commit 7b8c9e203039
+("drm/msm/dsi: Add support for MSM8998 DSI controller"). The value was
+always correct just the name was wrong.
 
-Add an IS_ERR() check after the function call to catch such errors and
-propagate them to the probe function, ensuring the driver fails to load
-safely rather than proceeding with an invalid pointer.
+Rename and reorder to maintain version sorting.
 
-Fixes: 1283b3b8f82b ("media: i2c: Add driver for Sony IMX219 sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7b8c9e203039 ("drm/msm/dsi: Add support for MSM8998 DSI controller")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
+Patchwork: https://patchwork.freedesktop.org/patch/713717/
+Link: https://lore.kernel.org/r/20260324-dsi-rgb101010-support-v5-3-ff6afc904115@pm.me
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx219.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/msm/dsi/dsi_cfg.c | 4 ++--
+ drivers/gpu/drm/msm/dsi/dsi_cfg.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/media/i2c/imx219.c
-+++ b/drivers/media/i2c/imx219.c
-@@ -1420,6 +1420,9 @@ static int imx219_probe(struct i2c_clien
- 	/* Request optional enable pin */
- 	imx219->reset_gpio = devm_gpiod_get_optional(dev, "reset",
- 						     GPIOD_OUT_HIGH);
-+	if (IS_ERR(imx219->reset_gpio))
-+		return dev_err_probe(dev, PTR_ERR(imx219->reset_gpio),
-+				     "failed to get reset gpio\n");
- 
- 	/*
- 	 * The sensor must be powered for imx219_identify_module()
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.c b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
+index e0bd452a9f1e6..4c1c2a77dec98 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_cfg.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
+@@ -286,10 +286,10 @@ static const struct msm_dsi_cfg_handler dsi_cfg_handlers[] = {
+ 		&msm8996_dsi_cfg, &msm_dsi_6g_host_ops},
+ 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_4_2,
+ 		&msm8976_dsi_cfg, &msm_dsi_6g_host_ops},
++	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_0_0,
++		&msm8998_dsi_cfg, &msm_dsi_6g_v2_host_ops},
+ 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_1_0,
+ 		&sdm660_dsi_cfg, &msm_dsi_6g_v2_host_ops},
+-	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_2_0,
+-		&msm8998_dsi_cfg, &msm_dsi_6g_v2_host_ops},
+ 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_2_1,
+ 		&sdm845_dsi_cfg, &msm_dsi_6g_v2_host_ops},
+ 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_3_0,
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.h b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
+index 8f04e685a74e9..7b56fc9297212 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_cfg.h
++++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
+@@ -18,8 +18,8 @@
+ #define MSM_DSI_6G_VER_MINOR_V1_3_1	0x10030001
+ #define MSM_DSI_6G_VER_MINOR_V1_4_1	0x10040001
+ #define MSM_DSI_6G_VER_MINOR_V1_4_2	0x10040002
++#define MSM_DSI_6G_VER_MINOR_V2_0_0	0x20000000
+ #define MSM_DSI_6G_VER_MINOR_V2_1_0	0x20010000
+-#define MSM_DSI_6G_VER_MINOR_V2_2_0	0x20000000
+ #define MSM_DSI_6G_VER_MINOR_V2_2_1	0x20020001
+ #define MSM_DSI_6G_VER_MINOR_V2_3_0	0x20030000
+ #define MSM_DSI_6G_VER_MINOR_V2_4_0	0x20040000
+-- 
+2.53.0
+
 
 
 
