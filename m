@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-257408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258182-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LlDB9saG2pR/QgAu9opvQ
-	(envelope-from <stable+bounces-257408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:03 +0200
+	id GE1kNhIlG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258182-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA8F60F2FF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CD5610B38
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4FD3530448A4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:08:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2B35C3098F3B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1985366567;
-	Sat, 30 May 2026 17:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8910A3B1EC0;
+	Sat, 30 May 2026 17:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gejq+l8y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jv6Ydg1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F26395AEA;
-	Sat, 30 May 2026 17:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66814320CAD;
+	Sat, 30 May 2026 17:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160894; cv=none; b=Q9FUNyFNLSkzG3//SbQZfoXDmc46fFQGzPUqLFTFSglRaCB219WBjhg5dY4exW+dL1ITfQfn9MN8fuCF9syu/1MpDkGpjLVg2qQsoH7e0m44Zv7dGy/bFGMkdEMiFrTvOqwf0n7AZAnxJNApXr250vOA2m9PlGbCXpqYoHYNgek=
+	t=1780163489; cv=none; b=MXacnekzv99zDcjgWnHVvvriV16w1BDbVaOZbPilBY2PlUq+zx0fdCfgT/E4h9QyXb3pzQcm58pQwyBPmcaz/BvGrPfMu3hJnI3IE7hIOM/URnwdv8wei+hvcX6C/3mBYR4xDd7t6157ZIx/ov7YJ+WuU58EYAZI3qkLEXLiTZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160894; c=relaxed/simple;
-	bh=pZTD0U7+EnbYs6+4FFtDm+RFVI3wF91C81toAMMhUqE=;
+	s=arc-20240116; t=1780163489; c=relaxed/simple;
+	bh=bNFQhpV76jWdTi/w2oanxdJbx84Ea6lWG6lG8w1RFIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3S3C/QL70IkoDf6ZezY2dhYh1zV3q43xEtk44Uk29kbMxQBB4f3TBbzpqNL6edlbnhxv0uH8wimok3Nrctnd+ob531NO22f+4ZN5AEs9oCkaoys2rTQEUdaF6NpQN4vs8yi8vnz43qop3kBxO83fqeMbQtHLzcvzNv2p/Zis8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gejq+l8y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71C21F00893;
-	Sat, 30 May 2026 17:08:12 +0000 (UTC)
+	 MIME-Version; b=Y54VBCaJhtPyHxDbCWyVdQdQqGomRokPdulDex+0S6bkLX5kVGzu5ucavvzhswq/LkUuFQ2PPMk+JR0MHpaW6Bo/PJXpz7ShqPF8v1rQRYIV25YYCKWhntHhv+MLlh6klQUbTQvvIB1qK4HPONxrbO2swLLP532/PzYLPMUHPew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jv6Ydg1M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABED91F00898;
+	Sat, 30 May 2026 17:51:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160893;
-	bh=h5oUBorRck0q9sc04yZ7WPHY5i0tWBtar8b0iNHcbV4=;
+	s=korg; t=1780163488;
+	bh=RHTRrJ2FMUeIjur37EUrAG3sCRz/zLC3aNsglPENPe0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gejq+l8yKyAj9M3vS61Byq/DewnuK1+dBzZJpQOJV0tiCrHIcoWBMocEEFELWXkPM
-	 5brGD4b5nZDaQPGennfk/b6pj6zZ7zMc3FQYUgDVxP2CBu6jzYXTKH+ASideTxD7tT
-	 LayrpARDVRLyFjUl8xBCFReWZ3MqY8kM0/ph4/LQ=
+	b=Jv6Ydg1M9dUTql16M/BGLDU6uHngwmOsv656y4r414bVaf3nVqOBkUn9w/E0/rQeP
+	 6oNWToKzAj+qTtlpBuXmE+pxIXtmTgv/CoFwqZ0pXfSY+FLTk2N0OVhREzxYHuVgiA
+	 HlgeEfaPzBuYCtK7vzbg2g7x5rS/Stre5b1ULuWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quan Sun <2022090917019@std.uestc.edu.cn>,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 464/969] bpf: Drop task_to_inode and inet_conn_established from lsm sleepable hooks
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 5.15 274/776] ipmi:si: Return state to normal if message allocation fails
 Date: Sat, 30 May 2026 17:59:48 +0200
-Message-ID: <20260530160313.095711369@linuxfoundation.org>
+Message-ID: <20260530160247.638270031@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,73 +66,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257408-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258182-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7CA8F60F2FF
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,minyard.net:email]
+X-Rspamd-Queue-Id: 54CD5610B38
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Corey Minyard <corey@minyard.net>
 
-[ Upstream commit beaf0e96b1da74549a6cabd040f9667d83b2e97e ]
+commit 09dd798270ff582d7309f285d4aaf5dbebae01cb upstream.
 
-bpf_lsm_task_to_inode() is called under rcu_read_lock() and
-bpf_lsm_inet_conn_established() is called from softirq context, so
-neither hook can be used by sleepable LSM programs.
+There were places where nothing would get started if a message
+allocation failed, so the driver needs to return to normal state.
 
-Fixes: 423f16108c9d8 ("bpf: Augment the set of sleepable LSM hooks")
-Reported-by: Quan Sun <2022090917019@std.uestc.edu.cn>
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Reported-by: Dongliang Mu <dzm91@hust.edu.cn>
-Closes: https://lore.kernel.org/bpf/3ab69731-24d1-431a-a351-452aafaaf2a5@std.uestc.edu.cn/T/#u
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://lore.kernel.org/r/20260407122334.344072-1-jiayuan.chen@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/bpf_lsm.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/char/ipmi/ipmi_si_intf.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/bpf_lsm.c b/kernel/bpf/bpf_lsm.c
-index e6a76da4bca78..075c06aa9c951 100644
---- a/kernel/bpf/bpf_lsm.c
-+++ b/kernel/bpf/bpf_lsm.c
-@@ -338,7 +338,6 @@ BTF_ID(func, bpf_lsm_current_getsecid_subj)
- BTF_ID(func, bpf_lsm_task_getsecid_obj)
- BTF_ID(func, bpf_lsm_task_prctl)
- BTF_ID(func, bpf_lsm_task_setscheduler)
--BTF_ID(func, bpf_lsm_task_to_inode)
- BTF_ID(func, bpf_lsm_userns_create)
- BTF_SET_END(sleepable_lsm_hooks)
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -480,15 +480,19 @@ retry:
+ 	} else if (smi_info->msg_flags & RECEIVE_MSG_AVAIL) {
+ 		/* Messages available. */
+ 		smi_info->curr_msg = alloc_msg_handle_irq(smi_info);
+-		if (!smi_info->curr_msg)
++		if (!smi_info->curr_msg) {
++			smi_info->si_state = SI_NORMAL;
+ 			return;
++		}
  
--- 
-2.53.0
-
+ 		start_getting_msg_queue(smi_info);
+ 	} else if (smi_info->msg_flags & EVENT_MSG_BUFFER_FULL) {
+ 		/* Events available. */
+ 		smi_info->curr_msg = alloc_msg_handle_irq(smi_info);
+-		if (!smi_info->curr_msg)
++		if (!smi_info->curr_msg) {
++			smi_info->si_state = SI_NORMAL;
+ 			return;
++		}
+ 
+ 		start_getting_events(smi_info);
+ 	} else if (smi_info->msg_flags & OEM_DATA_AVAIL &&
 
 
 
