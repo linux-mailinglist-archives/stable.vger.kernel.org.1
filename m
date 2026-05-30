@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-259260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COr8MwMyG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:51 +0200
+	id OIGBJKUgG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075D9612B55
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBCC61016C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9DBA03014B34
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6B99305814A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B04A241C8C;
-	Sat, 30 May 2026 18:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944263403F9;
+	Sat, 30 May 2026 17:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a7TBKL51"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6Z24AB0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F7923D2A4;
-	Sat, 30 May 2026 18:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68286329E46;
+	Sat, 30 May 2026 17:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167145; cv=none; b=ZT1YJbeimiXlG3VRy1E8v74cNtIMlkPLMDXiUiVNYaEsNiClacws42uxxy9lsugwKjacqaufbxCai7oJ1jyqjXLaDSgfnHjwyEjcSTgFxJhgKzashYGcfIEywlM+PQa/URSqwSEci2J9FhXomsqFs5u0tb48BNcv8vgRkcMUnWM=
+	t=1780162367; cv=none; b=jOqJTMkOois6MxX47OG1jrMxiN1Plft3/FBHpmJ4GR1kuiBzyhyM9sbx7XoKqjYVzmOHwRbB+0AEuWd4QAoZbe9wVwdvlQqVjQNTE4CCJKVxKb7E7G4xCjmwsBsO9teUpEv7muH6oWMHffXvCemDzlZPOlYhUaiyBodMiHum/TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167145; c=relaxed/simple;
-	bh=fuL5ZnSS8wT0i3U1K4r06sxnyCsYlz5Rg7zqCOniPkw=;
+	s=arc-20240116; t=1780162367; c=relaxed/simple;
+	bh=sD3Z8j/7pKv5OlqXOD3kSzRoGJ1AwSDnBmdjyyhy3Fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C339RI/XxYmh67Nfe4QQ8AVB7A8cvVHCX5Ly54RV9spk7lxF/cva2uGdWEhiK8A6UwJqez2S2gOBu70Iura1UOxgBIDZvmCQd4EsSz97o5Vf3nczyS7NdW+/UcjiqVwOqZ+0AA8cq6j0mhqvNyXg9M9lGXcmTOa8v+SKB2oqeOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a7TBKL51; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4665E1F00893;
-	Sat, 30 May 2026 18:52:23 +0000 (UTC)
+	 MIME-Version; b=eGcctnsjvRv4ix36cwrNo3ivWuz5+/a6pbmF/+YY96yYV4vTiZ9Z+ITcYRicZx0p1XncFxccr861ZViRpcQ6yC+mzBUbH3H+leVFp3H4OmC1A4RCIXQErAv3dyGn0iaOrKCVYKAYP5Ujauu6vrScy+F1ZIE6Y0Uv4/7oj1B+uJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6Z24AB0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740711F00893;
+	Sat, 30 May 2026 17:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167143;
-	bh=EHvdCB3Upa58Tp3lYUOUOpcFLxxrXkjjReUaXeQarwQ=;
+	s=korg; t=1780162366;
+	bh=E3IN9q+zKKp5elq8/CN3i3zDykyAW+B6H+plyPJU0ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=a7TBKL51A5yfbbUzuEF09WyBDcp1P7ymmKZ7EolnOHLMQGFwSRJjVHQeFgi83EX+R
-	 fcZWdsfc+OegojNu1PSZO8KGubmZ3+SA1+SXGIAAPA5E0nKtQ7P/tjE2PcztFLpZcd
-	 HjIC/K4tVijvcGHeNKbyHBGknu2g2uuqymwP7F0s=
+	b=h6Z24AB0w38ePbMoL5rGoK8UcKrwXYfqIWKEd2uHnbZgEi6M038xCb9Scy6udR7Db
+	 NAHUkXzal/CaEBDd988Eedo43ZqdMGGTc4zMPXXjDi+SV6Mhy/r4oPq6OISHUX3lo1
+	 jyKuQD5SGx+/1iuNw+liAD6cwx8kn6uZwY92kHyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 541/589] ixgbevf: fix use-after-free in VEPA multicast source pruning
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.1 898/969] hwmon: (pmbus/adm1266) reject short block-read responses in the GPIO accessors
 Date: Sat, 30 May 2026 18:07:02 +0200
-Message-ID: <20260530160238.902025795@linuxfoundation.org>
+Message-ID: <20260530160325.504724298@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,99 +64,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-259260-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,intel.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257846-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 075D9612B55
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email]
+X-Rspamd-Queue-Id: EBBCC61016C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-commit 5d49b568c188dc77199d8d2b959c91da8cc27cf1 upstream.
+commit a7232f68c43ca62f545049b7f5fbfc75137b843b upstream.
 
-ixgbevf_clean_rx_irq() prunes frames whose source MAC matches the VF's
-own address (VEPA multicast workaround) by freeing the skb and
-continuing to the next descriptor:
+adm1266_gpio_get() and adm1266_gpio_get_multiple() both compose the
+pin-status word as
 
-    dev_kfree_skb_irq(skb);
-    continue;
+	pins_status = read_buf[0] + (read_buf[1] << 8);
 
-The skb pointer is declared outside the while loop and persists across
-iterations.  Because the continue skips the "skb = NULL" reset at the
-bottom of the loop, the next iteration enters the "else if (skb)" path
-and calls ixgbevf_add_rx_frag() on the freed skb, dereferencing
-skb_shinfo(skb)->nr_frags - a use-after-free in NAPI softirq context.
+right after i2c_smbus_read_block_data(), guarding only against an
+error return.  A well-behaved device returns 2 bytes for
+GPIO_STATUS/PDIO_STATUS, but the helper happily reports a 0- or
+1-byte response too.  If the device returns 0 bytes, both read_buf
+slots are uninitialized stack memory; if it returns 1 byte, read_buf[1]
+is.
 
-The sibling driver iavf already handles this correctly by nulling the
-pointer before continuing.  Apply the same pattern here.
+The composed value then flows through set_bit() into the caller's
+*bits in adm1266_gpio_get_multiple(), or into the return value of
+adm1266_gpio_get(), and ends up in userspace via gpiolib (sysfs and
+the char-dev ioctls).  That leaks a few bits of kernel stack per
+request on any device whose firmware glitch, bus error, or hostile
+slave produces a short block-read response.
 
-I do not have ixgbevf hardware; the bug was found by static analysis
-(scan_drop_continue_loops.py + semgrep drop_continue_in_loop, multi-tool
-corroboration with the highest score in the scan).  The UAF was confirmed
-under KASAN by loading a test module that reproduces the exact code
-pattern (alloc skb, kfree_skb, then read skb_shinfo(skb)->nr_frags):
+Add the missing length check to both call sites and surface a short
+response as -EIO.
 
-  BUG: KASAN: slab-use-after-free in ixgbevf_uaf_test_init+0x100/0x1000
-  Read of size 8 at addr 000000006163ae78 by task insmod/30
-  freed 208-byte region [000000006163adc0, 000000006163ae90)
-
-QEMU emulates igb (82576) but not ixgbe (82599), and the igbvf VF
-driver does not include the VEPA source pruning path, so a full
-end-to-end reproduction with emulated hardware was not possible.
-
-Fixes: bad17234ba70 ("ixgbevf: Change receive model to use double buffered page based receives")
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20260515182419.1597859-8-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-3-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/pmbus/adm1266.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -1228,6 +1228,7 @@ static int ixgbevf_clean_rx_irq(struct i
- 		    ether_addr_equal(rx_ring->netdev->dev_addr,
- 				     eth_hdr(skb)->h_source)) {
- 			dev_kfree_skb_irq(skb);
-+			skb = NULL;
- 			continue;
- 		}
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -176,6 +176,8 @@ static int adm1266_gpio_get(struct gpio_
+ 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
+ 	if (ret < 0)
+ 		return ret;
++	if (ret < 2)
++		return -EIO;
+ 
+ 	pins_status = read_buf[0] + (read_buf[1] << 8);
+ 	if (offset < ADM1266_GPIO_NR)
+@@ -196,6 +198,8 @@ static int adm1266_gpio_get_multiple(str
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
+ 	if (ret < 0)
+ 		return ret;
++	if (ret < 2)
++		return -EIO;
+ 
+ 	status = read_buf[0] + (read_buf[1] << 8);
+ 
+@@ -208,6 +212,8 @@ static int adm1266_gpio_get_multiple(str
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, read_buf);
+ 	if (ret < 0)
+ 		return ret;
++	if (ret < 2)
++		return -EIO;
+ 
+ 	status = read_buf[0] + (read_buf[1] << 8);
  
 
 
