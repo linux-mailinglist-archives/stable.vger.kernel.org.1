@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-259310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259311-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJKHOO9MG2r1AgkAu9opvQ
-	(envelope-from <stable+bounces-259310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:47:43 +0200
+	id oKRTMIVMG2r1AgkAu9opvQ
+	(envelope-from <stable+bounces-259311-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:45:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A796134ED
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:47:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F5A61349C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3983F302F4F3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B18C03041162
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1A435CBCB;
-	Sat, 30 May 2026 20:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA11735F16F;
+	Sat, 30 May 2026 20:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VEvd9gxn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mm9itYYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C95F35CB6E;
-	Sat, 30 May 2026 20:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA4835E1D5;
+	Sat, 30 May 2026 20:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780173890; cv=none; b=bXBCeUt65S01Wt8niMc9sWv3rmkerW32C4JVfrkq7JVd0O1pUzgU9EDruifUA6dvszyPEDQNqjxSYCehwKCgfTUWtEe6XCuVbZIT8deN2cZCCAcF5FLXl9+/XvfJbNl4AN1GW7onjLYWRr5/y/M3K+THRT1HZTc5VpwuZvLhyjs=
+	t=1780173892; cv=none; b=Z6tFMEGVmmQdfnNwnJ7XPoHPkyMxSGjSIqj85i7oP2hiuylRl5iH9uMKRCKJP/pkj8VYOiIbPPsGvXZDQ9HcBh0CVvVE81am86jgnvaZKIzT0teSyTEfW0m2WaBF3yY/AH7uRprDSN5jld2N703TG8TTr7kPcZJPFH6h54mH0k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780173890; c=relaxed/simple;
-	bh=Fldar6aVFdZpwE0xREOfBeZJH5lmLPF7z/wAgyoC4d0=;
+	s=arc-20240116; t=1780173892; c=relaxed/simple;
+	bh=RQQTMSUlYVmsWV0GNSDmJ5Wt1VDx0vayUCwEBpR/iFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GPiFxmhj3cBbu4olp3+J+JQ7rCkMwEzhq6lREzmTkr7sAToU+g/An8v48PaKmbIKN2iZ+gNiuQnprxpz/EliDM9NNLS2XUSUl+w7KKB9FCoOFlhHT0DlBoeytWYjoEmfl1LILE6ny21Ca+UTlVe7WcyU7XhMabUcE8ytOg8MURQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VEvd9gxn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC551F00898;
-	Sat, 30 May 2026 20:44:47 +0000 (UTC)
+	 MIME-Version; b=keZ9PgrZWEvgcUZwAG03pgzoFJqX1lrKw8V45aUFI6/AXqMvfxC6Spvd2ydYUbDQ1LiBHVOHf5rxudtA6/MKUjUc/BMkkU+RhPo5nMGms2qfnuoPm9rjOaSpEKsQjXccwKRHYzJz3Y7AsRpAt+UHSiNaGTsS/rlD7nfYxBTI4zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mm9itYYQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB901F00893;
+	Sat, 30 May 2026 20:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780173888;
-	bh=vwFDcMX4HVrRIm6mxIs+rA1Z26u1mTV76c73txfblnQ=;
+	s=k20260515; t=1780173890;
+	bh=sdnNQtoXvYOfEgsqTMi8GxFAxnCBOiGAg8PbKzq08Is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VEvd9gxnwNayqFTnUbDBO3Wm02LAJoFB4WFq3643r4Y3HeoBSQA0TKbYRyB0BIePD
-	 ONFrDj5JfrsW7a7+xc2AAf1wsgb5PrIVesJRIVURNVtL+PEohj516ojbNRixYCSRoj
-	 e1yaYKPGRvK8wM/dWrB3wRB0P6kBk9MqfUrbS8qHORwAiDOpjv9RsoS6qfNajZ2FD0
-	 n2RnsPgSVi1SMxi8ZaOEzY1Y4RkYtvDg+ujg/iaZ4E0kAVNsMAefbVDmD13zLi/jLb
-	 +9lbv7kcfssS4GXXReQtIx/uwg4ZKlGLZyGbud9F8ct6yol6O56+2q+2VWEZNPmG6P
-	 ekYQsbS4+Oteg==
+	b=Mm9itYYQnrRSPDMQKlC/wBQ4OEOLXGJ43w9PAyKoGqYaV1pPSHlzwNKOISrlnWEfT
+	 5GsUXUrUFuXlgyiiFlshUbP4NCctZ7O00O5NZj/qNrPdUMmKOE1nSiZNNhBXS2LhRe
+	 o4Y8gaRycL84EZuPA/u2ZoJ874uzxL/WFieHbLas6CaHwH9Ga15nW8/uMUWblhc43T
+	 H07k6LXfftgvGrY/WbrjCxAC/04Hg+5Hw3lK+kjCavQNHXln43bZq+uf/Ad7bbJf/Y
+	 wYD3X6s37HYqeNGth+qCC+2w3E+vZ8zoYkLPPTFSHjUbLgGij+9Y0uFEfqbZo4UMYt
+	 6dlgQ0PSxwZ0Q==
 From: srini@kernel.org
 To: gregkh@linuxfoundation.org
 Cc: linux-kernel@vger.kernel.org,
 	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
 	stable@vger.kernel.org,
 	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 7/8] slimbus: qcom-ngd-ctrl: Balance pm_runtime enablement for NGD
-Date: Sat, 30 May 2026 21:44:20 +0100
-Message-ID: <20260530204421.116824-8-srini@kernel.org>
+Subject: [PATCH 8/8] slimbus: qcom-ngd-ctrl: Avoid ABBA on tx_lock/ctrl->lock
+Date: Sat, 30 May 2026 21:44:21 +0100
+Message-ID: <20260530204421.116824-9-srini@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530204421.116824-1-srini@kernel.org>
 References: <20260530204421.116824-1-srini@kernel.org>
@@ -69,11 +69,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259310-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259311-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -86,52 +86,83 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[srini@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: 62A796134ED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 69F5A61349C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-The pm_runtime_enable() and pm_runtime_use_autosuspend() calls are
-supposed to be balanced on exit, add these calls.
+During the SSR/PDR down notification the tx_lock is taken with the
+intent to provide synchronization with active DMA transfers.
 
-Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
+But during this period qcom_slim_ngd_down() is invoked, which ends up in
+slim_report_absent(), which takes the slim_controller lock. In multiple
+other codepaths these two locks are taken in the opposite order (i.e.
+slim_controller then tx_lock).
+
+The result is a lockdep splat, and a possible deadlock:
+
+  rprocctl/449 is trying to acquire lock:
+  ffff00009793e620 (&ctrl->lock){+.+.}-{4:4}, at: slim_report_absent (drivers/slimbus/core.c:322) slimbus
+
+  but task is already holding lock:
+  ffff00009793fb50 (&ctrl->tx_lock){+.+.}-{4:4}, at: qcom_slim_ngd_ssr_pdr_notify (drivers/slimbus/qcom-ngd-ctrl.c:1475) slim_qcom_ngd_ctrl
+
+  which lock already depends on the new lock.
+
+  Possible unsafe locking scenario:
+
+        CPU0                    CPU1
+        ----                    ----
+   lock(&ctrl->tx_lock);
+                                lock(&ctrl->lock);
+                                lock(&ctrl->tx_lock);
+   lock(&ctrl->lock);
+
+The assumption is that the comment refers to the desire to not call
+qcom_slim_ngd_exit_dma() while we have an ongoing DMA TX transaction.
+But any such transaction is initiated and completed within a single
+qcom_slim_ngd_xfer_msg().
+
+Prior to calling qcom_slim_ngd_exit_dma() the slim_controller is torn
+down, all child devices are notified that the slimbus is gone and the
+child devices are removed.
+
+Stop taking the tx_lock in qcom_slim_ngd_ssr_pdr_notify() to avoid the
+deadlock.
+
+Fixes: a899d324863a ("slimbus: qcom-ngd-ctrl: add Sub System Restart support")
 Cc: stable@vger.kernel.org
 Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/slimbus/qcom-ngd-ctrl.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-index 540a62999655..8b207efeadbc 100644
+index 8b207efeadbc..3071e46d03be 100644
 --- a/drivers/slimbus/qcom-ngd-ctrl.c
 +++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1582,8 +1582,11 @@ static int qcom_slim_ngd_probe(struct platform_device *pdev)
- 	pm_runtime_enable(dev);
- 	pm_runtime_get_noresume(dev);
- 	ret = qcom_slim_ngd_qmi_svc_event_init(ctrl);
--	if (ret)
-+	if (ret) {
- 		dev_err(&pdev->dev, "QMI service registration failed:%d", ret);
-+		pm_runtime_dont_use_autosuspend(dev);
-+		pm_runtime_disable(dev);
-+	}
- 
- 	return ret;
- }
-@@ -1696,6 +1699,7 @@ static void qcom_slim_ngd_remove(struct platform_device *pdev)
- {
- 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
- 
-+	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	qcom_slim_ngd_enable(ctrl, false);
- 	qcom_slim_ngd_exit_dma(ctrl);
+@@ -1471,15 +1471,12 @@ static int qcom_slim_ngd_ssr_pdr_notify(struct qcom_slim_ngd_ctrl *ctrl,
+ 	switch (action) {
+ 	case QCOM_SSR_BEFORE_SHUTDOWN:
+ 	case SERVREG_SERVICE_STATE_DOWN:
+-		/* Make sure the last dma xfer is finished */
+-		mutex_lock(&ctrl->tx_lock);
+ 		if (ctrl->state != QCOM_SLIM_NGD_CTRL_DOWN) {
+ 			pm_runtime_get_noresume(ctrl->ctrl.dev);
+ 			ctrl->state = QCOM_SLIM_NGD_CTRL_DOWN;
+ 			qcom_slim_ngd_down(ctrl);
+ 			qcom_slim_ngd_exit_dma(ctrl);
+ 		}
+-		mutex_unlock(&ctrl->tx_lock);
+ 		break;
+ 	case QCOM_SSR_AFTER_POWERUP:
+ 	case SERVREG_SERVICE_STATE_UP:
 -- 
 2.53.0
 
