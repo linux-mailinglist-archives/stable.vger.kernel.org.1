@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-257204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258020-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GjzID4YG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257204-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:54 +0200
+	id EHMJLY0hG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258020-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E66F60EC91
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ACA3610344
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E4F1530BAB9E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A91D53003D3B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AAB1348C72;
-	Sat, 30 May 2026 16:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D953469FC;
+	Sat, 30 May 2026 17:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeUSkz0M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouqYztQF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B8B34EF07;
-	Sat, 30 May 2026 16:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FF727A477;
+	Sat, 30 May 2026 17:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160173; cv=none; b=UvQzxWp/YDMeYuWS7ibecQhrpMqpES0I2TITjoM1wj0mhTPIzMkf7JMji3BTvUCadhVwbbbAHeUGr4qxe1/FnF17DwjI5NMlc+vwBsYskOO6aURnhDmYqAoiODhemXl9gU3fNBXpFn4ldkYRNVXF4lFf1l4ldJ84nLHbrr0RYdQ=
+	t=1780162955; cv=none; b=OTNTXSzzlgXW1Cvkdd2pELw9WXRDz3104Nd7SPOxURWtbuvbFOhrUdWQXmFWVtp86usO9qBc9yQCWwavYgHBiDgqQCaulgOU/SVOSlyDdkgWJVxsYn3oizDt0oaXzYKGOekRxWnMqt+BtkZPQRCYwcWZqP4E8Z1KmDHO9olucw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160173; c=relaxed/simple;
-	bh=WdOjkzad/B9DZVSAAGiiu/zT3XHLvPe9cWDPdV16ssE=;
+	s=arc-20240116; t=1780162955; c=relaxed/simple;
+	bh=F6UyGpqu+mkWZFA5EKJUeB29xbAGJP1yzfntLpPiRPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=enylei9iBsWI9vKEGuFcRhJeUQblTOBqO718VGWVhW69FNRMxTUdRpzU2fLg9AUVgEzDPbnFyLawnVciCOw4Z6vuMvSG7ppenPr//5xrgDn3pLDbyYfeW12tlpQt45pXMbEFgkltPA2SH6r38bKKQIm1CEViA8W6xpctPzvoCC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeUSkz0M; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6F31F00893;
-	Sat, 30 May 2026 16:56:11 +0000 (UTC)
+	 MIME-Version; b=IL6+Wxgewz5lZ3EBj1Oj54wcRCu8eDhHfEH80+t809NrZfzrhkRKirD5imy3012aVLeI76N0Ew/RzYOJTXtu2teM4oRBFQVvtRo6DoqOCMP0MaN+rnkQQyJOwdE4kY/dqNYvxPU/gjJI/a/E+SJiDds7PcyFGdjnZHGjBzjeSHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouqYztQF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF361F00893;
+	Sat, 30 May 2026 17:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160172;
-	bh=vmmMnhLvzIiMED+4bYgWDAtjxryoli0xB4XwgoLeSho=;
+	s=korg; t=1780162954;
+	bh=jsmQv2+GUNWUUova6MTn0k9w9ZfeMt40alU8QEOq3Q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xeUSkz0MtPPwnlNKENIttSxYK8xt99KG0mL8X6+onH4wu/6syejGdNIwxY2aAbzNi
-	 Tz0CSlN6dKIVGFOHUDQ7cxeJzWp9qu4si3y+nGE7rESEweSbArhMezfIsQalUKwQuV
-	 gWte4OjofqmrrxWKqcxfukSbbcIm/tNNs1sLebo8=
+	b=ouqYztQFe0V5+7ptLg+fj0h8DIDRQsAL8GN1Pe8EzLzsukk9J5Q6JMYa3DWtKhKCB
+	 pNPj4xwkh2gH3jMgak4FygLjXYgkp15aIWkUAapGKksYyT9Voob+Dc9NyiTnMdPM7s
+	 rvUXrQ8p3UPZmCV3ir/nLXQvj9d807hiLjQN+bmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Warthog9 Hawley <warthog9@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 6.1 264/969] ktest: Fix the month in the name of the failure directory
+	Liam Merwick <liam.merwick@oracle.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.15 074/776] KVM: SEV: Drop WARN on large size for KVM_MEMORY_ENCRYPT_REG_REGION
 Date: Sat, 30 May 2026 17:56:28 +0200
-Message-ID: <20260530160307.766729011@linuxfoundation.org>
+Message-ID: <20260530160242.236768463@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +65,105 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257204-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258020-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0E66F60EC91
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,oracle.com:email]
+X-Rspamd-Queue-Id: 5ACA3610344
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 768059ede35f197575a38b10797b52402d9d4d2f upstream.
+commit 8acffeef5ef720c35e513e322ab08e32683f32f2 upstream.
 
-The Perl localtime() function returns the month starting at 0 not 1. This
-caused the date produced to create the directory for saving files of a
-failed run to have the month off by one.
+Drop the WARN in sev_pin_memory() on npages overflowing an int, as the
+WARN is comically trivially to trigger from userspace, e.g. by doing:
 
-  machine-test-useconfig-fail-20260314073628
+  struct kvm_enc_region range = {
+          .addr = 0,
+          .size = -1ul,
+  };
 
-The above happened in April, not March. The correct name should have been:
+  __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_REG_REGION, &range);
 
-  machine-test-useconfig-fail-20260414073628
+Note, the checks in sev_mem_enc_register_region() that presumably exist to
+verify the incoming address+size are completely worthless, as both "addr"
+and "size" are u64s and SEV is 64-bit only, i.e. they _can't_ be greater
+than ULONG_MAX.  That wart will be cleaned up in the near future.
 
-This was somewhat confusing.
+	if (range->addr > ULONG_MAX || range->size > ULONG_MAX)
+		return -EINVAL;
 
+Opportunistically add a comment to explain why the code calculates the
+number of pages the "hard" way, e.g. instead of just shifting @ulen.
+
+Fixes: 78824fabc72e ("KVM: SVM: fix svn_pin_memory()'s use of get_user_pages_fast()")
 Cc: stable@vger.kernel.org
-Cc: John 'Warthog9' Hawley <warthog9@kernel.org>
-Link: https://patch.msgid.link/20260420142426.33ad0293@fedora
-Fixes: 7faafbd69639b ("ktest: Add open and close console and start stop monitor")
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Reviewed-by: Liam Merwick <liam.merwick@oracle.com>
+Tested-by: Liam Merwick <liam.merwick@oracle.com>
+Link: https://patch.msgid.link/20260313003302.3136111-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/ktest.pl |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/sev.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -1770,7 +1770,7 @@ sub save_logs {
-     my ($result, $basedir) = @_;
-     my @t = localtime;
-     my $date = sprintf "%04d%02d%02d%02d%02d%02d",
--	1900+$t[5],$t[4],$t[3],$t[2],$t[1],$t[0];
-+	1900+$t[5],$t[4]+1,$t[3],$t[2],$t[1],$t[0];
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -388,10 +388,16 @@ static struct page **sev_pin_memory(stru
+ 	if (ulen == 0 || uaddr + ulen < uaddr)
+ 		return ERR_PTR(-EINVAL);
  
-     my $type = $build_type;
-     if ($type =~ /useconfig/) {
+-	/* Calculate number of pages. */
++	/*
++	 * Calculate the number of pages that need to be pinned to cover the
++	 * entire range.  Note!  This isn't simply ulen >> PAGE_SHIFT, as KVM
++	 * doesn't require the incoming address+size to be page aligned!
++	 */
+ 	first = (uaddr & PAGE_MASK) >> PAGE_SHIFT;
+ 	last = ((uaddr + ulen - 1) & PAGE_MASK) >> PAGE_SHIFT;
+ 	npages = (last - first + 1);
++	if (npages > INT_MAX)
++		return ERR_PTR(-EINVAL);
+ 
+ 	locked = sev->pages_locked + npages;
+ 	lock_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
+@@ -400,9 +406,6 @@ static struct page **sev_pin_memory(stru
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+-	if (WARN_ON_ONCE(npages > INT_MAX))
+-		return ERR_PTR(-EINVAL);
+-
+ 	/* Avoid using vmalloc for smaller buffers. */
+ 	size = npages * sizeof(struct page *);
+ 	if (size > PAGE_SIZE)
 
 
 
