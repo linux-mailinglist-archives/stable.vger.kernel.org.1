@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-259233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258655-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBuTGF4zG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:58:38 +0200
+	id gMLkAOwpG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258655-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5E3612E47
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:58:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E91261171E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AAB7F3055807
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 455C43013BAB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4382594B9;
-	Sat, 30 May 2026 18:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC60274FDC;
+	Sat, 30 May 2026 18:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljPDZd/v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFPJH9TU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E403925B0A8;
-	Sat, 30 May 2026 18:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB6E17555;
+	Sat, 30 May 2026 18:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167057; cv=none; b=f2iKTFA41U4RC66a4/rl3LRayEoLeIjhdIAZDvLExkMYNr6cJ/Z3Fc5q8vdUMFZsf8y0b7RAlmFEVXEwNv1kGx++SdnSEx9+26vFyPcotLovukY3eyAxs1dkXlK8Hmbqr7ZPN5UMRzx+kgwuiGFwkUfmfu1GAZONG9uveI/g81M=
+	t=1780165084; cv=none; b=pl5kWmVgASsufhb4Mk6dvTEqptESkY4ThSp8GFFuECwoTH1XdU+pXEzVXNuTZA7yWCP/KG0DjABWWj14MjaVsseAqxU8hwpIRaK+kaZWjyEWmNrK58zjXW9ix8yOBqFaqZ+8MPYe32S8Dp1eqBpn62Ku6y4IrXneEHpiqdIQ8fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167057; c=relaxed/simple;
-	bh=evnkq1UOS6YcR5Zu44b5DhO1XM8j0gTt1LwOrpTtMMA=;
+	s=arc-20240116; t=1780165084; c=relaxed/simple;
+	bh=dmZ+ysRBtxyjgTOLpaNxT6+vnsEmpj+tpC7Y/z3PzJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3ovsdLZvNDAGPOE2sRdrGjyei8zDkyogpmB6yw44/cQYL0KNpLl9ws+BYmJ5XHNk84zBjfSbVHY2J8BzRdvg9T67z7mYyZAqvEHlgGxYZkWA5a0Se5PR0HSZXifvf/0SGw4ssz577BDG6XFgoupE+npn7PA+IhmiXASG0QOSm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljPDZd/v; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28441F00893;
-	Sat, 30 May 2026 18:50:53 +0000 (UTC)
+	 MIME-Version; b=k2cXEEeOW3F6EkOtMtzam+fJSLnWDMRnNJJEcOtDutDigXZk0yE8quow+pMiIKOejNKT/pl2VJZyXWl247zBv22aQg4SGuhFfaNzP1itn+SVScgasl0Oj4LIGcE1Y4SVzz/Rc6LlZ6O8WIqaT1SyvwD3R5a6F/X8IMyHDVI6ED8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFPJH9TU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2532B1F00893;
+	Sat, 30 May 2026 18:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167054;
-	bh=U+WEYoRcNVZRcDWn5nPwAk0iZX1NPer/76VocgHPVYg=;
+	s=korg; t=1780165082;
+	bh=eEdNP4VxxU70vQwK2ITMEEuzLF19aqhTSGE6C14L8OM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ljPDZd/vFPGc+w/SnpKO8TzJ9VdvQzRaXkAhpB7bM0MfPB981l2LP0L6IxHfVYYhI
-	 2+y7uBklNN2wmlEgX617UnZwE1ibA2QmpirOi9F81NjCq8RvAodAzW7/Hp0Wocn3hJ
-	 SFerDplYgt8+wNZQovopHPOnKCoDzngUQCSlYIhA=
+	b=eFPJH9TUnfBBGg6y0vSP5GpRL4PMqIS0x8VIh/cqY0MCrTzq3AKFGocDLTH+/v/pY
+	 /HAT84lKfgqh3DbTW/7g9RakTKo0EWn9dboz0XgyY1BkkHU6ZyO98wBUoHCvnJA+zp
+	 ebVVgyM4+8zgHUqGbjNGGx4v/CA+8sDFQeBoyolA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ruijie Li <ruijieli51@gmail.com>,
-	Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.10 551/589] batman-adv: clear current gateway during teardown
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.15 718/776] hwmon: (pmbus/adm1266) include PEC byte in pmbus_block_xfer read buffer
 Date: Sat, 30 May 2026 18:07:12 +0200
-Message-ID: <20260530160239.146860499@linuxfoundation.org>
+Message-ID: <20260530160258.372990251@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,83 +65,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259233-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258655-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: CA5E3612E47
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9E91261171E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruijie Li <ruijieli51@gmail.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-commit a340a51ed801eab7bb454150c226323b865263cc upstream.
+commit 487566cb1ccdf3756fdd7bf8d875e612ff3169bb upstream.
 
-batadv_gw_node_free() removes the gateway list entries during mesh teardown,
-but it does not clear the currently selected gateway. This leaves stale
-gateway state behind across cleanup and can break a later mesh recreation.
+adm1266_pmbus_block_xfer() sets up the read transaction with
 
-Clear bat_priv->gw.curr_gw before walking the gateway list so the selected
-gateway reference is dropped as part of teardown.
+	.buf = data->read_buf,
+	.len = ADM1266_PMBUS_BLOCK_MAX + 2,
 
-Fixes: 2265c1410864 ("batman-adv: gateway election code refactoring")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
-Signed-off-by: Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+but read_buf in struct adm1266_data is declared as
+
+	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 1];
+
+For a max-length block response (length byte = 255 + up to 1 PEC
+byte), the i2c controller is told to write 257 bytes into a 256-byte
+buffer, putting one byte past the end of read_buf.  The same response
+also makes the subsequent PEC compare
+
+	if (crc != msgs[1].buf[msgs[1].buf[0] + 1])
+
+read a byte beyond the array.
+
+Bump the read_buf declaration to ADM1266_PMBUS_BLOCK_MAX + 2 so the
+buffer can hold the length byte, up to 255 payload bytes, and the PEC
+byte the i2c_msg length already accounts for.
+
+Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-4-1c1ea1349cfe@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/gateway_client.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hwmon/pmbus/adm1266.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/batman-adv/gateway_client.c
-+++ b/net/batman-adv/gateway_client.c
-@@ -488,10 +488,14 @@ void batadv_gw_node_delete(struct batadv
-  */
- void batadv_gw_node_free(struct batadv_priv *bat_priv)
- {
-+	struct batadv_gw_node *curr_gw;
- 	struct batadv_gw_node *gw_node;
- 	struct hlist_node *node_tmp;
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -61,7 +61,7 @@ struct adm1266_data {
+ 	u8 *dev_mem;
+ 	struct mutex buf_mutex;
+ 	u8 write_buf[ADM1266_PMBUS_BLOCK_MAX + 1] ____cacheline_aligned;
+-	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 1] ____cacheline_aligned;
++	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 2] ____cacheline_aligned;
+ };
  
- 	spin_lock_bh(&bat_priv->gw.list_lock);
-+	curr_gw = rcu_replace_pointer(bat_priv->gw.curr_gw, NULL, true);
-+	batadv_gw_node_put(curr_gw);
-+
- 	hlist_for_each_entry_safe(gw_node, node_tmp,
- 				  &bat_priv->gw.gateway_list, list) {
- 		hlist_del_init_rcu(&gw_node->list);
+ static const struct nvmem_cell_info adm1266_nvmem_cells[] = {
 
 
 
