@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-259166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0P3/IrQxG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-259166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:32 +0200
+	id QO6dKf8fG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:35:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26BE7612A1F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4043560FFEB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:35:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B00283080E45
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C24E3304DFF0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5270D21E098;
-	Sat, 30 May 2026 18:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B49E33F5A0;
+	Sat, 30 May 2026 17:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aV+SBsHn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sj/k3cYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F779137750;
-	Sat, 30 May 2026 18:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8526E30148B;
+	Sat, 30 May 2026 17:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166828; cv=none; b=ZyjQmFMHLs4EStYIMHrQvO70z2tnHkRIKJ9yd4zlIf0P1Y/MNsV+KgeBzO2j7YsRJIz16darupBw0hz90XGQ77BiTCISwdLrl8q9LQ+Zs72Q0lKNR8/zw9AuPaftx6lcSMVSl2u+xwIwFphIUeh4J/3gGgOJTch3fA6FKfOBcS0=
+	t=1780162170; cv=none; b=p6XplTyndI0cu0AaK6CFzmRJaCE4Ujad6vcXm59vpNGOvBy/aiZieLR25IycqSsnmzFnToYkB9fgMyf92XXAHtN0hR5M2dPqOsRCWtPzo+xxDiRgnr25iCFnNfyc0tc1Ar+lTzqK0i94xxibqdh/hGehXEQ445t0/dI2Jsj7+/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166828; c=relaxed/simple;
-	bh=axHeH5mw3LIXnpzlQuHvitZdp+yQOdo3yQ6AonD1eNc=;
+	s=arc-20240116; t=1780162170; c=relaxed/simple;
+	bh=oftSnuXte5T4cCL8GOqZVQlQFLDJfY3RF2RTUb9gMQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBly6mQu/E624Lq3ecpeKZemKTlmyO36u7w62a0PQoaZZ+cHfhJGfqzYknwE0wYQsAAn1xxbi3sem6wgoaBW9qMODAAfoLyAjXCQkc4379kmu14DPbFN1xOAQu2LLNKGCQhAOH2Lh8RpAIeOZI6jyi7CP2REcDux6AWGfadxfUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aV+SBsHn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746E51F00893;
-	Sat, 30 May 2026 18:47:06 +0000 (UTC)
+	 MIME-Version; b=fFSuZ+PaplHevqHgDIS9nDX++PlmR2IubWcMJ7QbVzYW6zNVEafqHyGzBcFsyCX0Lgbam2KU69vHRtryTZFxBud30H8klwF9kZREYPiYFQyi+dnkZDx+/ssdWgCGNxfuJWW3CDJIJz/spBwODmwzl8rgYs/URDUK0puAIsYkbyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sj/k3cYZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFE91F00893;
+	Sat, 30 May 2026 17:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166827;
-	bh=OyCgz4MtP1wbi82sgu6IUrV45YKmJvbWUl8PA+DJKYI=;
+	s=korg; t=1780162169;
+	bh=606frkdeBYvTkrKMxWejD3QtWMQeMwz1Gc6ZU6O+caQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aV+SBsHnbfniTya6ZVnsuG4HCv2PSiQYf8zbvxpRARxMhdm7dw42cEVrsVZeBy10L
-	 RVLYJYBhJ4K1F99uaPQUrAlIXY+DKqFhTYMxzo/X5wuKkYOOPs7eph63z1MwUUva5S
-	 GdlfP3/imUWyA+lTho0uANCNpxHB1DmxE5ZPC7uA=
+	b=sj/k3cYZxtjRENAoUhNjXc/vH0lvZ2oUwFY+bFsppj3nXijEutAmxDRdkUO+/+LCE
+	 7KXB23Qcuxoj839XFRtucQ0ZpQR6B0avhpGqaYcMuCK6+PG/vtk2D8jd681C6V6+nj
+	 42mvyRunGeZnfgFwZNkpasft302MizByVdacv8uA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Schocher <hs@nabladev.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 484/589] net: phy: dp83869: fix setting CLK_O_SEL field.
-Date: Sat, 30 May 2026 18:06:05 +0200
-Message-ID: <20260530160237.367275485@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 842/969] ALSA: asihpi: Fix potential OOB array access at reading cache
+Date: Sat, 30 May 2026 18:06:06 +0200
+Message-ID: <20260530160323.905693466@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,96 +66,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259166-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257787-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 26BE7612A1F
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url]
+X-Rspamd-Queue-Id: 4043560FFEB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Schocher <hs@nabladev.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 46f74a3f7d57d9cc0110b09cbc8163fa0a01afa2 ]
+commit 7b7d6572145c1dab2dd9bfb550b188e5f0ff3c3f upstream.
 
-Table 7-121 in datasheet says we have to set register 0xc6
-to value 0x10 before CLK_O_SEL can be modified. No more infos
-about this field found in datasheet. With this fix, setting
-of CLK_O_SEL field in IO_MUX_CFG register worked through dts
-property "ti,clk-output-sel" on a DP83869HMRGZR.
+find_control() to retrieve a cached info accesses the array with the
+given index blindly, which may lead to an OOB array access.
+Add a sanity check for avoiding it.
 
-Signed-off-by: Heiko Schocher <hs@nabladev.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 01db923e8377 ("net: phy: dp83869: Add TI dp83869 phy")
-Link: https://patch.msgid.link/20260425031339.3318-1-hs@nabladev.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://sashiko.dev/#/patchset/20260511230121.28606-1-rosenp%40gmail.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260515085606.242284-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/dp83869.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ sound/pci/asihpi/hpicmn.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
-index e2fe89c8059ea..93f453ac242bb 100644
---- a/drivers/net/phy/dp83869.c
-+++ b/drivers/net/phy/dp83869.c
-@@ -30,6 +30,7 @@
- #define DP83869_RGMIICTL	0x0032
- #define DP83869_STRAP_STS1	0x006e
- #define DP83869_RGMIIDCTL	0x0086
-+#define DP83869_ANA_PLL_PROG_PI	0x00c6
- #define DP83869_RXFCFG		0x0134
- #define DP83869_RXFPMD1		0x0136
- #define DP83869_RXFPMD2		0x0137
-@@ -791,12 +792,22 @@ static int dp83869_config_init(struct phy_device *phydev)
- 		dp83869_config_port_mirroring(phydev);
+--- a/sound/pci/asihpi/hpicmn.c
++++ b/sound/pci/asihpi/hpicmn.c
+@@ -276,6 +276,12 @@ static short find_control(u16 control_in
+ 		return 0;
+ 	}
  
- 	/* Clock output selection if muxing property is set */
--	if (dp83869->clk_output_sel != DP83869_CLK_O_SEL_REF_CLK)
-+	if (dp83869->clk_output_sel != DP83869_CLK_O_SEL_REF_CLK) {
-+		/*
-+		 * Table 7-121 in datasheet says we have to set register 0xc6
-+		 * to value 0x10 before CLK_O_SEL can be modified.
-+		 */
-+		ret = phy_write_mmd(phydev, DP83869_DEVADDR,
-+				    DP83869_ANA_PLL_PROG_PI, 0x10);
-+		if (ret)
-+			return ret;
-+
- 		ret = phy_modify_mmd(phydev,
- 				     DP83869_DEVADDR, DP83869_IO_MUX_CFG,
- 				     DP83869_IO_MUX_CFG_CLK_O_SEL_MASK,
- 				     dp83869->clk_output_sel <<
- 				     DP83869_IO_MUX_CFG_CLK_O_SEL_SHIFT);
++	if (control_index >= p_cache->control_count) {
++		HPI_DEBUG_LOG(VERBOSE, "control_index out of bounce %d\n",
++			control_index);
++		return 0;
 +	}
- 
- 	if (phy_interface_is_rgmii(phydev)) {
- 		ret = phy_write_mmd(phydev, DP83869_DEVADDR, DP83869_RGMIIDCTL,
--- 
-2.53.0
-
++
+ 	*pI = p_cache->p_info[control_index];
+ 	if (!*pI) {
+ 		HPI_DEBUG_LOG(VERBOSE, "Uncached Control %d\n",
 
 
 
