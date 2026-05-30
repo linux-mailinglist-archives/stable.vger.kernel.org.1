@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-257737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258484-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AMQlJR4eG2q4/QgAu9opvQ
-	(envelope-from <stable+bounces-257737-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:58 +0200
+	id uMMJKsonG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258484-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3517F60FB7C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C4C611172
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 888FF300C0EE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A11CE300A314
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1050340298;
-	Sat, 30 May 2026 17:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41EB3AE18D;
+	Sat, 30 May 2026 18:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZG4t0go/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KPTBH1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175C633B6C4;
-	Sat, 30 May 2026 17:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C72B3AFCE3;
+	Sat, 30 May 2026 18:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162004; cv=none; b=CatVBuECB991DBOrzrSzwX8630n+wfmw+N1o84uAL72NsbABjh8pABybcu1/yowBz1ZV0EduirQHVn3gk0xBLes35aJkDXQd9wEx3mZkZoPwQR1riqXMIx6tBdYIh37P3Y8AOxCHvENDHbJYxwLyUiN8ShZUc5HAbikEw1IiGvE=
+	t=1780164504; cv=none; b=VhrzoRwNC5FuUgEIHRtRW8h+sC3xYqRapz4RLvnxCa54GQv6hJz8Jn8PV+ZKNjIdhdFwIi8/ZYo1SECeIIlM4v/Nk2kqiiK1XA2mP9xMAJeGg0hF/r53jWY23iblkpYSmKnqEomnNbdHRFdalycvQiKvxlfR6SnG1TxeiPoNTZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162004; c=relaxed/simple;
-	bh=skDJ3Ho979EwuoLwbEvpwqxhQkxxvyYf5ivY5+iHgcU=;
+	s=arc-20240116; t=1780164504; c=relaxed/simple;
+	bh=4G8DotZc/2o5P4ght2k8qEIIwtirmwJhTMyQyUC74os=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOZGrDXZAHniyMbNWMwVy0Od5+MFHL7s0lM09aEuF+utRE6NNTIfHiEYGC649X0fqeB1+VwXEPtJYVUkKWZSShEQ69sD+yFxPAsnSlJjKXFK/PTSUpWqTGe8Vvpzg0e1kNFxua6pWNwhTV5t5LsZNudqQega1hlsOCMhtESnVJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZG4t0go/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4AC1F00893;
-	Sat, 30 May 2026 17:26:41 +0000 (UTC)
+	 MIME-Version; b=oTBQJRSHENsXMHrp4pJD22X5dmSSOHBP89TDKTWo4Aq7avA4hqnh2k+I3Ei76JfGEGNAufqP04N35acYRe6Ye13//tU6mLSmlBRzDS7LtZXUKLhf72NbznOkzUfbyQ6Ulbmk4dLT72t5U1InRmzBFp3vbIZVBGB5aHv3Y15LDdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KPTBH1m; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B5B1F00893;
+	Sat, 30 May 2026 18:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162002;
-	bh=mpKvNKYyg1RyiGooB7n007YSzllsJxNPCKACYjqzVZw=;
+	s=korg; t=1780164503;
+	bh=I7Rww/iRmHBPFGpwN5K8zCYGgqrABttLbgHq7sukAwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZG4t0go/E3n1Xnwh2rBrbNOC60t+gJOP6RORwNhb3i7Splxe/hm/PkxTcLZ1CX566
-	 cWtiXF6xjwPRlYFm+/hwnqyH6H+G0kgMVvL83RMfGASEdR4xByV/SXRTk4NcKbmVvQ
-	 oC1g5ZgGdQjQaKK9q9GJKlNRYaQsgPyx6GXWLbyc=
+	b=2KPTBH1mvLHKOekuB70RHXYjmzvLstOsWNKpepv96qFTzsUYEIvNSOvmR7EcWMGzg
+	 GiyRno8pIspkw7LyuMlsnCWfQPP0jFbYIuSCjwZvCbuLmP4X8DtCEOTdPjkeuE676Y
+	 joTj4brMpfWxF/yQRF9e1LohgcPR7rtFuv674AW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Beniamino Galvani <b.galvani@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 764/969] ipv4: rename and move ip_route_output_tunnel()
+Subject: [PATCH 5.15 574/776] netfilter: conntrack: remove sprintf usage
 Date: Sat, 30 May 2026 18:04:48 +0200
-Message-ID: <20260530160321.666655878@linuxfoundation.org>
+Message-ID: <20260530160254.936011395@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,246 +65,215 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257737-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258484-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org,davemloft.net];
-	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3517F60FB7C
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 53C4C611172
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Beniamino Galvani <b.galvani@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit bf3fcbf7e7a08015d3b169bad6281b29d45c272d ]
+[ Upstream commit 6e7066bdb481a87fe88c4fa563e348c03b2d373d ]
 
-At the moment ip_route_output_tunnel() is used only by bareudp.
-Ideally, other UDP tunnel implementations should use it, but to do so
-the function needs to accept new parameters that are specific for UDP
-tunnels, such as the ports.
+Replace it with scnprintf, the buffer sizes are expected to be large enough
+to hold the result, no need for snprintf+overflow check.
 
-Prepare for these changes by renaming the function to
-udp_tunnel_dst_lookup() and move it to file
-net/ipv4/udp_tunnel_core.c.
+Increase buffer size in mangle_content_len() while at it.
 
-Suggested-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: aa6c6d9ee064 ("bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()")
+BUG: KASAN: stack-out-of-bounds in vsnprintf+0xea5/0x1270
+Write of size 1 at addr [..]
+ vsnprintf+0xea5/0x1270
+ sprintf+0xb1/0xe0
+ mangle_content_len+0x1ac/0x280
+ nf_nat_sdp_session+0x1cc/0x240
+ process_sdp+0x8f8/0xb80
+ process_invite_request+0x108/0x2b0
+ process_sip_msg+0x5da/0xf50
+ sip_help_tcp+0x45e/0x780
+ nf_confirm+0x34d/0x990
+ [..]
+
+Fixes: 9fafcd7b2032 ("[NETFILTER]: nf_conntrack/nf_nat: add SIP helper port")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bareudp.c      |  8 +++----
- include/net/route.h        |  6 -----
- include/net/udp_tunnel.h   |  6 +++++
- net/ipv4/route.c           | 48 --------------------------------------
- net/ipv4/udp_tunnel_core.c | 48 ++++++++++++++++++++++++++++++++++++++
- 5 files changed, 58 insertions(+), 58 deletions(-)
+ net/netfilter/nf_nat_amanda.c |  2 +-
+ net/netfilter/nf_nat_sip.c    | 33 ++++++++++++++++++---------------
+ 2 files changed, 19 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index cfbc0240126ef..bbc246d27f88a 100644
---- a/drivers/net/bareudp.c
-+++ b/drivers/net/bareudp.c
-@@ -325,8 +325,8 @@ static int bareudp_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	if (!sock)
- 		return -ESHUTDOWN;
+diff --git a/net/netfilter/nf_nat_amanda.c b/net/netfilter/nf_nat_amanda.c
+index 3bc7e0854efe4..41c30065dae12 100644
+--- a/net/netfilter/nf_nat_amanda.c
++++ b/net/netfilter/nf_nat_amanda.c
+@@ -62,7 +62,7 @@ static unsigned int help(struct sk_buff *skb,
+ 		return NF_DROP;
+ 	}
  
--	rt = ip_route_output_tunnel(skb, dev, bareudp->net, &saddr, info,
--				    IPPROTO_UDP, use_cache);
-+	rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, &saddr, info,
-+				   IPPROTO_UDP, use_cache);
- 
- 	if (IS_ERR(rt))
- 		return PTR_ERR(rt);
-@@ -505,8 +505,8 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
- 		struct rtable *rt;
- 		__be32 saddr;
- 
--		rt = ip_route_output_tunnel(skb, dev, bareudp->net, &saddr,
--					    info, IPPROTO_UDP, use_cache);
-+		rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, &saddr,
-+					   info, IPPROTO_UDP, use_cache);
- 		if (IS_ERR(rt))
- 			return PTR_ERR(rt);
- 
-diff --git a/include/net/route.h b/include/net/route.h
-index cdca622c5c6fe..568da3b95b06e 100644
---- a/include/net/route.h
-+++ b/include/net/route.h
-@@ -139,12 +139,6 @@ static inline struct rtable *__ip_route_output_key(struct net *net,
- 
- struct rtable *ip_route_output_flow(struct net *, struct flowi4 *flp,
- 				    const struct sock *sk);
--struct rtable *ip_route_output_tunnel(struct sk_buff *skb,
--				      struct net_device *dev,
--				      struct net *net, __be32 *saddr,
--				      const struct ip_tunnel_info *info,
--				      u8 protocol, bool use_cache);
--
- struct dst_entry *ipv4_blackhole_route(struct net *net,
- 				       struct dst_entry *dst_orig);
- 
-diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
-index cd2bd3826d168..f9a66a33e958b 100644
---- a/include/net/udp_tunnel.h
-+++ b/include/net/udp_tunnel.h
-@@ -161,6 +161,12 @@ int udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
- 
- void udp_tunnel_sock_release(struct socket *sock);
- 
-+struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
-+				     struct net_device *dev,
-+				     struct net *net, __be32 *saddr,
-+				     const struct ip_tunnel_info *info,
-+				     u8 protocol, bool use_cache);
-+
- struct metadata_dst *udp_tun_rx_dst(struct sk_buff *skb, unsigned short family,
- 				    __be16 flags, __be64 tunnel_id,
- 				    int md_size);
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 86893963b930d..60516c6ae62e0 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2922,54 +2922,6 @@ struct rtable *ip_route_output_flow(struct net *net, struct flowi4 *flp4,
+-	sprintf(buffer, "%u", port);
++	snprintf(buffer, sizeof(buffer), "%u", port);
+ 	if (!nf_nat_mangle_udp_packet(skb, exp->master, ctinfo,
+ 				      protoff, matchoff, matchlen,
+ 				      buffer, strlen(buffer))) {
+diff --git a/net/netfilter/nf_nat_sip.c b/net/netfilter/nf_nat_sip.c
+index f0a735e868518..15d4267cf49ff 100644
+--- a/net/netfilter/nf_nat_sip.c
++++ b/net/netfilter/nf_nat_sip.c
+@@ -68,25 +68,27 @@ static unsigned int mangle_packet(struct sk_buff *skb, unsigned int protoff,
  }
- EXPORT_SYMBOL_GPL(ip_route_output_flow);
  
--struct rtable *ip_route_output_tunnel(struct sk_buff *skb,
--				      struct net_device *dev,
--				      struct net *net, __be32 *saddr,
--				      const struct ip_tunnel_info *info,
--				      u8 protocol, bool use_cache)
--{
--#ifdef CONFIG_DST_CACHE
--	struct dst_cache *dst_cache;
--#endif
--	struct rtable *rt = NULL;
--	struct flowi4 fl4;
--	__u8 tos;
--
--#ifdef CONFIG_DST_CACHE
--	dst_cache = (struct dst_cache *)&info->dst_cache;
--	if (use_cache) {
--		rt = dst_cache_get_ip4(dst_cache, saddr);
--		if (rt)
--			return rt;
--	}
--#endif
--	memset(&fl4, 0, sizeof(fl4));
--	fl4.flowi4_mark = skb->mark;
--	fl4.flowi4_proto = protocol;
--	fl4.daddr = info->key.u.ipv4.dst;
--	fl4.saddr = info->key.u.ipv4.src;
--	tos = info->key.tos;
--	fl4.flowi4_tos = RT_TOS(tos);
--
--	rt = ip_route_output_key(net, &fl4);
--	if (IS_ERR(rt)) {
--		netdev_dbg(dev, "no route to %pI4\n", &fl4.daddr);
--		return ERR_PTR(-ENETUNREACH);
--	}
--	if (rt->dst.dev == dev) { /* is this necessary? */
--		netdev_dbg(dev, "circular route to %pI4\n", &fl4.daddr);
--		ip_rt_put(rt);
--		return ERR_PTR(-ELOOP);
--	}
--#ifdef CONFIG_DST_CACHE
--	if (use_cache)
--		dst_cache_set_ip4(dst_cache, &rt->dst, fl4.saddr);
--#endif
--	*saddr = fl4.saddr;
--	return rt;
--}
--EXPORT_SYMBOL_GPL(ip_route_output_tunnel);
--
- /* called with rcu_read_lock held */
- static int rt_fill_info(struct net *net, __be32 dst, __be32 src,
- 			struct rtable *rt, u32 table_id, dscp_t dscp,
-diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
-index 732e21b75ba28..386e983560094 100644
---- a/net/ipv4/udp_tunnel_core.c
-+++ b/net/ipv4/udp_tunnel_core.c
-@@ -204,4 +204,52 @@ struct metadata_dst *udp_tun_rx_dst(struct sk_buff *skb,  unsigned short family,
+ static int sip_sprintf_addr(const struct nf_conn *ct, char *buffer,
++			    size_t size,
+ 			    const union nf_inet_addr *addr, bool delim)
+ {
+ 	if (nf_ct_l3num(ct) == NFPROTO_IPV4)
+-		return sprintf(buffer, "%pI4", &addr->ip);
++		return scnprintf(buffer, size, "%pI4", &addr->ip);
+ 	else {
+ 		if (delim)
+-			return sprintf(buffer, "[%pI6c]", &addr->ip6);
++			return scnprintf(buffer, size, "[%pI6c]", &addr->ip6);
+ 		else
+-			return sprintf(buffer, "%pI6c", &addr->ip6);
++			return scnprintf(buffer, size, "%pI6c", &addr->ip6);
+ 	}
  }
- EXPORT_SYMBOL_GPL(udp_tun_rx_dst);
  
-+struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
-+				     struct net_device *dev,
-+				     struct net *net, __be32 *saddr,
-+				     const struct ip_tunnel_info *info,
-+				     u8 protocol, bool use_cache)
-+{
-+#ifdef CONFIG_DST_CACHE
-+	struct dst_cache *dst_cache;
-+#endif
-+	struct rtable *rt = NULL;
-+	struct flowi4 fl4;
-+	__u8 tos;
-+
-+#ifdef CONFIG_DST_CACHE
-+	dst_cache = (struct dst_cache *)&info->dst_cache;
-+	if (use_cache) {
-+		rt = dst_cache_get_ip4(dst_cache, saddr);
-+		if (rt)
-+			return rt;
-+	}
-+#endif
-+	memset(&fl4, 0, sizeof(fl4));
-+	fl4.flowi4_mark = skb->mark;
-+	fl4.flowi4_proto = protocol;
-+	fl4.daddr = info->key.u.ipv4.dst;
-+	fl4.saddr = info->key.u.ipv4.src;
-+	tos = info->key.tos;
-+	fl4.flowi4_tos = RT_TOS(tos);
-+
-+	rt = ip_route_output_key(net, &fl4);
-+	if (IS_ERR(rt)) {
-+		netdev_dbg(dev, "no route to %pI4\n", &fl4.daddr);
-+		return ERR_PTR(-ENETUNREACH);
-+	}
-+	if (rt->dst.dev == dev) { /* is this necessary? */
-+		netdev_dbg(dev, "circular route to %pI4\n", &fl4.daddr);
-+		ip_rt_put(rt);
-+		return ERR_PTR(-ELOOP);
-+	}
-+#ifdef CONFIG_DST_CACHE
-+	if (use_cache)
-+		dst_cache_set_ip4(dst_cache, &rt->dst, fl4.saddr);
-+#endif
-+	*saddr = fl4.saddr;
-+	return rt;
-+}
-+EXPORT_SYMBOL_GPL(udp_tunnel_dst_lookup);
-+
- MODULE_LICENSE("GPL");
+ static int sip_sprintf_addr_port(const struct nf_conn *ct, char *buffer,
++				 size_t size,
+ 				 const union nf_inet_addr *addr, u16 port)
+ {
+ 	if (nf_ct_l3num(ct) == NFPROTO_IPV4)
+-		return sprintf(buffer, "%pI4:%u", &addr->ip, port);
++		return scnprintf(buffer, size, "%pI4:%u", &addr->ip, port);
+ 	else
+-		return sprintf(buffer, "[%pI6c]:%u", &addr->ip6, port);
++		return scnprintf(buffer, size, "[%pI6c]:%u", &addr->ip6, port);
+ }
+ 
+ static int map_addr(struct sk_buff *skb, unsigned int protoff,
+@@ -119,7 +121,7 @@ static int map_addr(struct sk_buff *skb, unsigned int protoff,
+ 	if (nf_inet_addr_cmp(&newaddr, addr) && newport == port)
+ 		return 1;
+ 
+-	buflen = sip_sprintf_addr_port(ct, buffer, &newaddr, ntohs(newport));
++	buflen = sip_sprintf_addr_port(ct, buffer, sizeof(buffer), &newaddr, ntohs(newport));
+ 	return mangle_packet(skb, protoff, dataoff, dptr, datalen,
+ 			     matchoff, matchlen, buffer, buflen);
+ }
+@@ -212,7 +214,7 @@ static unsigned int nf_nat_sip(struct sk_buff *skb, unsigned int protoff,
+ 					       &addr, true) > 0 &&
+ 		    nf_inet_addr_cmp(&addr, &ct->tuplehash[dir].tuple.src.u3) &&
+ 		    !nf_inet_addr_cmp(&addr, &ct->tuplehash[!dir].tuple.dst.u3)) {
+-			buflen = sip_sprintf_addr(ct, buffer,
++			buflen = sip_sprintf_addr(ct, buffer, sizeof(buffer),
+ 					&ct->tuplehash[!dir].tuple.dst.u3,
+ 					true);
+ 			if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
+@@ -229,7 +231,7 @@ static unsigned int nf_nat_sip(struct sk_buff *skb, unsigned int protoff,
+ 					       &addr, false) > 0 &&
+ 		    nf_inet_addr_cmp(&addr, &ct->tuplehash[dir].tuple.dst.u3) &&
+ 		    !nf_inet_addr_cmp(&addr, &ct->tuplehash[!dir].tuple.src.u3)) {
+-			buflen = sip_sprintf_addr(ct, buffer,
++			buflen = sip_sprintf_addr(ct, buffer, sizeof(buffer),
+ 					&ct->tuplehash[!dir].tuple.src.u3,
+ 					false);
+ 			if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
+@@ -247,7 +249,7 @@ static unsigned int nf_nat_sip(struct sk_buff *skb, unsigned int protoff,
+ 		    htons(n) == ct->tuplehash[dir].tuple.dst.u.udp.port &&
+ 		    htons(n) != ct->tuplehash[!dir].tuple.src.u.udp.port) {
+ 			__be16 p = ct->tuplehash[!dir].tuple.src.u.udp.port;
+-			buflen = sprintf(buffer, "%u", ntohs(p));
++			buflen = scnprintf(buffer, sizeof(buffer), "%u", ntohs(p));
+ 			if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
+ 					   poff, plen, buffer, buflen)) {
+ 				nf_ct_helper_log(skb, ct, "cannot mangle rport");
+@@ -430,7 +432,8 @@ static unsigned int nf_nat_sip_expect(struct sk_buff *skb, unsigned int protoff,
+ 
+ 	if (!nf_inet_addr_cmp(&exp->tuple.dst.u3, &exp->saved_addr) ||
+ 	    exp->tuple.dst.u.udp.port != exp->saved_proto.udp.port) {
+-		buflen = sip_sprintf_addr_port(ct, buffer, &newaddr, port);
++		buflen = sip_sprintf_addr_port(ct, buffer, sizeof(buffer),
++					       &newaddr, port);
+ 		if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
+ 				   matchoff, matchlen, buffer, buflen)) {
+ 			nf_ct_helper_log(skb, ct, "cannot mangle packet");
+@@ -450,8 +453,8 @@ static int mangle_content_len(struct sk_buff *skb, unsigned int protoff,
+ {
+ 	enum ip_conntrack_info ctinfo;
+ 	struct nf_conn *ct = nf_ct_get(skb, &ctinfo);
++	char buffer[sizeof("4294967295")];
+ 	unsigned int matchoff, matchlen;
+-	char buffer[sizeof("65536")];
+ 	int buflen, c_len;
+ 
+ 	/* Get actual SDP length */
+@@ -466,7 +469,7 @@ static int mangle_content_len(struct sk_buff *skb, unsigned int protoff,
+ 			      &matchoff, &matchlen) <= 0)
+ 		return 0;
+ 
+-	buflen = sprintf(buffer, "%u", c_len);
++	buflen = scnprintf(buffer, sizeof(buffer), "%u", c_len);
+ 	return mangle_packet(skb, protoff, dataoff, dptr, datalen,
+ 			     matchoff, matchlen, buffer, buflen);
+ }
+@@ -503,7 +506,7 @@ static unsigned int nf_nat_sdp_addr(struct sk_buff *skb, unsigned int protoff,
+ 	char buffer[INET6_ADDRSTRLEN];
+ 	unsigned int buflen;
+ 
+-	buflen = sip_sprintf_addr(ct, buffer, addr, false);
++	buflen = sip_sprintf_addr(ct, buffer, sizeof(buffer), addr, false);
+ 	if (mangle_sdp_packet(skb, protoff, dataoff, dptr, datalen,
+ 			      sdpoff, type, term, buffer, buflen))
+ 		return 0;
+@@ -521,7 +524,7 @@ static unsigned int nf_nat_sdp_port(struct sk_buff *skb, unsigned int protoff,
+ 	char buffer[sizeof("nnnnn")];
+ 	unsigned int buflen;
+ 
+-	buflen = sprintf(buffer, "%u", port);
++	buflen = scnprintf(buffer, sizeof(buffer), "%u", port);
+ 	if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
+ 			   matchoff, matchlen, buffer, buflen))
+ 		return 0;
+@@ -541,7 +544,7 @@ static unsigned int nf_nat_sdp_session(struct sk_buff *skb, unsigned int protoff
+ 	unsigned int buflen;
+ 
+ 	/* Mangle session description owner and contact addresses */
+-	buflen = sip_sprintf_addr(ct, buffer, addr, false);
++	buflen = sip_sprintf_addr(ct, buffer, sizeof(buffer), addr, false);
+ 	if (mangle_sdp_packet(skb, protoff, dataoff, dptr, datalen, sdpoff,
+ 			      SDP_HDR_OWNER, SDP_HDR_MEDIA, buffer, buflen))
+ 		return 0;
 -- 
 2.53.0
 
