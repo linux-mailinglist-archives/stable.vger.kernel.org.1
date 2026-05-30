@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257264-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GswNlEjG2pa/ggAu9opvQ
-	(envelope-from <stable+bounces-258041-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:09 +0200
+	id eDqNEO8XG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257264-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455F26107CA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FCA60EBF5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B864030A22F2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:43:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1C0913029729
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B1A348C5E;
-	Sat, 30 May 2026 17:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAE9332EA7;
+	Sat, 30 May 2026 16:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/rIFaot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtkJsDg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2C821B191;
-	Sat, 30 May 2026 17:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D466432BF24;
+	Sat, 30 May 2026 16:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163027; cv=none; b=a/YkS+k6KVegneNcra/g0kHNmNitvKEE4DL9WggAzq5TnPCN4hmbzMYyWTRnakSYl2z90kpYln6hL4hmEtFR9A/Ks4oaZMvtnJNLme23Q3ZcRrHNGxbqU/p2YDAY+X6xVBROEx/dBknLRZtSw+AeJFLPWyDfyyfQ3krvdtMvwnM=
+	t=1780160393; cv=none; b=X0eHBSQRlMXLgzDUCAImEGwJ4UCwmduAdXLnpfZpX8mtJDYQgjjaVIYEhSmEtHSFruEEH7++JWMN4B3qXl62TxdCPUD61VlgCnvXJMBEpXQ/kQqCLkuCR5BBram9NeXS5WHDtPc2Zg8JoGJJA22nrH1BUX8/rBRBDwblpk4mEVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163027; c=relaxed/simple;
-	bh=UbX4B+EbSCXXQLpLpdFrvfJMMq3DP9Pd8jYV0dtFKyU=;
+	s=arc-20240116; t=1780160393; c=relaxed/simple;
+	bh=sqzjNGib9k5QbN9xD6qPeGdIj7NVCjInoWjAf44fOl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qF7qt+AAlx48O/OGQXRQrq0D1sLwk/2nA9iwonr9jtyEgG4UCaoSXgiXjOMj1aLiIqHyencDomhm2yLxDx6/nQHF4lYfHmA9kFqXr0C31g2UsM6Vn0rPkcP2MzgydOTWJW5H6qvnzEWBz4hx1FVFBDvjEIU8JH++5dlGzlZZzyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/rIFaot; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747341F00893;
-	Sat, 30 May 2026 17:43:45 +0000 (UTC)
+	 MIME-Version; b=s1gGKp6Buwaa1LFvxmRJNZXjdxxYM7SlKlIqkzyDO7bVEocCFjxfZRHZnrGQ5XeeQLIVYFWeqJRMhLtgzIx6uNjtEPAZpsMXu18jDrRdQ1BImUbjWw3mkMBPV4yiTje7pMLxJ39lHeBMWahqBFgeyN3NccBb38rFUifd0qphU28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtkJsDg+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C341F00893;
+	Sat, 30 May 2026 16:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163026;
-	bh=tmQc7zeNW/glCCOhzNcjgpc2Bt3YEskeVH/M52fvEWE=;
+	s=korg; t=1780160391;
+	bh=d4qhpY3la3OIv3hTWkzuCRzd1XPs//LScgN4e/DZFBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W/rIFaotl+RfbEXGaomaiH8BzyM90C2T9G8YmNIK6wHenS4JSeEH6/lMoRxfiiiqR
-	 khGgnxXX/kv6f3ilj5rVl5XNs53uFuLiJTMJDY5emOd7Htc3ehfhktvYSs0dESEYEW
-	 +aHpdRLH397hC5HhCOXISkIdhjvLgAc9t4c3Ygbo=
+	b=CtkJsDg+61PaMn+yV3SG3JmpZipU1gjharfzuKU0YcSRfG30QmsqNrwJy7VMV4ZwD
+	 QWLVMYA+bo79ymBll4grwZhWllmk5prRfMg1eWNGn3MEGSGEK37nLNACx2MgvtT0VR
+	 4W+G1uFs1CKXwsB64TZPMB7S2kcjzXKjAAyzT9fI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"linux-kernel@vger.kernel.org, sashal@kernel.org,  Joonwon Kang" <joonwonkang@google.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Joonwon Kang <joonwonkang@google.com>
-Subject: [PATCH 5.15 134/776] mailbox: Prevent out-of-bounds access in of_mbox_index_xlate()
-Date: Sat, 30 May 2026 17:57:28 +0200
-Message-ID: <20260530160243.866012566@linuxfoundation.org>
+	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 325/969] ip6_gre: Use cached t->net in ip6erspan_changelink().
+Date: Sat, 30 May 2026 17:57:29 +0200
+Message-ID: <20260530160309.367969412@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +67,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258041-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257264-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 455F26107CA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C4FCA60EBF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joonwon Kang <joonwonkang@google.com>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
 
-[ Upstream commit fcd7f96c783626c07ee3ed75fa3739a8a2052310 ]
+commit 1d324c2f43f70c965f25c58cc3611c779adbe47e upstream.
 
-Although it is guided that `#mbox-cells` must be at least 1, there are
-many instances of `#mbox-cells = <0>;` in the device tree. If that is
-the case and the corresponding mailbox controller does not provide
-`fw_xlate` and of_xlate` function pointers, `of_mbox_index_xlate()` will
-be used by default and out-of-bounds accesses could occur due to lack of
-bounds check in that function.
+After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
+rtnl_link_ops"), ip6erspan_newlink() correctly resolves the per-netns
+ip6gre hash via link_net. ip6erspan_changelink() was not converted in
+that series and still uses dev_net(dev), which diverges from the
+device's creation netns after IFLA_NET_NS_FD migration.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Joonwon Kang <joonwonkang@google.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-[ changed sp->nargs to sp->args_count in the code and
-fw_mbox_index_xlate() to of_mbox_index_xlate() in the commit message. ]
-Signed-off-by: Joonwon Kang <joonwonkang@google.com>
+This re-inserts the tunnel into the wrong per-netns hash. The
+original netns keeps a stale entry. When that netns is later
+destroyed, ip6gre_exit_rtnl_net() walks the stale entry, producing a
+slab-use-after-free reported by KASAN, followed by a kernel BUG at
+net/core/dev.c (LIST_POISON1) in unregister_netdevice_many_notify().
+
+Reachable from an unprivileged user namespace (unshare --user
+--map-root-user --net).
+
+ip6gre_changelink() earlier in the same file already uses the cached
+t->net; only ip6erspan_changelink() has the wrong shape.
+
+Fixes: 2d665034f239 ("net: ip6_gre: Fix ip6erspan hlen calculation")
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260430103318.3206018-1-maoyi.xie@ntu.edu.sg
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/mailbox.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/ipv6/ip6_gre.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -468,12 +468,10 @@ static struct mbox_chan *
- of_mbox_index_xlate(struct mbox_controller *mbox,
- 		    const struct of_phandle_args *sp)
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -2322,10 +2322,11 @@ static int ip6erspan_changelink(struct n
+ 				struct nlattr *data[],
+ 				struct netlink_ext_ack *extack)
  {
--	int ind = sp->args[0];
--
--	if (ind >= mbox->num_chans)
-+	if (sp->args_count < 1 || sp->args[0] >= mbox->num_chans)
- 		return ERR_PTR(-EINVAL);
+-	struct ip6gre_net *ign = net_generic(dev_net(dev), ip6gre_net_id);
++	struct ip6_tnl *t = netdev_priv(dev);
+ 	struct __ip6_tnl_parm p;
+-	struct ip6_tnl *t;
++	struct ip6gre_net *ign;
  
--	return &mbox->chans[ind];
-+	return &mbox->chans[sp->args[0]];
- }
- 
- /**
++	ign = net_generic(t->net, ip6gre_net_id);
+ 	t = ip6gre_changelink_common(dev, tb, data, &p, extack);
+ 	if (IS_ERR(t))
+ 		return PTR_ERR(t);
 
 
 
