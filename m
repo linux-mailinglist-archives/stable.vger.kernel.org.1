@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-257529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBTvDOYcG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257529-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:46 +0200
+	id gPVPDWMmG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF59C60F86A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A587E610E0A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2D12130C2740
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D96813035AAD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A453AB26B;
-	Sat, 30 May 2026 17:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F17CF2C11D9;
+	Sat, 30 May 2026 18:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJU3PWeK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZHuXeQ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998703A7848;
-	Sat, 30 May 2026 17:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A0BEEA8;
+	Sat, 30 May 2026 18:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161311; cv=none; b=pwNEdjXVMAiFajn7ko65WJHziiyMNIbt1vtUSW4ExiT7y0lQ7QJeCVR8KnLMjmbcWFvVjio+Ts0mjTPai7RhEGmzAcl3MBJwWrkdUrg/fyGHXjtgY7mymPDkTuCKnZ1/wRaJP21tRpZ1TfcBR8a5neeYiUnILHc6YfsyGuaHX+0=
+	t=1780164023; cv=none; b=WLKpX8vbN2px04I+48DG1hjSy2XdrrQday0cKpyDn1E8BFYjz7cwm4Xi16I1xrOLpuoL891Cg4kOcJxZDZuz1kaVpBFtWYuSUI7NIrvn5n8lCmUkbAyVCBG4B0a6YRWnsF4c7i6eRzyG7nVG43lwCk+rwoS5yXC/8JS0kXG3rQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161311; c=relaxed/simple;
-	bh=CDfB+qyxUDHaGYMKu2Q8OXIULqAe8HBtn4DZyz87MeY=;
+	s=arc-20240116; t=1780164023; c=relaxed/simple;
+	bh=Nc4W+VW0PwcUVLATxsKNu9rAYXGhyAQ6FeP4/5vULbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QpQKOJdsNK4iYQfGHuv7j7RZuYzHRpvtJtu8aQM355CGcsl0ZnRkMLaemFbqoMfC6WBrPDwVhZ/mGXUmzsgS0ENQ4YxfkERyq2Gcv3rJvkY2CJbSBHZbD8HkHWhh+74BpHkZCqSwUpEyEJUPWEaDguna14Kcb6RQ7lQcu0OepQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJU3PWeK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B6B1F00893;
-	Sat, 30 May 2026 17:15:09 +0000 (UTC)
+	 MIME-Version; b=Bnvr1xD8K5QdLlcos6cXD77Cd6HAAe0UGxYt6bZHUgzmFwbSdqFsuKTDvgL5wu45a0ygGjNacAq43xLaN6WV0oEPKk9BBYu0t3zEUg+1nQOHIjY/+YJaMkFBZ7JkTlqO69ZYE6t1vgCkLH7/XSSzRwJWvili6TCayQuXfOZoSew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZHuXeQ6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EDF1F00893;
+	Sat, 30 May 2026 18:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161310;
-	bh=sEhZVkKBNx73lh4eZL8zlK+Jo6Dg+Sq7HTXRqv6T70o=;
+	s=korg; t=1780164022;
+	bh=qvQ87fGDRJ5mYJSdWb6B+gs1+monYIet2XZXtJYpbNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aJU3PWeKwhtjE4qnaVYlqf+DYG4QNNQcOkPRZJD4gbj8ZJBHY1VctLySvcB2CdQl/
-	 3SLKE+we5UFxPRge8vGsDHbXy5vWApbmKlCdinVftMuskPFoEttbXpxrOpHX8pjXfD
-	 yxqKIBMsKfpNsuPkaFUJgWZ3PxsAPhcm186+9JlQ=
+	b=0ZHuXeQ69DXfGS1lQ2LKgYGdu7QZ/yRVOvDddR4JfBIsVv6nGjMNR7xG09QN1m+Rv
+	 FP/w831s4vDLZnTS+Rjui4GSq6VmIaGi0r9zPHlDnW5QAA1Z7toUT/fpt9uQzl/1GL
+	 X8MlBh0V4FHmcbE5MtZGOy3AMwZjOww1x7avIOMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Cai Xinchen <caixinchen1@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 586/969] ocfs2/dlm: validate qr_numregions in dlm_match_regions()
-Date: Sat, 30 May 2026 18:01:50 +0200
-Message-ID: <20260530160316.593066899@linuxfoundation.org>
+Subject: [PATCH 5.15 397/776] dpaa2: add independent dependencies for FSL_DPAA2_SWITCH
+Date: Sat, 30 May 2026 18:01:51 +0200
+Message-ID: <20260530160250.757363063@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,106 +67,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257529-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258340-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BF59C60F86A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A587E610E0A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Cai Xinchen <caixinchen1@huawei.com>
 
-[ Upstream commit 7ab3fbb01bc6d79091bc375e5235d360cd9b78be ]
+[ Upstream commit 12589892f41c4c645c80ef9f036f7451a6045624 ]
 
-Patch series "ocfs2/dlm: fix two bugs in dlm_match_regions()".
+Since the commit 84cba72956fd ("dpaa2-switch: integrate
+the MAC endpoint support") included dpaa2-mac.o in the driver,
+but it didn't select PCS_LYNX, PHYLINK and FSL_XGMAC_MDIO. it
+will lead to link error, such as
+undefined reference to `phylink_ethtool_ksettings_set'
+undefined reference to `lynx_pcs_create_fwnode'
 
-In dlm_match_regions(), the qr_numregions field from a DLM_QUERY_REGION
-network message is used to drive loops over the qr_regions buffer without
-sufficient validation.  This series fixes two issues:
+And the same reason as the commit d2624e70a2f53 ("dpaa2-eth: select
+XGMAC_MDIO for MDIO bus support"), enable the FSL_XGMAC_MDIO Kconfig
+option in order to have MDIO access to internal and external PHYs.
 
-- Patch 1 adds a bounds check to reject messages where qr_numregions
-  exceeds O2NM_MAX_REGIONS. The o2net layer only validates message
-  byte length; it does not constrain field values, so a crafted message
-  can set qr_numregions up to 255 and trigger out-of-bounds reads past
-  the 1024-byte qr_regions buffer.
+Because dpaa2-switch uses fsl_mc_driver APIs, add depends on FSL_MC_BUS
+&& FSL_MC_DPIO as FSL_DPAA2_SWITCH do.
 
-- Patch 2 fixes an off-by-one in the local-vs-remote comparison loop,
-  which uses '<=' instead of '<', reading one entry past the valid range
-  even when qr_numregions is within bounds.
+FSL_XGMAC_MDIO and FSL_MC_BUS depend on OF, thus the dependence of
+FSL_MC_BUS can satisfy FSL_XGMAC_MDIO's OF requirement.
 
-This patch (of 2):
-
-The qr_numregions field from a DLM_QUERY_REGION network message is used
-directly as loop bounds in dlm_match_regions() without checking against
-O2NM_MAX_REGIONS.  Since qr_regions is sized for at most O2NM_MAX_REGIONS
-(32) entries, a crafted message with qr_numregions > 32 causes
-out-of-bounds reads past the qr_regions buffer.
-
-Add a bounds check for qr_numregions before entering the loops.
-
-Link: https://lkml.kernel.org/r/SYBPR01MB7881A334D02ACEE5E0645801AF7BA@SYBPR01MB7881.ausprd01.prod.outlook.com
-Link: https://lkml.kernel.org/r/SYBPR01MB788166F524AD04E262E174BEAF7BA@SYBPR01MB7881.ausprd01.prod.outlook.com
-Fixes: ea2034416b54 ("ocfs2/dlm: Add message DLM_QUERY_REGION")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
+Suggested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
+Link: https://patch.msgid.link/20260312065907.476663-2-caixinchen1@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/dlm/dlmdomain.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/freescale/dpaa2/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
-index c4eccd499db8a..dff3d2a48b608 100644
---- a/fs/ocfs2/dlm/dlmdomain.c
-+++ b/fs/ocfs2/dlm/dlmdomain.c
-@@ -980,6 +980,14 @@ static int dlm_match_regions(struct dlm_ctxt *dlm,
- 		goto bail;
- 	}
- 
-+	if (qr->qr_numregions > O2NM_MAX_REGIONS) {
-+		mlog(ML_ERROR, "Domain %s: Joining node %d has invalid "
-+		     "number of heartbeat regions %u\n",
-+		     qr->qr_domain, qr->qr_node, qr->qr_numregions);
-+		status = -EINVAL;
-+		goto bail;
-+	}
-+
- 	r = remote;
- 	for (i = 0; i < qr->qr_numregions; ++i) {
- 		mlog(0, "Region %.*s\n", O2HB_MAX_REGION_NAME_LEN, r);
+diff --git a/drivers/net/ethernet/freescale/dpaa2/Kconfig b/drivers/net/ethernet/freescale/dpaa2/Kconfig
+index d029b69c3f183..36280e5d99e1f 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/Kconfig
++++ b/drivers/net/ethernet/freescale/dpaa2/Kconfig
+@@ -34,6 +34,10 @@ config FSL_DPAA2_SWITCH
+ 	tristate "Freescale DPAA2 Ethernet Switch"
+ 	depends on BRIDGE || BRIDGE=n
+ 	depends on NET_SWITCHDEV
++	depends on FSL_MC_BUS && FSL_MC_DPIO
++	select PHYLINK
++	select PCS_LYNX
++	select FSL_XGMAC_MDIO
+ 	help
+ 	  Driver for Freescale DPAA2 Ethernet Switch. This driver manages
+ 	  switch objects discovered on the Freeescale MC bus.
 -- 
 2.53.0
 
