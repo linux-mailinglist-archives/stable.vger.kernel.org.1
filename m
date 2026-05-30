@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-257766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IQqUG5ceG2rC/QgAu9opvQ
-	(envelope-from <stable+bounces-257766-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:59 +0200
+	id iDgTIqwoG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 406F460FCD3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 274526113E9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DEEC23009E1A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:28:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8AF3F301E7F5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D214B33E36A;
-	Sat, 30 May 2026 17:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8A33B7B72;
+	Sat, 30 May 2026 18:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KixQ9fDe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAr27MTW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1532FDC5E;
-	Sat, 30 May 2026 17:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BBE31F98D;
+	Sat, 30 May 2026 18:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162100; cv=none; b=gyINMYtDg4jH022OgPIUTfurlwbcJIDFQHsx8pmfhE3h0yViZfYLxL0iMDWe2xaeWd5WkYiabPzkJGDjCroeY+2ntHjMXSeeYye610N0UclOmuQVbFKQS+8CCzggFngwqEFXXFCKpwp7GhtTLiq6x3fGT0g3WqTh9RXkvUliwHI=
+	t=1780164688; cv=none; b=MEHtAhPcvD0PUnMhLO4Jvu2fUgA0fuB4ELZfU8ELlE/KXQKKte86H6BSfSXIyFtVXxxyOsN6OQQ93E/67g1CdAzCcD3+pmJ39YhefVPHu98U9nZEJMbMzayQADQyAG+mrD86OJxNbqBf+BeOinGhI2kyw3O9fJ9i3VhP66Sh5p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162100; c=relaxed/simple;
-	bh=vTAHJ8wFF0OuFKah8xuST4e63Ri7XjGzQxql/0UiwPw=;
+	s=arc-20240116; t=1780164688; c=relaxed/simple;
+	bh=5HpAJc18HvtjSLx20uI5j852CToeen/gUenhv3Giyp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KTA6R4rVDu3Y5gkGJn1ygWM77qFc0I03xyJWnQ4JzDJPxd4UQ/7QwfPes5pnP+rixJ2Dbi5HsCVp32mAsT0E/oADC/sgCVv0WZSZbvEdWfRYirUALx2+2sa+HV7QoNgpnhlxZiu6YuycGp4iGwFal7HYiyCokoyANW13medA2tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KixQ9fDe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA841F00893;
-	Sat, 30 May 2026 17:28:18 +0000 (UTC)
+	 MIME-Version; b=mYClZvm3QcvnDRsbSo1xmcKGfnoiyU41gdZR5190NKOvOXMmc8Dd8EYZM3uHIBNncrYSIokuQeqAzN9dLHimTJ1hUgDAiq7QakwLx6wYu+GbXcSR98NhBH0s2J95SWYqtUz/tFd2DDsGWm5XuHc16VRp1k1twX2A63uybIlDqe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAr27MTW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311681F00893;
+	Sat, 30 May 2026 18:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162099;
-	bh=ks1Z3CbX9vr4YGgpZxdJyvaIn4tIoWEcmXYEYHQAMck=;
+	s=korg; t=1780164687;
+	bh=j+EWyifU5ec5JbF2DAiLSSRgzh0U2jygvmG4jc+nFp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KixQ9fDe/S7jhFwqvbEFpMx+tBBqWMJIRNLgqxaYxGPRzGfs5ZwRe7Fie7EYUYiH2
-	 U7UHko0CdmPVKuzKKYX0WI1hc72gtcP3DDGo7shegVEImlr4QZ3hp0z8av5V0AIqgQ
-	 LDcqpKsb2IjhnZcuW6ZJQt2XQrRPLhYO2XbR2ol4=
+	b=XAr27MTWEUEADhgQdb+LZPvk+qhB5dLVVtNhSzyp6G59V49z3TGlJoxlbhs0olXyW
+	 7GUrCFAGBxKmy/sXywY+rccqOjRv/ufDbbgm7IrUEgBprtLXORSEvzw2SYbOQ4uzAa
+	 bIDlWWJymjxA4Ufx5JQ+qfHRf4DMb1WRrPSKcTBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.1 820/969] libceph: Fix potential out-of-bounds access in osdmap_decode()
+	Guillaume Nault <gnault@redhat.com>,
+	Beniamino Galvani <b.galvani@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 630/776] ipv4: remove "proto" argument from udp_tunnel_dst_lookup()
 Date: Sat, 30 May 2026 18:05:44 +0200
-Message-ID: <20260530160323.284729846@linuxfoundation.org>
+Message-ID: <20260530160256.252564119@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +66,121 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257766-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-258539-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org,davemloft.net];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tu-ilmenau.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 406F460FCD3
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email]
+X-Rspamd-Queue-Id: 274526113E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Beniamino Galvani <b.galvani@gmail.com>
 
-commit 35d0ed82d03e5ee77ea4f31f20e29562a7721649 upstream.
+[ Upstream commit 78f3655adcb52412275f282267ee771421731632 ]
 
-When decoding osd_state and osd_weight from an incoming osdmap in
-osdmap_decode(), both are decoded for each osd, i.e., map->max_osd
-times. The ceph_decode_need() check only accounts for
-sizeof(*map->osd_weight) once. This can potentially result in an
-out-of-bounds memory access if the incoming message is corrupted such
-that the max_osd value exceeds the actual content of the osdmap message.
+The function is now UDP-specific, the protocol is always IPPROTO_UDP.
 
-This patch fixes the issue by changing the corresponding part in the
-ceph_decode_need() check to account for
-map->max_osd*sizeof(*map->osd_weight).
-
-Cc: stable@vger.kernel.org
-Fixes: dcbc919a5dc8 ("libceph: switch osdmap decoding to use ceph_decode_entity_addr")
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: aa6c6d9ee064 ("bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osdmap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/bareudp.c      | 4 ++--
+ include/net/udp_tunnel.h   | 2 +-
+ net/ipv4/udp_tunnel_core.c | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -1703,7 +1703,7 @@ static int osdmap_decode(void **p, void
- 	ceph_decode_need(p, end, 3*sizeof(u32) +
- 			 map->max_osd*(struct_v >= 5 ? sizeof(u32) :
- 						       sizeof(u8)) +
--				       sizeof(*map->osd_weight), e_inval);
-+			 map->max_osd*sizeof(*map->osd_weight), e_inval);
- 	if (ceph_decode_32(p) != map->max_osd)
- 		goto e_inval;
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index a2008cdcff707..21ad3a7bbbf12 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -319,7 +319,7 @@ static int bareudp_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 		return -ESHUTDOWN;
  
+ 	rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, &saddr, info,
+-				   IPPROTO_UDP, use_cache);
++				   use_cache);
+ 
+ 	if (IS_ERR(rt))
+ 		return PTR_ERR(rt);
+@@ -499,7 +499,7 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
+ 		__be32 saddr;
+ 
+ 		rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, &saddr,
+-					   info, IPPROTO_UDP, use_cache);
++					   info, use_cache);
+ 		if (IS_ERR(rt))
+ 			return PTR_ERR(rt);
+ 
+diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
+index 81fdcecde24d6..ac9a8f635a5b1 100644
+--- a/include/net/udp_tunnel.h
++++ b/include/net/udp_tunnel.h
+@@ -165,7 +165,7 @@ struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
+ 				     struct net_device *dev,
+ 				     struct net *net, __be32 *saddr,
+ 				     const struct ip_tunnel_info *info,
+-				     u8 protocol, bool use_cache);
++				     bool use_cache);
+ 
+ struct metadata_dst *udp_tun_rx_dst(struct sk_buff *skb, unsigned short family,
+ 				    __be16 flags, __be64 tunnel_id,
+diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
+index 4b1785a8cf112..ad5e9ae28d190 100644
+--- a/net/ipv4/udp_tunnel_core.c
++++ b/net/ipv4/udp_tunnel_core.c
+@@ -211,7 +211,7 @@ struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
+ 				     struct net_device *dev,
+ 				     struct net *net, __be32 *saddr,
+ 				     const struct ip_tunnel_info *info,
+-				     u8 protocol, bool use_cache)
++				     bool use_cache)
+ {
+ #ifdef CONFIG_DST_CACHE
+ 	struct dst_cache *dst_cache;
+@@ -230,7 +230,7 @@ struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
+ #endif
+ 	memset(&fl4, 0, sizeof(fl4));
+ 	fl4.flowi4_mark = skb->mark;
+-	fl4.flowi4_proto = protocol;
++	fl4.flowi4_proto = IPPROTO_UDP;
+ 	fl4.daddr = info->key.u.ipv4.dst;
+ 	fl4.saddr = info->key.u.ipv4.src;
+ 	tos = info->key.tos;
+-- 
+2.53.0
+
 
 
 
