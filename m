@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-258437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPjgC9gpG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:00 +0200
+	id uEeEEmUxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E1E6116F3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3FD612944
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5C36308309C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:05:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB682311BA11
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFD63AFCE3;
-	Sat, 30 May 2026 18:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2F2351C2F;
+	Sat, 30 May 2026 18:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F94d14yd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fwjIBSA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AA63AFD11;
-	Sat, 30 May 2026 18:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27496313E34;
+	Sat, 30 May 2026 18:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164348; cv=none; b=Y8JPfa7XEgh2gK6sit6P9pv/InGTpyuVt5jmb7sCzCgwJxWj1PgGund/Qz/Oj61L5nuUrkooHrl29rH7au0NYAyZtP+Xi4ZK1cFyBV3rM6VGSfxiMdwskKj8f7ul73Zpp+AAPabyWRtLfo2/qm5GVuz3R7vrfwJ/y0YaZx0vy8k=
+	t=1780166294; cv=none; b=jvw6mjXt1QgqXulQ81QrLlTSNgWzpSAoMAhY3rv9Ec8DdAXo4Y6Rzkponqvu0DUxE+ZeH3IRWFubvAPZ5mfxu8ryIhENkWiaIgLe1sWuEyJPkdpcVWfkjAmwPx8On7c7SGQdYyt7N8rFiw9+AZS5uizGPZKvwF8y5fmTSdBZO7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164348; c=relaxed/simple;
-	bh=6UUr8pZd6JO8F3coDJF5rUcw0uD84UuE08wJqNZHdNo=;
+	s=arc-20240116; t=1780166294; c=relaxed/simple;
+	bh=WRJysgl5DVGo1w9FEK8MqXuFHebqYv7u+vJXonU1QNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LX2/jsXVSsrb4tOLThNI+qNAngdlU0hixiHbXGZDqLAZzEvxZzts5Pci4BfOCttxJU9AsTnINd+NVvUcpiVthjYsKj4d4u1ut/voA2D4N0DD+dqGHipgjThs+85XSA4EHattdjHZXL5mTmmMjel08hz19vzaT1p5YDoPIeCAsD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F94d14yd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E65B81F00893;
-	Sat, 30 May 2026 18:05:45 +0000 (UTC)
+	 MIME-Version; b=BN464lfjwdk1FIHS3MmSxTnLPbrB1CTWwBOZH6fUnyTX2LVebE3yLUfNr74U8WDicRxKBczPhHjoD+8pM9Sm7h04Y6S12m54GcUCkZM9QWv/TCW9DG6O7o+NdZgjslcYV04rZv2mXOo9TP7K3Jd/+jKqtJTBOnW1HXfIDSk3r0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fwjIBSA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608261F00899;
+	Sat, 30 May 2026 18:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164346;
-	bh=OfJoeRDArnjDuS4AWWhxT/8WjlpZTgS/u+IphbrGT6Q=;
+	s=korg; t=1780166293;
+	bh=TVRVT/UDM+//9nU6zmNKctYueSRhl44xyMv5JlLhlC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F94d14ydqdfGrWgLTVm+HkFwOjUdxoOxCfuM8G/HW/rW+0/UWyK2Lfm9hP9rbDpQJ
-	 Ru5vMmIz1AgRXlDe1kg7wNG43SzW8hRorWZp+4Dmb+CjRUwXe2px70ZaTm41hmwQhA
-	 Kflf//TOQ4qW0LVyjSLn1CC64AOE5nu/C7LKArMY=
+	b=0fwjIBSAd8FKSnKFOv/2+39rreBkU2qjts1bl1jFw/iDXeXj0i2BhEzoxapeQKUfb
+	 S26eFOkGfYXIzt0ou24omqcncnMcK5QDvxHm96mOfEevnyicwMYZ8pG1WttYbrLxEV
+	 zHrtXn8tyuzs0rure1/sy0PxG06Qo/0S5gcrm1BI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhengYuan Huang <gality369@gmail.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 498/776] ocfs2: validate bg_bits during freefrag scan
+Subject: [PATCH 5.10 331/589] drm/sun4i: Fix resource leaks
 Date: Sat, 30 May 2026 18:03:32 +0200
-Message-ID: <20260530160253.170051858@linuxfoundation.org>
+Message-ID: <20260530160233.610556239@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,155 +65,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258437-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,linux-foundation.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-259012-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fasheh.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:email,oracle.com:email]
-X-Rspamd-Queue-Id: A4E1E6116F3
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: AC3FD612944
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhengYuan Huang <gality369@gmail.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit 8f687eeed3da3012152b0f9473f578869de0cd7b ]
+[ Upstream commit 127367ad2e0f4870de60c6d719ae82ecf68d674c ]
 
-[BUG]
-A crafted filesystem can trigger an out-of-bounds bitmap walk when
-OCFS2_IOC_INFO is issued with OCFS2_INFO_FL_NON_COHERENT.
+Three clocks are not being released in devm_regmap_init_mmio() error
+path.
 
-BUG: KASAN: use-after-free in instrument_atomic_read include/linux/instrumented.h:68 [inline]
-BUG: KASAN: use-after-free in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
-BUG: KASAN: use-after-free in test_bit_le include/asm-generic/bitops/le.h:21 [inline]
-BUG: KASAN: use-after-free in ocfs2_info_freefrag_scan_chain fs/ocfs2/ioctl.c:495 [inline]
-BUG: KASAN: use-after-free in ocfs2_info_freefrag_scan_bitmap fs/ocfs2/ioctl.c:588 [inline]
-BUG: KASAN: use-after-free in ocfs2_info_handle_freefrag fs/ocfs2/ioctl.c:662 [inline]
-BUG: KASAN: use-after-free in ocfs2_info_handle_request+0x1c66/0x3370 fs/ocfs2/ioctl.c:754
-Read of size 8 at addr ffff888031bce000 by task syz.0.636/1435
-Call Trace:
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0xbe/0x130 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xd1/0x650 mm/kasan/report.c:482
- kasan_report+0xfb/0x140 mm/kasan/report.c:595
- check_region_inline mm/kasan/generic.c:186 [inline]
- kasan_check_range+0x11c/0x200 mm/kasan/generic.c:200
- __kasan_check_read+0x11/0x20 mm/kasan/shadow.c:31
- instrument_atomic_read include/linux/instrumented.h:68 [inline]
- _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
- test_bit_le include/asm-generic/bitops/le.h:21 [inline]
- ocfs2_info_freefrag_scan_chain fs/ocfs2/ioctl.c:495 [inline]
- ocfs2_info_freefrag_scan_bitmap fs/ocfs2/ioctl.c:588 [inline]
- ocfs2_info_handle_freefrag fs/ocfs2/ioctl.c:662 [inline]
- ocfs2_info_handle_request+0x1c66/0x3370 fs/ocfs2/ioctl.c:754
- ocfs2_info_handle+0x18d/0x2a0 fs/ocfs2/ioctl.c:828
- ocfs2_ioctl+0x632/0x6e0 fs/ocfs2/ioctl.c:913
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
- ...
+Add proper goto and set ret to the error code.
 
-[CAUSE]
-ocfs2_info_freefrag_scan_chain() uses on-disk bg_bits directly as the
-bitmap scan limit. The coherent path reads group descriptors through
-ocfs2_read_group_descriptor(), which validates the descriptor before
-use. The non-coherent path uses ocfs2_read_blocks_sync() instead and
-skips that validation, so an impossible bg_bits value can drive the
-bitmap walk past the end of the block.
-
-[FIX]
-Compute the bitmap capacity from the filesystem format with
-ocfs2_group_bitmap_size(), report descriptors whose bg_bits exceeds
-that limit, and clamp the scan to the computed capacity. This keeps the
-freefrag report going while avoiding reads beyond the buffer.
-
-Link: https://lkml.kernel.org/r/20260410034220.3825769-1-gality369@gmail.com
-Fixes: d24a10b9f8ed ("Ocfs2: Add a new code 'OCFS2_INFO_FREEFRAG' for o2info ioctl.")
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 8270249fbeaf0 ("drm/sun4i: backend: Create regmap after access is possible")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20260226163836.10335-1-ethantidmore06@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/ioctl.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/sun4i/sun4i_backend.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ocfs2/ioctl.c b/fs/ocfs2/ioctl.c
-index f59461d85da45..f9c66b172d304 100644
---- a/fs/ocfs2/ioctl.c
-+++ b/fs/ocfs2/ioctl.c
-@@ -442,13 +442,16 @@ static int ocfs2_info_freefrag_scan_chain(struct ocfs2_super *osb,
- 	struct buffer_head *bh = NULL;
- 	struct ocfs2_group_desc *bg = NULL;
+diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
+index c65b10d413879..b3741827c6c3a 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_backend.c
++++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
+@@ -900,7 +900,8 @@ static int sun4i_backend_bind(struct device *dev, struct device *master,
+ 						     &sun4i_backend_regmap_config);
+ 	if (IS_ERR(backend->engine.regs)) {
+ 		dev_err(dev, "Couldn't create the backend regmap\n");
+-		return PTR_ERR(backend->engine.regs);
++		ret = PTR_ERR(backend->engine.regs);
++		goto err_disable_ram_clk;
+ 	}
  
--	unsigned int max_bits, num_clusters;
-+	unsigned int max_bits, max_bitmap_bits, num_clusters;
- 	unsigned int offset = 0, cluster, chunk;
- 	unsigned int chunk_free, last_chunksize = 0;
- 
- 	if (!le32_to_cpu(rec->c_free))
- 		goto bail;
- 
-+	max_bitmap_bits = 8 * ocfs2_group_bitmap_size(osb->sb, 0,
-+					      osb->s_feature_incompat);
-+
- 	do {
- 		if (!bg)
- 			blkno = le64_to_cpu(rec->c_blkno);
-@@ -480,6 +483,19 @@ static int ocfs2_info_freefrag_scan_chain(struct ocfs2_super *osb,
- 			continue;
- 
- 		max_bits = le16_to_cpu(bg->bg_bits);
-+
-+		/*
-+		 * Non-coherent scans read raw blocks and do not get the
-+		 * bg_bits validation from
-+		 * ocfs2_read_group_descriptor().
-+		 */
-+		if (max_bits > max_bitmap_bits) {
-+			mlog(ML_ERROR,
-+			     "Group desc #%llu has %u bits, max bitmap bits %u\n",
-+			     (unsigned long long)blkno, max_bits, max_bitmap_bits);
-+			max_bits = max_bitmap_bits;
-+		}
-+
- 		offset = 0;
- 
- 		for (chunk = 0; chunk < chunks_in_group; chunk++) {
+ 	list_add_tail(&backend->engine.list, &drv->engine_list);
 -- 
 2.53.0
 
