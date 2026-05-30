@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-258968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257591-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPAAEC0uG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258968-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:29 +0200
+	id mHC6HnocG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257591-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 473E5612136
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2134D60F751
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A77B830118FC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:35:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 117D03052215
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A043AB285;
-	Sat, 30 May 2026 18:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BB93161A3;
+	Sat, 30 May 2026 17:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FL5RJ+V1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwjAk5t5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1B2349CCF;
-	Sat, 30 May 2026 18:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A6533E36A;
+	Sat, 30 May 2026 17:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166149; cv=none; b=TiXluPAMyLcLLy1deN0n8G6sYY2JbPg213TI4/Zt5VGY07/BE8BMfF8LjoNRtk043XFpArzz9gJDDrsuKaTeY8jJZt7gdCmCLMAnax/Rtzw9mfKv+oEmNWQMLdCyZSQTHQUwcg/BKd5a5O5cu/AAgDbw5kf3cfTN0TvG/aBCVWM=
+	t=1780161512; cv=none; b=gIqtK2qZydAfzqq6yYLCkax9BcAshbJZ+pAR0CUWwYH7Cbo0Ai/yBE4mtfhpJ8Wm3oZXYdOOlfDQ0Xsu6CkLFDUmQNT2DCHABWyx9ujBCAsQOYV23DK0UE3eXAuVmJnJ77w8OsjPmQ5I6ow2t+4k7pTkmI1yqzS34owkupgwoVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166149; c=relaxed/simple;
-	bh=oe+EVpXyqDKyzWoSMXSh+BJD1klNlejBehDfwDhVfrs=;
+	s=arc-20240116; t=1780161512; c=relaxed/simple;
+	bh=rYicNLW6mUkEwx3gD/4wERiL0tHb9u2OohsHdk8r6VY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GsgKPJ++JD85UHUBQha/gSlEK2SOkivUc9qdymYtG0LiDl+jrRyZco1qU+RhohIc6rphyHTC41g2jZJjbP+5MRc71MAKAYxh6BQe52oVEIDNCW2POgVkqo3Pv3K6lXr+dq7r61qOvnp7lRwshWcSNoZQeXewrVuP3lTIXvE8s1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FL5RJ+V1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF061F00893;
-	Sat, 30 May 2026 18:35:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e0RU7z5dXx34HanyAIOUMi+iHYQdursndDIZ+x3kPc3gD4QsaeOIcuFJlPMoRSt89GV5xWqbvfyBdom5jMOHYwECKfcaxL5uW/v7+It1PFUN9KoC1xH16DwSGTkzl2R3KLH0x/iRSEYKJkGfCH2//so+vWmbyBwXrmyeYsGvFGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwjAk5t5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322791F00893;
+	Sat, 30 May 2026 17:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166148;
-	bh=cpAVB/Ncf9wx3z4XnFcTMyNkR1zub+Gsbw7lQmg3kPU=;
+	s=korg; t=1780161511;
+	bh=cG9YNgww9462JJaFiOT7BRyR1YSNS9cJgKZEHEHXrEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FL5RJ+V1iKf4gJ6PRh+WkuqDlboDFaoZFofogKE3Anl8GHPbnAl8dDzZbZyoFfPH0
-	 v9t1QauQsmZfMmAnayByrR1RCrPf8sDO0cqQR5tj3gHRCZsKNdu4UY9TEGW4Q/Ay7A
-	 z/ZmPMcU3AUSCVEcPhpYL/pBAJ2uW1fk5pKcxV/g=
+	b=vwjAk5t5a+4XwVE00zZ8auYfXmpATGEEuaX9q3BN1LQp1HDcDBXFVdZPzrRMoVYrh
+	 LEj8IYHmsZJQn78Bu7LxVkITw63MCDapzUo8BRtXvxDI8gXolOhChy51RSSL5+ga+a
+	 kjazOYCpmj3W8kcuvaiMutfe5LhI4T4I6CSuy0VM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dudu Lu <phx0fer@gmail.com>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 289/589] vsock/virtio: fix accept queue count leak on transport mismatch
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 646/969] platform/x86: dell_rbu: avoid uninit value usage in packet_size_write()
 Date: Sat, 30 May 2026 18:02:50 +0200
-Message-ID: <20260530160232.535865215@linuxfoundation.org>
+Message-ID: <20260530160318.299695775@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +63,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+X-Spamd-Result: default: False [7.34 / 15.00];
+	URIBL_BLACK(7.50)[linuxtesting.org:url];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-257591-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,meta.com,redhat.com];
-	TAGGED_FROM(0.00)[bounces-258968-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	GREYLIST(0.00)[pass,meta];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,meta.com:email]
-X-Rspamd-Queue-Id: 473E5612136
-X-Rspamd-Action: no action
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
+	TAGGED_RCPT(0.00)[stable];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 2134D60F751
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dudu Lu <phx0fer@gmail.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 52bcb57a4e8a0865a76c587c2451906342ae1b2d upstream.
+[ Upstream commit f8fd138c2363c0e2d3235c32bfb4fb5c6474e4ae ]
 
-virtio_transport_recv_listen() calls sk_acceptq_added() before
-vsock_assign_transport(). If vsock_assign_transport() fails or
-selects a different transport, the error path returns without
-calling sk_acceptq_removed(), permanently incrementing
-sk_ack_backlog.
+Ensure the temp value has been properly parsed from the user-provided
+buffer and initialized to be used in later operations.  While at it,
+prefer a convenient kstrtoul() helper.
 
-After approximately backlog+1 such failures, sk_acceptq_is_full()
-returns true, causing the listener to reject all new connections.
+Found by Linux Verification Center (linuxtesting.org) with Svace static
+analysis tool.
 
-Fix by moving sk_acceptq_added() to after the transport validation,
-matching the pattern used by vmci_transport and hyperv_transport.
-
-Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20260413131409.19022-1-phx0fer@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ad6ce87e5bd4 ("[PATCH] dell_rbu: changes in packet update mechanism")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20260403134240.604837-1-pchelkin@ispras.ru
+[ij: add include]
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/platform/x86/dell/dell_rbu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1089,8 +1089,6 @@ virtio_transport_recv_listen(struct sock
- 		return -ENOMEM;
- 	}
+diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
+index fee20866b41e4..9039e494131fd 100644
+--- a/drivers/platform/x86/dell/dell_rbu.c
++++ b/drivers/platform/x86/dell/dell_rbu.c
+@@ -30,6 +30,7 @@
+ #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
  
--	sk_acceptq_added(sk);
--
- 	lock_sock_nested(child, SINGLE_DEPTH_NESTING);
+ #include <linux/init.h>
++#include <linux/kstrtox.h>
+ #include <linux/module.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
+@@ -617,9 +618,12 @@ static ssize_t packet_size_write(struct file *filp, struct kobject *kobj,
+ 				 char *buffer, loff_t pos, size_t count)
+ {
+ 	unsigned long temp;
++
++	if (kstrtoul(buffer, 10, &temp))
++		return -EINVAL;
++
+ 	spin_lock(&rbu_data.lock);
+ 	packet_empty_list();
+-	sscanf(buffer, "%lu", &temp);
+ 	if (temp < 0xffffffff)
+ 		rbu_data.packetsize = temp;
  
- 	child->sk_state = TCP_ESTABLISHED;
-@@ -1112,6 +1110,7 @@ virtio_transport_recv_listen(struct sock
- 		return ret;
- 	}
- 
-+	sk_acceptq_added(sk);
- 	if (virtio_transport_space_update(child, pkt))
- 		child->sk_write_space(child);
- 
+-- 
+2.53.0
+
 
 
 
