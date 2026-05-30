@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256946-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLvZKEsYG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:07 +0200
+	id 4PsgMCAPG2q/+ggAu9opvQ
+	(envelope-from <stable+bounces-256946-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFA160ECBD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE5A60E20D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A597430188A8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:02:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47AD030A79C0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFF635200B;
-	Sat, 30 May 2026 17:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011C33403E1;
+	Sat, 30 May 2026 16:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JflU2m/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkyfWbfm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82807481DD;
-	Sat, 30 May 2026 17:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296D2349CEE;
+	Sat, 30 May 2026 16:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160524; cv=none; b=gZwOTo9zbeUl6OogYlBrukZ7XUcZTQNLy9UXEcQ4LPZnJkp1uNh9HmdZkRnZHV2KSDrO/b8VqG02uLRMM/gPh6VxCyE7FTCwWu+EvKpPM8xN+lukhAOnTRT5K+Ws0ECz2qfrV+LC5GxgWcKuRB49CC4tOYx/i1ZZAYsmHwkRnKE=
+	t=1780157837; cv=none; b=CJ8oQik/AEfXmX4ab2S05th+YdftMrJ3mJwV2d/UVIwF3Jgt5UkZxSfw/wsuQK1LH9ARiCp5ELQekZLBfU2eZQjDXR9Ugulo+LSMjLGXwFVBAovAq3QUrCUGvkNjftpqH6l1ylAeDchw6cLvY3Pm+/hFUPf1/IdSXnUl63n9WKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160524; c=relaxed/simple;
-	bh=DcEJxQsjUAK7bjvVcIH2UBKOOVOc7713Uhii/rqZoYk=;
+	s=arc-20240116; t=1780157837; c=relaxed/simple;
+	bh=xKQZqMrMv/nbAhNX60+ePXFQotObeZuqT0xxAnZRxik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgyldSbI/r+QJ3PucehZgKK4+gtAQISKDTbWU/bb+UnfpUGjlbKVMI9Niuyep+RyIWTW9BbY43kE8GE2vH15Gs/NUg+0rgzQGiPPUmnxMl2RNiHkEGmE5zu5j2mwjNy3RIlEFhqu2PfCLEwpZtioVsWkxXr+qDXgqor2ali2fO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JflU2m/M; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2611F00893;
-	Sat, 30 May 2026 17:02:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mDaqhk1U6OaoVlLeYXCLB4QSFXUN070yEizl89JmLdCxMGPtLSKddeyApBLqFU6oUDCrN2Vyw1HFHdduWg3G3afhh54EDwpKkBBtreTWOjVq/GidR4/ydd/+qGGkT4mJui/+2fSZ53qe8tvzITR586BMjb1joyBt1v8JdkQJsGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkyfWbfm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9661F031C7;
+	Sat, 30 May 2026 16:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160523;
-	bh=PnlV8vNub7bg4hYAD5NcaHJP8YVP92l9uNDKexMTyKM=;
+	s=korg; t=1780157813;
+	bh=r8gsZsSsD+BwJq/A3yUCmbSrJA0SEpoWbu/O2QlNWkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JflU2m/MuhNI9zOHIQ7CQA49Ndi2u8P268I8tjlmCZx1LcS5yElPx+MlL9d2K36QC
-	 xoUDqBjxkv/jJpKNSHbXMzczdGb2g5FRYLCs9McEGPBeMc10Aw87dK2xCCp/ff33sb
-	 XmvY4OqwW1rgFC0onaKheyES1jRebtNLWEwD2b3U=
+	b=jkyfWbfmM5Zkf4V8oUbFilgqDJJSk+S47JNFFjZKu2VHxZY5MysbNXR+ZIrtzbvIN
+	 C8I86vl4VGyZnmscWxuvkyM//5dWRAmNGFaYVzbEGJodmvYWoFMN6VPSEKliQVkKDL
+	 XyeqKENMbsnr8pv25PqckMYKW0DXxQBN93iug6Pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.1 361/969] RDMA/hns: Fix unlocked call to hns_roce_qp_remove()
-Date: Sat, 30 May 2026 17:58:05 +0200
-Message-ID: <20260530160310.301683776@linuxfoundation.org>
+	=?UTF-8?q?C=C3=A9sar=20Montoya?= <sprit152009@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 005/589] ALSA: hda/realtek: Add mute LED quirk for HP Pavilion 15-eg0xxx
+Date: Sat, 30 May 2026 17:58:06 +0200
+Message-ID: <20260530160224.718566495@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257300-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256946-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BCFA160ECBD
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 1BE5A60E20D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: César Montoya <sprit152009@gmail.com>
 
-commit 0c99acbc8b6c6dd526ae475a48ee1897b61072fb upstream.
+[ Upstream commit 2f388b4e8fdd6b0f27cafd281658daacfd85807e ]
 
-Sashiko points out that hns_roce_qp_remove() requires the caller to hold
-locks.  The error flow in hns_roce_create_qp_common() doesn't hold those
-locks for the error unwind so it risks corrupting memory.
+The HP Pavilion 15-eg0xxx with subsystem ID 0x103c87cb uses a Realtek
+ALC287 codec with a mute LED wired to GPIO pin 4 (mask 0x10). The
+existing ALC287_FIXUP_HP_GPIO_LED fixup already handles this correctly,
+but the subsystem ID was missing from the quirk table.
 
-Grab the same locks the other two callers use.
+GPIO pin confirmed via manual hda-verb testing:
+  hda-verb SET_GPIO_MASK 0x10
+  hda-verb SET_GPIO_DIRECTION 0x10
+  hda-verb SET_GPIO_DATA 0x10
 
-Cc: stable@vger.kernel.org
-Fixes: e088a685eae9 ("RDMA/hns: Support rq record doorbell for the user space")
-Link: https://sashiko.dev/#/patchset/0-v2-1c49eeb88c48%2B91-rdma_udata_rep_jgg%40nvidia.com?part=9
-Link: https://patch.msgid.link/r/15-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
-Reviewed-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: César Montoya <sprit152009@gmail.com>
+Link: https://patch.msgid.link/20260321153603.12771-1-sprit152009@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_qp.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -1146,6 +1146,7 @@ static int hns_roce_create_qp_common(str
- 	struct hns_roce_ib_create_qp_resp resp = {};
- 	struct ib_device *ibdev = &hr_dev->ib_dev;
- 	struct hns_roce_ib_create_qp ucmd = {};
-+	unsigned long flags;
- 	int ret;
- 
- 	mutex_init(&hr_qp->mutex);
-@@ -1229,7 +1230,13 @@ static int hns_roce_create_qp_common(str
- 	return 0;
- 
- err_flow_ctrl:
-+	spin_lock_irqsave(&hr_dev->qp_list_lock, flags);
-+	hns_roce_lock_cqs(init_attr->send_cq ? to_hr_cq(init_attr->send_cq) : NULL,
-+			  init_attr->recv_cq ? to_hr_cq(init_attr->recv_cq) : NULL);
- 	hns_roce_qp_remove(hr_dev, hr_qp);
-+	hns_roce_unlock_cqs(init_attr->send_cq ? to_hr_cq(init_attr->send_cq) : NULL,
-+			    init_attr->recv_cq ? to_hr_cq(init_attr->recv_cq) : NULL);
-+	spin_unlock_irqrestore(&hr_dev->qp_list_lock, flags);
- err_store:
- 	free_qpc(hr_dev, hr_qp);
- err_qpc:
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 7ea036f820f54..d673e8934b775 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9291,6 +9291,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x87cb, "HP Pavilion 15-eg0xxx", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87cc, "HP Pavilion 15-eg0xxx", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87df, "HP ProBook 430 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+-- 
+2.53.0
+
 
 
 
