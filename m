@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-257877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259259-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLR6ELwgG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257877-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:08 +0200
+	id eJ9iAwUyG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259259-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9694B61019A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6840612B63
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E07E3012E84
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 183193015863
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68BA34A3C4;
-	Sat, 30 May 2026 17:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6342231A23;
+	Sat, 30 May 2026 18:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyIla3rL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LypnB7AN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A951D30E853;
-	Sat, 30 May 2026 17:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA236137750;
+	Sat, 30 May 2026 18:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162471; cv=none; b=Mgag2VxbsPzrg9aRkFRyZGsZz47ZrXVwmP9Zkc9TUd5uIJM5uD9UpxZoPj9gi5W9qTAUwN/VtONpnLtBf2HR84SU1O+2QExlrL3hrvzdJsiCChRzbRX7rWZwjVYd1pLoY4Orf3r/qUC7m83DN4l6jB8izvZsutbQQkL5o2/BRqg=
+	t=1780167141; cv=none; b=gEiZRigFyXiG+cVgfOP0d+jIi0TKEAIMEbd3W3PqviXO0GEqOKrIlOQLSQZw+tzwCZ/FFzUDiigYld+TwDmuSrqi233duCmVRlywMtA+tq/JgYh300Fx0pbutl4U0lt3KQRpYIu8TmAY3F+yJCuU77EIg4rPcRT8sx7gvs42yNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162471; c=relaxed/simple;
-	bh=vUFKYkDPdN3ZVk0gFgfVcBKas13BBDHYSebXH8BW1Fs=;
+	s=arc-20240116; t=1780167141; c=relaxed/simple;
+	bh=scdsR/eoTi8RBcLyNRLIOhg3tUUivo25Scx8uscX0So=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XnIqW8YGbsEVS5rvqE3MJrRacU1wP4Tp5zwTQyHM9CiscV9j762LZhrwVD/USqmYKsaQefJRzku6FvxiT+yh6KcPWl3HsHpTs5Bzrl8K5rEWLrTPNVcLwcEoM3p/D6z5RmW7RgUfFYBux3Cbe6XLOK5PYiAVi8Ev5n9RdD6tlIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyIla3rL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8381F00893;
-	Sat, 30 May 2026 17:34:29 +0000 (UTC)
+	 MIME-Version; b=QMZVABDMuLgS61Sg6wvwnKzPRJXF5PgTYpHPu6Ri1FmEooP3V4R1LYGuaGReCClh2Z2xmgAfRH7gNA7ysFd/ulDE3jSyWcoL81sEfQ6+gES5uD3YGEHszLSMNecidGKPx02yGh+O+GeHUNEzjHoRTHtK1gQStpH9RSNk3tBNOE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LypnB7AN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20CC1F00893;
+	Sat, 30 May 2026 18:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162470;
-	bh=gjkQmGtFbvzwLRJ7bJwc/9BVx/oa8sDr5/CgzWALCIE=;
+	s=korg; t=1780167140;
+	bh=XK8PziWoCZ2Amp8q6CAmR4v1ARO7VMV5HOVFs1vN4SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KyIla3rLCfm/xDpiuuzC+n/QRh9ArEp4XWKur+vbYmORy1DguOdY9WU5mu7AzuH6U
-	 IzPCouPL2PhO5XkSMuZXxsXGr8kOvMZGbcj2zDDefrP3qzB22BOq46Wk2aa65IGBi4
-	 Wdq7j1KkLbbwT726sRKxvI3NrBsqt9ZlW+Uv6z2Q=
+	b=LypnB7ANWIQ7Kpp9+3Ggv5o5QoT0AxpEQhIoKez8IABcF204mRPM2Z7y2L6olX5Si
+	 r7lN5fWnxuJleLowogkBSlPLYKulyNwdkiMwgVvs6WxIHzADmp/OiC+M7WQ2mK0+xP
+	 RVw1TUNtSgK8kdpYmn6YXuhdv1bPCHVKZreRxB2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	kernel test robot <lkp@intel.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 930/969] wifi: ath11k: fix error path leaks in some WMI WOW calls
-Date: Sat, 30 May 2026 18:07:34 +0200
-Message-ID: <20260530160326.425909066@linuxfoundation.org>
+Subject: [PATCH 5.10 574/589] irqchip/ath79-cpu: Remove unused function
+Date: Sat, 30 May 2026 18:07:35 +0200
+Message-ID: <20260530160239.698977233@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,112 +65,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257877-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-259259-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9694B61019A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: A6840612B63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Escande <nico.escande@gmail.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 55dda532bbc261aef495e403c8900c5e2ab5fa34 ]
+[ Upstream commit 0fa10fb77069fb67aa51384868ef3702b7791465 ]
 
-Fix two instances where we used to directly return the result of
-ath11k_wmi_cmd_send(...). Because we did not check the return value, we
-also did not free the skb in the error path.
+ath79_cpu_irq_init() was part of the legacy pre-OF code that got removed a
+while back.
 
-Fixes: 79802b13a492 ("ath11k: implement WoW enable and wakeup commands")
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260506134240.2284016-2-nico.escande@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Remove it to get rid of a missing prototype warning, reported by the kernel test
+robot.
+
+[ tglx: Fix the subject prefix. Sigh ... ]
+
+Fixes: 51fa4f8912c0 ("MIPS: ath79: drop legacy IRQ code")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260506085522.1210143-1-rosenp@gmail.com
+Closes: https://lore.kernel.org/oe-kbuild-all/202412011509.kGQkDr1y-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-ath79-cpu.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 8b50dbc47300b..31128630d8b62 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -8482,6 +8482,7 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
- 	struct wmi_wow_host_wakeup_ind *cmd;
- 	struct sk_buff *skb;
- 	size_t len;
-+	int ret;
- 
- 	len = sizeof(*cmd);
- 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
-@@ -8495,14 +8496,20 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
- 
- 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "wmi tlv wow host wakeup ind\n");
- 
--	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
-+	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to send WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID\n");
-+		dev_kfree_skb(skb);
-+	}
-+
-+	return ret;
+diff --git a/drivers/irqchip/irq-ath79-cpu.c b/drivers/irqchip/irq-ath79-cpu.c
+index 923e4bba37767..9b7273a7f8ced 100644
+--- a/drivers/irqchip/irq-ath79-cpu.c
++++ b/drivers/irqchip/irq-ath79-cpu.c
+@@ -85,10 +85,3 @@ static int __init ar79_cpu_intc_of_init(
  }
- 
- int ath11k_wmi_wow_enable(struct ath11k *ar)
- {
- 	struct wmi_wow_enable_cmd *cmd;
- 	struct sk_buff *skb;
--	int len;
-+	int ret, len;
- 
- 	len = sizeof(*cmd);
- 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
-@@ -8517,7 +8524,13 @@ int ath11k_wmi_wow_enable(struct ath11k *ar)
- 	cmd->pause_iface_config = WOW_IFACE_PAUSE_ENABLED;
- 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "wmi tlv wow enable\n");
- 
--	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
-+	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to send WMI_WOW_ENABLE_CMDID\n");
-+		dev_kfree_skb(skb);
-+	}
-+
-+	return ret;
- }
- 
- int ath11k_wmi_scan_prob_req_oui(struct ath11k *ar,
+ IRQCHIP_DECLARE(ar79_cpu_intc, "qca,ar7100-cpu-intc",
+ 		ar79_cpu_intc_of_init);
+-
+-void __init ath79_cpu_irq_init(unsigned irq_wb_chan2, unsigned irq_wb_chan3)
+-{
+-	irq_wb_chan[2] = irq_wb_chan2;
+-	irq_wb_chan[3] = irq_wb_chan3;
+-	mips_cpu_irq_init();
+-}
 -- 
 2.53.0
 
