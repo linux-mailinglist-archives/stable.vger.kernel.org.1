@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-258001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257222-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NqBMvYiG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:38 +0200
+	id cGTLHmgYG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257222-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F6756106B5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF3E60ED18
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6DB0A306C117
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:41:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C8FC7304B274
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA668348C5E;
-	Sat, 30 May 2026 17:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25EC933FE15;
+	Sat, 30 May 2026 16:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1lpKK/N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OS/m/YUJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE63934389F;
-	Sat, 30 May 2026 17:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE92D32BF24;
+	Sat, 30 May 2026 16:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162892; cv=none; b=MDayH83agVSHoULx2kozQ7Kr4ycCz3uToKtKVfEFf9cVwGg6WD9qBVJFpMHaGPuE5hGFwF14TAPmy9YZYyGHYiELI+jw5CEJzbchAoaiu2KJMtknUgpTk1eFeGZf4edMK/fNvLC8sxynJYfE60Puge+7p1cMqLzW9KXWHO+7TOQ=
+	t=1780160238; cv=none; b=kLVpQBpH/UOhJ7dG/ExuJ5erOogwcaORXDYVHySf09+X1SBgSHxmSuGEr/iumgWY4JD4VmsUaRzS0BC1AS/aT78fHWO66EXoLDcWAhlHo6oAhwXNxRMCkdVrdqk1a+1YJ+B1Zzrv7Z2nI7JzBEVlhtKx5cHuOBO1FpvTgtLAwJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162892; c=relaxed/simple;
-	bh=q3pld3kY0JnaNcEuujSsLVhGsgR/Mn/XQgmryBDg8Jo=;
+	s=arc-20240116; t=1780160238; c=relaxed/simple;
+	bh=6rCqa+D/FR26uYAWEQJaffvtmCQwjkl036F8UKqLN1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G64RuGFEJczGkVb9DfHO6aiyE1nKp3B75Y6TYlTPg9WlXEGP4DYiY7dYCDzjcUZGSzcdzdDVrEIy2ePC6nDkcOkflbJf1mDcwyRMzdF5grwnUtGwgkLydfLG4EVOlKUTQZsYr7lsDRg7UiWSyew4oVpPC3lPcsB62mtnxsxgxfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1lpKK/N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1761F00893;
-	Sat, 30 May 2026 17:41:30 +0000 (UTC)
+	 MIME-Version; b=rWbJL8hmL8CQRgL+PzaOC+jz84TbSfwlU89Ta2j3TNnVS3B0+uEMv32ZDcByGEPRpfCJsgf//8RVCS2OD6aJHDUF9ZWQ3kRv0Q5cstMa9Aj8zm29n+WCAkP7DoaFv1zwhX2LBzeoYQVE3kenW1SZvVUxD2CWuZyPTalGrl9FaYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OS/m/YUJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A8F21F00893;
+	Sat, 30 May 2026 16:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162891;
-	bh=yMiSPgqFGoVMZXyWj63QajokchuSUQf3G6xC0NHns8A=;
+	s=korg; t=1780160237;
+	bh=ND7scoCqHgq0jqbppY7efFN57yg9CmDf9TFSRTlKlT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U1lpKK/NtqdJ3lwzQa4/81dsHISnoxHpAX4etcS40/AAlA4Fpm94K0jiJQT5I+IEn
-	 9erxuGQL2LlyPGyAuEY10Hdg351v2air1Oe+ftHrITM74QdgCYdymOBb4FW/ZkpkcX
-	 LOAvDrAXKYH12orTPOCOebj/H6ogAlYzl47nuQXY=
+	b=OS/m/YUJHq9/HF7mdGVzh/yVITANq+/Pf3zrPHxF+cAoN8E/rj1cNEhI2GnuwRuwg
+	 50xdibB1MUxvK71BGWmpMiNB75GopjmQxxcF48l+WDQL06xSBWSTyLxdHk9CQbzu1N
+	 gMcGZGVwG9Svj4YV4nMIyocTgby1cxHygs1VrMu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minhong He <heminhong@kylinos.cn>,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Li hongliang <1468888505@139.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 094/776] ipv6: add NULL checks for idev in SRv6 paths
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: [PATCH 6.1 284/969] ACPI: scan: Use acpi_dev_put() in object add error paths
 Date: Sat, 30 May 2026 17:56:48 +0200
-Message-ID: <20260530160242.766816818@linuxfoundation.org>
+Message-ID: <20260530160308.306430130@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,95 +65,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kylinos.cn,uniroma2.it,kernel.org,139.com];
-	TAGGED_FROM(0.00)[bounces-258001-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-257222-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,rjwysocki.net];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kylinos.cn:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,uniroma2.it:email]
-X-Rspamd-Queue-Id: 4F6756106B5
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: EAF3E60ED18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minhong He <heminhong@kylinos.cn>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit 06413793526251870e20402c39930804f14d59c0 ]
+commit 9c0acc169ac71535477caedea8315f7041c5f07c upstream.
 
-__in6_dev_get() can return NULL when the device has no IPv6 configuration
-(e.g. MTU < IPV6_MIN_MTU or after NETDEV_UNREGISTER).
+After acpi_init_device_object(), the lifetime of struct acpi_device is
+managed by the driver core through reference counting.
 
-Add NULL checks for idev returned by __in6_dev_get() in both
-seg6_hmac_validate_skb() and ipv6_srh_rcv() to prevent potential NULL
-pointer dereferences.
+Both acpi_add_power_resource() and acpi_add_single_object() call
+acpi_init_device_object() and then invoke acpi_device_add(). If that
+fails, their error paths call the release callback directly instead of
+dropping the device reference through acpi_dev_put().
 
-Fixes: 1ababeba4a21 ("ipv6: implement dataplane support for rthdr type 4 (Segment Routing Header)")
-Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
-Signed-off-by: Minhong He <heminhong@kylinos.cn>
-Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Link: https://patch.msgid.link/20260316073301.106643-1-heminhong@kylinos.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Li hongliang <1468888505@139.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This bypasses the normal device lifetime rules and frees the object
+without releasing the reference acquired by device_initialize(), which
+may lead to a refcount leak.
+
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
+
+Fix both error paths by using acpi_dev_put() and let the release
+callback handle the final cleanup.
+
+Fixes: 781d737c7466 ("ACPI: Drop power resources driver")
+Fixes: 718fb0de8ff88 ("ACPI: fix NULL bug for HID/UID string")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://patch.msgid.link/20260413135343.2884481-1-lgs201920130244@gmail.com
+Signed-off-by: Rafael J. Wysocki <rjw@rjwysocki.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/exthdrs.c   | 4 ++++
- net/ipv6/seg6_hmac.c | 2 ++
- 2 files changed, 6 insertions(+)
+ drivers/acpi/power.c |    2 +-
+ drivers/acpi/scan.c  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 10772dab66bbd..3d249c10e3e9b 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -373,6 +373,10 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
- 	hdr = (struct ipv6_sr_hdr *)skb_transport_header(skb);
+--- a/drivers/acpi/power.c
++++ b/drivers/acpi/power.c
+@@ -986,7 +986,7 @@ struct acpi_device *acpi_add_power_resou
+ 	return device;
  
- 	idev = __in6_dev_get(skb->dev);
-+	if (!idev) {
-+		kfree_skb(skb);
-+		return -1;
-+	}
+  err:
+-	acpi_release_power_resource(&device->dev);
++	acpi_dev_put(device);
+ 	return NULL;
+ }
  
- 	accept_seg6 = net->ipv6.devconf_all->seg6_enabled;
- 	if (accept_seg6 > idev->cnf.seg6_enabled)
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index 7e3a857699322..68acff337e414 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -244,6 +244,8 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
- 	struct inet6_dev *idev;
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -1856,7 +1856,7 @@ static int acpi_add_single_object(struct
+ 		result = acpi_device_add(device);
  
- 	idev = __in6_dev_get(skb->dev);
-+	if (!idev)
-+		return false;
+ 	if (result) {
+-		acpi_device_release(&device->dev);
++		acpi_dev_put(device);
+ 		return result;
+ 	}
  
- 	srh = (struct ipv6_sr_hdr *)skb_transport_header(skb);
- 
--- 
-2.53.0
-
 
 
 
