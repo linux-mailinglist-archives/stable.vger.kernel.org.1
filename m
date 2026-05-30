@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-257306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNXJGl0YG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:25 +0200
+	id yBycM50jG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD0560ED03
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B67D610865
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 054993017E4F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:02:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5354D308F348
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FD1395AEA;
-	Sat, 30 May 2026 17:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04011348C5E;
+	Sat, 30 May 2026 17:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1nNKbrB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UU90Wi+R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162CA32B11D;
-	Sat, 30 May 2026 17:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAF833F8A4;
+	Sat, 30 May 2026 17:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160547; cv=none; b=GP0rLz28jTMvAdGNkd2DD2OVyqp8N0Lp9gZIX11QowulZdba4y1H3aQ331gNiOyJzZg9c1tTqjBkZuHVevyL/uoam2FihzsDrmd+OH4qKe1GLJR8X1ASpVmqgIIX5kUBgdY++f2qIKrjadjerq+Dhb+hN/hTGFqqT1X+yeYDk4c=
+	t=1780163089; cv=none; b=QzMhiyUb5VUkbt9phJEz2jzI/htQqOVibJE7vHtjEA/h9y3WMPd+ztqWWnaLCitJpClWoBXrj4t65lFb2/TK3igVi1FtBE5423XABjkybWBSmEJUXF0azhNAYRhUlU6skqXcQagPQVkYG6Pgs5lZ3qerHyTXf5Lrs37x0GbLVXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160547; c=relaxed/simple;
-	bh=XIMW0pg7S5riCB+ifu8rGen/fdtSf8rwB5tnZFJ6EaQ=;
+	s=arc-20240116; t=1780163089; c=relaxed/simple;
+	bh=YCg8vbrGxw9WoaTLWwDi6O2R+zYNfl5VRFsCR9SUy7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MBh7cGz+BvU4AY0409TyoR0l7ugtbr9HM0kuJ3/4LjkKY6hGTJyyUSy6mSXdem4RwByIshOIzydlH85nZD8X9gBjd32Gf85pDQYzn6C0Y5/bkGB4ObZRcEOU/5pjPjrxoMVBfkFNlhZOXnk8B5Y/1h+VnQ+eK4LAsa8+Zbe0+ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1nNKbrB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8241F00893;
-	Sat, 30 May 2026 17:02:24 +0000 (UTC)
+	 MIME-Version; b=dkeFdGGJ6vDBEv7MQgH6buBpeiGVgBCXOl3/E1ppl88m2B7AaAy2mmJYIjJEOrbgtNjGRh+H2nfGM6NbzWM0srJj/flmJfHTAGIsdDLe8XcYzwxx7+FaN+pA76OD68faDWUPmn2Z/rpdQOYC6wmqkX+/jU38d8fMWPoHrBHuQ1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UU90Wi+R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2881F00893;
+	Sat, 30 May 2026 17:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160546;
-	bh=QhyjX1KDa32pWDZ9uPN6HCPMTdQDpz0fz0do/D0qOtM=;
+	s=korg; t=1780163088;
+	bh=nGgF4VCKHlUK+QP3iCNG5ORWKXrhvOBNKCA7GMfN7xI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D1nNKbrB+ACxgsJEKVp/btToYmHlBs4BEYIJoToHQHwBqhWPRqFKAJPqzAGpLxPZW
-	 VEonIUd9Sh82U5S3VioFZt2UOW8CPC8PbgwUMd0jhB751fk3G81Vd0bSgbRCS+7Yg5
-	 OIRuDqR7ZJS/A4yUMUi+i51MuAyJ8aPPabeneJB0=
+	b=UU90Wi+R4rhAVaLlNJLHNVpiwtGo//tFetV/Ed5R7Go2xkHLRmEXtuXwratTnQlkK
+	 zdipGdeT406z0I+KPTAg8XqbAtO7R+h4FYlvXmxYYh+LEDe/nNqGjZkXrNyAW6a0WC
+	 zhq0P30iNgqKJ3+HhLcrwNrmdNp9M8uIo+nNAY3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH 6.1 340/969] clk: microchip: mpfs-ccc: fix out of bounds access during output registration
-Date: Sat, 30 May 2026 17:57:44 +0200
-Message-ID: <20260530160309.758630904@linuxfoundation.org>
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 5.15 151/776] f2fs: fix to trigger foreground gc during f2fs_map_blocks() in lfs mode
+Date: Sat, 30 May 2026 17:57:45 +0200
+Message-ID: <20260530160244.361182742@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +67,100 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257306-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-258061-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0BD0560ED03
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6B67D610865
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 2f7ae8ab6aa73daaf080d5332110357c29df9c36 upstream.
+[ Upstream commit 1005a3ca28e90c7a64fa43023f866b960a60f791 ]
 
-UBSAN reported an out of bounds access during registration of the last
-two outputs. This out of bounds access occurs because space is only
-allocated in the hws array for two PLLs and the four output dividers
-that each has, but the defined IDs contain two DLLS and their two
-outputs each, which are not supported by the driver. The ID order is
-PLLs -> DLLs -> PLL outputs -> DLL outputs. Decrement the PLL output IDs
-by two while adding them to the array to avoid the problem.
+w/ "mode=lfs" mount option, generic/299 will cause system panic as below:
 
-Fixes: d39fb172760e ("clk: microchip: add PolarFire SoC fabric clock support")
-CC: stable@vger.kernel.org
-Reviewed-by: Brian Masney <bmasney@redhat.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.c:2835!
+Call Trace:
+ <TASK>
+ f2fs_allocate_data_block+0x6f4/0xc50
+ f2fs_map_blocks+0x970/0x1550
+ f2fs_iomap_begin+0xb2/0x1e0
+ iomap_iter+0x1d6/0x430
+ __iomap_dio_rw+0x208/0x9a0
+ f2fs_file_write_iter+0x6b3/0xfa0
+ aio_write+0x15d/0x2e0
+ io_submit_one+0x55e/0xab0
+ __x64_sys_io_submit+0xa5/0x230
+ do_syscall_64+0x84/0x2f0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0010:new_curseg+0x70f/0x720
+
+The root cause of we run out-of-space is: in f2fs_map_blocks(), f2fs may
+trigger foreground gc only if it allocates any physical block, it will be
+a little bit later when there is multiple threads writing data w/
+aio/dio/bufio method in parallel, since we always use OPU in lfs mode, so
+f2fs_map_blocks() does block allocations aggressively.
+
+In order to fix this issue, let's give a chance to trigger foreground
+gc in prior to block allocation in f2fs_map_blocks().
+
+Fixes: 36abef4e796d ("f2fs: introduce mode=lfs mount option")
+Cc: Daeho Jeong <daehojeong@google.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ The context change is due to the commit 2f51ade9524c
+("f2fs: f2fs_do_map_lock") in v6.3 which is irrelevant to
+the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/microchip/clk-mpfs-ccc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/f2fs/data.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/microchip/clk-mpfs-ccc.c b/drivers/clk/microchip/clk-mpfs-ccc.c
-index 3a3ea2d142f8..0a76a1aaa50f 100644
---- a/drivers/clk/microchip/clk-mpfs-ccc.c
-+++ b/drivers/clk/microchip/clk-mpfs-ccc.c
-@@ -178,7 +178,7 @@ static int mpfs_ccc_register_outputs(struct device *dev, struct mpfs_ccc_out_hw_
- 			return dev_err_probe(dev, ret, "failed to register clock id: %d\n",
- 					     out_hw->id);
- 
--		data->hw_data.hws[out_hw->id] = &out_hw->divider.hw;
-+		data->hw_data.hws[out_hw->id - 2] = &out_hw->divider.hw;
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1523,8 +1523,11 @@ int f2fs_map_blocks(struct inode *inode,
  	}
  
- 	return 0;
-@@ -234,6 +234,10 @@ static int mpfs_ccc_probe(struct platform_device *pdev)
- 	unsigned int num_clks;
- 	int ret;
+ next_dnode:
+-	if (map->m_may_create)
++	if (map->m_may_create) {
++		if (f2fs_lfs_mode(sbi))
++			f2fs_balance_fs(sbi, true);
+ 		f2fs_do_map_lock(sbi, flag, true);
++	}
  
-+	/*
-+	 * If DLLs get added here, mpfs_ccc_register_outputs() currently packs
-+	 * sparse clock IDs in the hws array
-+	 */
- 	num_clks = ARRAY_SIZE(mpfs_ccc_pll_clks) + ARRAY_SIZE(mpfs_ccc_pll0out_clks) +
- 		   ARRAY_SIZE(mpfs_ccc_pll1out_clks);
- 
--- 
-2.54.0
-
+ 	/* When reading holes, we need its node page */
+ 	set_new_dnode(&dn, inode, NULL, NULL, 0);
 
 
 
