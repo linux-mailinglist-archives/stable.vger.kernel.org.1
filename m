@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-258147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAJ4ADsjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:47 +0200
+	id SM8IAxYaG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0869461078A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF0E60F0AC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 62E233002B73
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BB07930632E8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CAB03546EA;
-	Sat, 30 May 2026 17:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC0834104B;
+	Sat, 30 May 2026 17:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0zOEoc5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gt3FnHB6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0577346E55;
-	Sat, 30 May 2026 17:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC740481DD;
+	Sat, 30 May 2026 17:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163373; cv=none; b=qfInH16Pj9sytSbz2+/feitiYk1H5qkvbNI6fXuHiUXa4x3krtccThWsi5PK33kj0b22emcI538JgezygWwDfZ4Ur7pj/k/SuwR/rdQFC+xI0lnIRU6iFepcF/gNpTVTfCb5AbMQ9bewuOh04+19MTbBkfIZxkrbwOEadN0nviw=
+	t=1780160773; cv=none; b=gPxhGLQwNVJIoX9/vNe/ZGyved/bYixcQr2Fdz/iWE9iC+yRzQVEJfBWdbnKIEFmMSa0lG2PdbVaBrbKADEDQEaTZmoVA73FNdHKsNIT1B4vcetLhjErsBJ36CTEIMhaY3QdDb1lXftnIEHm0aYYGOsAbkGa9o1+TzDF9fr0LyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163373; c=relaxed/simple;
-	bh=v9C+CnXuon2zysMfIWvlX1q/1uDzMcI4p48B8IT8pcM=;
+	s=arc-20240116; t=1780160773; c=relaxed/simple;
+	bh=h49qzRulYFC5HWqu5ZGf/j4IKl8LKHzWJFClLF2CXRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tkEZIJ35rGuRDXIiQDUCGt6aULckyNawi5bRycstat6NN1hD8buhICshgrws20/5gLuYw6Q7Ydn7awreVzsyPNYK8hCEDwHFLKSJQmfjvU9lDAr2sugboys/iV2Oh5ghsRojooJduWcH3S/mDG043FUbp8cXbWujCYfM3DuMS9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0zOEoc5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B071F00893;
-	Sat, 30 May 2026 17:49:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H/woLzJYYOTfYh1HQ5GcQpHnNH2SdK/DihurzIkFB8kbAw+HwMkEsjHuAnhBVvQMLi9plEyjeomkdzp3R8ihJck+SmBfiOUuCyv42YOfD5gs+ZKzF1TEsrbnoFUIo+Fo9SyytVoMp7mU0P9lIQc4dEnJESuVWuO3AaJHyjDG3P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gt3FnHB6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F234C1F00893;
+	Sat, 30 May 2026 17:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163372;
-	bh=vdNbfytVZmzbAJWNxkONcqjyRIOFxV79QOFEGDBJK9E=;
+	s=korg; t=1780160772;
+	bh=DN8Py88AB+iUCxeehyef9tXs3f42fTuDSoFj5k5iVoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=k0zOEoc50ucaz57LOY8RrTJGgvpZ+J7FEI2dPafrFFpNjhnMjssrWhee/IBvpkdtD
-	 1WHJMaUPYoz0ZyeprYrgPeTYlbtRqjag/Y/eCmigBKbPM5/J4aQP36uePveNaiI498
-	 ev8rHIMQ8IVe5zz8TiYn9SpkYVaEU5tqULVzLYv8=
+	b=Gt3FnHB6uBxqe1VaXpCUsRh3v6RcvRW+OOO23DZK7LkUBA/eUg0OMQCqwEB1bk/lc
+	 E0/wlQzy5D0nJZsBOjrtKLNeLsgn+SMgldJS2QK9N9iOeB7e0LZQjAqfwKG9PLEcXW
+	 bQLOLwc2uki8nVfVa/yoUQx1BiPs9IlSpAoAh+04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.15 239/776] KVM: nSVM: Add missing consistency check for nCR3 validity
-Date: Sat, 30 May 2026 17:59:13 +0200
-Message-ID: <20260530160246.708192373@linuxfoundation.org>
+	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
+Subject: [PATCH 6.1 430/969] mtd: spi-nor: sst: Fix SST write failure
+Date: Sat, 30 May 2026 17:59:14 +0200
+Message-ID: <20260530160312.134045544@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,78 +69,111 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258147-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-257373-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,g_pat.pa:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0869461078A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 6BF0E60F0AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
 
-commit b71138fcc362c67ebe66747bb22cb4e6b4d6a651 upstream.
+commit 539bd20352832b9244238a055eb169ccf1c41ff6 upstream.
 
->From the APM Volume #2, 15.25.4 (24593—Rev. 3.42—March 2024):
+'commit 18bcb4aa54ea ("mtd: spi-nor: sst: Factor out common write operation
+to `sst_nor_write_data()`")' introduced a bug where only one byte of data
+is written, regardless of the number of bytes passed to
+sst_nor_write_data(), causing a kernel crash during the write operation.
+Ensure the correct number of bytes are written as passed to
+sst_nor_write_data().
 
-  When VMRUN is executed with nested paging enabled (NP_ENABLE = 1), the
-  following conditions are considered illegal state combinations, in
-  addition to those mentioned in “Canonicalization and Consistency Checks”:
-      • Any MBZ bit of nCR3 is set.
-      • Any G_PAT.PA field has an unsupported type encoding or any
-        reserved field in G_PAT has a nonzero value.
+Call trace:
+[   57.400180] ------------[ cut here ]------------
+[   57.404842] While writing 2 byte written 1 bytes
+[   57.409493] WARNING: CPU: 0 PID: 737 at drivers/mtd/spi-nor/sst.c:187 sst_nor_write_data+0x6c/0x74
+[   57.418464] Modules linked in:
+[   57.421517] CPU: 0 UID: 0 PID: 737 Comm: mtd_debug Not tainted 6.12.0-g5ad04afd91f9 #30
+[   57.429517] Hardware name: Xilinx Versal A2197 Processor board revA - x-prc-02 revA (DT)
+[   57.437600] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   57.444557] pc : sst_nor_write_data+0x6c/0x74
+[   57.448911] lr : sst_nor_write_data+0x6c/0x74
+[   57.453264] sp : ffff80008232bb40
+[   57.456570] x29: ffff80008232bb40 x28: 0000000000010000 x27: 0000000000000001
+[   57.463708] x26: 000000000000ffff x25: 0000000000000000 x24: 0000000000000000
+[   57.470843] x23: 0000000000010000 x22: ffff80008232bbf0 x21: ffff000816230000
+[   57.477978] x20: ffff0008056c0080 x19: 0000000000000002 x18: 0000000000000006
+[   57.485112] x17: 0000000000000000 x16: 0000000000000000 x15: ffff80008232b580
+[   57.492246] x14: 0000000000000000 x13: ffff8000816d1530 x12: 00000000000004a4
+[   57.499380] x11: 000000000000018c x10: ffff8000816fd530 x9 : ffff8000816d1530
+[   57.506515] x8 : 00000000fffff7ff x7 : ffff8000816fd530 x6 : 0000000000000001
+[   57.513649] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
+[   57.520782] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0008049b0000
+[   57.527916] Call trace:
+[   57.530354]  sst_nor_write_data+0x6c/0x74
+[   57.534361]  sst_nor_write+0xb4/0x18c
+[   57.538019]  mtd_write_oob_std+0x7c/0x88
+[   57.541941]  mtd_write_oob+0x70/0xbc
+[   57.545511]  mtd_write+0x68/0xa8
+[   57.548733]  mtdchar_write+0x10c/0x290
+[   57.552477]  vfs_write+0xb4/0x3a8
+[   57.555791]  ksys_write+0x74/0x10c
+[   57.559189]  __arm64_sys_write+0x1c/0x28
+[   57.563109]  invoke_syscall+0x54/0x11c
+[   57.566856]  el0_svc_common.constprop.0+0xc0/0xe0
+[   57.571557]  do_el0_svc+0x1c/0x28
+[   57.574868]  el0_svc+0x30/0xcc
+[   57.577921]  el0t_64_sync_handler+0x120/0x12c
+[   57.582276]  el0t_64_sync+0x190/0x194
+[   57.585933] ---[ end trace 0000000000000000 ]---
 
-Add the consistency check for nCR3 being a legal GPA with no MBZ bits
-set.  Note, the G_PAT.PA check is being handled separately[*].
-
-Link: https://lore.kernel.org/kvm/20260205214326.1029278-3-jmattson@google.com [*]
-Fixes: 4b16184c1cca ("KVM: SVM: Initialize Nested Nested MMU context on VMRUN")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-16-yosry@kernel.org
-[sean: capture everything in CC(), massage changelog formatting]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 18bcb4aa54ea ("mtd: spi-nor: sst: Factor out common write operation to `sst_nor_write_data()`")
+Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Reviewed-by: Bence Csókás <csokas.bence@prolan.hu>
+[pratyush@kernel.org: add Cc stable tag]
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Link: https://lore.kernel.org/r/20250213054546.2078121-1-amit.kumar-mahapatra@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mtd/spi-nor/sst.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -256,6 +256,10 @@ static bool nested_vmcb_check_controls(s
- 	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) && !npt_enabled))
- 		return false;
+--- a/drivers/mtd/spi-nor/sst.c
++++ b/drivers/mtd/spi-nor/sst.c
+@@ -124,7 +124,7 @@ static int sst_nor_write_data(struct spi
+ 	int ret;
  
-+	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) &&
-+	       !kvm_vcpu_is_legal_gpa(vcpu, control->nested_cr3)))
-+		return false;
-+
- 	if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
- 					   MSRPM_SIZE)))
- 		return false;
+ 	nor->program_opcode = op;
+-	ret = spi_nor_write_data(nor, to, 1, buf);
++	ret = spi_nor_write_data(nor, to, len, buf);
+ 	if (ret < 0)
+ 		return ret;
+ 	WARN(ret != len, "While writing %zu byte written %i bytes\n", len, ret);
 
 
 
