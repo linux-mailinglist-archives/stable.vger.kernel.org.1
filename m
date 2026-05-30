@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-257368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258777-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDUmIGgbG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257368-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:24 +0200
+	id kOp6IwotG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258777-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66FA60F485
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC6F2611E43
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5DF930E379F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:05:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7237301DCE1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2CC34BA42;
-	Sat, 30 May 2026 17:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A89F25B0B3;
+	Sat, 30 May 2026 18:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKl6Gc12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wprved0O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB6732B11D;
-	Sat, 30 May 2026 17:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13841217704;
+	Sat, 30 May 2026 18:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160756; cv=none; b=MuYdH9z11v1VcgsKonXAJhGRtr1l7QHelBV4jqycO4ZZcH4JU2O5zF4qmFO32YkTUi+49b6rX0cFyoM/OHMOS1iaNTIppwAeyw6s7ujY52NfQ7nXjpd2bkCc3e7uaWyD9WAzqW9UsrizV2B4cHE47k08tX24zjBgxAaS1gEPzhU=
+	t=1780165504; cv=none; b=VTb6V7eqALdrWJPxLQo+MfYlEb+LyZci5/QpZhyQu9ymvrgADk8hJMCgSqxNme2Q4aJuyVBwZGNLFuNLGtMKORopM9SNy2kvwSnHBPS0HTA5PMk5oC0/bGOVyRZ54aPGgF4QINbGNn+ckANQ1g7hyUmX25zXoetouKfH9akSfJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160756; c=relaxed/simple;
-	bh=MKu8wNJ7XXXO71BIh2gOquhXTqL43VCtOOeqJFwlw8E=;
+	s=arc-20240116; t=1780165504; c=relaxed/simple;
+	bh=ff8+4n1TirikL69mbHo3/Su17Z7xWtNOIsqOJN+jDSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M2AKwNCEdbRcIKfGQJjP7OmTCYLBS63wJVCJwMOaYtpk4g23CmkKRKIUj8CBs8o3RdT+Ex30CRgoOCJyrSB2MiMl/2+ykCw4wSGHFvhP04dXM8brbPWaVpAloQ7FzjtH/3sdNL4f0+soEvluNgAaQgaBXHog82MJolAtfGVLY2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKl6Gc12; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F16A1F00893;
-	Sat, 30 May 2026 17:05:54 +0000 (UTC)
+	 MIME-Version; b=q0JtXorWxJSlN1BcZvY22z3yBRRP5Zdj6LFuFIfLq/l0O71weExTZKe8VijZT1tcZqj1mXwN5jahORWoI7BxKnmJeWeiINXbmZVoJTB5VpOuLYJy9AxXW5uBSuQEzePkVJ/DLxwIISPg2SBdig9X0qQ8o3fsrT/UlIJ3UJYQqhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wprved0O; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E281F00893;
+	Sat, 30 May 2026 18:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160755;
-	bh=0cmKcLadMDOg1Lc619/OuywPUERyIkjD+heqf/yKR3g=;
+	s=korg; t=1780165503;
+	bh=DMrsU6fom/RAGFJPwiyiStKRC4HFbd1yqWQTZyL3vK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DKl6Gc12EWJJ/8IkPM6hpZsgB23OfAvNvxoSvVXv4LXWHH1f2JaKDXb1fZpbPpU/z
-	 B1NHvRdU8U3xNww+OVGJesEYhQPdmaD/8fuJJxJyLAhAY9++FJLpSpTOU2TVHP2+7i
-	 cz4hOaBF9jplpVrZk9DPGrA8PuFE7uyVuCj5s/Hg=
+	b=wprved0Od8SN2/4NtZIWZnoraBtzmUrxXou0lKr0QbjipC7DP2hsXngtJbyXNCK4t
+	 VpDFQL4WM4+0qOD+Vd1syrxX1CFpBrSA5aGuz07Aaa2L+FLZW3I0AcdXEiY0I12xj6
+	 yeuIp7zvILXAWpAU/Nq0DxwdNnlnAxul9C6o6nLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.1 425/969] pwm: imx-tpm: Count the number of enabled channels in probe
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 068/589] rxrpc: proc: size address buffers for %pISpc output
 Date: Sat, 30 May 2026 17:59:09 +0200
-Message-ID: <20260530160311.999147869@linuxfoundation.org>
+Message-ID: <20260530160226.389074087@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +69,192 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257368-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258777-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: D66FA60F485
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email,auristor.com:email,infradead.org:email]
+X-Rspamd-Queue-Id: DC6F2611E43
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viorel Suman (OSS) <viorel.suman@oss.nxp.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-commit 3962c24f2d14e8a7f8a23f56b7ce320523947342 upstream.
+[ Upstream commit a44ce6aa2efb61fe44f2cfab72bb01544bbca272 ]
 
-On a soft reset TPM PWM IP may preserve its internal state from previous
-runtime, therefore on a subsequent OS boot and driver probe
-"enable_count" value and TPM PWM IP internal channels "enabled" states
-may get unaligned. In consequence on a suspend/resume cycle the call "if
-(--tpm->enable_count == 0)" may lead to "enable_count" overflow the
-system being blocked from entering suspend due to:
+The AF_RXRPC procfs helpers format local and remote socket addresses into
+fixed 50-byte stack buffers with "%pISpc".
 
-   if (tpm->enable_count > 0)
-       return -EBUSY;
+That is too small for the longest current-tree IPv6-with-port form the
+formatter can produce. In lib/vsprintf.c, the compressed IPv6 path uses a
+dotted-quad tail not only for v4mapped addresses, but also for ISATAP
+addresses via ipv6_addr_is_isatap().
 
-Fix the problem by counting the enabled channels in probe function.
+As a result, a case such as
 
-Signed-off-by: Viorel Suman (OSS) <viorel.suman@oss.nxp.com>
-Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
-Link: https://patch.msgid.link/20260311123309.348904-1-viorel.suman@oss.nxp.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-[ukleinek: backport to linux-6.6.y]
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  [ffff:ffff:ffff:ffff:0:5efe:255.255.255.255]:65535
+
+is possible with the current formatter. That is 50 visible characters, so
+51 bytes including the trailing NUL, which does not fit in the existing
+char[50] buffers used by net/rxrpc/proc.c.
+
+Size the buffers from the formatter's maximum textual form and switch the
+call sites to scnprintf().
+
+Changes since v1:
+- correct the changelog to cite the actual maximum current-tree case
+  explicitly
+- frame the proof around the ISATAP formatting path instead of the earlier
+  mapped-v4 example
+
+Fixes: 75b54cb57ca3 ("rxrpc: Add IPv6 support")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Anderson Nascimento <anderson@allelesecurity.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-22-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted address accessors and variable declarations ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-imx-tpm.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/rxrpc/proc.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
---- a/drivers/pwm/pwm-imx-tpm.c
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -350,6 +350,7 @@ static int pwm_imx_tpm_probe(struct plat
- {
- 	struct imx_tpm_pwm_chip *tpm;
- 	int ret;
-+	unsigned int i;
- 	u32 val;
+diff --git a/net/rxrpc/proc.c b/net/rxrpc/proc.c
+index 8967201fd8e54..67553dfe6a3e4 100644
+--- a/net/rxrpc/proc.c
++++ b/net/rxrpc/proc.c
+@@ -10,6 +10,10 @@
+ #include <net/af_rxrpc.h>
+ #include "ar-internal.h"
  
- 	tpm = devm_kzalloc(&pdev->dev, sizeof(*tpm), GFP_KERNEL);
-@@ -383,6 +384,13 @@ static int pwm_imx_tpm_probe(struct plat
- 
- 	mutex_init(&tpm->lock);
- 
-+	/* count the enabled channels */
-+	for (i = 0; i < tpm->chip.npwm; ++i) {
-+		val = readl(tpm->base + PWM_IMX_TPM_CnSC(i));
-+		if (FIELD_GET(PWM_IMX_TPM_CnSC_ELS, val))
-+			++tpm->enable_count;
-+	}
++#define RXRPC_PROC_ADDRBUF_SIZE \
++	(sizeof("[xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:255.255.255.255]") + \
++	 sizeof(":12345"))
 +
- 	ret = pwmchip_add(&tpm->chip);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add PWM chip: %d\n", ret);
+ static const char *const rxrpc_conn_states[RXRPC_CONN__NR_STATES] = {
+ 	[RXRPC_CONN_UNUSED]			= "Unused  ",
+ 	[RXRPC_CONN_CLIENT]			= "Client  ",
+@@ -61,7 +65,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+ 	unsigned long timeout = 0;
+ 	rxrpc_seq_t tx_hard_ack, rx_hard_ack;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == &rxnet->calls) {
+ 		seq_puts(seq,
+@@ -78,7 +82,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 	if (rx) {
+ 		local = READ_ONCE(rx->local);
+ 		if (local)
+-			sprintf(lbuff, "%pISpc", &local->srx.transport);
++			scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 		else
+ 			strcpy(lbuff, "no_local");
+ 	} else {
+@@ -87,7 +91,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 
+ 	peer = call->peer;
+ 	if (peer)
+-		sprintf(rbuff, "%pISpc", &peer->srx.transport);
++		scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
+ 	else
+ 		strcpy(rbuff, "no_connection");
+ 
+@@ -158,7 +162,7 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_connection *conn;
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == &rxnet->conn_proc_list) {
+ 		seq_puts(seq,
+@@ -177,9 +181,9 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
+ 		goto print;
+ 	}
+ 
+-	sprintf(lbuff, "%pISpc", &conn->params.local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &conn->params.local->srx.transport);
+ 
+-	sprintf(rbuff, "%pISpc", &conn->params.peer->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &conn->params.peer->srx.transport);
+ print:
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %-47.47s %4x %08x %s %3u"
+@@ -216,7 +220,7 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_peer *peer;
+ 	time64_t now;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -229,9 +233,9 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
+ 
+ 	peer = list_entry(v, struct rxrpc_peer, hash_link);
+ 
+-	sprintf(lbuff, "%pISpc", &peer->local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &peer->local->srx.transport);
+ 
+-	sprintf(rbuff, "%pISpc", &peer->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
+ 
+ 	now = ktime_get_seconds();
+ 	seq_printf(seq,
+@@ -341,7 +345,7 @@ const struct seq_operations rxrpc_peer_seq_ops = {
+ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_local *local;
+-	char lbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -352,7 +356,7 @@ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
+ 
+ 	local = hlist_entry(v, struct rxrpc_local, link);
+ 
+-	sprintf(lbuff, "%pISpc", &local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %3u %3u\n",
+-- 
+2.53.0
+
 
 
 
