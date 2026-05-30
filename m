@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258439-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDUTJsgcG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:16 +0200
+	id UP4tJHIpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258439-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3598860F823
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0350B61163E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E5EA8300FAA6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:21:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D494731504BC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAD1263F44;
-	Sat, 30 May 2026 17:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0733AB291;
+	Sat, 30 May 2026 18:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6Zg4aXF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DImS8lc/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABCE14A62B;
-	Sat, 30 May 2026 17:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712FD39A4A4;
+	Sat, 30 May 2026 18:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161665; cv=none; b=kqRNwkWq/wI63JWkjg9iP0Mo8/vQFvblyKTu276LHnL6uYEnLnyVZChX1S2NB7+b0fgdyjOBQcTxgkoUK35ffrbQVMJ+j7JUQF3vfUcdQGLjDviVysWAanACwHHoxaNpnj1bn5vV1ALWEr6z+6NkHlx3oWWt8trfNDPc0RpJDx0=
+	t=1780164354; cv=none; b=q9YTM1uO2jJUTpIv+CGlGK9E4eB2dnRmTEmYnWSuF264SMWcEmSYzhF+GYgh+hhA3WyT+XpWoYQaLrDO3F7ds1mkMF7urzg5+1hf6EwrMaNgLrwGDws3e7NG2y9UmAtr+UE2ZtI+bdunzsMBtBm7PC9I0ok6ehkILgeoE4efrMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161665; c=relaxed/simple;
-	bh=IJqHAO3DBsykUbrdPhU/eg1i9DeP5nMa2ZYy88c4MUY=;
+	s=arc-20240116; t=1780164354; c=relaxed/simple;
+	bh=vX+o4eyHgG/1boF0nKwL2AQ+NHO9GiEdqDd6mKqoz40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRNBOrR8WmwSIfC6IoelNGlyPJYR+SLR4xk3zIR1a2brgY6OEz+uMgDpxLiLpiXZboAQ7a2BFMSqHj76r95pZIOe3ikrK6siB//mlGYHAyKjefg/CUWFdJB5uzwokRmAQlJgWfqxk01K125jyLpQTf1YVYsIzzK1d1ebJ/P0dlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6Zg4aXF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2A31F00893;
-	Sat, 30 May 2026 17:21:03 +0000 (UTC)
+	 MIME-Version; b=C/ncNEziLAOJWPr6SLN7XlyYAfLaqWR0N9JflKxHe8JxerwOedkd46zC2G1PjlUp2Z3M+4Ifh/h8PIZVLzwH0jGVmELv+3oE5aMEroBNi7LmRWDPJ7WpXYoRkVcrWxEyx18wv8VHdmO5ZE+4liziPF1AQ7/dIhAstZc8cwZqE60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DImS8lc/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F061F00893;
+	Sat, 30 May 2026 18:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161664;
-	bh=5lw4hW9B24PbLfPLz6vTcQk746Ye1wMRGExJHv9hlyk=;
+	s=korg; t=1780164353;
+	bh=iG36f9sP1EaAjw4eUBFzXbFylKj6E09lPqVKx6kKnC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r6Zg4aXF7WjsA0RU4+nDCT6LDg1PK4KrooT+Mi+y9IsarzYhs8tCRzPTCq717fIgH
-	 XGO6bBjVaYThM0k9+GH/yfUJojgygS9z7bRf4H4YQLOE5tzwHq8FiVrlWTLSXDgkJR
-	 D19tH3IiI/dtIIARt/Gih+exwBbJ9BhpJgLyNTIU=
+	b=DImS8lc/BsmzVNX/EKKgKQvGk19IWjnqxLNWdkAx/aeunpKNAj/KrLKTV3tCGXdUU
+	 cR5DSAYEz0aI0EGTFflsDyniRS2dVckd4ihUWyIEMYvoV3sIwunGnjvrA4lxuHAGbo
+	 dZV+BzPj9Rdm0nYul+Fd3qTlA2an4YCzhpQ+uGj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Khairul Anuar Romli <karom.9560@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 690/969] tcp: annotate data-races around tp->bytes_sent
+Subject: [PATCH 5.15 500/776] dmaengine: dw-axi-dmac: Remove unnecessary return statement from void function
 Date: Sat, 30 May 2026 18:03:34 +0200
-Message-ID: <20260530160319.563988220@linuxfoundation.org>
+Message-ID: <20260530160253.215487525@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +64,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257636-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-258439-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3598860F823
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,checkpatch.pl:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0350B61163E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Khairul Anuar Romli <karom.9560@gmail.com>
 
-[ Upstream commit ee43e957ce2ec77b2ec47fef28f3c0df6ab01a31 ]
+[ Upstream commit 48278a72fce8a8d30efaedeb206c9c3f05c1eb3f ]
 
-tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
+checkpatch.pl --strict reports a WARNING in dw-axi-dmac-platform.c:
 
-Fixes: ba113c3aa79a ("tcp: add data bytes sent stats")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-8-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  WARNING: void function return statements are not generally useful
+  FILE: drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
+
+According to Linux kernel coding style [Documentation/process/
+coding-style.rst], explicit "return;" statements at the end of void
+functions are redundant and should be omitted. The function will
+automatically return upon reaching the closing brace, so the extra
+statement adds unnecessary clutter without functional benefit.
+
+This patch removes the superfluous "return;" statement in
+dw_axi_dma_set_hw_channel() to comply with kernel coding standards and
+eliminate the checkpatch warning.
+
+Fixes: 32286e279385 ("dmaengine: dw-axi-dmac: Remove free slot check algorithm in dw_axi_dma_set_hw_channel")
+Signed-off-by: Khairul Anuar Romli <karom.9560@gmail.com>
+Link: https://patch.msgid.link/20260202060224.12616-4-karom.9560@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c        | 2 +-
- net/ipv4/tcp_output.c | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 17e6f5e90b1af..eb59c3d022bb7 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4108,7 +4108,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE, tp->write_seq - tp->snd_una);
- 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
+diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
+index 6715ade391aa1..95b3c2ea98419 100644
+--- a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
++++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
+@@ -502,8 +502,6 @@ static void dw_axi_dma_set_hw_channel(struct axi_dma_chan *chan, bool set)
+ 			(chan->id * DMA_APB_HS_SEL_BIT_SIZE));
+ 	reg_value |= (val << (chan->id * DMA_APB_HS_SEL_BIT_SIZE));
+ 	lo_hi_writeq(reg_value, chip->apb_regs + DMAC_APB_HW_HS_SEL_0);
+-
+-	return;
+ }
  
--	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, tp->bytes_sent,
-+	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, READ_ONCE(tp->bytes_sent),
- 			  TCP_NLA_PAD);
- 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS, tp->bytes_retrans,
- 			  TCP_NLA_PAD);
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index bff8b08a11ba5..bb023a07cb1fc 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -1382,7 +1382,8 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
- 		tcp_event_data_sent(tp, sk);
- 		WRITE_ONCE(tp->data_segs_out,
- 			   tp->data_segs_out + tcp_skb_pcount(skb));
--		tp->bytes_sent += skb->len - tcp_header_size;
-+		WRITE_ONCE(tp->bytes_sent,
-+			   tp->bytes_sent + skb->len - tcp_header_size);
- 	}
- 
- 	if (after(tcb->end_seq, tp->snd_nxt) || tcb->seq == tcb->end_seq)
+ /*
 -- 
 2.53.0
 
