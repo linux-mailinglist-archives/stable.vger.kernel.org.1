@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-258307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257524-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qC6SMs8nG2rM/ggAu9opvQ
-	(envelope-from <stable+bounces-258307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:19 +0200
+	id CA9rMtMcG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257524-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A4461118A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D70560F83F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FB963050469
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:58:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C278B304B897
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D53234BA42;
-	Sat, 30 May 2026 17:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70425395AD8;
+	Sat, 30 May 2026 17:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhKFe+2b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqCfxKAI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE60E21E098;
-	Sat, 30 May 2026 17:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C93239B4A6;
+	Sat, 30 May 2026 17:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163910; cv=none; b=EaphoHuuV9eeR8YX3rDRpvMQbM+Fmdh30Y/JQlx845L4M7LPSwPt/ys2TcoyUQD80g6jcyzchOJLFiT/bVIJKrwWRNPS7wOQG3vkhQecRFBP3Cj0EqWPXlhPAe2cJi1MLMikKCyE2OHinX2+sf5xY6OXnCGfWX7VvHnAzw1RkIY=
+	t=1780161294; cv=none; b=rA/BKW05ACyNPA58Cp4FkIhOsZvdifxAWRzl1Idpq5F+v7fXPMYsL9U2xD5P6pGClEzPh5M1vepq6Y3dV/RcjjdfW097dGQ80S5b/EoJA0q2P1bYl7GOpE93M/fszkcD99CSppWSoyK5yoPr5vDK4W8xBhYAjJK6v4MYY7wjZuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163910; c=relaxed/simple;
-	bh=SHAS8i8bZTkxrSnzn1fZKr+s8RuTVuhq4qW93Q5Ybfc=;
+	s=arc-20240116; t=1780161294; c=relaxed/simple;
+	bh=hSQ3aMpMpntLpPUdw2PJq4LwNV1fOq7iSbu5s0yS3Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cq3h7uou26UXK8tAoOeZSPILnn1BEhx+hTDc9V67k5enJw/Gv3UMHT0++yRV1+65hmRM3TUBR1FI6212eIhz8WYd08NGnbF8SHTCgMsvH8k03uPSTGlc5bwEXe46LUok4AAUO8P7Qkef/RlSjZoKQipMwEmR2kLAJ1q5DUjJgpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhKFe+2b; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7571F00893;
-	Sat, 30 May 2026 17:58:28 +0000 (UTC)
+	 MIME-Version; b=C4I/SaI0qip4RDLk2ctfM7ackgPQOF3222QkA+BwQtMlZGhYoW09zCoR9Z5Pn4hcbY+rJfuPNC2nneRdoxwHgR+O2F33f5t7xqnOBvM+vX0ov5lPxRHFjFBaxU2v7zcBVNG+pTA4Q3WIvXxJtllPyRRiFI1UnyUn/oJI31KDchs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqCfxKAI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478741F00893;
+	Sat, 30 May 2026 17:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163909;
-	bh=lLcokpNIALuEaO1SFbveBLIYz4dSgH6b3l+fDE943mU=;
+	s=korg; t=1780161292;
+	bh=C8CdbX9snlmc/P08V0AfSzszRR/H5lHkoUV0Ophzeuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KhKFe+2b4U6I0Am7S5BmGEqfAay2Mg30evvgMB9u9b+zWZgxlTX3iRt+cCR+6lDmZ
-	 yNAll2b9nXMzo5M89vp4WoJ0/dHI6bbZTW9rtBdqJ+GZkEoZUDEfORbPeqD4ZEfJZG
-	 A7KwaGqqgCXV8oxNtWQJ4gUFlmDXtIw0tzqe2YhU=
+	b=hqCfxKAIqGhIC6uZcCUU3dPH6llWbk7n9/gqGmZOlJfMVzf+EHZ74Kdh+YPEkCZxF
+	 5cb7ooUAPf2a+4Hx1SfnJ4B1+V53I3h/BJt3+0xDdWAp85g4NnSwI1oRnDPyBhQP6l
+	 1s4rS22SFy4zgcCijBr55GmlgIr7okf/+UHiyHVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	yangshiguang <yangshiguang@xiaomi.com>,
-	Gui-Dong Han <hanguidong02@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 391/776] debugfs: check for NULL pointer in debugfs_create_str()
-Date: Sat, 30 May 2026 18:01:45 +0200
-Message-ID: <20260530160250.597729141@linuxfoundation.org>
+Subject: [PATCH 6.1 582/969] arm64: dts: qcom: sm8450: Enable UHS-I SDR50 and SDR104 SD card modes
+Date: Sat, 30 May 2026 18:01:46 +0200
+Message-ID: <20260530160316.481046156@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +68,105 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258307-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,xiaomi.com,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257524-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 59A4461118A
+X-Rspamd-Queue-Id: 4D70560F83F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 31de83980d3764d784f79ff1bc93c42b324f4013 ]
+[ Upstream commit db0c5ef1abda6effdc5c85d6688fb6af2b351ae5 ]
 
-Passing a NULL pointer to debugfs_create_str() leads to a NULL pointer
-dereference when the debugfs file is read. Following upstream
-discussions, forbid the creation of debugfs string files with NULL
-pointers. Add a WARN_ON() to expose offending callers and return early.
+The reported problem of some non-working UHS-I speed modes on SM8450
+originates in commit 0a631a36f724 ("arm64: dts: qcom: Add device tree
+for Sony Xperia 1 IV"), and then it was spread to all SM8450 powered
+platforms by commit 9d561dc4e5cc ("arm64: dts: qcom: sm8450: disable
+SDHCI SDR104/SDR50 on all boards").
 
-Fixes: 9af0440ec86e ("debugfs: Implement debugfs_create_str()")
-Reported-by: yangshiguang <yangshiguang@xiaomi.com>
-Closes: https://lore.kernel.org/lkml/2025122221-gag-malt-75ba@gregkh/
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://patch.msgid.link/20260323085930.88894-2-hanguidong02@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The tests show that the rootcause of the problem was related to an
+overclocking of SD cards, and it's fixed later on by commit a27ac3806b0a
+("clk: qcom: gcc-sm8450: Use floor ops for SDCC RCGs").
+
+Since then both SDR50 and SDR104 speed modes are working fine on SM8450,
+tested on SM8450-HDK:
+
+SDR50 speed mode:
+
+    mmc0: new UHS-I speed SDR50 SDHC card at address 0001
+    mmcblk0: mmc0:0001 00000 14.6 GiB
+     mmcblk0: p1
+
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 24.6254 s, 43.6 MB/s
+
+SDR104 speed mode:
+
+    mmc0: new UHS-I speed SDR104 SDHC card at address 59b4
+    mmcblk0: mmc0:59b4 USDU1 28.3 GiB
+     mmcblk0: p1
+
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 12.3266 s, 87.1 MB/s
+
+Remove the restrictions on SD card speed modes from the SM8450 platform
+dtsi file and enable UHS-I speed modes.
+
+Fixes: 9d561dc4e5cc ("arm64: dts: qcom: sm8450: disable SDHCI SDR104/SDR50 on all boards")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20260314023715.357512-5-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/debugfs/file.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8450.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/fs/debugfs/file.c b/fs/debugfs/file.c
-index df5c2162e7297..e4e66bd2367e8 100644
---- a/fs/debugfs/file.c
-+++ b/fs/debugfs/file.c
-@@ -942,7 +942,7 @@ static const struct file_operations fops_str_wo = {
-  *          directory dentry if set.  If this parameter is %NULL, then the
-  *          file will be created in the root of the debugfs filesystem.
-  * @value: a pointer to the variable that the file should read to and write
-- *         from.
-+ *         from. This pointer and the string it points to must not be %NULL.
-  *
-  * This function creates a file in debugfs with the given name that
-  * contains the value of the variable @value.  If the @mode variable is so
-@@ -960,6 +960,9 @@ static const struct file_operations fops_str_wo = {
- void debugfs_create_str(const char *name, umode_t mode,
- 			struct dentry *parent, char **value)
- {
-+	if (WARN_ON(!value || !*value))
-+		return;
-+
- 	debugfs_create_mode_unsafe(name, mode, parent, value, &fops_str,
- 				   &fops_str_ro, &fops_str_wo);
- }
+diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+index 49502cdd1d4e0..c9ca7bd886397 100644
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -3191,9 +3191,6 @@ sdhc_2: sdhci@8804000 {
+ 			bus-width = <4>;
+ 			dma-coherent;
+ 
+-			/* Forbid SDR104/SDR50 - broken hw! */
+-			sdhci-caps-mask = <0x3 0x0>;
+-
+ 			status = "disabled";
+ 
+ 			sdhc2_opp_table: opp-table {
 -- 
 2.53.0
 
