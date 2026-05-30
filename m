@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-256947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257947-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AsvO5AOG2q/+ggAu9opvQ
-	(envelope-from <stable+bounces-256947-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:21:36 +0200
+	id 2NTnHzYiG2oN/ggAu9opvQ
+	(envelope-from <stable+bounces-257947-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECFBA60E193
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:21:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D6761050D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5290A301F8B1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:17:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98FC5303D102
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D406E346FD2;
-	Sat, 30 May 2026 16:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC562E7379;
+	Sat, 30 May 2026 17:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2hUnL9e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8xPQIjC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1F234889F;
-	Sat, 30 May 2026 16:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2681433E36A;
+	Sat, 30 May 2026 17:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780157841; cv=none; b=TePrdq3SYKI56YNWYNNfVPz49U/UjeyAZxW/eF6NsGlSZUqaaQ6ASvlLs2ntMt0QMFN3Yd6ZTl32Tu3ykkoMG330VDtgkLC2JJsleHUXFjbRLAzZAmwXLT2PooZ2fXjtr51Rsxx8kmP5DfgpRMIGjatGdXWUzhwyL9jjg7U/Scc=
+	t=1780162712; cv=none; b=MdDaX9ZlfjQ1XAIa57aeicYDDTcLJ80qPq052M9fqdgtaNP6tkfvabwNf2UBGa9dGmzww5/4W6HmLNhShlpfYy00N0z32UkStI/jSP69RZq6wskqhy9QpdqpyfqmkNBzunoEsJUen/9XvvhL/K1Wrn5VA9iTaKRuG1N0Ew4t0C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780157841; c=relaxed/simple;
-	bh=cOS8ZbdyfwUrLtbHgp2TAtVT9SlwrCwc2lgzupu3Dsk=;
+	s=arc-20240116; t=1780162712; c=relaxed/simple;
+	bh=bTdRIxJztyGulYk1EyBQONL9aLXlZwNQ93WI7kXi98s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QM15Ox56yOWd3i/4O1HDlM+YN639SppJXpsJduenc3wBGCkW37vmjX7jCESRdosQxxwk0ECBEt10lR5TtCTFzEstkYF0gWZjGAecdyf8zKUVc8uuZ8LqxceIdLPvNLcWAkUstwVr2hCZmPESuWMWwCB+HLZLLfaAa4zOnMoCeKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2hUnL9e; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EDE1F00899;
-	Sat, 30 May 2026 16:17:13 +0000 (UTC)
+	 MIME-Version; b=f4nhEcHfEv+SklRm625VXQl6Qra7w1ScMO/0zTmqeuiALsqC6wcFGb4NaGILIolUuM5EWqWA2dHvbs7pewIW/NVr6tl1zJySlmxFU+V09+BSoEubINzQzeVugUr0UOwDapqmdOZGD121kaWmIfR9bGA1xBvKL/YxLqN1XQ5eg1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8xPQIjC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 711B51F00893;
+	Sat, 30 May 2026 17:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780157835;
-	bh=jRSECdF9ndTRbrYRr69vTGNExW6FA8HuirdwvO0jBos=;
+	s=korg; t=1780162711;
+	bh=vb1MxzRIvha7Nc5Ims+Uxc0dcAEQZwihkd/Ud8WV5iQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p2hUnL9eo85w1WkPNouVSb7sjxBMB/ONLVE13E7/tXdcUWWRuIpkU03pA7TtjcJgu
-	 C0wYLyUk+KT5jDGEX5mnbHEZoL2kB5tzAQq0bz7GE1TbACBsuwhGUtKZ7KZ4Cb6E2g
-	 pUQMPppxSGisWGx+iglMjCQjXUbMykcOlZy4fF6g=
+	b=M8xPQIjCIMO5SPuwqd3MkMTm3RP4LNBiHnn+Vd26DEkvX9S0XklsFfJsYMga3jVJ5
+	 OJKqRObwRC+N1VtjL6P1gPzYfaq1qrMuA1AxYQ+d7xIbt1sNFaFXSkvF8mekB8wVa8
+	 nER02JhsW1DH+6tMPISpJhsXZh2wU0g322xhGAfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 007/776] wifi: wl1251: validate packet IDs before indexing tx_frames
-Date: Sat, 30 May 2026 17:55:21 +0200
-Message-ID: <20260530160240.436961325@linuxfoundation.org>
+Subject: [PATCH 5.15 008/776] ASoC: soc-core: call missing INIT_LIST_HEAD() for card_aux_list
+Date: Sat, 30 May 2026 17:55:22 +0200
+Message-ID: <20260530160240.464872417@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
 References: <20260530160240.228940103@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256947-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257947-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: ECFBA60E193
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D7D6761050D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,49 +99,64 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 0fd56fad9c56356e7fa7a7c52e7ecbf807a44eb0 ]
+[ Upstream commit b9eff9732cb0f86a68c9d1592a98ceab47c01e95 ]
 
-wl1251_tx_packet_cb() uses the firmware completion ID directly to index
-the fixed 16-entry wl->tx_frames[] array. The ID is a raw u8 from the
-completion block, and the callback does not currently verify that it
-fits the array before dereferencing it.
+Component has "card_aux_list" which is added/deled in bind/unbind aux dev
+function (A), and used in for_each_card_auxs() loop (B).
 
-Reject completion IDs that fall outside wl->tx_frames[] and keep the
-existing NULL check in the same guard. This keeps the fix local to the
-trust boundary and avoids touching the rest of the completion flow.
+	static void soc_unbind_aux_dev(...)
+	{
+		...
+		for_each_card_auxs_safe(...) {
+			...
+(A)			list_del(&component->card_aux_list);
+		}			     ^^^^^^^^^^^^^
+	}
 
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Link: https://patch.msgid.link/20260323080845.40033-1-pengpeng@iscas.ac.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+	static int soc_bind_aux_dev(...)
+	{
+		...
+		for_each_card_pre_auxs(...) {
+			...
+(A)			list_add(&component->card_aux_list, ...);
+		}			     ^^^^^^^^^^^^^
+		...
+	}
+
+	#define for_each_card_auxs(card, component)	\
+(B)		list_for_each_entry(component, ..., card_aux_list)
+						    ^^^^^^^^^^^^^
+
+But it has been used without calling INIT_LIST_HEAD().
+
+	> git grep card_aux_list sound/soc
+	sound/soc/soc-core.c:           list_del(&component->card_aux_list);
+	sound/soc/soc-core.c:           list_add(&component->card_aux_list, ...);
+
+call missing INIT_LIST_HEAD() for it.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87341mxa8l.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wl1251/tx.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/soc/soc-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ti/wl1251/tx.c b/drivers/net/wireless/ti/wl1251/tx.c
-index 5771f61392efb..7f406c086ca56 100644
---- a/drivers/net/wireless/ti/wl1251/tx.c
-+++ b/drivers/net/wireless/ti/wl1251/tx.c
-@@ -402,12 +402,14 @@ static void wl1251_tx_packet_cb(struct wl1251 *wl,
- 	int hdrlen;
- 	u8 *frame;
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index af8554e96035f..da652f2f09b61 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -2646,6 +2646,7 @@ int snd_soc_component_initialize(struct snd_soc_component *component,
+ 	INIT_LIST_HEAD(&component->dobj_list);
+ 	INIT_LIST_HEAD(&component->card_list);
+ 	INIT_LIST_HEAD(&component->list);
++	INIT_LIST_HEAD(&component->card_aux_list);
+ 	mutex_init(&component->io_mutex);
  
--	skb = wl->tx_frames[result->id];
--	if (skb == NULL) {
--		wl1251_error("SKB for packet %d is NULL", result->id);
-+	if (unlikely(result->id >= ARRAY_SIZE(wl->tx_frames) ||
-+		     wl->tx_frames[result->id] == NULL)) {
-+		wl1251_error("invalid packet id %u", result->id);
- 		return;
- 	}
- 
-+	skb = wl->tx_frames[result->id];
-+
- 	info = IEEE80211_SKB_CB(skb);
- 
- 	if (!(info->flags & IEEE80211_TX_CTL_NO_ACK) &&
+ 	component->name = fmt_single_name(dev, &component->id);
 -- 
 2.53.0
 
