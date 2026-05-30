@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258105-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFQXJSYaG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257291-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:02 +0200
+	id 8AivIEgkG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258105-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0736B60F0DF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 014406109E1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C6BD303AF23
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:01:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CBA6D30D2288
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2120535200B;
-	Sat, 30 May 2026 17:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F2F3AEB5C;
+	Sat, 30 May 2026 17:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALLqcoWp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjwB8lri"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048712690D5;
-	Sat, 30 May 2026 17:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540CF351C2F;
+	Sat, 30 May 2026 17:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160490; cv=none; b=D0Rus6YqfmIiIBg3IEwOjLMajKZ+yC9Emrc+NF5IvqwDD7+0Qx/yBFjN+SuYvty2kNmYGA8ajQgerXkXeIAcRfH5soiyHHrcsXFZWNGm0QCXPITW6XQ3O2Yg4ehWotMCZMb3Mys44apeo9uKABjRDn1gHsue61ujRNyURhmo22E=
+	t=1780163233; cv=none; b=pQkUxkuKXw7HX51Z25SG88UvVr/ca5ddZbufP0l592ykOcAQ8eJUldLTvwU2rMFmyVqf6MO/dXSkUEthpt3br5f8byMntMd77AzHtantj/sY8BxZsutd3It3s7tIKCDlrOSLwAXcIC2V+vaRmox6ptNZBy6uegsrbVrzMkMW6sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160490; c=relaxed/simple;
-	bh=ckuQbup+PGvtei+WIW3TnwAjF3HXuIGWwwK/XSqEYdw=;
+	s=arc-20240116; t=1780163233; c=relaxed/simple;
+	bh=cqWysi9PUvfJvAV5JHAn9ZkDGDe6RC4jAtPL5b6tDPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiJZs/DzEEP0q+qQIOWDiEDed/0/+2NMT+0iBpRvvd2/ShtM/wwmx+PpKmRycl0BbJbHH9KJdkWQQzrCyO0c84NN+/MhACLrTfv57TfMQZ1FuOCC5rBJp72LtKuWgYYoi3ap42+fGPxtfnoq5G74tc4eT1eFIHpa0xSdBHHFdbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALLqcoWp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433411F00893;
-	Sat, 30 May 2026 17:01:29 +0000 (UTC)
+	 MIME-Version; b=WTo7X/zFr6Qdds2iCq7xq+km2zbC2P3f8pf+wMs2IM48RHjE3xuYb8d5bHYwtlTj4UqDviFq6MUkuz34P99powb3pFhpi+1kAzsEYFAaRW71mzy2cHHZAW6gU9gGEPV9lUaByGJV+uCiVNL/6Qh+vuEDav63hZVV/6Q9yaqsASI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjwB8lri; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967071F00893;
+	Sat, 30 May 2026 17:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160489;
-	bh=ZCvY0UPojcUN63jDim3jDNGVn5Sp3zsX5xcR3kW+Kl8=;
+	s=korg; t=1780163232;
+	bh=/tqtTCOoK2p4T1fpLHz2U9aNjEptVfNQcVplYRzCDeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ALLqcoWpZxAaYoL53v0SD7aVVYTBcsvXPdh9awzG9Z8xmyEvDPdJLRVVA36YLanQ7
-	 /9kzfatt9ySJ1iJkhptEDTQc2sCv0CIrCdrYh0uqitok5RhkV4DgfZZXyI12LJPJj9
-	 1nuwVZXxSOYdh4OgHQatIDQMFnvPB62ht1Y+Cknw=
+	b=XjwB8lriRUbyarfMLtNwFTVyzhV9ydNgT0pBV3k7aJWL9+Bpgq4B5alik3Op1muwB
+	 apuXBm10rWuIgr+0OQ0thHmj3IjPxl/9nVsF1sgYfuREST2RurAvD6fTbLr3DHOKqO
+	 yJESdzfxB8PqIUAsJQtLFwg1ZRl2S4u6yKyy+u3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.1 353/969] dm-verity-fec: correctly reject too-small hash devices
+	David Gow <davidgow@google.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 5.15 163/776] drivers: base: Free devm resources when unregistering a device
 Date: Sat, 30 May 2026 17:57:57 +0200
-Message-ID: <20260530160310.096608250@linuxfoundation.org>
+Message-ID: <20260530160244.704150318@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,66 +73,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257291-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258105-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,139.com];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0736B60F0DF
+X-Rspamd-Queue-Id: 014406109E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: David Gow <davidgow@google.com>
 
-commit 4355142245f7e55336dcc005ec03592df4d546f8 upstream.
+[ Upstream commit 699fb50d99039a50e7494de644f96c889279aca3 ]
 
-Fix verity_fec_ctr() to reject too-small hash devices by correctly
-taking hash_start into account.
+In the current code, devres_release_all() only gets called if the device
+has a bus and has been probed.
 
-Note that this is necessary because dm-verity doesn't call
-dm_bufio_set_sector_offset() on the hash device's bufio client
-(v->bufio).  Thus, dm_bufio_get_device_size(v->bufio) returns a size
-relative to 0 rather than hash_start.  An alternative fix would be to
-call dm_bufio_set_sector_offset() on v->bufio, but then all the code
-that reads from the hash device would have to be adjusted accordingly.
+This leads to issues when using bus-less or driver-less devices where
+the device might never get freed if a managed resource holds a reference
+to the device. This is happening in the DRM framework for example.
 
-Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+We should thus call devres_release_all() in the device_del() function to
+make sure that the device-managed actions are properly executed when the
+device is unregistered, even if it has neither a bus nor a driver.
+
+This is effectively the same change than commit 2f8d16a996da ("devres:
+release resources on device_del()") that got reverted by commit
+a525a3ddeaca ("driver core: free devres in device_release") over
+memory leaks concerns.
+
+This patch effectively combines the two commits mentioned above to
+release the resources both on device_del() and device_release() and get
+the best of both worlds.
+
+Fixes: a525a3ddeaca ("driver core: free devres in device_release")
+Signed-off-by: David Gow <davidgow@google.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://lore.kernel.org/r/20230720-kunit-devm-inconsistencies-test-v3-3-6aa7e074f373@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-verity-fec.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/base/core.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -747,7 +747,8 @@ int verity_fec_ctr(struct dm_verity *v)
- 	 * it to be large enough.
- 	 */
- 	f->hash_blocks = f->blocks - v->data_blocks;
--	if (dm_bufio_get_device_size(v->bufio) < f->hash_blocks) {
-+	if (dm_bufio_get_device_size(v->bufio) <
-+	    v->hash_start + f->hash_blocks) {
- 		ti->error = "Hash device is too small for "
- 			DM_VERITY_OPT_FEC_BLOCKS;
- 		return -E2BIG;
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3604,9 +3604,21 @@ void device_del(struct device *dev)
+ 	device_remove_properties(dev);
+ 	device_links_purge(dev);
+ 
++	/*
++	 * If a device does not have a driver attached, we need to clean
++	 * up any managed resources. We do this in device_release(), but
++	 * it's never called (and we leak the device) if a managed
++	 * resource holds a reference to the device. So release all
++	 * managed resources here, like we do in driver_detach(). We
++	 * still need to do so again in device_release() in case someone
++	 * adds a new resource after this point, though.
++	 */
++	devres_release_all(dev);
++
+ 	if (dev->bus)
+ 		blocking_notifier_call_chain(&dev->bus->p->bus_notifier,
+ 					     BUS_NOTIFY_REMOVED_DEVICE, dev);
++
+ 	kobject_uevent(&dev->kobj, KOBJ_REMOVE);
+ 	glue_dir = get_glue_dir(dev);
+ 	kobject_del(&dev->kobj);
 
 
 
