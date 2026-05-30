@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-258296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gARhKasnG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:43 +0200
+	id GKd/L3ouG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:37:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 139B6611114
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C0E6121EB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 59DD2304C121
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 999E630C07E2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113C436EAB1;
-	Sat, 30 May 2026 17:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446212EF652;
+	Sat, 30 May 2026 18:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BouWSTOE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0Di61CV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B3F320CAD;
-	Sat, 30 May 2026 17:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24399331200;
+	Sat, 30 May 2026 18:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163872; cv=none; b=l60duCyad4Hkjxg4m6TB3dJgkjBqmbAzWM6eVjH87mt73pHjkTBr9gavb571nJ56OrVtzyEK1Sx/tYuzY6T+X+/VOR5MnLd0NMjfP2lKTxGfpX71N3WypRZSuG/YMuB2HcmqfHiEehSyaqO7O/1mXUHPEaneLuxQ/sIeeZ5TMCg=
+	t=1780165916; cv=none; b=Wpy3bmHzg4+B8Y23HoUzmQHLMPis0vkDlGK4rnElgKPH66aWbRseUPMqO2j11Gq3lypedH8Q/Fgyf8BSrYpRHhQhCAobfhxS169nnBHNh9HmzLVgrbygLAS2trLtWYoWErbvtWGL0ibi40JUCDx65dlGkMAMrurwCu0g5oGP4co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163872; c=relaxed/simple;
-	bh=dVK6fRvS9Y/7iF8u0bIKM2cNr7T9Q3TCb3qjx0avZyE=;
+	s=arc-20240116; t=1780165916; c=relaxed/simple;
+	bh=LxlMfV8bGYtfey7scDlAwxFlbUSstzXs5YRIcaH2o7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U7zEttAvCT9m8kNiu1HOzlh3ClddoeKnzDnx6WrXXzaSP9dCyJ1lFH3gDhkG56U+yghL2iXDYfl5bbUpO75ICGcsXMe5O5fiAX1YdyuRDlQEBWXjAl4BF9PQ+zyFmVO73cVp4u4aJe8oTdSvr5GBpLTXTMEEdHTo0i6+RfG+eOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BouWSTOE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A5C1F00893;
-	Sat, 30 May 2026 17:57:50 +0000 (UTC)
+	 MIME-Version; b=J8qftN6Fc+QRze/C0cAuIvqoC0+iTp7HWafiNNGf8QIlDpW7LSMYiHam+J6HjzfHZA7ovhfKIoo467y7hHmJTIAsoejmOqKJGNDCHlqt5hERmDF052S9bl6J2yFsAdcoEx2fyMCv4L7+km/thlnr92pde21CEwmTbaQNO93mi/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0Di61CV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F2F1F00893;
+	Sat, 30 May 2026 18:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163871;
-	bh=VziR8lAYdY9JiCcR4xiFIzydivVo0vpWR0/SB3OtdRk=;
+	s=korg; t=1780165915;
+	bh=/Xpx4sPa1y1bI6t/Cd6AW8ZFEg9MRvckE+EbSDjZudo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BouWSTOEybaQzALEaJ60+2r5LKKfIWxNcBYyXWtuontbzdqKQfEi5/Olm3132Zx9O
-	 x0ppClFG40+7qln33HXLbrnkpEwXxgPpPVTM/zEXca46a9IpiFhk/opkOhufZwLWSO
-	 pkresX15uOr176V9o3StGAOLw+HbwfF/nEc8Uo9s=
+	b=f0Di61CVZUALI2l3V3KtpAnqfgp1MO2ZaJLxQtYBS+iOXPLzfJrJuC/WwiEoC6icG
+	 VsVXYKcmgwACyR9LAcRprqs2wENG3uUJrs4boatiS0nlYSZozBMucfJb1HivMR7agx
+	 3/dB2lqR9FHxMIOg1d+yiG+bWJe6H+5zmF5+mN3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+98a040252119df0506f8@syzkaller.appspotmail.com,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Deepanshu Kartikey <Kartikey406@gmail.com>,
-	syzbot+466a45fcfb0562f5b9a0@syzkaller.appspotmail.com,
-	Junjie Cao <junjie.cao@linux.dev>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 387/776] nilfs2: reject zero bd_oblocknr in nilfs_ioctl_mark_blocks_dirty()
+	Pete Zaitcev <zaitcev@redhat.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 220/589] usb: usblp: fix heap leak in IEEE 1284 device ID via short response
 Date: Sat, 30 May 2026 18:01:41 +0200
-Message-ID: <20260530160250.505310752@linuxfoundation.org>
+Message-ID: <20260530160230.763443193@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,98 +63,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,linux.dev,dubeyko.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258296-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258899-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,98a040252119df0506f8,466a45fcfb0562f5b9a0];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 139B6611114
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 74C0E6121EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit be3e5d10643d3be1cbac9d9939f220a99253f980 ]
+commit 7a400c6fe3617e31e690e3f7ca37bb335e0498f3 upstream.
 
-nilfs_ioctl_mark_blocks_dirty() uses bd_oblocknr to detect dead blocks
-by comparing it with the current block number bd_blocknr. If they differ,
-the block is considered dead and skipped.
+usblp_ctrl_msg() collapses the usb_control_msg() return value to
+0/-errno, discarding the actual number of bytes transferred.  A broken
+printer can complete the GET_DEVICE_ID control transfer short and the
+driver has no way to know.
 
-However, bd_oblocknr should never be 0 since block 0 typically stores the
-primary superblock and is never a valid GC target block. A corrupted ioctl
-request with bd_oblocknr set to 0 causes the comparison to incorrectly
-match when the lookup returns -ENOENT and sets bd_blocknr to 0, bypassing
-the dead block check and calling nilfs_bmap_mark() on a non-existent
-block. This causes nilfs_btree_do_lookup() to return -ENOENT, triggering
-the WARN_ON(ret == -ENOENT).
+usblp_cache_device_id_string() reads the 2-byte big-endian length prefix
+from the response and trusts it (clamped only to the buffer bounds).
+The buffer is kmalloc(1024) at probe time. A device that sends exactly
+two bytes (e.g. 0x03 0xFF, claiming a 1023-byte ID) leaves
+device_id_string[2..1022] holding stale kmalloc heap.
 
-Fix this by rejecting ioctl requests with bd_oblocknr set to 0 at the
-beginning of each iteration.
+That stale data is then exposed:
+  - via the ieee1284_id sysfs attribute (sprintf("%s", buf+2), truncated
+    at the first NUL in the stale heap), and
+  - via the IOCNR_GET_DEVICE_ID ioctl, which copy_to_user()s the full
+    claimed length regardless of NULs, up to 1021 bytes of uninitialized
+    heap, with the leak size chosen by the device.
 
-[ryusuke: slightly modified the commit message and comments for accuracy]
+Fix this up by just zapping the buffer with zeros before each request
+sent to the device.
 
-Fixes: 7942b919f732 ("nilfs2: ioctl operations")
-Reported-by: syzbot+98a040252119df0506f8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=98a040252119df0506f8
-Suggested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Reported-by: syzbot+466a45fcfb0562f5b9a0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=466a45fcfb0562f5b9a0
-Cc: Junjie Cao <junjie.cao@linux.dev>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Pete Zaitcev <zaitcev@redhat.com>
+Assisted-by: gkh_clanker_t1000
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/2026042002-unicorn-greedily-3c63@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/ioctl.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/class/usblp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nilfs2/ioctl.c b/fs/nilfs2/ioctl.c
-index 6a2f779e0bad4..77e6bae7d5c97 100644
---- a/fs/nilfs2/ioctl.c
-+++ b/fs/nilfs2/ioctl.c
-@@ -751,6 +751,12 @@ static int nilfs_ioctl_mark_blocks_dirty(struct the_nilfs *nilfs,
- 	int ret, i;
+--- a/drivers/usb/class/usblp.c
++++ b/drivers/usb/class/usblp.c
+@@ -1365,6 +1365,7 @@ static int usblp_cache_device_id_string(
+ {
+ 	int err, length;
  
- 	for (i = 0; i < nmembs; i++) {
-+		/*
-+		 * bd_oblocknr must never be 0 as block 0
-+		 * is never a valid GC target block
-+		 */
-+		if (unlikely(!bdescs[i].bd_oblocknr))
-+			return -EINVAL;
- 		/* XXX: use macro or inline func to check liveness */
- 		ret = nilfs_bmap_lookup_at_level(bmap,
- 						 bdescs[i].bd_offset,
--- 
-2.53.0
-
++	memset(usblp->device_id_string, 0, USBLP_DEVICE_ID_SIZE);
+ 	err = usblp_get_id(usblp, 0, usblp->device_id_string, USBLP_DEVICE_ID_SIZE - 1);
+ 	if (err < 0) {
+ 		dev_dbg(&usblp->intf->dev,
 
 
 
