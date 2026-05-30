@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-257681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COCxJKMdG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257681-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:55 +0200
+	id mCc6JLYpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3762A60FA07
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032D46116D5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7494B304114E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:23:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28B16302BEB3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CF3334695;
-	Sat, 30 May 2026 17:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F347734389B;
+	Sat, 30 May 2026 18:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2oRYP19T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsdfEj8g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D893242D7;
-	Sat, 30 May 2026 17:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C3333B6C4;
+	Sat, 30 May 2026 18:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161817; cv=none; b=F5cZmKik3IVpfMCdmZN7B/4bliKoNfZ50N+WulKTSrhh1wSOr0IAL/Zuk5fXT6CzbJf0BrUqtGn/Fv4FscQUcnwWUBSMwnSUaaUPIIzLDOZj0/QVIpkTtk82SrX1GOs2ujviNxn81sx9TUDQCJXzpDJpfBjBcLINnckO1XLq81I=
+	t=1780164308; cv=none; b=DcE4Q9gBCDqDGzAps+MdJJtOHFW7PKRYY3ljJ7POVnnbzLvwdcdpAV9OHyvxciBJ1BjaPzBg+IFN352C5yTJBalN5fjXP0V9KjGZDtmThEJGGuemxI0ux8Bv2Dc83OLnKBJdrmrL2oH7vAUr36NBLFWOQZ4AMdkVOifzA7+23SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161817; c=relaxed/simple;
-	bh=J10R4yKrd9JdC7JCMTBYzEFNYW07/aza7XUEInru5LI=;
+	s=arc-20240116; t=1780164308; c=relaxed/simple;
+	bh=2hte2+H1i/vKwTpV8vFGv9OqjZ8g5rvSbnTBnpAq/44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JTQNqXrGLqc/ABdJFhOUGWkXPvWug3sWZohk3LwfgBaxPbG8+fMDR78ie59Ph57li2r09YIPwip4PCItSy1gjYU+qLl8pvbEEUPdPiN93/vEy+0g9WwrOFeDhfLWt8pCL3A+IDjI7MFk3V3M3BsIYguohI5tb+4aK5ekG9iF2ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2oRYP19T; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0641F00893;
-	Sat, 30 May 2026 17:23:35 +0000 (UTC)
+	 MIME-Version; b=eUvPXbPzy7AzIOTw85aTln8AqcARtuBmveYtb3GzBC1o1Qmat9HcFCvxs75s48vdSCaFPK2zPHDSJqIBiAvkix/+XweMwDpde2NkClz4PlaGJOPiFq5NAI+oc3LOa9H1aYN7S3i3A0UpWlZCPYBR8v71FF781XBCFiWMovDhxgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsdfEj8g; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC76D1F00893;
+	Sat, 30 May 2026 18:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161815;
-	bh=Gu4bDHHDTj2wPHMyGAHmQYFxRO2Bpx74axRuPJv8qPk=;
+	s=korg; t=1780164307;
+	bh=FPTHTLJKfVi6ol2KDKopAcrJ/BVBqHA3NyAejcP/Zrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2oRYP19T0/eyzB73CXejU4OK2jDgf7nh1iq3MlxQbOH/gDpDXOb8i75a9pV5GQR26
-	 ZfI4VTsPXkneQytW1LJ5nyrDg61pziDOzWl5GRet4xYlSexLUSuOX7OPmnd5FDfal4
-	 zPlMPC6nen2wjMoPI6WydUJTr2g9I125z4eSyrj8=
+	b=bsdfEj8gKwIgW/TXnyq7V2FS8mfBnk83HPb3Y0tr1caiDf7mX5WOtk9bReCOnNy9W
+	 iwuF8YQj1Sb5i62OB0JykYZNS6rO/z9tQkPHaKagOd72/FB7IZb6xzSTxFajW5dI12
+	 BNuQRi3v45bQCOvo/HR0vlXjCJjkg98peWmrm2iA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Mike Leach <mike.leach@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 705/969] netfilter: nfnetlink_osf: fix out-of-bounds read on option matching
+Subject: [PATCH 5.15 515/776] perf: tools: cs-etm: Fix print issue for Coresight debug in ETE/TRBE trace
 Date: Sat, 30 May 2026 18:03:49 +0200
-Message-ID: <20260530160319.991279162@linuxfoundation.org>
+Message-ID: <20260530160253.558003927@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,128 +69,143 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257681-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258425-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3762A60FA07
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 032D46116D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Mike Leach <mike.leach@arm.com>
 
-[ Upstream commit f5ca450087c3baf3651055e7a6de92600f827af3 ]
+[ Upstream commit 6c478e7b3eba3f387a2d6c749e3e3ee0f8ad1c53 ]
 
-In nf_osf_match(), the nf_osf_hdr_ctx structure is initialized once
-and passed by reference to nf_osf_match_one() for each fingerprint
-checked. During TCP option parsing, nf_osf_match_one() advances the
-shared ctx->optp pointer.
+Building perf with CORESIGHT=1 and the optional CSTRACE_RAW=1 enables
+additional debug printing of raw trace data when using command:-
+perf report --dump.
 
-If a fingerprint perfectly matches, the function returns early without
-restoring ctx->optp to its initial state. If the user has configured
-NF_OSF_LOGLEVEL_ALL, the loop continues to the next fingerprint.
-However, because ctx->optp was not restored, the next call to
-nf_osf_match_one() starts parsing from the end of the options buffer.
-This causes subsequent matches to read garbage data and fail
-immediately, making it impossible to log more than one match or logging
-incorrect matches.
+This raw trace prints the CoreSight formatted trace frames, which may be
+used to investigate suspected issues with trace quality / corruption /
+decode.
 
-Instead of using a shared ctx->optp pointer, pass the context as a
-constant pointer and use a local pointer (optp) for TCP option
-traversal. This makes nf_osf_match_one() strictly stateless from the
-caller's perspective, ensuring every fingerprint check starts at the
-correct option offset.
+These frames are not present in ETE + TRBE trace.
+This fix removes the unnecessary call to print these frames.
 
-Fixes: 1a6a0951fc00 ("netfilter: nfnetlink_osf: add missing fmatch check")
-Suggested-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+This fix also rationalises implementation - original code had helper
+function that unnecessarily repeated initialisation calls that had
+already been made.
+
+Due to an addtional fault with the OpenCSD library, this call when ETE/TRBE
+are being decoded will cause a segfault in perf. This fix also prevents
+that problem for perf using older (<= 1.8.0 version) OpenCSD libraries.
+
+Fixes: 68ffe3902898 ("perf tools: Add decoder mechanic to support dumping trace data")
+Reported-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Mike Leach <mike.leach@arm.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_osf.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ .../perf/util/cs-etm-decoder/cs-etm-decoder.c | 51 +++++--------------
+ 1 file changed, 13 insertions(+), 38 deletions(-)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index 000a5c280ef96..2207bda442d54 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -64,9 +64,9 @@ struct nf_osf_hdr_ctx {
- static bool nf_osf_match_one(const struct sk_buff *skb,
- 			     const struct nf_osf_user_finger *f,
- 			     int ttl_check,
--			     struct nf_osf_hdr_ctx *ctx)
-+			     const struct nf_osf_hdr_ctx *ctx)
- {
--	const __u8 *optpinit = ctx->optp;
-+	const __u8 *optp = ctx->optp;
- 	unsigned int check_WSS = 0;
- 	int fmatch = FMATCH_WRONG;
- 	int foptsize, optnum;
-@@ -95,17 +95,17 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
- 	check_WSS = f->wss.wc;
- 
- 	for (optnum = 0; optnum < f->opt_num; ++optnum) {
--		if (f->opt[optnum].kind == *ctx->optp) {
-+		if (f->opt[optnum].kind == *optp) {
- 			__u32 len = f->opt[optnum].length;
--			const __u8 *optend = ctx->optp + len;
-+			const __u8 *optend = optp + len;
- 
- 			fmatch = FMATCH_OK;
- 
--			switch (*ctx->optp) {
-+			switch (*optp) {
- 			case OSFOPT_MSS:
--				mss = ctx->optp[3];
-+				mss = optp[3];
- 				mss <<= 8;
--				mss |= ctx->optp[2];
-+				mss |= optp[2];
- 
- 				mss = ntohs((__force __be16)mss);
- 				break;
-@@ -113,7 +113,7 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
- 				break;
- 			}
- 
--			ctx->optp = optend;
-+			optp = optend;
- 		} else
- 			fmatch = FMATCH_OPT_WRONG;
- 
-@@ -156,9 +156,6 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
- 		}
- 	}
- 
--	if (fmatch != FMATCH_OK)
--		ctx->optp = optpinit;
+diff --git a/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c b/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
+index 31fa3b45134a2..fc74a95a23faf 100644
+--- a/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
++++ b/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
+@@ -214,46 +214,24 @@ cs_etm_decoder__init_def_logger_printing(struct cs_etm_decoder_params *d_params,
+ 					      (void *)decoder,
+ 					      cs_etm_decoder__print_str_cb);
+ 	if (ret != 0)
+-		ret = -1;
 -
- 	return fmatch == FMATCH_OK;
- }
+-	return 0;
+-}
++		return -1;
  
+ #ifdef CS_LOG_RAW_FRAMES
+-static void
+-cs_etm_decoder__init_raw_frame_logging(struct cs_etm_decoder_params *d_params,
+-				       struct cs_etm_decoder *decoder)
+-{
+-	/* Only log these during a --dump operation */
+-	if (d_params->operation == CS_ETM_OPERATION_PRINT) {
+-		/* set up a library default logger to process the
+-		 *  raw frame printer we add later
+-		 */
+-		ocsd_def_errlog_init(OCSD_ERR_SEV_ERROR, 1);
+-
+-		/* no stdout / err / file output */
+-		ocsd_def_errlog_config_output(C_API_MSGLOGOUT_FLG_NONE, NULL);
+-
+-		/* set the string CB for the default logger,
+-		 * passes strings to perf print logger.
+-		 */
+-		ocsd_def_errlog_set_strprint_cb(decoder->dcd_tree,
+-						(void *)decoder,
+-						cs_etm_decoder__print_str_cb);
+-
++	/*
++	 * Only log raw frames if --dump operation and hardware is actually
++	 * generating formatted CoreSight trace frames
++	 */
++	if ((d_params->operation == CS_ETM_OPERATION_PRINT) &&
++	    (d_params->formatted == true)) {
+ 		/* use the built in library printer for the raw frames */
+-		ocsd_dt_set_raw_frame_printer(decoder->dcd_tree,
+-					      CS_RAW_DEBUG_FLAGS);
++		ret = ocsd_dt_set_raw_frame_printer(decoder->dcd_tree,
++						    CS_RAW_DEBUG_FLAGS);
++		if (ret != 0)
++			return -1;
+ 	}
+-}
+-#else
+-static void
+-cs_etm_decoder__init_raw_frame_logging(
+-		struct cs_etm_decoder_params *d_params __maybe_unused,
+-		struct cs_etm_decoder *decoder __maybe_unused)
+-{
+-}
+ #endif
++	return 0;
++}
+ 
+ static ocsd_datapath_resp_t
+ cs_etm_decoder__do_soft_timestamp(struct cs_etm_queue *etmq,
+@@ -716,9 +694,6 @@ cs_etm_decoder__new(int decoders, struct cs_etm_decoder_params *d_params,
+ 	if (ret != 0)
+ 		goto err_free_decoder;
+ 
+-	/* init raw frame logging if required */
+-	cs_etm_decoder__init_raw_frame_logging(d_params, decoder);
+-
+ 	for (i = 0; i < decoders; i++) {
+ 		ret = cs_etm_decoder__create_etm_decoder(d_params,
+ 							 &t_params[i],
 -- 
 2.53.0
 
