@@ -1,59 +1,71 @@
-Return-Path: <stable+bounces-258259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNazGJYmG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:06 +0200
+	id iPKJHosbG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CA5610E95
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA0A60F4C7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 876B3311029F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:55:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9DC0E30260A2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3873546EA;
-	Sat, 30 May 2026 17:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7EC839B4A6;
+	Sat, 30 May 2026 17:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLGKOzb9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOt0TWYp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB35261B9E;
-	Sat, 30 May 2026 17:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05C63148DA;
+	Sat, 30 May 2026 17:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163749; cv=none; b=mMrgRXa4GqaDl3BxzKHe5PQ/NeWI4SxE2Ps5UhMInuaIhpqlaNdvfz6dgVhmPsyYbr+9iiiikOfYLf+BrBes6eXAt/mSP9RoIJ9Xb+Rs0uEPgxKqd7UkBQdtCzIfw3KCrXXD80vnAZxj5dv/veSktgzztosbB1TBSxeZeCkpPLE=
+	t=1780161259; cv=none; b=NkITT4GNWBjcAf1IjGsErgQu6oO5vIJhq8ZASUjsTwPdk+kTkWmOCZZ2mK7N6cVEpnKuwtMbkKKnG7P2rk8LofLZGTy6VKrmoBQnweCXkaKQVjiwv37qPAjVA6u+Fc3+WfwaIutYN5Z+g9PXA1JOh/4dq4AtN7QivXdJ5wHb+vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163749; c=relaxed/simple;
-	bh=IKzkaAjUlGAD5ly/GvDF5Y7yPPH8+uZbMauo3MRcOe8=;
+	s=arc-20240116; t=1780161259; c=relaxed/simple;
+	bh=OsHXkvkk3Epts+TQqrHhjbk+6DCNx3LxS3Wn8IC6wfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fb7NvjW3mQ/rzhFnu5Q1hmi9Y6dn3x01duGrcPyTS8SZ5T/O0tCfWwI1mEBhRP23I33bxdkKE0BXZYfX/ZpQzZndn+O54L7wToIJH3P2vy6pMhUazoXLu0qxCimdlN4KSqK2aUJqZlfQ04IpsIKaGCEdA6mnoKrKDSmiUcMo9xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLGKOzb9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806911F00893;
-	Sat, 30 May 2026 17:55:47 +0000 (UTC)
+	 MIME-Version; b=Fq+6hJ2u5frXKj52/MlGDKkQCZDXIq5GGb82rixyNfD9u5XbtHAlpx3rEJ6J6X4JFCHtbLPrYMwC06hK1eErVK2isVK5t7qvwYGFXWpS4kg0e/001DiwYSirZvdXf00GUldWk81baqWyl+1MxiDbwgPjbvWTr4eSlQJkNjmHVfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOt0TWYp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8726C1F00893;
+	Sat, 30 May 2026 17:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163748;
-	bh=Yxk1y9n5mscGRLu+gdIGUdYHvyrqWBqG5js6Mq/XxvI=;
+	s=korg; t=1780161258;
+	bh=SObUhL/jdGMlCNYg5VE4ClLQ8KHS2bcDNWzzdRKhYms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pLGKOzb9sueut+kaBEl3W5pzkKJNv0BluI4fjyDijjkqIK36Cs/f5I6UJBMIi2Wqa
-	 vNx6ybIr7ErDny6XAj/kxwfaNNXiBBP5LOJb3EcEzdf0xhI/iWP3/HDYKL4ON/vdO9
-	 7IC5C2pe+8FkQy4s0pQVfmC2D62iOoRx4vHArOcs=
+	b=mOt0TWYpiNzXUp9MVg2K26Mw/eRptFt4wQiAjjBdIcJSTaVkNZcv56wnRn3zsT/oS
+	 yZL1bHK7tPMsEp4IqYg76rikdx9HXmtfPQv631VlS6pty8x+29ymHlvPJZeF7ZyGy2
+	 IvvRUp1kmdR+gTqaFIq8F8e+sRkb4tvp9tvZRmPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Artem S. Tashkinov" <aros@gmx.com>,
-	Krishna Chomal <krishna.chomal108@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 5.15 350/776] platform/x86: hp-wmi: Ignore backlight and FnLock events
-Date: Sat, 30 May 2026 18:01:04 +0200
-Message-ID: <20260530160249.625294489@linuxfoundation.org>
+	Jane Chu <jane.chu@oracle.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hillf Danton <hillf.zj@alibaba-inc.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 541/969] Documentation: fix a hugetlbfs reservation statement
+Date: Sat, 30 May 2026 18:01:05 +0200
+Message-ID: <20260530160315.311232068@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +75,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258259-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257514-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.com,gmail.com,linux.intel.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gmx.com:email]
-X-Rspamd-Queue-Id: C2CA5610E95
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7FA0A60F4C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Chomal <krishna.chomal108@gmail.com>
+From: Jane Chu <jane.chu@oracle.com>
 
-commit e8c597368b8500a824c639bfb5ed0044068c6870 upstream.
+[ Upstream commit 7a197d346a44384a1a858a98ef03766840e561d4 ]
 
-On HP OmniBook 7 the keyboard backlight and FnLock keys are handled
-directly by the firmware. However, they still trigger WMI events which
-results in "Unknown key code" warnings in dmesg.
+Documentation/mm/hugetlbfs_reserv.rst has
+	if (resv_needed <= (resv_huge_pages - free_huge_pages))
+		resv_huge_pages += resv_needed;
+which describes this code in gather_surplus_pages()
+	needed = (h->resv_huge_pages + delta) - h->free_huge_pages;
+	if (needed <= 0) {
+		h->resv_huge_pages += delta;
+		return 0;
+	}
+which means if there are enough free hugepages to account for the new
+reservation, simply update the global reservation count without
+further action.
 
-Add these key codes to the keymap with KE_IGNORE to silence the warnings
-since no software action is needed.
+But the description is backwards, it should be
+	if (resv_needed <= (free_huge_pages - resv_huge_pages))
+instead.
 
-Tested-by: Artem S. Tashkinov <aros@gmx.com>
-Reported-by: Artem S. Tashkinov <aros@gmx.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221181
-Signed-off-by: Krishna Chomal <krishna.chomal108@gmail.com>
-Link: https://patch.msgid.link/20260403080155.169653-1-krishna.chomal108@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20260302201015.1824798-1-jane.chu@oracle.com
+Fixes: 70bc0dc578b3 ("Documentation: vm, add hugetlbfs reservation overview")
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Hillf Danton <hillf.zj@alibaba-inc.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/hp/hp-wmi.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ Documentation/mm/hugetlbfs_reserv.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/x86/hp/hp-wmi.c
-+++ b/drivers/platform/x86/hp/hp-wmi.c
-@@ -166,6 +166,11 @@ static const struct key_entry hp_wmi_key
- 	{ KE_KEY, 0x21a9,  { KEY_TOUCHPAD_OFF } },
- 	{ KE_KEY, 0x121a9, { KEY_TOUCHPAD_ON } },
- 	{ KE_KEY, 0x231b,  { KEY_HELP } },
-+	{ KE_IGNORE, 0x21ab, }, /* FnLock on */
-+	{ KE_IGNORE, 0x121ab, }, /* FnLock off */
-+	{ KE_IGNORE, 0x30021aa, }, /* kbd backlight: level 2 -> off */
-+	{ KE_IGNORE, 0x33221aa, }, /* kbd backlight: off -> level 1 */
-+	{ KE_IGNORE, 0x36421aa, }, /* kbd backlight: level 1 -> level 2*/
- 	{ KE_END, 0 }
- };
+diff --git a/Documentation/mm/hugetlbfs_reserv.rst b/Documentation/mm/hugetlbfs_reserv.rst
+index f143954e0d056..1c238b10e1772 100644
+--- a/Documentation/mm/hugetlbfs_reserv.rst
++++ b/Documentation/mm/hugetlbfs_reserv.rst
+@@ -157,7 +157,7 @@ are enough free huge pages to accommodate the reservation.  If there are,
+ the global reservation count resv_huge_pages is adjusted something like the
+ following::
  
+-	if (resv_needed <= (resv_huge_pages - free_huge_pages))
++	if (resv_needed <= (free_huge_pages - resv_huge_pages)
+ 		resv_huge_pages += resv_needed;
+ 
+ Note that the global lock hugetlb_lock is held when checking and adjusting
+-- 
+2.53.0
+
 
 
 
