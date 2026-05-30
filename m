@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258351-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eGUpHLccG2qQ/QgAu9opvQ
-	(envelope-from <stable+bounces-257596-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:59 +0200
+	id 4EdABoImG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258351-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7921F60F7EB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C316C610E35
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 141FC301023D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:18:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D8EC3015A5E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C623242D7;
-	Sat, 30 May 2026 17:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355E6342CB3;
+	Sat, 30 May 2026 18:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2HVKSojg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QntHiO/y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350431C5799;
-	Sat, 30 May 2026 17:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8512FDC5E;
+	Sat, 30 May 2026 18:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161530; cv=none; b=pr8zrliXEnlu8qpeo+fYf9cKhtj8FgWL7cPOQ1D7rH/W0SNOTuQpOimwTfjEp/IJU4M50UnvubpiHdJa2h69BeXbT6BRVoff73cYXceubyEwi3dTPIzWp/JsSWVMtbV99RAdc9rAmG2aDrRYRbEmLEgyQec+tMni185FyyXv7zo=
+	t=1780164060; cv=none; b=QOOFDVBBPVqdgjG1stA5xPkMNSPqdIHU5tm2hhFT6ZVbiTchYCdiFWCrpSuSaS7qtG1wKPuWBJofZXZ+ozfn9MUAWIdgkM3Kc1xVlZl704Uj4T/fp+kFpaRrefirlZUx/8p4VlclbXjgaBeVeMCdHHcGZMY9aldj6/pvNqpX4pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161530; c=relaxed/simple;
-	bh=xqutCXFy1CU2yu4vATjTXfPBSAFimTU0eRv4ZYq+WHk=;
+	s=arc-20240116; t=1780164060; c=relaxed/simple;
+	bh=pGFuRwKxKRPwBxA5Q5H4jSX8mUXHiDdySHTQV1QAPKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fdo2fREyPnbhKEHhM6ACPtKMrGycE+x/gYRPORA4BYM5jpAIq5v1Xb5//NQSvpYlkAY52iFu8CJbYoH4u3F9ZqaAU9nRPHSocwXrDYALdiFrFNRuzitYEHG0drxBZwcm4p/Id0kbTbVrSxfCcmP/92gx/rrG95TRsDNyMFq67YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2HVKSojg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD4D1F00893;
-	Sat, 30 May 2026 17:18:47 +0000 (UTC)
+	 MIME-Version; b=h+x+zLUdALBbQ8uHseZ8s3ECZA5mQnMBbPyMkofv21BzbAXVXwhcSJFKegHv37GP40/zkLrKNEi7ifiOr2c2beEi/SAjyfMWact9xWxvH4qGPzp4EHGo1Q5oq3fMY5RNvOgCTaal0gIrj8itxUed5B1M6ATTj8d0dUugCRwjtyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QntHiO/y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB8A1F00893;
+	Sat, 30 May 2026 18:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161528;
-	bh=L4kr/nErAOHS9h+nb8wrB1a8yOYWr6tHjzGjIJZ0eP4=;
+	s=korg; t=1780164059;
+	bh=SWUQ/DeQMN0ZHckVF+uw9JXR0hlnMl/TRjvP99PlKVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2HVKSojgrm3t5lt15yR87qwg0voSb5e3TDlDg+TRp5O58ANd+gzkazKXL4gPXz7aw
-	 hGbFuvbi0lqVpiovUGBjLBCLoqk3k0T5pPwNoalFy+8wVPIUG1HlAai9FNQbWjaZer
-	 jYZv2nlbdnK/eBADE2l/PY1HURpskYUaTI2Ojnzg=
+	b=QntHiO/yXYwhL9GtbLg39oLHMMsXPeNII7XvKU1o18CNcEyKjs1Lu3VuGBs12eEWV
+	 duT/o7ragrZ10jgsXLLCiV/QtNKg2z7rZbdKLOGhrXI+69+MJZn0w8kx1aCGO/zjnO
+	 nal9Md+rbZQfFG8jREBkzYOhnS/Ql/9QPyrO8BjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Guillaume Gonnet <ggonnet.linux@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 633/969] perf util: Kill die() prototype, dead for a long time
+Subject: [PATCH 5.15 443/776] dm init: ensure device probing has finished in dm-mod.waitfor=
 Date: Sat, 30 May 2026 18:02:37 +0200
-Message-ID: <20260530160317.929744389@linuxfoundation.org>
+Message-ID: <20260530160251.859931935@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +64,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257596-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7921F60F7EB
+	TAGGED_FROM(0.00)[bounces-258351-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C316C610E35
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Guillaume Gonnet <ggonnet.linux@gmail.com>
 
-[ Upstream commit e5cce1b9c82fbd48e2f1f7a25a9fad8ee228176f ]
+[ Upstream commit 99a2312f69805f4ba92d98a757625e0300a747ab ]
 
-In fef2a735167a827a ("perf tools: Kill die()") the die() function was
-removed, but not the prototype in util.h, now when building with
-LIBPERL=1, during a 'make -C tools/perf build-test' routine test, it is
-failing as perl likes die() calls and then this clashes with this
-remnant, remove it.
+The early_lookup_bdev() function returns successfully when the disk
+device is present but not necessarily its partitions. In this situation,
+dm_early_create() fails as the partition block device does not exist
+yet.
 
-Fixes: fef2a735167a827a ("perf tools: Kill die()")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+In my case, this phenomenon occurs quite often because the device is
+an SD card with slow reading times, on which kernel takes time to
+enumerate available partitions.
+
+Fortunately, the underlying device is back to "probing" state while
+enumerating partitions. Waiting for all probing to end is enough to fix
+this issue.
+
+That's also the reason why this problem never occurs with rootwait=
+parameter: the while loop inside wait_for_root() explicitly waits for
+probing to be done and then the function calls async_synchronize_full().
+These lines were omitted in 035641b, even though the commit says it's
+based on the rootwait logic...
+
+Anyway, calling wait_for_device_probe() after our while loop does the
+job (it both waits for probing and calls async_synchronize_full).
+
+Fixes: 035641b01e72 ("dm init: add dm-mod.waitfor to wait for asynchronously probed block devices")
+Signed-off-by: Guillaume Gonnet <ggonnet.linux@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/util.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/md/dm-init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/util.h b/tools/perf/util/util.h
-index c1f2d423a9ecb..bdb6d5e7102db 100644
---- a/tools/perf/util/util.h
-+++ b/tools/perf/util/util.h
-@@ -17,7 +17,6 @@
+diff --git a/drivers/md/dm-init.c b/drivers/md/dm-init.c
+index 6e9e73a558740..882dc385cf068 100644
+--- a/drivers/md/dm-init.c
++++ b/drivers/md/dm-init.c
+@@ -302,8 +302,10 @@ static int __init dm_init_init(void)
+ 		}
+ 	}
  
- /* General helper functions */
- void usage(const char *err) __noreturn;
--void die(const char *err, ...) __noreturn __printf(1, 2);
+-	if (waitfor[0])
++	if (waitfor[0]) {
++		wait_for_device_probe();
+ 		DMINFO("all devices available");
++	}
  
- struct dirent;
- struct strlist;
+ 	list_for_each_entry(dev, &devices, list) {
+ 		if (dm_early_create(&dev->dmi, dev->table,
 -- 
 2.53.0
 
