@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-259264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJZEFwgyG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259264-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:56 +0200
+	id wKWZI18qG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A208612B71
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E16C61182C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D53AA30039A9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 03C87305E44E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89052594B9;
-	Sat, 30 May 2026 18:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0631339863;
+	Sat, 30 May 2026 18:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWuX7Vt6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpd4Uf7Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892A22E7389;
-	Sat, 30 May 2026 18:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA8F241C8C;
+	Sat, 30 May 2026 18:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167159; cv=none; b=KpKPpuMmibtvaJIHsBd/6gUIpVbb+v2vfFbGj5JAsrELCJleTHsGO1NpN0SmvwKfUx5z1Hg5sfQpNPljxVpW7/6OsCXiSgiftUGWlQ+tcUgkhLWk4uf3mqtIK1UIxuP7b02IITxH4vXXI5owqLJk1zQdAys1+WpDzYc617/zkW4=
+	t=1780164974; cv=none; b=nNc/VD4skmAqhnp2LIYB9bk0xpn3i1yv4tkHqryb3HKb11SSpNNxGMVYX79OzQCBpOy6fwSCBDMGXCnllX0gDhEOvDwsrt64QbL+ZxmkkNosz1aDDn2CqZDGKl/w3+MqsW3JaUySsdfa7Mo4eLcs7n9vb64FWJI73BaDMoz8p7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167159; c=relaxed/simple;
-	bh=TeY5B9V9NZ4SWoOLjiKZSHBpSI6v3uC9Kv6zqwju8dw=;
+	s=arc-20240116; t=1780164974; c=relaxed/simple;
+	bh=wxD5ProUEt9kqXlGypFI41rgnJtmn16vaMFmaEz3IL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RliN3OqAKwKwiKsra2Azlb2DxzdIW9nLNxem51LrZ2xXQ93N9Ztm0MkK6hJ2Kv+b+kSdKDD0Bq7ysLUy1xFdBkvlHqmxBrXQGUkhFvsymxwQo8QnRUBrCLpTmPdRhe4g6jGje2sYMRuPyjmKVqCfbtZhwVBVu20nKqwfz4lFI7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWuX7Vt6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9494D1F00893;
-	Sat, 30 May 2026 18:52:37 +0000 (UTC)
+	 MIME-Version; b=HOUsJ7Yc0NmNX3f+Y/zVkMc5qpYTVJyPno1GoLr9Pvv7M2Ao9UsfTYaLgkhDLYGceBrNBRnPl4dWF17TZFjF0oFW0pvESXXXy++jEdWXl2RT8+Sbo7Zt/PMG9Fl2qpBUIZbyOTsE2PZqxyoQ6evWiwx/+ZU0oqJR8nnrF1D0mAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpd4Uf7Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9280C1F00893;
+	Sat, 30 May 2026 18:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167158;
-	bh=hbGWKi87yTsyQi4FLQEZImvx9JBBDOo+0dsmLqIPPjE=;
+	s=korg; t=1780164973;
+	bh=ar6yINtm5jl/HnvmPcw4JBiFzzXbXzGctsLy2ytmjoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IWuX7Vt6k2uFDxRTn/wfq/Gj5IHKoV6NYkDQFeTVw6V08WsOO70nZ/REu00H99XjE
-	 0bFBybpBsnQDaPJgh3czGLz0wKF7BMw3KK4+A8YKAXqd+FyFazEcC1aI4iApTmoAA5
-	 hACTYyighzLjVvmWoDXIA/jAEzJmTaOGIYY3b3vk=
+	b=xpd4Uf7QPRynGatls1WzysYiV1WzMuTBkpDfKTR5BNzPxkVOLhNo6EAJmEdIpeDvW
+	 Mt7PUuWDLdX7iebvJWWmRkW8SyLyU8tYpDKIIT3hHbDMoXRLObODdGAe9uP4hR0yJ2
+	 sd/nHtxwKLqJFTyYiCB8NhDiYKeVhH1thGGeVD3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lanqing Liu <lanqing.liu@unisoc.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 545/589] spi: sprd: fix error pointer deref after DMA setup failure
+	stable@kernel.org,
+	Simon Wunderlich <sw@simonwunderlich.de>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.15 712/776] batman-adv: bla: fix report_work leak on backbone_gw purge
 Date: Sat, 30 May 2026 18:07:06 +0200
-Message-ID: <20260530160239.000229907@linuxfoundation.org>
+Message-ID: <20260530160258.231501863@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,63 +78,136 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259264-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258623-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sashiko.dev:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2A208612B71
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email]
+X-Rspamd-Queue-Id: 0E16C61182C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 3d67fffb74267772d461c02c67f1eff893ad547d upstream.
+commit 0459430add32ea41f3e2ef9351610e6d33627a6b upstream.
 
-The driver falls back to PIO mode if DMA setup fails during probe.
+batadv_bla_purge_backbone_gw() removes stale backbone gateway entries,
+but fails to properly handle their associated report_work:
 
-Make sure to check the dma.enabled flag before trying to release the DMA
-channels also on late probe errors to avoid dereferencing an error
-pointer (or attempting to release a channel a second time).
+- If report_work is running, the purge must wait for it to finish before
+  freeing the backbone_gw, otherwise the worker may access freed memory
+  (e.g. bat_priv).
+- If report_work is pending, the purge must cancel it and release the
+  reference held for that pending work item.
 
-This issue was flagged by Sashiko when reviewing a devres allocation
-conversion patch.
+The previous implementation called hlist_for_each_entry_safe() inside a
+spin_lock_bh() section, but cancel_work_sync() may sleep and therefore
+cannot be called from within a spinlock-protected region.
 
-Fixes: 386119bc7be9 ("spi: sprd: spi: sprd: Add DMA mode support")
-Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=10
-Cc: stable@vger.kernel.org	# 5.1
-Cc: Lanqing Liu <lanqing.liu@unisoc.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260512074733.915029-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Restructure the loop to handle one entry per spinlock critical section:
+acquire the lock, find the next entry to purge, remove it from the hash
+list, then release the lock before calling cancel_work_sync() and
+dropping the hash_entry reference. Repeat until no more entries require
+purging.
+
+Cc: stable@kernel.org
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Reviewed-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sprd.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/batman-adv/bridge_loop_avoidance.c |   60 ++++++++++++++++++++-------------
+ 1 file changed, 38 insertions(+), 22 deletions(-)
 
---- a/drivers/spi/spi-sprd.c
-+++ b/drivers/spi/spi-sprd.c
-@@ -995,7 +995,8 @@ err_rpm_put:
- disable_clk:
- 	clk_disable_unprepare(ss->clk);
- release_dma:
--	sprd_spi_dma_release(ss);
-+	if (ss->dma.enable)
-+		sprd_spi_dma_release(ss);
- free_controller:
- 	spi_controller_put(sctlr);
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -1223,6 +1223,7 @@ static void batadv_bla_purge_backbone_gw
+ 	struct hlist_head *head;
+ 	struct batadv_hashtable *hash;
+ 	spinlock_t *list_lock;	/* protects write access to the hash lists */
++	bool purged;
+ 	int i;
+ 
+ 	hash = bat_priv->bla.backbone_hash;
+@@ -1233,30 +1234,45 @@ static void batadv_bla_purge_backbone_gw
+ 		head = &hash->table[i];
+ 		list_lock = &hash->list_locks[i];
+ 
+-		spin_lock_bh(list_lock);
+-		hlist_for_each_entry_safe(backbone_gw, node_tmp,
+-					  head, hash_entry) {
+-			if (now)
+-				goto purge_now;
+-			if (!batadv_has_timed_out(backbone_gw->lasttime,
+-						  BATADV_BLA_BACKBONE_TIMEOUT))
+-				continue;
+-
+-			batadv_dbg(BATADV_DBG_BLA, backbone_gw->bat_priv,
+-				   "%s(): backbone gw %pM timed out\n",
+-				   __func__, backbone_gw->orig);
++		do {
++			purged = false;
++
++			spin_lock_bh(list_lock);
++			hlist_for_each_entry_safe(backbone_gw, node_tmp,
++						  head, hash_entry) {
++				if (now)
++					goto purge_now;
++				if (!batadv_has_timed_out(backbone_gw->lasttime,
++							  BATADV_BLA_BACKBONE_TIMEOUT))
++					continue;
++
++				batadv_dbg(BATADV_DBG_BLA, backbone_gw->bat_priv,
++					   "%s(): backbone gw %pM timed out\n",
++					   __func__, backbone_gw->orig);
+ 
+ purge_now:
+-			/* don't wait for the pending request anymore */
+-			if (atomic_read(&backbone_gw->request_sent))
+-				atomic_dec(&bat_priv->bla.num_requests);
+-
+-			batadv_bla_del_backbone_claims(backbone_gw);
+-
+-			hlist_del_rcu(&backbone_gw->hash_entry);
+-			batadv_backbone_gw_put(backbone_gw);
+-		}
+-		spin_unlock_bh(list_lock);
++				purged = true;
++
++				/* don't wait for the pending request anymore */
++				if (atomic_read(&backbone_gw->request_sent))
++					atomic_dec(&bat_priv->bla.num_requests);
++
++				batadv_bla_del_backbone_claims(backbone_gw);
++
++				hlist_del_rcu(&backbone_gw->hash_entry);
++				break;
++			}
++			spin_unlock_bh(list_lock);
++
++			if (purged) {
++				/* reference for pending report_work */
++				if (cancel_work_sync(&backbone_gw->report_work))
++					batadv_backbone_gw_put(backbone_gw);
++
++				/* reference for hash_entry */
++				batadv_backbone_gw_put(backbone_gw);
++			}
++		} while (purged);
+ 	}
+ }
  
 
 
