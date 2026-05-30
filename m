@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-257163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PYTGiwWG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:54:04 +0200
+	id 6KuhH34iG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0C560E904
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:54:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84156105B2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 564FB30202A8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:53:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86565305E198
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E71D332EA7;
-	Sat, 30 May 2026 16:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0938E3438AE;
+	Sat, 30 May 2026 17:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TYuEdSH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xad6yFzR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426FB33FE15;
-	Sat, 30 May 2026 16:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AFC33F590;
+	Sat, 30 May 2026 17:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160024; cv=none; b=PTozP7PDQuyNzof5/+PUjjYVGZL57n/t0upk+dOuzAcTtUh9QfcsVB665gZeRdqGopY4WkAlg1Nytp7THKMGnm2b4YWVO9x/AlWiy1Qoy5QQ0zKIvovtOKLvx6cSYIYq2M2EjbaeZr7rlUCXwJIOXxTZANnEiUtrpGX5S7fq36w=
+	t=1780162819; cv=none; b=r8fgIyHhhUwGkB5iO+Fc9GP11oHduPPK1AkcOeWSERsTVtVDicXg+aujLIH+ctPGtQMS11Q3cLiXEC/tTQx5SdYSRioFFPJJhcLBbhtH8B61Dn3gO3tiZcFXSq91nEJcALMmZdXJ7z6VLbQwRp6o3uKXQevmBVB9bo2DIonp+iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160024; c=relaxed/simple;
-	bh=v0uUv9hPXPG6bhdUGaw/kVedWxgsDJsdyL5wEE/1eMY=;
+	s=arc-20240116; t=1780162819; c=relaxed/simple;
+	bh=tH91ro3EK4Fm+hjC1ZahDnIBrTbSon8eA2msbbzIki0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qssyzxl7BA+9sXFnux/pag4K95t7kHmpVDYQv0uW4Wdr/UqB09wExkZkGUfVtT4sJP6Te2KqmdzCzUu2DOGuGd7bSqj9cP9Q/TjGoYggHcTx/Bh/KZ3AG4NG2j01YCez2wsYZgE1xHYJnaNPw8FIHlWi/LtmEQASq6+aALUyBIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TYuEdSH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340AD1F00893;
-	Sat, 30 May 2026 16:53:41 +0000 (UTC)
+	 MIME-Version; b=uvvpakboMAZWf+qJWsyX7lf+ph5TwzBoUAZZlPJPnCDv+wVNiMZZy42RI5+L7e69yYjt35qw+9BKu+PykfmkqpNXXpWGVi+shJtXsQ9YlmJQauPPz3BmV8FYoNBvVpyZkzebu74eVJ0HZyq51mMUGdjtsOGvFbi0639k+1YuF2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xad6yFzR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F631F00893;
+	Sat, 30 May 2026 17:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160022;
-	bh=WayxdCoCbZiYIV7yWu9JLO8fBfRO8UpTGMnJP7zAHzw=;
+	s=korg; t=1780162818;
+	bh=N3rx0C/bYnmbIoVLMFwPT07bejCuF73O9IGoVlTrRC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1TYuEdSHVkXZHkf04inHegvSKQ3TvRFrJatIAWwXNapm/mLDCT/xuOka2cg/kl9ZS
-	 ceGy+3dV2OO5k9XBUe5OFrm+sSf1DVNMyZM9NSUy8rji5Z5Kfa+Ji0F8hxFajYlBjs
-	 yl7fYz08KhGIY/tefJS+wE0ztsz3wHRIMzrVuZZA=
+	b=Xad6yFzRiR3Ei9Svj5s6yJJ0g1+arpaz07gf+eRhv0jLV1MiWKBmdgLipqbnTWQip
+	 I56R/HCXY1aDiuRJtg0ODLOHhvDjSwqGgyHR1MiETUxBL3oI9uWy8RVzsSDlyTiS1Y
+	 Za+tHbjwCPlKcL5waLkSibee/S3RxhjDtFsBa5qc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.1 223/969] tpm: avoid -Wunused-but-set-variable
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 033/776] xfrm_user: fix info leak in build_mapping()
 Date: Sat, 30 May 2026 17:55:47 +0200
-Message-ID: <20260530160306.610250698@linuxfoundation.org>
+Message-ID: <20260530160241.133349483@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +71,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257163-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257979-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0A0C560E904
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,davemloft.net:email]
+X-Rspamd-Queue-Id: E84156105B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 6f1d4d2ecfcd1b577dc87350ea965fe81f272e83 upstream.
+[ Upstream commit 1beb76b2053b68c491b78370794b8ff63c8f8c02 ]
 
-Outside of the EFI tpm code, the TPM_MEMREMAP()/TPM_MEMUNMAP functions are
-defined as trivial macros, leading to the mapping_size variable ending
-up unused:
+struct xfrm_usersa_id has a one-byte padding hole after the proto
+field, which ends up never getting set to zero before copying out to
+userspace.  Fix that up by zeroing out the whole structure before
+setting individual variables.
 
-In file included from drivers/char/tpm/tpm-sysfs.c:16:
-In file included from drivers/char/tpm/tpm.h:28:
-include/linux/tpm_eventlog.h:167:6: error: variable 'mapping_size' set but not used [-Werror,-Wunused-but-set-variable]
-  167 |         int mapping_size;
-
-Turn the stubs into inline functions to avoid this warning.
-
-Cc: stable@vger.kernel.org # v5.3+
-Fixes: c46f3405692d ("tpm: Reserve the TPM final events table")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fixes: 3a2dfbe8acb1 ("xfrm: Notify changes in UDP encapsulation via netlink")
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Assisted-by: gregkh_clanker_t1000
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/tpm_eventlog.h |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/linux/tpm_eventlog.h
-+++ b/include/linux/tpm_eventlog.h
-@@ -131,11 +131,16 @@ struct tcg_algorithm_info {
- };
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index dcf433894951d..7e09ab9c34af8 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -3592,6 +3592,7 @@ static int build_mapping(struct sk_buff *skb, struct xfrm_state *x,
  
- #ifndef TPM_MEMREMAP
--#define TPM_MEMREMAP(start, size) NULL
-+static inline void *TPM_MEMREMAP(unsigned long start, size_t size)
-+{
-+	return NULL;
-+}
- #endif
+ 	um = nlmsg_data(nlh);
  
- #ifndef TPM_MEMUNMAP
--#define TPM_MEMUNMAP(start, size) do{} while(0)
-+static inline void TPM_MEMUNMAP(void *mapping, size_t size)
-+{
-+}
- #endif
- 
- /**
++	memset(&um->id, 0, sizeof(um->id));
+ 	memcpy(&um->id.daddr, &x->id.daddr, sizeof(um->id.daddr));
+ 	um->id.spi = x->id.spi;
+ 	um->id.family = x->props.family;
+-- 
+2.53.0
+
 
 
 
