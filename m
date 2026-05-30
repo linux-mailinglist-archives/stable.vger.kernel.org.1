@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-257547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258923-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GUEFtgbG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:16 +0200
+	id WJzlNJAwG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-258923-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F6160F57F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 554346127A9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EAC373035E62
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:16:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB0AB30D1090
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1746395AEA;
-	Sat, 30 May 2026 17:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D16932F770;
+	Sat, 30 May 2026 18:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IbV3ceHw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWYHRd3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F50263F44;
-	Sat, 30 May 2026 17:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6830E2FDC5E;
+	Sat, 30 May 2026 18:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161361; cv=none; b=YrRTUUg05xYV5YUeCHTKtRJk2pv/IMqPrBVVldZM2YpsI5NC+hoCTnXLHZoyev80QO8EryQSE9wDr/gfSGO1NmahTFWwt2F5QNPuFufTQfSxs3PxhxA7Xqvh3t0TlUBtXpzF1CMDs0RNFLMU2yeUgMaFB2fc+fMY7gdaWowHiDI=
+	t=1780165998; cv=none; b=GlrArMoACfBu0ngELAK9PaQMdEKh8QH4TJ0B9lP5PUlszP9ycA/aBc8ODALqQXh6NfbRJmXjpZPMOw80z0vHwe0d0y3DbU93xjUO3yA53DKobCKVqHzpxIzexb3iR3757mWqBgyHm0YtBhE+IBkf22CvMUkk6JKOSt6nGqVT9io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161361; c=relaxed/simple;
-	bh=ISjmwppbUVo6I7REarQIZPWmuEfjnTuIUDChe3d2Olo=;
+	s=arc-20240116; t=1780165998; c=relaxed/simple;
+	bh=Xxc/+N+5yQyKert0roJlcxCJSlajve5dykK120sX1wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QsK9mv7YjWPdKkwAOT8Xq6AqJ146qWis0gHU80N7IdEKOvhKZt/L/06cQdLuPAJG2YtqF9wP6JZgQzuU+t4UyWgAoZH+J6jNFFWGyEHFAFbvtKWhHmSo1GivNsj1ttPPwKEcECgo8Q1LoDShuk3XG1+31rHCeb+kBBzF8WtOmP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IbV3ceHw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7601F00893;
-	Sat, 30 May 2026 17:15:59 +0000 (UTC)
+	 MIME-Version; b=S0mT8nGarTBt0eGogk9eeojmkt1G1RxSjKavMPiomGWt1VUCgMRvm7JD1/7siFbyLuLS4p/mmobm+SRRP1PLtxvpoxV0adYlSbRZbE1xYeZMV4hrxa2Wnm0ThL/1zoGffI2+sjitu8oQnymCPEjcnnmxeSEX9dgY209tD++phT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWYHRd3e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABADD1F00893;
+	Sat, 30 May 2026 18:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161360;
-	bh=p5wpN60JR2M+NSZjfUdiRyNPfGS4nyu0SDrFe+IJFyw=;
+	s=korg; t=1780165997;
+	bh=w1cYTU6WZ7IsiSYBOgC1Ak3iY70TG2v1BUyXxCd5Cqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IbV3ceHwLnWonjgwpdM8euBA+ZGBqpJ5PGc361hixE7RWCMurni1tWooADcPPtG1X
-	 hc6F2Bb3GdVq+Hq/IE6qZViA6MKDS0gImSL/DNGo6/A/gfR9YmBNfnfHGTUROFzcaG
-	 7nbo0voAVQkW+2XCaL+OJ1Su6NCkDlzW4DCeDWeA=
+	b=jWYHRd3eYRSG4J3i5pGQwQigc8uTo01R3NcaAD7lVKZmV6viIju6QFN2l2b7r3TpH
+	 hArntNfzQwG6myidU/UuHMvLv5cfPvVUD+mw94Zqxsm0vzrV2y4VNPxzC+sSDH0f8D
+	 By3xAudDoR0opLpXtvsXxHdrcYfuDaPRbFmDG45E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Klinesmith <joshuaklinesmith@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 571/969] ksmbd: fix use-after-free from async crypto on Qualcomm crypto engine
-Date: Sat, 30 May 2026 18:01:35 +0200
-Message-ID: <20260530160316.168923495@linuxfoundation.org>
+Subject: [PATCH 5.10 215/589] ipmi:ssif: NULL thread on error
+Date: Sat, 30 May 2026 18:01:36 +0200
+Message-ID: <20260530160230.622907022@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,102 +67,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257547-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258923-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 23F6160F57F
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,minyard.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 554346127A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+From: Corey Minyard <corey@minyard.net>
 
-[ Upstream commit 3e298897f41c61450c2e7a4f457e8b2485eb35b3 ]
+commit a8aebe93a4938c0ca1941eeaae821738f869be3d upstream.
 
-ksmbd_crypt_message() sets a NULL completion callback on AEAD requests
-and does not handle the -EINPROGRESS return code from async hardware
-crypto engines like the Qualcomm Crypto Engine (QCE). When QCE returns
--EINPROGRESS, ksmbd treats it as an error and immediately frees the
-request while the hardware DMA operation is still in flight. The DMA
-completion callback then dereferences freed memory, causing a NULL
-pointer crash:
+Cleanup code was checking the thread for NULL, but it was possibly
+a PTR_ERR() in one spot.
 
-  pc : qce_skcipher_done+0x24/0x174
-  lr : vchan_complete+0x230/0x27c
-  ...
-  el1h_64_irq+0x68/0x6c
-  ksmbd_free_work_struct+0x20/0x118 [ksmbd]
-  ksmbd_exit_file_cache+0x694/0xa4c [ksmbd]
+Spotted with static analysis.
 
-Use the standard crypto_wait_req() pattern with crypto_req_done() as
-the completion callback, matching the approach used by the SMB client
-in fs/smb/client/smb2ops.c. This properly handles both synchronous
-engines (immediate return) and async engines (-EINPROGRESS followed
-by callback notification).
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Link: https://github.com/openwrt/openwrt/issues/21822
-Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://sourceforge.net/p/openipmi/mailman/message/59324676/
+Fixes: 75c486cb1bca ("ipmi:ssif: Clean up kthread on errors")
+Cc: <stable@vger.kernel.org> # 91eb7ec72612: ipmi:ssif: Remove unnecessary indention
+Cc: stable@vger.kernel.org
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/auth.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/char/ipmi/ipmi_ssif.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
-index a9b73ea3a7427..38e0eb27bad53 100644
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -1104,6 +1104,7 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
- 	struct smb2_transform_hdr *tr_hdr = smb2_get_msg(iov[0].iov_base);
- 	unsigned int assoc_data_len = sizeof(struct smb2_transform_hdr) - 20;
- 	int rc;
-+	DECLARE_CRYPTO_WAIT(wait);
- 	struct scatterlist *sg;
- 	u8 sign[SMB2_SIGNATURE_SIZE] = {};
- 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
-@@ -1190,12 +1191,12 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
- 
- 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
- 	aead_request_set_ad(req, assoc_data_len);
--	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_SLEEP, NULL, NULL);
-+	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
-+				  CRYPTO_TFM_REQ_MAY_SLEEP,
-+				  crypto_req_done, &wait);
- 
--	if (enc)
--		rc = crypto_aead_encrypt(req);
--	else
--		rc = crypto_aead_decrypt(req);
-+	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req) :
-+			     crypto_aead_decrypt(req), &wait);
- 	if (rc)
- 		goto free_iv;
- 
+diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
+index e93846f8f2352..4cbfe1858ab4f 100644
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -1910,6 +1910,7 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 					"kssif%4.4x", thread_num);
+ 	if (IS_ERR(ssif_info->thread)) {
+ 		rv = PTR_ERR(ssif_info->thread);
++		ssif_info->thread = NULL;
+ 		dev_notice(&ssif_info->client->dev,
+ 			   "Could not start kernel thread: error %d\n",
+ 			   rv);
 -- 
 2.53.0
 
