@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-257552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257563-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mODjG3cdG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257552-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:11 +0200
+	id SK7OF0QcG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257563-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9653E60F972
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728E260F69B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 64D3230580A9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:16:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 99C3530210E5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7443546F6;
-	Sat, 30 May 2026 17:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63D23998B1;
+	Sat, 30 May 2026 17:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGQMh/+8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZzCxjli"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B5F350A05;
-	Sat, 30 May 2026 17:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8559D263F44;
+	Sat, 30 May 2026 17:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161378; cv=none; b=BC4cKyz/XPMqiBuDPGZiYKSY9vn4omigq0pVi2QbpjhbP0oiyccJEroCvtJylH4MqSHAPJ9sbrWGwfHSbD218FTLjqkhPKdbGPwFOn2CjFKZF0f9/Q5HEcSuI4/48MorKDNQK5lpoj4Jvkmup9Amp1N1awekD1Y/wLU8CvEHtK4=
+	t=1780161417; cv=none; b=TwmX660dGKO1hhckV1wOJ0dn925jmLIG31ryPZwDhWDeqKp2urwk4LPWCjfR4KxGqZlrzJs03peUTSw2etTjVdvitjY7gwN4yu5tmOCB0tTvCPYJv66vHLRRqFVW37BfDa1YGurzWwf3Oj1G5qAPV5kWzuCQmYRQke6tOX7rXXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161378; c=relaxed/simple;
-	bh=iE+BgybXWH8VAFxCeqk7Q25eKbAduAU7rhGPgq9Q/1g=;
+	s=arc-20240116; t=1780161417; c=relaxed/simple;
+	bh=TIzp0v0G/GviqqRfN9h8oc2FUcKuBv12boOv8bCshgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZcGHpD1lK9uyG46VlbVhzhOS8UTSinjRI7f2lUnjN+hLbaiA9O2Bo0rlmnajHZSQSjrVdBM/3L9Ao8JCz6++0xBe4WX294Ok40lxsiUnrScadOu7m7AGHbA0OVYqn/9DeODWdeIN6Dfgn/kBL829C8gn8tYROCADgi6RS8UsYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGQMh/+8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016CF1F00893;
-	Sat, 30 May 2026 17:16:16 +0000 (UTC)
+	 MIME-Version; b=X1LliavJQIlP8VPEG6NHU3KoQgTyjyn6fAbrcJDlUCecyEkrDlZjsernwd5oF0faUYrbCHllkRDuEn54T06g87xNUJqHTTpVheSvRHHfxDDwnKCcsW3uuzrrSsBzYQr32E30z4F5XRin2bhEx+OJaPMHhnZDGzb8TY5kGhaOpUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZzCxjli; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733051F00893;
+	Sat, 30 May 2026 17:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161377;
-	bh=cbPnHOSaYuRoZ0VKVj0BVsX84ADoZI3+hnnbh8ct54c=;
+	s=korg; t=1780161416;
+	bh=QdHLNIAO610FUMFIpEZs3dmsg2QqiezBQ/KGDOBC3jQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yGQMh/+8bCeLsCAyPONtbRQFkPkuT2oCS2A68qfWPH/btbdfqvJqZu3iBfX0yAHEF
-	 VPXl2ataNp1FsAKBzGf50cZftjAvFFOxFikmCphi67kGBdYO35BUKyp5GFj1BOZzfw
-	 TFPsRkSD3/vAgkoAkeyYFnVYkDc+z6JN1SOq8MAE=
+	b=qZzCxjli6P6DMRfawXae0yQfGZk/r2q9CKyQPPNK9CRPhLzdwlZAM3gwnAAyiY8Rr
+	 dfuEftIDTy1hTxlDYdyIHCBcOLDpH4xjitF9WxtToTwblJhFm+jxg7opQwD+G25TO2
+	 K/53l9A1DIvXSd1lM1aNddYdODJo932VrwET3xfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Zanussi <zanussi@kernel.org>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Daniel Hodges <hodgesd@meta.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 599/969] tracing: Rebuild full_name on each hist_field_name() call
-Date: Sat, 30 May 2026 18:02:03 +0200
-Message-ID: <20260530160316.962225167@linuxfoundation.org>
+Subject: [PATCH 6.1 600/969] ima: check return value of crypto_shash_final() in boot aggregate
+Date: Sat, 30 May 2026 18:02:04 +0200
+Message-ID: <20260530160316.991626323@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257552-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257563-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9653E60F972
+X-Rspamd-Queue-Id: 728E260F69B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,54 +99,39 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Daniel Hodges <hodgesd@meta.com>
 
-[ Upstream commit 5ec1d1e97de134beed3a5b08235a60fc1c51af96 ]
+[ Upstream commit 870819434c8dfcc3158033b66e7851b81bb17e21 ]
 
-hist_field_name() uses a static MAX_FILTER_STR_VAL buffer for fully
-qualified variable-reference names, but it currently appends into that
-buffer with strcat() without rebuilding it first. As a result, repeated
-calls append a new "system.event.field" name onto the previous one,
-which can eventually run past the end of full_name.
+The return value of crypto_shash_final() is not checked in
+ima_calc_boot_aggregate_tfm(). If the hash finalization fails, the
+function returns success and a corrupted boot aggregate digest could
+be used for IMA measurements.
 
-Build the name with snprintf() on each call and return NULL if the fully
-qualified name does not fit in MAX_FILTER_STR_VAL.
+Capture the return value and propagate any error to the caller.
 
-Link: https://patch.msgid.link/20260401112224.85582-1-pengpeng@iscas.ac.cn
-Fixes: 067fe038e70f ("tracing: Add variable reference handling to hist triggers")
-Reviewed-by: Tom Zanussi <zanussi@kernel.org>
-Tested-by: Tom Zanussi <zanussi@kernel.org>
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 76bb28f6126f ("ima: use new crypto_shash API instead of old crypto_hash")
+Signed-off-by: Daniel Hodges <hodgesd@meta.com>
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ security/integrity/ima/ima_crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 356360e75f9a7..b5276f2f2cf40 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -1346,12 +1346,14 @@ static const char *hist_field_name(struct hist_field *field,
- 		 field->flags & HIST_FIELD_FL_VAR_REF) {
- 		if (field->system) {
- 			static char full_name[MAX_FILTER_STR_VAL];
-+			int len;
-+
-+			len = snprintf(full_name, sizeof(full_name), "%s.%s.%s",
-+				       field->system, field->event_name,
-+				       field->name);
-+			if (len >= sizeof(full_name))
-+				return NULL;
+diff --git a/security/integrity/ima/ima_crypto.c b/security/integrity/ima/ima_crypto.c
+index 64499056648ad..c5153f0d7306d 100644
+--- a/security/integrity/ima/ima_crypto.c
++++ b/security/integrity/ima/ima_crypto.c
+@@ -837,7 +837,7 @@ static int ima_calc_boot_aggregate_tfm(char *digest, u16 alg_id,
+ 		}
+ 	}
+ 	if (!rc)
+-		crypto_shash_final(shash, digest);
++		rc = crypto_shash_final(shash, digest);
+ 	return rc;
+ }
  
--			strcat(full_name, field->system);
--			strcat(full_name, ".");
--			strcat(full_name, field->event_name);
--			strcat(full_name, ".");
--			strcat(full_name, field->name);
- 			field_name = full_name;
- 		} else
- 			field_name = field->name;
 -- 
 2.53.0
 
