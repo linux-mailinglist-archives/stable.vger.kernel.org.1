@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258724-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CAeqBS4ZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257384-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:06:54 +0200
+	id mH2EOLksG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258724-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A974F60EE80
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:06:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD4E611DB2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 85DB7300B588
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 203E3309EFBE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD3635200B;
-	Sat, 30 May 2026 17:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CD1233D9E;
+	Sat, 30 May 2026 18:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mcr5ZLHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YkNegVQb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8759F32B11D;
-	Sat, 30 May 2026 17:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A52C27E05E;
+	Sat, 30 May 2026 18:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160811; cv=none; b=hIMf+tNCFEcQqsSbcFitb0hhRfgQxNDGt0khgpzyRM6Kt7wIIF4u94oJLHgGKSybJ5S8nzEduEuZlAzmJcx2w5mCk6rcm17w/otb7Dlf8hCQkdoFoZKbveFDAVrsXyCbk2jWkD8sBPQ0J4+7yeu4Idkwb1rl11cFA/ARvl8Ddck=
+	t=1780165326; cv=none; b=W5lQl6zfKFT6vegEVMkao7a8i5JywTiePXKPfqpGL0fU1EQ/o6epJHd0RVwhb60nMaZQjfgO0yWQSABTHM4bZisoknXJdV1Kx7Bt2j9m8V6JuFRXD+SjXpQbJZeayKaVJpVw7HOBPwmlZ/CsVgiJtVoDnkQMqrE/ORoboCcrjP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160811; c=relaxed/simple;
-	bh=D4YpujZl7bQqYsviGteynUvJkgZMjcnOWWZN4cuS19s=;
+	s=arc-20240116; t=1780165326; c=relaxed/simple;
+	bh=n+i92UqDPbXzyP6xxRNiiNxCagtQ4kwLZU2cHpYmCJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UcvMNXY8AV5XEBpNvmfynAzS57Ngoxd862h8UN1S9k1XqM2c9R4BCNg68gRIHY3l9X+t0KpxQPEcFOH6KokfBio12F8V344cDYgAEKjd3gw5ce6WYPy5HIKIGMiK2g8FrcYQGNHcOFunYdvsHo3TyDCMV4bavChxh+qpqvB4EGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mcr5ZLHS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97D71F00893;
-	Sat, 30 May 2026 17:06:49 +0000 (UTC)
+	 MIME-Version; b=fULovijn492dQLFh8OYPuwWTGUjrJD80cfRmc70UGs5xhvYPH/ZH6lMhCxU2gScBPH9abL62quWkwEv3sBUJqUzGwWeYD4R+pJVPw+SxL+cc7Tg2ZWoDcfJWciKcIpvuh7O3CmuQNRBQ3U6eGF4wgIfjuXezwqCvqmUYbe9M3oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YkNegVQb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FF21F00893;
+	Sat, 30 May 2026 18:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160810;
-	bh=vQIUpUnnEn8dTIT+sKcTsYUNBbM/jMRr9XI/fBsVfpo=;
+	s=korg; t=1780165323;
+	bh=E1tdAu42nLrFv/YsUBQZJvQW/eELRC4lKeY+0OHhQZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mcr5ZLHSAyantK6BSAkISMUPuc7/sJMBn7LmNHe9ywLM43FFQyud8+t2PS6ASSPQG
-	 PUrTqzCx/4LkyTWUkUIh8DdIV5ve8fjV8KePbuudWXkcH1Mcu4IhB3JT1mWr/WRm2o
-	 g4zug2Snbe4o3MjyQ0+dBf9dQEKUmpWchulH3qWQ=
+	b=YkNegVQbA1PVi28yQdf/glCv6poh0ldy/b9e1H3UhlxlAneQlBTaCLQWeIzvBFHHW
+	 UuKkmd3wV3UoNvAsYJgaAIPCVCNYutweFfj8gdQwdoWSI1HH+0IrqUycWJdJhVy5+y
+	 oiP0+4shGIGWRayBLNYwrRywlMsINO7LZRR4f1XQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 402/969] spi: mpc52xx: fix use-after-free on unbind
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 045/589] i2c: s3c24xx: check the size of the SMBUS message before using it
 Date: Sat, 30 May 2026 17:58:46 +0200
-Message-ID: <20260530160311.389496861@linuxfoundation.org>
+Message-ID: <20260530160225.775525167@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +67,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257384-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258724-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A974F60EE80
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,samsung.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5AD4E611DB2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 706b3dc2ac7a998c55e14b3fd2e8f934c367e6e0 upstream.
+commit c0128c7157d639a931353ea344fb44aad6d6e17a upstream.
 
-The state machine work is scheduled by the interrupt handler and
-therefore needs to be cancelled after disabling interrupts to avoid a
-potential use-after-free.
+The first byte of an i2c SMBUS message is the size, and it should be
+verified to ensure that it is in the range of 0..I2C_SMBUS_BLOCK_MAX
+before processing it.
 
-Fixes: 984836621aad ("spi: mpc52xx: Add cancel_work_sync before module remove")
-Cc: stable@vger.kernel.org
-Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260414134319.978196-5-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This is the same logic that was added in commit a6e04f05ce0b ("i2c:
+tegra: check msg length in SMBUS block read") to the i2c tegra driver.
+
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/2026022314-rely-scrubbed-4839@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-mpc52xx.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-s3c2410.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -519,10 +519,11 @@ static int mpc52xx_spi_remove(struct pla
- 	struct mpc52xx_spi *ms = spi_master_get_devdata(master);
- 	int i;
+--- a/drivers/i2c/busses/i2c-s3c2410.c
++++ b/drivers/i2c/busses/i2c-s3c2410.c
+@@ -511,8 +511,13 @@ static int i2c_s3c_irq_nextbyte(struct s
+ 		i2c->msg->buf[i2c->msg_ptr++] = byte;
  
--	cancel_work_sync(&ms->work);
- 	free_irq(ms->irq0, ms);
- 	free_irq(ms->irq1, ms);
- 
-+	cancel_work_sync(&ms->work);
-+
- 	for (i = 0; i < ms->gpio_cs_count; i++)
- 		gpiod_put(ms->gpio_cs[i]);
- 
+ 		/* Add actual length to read for smbus block read */
+-		if (i2c->msg->flags & I2C_M_RECV_LEN && i2c->msg->len == 1)
++		if (i2c->msg->flags & I2C_M_RECV_LEN && i2c->msg->len == 1) {
++			if (byte == 0 || byte > I2C_SMBUS_BLOCK_MAX) {
++				s3c24xx_i2c_stop(i2c, -EPROTO);
++				break;
++			}
+ 			i2c->msg->len += byte;
++		}
+  prepare_read:
+ 		if (is_msglast(i2c)) {
+ 			/* last byte of buffer */
 
 
 
