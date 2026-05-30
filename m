@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-259272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257923-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMbUOsAzG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:16 +0200
+	id 0Hh/AMogG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257923-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E68E612EE1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 131D36101CB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54DE530D4A22
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2923E3027BA9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6556231A21;
-	Sat, 30 May 2026 18:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A3034A3C4;
+	Sat, 30 May 2026 17:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEtWmj51"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0Jl1GYg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8DE2E7389;
-	Sat, 30 May 2026 18:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8993B995E;
+	Sat, 30 May 2026 17:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167186; cv=none; b=jo8sQx3rtMxJgj7PH9nVDEjTmworAj6vWaVxHrqu51sBuXAZWjyx2sIjOdXAIxd1mvGWWUYNnYd7wyl006rbi/9tgHl7jfMOEWJZDKYcFyYwzL2SZr3eqxYjjDzYTAQbaAJABKjpr3qnQM37LbcGKhiSZGvC3LnMZGAnjdbSd/0=
+	t=1780162624; cv=none; b=PO6c46I+HpcOTZovnQXWzWOy8edaE/CXkFF/ChFNLv5lZ0Wc/Gr7wgBVCeZ/0LlVcXh4m3sWcaR0D2ciKMMZGvqKDYmO+bmAN0wY23/aGm+ixHQap8Qk32Fc8TpsWmElwueRl1kEGmCpemBJnXBc2KKzd2znNZzB07eseDwGNac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167186; c=relaxed/simple;
-	bh=5c+mUAmKYH7lPhtVds1ezuHVKXxkGCE4mONym8SUwZs=;
+	s=arc-20240116; t=1780162624; c=relaxed/simple;
+	bh=BSGRRw57SW38Nz4OjK0q791byUnLO+sn8CStYZSt0xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOHWlaAvzlBhYq5LpGRviqt4OEhWQVK0tYzR++VXFdxPoofbmJjHWb8xAcTRm8iiAvmHZXN4PEp73Z0JEpQTYMHzWl1e4/8HkVDKwWeCmbD3E5WAHk6CyzsXVVSf7KjyhssIRsJI6OgY5J26yNtpVukW+6Hwz9im4UhYaiC+w5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEtWmj51; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB941F00893;
-	Sat, 30 May 2026 18:53:04 +0000 (UTC)
+	 MIME-Version; b=Wafv/7Xq4m0reQCLnYApEA2pC/RhlWx4N1EPFd3eZDXFQ6RN38oB6XgwlXOreYKfNtFhqUYnqftRiD6Ceg3pHV89xTh4hhGNFh7NLiNXn0+mKgaYSo9Y4olaAR6TyzO0UY/DGk4kM9Kf4DUEzDFbaBK3sj5v6I7SQRIalFsUGjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0Jl1GYg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07221F00893;
+	Sat, 30 May 2026 17:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167185;
-	bh=64K7rWFtG6GpsGAQqiOclbLGvLPQ1dH9EYd0W15R8s4=;
+	s=korg; t=1780162623;
+	bh=n2SZPich6L/1Eto82SeWnp/9/S+FHrTqHnOw0/rwV/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nEtWmj51bRykbeHcWugFlSZ3B0UJSZVmNlchPnOqjyLynOyOAEgnavgFEIsNLNSYZ
-	 MbQ9B2FaC4iWNhNTpmL3eQH6a34QUebvqCvIZY0cDmfEPG5dFaiqhHXlqc57se6vGL
-	 OTWGOSEVsaOScfI3/x3y4EJFIBcUaZ5KEUumVtpk=
+	b=g0Jl1GYgzd6rdcFy9vYOmpHZYn+NYe+bJQvlKyodEt8+nfX4k3UmZuhO6Rwckp13Z
+	 0hQZ3SbK2JSVff7z93yDBSaylASctutsTJzMiDoCklO39UlmW9fw19FGgpaWwPE996
+	 2hAMYtXKBcOUgTWx07z560FLbSY7c+Lo5vDrtmf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Efstathiades <john.efstathiades@pebblebay.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>,
+	Sriram R <quic_srirrama@quicinc.com>,
+	Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 589/589] net: usb: lan78xx: Fix double free issue with interrupt buffer allocation
+Subject: [PATCH 6.1 946/969] wifi: ath11k: update hal srng regs for IPQ5018
 Date: Sat, 30 May 2026 18:07:50 +0200
-Message-ID: <20260530160240.062963614@linuxfoundation.org>
+Message-ID: <20260530160326.883034529@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,133 +69,174 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,pebblebay.com,pengutronix.de,kernel.org,163.com];
-	TAGGED_FROM(0.00)[bounces-259272-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257923-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4E68E612EE1
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[quicinc.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 131D36101CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Sriram R <quic_srirrama@quicinc.com>
 
-[ Upstream commit 03819abbeb11117dcbba40bfe322b88c0c88a6b6 ]
+[ Upstream commit 711b80acbdfb9667a9cf8374e13320a6e624ce73 ]
 
-In lan78xx_probe(), the buffer `buf` was being freed twice: once
-implicitly through `usb_free_urb(dev->urb_intr)` with the
-`URB_FREE_BUFFER` flag and again explicitly by `kfree(buf)`. This caused
-a double free issue.
+IPQ5018 hal srng register address & offsets are not
+similar to IPQ8074/IPQ6018/QCN9074, hence define a
+new set of srng register group data for IPQ5018.
 
-To resolve this, reordered `kmalloc()` and `usb_alloc_urb()` calls to
-simplify the initialization sequence and removed the redundant
-`kfree(buf)`.  Now, `buf` is allocated after `usb_alloc_urb()`, ensuring
-it is correctly managed by  `usb_fill_int_urb()` and freed by
-`usb_free_urb()` as intended.
+Tested-on: IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
 
-Fixes: a6df95cae40b ("lan78xx: Fix memory allocation bug")
-Cc: John Efstathiades <john.efstathiades@pebblebay.com>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20241116130558.1352230-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context. Make the function usb_alloc_urb() call before
-kmalloc(). ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
+Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+Co-developed-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20221122132152.17771-6-quic_kathirve@quicinc.com
+Stable-dep-of: 2a2451a34afd ("wifi: ath11k: fix peer resolution on rx path when peer_id=0")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.c |  1 +
+ drivers/net/wireless/ath/ath11k/hw.c   | 79 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/hw.h   |  1 +
+ 3 files changed, 81 insertions(+)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index f0643d9d8ff94..af0622e942584 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -4057,29 +4057,30 @@ static int lan78xx_probe(struct usb_interface *intf,
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index ce87e67dc638c..a5a9b485a50d2 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -634,6 +634,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 			.max_fft_bins = 1024,
+ 		},
+ 		.internal_sleep_clock = false,
++		.regs = &ipq5018_regs,
+ 		.host_ce_config = ath11k_host_ce_config_qcn9074,
+ 		.ce_count = CE_CNT_5018,
+ 		.target_ce_config = ath11k_target_ce_config_wlan_ipq5018,
+diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
+index 5639e261d834e..6135a45f255d1 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.c
++++ b/drivers/net/wireless/ath/ath11k/hw.c
+@@ -2646,6 +2646,85 @@ static const struct ath11k_hw_tcl2wbm_rbm_map ath11k_hw_tcl2wbm_rbm_map_wcn6750[
+ 	},
+ };
  
- 	period = ep_intr->desc.bInterval;
- 	maxp = usb_maxpacket(dev->udev, dev->pipe_intr, 0);
--	buf = kmalloc(maxp, GFP_KERNEL);
--	if (!buf) {
++const struct ath11k_hw_regs ipq5018_regs = {
++	/* SW2TCL(x) R0 ring configuration address */
++	.hal_tcl1_ring_base_lsb = 0x00000694,
++	.hal_tcl1_ring_base_msb = 0x00000698,
++	.hal_tcl1_ring_id =	0x0000069c,
++	.hal_tcl1_ring_misc = 0x000006a4,
++	.hal_tcl1_ring_tp_addr_lsb = 0x000006b0,
++	.hal_tcl1_ring_tp_addr_msb = 0x000006b4,
++	.hal_tcl1_ring_consumer_int_setup_ix0 = 0x000006c4,
++	.hal_tcl1_ring_consumer_int_setup_ix1 = 0x000006c8,
++	.hal_tcl1_ring_msi1_base_lsb = 0x000006dc,
++	.hal_tcl1_ring_msi1_base_msb = 0x000006e0,
++	.hal_tcl1_ring_msi1_data = 0x000006e4,
++	.hal_tcl2_ring_base_lsb = 0x000006ec,
++	.hal_tcl_ring_base_lsb = 0x0000079c,
 +
-+	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
-+	if (!dev->urb_intr) {
- 		ret = -ENOMEM;
- 		goto out3;
- 	}
- 
--	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
--	if (!dev->urb_intr) {
-+	buf = kmalloc(maxp, GFP_KERNEL);
-+	if (!buf) {
- 		ret = -ENOMEM;
--		goto out4;
--	} else {
--		usb_fill_int_urb(dev->urb_intr, dev->udev,
--				 dev->pipe_intr, buf, maxp,
--				 intr_complete, dev, period);
--		dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
-+		goto free_urbs;
- 	}
- 
-+	usb_fill_int_urb(dev->urb_intr, dev->udev,
-+			 dev->pipe_intr, buf, maxp,
-+			 intr_complete, dev, period);
-+	dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
++	/* TCL STATUS ring address */
++	.hal_tcl_status_ring_base_lsb = 0x000008a4,
 +
- 	dev->maxpacket = usb_maxpacket(dev->udev, dev->pipe_out, 1);
++	/* REO2SW(x) R0 ring configuration address */
++	.hal_reo1_ring_base_lsb = 0x000001ec,
++	.hal_reo1_ring_base_msb = 0x000001f0,
++	.hal_reo1_ring_id = 0x000001f4,
++	.hal_reo1_ring_misc = 0x000001fc,
++	.hal_reo1_ring_hp_addr_lsb = 0x00000200,
++	.hal_reo1_ring_hp_addr_msb = 0x00000204,
++	.hal_reo1_ring_producer_int_setup = 0x00000210,
++	.hal_reo1_ring_msi1_base_lsb = 0x00000234,
++	.hal_reo1_ring_msi1_base_msb = 0x00000238,
++	.hal_reo1_ring_msi1_data = 0x0000023c,
++	.hal_reo2_ring_base_lsb = 0x00000244,
++	.hal_reo1_aging_thresh_ix_0 = 0x00000564,
++	.hal_reo1_aging_thresh_ix_1 = 0x00000568,
++	.hal_reo1_aging_thresh_ix_2 = 0x0000056c,
++	.hal_reo1_aging_thresh_ix_3 = 0x00000570,
++
++	/* REO2SW(x) R2 ring pointers (head/tail) address */
++	.hal_reo1_ring_hp = 0x00003028,
++	.hal_reo1_ring_tp = 0x0000302c,
++	.hal_reo2_ring_hp = 0x00003030,
++
++	/* REO2TCL R0 ring configuration address */
++	.hal_reo_tcl_ring_base_lsb = 0x000003fc,
++	.hal_reo_tcl_ring_hp = 0x00003058,
++
++	/* SW2REO ring address */
++	.hal_sw2reo_ring_base_lsb = 0x0000013c,
++	.hal_sw2reo_ring_hp = 0x00003018,
++
++	/* REO CMD ring address */
++	.hal_reo_cmd_ring_base_lsb = 0x000000e4,
++	.hal_reo_cmd_ring_hp = 0x00003010,
++
++	/* REO status address */
++	.hal_reo_status_ring_base_lsb = 0x00000504,
++	.hal_reo_status_hp = 0x00003070,
++
++	/* WCSS relative address */
++	.hal_seq_wcss_umac_ce0_src_reg = 0x08400000
++		- HAL_IPQ5018_CE_WFSS_REG_BASE,
++	.hal_seq_wcss_umac_ce0_dst_reg = 0x08401000
++		- HAL_IPQ5018_CE_WFSS_REG_BASE,
++	.hal_seq_wcss_umac_ce1_src_reg = 0x08402000
++		- HAL_IPQ5018_CE_WFSS_REG_BASE,
++	.hal_seq_wcss_umac_ce1_dst_reg = 0x08403000
++		- HAL_IPQ5018_CE_WFSS_REG_BASE,
++
++	/* WBM Idle address */
++	.hal_wbm_idle_link_ring_base_lsb = 0x00000874,
++	.hal_wbm_idle_link_ring_misc = 0x00000884,
++
++	/* SW2WBM release address */
++	.hal_wbm_release_ring_base_lsb = 0x000001ec,
++
++	/* WBM2SW release address */
++	.hal_wbm0_release_ring_base_lsb = 0x00000924,
++	.hal_wbm1_release_ring_base_lsb = 0x0000097c,
++};
++
+ const struct ath11k_hw_hal_params ath11k_hw_hal_params_ipq8074 = {
+ 	.rx_buf_rbm = HAL_RX_BUF_RBM_SW3_BM,
+ 	.tcl2wbm_rbm_map = ath11k_hw_tcl2wbm_rbm_map_ipq8074,
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index e2ed5d0477430..b8afd51d0c1ea 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -415,6 +415,7 @@ extern const struct ath11k_hw_regs qca6390_regs;
+ extern const struct ath11k_hw_regs qcn9074_regs;
+ extern const struct ath11k_hw_regs wcn6855_regs;
+ extern const struct ath11k_hw_regs wcn6750_regs;
++extern const struct ath11k_hw_regs ipq5018_regs;
  
- 	/* Reject broken descriptors. */
- 	if (dev->maxpacket == 0) {
- 		ret = -ENODEV;
--		goto out5;
-+		goto free_urbs;
- 	}
- 
- 	/* driver requires remote-wakeup capability during autosuspend. */
-@@ -4087,7 +4088,7 @@ static int lan78xx_probe(struct usb_interface *intf,
- 
- 	ret = lan78xx_phy_init(dev);
- 	if (ret < 0)
--		goto out5;
-+		goto free_urbs;
- 
- 	ret = register_netdev(netdev);
- 	if (ret != 0) {
-@@ -4109,10 +4110,8 @@ static int lan78xx_probe(struct usb_interface *intf,
- 
- out6:
- 	phy_disconnect(netdev->phydev);
--out5:
-+free_urbs:
- 	usb_free_urb(dev->urb_intr);
--out4:
--	kfree(buf);
- out3:
- 	lan78xx_unbind(dev, intf);
- out2:
+ static inline const char *ath11k_bd_ie_type_str(enum ath11k_bd_ie_type type)
+ {
 -- 
 2.53.0
 
