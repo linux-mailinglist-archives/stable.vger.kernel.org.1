@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-258770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257389-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SK3pFvorG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258770-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:06 +0200
+	id 4OYiEZgaG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257389-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1685E611C29
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E0760F256
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F51730B01B1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B84893092F2D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E374625B0B3;
-	Sat, 30 May 2026 18:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900003AD520;
+	Sat, 30 May 2026 17:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0D0d6qph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qred/Ohd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8ACF21ADC7;
-	Sat, 30 May 2026 18:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B543B9D80;
+	Sat, 30 May 2026 17:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165480; cv=none; b=CJFIeCgSn9LnPwDXfH6VdlpqiHom7+V3Y8jTz3PtuzwWbc6LgpGQhESzmufrRHpODgoZr/rkXK+2BHrSSKzOzRtMXZnr7sLiujs+d11eptrXXy0xUS7DOrWU/vsU8Q3kmxexjhSXXPYYo+mLWwFV8qP5bSH/8kL5E8My18PbWA8=
+	t=1780160829; cv=none; b=c5fjklqo3S6VwWupFU4LGFhsc9xzQC2B5BROdj60xMy00i7By4fESOMUffw0eX6hB5Zbdo5m6kbmhTG//fvSLXqFTrXZMICt1N6LcHkFo1k98a7f1yEkSCx6sewVXVCkOkPEISxlErOYbnpC7TuXaQQh9V5Z73aViDgk/aqiugc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165480; c=relaxed/simple;
-	bh=wFA9Qi71l+DtOqFZQYE1u5uWxXo2szxOPiQw/go5DE0=;
+	s=arc-20240116; t=1780160829; c=relaxed/simple;
+	bh=/UvbsjcSU9kR4k4I5yQ8DTJyyY9huKeGMOnBdLZSrBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qhzp2a/WlD2s8TWiv/i6A1WfBfDTF/7OOrtkqrVkxwhDql7Ooof8SLDbjSJ0BNNEkG0VquWz3gkNBor6xseV+7/AGVKVFxCokd4gMgASNf6lgIUyFWh3dxN3zupRoDk36N/ueySZ1tZufm+HTLCaJjQoea7mqnO8D5QEI2LB754=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0D0d6qph; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B1B1F00893;
-	Sat, 30 May 2026 18:24:38 +0000 (UTC)
+	 MIME-Version; b=ZDSbUey4N/8yScrRLJUWnvck26T8r61Gue9pFdcBpMyh2TbxpO3Mxsx/LzwcxIVt4Z+emyK/41dZFlmTsmNWNTCa+lROvqxsqiwr0l2ciH+gTJuanc9k6r/CVl2G3eCGLDmknS6ZOpYw8uPErL47RBrWwB1xAzRpnh1hbRs364s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qred/Ohd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28AF1F00898;
+	Sat, 30 May 2026 17:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165479;
-	bh=2fMr5pmn6k8qf5/UBWi2e9nO1D8tlHJtKP0lSqUPQgM=;
+	s=korg; t=1780160827;
+	bh=CdnxTU/TBCGvWugFB+mkr5DeuCgONMkYAOBdJI+8K0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0D0d6qphjQbxTI4t6VyzX8q4S4hsmsgNMWI7q/IowFshYcf+mhzTQB6ocOx8fZFOH
-	 mv7QcBNQmnBETl72IDfyrcwFBhgc5wDMIKw8rPldhGO642pRg/wvg0dV2ckqISH7gb
-	 LOfdAJjtWBXzjJxNL+qbyPp8z/NbsfRcMBp3h0Vg=
+	b=Qred/OhdPYD+rmoh5qPLIG6Y9OI6aBPtNLtg5HEGqykeMNiPsT0rxv2OwANRtgIYV
+	 QeYs2cl3qkM0NavbZy512s8dmniAu9QTYX1khZq/CUZ6xBGP9oRaKAAZuCWtWKllNJ
+	 cYtbOQlJWjNS3LDEly3QL5P3IJdtj15GhVZgiPN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 090/589] drm/amd/display: Add null checker before passing variables
+Subject: [PATCH 6.1 447/969] wifi: rtlwifi: pci: fix possible use-after-free caused by unfinished irq_prepare_bcn_tasklet
 Date: Sat, 30 May 2026 17:59:31 +0200
-Message-ID: <20260530160227.055687089@linuxfoundation.org>
+Message-ID: <20260530160312.618106137@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258770-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257389-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,altlinux.org:email]
-X-Rspamd-Queue-Id: 1685E611C29
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B8E0760F256
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit 8092aa3ab8f7b737a34b71f91492c676a843043a upstream.
+[ Upstream commit 039cd522dc70151da13329a5e3ae19b1736f468a ]
 
-Checks null pointer before passing variables to functions.
+The irq_prepare_bcn_tasklet is initialized in rtl_pci_init() and
+scheduled when RTL_IMR_BCNINT interrupt is triggered by hardware.
+But it is never killed in rtl_pci_deinit(). When the rtlwifi card
+probe fails or is being detached, the ieee80211_hw is deallocated.
+However, irq_prepare_bcn_tasklet may still be running or pending,
+leading to use-after-free when the freed ieee80211_hw is accessed
+in _rtl_pci_prepare_bcn_tasklet().
 
-This fixes 3 NULL_RETURNS issues reported by Coverity.
+Similar to irq_tasklet, add tasklet_kill() in rtl_pci_deinit() to
+ensure that irq_prepare_bcn_tasklet is properly terminated before
+the ieee80211_hw is released.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Fixes: cdaae8371aa9 ("drm/amd/display: Handle GPU reset for DC block")
-Fixes: dcd5fb82ffb4 ("drm/amd/display: Fix reference counting for struct dc_sink.")
-Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
-[ kovalev: bp to fix CVE-2024-43902; added Fixes tags ]
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+The issue was identified through static analysis.
+
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260223045522.48377-1-duoming@zju.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index c22783b882067..bd15de4dee75e 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1778,7 +1778,8 @@ static int dm_suspend(void *handle)
- 		mutex_lock(&dm->dc_lock);
- 		dm->cached_dc_state = dc_copy_state(dm->dc->current_state);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 4029e4e590fa6..ba2277cfbe3dc 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -1675,6 +1675,7 @@ static void rtl_pci_deinit(struct ieee80211_hw *hw)
  
--		dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
-+		if (dm->cached_dc_state)
-+			dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
- 
- 		amdgpu_dm_commit_zero_streams(dm->dc);
- 
-@@ -5396,7 +5397,8 @@ static void create_eml_sink(struct amdgpu_dm_connector *aconnector)
- 		aconnector->dc_sink = aconnector->dc_link->local_sink ?
- 		aconnector->dc_link->local_sink :
- 		aconnector->dc_em_sink;
--		dc_sink_retain(aconnector->dc_sink);
-+		if (aconnector->dc_sink)
-+			dc_sink_retain(aconnector->dc_sink);
- 	}
+ 	synchronize_irq(rtlpci->pdev->irq);
+ 	tasklet_kill(&rtlpriv->works.irq_tasklet);
++	tasklet_kill(&rtlpriv->works.irq_prepare_bcn_tasklet);
+ 	cancel_work_sync(&rtlpriv->works.lps_change_work);
  }
- 
-@@ -6575,7 +6577,8 @@ static int amdgpu_dm_connector_get_modes(struct drm_connector *connector)
- 				drm_add_modes_noedid(connector, 640, 480);
- 	} else {
- 		amdgpu_dm_connector_ddc_get_modes(connector, edid);
--		amdgpu_dm_connector_add_common_modes(encoder, connector);
-+		if (encoder)
-+			amdgpu_dm_connector_add_common_modes(encoder, connector);
- 	}
- 	amdgpu_dm_fbc_init(connector);
  
 -- 
 2.53.0
