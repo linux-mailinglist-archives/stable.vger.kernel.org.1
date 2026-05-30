@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-257171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IYOCRIYG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257171-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:10 +0200
+	id 8KmAEj0WG2rJ/AgAu9opvQ
+	(envelope-from <stable+bounces-257172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:54:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8069160EC42
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C72A60E931
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9C6930766C7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:54:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E08F7300EDA9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9953933F5A3;
-	Sat, 30 May 2026 16:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399773438AE;
+	Sat, 30 May 2026 16:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xI4zmuSD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VP8Ih9vx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4BC332EA7;
-	Sat, 30 May 2026 16:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C4932D42B;
+	Sat, 30 May 2026 16:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160054; cv=none; b=uKzKuVJylq/ZxvOaMQudRBM60kLsmq1sBmWK0mtPPBNqupYuvdtB33loUTS4IyKH36MgHljTs39RSWji3NOyqpbiN7LsVp0bCtBJacZYdsHAJpQMlOIXvIBwYCNxypoEj/HphMDU3z4d9mQcKBL3TSvYSPIx5jQ/lTxjSqNjTBI=
+	t=1780160058; cv=none; b=QpswiH1t9fZnHfXdrb7z2jy8ugITrb8ldpwuZtGQabQY/mM5JfBLZNxm/cG1UWFpH3426fauk3aCne8ckhf8gBS7enIpsRtr6fR0tK1w0jwZmAsZXhKFYLuLh2zkpxhoTSr2xC8cn0ndJDTJkUtz/3FOZSaGl1jv9UyR+sYKIvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160054; c=relaxed/simple;
-	bh=yDlkcbduB/TbLVesHQfgNqgIbztINq9GmJO+9+R4LtQ=;
+	s=arc-20240116; t=1780160058; c=relaxed/simple;
+	bh=9xVsm3eT0Xk9tlBw9sc2OVazhuLtfa7t39UY7pwJYSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDBpHhK30SdKkfqZg1FtK3rU6Cps2+apeLGP7RkY+nd8mFIodihrUenFesj4OxkchHyB+LEa0cOMCW0/qRAzAoO0fo46Hma31aXJ67a4uc/IX2M+NyMAq8N5ogANrenn/qMhNWpdmZj13/dETEC/vsc7DQCvIHdyMgRiROIlXSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xI4zmuSD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8CE1F00893;
-	Sat, 30 May 2026 16:54:12 +0000 (UTC)
+	 MIME-Version; b=RzBniG4qWEIpSEkY9Y6Sxkq7hBCzOvGgxP6Ipe8ffES2ZK/UJLsZSsH1lvp2P0FyhVMrz2eolqOirdxvO9Kxbpn8MP7/FpVj5vvJt/yAzzu9tD00BZLGZWImsKm2SnanAEb/WKBp/WMbiS+bSiIYHvN8C7AkOq32UT2gc9CECMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VP8Ih9vx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3E21F00893;
+	Sat, 30 May 2026 16:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160053;
-	bh=yUz9Hb5/yf0x3CGXNrKZPRfiOHc7ZTBLIftANWr3Jgc=;
+	s=korg; t=1780160057;
+	bh=FN8tF3vptSxc7JnXoNCfwyME4+xaeGAhrU9lPtnb4pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xI4zmuSDeJSphpucywtBofjybKHKY8i4nk9QAYxTLADTqpkWxCUezF1Dvh/S9K55o
-	 yEBnIK0STzOlfLMTP6qPR2D1aul+tKpShMIW2WlHI+mmuvjtcN7a/wEXWI50qAYF4v
-	 xWtUmY8M3cmE8weAPksYtjvkkvklbe8Gfp1S3p1Q=
+	b=VP8Ih9vxMD+6GgLK8VBly1FzWKYgnW7NdTQc5amDIxvCXtv5/xQ+XevMKKRLGLBcp
+	 1A6QSxXlXK5fxUrlCN/RIMxDbPhgdxdmqzAhiPMvIbKwDj77KI6u6ZQVWqhv9RZA3k
+	 4gE08Y1BEq15P6SbNvAMOTIcYpQNq3EJh2expXsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Robert Beckett <bob.beckett@collabora.com>,
 	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.1 199/969] nvme-pci: add NVME_QUIRK_DISABLE_WRITE_ZEROES for Kingston OM3SGP4
-Date: Sat, 30 May 2026 17:55:23 +0200
-Message-ID: <20260530160305.973465093@linuxfoundation.org>
+Subject: [PATCH 6.1 200/969] nvme: respect NVME_QUIRK_DISABLE_WRITE_ZEROES when wzsl is set
+Date: Sat, 30 May 2026 17:55:24 +0200
+Message-ID: <20260530160306.000266058@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -68,18 +68,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257171-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257172-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -89,7 +89,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8069160EC42
+X-Rspamd-Queue-Id: 0C72A60E931
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,40 +99,40 @@ X-Rspamd-Server: lfdr
 
 From: Robert Beckett <bob.beckett@collabora.com>
 
-commit a8eebf9699d69987cc49cec4e4fdb4111ab32423 upstream.
+commit 40f0496b617b431f8d2dd94d7f785c1121f8a68a upstream.
 
-The Kingston OM3SGP42048K2-A00 (PCI ID 2646:502f) firmware has a race
-condition when processing concurrent write zeroes and DSM (discard)
-commands, causing spurious "LBA Out of Range" errors and IOMMU page
-faults at address 0x0.
+The NVM Command Set Identify Controller data may report a non-zero
+Write Zeroes Size Limit (wzsl). When present, nvme_init_non_mdts_limits()
+unconditionally overrides max_zeroes_sectors from wzsl, even if
+NVME_QUIRK_DISABLE_WRITE_ZEROES previously set it to zero.
 
-The issue is reliably triggered by running two concurrent mkfs commands
-on different partitions of the same drive, which generates interleaved
-write zeroes and discard operations.
+This effectively re-enables write zeroes for devices that need it
+disabled, defeating the quirk. Several Kingston OM* drives rely on
+this quirk to avoid firmware issues with write zeroes commands.
 
-Disable write zeroes for this device, matching the pattern used for
-other Kingston OM* drives that have similar firmware issues.
+Check for the quirk before applying the wzsl override.
 
+Fixes: 5befc7c26e5a ("nvme: implement non-mdts command limits")
 Cc: stable@vger.kernel.org
 Signed-off-by: Robert Beckett <bob.beckett@collabora.com>
 Assisted-by: claude-opus-4-6-v1
 Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvme/host/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3620,6 +3620,8 @@ static const struct pci_device_id nvme_i
- 		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
- 	{ PCI_DEVICE(0x2646, 0x501E),   /* KINGSTON OM3PGP4xxxxQ OS21011 NVMe SSD */
- 		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
-+	{ PCI_DEVICE(0x2646, 0x502F),   /* KINGSTON OM3SGP4xxxxK NVMe SSD */
-+		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
- 	{ PCI_DEVICE(0x1f40, 0x1202),   /* Netac Technologies Co. NV3000 NVMe SSD */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1f40, 0x5236),   /* Netac Technologies Co. NV7000 NVMe SSD */
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -3188,7 +3188,7 @@ static int nvme_init_non_mdts_limits(str
+ 	if (id->dmrl)
+ 		ctrl->max_discard_segments = id->dmrl;
+ 	ctrl->dmrsl = le32_to_cpu(id->dmrsl);
+-	if (id->wzsl)
++	if (id->wzsl && !(ctrl->quirks & NVME_QUIRK_DISABLE_WRITE_ZEROES))
+ 		ctrl->max_zeroes_sectors = nvme_mps_to_sectors(ctrl, id->wzsl);
+ 
+ free_data:
 
 
 
