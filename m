@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258957-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WExCBckdG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257585-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:33 +0200
+	id 0KnLLectG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258957-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8E660FA9E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E7361207B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9DB713010BB4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:18:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 49D3E3008FC9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6096334695;
-	Sat, 30 May 2026 17:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CCE33E36A;
+	Sat, 30 May 2026 18:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="keteOori"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJHj3Q/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE17C30E829;
-	Sat, 30 May 2026 17:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4361E2EF652;
+	Sat, 30 May 2026 18:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161492; cv=none; b=j+x9OfLrpLyjxb1i+UBAjbp0EYc9aoMDeAEKzaidInCBQ2iaG3yg/tNzri1eP3++1qrbDOpEZsRsRILAbVSfDNv1eDzzWUexFThj/zpGmXxqtk8oVPToMmc/94EQJJ3indpLWZNE+0d9Ath65wp3E+SFczxjN6PBq2sxgElQGEE=
+	t=1780166113; cv=none; b=tjU+5NdpeXt87V3Yho3LG31bdG/YlX44ZYt38Dv09eH/ONgBrlh3WL569ba+BbaoB5rk0mmxknpjXg98h57jCF1j6AiaGwmtEwMQw7Z7laWbxHgollbcEZ3VZLnbI16umqMVRNnvcPaLPxKwv/vS46cgBbXiV6SgnW+FlZ2AGBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161492; c=relaxed/simple;
-	bh=DKHSCYwHwZRIwdRWD7HOxqCvlt00GcBv7uBNdMhn6tQ=;
+	s=arc-20240116; t=1780166113; c=relaxed/simple;
+	bh=vlm829tCfVfZ/avFjur2nQ/irr6Cs8d178bs2LWzKbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n9wYUjSEdW2eAxSXWtn6ZJZj4LOKQejodrm8FM953H57KRBeAWsWYAcE/iAg19VybuBB9bLg9u0Vgc10U9vZGuIR3JsD7L24M8JCbG9vSjzX6DP/ntkYGivFeLK32ya6NCBvFY7QlyYnHwZ7d0xUyxrUQUs6Iv0T5JiM9VyiYCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=keteOori; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E211F00893;
-	Sat, 30 May 2026 17:18:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j6t9gom/BuxBgwv4YGDmCslMUL7hPk8a4vVQ3JQa0FhsMOiX13oehOsEWsYVgJiYzsCgkRlbN8luqaSlQ+ZmVNVQHy7DfyS3oXjGYSnXj4ja2N17whUNdrBVeDPeuI79vdcSdjprq3BsDsOtG6rgTAd7uItIggfD9fOwqLCeqUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJHj3Q/Y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E0E1F00893;
+	Sat, 30 May 2026 18:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161491;
-	bh=7mztmAQjvCDzaE+TNyX3EWpiCtzVumCR+WkRm9Cxg64=;
+	s=korg; t=1780166112;
+	bh=GBSyGFi+7T3pGhUqxYs1beEFUv65TF5S7iehGBPqbsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=keteOoriLKb+WrzcNIwED9jNYg/lyNPUA3+Mg790d2dcGVti/A9tBqirZbWBpYbn8
-	 FagFSC3tStdJ1aU2/UnqxA2fudZOACF6Kgx++Ed9OqsKIplAqCdmaNXdmWwaAINHeL
-	 w9SKw8ludgprNdNdTdsmPW4QoZbayqzTR1QtTvmU=
+	b=MJHj3Q/Yf3pDNK4Jg1XMbOc2zw4Q+hJLdnxQJsJA0H5UAE/G0DbVymrSMmHN5oppp
+	 u7tgGZWnkFPvac37PyOVFyZmSc9erU3qOtDkoXraBmsv1snNinDc248jyF0EUx/Usy
+	 7N6I+YdgCDSvtdEEEAIY7iJMMFUXWNM+DNKVBc7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 632/969] perf expr: Return -EINVAL for syntax error in expr__find_ids()
-Date: Sat, 30 May 2026 18:02:36 +0200
-Message-ID: <20260530160317.903098961@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	"John B. Moore" <jbmoore61@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 276/589] drm/amdgpu/gfx9: drop unnecessary 64-bit fence flag check in KIQ
+Date: Sat, 30 May 2026 18:02:37 +0200
+Message-ID: <20260530160232.223477785@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +63,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257585-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258957-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9D8E660FA9E
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B7E7361207B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: John B. Moore <jbmoore61@gmail.com>
 
-[ Upstream commit 3a61fd866ef9aaa1d3158b460f852b74a2df07f4 ]
+commit 7bbfb2559bcec39d1a4e1182d931a2046112c352 upstream.
 
-expr__find_ids() propagates the parser return value directly.  For syntax
-errors, the parser can return a positive value, but callers treat it as
-success, e.g., for below case on Arm64 platform:
+Remove the BUG_ON(flags & AMDGPU_FENCE_FLAG_64BIT) assertion from
+gfx_v9_0_ring_emit_fence_kiq().  The KIQ hardware supports 64-bit
+fence writes; the 32-bit writeback address constraint is an
+upper-layer convention, not a hardware limitation.  The check serves
+no purpose and should not be present.
 
-  metric expr 100 * (STALL_SLOT_BACKEND / (CPU_CYCLES * #slots) - BR_MIS_PRED * 3 / CPU_CYCLES) for backend_bound
-  parsing metric: 100 * (STALL_SLOT_BACKEND / (CPU_CYCLES * #slots) - BR_MIS_PRED * 3 / CPU_CYCLES)
-  Failure to read '#slots' literal: #slots = nan
-  syntax error
+Found by code inspection while investigating related BUG_ON
+assertions in the GFX and compute ring emission paths.
 
-Convert positive parser returns in expr__find_ids() to -EINVAL, as a
-result, the error value will be respected by callers.
-
-Before:
-
-  perf stat -C 5
-  Failure to read '#slots'Failure to read '#slots'Failure to read '#slots'Failure to read '#slots'Segmentation fault
-
-After:
-
-  perf stat -C 5
-  Failure to read '#slots'Cannot find metric or group `Default'
-
-Fixes: ded80bda8bc9 ("perf expr: Migrate expr ids table to a hashmap")
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: John B. Moore <jbmoore61@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1b1101a46a426bb4328116bb5273c326a2780389)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/expr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tools/perf/util/expr.c b/tools/perf/util/expr.c
-index aaacf514dc09c..2afd561a7aab9 100644
---- a/tools/perf/util/expr.c
-+++ b/tools/perf/util/expr.c
-@@ -380,7 +380,8 @@ int expr__find_ids(const char *expr, const char *one,
- 	if (one)
- 		expr__del_id(ctx, one);
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -5433,9 +5433,6 @@ static void gfx_v9_0_ring_emit_fence_kiq
+ {
+ 	struct amdgpu_device *adev = ring->adev;
  
--	return ret;
-+	/* A positive value means syntax error, convert to -EINVAL */
-+	return ret > 0 ? -EINVAL : ret;
- }
- 
- double expr_id_data__value(const struct expr_id_data *data)
--- 
-2.53.0
-
+-	/* we only allocate 32bit for each seq wb address */
+-	BUG_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
+-
+ 	/* write fence seq to the "addr" */
+ 	amdgpu_ring_write(ring, PACKET3(PACKET3_WRITE_DATA, 3));
+ 	amdgpu_ring_write(ring, (WRITE_DATA_ENGINE_SEL(0) |
 
 
 
