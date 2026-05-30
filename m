@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-257800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBc+KQ4fG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257800-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:58 +0200
+	id cOyLF94wG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A003B60FDBE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23790612842
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AA26E300515C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:30:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 69190301913F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271053AB285;
-	Sat, 30 May 2026 17:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6ACB231A21;
+	Sat, 30 May 2026 18:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwDxKloV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwEccew6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27213ACF17;
-	Sat, 30 May 2026 17:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1E5137750;
+	Sat, 30 May 2026 18:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162213; cv=none; b=XGuIG/eN62xH3wWnI9//Gf0f1OHKA0oYsNqlsokVuxvWCQ+EGpMlFMSZo4A2Sb2lfpaG7DS/o0+xT5+YKZjvHE1QlD+eeM/GHSzo0gkCv/K4KcIJ8hCCkuu1yhpgEpeCvu5sBUnyG3XmW7WJivev+tKtW/dCa/rpITxVLzWINxU=
+	t=1780166874; cv=none; b=ipeBfBH0etxyqcEdXj4eIDZK3kJd4OzJABfHqFtRAXKWHiLG/02JQs6avEXYK72wN0h6aILXatQvRqkyT04HVMKmISI5OlYrEuvzht1Gw2U2bH0kGVd9yn4IDR35Dqwfn7fqOj2qnA7Lr+4TTeeSuXswAjsQV3jq1QlQSLq30EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162213; c=relaxed/simple;
-	bh=W7Kg75O7H74qMZI2PK/d6ql1pGS3a0AW3zIFr1LcEbY=;
+	s=arc-20240116; t=1780166874; c=relaxed/simple;
+	bh=T853UM8fa0pecTD/3DtrJe5j+TTRjs9IPpLBryC2mHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MSxhXrxxjAmOZq21YrCHySDrh6nQqCAANTWr3NoOPb4fEDoJFgxHReRwfKdNgn1GJ3x3sVdJzAzyj8NPKeRcPv0CwQ5NUI6RkGZv/Zkk0uiz0g9USMJS1StdiOOFfu7Wpxixg4MsAb1SiGl2O7HnuyI3GftclQ5gANF2UszIPQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwDxKloV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD671F00893;
-	Sat, 30 May 2026 17:30:11 +0000 (UTC)
+	 MIME-Version; b=tQFr726Du5w+KXPdWjjJ6pqCfHEyg08LCE3zhHio0pmvyKPi0SJnt8jeCzblKocJBDMSaC+8e18D5oTHJ1orepqbO/X1u2STDiun/oGROYoAgF820nUVjcU0sGHIMsndAhaOgcFfJzlOsP9fVwhyftmG2zsDqA4sq6IDzP3+JSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwEccew6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8DB1F00893;
+	Sat, 30 May 2026 18:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162212;
-	bh=bwmk/SYxaN5Kh6NllNlmW5xu95uL1rmsv/+K7oxPssI=;
+	s=korg; t=1780166873;
+	bh=ykT75Mnyo2iz3KY1a6SUiqTAJOSsmVPm2y6nqrP2avA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xwDxKloVYC5jBz8unzIa9lgYok/x+hsfsStZkXdQlk9quUFNfNlfG01f0h09hQiuQ
-	 SZPSfDExMq44+9dXQhl+G24LaLC4IXgsNaGH9RqWrfNRjLsjcrp3SmnPjh0ZYFbfoj
-	 EIqwQoRZzY2Nh76c64uxmDUazUJ+dsPMNEznznwI=
+	b=RwEccew688qmkAwosbKhMZmAqtO/mfouWYJsQyKBeoJjGTzWd2kpVrctNv2BSCOMA
+	 iPkWN1/VxvopM8HXNwvxqLJq6tu+GlyzniBB/e8wsD7SZWNGOeBGRH9KWh4JFmb3rn
+	 pf/mX4kHPQMolPDZe/aHsgnpTazS5U1vUnizPdMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Nan Li <tonanli66@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.1 854/969] netfilter: ipset: stop hash:* range iteration at end
+	Yannick Vignon <yannick.vignon@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 497/589] net/sched: taprio: Fix init procedure
 Date: Sat, 30 May 2026 18:06:18 +0200
-Message-ID: <20260530160324.247400127@linuxfoundation.org>
+Message-ID: <20260530160237.681665893@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,163 +68,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
-	TAGGED_FROM(0.00)[bounces-257800-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-259180-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: A003B60FDBE
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nxp.com:email]
+X-Rspamd-Queue-Id: 23790612842
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nan Li <tonanli66@gmail.com>
+From: Yannick Vignon <yannick.vignon@nxp.com>
 
-commit 0d3a282ab5f165fc207ff49ea5b6ad8f54616bd6 upstream.
+[ Upstream commit ebca25ead0711729e0aeeec45062e7ac4df3e158 ]
 
-The following hash set variants:
+Commit 13511704f8d759 ("net: taprio offload: enforce qdisc to netdev queue mapping")
+resulted in duplicate entries in the qdisc hash.
+While this did not impact the overall operation of the qdisc and taprio
+code paths, it did result in an infinite loop when dumping the qdisc
+properties, at least on one target (NXP LS1028 ARDB).
+Removing the duplicate call to qdisc_hash_add() solves the problem.
 
-hash:ip,mark
-hash:ip,port
-hash:ip,port,ip
-hash:ip,port,net
-
-iterate IPv4 ranges with a 32-bit iterator.
-
-The iterator must stop once the last address in the requested range has
-been processed. Advancing it once more can move the traversal state past
-the end of the request, so a later retry may continue from an unintended
-position.
-
-Handle the iterator increment explicitly at the end of the loop and stop
-once the upper bound has been processed. This keeps the existing retry
-behaviour intact for valid ranges while preventing traversal from
-continuing past the original boundary.
-
-Fixes: 48596a8ddc46 ("netfilter: ipset: Fix adding an IPv4 range containing more than 2^31 addresses")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Nan Li <tonanli66@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 13511704f8d759 ("net: taprio offload: enforce qdisc to netdev queue mapping")
+Signed-off-by: Yannick Vignon <yannick.vignon@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_hash_ipmark.c    |    6 +++++-
- net/netfilter/ipset/ip_set_hash_ipport.c    |    5 ++++-
- net/netfilter/ipset/ip_set_hash_ipportip.c  |    5 ++++-
- net/netfilter/ipset/ip_set_hash_ipportnet.c |    5 ++++-
- 4 files changed, 17 insertions(+), 4 deletions(-)
+ net/sched/sch_taprio.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/net/netfilter/ipset/ip_set_hash_ipmark.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipmark.c
-@@ -150,7 +150,7 @@ hash_ipmark4_uadt(struct ip_set *set, st
- 
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++, i++) {
-+	for (; ip <= ip_to; i++) {
- 		e.ip = htonl(ip);
- 		if (i > IPSET_MAX_RANGE) {
- 			hash_ipmark4_data_next(&h->next, &e);
-@@ -162,6 +162,10 @@ hash_ipmark4_uadt(struct ip_set *set, st
- 			return ret;
- 
- 		ret = 0;
-+
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
---- a/net/netfilter/ipset/ip_set_hash_ipport.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipport.c
-@@ -175,7 +175,7 @@ hash_ipport4_uadt(struct ip_set *set, st
- 
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		p = retried && ip == ntohl(h->next.ip) ? ntohs(h->next.port)
- 						       : port;
- 		for (; p <= port_to; p++, i++) {
-@@ -192,6 +192,9 @@ hash_ipport4_uadt(struct ip_set *set, st
- 
- 			ret = 0;
- 		}
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
---- a/net/netfilter/ipset/ip_set_hash_ipportip.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipportip.c
-@@ -182,7 +182,7 @@ hash_ipportip4_uadt(struct ip_set *set,
- 
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		p = retried && ip == ntohl(h->next.ip) ? ntohs(h->next.port)
- 						       : port;
- 		for (; p <= port_to; p++, i++) {
-@@ -199,6 +199,9 @@ hash_ipportip4_uadt(struct ip_set *set,
- 
- 			ret = 0;
- 		}
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
---- a/net/netfilter/ipset/ip_set_hash_ipportnet.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipportnet.c
-@@ -274,7 +274,7 @@ hash_ipportnet4_uadt(struct ip_set *set,
- 		p = port;
- 		ip2 = ip2_from;
- 	}
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		e.ip = htonl(ip);
- 		for (; p <= port_to; p++) {
- 			e.port = htons(p);
-@@ -298,6 +298,9 @@ hash_ipportnet4_uadt(struct ip_set *set,
- 			ip2 = ip2_from;
- 		}
- 		p = port;
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 85812bad227bc..50f430280337d 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -1723,8 +1723,6 @@ static void taprio_attach(struct Qdisc *sch)
+ 		if (FULL_OFFLOAD_IS_ENABLED(q->flags)) {
+ 			qdisc->flags |= TCQ_F_ONETXQUEUE | TCQ_F_NOPARENT;
+ 			old = dev_graft_qdisc(qdisc->dev_queue, qdisc);
+-			if (ntx < dev->real_num_tx_queues)
+-				qdisc_hash_add(qdisc, false);
+ 		} else {
+ 			old = dev_graft_qdisc(qdisc->dev_queue, sch);
+ 			qdisc_refcount_inc(sch);
+-- 
+2.53.0
+
 
 
 
