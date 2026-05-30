@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-257846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258619-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OIGBJKUgG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257846-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:45 +0200
+	id cAxKL08qG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258619-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBBCC61016C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DECE6117F8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6B99305814A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 02412304CFDF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944263403F9;
-	Sat, 30 May 2026 17:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ABC832F770;
+	Sat, 30 May 2026 18:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6Z24AB0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdWAvnZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68286329E46;
-	Sat, 30 May 2026 17:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5715C241C8C;
+	Sat, 30 May 2026 18:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162367; cv=none; b=jOqJTMkOois6MxX47OG1jrMxiN1Plft3/FBHpmJ4GR1kuiBzyhyM9sbx7XoKqjYVzmOHwRbB+0AEuWd4QAoZbe9wVwdvlQqVjQNTE4CCJKVxKb7E7G4xCjmwsBsO9teUpEv7muH6oWMHffXvCemDzlZPOlYhUaiyBodMiHum/TQ=
+	t=1780164961; cv=none; b=NKlyT+nm4ieyW9Fn71WJ6M9fwdIiRO9tyh3YNEzlmxuvaTY9Q4v8LEuaKkinHtsfyPSZAUeyNcrfZKzEu4XbswtcCVDRyPfK37cWsqGsTyZmlpV6BSTcmQnC1AlU6IYt0+uO7PWH5dPx9J+DYcgLdtAspAsB2HduR8o0QTkgrDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162367; c=relaxed/simple;
-	bh=sD3Z8j/7pKv5OlqXOD3kSzRoGJ1AwSDnBmdjyyhy3Fk=;
+	s=arc-20240116; t=1780164961; c=relaxed/simple;
+	bh=gW9/wlLBlkLiTGYOPkRtdhT1hvhMKj6CaCmUdvJ/hks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eGcctnsjvRv4ix36cwrNo3ivWuz5+/a6pbmF/+YY96yYV4vTiZ9Z+ITcYRicZx0p1XncFxccr861ZViRpcQ6yC+mzBUbH3H+leVFp3H4OmC1A4RCIXQErAv3dyGn0iaOrKCVYKAYP5Ujauu6vrScy+F1ZIE6Y0Uv4/7oj1B+uJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6Z24AB0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740711F00893;
-	Sat, 30 May 2026 17:32:45 +0000 (UTC)
+	 MIME-Version; b=XxfNhhNCTCheQWWqN6zxjycQqF9zLPd+Dut5J/xqd8XkcI9ZuNXlk1cnjb3suzTORgTl86Tx5n2G9807EHAvdXNu4NgX2zNYpcF/7suy3gES+345POX0EnGEA4fvyxQngUFMbk2VTWGZeGqFjg6qGGfW76Ao174tlZ5v66WLiAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdWAvnZV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD8C1F00893;
+	Sat, 30 May 2026 18:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162366;
-	bh=E3IN9q+zKKp5elq8/CN3i3zDykyAW+B6H+plyPJU0ps=;
+	s=korg; t=1780164960;
+	bh=coQ6h4S/ps+f/XRM8RyKwxYRCezcPgALEDbnzvORtIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h6Z24AB0w38ePbMoL5rGoK8UcKrwXYfqIWKEd2uHnbZgEi6M038xCb9Scy6udR7Db
-	 NAHUkXzal/CaEBDd988Eedo43ZqdMGGTc4zMPXXjDi+SV6Mhy/r4oPq6OISHUX3lo1
-	 jyKuQD5SGx+/1iuNw+liAD6cwx8kn6uZwY92kHyE=
+	b=mdWAvnZV9XALMd531nxfSG3+LrSLzfrxGfGjjoJEvyUyYKHm5TAhX03De7GP8MIhU
+	 8dea739wIMgrxRdxPFIjRn3sShZHBg87nMMgvPC5tRw+NFTWjAceH3TzITxP4RPuE9
+	 Kp6qRWBHlpdB3i9RG4rzT5JCQf7bPMOQDNngPmoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 898/969] hwmon: (pmbus/adm1266) reject short block-read responses in the GPIO accessors
-Date: Sat, 30 May 2026 18:07:02 +0200
-Message-ID: <20260530160325.504724298@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruide Cao <caoruide123@gmail.com>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.15 709/776] batman-adv: fix fragment reassembly length accounting
+Date: Sat, 30 May 2026 18:07:03 +0200
+Message-ID: <20260530160258.163167892@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,105 +72,167 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258619-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257846-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email]
-X-Rspamd-Queue-Id: EBBCC61016C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5DECE6117F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Ruide Cao <caoruide123@gmail.com>
 
-commit a7232f68c43ca62f545049b7f5fbfc75137b843b upstream.
+commit 9cd3f16c320bfdadd4509358122368deb56a5741 upstream.
 
-adm1266_gpio_get() and adm1266_gpio_get_multiple() both compose the
-pin-status word as
+batman-adv keeps a running payload length for queued fragments and uses it
+to validate a fragment chain before reassembly.
 
-	pins_status = read_buf[0] + (read_buf[1] << 8);
+That accounting currently allows the accumulated fragment length to be
+truncated during updates. As a result, malformed fragment chains can
+bypass the intended validation and drive reassembly with inconsistent
+length state, leading to a local denial of service.
 
-right after i2c_smbus_read_block_data(), guarding only against an
-error return.  A well-behaved device returns 2 bytes for
-GPIO_STATUS/PDIO_STATUS, but the helper happily reports a 0- or
-1-byte response too.  If the device returns 0 bytes, both read_buf
-slots are uninitialized stack memory; if it returns 1 byte, read_buf[1]
-is.
+Fix the accounting by storing the accumulated length in a length-typed
+field and rejecting update overflows before the existing validation logic
+runs.
 
-The composed value then flows through set_bit() into the caller's
-*bits in adm1266_gpio_get_multiple(), or into the return value of
-adm1266_gpio_get(), and ends up in userspace via gpiolib (sysfs and
-the char-dev ioctls).  That leaks a few bits of kernel stack per
-request on any device whose firmware glitch, bus error, or hostile
-slave produces a short block-read response.
+The fix was verified against the original reproducer and against valid
+fragment reassembly paths.
 
-Add the missing length check to both call sites and surface a short
-response as -EIO.
-
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-3-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruide Cao <caoruide123@gmail.com>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/batman-adv/fragmentation.c |   23 +++++++++++++++++------
+ net/batman-adv/types.h         |    2 +-
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -176,6 +176,8 @@ static int adm1266_gpio_get(struct gpio_
- 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
- 	if (ret < 0)
- 		return ret;
-+	if (ret < 2)
-+		return -EIO;
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -17,6 +17,7 @@
+ #include <linux/lockdep.h>
+ #include <linux/minmax.h>
+ #include <linux/netdevice.h>
++#include <linux/overflow.h>
+ #include <linux/skbuff.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+@@ -81,9 +82,9 @@ void batadv_frag_purge_orig(struct batad
+  *
+  * Return: the maximum size of payload that can be fragmented.
+  */
+-static int batadv_frag_size_limit(void)
++static size_t batadv_frag_size_limit(void)
+ {
+-	int limit = BATADV_FRAG_MAX_FRAG_SIZE;
++	size_t limit = BATADV_FRAG_MAX_FRAG_SIZE;
  
- 	pins_status = read_buf[0] + (read_buf[1] << 8);
- 	if (offset < ADM1266_GPIO_NR)
-@@ -196,6 +198,8 @@ static int adm1266_gpio_get_multiple(str
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
- 	if (ret < 0)
- 		return ret;
-+	if (ret < 2)
-+		return -EIO;
+ 	limit -= sizeof(struct batadv_frag_packet);
+ 	limit *= BATADV_FRAG_MAX_FRAGMENTS;
+@@ -144,7 +145,9 @@ static bool batadv_frag_insert_packet(st
+ 	struct batadv_frag_packet *frag_packet;
+ 	u8 bucket;
+ 	u16 seqno, hdr_size = sizeof(struct batadv_frag_packet);
++	bool overflow = false;
+ 	bool ret = false;
++	size_t data_len;
  
- 	status = read_buf[0] + (read_buf[1] << 8);
+ 	/* Linearize packet to avoid linearizing 16 packets in a row when doing
+ 	 * the later merge. Non-linear merge should be added to remove this
+@@ -154,6 +157,7 @@ static bool batadv_frag_insert_packet(st
+ 		goto err;
  
-@@ -208,6 +212,8 @@ static int adm1266_gpio_get_multiple(str
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, read_buf);
- 	if (ret < 0)
- 		return ret;
-+	if (ret < 2)
-+		return -EIO;
+ 	frag_packet = (struct batadv_frag_packet *)skb->data;
++	data_len = skb->len - hdr_size;
+ 	seqno = ntohs(frag_packet->seqno);
+ 	bucket = seqno % BATADV_FRAG_BUFFER_COUNT;
  
- 	status = read_buf[0] + (read_buf[1] << 8);
+@@ -172,7 +176,7 @@ static bool batadv_frag_insert_packet(st
+ 	spin_lock_bh(&chain->lock);
+ 	if (batadv_frag_init_chain(chain, seqno)) {
+ 		hlist_add_head(&frag_entry_new->list, &chain->fragment_list);
+-		chain->size = skb->len - hdr_size;
++		chain->size = data_len;
+ 		chain->timestamp = jiffies;
+ 		chain->total_size = ntohs(frag_packet->total_size);
+ 		ret = true;
+@@ -189,7 +193,11 @@ static bool batadv_frag_insert_packet(st
+ 		if (frag_entry_curr->no < frag_entry_new->no) {
+ 			hlist_add_before(&frag_entry_new->list,
+ 					 &frag_entry_curr->list);
+-			chain->size += skb->len - hdr_size;
++
++			if (check_add_overflow(chain->size, data_len,
++					       &chain->size))
++				overflow = true;
++
+ 			chain->timestamp = jiffies;
+ 			ret = true;
+ 			goto out;
+@@ -202,13 +210,16 @@ static bool batadv_frag_insert_packet(st
+ 	/* Reached the end of the list, so insert after 'frag_entry_last'. */
+ 	if (likely(frag_entry_last)) {
+ 		hlist_add_behind(&frag_entry_new->list, &frag_entry_last->list);
+-		chain->size += skb->len - hdr_size;
++
++		if (check_add_overflow(chain->size, data_len, &chain->size))
++			overflow = true;
++
+ 		chain->timestamp = jiffies;
+ 		ret = true;
+ 	}
  
+ out:
+-	if (chain->size > batadv_frag_size_limit() ||
++	if (overflow || chain->size > batadv_frag_size_limit() ||
+ 	    chain->total_size != ntohs(frag_packet->total_size) ||
+ 	    chain->total_size > batadv_frag_size_limit()) {
+ 		/* Clear chain if total size of either the list or the packet
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -294,7 +294,7 @@ struct batadv_frag_table_entry {
+ 	u16 seqno;
+ 
+ 	/** @size: accumulated size of packets in list */
+-	u16 size;
++	size_t size;
+ 
+ 	/** @total_size: expected size of the assembled packet */
+ 	u16 total_size;
 
 
 
