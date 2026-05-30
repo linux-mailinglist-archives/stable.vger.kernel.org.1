@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258591-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uH5TKh0gG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:29 +0200
+	id 0J0oClwpG2rg/ggAu9opvQ
+	(envelope-from <stable+bounces-258591-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F380610023
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B805561160B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B3E43089768
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AEC813019FDE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A301A2E7379;
-	Sat, 30 May 2026 17:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D1939A7FE;
+	Sat, 30 May 2026 18:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6wlFaTj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ck3sArKe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2BE3AA182;
-	Sat, 30 May 2026 17:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50DF31F98D;
+	Sat, 30 May 2026 18:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162265; cv=none; b=QQwUkTiZ5fQfe0pxN0f1PvmIpSILELZK/vtcrziM3gJI9TfbX3HsUoxQA8MA2MS3dWnYz2Vk3ZLY/E2pc1dA3ULZrXUrDqKAuxH4Ue62wBwc74KLln08PETL+QY2V/whXpdp2DbnSxrIL5B2HPEP1mDCjyjCkszqhtE01cY5Rzc=
+	t=1780164862; cv=none; b=qPWkTItPI7ycViAzjDHcCLOCinqPsgOdxq4iP0nhpVUYXQ+Cf9tzGfGsHNshpTRs8GFPsDmP866llUvnabCE+URW+/RHAtnKz9Eqw05nSCL4/j/IkmMqz7dUKSH4Pb6+rC9QKpAmGff2Rcj2eG6UAZCMFgFPENjdRQOANuzXefc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162265; c=relaxed/simple;
-	bh=g43dq6gd9GH/JJhiS6rZshDnZ74e+nKWtJi6YYx4nyY=;
+	s=arc-20240116; t=1780164862; c=relaxed/simple;
+	bh=KixZGPEjJ6YcTMbuwBh7OihgeK5FfAK5A3RmoJ8TF5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hv4lHW5GKA23QZKQCXuHOFgk3CR4FgkA9TWHUL8re1Dm8qLiDqMoBbQmuSVyNzmkzPnaqKJuJpEaa5t9kZMPbTwIKdlAIaqn2fggnZLimT36UmuH4+H37F5b6gDpsnj0bi0TcKFA15a9e8bJjnXtmk4dE//ryURrKPspi6w2HC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6wlFaTj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B4C1F00893;
-	Sat, 30 May 2026 17:31:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D5jfN93gz16mfEueRQTuIROpc7i4IE729mFgYVqouO0T+/g0xT83udnoNKq5lAlcORgrPkYPQH/EAn68lA//BsPeG5Ck5iad+Z8/vSWtgSd/iSuTrlvUTZi5FnU8TsSlDlCPUJNUpMdvFE8zfSRPsE221T9de/F1uVJOKHZiZPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ck3sArKe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090C41F00893;
+	Sat, 30 May 2026 18:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162262;
-	bh=yQDlyMZ9eZgCwQ0tIX+p4ZMBw+DzHrPDJlIFtkhXQzc=;
+	s=korg; t=1780164861;
+	bh=EHDGtsqzF5IsfIqNLacV9KqnuZ4+9xpFLmbmQni9buk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T6wlFaTjIAHRW9dImC2EbDFi9Zs69fs0mHNWvUWoKinXU+dwQOza6/VBLS9WVkA7H
-	 ELN1RiE5B+0XPB3JkIIPbLvYsnArsb2CrCLof9mIFCHrNA7MM7rPxvQB2ldJ+/CT7G
-	 E77A0tfWOKUn09eCUTMqFp0u+m8cTnEszjo86tG0=
+	b=ck3sArKecaa26NiflHZjo+22/LgDnPu8dagOc0O/fERpCvJkEX+qGVMX3ZYAX30WK
+	 gtgIKZjaFBAX5UQwF15gB9nwupGWSLql6ql1uM6FJAEkUWKNudJ2yiF6pE3sn3u6/F
+	 MRVwMgXoEKKDpDhqm8UaAUUOUheU8k/tWzuIlhnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh R <vigneshr@ti.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 870/969] spi: ti-qspi: fix use-after-free after DMA setup failure
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 680/776] ALSA: ua101: Reject too-short USB descriptors
 Date: Sat, 30 May 2026 18:06:34 +0200
-Message-ID: <20260530160324.707413108@linuxfoundation.org>
+Message-ID: <20260530160257.441156573@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258591-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257815-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ti.com:email,sashiko.dev:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0F380610023
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,suse.de:email]
+X-Rspamd-Queue-Id: B805561160B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit ea6ec3343e05f7937a53eb6d7617b3abdb4abc19 upstream.
+commit b59d5c51bb328a60749b4dd5fe7e649bfb4089b4 upstream.
 
-The driver falls back to PIO mode if DMA setup fails during probe.
+find_format_descriptor() walks the class-specific interface extras by
+advancing with bLength. It rejects descriptors that extend past the
+remaining buffer, but it does not reject descriptor lengths smaller than
+a USB descriptor header.
 
-Make sure to clear the DMA channel pointer also if buffer allocation
-fails to avoid passing a pointer to the released channel to the DMA
-engine (or trying to free the channel a second time on late probe errors
-or driver unbind).
+Reject too-short descriptors before using bLength to advance the local
+scan. This keeps the UA-101 parser robust against malformed descriptor
+data and matches the usual USB descriptor walking rules.
 
-This issue was flagged by Sashiko when reviewing a devres allocation
-conversion patch.
-
-Fixes: c687c46e9e45 ("spi: spi-ti-qspi: Use bounce buffer if read buffer is not DMA'ble")
-Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=17
-Cc: stable@vger.kernel.org	# 4.12
-Cc: Vignesh R <vigneshr@ti.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260512074809.915084-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 63978ab3e3e9 ("sound: add Edirol UA-101 support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260519-alsa-ua101-desc-len-v1-1-4307d1a5e054@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-ti-qspi.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/misc/ua101.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -875,6 +875,7 @@ static int ti_qspi_probe(struct platform
- 		dev_err(qspi->dev,
- 			"dma_alloc_coherent failed, using PIO mode\n");
- 		dma_release_channel(qspi->rx_chan);
-+		qspi->rx_chan = NULL;
- 		goto no_dma;
- 	}
- 	master->dma_rx = qspi->rx_chan;
+--- a/sound/usb/misc/ua101.c
++++ b/sound/usb/misc/ua101.c
+@@ -914,8 +914,9 @@ find_format_descriptor(struct usb_interf
+ 		struct uac_format_type_i_discrete_descriptor *desc;
+ 
+ 		desc = (struct uac_format_type_i_discrete_descriptor *)extra;
+-		if (desc->bLength > extralen) {
+-			dev_err(&interface->dev, "descriptor overflow\n");
++		if (desc->bLength < sizeof(struct usb_descriptor_header) ||
++		    desc->bLength > extralen) {
++			dev_err(&interface->dev, "invalid descriptor length\n");
+ 			return NULL;
+ 		}
+ 		if (desc->bLength == UAC_FORMAT_TYPE_I_DISCRETE_DESC_SIZE(1) &&
 
 
 
