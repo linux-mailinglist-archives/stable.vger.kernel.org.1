@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258996-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNnMBWQeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:08 +0200
+	id 2OhbGvQuG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258996-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820F160FC6C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F9F5612306
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF47D30A9906
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:21:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D2E4630373FC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE827340293;
-	Sat, 30 May 2026 17:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B1E33E36A;
+	Sat, 30 May 2026 18:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgpGYGAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0ZIYkxJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CF130E847;
-	Sat, 30 May 2026 17:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDB82E7379;
+	Sat, 30 May 2026 18:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161702; cv=none; b=WdebnypB5QPQ7tazrgzoSx6vZD8kTxf2GdNXR8S4S+SCkan0LpEAtKIAcNhsUADfRyv5s8WtWq62bonQm90CFFIVAacoPtBpd2Smub2d8xp/+8NJCxp6p5NgL+LFsKdibVtneJGb59YInQd3zo4w06mNnSVmfL7Tgvb4bcG02po=
+	t=1780166245; cv=none; b=Zse8KJRedyo4b6rIk9ifdfs3Z/9Xvo6sV0HULRlg5Uzxh3UOJzdY+4S8wXgr6vEzjPOWs3Qde2+Ljdh3y1K1cYRUHVX1pzUo1NwQcXqVsiWnYuHwpQTRZ35uhfgZ724aO9QDImZbqPtEwSaBzGsc0ig2k8ySd06XSO7oaKieUOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161702; c=relaxed/simple;
-	bh=MlkNM0wwhQHVZsYyraD+dwiHZoauqyAip+Cfkg+Zh/4=;
+	s=arc-20240116; t=1780166245; c=relaxed/simple;
+	bh=DW06VCi5ziIEoH+UiQ1/2hXN+UTizdEX9IU3UwoACMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=emapJWfr4gb4PIpKdZQeK6U/uDuN6sui75SuExltAi8FVoOdwRqtoZemCDgD58wsUFqqlokU5E68OeaQM0dqZrvZbFdxVqP1jwTQYlA2e8L6MRgspiOVc+m/6wlkWrcUaPjgAWnqBUZ/WPi/T7fNAc/pM1YxJDV+rLFfJVNvezM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DgpGYGAN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF18D1F00893;
-	Sat, 30 May 2026 17:21:40 +0000 (UTC)
+	 MIME-Version; b=dl6vw+ZRCxQ3inNVq3hOFZhxxv7mTEgnKgvxXtdDEO+zqcKVls5QrxN4C5zKnFJL7uwVpJr3rhg4zfaFMHYU5ssINUTJJLIVKAiZr3lFyglf0K5Eb/hpozyuavTSLO5B6vSEbOOiO9oLfaKoVv+e97NOqr2EsoDf8z71B/5RFC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0ZIYkxJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFED91F00893;
+	Sat, 30 May 2026 18:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161701;
-	bh=7BInkI+tNlcPG4W6MIyM7ULrA4ZWbnR6MA+jmdyJ0Yg=;
+	s=korg; t=1780166244;
+	bh=sh2mjZ6k32nep3jbB3cj4Si/4GYduO3ubS9z40h6dRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DgpGYGANrqSLBzdh37QMQbG5duGOcXPB+SjXd7LpsYft36mA924ppHSEIGBoBvYRt
-	 ZDMEYk2Eim2Op0rq8I7crFPA536mm6qq89vZ1VoeXbq/7sa/TDqodFEF0rx5vjwskh
-	 4zGGn3SYi7Bdntkw9cQm33Af9QDMAya6TLG/glz4=
+	b=S0ZIYkxJ01nLKZanjr+X+7jxDzhVYnQYmvBsddAn9h15lFZtyd4IBhT9cog5zHemM
+	 F1Az2NzXZqjCbd3URm5ZZET3ZGBnm4xYiN//NolnnJO1+Ay/ESQ5Fp6kBBnlg4uwLO
+	 HTqP84kKQpmlrkTsAzpanwx5ns7PaQiunouZ3o3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Vinod Govindapillai <vinod.govindapillai@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 672/969] drm/i915/wm: Verify the correct plane DDB entry
+Subject: [PATCH 5.10 315/589] Bluetooth: L2CAP: Fix printing wrong information if SDU length exceeds MTU
 Date: Sat, 30 May 2026 18:03:16 +0200
-Message-ID: <20260530160319.048682592@linuxfoundation.org>
+Message-ID: <20260530160233.218138728@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257647-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258996-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ursulin.net:email]
-X-Rspamd-Queue-Id: 820F160FC6C
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2F9F5612306
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit a97c88a176b6b8d116f4d3f508f3bd02bc77b462 ]
+[ Upstream commit 15bf35a660eb82a49f8397fc3d3acada8dae13db ]
 
-Actually verify the DDB entry for the plane we're looking
-at instead of always verifying the cursor DDB.
+The code was printing skb->len and sdu_len in the places where it should
+be sdu_len and chan->imtu respectively to match the if conditions.
 
-Fixes: 7d4561722c3b ("drm/i915: Tweak plane ddb allocation tracking")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patch.msgid.link/20260324134843.2364-5-ville.syrjala@linux.intel.com
-Reviewed-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
-(cherry picked from commit f002f7c7439de18117a31ca84dc87a59719c3dd6)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Link: https://lore.kernel.org/linux-bluetooth/20260315132013.75ab40c5@kernel.org/T/#m1418f9c82eeff8510c1beaa21cf53af20db96c06
+Fixes: e1d9a6688986 ("Bluetooth: LE L2CAP: Disconnect if received packet's SDU exceeds IMTU")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/skl_watermark.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bluetooth/l2cap_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/skl_watermark.c b/drivers/gpu/drm/i915/display/skl_watermark.c
-index 2a60aa3fedf82..965d8e762883f 100644
---- a/drivers/gpu/drm/i915/display/skl_watermark.c
-+++ b/drivers/gpu/drm/i915/display/skl_watermark.c
-@@ -3118,8 +3118,8 @@ void intel_wm_state_verify(struct intel_crtc *crtc,
- 		}
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index a6efb5b42f9b3..24ee019c0b696 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -7686,7 +7686,7 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
  
- 		/* DDB */
--		hw_ddb_entry = &hw->ddb[PLANE_CURSOR];
--		sw_ddb_entry = &new_crtc_state->wm.skl.plane_ddb[PLANE_CURSOR];
-+		hw_ddb_entry = &hw->ddb[plane->id];
-+		sw_ddb_entry = &new_crtc_state->wm.skl.plane_ddb[plane->id];
- 
- 		if (!skl_ddb_entry_equal(hw_ddb_entry, sw_ddb_entry)) {
- 			drm_err(&i915->drm,
+ 		if (sdu_len > chan->imtu) {
+ 			BT_ERR("Too big LE L2CAP SDU length: len %u > %u",
+-			       skb->len, sdu_len);
++			       sdu_len, chan->imtu);
+ 			l2cap_send_disconn_req(chan, ECONNRESET);
+ 			err = -EMSGSIZE;
+ 			goto failed;
 -- 
 2.53.0
 
