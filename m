@@ -1,62 +1,66 @@
-Return-Path: <stable+bounces-257405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258784-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBmPINEaG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:53 +0200
+	id +EDAEDktG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258784-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B5860F2F0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD87611EDA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B3B9530309D9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:08:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B29B2302F273
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E8C39B4A6;
-	Sat, 30 May 2026 17:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA99833E36A;
+	Sat, 30 May 2026 18:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jcc9L5tp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFzwBa54"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5920481DD;
-	Sat, 30 May 2026 17:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6301B217704;
+	Sat, 30 May 2026 18:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160884; cv=none; b=C2FWqvzrgWQeAWhG2RGl7fbh/tO43ZVkwzf1wH15sb5GxwT1QGfZ0pKoyi63tdf2bJDg/Utny7iH7bCPLp7Q/8SV5omj9s/g5lPZCYYyUtWURc+qBzSgISGoTTFk4591RJ4WIESR0/BYqIohSepJ04mw0RSqas7AGMAneHiPsKY=
+	t=1780165527; cv=none; b=rK88Wkacd4F6QPX/VUP7aXMM+TJXSA59Ibw2ZU1lkJe/FQxnKXKSovSQAPKLfWDOa0ane4aTDmKCbY+4whEZk/A24H/d7A1yco87ZdYX/zc+gw2AgqDVzn9cEIj4cY9YhmgWF0oJyPFi6wm/uDxzILisvOKw1FAbEkIDywfVhqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160884; c=relaxed/simple;
-	bh=tn3h1sJUhCn7lDMqlgaWJ5td8FuazFl2hqbX2oTRAgc=;
+	s=arc-20240116; t=1780165527; c=relaxed/simple;
+	bh=dY75Bae0KNjbxnrmQi8ffxB9kb53nQc1iJ2VV9vfsHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DpnrSYXsBUb4FWOcW6bwHgX+CUULIFBEjn4onX1+LjXDRbqRWx2OVvJvztwPXnm5JCZwm95fHFKoclQemdFPEQsVEM/xhcep+ydA8Z01OypP6B6AUZpgUh3wLbfrbEdPaXBdSwwi0TfVeb1PcEmYTAbOJR/wvMAtdrUb2Np4VzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jcc9L5tp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220DE1F00893;
-	Sat, 30 May 2026 17:08:02 +0000 (UTC)
+	 MIME-Version; b=b5tu09H9Dcv2/T1tg/GUgH3463MKj/H3ud7UvMAiQiyfzYFoKvNxOsOrMCts48ZBM1NigNOvKReVWGTsRTW0qQntBdfcB613RgDcO03W5uH4poEfl7SNU/hmBYEpBKUcG5kz2j60K6wtzvsPI6bkx9qNFwNrlgTfr9uoiU9T9xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFzwBa54; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92F21F00893;
+	Sat, 30 May 2026 18:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160883;
-	bh=9/NH03LN3qD1Q/plWT1DI1ClQPezutmdXbg52LjRI4U=;
+	s=korg; t=1780165526;
+	bh=lllKGFvNTN4ipEVTBfZrIRVA0jeaCp8jvmClGkmCqkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jcc9L5tps56yKbOw94EZysluNJ6CzboXKw813mRoAVdrSxyFHVf2e8LWgYVI4mZGa
-	 wy0474Ofvm+Wri/hRSM6HdX9JPOz0oLFZYKLGxx3InpcEuE99SvXbB6U7Q8r9zLsfx
-	 I0lfnq3006jkA9emfGm8SWz6Frb5Usdv5TU5H/cE=
+	b=dFzwBa54HMgb8KOB1nFrbxCkBzDt1VRsHjWdpCg1RSgCtyBlRYIhnP4Qv71r7z4WK
+	 xci7WZTxX2yyEG8CEQlnfA2XKDLvE8zMzZ56JEhu0Ot4aTOsuiONpIUYw7cf4AG7K3
+	 U1JzvK2LJmCiUOz+vBMox15Q+2KOBatEToGR1xRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Sun Jian <sun.jian.kdev@gmail.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	syzbot+62c1793956716ea8b28a@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 462/969] bpf: fix end-of-list detection in cgroup_storage_get_next_key()
+Subject: [PATCH 5.10 105/589] ocfs2: fix out-of-bounds write in ocfs2_write_end_inline
 Date: Sat, 30 May 2026 17:59:46 +0200
-Message-ID: <20260530160313.041440988@linuxfoundation.org>
+Message-ID: <20260530160227.503340257@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,79 +76,107 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-258784-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.alibaba.com,syzkaller.appspotmail.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257405-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,62c1793956716ea8b28a];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F1B5860F2F0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: CAD87611EDA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-[ Upstream commit 5828b9e5b272ecff7cf5d345128d3de7324117f7 ]
+[ Upstream commit 7bc5da4842bed3252d26e742213741a4d0ac1b14 ]
 
-list_next_entry() never returns NULL -- when the current element is the
-last entry it wraps to the list head via container_of(). The subsequent
-NULL check is therefore dead code and get_next_key() never returns
--ENOENT for the last element, instead reading storage->key from a bogus
-pointer that aliases internal map fields and copying the result to
-userspace.
+KASAN reports a use-after-free write of 4086 bytes in
+ocfs2_write_end_inline, called from ocfs2_write_end_nolock during a
+copy_file_range splice fallback on a corrupted ocfs2 filesystem mounted on
+a loop device.  The actual bug is an out-of-bounds write past the inode
+block buffer, not a true use-after-free.  The write overflows into an
+adjacent freed page, which KASAN reports as UAF.
 
-Replace it with list_entry_is_head() so the function correctly returns
--ENOENT when there are no more entries.
+The root cause is that ocfs2_try_to_write_inline_data trusts the on-disk
+id_count field to determine whether a write fits in inline data.  On a
+corrupted filesystem, id_count can exceed the physical maximum inline data
+capacity, causing writes to overflow the inode block buffer.
 
-Fixes: de9cbbaadba5 ("bpf: introduce cgroup storage maps")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Sun Jian <sun.jian.kdev@gmail.com>
-Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/20260403132951.43533-2-bestswngs@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Call trace (crash path):
+
+   vfs_copy_file_range (fs/read_write.c:1634)
+     do_splice_direct
+       splice_direct_to_actor
+         iter_file_splice_write
+           ocfs2_file_write_iter
+             generic_perform_write
+               ocfs2_write_end
+                 ocfs2_write_end_nolock (fs/ocfs2/aops.c:1949)
+                   ocfs2_write_end_inline (fs/ocfs2/aops.c:1915)
+                     memcpy_from_folio     <-- KASAN: write OOB
+
+So add id_count upper bound check in ocfs2_validate_inode_block() to
+alongside the existing i_size check to fix it.
+
+Link: https://lkml.kernel.org/r/20260403063830.3662739-1-joseph.qi@linux.alibaba.com
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: syzbot+62c1793956716ea8b28a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=62c1793956716ea8b28a
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/local_storage.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/inode.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/kernel/bpf/local_storage.c b/kernel/bpf/local_storage.c
-index f01ca6f1ee031..acf4649f7e472 100644
---- a/kernel/bpf/local_storage.c
-+++ b/kernel/bpf/local_storage.c
-@@ -259,7 +259,7 @@ static int cgroup_storage_get_next_key(struct bpf_map *_map, void *key,
- 			goto enoent;
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -1429,6 +1429,16 @@ int ocfs2_validate_inode_block(struct su
+ 			goto bail;
+ 		}
  
- 		storage = list_next_entry(storage, list_map);
--		if (!storage)
-+		if (list_entry_is_head(storage, &map->list, list_map))
- 			goto enoent;
- 	} else {
- 		storage = list_first_entry(&map->list,
--- 
-2.53.0
-
++		if (le16_to_cpu(data->id_count) >
++		    ocfs2_max_inline_data_with_xattr(sb, di)) {
++			rc = ocfs2_error(sb,
++					 "Invalid dinode #%llu: inline data id_count %u exceeds max %d\n",
++					 (unsigned long long)bh->b_blocknr,
++					 le16_to_cpu(data->id_count),
++					 ocfs2_max_inline_data_with_xattr(sb, di));
++			goto bail;
++		}
++
+ 		if (le64_to_cpu(di->i_size) > le16_to_cpu(data->id_count)) {
+ 			rc = ocfs2_error(sb,
+ 					 "Invalid dinode #%llu: inline data i_size %llu exceeds id_count %u\n",
 
 
 
