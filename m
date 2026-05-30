@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-258260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIUvDKAlG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:00 +0200
+	id mTRHL0UuG2oLAAkAu9opvQ
+	(envelope-from <stable+bounces-258863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F60610C93
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4835661217A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56A153018C01
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:55:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5E83E30AAC43
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0EC0341AC7;
-	Sat, 30 May 2026 17:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014393C73F7;
+	Sat, 30 May 2026 18:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRoPBuR1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHRtQa1s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B022628D;
-	Sat, 30 May 2026 17:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9C921ADC7;
+	Sat, 30 May 2026 18:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163752; cv=none; b=uQ8yPVnMiWhm1hAzd8msdFmmjXp3iXTZfgSKq/j5HnLX2mGZYfX3lHLxDBERmjx7GwtaSjTKN6ei5ZakWqKV26NGHeUiUYodU8qHzd5NW33M4RGAci4vDzKso2bb7ywkVwKAz8Y6ldtMvdJvSoVjX515vMpJrsRDsuWe5iMPVa4=
+	t=1780165793; cv=none; b=M1JuCiP+Vi7BIxfybKMp6OJJ/vQ3YitIRDgqlsN3BmxZXrCDuw8weDHDf24tQnXfe8VP1q4eBhehxDwkjx6wSAtc9K6e1EOLpIIr63WEUvd3VaAeYIZLs/sQFVlPS3W6kqGkZKPQuucIi7ZsmdRT6B1pL6YGnuCIwDlY5zTxirM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163752; c=relaxed/simple;
-	bh=yqfoCTlw3CJLOL+ZLDQEvu9ENBKxe4uo5Q0uEJyZz38=;
+	s=arc-20240116; t=1780165793; c=relaxed/simple;
+	bh=+y0eA0GRTCphf8J5M+aqWXzbf5BzY9jIrzLWfXkQ/D4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfphZW3YAbfjQrWBiZB7b7jB9TK1kl3l5y1/o4sfA+tnx5ztQpgUPb+2zbyUaH2HFuodFzndO81RpvikfeNlMGbAUp8mj9POQnMofWUM4EHj5Zawc1S8UIl9zazwv20nVB0TomZwTSFirvT05FC2h2C2tjvItkGAWlNOxsCPU3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRoPBuR1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE9C1F00893;
-	Sat, 30 May 2026 17:55:50 +0000 (UTC)
+	 MIME-Version; b=YhT+lNw15U9hque6CZ3iuE94lYmbfYReNXdM3Suj+87j4ER7cAOyRNwgjpDX4V+vStInxNw4j+fs2vYWnr7odjOdCLomeNLSMiqRQ9yPOR54akIQxg2qaFMSk/g+6fOnAk03bz86nNie0FyFeytYxY4AcxHGE5pI7cKe6ICTZkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHRtQa1s; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178051F00893;
+	Sat, 30 May 2026 18:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163751;
-	bh=AK7dXAMU/Nw+ZezqPCdT10t8SgVyWObiIB7qTzFiXls=;
+	s=korg; t=1780165792;
+	bh=i+/rs5xxoeWAP4j4kczU8fqXX6zmyZJ1IdzN0sVjdpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QRoPBuR1XIAShI9jt5irOR7N+QVzcjRV6l+8gXnksDrnstD7BcbzNVJ6qf3OoGzAD
-	 LXRyMzpSg3UyH08bwZBzHhs+qlseprE0WdyXeg9WmC6ZC3XsdED0DlROrQUCiE0hqL
-	 q+TP8Flp5UXOzgo7iyBJFsBd5zvQXJPPSAb0+6RE=
+	b=DHRtQa1s3v0WOmVl7BNDFNC+5lm4tBWjnV67ogrpetp7w4EBLi2ZWQ69PKyRM4YXP
+	 nTJw6dajCP5u+mODOhsHk8/e0Iq9gUszjHPtHKbzceB7+imEqh2+2x/dvzjEKqX6Fq
+	 pu7nTgv5VakJ90p1kzbkd1xj38ICk/wNBTLxjqGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.15 351/776] media: uvcvideo: Enable VB2_DMABUF for metadata stream
+	Sohei Koyama <skoyama@ddn.com>,
+	Andreas Dilger <adilger@dilger.ca>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 184/589] ext4: fix missing brelse() in ext4_xattr_inode_dec_ref_all()
 Date: Sat, 30 May 2026 18:01:05 +0200
-Message-ID: <20260530160249.651859180@linuxfoundation.org>
+Message-ID: <20260530160229.725251015@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,81 +73,81 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258260-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258863-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ddn.com,dilger.ca,gmail.com,huawei.com,linux.alibaba.com,mit.edu];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A7F60610C93
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,alibaba.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ddn.com:email,iloc.bh:url]
+X-Rspamd-Queue-Id: 4835661217A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Sohei Koyama <skoyama@ddn.com>
 
-commit fbac03467e53d8d72e5099c03df26d9adae11416 upstream.
+commit 77d059519382bd66283e6a4e83ee186e87e7708f upstream.
 
-The UVC driver has two video streams, one for the frames and another one
-for the metadata. Both streams share most of the codebase, but only the
-data stream declares support for DMABUF transfer mode.
+The commit c8e008b60492 ("ext4: ignore xattrs past end")
+introduced a refcount leak in when block_csum is false.
 
-I have tried the DMABUF transfer mode with CONFIG_DMABUF_HEAPS_SYSTEM
-and the frames looked correct.
+ext4_xattr_inode_dec_ref_all() calls ext4_get_inode_loc() to
+get iloc.bh, but never releases it with brelse().
 
-This patch announces the support for DMABUF for the metadata stream.
-This is useful for apps/HALs that only want to support DMABUF.
-
+Fixes: c8e008b60492 ("ext4: ignore xattrs past end")
+Signed-off-by: Sohei Koyama <skoyama@ddn.com>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 Cc: stable@vger.kernel.org
-Fixes: 088ead2552458 ("media: uvcvideo: Add a metadata device node")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260309-uvc-metadata-dmabuf-v1-1-fc8b87bd29c5@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
+Link: https://patch.msgid.link/20260406074830.8480-1-skoyama@ddn.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_queue.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/ext4/xattr.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_queue.c
-+++ b/drivers/media/usb/uvc/uvc_queue.c
-@@ -217,7 +217,7 @@ int uvc_queue_init(struct uvc_video_queu
- 	int ret;
- 
- 	queue->queue.type = type;
--	queue->queue.io_modes = VB2_MMAP | VB2_USERPTR;
-+	queue->queue.io_modes = VB2_MMAP | VB2_USERPTR | VB2_DMABUF;
- 	queue->queue.drv_priv = queue;
- 	queue->queue.buf_struct_size = sizeof(struct uvc_buffer);
- 	queue->queue.mem_ops = &vb2_vmalloc_memops;
-@@ -230,7 +230,6 @@ int uvc_queue_init(struct uvc_video_queu
- 		queue->queue.ops = &uvc_meta_queue_qops;
- 		break;
- 	default:
--		queue->queue.io_modes |= VB2_DMABUF;
- 		queue->queue.ops = &uvc_queue_qops;
- 		break;
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1108,7 +1108,7 @@ ext4_xattr_inode_dec_ref_all(handle_t *h
+ {
+ 	struct inode *ea_inode;
+ 	struct ext4_xattr_entry *entry;
+-	struct ext4_iloc iloc;
++	struct ext4_iloc iloc = { .bh = NULL };
+ 	bool dirty = false;
+ 	unsigned int ea_ino;
+ 	int err;
+@@ -1202,6 +1202,8 @@ ext4_xattr_inode_dec_ref_all(handle_t *h
+ 			ext4_warning_inode(parent,
+ 					   "handle dirty metadata err=%d", err);
  	}
++
++	brelse(iloc.bh);
+ }
+ 
+ /*
 
 
 
