@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-259011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257633-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCF0MJkuG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259011-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:17 +0200
+	id yK/yK80dG2qW/QgAu9opvQ
+	(envelope-from <stable+bounces-257633-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02552612245
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 289BD60FAB3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D15CF300809D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9AFBF3058897
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA4039A7FE;
-	Sat, 30 May 2026 18:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24789344DA4;
+	Sat, 30 May 2026 17:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6I/hD18"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFxWT1WS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A897331200;
-	Sat, 30 May 2026 18:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB44814A62B;
+	Sat, 30 May 2026 17:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166290; cv=none; b=MX7moaI5sOkThiwPBTXa3ll6hRQkk4JuncsfKAm6xhMyNqjNRQoBZiBucqB4Q08nBlGH+PMu7Y+kvvOW4h7arTiKmxV8bTGrADSlPu+IkIYtsB+mK432NgdMw4XUbaYwXYvjo4byVQQ2whX25z7tKljpoq2BMvL0egxEA/heM3g=
+	t=1780161655; cv=none; b=Wx6eEbEPzb4Qyw5/vxC+GyAx7simO7rRFN1D8GCiywwdmTR9bbC8+kgFrkLS4YKQFyX2+8bSE2sHO1BaIDwDGvh6Qgyoi/I24hAETWmY6q40s9z62irKxrn09Q2d3T1n4+UgBDH+zMFzHrNGx7ZXTyKMVGhYXomVcsEpX57LOu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166290; c=relaxed/simple;
-	bh=n8IEI4vqrCahX335iGsv6iWfUxpUK22O6KR4EpalfHA=;
+	s=arc-20240116; t=1780161655; c=relaxed/simple;
+	bh=yDUHe0UKbvWAtfIS1kvJY7mdsAyM6ghZ4VPi5TYUaWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKWRs/rynZG+UzGh/NI8IXHNaKbWO64o40hFTmZslSDomdks2O6SuSspNa4rOmzGhbpLrfSnNocwrTXvgCZg0AB6ASUim3C+2BH7/3SVfX+6luxidJtCzX1kZn+Mi6BKCJqEaNqrbq9n4X0ZmFVUpQO4W692Cb43I/k8XOFm/P4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6I/hD18; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D343B1F00893;
-	Sat, 30 May 2026 18:38:08 +0000 (UTC)
+	 MIME-Version; b=QNijE35qDwjtOwNacSguhfHI/3qDFcpRArfDryg9aC/BwLhgeGEo41ZaT6pjYkeSMwN+qTXDC8WlN5LANc1DB3M38AROK0ayW4XGq5h5SF7pDAlj/BEz8HGLY6IqzoN5SI7rIZd7xtawH7KZ6YQA6Akv17M9xgFssJEyTOD4f+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFxWT1WS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315AD1F00893;
+	Sat, 30 May 2026 17:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166289;
-	bh=5W29QDOgW1jH4vAEBOuB7OPWNSr45h0MA/s2lckztlM=;
+	s=korg; t=1780161654;
+	bh=eeFot4DXHstXAKA6oNY0m4a/aFSPVNqs9ooLK7if568=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d6I/hD18sp3iqZuHSHHuSdUQTT1uQZ9/cQGxNeIQ4CnV7NESi0FR6LYc6lJh/ClEy
-	 0iA7pkuGJN8yuedoqwy1/pxEHsl311daHl2x9PTaZDXttpn21iwVx6xtnZH3j/2sZ9
-	 +MF1rj0HBhz3sYFTjx2YCI5NhBImnNTK606fzZ6o=
+	b=UFxWT1WSuWuplBOxhKWdeOfDzSt3VBDIVMBbMO2rUg50Cp0gQdMtrPvDCkP5nke++
+	 NyxCmmAvpLFEigedpSk5PmQ5xdAS/t1XmDdR5xERbeI5P/EalYqAf9vbeuDuHT5Dyf
+	 S8d7H9YEORdPOvnP2jr2u4ZGn6aSYK8c5ytDAZCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 330/589] spi: fsl-qspi: Use reinit_completion() for repeated operations
+Subject: [PATCH 6.1 687/969] container_of: add container_of_const() that preserves const-ness of the pointer
 Date: Sat, 30 May 2026 18:03:31 +0200
-Message-ID: <20260530160233.586500317@linuxfoundation.org>
+Message-ID: <20260530160319.478218722@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +68,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-259011-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257633-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 02552612245
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 289BD60FAB3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 981b080a79724738882b0af1c5bb7ade30d94f24 ]
+[ Upstream commit 64f6a5d1922bf6d2b2d845de20d4563a6f328e2d ]
 
-The driver currently calls init_completion() during every spi_mem_op.
-Tchnically it may work, but it's not the recommended pattern.
+container_of does not preserve the const-ness of a pointer that is
+passed into it, which can cause C code that passes in a const pointer to
+get a pointer back that is not const and then scribble all over the data
+in it.  To prevent this, container_of_const() will preserve the const
+status of the pointer passed into it using the newly available _Generic()
+method.
 
-According to the kernel documentation: Calling init_completion() on
-the same completion object twice is most likely a bug as it
-re-initializes the queue to an empty queue and enqueued tasks could
-get "lost" - use reinit_completion() in that case, but be aware of
-other races.
-
-So moves the initial initialization to probe function and uses
-reinit_completion() for subsequent operations.
-
-Fixes: 84d043185dbe ("spi: Add a driver for the Freescale/NXP QuadSPI controller")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20260304-spi-nxp-v2-3-cd7d7726a27e@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Link: https://lore.kernel.org/r/20221205121206.166576-1-gregkh@linuxfoundation.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 21e92a38cfd8 ("tcp: add data-race annotations around tp->data_segs_out and tp->total_retrans")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-qspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/container_of.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index 46ae46a944c5c..2ff26027aafd2 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -607,7 +607,7 @@ static int fsl_qspi_do_op(struct fsl_qspi *q, const struct spi_mem_op *op)
- 	void __iomem *base = q->iobase;
- 	int err = 0;
+diff --git a/include/linux/container_of.h b/include/linux/container_of.h
+index a6f242137b116..c8d7cf8b8522c 100644
+--- a/include/linux/container_of.h
++++ b/include/linux/container_of.h
+@@ -21,4 +21,17 @@
+ 		      "pointer type mismatch in container_of()");	\
+ 	((type *)(__mptr - offsetof(type, member))); })
  
--	init_completion(&q->c);
-+	reinit_completion(&q->c);
- 
- 	/*
- 	 * Always start the sequence at the same index since we update
-@@ -913,6 +913,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		goto err_disable_clk;
- 
-+	init_completion(&q->c);
- 	ret = devm_request_irq(dev, ret,
- 			fsl_qspi_irq_handler, 0, pdev->name, q);
- 	if (ret) {
++/**
++ * container_of_const - cast a member of a structure out to the containing
++ *			structure and preserve the const-ness of the pointer
++ * @ptr:		the pointer to the member
++ * @type:		the type of the container struct this is embedded in.
++ * @member:		the name of the member within the struct.
++ */
++#define container_of_const(ptr, type, member)				\
++	_Generic(ptr,							\
++		const typeof(*(ptr)) *: ((const type *)container_of(ptr, type, member)),\
++		default: ((type *)container_of(ptr, type, member))	\
++	)
++
+ #endif	/* _LINUX_CONTAINER_OF_H */
 -- 
 2.53.0
 
