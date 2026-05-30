@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-257890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAQ8FuIgG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257890-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:46 +0200
+	id ADmqK0IsG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F045061022F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F78C611CC2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD31E3016EF1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:35:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B24D3026311
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DF3341AB8;
-	Sat, 30 May 2026 17:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27AB351C2F;
+	Sat, 30 May 2026 18:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHd/3VPI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07KUa5Y8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9180030E853;
-	Sat, 30 May 2026 17:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4F4233D9E;
+	Sat, 30 May 2026 18:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162514; cv=none; b=s+GX5FcRbHVsU1UARO47VEBOW8Y9oEIIxGlVZXeFUUsO4RDAS5vcuiRAweHhhXKxu/S6hp7/bsx/ABevIzgMqBeh171XLfn4HEVgvzN+C2eh6GUURC1rV3dqiW34mhe0o7SDFVnEOwFpC8qFNPrAiRRWkNYB4hV4Rh/DTNO64Dk=
+	t=1780165201; cv=none; b=QzMUwj7ZgPBD1BjR5cELgPVBOO+WpjRBByvZfDQP0BuDhWKDEo4TT+68YQ3KMBMlblL37/0HXJer755rsrDvI2zNRswUcOuU5ipSy7IYFJLsudqzq+P7AlkGg8I44t31IQYuj/qUiQqsgsnXlEumjjGK6xdQ3TUukIDi/pDU5ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162514; c=relaxed/simple;
-	bh=BWko8nPqR8zLVm9uejGEVbkrBBkIbJZ043196Dx9MWw=;
+	s=arc-20240116; t=1780165201; c=relaxed/simple;
+	bh=NCc1sttFqjp6JEFG9npEWL3JgVmbNVMy7L+W8RIr3iA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=epsHyXfxL4mprev03Oe+rUBJ8EGegtfTl4TbTYIjWjQ6SY8IJzjaMRI9pSwQMS/1qVM3Vp1jgo2e0u/4WGChnPMewHvstyY/00mxVuxWADPiRDm3bILggbNthyXlBpXTLJcGgfMm6X+dwLQ4dypRUcrI10jAlj8rztcrZpwTQFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHd/3VPI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62EE1F00893;
-	Sat, 30 May 2026 17:35:12 +0000 (UTC)
+	 MIME-Version; b=r9wTGuzdlYHh6qX4PlJYnatA+l81gGtMRIU8dFoJrDj4vxKHz+S4Apve/iHbWN6Gvu3+UivszMujTu/aYuQiWzNCH39nxkOoM30wWGbXSky78h7m//UziZSmV9H7+RWlIN4gcU6ZBtJJhCduLA0jLdM3cr9/m01MiC4A7E6zwSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07KUa5Y8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C771D1F00893;
+	Sat, 30 May 2026 18:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162513;
-	bh=jEgsjCbceHXhUOoc8/CDjS3Fb6Udmu4fSqSB82goWFc=;
+	s=korg; t=1780165200;
+	bh=aonENeR4UBRU0/tk0j2Qp2pF0xfSjCHG0yVKEnIn9mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IHd/3VPIyq1BQYB4Y8dAkghM6nl3ooag+CU6br5SMNBNPvDXXRBuz3jPVRmuxf8EP
-	 fV+7y9AWwEettWIm9YfauSmWEYh0X+AOjzBamUnf/DAu64uWAaSXl97hG6hcpyKSsi
-	 qwAzmCjBfOpTH82fypO1O/M18MZWFtghckV5g0oc=
+	b=07KUa5Y8Sl9EWgMdbHRImKJYOyHdV5CrebO5LWsZyztv7HxXrhlTihioD5IyiokXM
+	 /NRMloJUCEIwRYXPhqH5aeJFEpDJfQj7GSeUY7VtaE5lRL5AZOhDseSFyhIyBn1fLS
+	 /4IvOOnnHU11A0RuFIXKk3F0D06EDewdCLZvOxuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Youghandhar Chintala <quic_youghand@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 942/969] wifi: ath11k: Trigger sta disconnect on hardware restart
+Subject: [PATCH 5.15 752/776] wifi: ath11k: fix error path leaks in some WMI WOW calls
 Date: Sat, 30 May 2026 18:07:46 +0200
-Message-ID: <20260530160326.769572401@linuxfoundation.org>
+Message-ID: <20260530160259.194476094@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,167 +66,110 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257890-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-258688-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,quicinc.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: F045061022F
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 0F78C611CC2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youghandhar Chintala <quic_youghand@quicinc.com>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit a018750a2cceaf4427c4ee3d9ce3e83a171d5bd6 ]
+[ Upstream commit 55dda532bbc261aef495e403c8900c5e2ab5fa34 ]
 
-Currently after the hardware restart triggered from the driver, the
-station interface connection remains intact, since a disconnect trigger
-is not sent to userspace. This can lead to a problem in targets where
-the wifi mac sequence is added by the firmware.
+Fix two instances where we used to directly return the result of
+ath11k_wmi_cmd_send(...). Because we did not check the return value, we
+also did not free the skb in the error path.
 
-After the target restart, its wifi mac sequence number gets reset to
-zero. Hence AP to which our device is connected will receive frames with
-a  wifi mac sequence number jump to the past, thereby resulting in the
-AP dropping all these frames, until the frame arrives with a wifi mac
-sequence number which AP was expecting.
-
-To avoid such frame drops, its better to trigger a station disconnect
-upon target hardware restart which can be done with API
-ieee80211_reconfig_disconnect exposed to mac80211.
-
-The other targets are not affected by this change, since the hardware
-params flag is not set.
-
-Reported-by: kernel test robot <lkp@intel.com>
-
-Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
-
-Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20221104085403.11025-1-quic_youghand@quicinc.com
-Stable-dep-of: 2a2451a34afd ("wifi: ath11k: fix peer resolution on rx path when peer_id=0")
+Fixes: 79802b13a492 ("ath11k: implement WoW enable and wakeup commands")
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260506134240.2284016-2-nico.escande@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 6 ++++++
- drivers/net/wireless/ath/ath11k/hw.h   | 1 +
- drivers/net/wireless/ath/ath11k/mac.c  | 7 +++++++
- 3 files changed, 14 insertions(+)
+ drivers/net/wireless/ath/ath11k/wmi.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 9b5349230ad34..7a61c84939cb3 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -195,6 +195,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tcl_ring_retry = true,
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 		.smp2p_wow_exit = false,
-+		.support_fw_mac_sequence = false,
- 	},
- 	{
- 		.name = "qca6390 hw2.0",
-@@ -277,6 +278,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tcl_ring_retry = true,
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 		.smp2p_wow_exit = false,
-+		.support_fw_mac_sequence = true,
- 	},
- 	{
- 		.name = "qcn9074 hw1.0",
-@@ -356,6 +358,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tcl_ring_retry = true,
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 		.smp2p_wow_exit = false,
-+		.support_fw_mac_sequence = false,
- 	},
- 	{
- 		.name = "wcn6855 hw2.0",
-@@ -438,6 +441,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tcl_ring_retry = true,
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 		.smp2p_wow_exit = false,
-+		.support_fw_mac_sequence = true,
- 	},
- 	{
- 		.name = "wcn6855 hw2.1",
-@@ -519,6 +523,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tcl_ring_retry = true,
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 		.smp2p_wow_exit = false,
-+		.support_fw_mac_sequence = true,
- 	},
- 	{
- 		.name = "wcn6750 hw1.0",
-@@ -597,6 +602,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tcl_ring_retry = false,
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE_WCN6750,
- 		.smp2p_wow_exit = true,
-+		.support_fw_mac_sequence = true,
- 	},
- };
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 28b4527b993fe..bacf124eec882 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -7320,6 +7320,7 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
+ 	struct wmi_wow_host_wakeup_ind *cmd;
+ 	struct sk_buff *skb;
+ 	size_t len;
++	int ret;
  
-diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index 8a3f24862edc4..0c5ef8a526d85 100644
---- a/drivers/net/wireless/ath/ath11k/hw.h
-+++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -219,6 +219,7 @@ struct ath11k_hw_params {
- 	bool tcl_ring_retry;
- 	u32 tx_ring_size;
- 	bool smp2p_wow_exit;
-+	bool support_fw_mac_sequence;
- };
+ 	len = sizeof(*cmd);
+ 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
+@@ -7333,14 +7334,20 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
  
- struct ath11k_hw_ops {
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 6a244f110dca6..2ef03ad1c9051 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -7981,6 +7981,7 @@ ath11k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
- 	struct ath11k *ar = hw->priv;
- 	struct ath11k_base *ab = ar->ab;
- 	int recovery_count;
-+	struct ath11k_vif *arvif;
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "wmi tlv wow host wakeup ind\n");
  
- 	if (reconfig_type != IEEE80211_RECONFIG_TYPE_RESTART)
- 		return;
-@@ -8016,6 +8017,12 @@ ath11k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
- 				ath11k_dbg(ab, ATH11K_DBG_BOOT, "reset success\n");
- 			}
- 		}
-+		if (ar->ab->hw_params.support_fw_mac_sequence) {
-+			list_for_each_entry(arvif, &ar->arvifs, list) {
-+				if (arvif->is_up && arvif->vdev_type == WMI_VDEV_TYPE_STA)
-+					ieee80211_hw_restart_disconnect(arvif->vif);
-+			}
-+		}
- 	}
+-	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
++	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
++	if (ret) {
++		ath11k_warn(ar->ab, "failed to send WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID\n");
++		dev_kfree_skb(skb);
++	}
++
++	return ret;
+ }
  
- 	mutex_unlock(&ar->conf_mutex);
+ int ath11k_wmi_wow_enable(struct ath11k *ar)
+ {
+ 	struct wmi_wow_enable_cmd *cmd;
+ 	struct sk_buff *skb;
+-	int len;
++	int ret, len;
+ 
+ 	len = sizeof(*cmd);
+ 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
+@@ -7355,5 +7362,11 @@ int ath11k_wmi_wow_enable(struct ath11k *ar)
+ 	cmd->pause_iface_config = WOW_IFACE_PAUSE_ENABLED;
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "wmi tlv wow enable\n");
+ 
+-	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
++	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
++	if (ret) {
++		ath11k_warn(ar->ab, "failed to send WMI_WOW_ENABLE_CMDID\n");
++		dev_kfree_skb(skb);
++	}
++
++	return ret;
+ }
 -- 
 2.53.0
 
