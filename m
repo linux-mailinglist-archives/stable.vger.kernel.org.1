@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-258116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258720-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4JSsH3AkG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:56 +0200
+	id GDWfGLIsG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258720-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C64610A4C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD39611DA1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0FB3030D5F3C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 40EB1309EBEC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713A23546EA;
-	Sat, 30 May 2026 17:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37BD2641C6;
+	Sat, 30 May 2026 18:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3FHqM3A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yC0pYdem"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA093AFCF3;
-	Sat, 30 May 2026 17:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09292E7390;
+	Sat, 30 May 2026 18:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163270; cv=none; b=UsaWo9U9Z6yoPaJiXruS/Cpf4ZDsnM51d+IgqRXr0i4mtK0ro0iJxJVgRQYHvrYDo4GA0S6+H8wLFfpDUAOS8Es1HIM6lS+vhe/U9K44DjSoODN3quUb8b9MglTq++s7NVtOjT9FsPVvrbQvZmgIBRw033eq9fg4X4W+T/dwXlo=
+	t=1780165311; cv=none; b=tTmGSyG6t4lsbfCAKcRV7P0xYSnrgSdxSlObLarhmd+foFoWa8XBczCFFmj+95aEehTP25it9k7KyiutQwJhxW2aK7rJ4lqFMOZmqbFCeF3CZZSJCZVz9fU1L43elPmor6wp6KY/LjweLYh3kqEMQhw1ykRSKs0kCuaTzJKoWoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163270; c=relaxed/simple;
-	bh=JBwPQj2puTUBYQ0Cq/5zfbNOhDkxG8CdQZcjqev+zsM=;
+	s=arc-20240116; t=1780165311; c=relaxed/simple;
+	bh=qMHjPYgXFwVRZaZfNiDC1TYW3zKDlR3ZIkaV/EvuwRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JBAk9vVMhaZSiWqySTZxAoMznxZ7VqMR7nzbBRcMHjOXHRIxdFh/7EzH4jhPIAAo7GF5+cUqqC8jcgkcYSCAEBUrjdx7piAHy4yPSUU0u42V8+7dZHae/m7phowDGmOv3ceeAqqHzd2fMn/fouW61Yu9u1o/NM5IixZhCqV2pW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3FHqM3A; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5834C1F00893;
-	Sat, 30 May 2026 17:47:48 +0000 (UTC)
+	 MIME-Version; b=lVw1JRnIfq4dlxEf+U14Bu9S7G1YcTUY1SfPYCx01UGEQB6hUC3uyn87AZkoiEwQ+mh0MVb2lsfKncdkKW1hbGL2AlbtPO23U3umAZeD1+sbBdaBYPXaemqkEB+zn53+SEY5rKBS6NAYLOQP0DYVfLrxoTFOEXikCTCcxKa/j5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yC0pYdem; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123E81F00893;
+	Sat, 30 May 2026 18:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163269;
-	bh=LMvz3qkBb/q14Zob7TEjDf/zOaP6Kj9BCUmI3f/B/oE=;
+	s=korg; t=1780165310;
+	bh=IjHlr2b1PEHY8Opfbbw6ZrEjOJzYcLa2VNukCjsIrLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y3FHqM3AtNp38/yJgZFz4TK4VmmXeJ70Wg/icZk7rjqMsYjElOdKBZxZzrLNPJi10
-	 d/sxwH1FfOPK5mXoWAZ+62UOrrJRvucASNum6MGDVt9DoQvRQLoMvD85QyuNjni9oR
-	 A5Xf1REx/YyDfc15p1UZW9FUCLAgmPMcpPR/TOJk=
+	b=yC0pYdemNZ83ZrfwlJAJ5Nm2RWLyhSTJssFtLKS1XmEWLNkQhE+G9dWxojqm9VYim
+	 Ed8MGE0TM8/DciNvgUTZnHevoBXnHsj69MjoeYWogr8D7FAll/e+3EEbM91qeI6tHN
+	 wO5P9TtBdkikwcTsUHIXmODwUmrH/wdORu8csT4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 208/776] ALSA: aoa: i2sbus: fix OF node lifetime handling
+	Stefano Brivio <sbrivio@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	Mukul Sikka <mukul.sikka@broadcom.com>,
+	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 041/589] netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR
 Date: Sat, 30 May 2026 17:58:42 +0200
-Message-ID: <20260530160245.888206092@linuxfoundation.org>
+Message-ID: <20260530160225.669445682@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +66,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258116-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258720-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D3C64610A4C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,broadcom.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BFD39611DA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 4ec93f070eda6b765b62efcaed9241c3b3b0b6ad upstream.
+commit 07ace0bbe03b3d8e85869af1dec5e4087b1d57b8 upstream
 
-i2sbus_add_dev() keeps the matched "sound" child pointer after
-for_each_child_of_node() has dropped the iterator reference. Take an
-extra reference before saving that node and drop it after the
-layout-id/device-id lookup is complete.
+pipapo relies on kmalloc(0) returning ZERO_SIZE_PTR (i.e., not NULL
+but pointer is invalid).
 
-The function also stores np in dev->sound.ofdev.dev.of_node without
-taking a reference for the embedded soundbus device. Since i2sbus
-overrides the embedded platform device release callback, balance that
-reference explicitly in the local error path and in i2sbus_release_dev().
+Rework this to not call slab allocator when we'd request a 0-byte
+allocation.
 
-Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260330-aoa-i2sbus-ofnode-lifetime-v1-1-51c309f4ff06@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Mukul Sikka <mukul.sikka@broadcom.com>
+Signed-off-by: Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
+[Keerthana: In older stable branches (v6.6 and earlier), the allocation logic in
+pipapo_clone() still relies on `src->rules` rather than `src->rules_alloc`
+(introduced in v6.9 via 9f439bd6ef4f). Consequently, the previously
+backported INT_MAX clamping check uses `src->rules`. This patch correctly
+moves that `src->rules > (INT_MAX / ...)` check inside the new
+`if (src->rules > 0)` block]
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/aoa/soundbus/i2sbus/core.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/netfilter/nft_set_pipapo.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/sound/aoa/soundbus/i2sbus/core.c
-+++ b/sound/aoa/soundbus/i2sbus/core.c
-@@ -83,6 +83,7 @@ static void i2sbus_release_dev(struct de
- 	for (i = aoa_resource_i2smmio; i <= aoa_resource_rxdbdma; i++)
- 		free_irq(i2sdev->interrupts[i], i2sdev);
- 	i2sbus_control_remove_dev(i2sdev->control, i2sdev);
-+	of_node_put(i2sdev->sound.ofdev.dev.of_node);
- 	mutex_destroy(&i2sdev->lock);
- 	kfree(i2sdev);
- }
-@@ -148,7 +149,6 @@ static int i2sbus_get_and_fixup_rsrc(str
- }
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index baabbfe62a27f..39623bb726a5e 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -524,6 +524,9 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
+ 	struct nft_pipapo_field *f;
+ 	int i;
  
- /* Returns 1 if added, 0 for otherwise; don't return a negative value! */
--/* FIXME: look at device node refcounting */
- static int i2sbus_add_dev(struct macio_dev *macio,
- 			  struct i2sbus_control *control,
- 			  struct device_node *np)
-@@ -179,8 +179,9 @@ static int i2sbus_add_dev(struct macio_d
- 	i = 0;
- 	for_each_child_of_node(np, child) {
- 		if (of_node_name_eq(child, "sound")) {
-+			of_node_put(sound);
- 			i++;
--			sound = child;
-+			sound = of_node_get(child);
- 		}
++	if (m->bsize_max == 0)
++		return ret;
++
+ 	res_map = kmalloc_array(m->bsize_max, sizeof(*res_map), GFP_ATOMIC);
+ 	if (!res_map) {
+ 		ret = ERR_PTR(-ENOMEM);
+@@ -1363,14 +1366,20 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
+ 		       src->bsize * sizeof(*dst->lt) *
+ 		       src->groups * NFT_PIPAPO_BUCKETS(src->bb));
+ 
+-		if (src->rules > (INT_MAX / sizeof(*src->mt)))
+-			goto out_mt;
++		if (src->rules > 0) {
++			if (src->rules > (INT_MAX / sizeof(*src->mt)))
++				goto out_mt;
++
++			dst->mt = kvmalloc_array(src->rules, sizeof(*src->mt),
++						 GFP_KERNEL);
++			if (!dst->mt)
++				goto out_mt;
+ 
+-		dst->mt = kvmalloc(src->rules * sizeof(*src->mt), GFP_KERNEL);
+-		if (!dst->mt)
+-			goto out_mt;
++			memcpy(dst->mt, src->mt, src->rules * sizeof(*src->mt));
++		} else {
++			dst->mt = NULL;
++		}
+ 
+-		memcpy(dst->mt, src->mt, src->rules * sizeof(*src->mt));
+ 		src++;
+ 		dst++;
  	}
- 	if (i == 1) {
-@@ -206,6 +207,7 @@ static int i2sbus_add_dev(struct macio_d
- 			}
- 		}
- 	}
-+	of_node_put(sound);
- 	/* for the time being, until we can handle non-layout-id
- 	 * things in some fabric, refuse to attach if there is no
- 	 * layout-id property or we haven't been forced to attach.
-@@ -220,7 +222,7 @@ static int i2sbus_add_dev(struct macio_d
- 	mutex_init(&dev->lock);
- 	spin_lock_init(&dev->low_lock);
- 	dev->sound.ofdev.archdata.dma_mask = macio->ofdev.archdata.dma_mask;
--	dev->sound.ofdev.dev.of_node = np;
-+	dev->sound.ofdev.dev.of_node = of_node_get(np);
- 	dev->sound.ofdev.dev.dma_mask = &dev->sound.ofdev.archdata.dma_mask;
- 	dev->sound.ofdev.dev.parent = &macio->ofdev.dev;
- 	dev->sound.ofdev.dev.release = i2sbus_release_dev;
-@@ -328,6 +330,7 @@ static int i2sbus_add_dev(struct macio_d
- 	for (i=0;i<3;i++)
- 		release_and_free_resource(dev->allocated_resource[i]);
- 	mutex_destroy(&dev->lock);
-+	of_node_put(dev->sound.ofdev.dev.of_node);
- 	kfree(dev);
- 	return 0;
- }
+-- 
+2.53.0
+
 
 
 
