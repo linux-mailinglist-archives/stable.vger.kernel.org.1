@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-259088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257726-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOJZFDQwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259088-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:08 +0200
+	id 2MwHDVAfG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257726-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD164612678
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 871F160FE41
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 06648303B14D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:42:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AEE7D3061E9C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D262C11C4;
-	Sat, 30 May 2026 18:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCD933F5A0;
+	Sat, 30 May 2026 17:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v29k6Plu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeCTao82"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A3C2773DE;
-	Sat, 30 May 2026 18:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573772FDC5E;
+	Sat, 30 May 2026 17:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166573; cv=none; b=eFaFEt6Z5FbtHNj9sqEqWE0JZjMgGznHFLT2YsQr0ABFMO5InuenFXwEb94Lt48zjyQqcNrapMNWDPiIc/ZBSAjAvxuI9homVodWkfNdfK3t0R8+bqUdfD8db9DrL1naDvqning5MeLAgGWDRmkcrOPL3wZyiry9yE34i7zEqA8=
+	t=1780161966; cv=none; b=BRrEi+QYsyxJFAwjt5pZB/wCz949W8Qq0EFrsvB3dTccr+lcJJ17wwhwoxKgCP+Lgs7ABh2Cy3J5T9Ej4+czWxDZoMhWxVsfk8XbgjodifWctwT55fBHKCJSG7fXRJpgWZ0LQdg9ZoiCHtq5X93RphklSO01JHUwPgf5FYMMFzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166573; c=relaxed/simple;
-	bh=UtzTUWLd0H/w438HwFgx/JTxnJxiaGiK+PawH2zWJ+w=;
+	s=arc-20240116; t=1780161966; c=relaxed/simple;
+	bh=Yy9LO/AY0WOotlrogN5xfcrR8D0UQFpGjlgGRkpIRgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZrHeZJ4WLYKe4T5j6uLGtCCYyKMs0Nqys8sPqK446Z7/C+rhB4RF7c/zG2uCkkjtmtrbAVQtDh3+zrJjKEC3jhsTKayIyNL7RsBSynWCUjF0SNQ7gX2ox6mglqs8H+/jb06fJSimu78EHjOP6ekAuoBTX7li6bxTsLAabQ+1t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v29k6Plu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D7C1F00893;
-	Sat, 30 May 2026 18:42:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c4ntwdx8WrhyrGD0YYEhsQhvA33xBHBPMIg5YhtWjr4kQRIcudPsS79EF1OTdZDWdmas1rYALib9M5sJcK/8hcgS0u7NAZ4WhTrwWAo7PdDJz8cYDlcDN8dA12fKMnGQs7AM8DtGh5yy2CbjZ+nIA8aXeLck1SKIFBHlzQKQzGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeCTao82; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA511F00893;
+	Sat, 30 May 2026 17:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166572;
-	bh=uu7TnpWCT9PKVWffHzFK/3kJ6lVzCcGl/RlrBBYzXcs=;
+	s=korg; t=1780161965;
+	bh=aTQD/HUSmPdSR4y72vYxXF3LBklaJ7STwiY6ucfzDfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=v29k6Plu9x380wk9GwlMWzRWKrACot0z6AaVqWTkOreLu8KczSHOyUqXYgyadzAGT
-	 PVP7k9Ibe10QHsf4RFn/Rw0K5gQQ/uL4Q1ep3ltmCBhn2gTFQogd5dfjdD2EoxMcgL
-	 8xraRptnz1c73Ecso0V7e8XhZVl5qSyMl6WhSuoM=
+	b=HeCTao82zfhec+CpWumdA9sL4NWKp27HAnyTEGt/ysv+GNHTYGEbArFZp7YMJpy7J
+	 JCT/xh0J2Y+Qy8B7284FJGIEcR+Kznm2LBNyQwcg+srTsuiQOsTB55HjCh9EP8bCA+
+	 tnsDFIF1dEoTCkqwMHOlD40FTnGjZKwL4K0mb2e4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Val Packett <val@packett.cool>
-Subject: [PATCH 5.10 406/589] dt-bindings: clock: qcom,dispcc-sc7180: Define MDSS resets
+	Xin Long <lucien.xin@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 763/969] sctp: discard stale INIT after handshake completion
 Date: Sat, 30 May 2026 18:04:47 +0200
-Message-ID: <20260530160235.437264076@linuxfoundation.org>
+Message-ID: <20260530160321.638832647@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,86 +64,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259088-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257726-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: CD164612678
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 871F160FE41
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit fc6e29d42872680dca017f2e5169eefe971f8d89 ]
+[ Upstream commit 8a92cb475ca90d84db769e4d4383e631ace0d6e5 ]
 
-The MDSS resets have so far been left undescribed. Fix that.
+After an association reaches ESTABLISHED, the peer’s init_tag is already
+known from the handshake. Any subsequent INIT with the same init_tag is
+not a valid restart, but a delayed or duplicate INIT.
 
-Fixes: 75616da71291 ("dt-bindings: clock: Introduce QCOM sc7180 display clock bindings")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Tested-by: Val Packett <val@packett.cool> # sc7180-ecs-liva-qc710
-Link: https://lore.kernel.org/r/20260120-topic-7180_dispcc_bcr-v1-1-0b1b442156c3@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: b0bc6011c549 ("clk: qcom: dispcc-sc7180: Add missing MDSS resets")
+Drop such INIT chunks in sctp_sf_do_unexpected_init() instead of
+processing them as new association attempts.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/5788c76c1ee122a3ed00189e88dcf9df1fba226c.1777214801.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/qcom,dispcc-sc7180.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/sctp/sm_statefuns.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/dt-bindings/clock/qcom,dispcc-sc7180.h b/include/dt-bindings/clock/qcom,dispcc-sc7180.h
-index b9b51617a335d..0705103060748 100644
---- a/include/dt-bindings/clock/qcom,dispcc-sc7180.h
-+++ b/include/dt-bindings/clock/qcom,dispcc-sc7180.h
-@@ -6,6 +6,7 @@
- #ifndef _DT_BINDINGS_CLK_QCOM_DISP_CC_SC7180_H
- #define _DT_BINDINGS_CLK_QCOM_DISP_CC_SC7180_H
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 80a6b9fc964e5..1685f73602d5e 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -1556,6 +1556,12 @@ static enum sctp_disposition sctp_sf_do_unexpected_init(
+ 	/* Tag the variable length parameters.  */
+ 	chunk->param_hdr.v = skb_pull(chunk->skb, sizeof(struct sctp_inithdr));
  
-+/* Clocks */
- #define DISP_CC_PLL0				0
- #define DISP_CC_PLL0_OUT_EVEN			1
- #define DISP_CC_MDSS_AHB_CLK			2
-@@ -40,7 +41,11 @@
- #define DISP_CC_MDSS_VSYNC_CLK_SRC		31
- #define DISP_CC_XO_CLK				32
- 
--/* DISP_CC GDSCR */
-+/* Resets */
-+#define DISP_CC_MDSS_CORE_BCR			0
-+#define DISP_CC_MDSS_RSCC_BCR			1
++	if (asoc->state >= SCTP_STATE_ESTABLISHED) {
++		/* Discard INIT matching peer vtag after handshake completion (stale INIT). */
++		if (ntohl(chunk->subh.init_hdr->init_tag) == asoc->peer.i.init_tag)
++			return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
++	}
 +
-+/* GDSCs */
- #define MDSS_GDSC				0
- 
- #endif
+ 	/* Verify the INIT chunk before processing it. */
+ 	err_chunk = NULL;
+ 	if (!sctp_verify_init(net, ep, asoc, chunk->chunk_hdr->type,
 -- 
 2.53.0
 
