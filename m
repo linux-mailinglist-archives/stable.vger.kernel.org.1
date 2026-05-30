@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-258917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNl3MaUuG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258917-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:29 +0200
+	id IAqZGT0dG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43837612282
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C29E260F8DA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F3FB53084427
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:32:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 678EE303AF0E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A72A329E79;
-	Sat, 30 May 2026 18:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A706E3AE18D;
+	Sat, 30 May 2026 17:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrtImTXw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mRTnx0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA682FDC5E;
-	Sat, 30 May 2026 18:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D103A7848;
+	Sat, 30 May 2026 17:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165978; cv=none; b=a4YXZnHdLYDrZRxJy/iE0FhMdIbIntnpSOhF40PBZISv+V5jR7qn4z8fgU7S2Q6udfVuQWuXTuQuooZUu06Mtx8rrXOb0XP/ogMZNNS4jII+rgQMH/GtC9Pw07BhHLYquMuzOI+P6xkBz6Cz+tci7PBtLbnNlmiskZP6L9MQvvs=
+	t=1780161337; cv=none; b=FJttuHB7ibaMy73tl21YyMlq9APnzF3EIWV5hinK+4xOrmHLocsBYuqhyZ1VQO6xJ3J4qGjuKiPuthEgdLb+yYWJBf2WP9MwoupgqQ0m0xZPy9DgT9OZB18XOEGGmelIr/eFA9aIbGee9rtrAH7Wv7LfxCHweotQknpDDqqk5wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165978; c=relaxed/simple;
-	bh=KJSBItJ51c7sRbsUs8G4S7WUKRqYANqReEySzfi5Sto=;
+	s=arc-20240116; t=1780161337; c=relaxed/simple;
+	bh=ASaqLvbQAqkpcwWQS1Osuu+ldqnt7V9oQEYY7oC0s0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kT/P/Z69ew4zjt136Sf8k1YfqLw39gvUlUnZ/whM7JkQe4MuuYnEHDSnPGdUldn8G4mpWCdIYcxxHoLkwdd3fhq4fE47vQEMZcaJ4kfQzhKjxeQxkJyIsBu85EY1xj92ZPb/zxtWTi2TpiYfrLyyzneUR3TpUGvNVT9O6w9yxQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrtImTXw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 745F61F00893;
-	Sat, 30 May 2026 18:32:56 +0000 (UTC)
+	 MIME-Version; b=px8njfXnF9/D9stNDa5Pa64suwKQOLZynMJNzwjGSduHmyrZ3k7p1uhWYQApnjDOP3yEFj3q8t8/x3gaZQWkUjTtk9TJKd5EUm3wjwUw7XlRH9zA+h1AsBwPU6P+ZIj5zuIT0n7drwWMlAIsG9kS8viU8B9akYcrIp5MUNFrRo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mRTnx0f; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2EF1F00893;
+	Sat, 30 May 2026 17:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165977;
-	bh=e4xIu/zbXXVfNKuLIYm2LgN0Wo93WZXHCayqOgcztcw=;
+	s=korg; t=1780161336;
+	bh=lWcqVYzzTO0YY+pcJDjOXQziaF2cCL+UeRZsRuGU6K8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MrtImTXwLJv2f4V0Jrw7ygbRZJpjWJffr5lcWax8pJPyj1ndvP108xugqqQ9ljKL9
-	 iCVAeK1skhwlHOGRKLVYlwgV3b3uPkSW1qB49WyQbh6sdaEOr6/Zh+ROxF3E8OhfKo
-	 8RJa8tRscVJSHkfA11de3VjipntNGLdPw40LRH2A=
+	b=1mRTnx0f3VRFRUDD0cDEaMwP1Vkt0ttW+FQugUZKaLVJiNxJtGevkPjOCSncWW2sV
+	 TvxrJ9h+plqgWInDf0W9p/ApzWU4Iim40bQdqzlBRODVlpNieYghhmL5fu7Zmq0yO3
+	 sXud9OukkVCbttPPKCEDndTZmkwapUUCGZRzRSCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Xiao Liu <lx24@stu.ynu.edu.cn>,
-	Nan Li <tonanli66@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Allison Henderson <achender@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 237/589] net/rds: handle zerocopy send cleanup before the message is queued
+	ZhengYuan Huang <gality369@gmail.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 594/969] ocfs2: validate bg_bits during freefrag scan
 Date: Sat, 30 May 2026 18:01:58 +0200
-Message-ID: <20260530160231.226236835@linuxfoundation.org>
+Message-ID: <20260530160316.820698785@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,119 +76,152 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258917-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,stu.ynu.edu.cn,redhat.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257540-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,linux-foundation.org,kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 43837612282
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C29E260F8DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nan Li <tonanli66@gmail.com>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-commit 44b550d88b267320459d518c0743a241ab2108fa upstream.
+[ Upstream commit 8f687eeed3da3012152b0f9473f578869de0cd7b ]
 
-A zerocopy send can fail after user pages have been pinned but before
-the message is attached to the sending socket.
+[BUG]
+A crafted filesystem can trigger an out-of-bounds bitmap walk when
+OCFS2_IOC_INFO is issued with OCFS2_INFO_FL_NON_COHERENT.
 
-The purge path currently infers zerocopy state from rm->m_rs, so an
-unqueued message can be cleaned up as if it owned normal payload pages.
-However, zerocopy ownership is really determined by the presence of
-op_mmp_znotifier, regardless of whether the message has reached the
-socket queue.
+BUG: KASAN: use-after-free in instrument_atomic_read include/linux/instrumented.h:68 [inline]
+BUG: KASAN: use-after-free in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+BUG: KASAN: use-after-free in test_bit_le include/asm-generic/bitops/le.h:21 [inline]
+BUG: KASAN: use-after-free in ocfs2_info_freefrag_scan_chain fs/ocfs2/ioctl.c:495 [inline]
+BUG: KASAN: use-after-free in ocfs2_info_freefrag_scan_bitmap fs/ocfs2/ioctl.c:588 [inline]
+BUG: KASAN: use-after-free in ocfs2_info_handle_freefrag fs/ocfs2/ioctl.c:662 [inline]
+BUG: KASAN: use-after-free in ocfs2_info_handle_request+0x1c66/0x3370 fs/ocfs2/ioctl.c:754
+Read of size 8 at addr ffff888031bce000 by task syz.0.636/1435
+Call Trace:
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xbe/0x130 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xd1/0x650 mm/kasan/report.c:482
+ kasan_report+0xfb/0x140 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:186 [inline]
+ kasan_check_range+0x11c/0x200 mm/kasan/generic.c:200
+ __kasan_check_read+0x11/0x20 mm/kasan/shadow.c:31
+ instrument_atomic_read include/linux/instrumented.h:68 [inline]
+ _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+ test_bit_le include/asm-generic/bitops/le.h:21 [inline]
+ ocfs2_info_freefrag_scan_chain fs/ocfs2/ioctl.c:495 [inline]
+ ocfs2_info_freefrag_scan_bitmap fs/ocfs2/ioctl.c:588 [inline]
+ ocfs2_info_handle_freefrag fs/ocfs2/ioctl.c:662 [inline]
+ ocfs2_info_handle_request+0x1c66/0x3370 fs/ocfs2/ioctl.c:754
+ ocfs2_info_handle+0x18d/0x2a0 fs/ocfs2/ioctl.c:828
+ ocfs2_ioctl+0x632/0x6e0 fs/ocfs2/ioctl.c:913
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
+ ...
 
-Capture op_mmp_znotifier up front in rds_message_purge() and use it as
-the cleanup discriminator. If the message is already associated with a
-socket, keep the existing completion path. Otherwise, drop the pinned
-page accounting directly and release the notifier before putting the
-payload pages.
+[CAUSE]
+ocfs2_info_freefrag_scan_chain() uses on-disk bg_bits directly as the
+bitmap scan limit. The coherent path reads group descriptors through
+ocfs2_read_group_descriptor(), which validates the descriptor before
+use. The non-coherent path uses ocfs2_read_blocks_sync() instead and
+skips that validation, so an impossible bg_bits value can drive the
+bitmap walk past the end of the block.
 
-This keeps early send failure cleanup consistent with the zerocopy
-lifetime rules without changing the normal queued completion path.
+[FIX]
+Compute the bitmap capacity from the filesystem format with
+ocfs2_group_bitmap_size(), report descriptors whose bg_bits exceeds
+that limit, and clamp the scan to the computed capacity. This keeps the
+freefrag report going while avoiding reads beyond the buffer.
 
-Fixes: 0cebaccef3ac ("rds: zerocopy Tx support.")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Xiao Liu <lx24@stu.ynu.edu.cn>
-Signed-off-by: Xiao Liu <lx24@stu.ynu.edu.cn>
-Signed-off-by: Nan Li <tonanli66@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/d2ea98a6313d5467bac00f7c9fef8c7acddb9258.1777550074.git.tonanli66@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20260410034220.3825769-1-gality369@gmail.com
+Fixes: d24a10b9f8ed ("Ocfs2: Add a new code 'OCFS2_INFO_FREEFRAG' for o2info ioctl.")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/message.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ fs/ocfs2/ioctl.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/net/rds/message.c
-+++ b/net/rds/message.c
-@@ -129,24 +129,34 @@ static void rds_rm_zerocopy_callback(str
-  */
- static void rds_message_purge(struct rds_message *rm)
- {
-+	struct rds_znotifier *znotifier;
- 	unsigned long i, flags;
--	bool zcopy = false;
-+	bool zcopy;
+diff --git a/fs/ocfs2/ioctl.c b/fs/ocfs2/ioctl.c
+index afd54ec661030..84fb4bc33db9e 100644
+--- a/fs/ocfs2/ioctl.c
++++ b/fs/ocfs2/ioctl.c
+@@ -442,13 +442,16 @@ static int ocfs2_info_freefrag_scan_chain(struct ocfs2_super *osb,
+ 	struct buffer_head *bh = NULL;
+ 	struct ocfs2_group_desc *bg = NULL;
  
- 	if (unlikely(test_bit(RDS_MSG_PAGEVEC, &rm->m_flags)))
- 		return;
+-	unsigned int max_bits, num_clusters;
++	unsigned int max_bits, max_bitmap_bits, num_clusters;
+ 	unsigned int offset = 0, cluster, chunk;
+ 	unsigned int chunk_free, last_chunksize = 0;
  
- 	spin_lock_irqsave(&rm->m_rs_lock, flags);
-+	znotifier = rm->data.op_mmp_znotifier;
-+	rm->data.op_mmp_znotifier = NULL;
-+	zcopy = !!znotifier;
+ 	if (!le32_to_cpu(rec->c_free))
+ 		goto bail;
+ 
++	max_bitmap_bits = 8 * ocfs2_group_bitmap_size(osb->sb, 0,
++					      osb->s_feature_incompat);
 +
- 	if (rm->m_rs) {
- 		struct rds_sock *rs = rm->m_rs;
+ 	do {
+ 		if (!bg)
+ 			blkno = le64_to_cpu(rec->c_blkno);
+@@ -480,6 +483,19 @@ static int ocfs2_info_freefrag_scan_chain(struct ocfs2_super *osb,
+ 			continue;
  
--		if (rm->data.op_mmp_znotifier) {
--			zcopy = true;
--			rds_rm_zerocopy_callback(rs, rm->data.op_mmp_znotifier);
-+		if (znotifier) {
-+			rds_rm_zerocopy_callback(rs, znotifier);
- 			rds_wake_sk_sleep(rs);
--			rm->data.op_mmp_znotifier = NULL;
- 		}
- 		sock_put(rds_rs_to_sk(rs));
- 		rm->m_rs = NULL;
-+	} else if (znotifier) {
+ 		max_bits = le16_to_cpu(bg->bg_bits);
++
 +		/*
-+		 * Zerocopy can fail before the message is queued on the
-+		 * socket, so there is no rs to carry the notification.
++		 * Non-coherent scans read raw blocks and do not get the
++		 * bg_bits validation from
++		 * ocfs2_read_group_descriptor().
 +		 */
-+		mm_unaccount_pinned_pages(&znotifier->z_mmp);
-+		kfree(rds_info_from_znotifier(znotifier));
- 	}
- 	spin_unlock_irqrestore(&rm->m_rs_lock, flags);
++		if (max_bits > max_bitmap_bits) {
++			mlog(ML_ERROR,
++			     "Group desc #%llu has %u bits, max bitmap bits %u\n",
++			     (unsigned long long)blkno, max_bits, max_bitmap_bits);
++			max_bits = max_bitmap_bits;
++		}
++
+ 		offset = 0;
  
+ 		for (chunk = 0; chunk < chunks_in_group; chunk++) {
+-- 
+2.53.0
+
 
 
 
