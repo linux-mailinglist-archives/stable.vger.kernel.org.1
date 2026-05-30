@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-257885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259278-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OAZGEtMgG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257885-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:31 +0200
+	id oKevK9gzG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259278-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3CC46101F1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31DD5612EF6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7D33306A886
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C75A309C54C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4748D33A9DA;
-	Sat, 30 May 2026 17:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CB8248F66;
+	Sat, 30 May 2026 18:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2qwg+yP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aaVhEL8Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A24341AB8;
-	Sat, 30 May 2026 17:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3FC137750;
+	Sat, 30 May 2026 18:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162498; cv=none; b=BXz9F6bXuYLcpjSF9di0WK/Ue6B4WQemYgfb3ACCoTRHWovn4ojItTbDunkJF0flKIFzjpoIV34/iVBkTQr78VuOtTu3Au2s/BWStErCS+MBAjlraKYwbgSk0SxLv4i/QM3IrH4oMzEeVWNLgoCZTXbaatUH3BmVjxtu6B+guWA=
+	t=1780167206; cv=none; b=OAo8elC8T8r1AuvM0g+j290rRrAg95aqwU5N33m7469QgZSPfINXbcOXMRSMp5To8JM43qlr7FTERU/vJjTFMP+a1RbbUQJJWOzUHN93JcrTWK/Nu9i0gjAPr6Lb7zF35iEyKyBZlxgGsr1HuII5RwrMiSrsknOTxp9CQURo00o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162498; c=relaxed/simple;
-	bh=k8OO6IXo+kL3DkEX6M1aUCv66CCobWqwXjcGjYJMzs0=;
+	s=arc-20240116; t=1780167206; c=relaxed/simple;
+	bh=qaeN2pTMF2ixFaJcBqSdy+fds2o4u7q1bEWuetNjBqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e+7nxp62R9hvIMsStESZDLoyWPV7FtCfX7gkSFm0SyXrI1UuPWUaLUKkLnblqQ5Y2/+o6ih5wbEDq6diwIxw/HXm7Rv8/CkkR3iTjS2zfbc83zSPcch92+qF20miksdWhL1OgX4MTQQHjYCFt7yOV+wQVb+2Wx9EwrKYWuSjOCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2qwg+yP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEED1F00893;
-	Sat, 30 May 2026 17:34:56 +0000 (UTC)
+	 MIME-Version; b=YQLTfIMh1dG3z7uQUspFrLFy9a8yYJPqsGAqT8SD4eK6F/4RLj7qpLv/tWfEI6L6PeFWTrYG+n7okbVATA8cu9DkoH/gxOPN6x5mLdwB9FCs0gn07fo3sfIOM5HtmHexTPP/Xz+M+Ho1SsHCTlBurgUy19W13ROfe7JOAP/Z8Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aaVhEL8Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64231F00893;
+	Sat, 30 May 2026 18:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162497;
-	bh=mjKp4T3V5hP8UNz/WJKlUkLRW910UB4a1WAUnZOeUAk=;
+	s=korg; t=1780167205;
+	bh=MzFuaW7hXiPSUPwNZXSMRMpvQxsD+X4dqvnBDmaqAjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o2qwg+yPt1Llbn7D7dGBT3klGyyq5kKkH+8btfOabjW+YwCb9kia2DxR8D5c1rNdi
-	 uMo2oz9d6gZN1SGsX/AA3kp4auwkFG8NXyFH53lWaFoUAD9byEpo+R20Qduddf/noH
-	 gLVgQQ6n8yba+ohctusDss2VvfN4sKd99acp43LM=
+	b=aaVhEL8QcRxoH7qCcIUqF2/pV5rAiuCLsyACaG9j4LWjOGvnxm3A7Dc1KtcDD0tjM
+	 EPeoW4YgPjDtTacUPXPDxzJotMOah005mjR2glJxRRn4Yr4Gx6DhU636Qm7L7SJknS
+	 tWTRAd7fc9eP/+4qHVrWIQjwcftDX8ITEcONeqwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E9=92=B1=E4=B8=80=E9=93=AD?= <yimingqian591@gmail.com>,
+	Sashiko <sashiko-bot@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 938/969] net: tls: fix off-by-one in sg_chain entry count for wrapped sk_msg ring
-Date: Sat, 30 May 2026 18:07:42 +0200
-Message-ID: <20260530160326.655077321@linuxfoundation.org>
+Subject: [PATCH 5.10 582/589] net: tls: prevent chain-after-chain in plain text SG
+Date: Sat, 30 May 2026 18:07:43 +0200
+Message-ID: <20260530160239.891487544@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,111 +64,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,queasysnail.net,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257885-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259278-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A3CC46101F1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 31DD5612EF6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 285943c6e7ca309bbea84b253745154241d9788a ]
+[ Upstream commit ff26a0e8377dec07e4a7230db7675bed1b9a6d03 ]
 
-When an sk_msg scatterlist ring wraps (sg.end < sg.start),
-tls_push_record() chains the tail portion of the ring to the head
-using sg_chain(). An extra entry in the sg array is reserved for
-this:
+Sashiko points out that if end = 0 (start != 0) the current
+code will create a chain link to content type right after
+the wrap link:
 
-  struct sk_msg_sg {
-        [...]
-        /* The extra two elements:
-         * 1) used for chaining the front and sections when the list becomes
-         *    partitioned (e.g. end < start). The crypto APIs require the
-         *    chaining;
-         * 2) to chain tailer SG entries after the message.
-         */
-        struct scatterlist              data[MAX_MSG_FRAGS + 2];
+  This would create a chain where the wrap link points directly
+  to another chain link. The scatterlist API sg_next iterator
+  does not recursively resolve consecutive chain links.
 
-The current code uses MAX_SKB_FRAGS + 1 as the ring size:
+meaning this is illegal input to crypto.
 
-    sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
-             MAX_SKB_FRAGS - msg_pl->sg.start + 1,
-             msg_pl->sg.data);
+The wrapping link is unnecessary if end = 0. end is the entry after
+the last one used so end = 0 means there's nothing pushed after
+the wrap:
 
-This places the chain pointer at
+   end         start            i
+    v            v              v
+  [   ]...[   ][ d ][ d ][ d ][ d ][rsv for wrap]
 
-  sg_chain(data[start], (MAX_SKB_FRAGS - msg_start + 1) .. =
-  &data[start] + (MAX_SKB_FRAGS - msg_start + 1) - 1 =
-  data[start + (MAX_SKB_FRAGS - start + 1) - 1] =
-  data[MAX_SKB_FRAGS]
+Skip the wrapping in this case.
 
-instead of the true last entry. This is likely due to a "race" of
-the commit under Fixes landing close to
-commit 031097d9e079 ("bpf: sk_msg, zap ingress queue on psock down")
+TLS 1.3 can use the "wrapping slot" for it's chaining if end = 0.
+This avoids the chain-after-chain.
 
-Convert to ARRAY_SIZE and drop the data[start] / - start (as suggested
-by Sabrina).
+Move the wrap chaining before marking END and chaining off content
+type, that feels like more logical ordering to me, but should not
+matter from functional perspective.
 
-Reported-by: 钱一铭 <yimingqian591@gmail.com>
+Reported-by: Sashiko <sashiko-bot@kernel.org>
 Fixes: 9aaaa56845a0 ("bpf: Sockmap/tls, skmsg can have wrapped skmsg that needs extra chaining")
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20260511174920.433155-2-kuba@kernel.org
+Link: https://patch.msgid.link/20260511174920.433155-3-kuba@kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/tls/tls_sw.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
 diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index ef7dda0915d33..a46f3cc4b3f14 100644
+index 9969222dd2150..1b8e003d5e70b 100644
 --- a/net/tls/tls_sw.c
 +++ b/net/tls/tls_sw.c
-@@ -801,11 +801,9 @@ static int tls_push_record(struct sock *sk, int flags,
+@@ -730,21 +730,33 @@ static int tls_push_record(struct sock *sk, int flags,
+ 	i = msg_pl->sg.end;
+ 	sk_msg_iter_var_prev(i);
+ 
++	/* msg_pl->sg.data is a ring; data[MAX+1] is reserved for the wrap
++	 * link (frags won't use it). 'i' is now the last filled entry:
++	 *
++	 *         i   end              start
++	 *         v    v                 v            [ rsv ]
++	 *  [ d ][ d ][   ][   ]...[   ][ d ][ d ][ d ][chain]
++	 *    ^   END                                     v
++	 *     `-----------------------------------------'
++	 *
++	 * Note that SGL does not allow chain-after-chain, so for TLS 1.3,
++	 * we must make sure we don't create the wrap entry and then chain
++	 * link to content_type immediately at index 0.
++	 */
++	if (i < msg_pl->sg.start)
++		sg_chain(msg_pl->sg.data, ARRAY_SIZE(msg_pl->sg.data),
++			 msg_pl->sg.data);
++
+ 	rec->content_type = record_type;
+ 	if (prot->version == TLS_1_3_VERSION) {
+ 		/* Add content type to end of message.  No padding added */
+ 		sg_set_buf(&rec->sg_content_type, &rec->content_type, 1);
+ 		sg_mark_end(&rec->sg_content_type);
+-		sg_chain(msg_pl->sg.data, msg_pl->sg.end + 1,
+-			 &rec->sg_content_type);
++		sg_chain(msg_pl->sg.data, i + 2, &rec->sg_content_type);
+ 	} else {
  		sg_mark_end(sk_msg_elem(msg_pl, i));
  	}
  
--	if (msg_pl->sg.end < msg_pl->sg.start) {
--		sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
--			 MAX_SKB_FRAGS - msg_pl->sg.start + 1,
-+	if (msg_pl->sg.end < msg_pl->sg.start)
-+		sg_chain(msg_pl->sg.data, ARRAY_SIZE(msg_pl->sg.data),
- 			 msg_pl->sg.data);
--	}
- 
+-	if (msg_pl->sg.end < msg_pl->sg.start)
+-		sg_chain(msg_pl->sg.data, ARRAY_SIZE(msg_pl->sg.data),
+-			 msg_pl->sg.data);
+-
  	i = msg_pl->sg.start;
  	sg_chain(rec->sg_aead_in, 2, &msg_pl->sg.data[i]);
+ 
 -- 
 2.53.0
 
