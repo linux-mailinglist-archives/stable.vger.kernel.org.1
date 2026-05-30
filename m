@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-259258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257877-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDLsLP0xG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:45 +0200
+	id SLR6ELwgG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257877-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD06F612B2F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9694B61019A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 67C1E300BC48
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E07E3012E84
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1F8231A23;
-	Sat, 30 May 2026 18:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68BA34A3C4;
+	Sat, 30 May 2026 17:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWZrtViJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyIla3rL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6209E1D63E4;
-	Sat, 30 May 2026 18:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A951D30E853;
+	Sat, 30 May 2026 17:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167138; cv=none; b=ICxVP+MxTM7IfC7zXuyjp9oFyZtGH8iwOh766WDECTy8YzRX+fMllUoKkh5hTTh/h230GEqFTtehkkCSMR/z67jF+E1srR50xZKhIkYHKpjWVWE6yh6cWv3KxUnG3NuBxZ/KhtSnTUc/kRLk0S+lttcZu+tt1mgupb6yS2PIcXs=
+	t=1780162471; cv=none; b=Mgag2VxbsPzrg9aRkFRyZGsZz47ZrXVwmP9Zkc9TUd5uIJM5uD9UpxZoPj9gi5W9qTAUwN/VtONpnLtBf2HR84SU1O+2QExlrL3hrvzdJsiCChRzbRX7rWZwjVYd1pLoY4Orf3r/qUC7m83DN4l6jB8izvZsutbQQkL5o2/BRqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167138; c=relaxed/simple;
-	bh=Rl49n76eQNNcNGJD1vTlqxf61b0cbkIpWIbZWSLonko=;
+	s=arc-20240116; t=1780162471; c=relaxed/simple;
+	bh=vUFKYkDPdN3ZVk0gFgfVcBKas13BBDHYSebXH8BW1Fs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X1APXFeAmT18sZtXdxyAH7LJ5KlL4R8ZtZH48s5dFhD0s3Ijdbk2U2aTBfja6WZ56OpKGmFk01e2Hw59g0u1EL/IXDyqhuvnnDKHVsI6KEHbnOxEyMTqbMbDLkG4u30v2v4vw83ZlIyEFWU8khbBbFRXkj5OpLMJzBDbgiquX08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWZrtViJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61081F00893;
-	Sat, 30 May 2026 18:52:16 +0000 (UTC)
+	 MIME-Version; b=XnIqW8YGbsEVS5rvqE3MJrRacU1wP4Tp5zwTQyHM9CiscV9j762LZhrwVD/USqmYKsaQefJRzku6FvxiT+yh6KcPWl3HsHpTs5Bzrl8K5rEWLrTPNVcLwcEoM3p/D6z5RmW7RgUfFYBux3Cbe6XLOK5PYiAVi8Ev5n9RdD6tlIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyIla3rL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8381F00893;
+	Sat, 30 May 2026 17:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167137;
-	bh=gV8OkSFX7TO38ZH2qdZMtBMoy1pyMBZFShc/Sr8hyjI=;
+	s=korg; t=1780162470;
+	bh=gjkQmGtFbvzwLRJ7bJwc/9BVx/oa8sDr5/CgzWALCIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iWZrtViJQUdf7zS277BT2T0xweuFm2z0XtQID/m9hJD8mZzPrSbTIX8Hq5TvXPUqA
-	 LTlTXZAaLE+c9hLNQRWSvwqDmroz3d/wtfNrkiB8Dqc1iaRIgpgQ8xHV+yMgxPfLN/
-	 HWeSAuKwkyVvc/A2TE8gYZEzW5qeHP9NGBlpDMXE=
+	b=KyIla3rLCfm/xDpiuuzC+n/QRh9ArEp4XWKur+vbYmORy1DguOdY9WU5mu7AzuH6U
+	 IzPCouPL2PhO5XkSMuZXxsXGr8kOvMZGbcj2zDDefrP3qzB22BOq46Wk2aa65IGBi4
+	 Wdq7j1KkLbbwT726sRKxvI3NrBsqt9ZlW+Uv6z2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 573/589] phy: marvell: mvebu-a3700-utmi: fix incorrect USB2_PHY_CTRL register access
+Subject: [PATCH 6.1 930/969] wifi: ath11k: fix error path leaks in some WMI WOW calls
 Date: Sat, 30 May 2026 18:07:34 +0200
-Message-ID: <20260530160239.674744403@linuxfoundation.org>
+Message-ID: <20260530160326.425909066@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +65,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259258-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257877-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: AD06F612B2F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9694B61019A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit 91ddf6f722084383fb05be731c0107814b055c0c ]
+[ Upstream commit 55dda532bbc261aef495e403c8900c5e2ab5fa34 ]
 
-The mvebu_a3700_utmi_phy_power_off() function tries to modify the
-USB2_PHY_CTRL register by using the IO address of the PHY IP block along
-with the readl/writel IO accessors. However, the register exist in the
-USB miscellaneous register space, and as such it must be accessed via
-regmap like it is done in the mvebu_a3700_utmi_phy_power_on() function.
+Fix two instances where we used to directly return the result of
+ath11k_wmi_cmd_send(...). Because we did not check the return value, we
+also did not free the skb in the error path.
 
-Change the code to use regmap_update_bits() for modífying the register
-to fix this.
-
-Fixes: cc8b7a0ae866 ("phy: add A3700 UTMI PHY driver")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20260321-a3700-utmi-fix-usb2_phy_ctrl-access-v1-1-6005ff4b5058@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 79802b13a492 ("ath11k: implement WoW enable and wakeup commands")
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260506134240.2284016-2-nico.escande@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/marvell/phy-mvebu-a3700-utmi.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
-index 8834436bc9dbc..e3a9278c06842 100644
---- a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
-+++ b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
-@@ -168,9 +168,8 @@ static int mvebu_a3700_utmi_phy_power_off(struct phy *phy)
- 	u32 reg;
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 8b50dbc47300b..31128630d8b62 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -8482,6 +8482,7 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
+ 	struct wmi_wow_host_wakeup_ind *cmd;
+ 	struct sk_buff *skb;
+ 	size_t len;
++	int ret;
  
- 	/* Disable PHY pull-up and enable USB2 suspend */
--	reg = readl(utmi->regs + USB2_PHY_CTRL(usb32));
--	reg &= ~(RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32));
--	writel(reg, utmi->regs + USB2_PHY_CTRL(usb32));
-+	regmap_update_bits(utmi->usb_misc, USB2_PHY_CTRL(usb32),
-+			   RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32), 0);
+ 	len = sizeof(*cmd);
+ 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
+@@ -8495,14 +8496,20 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
  
- 	/* Power down OTG module */
- 	if (usb32) {
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "wmi tlv wow host wakeup ind\n");
+ 
+-	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
++	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
++	if (ret) {
++		ath11k_warn(ar->ab, "failed to send WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID\n");
++		dev_kfree_skb(skb);
++	}
++
++	return ret;
+ }
+ 
+ int ath11k_wmi_wow_enable(struct ath11k *ar)
+ {
+ 	struct wmi_wow_enable_cmd *cmd;
+ 	struct sk_buff *skb;
+-	int len;
++	int ret, len;
+ 
+ 	len = sizeof(*cmd);
+ 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
+@@ -8517,7 +8524,13 @@ int ath11k_wmi_wow_enable(struct ath11k *ar)
+ 	cmd->pause_iface_config = WOW_IFACE_PAUSE_ENABLED;
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "wmi tlv wow enable\n");
+ 
+-	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
++	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
++	if (ret) {
++		ath11k_warn(ar->ab, "failed to send WMI_WOW_ENABLE_CMDID\n");
++		dev_kfree_skb(skb);
++	}
++
++	return ret;
+ }
+ 
+ int ath11k_wmi_scan_prob_req_oui(struct ath11k *ar,
 -- 
 2.53.0
 
