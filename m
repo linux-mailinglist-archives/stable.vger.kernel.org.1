@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-258622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFDDF1wqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258622-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:12 +0200
+	id aH+SIQsyG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBCCF61181E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235AE612B7F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2181B3059A67
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 67A1A30D25FB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844073ACA4D;
-	Sat, 30 May 2026 18:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E15233952;
+	Sat, 30 May 2026 18:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVdmM+Q9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vc4KmvxZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4540B241C8C;
-	Sat, 30 May 2026 18:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0911D63E4;
+	Sat, 30 May 2026 18:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164971; cv=none; b=KFOr1q5fFyFgaSaKpq2x7gEovdogjhLWQ/M2u+iQcmQrPL14GUhglmmNudE6RK2HS114h8u76ZIJadK6gz8F3dsst4WSjjWU9JzU3b+cHFtmZhK08Xe1sP2vHk17FYt2l9SriIytP7iTJprXuvSdha4yGrWVMC9TvRh5Tzf0COk=
+	t=1780166945; cv=none; b=ExcO2N2+I/zyLSEXX3VJLe2JIOb9xqIqIJuw0XnwoM4BfG9lM/BpigEGVLlYkALAB7loogOskS5IiXfB3mXza7rIpkOb0lrStYF+AiL1/AQEuKeZIQokLtnDWDzoRyENYxcZ0BDbtZwsPOxEVCL5cSKAc2a8Sa7Vm6CQv1oUxoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164971; c=relaxed/simple;
-	bh=3xrIUiwcwJ5bkrpZueKOdawRnncOuM9laCzu5fRm/lg=;
+	s=arc-20240116; t=1780166945; c=relaxed/simple;
+	bh=tvLy1joiFq13cKuqyeqRBOpzNBJPdtdG8OVOmEgIdo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iAa86u515HSI48TTSh4wuxSFqA3sDz0hMRbJG6QantsH5sbmaMbwnjjlwo3w4dw1o2wCI6Xnqlhc6hVA4blDr00K1ExhK2WyeQU+foHgr2kNOw7owsYp6XU9sLtAlhhR607mKmrNak5RnEjkRe0o4vgXa6gTgIMbc+eFaEAEbLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVdmM+Q9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4881B1F00893;
-	Sat, 30 May 2026 18:16:09 +0000 (UTC)
+	 MIME-Version; b=clr4nY6EkwYrdzX2Sy6iONBzpYAcJ+v4QLd6dIVGZdfFUTJgjUo48g/i1sgmopktljVEBxThyFHtJpMz9jyuRbBTQZFfP7n//81sTWEFF3+AKZ3J7wBqzjVH48flVTCgLsUCIKa3GBVnxTVlrwl1mo9AAjU9rYcXBEFxaTyVOwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vc4KmvxZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B7351F00893;
+	Sat, 30 May 2026 18:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164969;
-	bh=w0rrCmHAd5BlwLt/jSS+coT2C5BAWy3alHmvJCH/R8Y=;
+	s=korg; t=1780166944;
+	bh=3/SSfQRMLFLMSA9Ka9823zh7z0uv5R2lMUTOqO2oFys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BVdmM+Q9okFedG1FG0uTC/823cddVboPiB+hI9Ae0K3kRWYtqjFmp7glZqjLTapJ2
-	 pFGQFAPYBLHy859uaGQkprSGBn2/MtEvuAznE+McZvm5/xmZOp0ZQbGqk2g7Ul8hkP
-	 jl2QNGqTo5JdfjYR4xkMa/762foj3lVWHlYHIWZw=
+	b=vc4KmvxZNXZKWLzNNov8lOvhTv8Eab9nQvuua3ur75+GlCMRbCdovSxgEECnVkI09
+	 mQimyP5yhA3vdtAsWT3kCrmCZCaCcf/uPBrvj0qF+mvMjnE7ngv8q551wqu8PvM1zV
+	 zKmaIou8HENJ1ghxpWsb6vG+5K8/dNbVdlrdcRa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijing Yin <yzjaurora@gmail.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
-	syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 685/776] phonet/pep: disable BH around forwarded sk_receive_skb()
-Date: Sat, 30 May 2026 18:06:39 +0200
-Message-ID: <20260530160257.564424626@linuxfoundation.org>
+	Nicholas Carlini <nicholas@carlini.com>
+Subject: [PATCH 5.10 519/589] io-wq: check that the predecessor is hashed in io_wq_remove_pending()
+Date: Sat, 30 May 2026 18:06:40 +0200
+Message-ID: <20260530160238.264578864@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,141 +61,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,remlab.net,syzkaller.appspotmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258622-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-259201-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,9f4a135646b66c509935];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,pastebin.com:url,remlab.net:email]
-X-Rspamd-Queue-Id: CBCCF61181E
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 235AE612B7F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijing Yin <yzjaurora@gmail.com>
+From: Nicholas Carlini <nicholas@carlini.com>
 
-commit dbc81608e3a653dea6cf403f20cae35468b8ab9c upstream.
+io_wq_remove_pending() needs to fix up wq->hash_tail[] if the cancelled
+work was the tail of its hash bucket. When doing this, it checks whether
+the preceding entry in acct->work_list has the same hash value, but
+never checks that the predecessor is hashed at all. io_get_work_hash()
+is simply atomic_read(&work->flags) >> IO_WQ_HASH_SHIFT, and the hash
+bits are never set for non-hashed work, so it returns 0. Thus, when a
+hashed bucket-0 work is cancelled while a non-hashed work is its list
+predecessor, the check spuriously passes and a pointer to the non-hashed
+io_kiocb is stored in wq->hash_tail[0].
 
-The networking receive path is usually run from softirq context, but
-protocols that take the socket lock may have packets stored in the
-backlog and processed later from process context. In that case
-release_sock() -> __release_sock() drops the slock with spin_unlock_bh()
-and then calls sk->sk_backlog_rcv() with bottom halves enabled.
+Because non-hashed work is dequeued via the fast path in
+io_get_next_work(), which never touches hash_tail[], the stale pointer
+is never cleared. Therefore, after the non-hashed io_kiocb completes and
+is freed back to req_cachep, wq->hash_tail[0] is a dangling pointer. The
+io_wq is per-task (tctx->io_wq) and survives ring open/close, so the
+dangling pointer persists for the lifetime of the task; the next hashed
+bucket-0 enqueue dereferences it in io_wq_insert_work() and
+wq_list_add_after() writes through freed memory.
 
-Typical sk_backlog_rcv handlers process the socket whose backlog is
-being drained, so the BH state at entry is irrelevant for the slocks
-they touch. pep_do_rcv() is different: when the inbound skb targets an
-existing PEP pipe, it forwards the skb to a different *child* socket
-via sk_receive_skb(). That helper takes the child slock with
-bh_lock_sock_nested(), which is just spin_lock_nested() and assumes BH
-is already off. The same child slock therefore ends up acquired with
-BH on (process path) and with BH off (softirq path):
+Add the missing io_wq_is_hashed() check so a non-hashed predecessor
+never inherits a hash_tail[] slot.
 
-  process context                   softirq context
-  ---------------                   ---------------
-  release_sock(listener)            __netif_receive_skb()
-   __release_sock()                  phonet_rcv()
-    spin_unlock_bh()                  __sk_receive_skb(listener)
-    [BH now ENABLED]                  [BH already disabled]
-    sk_backlog_rcv:                   sk_backlog_rcv:
-     pep_do_rcv()                      pep_do_rcv()
-      sk_receive_skb(child)             sk_receive_skb(child)
-       bh_lock_sock_nested(child)        bh_lock_sock_nested(child)
-       => SOFTIRQ-ON-W                   => IN-SOFTIRQ-W
-
-Lockdep flags this as inconsistent lock state, and it can become a real
-self-deadlock if a softirq on the same CPU tries to receive to the same
-child socket while its slock is held in the BH-enabled path:
-
-  WARNING: inconsistent lock state
-  inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-   (slock-AF_PHONET/1){+.?.}-{3:3}, at: __sk_receive_skb+0x1cf/0x900
-    __sk_receive_skb              net/core/sock.c:563
-    sk_receive_skb                include/net/sock.h:2022 [inline]
-    pep_do_rcv                    net/phonet/pep.c:675
-    sk_backlog_rcv                include/net/sock.h:1190
-    __release_sock                net/core/sock.c:3216
-    release_sock                  net/core/sock.c:3815
-    pep_sock_accept               net/phonet/pep.c:879
-
-Wrap the forwarded sk_receive_skb() in local_bh_disable() /
-local_bh_enable() so the child slock is always acquired with BH off.
-local_bh_disable() nests safely on the softirq path.
-
-Discovered via in-house syzkaller fuzzing; the same root cause also
-on the linux-6.1.y syzbot dashboard as extid 44f0626dd6284f02663c.
-Reproduced under KASAN + LOCKDEP + PROVE_LOCKING, reproducer:
-https://pastebin.com/A3t8xzCR
-
-Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
-Link: https://syzkaller.appspot.com/bug?extid=44f0626dd6284f02663c
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
-Acked-by: Rémi Denis-Courmont <remi@remlab.net>
-Reported-by: syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260519172635.86304-1-yzjaurora@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org # 5.7+
+Fixes: 204361a77f40 ("io-wq: fix hang after cancelling pending hashed work")
+Signed-off-by: Nicholas Carlini <nicholas@carlini.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pep.c |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ io_uring/io-wq.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/phonet/pep.c
-+++ b/net/phonet/pep.c
-@@ -671,8 +671,23 @@ static int pep_do_rcv(struct sock *sk, s
- 
- 	/* Look for an existing pipe handle */
- 	sknode = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
--	if (sknode)
--		return sk_receive_skb(sknode, skb, 1);
-+	if (sknode) {
-+		int rc;
-+
-+		/* pep_do_rcv() runs from two contexts: from softirq via
-+		 * phonet_rcv() -> __sk_receive_skb() with BH disabled,
-+		 * and from process context via
-+		 * release_sock() -> __release_sock(), which drops
-+		 * the listener slock with spin_unlock_bh() before draining
-+		 * the backlog.  The child pipe slock is taken below via
-+		 * bh_lock_sock_nested(), which does not itself disable BH, so
-+		 * disable BH here to keep both acquire contexts consistent.
-+		 */
-+		local_bh_disable();
-+		rc = sk_receive_skb(sknode, skb, 1);
-+		local_bh_enable();
-+		return rc;
-+	}
- 
- 	switch (hdr->message_id) {
- 	case PNS_PEP_CONNECT_REQ:
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -1014,7 +1014,8 @@ static inline void io_wqe_remove_pending
+ 	if (io_wq_is_hashed(work) && work == wqe->hash_tail[hash]) {
+ 		if (prev)
+ 			prev_work = container_of(prev, struct io_wq_work, list);
+-		if (prev_work && io_get_work_hash(prev_work) == hash)
++		if (prev_work && io_wq_is_hashed(prev_work) &&
++		    io_get_work_hash(prev_work) == hash)
+ 			wqe->hash_tail[hash] = prev_work;
+ 		else
+ 			wqe->hash_tail[hash] = NULL;
 
 
 
