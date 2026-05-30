@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-258801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257420-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OL6kGZwsG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258801-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:29:48 +0200
+	id OH4hACYaG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257420-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63EC611D75
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:29:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 956BA60F0DC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 59298309C9CD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:26:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8B16E302FCE4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E112E6CA8;
-	Sat, 30 May 2026 18:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB513B389D;
+	Sat, 30 May 2026 17:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRded4xZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DB5YJL/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6417274FDC;
-	Sat, 30 May 2026 18:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93300395AEA;
+	Sat, 30 May 2026 17:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165584; cv=none; b=h4GoN4nM+oy+LwFF1WZHDD70NYwJLzsOdPhIpa+sJgDBoWVnaxkPNWKXTfbVm0Vw8mRAhcVvn2Xv7z4kNHQYB2dREOISC959D6ZBsI3rteXJ33TYCH4XQ4hsfhUHxqJjceTDRG3G6rERgT5CfqM5+oQc0sJMHM5RG6S2A/W3Zwo=
+	t=1780160935; cv=none; b=MO0W21eFVSp+cA9ucV4J8BJxZJAXBCBO7H9EZzvW4UZ6kh5E+if8bjSC+GJ8Y9Yzamg3t3+u7piVbX/eGB9vMCbhZej9QWwY9HAmIgcGWFvjMl4FnX1JZlJDJKskg5atLpZdFn0j8Oy7EPstc4NJGj3ed4Fr6KAWwkS3uV+6S5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165584; c=relaxed/simple;
-	bh=qmnLCE0sX+b2wpOZORLQST2ZMGP82pngkbi8+w5740U=;
+	s=arc-20240116; t=1780160935; c=relaxed/simple;
+	bh=3C1hhorlhb13mtLj4IF6TSg3nTQ0aq+YLlOP3lAjpUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=czh7nIM71tWgTNMS+I7gnP7yo2YC+1sv0f0cJ5/XuZb7/qNI+c1V4tVTtJxaNVOWwRZIsiUT8wOaa4+xGTehBnaDmlQt+DI9Lhgf0jGLPkQ1gSu4QgggCCzpMYkiaWCRLD7L88v4vPkWd6Kqeupc80d3DmhiMCRRC/cTaTkGvPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRded4xZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184311F00893;
-	Sat, 30 May 2026 18:26:22 +0000 (UTC)
+	 MIME-Version; b=c+EsLqfhALkUlsT8jk9+AXcrpIuKumAv8UaAOQ1aecNS7xLp1H7ZQRj4oZfBgCrkjUluX7pxRDIXuJMTHEU6YlZxV0RHIp64P+nwVGgSOj4AGLTTypFP3eCcW2Q8Tyi5JNK6agGEmFIcEIWKEOrcNZ8MYw5HuZjvXfYMpPkz5LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DB5YJL/w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFAC1F00893;
+	Sat, 30 May 2026 17:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165583;
-	bh=QlH9x+8CcJPmYYAddptbowV8K4uGRWk+NYXTesb/0bQ=;
+	s=korg; t=1780160934;
+	bh=0qSdK7WBQISit5ApePwTYMq9CjqLh8G79AedJ+s050g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iRded4xZ6U3ofUmVmpnZsaIZUYqUQrED4cOSgN2RYPlQ9+d5kOztOf9WMx0F7kQQg
-	 RJpKFF8LnqURSM1+0ydIMy7EMVLMkzHUKk/nVYYGXOpxc00+jJDOLjCPcOR9qKFKBz
-	 Yun79T5fr/17wfTlsbJjihJTWFALbgAdN8XkwuB0=
+	b=DB5YJL/wOCwo15HWUH00J0yrHxeUAJc2VOPpLGDPX3/JEURfJ+343PLl9uy+h0LV7
+	 Zqyr1M//LGSDSE+jHsr+3xs7gx/t8vx8JutwHZmvwZuove/EwXz0fG31g+i4aD5AyM
+	 QJUdHg0HeGnm61N/kV85PFgIuuvr1UfV1xmLx1ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.10 121/589] drm/amd/display: Do not add -mhard-float to calcs, dsc, and dcn30 FP files for clang
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Andreas Koensgen <ajk@comnets.uni-bremen.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-hams@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 478/969] 6pack: propagage new tty types
 Date: Sat, 30 May 2026 18:00:02 +0200
-Message-ID: <20260530160227.943828059@linuxfoundation.org>
+Message-ID: <20260530160313.498423975@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +73,169 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258801-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257420-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D63EC611D75
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 956BA60F0DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-This patch is for linux-5.10.y only. It is functionally equivalent to
-upstream commit 7db038d9790e ("drm/amd/display: Do not add
-'-mhard-float' to dml_ccflags for clang"), which was created after all
-files that require '-mhard-float' were moved under the dml folder. In
-linux-5.10.y, which does not contain upstream commits
+[ Upstream commit 1241b384efa53f4b7a95fe2b34d69359bb3ae1b5 ]
 
-  b4bab46400a0 ("drm/amd/display: move calcs folder into DML")
-  27e01f10d183 ("drm/amd/display: move FPU associated DSC code to DML folder")
-  40b31e5355ba ("drm/amd/display: Remove FPU flags from DCN30 Makefile")
+In tty, u8 is now used for data, ssize_t for sizes (with possible
+negative error codes). Propagate these types to 6pack.
 
-clang-21 or newer errors with
-
-  clang: error: unsupported option '-mhard-float' for target 'x86_64-pc-linux-gnu'
-  make[6]: *** [scripts/Makefile.build:286: drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calc_math.o] Error 1
-  clang: error: unsupported option '-mhard-float' for target 'x86_64-pc-linux-gnu'
-  make[6]: *** [scripts/Makefile.build:286: drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.o] Error 1
-  clang: error: unsupported option '-mhard-float' for target 'x86_64-pc-linux-gnu'
-  make[6]: *** [scripts/Makefile.build:286: drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calc_auto.o] Error 1
-  clang: error: unsupported option '-mhard-float' for target 'x86_64-pc-linux-gnu'
-  make[6]: *** [scripts/Makefile.build:286: drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/rc_calc.o] Error 1
-  clang: error: unsupported option '-mhard-float' for target 'x86_64-pc-linux-gnu'
-  make[6]: *** [scripts/Makefile.build:286: drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_optc.o] Error 1
-  clang: error: unsupported option '-mhard-float' for target 'x86_64-pc-linux-gnu'
-  make[6]: *** [scripts/Makefile.build:286: drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_resource.o] Error 1
-
-Apply a functionally equivalent change to prevent adding '-mhard-float'
-with clang for these files.
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2156
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andreas Koensgen <ajk@comnets.uni-bremen.de>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: linux-hams@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Reviewed-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://lore.kernel.org/r/20240808103549.429349-12-jirislaby@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: bf9a38803b26 ("net: hamradio: 6pack: fix uninit-value in sixpack_receive_buf")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/calcs/Makefile |    3 ++-
- drivers/gpu/drm/amd/display/dc/dcn30/Makefile |    4 ++--
- drivers/gpu/drm/amd/display/dc/dsc/Makefile   |    3 ++-
- 3 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/hamradio/6pack.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/calcs/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/calcs/Makefile
-@@ -26,7 +26,8 @@
- #
+diff --git a/drivers/net/hamradio/6pack.c b/drivers/net/hamradio/6pack.c
+index 1b007dd174794..fe85cffa4f945 100644
+--- a/drivers/net/hamradio/6pack.c
++++ b/drivers/net/hamradio/6pack.c
+@@ -94,8 +94,8 @@ struct sixpack {
+ 	unsigned char		*xhead;         /* next byte to XMIT */
+ 	int			xleft;          /* bytes left in XMIT queue  */
  
- ifdef CONFIG_X86
--calcs_ccflags := -mhard-float -msse
-+calcs_ccflags-$(CONFIG_CC_IS_GCC) := -mhard-float
-+calcs_ccflags := $(calcs_ccflags-y) -msse
- endif
+-	unsigned char		raw_buf[4];
+-	unsigned char		cooked_buf[400];
++	u8			raw_buf[4];
++	u8			cooked_buf[400];
  
- ifdef CONFIG_PPC64
---- a/drivers/gpu/drm/amd/display/dc/dcn30/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/Makefile
-@@ -32,8 +32,8 @@ DCN30 = dcn30_init.o dcn30_hubbub.o dcn3
+ 	unsigned int		rx_count;
+ 	unsigned int		rx_count_cooked;
+@@ -113,8 +113,8 @@ struct sixpack {
+ 	unsigned char		slottime;
+ 	unsigned char		duplex;
+ 	unsigned char		led_state;
+-	unsigned char		status;
+-	unsigned char		status1;
++	u8			status;
++	u8			status1;
+ 	unsigned char		status2;
+ 	unsigned char		tx_enable;
+ 	unsigned char		tnc_state;
+@@ -126,7 +126,7 @@ struct sixpack {
  
+ #define AX25_6PACK_HEADER_LEN 0
  
- ifdef CONFIG_X86
--CFLAGS_$(AMDDALPATH)/dc/dcn30/dcn30_resource.o := -mhard-float -msse
--CFLAGS_$(AMDDALPATH)/dc/dcn30/dcn30_optc.o := -mhard-float -msse
-+CFLAGS_$(AMDDALPATH)/dc/dcn30/dcn30_resource.o := $(if $(CONFIG_CC_IS_GCC),-mhard-float) -msse
-+CFLAGS_$(AMDDALPATH)/dc/dcn30/dcn30_optc.o := $(if $(CONFIG_CC_IS_GCC),-mhard-float) -msse
- endif
+-static void sixpack_decode(struct sixpack *, const unsigned char[], int);
++static void sixpack_decode(struct sixpack *, const u8 *, size_t);
+ static int encode_sixpack(unsigned char *, unsigned char *, int, unsigned char);
  
- ifdef CONFIG_PPC64
---- a/drivers/gpu/drm/amd/display/dc/dsc/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dsc/Makefile
-@@ -3,7 +3,8 @@
- # Makefile for the 'dsc' sub-component of DAL.
+ /*
+@@ -331,7 +331,7 @@ static void sp_bump(struct sixpack *sp, char cmd)
+ {
+ 	struct sk_buff *skb;
+ 	int count;
+-	unsigned char *ptr;
++	u8 *ptr;
  
- ifdef CONFIG_X86
--dsc_ccflags := -mhard-float -msse
-+dsc_ccflags-$(CONFIG_CC_IS_GCC) := -mhard-float
-+dsc_ccflags := $(dsc_ccflags-y) -msse
- endif
+ 	count = sp->rcount + 1;
  
- ifdef CONFIG_PPC64
+@@ -397,7 +397,7 @@ static void sixpack_receive_buf(struct tty_struct *tty,
+ 	const unsigned char *cp, const char *fp, int count)
+ {
+ 	struct sixpack *sp;
+-	int count1;
++	size_t count1;
+ 
+ 	if (!count)
+ 		return;
+@@ -773,9 +773,9 @@ static int encode_sixpack(unsigned char *tx_buf, unsigned char *tx_buf_raw,
+ 
+ /* decode 4 sixpack-encoded bytes into 3 data bytes */
+ 
+-static void decode_data(struct sixpack *sp, unsigned char inbyte)
++static void decode_data(struct sixpack *sp, u8 inbyte)
+ {
+-	unsigned char *buf;
++	u8 *buf;
+ 
+ 	if (sp->rx_count != 3) {
+ 		sp->raw_buf[sp->rx_count++] = inbyte;
+@@ -801,9 +801,9 @@ static void decode_data(struct sixpack *sp, unsigned char inbyte)
+ 
+ /* identify and execute a 6pack priority command byte */
+ 
+-static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
++static void decode_prio_command(struct sixpack *sp, u8 cmd)
+ {
+-	int actual;
++	ssize_t actual;
+ 
+ 	if ((cmd & SIXP_PRIO_DATA_MASK) != 0) {     /* idle ? */
+ 
+@@ -851,9 +851,9 @@ static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
+ 
+ /* identify and execute a standard 6pack command byte */
+ 
+-static void decode_std_command(struct sixpack *sp, unsigned char cmd)
++static void decode_std_command(struct sixpack *sp, u8 cmd)
+ {
+-	unsigned char checksum = 0, rest = 0;
++	u8 checksum = 0, rest = 0;
+ 	short i;
+ 
+ 	switch (cmd & SIXP_CMD_MASK) {     /* normal command */
+@@ -901,10 +901,10 @@ static void decode_std_command(struct sixpack *sp, unsigned char cmd)
+ /* decode a 6pack packet */
+ 
+ static void
+-sixpack_decode(struct sixpack *sp, const unsigned char *pre_rbuff, int count)
++sixpack_decode(struct sixpack *sp, const u8 *pre_rbuff, size_t count)
+ {
+-	unsigned char inbyte;
+-	int count1;
++	size_t count1;
++	u8 inbyte;
+ 
+ 	for (count1 = 0; count1 < count; count1++) {
+ 		inbyte = pre_rbuff[count1];
+-- 
+2.53.0
+
 
 
 
