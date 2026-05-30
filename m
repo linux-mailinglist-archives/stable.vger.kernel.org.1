@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-257792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259171-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FLnCX0fG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257792-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:49 +0200
+	id IESiCMIxG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259171-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A7160FEE5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D53DC612A51
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A5563305D5A8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:29:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BA5F2301F158
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8997340298;
-	Sat, 30 May 2026 17:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184A621E098;
+	Sat, 30 May 2026 18:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsC/oYv+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G50MXujo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1357342CA7;
-	Sat, 30 May 2026 17:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CCD14A60F;
+	Sat, 30 May 2026 18:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162186; cv=none; b=bR8k3lw6uZE7GZOhhq6qthA4fOS0QJO23sJ27MfRFkyc//J0SowvH0FckL29e/mbqxRtTNYR29sy7O/WHYFL3kHiCYpHnAPB3mmsge2jwiK15WoMLnov0YPLJgafZHDMbuTxRixNQQpcjVGEtmHf6CMDVz+LhNlX38HIofeD+Ig=
+	t=1780166844; cv=none; b=Yfap2WXOKppUvacY3SRFnHmkykQAnqhFzzZ6fcAxFzPIAj9tYFyRXPbzgAdTTf1pNjgRX2iF8ZDCHlOkbBKcvEMhRb+rd5bq6QT777Bqkw7kMwye+hpRlZlist5cQ5PMKZ/Rkd/yOMuz9m2EPuhkoobz9uDXjZVc14Q73j275Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162186; c=relaxed/simple;
-	bh=+retFB05BuwKyc76TnmUj0SBP4ZvRMjoRyYVxFPyjT8=;
+	s=arc-20240116; t=1780166844; c=relaxed/simple;
+	bh=xyCG0Z9TPYpnuHl53CLhhaFIVZXUb/A7uipPo28vRik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rrm8oCbsl2OlqtK87wEMBCfOfgSmlNaokt/s+G8bIo4+xrIDyR0IdZNuWaWc8bJC5KIHeOyoWxL1qr6FilIiy1XUqvif/C/Qc9vhc16NX23qdazmKKUE6L7TU6ROypHvBhBz1I4QGq+30B+ZS+Ln4E50q04iWLcj8PIc8bEbC3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsC/oYv+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116A71F00893;
-	Sat, 30 May 2026 17:29:44 +0000 (UTC)
+	 MIME-Version; b=lzGqx4tL5WLg9hZqmDz8MLjJ7KW0+KRR4cPgBEom+ws+fnNP3HnlTM/c5QIcoKWCB6mQCQ3lbO3x0RvVqK6zYYjYfJqlI4+dP77n5P/oQ9YQlOGg4LP7E8PhhDwceoDdjBYvF+ij79ZuIQGilK2iALXyB+csf36WdwZ3Atr6lVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G50MXujo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324401F00893;
+	Sat, 30 May 2026 18:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162185;
-	bh=ssk0lapLN50ke+3He4OMiK3HESF8wocws1O7w86AVYA=;
+	s=korg; t=1780166843;
+	bh=XrqRP3RaHYw6T8zSDN0/aYzUqUmd8FIGP8oxffPyDbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wsC/oYv+93kNJZUpk5kRPYH9Gu0vDTiAkRE3t4J7i0Tyiu+xyXr1XegNO3DOUFaGR
-	 Tt7OEGl6YLEtr2hfLuSAYYPjTgpjg933sT5NhfZTnHfRGDIer7ZgsEYY30YR6r2RDI
-	 rlWH4LwfAlGNh+HROpXT3Ig+YWkGoe+2lV5KzJrM=
+	b=G50MXujo04UsaMA8Hhuk4wglvLWxDRTvzEaPIlXW8s5w6+U38vQXcfQnFaDR7hUId
+	 UyPNTt7U6TEw8WW/vSMYx9QNloZAt8a52u1vrJjVA4nzKjKux2Duqx7EOslWVftIax
+	 9rfEgzW1+Lw1NEHrfJBMnPJZ9zhpFzRF2EWWJGyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 846/969] Bluetooth: bnep: Fix UAF read of dev->name
+	Guillaume Nault <gnault@redhat.com>,
+	Beniamino Galvani <b.galvani@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 489/589] ipv4: remove "proto" argument from udp_tunnel_dst_lookup()
 Date: Sat, 30 May 2026 18:06:10 +0200
-Message-ID: <20260530160324.022896781@linuxfoundation.org>
+Message-ID: <20260530160237.489894085@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +66,121 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257792-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259171-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org,davemloft.net];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 93A7160FEE5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,davemloft.net:email]
+X-Rspamd-Queue-Id: D53DC612A51
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Beniamino Galvani <b.galvani@gmail.com>
 
-commit 59e932ded949fa6f0340bf7c6d7818f962fa4fd2 upstream.
+[ Upstream commit 78f3655adcb52412275f282267ee771421731632 ]
 
-bnep_add_connection() needs to keep holding the bnep_session_sem while
-reading dev->name (just like bnep_get_connlist() does); otherwise the
-bnep_session() thread can concurrently free the net_device, which can for
-example be triggered by a concurrent bnep_del_connection().
+The function is now UDP-specific, the protocol is always IPPROTO_UDP.
 
-(This UAF is fairly uninteresting from a security perspective;
-calling bnep_add_connection() requires passing a capable(CAP_NET_ADMIN)
-check. It also requires completely tearing down a netdev during a fairly
-tight race window.)
-
-Cc: stable@vger.kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: aa6c6d9ee064 ("bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/bnep/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/bareudp.c      | 4 ++--
+ include/net/udp_tunnel.h   | 2 +-
+ net/ipv4/udp_tunnel_core.c | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -638,8 +638,8 @@ int bnep_add_connection(struct bnep_conn
- 		goto failed;
- 	}
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index dc1a551e6346a..1ed25e1afd246 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -318,7 +318,7 @@ static int bareudp_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 		return -ESHUTDOWN;
  
--	up_write(&bnep_session_sem);
- 	strcpy(req->device, dev->name);
-+	up_write(&bnep_session_sem);
- 	return 0;
+ 	rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, &saddr, info,
+-				   IPPROTO_UDP, use_cache);
++				   use_cache);
  
- failed:
+ 	if (IS_ERR(rt))
+ 		return PTR_ERR(rt);
+@@ -498,7 +498,7 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
+ 		__be32 saddr;
+ 
+ 		rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, &saddr,
+-					   info, IPPROTO_UDP, use_cache);
++					   info, use_cache);
+ 		if (IS_ERR(rt))
+ 			return PTR_ERR(rt);
+ 
+diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
+index efcaa114360b7..4d4f1a67d4b26 100644
+--- a/include/net/udp_tunnel.h
++++ b/include/net/udp_tunnel.h
+@@ -157,7 +157,7 @@ struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
+ 				     struct net_device *dev,
+ 				     struct net *net, __be32 *saddr,
+ 				     const struct ip_tunnel_info *info,
+-				     u8 protocol, bool use_cache);
++				     bool use_cache);
+ 
+ struct metadata_dst *udp_tun_rx_dst(struct sk_buff *skb, unsigned short family,
+ 				    __be16 flags, __be64 tunnel_id,
+diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
+index 356ef25481a83..50c83f90487db 100644
+--- a/net/ipv4/udp_tunnel_core.c
++++ b/net/ipv4/udp_tunnel_core.c
+@@ -226,7 +226,7 @@ struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
+ 				     struct net_device *dev,
+ 				     struct net *net, __be32 *saddr,
+ 				     const struct ip_tunnel_info *info,
+-				     u8 protocol, bool use_cache)
++				     bool use_cache)
+ {
+ #ifdef CONFIG_DST_CACHE
+ 	struct dst_cache *dst_cache;
+@@ -245,7 +245,7 @@ struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
+ #endif
+ 	memset(&fl4, 0, sizeof(fl4));
+ 	fl4.flowi4_mark = skb->mark;
+-	fl4.flowi4_proto = protocol;
++	fl4.flowi4_proto = IPPROTO_UDP;
+ 	fl4.daddr = info->key.u.ipv4.dst;
+ 	fl4.saddr = info->key.u.ipv4.src;
+ 	tos = info->key.tos;
+-- 
+2.53.0
+
 
 
 
