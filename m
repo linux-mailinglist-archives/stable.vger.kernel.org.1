@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258926-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0ME4ML0lG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:29 +0200
+	id IKmYNIwwG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-258926-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B12610CCC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50539612792
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DA45A30120FF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 19E9630D80DF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1813B7B72;
-	Sat, 30 May 2026 17:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FAE313E34;
+	Sat, 30 May 2026 18:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwydmZDj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCObz9DC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC6A352027;
-	Sat, 30 May 2026 17:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864D426738C;
+	Sat, 30 May 2026 18:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163866; cv=none; b=mE8RT6vnCXD/mdCOCpvl1aG7SmAGBZDy8duqpAXEpzPxTDGWmxiq+ZzO07/yBHnTedZo8SwcnJWH0hZzCzzeDs7HPLhYxa7NFjSErw6gnHBJNlaAZZ+9OsKZEr4lMt9WbFxcv9sZ7OqcTNVahhw4z7mRJvVIgLMXYRHT0El89yg=
+	t=1780166008; cv=none; b=CrK7dTgSLVce8OeLzptgaHhQ+vdZzrKIvAXqnbq+vsb7DnBMyQdKQjgBDfviBYpubJcjRt0zED012Ap/rfG4fQGFiCSWL1spRHQlxQgbsJ8j00pVY/uxHJTkfv6NO+5UL1nmByHlug2p3FICt4liQXkEoXlqFCV9A6m6bjpKPCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163866; c=relaxed/simple;
-	bh=FyxGDZ8Rc9LZrq2vLmxS4JQ/5QOygSVjz5BVUvkBb70=;
+	s=arc-20240116; t=1780166008; c=relaxed/simple;
+	bh=I4HaCpQhHN7XysMq+jssh7SDjE5ZO7s5kolfH0AIipQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=preur1ez0YpwxSXc7+MyydmahjU/uGdFnj8XXhfz5sLP720+92e+OYVmVX9AExv7cjMYpD6ZeLX4SwayMTs3qFrISETNJQtrfRWAvi46yqnppve8UAATcSp4ywJ4LcLH9ZBEupgsuycJhYGxrvQlnhiYhsZQRvMFvwLiaenA+lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwydmZDj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B03A1F00893;
-	Sat, 30 May 2026 17:57:44 +0000 (UTC)
+	 MIME-Version; b=Ai4EyHv57OAu2Exw85yfvbXan+LZ7YNHzlOZd4BCgugS7HY2cX4TigpW6Dd5Dtaz6EtsNs1ZJIJTCkOFPDPpL0oHzelnrsfmEt89pjNEzN1Nxp/leoU7Wm2977YxTtwAYIcZHkPuPp18jv+RzSQjagDlB0g9ygqLPNcyUjtoBLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCObz9DC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90531F00893;
+	Sat, 30 May 2026 18:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163865;
-	bh=nALtJp+MFsfwtGd4K4Gz8v5URs2FC72knv/Q1D5jaYY=;
+	s=korg; t=1780166007;
+	bh=bLY2+ts2GSvSkAuFNqbNFNrzse2mgW76oH3JHN9tezk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CwydmZDj5bOht1fx8JQDxu08DW5/ZEQqkrBcdJoSclqlJYIPsPO+wfDp/X5flKlRo
-	 aNUBHRyNyGRKL0H+1mwLABhQSd6EF0p7T+cxZWtHIkrUzu3/dcZMPHmE590JVx29QT
-	 pVXQCe+v07UnOw7/1MMqIBKTIC2jo2Y4LXBhG4Dk=
+	b=iCObz9DCw3ijVaTBH02BI6ZAeabUnZ63M2kfZKHCcdE9SmZBqJrab2uZ75m6lUodB
+	 cCCYJjzMeBezCY0OLZBSfq+PkSG78+ClQasl9WCYXQwo8OHcUnCyXxPJ6t1DxvtqIg
+	 xKXr5Om8CwOrBknLKhM8Qsg26ZTRG4yTk3grVqGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyungjung Joo <jhj140711@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 385/776] fs/omfs: reject s_sys_blocksize smaller than OMFS_DIR_START
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Vincent Danjean <vdanjean@debian.org>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 5.10 218/589] wifi: ath5k: do not access array OOB
 Date: Sat, 30 May 2026 18:01:39 +0200
-Message-ID: <20260530160250.460095922@linuxfoundation.org>
+Message-ID: <20260530160230.711425125@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +66,97 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258294-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258926-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 45B12610CCC
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 50539612792
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: HyungJung Joo <jhj140711@gmail.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 0621c385fda1376e967f37ccd534c26c3e511d14 ]
+commit d748603f12baff112caa3ab7d39f50100f010dbd upstream.
 
-omfs_fill_super() rejects oversized s_sys_blocksize values (> PAGE_SIZE),
-but it does not reject values smaller than OMFS_DIR_START (0x1b8 = 440).
+Vincent reports:
+> The ath5k driver seems to do an array-index-out-of-bounds access as
+> shown by the UBSAN kernel message:
+> UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath5k/base.c:1741:20
+> index 4 is out of range for type 'ieee80211_tx_rate [4]'
+> ...
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0x5d/0x80
+>  ubsan_epilogue+0x5/0x2b
+>  __ubsan_handle_out_of_bounds.cold+0x46/0x4b
+>  ath5k_tasklet_tx+0x4e0/0x560 [ath5k]
+>  tasklet_action_common+0xb5/0x1c0
 
-Later, omfs_make_empty() uses
+It is real. 'ts->ts_final_idx' can be 3 on 5212, so:
+   info->status.rates[ts->ts_final_idx + 1].idx = -1;
+with the array defined as:
+   struct ieee80211_tx_rate rates[IEEE80211_TX_MAX_RATES];
+while the size is:
+   #define IEEE80211_TX_MAX_RATES  4
+is indeed bogus.
 
-    sbi->s_sys_blocksize - OMFS_DIR_START
+Set this 'idx = -1' sentinel only if the array index is less than the
+array size. As mac80211 will not look at rates beyond the size
+(IEEE80211_TX_MAX_RATES).
 
-as the length argument to memset().  Since s_sys_blocksize is u32,
-a crafted filesystem image with s_sys_blocksize < OMFS_DIR_START causes
-an unsigned underflow there, wrapping to a value near 2^32.  That drives
-a ~4 GiB memset() from bh->b_data + OMFS_DIR_START and overwrites kernel
-memory far beyond the backing block buffer.
+Note: The effect of the OOB write is negligible. It just overwrites the
+next member of info->status, i.e. ack_signal.
 
-Add the corresponding lower-bound check alongside the existing upper-bound
-check in omfs_fill_super(), so that malformed images are rejected during
-superblock validation before any filesystem data is processed.
-
-Fixes: a3ab7155ea21 ("omfs: add directory routines")
-Signed-off-by: Hyungjung Joo <jhj140711@gmail.com>
-Link: https://patch.msgid.link/20260317054827.1822061-1-jhj140711@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Reported-by: Vincent Danjean <vdanjean@debian.org>
+Link: https://lore.kernel.org/all/aQYUkIaT87ccDCin@eldamar.lan
+Closes: https://bugs.debian.org/1119093
+Fixes: 6d7b97b23e11 ("ath5k: fix tx status reporting issues")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251209100459.2253198-1-jirislaby@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/omfs/inode.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/ath/ath5k/base.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/omfs/inode.c b/fs/omfs/inode.c
-index 2a0e83236c011..9773846daa4bc 100644
---- a/fs/omfs/inode.c
-+++ b/fs/omfs/inode.c
-@@ -515,6 +515,12 @@ static int omfs_fill_super(struct super_block *sb, void *data, int silent)
- 		goto out_brelse_bh;
+--- a/drivers/net/wireless/ath/ath5k/base.c
++++ b/drivers/net/wireless/ath/ath5k/base.c
+@@ -1693,7 +1693,8 @@ ath5k_tx_frame_completed(struct ath5k_hw
  	}
  
-+	if (sbi->s_sys_blocksize < OMFS_DIR_START) {
-+		printk(KERN_ERR "omfs: sysblock size (%d) is too small\n",
-+			sbi->s_sys_blocksize);
-+		goto out_brelse_bh;
-+	}
-+
- 	if (sbi->s_blocksize < sbi->s_sys_blocksize ||
- 	    sbi->s_blocksize > OMFS_MAX_BLOCK_SIZE) {
- 		printk(KERN_ERR "omfs: block size (%d) is out of range\n",
--- 
-2.53.0
-
+ 	info->status.rates[ts->ts_final_idx].count = ts->ts_final_retry;
+-	info->status.rates[ts->ts_final_idx + 1].idx = -1;
++	if (ts->ts_final_idx + 1 < IEEE80211_TX_MAX_RATES)
++		info->status.rates[ts->ts_final_idx + 1].idx = -1;
+ 
+ 	if (unlikely(ts->ts_status)) {
+ 		ah->stats.ack_fail++;
 
 
 
