@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-257232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257233-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MnvAWMZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257232-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:47 +0200
+	id +AN/IKkXG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257233-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 541BF60EEDD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB2060EB42
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75A2830C0A8F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:57:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4805A30491BA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B9639D3D9;
-	Sat, 30 May 2026 16:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4976F332EA7;
+	Sat, 30 May 2026 16:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPoVEjtK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qW3rX5KS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C4D395AE2;
-	Sat, 30 May 2026 16:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AF2348C72;
+	Sat, 30 May 2026 16:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160276; cv=none; b=lfRVF9qfkOBkZHVk8TADY49NNQ71w2dO9wjDKZ7jqOG3PeyPSlxUQKRp4Rp4N9wAg/uSV1e2HyRu55FDdC3uTiURqiMVRe4cySH1WZsLEoIzoyhXCh8jOqEgIYVJ5y7XgmqZiyEDGzU4Uz8MXFvZKTskmwQD3up+aaDfO3z3kOo=
+	t=1780160280; cv=none; b=IWvPru/DihHb+hgZ9tceoqZOnCYEdu+Q/sk8F8rQxcFLeuwQNMT9l6pKpMPUJ+57zWPL7nh5TNL/mPGgPqUBYNun0fvyfi6vDj1BgU6gHJsstYJFX+ki48oxeqaN+wGZDTWi3/GiQc6kXXOeYc/AnlTK3me5+YY94y2TevTTOwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160276; c=relaxed/simple;
-	bh=FccemNPrzvxsxkzio7zG3AaweR44MsV5OcUnVA3Q/Hk=;
+	s=arc-20240116; t=1780160280; c=relaxed/simple;
+	bh=ciKc/oSGqxY5c345LQeZGUfdM2DWGWwyz6r45vZ5uPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q28CGC5lBVndDlzBstY5lOE3/3K4TLC3hTVKy31FtAaLjRBuhhbHQJq8YwAPQU6ubfxPk+VzDmbUC7xKSDV0ewxszZY2W7H836AtSo5nFFcf5l0AGYnLn9G+by3/otbp5WHIVNlYwGsQh/ffME7xK0mdsQtny+wuuiB3AuNt+GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPoVEjtK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221851F00893;
-	Sat, 30 May 2026 16:57:53 +0000 (UTC)
+	 MIME-Version; b=NX3KoDfw1yDN23hLslQ1X0oEp9HK8P6eMHsFov5DFd3ErGxAWRN4HilCvBMS63O9bHBRG2MxWZmddTmbyLToktVOPY0ylizYl//ZugvZA8+yJZ4QRHhXZxMVorUv77H3a5S9NIHfgaX2zk0yOWJpt7nGxsGSCUzQfH3bH63wXf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qW3rX5KS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33DA1F00893;
+	Sat, 30 May 2026 16:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160274;
-	bh=xA4KoSH9+rzgw5MiSxgjq26Igx/a+I4xFMtqmrjMBro=;
+	s=korg; t=1780160278;
+	bh=vhDnDIbOocFk38rw4sOxvA08whfxKOX7qkUEY9rfYzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GPoVEjtKobvTUb0jKovCjOqfEGYPtwz+eE6U3B0RKhupffE7OqnO945A2lbt9s+xu
-	 WN0P5n4HEddLHvR9l6jygW2Ixrz1BIqxrBPcVhE1C2q3g1mNmSJjlEj+evT034ulKk
-	 n93brHwD4lRX0vglnLCH+HREtBB6dKPGBlVAU3Co=
+	b=qW3rX5KSUCsfd+Macfz7NqayIdRbLAETbhldbOauLVbmD3DQuSGaPtbf9bhOo2vku
+	 3irZkvcnSgNhf1q+aO4cPNOa4k/3NCBFJnAJhBL/lofGj9lkQPVnPWQY3OnZasLfbD
+	 ZfZnKTprxmVWd3waE09H3YcHCGvX1fjViGnj2GCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dong Chenchen <dongchenchen2@huawei.com>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
+	Qingfang Deng <qingfang.deng@linux.dev>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 293/969] net: Fix icmp host relookup triggering ip_rt_bug
-Date: Sat, 30 May 2026 17:56:57 +0200
-Message-ID: <20260530160308.538389732@linuxfoundation.org>
+Subject: [PATCH 6.1 294/969] flow_dissector: do not dissect PPPoE PFC frames
+Date: Sat, 30 May 2026 17:56:58 +0200
+Message-ID: <20260530160308.564817884@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -69,31 +66,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257232-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257233-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 541BF60EEDD
+X-Rspamd-Queue-Id: 2DB2060EB42
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,77 +98,95 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Dong Chenchen <dongchenchen2@huawei.com>
+From: Qingfang Deng <qingfang.deng@linux.dev>
 
-[ Upstream commit c44daa7e3c73229f7ac74985acb8c7fb909c4e0a ]
+[ Upstream commit d6c19b31a3c1d519fabdcf0aa239e6b6109b9473 ]
 
-arp link failure may trigger ip_rt_bug while xfrm enabled, call trace is:
+RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
+RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
+PFC for PPPoE sessions, and the flow dissector driver has assumed an
+uncompressed frame until the blamed commit.
 
-WARNING: CPU: 0 PID: 0 at net/ipv4/route.c:1241 ip_rt_bug+0x14/0x20
-Modules linked in:
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.0-rc6-00077-g2e1b3cc9d7f7
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-RIP: 0010:ip_rt_bug+0x14/0x20
+During the review process of that commit [1], support for PFC is
+suggested. However, having a compressed (1-byte) protocol field means
+the subsequent PPP payload is shifted by one byte, causing 4-byte
+misalignment for the network header and an unaligned access exception
+on some architectures.
+
+The exception can be reproduced by sending a PPPoE PFC frame to an
+ethernet interface of a MIPS board, with RPS enabled, even if no PPPoE
+session is active on that interface:
+
+$ 0   : 00000000 80c40000 00000000 85144817
+$ 4   : 00000008 00000100 80a75758 81dc9bb8
+$ 8   : 00000010 8087ae2c 0000003d 00000000
+$12   : 000000e0 00000039 00000000 00000000
+$16   : 85043240 80a75758 81dc9bb8 00006488
+$20   : 0000002f 00000007 85144810 80a70000
+$24   : 81d1bda0 00000000
+$28   : 81dc8000 81dc9aa8 00000000 805ead08
+Hi    : 00009d51
+Lo    : 2163358a
+epc   : 805e91f0 __skb_flow_dissect+0x1b0/0x1b50
+ra    : 805ead08 __skb_get_hash_net+0x74/0x12c
+Status: 11000403        KERNEL EXL IE
+Cause : 40800010 (ExcCode 04)
+BadVA : 85144817
+PrId  : 0001992f (MIPS 1004Kc)
 Call Trace:
- <IRQ>
- ip_send_skb+0x14/0x40
- __icmp_send+0x42d/0x6a0
- ipv4_link_failure+0xe2/0x1d0
- arp_error_report+0x3c/0x50
- neigh_invalidate+0x8d/0x100
- neigh_timer_handler+0x2e1/0x330
- call_timer_fn+0x21/0x120
- __run_timer_base.part.0+0x1c9/0x270
- run_timer_softirq+0x4c/0x80
- handle_softirqs+0xac/0x280
- irq_exit_rcu+0x62/0x80
- sysvec_apic_timer_interrupt+0x77/0x90
+[<805e91f0>] __skb_flow_dissect+0x1b0/0x1b50
+[<805ead08>] __skb_get_hash_net+0x74/0x12c
+[<805ef330>] get_rps_cpu+0x1b8/0x3fc
+[<805fca70>] netif_receive_skb_list_internal+0x324/0x364
+[<805fd120>] napi_complete_done+0x68/0x2a4
+[<8058de5c>] mtk_napi_rx+0x228/0xfec
+[<805fd398>] __napi_poll+0x3c/0x1c4
+[<805fd754>] napi_threaded_poll_loop+0x234/0x29c
+[<805fd848>] napi_threaded_poll+0x8c/0xb0
+[<80053544>] kthread+0x104/0x12c
+[<80002bd8>] ret_from_kernel_thread+0x14/0x1c
 
-The script below reproduces this scenario:
-ip xfrm policy add src 0.0.0.0/0 dst 0.0.0.0/0 \
-	dir out priority 0 ptype main flag localok icmp
-ip l a veth1 type veth
-ip a a 192.168.141.111/24 dev veth0
-ip l s veth0 up
-ping 192.168.141.155 -c 1
+Code: 02d51821  1060045b  00000000 <8c640000> 3084000f  2c820005  144001a2  00042080  8e220000
 
-icmp_route_lookup() create input routes for locally generated packets
-while xfrm relookup ICMP traffic.Then it will set input route
-(dst->out = ip_rt_bug) to skb for DESTUNREACH.
+To reduce the attack surface and maintain performance, do not process
+PPPoE PFC frames.
 
-For ICMP err triggered by locally generated packets, dst->dev of output
-route is loopback. Generally, xfrm relookup verification is not required
-on loopback interfaces (net.ipv4.conf.lo.disable_xfrm = 1).
-
-Skip icmp relookup for locally generated packets to fix it.
-
-Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
-Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241127040850.1513135-1-dongchenchen2@huawei.com
+[1] https://lore.kernel.org/r/20220630231016.GA392@debian.home
+Fixes: 46126db9c861 ("flow_dissector: Add PPPoE dissectors")
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+Link: https://patch.msgid.link/20260415022456.141758-1-qingfang.deng@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/icmp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/core/flow_dissector.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 66def7f98f704..a9aef281631ee 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -518,6 +518,9 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
- 	if (!IS_ERR(rt)) {
- 		if (rt != rt2)
- 			return rt;
-+		if (inet_addr_type_dev_table(net, route_lookup_dev,
-+					     fl4->daddr) == RTN_LOCAL)
-+			return rt;
- 	} else if (PTR_ERR(rt) == -EPERM) {
- 		rt = NULL;
- 	} else
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index 5f50e182acd57..77c65b2968a37 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -1270,16 +1270,13 @@ bool __skb_flow_dissect(const struct net *net,
+ 			break;
+ 		}
+ 
+-		/* least significant bit of the most significant octet
+-		 * indicates if protocol field was compressed
++		/* PFC (compressed 1-byte protocol) frames are not processed.
++		 * A compressed protocol field has the least significant bit of
++		 * the most significant octet set, which will fail the following
++		 * ppp_proto_is_valid(), returning FLOW_DISSECT_RET_OUT_BAD.
+ 		 */
+ 		ppp_proto = ntohs(hdr->proto);
+-		if (ppp_proto & 0x0100) {
+-			ppp_proto = ppp_proto >> 8;
+-			nhoff += PPPOE_SES_HLEN - 1;
+-		} else {
+-			nhoff += PPPOE_SES_HLEN;
+-		}
++		nhoff += PPPOE_SES_HLEN;
+ 
+ 		if (ppp_proto == PPP_IP) {
+ 			proto = htons(ETH_P_IP);
 -- 
 2.53.0
 
