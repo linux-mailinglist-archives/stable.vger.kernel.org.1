@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-257147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257926-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPsALfgWG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:57:28 +0200
+	id uLv+MvwhG2oN/ggAu9opvQ
+	(envelope-from <stable+bounces-257926-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CAD560EA81
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 686A861047C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 460BF3058E68
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:52:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 48CD030E4592
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D369348C72;
-	Sat, 30 May 2026 16:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99FFB3B6359;
+	Sat, 30 May 2026 17:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eX6usT7F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nql8+Md5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0991CAA6C;
-	Sat, 30 May 2026 16:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A313AA182;
+	Sat, 30 May 2026 17:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159966; cv=none; b=G0OBk9ikkOMHR6HRU80X4oprwFfQ1e4Nfpzcjgma6F/8JTZG+62Db+FrjNcrw8YY4UPOKTRleKTssidujCJdC1/gV/bDfgkQzBq4U7apqSUr8SXgpuVUviHqktz180AVtX/d1iFl9Uva6THB9E/S80DNAukRQQjONS8RueHdW4s=
+	t=1780162634; cv=none; b=Y5ALFaET0XBw6BN6NjbUqmO6l6upUSwJ8lCf+nrXZCFOM8AeTsVfBfISY47kFUrKJjn1okqHdTdym43vDjn4Q8l8ulUFqOl3LDXG/wZ8pySuIFk1T5SaUCp6u4EyJHKKwZVMuks5vcLwbQ3ibcDDuqjHflOPExOclNRDIBZt47E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159966; c=relaxed/simple;
-	bh=luif0YMAL5DuJ+MeeeDd6Jj8uCGTT/O5rciAbgdUev4=;
+	s=arc-20240116; t=1780162634; c=relaxed/simple;
+	bh=u98TIByfKR6Q6dvu8lpPQaFMRwp+Lex6U8JXQvfxatU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ha4AYPAU7gc7mNKXuvZh0LOcOuyXCqi5fwr4lq1UEheiMhTCakOT42J1T/nmAITBm46Ni5tJodjgQ/+IUQSyJal4YakUWGjFEjDasokmlvjkTO70UawXN729MAnhgpBffv2MlpFf5q4bSy7qW/pmxshKMmh2DP7WIwyyffnG3Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eX6usT7F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34161F00893;
-	Sat, 30 May 2026 16:52:43 +0000 (UTC)
+	 MIME-Version; b=Pl42t0FHh8V0NgLjlkF7Y4zV1bUfDlcfxMDkC7Xui4LZGACPRIGHfPo411cO/sCxnhWy+A1yCvnCZXDWERrWM4UAmNFfhRrmvtD7AkZ+myAJF3cwFula+OrGUbe0Hr/76KviGwuERWYbf6bgSJ36B5iiB3qqoi4o4T2mrUphkPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nql8+Md5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD05F1F00893;
+	Sat, 30 May 2026 17:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159964;
-	bh=j5shZnP0Y9ljbd8x22Z99JUc3+MzavxDveFMczmnACc=;
+	s=korg; t=1780162633;
+	bh=0kDuYSU9KF6m0bKSoAuDwE058cG00MDNzQwPc7mYoiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eX6usT7FRnUr/xR2HfOV7du93HfmBZ2Q6KZjrFzORRDfcPisIlTwSmAyinWBdxt+7
-	 ZouSVt5wd7mCfGh36g0QXUhEcloiJDjYDUixTR9wnfHhRUyByd+2TlxMaQWuis3iX5
-	 QgmShQdWr/YA9IrfjIjhKOyNgl9rBhMZcNZb62Ok=
+	b=nql8+Md51LiHuXJRZupoHC8fGmYfKxHcpg+Zjh7I1Wsv5lyuPkO7h+kcwrGDQLF5Q
+	 eqR6tX4H9e+qf220JzmSHpfGt+7iBclUM09aLZqusRHwMEpgYqtegwgNd0ZuLKmxi8
+	 CX77wplM1I/elARilE5cPlOCgo5cT28/GPOqULKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 209/969] ALSA: caiaq: Fix control_put() result and cache rollback
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 019/776] PCI: hv: Set default NUMA node to 0 for devices without affinity info
 Date: Sat, 30 May 2026 17:55:33 +0200
-Message-ID: <20260530160306.238709515@linuxfoundation.org>
+Message-ID: <20260530160240.759842128@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,158 +64,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257147-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,microsoft.com,outlook.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257926-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 5CAD560EA81
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email]
+X-Rspamd-Queue-Id: 686A861047C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Long Li <longli@microsoft.com>
 
-commit a3542d1b30f92307f545f2def14e8d988dffdff0 upstream.
+[ Upstream commit 7b3b1e5a87b2f5e35c52b5386d7c327be869454f ]
 
-control_put() always returns 1 and updates cdev->control_state[]
-before sending the USB command. It also ignores transport errors
-from usb_bulk_msg(), snd_usb_caiaq_send_command(), and
-snd_usb_caiaq_send_command_bank().
+When hv_pci_assign_numa_node() processes a device that does not have
+HV_PCI_DEVICE_FLAG_NUMA_AFFINITY set or has an out-of-range
+virtual_numa_node, the device NUMA node is left unset. On x86_64,
+the uninitialized default happens to be 0, but on ARM64 it is
+NUMA_NO_NODE (-1).
 
-That breaks the ALSA .put() contract and can leave control_get()
-reporting a cached value the device never accepted.
+Tests show that when no NUMA information is available from the Hyper-V
+host, devices perform best when assigned to node 0. With NUMA_NO_NODE
+the kernel may spread work across NUMA nodes, which degrades
+performance on Hyper-V, particularly for high-throughput devices like
+MANA.
 
-Return 0 for unchanged values, propagate transport failures,
-and restore the cached byte when the write fails.
+Always set the device NUMA node to 0 before the conditional NUMA
+affinity check, so that devices get a performant default when the host
+provides no NUMA information, and behavior is consistent on both
+x86_64 and ARM64.
 
-Fixes: 8e3cd08ed8e59 ("[ALSA] caiaq - add control API and more input features")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260417-caiaq-control-put-v1-1-c37826e92447@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 999dd956d838 ("PCI: hv: Add support for protocol 1.3 and support PCI_BUS_RELATIONS2")
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/caiaq/control.c |   54 +++++++++++++++++++++++++++++++---------------
- 1 file changed, 37 insertions(+), 17 deletions(-)
+ drivers/pci/controller/pci-hyperv.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/sound/usb/caiaq/control.c
-+++ b/sound/usb/caiaq/control.c
-@@ -87,6 +87,7 @@ static int control_put(struct snd_kcontr
- 	struct snd_usb_caiaqdev *cdev = caiaqdev(chip->card);
- 	int pos = kcontrol->private_value;
- 	int v = ucontrol->value.integer.value[0];
-+	int ret;
- 	unsigned char cmd;
+diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
+index ac47a6ee2e93b..7917ed426f6a7 100644
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -1963,6 +1963,14 @@ static void hv_pci_assign_numa_node(struct hv_pcibus_device *hbus)
+ 		if (!hv_dev)
+ 			continue;
  
- 	switch (cdev->chip.usb_id) {
-@@ -103,6 +104,10 @@ static int control_put(struct snd_kcontr
- 
- 	if (pos & CNT_INTVAL) {
- 		int i = pos & ~CNT_INTVAL;
-+		unsigned char old = cdev->control_state[i];
++		/*
++		 * If the Hyper-V host doesn't provide a NUMA node for the
++		 * device, default to node 0. With NUMA_NO_NODE the kernel
++		 * may spread work across NUMA nodes, which degrades
++		 * performance on Hyper-V.
++		 */
++		set_dev_node(&dev->dev, 0);
 +
-+		if (old == v)
-+			return 0;
- 
- 		cdev->control_state[i] = v;
- 
-@@ -113,10 +118,11 @@ static int control_put(struct snd_kcontr
- 			cdev->ep8_out_buf[0] = i;
- 			cdev->ep8_out_buf[1] = v;
- 
--			usb_bulk_msg(cdev->chip.dev,
--				     usb_sndbulkpipe(cdev->chip.dev, 8),
--				     cdev->ep8_out_buf, sizeof(cdev->ep8_out_buf),
--				     &actual_len, 200);
-+			ret = usb_bulk_msg(cdev->chip.dev,
-+					   usb_sndbulkpipe(cdev->chip.dev, 8),
-+					   cdev->ep8_out_buf,
-+					   sizeof(cdev->ep8_out_buf),
-+					   &actual_len, 200);
- 		} else if (cdev->chip.usb_id ==
- 			USB_ID(USB_VID_NATIVEINSTRUMENTS, USB_PID_MASCHINECONTROLLER)) {
- 
-@@ -128,21 +134,36 @@ static int control_put(struct snd_kcontr
- 				offset = MASCHINE_BANK_SIZE;
- 			}
- 
--			snd_usb_caiaq_send_command_bank(cdev, cmd, bank,
--					cdev->control_state + offset,
--					MASCHINE_BANK_SIZE);
-+			ret = snd_usb_caiaq_send_command_bank(cdev, cmd, bank,
-+							      cdev->control_state + offset,
-+							      MASCHINE_BANK_SIZE);
- 		} else {
--			snd_usb_caiaq_send_command(cdev, cmd,
--					cdev->control_state, sizeof(cdev->control_state));
-+			ret = snd_usb_caiaq_send_command(cdev, cmd,
-+							 cdev->control_state,
-+							 sizeof(cdev->control_state));
- 		}
--	} else {
--		if (v)
--			cdev->control_state[pos / 8] |= 1 << (pos % 8);
--		else
--			cdev->control_state[pos / 8] &= ~(1 << (pos % 8));
- 
--		snd_usb_caiaq_send_command(cdev, cmd,
--				cdev->control_state, sizeof(cdev->control_state));
-+		if (ret < 0) {
-+			cdev->control_state[i] = old;
-+			return ret;
-+		}
-+	} else {
-+		int idx = pos / 8;
-+		unsigned char mask = 1 << (pos % 8);
-+		unsigned char old = cdev->control_state[idx];
-+		unsigned char val = v ? (old | mask) : (old & ~mask);
-+
-+		if (old == val)
-+			return 0;
-+
-+		cdev->control_state[idx] = val;
-+		ret = snd_usb_caiaq_send_command(cdev, cmd,
-+						 cdev->control_state,
-+						 sizeof(cdev->control_state));
-+		if (ret < 0) {
-+			cdev->control_state[idx] = old;
-+			return ret;
-+		}
- 	}
- 
- 	return 1;
-@@ -640,4 +661,3 @@ int snd_usb_caiaq_control_init(struct sn
- 
- 	return ret;
- }
--
+ 		if (hv_dev->desc.flags & HV_PCI_DEVICE_FLAG_NUMA_AFFINITY &&
+ 		    hv_dev->desc.virtual_numa_node < num_possible_nodes())
+ 			/*
+-- 
+2.53.0
+
 
 
 
