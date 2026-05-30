@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-258217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDcyJWUkG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258217-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:45 +0200
+	id kMA0GzkuG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B65610A25
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1075761215C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 145BB300D4E1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:53:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0588A312F398
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C21A342CA7;
-	Sat, 30 May 2026 17:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E056C3B1ECD;
+	Sat, 30 May 2026 18:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+ItWhCO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1juZm7S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB33320CAD;
-	Sat, 30 May 2026 17:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE31279DC9;
+	Sat, 30 May 2026 18:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163606; cv=none; b=tFbJqxNWZg0esZcEDhvjLkHeTUiftAz9mVxNeDDqRMlCe5naMLUx6lR7KvfXnv4ZdEBSL5IMvs2wsStZ/b9lA//G8dgf6ebgzFJ68rAAp8GVyF0IqLebncAFswECBYbo0GY8rHMzFgf+QjbkeKiJmKWmgt9H9Ad22iO5bv71YqE=
+	t=1780165780; cv=none; b=NuKyatN19AXde41WQs3BekuuDnCvrIaUr163uBDv0GQpRCVQkcmPlMvgLxQmNdnk1xkeDA9G1hRbUiyHMBuBygA2Jn+3n8Kbso6pcpQ09j5WSRzrEBeTO0Ug3pJEEaCjJ2SANGRO2PXpUV5/KnCkT49tNQAQyjUCqfl0j2qroos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163606; c=relaxed/simple;
-	bh=LOB5TplWHFUBFzgcHx3yN8EBbQIJ8q45TVCAkWZIH6I=;
+	s=arc-20240116; t=1780165780; c=relaxed/simple;
+	bh=y3QHaH5j+RMT6XYitXNk/ZiQk9VhViGxWuCDwuAz8h8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CyojaK+TV5umhuphI9iKYcLp3POKtxvemXi9vj525u/MP5g2fi7Dnq2FiId4Q01YWv1+9oY0+1w5y8/uMZ8cgbQ3On8h/wmpdKeCILlcle+CxEutkFayrVKg7bUqdHTUIxx0pZcu2JfwANwGXMVhf0DGG3t7wx82CDRlxlCBM38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+ItWhCO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8CE1F00893;
-	Sat, 30 May 2026 17:53:24 +0000 (UTC)
+	 MIME-Version; b=gJTDhtY/Gtp9xJ46INfD+teXlcb4KLi8wxUJGS79PYTuU1XvEJLKRsB9mE/VGDkX5iz+phNLhA8Xnkv3/DH5df8p0ZEFcuM5bw4uwD4EdlCD3nMeMJMAFy3LPDAdIMOutXIwieZ5Jp+NY8aXM62fVKZYCFfd4v6w3xhjO2MCRN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1juZm7S; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DEF1F00893;
+	Sat, 30 May 2026 18:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163605;
-	bh=E98nFmX7fzG02Wn5PszC4mcBl/cBCbiCDwrLUPttlMQ=;
+	s=korg; t=1780165779;
+	bh=D1vio2yJGFCxK1XyG1i7JpV16V+ZWzwl8IsOL5EHrOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z+ItWhCOHQHuZN1DVQTtlS6QpzHgR8/venDVl4b5DE8x7mLdMzr1uHHJNp5oSSq3i
-	 57XuaM4DMQnmgR2hE4jPvHNV7QuBWJC4X+Y7dXrGcibmQ9bgXl74w2wFF91TIqRENj
-	 VEpupa1jIifhBk4r8XVPGGTPGqgq9xiMOd6+aFlY=
+	b=A1juZm7SLUuh0E37nxB1VsDtx5b7fkZENeIRYa4h7Gg/kT8FJXGlNGfHTAR+Hw+lb
+	 SO0Y4IseeG6cw26FPMLG6SF5Sz3r+5+QXrtxNYmnqSSmCWdzbhnXr67iv3e/shAMD8
+	 uY27sOEO9TbbfrKeGXRNXs8tx4U4oSXPqBP8KPlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Zen <kai.aizen.dev@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 309/776] net: rtnetlink: zero ifla_vf_broadcast to avoid stack infoleak in rtnl_fill_vfinfo
-Date: Sat, 30 May 2026 18:00:23 +0200
-Message-ID: <20260530160248.552465153@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Tyllis Xu <LivelyCarpet87@gmail.com>
+Subject: [PATCH 5.10 143/589] ibmasm: fix heap over-read in ibmasm_send_i2o_message()
+Date: Sat, 30 May 2026 18:00:24 +0200
+Message-ID: <20260530160228.538813514@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +63,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258217-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258859-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.992];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B2B65610A25
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 1075761215C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Zen <kai.aizen.dev@gmail.com>
+From: Tyllis Xu <livelycarpet87@gmail.com>
 
-commit 4b9e327991815e128ad3af75c3a04630a63ce3e0 upstream.
+commit 9aad71144fa3682cca3837a06c8623016790e7ec upstream.
 
-rtnl_fill_vfinfo() declares struct ifla_vf_broadcast on the stack
-without initialisation:
+The ibmasm_send_i2o_message() function uses get_dot_command_size() to
+compute the byte count for memcpy_toio(), but this value is derived from
+user-controlled fields in the dot_command_header (command_size: u8,
+data_size: u16) and is never validated against the actual allocation size.
+A root user can write a small buffer with inflated header fields, causing
+memcpy_toio() to read up to ~65 KB past the end of the allocation into
+adjacent kernel heap, which is then forwarded to the service processor
+over MMIO.
 
-	struct ifla_vf_broadcast vf_broadcast;
+Silently clamping the copy size is not sufficient: if the header fields
+claim a larger size than the buffer, the SP receives a dot command whose
+own header is inconsistent with the I2O message length, which can cause
+the SP to desynchronize. Reject such commands outright by returning
+failure.
 
-The struct contains a single fixed 32-byte field:
+Validate command_size before calling get_mfa_inbound() to avoid leaking
+an I2O message frame: reading INBOUND_QUEUE_PORT dequeues a hardware
+frame from the controller's free pool, and returning without a
+corresponding set_mfa_inbound() call would permanently exhaust it.
 
-	/* include/uapi/linux/if_link.h */
-	struct ifla_vf_broadcast {
-		__u8 broadcast[32];
-	};
+Additionally, clamp command_size to I2O_COMMAND_SIZE before the
+memcpy_toio() so the MMIO write stays within the I2O message frame,
+consistent with the clamping already performed by outgoing_message_size()
+for the header field.
 
-The function then copies dev->broadcast into it using dev->addr_len
-as the length:
-
-	memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
-
-On Ethernet devices (the overwhelming majority of SR-IOV NICs)
-dev->addr_len is 6, so only the first 6 bytes of broadcast[] are
-written. The remaining 26 bytes retain whatever was previously on
-the kernel stack. The full struct is then handed to userspace via:
-
-	nla_put(skb, IFLA_VF_BROADCAST,
-		sizeof(vf_broadcast), &vf_broadcast)
-
-leaking up to 26 bytes of uninitialised kernel stack per VF per
-RTM_GETLINK request, repeatable.
-
-The other vf_* structs in the same function are explicitly zeroed
-for exactly this reason - see the memset() calls for ivi,
-vf_vlan_info, node_guid and port_guid a few lines above.
-vf_broadcast was simply missed when it was added.
-
-Reachability: any unprivileged local process can open AF_NETLINK /
-NETLINK_ROUTE without capabilities and send RTM_GETLINK with an
-IFLA_EXT_MASK attribute carrying RTEXT_FILTER_VF. The kernel walks
-each VF and emits IFLA_VF_BROADCAST, leaking 26 bytes of stack per
-VF per request. Stack residue at this call site can include return
-addresses and transient sensitive data; KASAN with stack
-instrumentation, or KMSAN, will flag the nla_put() when reproduced.
-
-Zero the on-stack struct before the partial memcpy, matching the
-existing pattern used for the other vf_* structs in the same
-function.
-
-Fixes: 75345f888f70 ("ipoib: show VF broadcast address")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Kai Zen <kai.aizen.dev@gmail.com>
-Link: https://patch.msgid.link/3c506e8f936e52b57620269b55c348af05d413a2.1777557228.git.kai.aizen.dev@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+Link: https://patch.msgid.link/20260314165805.548293-1-LivelyCarpet87@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/rtnetlink.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/misc/ibmasm/lowlevel.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -1309,6 +1309,7 @@ static noinline_for_stack int rtnl_fill_
- 		port_guid.vf = ivi.vf;
+--- a/drivers/misc/ibmasm/lowlevel.c
++++ b/drivers/misc/ibmasm/lowlevel.c
+@@ -19,17 +19,21 @@ static struct i2o_header header = I2O_HE
+ int ibmasm_send_i2o_message(struct service_processor *sp)
+ {
+ 	u32 mfa;
+-	unsigned int command_size;
++	size_t command_size;
+ 	struct i2o_message *message;
+ 	struct command *command = sp->current_command;
  
- 	memcpy(vf_mac.mac, ivi.mac, sizeof(ivi.mac));
-+	memset(&vf_broadcast, 0, sizeof(vf_broadcast));
- 	memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
- 	vf_vlan.vlan = ivi.vlan;
- 	vf_vlan.qos = ivi.qos;
++	command_size = get_dot_command_size(command->buffer);
++	if (command_size > command->buffer_size)
++		return 1;
++	if (command_size > I2O_COMMAND_SIZE)
++		command_size = I2O_COMMAND_SIZE;
++
+ 	mfa = get_mfa_inbound(sp->base_address);
+ 	if (!mfa)
+ 		return 1;
+ 
+-	command_size = get_dot_command_size(command->buffer);
+-	header.message_size = outgoing_message_size(command_size);
+-
++	header.message_size = outgoing_message_size((unsigned int)command_size);
+ 	message = get_i2o_message(sp->base_address, mfa);
+ 
+ 	memcpy_toio(&message->header, &header, sizeof(struct i2o_header));
 
 
 
