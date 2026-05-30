@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257572-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MhHFVgmG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:04 +0200
+	id 0LkiJqIdG2qW/QgAu9opvQ
+	(envelope-from <stable+bounces-257572-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E3E610DF5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 271DF60FA00
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C033E3016CCA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:02:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0587630686D3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69FB3AB291;
-	Sat, 30 May 2026 18:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A17395AEA;
+	Sat, 30 May 2026 17:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H72uRflj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Urct9U5P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDDC2FDC5E;
-	Sat, 30 May 2026 18:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A6D263F44;
+	Sat, 30 May 2026 17:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164137; cv=none; b=sH7QKwAYYQwWSyxx/TtL5Yk7gjZksOREqtjYboHZBfxBeLrrefxA4DkPERQisnlfOPsWk3bJRT+KWtyO02tY/StDnz4d/UVPwDxu4QwOKr0FRoNnuQqeFehehuXQvgU1rU/3SdK3kywjkw1RFiwM5ilkC5FkZivXqXaRvKpWRrc=
+	t=1780161448; cv=none; b=UQj2zds40I7/oE4VG3IDmIzhmc/n8rObP093j+EdhzH8/AYXDmZ9rlD4y3aerD0+W+4SoaWhXqB93iC4Hc3cmT2b8bVxVF0ovJe8vJi6CfERxa3thbEkB+6C2M8IlnDbm67M/oOE6v1WRDr9gNhhxJi89ZsmCOfmgZwy7XbEt3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164137; c=relaxed/simple;
-	bh=0LETy8Z0FWOJNzhjxCF2FDXGKFQkxC9eRbBWx17gTZ0=;
+	s=arc-20240116; t=1780161448; c=relaxed/simple;
+	bh=PUmChrO0zhVyMQDt0Vgbjm0+fLQh01T0ar/rI6D7Tlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPhwuD1IGpTqET8pT1MmQNDSeXh9zKvPaa9xMQ152kHsA4H2imiwwBMcRArVeb2g5z+u363taoxNML4NmpruxsgvkL9PvekjG1qHoN0v9jJLEpf+BD0UlxTM/nDzeMDXS+Y11JwzPxHhezybCnTihs0QexEIiTSZbJ5mSrWbSBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H72uRflj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B8611F00893;
-	Sat, 30 May 2026 18:02:15 +0000 (UTC)
+	 MIME-Version; b=MHQpT6f/eKMTOobPJNvN3GBIrt11yLY34BVXUbD0sOPmrPeVHjEfvxtZ8C/T96zVs1CR46iH5sme1B6QBtiimyQEDKQKA94G9E6f1zT48Jg4e357/V8p6SOEwIvYKvkqrG8oyWLrxVkfyEbm8i0PS+NOSwrdiws3G2FWQ0kArOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Urct9U5P; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BFE1F00893;
+	Sat, 30 May 2026 17:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164136;
-	bh=Dwey2mgXobzyF1tiUQAAS1GGaiG1ktvuF4yhRde4sDk=;
+	s=korg; t=1780161446;
+	bh=CMXhVPYnPLqVRPfe+7U1MD5HmqD8PoOhUqUdM13PBqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H72uRfljVZLi6B5meQD5Yoiybox5gSNHjz/kpyLnXrawHOoGyouXiXHupb1UtmwEW
-	 ljCH1JKJiZGqC1nYfqaIajt9RZhptF7xPppPXORJ8wuLqv0/H8qUVsb2eSvh/QS5iP
-	 rIgEy12uhkEHi9e1a43VDjqxCCx1y668gCnAqBB4=
+	b=Urct9U5PSj7TH+Lyjl9fVAA5hAIcTv5mBCkLpzmBYtCtZ0db4hxezB0I1DEB43NmP
+	 2viUJC2UwN6dBrN7Hus/nWYZNvSnZ3hPGk35+JFwXneXbzILNH0Vyj/EOFZHchLsXd
+	 0Kf4P9w5k5byqR5Z465FYkpfd8MBNdejTXfEjLiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 436/776] dm cache: fix concurrent write failure in passthrough mode
+Subject: [PATCH 6.1 626/969] pinctrl: cy8c95x0: remove duplicate error message
 Date: Sat, 30 May 2026 18:02:30 +0200
-Message-ID: <20260530160251.699618877@linuxfoundation.org>
+Message-ID: <20260530160317.734516345@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,115 +66,103 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257572-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258374-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 15E3E610DF5
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 271DF60FA00
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit e4f66341779d0cf4c83c74793753a84094286d9e ]
+[ Upstream commit 970dacb3b9f0fedbbbcfd7dbf1f4f22340b3f359 ]
 
-When bio prison cell lock acquisition fails due to concurrent writes to
-the same block in passthrough mode, dm-cache incorrectly returns an I/O
-error instead of properly handling the concurrency. This can occur in
-both process and workqueue contexts when invalidate_lock() is called for
-exclusive access to a data block. Fix this by deferring the write bios
-to ensure proper block device behavior.
+The pin control core is covered to report any error via message.
+The devm_request_threaded_irq() already prints an error message.
+Remove the duplicates.
 
-Reproduce steps:
+While at it, drop the info message as the same information about
+an IRQ in use can be retrieved differently.
 
-1. Create a cache device
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. Promote the first data block into cache
-
-fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
---direct=1 --size=64k
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the first cached block concurrently. Sometimes one of the
-   processes will receive I/O errors.
-
-fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
---randrepeat=0 --direct=1 --numjobs=2 --size 64k
-
- <snip>
- fio-3.41
- fio: io_u error on file /dev/mapper/cache: Input/output error: write offset=4096, buflen=4096
- fio: pid=106, err=5/file:io_u.c:2008, func=io_u error, error=Input/output error
- test: (groupid=0, jobs=1): err= 0: pid=105
- test: (groupid=0, jobs=1): err= 5 (file:io_u.c:2008, func=io_u error, error=Input/output error): pid=106
- <snip>
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Stable-dep-of: 5ad32c3607cf ("pinctrl: cy8c95x0: Avoid returning positive values to user space")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/pinctrl/pinctrl-cy8c95x0.c | 21 +++++----------------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index 783722a4c3364..1498ffbcb0e03 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1524,6 +1524,15 @@ static int invalidate_lock(struct dm_cache_migration *mg)
- 			    READ_WRITE_LOCK_LEVEL, prealloc, &mg->cell);
- 	if (r < 0) {
- 		free_prison_cell(cache, prealloc);
-+
-+		/* Defer the bio for retrying the cell lock */
-+		if (mg->overwrite_bio) {
-+			struct bio *bio = mg->overwrite_bio;
-+
-+			mg->overwrite_bio = NULL;
-+			defer_bio(cache, bio);
-+		}
-+
- 		invalidate_complete(mg, false);
- 		return r;
- 	}
+diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
+index f7c8ae9808133..c60886d804ce0 100644
+--- a/drivers/pinctrl/pinctrl-cy8c95x0.c
++++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
+@@ -1206,6 +1206,7 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
+ {
+ 	struct gpio_irq_chip *girq = &chip->gpio_chip.irq;
+ 	DECLARE_BITMAP(pending_irqs, MAX_LINE);
++	struct device *dev = chip->dev;
+ 	int ret;
+ 
+ 	mutex_init(&chip->irq_lock);
+@@ -1232,17 +1233,9 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
+ 	girq->handler = handle_simple_irq;
+ 	girq->threaded = true;
+ 
+-	ret = devm_request_threaded_irq(chip->dev, irq,
+-					NULL, cy8c95x0_irq_handler,
+-					IRQF_ONESHOT | IRQF_SHARED,
+-					dev_name(chip->dev), chip);
+-	if (ret) {
+-		dev_err(chip->dev, "failed to request irq %d\n", irq);
+-		return ret;
+-	}
+-	dev_info(chip->dev, "Registered threaded IRQ\n");
+-
+-	return 0;
++	return devm_request_threaded_irq(dev, irq, NULL, cy8c95x0_irq_handler,
++					 IRQF_ONESHOT | IRQF_SHARED,
++					 dev_name(chip->dev), chip);
+ }
+ 
+ static int cy8c95x0_setup_pinctrl(struct cy8c95x0_pinctrl *chip)
+@@ -1258,11 +1251,7 @@ static int cy8c95x0_setup_pinctrl(struct cy8c95x0_pinctrl *chip)
+ 	pd->owner = THIS_MODULE;
+ 
+ 	chip->pctldev = devm_pinctrl_register(chip->dev, pd, chip);
+-	if (IS_ERR(chip->pctldev))
+-		return dev_err_probe(chip->dev, PTR_ERR(chip->pctldev),
+-			"can't register controller\n");
+-
+-	return 0;
++	return PTR_ERR_OR_ZERO(chip->pctldev);
+ }
+ 
+ static int cy8c95x0_detect(struct i2c_client *client,
 -- 
 2.53.0
 
