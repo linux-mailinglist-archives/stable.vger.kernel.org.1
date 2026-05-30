@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-257753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259134-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBVRHFMeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:51 +0200
+	id 2EmbM0gyG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259134-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC3360FC39
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38240612C38
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 78EC73026F1B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C81ED3118D6D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B221D39B4A6;
-	Sat, 30 May 2026 17:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D14315E5BB;
+	Sat, 30 May 2026 18:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHe1F7aG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXVrgl3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8804739A4A4;
-	Sat, 30 May 2026 17:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785A62E7398;
+	Sat, 30 May 2026 18:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162056; cv=none; b=XCuYXZ+NT7A8LGKiWEz6mBJRJsptmAiOoLBWTTpcqHFjGZGolaXyR8rDENeOLdAIYIFNfUr2kw6BRYdRy2p/oGa83nDGCf7N7zTC9BMZijuRVDSh0IknVJlJvVe9iyAIAIN0ajpcFEOlisnVRrZzfIBajycPXrX9Csayz9TQ9Jg=
+	t=1780166723; cv=none; b=OKQ2XkGSa16AwaAJ0gmldbkxUpshXSKEbldpdciTU5PzLPVDM4H+ncnU9Vsvl0ItziENDCNQ/47XPWlEeEn2bx701VqCQEvkFXAVnYWA5lfjNjzzf/LAoJ6fYMWhhbJlft0/sPnIUfeljBPRsey8gKXZUMpnPRT7/emokbjIqrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162056; c=relaxed/simple;
-	bh=53Eo+iJrAQk6UV7GMMiFeZ3i7bB7QZJpCNy0lnJyiVY=;
+	s=arc-20240116; t=1780166723; c=relaxed/simple;
+	bh=OzIIeHQvKrcgfcEr0L9I6z8lLaUXEsYWY7d5o1FUIIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oRRzrMLINB7CQN5Wr/YiVEgwQZkbIklA2S708gdoHKGKsH02FW7fEM27oonjPUs9XXjY97Gb0iNTRaAqIp8BgCzB/4ZfSMGfGvE6xujlpldo157orirmWrw9RYCdIpoKzcguGFVpJV6nerq9f2F9caklyoxhzw3ss08bzSrghAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHe1F7aG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99D61F00893;
-	Sat, 30 May 2026 17:27:34 +0000 (UTC)
+	 MIME-Version; b=jfw1+Z6hZIfPs52Tk7oOa1ssqoNiwi/S3+No7YrUBMsS6ON/DE2vvkW/NZ8Uq9NABTwS/WyhEHnAZxLP5GI1XBp8V4uvZBomlX29yEUhqZsxx5lhAsq5Jux+obxvOu1PCv3BXlKW0e68hSQCqHO0QQctjgjoFEKYdlbXlX+4+UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXVrgl3Y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22C01F00893;
+	Sat, 30 May 2026 18:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162055;
-	bh=Kbr8oWYB4igwpUXS0vo1/ghGX0EMpw7D+o3q12Xv7YU=;
+	s=korg; t=1780166722;
+	bh=F9eKCYj05M2nsasRL8uC8pFgvGFZcugTBHWZCLbO4Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AHe1F7aGOfweozAzTABFzG/1QFeSCjdOZWZsuKjuEJYYKOy6suvvpV50w74qVMbHL
-	 pZBXh6Zcf7kLaw7TUH29GsO/2Of4ZcbgKlYttDU5OCZlFeajcDmYU3ufrifZkNIrH+
-	 7YizyTEhtK2eAq5jBILDyTOtXYm6M35sneZTqRnA=
+	b=SXVrgl3Yq5ZVF8FL3U3h+xCmfKujYvIaozWWAsnbGgs7Z574ALE2SbhvSd4mTcbg5
+	 Z9/qlento5GLEScG+WjtxXFkLVdViTfUluG2mCTjik7St/HMbcf/YaczZfBrbfdThL
+	 eIhiFMATeewpqtZFx6KdcuYKDoyTyAwGh6pS0dyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Robaina <rrobaina@redhat.com>,
-	Sergio Correia <scorreia@redhat.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.1 808/969] audit: fix incorrect inheritable capability in CAPSET records
-Date: Sat, 30 May 2026 18:05:32 +0200
-Message-ID: <20260530160322.944433698@linuxfoundation.org>
+	syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com,
+	Kohei Enju <kohei@enjuk.jp>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 452/589] vhost_net: fix sleeping with preempt-disabled in vhost_net_busy_poll()
+Date: Sat, 30 May 2026 18:05:33 +0200
+Message-ID: <20260530160236.567576631@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +66,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257753-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259134-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2EC3360FC39
+	TAGGED_RCPT(0.00)[stable,6985cb8e543ea90ba8ee];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,enjuk.jp:email]
+X-Rspamd-Queue-Id: 38240612C38
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergio Correia <scorreia@redhat.com>
+From: Kohei Enju <kohei@enjuk.jp>
 
-commit e4a640475e43f406fdfd56d370b1f34b0cbbc18d upstream.
+[ Upstream commit e08a9fac5cf8c3fecf4755e7e3ac059f78b8f83d ]
 
-__audit_log_capset() records the effective capability set into the
-inheritable field due to a copy-paste error. Every CAPSET audit
-record therefore reports cap_pi (process inheritable) with the value
-of cap_effective instead of cap_inheritable.
+syzbot reported "sleeping function called from invalid context" in
+vhost_net_busy_poll().
 
-This silently corrupts audit data used for compliance and forensic
-analysis: an attacker who modifies inheritable capabilities to
-prepare for a privilege-escalating exec would have the change masked
-in the audit trail.
+Commit 030881372460 ("vhost_net: basic polling support") introduced a
+busy-poll loop and preempt_{disable,enable}() around it, where each
+iteration calls a sleepable function inside the loop.
 
-The bug has been present since the original introduction of CAPSET
-audit records in 2008.
+The purpose of disabling preemption was to keep local_clock()-based
+timeout accounting on a single CPU, rather than as a requirement of
+busy-poll itself:
 
-Cc: stable@vger.kernel.org
-Fixes: e68b75a027bb ("When the capset syscall is used it is not possible for audit to record the actual capbilities being added/removed.  This patch adds a new record type which emits the target pid and the eff, inh, and perm cap sets.")
-Reviewed-by: Ricardo Robaina <rrobaina@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Sergio Correia <scorreia@redhat.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+https://lore.kernel.org/1448435489-5949-4-git-send-email-jasowang@redhat.com
+
+>From this perspective, migrate_disable() is sufficient here, so replace
+preempt_disable() with migrate_disable(), avoiding sleepable accesses
+from a preempt-disabled context.
+
+Fixes: 030881372460 ("vhost_net: basic polling support")
+Tested-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
+Reported-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69e6a414.050a0220.24bfd3.002d.GAE@google.com/T/
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/auditsc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vhost/net.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -2841,7 +2841,7 @@ void __audit_log_capset(const struct cre
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index c9f30aa50879d..dbc2228939265 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -544,7 +544,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
+ 	busyloop_timeout = poll_rx ? rvq->busyloop_timeout:
+ 				     tvq->busyloop_timeout;
  
- 	context->capset.pid = task_tgid_nr(current);
- 	context->capset.cap.effective   = new->cap_effective;
--	context->capset.cap.inheritable = new->cap_effective;
-+	context->capset.cap.inheritable = new->cap_inheritable;
- 	context->capset.cap.permitted   = new->cap_permitted;
- 	context->capset.cap.ambient     = new->cap_ambient;
- 	context->type = AUDIT_CAPSET;
+-	preempt_disable();
++	migrate_disable();
+ 	endtime = busy_clock() + busyloop_timeout;
+ 
+ 	while (vhost_can_busy_poll(endtime)) {
+@@ -561,7 +561,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
+ 		cpu_relax();
+ 	}
+ 
+-	preempt_enable();
++	migrate_enable();
+ 
+ 	if (poll_rx || sock_has_rx_data(sock))
+ 		vhost_net_busy_poll_try_queue(net, vq);
+-- 
+2.53.0
+
 
 
 
