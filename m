@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-257489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258869-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMmrLUIcG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:02 +0200
+	id yLm7JjkvG2paAAkAu9opvQ
+	(envelope-from <stable+bounces-258869-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A5B60F694
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DAC6123D3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 390A43084B8A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:12:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8154D318E424
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04ECE34EF07;
-	Sat, 30 May 2026 17:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51743C3C13;
+	Sat, 30 May 2026 18:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTSSoHIq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1w0ir/CM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E993148DA;
-	Sat, 30 May 2026 17:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03AA3C76BC;
+	Sat, 30 May 2026 18:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161172; cv=none; b=IylyZtEAYFSlPhbl8pIqcGKLcbNXM5/UkEUR2AVKfNhJYpzBvz4bJbyWgHwQfQ1kr5jWPq/Hc17QRlDSEEWW3iaQRMS4Q22Uvnx7mcYl36cp2v20Kj9BAT/2J4TidsTju+gN89YplfY3UAGSh8zricuQ1syMyNbJIAJaouoVSCo=
+	t=1780165815; cv=none; b=cvB6j4AdXP9PbXmlz1kCDTwkgk50a4n9RUiRu7CWroz/SOBzBXJSrFcpQaeQ5VT7Z2Q1S7zo1f9pruweAXYp2KOYBRgMcByaqMEsaGmC74mVssvRtxelLMlJWvepYoY1G9v4HaKtnFh4ExhK4FQRkHCMTh/rzz510VDcGN6lj8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161172; c=relaxed/simple;
-	bh=zdLp2Je3KMpJnlLWJ+2EvHSBy8pA/Yi/ZbFdGHAGhD0=;
+	s=arc-20240116; t=1780165815; c=relaxed/simple;
+	bh=RBZvS461HT5LhHgzRgofa8OSsBYXBERZDYdw7ZzJ/pE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e6K8felp1gOrUGNlDGAYCq7Wzw45Lu/51cqc+MQnFoQf51QWpfON5xz5qmjLPZ2FW5Qv2q+A+ajljd7WD/I/edsrOFb62UE2Pk/FEd+T2FVqbUzlcTqSj/5aMVRvlUztTDoTqHIWXcbYFxE9hEfTtWZKJdks7zZs3exal2BeXMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTSSoHIq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EA41F00893;
-	Sat, 30 May 2026 17:12:50 +0000 (UTC)
+	 MIME-Version; b=QTmGh8nfOA8i1uDLhdQjnVuSJL0UDAfhxnYfzpOKeyrXWGZm2KwCcv8TN+XoPkh4TIBickK9e/+PIizlzDVVMZPR8J+aOmB4Zh0gZqhihnjm5bVreACUMpg53YNJa6S/AMbj/kONjYU66GXdTRMTCytWDtrLnZKcbYnse9P4HW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1w0ir/CM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E597E1F00893;
+	Sat, 30 May 2026 18:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161171;
-	bh=ZGr7JSxegmNJbtaHXBoVp8cT+ijYZlvSZRIhvRCk4SU=;
+	s=korg; t=1780165812;
+	bh=zalla1K4KWXLLcxw36k9PfdqikV9foPMROOa+w3ykKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qTSSoHIqKheYszUetAoBxtd22HgZFw1G8HCq4kQ7IbOSyyE3QEM2LiX2+BN3YpDwy
-	 jEAKE0Q2RpmymgaTTlCuF8ZoBpuIIIIQ1Z0ZFWNTfUuy4am9EI9k5yIiBqw1BEGNXz
-	 QL6NgsqBqBnZ8IjsBlZeyxaxYJoPIg+pfFqARe/U=
+	b=1w0ir/CMbiZ9vD5ufL6T2DbXGuNSbQvQaDMPleYaNVFZ16OTKKX82VG/9sT6bhkw+
+	 /p45ZeiyF59XN2KIBozYR7IAVydadsFxKAWO4HRKnNf4gtCkMeFrf/E1w+m/xFjfAi
+	 gGEnEedLaeY0UfEkyOcAgnZjJ+rYJUM4+5cMIfjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Olaru <paul.olaru@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 547/969] ASoC: SOF: Add support for compress API for stream data/offset
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 190/589] crypto: atmel-ecc - Release client on allocation failure
 Date: Sat, 30 May 2026 18:01:11 +0200
-Message-ID: <20260530160315.479710202@linuxfoundation.org>
+Message-ID: <20260530160229.895117104@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,149 +67,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257489-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258869-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 32A5B60F694
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 04DAC6123D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Baluta <daniel.baluta@nxp.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 090349a9feba3ceee3997d31d68ffe54e5b57acb ]
+commit 095d50008d55d13f8fcf1bbeb7c6eba51779bc85 upstream.
 
-snd_sof_pcm_stream keeps information about both PCM (snd_pcm_substream)
-and Compress (snd_compr_stream) streams.
+Call atmel_ecc_i2c_client_free() to release the I2C client reserved by
+atmel_ecc_i2c_client_alloc() when crypto_alloc_kpp() fails. Otherwise
+->tfm_count will be out of sync.
 
-When PCM substream pointer is NULL this means we are dealing with a
-compress stream.
-
-Reviewed-by: Paul Olaru <paul.olaru@nxp.com>
-Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://lore.kernel.org/r/20230117122533.201708-4-daniel.baluta@oss.nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 2c4fdd055f92 ("ASoC: SOF: compress: return the configured codec from get_params")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 11105693fa05 ("crypto: atmel-ecc - introduce Microchip / Atmel ECC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/sof-priv.h   |  1 +
- sound/soc/sof/stream-ipc.c | 48 ++++++++++++++++++++++++++++----------
- 2 files changed, 37 insertions(+), 12 deletions(-)
+ drivers/crypto/atmel-ecc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/sof/sof-priv.h b/sound/soc/sof/sof-priv.h
-index d7f4f828f38f9..6f5b06473011d 100644
---- a/sound/soc/sof/sof-priv.h
-+++ b/sound/soc/sof/sof-priv.h
-@@ -112,6 +112,7 @@ struct sof_compr_stream {
- 	u32 sampling_rate;
- 	u16 channels;
- 	u16 sample_container_bytes;
-+	size_t posn_offset;
- };
- 
- struct snd_sof_dev;
-diff --git a/sound/soc/sof/stream-ipc.c b/sound/soc/sof/stream-ipc.c
-index 872a49550672c..216b454f6b94e 100644
---- a/sound/soc/sof/stream-ipc.c
-+++ b/sound/soc/sof/stream-ipc.c
-@@ -33,14 +33,27 @@ int sof_ipc_msg_data(struct snd_sof_dev *sdev,
- 	if (!sps || !sdev->stream_box.size) {
- 		snd_sof_dsp_mailbox_read(sdev, sdev->dsp_box.offset, p, sz);
- 	} else {
--		struct snd_pcm_substream *substream = sps->substream;
--		struct sof_stream *stream = substream->runtime->private_data;
-+		size_t posn_offset;
- 
--		/* The stream might already be closed */
--		if (!stream)
--			return -ESTRPIPE;
-+		if (sps->substream) {
-+			struct sof_stream *stream = sps->substream->runtime->private_data;
- 
--		snd_sof_dsp_mailbox_read(sdev, stream->posn_offset, p, sz);
-+			/* The stream might already be closed */
-+			if (!stream)
-+				return -ESTRPIPE;
-+
-+			posn_offset = stream->posn_offset;
-+		} else {
-+
-+			struct sof_compr_stream *sstream = sps->cstream->runtime->private_data;
-+
-+			if (!sstream)
-+				return -ESTRPIPE;
-+
-+			posn_offset = sstream->posn_offset;
-+		}
-+
-+		snd_sof_dsp_mailbox_read(sdev, posn_offset, p, sz);
+--- a/drivers/crypto/atmel-ecc.c
++++ b/drivers/crypto/atmel-ecc.c
+@@ -273,6 +273,7 @@ static int atmel_ecdh_init_tfm(struct cr
+ 	if (IS_ERR(fallback)) {
+ 		dev_err(&ctx->client->dev, "Failed to allocate transformation for '%s': %ld\n",
+ 			alg, PTR_ERR(fallback));
++		atmel_ecc_i2c_client_free(ctx->client);
+ 		return PTR_ERR(fallback);
  	}
  
- 	return 0;
-@@ -51,18 +64,29 @@ int sof_set_stream_data_offset(struct snd_sof_dev *sdev,
- 			       struct snd_sof_pcm_stream *sps,
- 			       size_t posn_offset)
- {
--	struct snd_pcm_substream *substream = sps->substream;
--	struct sof_stream *stream = substream->runtime->private_data;
--
- 	/* check if offset is overflow or it is not aligned */
- 	if (posn_offset > sdev->stream_box.size ||
- 	    posn_offset % sizeof(struct sof_ipc_stream_posn) != 0)
- 		return -EINVAL;
- 
--	stream->posn_offset = sdev->stream_box.offset + posn_offset;
-+	posn_offset += sdev->stream_box.offset;
-+
-+	if (sps->substream) {
-+		struct sof_stream *stream = sps->substream->runtime->private_data;
-+
-+		stream->posn_offset = posn_offset;
-+		dev_dbg(sdev->dev, "pcm: stream dir %d, posn mailbox offset is %zu",
-+			sps->substream->stream, posn_offset);
-+	} else if (sps->cstream) {
-+		struct sof_compr_stream *sstream = sps->cstream->runtime->private_data;
- 
--	dev_dbg(sdev->dev, "pcm: stream dir %d, posn mailbox offset is %zu",
--		substream->stream, stream->posn_offset);
-+		sstream->posn_offset = posn_offset;
-+		dev_dbg(sdev->dev, "compr: stream dir %d, posn mailbox offset is %zu",
-+			sps->cstream->direction, posn_offset);
-+	} else {
-+		dev_err(sdev->dev, "No stream opened");
-+		return -EINVAL;
-+	}
- 
- 	return 0;
- }
--- 
-2.53.0
-
 
 
 
