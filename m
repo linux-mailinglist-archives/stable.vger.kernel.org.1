@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-259146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257747-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKduClIyG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259146-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:10 +0200
+	id 4CcnEt4eG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257747-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD218612C4D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7B2160FD50
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B114D3124803
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 823F3300CCA1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392A618FDBD;
-	Sat, 30 May 2026 18:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E83334695;
+	Sat, 30 May 2026 17:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJdJeKmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UaD23iR2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA2486334;
-	Sat, 30 May 2026 18:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9D22FDC5E;
+	Sat, 30 May 2026 17:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166762; cv=none; b=Dmwxyn12vvNF1bcWQvJ5pMjUvCROcTHt5JoUg89I9uqNylZD7170hEgG74TqUspFf6+LNQ5tv57LJqBCjYLyFQX5tOXu4MNBAxGSLU94BDHc7onK23yUm4GIhpJh1GZdifUYy4bS7kWhWPesn89ucqqrW3UkiusZGujx1Xwhu/g=
+	t=1780162036; cv=none; b=UQvpeTWK48+CzCghICfzPxJqet/b9skeFZ1rRmf0BAe7qr57RN/Tx/js+GdhXSHQQVwaf8g795JueZjmZojCRFt7DOsTbONlZkbECh4wOvFtK/yO+oWfJTie6zb6hL/oM+U3MUHcBFZDKQ+lQXTBIElQ56OIyxIfs97GAN/i96E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166762; c=relaxed/simple;
-	bh=NJok882ATDhLILX0xtltPPbgroHfDSZZzurjRj5kmyU=;
+	s=arc-20240116; t=1780162036; c=relaxed/simple;
+	bh=3HIWl3VbHPhwyViKZWdZPvt2fQJvmRJ8cUssomwjWdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1kVcnQ2uEvw26YYMeyTAM2mJYagGoODwpozwO7FfNmwOYDCbJbEHZpRoj84sMpdLigEBaUAowyj3maMT6WcAh81TdHp/FHxJfdjURzCSFQF7MCjMGWWeeiBmadWw6ZkuD6gw1LKZkFoMXHEZK0HOh6xSN/zMIp/kR7CEDJ7sZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJdJeKmR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404A21F00893;
-	Sat, 30 May 2026 18:46:00 +0000 (UTC)
+	 MIME-Version; b=YRzwYzWVG8aigqivlSZnW84vnMU0JcjbjU17swdx28wlaa2skjL62yDNx+zdvuIl/8PbTt3xc7jMphhEWXFnhCqNDBIy1j94nIPOLt9Hc+4x94JE9NSj4WSYd4MDvkFEkwQJCMLOXlwQbxhr/HdQIlrccpC1ENci7dcLpbx1GAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UaD23iR2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DCA1F00893;
+	Sat, 30 May 2026 17:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166760;
-	bh=IuXXcgq9P+4XVkKQGjHIUiLajs5pSr9SuXiPQ1kqRhY=;
+	s=korg; t=1780162035;
+	bh=prR82i5szzIyy4Lg1Tbftvl4JdzhWOcSirgzfdK2haM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RJdJeKmRTeDxcc7Bz/j6tl7lHsovjd/VQEK+gwTOSlp6nD8rnbZPTHP57lWCdwL1u
-	 zEhR4gwbrKc6q71fDR5ZJl3oSxgSADYzq/5nomBQoewPInx/GOw+Ug29X1tLDInA1n
-	 d+vRDfamjOsmxAHuvfDsN2xKQOnXF31rhgxQuTXo=
+	b=UaD23iR2XHjGr5N3vzx5lmb2WpY5An1fLtRhz+Trq3HEDxni23ZHXMs2Ug2kqn3Pd
+	 8I57QoDhb4C1FsUVdzXABenk3hU1W4jwgTJzdoiiM5/8XvwlaoAaQshk3xr94Sgleq
+	 61gclBj7eMBrcnefM2GNCNy5vQAiQCU32tvyGcYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kito Xu (veritas501)" <hxzene@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ryo Takakura <ryotkkr98@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 436/589] netfilter: xtables: restrict several matches to inet family
-Date: Sat, 30 May 2026 18:05:17 +0200
-Message-ID: <20260530160236.173735545@linuxfoundation.org>
+Subject: [PATCH 6.1 794/969] net: bcmgenet: Initialize u64 stats seq counter
+Date: Sat, 30 May 2026 18:05:18 +0200
+Message-ID: <20260530160322.541926496@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,239 +68,113 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259146-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,broadcom.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257747-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BD218612C4D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,broadcom.com:email]
+X-Rspamd-Queue-Id: B7B2160FD50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ryo Takakura <ryotkkr98@gmail.com>
 
-[ Upstream commit b6fe26f86a1649f84e057f3f15605b08eda15497 ]
+[ Upstream commit ffc2c8c4a714df53a715827d6334ab9474424f6a ]
 
-This is a partial revert of:
+Initialize u64 stats as it uses seq counter on 32bit machines
+as suggested by lockdep below.
 
-  commit ab4f21e6fb1c ("netfilter: xtables: use NFPROTO_UNSPEC in more extensions")
+[    1.830953][    T1] INFO: trying to register non-static key.
+[    1.830993][    T1] The code is fine but needs lockdep annotation, or maybe
+[    1.831027][    T1] you didn't initialize this object before use?
+[    1.831057][    T1] turning off the locking correctness validator.
+[    1.831090][    T1] CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           6.16.0-rc2-v7l+ #1 PREEMPT
+[    1.831097][    T1] Tainted: [W]=WARN
+[    1.831099][    T1] Hardware name: BCM2711
+[    1.831101][    T1] Call trace:
+[    1.831104][    T1]  unwind_backtrace from show_stack+0x18/0x1c
+[    1.831120][    T1]  show_stack from dump_stack_lvl+0x8c/0xcc
+[    1.831129][    T1]  dump_stack_lvl from register_lock_class+0x9e8/0x9fc
+[    1.831141][    T1]  register_lock_class from __lock_acquire+0x420/0x22c0
+[    1.831154][    T1]  __lock_acquire from lock_acquire+0x130/0x3f8
+[    1.831166][    T1]  lock_acquire from bcmgenet_get_stats64+0x4a4/0x4c8
+[    1.831176][    T1]  bcmgenet_get_stats64 from dev_get_stats+0x4c/0x408
+[    1.831184][    T1]  dev_get_stats from rtnl_fill_stats+0x38/0x120
+[    1.831193][    T1]  rtnl_fill_stats from rtnl_fill_ifinfo+0x7f8/0x1890
+[    1.831203][    T1]  rtnl_fill_ifinfo from rtmsg_ifinfo_build_skb+0xd0/0x138
+[    1.831214][    T1]  rtmsg_ifinfo_build_skb from rtmsg_ifinfo+0x48/0x8c
+[    1.831225][    T1]  rtmsg_ifinfo from register_netdevice+0x8c0/0x95c
+[    1.831237][    T1]  register_netdevice from register_netdev+0x28/0x40
+[    1.831247][    T1]  register_netdev from bcmgenet_probe+0x690/0x6bc
+[    1.831255][    T1]  bcmgenet_probe from platform_probe+0x64/0xbc
+[    1.831263][    T1]  platform_probe from really_probe+0xd0/0x2d4
+[    1.831269][    T1]  really_probe from __driver_probe_device+0x90/0x1a4
+[    1.831273][    T1]  __driver_probe_device from driver_probe_device+0x38/0x11c
+[    1.831278][    T1]  driver_probe_device from __driver_attach+0x9c/0x18c
+[    1.831282][    T1]  __driver_attach from bus_for_each_dev+0x84/0xd4
+[    1.831291][    T1]  bus_for_each_dev from bus_add_driver+0xd4/0x1f4
+[    1.831303][    T1]  bus_add_driver from driver_register+0x88/0x120
+[    1.831312][    T1]  driver_register from do_one_initcall+0x78/0x360
+[    1.831320][    T1]  do_one_initcall from kernel_init_freeable+0x2bc/0x314
+[    1.831331][    T1]  kernel_init_freeable from kernel_init+0x1c/0x144
+[    1.831339][    T1]  kernel_init from ret_from_fork+0x14/0x20
+[    1.831344][    T1] Exception stack(0xf082dfb0 to 0xf082dff8)
+[    1.831349][    T1] dfa0:                                     00000000 00000000 00000000 00000000
+[    1.831353][    T1] dfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[    1.831356][    T1] dfe0: 00000000 00000000 00000000 00000000 00000013 00000000
 
-to allow ipv4 and ipv6 only.
-
-- xt_mac
-- xt_owner
-- xt_physdev
-
-These extensions are not used by ebtables in userspace.
-
-Moreover, xt_realm is only for ipv4, since dst->tclassid is ipv4
-specific.
-
-Fixes: ab4f21e6fb1c ("netfilter: xtables: use NFPROTO_UNSPEC in more extensions")
-Reported-by: "Kito Xu (veritas501)" <hxzene@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 59aa6e3072aa ("net: bcmgenet: switch to use 64bit statistics")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250702092417.46486-1-ryotkkr98@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_mac.c     | 34 +++++++++++++++++++++++-----------
- net/netfilter/xt_owner.c   | 37 +++++++++++++++++++++++++------------
- net/netfilter/xt_physdev.c | 29 +++++++++++++++++++----------
- net/netfilter/xt_realm.c   |  2 +-
- 4 files changed, 68 insertions(+), 34 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/netfilter/xt_mac.c b/net/netfilter/xt_mac.c
-index 81649da57ba5d..bd2354760895d 100644
---- a/net/netfilter/xt_mac.c
-+++ b/net/netfilter/xt_mac.c
-@@ -38,25 +38,37 @@ static bool mac_mt(const struct sk_buff *skb, struct xt_action_param *par)
- 	return ret;
- }
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 43fba7b47d1cd..64bc7b3afb514 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -4079,6 +4079,12 @@ static int bcmgenet_probe(struct platform_device *pdev)
+ 	for (i = 0; i <= priv->hw_params->rx_queues; i++)
+ 		priv->rx_rings[i].rx_max_coalesced_frames = 1;
  
--static struct xt_match mac_mt_reg __read_mostly = {
--	.name      = "mac",
--	.revision  = 0,
--	.family    = NFPROTO_UNSPEC,
--	.match     = mac_mt,
--	.matchsize = sizeof(struct xt_mac_info),
--	.hooks     = (1 << NF_INET_PRE_ROUTING) | (1 << NF_INET_LOCAL_IN) |
--	             (1 << NF_INET_FORWARD),
--	.me        = THIS_MODULE,
-+static struct xt_match mac_mt_reg[] __read_mostly = {
-+	{
-+		.name		= "mac",
-+		.family		= NFPROTO_IPV4,
-+		.match		= mac_mt,
-+		.matchsize	= sizeof(struct xt_mac_info),
-+		.hooks		= (1 << NF_INET_PRE_ROUTING) |
-+				  (1 << NF_INET_LOCAL_IN) |
-+				  (1 << NF_INET_FORWARD),
-+		.me		= THIS_MODULE,
-+	},
-+	{
-+		.name		= "mac",
-+		.family		= NFPROTO_IPV6,
-+		.match		= mac_mt,
-+		.matchsize	= sizeof(struct xt_mac_info),
-+		.hooks		= (1 << NF_INET_PRE_ROUTING) |
-+				  (1 << NF_INET_LOCAL_IN) |
-+				  (1 << NF_INET_FORWARD),
-+		.me		= THIS_MODULE,
-+	},
- };
- 
- static int __init mac_mt_init(void)
- {
--	return xt_register_match(&mac_mt_reg);
-+	return xt_register_matches(mac_mt_reg, ARRAY_SIZE(mac_mt_reg));
- }
- 
- static void __exit mac_mt_exit(void)
- {
--	xt_unregister_match(&mac_mt_reg);
-+	xt_unregister_matches(mac_mt_reg, ARRAY_SIZE(mac_mt_reg));
- }
- 
- module_init(mac_mt_init);
-diff --git a/net/netfilter/xt_owner.c b/net/netfilter/xt_owner.c
-index 50332888c8d23..7be2fe22b067e 100644
---- a/net/netfilter/xt_owner.c
-+++ b/net/netfilter/xt_owner.c
-@@ -127,26 +127,39 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
- 	return true;
- }
- 
--static struct xt_match owner_mt_reg __read_mostly = {
--	.name       = "owner",
--	.revision   = 1,
--	.family     = NFPROTO_UNSPEC,
--	.checkentry = owner_check,
--	.match      = owner_mt,
--	.matchsize  = sizeof(struct xt_owner_match_info),
--	.hooks      = (1 << NF_INET_LOCAL_OUT) |
--	              (1 << NF_INET_POST_ROUTING),
--	.me         = THIS_MODULE,
-+static struct xt_match owner_mt_reg[] __read_mostly = {
-+	{
-+		.name       = "owner",
-+		.revision   = 1,
-+		.family     = NFPROTO_IPV4,
-+		.checkentry = owner_check,
-+		.match      = owner_mt,
-+		.matchsize  = sizeof(struct xt_owner_match_info),
-+		.hooks      = (1 << NF_INET_LOCAL_OUT) |
-+			      (1 << NF_INET_POST_ROUTING),
-+		.me         = THIS_MODULE,
-+	},
-+	{
-+		.name       = "owner",
-+		.revision   = 1,
-+		.family     = NFPROTO_IPV6,
-+		.checkentry = owner_check,
-+		.match      = owner_mt,
-+		.matchsize  = sizeof(struct xt_owner_match_info),
-+		.hooks      = (1 << NF_INET_LOCAL_OUT) |
-+			      (1 << NF_INET_POST_ROUTING),
-+		.me         = THIS_MODULE,
-+	}
- };
- 
- static int __init owner_mt_init(void)
- {
--	return xt_register_match(&owner_mt_reg);
-+	return xt_register_matches(owner_mt_reg, ARRAY_SIZE(owner_mt_reg));
- }
- 
- static void __exit owner_mt_exit(void)
- {
--	xt_unregister_match(&owner_mt_reg);
-+	xt_unregister_matches(owner_mt_reg, ARRAY_SIZE(owner_mt_reg));
- }
- 
- module_init(owner_mt_init);
-diff --git a/net/netfilter/xt_physdev.c b/net/netfilter/xt_physdev.c
-index ec6ed6fda96c5..6a596878d611f 100644
---- a/net/netfilter/xt_physdev.c
-+++ b/net/netfilter/xt_physdev.c
-@@ -115,24 +115,33 @@ static int physdev_mt_check(const struct xt_mtchk_param *par)
- 	return 0;
- }
- 
--static struct xt_match physdev_mt_reg __read_mostly = {
--	.name       = "physdev",
--	.revision   = 0,
--	.family     = NFPROTO_UNSPEC,
--	.checkentry = physdev_mt_check,
--	.match      = physdev_mt,
--	.matchsize  = sizeof(struct xt_physdev_info),
--	.me         = THIS_MODULE,
-+static struct xt_match physdev_mt_reg[] __read_mostly = {
-+	{
-+		.name		= "physdev",
-+		.family		= NFPROTO_IPV4,
-+		.checkentry	= physdev_mt_check,
-+		.match		= physdev_mt,
-+		.matchsize	= sizeof(struct xt_physdev_info),
-+		.me		= THIS_MODULE,
-+	},
-+	{
-+		.name		= "physdev",
-+		.family		= NFPROTO_IPV6,
-+		.checkentry	= physdev_mt_check,
-+		.match		= physdev_mt,
-+		.matchsize	= sizeof(struct xt_physdev_info),
-+		.me		= THIS_MODULE,
-+	},
- };
- 
- static int __init physdev_mt_init(void)
- {
--	return xt_register_match(&physdev_mt_reg);
-+	return xt_register_matches(physdev_mt_reg, ARRAY_SIZE(physdev_mt_reg));
- }
- 
- static void __exit physdev_mt_exit(void)
- {
--	xt_unregister_match(&physdev_mt_reg);
-+	xt_unregister_matches(physdev_mt_reg, ARRAY_SIZE(physdev_mt_reg));
- }
- 
- module_init(physdev_mt_init);
-diff --git a/net/netfilter/xt_realm.c b/net/netfilter/xt_realm.c
-index 6df485f4403d0..61b2f1e58d150 100644
---- a/net/netfilter/xt_realm.c
-+++ b/net/netfilter/xt_realm.c
-@@ -33,7 +33,7 @@ static struct xt_match realm_mt_reg __read_mostly = {
- 	.matchsize	= sizeof(struct xt_realm_info),
- 	.hooks		= (1 << NF_INET_POST_ROUTING) | (1 << NF_INET_FORWARD) |
- 			  (1 << NF_INET_LOCAL_OUT) | (1 << NF_INET_LOCAL_IN),
--	.family		= NFPROTO_UNSPEC,
-+	.family		= NFPROTO_IPV4,
- 	.me		= THIS_MODULE
- };
++	/* Initialize u64 stats seq counter for 32bit machines */
++	for (i = 0; i <= priv->hw_params->rx_queues; i++)
++		u64_stats_init(&priv->rx_rings[i].stats64.syncp);
++	for (i = 0; i <= priv->hw_params->tx_queues; i++)
++		u64_stats_init(&priv->tx_rings[i].stats64.syncp);
++
+ 	/* libphy will determine the link state */
+ 	netif_carrier_off(dev);
  
 -- 
 2.53.0
