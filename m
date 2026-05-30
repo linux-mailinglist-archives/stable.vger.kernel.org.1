@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-257608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPx1GhIeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257608-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:46 +0200
+	id uDM0EkcvG2paAAkAu9opvQ
+	(envelope-from <stable+bounces-258985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53D260FB53
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3064612406
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D0A130985E7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:19:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 163DE30A5D7A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183973242D7;
-	Sat, 30 May 2026 17:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FD533E36A;
+	Sat, 30 May 2026 18:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ok6v70RA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5IUyRfB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0173161A3;
-	Sat, 30 May 2026 17:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4A241A8F;
+	Sat, 30 May 2026 18:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161569; cv=none; b=G5OXNWd2uf8s23opp4F09oot7MiGxiI9HogmM2wUjQMhgp1di7eJ47tJUhyhpvK5t96shs8sZVSoWg0BQJJK71Sw1qvJb9F3d2MzMfrxJ620PaywNUoKrw9hC3pZ8KtQ176OZ/bhx+3Z9aTeZ4FwJ9HSJ3GNKpwPd9UEaql/7Zw=
+	t=1780166208; cv=none; b=KiKznW+/DEZA6GGgd5bYHxI4dhVfV1/o+TC6M6IUib94PgeiJ2K4Y16Iz4w9y9iD5JJq09YaTU26CEcp4vKRuLXsRyKN6dRGlxS/Q9qZjK087koK+CzyuDFzsO6sjO/0m317EaeZTtxqsHlfIMCOj8aN29cTULV8Q7jT9rxswR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161569; c=relaxed/simple;
-	bh=yB48RLueYiH1dwLOFbQKNRPvLyHlzx1VIOzyZ+bUM9U=;
+	s=arc-20240116; t=1780166208; c=relaxed/simple;
+	bh=1tjXaY8DyX+27ZygzBYgx3L79ioFAtPIMJSKCz6v0Wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOGFh/BDj+W5cEEFYfZa8BCCEK4/wmIA8sEkLZIIidEgsT3JLSPnIOr2Dwpkl3u+j2arycmrQLLSUSSmGnAcaCU8qBLAF5kI6eRPkExl2+yC2XO/vONIZszyBXAM/2AQj3MAQyKxriVmOH1YoS8fgb0a5Z8B72kyvZWgFiVtR0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ok6v70RA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD9A1F00893;
-	Sat, 30 May 2026 17:19:27 +0000 (UTC)
+	 MIME-Version; b=NYcuah29XI2q9/SspCtEDIb125kzvsPSpCxDP0T+KPpoE2P4MhRL1E5VWY66rA/VISM5TM8J3ZUCfiseq9+CjcUmtGpeGdnRC9htr5MxAUnfM/pxbQqoqCSz1EdhpDYZndMoYNzSi/IJE6lqy+o6i9Y/XR92fWpPQYq/Xp34BKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5IUyRfB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6271F00893;
+	Sat, 30 May 2026 18:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161568;
-	bh=o97UWOb8QhVhpyL2RrRJU9h9oS4jm8hPjUfw1XkrtUI=;
+	s=korg; t=1780166207;
+	bh=pmHZm39bAHgTfJZlfTB+LGUpxis9bJkbaijxgYTQsTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ok6v70RATBu6QdwwZ0rfDmh4FIZMFNhc9Op+NBN5LBDmvMS4K60OFeU+yjzZEf8OK
-	 YRYOskSrlD/64w91LoEdeyNhSufu9Xfntjstv6RcE5s1o1a1DxqXNKNX15pPSFJ5Q3
-	 LtEHy8ItQgMLcv7EgfJxEIB/mLIAM+H71uNFgHk8=
+	b=O5IUyRfBz+wMJ/OyhX7FGg8pZ0bSQR7cL1AeCVIzK5wb7gPpfTs/uvrDv/KdYbCSO
+	 GxA22Ww/jVvp+Qg6hHPXv4Z2tWL1dbwV3xH/97adt3RZt111and0RC1hcIRshs8h15
+	 seZd01FRZyyIvppEZbxjbVy05CALaYcwIT8ShzBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kees Cook <kees@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 661/969] clk: qoriq: avoid format string warning
-Date: Sat, 30 May 2026 18:03:05 +0200
-Message-ID: <20260530160318.730615111@linuxfoundation.org>
+Subject: [PATCH 5.10 305/589] wifi: brcmfmac: Fix error pointer dereference
+Date: Sat, 30 May 2026 18:03:06 +0200
+Message-ID: <20260530160232.971024405@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,115 +69,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258985-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257608-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D53D260FB53
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,broadcom.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D3064612406
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit 096abbb6682ee031a0f5ce9f4c71ead9fa63d31e ]
+[ Upstream commit dd8592fc6007a451c3e4b9025de365e39de8178a ]
 
-clang-22 warns about the use of non-variadic format arguments passed into
-snprintf():
+The function brcmf_chip_add_core() can return an error pointer and is
+not checked. Add checks for error pointer.
 
-drivers/clk/clk-qoriq.c:925:39: error: diagnostic behavior may be improved by adding the
-      'format(printf, 7, 8)' attribute to the declaration of 'create_mux_common' [-Werror,-Wmissing-format-attribute]
-  910 | static struct clk * __init create_mux_common(struct clockgen *cg,
-      | __attribute__((format(printf, 7, 8)))
-  911 |                                              struct mux_hwclock *hwc,
-  912 |                                              const struct clk_ops *ops,
-  913 |                                              unsigned long min_rate,
-  914 |                                              unsigned long max_rate,
-  915 |                                              unsigned long pct80_rate,
-  916 |                                              const char *fmt, int idx)
-  917 | {
-  918 |         struct clk_init_data init = {};
-  919 |         struct clk *clk;
-  920 |         const struct clockgen_pll_div *div;
-  921 |         const char *parent_names[NUM_MUX_PARENTS];
-  922 |         char name[32];
-  923 |         int i, j;
-  924 |
-  925 |         snprintf(name, sizeof(name), fmt, idx);
-      |                                              ^
-drivers/clk/clk-qoriq.c:910:28: note: 'create_mux_common' declared here
-  910 | static struct clk * __init create_mux_common(struct clockgen *cg,
+Detected by Smatch:
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1010 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
 
-Rework this to pass the 'int idx' as a varargs argument, allowing the
-format string to be verified at the caller location.
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1013 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
 
-Fixes: 0dfc86b3173f ("clk: qoriq: Move chip-specific knowledge into driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1016 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
+
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1019 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
+
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1022 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
+
+Fixes: cb7cf7be9eba7 ("brcmfmac: make chip related functions host interface independent")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20260217023043.73631-1-ethantidmore06@gmail.com
+[add missing wifi: prefix]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-qoriq.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ .../wireless/broadcom/brcm80211/brcmfmac/chip.c   | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/clk/clk-qoriq.c b/drivers/clk/clk-qoriq.c
-index 5eddb9f0d6bdb..4baec1bf3557f 100644
---- a/drivers/clk/clk-qoriq.c
-+++ b/drivers/clk/clk-qoriq.c
-@@ -905,13 +905,11 @@ static const struct clockgen_pll_div *get_pll_div(struct clockgen *cg,
- 	return &cg->pll[pll].div[div];
- }
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+index a0097ffe33590..e720da11e5ef9 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+@@ -981,18 +981,33 @@ static int brcmf_chip_recognition(struct brcmf_chip_priv *ci)
  
--static struct clk * __init create_mux_common(struct clockgen *cg,
--					     struct mux_hwclock *hwc,
--					     const struct clk_ops *ops,
--					     unsigned long min_rate,
--					     unsigned long max_rate,
--					     unsigned long pct80_rate,
--					     const char *fmt, int idx)
-+static struct clk * __init __printf(7, 8)
-+create_mux_common(struct clockgen *cg, struct mux_hwclock *hwc,
-+		  const struct clk_ops *ops, unsigned long min_rate,
-+		  unsigned long max_rate, unsigned long pct80_rate,
-+		  const char *fmt, ...)
- {
- 	struct clk_init_data init = {};
- 	struct clk *clk;
-@@ -919,8 +917,11 @@ static struct clk * __init create_mux_common(struct clockgen *cg,
- 	const char *parent_names[NUM_MUX_PARENTS];
- 	char name[32];
- 	int i, j;
-+	va_list args;
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_CHIPCOMMON,
+ 					   SI_ENUM_BASE_DEFAULT, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
++
+ 		brcmf_chip_sb_corerev(ci, core);
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_SDIO_DEV,
+ 					   BCM4329_CORE_BUS_BASE, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
++
+ 		brcmf_chip_sb_corerev(ci, core);
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_INTERNAL_MEM,
+ 					   BCM4329_CORE_SOCRAM_BASE, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
++
+ 		brcmf_chip_sb_corerev(ci, core);
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_ARM_CM3,
+ 					   BCM4329_CORE_ARM_BASE, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
++
+ 		brcmf_chip_sb_corerev(ci, core);
  
--	snprintf(name, sizeof(name), fmt, idx);
-+	va_start(args, fmt);
-+	vsnprintf(name, sizeof(name), fmt, args);
-+	va_end(args);
- 
- 	for (i = 0, j = 0; i < NUM_MUX_PARENTS; i++) {
- 		unsigned long rate;
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_80211, 0x18001000, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
++
+ 		brcmf_chip_sb_corerev(ci, core);
+ 	} else if (socitype == SOCI_AI) {
+ 		ci->iscoreup = brcmf_chip_ai_iscoreup;
 -- 
 2.53.0
 
