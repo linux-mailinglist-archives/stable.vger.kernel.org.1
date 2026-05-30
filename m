@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-257235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258015-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OM4ROG0ZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257235-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:57 +0200
+	id 4MjrGoAhG2oN/ggAu9opvQ
+	(envelope-from <stable+bounces-258015-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CA060EEEC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CC0610320
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B3F4130C1B9D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:58:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7671730065D4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF9533F5A3;
-	Sat, 30 May 2026 16:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3B834A3C4;
+	Sat, 30 May 2026 17:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjFeszNz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcvKev/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487FD2E92B3;
-	Sat, 30 May 2026 16:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D5127A477;
+	Sat, 30 May 2026 17:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160287; cv=none; b=l/PlIV32ovrHW17dNfbhJcLGuRKSx2jWB5nkY1HnN62LKeWaANDOKtaAvpdiofSVsk6hps7CFOSWv6Wd0rMpKYBbQdrfOolurkQc0OGb3EdG2s1boDjRcxEVt/9L0WwZp6hRNbbkDHVahRvcO6mTRKoKoR9ovVrIBkx98zjvSIQ=
+	t=1780162939; cv=none; b=UxQh3DuPyJmUOg/FLyO5eBmMxJxTobcRXuUxZsxr9qpI73iC5uRFAoOw+g32TND3LaJA+emrvddPKoS/bJfleDwfl66Nm+YJd4jMYURpmtN/8rYzec8uBrIU1z231qkgguExs8TrY66Vkh0KaXlQpn+5bv64BgJi+sAARtduFp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160287; c=relaxed/simple;
-	bh=2orBNCKwnptj1WJjdFZ8cETvvW+SPIeFkjtW75F8X3k=;
+	s=arc-20240116; t=1780162939; c=relaxed/simple;
+	bh=EK2Zaemy9LcHXxUjIhqYoRUIaJGtbpug6P3+cBBbmsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9DXLGR1doPXCSbaxBRzM3zf3ETEVgFD4OHOiYBmtJI9VNpfZW+dbrsWKHTqWzzn6jfm/ejCFVH4F7WVSj3jPdZlKrNo1jFzRm0XctLPAHKqpBKXxYKV/QruTANlq51pVMgTktmXlCLmiT4GMooGGykipyF1Xf9sG8GlSN02YuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjFeszNz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30FE61F00893;
-	Sat, 30 May 2026 16:58:04 +0000 (UTC)
+	 MIME-Version; b=SYSAs+afWTN/pCC+usk3+SQt83/udK8cU98l38QOtR5VR/aiV8MgOZ7ShGj8KtmfFduBYexg2oRu/OMwhZ3hv9JfwCzSyMMmQxc7LGvftOJV9Qu8DRxCSmYyXSky2qF10Hs68MLaEFWSqUri/L9abdiKkgm3FR0eR3tiB0AzBAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcvKev/7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4176F1F00893;
+	Sat, 30 May 2026 17:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160285;
-	bh=VOkmSGBozst6mXp9FS0gTAittxxzgRonJhHbuTpejk4=;
+	s=korg; t=1780162938;
+	bh=Q1/NAJRjkBk+FNsiGZIAyXcVBqmkhP53XgWRcEiFDo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cjFeszNzQxi9rtRHUpfuB/Wy+PpTQrvr53QkfS59ipyJ6DklLgXUBuw3UVgevbAFy
-	 PGvXno0il6Dw/FrQj+YV/ZoQ8wrPzY7mIRLNL2XJfUlM0szCjqsFj1Smd0oahjBn7k
-	 IBJvakr+6dNjQ5bw84d9PkHgppXfqh6QuGKfybUM=
+	b=gcvKev/7Sf36b23T4Aionq52oLPwpyCSdp05XC3o9HE7IlvgrhutavMuMpWLzme4f
+	 NKYapEyfvidFZiT5Cf5wqWSOT7ZkXeYhfq89qLPsU2fyiWROoK8G4kwZsjJxAQMk5D
+	 CdpOpNl3a5RzdLy4XLXgwK8LVDtnbeAo7wtKu9T0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Fang Wang <32840572@qq.com>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 296/969] Bluetooth: hci_sync: Remove remaining dependencies of hci_request
+Subject: [PATCH 5.15 106/776] ocfs2: validate inline data i_size during inode read
 Date: Sat, 30 May 2026 17:57:00 +0200
-Message-ID: <20260530160308.617814289@linuxfoundation.org>
+Message-ID: <20260530160243.090300771@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,166 +72,123 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257235-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,qq.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-258015-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,syzkaller.appspotmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,c897823f699449cc3eb4];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 54CA060EEEC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 09CC0610320
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit f2d89775358606c7ab6b6b6c4a02fe1e8cd270b1 ]
+[ Upstream commit 1524af3685b35feac76662cc551cbc37bd14775f ]
 
-This removes the dependencies of hci_req_init and hci_request_cancel_all
-from hci_sync.c.
+When reading an inode from disk, ocfs2_validate_inode_block() performs
+various sanity checks but does not validate the size of inline data.  If
+the filesystem is corrupted, an inode's i_size can exceed the actual
+inline data capacity (id_count).
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Fang Wang <32840572@qq.com>
+This causes ocfs2_dir_foreach_blk_id() to iterate beyond the inline data
+buffer, triggering a use-after-free when accessing directory entries from
+freed memory.
+
+In the syzbot report:
+  - i_size was 1099511627576 bytes (~1TB)
+  - Actual inline data capacity (id_count) is typically <256 bytes
+  - A garbage rec_len (54648) caused ctx->pos to jump out of bounds
+  - This triggered a UAF in ocfs2_check_dir_entry()
+
+Fix by adding a validation check in ocfs2_validate_inode_block() to ensure
+inodes with inline data have i_size <= id_count.  This catches the
+corruption early during inode read and prevents all downstream code from
+operating on invalid data.
+
+Link: https://lkml.kernel.org/r/20251212052132.16750-1-kartikey406@gmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c897823f699449cc3eb4
+Tested-by: syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20251211115231.3560028-1-kartikey406@gmail.com/T/ [v1]
+Link: https://lore.kernel.org/all/20251212040400.6377-1-kartikey406@gmail.com/T/ [v2]
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7bc5da4842be ("ocfs2: fix out-of-bounds write in ocfs2_write_end_inline")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci_sync.h | 17 +++++++++++++++++
- net/bluetooth/hci_request.h      | 21 ---------------------
- net/bluetooth/hci_sync.c         | 14 +++++++++++---
- 3 files changed, 28 insertions(+), 24 deletions(-)
+ fs/ocfs2/inode.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
-index a8b106d884d41..a68ddf5c02286 100644
---- a/include/net/bluetooth/hci_sync.h
-+++ b/include/net/bluetooth/hci_sync.h
-@@ -5,6 +5,23 @@
-  * Copyright (C) 2021 Intel Corporation
-  */
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -1416,12 +1416,25 @@ int ocfs2_validate_inode_block(struct su
+ 		goto bail;
+ 	}
  
-+#define HCI_REQ_DONE	  0
-+#define HCI_REQ_PEND	  1
-+#define HCI_REQ_CANCELED  2
+-	if ((le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) &&
+-	    le32_to_cpu(di->i_clusters)) {
+-		rc = ocfs2_error(sb, "Invalid dinode %llu: %u clusters\n",
+-				 (unsigned long long)bh->b_blocknr,
+-				 le32_to_cpu(di->i_clusters));
+-		goto bail;
++	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) {
++		struct ocfs2_inline_data *data = &di->id2.i_data;
 +
-+#define hci_req_sync_lock(hdev)   mutex_lock(&hdev->req_lock)
-+#define hci_req_sync_unlock(hdev) mutex_unlock(&hdev->req_lock)
++		if (le32_to_cpu(di->i_clusters)) {
++			rc = ocfs2_error(sb,
++					 "Invalid dinode %llu: %u clusters\n",
++					 (unsigned long long)bh->b_blocknr,
++					 le32_to_cpu(di->i_clusters));
++			goto bail;
++		}
 +
-+struct hci_request {
-+	struct hci_dev		*hdev;
-+	struct sk_buff_head	cmd_q;
-+
-+	/* If something goes wrong when building the HCI request, the error
-+	 * value is stored in this field.
-+	 */
-+	int			err;
-+};
-+
- typedef int (*hci_cmd_sync_work_func_t)(struct hci_dev *hdev, void *data);
- typedef void (*hci_cmd_sync_work_destroy_t)(struct hci_dev *hdev, void *data,
- 					    int err);
-diff --git a/net/bluetooth/hci_request.h b/net/bluetooth/hci_request.h
-index 0be75cf0efed8..b730da4a8b476 100644
---- a/net/bluetooth/hci_request.h
-+++ b/net/bluetooth/hci_request.h
-@@ -22,27 +22,6 @@
++		if (le64_to_cpu(di->i_size) > le16_to_cpu(data->id_count)) {
++			rc = ocfs2_error(sb,
++					 "Invalid dinode #%llu: inline data i_size %llu exceeds id_count %u\n",
++					 (unsigned long long)bh->b_blocknr,
++					 (unsigned long long)le64_to_cpu(di->i_size),
++					 le16_to_cpu(data->id_count));
++			goto bail;
++		}
+ 	}
  
- #include <asm/unaligned.h>
- 
--#define HCI_REQ_DONE	  0
--#define HCI_REQ_PEND	  1
--#define HCI_REQ_CANCELED  2
--
--#define hci_req_sync_lock(hdev)   mutex_lock(&hdev->req_lock)
--#define hci_req_sync_unlock(hdev) mutex_unlock(&hdev->req_lock)
--
--#define HCI_REQ_DONE	  0
--#define HCI_REQ_PEND	  1
--#define HCI_REQ_CANCELED  2
--
--struct hci_request {
--	struct hci_dev		*hdev;
--	struct sk_buff_head	cmd_q;
--
--	/* If something goes wrong when building the HCI request, the error
--	 * value is stored in this field.
--	 */
--	int			err;
--};
--
- void hci_req_init(struct hci_request *req, struct hci_dev *hdev);
- void hci_req_purge(struct hci_request *req);
- bool hci_req_status_pend(struct hci_dev *hdev);
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index c6f9d07a48194..4d23455e90bbe 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -11,7 +11,6 @@
- #include <net/bluetooth/hci_core.h>
- #include <net/bluetooth/mgmt.h>
- 
--#include "hci_request.h"
- #include "hci_codec.h"
- #include "hci_debugfs.h"
- #include "smp.h"
-@@ -142,6 +141,13 @@ static int hci_cmd_sync_run(struct hci_request *req)
- 	return 0;
- }
- 
-+static void hci_request_init(struct hci_request *req, struct hci_dev *hdev)
-+{
-+	skb_queue_head_init(&req->cmd_q);
-+	req->hdev = hdev;
-+	req->err = 0;
-+}
-+
- /* This function requires the caller holds hdev->req_lock. */
- struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
- 				  const void *param, u8 event, u32 timeout,
-@@ -153,7 +159,7 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
- 
- 	bt_dev_dbg(hdev, "Opcode 0x%4.4x", opcode);
- 
--	hci_req_init(&req, hdev);
-+	hci_request_init(&req, hdev);
- 
- 	hci_cmd_sync_add(&req, opcode, plen, param, event, sk);
- 
-@@ -5188,7 +5194,9 @@ int hci_dev_close_sync(struct hci_dev *hdev)
- 	cancel_delayed_work(&hdev->le_scan_disable);
- 	cancel_delayed_work(&hdev->le_scan_restart);
- 
--	hci_request_cancel_all(hdev);
-+	hci_cmd_sync_cancel_sync(hdev, ENODEV);
-+
-+	cancel_interleave_scan(hdev);
- 
- 	if (hdev->adv_instance_timeout) {
- 		cancel_delayed_work_sync(&hdev->adv_instance_expire);
--- 
-2.53.0
-
+ 	rc = 0;
 
 
 
