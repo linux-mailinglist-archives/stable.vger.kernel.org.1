@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-258786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257408-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJMyGUAtG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258786-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:32 +0200
+	id 2LlDB9saG2pR/QgAu9opvQ
+	(envelope-from <stable+bounces-257408-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE81B611F0A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA8F60F2FF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 19702302D5D0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4FD3530448A4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596CC27E05E;
-	Sat, 30 May 2026 18:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1985366567;
+	Sat, 30 May 2026 17:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Urm6/xbd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gejq+l8y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33C521ADC7;
-	Sat, 30 May 2026 18:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F26395AEA;
+	Sat, 30 May 2026 17:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165534; cv=none; b=pSd1Ykuv3ujl0mKQ9glTIWiMgI0woHMBsWMln9AABt+3TeE6HJeTB/bw6WGHgnwEj4c6u+7W+H2Fp5FFwZutBco03o80PtfqlS0ze/j9+Z/bDp0t8UCJzqpIXwbYV5PQlKsivky7/bprseze0q7ikHjj0gqz+NnlPKLX4OoGwL8=
+	t=1780160894; cv=none; b=Q9FUNyFNLSkzG3//SbQZfoXDmc46fFQGzPUqLFTFSglRaCB219WBjhg5dY4exW+dL1ITfQfn9MN8fuCF9syu/1MpDkGpjLVg2qQsoH7e0m44Zv7dGy/bFGMkdEMiFrTvOqwf0n7AZAnxJNApXr250vOA2m9PlGbCXpqYoHYNgek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165534; c=relaxed/simple;
-	bh=2VaKEX/p/vhpHTXn7Dz/RzBNtTWy7ptm3UNWLY5N7ss=;
+	s=arc-20240116; t=1780160894; c=relaxed/simple;
+	bh=pZTD0U7+EnbYs6+4FFtDm+RFVI3wF91C81toAMMhUqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p8xL3uR/W0xBAPrNVUMUEiZJOCVWeepYykS6pT8akqfvSxfc012baqbOF35CFOs6JbwMhpWAARWaooZCOR6iox7IbGDyMnE7Ucn3vwtBhQ/PkC/Av6aPv7LJFgA3fagNlDrJdEXZPi1o4IGvbyURB/P385IQr41cmQPc3QNKSqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Urm6/xbd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439AB1F00893;
-	Sat, 30 May 2026 18:25:32 +0000 (UTC)
+	 MIME-Version; b=s3S3C/QL70IkoDf6ZezY2dhYh1zV3q43xEtk44Uk29kbMxQBB4f3TBbzpqNL6edlbnhxv0uH8wimok3Nrctnd+ob531NO22f+4ZN5AEs9oCkaoys2rTQEUdaF6NpQN4vs8yi8vnz43qop3kBxO83fqeMbQtHLzcvzNv2p/Zis8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gejq+l8y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71C21F00893;
+	Sat, 30 May 2026 17:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165532;
-	bh=suoku9vRYHli+cd5Iicd/yI8fAXUCGlfoDXeNOAJJcg=;
+	s=korg; t=1780160893;
+	bh=h5oUBorRck0q9sc04yZ7WPHY5i0tWBtar8b0iNHcbV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Urm6/xbdk3yUAqRvKuPJyXaZ0cUw5VTaO5TvCDotk+IMPQKZGLRF2qAf4F6NsEInV
-	 mPwJ375NI3ucrfm9W0NrvfSlzv4LsOCnAzIFHrST3G6P7MobPL8CJa1Y44QLvHb1/W
-	 wTj+JXJz3iUjXXPWG+h4KYuBJ+Mz/Q8ZiRZEYxFw=
+	b=gejq+l8yKyAj9M3vS61Byq/DewnuK1+dBzZJpQOJV0tiCrHIcoWBMocEEFELWXkPM
+	 5brGD4b5nZDaQPGennfk/b6pj6zZ7zMc3FQYUgDVxP2CBu6jzYXTKH+ASideTxD7tT
+	 LayrpARDVRLyFjUl8xBCFReWZ3MqY8kM0/ph4/LQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Ming Lei <ming.lei@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>,
-	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
-Subject: [PATCH 5.10 107/589] blk-mq: use quiesced elevator switch when reinitializing queues
+	Quan Sun <2022090917019@std.uestc.edu.cn>,
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Dongliang Mu <dzm91@hust.edu.cn>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 464/969] bpf: Drop task_to_inode and inet_conn_established from lsm sleepable hooks
 Date: Sat, 30 May 2026 17:59:48 +0200
-Message-ID: <20260530160227.559296606@linuxfoundation.org>
+Message-ID: <20260530160313.095711369@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,143 +72,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257408-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258786-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,broadcom.com:email,kernel.dk:email]
-X-Rspamd-Queue-Id: BE81B611F0A
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7CA8F60F2FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 8237c01f1696bc53c470493bf1fe092a107648a6 ]
+[ Upstream commit beaf0e96b1da74549a6cabd040f9667d83b2e97e ]
 
-The hctx's run_work may be racing with the elevator switch when
-reinitializing hardware queues. The queue is merely frozen in this
-context, but that only prevents requests from allocating and doesn't
-stop the hctx work from running. The work may get an elevator pointer
-that's being torn down, and can result in use-after-free errors and
-kernel panics (example below). Use the quiesced elevator switch instead,
-and make the previous one static since it is now only used locally.
+bpf_lsm_task_to_inode() is called under rcu_read_lock() and
+bpf_lsm_inet_conn_established() is called from softirq context, so
+neither hook can be used by sleepable LSM programs.
 
-  nvme nvme0: resetting controller
-  nvme nvme0: 32/0/0 default/read/poll queues
-  BUG: kernel NULL pointer dereference, address: 0000000000000008
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 80000020c8861067 P4D 80000020c8861067 PUD 250f8c8067 PMD 0
-  Oops: 0000 [#1] SMP PTI
-  Workqueue: kblockd blk_mq_run_work_fn
-  RIP: 0010:kyber_has_work+0x29/0x70
-
-...
-
-  Call Trace:
-   __blk_mq_do_dispatch_sched+0x83/0x2b0
-   __blk_mq_sched_dispatch_requests+0x12e/0x170
-   blk_mq_sched_dispatch_requests+0x30/0x60
-   __blk_mq_run_hw_queue+0x2b/0x50
-   process_one_work+0x1ef/0x380
-   worker_thread+0x2d/0x3e0
-
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20220927155652.3260724-1-kbusch@fb.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 423f16108c9d8 ("bpf: Augment the set of sleepable LSM hooks")
+Reported-by: Quan Sun <2022090917019@std.uestc.edu.cn>
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Reported-by: Dongliang Mu <dzm91@hust.edu.cn>
+Closes: https://lore.kernel.org/bpf/3ab69731-24d1-431a-a351-452aafaaf2a5@std.uestc.edu.cn/T/#u
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://lore.kernel.org/r/20260407122334.344072-1-jiayuan.chen@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c   |    6 +++---
- block/blk.h      |    3 +--
- block/elevator.c |    4 ++--
- 3 files changed, 6 insertions(+), 7 deletions(-)
+ kernel/bpf/bpf_lsm.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3689,14 +3689,14 @@ static bool blk_mq_elv_switch_none(struc
+diff --git a/kernel/bpf/bpf_lsm.c b/kernel/bpf/bpf_lsm.c
+index e6a76da4bca78..075c06aa9c951 100644
+--- a/kernel/bpf/bpf_lsm.c
++++ b/kernel/bpf/bpf_lsm.c
+@@ -338,7 +338,6 @@ BTF_ID(func, bpf_lsm_current_getsecid_subj)
+ BTF_ID(func, bpf_lsm_task_getsecid_obj)
+ BTF_ID(func, bpf_lsm_task_prctl)
+ BTF_ID(func, bpf_lsm_task_setscheduler)
+-BTF_ID(func, bpf_lsm_task_to_inode)
+ BTF_ID(func, bpf_lsm_userns_create)
+ BTF_SET_END(sleepable_lsm_hooks)
  
- 	mutex_lock(&q->sysfs_lock);
- 	/*
--	 * After elevator_switch_mq, the previous elevator_queue will be
-+	 * After elevator_switch, the previous elevator_queue will be
- 	 * released by elevator_release. The reference of the io scheduler
- 	 * module get by elevator_get will also be put. So we need to get
- 	 * a reference of the io scheduler module here to prevent it to be
- 	 * removed.
- 	 */
- 	__module_get(qe->type->elevator_owner);
--	elevator_switch_mq(q, NULL);
-+	elevator_switch(q, NULL);
- 	mutex_unlock(&q->sysfs_lock);
- 
- 	return true;
-@@ -3721,7 +3721,7 @@ static void blk_mq_elv_switch_back(struc
- 	kfree(qe);
- 
- 	mutex_lock(&q->sysfs_lock);
--	elevator_switch_mq(q, t);
-+	elevator_switch(q, t);
- 	mutex_unlock(&q->sysfs_lock);
- }
- 
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -202,8 +202,7 @@ void blk_account_io_done(struct request
- void blk_insert_flush(struct request *rq);
- 
- void elevator_init_mq(struct request_queue *q);
--int elevator_switch_mq(struct request_queue *q,
--			      struct elevator_type *new_e);
-+int elevator_switch(struct request_queue *q, struct elevator_type *new_e);
- void __elevator_exit(struct request_queue *, struct elevator_queue *);
- int elv_register_queue(struct request_queue *q, bool uevent);
- void elv_unregister_queue(struct request_queue *q);
---- a/block/elevator.c
-+++ b/block/elevator.c
-@@ -572,7 +572,7 @@ void elv_unregister(struct elevator_type
- }
- EXPORT_SYMBOL_GPL(elv_unregister);
- 
--int elevator_switch_mq(struct request_queue *q,
-+static int elevator_switch_mq(struct request_queue *q,
- 			      struct elevator_type *new_e)
- {
- 	int ret;
-@@ -701,7 +701,7 @@ void elevator_init_mq(struct request_que
-  * need for the new one. this way we have a chance of going back to the old
-  * one, if the new one fails init for some reason.
-  */
--static int elevator_switch(struct request_queue *q, struct elevator_type *new_e)
-+int elevator_switch(struct request_queue *q, struct elevator_type *new_e)
- {
- 	int err;
- 
+-- 
+2.53.0
+
 
 
 
