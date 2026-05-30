@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-258062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257311-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eP0bKJ8jG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258062-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:27 +0200
+	id 4HoKGIEaG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257311-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24F4761086C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C4A60F201
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2892930BF7F8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55FEA308259E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC7634A3C4;
-	Sat, 30 May 2026 17:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1ADC32D42B;
+	Sat, 30 May 2026 17:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8EoBuG9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQ3jiLmv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB8823392B;
-	Sat, 30 May 2026 17:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD7D32B11D;
+	Sat, 30 May 2026 17:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163093; cv=none; b=VUNU1GIYNydOCo3JNSxmjStoR68xaFimsqWzCXCSf54kYw095TJEWgF7XuBMCgZbMScjzlwCv8c6/vPXfuNC+fWiRz8bT1813tkswztYy7WOb1+8/FUeQzJWh6uWk8srpgufW1TdNlEJX4FXa11jmSz5udoXds6wXwiWlSW8Srk=
+	t=1780160566; cv=none; b=HySom90f1s3jRmtOVRgmMrxjq7pSW+JqmyzIg3mL5dAyN5DIVEaXak/pFXQx9LfHeyf7t52VLEDd62ZCH/GSGlSEoDS04O747+DJbogUgTxEpWbEzRri1JHnw2Uy96Wqe6J6Ud0KMGhl/x4g7xRrPT9y8xh27E1qdgYdw3CBPEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163093; c=relaxed/simple;
-	bh=YpZgZJxZFrvyr2hoqqQFdF8+d6ByAd3N8Dc7HHYA/iI=;
+	s=arc-20240116; t=1780160566; c=relaxed/simple;
+	bh=IsjciT669728mxkxB5y+2h4rJwsXVB0TLKDlZz5Djms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bA1nOA9GBz2+Qw4+3zvsa2HdJPLsXWRyihVPAx2RJCZSinnhwA9aR44aUYdph4cFL1542xD4RnY+UnBtjw87/a+kDAlvfpPF679/nnF8VoPORhWUsBtPkUlM/ek2pxttDTrFYX6Qft7hADJoWs224lv34WmL/g6VsKcCxrN1f9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8EoBuG9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1F21F00893;
-	Sat, 30 May 2026 17:44:51 +0000 (UTC)
+	 MIME-Version; b=k2MEE66ND2ZdA9ao9exolhLQOtHSu4C7f7eCyM6BGULsX8vOuE3ttVyI9kIugRB3DQ3UtGmSU4EFL4Q1fUqjyXzog8ghrICpJuY+j9yJfjPnWT3k3sH6Jdr9pzjkRMxj9a86OjrjM11QwTko3Mg3mxxxhBgTy/x5QfCQcm4MkVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQ3jiLmv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132271F00893;
+	Sat, 30 May 2026 17:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163092;
-	bh=pt2/lySzc5z3Z0ouZLGCsW1ngVpSqH5W0xXZflO9pwM=;
+	s=korg; t=1780160565;
+	bh=Oj5N1N7A67FxJ1/fI5rcmFExgb1PujRxse7PymWaQWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r8EoBuG9eSbtlXm/3BTK1iZXnOg605iwB82PLzerwjsP+ZPyp0WrD/iamVpQ/yu9e
-	 etRrobWXCYEd9HM+ZqvntCBTsf77Ab6tWtkZHi+XW+Jy7CmQoe/GfGP9Bg0SEtWiTj
-	 b4Q0LDcp350P+Q26MEhuKBbrFYr5kjkZqv7otIlM=
+	b=gQ3jiLmvzrCXvQxw+NYV27v1/BLC9ZYqTzKusZ/2Rs0FzRHB25KkKIDKbACITjl8V
+	 MSihZxLkVtAAzOxMs9tGpUZUSWYXN0UecvjnpJzl6crr/lptI7np3O5/WGY1SOzFOi
+	 2LDdgJtUn9E/hCR88M6lTec13xiXRhwfPbIk+RRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	"stable@vger.kernel.org, Johannes Berg" <johannes.berg@intel.com>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
-	Robert Garcia <rob_garcia@163.com>
-Subject: [PATCH 5.15 152/776] SUNRPC: lock against ->sock changing during sysfs read
-Date: Sat, 30 May 2026 17:57:46 +0200
-Message-ID: <20260530160244.388216418@linuxfoundation.org>
+	Joseph Salisbury <joseph.salisbury@oracle.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 343/969] ASoC: fsl_easrc: fix comment typo
+Date: Sat, 30 May 2026 17:57:47 +0200
+Message-ID: <20260530160309.838305982@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,96 +65,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,Netapp.com,163.com];
-	TAGGED_FROM(0.00)[bounces-258062-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257311-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,netapp.com:email]
-X-Rspamd-Queue-Id: 24F4761086C
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D7C4A60F201
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Joseph Salisbury <joseph.salisbury@oracle.com>
 
-[ Upstream commit b49ea673e119f59c71645e2f65b3ccad857c90ee ]
+commit 804dce6c73fdfa44184ee4e8b09abad7f5da408f upstream.
 
-->sock can be set to NULL asynchronously unless ->recv_mutex is held.
-So it is important to hold that mutex.  Otherwise a sysfs read can
-trigger an oops.
-Commit 17f09d3f619a ("SUNRPC: Check if the xprt is connected before
-handling sysfs reads") appears to attempt to fix this problem, but it
-only narrows the race window.
+The file contains a spelling error in a source comment (funciton).
 
-Fixes: 17f09d3f619a ("SUNRPC: Check if the xprt is connected before handling sysfs reads")
-Fixes: a8482488a7d6 ("SUNRPC query transport's source port")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Typos in comments reduce readability and make text searches less reliable
+for developers and maintainers.
+
+Replace 'funciton' with 'function' in the affected comment. This is a
+comment-only cleanup and does not change behavior.
+
+Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joseph Salisbury <joseph.salisbury@oracle.com>
+Link: https://patch.msgid.link/20260316180545.144032-1-joseph.salisbury@oracle.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/sysfs.c    |    5 ++++-
- net/sunrpc/xprtsock.c |    7 ++++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_easrc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sunrpc/sysfs.c
-+++ b/net/sunrpc/sysfs.c
-@@ -113,11 +113,14 @@ static ssize_t rpc_sysfs_xprt_srcaddr_sh
- 		return 0;
- 
- 	sock = container_of(xprt, struct sock_xprt, xprt);
--	if (kernel_getsockname(sock->sock, (struct sockaddr *)&saddr) < 0)
-+	mutex_lock(&sock->recv_mutex);
-+	if (sock->sock == NULL ||
-+	    kernel_getsockname(sock->sock, (struct sockaddr *)&saddr) < 0)
- 		goto out;
- 
- 	ret = sprintf(buf, "%pISc\n", &saddr);
- out:
-+	mutex_unlock(&sock->recv_mutex);
- 	xprt_put(xprt);
- 	return ret + 1;
- }
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -1680,7 +1680,12 @@ static int xs_get_srcport(struct sock_xp
- unsigned short get_srcport(struct rpc_xprt *xprt)
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -1286,7 +1286,7 @@ static int fsl_easrc_request_context(int
+ /*
+  * Release the context
+  *
+- * This funciton is mainly doing the revert thing in request context
++ * This function is mainly doing the revert thing in request context
+  */
+ static void fsl_easrc_release_context(struct fsl_asrc_pair *ctx)
  {
- 	struct sock_xprt *sock = container_of(xprt, struct sock_xprt, xprt);
--	return xs_sock_getport(sock->sock);
-+	unsigned short ret = 0;
-+	mutex_lock(&sock->recv_mutex);
-+	if (sock->sock)
-+		ret = xs_sock_getport(sock->sock);
-+	mutex_unlock(&sock->recv_mutex);
-+	return ret;
- }
- EXPORT_SYMBOL(get_srcport);
- 
 
 
 
