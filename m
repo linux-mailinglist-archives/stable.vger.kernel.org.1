@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-258224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LRpJ1QmG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258224-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:00 +0200
+	id yD2DFy4cG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21CC0610DEE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49CB460F652
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D319C30EFE3E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:53:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 395B23073A3B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC7A341AC7;
-	Sat, 30 May 2026 17:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996AB33F8A2;
+	Sat, 30 May 2026 17:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ignmIJ95"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bW43MAAL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5E53546EA;
-	Sat, 30 May 2026 17:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7768BEEA8;
+	Sat, 30 May 2026 17:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163630; cv=none; b=FtUZLuHbCSkbIafzYXAMk4VbKnBfd8Q4tWPT7SWFcqbgVEL7Kdj8u/5akHpSeoVwlp4Ha63nfBUvwt0TFkEEb+haNv+gP0bFVJLCpztKQ/3p2VKzfIxE/Dja0dfo9CfJtnRF2jCNncOViB/vCinxYy85oeERbR/S8QBu5xEwOBc=
+	t=1780161135; cv=none; b=Rpfe8/+Q3KfpSQuWoGMy+jpe6bimDlg/Ej3DqZ9R0/MqWIoy/Ug9t2AAhUIwxYUe2rMFhCNqYDlenElLPKRviWFwDR3Ig6otXdJziSzOb1aQMYQr7HJiyYMgUCGUSJsCruwj5dTm0OGZdhGL0b2/qfzsvTFUixLg2s1IF8CWYaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163630; c=relaxed/simple;
-	bh=zdactaKkGPsVtwQmLkiJ9irclVf45qPOrO06Sx1102I=;
+	s=arc-20240116; t=1780161135; c=relaxed/simple;
+	bh=J7Uc9VCXrsUrKyP5K1PjmMFFTCiwvB+jxVfvxRFPxMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z536ru7+f12BZ0NosZAA9xH/7riPrbEcC5xsqY7RWUWnKV2INM6qCDJi8PxrGMHr4jqHcz96d1GG7RAtTXQaEbBRaC3hVMk9JqSRh1KTKIMrDEPwkhRUMfVdxifGZV/J8sx3xyzwts31jXPzA4PgB/OpeZHgBEnEWHOysO7qiF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ignmIJ95; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFBCD1F00893;
-	Sat, 30 May 2026 17:53:48 +0000 (UTC)
+	 MIME-Version; b=q3S9Xekwpyyy9jIt2Rhc8Yh27zGVk2EvS0Jas5F+bmSCL9dlZV3h/OhfTImuZpmC2PMt57N57OF25JjvfMK13Yj3PH1BsXDPL+pxZ7i7XSUYbYK+xKE3sZS2kcU4+X1pBQpys0HSfpH1ywyA52PRbkR3/Iu1v9ILwnme4sERYNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bW43MAAL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0EEA1F00893;
+	Sat, 30 May 2026 17:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163629;
-	bh=zyHckycZYotkqZYn7qde3nEzIEIIp+/6sshEDTY5vsE=;
+	s=korg; t=1780161134;
+	bh=2uclVLpK0SVNw6y3bdv+Arj76+a/HQTCYzWcE9bH3xA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ignmIJ950pyQDR+ZepbDgmxMq6A4iRSkp9cyRH+H3hVzLaZ+KbfnqYCRwh4uvIcHA
-	 lsBSJr1ciU5CMozHWgFheEDpGpCfnTbf8JH5ubsRZGu2vY+Jl/ZgeS6G44nqf1TnLt
-	 9RI25lj9a/L84Efe1MVYPXfWrgC0Othhk9Ssq880=
+	b=bW43MAALj0rhqI40S+oKCu7AuFsK3bU7Kl0113bZNqsihQcnf1TSd5w8JC2PiF9Ce
+	 FxcJoiAfDXl0lA+a5v6PYBZ8RrSN7cQBnoclkBVpvmdeXcJtcyAbMEBWtVQcFs160t
+	 bAp3F31k6bjVa3lZ/MiTEuvcQ1p3PTYknErdxujM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.15 315/776] hwmon: (ltc2992) Fix u32 overflow in power read path
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 505/969] drm/sun4i: Fix resource leaks
 Date: Sat, 30 May 2026 18:00:29 +0200
-Message-ID: <20260530160248.711087494@linuxfoundation.org>
+Message-ID: <20260530160314.277511269@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +65,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258224-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_FROM(0.00)[bounces-257478-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 21CC0610DEE
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 49CB460F652
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-commit 2da0c1fd01dbd6b22844e8676585153dfc660cbe upstream.
+[ Upstream commit 127367ad2e0f4870de60c6d719ae82ecf68d674c ]
 
-ltc2992_get_power() computes the divisor for mul_u64_u32_div() as
-r_sense_uohm * 1000. This multiplication overflows u32 when
-r_sense_uohm exceeds about 4.29 ohms (4294967 micro-ohms), producing
-a truncated divisor and an incorrect power reading.
+Three clocks are not being released in devm_regmap_init_mmio() error
+path.
 
-Cancel the factor of 1000 from both the numerator
-(VADC_UV_LSB * IADC_NANOV_LSB = 312500000) and the divisor
-(r_sense_uohm * 1000), giving (VADC_UV_LSB / 1000) * IADC_NANOV_LSB
-= 312500 as the numerator and plain r_sense_uohm as the divisor.
-The cancellation is exact because LTC2992_VADC_UV_LSB (25000) is
-divisible by 1000.
+Add proper goto and set ret to the error code.
 
-This is the read-path counterpart of the write-path fix applied in
-the preceding patch.
-
-Fixes: b0bd407e94b03 ("hwmon: (ltc2992) Add support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260416215904.101969-3-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8270249fbeaf0 ("drm/sun4i: backend: Create regmap after access is possible")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20260226163836.10335-1-ethantidmore06@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/ltc2992.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/sun4i/sun4i_backend.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/hwmon/ltc2992.c
-+++ b/drivers/hwmon/ltc2992.c
-@@ -628,8 +628,10 @@ static int ltc2992_get_power(struct ltc2
- 	if (reg_val < 0)
- 		return reg_val;
+diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
+index d4fd621e33158..7cabf677ab1fc 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_backend.c
++++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
+@@ -878,7 +878,8 @@ static int sun4i_backend_bind(struct device *dev, struct device *master,
+ 						     &sun4i_backend_regmap_config);
+ 	if (IS_ERR(backend->engine.regs)) {
+ 		dev_err(dev, "Couldn't create the backend regmap\n");
+-		return PTR_ERR(backend->engine.regs);
++		ret = PTR_ERR(backend->engine.regs);
++		goto err_disable_ram_clk;
+ 	}
  
--	*val = mul_u64_u32_div(reg_val, LTC2992_VADC_UV_LSB * LTC2992_IADC_NANOV_LSB,
--			       st->r_sense_uohm[channel] * 1000);
-+	*val = mul_u64_u32_div(reg_val,
-+			       LTC2992_VADC_UV_LSB / 1000 *
-+			       LTC2992_IADC_NANOV_LSB,
-+			       st->r_sense_uohm[channel]);
- 
- 	return 0;
- }
+ 	list_add_tail(&backend->engine.list, &drv->engine_list);
+-- 
+2.53.0
+
 
 
 
