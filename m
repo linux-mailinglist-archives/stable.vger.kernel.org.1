@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-258653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +OcqE+EpG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258653-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:09 +0200
+	id AGGkHbIzG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03FDD6116FA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B602612EC2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 79CD0300D743
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E0DE30D2FF2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDAD274FDC;
-	Sat, 30 May 2026 18:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F5F1D63E4;
+	Sat, 30 May 2026 18:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPRggBk8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsYuyio/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45492233D9E;
-	Sat, 30 May 2026 18:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8F22367DF;
+	Sat, 30 May 2026 18:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165077; cv=none; b=un99EVS6ae2HZvpWAeZc5dsjGmJEYoZs9on6CgLKmp9L0BsSovjnjJTfVfcblL+K/8RFEMUl8IS059b611MbuxRB9JWDAJ/DcN6bFJZ10OSUrU0IHKuC8sbpecCIFFndBunElypI6QyjhMqhS2dGu+LVYXtZOiiK6O0lhi7nMtM=
+	t=1780167171; cv=none; b=JdhFadZ/lnN+OASo/dzmVLy8X5yYVubN9RlwmXcz4C5mp2p/oFrGsrAyxy6DIXKHp0fLQwyl0F7HLV0MF92SB0cqaW0t2QKU/Nvmmuzt1UE+A0iLWqhjP2it7NplXLm5txHXJu3RGMmSkR7Jvq9sdwJ1FzUBgvYAPAPw4TQvkQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165077; c=relaxed/simple;
-	bh=yAVb8fz5NyEJ66S+fc7IW6yHA1wsKWVWnGlGfv2+66U=;
+	s=arc-20240116; t=1780167171; c=relaxed/simple;
+	bh=zEGL+DyYwle50YuZB0f+00c01aeR512oJTvoXXYiuNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PPNmjM8021FBGZMffEPkH3j7W72+mEoKte4RLilAsNVew3OVtax+7al57tkTDpdWmHAypeO8zaSCLfhj4gvAWE0TZ1jeYT0mk1MLqr0dKh2Ek0eXF+FGCsO5Yp8fQYx8RHUw+R0M8BLJXJHOs7sl0zH+bUGUxC6wKTzgLZNI9QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPRggBk8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8896D1F00893;
-	Sat, 30 May 2026 18:17:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XmlvpQ8SNEHXT8SdQ0pFlPlE2hc66MUP6RCVur+kA3gGVUJNGlGG9hkCu5cS8yVfloSwZYREkTwTJGSnmvl9ymbtJHmXYHtzM33Ptz3VpAvyOR94tckYIDTKLn2jOsNvd1NI5dD+0BmdCN4+Uc1AXLedDeOMpj8pCQ7eDMYFx/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsYuyio/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EE01F00893;
+	Sat, 30 May 2026 18:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165076;
-	bh=+fB9sseWT7NvFHsyM6+5gARUYEPLZPkQeDkko0/mKDk=;
+	s=korg; t=1780167168;
+	bh=BiMgWx7ZkCETncGHImSDCe3UdeL4g9QBsQvZCZ2MVS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iPRggBk88Zo9EY9bKw3Socyqt6szcN+CwQZnI7mb6FzEJAgk7QUJRJwngUmbN1SRH
-	 pN/+ouaZlA27pYLfX8wy3BYYc+XwfazDserO43vj2lBekXBlL/33neKJQKLCvKgq0f
-	 Hj4yABjuXun+faw/uVFzEst5YR8KhJzdLpQzYMUE=
+	b=VsYuyio/UJWBAxkp2/IaEgq8PEVyijiTfkm8WnG7y4lTYS9q9FAjMeWu9drDegdVF
+	 2nNNnHa2PkdEgYuI464glGk3WmsmY4BHDjYozkQ6qNe4U6CS2BUkh5FyKTLgX+OqS/
+	 b34iNOc6NFXeOGcx+LYBbzOGk/E4a7BU1Rh7FK5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Andreas Haarmann-Thiemann <eitschman@nebelreich.de>,
+	Linus Walleij <linusw@kernel.org>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 743/776] netfilter: bridge: eb_tables: close module init race
+Subject: [PATCH 5.10 576/589] net: ethernet: cortina: Drop half-assembled SKB
 Date: Sat, 30 May 2026 18:07:37 +0200
-Message-ID: <20260530160258.985097787@linuxfoundation.org>
+Message-ID: <20260530160239.746969162@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +65,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-259267-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258653-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 03FDD6116FA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nebelreich.de:email]
+X-Rspamd-Queue-Id: 5B602612EC2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Andreas Haarmann-Thiemann <eitschman@nebelreich.de>
 
-[ Upstream commit 27414ff1b287ea9a2a11675149ec28e05539f3cc ]
+[ Upstream commit b266bacba796ff5c4dcd2ae2fc08aacf7ab39153 ]
 
-sashiko reports for unrelated patch:
- Does the core ebtables initialization in ebtables.c suffer from a similar race?
- Once nf_register_sockopt() completes, the sockopts are exposed globally.
+In gmac_rx() (drivers/net/ethernet/cortina/gemini.c), when
+gmac_get_queue_page() returns NULL for the second page of a multi-page
+fragment, the driver logs an error and continues — but does not free the
+partially assembled skb that was being assembled via napi_build_skb() /
+napi_get_frags().
 
-sockopt has to be registered last, just like in ip/ip6/arptables.
+Free the in-progress partially assembled skb via napi_free_frags()
+and increase the number of dropped frames appropriately
+and assign the skb pointer NULL to make sure it is not lingering
+around, matching the pattern already used elsewhere in the driver.
 
-Fixes: 5b53951cfc85 ("netfilter: ebtables: use net_generic infra")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Signed-off-by: Andreas Haarmann-Thiemann <eitschman@nebelreich.de>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Link: https://patch.msgid.link/20260505-gemini-ethernet-fix-v2-1-997c31d06079@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/netfilter/ebtables.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index 5390b25cdb45e..9374a3207a276 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -2582,19 +2582,20 @@ static int __init ebtables_init(void)
- {
- 	int ret;
- 
--	ret = xt_register_target(&ebt_standard_target);
-+	ret = register_pernet_subsys(&ebt_net_ops);
- 	if (ret < 0)
- 		return ret;
--	ret = nf_register_sockopt(&ebt_sockopts);
-+
-+	ret = xt_register_target(&ebt_standard_target);
- 	if (ret < 0) {
--		xt_unregister_target(&ebt_standard_target);
-+		unregister_pernet_subsys(&ebt_net_ops);
- 		return ret;
- 	}
- 
--	ret = register_pernet_subsys(&ebt_net_ops);
-+	ret = nf_register_sockopt(&ebt_sockopts);
- 	if (ret < 0) {
--		nf_unregister_sockopt(&ebt_sockopts);
- 		xt_unregister_target(&ebt_standard_target);
-+		unregister_pernet_subsys(&ebt_net_ops);
- 		return ret;
- 	}
- 
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index ee51367df6488..642ef6b3eebaf 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -1463,6 +1463,11 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 		gpage = gmac_get_queue_page(geth, port, mapping + PAGE_SIZE);
+ 		if (!gpage) {
+ 			dev_err(geth->dev, "could not find mapping\n");
++			if (skb) {
++				napi_free_frags(&port->napi);
++				port->stats.rx_dropped++;
++				skb = NULL;
++			}
+ 			continue;
+ 		}
+ 		page = gpage->page;
 -- 
 2.53.0
 
