@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-259113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNZbD4swG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259113-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:35 +0200
+	id MHNXNwEoG2rM/ggAu9opvQ
+	(envelope-from <stable+bounces-258505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E821C612783
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9445D611249
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2CF7E30A1A74
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9F7BB301CD84
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D13029E11A;
-	Sat, 30 May 2026 18:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA433AB26B;
+	Sat, 30 May 2026 18:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7RglXqY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2jPsQN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF9C331A56;
-	Sat, 30 May 2026 18:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059ED352027;
+	Sat, 30 May 2026 18:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166655; cv=none; b=EZYPzmxwtTUZ5y9RzfV28Y8irfLIYg9Bg/hl5Dj36r5qL8NNzGKl6eZs50hB30FZwuCq7DYti3mh0gTYjJUgjmDkcevYB25pTcdihhOKrgiMztARBJCWjXzKA+alSXZ4pAomFwm3eC8+lJosovep7zyWeC/9w/7qyARjl6oI6NM=
+	t=1780164576; cv=none; b=Z3/CI7IfD0ApGQcDcfr8aWc95FaGsmbjZxu3orMlknNEg9By9VmVga+qKELQQ1zF8hqFRNMXZ12A/X9lev8hbItyIBb7DYROBvr8O+Rm9q1U6SeQ5qdg8x0OWcFznRHxXiH+LsSJrTovySQmbqN8om4k/WQWUCsvNQHOK40mD5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166655; c=relaxed/simple;
-	bh=1uwBHMUZX1atc0k07/vKzHQgjLBhCpImE0Yvrq6NeKI=;
+	s=arc-20240116; t=1780164576; c=relaxed/simple;
+	bh=ZKK3F09yfSWmPtOd4ldtn53QhvKgIuXjTMkWYBLr144=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fx3VLlJCTo5rEMzVWIE+zFlDkA+/tSMlMiPCxcRy+Yqcal6dgmp2hE2a8QSXWiZ9MJlRBcg/ooTXwGYV7vBV2QKCVYQ+QNHw5arsw+J3zV7pLhNupCUOThIF3t2m2lwWPMip5p9563Xw2+48ziF4Vq8dC4iT9vJhzY3Gwb3rcNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7RglXqY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9759F1F00893;
-	Sat, 30 May 2026 18:44:13 +0000 (UTC)
+	 MIME-Version; b=o9SzZYo/y/7L86Ym8NJIRmDNKncH/Hcbhnnt++JOu6X1gmqoi4RcT6pYSKR3n5Oys9FoLCDw3zGBiQUt5CYvE0xIIJoN8T00GXYT+zbNFFKEC92cyOksGeIhR5c0LMYAoY84WzzrnZre2m1LLd48uFKOr9SbE/SEBjvMeeq9rxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2jPsQN0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E511F00893;
+	Sat, 30 May 2026 18:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166654;
-	bh=cWZcOdDAr1ycCL6RTnBzFRKbrHG8pXL14dMU0jnlcZg=;
+	s=korg; t=1780164574;
+	bh=6Nmhb5ugOixm76Kmg1xvhOfLCyvLHdACjolDLvEndEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U7RglXqYJk+DsJJujbjYPYgQ/o+6/oAkiJ9qDyg6yqqL07nOFEQTJzjmcYDP2v8CD
-	 thyCiO33m9SF+ADIZuw7sw4xlX5TJc33DlWs11xafb08spp7IkrlNtR7ry/q//rA5w
-	 9s3zdj7SE1Y+nAsJsCMHyZOhN+1HAaB88pyb8NAo=
+	b=B2jPsQN0MwtkP3H9H8NH11Bhm+O045a5RwbE7D5UwFmmDxTqYBJQ5pT19O5FY3LSC
+	 7M41h1PCGLXT51viqViJ5Kw2IckhgO6kq+CGyJ/j6P6WF6SnSTk5cGPk+enr2zClZB
+	 euO7d2Bu+ZfrHPR4vqArDCZrFdkxkqKk7oTe/AMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Sukholitko <boris.sukholitko@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Myeonghun Pak <mhun512@gmail.com>,
+	Ijae Kim <ae878000@gmail.com>,
+	Taegyu Kim <tmk5904@psu.edu>,
+	Yuho Choi <dbgh9129@gmail.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 429/589] flow_dissector: Add number of vlan tags dissector
+Subject: [PATCH 5.15 596/776] fbdev: offb: fix PCI device reference leak on probe failure
 Date: Sat, 30 May 2026 18:05:10 +0200
-Message-ID: <20260530160235.997771473@linuxfoundation.org>
+Message-ID: <20260530160255.445766387@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,148 +71,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258505-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,psu.edu,gmx.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259113-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,davemloft.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E821C612783
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9445D611249
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Sukholitko <boris.sukholitko@broadcom.com>
+From: Yuho Choi <dbgh9129@gmail.com>
 
-[ Upstream commit 34951fcf26c59e78ae430fba1fce7c08b1871249 ]
+[ Upstream commit 869b93ba04088713596e68453c1146f52f713290 ]
 
-Our customers in the fiber telecom world have network configurations
-where they would like to control their traffic according to the number
-of tags appearing in the packet.
+offb_init_nodriver() gets a referenced PCI device with pci_get_device().
+If pci_enable_device() fails, the function returns without dropping that
+reference.
 
-For example, TR247 GPON conformance test suite specification mostly
-talks about untagged, single, double tagged packets and gives lax
-guidelines on the vlan protocol vs. number of vlan tags.
+Release the PCI device reference before returning from the
+pci_enable_device() failure path.
 
-This is different from the common IT networks where 802.1Q and 802.1ad
-protocols are usually describe single and double tagged packet. GPON
-configurations that we work with have arbitrary mix the above protocols
-and number of vlan tags in the packet.
-
-The goal is to make the following TC commands possible:
-
-tc filter add dev eth1 ingress flower \
-  num_of_vlans 1 vlan_prio 5 action drop
-
->From our logs, we have redirect rules such that:
-
-tc filter add dev $GPON ingress flower num_of_vlans $N \
-     action mirred egress redirect dev $DEV
-
-where N can range from 0 to 3 and $DEV is the function of $N.
-
-Also there are rules setting skb mark based on the number of vlans:
-
-tc filter add dev $GPON ingress flower num_of_vlans $N vlan_prio \
-    $P action skbedit mark $M
-
-This new dissector allows extracting the number of vlan tags existing in
-the packet.
-
-Signed-off-by: Boris Sukholitko <boris.sukholitko@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: cc1ff87bce1c ("pppoe: drop PFC frames")
+Fixes: 5bda8f7b5468 ("video: fbdev: offb: Call pci_enable_device() before using the PCI VGA device")
+Co-developed-by: Myeonghun Pak <mhun512@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Co-developed-by: Taegyu Kim <tmk5904@psu.edu>
+Signed-off-by: Taegyu Kim <tmk5904@psu.edu>
+Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/flow_dissector.h |  9 +++++++++
- net/core/flow_dissector.c    | 20 ++++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ drivers/video/fbdev/offb.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/flow_dissector.h b/include/net/flow_dissector.h
-index 4036063d047c2..6826309631cb3 100644
---- a/include/net/flow_dissector.h
-+++ b/include/net/flow_dissector.h
-@@ -269,6 +269,14 @@ struct flow_dissector_key_hash {
- 	u32 hash;
- };
- 
-+/**
-+ * struct flow_dissector_key_num_of_vlans:
-+ * @num_of_vlans: num_of_vlans value
-+ */
-+struct flow_dissector_key_num_of_vlans {
-+	u8 num_of_vlans;
-+};
+diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
+index 4501e848a36f2..593aad22248e6 100644
+--- a/drivers/video/fbdev/offb.c
++++ b/drivers/video/fbdev/offb.c
+@@ -643,8 +643,13 @@ static void __init offb_init_nodriver(struct device_node *dp, int no_real_node)
+ 			vid = be32_to_cpup(vidp);
+ 			did = be32_to_cpup(didp);
+ 			pdev = pci_get_device(vid, did, NULL);
+-			if (!pdev || pci_enable_device(pdev))
++			if (!pdev)
+ 				return;
 +
- enum flow_dissector_key_id {
- 	FLOW_DISSECTOR_KEY_CONTROL, /* struct flow_dissector_key_control */
- 	FLOW_DISSECTOR_KEY_BASIC, /* struct flow_dissector_key_basic */
-@@ -298,6 +306,7 @@ enum flow_dissector_key_id {
- 	FLOW_DISSECTOR_KEY_META, /* struct flow_dissector_key_meta */
- 	FLOW_DISSECTOR_KEY_CT, /* struct flow_dissector_key_ct */
- 	FLOW_DISSECTOR_KEY_HASH, /* struct flow_dissector_key_hash */
-+	FLOW_DISSECTOR_KEY_NUM_OF_VLANS, /* struct flow_dissector_key_num_of_vlans */
- 
- 	FLOW_DISSECTOR_KEY_MAX,
- };
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index 8fe8b3afacd04..146f24c53c660 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -1032,6 +1032,16 @@ bool __skb_flow_dissect(const struct net *net,
- 		memcpy(key_eth_addrs, &eth->h_dest, sizeof(*key_eth_addrs));
- 	}
- 
-+	if (dissector_uses_key(flow_dissector,
-+			       FLOW_DISSECTOR_KEY_NUM_OF_VLANS)) {
-+		struct flow_dissector_key_num_of_vlans *key_num_of_vlans;
-+
-+		key_num_of_vlans = skb_flow_dissector_target(flow_dissector,
-+							     FLOW_DISSECTOR_KEY_NUM_OF_VLANS,
-+							     target_container);
-+		key_num_of_vlans->num_of_vlans = 0;
-+	}
-+
- proto_again:
- 	fdret = FLOW_DISSECT_RET_CONTINUE;
- 
-@@ -1155,6 +1165,16 @@ bool __skb_flow_dissect(const struct net *net,
- 			nhoff += sizeof(*vlan);
++			if (pci_enable_device(pdev)) {
++				pci_dev_put(pdev);
++				return;
++			}
  		}
- 
-+		if (dissector_uses_key(flow_dissector,
-+				       FLOW_DISSECTOR_KEY_NUM_OF_VLANS)) {
-+			struct flow_dissector_key_num_of_vlans *key_nvs;
-+
-+			key_nvs = skb_flow_dissector_target(flow_dissector,
-+							    FLOW_DISSECTOR_KEY_NUM_OF_VLANS,
-+							    target_container);
-+			key_nvs->num_of_vlans++;
-+		}
-+
- 		if (dissector_vlan == FLOW_DISSECTOR_KEY_MAX) {
- 			dissector_vlan = FLOW_DISSECTOR_KEY_VLAN;
- 		} else if (dissector_vlan == FLOW_DISSECTOR_KEY_VLAN) {
+ #endif
+ 		/* kludge for valkyrie */
 -- 
 2.53.0
 
