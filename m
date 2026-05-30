@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-257808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259189-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOhfLMceG2q4/QgAu9opvQ
-	(envelope-from <stable+bounces-257808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:47 +0200
+	id 2BEjEe0xG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259189-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 529A960FD3E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B4D612AD3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9E7BD3005982
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:30:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A216430B2368
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17793341AB8;
-	Sat, 30 May 2026 17:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6502343BE;
+	Sat, 30 May 2026 18:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Flq8OWQH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZqAgRsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E20430676E;
-	Sat, 30 May 2026 17:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AD1137750;
+	Sat, 30 May 2026 18:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162243; cv=none; b=HdqcAouVDfo5F+9z0mHcf1tMPQjpifZB8G1KWiqcP4ryTRQv/N4PUetnBt0gkh/u6A2WQmS8Mnt+eIAC0/KaU22XwJNUVQiVObW7Gw34c12oOuQ2egvQyhN6ZZc7uoeEeRVW7mAJKTIb6FcXaxAlMHvm3+4xCU4iowDk1U7xW1o=
+	t=1780166905; cv=none; b=XAmyOXIg4dG9JPZ4beEBM1fxGSEJfyI6yOx8LhQXGpwgmiNhQu+fM7aj+uJOjOmjuISITOrdkfYYfud6QCqvGdVCSzMpfEP6GYSGsf2fU24gfLjuHcq+Upj9fZ9pJbFvQfv4l/qEinNMwhc9Z+cvSwRDvd1Dc7OLxAp0tp1ATCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162243; c=relaxed/simple;
-	bh=m8V1rQtLJWQSpdj+POmonJGon6YdPFsO+22ylF/klB0=;
+	s=arc-20240116; t=1780166905; c=relaxed/simple;
+	bh=JvJnreCv/txBqyxPLnd0lT0uDgm+iju/bhLVWNUj3xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FGdGbLhSUV8cNQoQR+uamb5+VxTsPa7JrRyKPjHd3IV5nnrdbWYUobkawICBCaKRNrav7juSfB7JOnbb/obTu+wfanvO0zhCBwVh9jC5QnhGM0AS1g+xG4lmF/DMp1jgDy0HYMquQ1mD1ETaZS+O4qwzpOK9N0eSgC6b1Y/Rnps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Flq8OWQH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD0C1F00898;
-	Sat, 30 May 2026 17:30:38 +0000 (UTC)
+	 MIME-Version; b=MhusioLS5ASaz3EZIZNmtpy7kZt/69j2DigB1FwgyF5O9e0OC8mVKOPyYsLbtTxwt0eTM/K6mI0ktOL7AcOl3eO919q44XeJxARzecaw3umJ+ZYec0QEcnFImgA/B3p0BwE2w0Cw4UYF9x6YkfZgBoSQIam2iAV0W+tHT+IgTS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZqAgRsA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B201F00893;
+	Sat, 30 May 2026 18:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162238;
-	bh=Ysk59t3bVLD0+QMSKUYmZCKUi3+SoiL50NxjAInGXYY=;
+	s=korg; t=1780166904;
+	bh=NrooeZmy7kCfcfdUgUq0nkkWeIbith0LbWlTh146sxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Flq8OWQHlkPU8gXuLaeQ+HjZjItAz2OzWpnTeHx0ht6+spn45k+hNyQMt0HosdIJC
-	 XG7vsJsnpRa2g8Q9GEglGHQBGYBxmtBmiE3YH1ihgxg6ExLTFts9PrcC8Ck2pi+m+F
-	 ITyRmVe2Vo11ezdP9S+35YgetnGqkmeYLoYJOF1s=
+	b=WZqAgRsA+dxkeKPcTHi9rOkvd+mEJcl8WAuDMa2KuYmNXgTiPy2GDNktQNGTN1ZBE
+	 lfJDHJzn0Daa5z6pRI7tC4IgqDH+LxtlyTlvRLh+BBOY6q1a8HcA3lyXjBO6raW6Oh
+	 5ACq4MfdSTz0jBlCrJMuFccqBr4PioQr3oGRre9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Benjamin Block <bblock@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 833/969] s390/debug: Reject zero-length input before trimming a newline
-Date: Sat, 30 May 2026 18:05:57 +0200
-Message-ID: <20260530160323.648931128@linuxfoundation.org>
+Subject: [PATCH 5.10 477/589] net: sched: choke: remove unused variables in struct choke_sched_data
+Date: Sat, 30 May 2026 18:05:58 +0200
+Message-ID: <20260530160237.179624802@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,78 +68,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257808-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259189-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 529A960FD3E
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email]
+X-Rspamd-Queue-Id: D2B4D612AD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit c366a7b5ed7564e41345c380285bd3f6cb98971b ]
+[ Upstream commit 38af11717b386560f10f2891350933fc5200aeea ]
 
-debug_get_user_string() copies the userspace buffer into a newly
-allocated NUL-terminated buffer and then unconditionally looks at
-buffer[user_len - 1] to strip a trailing newline.
+The variable "other" in the struct choke_sched_data is not used. Remove it.
 
-A zero-length write reaches this helper unchanged, so the newline trim
-reads before the start of the allocated buffer.
-
-Reject empty writes before accessing the last input byte.
-
-Fixes: 66a464dbc8e0 ("[PATCH] s390: debug feature changes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
-Tested-by: Vasily Gorbik <gor@linux.ibm.com>
-Link: https://lore.kernel.org/r/20260417073530.96002-1-pengpeng@iscas.ac.cn
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: d3aeb889dcbd ("net/sched: sch_choke: annotate data-races in choke_dump_stats()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/debug.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/sched/sch_choke.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/s390/kernel/debug.c b/arch/s390/kernel/debug.c
-index 9a94979ee4de5..65302aea77e85 100644
---- a/arch/s390/kernel/debug.c
-+++ b/arch/s390/kernel/debug.c
-@@ -1268,6 +1268,9 @@ static inline char *debug_get_user_string(const char __user *user_buf,
- {
- 	char *buffer;
+diff --git a/net/sched/sch_choke.c b/net/sched/sch_choke.c
+index f3805bee995bb..e38cf34287018 100644
+--- a/net/sched/sch_choke.c
++++ b/net/sched/sch_choke.c
+@@ -60,7 +60,6 @@ struct choke_sched_data {
+ 		u32	forced_drop;	/* Forced drops, qavg > max_thresh */
+ 		u32	forced_mark;	/* Forced marks, qavg > max_thresh */
+ 		u32	pdrop;          /* Drops due to queue limits */
+-		u32	other;          /* Drops due to drop() calls */
+ 		u32	matched;	/* Drops to flow match */
+ 	} stats;
  
-+	if (!user_len)
-+		return ERR_PTR(-EINVAL);
-+
- 	buffer = kmalloc(user_len + 1, GFP_KERNEL);
- 	if (!buffer)
- 		return ERR_PTR(-ENOMEM);
+@@ -464,7 +463,6 @@ static int choke_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 		.early	= q->stats.prob_drop + q->stats.forced_drop,
+ 		.marked	= q->stats.prob_mark + q->stats.forced_mark,
+ 		.pdrop	= q->stats.pdrop,
+-		.other	= q->stats.other,
+ 		.matched = q->stats.matched,
+ 	};
+ 
 -- 
 2.53.0
 
