@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257934-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBpfNMsXG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257155-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:59 +0200
+	id AO+1MgsiG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257934-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7536E60EBA3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA9561049B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 896D13028B72
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:53:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8DACD30E9402
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51CA332EA7;
-	Sat, 30 May 2026 16:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D793AD520;
+	Sat, 30 May 2026 17:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wE3E2B+L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJdonCaW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB2632D42B;
-	Sat, 30 May 2026 16:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C135D34D38B;
+	Sat, 30 May 2026 17:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159996; cv=none; b=qr96x6P74BXIHqJxgyKPkFvxtpC5vNB3hTiMUDWPY9bKA/pzfeek21JBr8BepH9mmSO+Bo7aefZb4ZDaX6u0FTpE3RqFs+qQ6f6Di9K3JO6zn5ek31zkIJ/i7G0Kg9t1+0X8e5yh3Y7eDLQenPTh6MushLtxet2taMfbO/hhMg8=
+	t=1780162662; cv=none; b=botb/iij6Z2af6AQClhQ7++TuiPGRfJpmk8+0gU72sDfzarHgk2Xorn0LInNVsAQq9VQdmsF99803LikYR7CjvO6MNSsqn0zPNlWoEAB8pMWHFIMyrHng3FdFUFYd9FIdu+hAwgF5yrfeUJb4e+8u4VE8wsrWCuB1nUjlb1XaiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159996; c=relaxed/simple;
-	bh=87ltzbE/Fbo6faUmaptC3ORlUGMjEWDdHy8hIrhvzrU=;
+	s=arc-20240116; t=1780162662; c=relaxed/simple;
+	bh=AdbhM/AqASSHNjP0l81RTi6Zw92OzJFwPTm86mr59BA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWGuVeBjh/qKOprUlA42Raoi8wtiKC33y4Cj5nETlU+0d/pfzH6jIMy7ij3ysY1V0P162n6uDXKjT4Y+Bj5Hb6yjn2fv1/ecc217HP32BE/2F92fpHML5eko/GmzEn0838GnaK6gcy65C9ZNj363nHf4kK7f2C7xpzysUsUFQRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wE3E2B+L; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8201F00893;
-	Sat, 30 May 2026 16:53:13 +0000 (UTC)
+	 MIME-Version; b=azCWYdKJST5d1YAeZNvlXq5iRAh6PaRrDMV+g/9E1mk8AE73Wd/mTWfmTEaTGLpZiCZlarMf1CBy2htO+hrpYDV3S2r/etZKLWoeS0xfcYiPcJgZDOVrALIEpQV2KwB515o4cusWH3mkPuxlZMBlrPrhNQapXNAo1WESFax9USA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJdonCaW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6F21F00898;
+	Sat, 30 May 2026 17:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159995;
-	bh=gGaTSpwopVWnU0qpS/zQQ7A/oOBjQ/XF0FQ1+iMuL4g=;
+	s=korg; t=1780162660;
+	bh=U4EbAIxRZT4e8FuXJwIJCCXaOH+WlxhvsdjAUnvh270=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wE3E2B+L8uTN0PUCsyHJEP5g2lZhoAyHcf58wi/I/ZqfiuN59KDffkHKzL4WDRB1n
-	 XYnG5K8GCp1QnmhSzm5XL4QgABCvT1EMOz0ce03YhvDiGDFODrNZcPS5yqdsO04nok
-	 +78Zj59NHN7eCZTBNqY/RtQcf1U0vVPFsfyJbh+U=
+	b=yJdonCaWUEYHwvvw2QTBc3Z61HBzfiPpo0a3Q9Oxe5fATf5t6ZxsyNM7n89rvHPsD
+	 RHj6iruka8n12wIml+6JiAngEux/+khrI/vNw06gnSl4qdkeGev9EUaBEQsY1wZk8I
+	 Zzja6eyD73nNzvdtag/6rQbJLShteeAkL3fFc9C4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Marek Vasut <marex@nabladev.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 216/969] net: ks8851: Reinstate disabling of BHs around IRQ handler
-Date: Sat, 30 May 2026 17:55:40 +0200
-Message-ID: <20260530160306.420185042@linuxfoundation.org>
+	Yiqi Sun <sunyiqixm@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 027/776] ipv4: icmp: fix null-ptr-deref in icmp_build_probe()
+Date: Sat, 30 May 2026 17:55:41 +0200
+Message-ID: <20260530160240.970723560@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,499 +69,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257155-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257934-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7536E60EBA3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 3EA9561049B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@nabladev.com>
+From: Yiqi Sun <sunyiqixm@gmail.com>
 
-commit 5c9fcac3c872224316714d0d8914d9af16c76a6d upstream.
+[ Upstream commit fde29fd9349327acc50d19a0b5f3d5a6c964dfd8 ]
 
-If the driver executes ks8851_irq() AND a TX packet has been sent, then
-the driver enables TX queue via netif_wake_queue() which schedules TX
-softirq to queue packets for this device.
+ipv6_stub->ipv6_dev_find() may return ERR_PTR(-EAFNOSUPPORT) when the
+IPv6 stack is not active (CONFIG_IPV6=m and not loaded), and passing
+this error pointer to dev_hold() will cause a kernel crash with
+null-ptr-deref.
 
-If CONFIG_PREEMPT_RT=y is set AND a packet has also been received by
-the MAC, then ks8851_rx_pkts() calls netdev_alloc_skb_ip_align() to
-allocate SKBs for the received packets. If netdev_alloc_skb_ip_align()
-is called with BH enabled, then local_bh_enable() at the end of
-netdev_alloc_skb_ip_align() will trigger the pending softirq processing,
-which may ultimately call the .xmit callback ks8851_start_xmit_par().
-The ks8851_start_xmit_par() will try to lock struct ks8851_net_par
-.lock spinlock, which is already locked by ks8851_irq() from which
-ks8851_start_xmit_par() was called. This leads to a deadlock, which
-is reported by the kernel, including a trace listed below.
+Instead, silently discard the request. RFC 8335 does not appear to
+define a specific response for the case where an IPv6 interface
+identifier is syntactically valid but the implementation cannot perform
+the lookup at runtime, and silently dropping the request may safer than
+misreporting "No Such Interface".
 
-If CONFIG_PREEMPT_RT is not set, then since commit 0913ec336a6c0
-("net: ks8851: Fix deadlock with the SPI chip variant") the deadlock
-can also be triggered without received packet in the RX FIFO. The
-pending softirqs will be processed on return from
-spin_unlock_bh(&ks->statelock) in ks8851_irq(), which triggers the
-deadlock as well.
-
-Fix the problem by disabling BH around critical sections, including the
-IRQ handler, thus preventing the net_tx_action() softirq from triggering
-during these critical sections. The net_tx_action() softirq is triggered
-once BH are re-enabled and at the end of the IRQ handler, once all the
-other IRQ handler actions have been completed.
-
- __schedule from schedule_rtlock+0x1c/0x34
- schedule_rtlock from rtlock_slowlock_locked+0x548/0x904
- rtlock_slowlock_locked from rt_spin_lock+0x60/0x9c
- rt_spin_lock from ks8851_start_xmit_par+0x74/0x1a8
- ks8851_start_xmit_par from netdev_start_xmit+0x20/0x44
- netdev_start_xmit from dev_hard_start_xmit+0xd0/0x188
- dev_hard_start_xmit from sch_direct_xmit+0xb8/0x25c
- sch_direct_xmit from __qdisc_run+0x1f8/0x4ec
- __qdisc_run from qdisc_run+0x1c/0x28
- qdisc_run from net_tx_action+0x1f0/0x268
- net_tx_action from handle_softirqs+0x1a4/0x270
- handle_softirqs from __local_bh_enable_ip+0xcc/0xe0
- __local_bh_enable_ip from __alloc_skb+0xd8/0x128
- __alloc_skb from __netdev_alloc_skb+0x3c/0x19c
- __netdev_alloc_skb from ks8851_irq+0x388/0x4d4
- ks8851_irq from irq_thread_fn+0x24/0x64
- irq_thread_fn from irq_thread+0x178/0x28c
- irq_thread from kthread+0x12c/0x138
- kthread from ret_from_fork+0x14/0x28
-
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Fixes: e0863634bf9f ("net: ks8851: Queue RX packets in IRQ handler instead of disabling BHs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Marek Vasut <marex@nabladev.com>
-Link: https://patch.msgid.link/20260415231020.455298-1-marex@nabladev.com
+Fixes: d329ea5bd884 ("icmp: add response to RFC 8335 PROBE messages")
+Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
+Link: https://patch.msgid.link/20260402070419.2291578-1-sunyiqixm@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/micrel/ks8851.h        |    6 --
- drivers/net/ethernet/micrel/ks8851_common.c |   64 +++++++++++-----------------
- drivers/net/ethernet/micrel/ks8851_par.c    |   15 ++----
- drivers/net/ethernet/micrel/ks8851_spi.c    |   11 +---
- 4 files changed, 38 insertions(+), 58 deletions(-)
+ net/ipv4/icmp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/net/ethernet/micrel/ks8851.h
-+++ b/drivers/net/ethernet/micrel/ks8851.h
-@@ -408,10 +408,8 @@ struct ks8851_net {
- 	struct gpio_desc	*gpio;
- 	struct mii_bus		*mii_bus;
- 
--	void			(*lock)(struct ks8851_net *ks,
--					unsigned long *flags);
--	void			(*unlock)(struct ks8851_net *ks,
--					  unsigned long *flags);
-+	void			(*lock)(struct ks8851_net *ks);
-+	void			(*unlock)(struct ks8851_net *ks);
- 	unsigned int		(*rdreg16)(struct ks8851_net *ks,
- 					   unsigned int reg);
- 	void			(*wrreg16)(struct ks8851_net *ks,
---- a/drivers/net/ethernet/micrel/ks8851_common.c
-+++ b/drivers/net/ethernet/micrel/ks8851_common.c
-@@ -28,25 +28,23 @@
- /**
-  * ks8851_lock - register access lock
-  * @ks: The chip state
-- * @flags: Spinlock flags
-  *
-  * Claim chip register access lock
-  */
--static void ks8851_lock(struct ks8851_net *ks, unsigned long *flags)
-+static void ks8851_lock(struct ks8851_net *ks)
- {
--	ks->lock(ks, flags);
-+	ks->lock(ks);
- }
- 
- /**
-  * ks8851_unlock - register access unlock
-  * @ks: The chip state
-- * @flags: Spinlock flags
-  *
-  * Release chip register access lock
-  */
--static void ks8851_unlock(struct ks8851_net *ks, unsigned long *flags)
-+static void ks8851_unlock(struct ks8851_net *ks)
- {
--	ks->unlock(ks, flags);
-+	ks->unlock(ks);
- }
- 
- /**
-@@ -129,11 +127,10 @@ static void ks8851_set_powermode(struct
- static int ks8851_write_mac_addr(struct net_device *dev)
- {
- 	struct ks8851_net *ks = netdev_priv(dev);
--	unsigned long flags;
- 	u16 val;
- 	int i;
- 
--	ks8851_lock(ks, &flags);
-+	ks8851_lock(ks);
- 
- 	/*
- 	 * Wake up chip in case it was powered off when stopped; otherwise,
-@@ -149,7 +146,7 @@ static int ks8851_write_mac_addr(struct
- 	if (!netif_running(dev))
- 		ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
- 
--	ks8851_unlock(ks, &flags);
-+	ks8851_unlock(ks);
- 
- 	return 0;
- }
-@@ -163,12 +160,11 @@ static int ks8851_write_mac_addr(struct
- static void ks8851_read_mac_addr(struct net_device *dev)
- {
- 	struct ks8851_net *ks = netdev_priv(dev);
--	unsigned long flags;
- 	u8 addr[ETH_ALEN];
- 	u16 reg;
- 	int i;
- 
--	ks8851_lock(ks, &flags);
-+	ks8851_lock(ks);
- 
- 	for (i = 0; i < ETH_ALEN; i += 2) {
- 		reg = ks8851_rdreg16(ks, KS_MAR(i));
-@@ -177,7 +173,7 @@ static void ks8851_read_mac_addr(struct
- 	}
- 	eth_hw_addr_set(dev, addr);
- 
--	ks8851_unlock(ks, &flags);
-+	ks8851_unlock(ks);
- }
- 
- /**
-@@ -328,11 +324,10 @@ static irqreturn_t ks8851_irq(int irq, v
- {
- 	struct ks8851_net *ks = _ks;
- 	struct sk_buff_head rxq;
--	unsigned long flags;
- 	unsigned int status;
- 	struct sk_buff *skb;
- 
--	ks8851_lock(ks, &flags);
-+	ks8851_lock(ks);
- 
- 	status = ks8851_rdreg16(ks, KS_ISR);
- 	ks8851_wrreg16(ks, KS_ISR, status);
-@@ -389,7 +384,7 @@ static irqreturn_t ks8851_irq(int irq, v
- 		ks8851_wrreg16(ks, KS_RXCR1, rxc->rxcr1);
- 	}
- 
--	ks8851_unlock(ks, &flags);
-+	ks8851_unlock(ks);
- 
- 	if (status & IRQ_LCI)
- 		mii_check_link(&ks->mii);
-@@ -421,7 +416,6 @@ static void ks8851_flush_tx_work(struct
- static int ks8851_net_open(struct net_device *dev)
- {
- 	struct ks8851_net *ks = netdev_priv(dev);
--	unsigned long flags;
- 	int ret;
- 
- 	ret = request_threaded_irq(dev->irq, NULL, ks8851_irq,
-@@ -434,7 +428,7 @@ static int ks8851_net_open(struct net_de
- 
- 	/* lock the card, even if we may not actually be doing anything
- 	 * else at the moment */
--	ks8851_lock(ks, &flags);
-+	ks8851_lock(ks);
- 
- 	netif_dbg(ks, ifup, ks->netdev, "opening\n");
- 
-@@ -487,7 +481,7 @@ static int ks8851_net_open(struct net_de
- 
- 	netif_dbg(ks, ifup, ks->netdev, "network device up\n");
- 
--	ks8851_unlock(ks, &flags);
-+	ks8851_unlock(ks);
- 	mii_check_link(&ks->mii);
- 	return 0;
- }
-@@ -503,23 +497,22 @@ static int ks8851_net_open(struct net_de
- static int ks8851_net_stop(struct net_device *dev)
- {
- 	struct ks8851_net *ks = netdev_priv(dev);
--	unsigned long flags;
- 
- 	netif_info(ks, ifdown, dev, "shutting down\n");
- 
- 	netif_stop_queue(dev);
- 
--	ks8851_lock(ks, &flags);
-+	ks8851_lock(ks);
- 	/* turn off the IRQs and ack any outstanding */
- 	ks8851_wrreg16(ks, KS_IER, 0x0000);
- 	ks8851_wrreg16(ks, KS_ISR, 0xffff);
--	ks8851_unlock(ks, &flags);
-+	ks8851_unlock(ks);
- 
- 	/* stop any outstanding work */
- 	ks8851_flush_tx_work(ks);
- 	flush_work(&ks->rxctrl_work);
- 
--	ks8851_lock(ks, &flags);
-+	ks8851_lock(ks);
- 	/* shutdown RX process */
- 	ks8851_wrreg16(ks, KS_RXCR1, 0x0000);
- 
-@@ -528,7 +521,7 @@ static int ks8851_net_stop(struct net_de
- 
- 	/* set powermode to soft power down to save power */
- 	ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
--	ks8851_unlock(ks, &flags);
-+	ks8851_unlock(ks);
- 
- 	/* ensure any queued tx buffers are dumped */
- 	while (!skb_queue_empty(&ks->txq)) {
-@@ -582,14 +575,13 @@ static netdev_tx_t ks8851_start_xmit(str
- static void ks8851_rxctrl_work(struct work_struct *work)
- {
- 	struct ks8851_net *ks = container_of(work, struct ks8851_net, rxctrl_work);
--	unsigned long flags;
- 
--	ks8851_lock(ks, &flags);
-+	ks8851_lock(ks);
- 
- 	/* need to shutdown RXQ before modifying filter parameters */
- 	ks8851_wrreg16(ks, KS_RXCR1, 0x00);
- 
--	ks8851_unlock(ks, &flags);
-+	ks8851_unlock(ks);
- }
- 
- static void ks8851_set_rx_mode(struct net_device *dev)
-@@ -796,7 +788,6 @@ static int ks8851_set_eeprom(struct net_
- {
- 	struct ks8851_net *ks = netdev_priv(dev);
- 	int offset = ee->offset;
--	unsigned long flags;
- 	int len = ee->len;
- 	u16 tmp;
- 
-@@ -810,7 +801,7 @@ static int ks8851_set_eeprom(struct net_
- 	if (!(ks->rc_ccr & CCR_EEPROM))
- 		return -ENOENT;
- 
--	ks8851_lock(ks, &flags);
-+	ks8851_lock(ks);
- 
- 	ks8851_eeprom_claim(ks);
- 
-@@ -833,7 +824,7 @@ static int ks8851_set_eeprom(struct net_
- 	eeprom_93cx6_wren(&ks->eeprom, false);
- 
- 	ks8851_eeprom_release(ks);
--	ks8851_unlock(ks, &flags);
-+	ks8851_unlock(ks);
- 
- 	return 0;
- }
-@@ -843,7 +834,6 @@ static int ks8851_get_eeprom(struct net_
- {
- 	struct ks8851_net *ks = netdev_priv(dev);
- 	int offset = ee->offset;
--	unsigned long flags;
- 	int len = ee->len;
- 
- 	/* must be 2 byte aligned */
-@@ -853,7 +843,7 @@ static int ks8851_get_eeprom(struct net_
- 	if (!(ks->rc_ccr & CCR_EEPROM))
- 		return -ENOENT;
- 
--	ks8851_lock(ks, &flags);
-+	ks8851_lock(ks);
- 
- 	ks8851_eeprom_claim(ks);
- 
-@@ -861,7 +851,7 @@ static int ks8851_get_eeprom(struct net_
- 
- 	eeprom_93cx6_multiread(&ks->eeprom, offset/2, (__le16 *)data, len/2);
- 	ks8851_eeprom_release(ks);
--	ks8851_unlock(ks, &flags);
-+	ks8851_unlock(ks);
- 
- 	return 0;
- }
-@@ -920,7 +910,6 @@ static int ks8851_phy_reg(int reg)
- static int ks8851_phy_read_common(struct net_device *dev, int phy_addr, int reg)
- {
- 	struct ks8851_net *ks = netdev_priv(dev);
--	unsigned long flags;
- 	int result;
- 	int ksreg;
- 
-@@ -928,9 +917,9 @@ static int ks8851_phy_read_common(struct
- 	if (ksreg < 0)
- 		return ksreg;
- 
--	ks8851_lock(ks, &flags);
-+	ks8851_lock(ks);
- 	result = ks8851_rdreg16(ks, ksreg);
--	ks8851_unlock(ks, &flags);
-+	ks8851_unlock(ks);
- 
- 	return result;
- }
-@@ -965,14 +954,13 @@ static void ks8851_phy_write(struct net_
- 			     int phy, int reg, int value)
- {
- 	struct ks8851_net *ks = netdev_priv(dev);
--	unsigned long flags;
- 	int ksreg;
- 
- 	ksreg = ks8851_phy_reg(reg);
- 	if (ksreg >= 0) {
--		ks8851_lock(ks, &flags);
-+		ks8851_lock(ks);
- 		ks8851_wrreg16(ks, ksreg, value);
--		ks8851_unlock(ks, &flags);
-+		ks8851_unlock(ks);
- 	}
- }
- 
---- a/drivers/net/ethernet/micrel/ks8851_par.c
-+++ b/drivers/net/ethernet/micrel/ks8851_par.c
-@@ -55,29 +55,27 @@ struct ks8851_net_par {
- /**
-  * ks8851_lock_par - register access lock
-  * @ks: The chip state
-- * @flags: Spinlock flags
-  *
-  * Claim chip register access lock
-  */
--static void ks8851_lock_par(struct ks8851_net *ks, unsigned long *flags)
-+static void ks8851_lock_par(struct ks8851_net *ks)
- {
- 	struct ks8851_net_par *ksp = to_ks8851_par(ks);
- 
--	spin_lock_irqsave(&ksp->lock, *flags);
-+	spin_lock_bh(&ksp->lock);
- }
- 
- /**
-  * ks8851_unlock_par - register access unlock
-  * @ks: The chip state
-- * @flags: Spinlock flags
-  *
-  * Release chip register access lock
-  */
--static void ks8851_unlock_par(struct ks8851_net *ks, unsigned long *flags)
-+static void ks8851_unlock_par(struct ks8851_net *ks)
- {
- 	struct ks8851_net_par *ksp = to_ks8851_par(ks);
- 
--	spin_unlock_irqrestore(&ksp->lock, *flags);
-+	spin_unlock_bh(&ksp->lock);
- }
- 
- /**
-@@ -233,7 +231,6 @@ static netdev_tx_t ks8851_start_xmit_par
- {
- 	struct ks8851_net *ks = netdev_priv(dev);
- 	netdev_tx_t ret = NETDEV_TX_OK;
--	unsigned long flags;
- 	unsigned int txqcr;
- 	u16 txmir;
- 	int err;
-@@ -241,7 +238,7 @@ static netdev_tx_t ks8851_start_xmit_par
- 	netif_dbg(ks, tx_queued, ks->netdev,
- 		  "%s: skb %p, %d@%p\n", __func__, skb, skb->len, skb->data);
- 
--	ks8851_lock_par(ks, &flags);
-+	ks8851_lock_par(ks);
- 
- 	txmir = ks8851_rdreg16_par(ks, KS_TXMIR) & 0x1fff;
- 
-@@ -262,7 +259,7 @@ static netdev_tx_t ks8851_start_xmit_par
- 		ret = NETDEV_TX_BUSY;
- 	}
- 
--	ks8851_unlock_par(ks, &flags);
-+	ks8851_unlock_par(ks);
- 
- 	return ret;
- }
---- a/drivers/net/ethernet/micrel/ks8851_spi.c
-+++ b/drivers/net/ethernet/micrel/ks8851_spi.c
-@@ -73,11 +73,10 @@ struct ks8851_net_spi {
- /**
-  * ks8851_lock_spi - register access lock
-  * @ks: The chip state
-- * @flags: Spinlock flags
-  *
-  * Claim chip register access lock
-  */
--static void ks8851_lock_spi(struct ks8851_net *ks, unsigned long *flags)
-+static void ks8851_lock_spi(struct ks8851_net *ks)
- {
- 	struct ks8851_net_spi *kss = to_ks8851_spi(ks);
- 
-@@ -87,11 +86,10 @@ static void ks8851_lock_spi(struct ks885
- /**
-  * ks8851_unlock_spi - register access unlock
-  * @ks: The chip state
-- * @flags: Spinlock flags
-  *
-  * Release chip register access lock
-  */
--static void ks8851_unlock_spi(struct ks8851_net *ks, unsigned long *flags)
-+static void ks8851_unlock_spi(struct ks8851_net *ks)
- {
- 	struct ks8851_net_spi *kss = to_ks8851_spi(ks);
- 
-@@ -311,7 +309,6 @@ static void ks8851_tx_work(struct work_s
- 	struct ks8851_net_spi *kss;
- 	unsigned short tx_space;
- 	struct ks8851_net *ks;
--	unsigned long flags;
- 	struct sk_buff *txb;
- 	bool last;
- 
-@@ -319,7 +316,7 @@ static void ks8851_tx_work(struct work_s
- 	ks = &kss->ks8851;
- 	last = skb_queue_empty(&ks->txq);
- 
--	ks8851_lock_spi(ks, &flags);
-+	ks8851_lock_spi(ks);
- 
- 	while (!last) {
- 		txb = skb_dequeue(&ks->txq);
-@@ -345,7 +342,7 @@ static void ks8851_tx_work(struct work_s
- 	ks->tx_space = tx_space;
- 	spin_unlock_bh(&ks->statelock);
- 
--	ks8851_unlock_spi(ks, &flags);
-+	ks8851_unlock_spi(ks);
- }
- 
- /**
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 0215e2510670a..4dae803fc7c71 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -1108,6 +1108,13 @@ bool icmp_build_probe(struct sk_buff *skb, struct icmphdr *icmphdr)
+ 			if (iio->ident.addr.ctype3_hdr.addrlen != sizeof(struct in6_addr))
+ 				goto send_mal_query;
+ 			dev = ipv6_stub->ipv6_dev_find(net, &iio->ident.addr.ip_addr.ipv6_addr, dev);
++			/*
++			 * If IPv6 identifier lookup is unavailable, silently
++			 * discard the request instead of misreporting NO_IF.
++			 */
++			if (IS_ERR(dev))
++				return false;
++
+ 			dev_hold(dev);
+ 			break;
+ #endif
+-- 
+2.53.0
+
 
 
 
