@@ -1,70 +1,60 @@
-Return-Path: <stable+bounces-258808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HMsO+wrG2ow/wgAu9opvQ
-	(envelope-from <stable+bounces-258808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:52 +0200
+	id 6HiVGJ0bG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FC4611C04
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75FD60F502
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 03C9A30074D7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:26:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C208830F59FF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4CB219303;
-	Sat, 30 May 2026 18:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABBF3AB476;
+	Sat, 30 May 2026 17:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnELswRg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+uEnWig"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C1621ADC7;
-	Sat, 30 May 2026 18:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9F53016E1;
+	Sat, 30 May 2026 17:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165607; cv=none; b=nlhEIqS7Qdm6ODeUtOfkkaxHaNGEcrb+aEmA2Rj7LEN8WdroBEijENbze1qdlB6Tklw8i5HshOBISxWGXm/ujqS0+fcZ6TqqOQctp/74OC+9rpoyfbLyRkk/QJ0YRz+yWcIdf188ik8vMLzcZR0HFXhf7D6HFGVtUZUp0t/jYdc=
+	t=1780160957; cv=none; b=leRgLdp6TpZ+1FX4rv242LaXxhsUCqxXMAeKumsU0ZxrYkDlqXvF2fnHhMwjSZkMjettbPsW4I/2+WCZ6abe8ZW5oFPuPaAU8eOELZpgCgnjs+u/uGPM9dRa0fYHt9LzO6MzJty3VuSJaoi7u1vkyKgFxNjWfp1uFT5knA1kdgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165607; c=relaxed/simple;
-	bh=pPcxCHRFwvrFmB1jEkOGQhb9bDWnXXmXiEGmWYq0vDM=;
+	s=arc-20240116; t=1780160957; c=relaxed/simple;
+	bh=F9acv8BSP8gbywjl9K+mCdz5HPMX8n0tOMROC4Vnq+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGmR9k8lK+J+/GFW3lAh6koud/gw0F5gN26OscMrmWxPKFR3Txz11XZQuPDTJTQqXnXKwly2y2DYIc+iCiNkETnp7bpkYHfF3u9dQH99p8Q4VPfQfCkmNLJJKle7B/R/KQcc4BmzaeH7zxOmqXjeKMyz9tmCgujX3PA7iHauSqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnELswRg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2BDA1F00893;
-	Sat, 30 May 2026 18:26:45 +0000 (UTC)
+	 MIME-Version; b=iXEru1x17/EFcVK/qN/8OdK0GMc1ATym3+sLaBsuH91GUQy8WlZptxdNj5/QaguBuUKvD5Uk7aAMtIUD0nJbu88YW9NzHANQ608nMbuafPP+8szi7p6O5JBWyyOlBJHo6WeSArFshU3dK7xYcowTF72DcOaVmne0Vam+JytJm64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+uEnWig; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341931F00893;
+	Sat, 30 May 2026 17:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165606;
-	bh=axJ8MMwajyFGWkQhmMWrWscppNYskTNittBB9x1s/NU=;
+	s=korg; t=1780160955;
+	bh=VAQrbbQlb6dwPlWC7jz7bxUI9TiuPQcRpu2mRs9pPlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mnELswRgB+F+x1VZUmGms8bw60OVgP+tt7kmqsTkk3wCiqSI5UwZ1FqcmHx57x0lu
-	 34vCnTrbnG8F5TK9UbGsovhCaiScVi9t17UICok4unGHwNtK8i+JIckQ7xk1p3OX4Q
-	 6iD7GU6OmfDs9ACiN8sOLPoDMLX93iC9LjFuALF8=
+	b=U+uEnWig/6dAmqoHuzKdaQNpF/CaLPBpUKeyxTpAgv0gx66Rn1FUvTEdIpjyvVMNU
+	 HlTHx1ZRlFh6erHqsJolE1mQcP+LqfuW9u8mhLF9WSBECLXUKVnZVWoqIlWDOdDxPO
+	 5eYkBse45ndf1/l3EXacHb23tOdu5Wv6ay9HKOoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Jie Wang <jiewang2024@lzu.edu.cn>,
-	Yang Yang <n05ec@lzu.edu.cn>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+619b9ef527f510a57cfc@syzkaller.appspotmail.com,
+	Sun Jian <sun.jian.kdev@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 127/589] rxrpc: only handle RESPONSE during service challenge
+Subject: [PATCH 6.1 484/969] bpf: reject short IPv4/IPv6 inputs in bpf_prog_test_run_skb
 Date: Sat, 30 May 2026 18:00:08 +0200
-Message-ID: <20260530160228.108164883@linuxfoundation.org>
+Message-ID: <20260530160313.668741239@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,124 +65,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258808-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257426-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,619b9ef527f510a57cfc];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lzu.edu.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,auristor.com:email]
-X-Rspamd-Queue-Id: F3FC4611C04
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C75FD60F502
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Jie <jiewang2024@lzu.edu.cn>
+From: Sun Jian <sun.jian.kdev@gmail.com>
 
-[ Upstream commit c43ffdcfdbb5567b1f143556df8a04b4eeea041c ]
+[ Upstream commit 12bec2bd4b76d81c5d3996bd14ec1b7f4d983747 ]
 
-Only process RESPONSE packets while the service connection is still in
-RXRPC_CONN_SERVICE_CHALLENGING. Check that state under state_lock before
-running response verification and security initialization, then use a local
-secured flag to decide whether to queue the secured-connection work after
-the state transition. This keeps duplicate or late RESPONSE packets from
-re-running the setup path and removes the unlocked post-transition state
-test.
+bpf_prog_test_run_skb() calls eth_type_trans() first and then uses
+skb->protocol to initialize sk family and address fields for the test
+run.
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Jie Wang <jiewang2024@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-21-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted to spin_lock_bh usage, 3-arg verify_response(), and direct rxrpc_call_is_secure() ]
+For IPv4 and IPv6 packets, it may access ip_hdr(skb) or ipv6_hdr(skb)
+even when the provided test input only contains an Ethernet header.
+
+Reject the input earlier if the Ethernet frame carries IPv4/IPv6
+EtherType but the L3 header is too short.
+
+Fold the IPv4/IPv6 header length checks into the existing protocol
+switch and return -EINVAL before accessing the network headers.
+
+Fixes: fa5cb548ced6 ("bpf: Setup socket family and addresses in bpf_prog_test_run_skb")
+Reported-by: syzbot+619b9ef527f510a57cfc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=619b9ef527f510a57cfc
+Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
+Link: https://lore.kernel.org/r/20260408034623.180320-2-sun.jian.kdev@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/conn_event.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ net/bpf/test_run.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -293,6 +293,7 @@ static int rxrpc_process_event(struct rx
- 			       u32 *_abort_code)
- {
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+	bool secured = false;
- 	__be32 wtmp;
- 	u32 abort_code;
- 	int loop, ret;
-@@ -337,6 +338,13 @@ static int rxrpc_process_event(struct rx
- 							    _abort_code);
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index 51259647c65fb..84d7a4dd8f051 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -1164,19 +1164,23 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog, const union bpf_attr *kattr,
  
- 	case RXRPC_PACKET_TYPE_RESPONSE:
-+		spin_lock_bh(&conn->state_lock);
-+		if (conn->state != RXRPC_CONN_SERVICE_CHALLENGING) {
-+			spin_unlock_bh(&conn->state_lock);
-+			return 0;
-+		}
-+		spin_unlock_bh(&conn->state_lock);
-+
- 		ret = conn->security->verify_response(conn, skb, _abort_code);
- 		if (ret < 0)
- 			return ret;
-@@ -351,17 +359,18 @@ static int rxrpc_process_event(struct rx
- 
- 		spin_lock(&conn->bundle->channel_lock);
- 		spin_lock_bh(&conn->state_lock);
--
- 		if (conn->state == RXRPC_CONN_SERVICE_CHALLENGING) {
- 			conn->state = RXRPC_CONN_SERVICE;
--			spin_unlock_bh(&conn->state_lock);
-+			secured = true;
-+		}
-+		spin_unlock_bh(&conn->state_lock);
-+
-+		if (secured) {
- 			for (loop = 0; loop < RXRPC_MAXCALLS; loop++)
- 				rxrpc_call_is_secure(
- 					rcu_dereference_protected(
- 						conn->channels[loop].call,
- 						lockdep_is_held(&conn->bundle->channel_lock)));
--		} else {
--			spin_unlock_bh(&conn->state_lock);
+ 	switch (skb->protocol) {
+ 	case htons(ETH_P_IP):
+-		sk->sk_family = AF_INET;
+-		if (sizeof(struct iphdr) <= skb_headlen(skb)) {
+-			sk->sk_rcv_saddr = ip_hdr(skb)->saddr;
+-			sk->sk_daddr = ip_hdr(skb)->daddr;
++		if (skb_headlen(skb) < sizeof(struct iphdr)) {
++			ret = -EINVAL;
++			goto out;
  		}
- 
- 		spin_unlock(&conn->bundle->channel_lock);
++		sk->sk_family = AF_INET;
++		sk->sk_rcv_saddr = ip_hdr(skb)->saddr;
++		sk->sk_daddr = ip_hdr(skb)->daddr;
+ 		break;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	case htons(ETH_P_IPV6):
+-		sk->sk_family = AF_INET6;
+-		if (sizeof(struct ipv6hdr) <= skb_headlen(skb)) {
+-			sk->sk_v6_rcv_saddr = ipv6_hdr(skb)->saddr;
+-			sk->sk_v6_daddr = ipv6_hdr(skb)->daddr;
++		if (skb_headlen(skb) < sizeof(struct ipv6hdr)) {
++			ret = -EINVAL;
++			goto out;
+ 		}
++		sk->sk_family = AF_INET6;
++		sk->sk_v6_rcv_saddr = ipv6_hdr(skb)->saddr;
++		sk->sk_v6_daddr = ipv6_hdr(skb)->daddr;
+ 		break;
+ #endif
+ 	default:
+-- 
+2.53.0
+
 
 
 
