@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-258228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNlHD3ckG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258228-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:03 +0200
+	id qK7ENGssG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33753610A53
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFC5611D13
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D0D62300EC6A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A00333035E4A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171AC3B8920;
-	Sat, 30 May 2026 17:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BEB349CCF;
+	Sat, 30 May 2026 18:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xuyMchvh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYSOfy9q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D410A349CCF;
-	Sat, 30 May 2026 17:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC5536EAB1;
+	Sat, 30 May 2026 18:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163643; cv=none; b=ROfBpHhpt+VbsdvhgNB2KGmatTS/88FVm9EC8Q3F0CSrCK/Q69tpWf4sfaFb85506OC8mgowmRjRsdEuDL7iZqfD3eE7akCnXSxyTig+YwL0OduBtEz7SdkX9RRcE9JTLygJZkUmtFXbsO4tJt0Qk7zuGmke1NpqW/3Wly6A6OQ=
+	t=1780165688; cv=none; b=TDjlQAOBriEFLR1cnB1MYNq1r9ZkEIBKn7AoG4MeaW+I0grrpxwNHjuIp/k+4aeCCkDmER0eMye1ejOlioVBtGmwsPM6sHzwOJKXrgznfj35PYAGTKZzmt18vNzle0tI59aniI+fuhRG/geozTezS1M1R7ElGuuL+EQx3sgjtb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163643; c=relaxed/simple;
-	bh=FttCIAEHYUYH2njEUltho5Tn3Ubca4J1shHTfYFnc8Y=;
+	s=arc-20240116; t=1780165688; c=relaxed/simple;
+	bh=VFXN+TUPY1HMseoc8CZgPbezcXnIgRU7seLeVozmgEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPuOlb3BTi1HtxHo8iDcoElp7jRjY2OtOXR6XAFjRkjalo9IY8Vek0/wb2WJa90a3RC8ug3n/VfqwGbwDsQYPDROdta5Cykd/j/yAz/id5/KAtlrPKoWSgd9pGNh+5EJbYWKDzmxLhoYRUfoks6S8R2mBqi/s9yUIjO3EWIuqDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xuyMchvh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230FE1F00893;
-	Sat, 30 May 2026 17:54:01 +0000 (UTC)
+	 MIME-Version; b=pqA/tT4roLuHWGBIgO8tp3ZRCel+AHvCMBvU3TkoiqVcItGi0xsY8IZg6n6oUFfQppPSvWcqI+NxyBrqKw2tyZeFnA9qpqjZmOxXo/5hok60HJlPFw/9GgKV+ZJEhtwuCZ7GsgcQK8jX34BIj0oyNJzxQAwkQ74MgdD9JiVRgm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYSOfy9q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE161F00893;
+	Sat, 30 May 2026 18:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163642;
-	bh=Co8S0ypteuN6wSv5gorbCQyqhg4YPJ83ECJTevBqhR0=;
+	s=korg; t=1780165687;
+	bh=BJeYoftvbwBY/4kTaNLbSx2jItbxOO+8cjIUMGb9a+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xuyMchvhqMLxEaQxbtqSen4TONCWDMns59ROvq74pjg9+iIa4dmmgqTLrgyF2kvKu
-	 3CaeLSWYg42GtEl4AmJVtZvs8ihHig5bm01xzJmuS+hiqYKAzYozQoYjHRHWUmmCdQ
-	 mG271yLcB1VDlGNcGu5mjWHKu4V1lweLTjB1XbbE=
+	b=jYSOfy9q58mam5wXbuahbT0949z+eBjcFjTLHTacn+/JD4D1Z7DL/Pi9Pbm7nqqlF
+	 fzAK7+YVMVEPCmcfVzekVoneLL2aRPssKryqbjtrs4R68apejNLNtoZ+vSbWzPRVpy
+	 KdV44QN2i1U7BG4Y8pNKToTqlTmpQmABj+8GAfUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian King <bjking1@linux.ibm.com>,
-	Shaik Abdulla <shaik.abdulla1@ibm.com>,
-	Naveed Ahmed <naveedaus@in.ibm.com>,
-	Mingming Cao <mmc@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 319/776] ibmveth: Disable GSO for packets with small MSS
-Date: Sat, 30 May 2026 18:00:33 +0200
-Message-ID: <20260530160248.813497028@linuxfoundation.org>
+	stable@kernel.org,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 153/589] net: caif: clear client service pointer on teardown
+Date: Sat, 30 May 2026 18:00:34 +0200
+Message-ID: <20260530160228.810167792@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,133 +72,97 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258832-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,redhat.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258228-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 33753610A53
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lzu.edu.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9AFC5611D13
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingming Cao <mmc@linux.ibm.com>
+From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-commit cc427d24ac6442ffdeafd157a63c7c5b73ed4de4 upstream.
+commit f7cf8ece8cee3c1ee361991470cdb1eb65ab02e8 upstream.
 
-Some physical adapters on Power systems do not support segmentation
-offload when the MSS is less than 224 bytes. Attempting to send such
-packets causes the adapter to freeze, stopping all traffic until
-manually reset.
+`caif_connect()` can tear down an existing client after remote shutdown by
+calling `caif_disconnect_client()` followed by `caif_free_client()`.
+`caif_free_client()` releases the service layer referenced by
+`adap_layer->dn`, but leaves that pointer stale.
 
-Implement ndo_features_check to disable GSO for packets with small MSS
-values. The network stack will perform software segmentation instead.
+When the socket is later destroyed, `caif_sock_destructor()` calls
+`caif_free_client()` again and dereferences the freed service pointer.
 
-The 224-byte minimum matches ibmvnic
-commit <f10b09ef687f> ("ibmvnic: Enforce stronger sanity checks
-on GSO packets")
-which uses the same physical adapters in SEA configurations.
+Clear the client/service links before releasing the service object so
+repeated teardown becomes harmless.
 
-The issue occurs specifically when the hardware attempts to perform
-segmentation (gso_segs > 1) with a small MSS. Single-segment GSO packets
-(gso_segs == 1) do not trigger the problematic LSO code path and are
-transmitted normally without segmentation.
-
-Add an ndo_features_check callback to disable GSO when MSS < 224 bytes.
-Also call vlan_features_check() to ensure proper handling of VLAN packets,
-particularly QinQ (802.1ad) configurations where the hardware parser may
-not support certain offload features.
-
-Validated using iptables to force small MSS values. Without the fix,
-the adapter freezes. With the fix, packets are segmented in software
-and transmission succeeds. Comprehensive regression testing completedd
-(MSS tests, performance, stability).
-
-Fixes: 8641dd85799f ("ibmveth: Add support for TSO")
-Cc: stable@vger.kernel.org
-Reviewed-by: Brian King <bjking1@linux.ibm.com>
-Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
-Tested-by: Naveed Ahmed <naveedaus@in.ibm.com>
-Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-Link: https://patch.msgid.link/20260424162917.65725-1-mmc@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 43e369210108 ("caif: Move refcount from service layer to sock and dev.")
+Cc: stable@kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Link: https://patch.msgid.link/9f3d37847c0037568aae698ca23cd47c6691acb0.1775897577.git.zcliangcn@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmveth.c |   22 ++++++++++++++++++++++
- drivers/net/ethernet/ibm/ibmveth.h |    1 +
- 2 files changed, 23 insertions(+)
+ net/caif/cfsrvl.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -1624,6 +1624,27 @@ static int ibmveth_set_mac_addr(struct n
- 	return 0;
+--- a/net/caif/cfsrvl.c
++++ b/net/caif/cfsrvl.c
+@@ -197,10 +197,20 @@ bool cfsrvl_phyid_match(struct cflayer *
+ 
+ void caif_free_client(struct cflayer *adap_layer)
+ {
++	struct cflayer *serv_layer;
+ 	struct cfsrvl *servl;
+-	if (adap_layer == NULL || adap_layer->dn == NULL)
++
++	if (!adap_layer)
++		return;
++
++	serv_layer = adap_layer->dn;
++	if (!serv_layer)
+ 		return;
+-	servl = container_obj(adap_layer->dn);
++
++	layer_set_dn(adap_layer, NULL);
++	layer_set_up(serv_layer, NULL);
++
++	servl = container_obj(serv_layer);
+ 	servl->release(&servl->layer);
  }
- 
-+static netdev_features_t ibmveth_features_check(struct sk_buff *skb,
-+						struct net_device *dev,
-+						netdev_features_t features)
-+{
-+	/* Some physical adapters do not support segmentation offload with
-+	 * MSS < 224. Disable GSO for such packets to avoid adapter freeze.
-+	 * Note: Single-segment packets (gso_segs == 1) don't need this check
-+	 * as they bypass the LSO path and are transmitted without segmentation.
-+	 */
-+	if (skb_is_gso(skb)) {
-+		if (skb_shinfo(skb)->gso_size < IBMVETH_MIN_LSO_MSS) {
-+			netdev_warn_once(dev,
-+					 "MSS %u too small for LSO, disabling GSO\n",
-+					 skb_shinfo(skb)->gso_size);
-+			features &= ~NETIF_F_GSO_MASK;
-+		}
-+	}
-+
-+	return vlan_features_check(skb, features);
-+}
-+
- static const struct net_device_ops ibmveth_netdev_ops = {
- 	.ndo_open		= ibmveth_open,
- 	.ndo_stop		= ibmveth_close,
-@@ -1635,6 +1656,7 @@ static const struct net_device_ops ibmve
- 	.ndo_set_features	= ibmveth_set_features,
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_set_mac_address    = ibmveth_set_mac_addr,
-+	.ndo_features_check	= ibmveth_features_check,
- #ifdef CONFIG_NET_POLL_CONTROLLER
- 	.ndo_poll_controller	= ibmveth_poll_controller,
- #endif
---- a/drivers/net/ethernet/ibm/ibmveth.h
-+++ b/drivers/net/ethernet/ibm/ibmveth.h
-@@ -36,6 +36,7 @@
- #define IBMVETH_ILLAN_IPV4_TCP_CSUM		0x0000000000000002UL
- #define IBMVETH_ILLAN_ACTIVE_TRUNK		0x0000000000000001UL
- 
-+#define IBMVETH_MIN_LSO_MSS		224	/* Minimum MSS for LSO */
- /* hcall macros */
- #define h_register_logical_lan(ua, buflst, rxq, fltlst, mac) \
-   plpar_hcall_norets(H_REGISTER_LOGICAL_LAN, ua, buflst, rxq, fltlst, mac)
+ EXPORT_SYMBOL(caif_free_client);
 
 
 
