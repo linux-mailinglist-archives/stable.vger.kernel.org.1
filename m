@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-257915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIVLNvohG2oN/ggAu9opvQ
-	(envelope-from <stable+bounces-257915-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:26 +0200
+	id 8OtpFM4MG2q/+ggAu9opvQ
+	(envelope-from <stable+bounces-256927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4978661046F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5059460E03C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CCAF308A5EC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:36:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1F54B3041AE2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27161349CCF;
-	Sat, 30 May 2026 17:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5F233F8B7;
+	Sat, 30 May 2026 16:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QndqrGs0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FSvgDH4i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1FD32B11F;
-	Sat, 30 May 2026 17:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E848334695
+	for <stable@vger.kernel.org>; Sat, 30 May 2026 16:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162597; cv=none; b=Q2+aziw9Ew043ctmM17EboJzmK6rZBgIr3A0VHJTsURJXuel/WKGByWpWU3mrDS9WNYFxgj4RuFxoTPlxDbVpA6PsN+IrqyghhCZHyMnPf5Qy/dcUIHGRB8TjqkQwuwUyLQ7q9Gj4D2EJUdxXlBSyFbu3v9Cs8Va4Vvm82jkFYo=
+	t=1780157365; cv=none; b=Rf6dKZC7QtAjZpUDlUHeQjsldpxzzlvkTPOizoOoySGPHwljStFXc3fqs8G68dEWujt9tv5Bf7ZObThKC18IYwP15qNieuGtrQyuBtK/GpHX12mZel1pfVj0/SgbVyYJXg5KHKYkdxGVTXqCocefIoiVaapLoMXIqUzpHBddHAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162597; c=relaxed/simple;
-	bh=Di6qQdAVIwmV26ZqOOV8TGmNfdsxSKbbkL2xk+FWZ5E=;
+	s=arc-20240116; t=1780157365; c=relaxed/simple;
+	bh=jB5Q8xfKTeyrR0xITQGC4yib3p3To1ECXidWijf1Thw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2Euqxcs/AZ+bWbsxzdh8WNsXAAL3qqydtPoCP0cJk5M2FDBsCOdT+AWPKIt/HE4b31wEkp2cWlSuGpPz0+CLD4N2SaFfMsmyGN05ViArxUChdaVu4UuwcsIs/cRlxZedVYjXlYwNXxMfAiVP6MclnakMoEva/Vu6tJZbrXk4qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QndqrGs0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3A41F00893;
-	Sat, 30 May 2026 17:36:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162596;
-	bh=7Lj9Es4c+r2Bz4L3dLXNw9Vw+8Ob2zrgZEe1S/EBIUk=;
+	 MIME-Version; b=nxiXCX9hNkHtZlor586WhdSTvRIJbhcMgkzubXSXUYLyvipCZHbPpJUugYgoX9TOi/N9Pfp3rfGAvCwBxNrXF3B/s+MB14WNoxbijXu4ANkCwCLk5X4efU0H6PACSc0uCd/PkINIaPtflX2EuGZ2BLAaee3L+zpYCR5Jj5EJw/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FSvgDH4i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B7A1F00893;
+	Sat, 30 May 2026 16:09:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780157364;
+	bh=VP2L3bBO+I9BYrX8bY7W1fTeUwLgvmNmr8sZwYLYG6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QndqrGs0tXXo6vi433WiTYbUO8YdBtMkyoLXKGkDLoNDX9EI1sH75a5pcz2+/6mey
-	 eitLEQkSPOA9halKiC9xXZeUHFAyVCpA2QhQ0V8lyoHpX+tbblxO/o+WINI+Gdx0jR
-	 G0Fu2pUZH1C1ouodA6tVL0tnU7IBxu/kgYxWxe/s=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	b=FSvgDH4iFnG3bugMG/Orr9KgDtwk4UTUkpuzKtN2c1ufqBJJXfyx9znjYhgO+hfKI
+	 HtvIp4HnxXZFGA5zXT8tnVMSl3bu9WzAJ7m4QK1iTtwb4AR93ql6O82b6vdqpupnwj
+	 qmiRwWIX5j8eJOGsJ77U4m2ZoSmWJ2Qf7VCXlyB370fIb6DjfWvIm5HBC9aj6q0ygt
+	 cfF7GJEwCfWNmTxA5eqD1VGAdaFmmsU6AB9CrxZ9RymSD03MQwnIteDRLFQ90bVmJ6
+	 MELiFEp2hjmASZITALk2yXGuTHhRt4yHn3/K+apoANutUqIckicjTO088VL2yQCL/K
+	 X7A+0W34uo5Yg==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Nicholas Carlini <npc@anthropic.com>,
-	David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 969/969] security/keys: fix missed RCU read section on lookup
-Date: Sat, 30 May 2026 18:08:13 +0200
-Message-ID: <20260530160327.539304944@linuxfoundation.org>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] af_unix: Cache state->msg in unix_stream_read_generic().
+Date: Sat, 30 May 2026 12:09:21 -0400
+Message-ID: <20260530160922.2835319-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+In-Reply-To: <2026052802-epidermis-spotter-7887@gregkh>
+References: <2026052802-epidermis-spotter-7887@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,84 +62,123 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257915-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256927-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[anthropic.com:email,namei.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,paul-moore.com:email]
-X-Rspamd-Queue-Id: 4978661046F
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5059460E03C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-------------------
+[ Upstream commit 8b77338eb2af74bb93986e4a8cfd86724168fe39 ]
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+In unix_stream_read_generic(), state->msg is fetched multiple times.
 
-commit 43a1e3744548e6fd85873e6fb43e293eb4010694 upstream.
+Let's cache it in a local variable.
 
-Nicholas Carlini reports that the keyring code calls assoc_array_find()
-in find_key_to_update() without holding the RCU read lock, while the
-assoc_array_gc() code really is designed around removing the node from
-the tree and then freeing it after an RCU grace-period.
-
-The regular key handling doesn't see this because holding the keyring
-semaphore hides any lifetime issues, but the persistent key handling
-uses a different model.
-
-Instead of extending the keyring locking, just do the simple RCU locking
-that the assoc_array was designed for.
-
-Reported-by: Nicholas Carlini <npc@anthropic.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Paul Moore <paul@paul-moore.com>
-Cc: James Morris James Morris <jmorris@namei.org>
-Cc: Serge E. Hallyn <serge@hallyn.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250702223606.1054680-6-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: be309f8eae8b ("af_unix: Fix UAF read of tail->len in unix_stream_data_wait()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/keys/keyring.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/unix/af_unix.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/security/keys/keyring.c b/security/keys/keyring.c
-index b39038f7dd31..5a9887d6b7be 100644
---- a/security/keys/keyring.c
-+++ b/security/keys/keyring.c
-@@ -1109,6 +1109,7 @@ key_ref_t find_key_to_update(key_ref_t keyring_ref,
- 	kenter("{%d},{%s,%s}",
- 	       keyring->serial, index_key->type->name, index_key->description);
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 87908ae74efb3..e434d38ec4d7c 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2712,20 +2712,21 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 				    bool freezable)
+ {
+-	struct scm_cookie scm;
++	int noblock = state->flags & MSG_DONTWAIT;
+ 	struct socket *sock = state->socket;
++	struct msghdr *msg = state->msg;
+ 	struct sock *sk = sock->sk;
+-	struct unix_sock *u = unix_sk(sk);
+-	int copied = 0;
++	size_t size = state->size;
+ 	int flags = state->flags;
+-	int noblock = flags & MSG_DONTWAIT;
+ 	bool check_creds = false;
+-	int target;
++	struct scm_cookie scm;
++	unsigned int last_len;
++	struct unix_sock *u;
++	int copied = 0;
+ 	int err = 0;
+ 	long timeo;
++	int target;
+ 	int skip;
+-	size_t size = state->size;
+-	unsigned int last_len;
  
-+	guard(rcu)();
- 	object = assoc_array_find(&keyring->keys, &keyring_assoc_array_ops,
- 				  index_key);
+ 	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)) {
+ 		err = -EINVAL;
+@@ -2745,6 +2746,8 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
  
+ 	memset(&scm, 0, sizeof(scm));
+ 
++	u = unix_sk(sk);
++
+ 	/* Lock the socket to prevent queue disordering
+ 	 * while sleeps in memcpy_tomsg
+ 	 */
+@@ -2841,10 +2844,10 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 		}
+ 
+ 		/* Copy address just once */
+-		if (state->msg && state->msg->msg_name) {
+-			DECLARE_SOCKADDR(struct sockaddr_un *, sunaddr,
+-					 state->msg->msg_name);
+-			unix_copy_addr(state->msg, skb->sk);
++		if (msg && msg->msg_name) {
++			DECLARE_SOCKADDR(struct sockaddr_un *, sunaddr, msg->msg_name);
++
++			unix_copy_addr(msg, skb->sk);
+ 			sunaddr = NULL;
+ 		}
+ 
+@@ -2917,8 +2920,8 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 	} while (size);
+ 
+ 	mutex_unlock(&u->iolock);
+-	if (state->msg)
+-		scm_recv_unix(sock, state->msg, &scm, flags);
++	if (msg)
++		scm_recv_unix(sock, msg, &scm, flags);
+ 	else
+ 		scm_destroy(&scm);
+ out:
 -- 
-2.54.0
-
-
+2.53.0
 
 
