@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-258777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258173-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOp6IwotG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:38 +0200
+	id sN+HC/0jG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258173-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC6F2611E43
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F33F61092C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7237301DCE1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 906A63009F11
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A89F25B0B3;
-	Sat, 30 May 2026 18:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E20346E55;
+	Sat, 30 May 2026 17:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wprved0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MH60mlZd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13841217704;
-	Sat, 30 May 2026 18:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF41304BCB;
+	Sat, 30 May 2026 17:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165504; cv=none; b=VTb6V7eqALdrWJPxLQo+MfYlEb+LyZci5/QpZhyQu9ymvrgADk8hJMCgSqxNme2Q4aJuyVBwZGNLFuNLGtMKORopM9SNy2kvwSnHBPS0HTA5PMk5oC0/bGOVyRZ54aPGgF4QINbGNn+ckANQ1g7hyUmX25zXoetouKfH9akSfJU=
+	t=1780163459; cv=none; b=t7rITrKGCh+v9CGWlAQSCXgIPgt7cnCegdxx5dSxL5PZQfaN11aHYCz11CzpNwh4SMmkAM5sU8vWxYfbo985dHLnElod2Uv0YwdMU2fxbpgSc98i5umCgknP68fEa/vsClB0lIcycxk3jhQ7r6QpMqIuSphqaySy23N8xNgmKfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165504; c=relaxed/simple;
-	bh=ff8+4n1TirikL69mbHo3/Su17Z7xWtNOIsqOJN+jDSI=;
+	s=arc-20240116; t=1780163459; c=relaxed/simple;
+	bh=l8Rp/2e12lOGXHS4eHNyJ/6usCVF3g2dG1mVHKxaxrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q0JtXorWxJSlN1BcZvY22z3yBRRP5Zdj6LFuFIfLq/l0O71weExTZKe8VijZT1tcZqj1mXwN5jahORWoI7BxKnmJeWeiINXbmZVoJTB5VpOuLYJy9AxXW5uBSuQEzePkVJ/DLxwIISPg2SBdig9X0qQ8o3fsrT/UlIJ3UJYQqhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wprved0O; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E281F00893;
-	Sat, 30 May 2026 18:25:02 +0000 (UTC)
+	 MIME-Version; b=Au3OwbwUCNYO97nnGW1yKdL2eYsvFsQZDiLMi/OJiZDs1wxtFV3/redH2p+kzuXLL74DNP+99v0Vc6IJnCLc4zkm8woNfTkCYWqUxVt98rve3hmyU5GQrumcqlC1HSu7s4Vxuvz+5pZhHWv+WONdzvNgm+vmhh+8byhGCpoLxgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MH60mlZd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F359F1F00893;
+	Sat, 30 May 2026 17:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165503;
-	bh=DMrsU6fom/RAGFJPwiyiStKRC4HFbd1yqWQTZyL3vK0=;
+	s=korg; t=1780163458;
+	bh=vIugvuZ7wokATplNFA9eT3pxzOCh2tRyn9YF4IMQUdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wprved0Od8SN2/4NtZIWZnoraBtzmUrxXou0lKr0QbjipC7DP2hsXngtJbyXNCK4t
-	 VpDFQL4WM4+0qOD+Vd1syrxX1CFpBrSA5aGuz07Aaa2L+FLZW3I0AcdXEiY0I12xj6
-	 yeuIp7zvILXAWpAU/Nq0DxwdNnlnAxul9C6o6nLQ=
+	b=MH60mlZdZjvlWkvqQsp/XW6ZNgCDHPK9zhxjtbiaVIWhCrFJwDRODLcaJkObd3TZ2
+	 gnNo7fGK9wJkFiX7zNTrzhocCE+kQ4jcPrxKzv6ya4rAdhisJ3QsYnLyW6KQ4eA94U
+	 0qPmuyMV7Cb6lPQ2AWRCD76EStkLMIGmFoj9P/Cc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 068/589] rxrpc: proc: size address buffers for %pISpc output
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.15 235/776] KVM: SVM: Explicitly mark vmcb01 dirty after modifying VMCB intercepts
 Date: Sat, 30 May 2026 17:59:09 +0200
-Message-ID: <20260530160226.389074087@linuxfoundation.org>
+Message-ID: <20260530160246.605151194@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,189 +65,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258173-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258777-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email,auristor.com:email,infradead.org:email]
-X-Rspamd-Queue-Id: DC6F2611E43
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 1F33F61092C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit a44ce6aa2efb61fe44f2cfab72bb01544bbca272 ]
+commit d5bde6113aed8315a2bfe708730b721be9c2f48b upstream.
 
-The AF_RXRPC procfs helpers format local and remote socket addresses into
-fixed 50-byte stack buffers with "%pISpc".
+When reacting to an intercept update, explicitly mark vmcb01's intercepts
+dirty, as KVM always initially operates on vmcb01, and nested_svm_vmexit()
+isn't guaranteed to mark VMCB_INTERCEPTS as dirty.  I.e. if L2 is active,
+KVM will modify the intercepts for L1, but might not mark them as dirty
+before the next VMRUN of L1.
 
-That is too small for the longest current-tree IPv6-with-port form the
-formatter can produce. In lib/vsprintf.c, the compressed IPv6 path uses a
-dotted-quad tail not only for v4mapped addresses, but also for ISATAP
-addresses via ipv6_addr_is_isatap().
-
-As a result, a case such as
-
-  [ffff:ffff:ffff:ffff:0:5efe:255.255.255.255]:65535
-
-is possible with the current formatter. That is 50 visible characters, so
-51 bytes including the trailing NUL, which does not fit in the existing
-char[50] buffers used by net/rxrpc/proc.c.
-
-Size the buffers from the formatter's maximum textual form and switch the
-call sites to scnprintf().
-
-Changes since v1:
-- correct the changelog to cite the actual maximum current-tree case
-  explicitly
-- frame the proof around the ISATAP formatting path instead of the earlier
-  mapped-v4 example
-
-Fixes: 75b54cb57ca3 ("rxrpc: Add IPv6 support")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Anderson Nascimento <anderson@allelesecurity.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-22-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted address accessors and variable declarations ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 116a0a23676e ("KVM: SVM: Add clean-bit for intercetps, tsc-offset and pause filter count")
+Cc: stable@vger.kernel.org
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20260218230958.2877682-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/proc.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ arch/x86/kvm/svm/nested.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/proc.c b/net/rxrpc/proc.c
-index 8967201fd8e54..67553dfe6a3e4 100644
---- a/net/rxrpc/proc.c
-+++ b/net/rxrpc/proc.c
-@@ -10,6 +10,10 @@
- #include <net/af_rxrpc.h>
- #include "ar-internal.h"
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -128,11 +128,13 @@ void recalc_intercepts(struct vcpu_svm *
+ 	struct vmcb_control_area *c, *h, *g;
+ 	unsigned int i;
  
-+#define RXRPC_PROC_ADDRBUF_SIZE \
-+	(sizeof("[xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:255.255.255.255]") + \
-+	 sizeof(":12345"))
+-	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
++	vmcb_mark_dirty(svm->vmcb01.ptr, VMCB_INTERCEPTS);
+ 
+ 	if (!is_guest_mode(&svm->vcpu))
+ 		return;
+ 
++	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
 +
- static const char *const rxrpc_conn_states[RXRPC_CONN__NR_STATES] = {
- 	[RXRPC_CONN_UNUSED]			= "Unused  ",
- 	[RXRPC_CONN_CLIENT]			= "Client  ",
-@@ -61,7 +65,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
- 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
- 	unsigned long timeout = 0;
- 	rxrpc_seq_t tx_hard_ack, rx_hard_ack;
--	char lbuff[50], rbuff[50];
-+	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
- 
- 	if (v == &rxnet->calls) {
- 		seq_puts(seq,
-@@ -78,7 +82,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
- 	if (rx) {
- 		local = READ_ONCE(rx->local);
- 		if (local)
--			sprintf(lbuff, "%pISpc", &local->srx.transport);
-+			scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
- 		else
- 			strcpy(lbuff, "no_local");
- 	} else {
-@@ -87,7 +91,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
- 
- 	peer = call->peer;
- 	if (peer)
--		sprintf(rbuff, "%pISpc", &peer->srx.transport);
-+		scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
- 	else
- 		strcpy(rbuff, "no_connection");
- 
-@@ -158,7 +162,7 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
- {
- 	struct rxrpc_connection *conn;
- 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
--	char lbuff[50], rbuff[50];
-+	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
- 
- 	if (v == &rxnet->conn_proc_list) {
- 		seq_puts(seq,
-@@ -177,9 +181,9 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
- 		goto print;
- 	}
- 
--	sprintf(lbuff, "%pISpc", &conn->params.local->srx.transport);
-+	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &conn->params.local->srx.transport);
- 
--	sprintf(rbuff, "%pISpc", &conn->params.peer->srx.transport);
-+	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &conn->params.peer->srx.transport);
- print:
- 	seq_printf(seq,
- 		   "UDP   %-47.47s %-47.47s %4x %08x %s %3u"
-@@ -216,7 +220,7 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
- {
- 	struct rxrpc_peer *peer;
- 	time64_t now;
--	char lbuff[50], rbuff[50];
-+	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
- 
- 	if (v == SEQ_START_TOKEN) {
- 		seq_puts(seq,
-@@ -229,9 +233,9 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
- 
- 	peer = list_entry(v, struct rxrpc_peer, hash_link);
- 
--	sprintf(lbuff, "%pISpc", &peer->local->srx.transport);
-+	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &peer->local->srx.transport);
- 
--	sprintf(rbuff, "%pISpc", &peer->srx.transport);
-+	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
- 
- 	now = ktime_get_seconds();
- 	seq_printf(seq,
-@@ -341,7 +345,7 @@ const struct seq_operations rxrpc_peer_seq_ops = {
- static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
- {
- 	struct rxrpc_local *local;
--	char lbuff[50];
-+	char lbuff[RXRPC_PROC_ADDRBUF_SIZE];
- 
- 	if (v == SEQ_START_TOKEN) {
- 		seq_puts(seq,
-@@ -352,7 +356,7 @@ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
- 
- 	local = hlist_entry(v, struct rxrpc_local, link);
- 
--	sprintf(lbuff, "%pISpc", &local->srx.transport);
-+	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
- 
- 	seq_printf(seq,
- 		   "UDP   %-47.47s %3u %3u\n",
--- 
-2.53.0
-
+ 	c = &svm->vmcb->control;
+ 	h = &svm->vmcb01.ptr->control;
+ 	g = &svm->nested.ctl;
 
 
 
