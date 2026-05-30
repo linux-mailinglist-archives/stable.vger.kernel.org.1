@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-258054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258055-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEztIo0jG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258054-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:09 +0200
+	id OIA9HjwiG2oN/ggAu9opvQ
+	(envelope-from <stable+bounces-258055-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03E3E610840
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EED361051C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6217308A95D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 663453009830
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9888344DB9;
-	Sat, 30 May 2026 17:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D7C348C5E;
+	Sat, 30 May 2026 17:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFnbvhSZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ms9wOt7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C318B27A477;
-	Sat, 30 May 2026 17:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DAA21B191;
+	Sat, 30 May 2026 17:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163066; cv=none; b=FuH1y63bwio6pEWvLflCfD6HyG7fcdt6SzbAeZrpuqy5dum7I1v44DmA2nmpfsZj6BKhjFnC0t5pr3vYNKdjHMLPKpUgKDdMsa2O6n20bCJ+0PmXL+/dWvqdB2RjDIgdo8EI/o2y4rIQPCoByctCs0lLmMcv2Se06+8vI0kjzxE=
+	t=1780163070; cv=none; b=Y8bKadCMea495RvazHrBX9aS56PnlGzUSZBtYtrmyF0drZ61ItzbPclvrnYrdhw3orI9QYwyz7SeHHp+eZ6/0cPq5vCgIPK9Z63CPszqVZhWm/bATUcegYvgqWOlsfqCPxsLNhOAUIe8d8zawxUpbGUXWDxAVlNtf9y8ZXQpDck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163066; c=relaxed/simple;
-	bh=xSUkoqDHqr4PTTAfV790H/F7HGLx1XAihjhoKsACGi8=;
+	s=arc-20240116; t=1780163070; c=relaxed/simple;
+	bh=pWg2dp6A4ej9iWOptM9DqQJyqDbcH5CCKHWtEv/fbUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FXZyzr2fehbAjPVnbtTfMyRCyRXxtlJZo/avI71FDkrvytZGvojp37pgvrWSpzBrdzhx0X5CLOTpWlhzhZ3s1dewJ/xBgarI4P6VrpDfjufRxN7DDi7NOJl0xfhSoqBASXK4HMj6jgAGT/+TPeyTcQr5nGZqdNcnjTss97kxUoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFnbvhSZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F641F00893;
-	Sat, 30 May 2026 17:44:24 +0000 (UTC)
+	 MIME-Version; b=GQ7uteyxstuA2UMb0k7RqpAY1F8VN7fiJmj9wDEpmmNE7JFFCNkxfuc8KkxK1MM06ybNwW+51bj0H5tOfcRtBpzrWMBc9ArVPg2heCEVQ9P+f2TgPgnEDBH/eK5yqi4VzyMhNsyDSuu36AULu9KIecuTPHa0aGTvv8LNuuheK4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ms9wOt7n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6871F00893;
+	Sat, 30 May 2026 17:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163065;
-	bh=8V4GqtH9xPbfbUY9bODOetdviVCGuIVMfZkIpP4d5aE=;
+	s=korg; t=1780163069;
+	bh=FUB0IVeSC1r46ADyVQN06IT1aADhz+NZI80WkinD+Kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IFnbvhSZ56xx3Xp2n99AwwR04Kl2HNY56bLaLgwv1T0wgpJl7orpBB+sgVYJc7Ygk
-	 zs1b62mtbpIAM5gxgvMHnFzlbagynNFEJ4Fyi+AhQbjiC6zYZAUWnQqfSQEcN8R7mo
-	 W98npesoP5H4QIa7B92Mx1sUD2lAOqweNIkoeje4=
+	b=ms9wOt7nhM92E5FEj+eZl140IGiFMnQh5JuRKbQfgdpFP7VSIzQGteiPpyxMOUiNQ
+	 PJYfVKY1KLG017uZvKH/xrnT0h5RiSHrWIh0rT6o8efvjoVlNnSlvOHCGpzev3WdMG
+	 TFGtZWnBjPy5rz7Gq8CVwEnqVU+dsSeWPvEla0gQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>,
-	Johnny Hao <johnny_haocn@sina.com>
-Subject: [PATCH 5.15 145/776] ALSA: usb-audio: Kill timer properly at removal
-Date: Sat, 30 May 2026 17:57:39 +0200
-Message-ID: <20260530160244.170232546@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Igor Bagnucki <igor.bagnucki@intel.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Leon Chen <leonchen.oss@139.com>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.15 146/776] ice: Add netif_device_attach/detach into PF reset flow
+Date: Sat, 30 May 2026 17:57:40 +0200
+Message-ID: <20260530160244.221569104@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
 References: <20260530160240.228940103@linuxfoundation.org>
@@ -64,36 +68,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258054-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,suse.de,sina.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,intel.com,linux.intel.com,redhat.com,139.com];
+	TAGGED_FROM(0.00)[bounces-258055-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,d8f72178ab6783a7daea];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,appspotmail.com:email,msgid.link:url,sina.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 03E3E610840
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,139.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7EED361051C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,54 +104,114 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
 
-[ Upstream commit 0718a78f6a9f04b88d0dc9616cc216b31c5f3cf1 ]
+[ Upstream commit d11a67634227f9f9da51938af085fb41a733848f ]
 
-The USB-audio MIDI code initializes the timer, but in a rare case, the
-driver might be freed without the disconnect call.  This leaves the
-timer in an active state while the assigned object is released via
-snd_usbmidi_free(), which ends up with a kernel warning when the debug
-configuration is enabled, as spotted by fuzzer.
+Ethtool callbacks can be executed while reset is in progress and try to
+access deleted resources, e.g. getting coalesce settings can result in a
+NULL pointer dereference seen below.
 
-For avoiding the problem, put timer_shutdown_sync() at
-snd_usbmidi_free(), so that the timer can be killed properly.
-While we're at it, replace the existing timer_delete_sync() at the
-disconnect callback with timer_shutdown_sync(), too.
+Reproduction steps:
+Once the driver is fully initialized, trigger reset:
+	# echo 1 > /sys/class/net/<interface>/device/reset
+when reset is in progress try to get coalesce settings using ethtool:
+	# ethtool -c <interface>
 
-Reported-by: syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/681c70d7.050a0220.a19a9.00c6.GAE@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250519212031.14436-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ The context change is due to the commit 8fa7292fee5c
-("treewide: Switch/rename to timer_delete[_sync]()")
-in v6.15 which is irrelevant to the logic of this patch. ]
-Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+BUG: kernel NULL pointer dereference, address: 0000000000000020
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 11 PID: 19713 Comm: ethtool Tainted: G S                 6.10.0-rc7+ #7
+RIP: 0010:ice_get_q_coalesce+0x2e/0xa0 [ice]
+RSP: 0018:ffffbab1e9bcf6a8 EFLAGS: 00010206
+RAX: 000000000000000c RBX: ffff94512305b028 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffff9451c3f2e588 RDI: ffff9451c3f2e588
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: ffff9451c3f2e580 R11: 000000000000001f R12: ffff945121fa9000
+R13: ffffbab1e9bcf760 R14: 0000000000000013 R15: ffffffff9e65dd40
+FS:  00007faee5fbe740(0000) GS:ffff94546fd80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000020 CR3: 0000000106c2e005 CR4: 00000000001706f0
+Call Trace:
+<TASK>
+ice_get_coalesce+0x17/0x30 [ice]
+coalesce_prepare_data+0x61/0x80
+ethnl_default_doit+0xde/0x340
+genl_family_rcv_msg_doit+0xf2/0x150
+genl_rcv_msg+0x1b3/0x2c0
+netlink_rcv_skb+0x5b/0x110
+genl_rcv+0x28/0x40
+netlink_unicast+0x19c/0x290
+netlink_sendmsg+0x222/0x490
+__sys_sendto+0x1df/0x1f0
+__x64_sys_sendto+0x24/0x30
+do_syscall_64+0x82/0x160
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7faee60d8e27
+
+Calling netif_device_detach() before reset makes the net core not call
+the driver when ethtool command is issued, the attempt to execute an
+ethtool command during reset will result in the following message:
+
+    netlink error: No such device
+
+instead of NULL pointer dereference. Once reset is done and
+ice_rebuild() is executing, the netif_device_attach() is called to allow
+for ethtool operations to occur again in a safe manner.
+
+Fixes: fcea6f3da546 ("ice: Add stats and ethtool support")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Igor Bagnucki <igor.bagnucki@intel.com>
+Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+[ Minor changed in ice_prepare_for_reset() to make sure vsi available to
+access ]
+Signed-off-by: Leon Chen <leonchen.oss@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/midi.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/sound/usb/midi.c
-+++ b/sound/usb/midi.c
-@@ -1530,6 +1530,7 @@ static void snd_usbmidi_free(struct snd_
- 			snd_usbmidi_in_endpoint_delete(ep->in);
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -479,6 +479,7 @@ static void
+ ice_prepare_for_reset(struct ice_pf *pf)
+ {
+ 	struct ice_hw *hw = &pf->hw;
++	struct ice_vsi *vsi = ice_get_main_vsi(pf);
+ 	unsigned int i;
+ 
+ 	/* already prepared for reset */
+@@ -495,6 +496,9 @@ ice_prepare_for_reset(struct ice_pf *pf)
+ 	ice_for_each_vf(pf, i)
+ 		ice_set_vf_state_qs_dis(&pf->vf[i]);
+ 
++	if (vsi && vsi->netdev)
++		netif_device_detach(vsi->netdev);
++
+ 	/* clear SW filtering DB */
+ 	ice_clear_hw_tbls(hw);
+ 	/* disable the VSIs and their queues that are not already DOWN */
+@@ -6417,6 +6421,7 @@ static void ice_update_pf_netdev_link(st
+  */
+ static void ice_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
+ {
++	struct ice_vsi *vsi = ice_get_main_vsi(pf);
+ 	struct device *dev = ice_pf_to_dev(pf);
+ 	struct ice_hw *hw = &pf->hw;
+ 	enum ice_status ret;
+@@ -6538,6 +6543,9 @@ static void ice_rebuild(struct ice_pf *p
+ 		ice_rebuild_arfs(pf);
  	}
- 	mutex_destroy(&umidi->mutex);
-+	timer_shutdown_sync(&umidi->error_timer);
- 	kfree(umidi);
- }
  
-@@ -1553,7 +1554,7 @@ void snd_usbmidi_disconnect(struct list_
- 	spin_unlock_irq(&umidi->disc_lock);
- 	up_write(&umidi->disc_rwsem);
++	if (vsi && vsi->netdev)
++		netif_device_attach(vsi->netdev);
++
+ 	ice_update_pf_netdev_link(pf);
  
--	del_timer_sync(&umidi->error_timer);
-+	timer_shutdown_sync(&umidi->error_timer);
- 
- 	for (i = 0; i < MIDI_MAX_ENDPOINTS; ++i) {
- 		struct snd_usb_midi_endpoint *ep = &umidi->endpoints[i];
+ 	/* tell the firmware we are up */
 
 
 
