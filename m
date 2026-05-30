@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uE6EOL8ZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257407-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:19 +0200
+	id KAf3JNcrG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29AC60EFEC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F60611BD1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 81460300B532
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:08:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B259A30A0788
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FAE39E162;
-	Sat, 30 May 2026 17:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB3721ADC7;
+	Sat, 30 May 2026 18:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p3PdMao9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzMq5mXo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356A1366567;
-	Sat, 30 May 2026 17:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562E017555;
+	Sat, 30 May 2026 18:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160891; cv=none; b=so/wkxUhlX+aJA2YxaM+SCGKxhaWA3uiKDLO5KLEdfEfYH011ll4+2qgIOo0HK7OcMSSzE+6SjmdWmzRQECE7TiIxA/MzrLjUrUHNFEumEzIcn1ZIRrT02gy41Z2R5oGggmOIy5DL1KGrrJUV2wHPySdvK3xIK9UzuE5D5nUOzc=
+	t=1780165444; cv=none; b=ox9Xqn13Aj2CRk1AkVGfabgDKfrGUYvv825+wi7OiEBSHNN9N31v8OLB1wHH5as8Sz5R7nh+ziKpNdbdKX8w3HUgNKvXOXWPH9T1f0IzO89L2N+UvHgd5GflvH1d6++ZZd5Wz1AVs+cLhAntDOdUSCM+q/eKx+tk6sLq5eShdWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160891; c=relaxed/simple;
-	bh=z6n/aeRbdeqh5PGj9YGVUiyXyCAYwxoiGZ9pdHpZQm8=;
+	s=arc-20240116; t=1780165444; c=relaxed/simple;
+	bh=zczHV+iiesuxZGrVqEqJXxiUMm3Ut6xuV32OSOsqxpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ik6wrrGEd31yAC3khiytOWtaWeil/sWRsJD2Npzdzidi/vzybf6P6jiqdl3N5v6+yc7iD23ok08S+x9FZfoyPDnKFXWYEbiKY7xmNk7jGQc92qXyFugmWRMx4RkkXKSkg5L56aLwsaInSRCI85azyYlHDvzOXfVaN0YfgClxmRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p3PdMao9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8027B1F00893;
-	Sat, 30 May 2026 17:08:09 +0000 (UTC)
+	 MIME-Version; b=W+Cy4wxU5otZtVnXbs8IP0dcL+HB210IlnFs7i4irC6lbxQgoWUhDm8IgQab0u1KOYz3OH5sKTQy6NaEe/AUlosX4XLLSRq/v/y0m0CY1Ny4zoZwV8Af234TsV6I5Tw2H1pAffROwJaqsIHxTCwK3bYwg5+hP3r8oVjVTAclmDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzMq5mXo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1F91F00893;
+	Sat, 30 May 2026 18:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160890;
-	bh=i6aZxCM6v2JJxw/tm1LKK+avZPJlWeUAepAka5yXnqQ=;
+	s=korg; t=1780165442;
+	bh=8ZCvt6llz37doXh4S1XSOozPvO8JYxxzWrO1Oiopbnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p3PdMao9l18gjReqpSf79pV/zd8wBA4u+e4mWK1mcVbQUlJ/8xzSau0WG8Jg7btof
-	 +jORgtvVkAKwr0PEkCzk9ue30b+4oDz1PlQxpkCG/SGMLeGxHpVC3JdWfn31sq7Su3
-	 ttUlv0MVqjdqvVsmulNr4kE/mvFqqphG+oNmnPeU=
+	b=kzMq5mXo+J5wimIbJDOk/OSqueGpzioXUBOvkmuoiosp92Lp6qlmgCJDtaaE6sIjP
+	 1qPqlJKhWrPvzWq4kD3AEc5bZtWt9MlWG33Cn/7MM9WSmfYHK8RDsjQhs9dVtOL1xk
+	 4T/X6JdNy/WYRvnBensPEi3rkb5ymjQxXAnhQ3Yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 437/969] devres: fix missing node debug info in devm_krealloc()
+	syzbot+47321e8fd5a4c84088db@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.10 080/589] media: as102: fix to not free memory after the device is registered in as102_usb_probe()
 Date: Sat, 30 May 2026 17:59:21 +0200
-Message-ID: <20260530160312.334961952@linuxfoundation.org>
+Message-ID: <20260530160226.756172386@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,108 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257407-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-258759-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable,47321e8fd5a4c84088db,cisco];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F29AC60EFEC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,appspotmail.com:email]
+X-Rspamd-Queue-Id: 49F60611BD1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit f813ec9e84b4d0ca81ec1da94ab07bfb4a29266c ]
+commit 8bd29dbe03fc5b0f039ab2395ff37b64236d2f0c upstream.
 
-Fix missing call to set_node_dbginfo() for new devres nodes created by
-devm_krealloc().
+In as102_usb driver, the following race condition occurs:
+```
+		CPU0						CPU1
+as102_usb_probe()
+  kzalloc(); // alloc as102_dev_t
+  ....
+  usb_register_dev();
+						fd = sys_open("/path/to/dev"); // open as102 fd
+						....
+  usb_deregister_dev();
+  ....
+  kfree(); // free as102_dev_t
+  ....
+						sys_close(fd);
+						  as102_release() // UAF!!
+						    as102_usb_release()
+						      kfree(); // DFB!!
+```
 
-Fixes: f82485722e5d ("devres: provide devm_krealloc()")
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/20260202235210.55176-2-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When a USB character device registered with usb_register_dev() is later
+unregistered (via usb_deregister_dev() or disconnect), the device node is
+removed so new open() calls fail. However, file descriptors that are
+already open do not go away immediately: they remain valid until the last
+reference is dropped and the driver's .release() is invoked.
+
+In as102, as102_usb_probe() calls usb_register_dev() and then, on an
+error path, does usb_deregister_dev() and frees as102_dev_t right away.
+If userspace raced a successful open() before the deregistration, that
+open FD will later hit as102_release() --> as102_usb_release() and access
+or free as102_dev_t again, occur a race to use-after-free and
+double-free vuln.
+
+The fix is to never kfree(as102_dev_t) directly once usb_register_dev()
+has succeeded. After deregistration, defer freeing memory to .release().
+
+In other words, let release() perform the last kfree when the final open
+FD is closed.
+
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+47321e8fd5a4c84088db@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=47321e8fd5a4c84088db
+Fixes: cd19f7d3e39b ("[media] as102: fix leaks at failure paths in as102_usb_probe()")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/devres.c | 2 ++
+ drivers/media/usb/as102/as102_usb_drv.c |    2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index 9d0ea5c14bc50..2b4f866a61db6 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -909,6 +909,8 @@ void *devm_krealloc(struct device *dev, void *ptr, size_t new_size, gfp_t gfp)
- 	if (!new_dr)
- 		return NULL;
- 
-+	set_node_dbginfo(&new_dr->node, "devm_krealloc_release", new_size);
-+
- 	/*
- 	 * The spinlock protects the linked list against concurrent
- 	 * modifications but not the resource itself.
--- 
-2.53.0
-
+--- a/drivers/media/usb/as102/as102_usb_drv.c
++++ b/drivers/media/usb/as102/as102_usb_drv.c
+@@ -405,7 +405,9 @@ static int as102_usb_probe(struct usb_in
+ failed_dvb:
+ 	as102_free_usb_stream_buffer(as102_dev);
+ failed_stream:
++	usb_set_intfdata(intf, NULL);
+ 	usb_deregister_dev(intf, &as102_usb_class_driver);
++	return ret;
+ failed:
+ 	usb_put_dev(as102_dev->bus_adap.usb_dev);
+ 	usb_set_intfdata(intf, NULL);
 
 
 
