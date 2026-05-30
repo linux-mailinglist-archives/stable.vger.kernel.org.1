@@ -1,58 +1,73 @@
-Return-Path: <stable+bounces-258186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJm1EcElG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258186-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:33 +0200
+	id 2HrHEiYsG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7DE610CD3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA38D611C78
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 20F1330BDFAF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F77B3016812
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C1F346E55;
-	Sat, 30 May 2026 17:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1518282F23;
+	Sat, 30 May 2026 18:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iveo8e8b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NW04I6R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967D9320CAD;
-	Sat, 30 May 2026 17:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F0A219303;
+	Sat, 30 May 2026 18:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163502; cv=none; b=qu7p6PqZXiDZK0l54IGsLobRnlqK39yz0aEhXeaSxLkPw3psck2UD/afHFXjSd3iok1iUZI+gtDXX7gIh4HBaApveYQ1jwM3Y59/EzIFwBjsaAYbUpwZGtFMXDkhMISD832RQrBTqK4n7MTZhhMsZrj3JbsvvXB6CAlukh0vOoI=
+	t=1780165550; cv=none; b=H6pCBpF1a7RtESfQTjXiKlz6nxho4BfMYwzizDPYI0VaaRKyE3iv2Sp0DxCsZtRQiuv5l1uZZFwo4/ZOajZ7EQ3tfFEuYK6xIzSHf//nJNqASiEBFF6E5KyOJrVHT61jOWHDeO/WspFyv71yzzqYu+M1ePk4ihTPVs02B3WPEDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163502; c=relaxed/simple;
-	bh=JgPDRw1vDu26HIx8x2TAWzX49IPnZsrCxxLhhKUqg9A=;
+	s=arc-20240116; t=1780165550; c=relaxed/simple;
+	bh=FQl121+80J25BLekN5m3Doq9Bn6mc/o1+Z4Lhvjjocw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EcKCn9dnCgmiTo3ZHiNpFLNnvNEhQVJSjQXRod99af2m6fhcZIRSiCQpjz0HDUFbOaEyRVSohLtamM5nsvpm2TOdq1JDZvALNDJrwgCUoYDC4ec5Y2EtrIpTN/tIcxshKcISxqIRAiHhlosoQEIwAxtkvb8LyZTPDDe6VYfwkks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iveo8e8b; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8FF1F00893;
-	Sat, 30 May 2026 17:51:40 +0000 (UTC)
+	 MIME-Version; b=C+VdUjzbrg7tdjHfh+qSYOlEmcGP670oTiIv/8xaz+gyyJ8hIOAaIbop2vK9u6jCK7lg2DxeB+ivecHEJce2MwnpAiXJ3byeKp3hLNGT2JuQXGp8gH4bYHaR1LODtT4eepXXH5o8DzEpay+thQlQEytBTdecGLmiimZ9X1CtMqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NW04I6R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1E51F00893;
+	Sat, 30 May 2026 18:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163501;
-	bh=+HwFabfDFiaj47k/1UWvqBhuJaPPoIQo4Ig/lcqEaEs=;
+	s=korg; t=1780165549;
+	bh=ljSevPGuTVY6yTZlI+ozGeGZh/VBvHptpuS0dhOuNHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Iveo8e8b2wXhKuwJhzyx3opZRfbWaT8g267Q0/ycb7ug7uP36KXQwkhzLHMEGOSto
-	 72cqdUiKd87pWgcjuedo5iV9gqI/FnK4/t8mQRoirJ5rfOGtd3tI/Bgo7maRuEgC1L
-	 1dOvFFXof9Aq1XoV7LJS5XlOpRwiL2TI6stk2CoU=
+	b=2NW04I6RaI2DgnO0ofO+44yr1A6xe+4nVDpeyzQoeLf6c6eDlBdt9VcKTAnTnNN7A
+	 LS/wH3p4qCJhNwVI97xEpq5R/2G/0dSUKIjA+SON6y9MDPqEvY3hw31NFzQChL40qs
+	 imrXdSREVTtaBSfGHYr583Y1huPCL/AcUbHexB1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivam Kalra <shivamkalra98@zohomail.in>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 278/776] ACPI: video: force native backlight on HP OMEN 16 (8A44)
-Date: Sat, 30 May 2026 17:59:52 +0200
-Message-ID: <20260530160247.743784360@linuxfoundation.org>
+	Breno Leitao <leitao@debian.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 112/589] mm: blk-cgroup: fix use-after-free in cgwb_release_workfn()
+Date: Sat, 30 May 2026 17:59:53 +0200
+Message-ID: <20260530160227.700020372@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +83,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258186-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258791-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,debian.org,kernel.org,linux.dev,kernel.dk,cmpxchg.org,toxicpanda.com,gmail.com,oracle.com,suse.com,google.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9F7DE610CD3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BA38D611C78
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivam Kalra <shivamkalra98@zohomail.in>
+From: Breno Leitao <leitao@debian.org>
 
-commit 4b506ea5351a1f5937ac632a4a5c35f6f796cc41 upstream.
+[ Upstream commit 8f5857be99f1ed1fa80991c72449541f634626ee ]
 
-The HP OMEN 16 Gaming Laptop (board name 8A44) has a mux-less hybrid
-GPU configuration with AMD Rembrandt (Radeon 680M) and NVIDIA GA104
-(RTX 3070 Ti). The internal eDP panel is wired to the AMD iGPU.
+cgwb_release_workfn() calls css_put(wb->blkcg_css) and then later accesses
+wb->blkcg_css again via blkcg_unpin_online().  If css_put() drops the last
+reference, the blkcg can be freed asynchronously (css_free_rwork_fn ->
+blkcg_css_free -> kfree) before blkcg_unpin_online() dereferences the
+pointer to access blkcg->online_pin, resulting in a use-after-free:
 
-When Nouveau loads without GSP firmware, the ACPI video backlight
-device (acpi_video0) gets registered alongside the native AMD
-backlight (amdgpu_bl2). In this state, writes to amdgpu_bl2 update
-the software brightness value but fail to change the physical panel
-brightness.
+  BUG: KASAN: slab-use-after-free in blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+  Write of size 4 at addr ff11000117aa6160 by task kworker/71:1/531
+   Workqueue: cgwb_release cgwb_release_workfn
+   Call Trace:
+    <TASK>
+     blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+     cgwb_release_workfn (mm/backing-dev.c:629)
+     process_scheduled_works (kernel/workqueue.c:3278 kernel/workqueue.c:3385)
 
-Force native backlight to prevent acpi_video0 from registering.
-Confirmed that booting with acpi_backlight=native resolves the
-issue.
+   Freed by task 1016:
+    kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6246 mm/slub.c:6561)
+    css_free_rwork_fn (kernel/cgroup/cgroup.c:5542)
+    process_scheduled_works (kernel/workqueue.c:3302 kernel/workqueue.c:3385)
 
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
-Link: https://patch.msgid.link/20260426-omen-16-backlight-fix-v1-1-62364f268ea6@zohomail.in
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+** Stack based on commit 66672af7a095 ("Add linux-next specific files
+for 20260410")
+
+I am seeing this crash sporadically in Meta fleet across multiple kernel
+versions.  A full reproducer is available at:
+https://github.com/leitao/debug/blob/main/reproducers/repro_blkcg_uaf.sh
+
+(The race window is narrow.  To make it easily reproducible, inject a
+msleep(100) between css_put() and blkcg_unpin_online() in
+cgwb_release_workfn().  With that delay and a KASAN-enabled kernel, the
+reproducer triggers the splat reliably in less than a second.)
+
+Fix this by moving blkcg_unpin_online() before css_put(), so the
+cgwb's CSS reference keeps the blkcg alive while blkcg_unpin_online()
+accesses it.
+
+Link: https://lore.kernel.org/20260413-blkcg-v1-1-35b72622d16c@debian.org
+Fixes: 59b57717fff8 ("blkcg: delay blkg destruction until after writeback has finished")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Dennis Zhou <dennis@kernel.org>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: JP Kobryn <inwardvessel@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/video_detect.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ mm/backing-dev.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -154,6 +154,14 @@ static const struct dmi_system_id video_
- 		DMI_MATCH(DMI_PRODUCT_NAME, "VPCEH3U1E"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* HP OMEN Gaming Laptop 16-n0xxx */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16-n0xxx"),
-+		},
-+	},
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -397,12 +397,13 @@ static void cgwb_release_workfn(struct w
+ 	wb_shutdown(wb);
  
- 	/*
- 	 * These models have a working acpi_video backlight control, and using
+ 	css_put(wb->memcg_css);
+-	css_put(wb->blkcg_css);
+-	mutex_unlock(&wb->bdi->cgwb_release_mutex);
+ 
+ 	/* triggers blkg destruction if no online users left */
+ 	blkcg_unpin_online(blkcg);
+ 
++	css_put(wb->blkcg_css);
++	mutex_unlock(&wb->bdi->cgwb_release_mutex);
++
+ 	fprop_local_destroy_percpu(&wb->memcg_completions);
+ 	wb_exit(wb);
+ 	call_rcu(&wb->rcu, cgwb_free_rcu);
 
 
 
