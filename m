@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-257917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257918-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECkvBv8hG2oN/ggAu9opvQ
-	(envelope-from <stable+bounces-257917-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:31 +0200
+	id 6HIBHHEgG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257918-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B99F61048C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BBA36100CD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD9B6301CFB4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:36:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 52363300D756
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60E333E36A;
-	Sat, 30 May 2026 17:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72DD3AFAE2;
+	Sat, 30 May 2026 17:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cg1glk6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JoQlFM31"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB1A341AB8;
-	Sat, 30 May 2026 17:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E7D33E36A;
+	Sat, 30 May 2026 17:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162604; cv=none; b=hv/mxWXZopoz/631ewLXuT1ItKZCQ2baaC3sxoouAZAhxWdueXN0koXsx5uAgfcJHcTHtzFJu/L/lq/rRxP1kOHi4BLE8J6TPVgDTa4tbSuRLhJVaK6YvmQXib3g9TizME1PVtW6y+hmtJO5RdZ5KGsDSrguTsWgKIudoFKcZto=
+	t=1780162608; cv=none; b=DUXC36+TcbuCrgBgEMp+VtkIFoqHr4oPjsytxNC71zJyZrc9cRp3sZJF+aWag8L4g53mYYO6/aZ5MqgNvsW8ig95xK1DFqzDQDX8UJVQNYosgjazfpoLL1qsDdLJBe+iE8jGqCsjXbjpgF5KTxLLTeLVk4ZIwfsMmY0vAVdFc7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162604; c=relaxed/simple;
-	bh=ftaHpr7uZzYRHGmqoElPqajcoa6Pb0tzqpqZtVdckZQ=;
+	s=arc-20240116; t=1780162608; c=relaxed/simple;
+	bh=fMpK22cX4dvFRZCWKpPjAbsSvCIk3Q18AnGyVkDU1nM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blNW+3OQ+NG+o2KqUWr70GecZyLYcBvc+SI8lDmLmaBNmSI1l5mHSML9CgtuYnOO0ibkLXLKKKmTLa0cLEtfYDWLYGUFNmah+nbE+Gmn3FuyYfXcqVWFAxWMjOE72ahU50BQoaDSAWccMKLF3xTBkmIiTZUta5L9lXNj+R++6jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cg1glk6R; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D062E1F00893;
-	Sat, 30 May 2026 17:36:42 +0000 (UTC)
+	 MIME-Version; b=aa/qacKYdZwFpFFEDkqyK2s4xy51q+BPTiw8QNfWKR0Pu/tu8JgMtCBZftjsYLD7f5JqZ/OVBvNE+BWFQj1yPUEbU6vB9FFbwncLsAPtLuI9tuxOkY95p8MJ7LrkjH8T/kNkBfOBKxCf6e1vaPmDG7LXz/W5UfbE2aeWhCD5rLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JoQlFM31; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2602C1F0089D;
+	Sat, 30 May 2026 17:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162603;
-	bh=Fln5rMz+DlvCWzsVnXRBTE4ZTVUZVjvhpm+o1qXHuOI=;
+	s=korg; t=1780162606;
+	bh=oAY9MrjvGIO37eka7sBXCWEXd0AG6UVldS+5woeCzvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cg1glk6RQ34yIWRj3rFip1hg3Qi5ep7xS68Yk45IzNXnd6d4z9e2vB3dpPsQ8HSbE
-	 ifX/p1KmhnP7IU2twAo0+11D+oyg74uEUSWxa0C2bq+AMI4PboeO7pWbAnrr1xaSpQ
-	 OL9M+Dq87hFxOOvMy+0UoxLsJs7YT26OL/zw0A1M=
+	b=JoQlFM31GWGXuC5aEKlt+PQ8aZpw9yWyxKVyjbc/87CQxatXhSWqWeEq0g8bxUtBX
+	 8cvQTjsDyeJhT5iraT6abmLqeVZE7+zTaczLy2V1NKW2GQ19Rs1IeecJe+/2qOYLVB
+	 dr9d9GQ0R38rcSSH/CW8h4DvNlopD5jjsoCPKXvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Matthew Leach <matthew.leach@collabora.com>,
-	P Praneesh <praneesh.p@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 950/969] wifi: ath11k: fix peer resolution on rx path when peer_id=0
-Date: Sat, 30 May 2026 18:07:54 +0200
-Message-ID: <20260530160326.994037754@linuxfoundation.org>
+Subject: [PATCH 6.1 951/969] net: dsa: mt7530: sync driver-specific behavior of MT7531 variants
+Date: Sat, 30 May 2026 18:07:55 +0200
+Message-ID: <20260530160327.021102300@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257917-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257918-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email,qualcomm.com:email]
-X-Rspamd-Queue-Id: 6B99F61048C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,makrotopia.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6BBA36100CD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,71 +100,56 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Matthew Leach <matthew.leach@collabora.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit 2a2451a34afdf563b3102d36a4b6cf335cf813e2 ]
+[ Upstream commit 497041d763016c2e8314d2f6a329a9b77c3797ca ]
 
-It has been observed that on certain chipsets a peer can be assigned
-peer_id=0. For reception of non-aggregated MPDUs this is fine as
-ath11k_dp_rx_h_find_peer() has a fallback case where it locates the peer
-based upon the source MAC address. On an aggregated link, the mpdu_start
-header is only populated by hardware on the first sub-MSDU. This causes
-the peer resolution to be skipped for the subsequent MSDUs and the
-encryption type of these frames to be set to an incorrect value,
-resulting in these MSDUs being dropped by ieee80211.
+MT7531 standalone and MMIO variants found in MT7988 and EN7581 share
+most basic properties. Despite that, assisted_learning_on_cpu_port and
+mtu_enforcement_ingress were only applied for MT7531 but not for MT7988
+or EN7581, causing the expected issues on MMIO devices.
 
-ath11k_pci 0000:03:00.0: data rx skb 000000002f4b704d len 1534 peer xx:xx:xx:xx:xx:xx 0 ucast sn 3063 he160 rate_idx 9 vht_nss 2 freq 5240 band 1 flag 0x40d1a fcs-err 0 mic-err 0 amsdu-more 0 peer_id 0 first_msdu 1 last_msdu 0
-ath11k_pci 0000:03:00.0: data rx skb 0000000038acd580 len 1534 peer (null) 0 ucast sn 3063 he160 rate_idx 9 vht_nss 2 freq 5240 band 1 flag 0x40d00 fcs-err 0 mic-err 0 amsdu-more 0 peer_id 0 first_msdu 0 last_msdu 1
+Apply both settings equally also for MT7988 and EN7581 by moving both
+assignments form mt7531_setup() to mt7531_setup_common().
 
-Remove the null peer_id checks in ath11k_dp_rx_h_find_peer() and
-ath11k_hal_rx_parse_mon_status_tlv(), allowing peers with an assigned ID
-of 0 to be resolved.
+This fixes unwanted flooding of packets due to unknown unicast
+during DA lookup, as well as issues with heterogenous MTU settings.
 
-Tested-on: QCA2066 hw2.1 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.9
-
-Fixes: 2167fa606c0f ("ath11k: Add support for RX decapsulation offload")
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Signed-off-by: Matthew Leach <matthew.leach@collabora.com>
-Reviewed-by: P Praneesh <praneesh.p@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260424-ath11k-null-peerid-workaround-v4-1-252b224d3cf6@collabora.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 7f54cc9772ce ("net: dsa: mt7530: split-off common parts from mt7531_setup")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Chester A. Unal <chester.a.unal@arinc9.com>
+Link: https://patch.msgid.link/89ed7ec6d4fa0395ac53ad2809742bb1ce61ed12.1745290867.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: e824e40d0e84 ("net: dsa: mt7530: fix FDB entries not aging out with short timeout")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c  | 3 +--
- drivers/net/wireless/ath/ath11k/hal_rx.c | 5 +----
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ drivers/net/dsa/mt7530.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index be00ea6fbf8b6..397ce654bb3fd 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2226,8 +2226,7 @@ ath11k_dp_rx_h_find_peer(struct ath11k_base *ab, struct sk_buff *msdu)
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index 1aba0cf38630f..308e56a73df01 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -2558,6 +2558,9 @@ mt7531_setup_common(struct dsa_switch *ds)
+ 	struct mt7530_priv *priv = ds->priv;
+ 	int ret, i;
  
- 	lockdep_assert_held(&ab->base_lock);
++	ds->assisted_learning_on_cpu_port = true;
++	ds->mtu_enforcement_ingress = true;
++
+ 	mt753x_trap_frames(priv);
  
--	if (rxcb->peer_id)
--		peer = ath11k_peer_find_by_id(ab, rxcb->peer_id);
-+	peer = ath11k_peer_find_by_id(ab, rxcb->peer_id);
+ 	/* Enable and reset MIB counters */
+@@ -2701,9 +2704,6 @@ mt7531_setup(struct dsa_switch *ds)
+ 	if (ret)
+ 		return ret;
  
- 	if (peer)
- 		return peer;
-diff --git a/drivers/net/wireless/ath/ath11k/hal_rx.c b/drivers/net/wireless/ath/ath11k/hal_rx.c
-index 47bd937591470..a3fbff807948c 100644
---- a/drivers/net/wireless/ath/ath11k/hal_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/hal_rx.c
-@@ -1468,11 +1468,8 @@ ath11k_hal_rx_parse_mon_status_tlv(struct ath11k_base *ab,
- 	case HAL_RX_MPDU_START: {
- 		struct hal_rx_mpdu_info *mpdu_info =
- 				(struct hal_rx_mpdu_info *)tlv_data;
--		u16 peer_id;
+-	ds->assisted_learning_on_cpu_port = true;
+-	ds->mtu_enforcement_ingress = true;
+-
+ 	return 0;
+ }
  
--		peer_id = ath11k_hal_rx_mpduinfo_get_peerid(ab, mpdu_info);
--		if (peer_id)
--			ppdu_info->peer_id = peer_id;
-+		ppdu_info->peer_id = ath11k_hal_rx_mpduinfo_get_peerid(ab, mpdu_info);
- 		break;
- 	}
- 	case HAL_RXPCU_PPDU_END_INFO: {
 -- 
 2.53.0
 
