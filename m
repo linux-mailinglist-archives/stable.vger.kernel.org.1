@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258857-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJBwM8AbG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:52 +0200
+	id EBCIJSAvG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258857-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8642D60F543
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D0861238D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A7C6B3100F0C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:10:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EDB0C3185253
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCED53AA4FE;
-	Sat, 30 May 2026 17:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA71A32F770;
+	Sat, 30 May 2026 18:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WbGgrr4h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUBHVl+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A07F3016E1;
-	Sat, 30 May 2026 17:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC753242BA;
+	Sat, 30 May 2026 18:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161010; cv=none; b=kPyKuuphsXXMlpePuFfioEY31oaJ1sTqFnCBs9l/qJgflqLoggv2x5B1V/ZpkmpQiFpDQf5BmUxQVXdkoCJJy+iENszoqzosN094p40Hcoos4i88aGjFBbYks00OirJEZJFDT5VzhGPqiccItJZQi1DUQ3rkj65QBExCPVJqPOE=
+	t=1780165773; cv=none; b=oiYhx4Ynuw0kL+rXabjEGvjAy7MSt0XGCiFSjSzk/5B+bXxNCb7By1v13tIs994na6i6bs7jbcI5yfMtDPSENTXJnFJR8e99kOp/79R2Fd4njX3X9n8rz9toAmI1s5Tf+WBSPCbLJUcSnVAzmGXgeJR1IPB2scTP2sLmO5OW8qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161010; c=relaxed/simple;
-	bh=C12iEyqgAji6MqLQq5Plw86tJ0kxEUa/CdTMPlG9ALA=;
+	s=arc-20240116; t=1780165773; c=relaxed/simple;
+	bh=To2eJfG45zLgX1Z2lqHwIVDux6tlENMoAFLH0tSc8h4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NdzaE42yEgIDth88vLh2ztQFIg8J26OJM+ytWtgElrBy/ErocqE1/HWT0otqqwyv797l1DuNA+tymVO36ztIlWf538A31wdy7N1NLl29ATaQGP8ZmkL8rhlnwcnGP9q9/UxIEzhhnuMjhc1aa8iXwEBQD0P45xe7uokRP0Ev0iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WbGgrr4h; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE84D1F00893;
-	Sat, 30 May 2026 17:10:08 +0000 (UTC)
+	 MIME-Version; b=Uem2PAa1PPGwGyhEqKGjSaplSRuV0pbwzEQdegt77B1NMT/CoJEI8NZ33bWKbiPvPNSZmcaFSDmWfhgs4WevIBS3UkFfskBAqffM3Fe3U65g9QbJjZuYCqqbg1oqHWVNEEBQ+hTCqx2ZrW3Sq9ucYyg1y2i1cO8oH03oNMU+lPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUBHVl+x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DCC1F00893;
+	Sat, 30 May 2026 18:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161009;
-	bh=yO0zQNPUyRuGwzz8IUb6BQcAgqGImapWvWh37OUWrPk=;
+	s=korg; t=1780165772;
+	bh=M88LrGvy7NzqPIGmSGE/Mr2OlEhaVtRhp7iyeLcMIP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WbGgrr4h4C+y76c5stXX3XTNzXpQajIEeIvwNC8zd+DBzb1J9L46mMwbrfPatCBSj
-	 Vhl+fqiRrz+rpcS+h27GUMBDt5WVRScj3/yDl0lqMiEcXRvd/ebqsYZFyBUXfHoxdx
-	 mu5b9saDgncT4Z1FKJ3kIB7AzASrpHsNVThkNi40=
+	b=HUBHVl+xSpBdwHsXMN0FVOjA8yWslRu6NEKNEat7dzp9z7PsrefHIflqLR6ntyZSt
+	 xSvWUbV0NTJb8UMIF2Ye8reKw4RC04A/K5ouNae/or80Wy0ZAbPG/nFJlQylJlYLrs
+	 8tSqX9/2whTZ0tWvHEm20GHs2yag75MiUTaXy+XM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 498/969] dm cache policy smq: fix missing locks in invalidating cache blocks
+	Yuhao Jiang <danisjiang@gmail.com>,
+	ychen@northwestern.edu,
+	Tyllis Xu <LivelyCarpet87@gmail.com>
+Subject: [PATCH 5.10 141/589] misc: ibmasm: fix OOB MMIO read in ibmasm_handle_mouse_interrupt()
 Date: Sat, 30 May 2026 18:00:22 +0200
-Message-ID: <20260530160314.075671140@linuxfoundation.org>
+Message-ID: <20260530160228.483854499@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,121 +69,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257442-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258857-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,northwestern.edu];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.993];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8642D60F543
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,northwestern.edu:email]
+X-Rspamd-Queue-Id: 06D0861238D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Tyllis Xu <livelycarpet87@gmail.com>
 
-[ Upstream commit 2d1f7b65f5deedd2e6b09fdc6ea27f8375f24b45 ]
+commit 4b6e6ead556734bdc14024c5f837132b1e7a4b84 upstream.
 
-In passthrough mode, the policy invalidate_mapping operation is called
-simultaneously from multiple workers, thus it should be protected by a
-lock. Otherwise, we might end up with data races on the allocated blocks
-counter, or even use-after-free issues with internal data structures
-when doing concurrent writes.
+ibmasm_handle_mouse_interrupt() performs an out-of-bounds MMIO read
+when the queue reader or writer index from hardware exceeds
+REMOTE_QUEUE_SIZE (60).
 
-Note that the existing FIXME in smq_invalidate_mapping() doesn't affect
-passthrough mode since migration tasks don't exist there, but would need
-attention if supporting fast device shrinking via suspend/resume without
-target reloading.
+A compromised service processor can trigger this by writing an
+out-of-range value to the reader or writer MMIO register before
+asserting an interrupt. Since writer is re-read from hardware on
+every loop iteration, it can also be set to an out-of-range value
+after the loop has already started.
 
-Reproduce steps:
+The root cause is that get_queue_reader() and get_queue_writer() return
+raw readl() values that are passed directly into get_queue_entry(),
+which computes:
 
-1. Create a cache device consisting of 1024 cache entries
+  queue_begin + reader * sizeof(struct remote_input)
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+with no bounds check. This unchecked MMIO address is then passed to
+memcpy_fromio(), reading 8 bytes from unintended device registers.
+For sufficiently large values the address falls outside the PCI BAR
+mapping entirely, triggering a machine check exception.
 
-2. Populate the cache, and record the number of cached blocks
+Fix by checking both indices against REMOTE_QUEUE_SIZE at the top of
+the loop body, before any call to get_queue_entry(). On an out-of-range
+value, reset the reader register to 0 via set_queue_reader() before
+breaking, so that normal queue operation can resume if the corrupted
+hardware state is transient.
 
-fio --name=populate --filename=/dev/mapper/cache --rw=randwrite --bs=4k \
---size=64m --direct=1
-nr_cached=$(dmsetup status cache | awk '{split($7, a, "/"); print a[1]}')
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the passthrough cache. By setting multiple jobs with I/O
-   size equal to the cache block size, cache blocks are invalidated
-   concurrently from different workers.
-
-fio --filename=/dev/mapper/cache --name=test --rw=randwrite --bs=64k \
---direct=1 --numjobs=2 --randrepeat=0 --size=64m
-
-5. Check if demoted matches cached block count. These numbers should
-   match but may differ due to the data race.
-
-nr_demoted=$(dmsetup status cache | awk '{print $12}')
-echo "$nr_cached, $nr_demoted"
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Fixes: 278d72ae8803 ("[PATCH] ibmasm driver: redesign handling of remote control events")
+Cc: stable@vger.kernel.org
+Cc: ychen@northwestern.edu
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+Link: https://patch.msgid.link/20260308062108.258940-1-LivelyCarpet87@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-policy-smq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/misc/ibmasm/remote.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/md/dm-cache-policy-smq.c b/drivers/md/dm-cache-policy-smq.c
-index c983cf240632e..d4c2bc5c0ef45 100644
---- a/drivers/md/dm-cache-policy-smq.c
-+++ b/drivers/md/dm-cache-policy-smq.c
-@@ -1587,14 +1587,18 @@ static int smq_invalidate_mapping(struct dm_cache_policy *p, dm_cblock_t cblock)
- {
- 	struct smq_policy *mq = to_smq_policy(p);
- 	struct entry *e = get_entry(&mq->cache_alloc, from_cblock(cblock));
-+	unsigned long flags;
+--- a/drivers/misc/ibmasm/remote.c
++++ b/drivers/misc/ibmasm/remote.c
+@@ -177,6 +177,11 @@ void ibmasm_handle_mouse_interrupt(struc
+ 	writer = get_queue_writer(sp);
  
- 	if (!e->allocated)
- 		return -ENODATA;
- 
-+	spin_lock_irqsave(&mq->lock, flags);
- 	// FIXME: what if this block has pending background work?
- 	del_queue(mq, e);
- 	h_remove(&mq->table, e);
- 	free_entry(&mq->cache_alloc, e);
-+	spin_unlock_irqrestore(&mq->lock, flags);
+ 	while (reader != writer) {
++		if (reader >= REMOTE_QUEUE_SIZE || writer >= REMOTE_QUEUE_SIZE) {
++			set_queue_reader(sp, 0);
++			break;
++		}
 +
- 	return 0;
- }
+ 		memcpy_fromio(&input, get_queue_entry(sp, reader),
+ 				sizeof(struct remote_input));
  
--- 
-2.53.0
-
 
 
 
