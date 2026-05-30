@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKN9AboqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258660-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:46 +0200
+	id 4J6TFaAgG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA02611944
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA35D61015B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9429F309B514
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6CB6330344DB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A680274FDC;
-	Sat, 30 May 2026 18:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C485232B106;
+	Sat, 30 May 2026 17:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TsOIVVsJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vayxBJ9c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676E317555;
-	Sat, 30 May 2026 18:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B6933A9DA;
+	Sat, 30 May 2026 17:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165102; cv=none; b=uvTH2dQ8yj+lfGJWXraS4F7cX7jsxWISbKwACuIj2jAfaJdn5Ooq3JNl2sqGEBFRbqlGUaEHVPqIZRizHBxqgW6WAzfxWs5p2TqPwNliwPFZnYNTBG9+GyA9SfuKc+3JjTQuBM2wsrsubDh2nWxllFT2HT2FLxklxzsJJHGZTPk=
+	t=1780162398; cv=none; b=hSb2/6NWGXJOnRW9pmsMvCLrhQvAA+8OCPrAC20noP5heZyrQgowZzWMZtgGbWpiEgSvcG2xauuvWr/beOnbqKP3xSsE2sZC5cqsLRnPUXfkBeAgkvU8nOH7fndSZwQ6qC3R2Xqmqiu/kllwtFU4W+TT27vEBgbwhKYMLAYNAQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165102; c=relaxed/simple;
-	bh=Cr/DVBhH5yQklrO8C4u6NvRX57XgjnZAONEoKJcjDN8=;
+	s=arc-20240116; t=1780162398; c=relaxed/simple;
+	bh=6gwCw1cQPYUREz48HDN8EJ1xyaJWH2Rfn1e5BUV3lrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EJjSPRXVK6h/0hN39LEC7sYsmp9ZGLjXXNg0dfg/x9E6DntU4IhtKn554G/RPkzyqBwiYEq+mMzyzZi/A1sEIs+6LwYG6daaG6Tho5AeOwoKjAWFejCPtQ6OLyFJ1qjjUwSGDVZfKAfk7/SrYo/EwPrCiFCekDJlkWAl712cvVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TsOIVVsJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 660BC1F00893;
-	Sat, 30 May 2026 18:18:20 +0000 (UTC)
+	 MIME-Version; b=qTzQb26fJa5Dqm8olIJEs7zwIFTcmqDl14u70c0D4frCWn8Cl784qCNZZj1zq13sKXKfEoLv0XtZ3ovlRUzN/NwWdrDE+osIWajPZHQh+xNE8NG8UGTKhe79F/CjSXVShE7wfoiBEXO/CZJMQ+k4iUOuWUfcISv82CSQFLA/XYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vayxBJ9c; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EF81F00893;
+	Sat, 30 May 2026 17:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165101;
-	bh=lJpf7kBANBIPYYhY7scZQkq4xY6gMNaQCMn8pFKTnnA=;
+	s=korg; t=1780162397;
+	bh=TW2y0AR25E+JOWyJe5nzVM52R4LYQ5ZCCvKgEKgyymU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TsOIVVsJ/9WIkVI0/nkwuwJMJcem6mseLm8OKym9kLAOyvs9xRTIbhbgKBxSvhoTE
-	 liRAe3j5LozWaIitDpdDjPN/COb17jFBjzuUkss9aBNkIwGGlxeKvqZP2jUQAbMs3S
-	 yPYZPMX0B584JFXoPBMc6lQxf4bvzpiRtf1Z+9JA=
+	b=vayxBJ9c1CSFyQYf7cxPNwBjZkWV4NZrNYgKDy1aMvckL3onuoDZDQXke3SCDHHvI
+	 IxxKGgGfgpopuJbDzx9xqdryFXXTkPvKE8CcvWfOanFC8MbF9Hl1S1qS6/CSt044JE
+	 DCO9fMoLXpIBBuIDrmgIdWDVmQU/lALjtj/lqZQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.15 720/776] hwmon: (pmbus/adm1266) cap PDIO scan in get_multiple at ADM1266_PDIO_NR
+	kernel test robot <lkp@intel.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 910/969] netfilter: xtables: fix up kconfig dependencies
 Date: Sat, 30 May 2026 18:07:14 +0200
-Message-ID: <20260530160258.423450580@linuxfoundation.org>
+Message-ID: <20260530160325.853138028@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258660-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257855-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,70 +86,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,qualcomm.com:email]
-X-Rspamd-Queue-Id: 7DA02611944
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,strlen.de:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: DA35D61015B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Florian Westphal <fw@strlen.de>
 
-commit d7834d92251baade796812876e95555e2066fa9f upstream.
+[ Upstream commit 749d4ef0868c5d8a98e07073791b2198178c93b4 ]
 
-adm1266_gpio_get_multiple() iterates the PDIO portion of the
-caller-supplied mask using
+Randy Dunlap reports arptables build failure:
+arp_tables.c:(.text+0x20): undefined reference to `xt_find_table'
 
-	for_each_set_bit_from(gpio_nr, mask,
-			      ADM1266_GPIO_NR + ADM1266_PDIO_STATUS) {
-		...
-	}
+... because recent change removed a 'select' on the xtables core.
+Add a "depends" clause on arptables to resolve this.
 
-where ADM1266_PDIO_STATUS is the PMBus command code (0xE9, i.e. 233),
-not the number of PDIO pins.  The intended upper bound is
-ADM1266_GPIO_NR + ADM1266_PDIO_NR = 25.
+Kernel test robot reports another build breakage:
+iptable_nat.c:(.text+0x8): undefined reference to `ipt_unregister_table_exit'
 
-gpiolib hands in a mask sized for gc.ngpio (= 25 bits on this chip),
-so the iteration walks find_next_bit() up to 242, reading up to 217
-extra bits (a handful of unsigned-long words: four on 64-bit, seven
-on 32-bit) of whatever lives past the end of the mask in the
-caller's stack.  Any incidental set bit in that range then drives a
-set_bit(gpio_nr, bits) call that writes past the end of the
-caller-supplied bits array too -- both out-of-bounds.
+... because of a typo, the nat table selected ip6tables.
 
-Substitute ADM1266_PDIO_NR for the constant so the scan stops at the
-last real PDIO bit.
-
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-1-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Closes: https://lore.kernel.org/netfilter-devel/d0dfbaef-046a-4c42-9daa-53636664bf6d@infradead.org/
+Fixes: a9525c7f6219 ("netfilter: xtables: allow xtables-nft only builds")
+Fixes: 4654467dc7e1 ("netfilter: arptables: allow xtables-nft only builds")
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Stable-dep-of: b4597d5fd7d2 ("netfilter: x_tables: add and use xtables_unregister_table_exit")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/netfilter/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -212,7 +212,7 @@ static int adm1266_gpio_get_multiple(str
- 	status = read_buf[0] + (read_buf[1] << 8);
- 
- 	*bits = 0;
--	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_STATUS) {
-+	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
- 		if (test_bit(gpio_nr - ADM1266_GPIO_NR, &status))
- 			set_bit(gpio_nr, bits);
- 	}
+diff --git a/net/ipv4/netfilter/Kconfig b/net/ipv4/netfilter/Kconfig
+index 5ee86c7ae4dcb..0f60a740d117d 100644
+--- a/net/ipv4/netfilter/Kconfig
++++ b/net/ipv4/netfilter/Kconfig
+@@ -217,7 +217,7 @@ config IP_NF_NAT
+ 	default m if NETFILTER_ADVANCED=n
+ 	select NF_NAT
+ 	select NETFILTER_XT_NAT
+-	select IP6_NF_IPTABLES_LEGACY
++	select IP_NF_IPTABLES_LEGACY
+ 	help
+ 	  This enables the `nat' table in iptables. This allows masquerading,
+ 	  port forwarding and other forms of full Network Address Port
+@@ -343,6 +343,7 @@ config NFT_COMPAT_ARP
+ config IP_NF_ARPFILTER
+ 	tristate "arptables-legacy packet filtering support"
+ 	select IP_NF_ARPTABLES
++	depends on NETFILTER_XTABLES
+ 	help
+ 	  ARP packet filtering defines a table `filter', which has a series of
+ 	  rules for simple ARP packet filtering at local input and
+-- 
+2.53.0
+
 
 
 
