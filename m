@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNdCLEElG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:25 +0200
+	id 6J33GBgcG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3E7610BA1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0BC360F62F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6011B3013032
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:55:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9EA4931083EA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964C03546EA;
-	Sat, 30 May 2026 17:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B2734EF07;
+	Sat, 30 May 2026 17:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feWWVUVf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D2thq6LT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A873AEB5C;
-	Sat, 30 May 2026 17:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2176EEEA8;
+	Sat, 30 May 2026 17:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163701; cv=none; b=dgaWey7U+idIdO5vtXLJ6tTDViPiEFYhKB15ZKGJcW4DVRxwX/I4RaT9KCtHOvxyYPTPF9gLd/GYs+AakdvKfTLUgBuXf3Vw8MB/u5Ur54yTLHfzs8/rwNknSUf00E9IK5U8YSOS4IGmricZGb8JNO/p01ie6W5SXKbBKnKtyh0=
+	t=1780161108; cv=none; b=lGKMUqVQQFdrem857eioYC4PPBn1ohl6jRAfbkwM9igj8491/VS+qV14EK1PAPDlBDAow3nG8E8reto8Vg4TID1fJChsGAs0iehsxkXY9hy2hAyyftK3HhgkNi8NfjQ9hwmoiRP88Ok4yTXXb4Y1dokMbi/H64ozh6TwlusyF08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163701; c=relaxed/simple;
-	bh=AgmkPMAfceJYRED8GEHKdE8x4QAY3hsaC4rzeUKDAaU=;
+	s=arc-20240116; t=1780161108; c=relaxed/simple;
+	bh=iNJ+2U8OCIPcXwqkJBpAPQIsP8f6ix0e3K4LjinvDPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PW/KwcFSFD9ec14WEBlv3zSmVIJOgTi8Q5PSxB31+qnBqPQSziocJ0N6BFYAb38RwVAFRwkDnK+HZqQ/3R6QLMTPTPjcy5g9sKma/IVgc3vaY+0LfplzlDLNvcDIjQzVtCMsg5Hx+6wV/lpUJKZRpw0lDr9S62JBZ31XBBJ/i48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feWWVUVf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF3B1F00893;
-	Sat, 30 May 2026 17:54:57 +0000 (UTC)
+	 MIME-Version; b=ipNQ66ObP9fDS5nhNntbIp+eUs0Eajh8lZSf1+Ey+2v9SeOtc4ND7Q8YRwy23XEaS8n5Icq8Sujz24oBMTiII9x4oVE0wkaAajra49ipQ8w8yA2VkLlhmK6SCwTOQRdCSimbW7poTV6gMzUJSCGOuOVK9HNFxhGhELxiTwFi4Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D2thq6LT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE611F00893;
+	Sat, 30 May 2026 17:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163698;
-	bh=pvC6+wMVW5AQ0BR6/qbYQEGloWGuQgJnbAsC2wTOxGc=;
+	s=korg; t=1780161106;
+	bh=IP2/ya7ENmHVtFCOU1CR0VX4La8Z2FaNroYFtGypeJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=feWWVUVfkYKVx+mz50lDejUiUPI4k12p1dBSGaOJzWjkBOZMRz5XLu1sSGZrYMIT0
-	 KnMO1AIaXbSiHN1KUnsyYjK1bV4LeOnIe0E+y4PqcmDp6GBvnL+qwfXVQNHYjNrHop
-	 JtWIKnmKTgGzzBz1OevUPB0J7sbrXZ8u4BkfzyEc=
+	b=D2thq6LTTTb0boca0NDgf2UYkuhw9JTqqvTTXYfoxl5smWbySmKGgnBKoJftoS0dN
+	 FRqOEMRdKdt0MD54BK/JVuim/NRqlAAA3wt4XR3xSUoO1hVDl4anbTiDNdQgW3+sXM
+	 y5CYk3zQ4osNI4bV/dI/QmsdCKQLu0espSmp6VGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 5.15 336/776] nvmet: avoid recursive nvmet-wq flush in nvmet_ctrl_free
-Date: Sat, 30 May 2026 18:00:50 +0200
-Message-ID: <20260530160249.255922506@linuxfoundation.org>
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 527/969] drm/msm/shrinker: Fix can_block() logic
+Date: Sat, 30 May 2026 18:00:51 +0200
+Message-ID: <20260530160314.911937705@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,171 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257470-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258244-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,lst.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qemu.org:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3F3E7610BA1
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D0BC360F62F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kulkarni <kch@nvidia.com>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-commit aade8abd8b868b6ffa9697aadaea28ec7f65bee6 upstream.
+[ Upstream commit df0f439e3926817cf577ca6272aad68468ff7624 ]
 
-nvmet_tcp_release_queue_work() runs on nvmet-wq and can drop the
-final controller reference through nvmet_cq_put(). If that triggers
-nvmet_ctrl_free(), the teardown path flushes ctrl->async_event_work on
-the same nvmet-wq.
+The intention here was to allow blocking if DIRECT_RECLAIM or if called
+from kswapd and KSWAPD_RECLAIM is set.
 
-Call chain:
+Reported by Claude code review: https://lore.gitlab.freedesktop.org/drm-ai-reviews/review-patch9-20260309151119.290217-10-boris.brezillon@collabora.com/ on a panthor patch which had copied similar logic.
 
- nvmet_tcp_schedule_release_queue()
-   kref_put(&queue->kref, nvmet_tcp_release_queue)
-     nvmet_tcp_release_queue()
-       queue_work(nvmet_wq, &queue->release_work) <--- nvmet_wq
-         process_one_work()
-           nvmet_tcp_release_queue_work()
-             nvmet_cq_put(&queue->nvme_cq)
-               nvmet_cq_destroy()
-                 nvmet_ctrl_put(cq->ctrl)
-                   nvmet_ctrl_free()
-                     flush_work(&ctrl->async_event_work) <--- nvmet_wq
-
-                      Previously Scheduled by :-
-		        nvmet_add_async_event
-		          queue_work(nvmet_wq, &ctrl->async_event_work);
-
-This trips lockdep with a possible recursive locking warning.
-
-[ 5223.015876] run blktests nvme/003 at 2026-04-07 20:53:55
-[ 5223.061801] loop0: detected capacity change from 0 to 2097152
-[ 5223.072206] nvmet: adding nsid 1 to subsystem blktests-subsystem-1
-[ 5223.088368] nvmet_tcp: enabling port 0 (127.0.0.1:4420)
-[ 5223.126086] nvmet: Created discovery controller 1 for subsystem nqn.2014-08.org.nvmexpress.discovery for NQN nqn.2014-08.org.nvmexpress:uuid:0f01fb42-9f7f-4856-b0b3-51e60b8de349.
-[ 5223.128453] nvme nvme1: new ctrl: NQN "nqn.2014-08.org.nvmexpress.discovery", addr 127.0.0.1:4420, hostnqn: nqn.2014-08.org.nvmexpress:uuid:0f01fb42-9f7f-4856-b0b3-51e60b8de349
-[ 5233.199447] nvme nvme1: Removing ctrl: NQN "nqn.2014-08.org.nvmexpress.discovery"
-
-[ 5233.227718] ============================================
-[ 5233.231283] WARNING: possible recursive locking detected
-[ 5233.234696] 7.0.0-rc3nvme+ #20 Tainted: G           O     N
-[ 5233.238434] --------------------------------------------
-[ 5233.241852] kworker/u192:6/2413 is trying to acquire lock:
-[ 5233.245429] ffff888111632548 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: touch_wq_lockdep_map+0x26/0x90
-[ 5233.251438]
-               but task is already holding lock:
-[ 5233.255254] ffff888111632548 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: process_one_work+0x5cc/0x6e0
-[ 5233.261125]
-               other info that might help us debug this:
-[ 5233.265333]  Possible unsafe locking scenario:
-
-[ 5233.269217]        CPU0
-[ 5233.270795]        ----
-[ 5233.272436]   lock((wq_completion)nvmet-wq);
-[ 5233.275241]   lock((wq_completion)nvmet-wq);
-[ 5233.278020]
-                *** DEADLOCK ***
-
-[ 5233.281793]  May be due to missing lock nesting notation
-
-[ 5233.286195] 3 locks held by kworker/u192:6/2413:
-[ 5233.289192]  #0: ffff888111632548 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: process_one_work+0x5cc/0x6e0
-[ 5233.294569]  #1: ffffc9000e2a7e40 ((work_completion)(&queue->release_work)){+.+.}-{0:0}, at: process_one_work+0x1c5/0x6e0
-[ 5233.300128]  #2: ffffffff82d7dc40 (rcu_read_lock){....}-{1:3}, at: __flush_work+0x62/0x530
-[ 5233.304290]
-               stack backtrace:
-[ 5233.306520] CPU: 4 UID: 0 PID: 2413 Comm: kworker/u192:6 Tainted: G           O     N  7.0.0-rc3nvme+ #20 PREEMPT(full)
-[ 5233.306524] Tainted: [O]=OOT_MODULE, [N]=TEST
-[ 5233.306525] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-[ 5233.306527] Workqueue: nvmet-wq nvmet_tcp_release_queue_work [nvmet_tcp]
-[ 5233.306532] Call Trace:
-[ 5233.306534]  <TASK>
-[ 5233.306536]  dump_stack_lvl+0x73/0xb0
-[ 5233.306552]  print_deadlock_bug+0x225/0x2f0
-[ 5233.306556]  __lock_acquire+0x13f0/0x2290
-[ 5233.306563]  lock_acquire+0xd0/0x300
-[ 5233.306565]  ? touch_wq_lockdep_map+0x26/0x90
-[ 5233.306571]  ? __flush_work+0x20b/0x530
-[ 5233.306573]  ? touch_wq_lockdep_map+0x26/0x90
-[ 5233.306577]  touch_wq_lockdep_map+0x3b/0x90
-[ 5233.306580]  ? touch_wq_lockdep_map+0x26/0x90
-[ 5233.306583]  ? __flush_work+0x20b/0x530
-[ 5233.306585]  __flush_work+0x268/0x530
-[ 5233.306588]  ? __pfx_wq_barrier_func+0x10/0x10
-[ 5233.306594]  ? xen_error_entry+0x30/0x60
-[ 5233.306600]  nvmet_ctrl_free+0x140/0x310 [nvmet]
-[ 5233.306617]  nvmet_cq_put+0x74/0x90 [nvmet]
-[ 5233.306629]  nvmet_tcp_release_queue_work+0x19f/0x360 [nvmet_tcp]
-[ 5233.306634]  process_one_work+0x206/0x6e0
-[ 5233.306640]  worker_thread+0x184/0x320
-[ 5233.306643]  ? __pfx_worker_thread+0x10/0x10
-[ 5233.306646]  kthread+0xf1/0x130
-[ 5233.306648]  ? __pfx_kthread+0x10/0x10
-[ 5233.306651]  ret_from_fork+0x355/0x450
-[ 5233.306653]  ? __pfx_kthread+0x10/0x10
-[ 5233.306656]  ret_from_fork_asm+0x1a/0x30
-[ 5233.306664]  </TASK>
-
-There is also no need to flush async_event_work from controller
-teardown. The admin queue teardown already fails outstanding AER
-requests before the final controller put :-
-
- nvmet_sq_destroy(admin sq)
-    nvmet_async_events_failall(ctrl)
-
-The controller has already been removed from the subsystem list before
-nvmet_ctrl_free() quiesces outstanding work.
-
-Replace flush_work() with cancel_work_sync() so a pending
-async_event_work item is canceled and a running instance is waited on
-without recursing into the same workqueue.
-
-Fixes: 06406d81a2d7 ("nvmet: cancel fatal error and flush async work before free controller")
-Cc: stable@vger.kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Boris Brezillon <boris.brezillon@collabora.com>
+Fixes: 7860d720a84c ("drm/msm: Fix build break with recent mm tree")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714238/
+Message-ID: <20260325184106.1259528-1-robin.clark@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/msm_gem_shrinker.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -1471,7 +1471,7 @@ static void nvmet_ctrl_free(struct kref
+diff --git a/drivers/gpu/drm/msm/msm_gem_shrinker.c b/drivers/gpu/drm/msm/msm_gem_shrinker.c
+index a35c98306f1e5..f1b330c272fb7 100644
+--- a/drivers/gpu/drm/msm/msm_gem_shrinker.c
++++ b/drivers/gpu/drm/msm/msm_gem_shrinker.c
+@@ -26,9 +26,8 @@ static bool can_swap(void)
  
- 	nvmet_stop_keep_alive_timer(ctrl);
+ static bool can_block(struct shrink_control *sc)
+ {
+-	if (!(sc->gfp_mask & __GFP_DIRECT_RECLAIM))
+-		return false;
+-	return current_is_kswapd() || (sc->gfp_mask & __GFP_RECLAIM);
++	return (sc->gfp_mask & __GFP_DIRECT_RECLAIM) ||
++	       (current_is_kswapd() && (sc->gfp_mask & __GFP_KSWAPD_RECLAIM));
+ }
  
--	flush_work(&ctrl->async_event_work);
-+	cancel_work_sync(&ctrl->async_event_work);
- 	cancel_work_sync(&ctrl->fatal_err_work);
- 
- 	ida_simple_remove(&cntlid_ida, ctrl->cntlid);
+ static unsigned long
+-- 
+2.53.0
+
 
 
 
