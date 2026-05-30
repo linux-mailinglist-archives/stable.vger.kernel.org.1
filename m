@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258858-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JFbBD4cG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257482-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:58 +0200
+	id SOc+IyAvG2paAAkAu9opvQ
+	(envelope-from <stable+bounces-258858-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9827160F685
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D6B61238B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6185C307A1E0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:12:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED9873185252
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEE334104B;
-	Sat, 30 May 2026 17:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F713A6EF0;
+	Sat, 30 May 2026 18:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6UFr8cL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mc1GA+ne"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C934D481DD;
-	Sat, 30 May 2026 17:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7615279DC9;
+	Sat, 30 May 2026 18:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161148; cv=none; b=JiGKpFh6pM91nZi52VHopR9lkdh1Q5VlC6dbDmiIdyjautQVDznuX71IYEW4Jv9wkytNZVuVKUJ0zXt0/1gckbLBWN4v3PBgRBhU21rH0AkEv6uHuJkxNUXUvUTlfqr2Q+dJD8/zp5hG/JVHZRqKEK6boPAYSDRmEztlzNnyDBo=
+	t=1780165776; cv=none; b=D35F71daPpmSHtF6vWS8ElhkoULkZmMCnvoDY5+w9+evju1dwI9lYi7dHYI8cg60Pc2j566zTOZLj3ov6lkNe4wqSmbG6AxhkfnYRLennXG8MgoZYsLd7vusqRQUWHGXx+upj41qb6kn93LX6VtMW5z9ywHSAaT8medtKmlZ7C0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161148; c=relaxed/simple;
-	bh=dJ5B6yNokpVXHhJBY+hmyd5Wf2X6xpoRmSNduwZQ33M=;
+	s=arc-20240116; t=1780165776; c=relaxed/simple;
+	bh=ESPVgnmnoZPhaXOUooNnC6pO2liQsIfsJF4OZdwtCDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eGocYsUrbgTFOAzzdemo/jP62MRBCWLxjWeqCsmJzJypoxgw+H5l5RsfMscUZubC9ZYhy1riB9YfUss7wzbnZFHtByeDtLGxhhfzoMWqGfcj9S1Kd/J+I1B+jd4QG7cWZCtcKFyOgOxKhA+iZ+LT/zP+TKI1rgwmUYfYy997Wmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6UFr8cL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181601F00893;
-	Sat, 30 May 2026 17:12:26 +0000 (UTC)
+	 MIME-Version; b=fI6ZLPa/etWypOpgAmtWo0czb2oIORe001gv4GN4M/imCg9Exu4FCmEKhTrMNdE6lOayoPzPhyO/IjOfsuRjldDbgBEDnD8hQDSKkvDy7AkDgtA0kbnb02/hcwO2Kbi7zXbhjBmx+OEy6TGsUctcHt+m2Xc+7A/nbzkeJHiZafk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mc1GA+ne; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274851F00893;
+	Sat, 30 May 2026 18:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161147;
-	bh=QVuqY2QMc4FaHUi3Xs5/S9bKWre6s75NV4XGmnO66Xo=;
+	s=korg; t=1780165775;
+	bh=0DpCrlK++1FTxteZziFpk7bvQfhV6Etn58W8ulBEK8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C6UFr8cLQ1C5ktb69rOstHerBgx9VYF2ZUcvxkJxf4lWAvJOPH/0ICuRgKC+S58Rz
-	 ytS+lo1WbN92CztbGeq/ic+5LeFHO+LfR6+xZEAfI0/iExe0C+KRjYyh9vNed+mAi6
-	 ccIbuuj0gl7lD+5aE+L/mJKCbmQLyNsIK1jZZNxQ=
+	b=mc1GA+neKjrLz/MtWfUM98LRRFLqFv9bP7IKXAKHki3LVKMXuz4Y4LzhL3PMm97x1
+	 6tXl9H8XfwYIpDQd6WuheXhzXRCxEPilIXWYeTOHcvmaxgJZUKQkrI3NWb1oz9ZDq+
+	 OQ1ws0h7WZYvwYjVuEy7Cpm/Kjh9M8C7p//SjlT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 499/969] dm cache: fix concurrent write failure in passthrough mode
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Tyllis Xu <LivelyCarpet87@gmail.com>
+Subject: [PATCH 5.10 142/589] ibmasm: fix OOB reads in command_file_write due to missing size checks
 Date: Sat, 30 May 2026 18:00:23 +0200
-Message-ID: <20260530160314.103514556@linuxfoundation.org>
+Message-ID: <20260530160228.510853743@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,114 +68,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257482-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258858-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.993];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9827160F685
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E7D6B61238B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Tyllis Xu <livelycarpet87@gmail.com>
 
-[ Upstream commit e4f66341779d0cf4c83c74793753a84094286d9e ]
+commit 0eb09f737428e482a32a2e31e5e223f2b35a71d3 upstream.
 
-When bio prison cell lock acquisition fails due to concurrent writes to
-the same block in passthrough mode, dm-cache incorrectly returns an I/O
-error instead of properly handling the concurrency. This can occur in
-both process and workqueue contexts when invalidate_lock() is called for
-exclusive access to a data block. Fix this by deferring the write bios
-to ensure proper block device behavior.
+The command_file_write() handler allocates a kernel buffer of exactly
+count bytes and copies user data into it, but does not validate the
+buffer against the dot command protocol before passing it to
+get_dot_command_size() and get_dot_command_timeout().
 
-Reproduce steps:
+Since both the allocation size (count) and the header fields (command_size,
+data_size) are independently user-controlled, an attacker can cause
+get_dot_command_size() to return a value exceeding the allocation,
+triggering OOB reads in get_dot_command_timeout() and an out-of-bounds
+memcpy_toio() that leaks kernel heap memory to the service processor.
 
-1. Create a cache device
+Fix with two guards: reject writes smaller than sizeof(struct
+dot_command_header) before allocation, then after copying user data
+reject commands where the buffer is smaller than the total size declared
+by the header (sizeof(header) + command_size + data_size). This ensures
+all subsequent header and payload field accesses stay within the buffer.
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. Promote the first data block into cache
-
-fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
---direct=1 --size=64k
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the first cached block concurrently. Sometimes one of the
-   processes will receive I/O errors.
-
-fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
---randrepeat=0 --direct=1 --numjobs=2 --size 64k
-
- <snip>
- fio-3.41
- fio: io_u error on file /dev/mapper/cache: Input/output error: write offset=4096, buflen=4096
- fio: pid=106, err=5/file:io_u.c:2008, func=io_u error, error=Input/output error
- test: (groupid=0, jobs=1): err= 0: pid=105
- test: (groupid=0, jobs=1): err= 5 (file:io_u.c:2008, func=io_u error, error=Input/output error): pid=106
- <snip>
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+Link: https://patch.msgid.link/20260314165355.548119-1-LivelyCarpet87@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/misc/ibmasm/ibmasmfs.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index f7da6f853ec33..c57df4d91c9b2 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1536,6 +1536,15 @@ static int invalidate_lock(struct dm_cache_migration *mg)
- 			    READ_WRITE_LOCK_LEVEL, prealloc, &mg->cell);
- 	if (r < 0) {
- 		free_prison_cell(cache, prealloc);
-+
-+		/* Defer the bio for retrying the cell lock */
-+		if (mg->overwrite_bio) {
-+			struct bio *bio = mg->overwrite_bio;
-+
-+			mg->overwrite_bio = NULL;
-+			defer_bio(cache, bio);
-+		}
-+
- 		invalidate_complete(mg, false);
- 		return r;
+--- a/drivers/misc/ibmasm/ibmasmfs.c
++++ b/drivers/misc/ibmasm/ibmasmfs.c
+@@ -303,6 +303,8 @@ static ssize_t command_file_write(struct
+ 		return -EINVAL;
+ 	if (count == 0 || count > IBMASM_CMD_MAX_BUFFER_SIZE)
+ 		return 0;
++	if (count < sizeof(struct dot_command_header))
++		return -EINVAL;
+ 	if (*offset != 0)
+ 		return 0;
+ 
+@@ -319,6 +321,11 @@ static ssize_t command_file_write(struct
+ 		return -EFAULT;
  	}
--- 
-2.53.0
-
+ 
++	if (count < get_dot_command_size(cmd->buffer)) {
++		command_put(cmd);
++		return -EINVAL;
++	}
++
+ 	spin_lock_irqsave(&command_data->sp->lock, flags);
+ 	if (command_data->command) {
+ 		spin_unlock_irqrestore(&command_data->sp->lock, flags);
 
 
 
