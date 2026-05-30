@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCFuNR0eG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257722-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:57 +0200
+	id qD18FmQwG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DC460FB70
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC6B612709
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 07F01301021E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:25:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E4925307E929
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AC433F5A0;
-	Sat, 30 May 2026 17:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C1539A7FE;
+	Sat, 30 May 2026 18:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tw7PzEB1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFjeiZRQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2383533B6C4;
-	Sat, 30 May 2026 17:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E7233F5B4;
+	Sat, 30 May 2026 18:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161953; cv=none; b=f7LNavWiNB1FGf50zha0I3ttD96pnd1yWFg+x5qQy3V5cKnH+2nWr2QU+L4TqaE0/y/2XwbC2+kQ5R1J2A1SeinPSrGaVp59sQdm5aGfvUO1cmJvXnZxEBu6FLLwtJLZLeZjkEAA6rIySI5P5L88+afNd0d2stY6XW6sj6t7zlA=
+	t=1780166625; cv=none; b=D/ftvfowqm+Z9+eHDjCshKh7ORYbd5wRnlqYBcpabnL9qIByCidmE+dY5WsgWX1PDCbFVh8pkEJoPVCSgfdYrb141CeiCghLDdddTTiHSeFjcAVWfDyHh3YZ3Wf/H3h7BVANxlDHmUC0aaMRHU4p7aJ70ArzfQpiZvQQCh1mRrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161953; c=relaxed/simple;
-	bh=hZwTuflw3WD6kU/xXv9ZkmY00poHFeQPM6x806CEbRU=;
+	s=arc-20240116; t=1780166625; c=relaxed/simple;
+	bh=hHwozZkO3MDHl9lUY8avCr69wHYYIrQS6Zj6Y04WD/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fLDKPDWy8DUFuL69J3Sbgw+bMni8Qh9qF2h4D9K1g2pSO/oBXqmYM52e5tXMf5n+gxFL5LkjtWelCVvW7dAeHOC9yAGOe8V9xiqiK+UXSLdj1oi7itmkbCAAHDDudIwz7ikBXkJVNOr//eNmMPcnHWjOsaANyyo2fYPi+cuC79I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tw7PzEB1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CF51F00893;
-	Sat, 30 May 2026 17:25:51 +0000 (UTC)
+	 MIME-Version; b=Yk21ID2eloFDBYVWJIuy4n8WG33kzAdhAnL2Fir9FsUZ+tOLWGdMLHAHJ9TfOwHl99AnrfPusYjJ1k82T/5tBgpMLC6roU9KE9q12LMb0f18v8F8GeD2OrKM1WFoe/PQKJYlkgmO0qa0PVQOSRwLAiQByFSHcNxZDtOyWSvatxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFjeiZRQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515121F00893;
+	Sat, 30 May 2026 18:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161952;
-	bh=2D3gQCKRQjwSyA7WJhBQEr4an1X+Eet4YmUTf/2wmMo=;
+	s=korg; t=1780166623;
+	bh=zva43PkorYUU5Gpzd2m4gu5gafeqwCfxp0A9ZkNNYzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tw7PzEB1ehlgOkfxCHAhQfSGDJga8Dhjf1cPBtoPRBmXNjOtwxcjO8cUhqiR0l0KX
-	 7IPQWCe1d64q0qw1A0IYSbhAW27Q1VEn/A/LKWjNOHLRUZJ56DO9cJSS7v+NYhp98h
-	 0LY0JXCSiGPBE/cvA127j9ePNqj642kI6rnW8Grc=
+	b=uFjeiZRQlIgNcZ++kZJ7DbbcDMbyaZEoPizx1TiteWTtbQv9VUNUsCm960wNQGVw6
+	 HIRIsuxVaqQ7z60XaW9vCnLsGaOcdqmrgaj9veqUdexY2XeKrG6Ra6Wc+6WZOS0bo8
+	 IpUanzuG/yoL1imOHE3X82aVjas/cItviw3R5xvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 777/969] drm/amd/display: Read EDID from VBIOS embedded panel info
-Date: Sat, 30 May 2026 18:05:01 +0200
-Message-ID: <20260530160322.046472555@linuxfoundation.org>
+Subject: [PATCH 5.10 421/589] net/sched: taprio: rename close_time to end_time
+Date: Sat, 30 May 2026 18:05:02 +0200
+Message-ID: <20260530160235.803413721@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,170 +64,239 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257722-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259104-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: D1DC460FB70
+	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: CEC6B612709
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 9ea16f64189bf7b6ba50fc7f0325b3c1f836d105 ]
+[ Upstream commit e5517551112ff2395611e552443932152f83672d ]
 
-Some board manufacturers hardcode the EDID for the embedded
-panel in the VBIOS. This EDID should be used when the panel
-doesn't have a DDC.
+There is a confusion in terms in taprio which makes what is called
+"close_time" to be actually used for 2 things:
 
-For reference, see the legacy non-DC display code:
-amdgpu_atombios_encoder_get_lcd_info()
+1. determining when an entry "closes" such that transmitted skbs are
+   never allowed to overrun that time (?!)
+2. an aid for determining when to advance and/or restart the schedule
+   using the hrtimer
 
-This is necessary to support embedded connectors without DDC.
+It makes more sense to call this so-called "close_time" "end_time",
+because it's not clear at all to me what "closes". Future patches will
+hopefully make better use of the term "to close".
 
-Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
-Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit eb105e63b474c11ef6a84a1c6b18100d851ff364)
+This is an absolutely mechanical change.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 105425b1969c ("net/sched: taprio: fix use-after-free in advance_sched() on schedule switch")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/bios/bios_parser.c | 62 +++++++++++++++++++
- .../display/include/grph_object_ctrl_defs.h   |  4 ++
- 2 files changed, 66 insertions(+)
+ net/sched/sch_taprio.c | 52 +++++++++++++++++++++---------------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-index 0f686e363d308..d8982aca8ef68 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-@@ -1215,6 +1215,60 @@ static enum bp_result bios_parser_get_embedded_panel_info(
- 	return BP_RESULT_FAILURE;
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index b876b950c62e8..9174cdd0aa74b 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -36,11 +36,11 @@ static DEFINE_SPINLOCK(taprio_list_lock);
+ struct sched_entry {
+ 	struct list_head list;
+ 
+-	/* The instant that this entry "closes" and the next one
++	/* The instant that this entry ends and the next one
+ 	 * should open, the qdisc will make some effort so that no
+ 	 * packet leaves after this time.
+ 	 */
+-	ktime_t close_time;
++	ktime_t end_time;
+ 	ktime_t next_txtime;
+ 	atomic_t budget;
+ 	int index;
+@@ -53,7 +53,7 @@ struct sched_gate_list {
+ 	struct rcu_head rcu;
+ 	struct list_head entries;
+ 	size_t num_entries;
+-	ktime_t cycle_close_time;
++	ktime_t cycle_end_time;
+ 	s64 cycle_time;
+ 	s64 cycle_time_extension;
+ 	s64 base_time;
+@@ -583,7 +583,7 @@ static struct sk_buff *taprio_dequeue_from_txq(struct Qdisc *sch, int txq,
+ 	 * guard band ...
+ 	 */
+ 	if (gate_mask != TAPRIO_ALL_GATES_OPEN &&
+-	    ktime_after(guard, entry->close_time))
++	    ktime_after(guard, entry->end_time))
+ 		return NULL;
+ 
+ 	/* ... and no budget. */
+@@ -645,7 +645,7 @@ static bool should_restart_cycle(const struct sched_gate_list *oper,
+ 	if (list_is_last(&entry->list, &oper->entries))
+ 		return true;
+ 
+-	if (ktime_compare(entry->close_time, oper->cycle_close_time) == 0)
++	if (ktime_compare(entry->end_time, oper->cycle_end_time) == 0)
+ 		return true;
+ 
+ 	return false;
+@@ -653,7 +653,7 @@ static bool should_restart_cycle(const struct sched_gate_list *oper,
+ 
+ static bool should_change_schedules(const struct sched_gate_list *admin,
+ 				    const struct sched_gate_list *oper,
+-				    ktime_t close_time)
++				    ktime_t end_time)
+ {
+ 	ktime_t next_base_time, extension_time;
+ 
+@@ -662,18 +662,18 @@ static bool should_change_schedules(const struct sched_gate_list *admin,
+ 
+ 	next_base_time = sched_base_time(admin);
+ 
+-	/* This is the simple case, the close_time would fall after
++	/* This is the simple case, the end_time would fall after
+ 	 * the next schedule base_time.
+ 	 */
+-	if (ktime_compare(next_base_time, close_time) <= 0)
++	if (ktime_compare(next_base_time, end_time) <= 0)
+ 		return true;
+ 
+-	/* This is the cycle_time_extension case, if the close_time
++	/* This is the cycle_time_extension case, if the end_time
+ 	 * plus the amount that can be extended would fall after the
+ 	 * next schedule base_time, we can extend the current schedule
+ 	 * for that amount.
+ 	 */
+-	extension_time = ktime_add_ns(close_time, oper->cycle_time_extension);
++	extension_time = ktime_add_ns(end_time, oper->cycle_time_extension);
+ 
+ 	/* FIXME: the IEEE 802.1Q-2018 Specification isn't clear about
+ 	 * how precisely the extension should be made. So after
+@@ -692,7 +692,7 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+ 	struct sched_gate_list *oper, *admin;
+ 	struct sched_entry *entry, *next;
+ 	struct Qdisc *sch = q->root;
+-	ktime_t close_time;
++	ktime_t end_time;
+ 
+ 	spin_lock(&q->current_entry_lock);
+ 	entry = rcu_dereference_protected(q->current_entry,
+@@ -711,41 +711,41 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+ 	 * entry of all schedules are pre-calculated during the
+ 	 * schedule initialization.
+ 	 */
+-	if (unlikely(!entry || entry->close_time == oper->base_time)) {
++	if (unlikely(!entry || entry->end_time == oper->base_time)) {
+ 		next = list_first_entry(&oper->entries, struct sched_entry,
+ 					list);
+-		close_time = next->close_time;
++		end_time = next->end_time;
+ 		goto first_run;
+ 	}
+ 
+ 	if (should_restart_cycle(oper, entry)) {
+ 		next = list_first_entry(&oper->entries, struct sched_entry,
+ 					list);
+-		oper->cycle_close_time = ktime_add_ns(oper->cycle_close_time,
+-						      oper->cycle_time);
++		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
++						    oper->cycle_time);
+ 	} else {
+ 		next = list_next_entry(entry, list);
+ 	}
+ 
+-	close_time = ktime_add_ns(entry->close_time, next->interval);
+-	close_time = min_t(ktime_t, close_time, oper->cycle_close_time);
++	end_time = ktime_add_ns(entry->end_time, next->interval);
++	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
+ 
+-	if (should_change_schedules(admin, oper, close_time)) {
++	if (should_change_schedules(admin, oper, end_time)) {
+ 		/* Set things so the next time this runs, the new
+ 		 * schedule runs.
+ 		 */
+-		close_time = sched_base_time(admin);
++		end_time = sched_base_time(admin);
+ 		switch_schedules(q, &admin, &oper);
+ 	}
+ 
+-	next->close_time = close_time;
++	next->end_time = end_time;
+ 	taprio_set_budget(q, next);
+ 
+ first_run:
+ 	rcu_assign_pointer(q->current_entry, next);
+ 	spin_unlock(&q->current_entry_lock);
+ 
+-	hrtimer_set_expires(&q->advance_timer, close_time);
++	hrtimer_set_expires(&q->advance_timer, end_time);
+ 
+ 	rcu_read_lock();
+ 	__netif_schedule(sch);
+@@ -1007,8 +1007,8 @@ static int taprio_get_start_time(struct Qdisc *sch,
+ 	return 0;
  }
  
-+static enum bp_result get_embedded_panel_extra_info(
-+	struct bios_parser *bp,
-+	struct embedded_panel_info *info,
-+	const uint32_t table_offset)
-+{
-+	uint8_t *record = bios_get_image(&bp->base, table_offset, 1);
-+	ATOM_PANEL_RESOLUTION_PATCH_RECORD *panel_res_record;
-+	ATOM_FAKE_EDID_PATCH_RECORD *fake_edid_record;
-+
-+	while (*record != ATOM_RECORD_END_TYPE) {
-+		switch (*record) {
-+		case LCD_MODE_PATCH_RECORD_MODE_TYPE:
-+			record += sizeof(ATOM_PATCH_RECORD_MODE);
-+			break;
-+		case LCD_RTS_RECORD_TYPE:
-+			record += sizeof(ATOM_LCD_RTS_RECORD);
-+			break;
-+		case LCD_CAP_RECORD_TYPE:
-+			record += sizeof(ATOM_LCD_MODE_CONTROL_CAP);
-+			break;
-+		case LCD_FAKE_EDID_PATCH_RECORD_TYPE:
-+			fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
-+			if (fake_edid_record->ucFakeEDIDLength) {
-+				if (fake_edid_record->ucFakeEDIDLength == 128)
-+					info->fake_edid_size =
-+						fake_edid_record->ucFakeEDIDLength;
-+				else
-+					info->fake_edid_size =
-+						fake_edid_record->ucFakeEDIDLength * 128;
-+
-+				info->fake_edid = fake_edid_record->ucFakeEDIDString;
-+
-+				record += struct_size(fake_edid_record,
-+						      ucFakeEDIDString,
-+						      info->fake_edid_size);
-+			} else {
-+				/* empty fake edid record must be 3 bytes long */
-+				record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
-+			}
-+			break;
-+		case LCD_PANEL_RESOLUTION_RECORD_TYPE:
-+			panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
-+			info->panel_width_mm = panel_res_record->usHSize;
-+			info->panel_height_mm = panel_res_record->usVSize;
-+			record += sizeof(ATOM_PANEL_RESOLUTION_PATCH_RECORD);
-+			break;
-+		default:
-+			return BP_RESULT_BADBIOSTABLE;
-+		}
-+	}
-+
-+	return BP_RESULT_OK;
-+}
-+
- static enum bp_result get_embedded_panel_info_v1_2(
- 	struct bios_parser *bp,
- 	struct embedded_panel_info *info)
-@@ -1331,6 +1385,10 @@ static enum bp_result get_embedded_panel_info_v1_2(
- 	if (ATOM_PANEL_MISC_API_ENABLED & lvds->ucLVDS_Misc)
- 		info->lcd_timing.misc_info.API_ENABLED = true;
+-static void setup_first_close_time(struct taprio_sched *q,
+-				   struct sched_gate_list *sched, ktime_t base)
++static void setup_first_end_time(struct taprio_sched *q,
++				 struct sched_gate_list *sched, ktime_t base)
+ {
+ 	struct sched_entry *first;
+ 	ktime_t cycle;
+@@ -1019,9 +1019,9 @@ static void setup_first_close_time(struct taprio_sched *q,
+ 	cycle = sched->cycle_time;
  
-+	if (lvds->usExtInfoTableOffset)
-+		return get_embedded_panel_extra_info(bp, info,
-+			le16_to_cpu(lvds->usExtInfoTableOffset) + DATA_TABLES(LCD_Info));
-+
- 	return BP_RESULT_OK;
+ 	/* FIXME: find a better place to do this */
+-	sched->cycle_close_time = ktime_add_ns(base, cycle);
++	sched->cycle_end_time = ktime_add_ns(base, cycle);
+ 
+-	first->close_time = ktime_add_ns(base, first->interval);
++	first->end_time = ktime_add_ns(base, first->interval);
+ 	taprio_set_budget(q, first);
+ 	rcu_assign_pointer(q->current_entry, NULL);
  }
+@@ -1564,7 +1564,7 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
+ 		if (admin)
+ 			call_rcu(&admin->rcu, taprio_free_sched_cb);
+ 	} else {
+-		setup_first_close_time(q, new_admin, start);
++		setup_first_end_time(q, new_admin, start);
  
-@@ -1456,6 +1514,10 @@ static enum bp_result get_embedded_panel_info_v1_3(
- 			(uint32_t) (ATOM_PANEL_MISC_V13_GREY_LEVEL &
- 				lvds->ucLCD_Misc) >> ATOM_PANEL_MISC_V13_GREY_LEVEL_SHIFT;
- 
-+	if (lvds->usExtInfoTableOffset)
-+		return get_embedded_panel_extra_info(bp, info,
-+			le16_to_cpu(lvds->usExtInfoTableOffset) + DATA_TABLES(LCD_Info));
-+
- 	return BP_RESULT_OK;
- }
- 
-diff --git a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
-index 813463ffe15c5..8e776c90d21bf 100644
---- a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
-+++ b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
-@@ -153,6 +153,10 @@ struct embedded_panel_info {
- 	uint32_t drr_enabled;
- 	uint32_t min_drr_refresh_rate;
- 	bool realtek_eDPToLVDS;
-+	uint16_t panel_width_mm;
-+	uint16_t panel_height_mm;
-+	uint16_t fake_edid_size;
-+	const uint8_t *fake_edid;
- };
- 
- struct dc_firmware_info {
+ 		/* Protects against advance_sched() */
+ 		spin_lock_irqsave(&q->current_entry_lock, flags);
 -- 
 2.53.0
 
