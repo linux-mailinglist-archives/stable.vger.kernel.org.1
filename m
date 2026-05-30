@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259127-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AD06BhkoG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:33 +0200
+	id AFRoFiYyG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259127-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3DF6112A7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2F9612BE3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 83C693008262
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:10:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A30930892D7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E813BFE3B;
-	Sat, 30 May 2026 18:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E5633F5B4;
+	Sat, 30 May 2026 18:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMkEJ0JJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xrv3QHkJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08548352027;
-	Sat, 30 May 2026 18:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13D01B87C0;
+	Sat, 30 May 2026 18:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164629; cv=none; b=oiBFQPBBpATgo9sPpN5DJTIDXhAnJTfCZ0MLF5+IZXm0979j2U0KxDB/5hAlhIzBskrm1MLvP/tzvmKY4HDOGvKBOa5ONJ90loSC+Zn5BuQ8xFmMNQMBjo9omTqv+vfiUlWeukZ2c3WnA4tNJzSITz+zYUWyjE+iiu6mLU2T8iU=
+	t=1780166701; cv=none; b=Tjr+q3rK/0+LhlRQE0KiagvxbSrGI7cUOzrx/QLWY0bQRkeL2gEkHAdFj8C7prqNqQfVnA5FUSuFgWX3z+3ugyGRDBOErig6USFpAIEDYTmqk+Wcw+KemP9bhOnQJ51+Ykc5e3MT4/A8DGZ9Gi//999RTT+1JkTvoVXT8cYrWc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164629; c=relaxed/simple;
-	bh=bYpx/nsx1iJR22/L1tGtNSgtuyN1vgn3EKWGFN0R7JM=;
+	s=arc-20240116; t=1780166701; c=relaxed/simple;
+	bh=W9auTEGNcnGf+tPkSlS3+LKd7zsH2nviVKhXUZ72szg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qk+eyzOoZLZUFykPJnnikYlQgZLqMDibY4LTERMQCl9L+V5OBlrSijgajTNurnQay9lMs3gPDhok9MzX2YkBuHW2y9CqV0Eti8SmcRd7k5cJn+X0NicmgNui3KQHxolMNdx7MenM96dgmzmgD5rJbWVgd57FOtzLgDfyGW6EsKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMkEJ0JJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC9F1F00893;
-	Sat, 30 May 2026 18:10:27 +0000 (UTC)
+	 MIME-Version; b=aPKnzD+hH+U1YZwhvQLZiULfX0vI10VNCepCe144UTQEinQMBZwKpev+iFhI4SuLKaZA1J3Syi4Mbs4q/qdRQiVglvaBjpP7ExRqnA+tJHTN00X9g5vbzKbEHcnpWh0qk7KHbPJEL0Z5FnGUDDEUW69dKPqzEpSaCTcX2EDL9CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xrv3QHkJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012E11F00893;
+	Sat, 30 May 2026 18:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164627;
-	bh=W7lx938apYuxNb34ZCZ4M3x1e+sRsINYiOXsSvaBOSI=;
+	s=korg; t=1780166699;
+	bh=RTPJfjCSpGUlGxpSxDqbp03bgB4r00enF25lSLRQqKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YMkEJ0JJ7TDQkBs3aUPmPplU8gcQkWe38PEFNsRYt30PKHoheuXb/kI/eHh4rKE5h
-	 4Dbw1wawKEHXZA+1z4LRBQllBAYxMlm/SXT5WA+80VFUuz0K+VowkaylyN8OslbEqa
-	 kPn9nypO+VjH39SPd4q7V7qilrbLaVVSyeilnuSw=
+	b=Xrv3QHkJslbrEXBX4OvcYUIhw+kMsM3NtHlNKyWZZ3njqbmAIRX/kNjyFRoqdiY8M
+	 wdx4tjrgae5A4NPHuABi3oSZf48zve2Usz6HN1rhOdOOj0EcQVQfbFT+W86zGlCSno
+	 55ZxmPd4a4Cxzm8bZzLx7ozXgh+D1mPE6rsAHeXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Enze Li <lienze@kylinos.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 611/776] scsi: sr: Add memory allocation failure handling for get_capabilities()
-Date: Sat, 30 May 2026 18:05:25 +0200
-Message-ID: <20260530160255.800368334@linuxfoundation.org>
+Subject: [PATCH 5.10 445/589] net/sched: sch_pie: annotate data-races in pie_dump_stats()
+Date: Sat, 30 May 2026 18:05:26 +0200
+Message-ID: <20260530160236.396102935@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,117 +67,191 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258521-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259127-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BF3DF6112A7
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email]
+X-Rspamd-Queue-Id: DD2F9612BE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Enze Li <lienze@kylinos.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ebc95c790653508ad7e031cfb9de5d0fa39135e2 ]
+[ Upstream commit 5154561d9b119f781249f8e845fecf059b38b483 ]
 
-The function get_capabilities() has the possibility of failing to allocate
-the transfer buffer but it does not currently handle this. This may lead to
-exceptions when accessing the buffer.
+pie_dump_stats() only runs with RTNL held,
+reading fields that can be changed in qdisc fast path.
 
-Add error handling when memory allocation fails.
+Add READ_ONCE()/WRITE_ONCE() annotations.
 
-Link: https://lore.kernel.org/r/20220427025647.298358-1-lienze@kylinos.cn
-Signed-off-by: Enze Li <lienze@kylinos.cn>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 0898a817621a ("cdrom, scsi: sr: propagate read-only status to block layer via set_disk_ro()")
+Alternative would be to acquire the qdisc spinlock, but our long-term
+goal is to make qdisc dump operations lockless as much as we can.
+
+tc_pie_xstats fields don't need to be latched atomically,
+otherwise this bug would have been caught earlier.
+
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260421142944.4009941-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sr.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ include/net/pie.h   |  2 +-
+ net/sched/sch_pie.c | 38 +++++++++++++++++++-------------------
+ 2 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/scsi/sr.c b/drivers/scsi/sr.c
-index af210910dadf2..529d4169b373b 100644
---- a/drivers/scsi/sr.c
-+++ b/drivers/scsi/sr.c
-@@ -118,7 +118,7 @@ static int sr_open(struct cdrom_device_info *, int);
- static void sr_release(struct cdrom_device_info *);
- 
- static void get_sectorsize(struct scsi_cd *);
--static void get_capabilities(struct scsi_cd *);
-+static int get_capabilities(struct scsi_cd *);
- 
- static unsigned int sr_check_events(struct cdrom_device_info *cdi,
- 				    unsigned int clearing, int slot);
-@@ -710,8 +710,9 @@ static int sr_probe(struct device *dev)
- 
- 	sdev->sector_size = 2048;	/* A guess, just in case */
- 
--	/* FIXME: need to handle a get_capabilities failure properly ?? */
--	get_capabilities(cd);
-+	error = -ENOMEM;
-+	if (get_capabilities(cd))
-+		goto fail_minor;
- 	sr_vendor_init(cd);
- 
- 	set_capacity(disk, cd->capacity);
-@@ -831,7 +832,7 @@ static void get_sectorsize(struct scsi_cd *cd)
- 	return;
+diff --git a/include/net/pie.h b/include/net/pie.h
+index 3fe2361e03b46..f6fd51e2b7daa 100644
+--- a/include/net/pie.h
++++ b/include/net/pie.h
+@@ -104,7 +104,7 @@ static inline void pie_vars_init(struct pie_vars *vars)
+ 	vars->dq_tstamp = DTIME_INVALID;
+ 	vars->accu_prob = 0;
+ 	vars->dq_count = DQCOUNT_INVALID;
+-	vars->avg_dq_rate = 0;
++	WRITE_ONCE(vars->avg_dq_rate, 0);
  }
  
--static void get_capabilities(struct scsi_cd *cd)
-+static int get_capabilities(struct scsi_cd *cd)
- {
- 	unsigned char *buffer;
- 	struct scsi_mode_data data;
-@@ -856,7 +857,7 @@ static void get_capabilities(struct scsi_cd *cd)
- 	buffer = kmalloc(512, GFP_KERNEL);
- 	if (!buffer) {
- 		sr_printk(KERN_ERR, cd, "out of memory.\n");
--		return;
-+		return -ENOMEM;
+ static inline struct pie_skb_cb *get_pie_cb(const struct sk_buff *skb)
+diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
+index 47f5d4adb5a33..7a8b05174ebf7 100644
+--- a/net/sched/sch_pie.c
++++ b/net/sched/sch_pie.c
+@@ -89,7 +89,7 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	bool enqueue = false;
+ 
+ 	if (unlikely(qdisc_qlen(sch) >= sch->limit)) {
+-		q->stats.overlimit++;
++		WRITE_ONCE(q->stats.overlimit, q->stats.overlimit + 1);
+ 		goto out;
  	}
  
- 	/* eat unit attentions */
-@@ -876,7 +877,7 @@ static void get_capabilities(struct scsi_cd *cd)
- 				 CDC_MRW | CDC_MRW_W | CDC_RAM);
- 		kfree(buffer);
- 		sr_printk(KERN_INFO, cd, "scsi-1 drive");
--		return;
-+		return 0;
+@@ -101,7 +101,7 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		/* If packet is ecn capable, mark it if drop probability
+ 		 * is lower than 10%, else drop it.
+ 		 */
+-		q->stats.ecn_mark++;
++		WRITE_ONCE(q->stats.ecn_mark, q->stats.ecn_mark + 1);
+ 		enqueue = true;
  	}
  
- 	n = data.header_length + data.block_descriptor_length;
-@@ -935,6 +936,7 @@ static void get_capabilities(struct scsi_cd *cd)
+@@ -111,15 +111,15 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		if (!q->params.dq_rate_estimator)
+ 			pie_set_enqueue_time(skb);
+ 
+-		q->stats.packets_in++;
++		WRITE_ONCE(q->stats.packets_in, q->stats.packets_in + 1);
+ 		if (qdisc_qlen(sch) > q->stats.maxq)
+-			q->stats.maxq = qdisc_qlen(sch);
++			WRITE_ONCE(q->stats.maxq, qdisc_qlen(sch));
+ 
+ 		return qdisc_enqueue_tail(skb, sch);
  	}
  
- 	kfree(buffer);
-+	return 0;
+ out:
+-	q->stats.dropped++;
++	WRITE_ONCE(q->stats.dropped, q->stats.dropped + 1);
+ 	q->vars.accu_prob = 0;
+ 	return qdisc_drop(skb, sch, to_free);
  }
+@@ -263,11 +263,11 @@ void pie_process_dequeue(struct sk_buff *skb, struct pie_params *params,
+ 			count = count / dtime;
  
- /*
+ 			if (vars->avg_dq_rate == 0)
+-				vars->avg_dq_rate = count;
++				WRITE_ONCE(vars->avg_dq_rate, count);
+ 			else
+-				vars->avg_dq_rate =
++				WRITE_ONCE(vars->avg_dq_rate,
+ 				    (vars->avg_dq_rate -
+-				     (vars->avg_dq_rate >> 3)) + (count >> 3);
++				     (vars->avg_dq_rate >> 3)) + (count >> 3));
+ 
+ 			/* If the queue has receded below the threshold, we hold
+ 			 * on to the last drain rate calculated, else we reset
+@@ -377,7 +377,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 	if (delta > 0) {
+ 		/* prevent overflow */
+ 		if (vars->prob < oldprob) {
+-			vars->prob = MAX_PROB;
++			WRITE_ONCE(vars->prob, MAX_PROB);
+ 			/* Prevent normalization error. If probability is at
+ 			 * maximum value already, we normalize it here, and
+ 			 * skip the check to do a non-linear drop in the next
+@@ -388,7 +388,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 	} else {
+ 		/* prevent underflow */
+ 		if (vars->prob > oldprob)
+-			vars->prob = 0;
++			WRITE_ONCE(vars->prob, 0);
+ 	}
+ 
+ 	/* Non-linear drop in probability: Reduce drop probability quickly if
+@@ -399,7 +399,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 		/* Reduce drop probability to 98.4% */
+ 		vars->prob -= vars->prob / 64;
+ 
+-	vars->qdelay = qdelay;
++	WRITE_ONCE(vars->qdelay, qdelay);
+ 	vars->backlog_old = backlog;
+ 
+ 	/* We restart the measurement cycle if the following conditions are met
+@@ -494,21 +494,21 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	struct pie_sched_data *q = qdisc_priv(sch);
+ 	struct tc_pie_xstats st = {
+ 		.prob		= q->vars.prob << BITS_PER_BYTE,
+-		.delay		= ((u32)PSCHED_TICKS2NS(q->vars.qdelay)) /
++		.delay		= ((u32)PSCHED_TICKS2NS(READ_ONCE(q->vars.qdelay))) /
+ 				   NSEC_PER_USEC,
+-		.packets_in	= q->stats.packets_in,
+-		.overlimit	= q->stats.overlimit,
+-		.maxq		= q->stats.maxq,
+-		.dropped	= q->stats.dropped,
+-		.ecn_mark	= q->stats.ecn_mark,
++		.packets_in	= READ_ONCE(q->stats.packets_in),
++		.overlimit	= READ_ONCE(q->stats.overlimit),
++		.maxq		= READ_ONCE(q->stats.maxq),
++		.dropped	= READ_ONCE(q->stats.dropped),
++		.ecn_mark	= READ_ONCE(q->stats.ecn_mark),
+ 	};
+ 
+ 	/* avg_dq_rate is only valid if dq_rate_estimator is enabled */
+ 	st.dq_rate_estimating = q->params.dq_rate_estimator;
+ 
+ 	/* unscale and return dq_rate in bytes per sec */
+-	if (q->params.dq_rate_estimator)
+-		st.avg_dq_rate = q->vars.avg_dq_rate *
++	if (st.dq_rate_estimating)
++		st.avg_dq_rate = READ_ONCE(q->vars.avg_dq_rate) *
+ 				 (PSCHED_TICKS_PER_SEC) >> PIE_SCALE;
+ 
+ 	return gnet_stats_copy_app(d, &st, sizeof(st));
 -- 
 2.53.0
 
