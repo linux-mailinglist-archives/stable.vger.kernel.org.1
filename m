@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-259179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNtNI9kwG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-259179-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:53 +0200
+	id 0ImVKR0pG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357A4612834
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24AA661154C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7F45D3017EEF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 881B13070CBB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C731A9F90;
-	Sat, 30 May 2026 18:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254073AB26B;
+	Sat, 30 May 2026 18:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrZjWgrS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynshIHbf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D0515E5BB;
-	Sat, 30 May 2026 18:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B5E223DC6;
+	Sat, 30 May 2026 18:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166871; cv=none; b=p4AbXE69N9vBjscQKxu8mAnk3Gnecd7h706nY7ktwcyOSAK/CWEiU8KWNfae2JkE3d3ZXOJmtyXQoKXVK4ODMB/R3nNj2Adi6kxxrHybyvclthMItz905s9XUTEe2/5/XlqGBu5muVbfba1jLM8+QNDh6MXvLgVWnDxDB/tufas=
+	t=1780164801; cv=none; b=hpx8mwzUCkT1IJaWIc1J1CC/48TFxJFGlwJLrfiElJTA9rIy348O7H7QoeG7SSAiyUuJfchSO6m3XabUmIJnAl/WW6Fhdg46j6Y/UymP6FxtPC90N1op2Utn7CAPRck9HNKTbkUaM7O2w3pSrullNfl2dAb1Ildg/vH3ZtC0nmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166871; c=relaxed/simple;
-	bh=BG5LpBDFiTlGo3kGHvBlyv0Mguyno9frwt34g0ZOMlw=;
+	s=arc-20240116; t=1780164801; c=relaxed/simple;
+	bh=cbjcytuIskpXVFOUz3TE97PhIWAAdmb1Jgr33SadYE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vxy73tS26rw/NXp+4FILyFof49RPe9UhUUTTDM3H4DpP9NEl9bUZLmB8KZwXkZZUgtMWbZXGL1Lv7Emqt3eDFJjWp0WlyjAaBFaygmNsuiqQYTo27QkNqoUiNu6QaDglZqFClaYRtiihTCjJn/yt4oeQPvbtjSGj4ulnHLFrqvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrZjWgrS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECCA1F00893;
-	Sat, 30 May 2026 18:47:49 +0000 (UTC)
+	 MIME-Version; b=IXQhXjZAMhd97Z2PFFa/9KplB6UqZiZNsCzuW9J4MIqSIXVAr/v9d+9Ty7IB7eXYuUgLaP8vVRugY0ZY8VpPBshWvy23XdI1dMSjEUGUnJsPmEun2363YyLeINjbCYJ48gcaAyk8I3cUZnBDaJpZHjFvYRg1zUVbfbps5EE2/aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynshIHbf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF1E1F00893;
+	Sat, 30 May 2026 18:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166870;
-	bh=ClA1/YryYY7W/JNi4iK27Y+V7MdmXnrrODC0DGfg2QY=;
+	s=korg; t=1780164800;
+	bh=E4xEX2FV4+M8rnk7dwu3WKIntHNL3HnmOTA/r6pC7Xg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MrZjWgrSTaGShbEHJn92YdHTNWB0UnqgUE/E7+zj0G8YE9klf/KH6RKs0MoNRmdMc
-	 mXdhPJyCYyTCwopMQEE5WqhdBnQgozn5XryJu4mwh+QYxphWV2+m57q+XFFozMKhjw
-	 cq8eSn/LbigMr6FOYv0zBO1VtrFRXbpU8ykagiRs=
+	b=ynshIHbf/ygXotVC6SgbiqShlqMgugpLDX/0NgYzDADdmxgn72osCEG01+j8sJ5a7
+	 7B5hdNJCq4pgXyzMIC1TPljo/DUujbP1Ya9oa9Jld5dEDbbRay0yVAUETEMeaAKjkw
+	 ztE8D3kUSDNmrtSTMo7pLYi8p+VzgQpppCHDGKMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 496/589] btrfs: tracepoints: fix sleep while in atomic context in btrfs_sync_file()
-Date: Sat, 30 May 2026 18:06:17 +0200
-Message-ID: <20260530160237.657192040@linuxfoundation.org>
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 5.15 664/776] drm/i915: skip __i915_request_skip() for already signaled requests
+Date: Sat, 30 May 2026 18:06:18 +0200
+Message-ID: <20260530160257.052007704@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259179-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258573-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,89 +86,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,qemu.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 357A4612834
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,ursulin.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 24AA661154C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
 
-[ Upstream commit c73370c677646e86fc4b1780fb07027bdf847375 ]
+commit 4cfe4c0efbdcde742a47813180cc69b132d7598e upstream.
 
-The trace event btrfs_sync_file() is called in an atomic context (all trace
-events are) and its call to dput(), which is needed due to the call to
-dget_parent(), can sleep, triggering a kernel splat.
+After a GPU reset the HWSP is zeroed, so previously completed
+requests appear incomplete. If such a request is picked up during
+reset_rewind() and marked guilty, i915_request_set_error_once()
+returns early (fence already signaled), leaving fence.error without
+a fatal error code. The subsequent __i915_request_skip() then hits:
+```
+GEM_BUG_ON(!fatal_error(rq->fence.error))
+```
 
-This can be reproduced by enabling the trace event and running btrfs/056
-from fstests for example. The splat shown in dmesg is the following:
+Fixes a kernel BUG observed on Sandy Bridge (Gen6) during
+heartbeat-triggered engine resets.
+```
+kernel BUG at drivers/gpu/drm/i915/i915_request.c:556!
+RIP: __i915_request_skip+0x15e/0x1d0 [i915]
+...
+__i915_request_reset+0x212/0xa70 [i915]
+reset_rewind+0xe4/0x280 [i915]
+intel_gt_reset+0x30d/0x5b0 [i915]
+heartbeat+0x516/0x530 [i915]
+```
 
-  [53.919] BUG: sleeping function called from invalid context at fs/dcache.c:970
-  [53.947] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 32773, name: xfs_io
-  [53.988] preempt_count: 2, expected: 0
-  [53.967] RCU nest depth: 0, expected: 0
-  [53.943] Preemption disabled at:
-  [53.944] [<0000000000000000>] 0x0
-  [54.078] CPU: 0 UID: 0 PID: 32773 Comm: xfs_io Tainted: G        W           7.1.0-rc1-btrfs-next-232+ #1 PREEMPT(full)
-  [54.070] Tainted: [W]=WARN
-  [54.071] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-  [54.072] Call Trace:
-  [54.074]  <TASK>
-  [54.076]  dump_stack_lvl+0x56/0x80
-  [54.079]  __might_resched.cold+0xd6/0x10f
-  [54.072]  dput.part.0+0x24/0x110
-  [54.078]  trace_event_raw_event_btrfs_sync_file+0x75/0x140 [btrfs]
-  [54.089]  btrfs_sync_file+0x1ed/0x530 [btrfs]
-  [54.087]  ? __handle_mm_fault+0x8ae/0xed0
-  [54.089]  btrfs_do_write_iter+0x172/0x210 [btrfs]
-  [54.091]  vfs_write+0x21f/0x450
-  [54.094]  __x64_sys_pwrite64+0x8d/0xc0
-  [54.096]  ? do_user_addr_fault+0x20c/0x670
-  [54.099]  do_syscall_64+0x60/0xf20
-  [54.092]  ? clear_bhb_loop+0x60/0xb0
-  [54.094]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Guard __i915_request_skip() with i915_request_signaled(), if the
+fence is already signaled, the ring content is committed and there
+is nothing left to skip.
 
-So stop using dget_parent() and dput() and access the parent dentry
-directly as dentry->d_parent. This is also what ext4 is doing in
-its equivalent trace event ext4_sync_file_enter().
-
-Fixes: a85b46db143f ("btrfs: tracepoints: get correct superblock from dentry in event btrfs_sync_file()")
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 36e191f0644b ("drm/i915: Apply i915_request_skip() on submission")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/13729
+Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Cc: stable@vger.kernel.org # v5.7+
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/fe76921d35b6ae85aa651822726d0d9815aa5362.1776339012.git.sebastian.brzezinka@intel.com
+(cherry picked from commit 5ba54393dcd7adf75a9f39f5a933b1538349cad5)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/btrfs.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_reset.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
-index 7e6fcbc6c6c55..dc816accaf38a 100644
---- a/include/trace/events/btrfs.h
-+++ b/include/trace/events/btrfs.h
-@@ -699,10 +699,8 @@ TRACE_EVENT(btrfs_sync_file,
- 	TP_fast_assign(
- 		struct dentry *dentry = file_dentry(file);
- 		struct inode *inode = file_inode(file);
--		struct dentry *parent = dget_parent(dentry);
--		struct inode *parent_inode = d_inode(parent);
-+		struct inode *parent_inode = d_inode(dentry->d_parent);
- 
--		dput(parent);
- 		TP_fast_assign_fsid(btrfs_sb(inode->i_sb));
- 		__entry->ino		= btrfs_ino(BTRFS_I(inode));
- 		__entry->parent		= btrfs_ino(BTRFS_I(parent_inode));
--- 
-2.53.0
-
+--- a/drivers/gpu/drm/i915/gt/intel_reset.c
++++ b/drivers/gpu/drm/i915/gt/intel_reset.c
+@@ -137,7 +137,8 @@ void __i915_request_reset(struct i915_re
+ 	rcu_read_lock(); /* protect the GEM context */
+ 	if (guilty) {
+ 		i915_request_set_error_once(rq, -EIO);
+-		__i915_request_skip(rq);
++		if (!i915_request_signaled(rq))
++			__i915_request_skip(rq);
+ 		banned = mark_guilty(rq);
+ 	} else {
+ 		i915_request_set_error_once(rq, -EAGAIN);
 
 
 
