@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258353-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IF73B6ccG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257611-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:43 +0200
+	id 8ETnFakoG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258353-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD35960F7C5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DF76113DB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 242BF3028F04
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:19:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53214303DAFA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34ECA30E847;
-	Sat, 30 May 2026 17:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D772355F53;
+	Sat, 30 May 2026 18:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AI4py74"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8sEBblm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2FE3161A3;
-	Sat, 30 May 2026 17:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A1323392B;
+	Sat, 30 May 2026 18:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161581; cv=none; b=mhm+ThQUzpMBkcQ9nACLpgb31HBl/333DWIE2wNhHOdon5mtP2IT9mzqi7yHxzyB5N+l1Gt3N+OoQYBc84+5uesi/yoEGQPDasj31xTxv9GTGI2mh+SeGkxvNgLM8FsNI+kr70dtGS8WYDlpWVJgv9UalFwebpIBk4vN5D3vXIU=
+	t=1780164067; cv=none; b=fZc0dnQTDJ9OCWuxaGrfUgyJBe3In96wUNCgypwP9/hWoI+UxlO2hG0rGXGBJ8m1qy7KlMAZccyTFIwRSZFzZKwpniD2/YCEtSeTnwzB9B9U+XKdhJINnX63SaIuaLn/GJ9eDNeMOC+OyH/KsOWEljKCeo6Mu7XDS/mZTHH83AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161581; c=relaxed/simple;
-	bh=SR0cbpsidA5LmY2wzpC0RaZgPslw1+fFejqcqPoUtUc=;
+	s=arc-20240116; t=1780164067; c=relaxed/simple;
+	bh=0CVGOmIAVuhE+1hAX1j70SDU+eGRr3XAh6QMEhSOPDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otPBp+H6Rv3RmBgDWdoh+Wo4sHN0XwSk84Wjl5db/edyr8JRRyyLekQ0bGU/x8oIC6nW6sv5xJ58nxwLmTDwiI5oIiXsyEaeBRE56WOYvOSEghzTopJ64O0GrZjkdqowtHaoo6y5HaoEGvPNzXyDJfLIK/GdcnFiy3pwAE+7GlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AI4py74; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CA01F00893;
-	Sat, 30 May 2026 17:19:39 +0000 (UTC)
+	 MIME-Version; b=mw5kMr2VxA78k1Ploo5bq4nAv7VvZcwq1aOrlZ8FRsCf8X3tJqJpk6AasYvLZTqEvL1v4J6kPVQ/MMI1bJBjDtvMPk3p+xvKWoPnDYLm1YWyXeErdHDSCJSLlVn9vc4hnybg9kEoEXDEbL0AJqs4yTwoXKs5nA/q7iqDAViWCf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8sEBblm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685BE1F00893;
+	Sat, 30 May 2026 18:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161580;
-	bh=TCMrEYr48k+Gkqcr7oaxKOvwsgDOW5g/Ymm86CrhPeY=;
+	s=korg; t=1780164066;
+	bh=vnrKo85h7iLL1BzGSw2qC3sYfzniuZs+vw++FAFM8rE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0AI4py74Ccea7So74QgUSngzqbMaXyVxNka/4+c0tSXrmw21HciI8SpsUjJmhB2tC
-	 OkYsLbbI7LP2s86S2Yr8Q4o+DD8y2HSjQbXEARF5IPyQR4NK9wkzCOCX/EDmqpfsFh
-	 DqTm2U4U7RYtD7pory1UWl16h9N8xtZwES2wHoMM=
+	b=s8sEBblmfWN3PigwZNhhzXMVexmlt9Ql6+lz531HGp7buU87hHWyu4JIUkL0aExT9
+	 B4aljVxLBSGI8Nf8LUyEhykzLk2bCI5dyeLWq6ipcvVgiVdSxs5C5zCa+3o9XAm1el
+	 CN7J2nsLX7G87YHs2me258yv+kifGonWwPSaYHJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 635/969] driver core: device.h: remove extern from function prototypes
+Subject: [PATCH 5.15 445/776] spi: hisi-kunpeng: prevent infinite while() loop in hisi_spi_flush_fifo
 Date: Sat, 30 May 2026 18:02:39 +0200
-Message-ID: <20260530160317.987666910@linuxfoundation.org>
+Message-ID: <20260530160251.908863019@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +66,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257611-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258353-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CD35960F7C5
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 04DF76113DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit f43243c66e5e9ad839d235f82a58e73a7e7612af ]
+[ Upstream commit 9f61daf2c2debe9f5cf4e1a4471e56a89a6fe45a ]
 
-The kernel coding style does not require 'extern' in function prototypes
-in .h files, so remove them from include/linux/device.h as they are not
-needed.
+The hisi_spi_flush_fifo()'s inner while loop that lacks any timeout
+mechanism. Maybe the hardware never becomes empty, the loop will spin
+forever, causing the CPU to hang.
 
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Link: https://lore.kernel.org/r/20230324122711.2664537-1-gregkh@linuxfoundation.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 797cc011ae02 ("backlight: sky81452-backlight: Check return value of devm_gpiod_get_optional() in sky81452_bl_parse_dt()")
+Fix this by adding a inner_limit based on loops_per_jiffy. The inner loop
+now exits after approximately one jiffy if the FIFO remains non-empty, logs
+a ratelimited warning, and breaks out of the outer loop. Additionally, add
+a cpu_relax() inside the busy loop to improve power efficiency.
+
+Fixes: c770d8631e18 ("spi: Add HiSilicon SPI Controller Driver for Kunpeng SoCs")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://patch.msgid.link/d834ce28172886bfaeb9c8ca00cfd9bf1c65d5a1.1773889292.git.xiaopei01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/device.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-hisi-kunpeng.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 98e4a0d01e5a4..428c96ce6b4c4 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1149,8 +1149,7 @@ void device_links_supplier_sync_state_pause(void);
- void device_links_supplier_sync_state_resume(void);
- void device_link_wait_removal(void);
+diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
+index 54730e93fba45..06c8893243b7d 100644
+--- a/drivers/spi/spi-hisi-kunpeng.c
++++ b/drivers/spi/spi-hisi-kunpeng.c
+@@ -198,8 +198,18 @@ static void hisi_spi_flush_fifo(struct hisi_spi *hs)
+ 	unsigned long limit = loops_per_jiffy << 1;
  
--extern __printf(3, 4)
--int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
-+__printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
+ 	do {
+-		while (hisi_spi_rx_not_empty(hs))
++		unsigned long inner_limit = loops_per_jiffy;
++
++		while (hisi_spi_rx_not_empty(hs) && --inner_limit) {
+ 			readl(hs->regs + HISI_SPI_DOUT);
++			cpu_relax();
++		}
++
++		if (!inner_limit) {
++			dev_warn_ratelimited(hs->dev, "RX FIFO flush timeout\n");
++			break;
++		}
++
+ 	} while (hisi_spi_busy(hs) && limit--);
+ }
  
- /* Create alias, so I can be autoloaded. */
- #define MODULE_ALIAS_CHARDEV(major,minor) \
 -- 
 2.53.0
 
