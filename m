@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-259132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257752-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCmUDkQyG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:56 +0200
+	id AMlYC+8eG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257752-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4140612C2A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A203B60FD72
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A27E330BB286
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ECB01301FC82
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2F92E7398;
-	Sat, 30 May 2026 18:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FA7344DA4;
+	Sat, 30 May 2026 17:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9a29Xm1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4Gd8kd5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1ED86334;
-	Sat, 30 May 2026 18:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C7633E36A;
+	Sat, 30 May 2026 17:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166717; cv=none; b=sK1XDh9JQosnU6s+MUCk9M9Qe4ynUw6EoUcq3e2YY83Kv+KlSkKIyeAD8hWGs4oB5r8rcZ7NO2HI565UMrGVYZEPQzy0TTzq1JN4NuGdoSpe+0n5I8DCS5J0lwqgpOPZUWSKZX641s/nGxpoaMRQB4mqhnAqyDEHT1Su0C3k+EA=
+	t=1780162053; cv=none; b=ji1FB+IEf7ZBj4x/moFWET+6teEvQM3zL89zYfY7Pst8aUdvX/4pVxy4Jnl5S7qlb8AmNfNmfChiRb4gTpaAgrhgs9MrmNjY56nvUhidtz1ZvI/pBf7/keroKMkr3H1QO6it8bIdpdgXCH7qMncDLE/1pUbf5c8kOZceUwElGf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166717; c=relaxed/simple;
-	bh=Jg3dba7QZNM0e91EMDB8W55PD3bECKJlf2pXB9Y3Eew=;
+	s=arc-20240116; t=1780162053; c=relaxed/simple;
+	bh=/+V3/2GRayl2Fjl4bTPj90YOtCjgFPMDQf9AZ+ES5Fs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVyaLj9JTLkPI/iiZLKkt7I+rVFahIC0YXkfvj99H3BwzRlruebOTIDcJYGnxNBkxC0/9bcK5fhOfN/Pr8sr0ggdL7Ab/c+U7VV0WU5q7V4LyDUqp3FBUGAwlMhWn8zEIJrz15u02SF7vQh/g+Zu7UAylDFOMhO8gFQxPKo6FJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9a29Xm1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415BE1F00893;
-	Sat, 30 May 2026 18:45:15 +0000 (UTC)
+	 MIME-Version; b=D4Gw9UdG5RG7idM1+3AIpiGkAFbAfPsnxgwtCz8jM4VcWp9inA4sXzgtLlrwEIH5Zm0M4UW3FKOoni3N3R3kuQO5i3uCSzlSFdeYEcg6m9b4XUI4f2JHncbt3FiH+3vocG+Cg/N78NPJnHZdnu2yqDWGWrE2OfCxAFMhWqJVtnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4Gd8kd5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B001F00893;
+	Sat, 30 May 2026 17:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166715;
-	bh=x/3byMkXRhBUHe3TsyZfz7rS5c+HXMecSFBcC+tAav8=;
+	s=korg; t=1780162052;
+	bh=VfZp4mNj/Z7uckElyz0qWp9HABMawbfg5VHei9opVu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G9a29Xm1SG4gfbq58LIIkIr8iRjE4jnZ512q7SMtzJSW7qzhJfd3LNhhd8OQ6OL4G
-	 gT4HKWOaDKIj4Kv5WPj45qRcGsDtlte6b2O0cXAx6NtrfH++40YFOAKZF0CMQfBuzP
-	 DxVffHD3PL7OnNPwBGNCs6qXmiT4sIfLx+6vbHp0=
+	b=y4Gd8kd5N35g5TzuEG7Tco76QPC/H8uEapiv4YGLS0wO9hGjXOGZ5P0k3ka4KTU0J
+	 Zlr2PSJdnpdjd1ONjsPnSiSRaDAYq2CxQJxiQ3hRaC96Qt69b4B/I8nnJz+VPfhH0i
+	 UbkXbRRGz+FSz6KzjYcChnLZ+LcsCtg4dg72qgTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 450/589] nfp: fix swapped arguments in nfp_encode_basic_qdr() calls
+	Li Xiasong <lixiasong1@huawei.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.1 807/969] netfilter: nf_conntrack_sip: get helper before allocating expectation
 Date: Sat, 30 May 2026 18:05:31 +0200
-Message-ID: <20260530160236.520071496@linuxfoundation.org>
+Message-ID: <20260530160322.916931038@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,129 +77,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259132-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257752-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bell-sw.com:email]
-X-Rspamd-Queue-Id: A4140612C2A
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A203B60FD72
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Li Xiasong <lixiasong1@huawei.com>
 
-[ Upstream commit 4078c5611d7585548b249377ebd60c272e410490 ]
+commit eb6317739b1ea3ab28791e1f91b24781905fa815 upstream.
 
-There is a mismatch between the passed arguments and the actual
-nfp_encode_basic_qdr() function parameter names:
+process_register_request() allocates an expectation and then checks
+whether a conntrack helper is available. If helper lookup fails, the
+function returns early and the allocated expectation is left behind.
 
-  static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
-                                  int mode, bool addr40, int isld1,
-                                  int isld0)
-  {
-      ...
+Reorder the code to fetch and validate helper before calling
+nf_ct_expect_alloc(). This keeps the logic simpler and removes the leak
+path while preserving existing behavior.
 
-But "dest_island" and "cpp_tgt" are swapped at every call-site.
-For example:
-
-  return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-                              mode, addr40, isld1, isld0);
-
-As a result, nfp_encode_basic_qdr() receives "dest_island" as CPP target
-type, which is always NFP_CPP_TARGET_QDR(2) for these calls, and "cpp_tgt"
-as the destination island ID, which can accidentally match or be outside
-the valid NFP_CPP_TARGET_* types (e.g. '-1' for any destination).
-
-Since code already worked for years, also add extra pr_warn() to error
-paths in nfp_encode_basic_qdr() to help identify any potential address
-verification failures.
-
-Detected using the static analysis tool - Svace.
-
-Fixes: 4cb584e0ee7d ("nfp: add CPP access core")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Link: https://patch.msgid.link/20260422160536.61855-1-aleksei.kodanev@bell-sw.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e14575fa7529 ("netfilter: nf_conntrack: use rcu accessors where needed")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/netronome/nfp/nfpcore/nfp_target.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ net/netfilter/nf_conntrack_sip.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-index 79470f198a62a..9cf19446657c6 100644
---- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-+++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-@@ -435,12 +435,17 @@ static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -1367,6 +1367,10 @@ static int process_register_request(stru
+ 		goto store_cseq;
+ 	}
  
- 	/* Full Island ID and channel bits overlap? */
- 	ret = nfp_decode_basic(addr, &v, cpp_tgt, mode, addr40, isld1, isld0);
--	if (ret)
-+	if (ret) {
-+		pr_warn("%s: decode dest_island failed: %d\n", __func__, ret);
- 		return ret;
-+	}
++	helper = rcu_dereference(nfct_help(ct)->helper);
++	if (!helper)
++		return NF_DROP;
++
+ 	exp = nf_ct_expect_alloc(ct);
+ 	if (!exp) {
+ 		nf_ct_helper_log(skb, ct, "cannot alloc expectation");
+@@ -1377,10 +1381,6 @@ static int process_register_request(stru
+ 	if (sip_direct_signalling)
+ 		saddr = &ct->tuplehash[!dir].tuple.src.u3;
  
- 	/* The current address won't go where expected? */
--	if (dest_island != -1 && dest_island != v)
-+	if (dest_island != -1 && dest_island != v) {
-+		pr_warn("%s: dest_island mismatch: current (%d) != decoded (%d)\n",
-+			__func__, dest_island, v);
- 		return -EINVAL;
-+	}
- 
- 	/* If dest_island was -1, we don't care where it goes. */
- 	return 0;
-@@ -493,7 +498,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * the address but we can verify if the existing
- 			 * contents will point to a valid island.
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		iid_lsb = addr40 ? 34 : 26;
-@@ -504,7 +509,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 		return 0;
- 	case 1:
- 		if (cpp_tgt == NFP_CPP_TARGET_QDR && !addr40)
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		idx_lsb = addr40 ? 39 : 31;
-@@ -530,7 +535,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * be set before hand and with them select an island.
- 			 * So we need to confirm that it's at least plausible.
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		/* Make sure we compare against isldN values
-@@ -551,7 +556,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * iid<1> = addr<30> = channel<0>
- 			 * channel<1> = addr<31> = Index
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		isld[0] &= ~3;
--- 
-2.53.0
-
+-	helper = rcu_dereference(nfct_help(ct)->helper);
+-	if (!helper)
+-		return NF_DROP;
+-
+ 	nf_ct_expect_init(exp, SIP_EXPECT_SIGNALLING, nf_ct_l3num(ct),
+ 			  saddr, &daddr, proto, NULL, &port);
+ 	exp->timeout.expires = sip_timeout * HZ;
 
 
 
