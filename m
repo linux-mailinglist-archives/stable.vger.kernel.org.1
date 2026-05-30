@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-258790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLgrDa4tG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258790-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:34:22 +0200
+	id kJm1EcElG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97073612010
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:34:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7DE610CD3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C1E2D30CC91E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 20F1330BDFAF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB6625B0B3;
-	Sat, 30 May 2026 18:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C1F346E55;
+	Sat, 30 May 2026 17:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOanCtn5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iveo8e8b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FEB219303;
-	Sat, 30 May 2026 18:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967D9320CAD;
+	Sat, 30 May 2026 17:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165547; cv=none; b=ffYtt3wgsgxM2RfWmqxacV7n6/KO3DiH/AFa9PsEdihM14R6rehoTUpn+yEYfjbTGof6k5tJcjxLs+bL22i1+mmFKuyybI9GVhydhrRx/wDvOsiMfD/Bqr1nFIfN+XXrj2xsUyz9i6BzenWycRWaOl71wHZ8e7YSutqc4gz+25M=
+	t=1780163502; cv=none; b=qu7p6PqZXiDZK0l54IGsLobRnlqK39yz0aEhXeaSxLkPw3psck2UD/afHFXjSd3iok1iUZI+gtDXX7gIh4HBaApveYQ1jwM3Y59/EzIFwBjsaAYbUpwZGtFMXDkhMISD832RQrBTqK4n7MTZhhMsZrj3JbsvvXB6CAlukh0vOoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165547; c=relaxed/simple;
-	bh=98SPtfLfsolmC6OYO8qK/Xw2xt+1DVbXHlXucDWPthc=;
+	s=arc-20240116; t=1780163502; c=relaxed/simple;
+	bh=JgPDRw1vDu26HIx8x2TAWzX49IPnZsrCxxLhhKUqg9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQIpTDltC6fAZ0OQVbXsISLRSD+bDf2SDrmlhjzeK6trtk+JqXG9c3xPk5GRzFvWYFtS/1QAjQakwna7TsCbBFTFs0p9SVZphDVXIz4S2zDwSvqTAt2wFlUuFY7L0Xxz9K2uLX+hYMg30I263u75ougjMdwyUYEsL/BAMaLxHR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOanCtn5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434301F00893;
-	Sat, 30 May 2026 18:25:45 +0000 (UTC)
+	 MIME-Version; b=EcKCn9dnCgmiTo3ZHiNpFLNnvNEhQVJSjQXRod99af2m6fhcZIRSiCQpjz0HDUFbOaEyRVSohLtamM5nsvpm2TOdq1JDZvALNDJrwgCUoYDC4ec5Y2EtrIpTN/tIcxshKcISxqIRAiHhlosoQEIwAxtkvb8LyZTPDDe6VYfwkks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iveo8e8b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8FF1F00893;
+	Sat, 30 May 2026 17:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165546;
-	bh=dtJJI+w1tVZ21ZvHertcdIfkkARi6e/Zj1REzRShHHg=;
+	s=korg; t=1780163501;
+	bh=+HwFabfDFiaj47k/1UWvqBhuJaPPoIQo4Ig/lcqEaEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fOanCtn5fENJEJjyzuXXuRxwX1iCIBCGCg0Tnct1vAdzKhRnuDOUQT4aEJJwsKyl7
-	 TUx1b/xLUnXfCPtupMGrxnOH+Y+I1dAk9Oimm/rL+qjUad3h6lvorSwkMfQ3c4qb0q
-	 u8LPVZnceoHFqDs5zORHZidIzyr+Oc/sDilDhLXA=
+	b=Iveo8e8b2wXhKuwJhzyx3opZRfbWaT8g267Q0/ycb7ug7uP36KXQwkhzLHMEGOSto
+	 72cqdUiKd87pWgcjuedo5iV9gqI/FnK4/t8mQRoirJ5rfOGtd3tI/Bgo7maRuEgC1L
+	 1dOvFFXof9Aq1XoV7LJS5XlOpRwiL2TI6stk2CoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+67b90111784a3eac8c04@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Joseph Qi <jiangqi903@gmail.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 111/589] ocfs2: fix possible deadlock between unlink and dio_end_io_write
+	Shivam Kalra <shivamkalra98@zohomail.in>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 278/776] ACPI: video: force native backlight on HP OMEN 16 (8A44)
 Date: Sat, 30 May 2026 17:59:52 +0200
-Message-ID: <20260530160227.672629318@linuxfoundation.org>
+Message-ID: <20260530160247.743784360@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,121 +63,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-258790-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,linux.alibaba.com,suse.com,fasheh.com,evilplan.org,oracle.com,gmail.com,live.cn,huawei.com,linux-foundation.org,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258186-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,67b90111784a3eac8c04];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 97073612010
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9F7DE610CD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
+From: Shivam Kalra <shivamkalra98@zohomail.in>
 
-[ Upstream commit b02da26a992db0c0e2559acbda0fc48d4a2fd337 ]
+commit 4b506ea5351a1f5937ac632a4a5c35f6f796cc41 upstream.
 
-ocfs2_unlink takes orphan dir inode_lock first and then ip_alloc_sem,
-while in ocfs2_dio_end_io_write, it acquires these locks in reverse order.
-This creates an ABBA lock ordering violation on lock classes
-ocfs2_sysfile_lock_key[ORPHAN_DIR_SYSTEM_INODE] and
-ocfs2_file_ip_alloc_sem_key.
+The HP OMEN 16 Gaming Laptop (board name 8A44) has a mux-less hybrid
+GPU configuration with AMD Rembrandt (Radeon 680M) and NVIDIA GA104
+(RTX 3070 Ti). The internal eDP panel is wired to the AMD iGPU.
 
-Lock Chain #0 (orphan dir inode_lock -> ip_alloc_sem):
-ocfs2_unlink
-  ocfs2_prepare_orphan_dir
-    ocfs2_lookup_lock_orphan_dir
-      inode_lock(orphan_dir_inode) <- lock A
-    __ocfs2_prepare_orphan_dir
-      ocfs2_prepare_dir_for_insert
-        ocfs2_extend_dir
-	  ocfs2_expand_inline_dir
-	    down_write(&oi->ip_alloc_sem) <- Lock B
+When Nouveau loads without GSP firmware, the ACPI video backlight
+device (acpi_video0) gets registered alongside the native AMD
+backlight (amdgpu_bl2). In this state, writes to amdgpu_bl2 update
+the software brightness value but fail to change the physical panel
+brightness.
 
-Lock Chain #1 (ip_alloc_sem -> orphan dir inode_lock):
-ocfs2_dio_end_io_write
-  down_write(&oi->ip_alloc_sem) <- Lock B
-  ocfs2_del_inode_from_orphan()
-    inode_lock(orphan_dir_inode) <- Lock A
+Force native backlight to prevent acpi_video0 from registering.
+Confirmed that booting with acpi_backlight=native resolves the
+issue.
 
-Deadlock Scenario:
-  CPU0 (unlink)                     CPU1 (dio_end_io_write)
-  ------                            ------
-  inode_lock(orphan_dir_inode)
-                                    down_write(ip_alloc_sem)
-  down_write(ip_alloc_sem)
-                                    inode_lock(orphan_dir_inode)
-
-Since ip_alloc_sem is to protect allocation changes, which is unrelated
-with operations in ocfs2_del_inode_from_orphan.  So move
-ocfs2_del_inode_from_orphan out of ip_alloc_sem to fix the deadlock.
-
-Link: https://lkml.kernel.org/r/20260306032211.1016452-1-joseph.qi@linux.alibaba.com
-Reported-by: syzbot+67b90111784a3eac8c04@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=67b90111784a3eac8c04
-Fixes: a86a72a4a4e0 ("ocfs2: take ip_alloc_sem in ocfs2_dio_get_block & ocfs2_dio_end_io_write")
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+Link: https://patch.msgid.link/20260426-omen-16-backlight-fix-v1-1-62364f268ea6@zohomail.in
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/aops.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/acpi/video_detect.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/ocfs2/aops.c
-+++ b/fs/ocfs2/aops.c
-@@ -2325,8 +2325,6 @@ static int ocfs2_dio_end_io_write(struct
- 		goto out;
- 	}
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -154,6 +154,14 @@ static const struct dmi_system_id video_
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "VPCEH3U1E"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* HP OMEN Gaming Laptop 16-n0xxx */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16-n0xxx"),
++		},
++	},
  
--	down_write(&oi->ip_alloc_sem);
--
- 	/* Delete orphan before acquire i_rwsem. */
- 	if (dwc->dw_orphaned) {
- 		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
-@@ -2339,6 +2337,7 @@ static int ocfs2_dio_end_io_write(struct
- 			mlog_errno(ret);
- 	}
- 
-+	down_write(&oi->ip_alloc_sem);
- 	di = (struct ocfs2_dinode *)di_bh->b_data;
- 
- 	ocfs2_init_dinode_extent_tree(&et, INODE_CACHE(inode), di_bh);
+ 	/*
+ 	 * These models have a working acpi_video backlight control, and using
 
 
 
