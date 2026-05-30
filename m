@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NrCAL0aG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:33 +0200
+	id 8NxFEDklG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 011E260F2AA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB55E610B82
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 542E1300F254
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0A44530243B3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC8734104B;
-	Sat, 30 May 2026 17:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F233BD646;
+	Sat, 30 May 2026 17:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTYO94Qv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iqfhlrcz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD7F481DD;
-	Sat, 30 May 2026 17:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB733AE18D;
+	Sat, 30 May 2026 17:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161060; cv=none; b=YGoSOIzdTPVih7q20hsHeOsFO67UcYymno+vVn+qoZ9T7OFdcOYwL/gUThxcOJf3jm3uhxQmTT0unIvOr+nPk6kfxzREq439mPTJvD0CbDysZsykTIuehxu1R/3b37osJPYt7GDeGoXuiDiWtRrzMfMh3eWvoHnRPxwuL5b1hD4=
+	t=1780163799; cv=none; b=bn2RrSiH42ME68zKFWo+VjWecOM+mMh6jjzLFnjoEJCMZieAIcwO8AC0iECkcvQjARtzd6wWkt/Ik3aHFR5wFyNbr7KT3EOkMlXzUkx21a094b4BXPGA1lGsD863xoa/MnLLfX53toA3gSUbTP2CE/pJTjx8RNnDvHdljwLZqUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161060; c=relaxed/simple;
-	bh=qv5EZXkzAd2SZvGPgFWm9nNbl/7fyTpv2P/j8a8e5j4=;
+	s=arc-20240116; t=1780163799; c=relaxed/simple;
+	bh=TmVaN5ffozNe+wa9jtSPHUAjrUXm1PEtzt4sMCDz+Kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZ/0xBCxFQ2P2gwTtlpGavR8X1AzYjtvATZe9qqX6oOS75CJECDb5z15aMNyQ3uBUMM7xDKufa6mf1Z/Jy+/TkFkbSRBkp02KVsLjIdJdpDZl46g8Aq/0NbOLWx6g2HwPBZvkKE8spzO6ySjk/5kY7MK/CGuvV8lEtvqCv7qWvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTYO94Qv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C987B1F00893;
-	Sat, 30 May 2026 17:10:58 +0000 (UTC)
+	 MIME-Version; b=Es+f/4llzng4okz5USzm2UfyPp3X6lFr+jxSxjjyA7jUmbhp/0iXOkCaU/g6CfKbwwhJaB9eJrlrsOq+dLhnEI9M/70/Eoh/EtMqmRwI+qK9EMsP7QFLuFKErsOfkFb5G4yU7mIYSM8niVXEjWgJUS+FMJWagSB8vG51oww8U2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iqfhlrcz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A637D1F00893;
+	Sat, 30 May 2026 17:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161059;
-	bh=ywqzY1sHld65+B5O8bTk1TsAi/2cnhcnsqzxWtrjds0=;
+	s=korg; t=1780163798;
+	bh=pJbDoTYde8XV3kynzujdtWiKJCgcA+Wg4s2EB2PrzBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LTYO94Qvbc5+k2AR0VaozkGOvtKKEfQOnRj776p6O5a8I4CubGK3Ih3U1W4Be5oiy
-	 xJ/Gxe1hFaE6ZGno9fwATaqpEeL91lfgimG4pgeGr0LoNmjUqqO42C7Q/CEqu7PKR/
-	 SsjYVE4SAtLA3IFcqg7onVGDpRX8QHdar04zwxeE=
+	b=IqfhlrczBVF1P1EaxptULZk2L69OiRFJWu6FLhC5TDn2B6mKkh/A4dZ02sXCj7GFb
+	 LTa1L06DJ7NnbOuR5mb65n2gdlgEHS+6CgeE4F3a1Nb7hz/dOeCMtF1p41YRwhWKWa
+	 +7qqaSd1cVFtk41OLWl/PEPfjYIM3taU1LlFSIKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Alexander Koskovich <akoskovich@pm.me>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 514/969] drm/msm/dsi: rename MSM8998 DSI version from V2_2_0 to V2_0_0
+	"Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 5.15 324/776] cpuidle: powerpc: avoid double clear when breaking snooze
 Date: Sat, 30 May 2026 18:00:38 +0200
-Message-ID: <20260530160314.532489092@linuxfoundation.org>
+Message-ID: <20260530160248.944135851@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,95 +66,94 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257456-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258274-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 011E260F2AA
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: EB55E610B82
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Koskovich <akoskovich@pm.me>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-[ Upstream commit 913a709dea0eff9c7b2e9470f8c8594b9a0114ab ]
+commit 64ed1e3e728afb57ba9acb59e69de930ead847d9 upstream.
 
-The MSM8998 DSI controller is v2.0.0 as stated in commit 7b8c9e203039
-("drm/msm/dsi: Add support for MSM8998 DSI controller"). The value was
-always correct just the name was wrong.
+snooze_loop is done often in any system which has fair bit of
+idle time. So it qualifies for even micro-optimizations.
 
-Rename and reorder to maintain version sorting.
+When breaking the snooze due to timeout, TIF_POLLING_NRFLAG is cleared
+twice. Clearing the bit invokes atomics. Avoid double clear and thereby
+avoid one atomic write.
 
-Fixes: 7b8c9e203039 ("drm/msm/dsi: Add support for MSM8998 DSI controller")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
-Patchwork: https://patchwork.freedesktop.org/patch/713717/
-Link: https://lore.kernel.org/r/20260324-dsi-rgb101010-support-v5-3-ff6afc904115@pm.me
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+dev->poll_time_limit indicates whether the loop was broken due to
+timeout. Use that instead of defining a new variable.
+
+Fixes: 7ded429152e8 ("cpuidle: powerpc: no memory barrier after break from idle")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260311061709.1230440-1-sshegde@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_cfg.c | 4 ++--
- drivers/gpu/drm/msm/dsi/dsi_cfg.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/cpuidle/cpuidle-powernv.c |    5 ++++-
+ drivers/cpuidle/cpuidle-pseries.c |    5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.c b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-index e0bd452a9f1e6..4c1c2a77dec98 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-@@ -286,10 +286,10 @@ static const struct msm_dsi_cfg_handler dsi_cfg_handlers[] = {
- 		&msm8996_dsi_cfg, &msm_dsi_6g_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_4_2,
- 		&msm8976_dsi_cfg, &msm_dsi_6g_host_ops},
-+	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_0_0,
-+		&msm8998_dsi_cfg, &msm_dsi_6g_v2_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_1_0,
- 		&sdm660_dsi_cfg, &msm_dsi_6g_v2_host_ops},
--	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_2_0,
--		&msm8998_dsi_cfg, &msm_dsi_6g_v2_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_2_1,
- 		&sdm845_dsi_cfg, &msm_dsi_6g_v2_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_3_0,
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.h b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-index 8f04e685a74e9..7b56fc9297212 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-+++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-@@ -18,8 +18,8 @@
- #define MSM_DSI_6G_VER_MINOR_V1_3_1	0x10030001
- #define MSM_DSI_6G_VER_MINOR_V1_4_1	0x10040001
- #define MSM_DSI_6G_VER_MINOR_V1_4_2	0x10040002
-+#define MSM_DSI_6G_VER_MINOR_V2_0_0	0x20000000
- #define MSM_DSI_6G_VER_MINOR_V2_1_0	0x20010000
--#define MSM_DSI_6G_VER_MINOR_V2_2_0	0x20000000
- #define MSM_DSI_6G_VER_MINOR_V2_2_1	0x20020001
- #define MSM_DSI_6G_VER_MINOR_V2_3_0	0x20030000
- #define MSM_DSI_6G_VER_MINOR_V2_4_0	0x20040000
--- 
-2.53.0
-
+--- a/drivers/cpuidle/cpuidle-powernv.c
++++ b/drivers/cpuidle/cpuidle-powernv.c
+@@ -93,7 +93,10 @@ static int snooze_loop(struct cpuidle_de
+ 
+ 	HMT_medium();
+ 	ppc64_runlatch_on();
+-	clear_thread_flag(TIF_POLLING_NRFLAG);
++
++	/* Avoid double clear when breaking */
++	if (!dev->poll_time_limit)
++		clear_thread_flag(TIF_POLLING_NRFLAG);
+ 
+ 	local_irq_disable();
+ 
+--- a/drivers/cpuidle/cpuidle-pseries.c
++++ b/drivers/cpuidle/cpuidle-pseries.c
+@@ -61,7 +61,10 @@ static int snooze_loop(struct cpuidle_de
+ 	}
+ 
+ 	HMT_medium();
+-	clear_thread_flag(TIF_POLLING_NRFLAG);
++
++       /* Avoid double clear when breaking */
++	if (!dev->poll_time_limit)
++		clear_thread_flag(TIF_POLLING_NRFLAG);
+ 
+ 	local_irq_disable();
+ 
 
 
 
