@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-257895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNcpLgggG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:08 +0200
+	id mGvWFosxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB8AA610000
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC96C61297C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5A236300A5BB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:35:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3F1B33022E1E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86BF53AB285;
-	Sat, 30 May 2026 17:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C8421E098;
+	Sat, 30 May 2026 18:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBhn6isS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ix0aT3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1F51C5799;
-	Sat, 30 May 2026 17:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A881D63E4;
+	Sat, 30 May 2026 18:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162531; cv=none; b=onbyGn8HCHa6Ut6Li7RM2wrw53d65HECXVUBLTrpQ5jbxy1QoEXO3anPN8Yg1VCfxUW3umjn9fept0JfbtvXxzvQmYzJ9O8a6DO6874QMQMtSWMmQiVriu5vBuIEMRI5PR1JCuQQd7UJ2ii8aw1xwyvx4e0yNR0d0mrSHQs1JNA=
+	t=1780167049; cv=none; b=KUrt/KfZg9oa7NYdFgrXs//YOMNx/uUN/+eiLiF5BlSVkLYI+6moLqigEK5MW/MUwp+L9Yt1l76+uQxbuMcplnknZAk+VLR98uYZOCu1rgg2gV9i8LQpoZ8OcF4Zsoz79Hy8cTrqisibAyKDTZxDoIJRsYbthgEFntp9Q9+lkNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162531; c=relaxed/simple;
-	bh=z2U/NaYJio0WWU5+lybRl6sY8hAR+jz8K0cbnVQhd9g=;
+	s=arc-20240116; t=1780167049; c=relaxed/simple;
+	bh=fdpevyAWfNA3Vi9sf4aRuqCyuPA8bJSLh5ONpqR/ZzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAbkWAbzAygH9MbxqA3KsYT2IYiT3UGenAy1GHfQxN6WLaKZlDWRX5LM+Eihh9jkaHhr+R4PhICapIzsgkveSexfCVXUq/+2icLVOjuZOjtX2wJCW/g02o55MTWAtd9rOJFu2pP0MC76ny0OVDyd1Of5sMenqXj0Tt6/+2udMpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBhn6isS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913B11F0089D;
-	Sat, 30 May 2026 17:35:29 +0000 (UTC)
+	 MIME-Version; b=gPArmhi7lsOMH0oEKKK3SeViB9VksD1a4xPd3xClFJdZJpsGI0ZxngT7KdccZKpGcRIPzIUJZOKygzHCjcp1KoQudFZQNYq/0OXnX9E7UyttaCPqVbWE8V6+Q2avfi+sWAhnTmzqtXgvk6yRaWLh/vRrSpMZnhxEufi6MU0JGoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ix0aT3W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D3D1F00893;
+	Sat, 30 May 2026 18:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162530;
-	bh=8JvND5xd/KtGt9KxWwF6fnElgLcN+lxn3SNqvXe2Jos=;
+	s=korg; t=1780167048;
+	bh=kgLTZeswgZeGcd12QlzJDUmlGNn++9RII/iB1leLdow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iBhn6isSb9KwYGugq6Wion493PO7I5Xdes8XlzmdbuluKUmApV84Pa8JCl5srzkEI
-	 /UPBn5B8FmTKQcu/vBlZTNlEcX9kek0f+ZxA/zbSRS4nmPzIw6toz2GzohsRb7nuGh
-	 wFZ904esE7WNMDnTNJdCk92QRlIf/pZhvc8pFJA0=
+	b=2ix0aT3WZJS5ygEYpGGK0nAJFM8u51gq1VggkPJMcm2R0+FmzWvjfuqv4Pg3yYmrM
+	 tvtP0/VUQunPIQgQZ0YDXb5ecb4dWvoF1d1KNWM+JgXAru3GUT7MTiMZD/dL/J6jQp
+	 4fU1R58z8Q50hdjvO9XH0452n/OSGpkD7YN3jrmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 905/969] ARM: integrator: Fix early initialization
-Date: Sat, 30 May 2026 18:07:09 +0200
-Message-ID: <20260530160325.706166681@linuxfoundation.org>
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 549/589] drm/amd/display: Fix integer overflow in bios_get_image()
+Date: Sat, 30 May 2026 18:07:10 +0200
+Message-ID: <20260530160239.098486259@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257895-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259231-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,111 +87,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,arndb.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CB8AA610000
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: EC96C61297C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Harry Wentland <harry.wentland@amd.com>
 
-[ Upstream commit 90d77b30a666049ad24df463f52e5d529c44e8cd ]
+commit cd86529ec61474a38c3837fb7823790a7c3f8cce upstream.
 
-Starting with commit bdb249fce9ad4 ("ARM: integrator: read counter using
-syscon/regmap"), intcp_init_early calls syscon_regmap_lookup_by_compatible
-which in turn calls of_syscon_register. This function allocates memory.
-Since the memory management code has not been initialized at that time,
-the call always fails. It either returns -ENOMEM or crashes as follows.
+[Why&How]
+The bounds check in bios_get_image() computes 'offset + size' using
+unsigned 32-bit arithmetic before comparing against bios_size. If a
+VBIOS image contains a near-UINT32_MAX offset the addition wraps to a
+small value, the comparison passes, and the function returns a wild
+pointer past the VBIOS mapping.
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000c when read
-[0000000c] *pgd=00000000
-Internal error: Oops: 5 [#1] ARM
-Modules linked in:
-CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.15.0-rc5-00026-g5fcc9bf84ee5 #1 PREEMPT
-Hardware name: ARM Integrator/CP (Device Tree)
-PC is at __kmalloc_cache_noprof+0xec/0x39c
-LR is at __kmalloc_cache_noprof+0x34/0x39c
-...
-Call trace:
- __kmalloc_cache_noprof from of_syscon_register+0x7c/0x310
- of_syscon_register from device_node_get_regmap+0xa4/0xb0
- device_node_get_regmap from intcp_init_early+0xc/0x40
- intcp_init_early from start_kernel+0x60/0x688
- start_kernel from 0x0
+Additionally, the comparison uses '<' (strict), which incorrectly
+rejects the valid exact-fit case where offset + size == bios_size.
 
-The crash is seen due to a dereferenced pointer which is not supposed to be
-NULL but is NULL if the memory management subsystem has not been
-initialized. The crash is not seen with all versions of gcc. Some versions
-such as gcc 9.x apparently do not dereference the pointer, presumably if
-tracing is disabled. The problem has been reproduced with gcc 10.x, 11.x,
-and 13.x. Either case, if the crash is not seen, the call to
-syscon_regmap_lookup_by_compatible returns -ENOMEM, and
-sched_clock_register is never called.
+Fix both issues by restructuring the check to avoid the addition
+entirely: first reject if offset alone exceeds bios_size, then check
+size against the remaining space (bios_size - offset). This eliminates
+the overflow and correctly permits exact-fit accesses.
 
-Fix the problem by moving the early initialization code into the standard
-machine initialization code.
-
-Fixes: bdb249fce9ad4 ("ARM: integrator: read counter using syscon/regmap")
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/20250518164118.3859567-1-linux@roeck-us.net
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20260505-integrator-fixes-v1-1-56ab9aac59db@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Assisted-by: GitHub Copilot:claude-opus-4.6
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d40fb392af659c4a02b560319f226842f6ec1a95)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-versatile/integrator_cp.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-versatile/integrator_cp.c b/arch/arm/mach-versatile/integrator_cp.c
-index 2ed4ded56b3fe..03dfb5f720b7b 100644
---- a/arch/arm/mach-versatile/integrator_cp.c
-+++ b/arch/arm/mach-versatile/integrator_cp.c
-@@ -86,14 +86,6 @@ static u64 notrace intcp_read_sched_clock(void)
- 	return val;
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c
+@@ -37,10 +37,13 @@ uint8_t *bios_get_image(struct dc_bios *
+ 	uint32_t offset,
+ 	uint32_t size)
+ {
+-	if (bp->bios && offset + size < bp->bios_size)
+-		return bp->bios + offset;
+-	else
++	if (!bp->bios)
+ 		return NULL;
++
++	if (offset > bp->bios_size || size > bp->bios_size - offset)
++		return NULL;
++
++	return bp->bios + offset;
  }
  
--static void __init intcp_init_early(void)
--{
--	cm_map = syscon_regmap_lookup_by_compatible("arm,core-module-integrator");
--	if (IS_ERR(cm_map))
--		return;
--	sched_clock_register(intcp_read_sched_clock, 32, 24000000);
--}
--
- static void __init intcp_init_irq_of(void)
- {
- 	cm_init();
-@@ -119,6 +111,10 @@ static void __init intcp_init_of(void)
- {
- 	struct device_node *cpcon;
- 
-+	cm_map = syscon_regmap_lookup_by_compatible("arm,core-module-integrator");
-+	if (!IS_ERR(cm_map))
-+		sched_clock_register(intcp_read_sched_clock, 32, 24000000);
-+
- 	cpcon = of_find_matching_node(NULL, intcp_syscon_match);
- 	if (!cpcon)
- 		return;
-@@ -138,7 +134,6 @@ static const char * intcp_dt_board_compat[] = {
- DT_MACHINE_START(INTEGRATOR_CP_DT, "ARM Integrator/CP (Device Tree)")
- 	.reserve	= integrator_reserve,
- 	.map_io		= intcp_map_io,
--	.init_early	= intcp_init_early,
- 	.init_irq	= intcp_init_irq_of,
- 	.init_machine	= intcp_init_of,
- 	.dt_compat      = intcp_dt_board_compat,
--- 
-2.53.0
-
+ #include "reg_helper.h"
 
 
 
