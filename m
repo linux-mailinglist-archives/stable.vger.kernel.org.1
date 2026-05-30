@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-257682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFOhIqQdG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257682-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:56 +0200
+	id oMm9BYAvG2paAAkAu9opvQ
+	(envelope-from <stable+bounces-259021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3185260FA0E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF62561247A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F3320304237A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:23:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9540C30C4402
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760A7340293;
-	Sat, 30 May 2026 17:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F9A331200;
+	Sat, 30 May 2026 18:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTu5wreM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTy0hdCq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A1733E36A;
-	Sat, 30 May 2026 17:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217D33ACA4D;
+	Sat, 30 May 2026 18:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161820; cv=none; b=X+/9TFudT3mddux1uunxDi9jUodb4WaYzigC7HPZzJtAFiRWe8oLMfyAGgwzWTbd/fb9Gh3frPK4t/MeMkLXd9DZ4NqzOtUqUdKXfoj4vTT63r8n4mnrJFKBE3NsHaBt8r13nfTxR1I3yQX/9p3z7wk2pi1LR7sFwvWn5nuFzM8=
+	t=1780166325; cv=none; b=puu67XtrdLDVo8F4DrchvaFmAqlv6jvfvDi2gCN6W7pYVNxTdysQwecXz4RjzMMlpwnFWBRzLIv/atRu7pVgCNDojiGmEX+YSdlY1wejyisGdh9YUaLBtyY32VfxGbSt0mmBz6G0sIqN/U49KuQhpwu/V+ANnT37qnAwbsrsflI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161820; c=relaxed/simple;
-	bh=CTfCbwUp0TwMA70soEGgTtzAYWNjcKSP0Flc9cF8RMI=;
+	s=arc-20240116; t=1780166325; c=relaxed/simple;
+	bh=olzEY6Ajse+q0095HNscoFgbyrz0SpvNrhnlt/ov6Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k94mujpxazLJluNMWhPmm5wx2NEe+P8Ax5plvni0G09g33fnE4kBsoD08sO1HuLpB16ZubraQH2hdi6a8uDy5D5I0rj09FvfAhrqdD+kz1kJSrhyRP9Rky7you7LtezAO3fRWOiupzvJC0AVAfZa2M5pwGG+qiWlB3oU9yi5dMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTu5wreM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D0B1F00893;
-	Sat, 30 May 2026 17:23:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Xf55PSOOTF4GCLosKlGLYnnMZXA4kg30slvuBEqRpv5BrabcxIZ8OAG3brGrO1KbRjb6SstYyAhLosX+jpqNIkWkNpX95MLd6lY+tHHzhZrjaXx8n8ARqsgvI7FRBoTWMD23u7OkPQsjoBnCVTm/Fexm2B9umrFw4eF+QFyvAuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTy0hdCq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631EC1F00893;
+	Sat, 30 May 2026 18:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161819;
-	bh=yPJN1e7rzPNkMCt0OApgNjIOF0U4KnW2mRPbIuZVB+A=;
+	s=korg; t=1780166324;
+	bh=qkWfA3952HLfIuRV3o7pv4ysPiGzcPwqOlPLBB48NGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OTu5wreMcZgOxp3nEJdu8qDE5yPK5ZzCo5aCVprLjn/wy/4iSobOWB1K6r1tQ8Gn5
-	 0267ykDHnbhG0R3x8aJEuWNXz1/tEv+7XrOpu/eyoJkmvRpUqhu4Vd9ruu4EPP1vnv
-	 TTWStJq87zpoH6dFMBdqa6P9aJjy9Mqq84FHhWDI=
+	b=FTy0hdCqyrDe3/g1CQWnr8puKrEjGg0jS9F1h7zaaMRcN2v9TFTPIfc90ownbFa6k
+	 +Q9/JNrGzLO2cBRLibeYp1NUTFQ2BbUc8/Bw7BaKzt9SHCpMwVvypoGzjkdNwsoSzd
+	 TxYDvRyAS5xSVmslj5Tf4Fka0gApyUsbJ2/Hkc8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Joe Damato <joe@dama.to>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 696/969] ipv6: fix possible UAF in icmpv6_rcv()
+Subject: [PATCH 5.10 339/589] drm/amd/pm/ci: Fix powertune defaults for Hawaii 0x67B0
 Date: Sat, 30 May 2026 18:03:40 +0200
-Message-ID: <20260530160319.734648615@linuxfoundation.org>
+Message-ID: <20260530160233.805977814@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,104 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-259021-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257682-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3185260FA0E
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: AF62561247A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit f996edd7615e686ada141b7f3395025729ff8ccb ]
+[ Upstream commit d784759c07924280f3c313f205fc48eb62d7cb71 ]
 
-Caching saddr and daddr before pskb_pull() is problematic
-since skb->head can change.
+There is no AMD GPU with the ID 0x66B0, this looks like a typo.
+It should be 0x67B0 which is actually part of the PCI ID list,
+and should use the Hawaii XT powertune defaults according to
+the old radeon driver.
 
-Remove these temporary variables:
-
-- We only access &ipv6_hdr(skb)->saddr and &ipv6_hdr(skb)->daddr
-  when net_dbg_ratelimited() is called in the slow path.
-
-- Avoid potential future misuse after pskb_pull() call.
-
-Fixes: 4b3418fba0fe ("ipv6: icmp: include addresses in debug messages")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Joe Damato <joe@dama.to>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260416103505.2380753-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/icmp.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index 80eabb22d144f..877cb5e8ded7b 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -889,7 +889,6 @@ static int icmpv6_rcv(struct sk_buff *skb)
- 	struct net *net = dev_net(skb->dev);
- 	struct net_device *dev = icmp6_dev(skb);
- 	struct inet6_dev *idev = __in6_dev_get(dev);
--	const struct in6_addr *saddr, *daddr;
- 	struct icmp6hdr *hdr;
- 	u8 type;
- 
-@@ -920,12 +919,10 @@ static int icmpv6_rcv(struct sk_buff *skb)
- 
- 	__ICMP6_INC_STATS(dev_net(dev), idev, ICMP6_MIB_INMSGS);
- 
--	saddr = &ipv6_hdr(skb)->saddr;
--	daddr = &ipv6_hdr(skb)->daddr;
--
- 	if (skb_checksum_validate(skb, IPPROTO_ICMPV6, ip6_compute_pseudo)) {
- 		net_dbg_ratelimited("ICMPv6 checksum failed [%pI6c > %pI6c]\n",
--				    saddr, daddr);
-+				    &ipv6_hdr(skb)->saddr,
-+				    &ipv6_hdr(skb)->daddr);
- 		goto csum_error;
- 	}
- 
-@@ -1007,7 +1004,8 @@ static int icmpv6_rcv(struct sk_buff *skb)
- 			break;
- 
- 		net_dbg_ratelimited("icmpv6: msg of unknown type [%pI6c > %pI6c]\n",
--				    saddr, daddr);
-+				    &ipv6_hdr(skb)->saddr,
-+				    &ipv6_hdr(skb)->daddr);
- 
- 		/*
- 		 * error of unknown type.
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+index 581ade4111426..04e2e7e44e7ce 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+@@ -244,7 +244,7 @@ static void ci_initialize_power_tune_defaults(struct pp_hwmgr *hwmgr)
+ 		smu_data->power_tune_defaults = &defaults_hawaii_pro;
+ 		break;
+ 	case 0x67B8:
+-	case 0x66B0:
++	case 0x67B0:
+ 		smu_data->power_tune_defaults = &defaults_hawaii_xt;
+ 		break;
+ 	case 0x6640:
 -- 
 2.53.0
 
