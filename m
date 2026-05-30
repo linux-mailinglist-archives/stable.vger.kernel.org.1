@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-256934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256935-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOJ7M6wMG2q/+ggAu9opvQ
-	(envelope-from <stable+bounces-256934-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:13:32 +0200
+	id AIy3KssMG2q/+ggAu9opvQ
+	(envelope-from <stable+bounces-256935-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7430E60E018
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B30960E02E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A1C53302AB12
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:11:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7DF45302E914
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6072F233932;
-	Sat, 30 May 2026 16:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC6432BF24;
+	Sat, 30 May 2026 16:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVeoui2X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEdBj1Ep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1836B33F59D;
-	Sat, 30 May 2026 16:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1103112BC;
+	Sat, 30 May 2026 16:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780157496; cv=none; b=N/1w4R/bUkoTKMaRnk3fRxYM7j3mq8zrLiGj+ghLVQXRGtYYSoo8JC/HtdmnWfcpCAQ8bwAG/lzxBbDsnDa3kyxOO/h2AbKnObvhPxgM05CegerO0Q0n3N+U3lVJ3u4QPR+99cagBNWMgcA5pplo5lap2wci30gs8PHhiLAvDo4=
+	t=1780157507; cv=none; b=IpnHtEK7XEf91r+hZLo54dZ3bMeqOFBEcYq8hM2phGPxADcMkU2b39e0k8GQnBTzizCurhBj1C6xkPD6WhDZ5FZuWhbFxv+r3TFS1TYEyHghiNr8fFMFrJHTHgOEYA+i2g6zr/NMnEjOn4R49upuSs1VAGIQ7xsTckYL2+pLhvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780157496; c=relaxed/simple;
-	bh=fFIINafoX0Al2f7kT6onb8KxbLGc5S0Zp/XXWG3brV0=;
+	s=arc-20240116; t=1780157507; c=relaxed/simple;
+	bh=WsT+PjTwmDVZFsklOzSto8VhGy77P+rCtiLzHMYtaRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SbA1UvV1qRuYc2SORbVSsm937pY0bkkdP1TfEq4ikXa6w7gEv3QmsFM0FTXSM04awGqSe6c8QlaQszP5D63TZDBxj8mu1iIZ11oGuleOXHyGcqU7ABmvzhNVp3olYPU5W212cC+dUH/WXVUzHFNIL6CKFRlFaDRgGp4SUwOSbJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVeoui2X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E0F91F00893;
-	Sat, 30 May 2026 16:11:33 +0000 (UTC)
+	 MIME-Version; b=QUVTqEX5bm0jWcVjdNOTYGtRzRgxCdEiOYBZHW8AlTljjmEaWEPBS+qloSueo0eizp7GBeFvVz09OKoNkujuQVUGkokyonl6moiMQGzWamPqdPB0XVHLMberaFkp9rVauaRiyEfcGqK3+3SnLkVWCA5B5Rada2ZRPsqYxQ+lk80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEdBj1Ep; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E62E1F00893;
+	Sat, 30 May 2026 16:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780157494;
-	bh=hhqVy4uoTZS0IqkvNwrOORAsjl9eJ8HbL9n311+ggF0=;
+	s=korg; t=1780157505;
+	bh=EwO4WvDXSJHEiSvlHSYo4+Yefiz83/sFKf7mHd1ANdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fVeoui2XDmm7yL5NFnxsP+nHa7DSSZOOolTYj85BDy6NToVFIIXZ0RCuIRd0RDwg5
-	 ZBUx3zh3BHNI1bns4rJLvOHsQ0FtMdrdUxPhd8aBo/SI65FjmESHOkn5Ano8iocRdF
-	 qFbaoQSyuD/evnBr4St8BZqPX0HpO67I+yeUw5Xg=
+	b=EEdBj1EpwrFZaG0rk5nW8t87Bk9ewnehzAjIsOnzrphFtGOQNSJXuP6qZqEWRxwLO
+	 ibiqJuRCb+L/69wR1FVkhaK79y1WtHSQi5rcRdXxYTK/QOeVejnOA75FhotaIPnfkq
+	 xOBmOMjRhlmgyK1Vtz2trkwIDmbBE3HVYcHBDe3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vee Satayamas <vsatayamas@gmail.com>,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Andrii Kovalchuk <coderpy4@proton.me>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/969] ASoC: amd: yc: Add DMI quirk for ASUS EXPERTBOOK BM1403CDA
-Date: Sat, 30 May 2026 17:52:05 +0200
-Message-ID: <20260530160300.534009046@linuxfoundation.org>
+Subject: [PATCH 6.1 002/969] ALSA: hda/realtek: Add HP ENVY Laptop 13-ba0xxx quirk
+Date: Sat, 30 May 2026 17:52:06 +0200
+Message-ID: <20260530160300.558682366@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -74,26 +73,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kylinos.cn,kernel.org];
-	TAGGED_FROM(0.00)[bounces-256934-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-256935-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7430E60E018
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,proton.me:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 4B30960E02E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,41 +99,34 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Vee Satayamas <vsatayamas@gmail.com>
+From: Andrii Kovalchuk <coderpy4@proton.me>
 
-[ Upstream commit f200b2f9a810c440c6750b56fc647b73337749a1 ]
+[ Upstream commit 793b008cd39516385791a1d1d223d817e947a471 ]
 
-Add a DMI quirk for the Asus Expertbook BM1403CDA to resolve the issue of the
-internal microphone not being detected.
+Add a PCI quirk for HP ENVY Laptop 13-ba0xxx (PCI device ID 0x8756)
+to enable proper mute LED and mic mute behavior using the
+ALC245_FIXUP_HP_X360_MUTE_LEDS fixup.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221236
-Signed-off-by: Vee Satayamas <vsatayamas@gmail.com>
-Reviewed-by: Zhang Heng <zhangheng@kylinos.cn>
-Link: https://patch.msgid.link/20260315142511.66029-2-vsatayamas@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Andrii Kovalchuk <coderpy4@proton.me>
+Link: https://patch.msgid.link/u0s-uRVegF9BN0t-4JnOUwsIAR-mVc4U4FJfJHdEHX7ro_laErHD9y35NebWybcN16gVaVHPJo1ap3AoJ1a2gqJImPvThgeNt_SYVY1KaDw=@proton.me
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 991f8777cc859..be510328c5a0c 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -563,6 +563,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "PM1503CDA"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "BM1403CDA"),
-+		}
-+	},
- 	{}
- };
- 
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 9d6b3a6b8ed26..6048ad6319e3b 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9938,6 +9938,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8730, "HP ProBook 445 G7", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8735, "HP ProBook 435 G7", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8736, "HP", ALC285_FIXUP_HP_GPIO_AMP_INIT),
++	SND_PCI_QUIRK(0x103c, 0x8756, "HP ENVY Laptop 13-ba0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
+ 	SND_PCI_QUIRK(0x103c, 0x8760, "HP EliteBook 8{4,5}5 G7", ALC285_FIXUP_HP_BEEP_MICMUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x876e, "HP ENVY x360 Convertible 13-ay0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
+ 	SND_PCI_QUIRK(0x103c, 0x877a, "HP", ALC285_FIXUP_HP_MUTE_LED),
 -- 
 2.53.0
 
