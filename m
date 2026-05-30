@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-259076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJafKyMwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259076-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:51 +0200
+	id 8LNbCrodG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E4561264B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 328AD60FA5C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 369F93002E74
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D5653300939E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4287539A7FE;
-	Sat, 30 May 2026 18:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC01340293;
+	Sat, 30 May 2026 17:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAjIomon"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeIcdB8X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E423C343D;
-	Sat, 30 May 2026 18:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70D3263F44;
+	Sat, 30 May 2026 17:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166512; cv=none; b=pdWu53U5HbhEzKyWb/5o9tEYG5Ir7OizDKpW6EPwSoowYrO2BrcgrN1rlggNAtJ9ZXSpyDKalgD0AMAN4eUT4xmQIhu7elv/gceZl7Lt9qdPEGJCtuz1ml2IpnZ+rSBoIli08BE8qrP6zGu6pD1Q8xiX2uUIllq/2o2/nl/uv6k=
+	t=1780161866; cv=none; b=PIji17ow3wM2OL8Mu4Rr+sfIp7nFMFo3woXjBa5vvttirOflabY2YHzGnkGSjJMDIYgden3nkb/QFlGJfjq6vAwihag8ZNhL5JcPvLiAZWrfop8CoKjsbvzrQzreTnFxELPnVdAR8J7i3aBNj+5a+zN1Bau/7LztcExxwHa70kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166512; c=relaxed/simple;
-	bh=QSOX1jV/eq5ZkNMOaUd3B+J5yF88TmSrJcHUuT/m4rQ=;
+	s=arc-20240116; t=1780161866; c=relaxed/simple;
+	bh=vpcLG/6yXw4VD/ML+svZZnk+bTn+EPdNzKqk99h2z4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IfLVsmsuxtbsA465/Ct6cHuJNAcMpF1482T3cMcYJg9ArSZilTbC10xJrJmpwEPO4RYm4OpxptP60Y4p5gUjkqbNF6QxAatf/mHgBtrE8UXYG0XuhVxvvuQkjVKnaNNjD0Fpwb3C7HEaPmp9YkbJVvO+KEHVHidIcMpd5ePQ4Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAjIomon; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B72B1F00893;
-	Sat, 30 May 2026 18:41:45 +0000 (UTC)
+	 MIME-Version; b=gjkgLO1N5abS225UF4cldcqa3pa2NSJP3JMoVJnsW/ZepvSLOwYFKT8DgMAzsLzTig8pm7faA7aNO7Mye9oXPeFVfpsvRuTi+muG2LIIWT1ffiAAgxwi4lmfakunf/RenlQCdUJdvC/k5Qfv9/HgC+u+X8kYV2cjRN2zykzehIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TeIcdB8X; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC6C1F00893;
+	Sat, 30 May 2026 17:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166506;
-	bh=P7NJVw61F+WwddHCt8qXWiShCHzcl8Tbue7iWYCfkMI=;
+	s=korg; t=1780161865;
+	bh=XTlEyFmRGaDKhXFIsHpfAOKssni1Tawsp3m32RhI8DM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SAjIomonaN7Irq0EzEf55qfyfSg38heEUs+T7R100n6BuNhEwbAf/qK+uBCr6Hd5M
-	 gfOGTE1TwZcf8+rDI6eWP7XgrfcBFuiRFxhfQz+DJZcKBQDb5fiHre6P7Cefx69p03
-	 BcBHCaL40cNV3G3ftOznOVhxegvDm3xBuwfvqTBQ=
+	b=TeIcdB8XiZfyghl7EDsHcf2H++1k9VXUsI/QvqXhLNKHBJBzMO8ZtJYCHVgy7aGad
+	 4mXSV/4LYK/zcuKZ6mcS54hWjJZryUy56iR7/PxRuu/X9BVNFHfzxypkOENziQiNY0
+	 Hmz2CNo5CIEWoZqC+KqlOMZCWEl1TqAWkzQqLdk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 392/589] tty: hvc_iucv: fix off-by-one in number of supported devices
-Date: Sat, 30 May 2026 18:04:33 +0200
-Message-ID: <20260530160235.098036501@linuxfoundation.org>
+Subject: [PATCH 6.1 750/969] net/sched: sch_choke: annotate data-races in choke_dump_stats()
+Date: Sat, 30 May 2026 18:04:34 +0200
+Message-ID: <20260530160321.273983097@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,79 +69,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257696-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259076-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 54E4561264B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 328AD60FA5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f2a880e802ad12d1e38039d1334fb1475d0f5241 ]
+[ Upstream commit d3aeb889dcbd78e95f500d383799a23d949796e0 ]
 
-MAX_HVC_IUCV_LINES == HVC_ALLOC_TTY_ADAPTERS == 8.
-This is the number of entries in:
-  static struct hvc_iucv_private *hvc_iucv_table[MAX_HVC_IUCV_LINES];
+choke_dump_stats() only runs with RTNL held.
+It reads fields that can be changed in qdisc fast path.
+Add READ_ONCE()/WRITE_ONCE() annotations.
 
-Sometimes hvc_iucv_table[] is limited by:
-(a)	if (num > hvc_iucv_devices) // for error detection
-or
-(b)	for (i = 0; i < hvc_iucv_devices; i++) // in 2 places
-(so these 2 don't agree; second one appears to be correct to me.)
-
-hvc_iucv_devices can be 0..8. This is a counter.
-(c)	if (hvc_iucv_devices > MAX_HVC_IUCV_LINES)
-
-If hvc_iucv_devices == 8, (a) allows the code to access hvc_iucv_table[8].
-Oops.
-
-Fixes: 44a01d5ba8a4 ("[S390] s390/hvc_console: z/VM IUCV hypervisor console support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://patch.msgid.link/20260130072939.1535869-1-rdunlap@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260423062839.2524324-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/hvc/hvc_iucv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_choke.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/tty/hvc/hvc_iucv.c b/drivers/tty/hvc/hvc_iucv.c
-index d76dff7eec521..c031f8947a935 100644
---- a/drivers/tty/hvc/hvc_iucv.c
-+++ b/drivers/tty/hvc/hvc_iucv.c
-@@ -130,7 +130,7 @@ static struct iucv_handler hvc_iucv_handler = {
-  */
- static struct hvc_iucv_private *hvc_iucv_get_private(uint32_t num)
+diff --git a/net/sched/sch_choke.c b/net/sched/sch_choke.c
+index e38cf34287018..7283f96dead62 100644
+--- a/net/sched/sch_choke.c
++++ b/net/sched/sch_choke.c
+@@ -229,7 +229,7 @@ static int choke_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 
+ 		/* Draw a packet at random from queue and compare flow */
+ 		if (choke_match_random(q, skb, &idx)) {
+-			q->stats.matched++;
++			WRITE_ONCE(q->stats.matched, q->stats.matched + 1);
+ 			choke_drop_by_idx(sch, idx, to_free);
+ 			goto congestion_drop;
+ 		}
+@@ -241,11 +241,13 @@ static int choke_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			qdisc_qstats_overlimit(sch);
+ 			if (use_harddrop(q) || !use_ecn(q) ||
+ 			    !INET_ECN_set_ce(skb)) {
+-				q->stats.forced_drop++;
++				WRITE_ONCE(q->stats.forced_drop,
++					   q->stats.forced_drop + 1);
+ 				goto congestion_drop;
+ 			}
+ 
+-			q->stats.forced_mark++;
++			WRITE_ONCE(q->stats.forced_mark,
++				   q->stats.forced_mark + 1);
+ 		} else if (++q->vars.qcount) {
+ 			if (red_mark_probability(p, &q->vars, q->vars.qavg)) {
+ 				q->vars.qcount = 0;
+@@ -253,11 +255,13 @@ static int choke_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 
+ 				qdisc_qstats_overlimit(sch);
+ 				if (!use_ecn(q) || !INET_ECN_set_ce(skb)) {
+-					q->stats.prob_drop++;
++					WRITE_ONCE(q->stats.prob_drop,
++					           q->stats.prob_drop + 1);
+ 					goto congestion_drop;
+ 				}
+ 
+-				q->stats.prob_mark++;
++				WRITE_ONCE(q->stats.prob_mark,
++					   q->stats.prob_mark + 1);
+ 			}
+ 		} else
+ 			q->vars.qR = red_random(p);
+@@ -272,7 +276,7 @@ static int choke_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return NET_XMIT_SUCCESS;
+ 	}
+ 
+-	q->stats.pdrop++;
++	WRITE_ONCE(q->stats.pdrop, q->stats.pdrop + 1);
+ 	return qdisc_drop(skb, sch, to_free);
+ 
+ congestion_drop:
+@@ -460,10 +464,12 @@ static int choke_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
  {
--	if (num > hvc_iucv_devices)
-+	if (num >= hvc_iucv_devices)
- 		return NULL;
- 	return hvc_iucv_table[num];
- }
+ 	struct choke_sched_data *q = qdisc_priv(sch);
+ 	struct tc_choke_xstats st = {
+-		.early	= q->stats.prob_drop + q->stats.forced_drop,
+-		.marked	= q->stats.prob_mark + q->stats.forced_mark,
+-		.pdrop	= q->stats.pdrop,
+-		.matched = q->stats.matched,
++		.early	= READ_ONCE(q->stats.prob_drop) +
++			  READ_ONCE(q->stats.forced_drop),
++		.marked	= READ_ONCE(q->stats.prob_mark) +
++			  READ_ONCE(q->stats.forced_mark),
++		.pdrop	= READ_ONCE(q->stats.pdrop),
++		.matched = READ_ONCE(q->stats.matched),
+ 	};
+ 
+ 	return gnet_stats_copy_app(d, &st, sizeof(st));
 -- 
 2.53.0
 
