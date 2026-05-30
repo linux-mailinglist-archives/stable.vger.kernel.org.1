@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257960-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BbiJT4YG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:54 +0200
+	id SAmCCUkiG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257960-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DB7260EC90
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73FD6610538
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36990307FC33
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:54:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EF2C304F2E6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB7E3403F3;
-	Sat, 30 May 2026 16:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB133ACA4D;
+	Sat, 30 May 2026 17:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eN+l0W/u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4jUbeFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D9C32BF24;
-	Sat, 30 May 2026 16:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B670B3AD520;
+	Sat, 30 May 2026 17:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160091; cv=none; b=GnExOFp57945DmSdGlWuzABv0Jk3DqFASzfkXK0+OHDI8WUpmaC87JDhLoOlomrKvCJOTCwqV4oursCDgc4oSwreFWasNeInYLnWLzW67lSizomKrr3oSZyPH0wC+Zz7ZfT6Wu++NstRnJFofbIQCEOvalT3nCFkpuRtjel5HfI=
+	t=1780162756; cv=none; b=H1OJUn0zAqcPVTZeP6VBKIc8yY/9JCzUUBpF1dRnEYifVxhZf2PGi1Ax3ln7N8Zpyulj18M9UXYZKYgpiyNCuf/bN8OV69p7m6ZmypZIFAO3aEGpdavrg6zejVKSHoYX3rTjGfcd/NDoSwtW++wFpk6KKMEMTEhFErtHOr648oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160091; c=relaxed/simple;
-	bh=CmjO9LXaApYXHh2N57h1qYNKoia3y4j7RJb3+aAeNxM=;
+	s=arc-20240116; t=1780162756; c=relaxed/simple;
+	bh=rMxVNOwx2UO784ps1E3fD2Vq2c5lt6Lxtfx6bLgTyo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QlOfphUV6OPvZgnjHltbPorWD9tl8TLr9DJ8LA8Epu1mnetqgSt7S0NqY0A28FCvQjRlxlPThxVXStX66xlTBfpUh6KM/Idh2RebN475QhTwuRxRDGvwJOBGS20DDFhR8dJcNbFkXLWz6+/sEpKJhBEgFU0q6IhOI6JpqqYxBTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eN+l0W/u; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89751F00893;
-	Sat, 30 May 2026 16:54:49 +0000 (UTC)
+	 MIME-Version; b=md9yb6EuECWZAZ4/GljBCAZetpdZ6ZSH39cRTQKFE159IxkrPW9x/q5y2MRJjnq23DsKQS+VvVZSIAsiFr5xbVwn3tC/+oOs/84soycCXv1zZTNJYqaM2pkvlqNcSgbyPHjGVV/jiKxS8lES5X7ILCofKA3qZhJCYKpaHfVAyag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4jUbeFe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6811F00898;
+	Sat, 30 May 2026 17:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160090;
-	bh=1B7g9y3Z3u7cuZUtoWV0sHAciSbG4jfUkYXvL9TrW7E=;
+	s=korg; t=1780162754;
+	bh=dV2Y5j3Ow1aJdbVKyLSVrTdebk8wAvRq5dhN5g1XFFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eN+l0W/uOsFWWrM5Sbx4nRQLgxGq3dVdMD8syTJCf1K1SLu5H4ekaxoC87UgwgPbY
-	 gyeZrkc7fJ0bd9zZlF+gPb6aQPqp2w9IiIMUOpGT26CcOzPjQxtCACD+oyE5dJvT87
-	 +FYEy6bAG3ifWYeUsHTWAb14o7Ljl4nk9vuviZAs=
+	b=p4jUbeFeKyCatQUSJcc1w1Bs9gkw/dPVMvXlweVuKMVXVAScHdOgAKJMq5z9f0Jzf
+	 VS2AafjvvcUvANRvH+2j7bLjHqz6QT9qZBupz3NV/GEWok8ksYhVqYtp+PWvi1sFC5
+	 zVTIovXk0s9NHJatw4M3MRsmPpd6qHLFPzxPb/Do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 243/969] KVM: nSVM: Add missing consistency check for nCR3 validity
+	Samuel Page <sam@bynar.io>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.15 053/776] can: raw: fix ro->uniq use-after-free in raw_rcv()
 Date: Sat, 30 May 2026 17:56:07 +0200
-Message-ID: <20260530160307.172103308@linuxfoundation.org>
+Message-ID: <20260530160241.682404166@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +63,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257181-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257960-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 0DB7260EC90
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[hartkopp.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 73FD6610538
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Samuel Page <sam@bynar.io>
 
-commit b71138fcc362c67ebe66747bb22cb4e6b4d6a651 upstream.
+commit a535a9217ca3f2fccedaafb2fddb4c48f27d36dc upstream.
 
->From the APM Volume #2, 15.25.4 (24593—Rev. 3.42—March 2024):
+raw_release() unregisters raw CAN receive filters via can_rx_unregister(),
+but receiver deletion is deferred with call_rcu(). This leaves a window
+where raw_rcv() may still be running in an RCU read-side critical section
+after raw_release() frees ro->uniq, leading to a use-after-free of the
+percpu uniq storage.
 
-  When VMRUN is executed with nested paging enabled (NP_ENABLE = 1), the
-  following conditions are considered illegal state combinations, in
-  addition to those mentioned in “Canonicalization and Consistency Checks”:
-      • Any MBZ bit of nCR3 is set.
-      • Any G_PAT.PA field has an unsupported type encoding or any
-        reserved field in G_PAT has a nonzero value.
+Move free_percpu(ro->uniq) out of raw_release() and into a raw-specific
+socket destructor. can_rx_unregister() takes an extra reference to the
+socket and only drops it from the RCU callback, so freeing uniq from
+sk_destruct ensures the percpu area is not released until the relevant
+callbacks have drained.
 
-Add the consistency check for nCR3 being a legal GPA with no MBZ bits
-set.  Note, the G_PAT.PA check is being handled separately[*].
-
-Link: https://lore.kernel.org/kvm/20260205214326.1029278-3-jmattson@google.com [*]
-Fixes: 4b16184c1cca ("KVM: SVM: Initialize Nested Nested MMU context on VMRUN")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-16-yosry@kernel.org
-[sean: capture everything in CC(), massage changelog formatting]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 514ac99c64b2 ("can: fix multiple delivery of a single CAN frame for overlapping CAN filters")
+Cc: stable@vger.kernel.org # v4.1+
+Assisted-by: Bynario AI
+Signed-off-by: Samuel Page <sam@bynar.io>
+Link: https://patch.msgid.link/26ec626d-cae7-4418-9782-7198864d070c@bynar.io
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+[mkl: applied manually]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/can/raw.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -257,6 +257,10 @@ static bool __nested_vmcb_check_controls
- 	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) && !npt_enabled))
- 		return false;
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -333,6 +333,14 @@ static int raw_notifier(struct notifier_
+ 	return NOTIFY_DONE;
+ }
  
-+	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) &&
-+	       !kvm_vcpu_is_legal_gpa(vcpu, control->nested_cr3)))
-+		return false;
++static void raw_sock_destruct(struct sock *sk)
++{
++	struct raw_sock *ro = raw_sk(sk);
 +
- 	if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
- 					   MSRPM_SIZE)))
- 		return false;
++	free_percpu(ro->uniq);
++	can_sock_destruct(sk);
++}
++
+ static int raw_init(struct sock *sk)
+ {
+ 	struct raw_sock *ro = raw_sk(sk);
+@@ -358,6 +366,8 @@ static int raw_init(struct sock *sk)
+ 	if (unlikely(!ro->uniq))
+ 		return -ENOMEM;
+ 
++	sk->sk_destruct = raw_sock_destruct;
++
+ 	/* set notifier */
+ 	spin_lock(&raw_notifier_lock);
+ 	list_add_tail(&ro->notifier, &raw_notifier_list);
+@@ -405,7 +415,6 @@ static int raw_release(struct socket *so
+ 	ro->bound = 0;
+ 	ro->dev = NULL;
+ 	ro->count = 0;
+-	free_percpu(ro->uniq);
+ 
+ 	sock_orphan(sk);
+ 	sock->sk = NULL;
 
 
 
