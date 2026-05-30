@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-259214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257835-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLDDKwozG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:14 +0200
+	id CGI4EmMfG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257835-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E670612D25
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF7760FE84
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 890013032640
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F049E30060BB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A42233943;
-	Sat, 30 May 2026 18:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4A132B106;
+	Sat, 30 May 2026 17:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ordAVN8w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVL2Jhdv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D1715E5BB;
-	Sat, 30 May 2026 18:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27932E7379;
+	Sat, 30 May 2026 17:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166990; cv=none; b=NzxV2ZXgHUM8mxhpRTYcXuPFhnS//08UPZ8yfJLBwMSlMPSvefI8ww4/t0MdS5MlBMOCz/PwgPG4f29Bbjn1RDH7eG8OesJdT3owsRC+4w6w8PbLpO/XocXGyvzbWzISPmOuIh24I/JcHXP9MJ4gbIYZjf5iuOvsV9XZ5MFPQOg=
+	t=1780162329; cv=none; b=p9U8hMalO3y4qkMYpdHKBCVJgu/UdH9V0jv4z7A64iNzC/8l7JGaFSjFAe6SAD+UUF4IjekmcKDXsaTxFkTiW2x79d+Fjdd2BJmF/1lC3IfAhUr1URKQw6qIl9vvTNMCk7VAHJBBT9QLeDzJhXkTOkl4KGjHs01FsT47gFfY5k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166990; c=relaxed/simple;
-	bh=NPTwiQubVp5dtDEelyiVy2+pfrCt2G+qtFe3u8iAIV4=;
+	s=arc-20240116; t=1780162329; c=relaxed/simple;
+	bh=mpDcMZHjy6Q5gnDUOIM8iyHxsfIbBcZKxxUOJH+Var4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5xAvKSGJInOpLTjOXlo+7eo45sQxypoIwl7cLZi+/YLsjmOqFb1GGDZkhZO2mtploDnGxkiXjDMrORyIZ1x2NCFvom7GpeCXeZM7J2t15NGe/sPOQvagdncW88iN6dHBx+w2c0qHcUcOgnNOvkXmhriiH2898CV2O4W1ziruyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ordAVN8w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653A91F00893;
-	Sat, 30 May 2026 18:49:48 +0000 (UTC)
+	 MIME-Version; b=XkhrLv4nHfBW6xq7pkk+5O8P/SSwRkBpfOOGq2n7he3oySMc7jyddbJHTDU7dweKUh+y9pKERpa+PM6n7wK7v5KuJQJM0Gmx0lBBZRks0LOnRdmYcGdGxn4xSR/ZvE48ggodix5WDdsDC+XG4kSXeSZbPtwg2wQC/fDiLs81P3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVL2Jhdv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05761F00893;
+	Sat, 30 May 2026 17:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166989;
-	bh=d6w1KNO4AEQcQ4jJUx4YT5Cv3dmt2XWtuAlYgJmoukE=;
+	s=korg; t=1780162328;
+	bh=cPocOez+RvvE/5Jn6r2t6h1W9jLCXWJh89+q8zR1Vr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ordAVN8wATN/NyrOKmCJYj4ci/GkghfouiuF+rR7JWJ1WSBioa0IB6YEZognY0Uit
-	 TU05fmuQ7PXLPjpHgG+YfGh41ALOWnVPscsxIUv9kdR7UTzqA3WP8Wl7c/W6zYOsDM
-	 NhpBeiSi0UN9Kki5HRz7zN1EDk9jP8RdSs1i1l1E=
+	b=pVL2JhdvL0pI2lIHPsB6q40osR6sGXTiUjpCdm6u3QWfUT/ffh19Th6rSLPUBC1W3
+	 Ya5mU+vpUhx8UFkU6JIXyBQE+bxZDqvotEzNWDM2zklCdMOMkX9FY+VPAUnlurrptv
+	 gXGh2m0fDAuWDkfyIa98R/mtpiU/59p6LmdfKtEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.10 531/589] Bluetooth: bnep: Fix UAF read of dev->name
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.1 888/969] batman-adv: tt: fix negative last_changeset_len
 Date: Sat, 30 May 2026 18:06:52 +0200
-Message-ID: <20260530160238.662247811@linuxfoundation.org>
+Message-ID: <20260530160325.220093612@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259214-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257835-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,51 +88,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2E670612D25
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4CF7760FE84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 59e932ded949fa6f0340bf7c6d7818f962fa4fd2 upstream.
+commit fc92cdfcb295cefa4344d71a527d61b638b7bfc4 upstream.
 
-bnep_add_connection() needs to keep holding the bnep_session_sem while
-reading dev->name (just like bnep_get_connlist() does); otherwise the
-bnep_session() thread can concurrently free the net_device, which can for
-example be triggered by a concurrent bnep_del_connection().
+batadv_piv_tt::last_changeset_len len was declared as s16, but the field is
+never intended to hold a negative value. When a value greater than 32767 is
+assigned, it wraps to a negative signed integer.
 
-(This UAF is fairly uninteresting from a security perspective;
-calling bnep_add_connection() requires passing a capable(CAP_NET_ADMIN)
-check. It also requires completely tearing down a netdev during a fairly
-tight race window.)
+In batadv_send_my_tt_response(), last_changeset_len is temporarily widened
+to s32. The incorrectly negative s16 value propagates into the s32, causing
+batadv_tt_prepare_tvlv_local_data() to allocate a full sized buffer but
+populates only a small portion of it with the collected changeset. All
+remaining bits are kept uninitialized.
 
-Cc: stable@vger.kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Using an u16 avoids this type confusion and ensures that no (negative) sign
+extension is performed in batadv_send_my_tt_response().
+
+Cc: stable@kernel.org
+Fixes: a73105b8d4c7 ("batman-adv: improved client announcement mechanism")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/bnep/core.c |    2 +-
+ net/batman-adv/types.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -638,8 +638,8 @@ int bnep_add_connection(struct bnep_conn
- 		goto failed;
- 	}
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -993,7 +993,7 @@ struct batadv_priv_tt {
+ 	 * @last_changeset_len: length of last tt changeset this host has
+ 	 *  generated
+ 	 */
+-	s16 last_changeset_len;
++	u16 last_changeset_len;
  
--	up_write(&bnep_session_sem);
- 	strcpy(req->device, dev->name);
-+	up_write(&bnep_session_sem);
- 	return 0;
- 
- failed:
+ 	/**
+ 	 * @last_changeset_lock: lock protecting last_changeset &
 
 
 
