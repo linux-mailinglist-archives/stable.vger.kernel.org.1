@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-258241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258252-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OzKBT4lG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258241-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:22 +0200
+	id YCS0JlMlG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258252-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87029610B90
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33500610BEF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 42587301FC92
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 339B6301EC56
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792A73546EA;
-	Sat, 30 May 2026 17:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CB33546EA;
+	Sat, 30 May 2026 17:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jE7SmmCi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9Xv99WR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6232C261B9E;
-	Sat, 30 May 2026 17:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88FC2628D;
+	Sat, 30 May 2026 17:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163689; cv=none; b=SQkxz1G9pZnCt9sYA9XMpNmmmmYznLlorG4hFvXI05c23BlbosT8jV9Zl8OKUgWjhRKmGWex740owhqBehh8Rsl/OG4rXbM0Vy5tySnR3PDvq/s1vnUqgTfvFhJlhULwWlcVSimQycJ/uaDsO+wjvk9BKC0qS8RsPzhWSqnrPeI=
+	t=1780163725; cv=none; b=f2R/iuZYc5vatzmTL+05lOhMt5U1GScx2IMOV71KaD/h4ethdu22sEx9FBt4SzV75P6kTQBp5ifCAx5p9gB4KTayV3n7jpLVF7EcZnX6K34tQQSJOODfTdRv5AVsrwjGs4/KFMhdbjlprpCKLRa8wS7P/epqQYTXC0d1U/Zi1KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163689; c=relaxed/simple;
-	bh=XGhKS22g9YTKX/lRf3VOCp7ouevarpqQhVkKJduCok4=;
+	s=arc-20240116; t=1780163725; c=relaxed/simple;
+	bh=9ZoxQcGGno5kqGi1+I8jNm89HUniNhW5sN3FBbAMGWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/g5D9J5Tw1BBDezK7ihDXw/qXqQ19y5aU9WuNBQ9BsNq+2VnnWYFWBCLDrN1EhR5QKyBNXg2VvjdVpDtTv15LWFl0ImaAyAUYdFT3Eq2zv+qKNYhTCp48LK9YjwuHW9SXLf6IM9QCoOTk4RV2eoQfeOBhVVAxdWCiHB2p/cvTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jE7SmmCi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69051F00893;
-	Sat, 30 May 2026 17:54:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tgqaeYCjnT47Q8Npcc8EXSVJJUa4rdfKFjCaP+F3vAmsXk5Pr88Zm2xWt92d5gDOnAJ9eUMqMQV0fxEHlI6MN0m5InQ4IqWRnUVJ7jkf2TllXk/HNL6f8ZiWxFhxPIvDR1OyzC8oEDqnw/YjMS336ki3PpekC/e00tYxkFBxhb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9Xv99WR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3307F1F00893;
+	Sat, 30 May 2026 17:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163688;
-	bh=nRGrAUxgj3xrksW1BXf0lv8u1evmTYaUp4YY4nS2J0w=;
+	s=korg; t=1780163724;
+	bh=HyOaE8lwozrXaebfQ50sA9pPiDk+IlM4T7hPhYl+t6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jE7SmmCibdZp25tCMAmEixkxuOyTr5VhMHqtfWvnHgNBygQkof+ACINUVtTNDP6Ly
-	 Z1Afo4xh9LapCCXWmrkJSJul9xDbeaT/6BMX5/EY/xDw1RMDCzJH6PodLjBKzhpBgt
-	 mSGZmzqGsd+C6+XZX49rYzvrRGnjg8EAzK3YNOfg=
+	b=B9Xv99WRK9ioMxtDgQ9VyMODv45o9zpyUnO53uGtMIICsshbGTnD+30akmWPp3lfU
+	 I1N6dIghhHS62s9szYsXoZgNGH12ISMAHy7g8uIbOQgRfCwrU0TISmx/0LpIPv0AYO
+	 FDz8Ai76KjTnQkztiaa1vwVXlVkCAzxxQYLMav1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Salisbury <joseph.salisbury@oracle.com>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 325/776] ASoC: fsl_easrc: fix comment typo
-Date: Sat, 30 May 2026 18:00:39 +0200
-Message-ID: <20260530160248.971252639@linuxfoundation.org>
+Subject: [PATCH 5.15 326/776] ASoC: Intel: bytcr_wm5102: Fix MCLK leak on platform_clock_control error
+Date: Sat, 30 May 2026 18:00:40 +0200
+Message-ID: <20260530160248.996333203@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
 References: <20260530160240.228940103@linuxfoundation.org>
@@ -62,35 +64,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258241-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,oss.qualcomm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258252-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 87029610B90
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 33500610BEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,39 +100,40 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Joseph Salisbury <joseph.salisbury@oracle.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 804dce6c73fdfa44184ee4e8b09abad7f5da408f upstream.
+commit 13d30682e8dee191ac04e93642f0372a723e8b0c upstream.
 
-The file contains a spelling error in a source comment (funciton).
+If byt_wm5102_prepare_and_enable_pll1() fails in the
+SND_SOC_DAPM_EVENT_ON() path, platform_clock_control() returns after
+clk_prepare_enable(priv->mclk) without disabling the clock again.
 
-Typos in comments reduce readability and make text searches less reliable
-for developers and maintainers.
+This leaks an MCLK enable reference on failed power-up attempts. Add the
+missing clk_disable_unprepare() on the error path, matching the unwind
+used by the other Intel platform_clock_control() implementations.
 
-Replace 'funciton' with 'function' in the affected comment. This is a
-comment-only cleanup and does not change behavior.
-
-Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
+Fixes: 9a87fc1e0619 ("ASoC: Intel: bytcr_wm5102: Add machine driver for BYT/WM5102")
 Cc: stable@vger.kernel.org
-Signed-off-by: Joseph Salisbury <joseph.salisbury@oracle.com>
-Link: https://patch.msgid.link/20260316180545.144032-1-joseph.salisbury@oracle.com
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260427-bytcr-wm5102-mclk-leak-v1-1-02b96d08e99c@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_easrc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/boards/bytcr_wm5102.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -1286,7 +1286,7 @@ static int fsl_easrc_request_context(int
- /*
-  * Release the context
-  *
-- * This funciton is mainly doing the revert thing in request context
-+ * This function is mainly doing the revert thing in request context
-  */
- static void fsl_easrc_release_context(struct fsl_asrc_pair *ctx)
- {
+--- a/sound/soc/intel/boards/bytcr_wm5102.c
++++ b/sound/soc/intel/boards/bytcr_wm5102.c
+@@ -111,6 +111,7 @@ static int platform_clock_control(struct
+ 		ret = byt_wm5102_prepare_and_enable_pll1(codec_dai, 48000);
+ 		if (ret) {
+ 			dev_err(card->dev, "Error setting codec sysclk: %d\n", ret);
++			clk_disable_unprepare(priv->mclk);
+ 			return ret;
+ 		}
+ 	} else {
 
 
 
