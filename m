@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-257220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257999-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBIOG/MYG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257220-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:55 +0200
+	id GGFhL2UhG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257999-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:41:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBA0C60EE19
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FEC16102F2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:41:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B58A130E95D3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:57:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 260643006139
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B6633F5A3;
-	Sat, 30 May 2026 16:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C163469FC;
+	Sat, 30 May 2026 17:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plAVjEfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llo3RArd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7C432BF24;
-	Sat, 30 May 2026 16:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4A83438AE;
+	Sat, 30 May 2026 17:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160231; cv=none; b=YxTSds3vLp5+A30X8EE2+iKZ1jL1guRIDGiOKbgOSSFKP24RVpBzpGFapiECfyRp4NbZJLPYD6cN2/3DjNY6WjgImUIFel1P0nwWRk2dOqig8pxNcgPykgSbidhy4YvXofvqZDjIrkFbAS0Ynr6THn7/huYsiE6qQmGTW5wy1Ec=
+	t=1780162886; cv=none; b=aOHehUQO9MEO3z7+GSZmnamatnaWYgBP5ah5l9fVIi2FXca8+NcpVYm6IOyen6nfQrOIHwl+ARC+8sKQL2ZBKeyOAIAvY77r95YBxtEVow/u5B4e/JAklgMg/eQexTII+fE3zE1XgvANYMW/D1QlkOrBVtxhleW8DGzgKtO8VgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160231; c=relaxed/simple;
-	bh=+Ty66//CuJElMKyAldqD70OeYfpl5B/3nErHpHQyPAM=;
+	s=arc-20240116; t=1780162886; c=relaxed/simple;
+	bh=vArbN1xDBfvbv+9qCV6GVIGoVBxYSuCiqzdIrFOs0Rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8BxKy2yyybf1yOoUySD1DO0xpIIhyAPJ7d4ovcXLLWGJaOs7qG/XigiOpMzT9URgEEn77gc5l4JTCW1+qqC9j9lJ4noLEXjGHGcOzHvZzg+Hg3/zBr9AuK3/y3JLCAeojmsH2SjyiuhM54KIJ8htei08puyBBz8WG7MsUQ3VBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plAVjEfe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8C61F00893;
-	Sat, 30 May 2026 16:57:09 +0000 (UTC)
+	 MIME-Version; b=hgEyNravsVDwznXsIU4+UoLjXr8CjiqQOVsMOhfHhjg/99s6PcC0Lr8AUz60ewyt9dRo31VeTp4MUzFl18eND33EETV/AyPdYJPavWepVd9v29bFwVmHngW2HHavcrMi+dUANzclbnu2StAWV+HdoME6kTN7woirHRS/gAo91f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llo3RArd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70DFD1F00893;
+	Sat, 30 May 2026 17:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160230;
-	bh=0NpthxVCdsy2MRPX9Tzd9fDF4XM4FrIAjdpt8hKmjmI=;
+	s=korg; t=1780162885;
+	bh=WEgjBI9uL7G/WvZmz3A9tKH3Dk9servo1xItgF9HYpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=plAVjEfePzf1ZN5kW/GAfTXQXwPsLvEDdYkYCzgdmhXwipDDRYfaPiGuTGp88GYMG
-	 r0RH+tlLE6LduNJdmkK6M6e9eNGqoXLxdCIW6c/oG2hZpaJfOlI4M1S93Cx888cxaZ
-	 QAbG1riQPz7BK2R76KivWyZysmU5hdmeKrp8ewUA=
+	b=llo3RArdBK1Ky/LNGE0YfEFYHJxbDHNOpAIIrAzKkygSIktCk8fiSHallKKzMpqb4
+	 9ledODgBMVzZGk3OtFAhUn+3AdvRJJyu6aGqobZkrkrH/WpgrO0J9tDY6P4zz89RQT
+	 lTMWvuTEU8CDgvRPHbWA8nzwkVAQKnIkK8fR9dww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 6.1 282/969] ipmi:si: Return state to normal if message allocation fails
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 092/776] Revert "net: ethernet: xscale: Check for PTP support properly"
 Date: Sat, 30 May 2026 17:56:46 +0200
-Message-ID: <20260530160308.255895001@linuxfoundation.org>
+Message-ID: <20260530160242.715035022@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +64,87 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257220-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257999-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DBA0C60EE19
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5FEC16102F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+This reverts commit 144dde3146985b25fa84d4e4b7c3d11e0f5fc5a4.
 
-commit 09dd798270ff582d7309f285d4aaf5dbebae01cb upstream.
-
-There were places where nothing would get started if a message
-allocation failed, so the driver needs to return to normal state.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_si_intf.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/xscale/ixp4xx_eth.c | 5 ++++-
+ drivers/net/ethernet/xscale/ptp_ixp46x.c | 3 ---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/char/ipmi/ipmi_si_intf.c
-+++ b/drivers/char/ipmi/ipmi_si_intf.c
-@@ -481,15 +481,19 @@ retry:
- 	} else if (smi_info->msg_flags & RECEIVE_MSG_AVAIL) {
- 		/* Messages available. */
- 		smi_info->curr_msg = alloc_msg_handle_irq(smi_info);
--		if (!smi_info->curr_msg)
-+		if (!smi_info->curr_msg) {
-+			smi_info->si_state = SI_NORMAL;
- 			return;
-+		}
+diff --git a/drivers/net/ethernet/xscale/ixp4xx_eth.c b/drivers/net/ethernet/xscale/ixp4xx_eth.c
+index ad6384a1e6b21..9951006f1bc77 100644
+--- a/drivers/net/ethernet/xscale/ixp4xx_eth.c
++++ b/drivers/net/ethernet/xscale/ixp4xx_eth.c
+@@ -380,6 +380,9 @@ static int ixp4xx_hwtstamp_set(struct net_device *netdev,
+ 	int ret;
+ 	int ch;
  
- 		start_getting_msg_queue(smi_info);
- 	} else if (smi_info->msg_flags & EVENT_MSG_BUFFER_FULL) {
- 		/* Events available. */
- 		smi_info->curr_msg = alloc_msg_handle_irq(smi_info);
--		if (!smi_info->curr_msg)
-+		if (!smi_info->curr_msg) {
-+			smi_info->si_state = SI_NORMAL;
- 			return;
-+		}
++	if (!cpu_is_ixp46x())
++		return -EOPNOTSUPP;
++
+ 	if (!netif_running(netdev))
+ 		return -EINVAL;
  
- 		start_getting_events(smi_info);
- 	} else if (smi_info->msg_flags & OEM_DATA_AVAIL &&
+@@ -388,7 +391,7 @@ static int ixp4xx_hwtstamp_set(struct net_device *netdev,
+ 
+ 	ret = ixp46x_ptp_find(&port->timesync_regs, &port->phc_index);
+ 	if (ret)
+-		return -EOPNOTSUPP;
++		return ret;
+ 
+ 	ch = PORT2CHANNEL(port);
+ 	regs = port->timesync_regs;
+diff --git a/drivers/net/ethernet/xscale/ptp_ixp46x.c b/drivers/net/ethernet/xscale/ptp_ixp46x.c
+index 422946c1e65b7..20f6aa508003b 100644
+--- a/drivers/net/ethernet/xscale/ptp_ixp46x.c
++++ b/drivers/net/ethernet/xscale/ptp_ixp46x.c
+@@ -244,9 +244,6 @@ static struct ixp_clock ixp_clock;
+ 
+ int ixp46x_ptp_find(struct ixp46x_ts_regs *__iomem *regs, int *phc_index)
+ {
+-	if (!cpu_is_ixp46x())
+-		return -ENODEV;
+-
+ 	*regs = ixp_clock.regs;
+ 	*phc_index = ptp_clock_index(ixp_clock.ptp_clock);
+ 
+-- 
+2.53.0
+
 
 
 
