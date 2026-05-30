@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-259192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEvYDgcxG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-259192-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:39 +0200
+	id qMs7D70qG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00F656128A1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 990DC611953
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4AFE0301DCC1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:48:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED71330892CB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61428233943;
-	Sat, 30 May 2026 18:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8263B7B72;
+	Sat, 30 May 2026 18:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/2jhBK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvBZwT5z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A311D63E4;
-	Sat, 30 May 2026 18:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B042F90E0;
+	Sat, 30 May 2026 18:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166915; cv=none; b=iN/7zqgDDFmrCGfnj73/auPTKp0/IHg42jQ0sQr1qkKtt3nwn0GXJ0plciTeQrrJXB7sRRsDbTE6/Bgl6ghrqu3FDscayJqapEnoCaNrHZtAzYsoRSFtB1Aj/sKbsN5w6HzWAR32fWrRPVWDYkdb4S2gk5+YGtMuX/oFEKfNT7w=
+	t=1780164748; cv=none; b=Z2UkqDdS0V7DmUOoKNnWWd85NpPPmYfOV6IQYHeiXXyX8rT2ryxBpP5/KiKbdN49hxqpaTf9D221B8O1/a5CPin6kgMsDEt0y+OjuuQ2gZFndpLUj7kTJvNCW9+j/qE5jtMJFx6SR0mI156xSYPseoGZRSsVwyUM4VKKFS2Pqd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166915; c=relaxed/simple;
-	bh=xK8rNTCJlo175EeORuWcS2D2Xid8DsbxnOUidk9knGs=;
+	s=arc-20240116; t=1780164748; c=relaxed/simple;
+	bh=dZHNY3XiYUoVawVq17VrL0mfv3THxmTU9XwgSU6P4dI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9WLpxlshOrMwofhpVyeAsZSHlTAuStiESjoH6tI8AAML8XhmAGX7+5ixJuJFj28L3uf3jcIsnbobJCAqu9f0iBdBuLyCbMsrhhZXH6XiPlGM6r9e2FP/G8j+4/IXzbjkCQT5EiAW9iwrZGfFoCwkE2ZIVrNx/xLKnFKbZpm0/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/2jhBK7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BABC1F00893;
-	Sat, 30 May 2026 18:48:33 +0000 (UTC)
+	 MIME-Version; b=SD3FCeHqnwZdoSNAyvkTT0WH+QTMVVi8XTzzcyKW2NoAwWqxEsKQ/p/1/kSNqmGOVeY6En2dkpcM6EE9KY6WnpG9iRNeLWZjGhj8/S9wBsbFVEcHgNUjObjAzqW+Fg6Dg2O1erSN8uC/B74IX1RsShLVHOs+WedcVjyvsFfynUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvBZwT5z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB8E1F00893;
+	Sat, 30 May 2026 18:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166914;
-	bh=GNJ4VnU0Be/NzEEOxYxsX+e+kqSIDbZOV0AvPyr3d28=;
+	s=korg; t=1780164747;
+	bh=F4lGDOfmwmys98jEB6oR/Ic6egBsvFmUbNq9cMnNXQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u/2jhBK7qSoKgtDZEVW9ZNh0l1Io8y9Oz9Lsed8wyKo/lBKXKoFMhtirbBnFX/uxj
-	 uhkfxmf8mpSF16i/FsJhOZzdJb7k1oQMss7Ah1ZrO4QLyNYR15CwOAVyeak56VW3IM
-	 5fNSjHhp9/MoQ8yB7KTjnGQQXFrm6/7m+/tOYAks=
+	b=DvBZwT5zpSsdFI6Y3N0KgbLiHLTR/aRSqopxRprExTH6o48tiwgiI4I++EcXttj18
+	 halto3pIiMD/2U8BLTyfLKPpOBO2CDGrRe1X46sbQOJ/OWXZ923CQnZDY5/JTo5jFG
+	 0WBA4LWEDc+YNXR2TKFrX0+K9E4AmriuAAMmERpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoze Xie <royenheart@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 480/589] vrf: Fix a potential NPD when removing a port from a VRF
+	Yiming Qian <yimingqian591@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.15 647/776] crypto: af_alg - Cap AEAD AD length to 0x80000000
 Date: Sat, 30 May 2026 18:06:01 +0200
-Message-ID: <20260530160237.257347956@linuxfoundation.org>
+Message-ID: <20260530160256.655473817@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,150 +65,66 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-259192-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258557-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gondor.apana.org.au];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email]
-X-Rspamd-Queue-Id: 00F656128A1
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 990DC611953
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 2674d603a9e6970463b2b9ebcf8e31e90beae169 ]
+commit e4c06479d7059888adf2f22bc1ebcf053bf691a2 upstream.
 
-RCU readers that identified a net device as a VRF port using
-netif_is_l3_slave() assume that a subsequent call to
-netdev_master_upper_dev_get_rcu() will return a VRF device. They then
-continue to dereference its l3mdev operations.
+In order to prevent arithmetic overflows when checking the TX
+buffer size, cap the associated data length to 0x80000000.
 
-This assumption is not always correct and can result in a NPD [1]. There
-is no RCU synchronization when removing a port from a VRF, so it is
-possible for an RCU reader to see a new master device (e.g., a bridge)
-that does not have l3mdev operations.
-
-Fix by adding RCU synchronization after clearing the IFF_L3MDEV_SLAVE
-flag. Skip this synchronization when a net device is removed from a VRF
-as part of its deletion and when the VRF device itself is deleted. In
-the latter case an RCU grace period will pass by the time RTNL is
-released.
-
-[1]
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-[...]
-RIP: 0010:l3mdev_fib_table_rcu (net/l3mdev/l3mdev.c:181)
-[...]
-Call Trace:
-<TASK>
-l3mdev_fib_table_by_index (net/l3mdev/l3mdev.c:201 net/l3mdev/l3mdev.c:189)
-__inet_bind (net/ipv4/af_inet.c:499 (discriminator 3))
-inet_bind_sk (net/ipv4/af_inet.c:469)
-__sys_bind (./include/linux/file.h:62 (discriminator 1) ./include/linux/file.h:83 (discriminator 1) net/socket.c:1951 (discriminator 1))
-__x64_sys_bind (net/socket.c:1969 (discriminator 1) net/socket.c:1967 (discriminator 1) net/socket.c:1967 (discriminator 1))
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Fixes: fdeea7be88b1 ("net: vrf: Set slave's private flag before linking")
-Reported-by: Haoze Xie <royenheart@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Closes: https://lore.kernel.org/netdev/20260419145332.3988923-1-n05ec@lzu.edu.cn/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260423063607.1208202-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Fixes: 400c40cf78da ("crypto: algif - add AEAD support")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vrf.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ crypto/af_alg.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-index b43e8041fda34..d1a2b3dcd00c9 100644
---- a/drivers/net/vrf.c
-+++ b/drivers/net/vrf.c
-@@ -1143,6 +1143,7 @@ static int do_vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -478,6 +478,8 @@ static int af_alg_cmsg_send(struct msghd
+ 			if (cmsg->cmsg_len < CMSG_LEN(sizeof(u32)))
+ 				return -EINVAL;
+ 			con->aead_assoclen = *(u32 *)CMSG_DATA(cmsg);
++			if (con->aead_assoclen >= 0x80000000u)
++				return -EINVAL;
+ 			break;
  
- err:
- 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
-+	synchronize_net();
- 	return ret;
- }
- 
-@@ -1162,10 +1163,16 @@ static int vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
- }
- 
- /* inverse of do_vrf_add_slave */
--static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
-+static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev,
-+			    bool needs_sync)
- {
- 	netdev_upper_dev_unlink(port_dev, dev);
- 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
-+	/* Make sure that concurrent RCU readers that identified the device
-+	 * as a VRF port see a VRF master or no master at all.
-+	 */
-+	if (needs_sync)
-+		synchronize_net();
- 
- 	cycle_netdev(port_dev, NULL);
- 
-@@ -1174,7 +1181,7 @@ static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
- 
- static int vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
- {
--	return do_vrf_del_slave(dev, port_dev);
-+	return do_vrf_del_slave(dev, port_dev, true);
- }
- 
- static void vrf_dev_uninit(struct net_device *dev)
-@@ -1666,7 +1673,7 @@ static void vrf_dellink(struct net_device *dev, struct list_head *head)
- 	struct list_head *iter;
- 
- 	netdev_for_each_lower_dev(dev, port_dev, iter)
--		vrf_del_slave(dev, port_dev);
-+		do_vrf_del_slave(dev, port_dev, false);
- 
- 	vrf_map_unregister_dev(dev);
- 
-@@ -1797,7 +1804,7 @@ static int vrf_device_event(struct notifier_block *unused,
- 			goto out;
- 
- 		vrf_dev = netdev_master_upper_dev_get(dev);
--		vrf_del_slave(vrf_dev, dev);
-+		do_vrf_del_slave(vrf_dev, dev, false);
- 	}
- out:
- 	return NOTIFY_DONE;
--- 
-2.53.0
-
+ 		default:
 
 
 
