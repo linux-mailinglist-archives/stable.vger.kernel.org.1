@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-258659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIHFNLYqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:42 +0200
+	id yBzxEE4zG2rIAAkAu9opvQ
+	(envelope-from <stable+bounces-259234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:58:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB2261193C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49435612E3F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9105430983E9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF5DC30571BB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02800339863;
-	Sat, 30 May 2026 18:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE76137750;
+	Sat, 30 May 2026 18:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxyvNpiC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/4oUJxV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB977233D9E;
-	Sat, 30 May 2026 18:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6EA233952;
+	Sat, 30 May 2026 18:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165098; cv=none; b=AEujARwjGmRcrvISm+UlKwxehliJ1VXOMo6C2VBmCGg2x/w1ohqkODI80In3ebGfwMxIWA5ksIbfxv662aJhFz7oxGu1t8ECRUiHOKo/VeKdaW3otTJnZAOQH6rGXjJ8CF7GeBsGPPj0HIYugf7205MPpDLkj3vVuA2lhCy31HI=
+	t=1780167059; cv=none; b=ikte4Se2UaPdpALJjQJi0D6CWPA2qZaIHjbLfABOsfEU57/bjRq8aihgXAa9xY/wopTpDYxRsaQ/78NKX2iVlpx8nsV+Hatjw2+S2HZ7IgeAaB+ldJWI1Lxndz3wjOI/4BmpbMnWidio1+Whino3H6jM4U4CuF1RWlZ/9bNHda0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165098; c=relaxed/simple;
-	bh=KMQV6ZX0jCjdA5o87g4L6mCchDYr8rM28ROF81u9QyA=;
+	s=arc-20240116; t=1780167059; c=relaxed/simple;
+	bh=x6OU6Q+XuteVbYkpei0dpuU8Da11Hw2qRhnx4TvYdp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y7r//lIuaam1SfIWNuJlMVQxvX92C3u5IpZxXUT9l6xVmWSQFJUghwXx9W8PH0SyrQymXKON7qCt4hvYnzOqmqocP2q/ovNTh7SV2PuoRddz/ocbIt0xRCJk/i6QhWEUc8xsmuXR3sfpZLOEEGsYesldRyr74lkYMPyma0fJBi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxyvNpiC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6601F00893;
-	Sat, 30 May 2026 18:18:16 +0000 (UTC)
+	 MIME-Version; b=CTUDfSgUvQr/vcEnb/nCQC14BHgPKT+E4uxXqS+v6hBQgUqDLyNXjrxVweJnY8NND+YjH5AbXMLejoRV5eGtHgGa8Yn4BaYsEA9RL0gPDjYIUFS9RmMSbBKcvC1KpYdBMpR4uyl/Rf6ue2vNWrEBiLxiJyVYP4jk8rjV5tEd8FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/4oUJxV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8ED1F00893;
+	Sat, 30 May 2026 18:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165097;
-	bh=YQPExy/OOuBrqv/LmqrsfauBrQt2OpcOC4CgyWOcBbw=;
+	s=korg; t=1780167057;
+	bh=eur3NQ/Gf41OgTTCFUJOwlkmQevgv/FU29dYbrsttQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VxyvNpiCoPjJ+Bm+VtXhTMErATbrre0tAuNM0IpW/8SrTZl7jRhIHnfOE1v7nsrva
-	 mfabfcygFPazq+/jyrKaWQxNV05r3cu6Vwo/dNwLwLOhhRNTJjml+hjvmxRWy7ZAtz
-	 /9R49YHm0Zen0CZozu0G4pIzAHvgjOeNmjSJ8FvY=
+	b=r/4oUJxViuJPzvIgr2GvX3EWi4ENd2ziQFHYouGf+HYpV1wfq5h/gZffWlCT13OrN
+	 yfG/4G72hY54yqn+PC5a9PR16HCORLGEf1iHbRjE1fciMUcg4WS1L/k2q77+KeEXXc
+	 dLdjSsgCF+IgFCoNa5KrhQ6IAqE45Kh8LtjFAbaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.15 719/776] hwmon: (pmbus/adm1266) bounce blackbox records through a protocol-sized buffer
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.10 552/589] batman-adv: dat: handle forward allocation error
 Date: Sat, 30 May 2026 18:07:13 +0200
-Message-ID: <20260530160258.396898948@linuxfoundation.org>
+Message-ID: <20260530160239.170877241@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,101 +71,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-259234-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258659-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nexthop.ai:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4AB2261193C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 49435612E3F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 43cae21424ff8e33894a0f86c6b80b840c049fd7 upstream.
+commit 2d8826a2d3657cea66fb0370f9e521575a673871 upstream.
 
-adm1266_pmbus_block_xfer() copies the device-supplied block payload
-into the caller-provided buffer using the device-supplied length:
+batadv_dat_forward_data() calls pskb_copy_for_clone() to duplicate an skb
+for each DHT candidate, but does not check the return value before passing
+it to batadv_send_skb_prepare_unicast_4addr(). That function dereferences
+the skb unconditionally, so a failed allocation triggers a NULL pointer
+dereference.
 
-	memcpy(data_r, &msgs[1].buf[1], msgs[1].buf[0]);
+Skip forwarding to the current DHT candidate on allocation failure.
 
-The helper does not know how large data_r is and trusts the device to
-return at most one record's worth of bytes.  adm1266_nvmem_read_blackbox()
-violates that contract: it advances read_buff inside data->dev_mem in
-ADM1266_BLACKBOX_SIZE (64-byte) strides while the helper is willing to
-write up to ADM1266_PMBUS_BLOCK_MAX (255) bytes.  A device that returns
-more than 64 bytes on the trailing record (read_buff offset 1984 in
-the 2048-byte dev_mem allocation) overflows dev_mem by up to 191 bytes
-before the post-call
-
-	if (ret != ADM1266_BLACKBOX_SIZE)
-		return -EIO;
-
-can reject the response.
-
-Contain the fix in the caller without changing the helper signature:
-read each record into a 255-byte local bounce buffer that matches the
-helper's maximum output, validate the returned length, and only then
-copy exactly ADM1266_BLACKBOX_SIZE bytes into the dev_mem slot.
-
-Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-5-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: stable@kernel.org
+Fixes: 785ea1144182 ("batman-adv: Distributed ARP Table - create DHT helper functions")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/batman-adv/distributed-arp-table.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -350,6 +350,7 @@ static void adm1266_init_debugfs(struct
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -701,6 +701,9 @@ static bool batadv_dat_forward_data(stru
+ 			goto free_orig;
  
- static int adm1266_nvmem_read_blackbox(struct adm1266_data *data, u8 *read_buff)
- {
-+	u8 record[ADM1266_PMBUS_BLOCK_MAX];
- 	int record_count;
- 	char index;
- 	u8 buf[I2C_SMBUS_BLOCK_MAX];
-@@ -367,13 +368,14 @@ static int adm1266_nvmem_read_blackbox(s
- 		return -EIO;
- 
- 	for (index = 0; index < record_count; index++) {
--		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, read_buff);
-+		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, record);
- 		if (ret < 0)
- 			return ret;
- 
- 		if (ret != ADM1266_BLACKBOX_SIZE)
- 			return -EIO;
- 
-+		memcpy(read_buff, record, ADM1266_BLACKBOX_SIZE);
- 		read_buff += ADM1266_BLACKBOX_SIZE;
- 	}
- 
+ 		tmp_skb = pskb_copy_for_clone(skb, GFP_ATOMIC);
++		if (!tmp_skb)
++			goto free_neigh;
++
+ 		if (!batadv_send_skb_prepare_unicast_4addr(bat_priv, tmp_skb,
+ 							   cand[i].orig_node,
+ 							   packet_subtype)) {
 
 
 
