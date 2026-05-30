@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-257415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258767-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBeDHwcaG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:31 +0200
+	id 8La9BGUrG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258767-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D7960F087
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A17611A91
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7114F3057639
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:09:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3D0823004433
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5928A3AFB13;
-	Sat, 30 May 2026 17:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE2A17555;
+	Sat, 30 May 2026 18:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pVoecjw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uC8Rm7YZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB243C2B9C;
-	Sat, 30 May 2026 17:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC72219303;
+	Sat, 30 May 2026 18:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160919; cv=none; b=sseI8NqL+mXoKKYobZXaZFUmOzmM56VQnmpXIyxiTPtj2KBXB4Ztz7ppi7HxnNxtm7NYsaqNrpAn4yPSm18Fa4DDv5/3XI6r3T5NwZN/QFiJwznhnWDAkQDvf1bjXDnA4Mf5vxkNHMt90s+jCdtzHBTbBaEcOkLxWO+5K14loRA=
+	t=1780165470; cv=none; b=Ke8/55gdRq/wx9/HsGr6y2t9J/ass8GgfDPXE3HfLi4q0IQssfFjwYGrlsrNnpNgGp5Upd07QKuV0SibamWtwzn33GLHEO/91l45VEB01m8PU3lSMnUCCdAyso5ItHe56rRfMiouY7Ghd0KxIQFXKLwp8o7eA0TzWWiDUzrdQfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160919; c=relaxed/simple;
-	bh=TDe1TXmXnNqbNdaDnmjNK4Ef5Dur6njlQuIeqlGwFdE=;
+	s=arc-20240116; t=1780165470; c=relaxed/simple;
+	bh=9i397wQPDcq6v3Mh4D90KyoWhqAsAvRaU7rRToxDseA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KGU97PjJvMATqRLh4TV8ofjJWyHrQv2sBZKJwz1/cZQg1VGKP1sD947Ws7U8+qsWAuDicDaaT6u4L5vSlEpaDxXmB6xFESBjVjPJNBGqLfXaKUC1nqzP2Dowa6olv0q8jDwwF/y0rQ8bvSviNnS2g6vPWtMU/XMVI3xc5enri70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pVoecjw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102791F00898;
-	Sat, 30 May 2026 17:08:36 +0000 (UTC)
+	 MIME-Version; b=tKYUMGlLS9Hh3yb73HaNVyjZ1rjmmcEf7SfqLhatHjUbPL953+8zSoGKYluXU0JaBpqWkotk5gH0LJ4go3MSGLkjoMZHHMYCkrt/bFZJZZKgAmZoZ/pdgMEFIKejAEw++fy0wJmos+gRGEtFG5aj34Lt13pN41CWqqnMGWPi5X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uC8Rm7YZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC59E1F00893;
+	Sat, 30 May 2026 18:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160917;
-	bh=9j9R2m10vMbIVnDgLBtrqeNYyfgVEv5IuOgUDS7x+/8=;
+	s=korg; t=1780165469;
+	bh=F8TcH6DzrfjhwYvvXgUl4KheEoNYXbW2elaUM1WdNqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1pVoecjwvI1uJzpqji38/xHEnbpuLIomaeOSJD0YWvRDbBpqiEn8Tl0zx7LtprmFM
-	 YK9kJ9lGV179FYalzsQUrBD/SRI5H5j+1hQvnfEVS3zSr4zUdZSX69vndYJs4SCIJj
-	 7vCBLdbibDyNmdXIXYvAHGHbuDnua5Oo5xdgA+cw=
+	b=uC8Rm7YZjOYi7RuUxhFWmiXsAPZyKHx8lmnWVLp06ELRWVMgyyBZqHUOQ+OVuCsTW
+	 vC+hszzL/klBIlXFDV5nrHJSz5ERyeEVzuS2JChQoRfuOBe4VfBTFSlpPYx9JmjU77
+	 rGuUBPN90zrdouPtEO/2IwgwyArZQA557PBFlSxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Florian Westphal <fw@strlen.de>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 443/969] hrtimer: Reduce trace noise in hrtimer_start()
-Date: Sat, 30 May 2026 17:59:27 +0200
-Message-ID: <20260530160312.505363514@linuxfoundation.org>
+Subject: [PATCH 5.10 087/589] net/sched: act_ct: fix ref leak when switching zones
+Date: Sat, 30 May 2026 17:59:28 +0200
+Message-ID: <20260530160226.957792863@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,248 +66,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257415-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258767-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,strlen.de,gmail.com,davemloft.net,altlinux.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 28D7960F087
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[altlinux.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,strlen.de:email,davemloft.net:email]
+X-Rspamd-Queue-Id: 37A17611A91
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@kernel.org>
+From: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
 
-[ Upstream commit f2e388a019e4cf83a15883a3d1f1384298e9a6aa ]
+commit bcb74e132a76ce0502bb33d5b65533a4ed72d159 upstream.
 
-hrtimer_start() when invoked with an already armed timer traces like:
+When switching zones or network namespaces without doing a ct clear in
+between, it is now leaking a reference to the old ct entry. That's
+because tcf_ct_skb_nfct_cached() returns false and
+tcf_ct_flow_table_lookup() may simply overwrite it.
 
- <comm>-..   [032] d.h2. 5.002263: hrtimer_cancel: hrtimer= ....
- <comm>-..   [032] d.h1. 5.002263: hrtimer_start: hrtimer= ....
+The fix is to, as the ct entry is not reusable, free it already at
+tcf_ct_skb_nfct_cached().
 
-Which is incorrect as the timer doesn't get canceled. Just the expiry time
-changes. The internal dequeue operation which is required for that is not
-really interesting for trace analysis. But it makes it tedious to keep real
-cancellations and the above case apart.
-
-Remove the cancel tracing in hrtimer_start() and add a 'was_armed'
-indicator to the hrtimer start tracepoint, which clearly indicates what the
-state of the hrtimer is when hrtimer_start() is invoked:
-
-<comm>-..   [032] d.h1. 6.200103: hrtimer_start: hrtimer= .... was_armed=0
- <comm>-..   [032] d.h1. 6.200558: hrtimer_start: hrtimer= .... was_armed=1
-
-Fixes: c6a2a1770245 ("hrtimer: Add tracepoint for hrtimers")
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260224163430.208491877@kernel.org
+Reported-by: Florian Westphal <fw@strlen.de>
+Fixes: 2f131de361f6 ("net/sched: act_ct: Fix flow table lookup after ct clear or switching zones")
+Signed-off-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[ kovalev: bp to fix CVE-2022-49183; used nf_conntrack_put(&ct->ct_general)
+  instead of nf_ct_put(ct) due to the older kernel not yet having the
+  conversion from the indirect call (see upstream commit 408bdcfce8df) ]
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/timer.h | 11 +++++----
- kernel/time/hrtimer.c        | 43 +++++++++++++++++-------------------
- 2 files changed, 27 insertions(+), 27 deletions(-)
+ net/sched/act_ct.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/include/trace/events/timer.h b/include/trace/events/timer.h
-index b4bc2828fa09f..ec8d0de1ad225 100644
---- a/include/trace/events/timer.h
-+++ b/include/trace/events/timer.h
-@@ -198,12 +198,13 @@ TRACE_EVENT(hrtimer_init,
-  * hrtimer_start - called when the hrtimer is started
-  * @hrtimer:	pointer to struct hrtimer
-  * @mode:	the hrtimers mode
-+ * @was_armed:	Was armed when hrtimer_start*() was invoked
-  */
- TRACE_EVENT(hrtimer_start,
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index d9748c917a503..d75f4b2b97daa 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -589,22 +589,25 @@ static bool tcf_ct_skb_nfct_cached(struct net *net, struct sk_buff *skb,
+ 	if (!ct)
+ 		return false;
+ 	if (!net_eq(net, read_pnet(&ct->ct_net)))
+-		return false;
++		goto drop_ct;
+ 	if (nf_ct_zone(ct)->id != zone_id)
+-		return false;
++		goto drop_ct;
  
--	TP_PROTO(struct hrtimer *hrtimer, enum hrtimer_mode mode),
-+	TP_PROTO(struct hrtimer *hrtimer, enum hrtimer_mode mode, bool was_armed),
+ 	/* Force conntrack entry direction. */
+ 	if (force && CTINFO2DIR(ctinfo) != IP_CT_DIR_ORIGINAL) {
+ 		if (nf_ct_is_confirmed(ct))
+ 			nf_ct_kill(ct);
  
--	TP_ARGS(hrtimer, mode),
-+	TP_ARGS(hrtimer, mode, was_armed),
- 
- 	TP_STRUCT__entry(
- 		__field( void *,	hrtimer		)
-@@ -211,6 +212,7 @@ TRACE_EVENT(hrtimer_start,
- 		__field( s64,		expires		)
- 		__field( s64,		softexpires	)
- 		__field( enum hrtimer_mode,	mode	)
-+		__field( bool,		was_armed	)
- 	),
- 
- 	TP_fast_assign(
-@@ -219,13 +221,14 @@ TRACE_EVENT(hrtimer_start,
- 		__entry->expires	= hrtimer_get_expires(hrtimer);
- 		__entry->softexpires	= hrtimer_get_softexpires(hrtimer);
- 		__entry->mode		= mode;
-+		__entry->was_armed	= was_armed;
- 	),
- 
- 	TP_printk("hrtimer=%p function=%ps expires=%llu softexpires=%llu "
--		  "mode=%s", __entry->hrtimer, __entry->function,
-+		  "mode=%s was_armed=%d", __entry->hrtimer, __entry->function,
- 		  (unsigned long long) __entry->expires,
- 		  (unsigned long long) __entry->softexpires,
--		  decode_hrtimer_mode(__entry->mode))
-+		  decode_hrtimer_mode(__entry->mode), __entry->was_armed)
- );
- 
- /**
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 2d8c7b735baeb..d56e18b133741 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -497,17 +497,10 @@ debug_init(struct hrtimer *timer, clockid_t clockid,
- 	trace_hrtimer_init(timer, clockid, mode);
- }
- 
--static inline void debug_activate(struct hrtimer *timer,
--				  enum hrtimer_mode mode)
-+static inline void debug_activate(struct hrtimer *timer, enum hrtimer_mode mode, bool was_armed)
- {
- 	debug_hrtimer_activate(timer, mode);
--	trace_hrtimer_start(timer, mode);
--}
+-		nf_conntrack_put(&ct->ct_general);
+-		nf_ct_set(skb, NULL, IP_CT_UNTRACKED);
 -
--static inline void debug_deactivate(struct hrtimer *timer)
--{
--	debug_hrtimer_deactivate(timer);
--	trace_hrtimer_cancel(timer);
-+	trace_hrtimer_start(timer, mode, was_armed);
- }
+-		return false;
++		goto drop_ct;
+ 	}
  
- static struct hrtimer_clock_base *
-@@ -1099,9 +1092,9 @@ EXPORT_SYMBOL_GPL(hrtimer_forward);
-  * Returns true when the new timer is the leftmost timer in the tree.
-  */
- static bool enqueue_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
--			    enum hrtimer_mode mode)
-+			    enum hrtimer_mode mode, bool was_armed)
- {
--	debug_activate(timer, mode);
-+	debug_activate(timer, mode, was_armed);
- 	WARN_ON_ONCE(!base->cpu_base->online);
- 
- 	base->cpu_base->active_bases |= 1 << base->index;
-@@ -1161,6 +1154,8 @@ remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
- 	if (state & HRTIMER_STATE_ENQUEUED) {
- 		bool reprogram;
- 
-+		debug_hrtimer_deactivate(timer);
+ 	return true;
 +
- 		/*
- 		 * Remove the timer and force reprogramming when high
- 		 * resolution mode is active and the timer is on the current
-@@ -1169,7 +1164,6 @@ remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
- 		 * reprogramming happens in the interrupt handler. This is a
- 		 * rare case and less expensive than a smp call.
- 		 */
--		debug_deactivate(timer);
- 		reprogram = base->cpu_base == this_cpu_ptr(&hrtimer_bases);
- 
- 		/*
-@@ -1236,15 +1230,15 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- {
- 	struct hrtimer_cpu_base *this_cpu_base = this_cpu_ptr(&hrtimer_bases);
- 	struct hrtimer_clock_base *new_base;
--	bool force_local, first;
-+	bool force_local, first, was_armed;
- 
- 	/*
- 	 * If the timer is on the local cpu base and is the first expiring
- 	 * timer then this might end up reprogramming the hardware twice
--	 * (on removal and on enqueue). To avoid that by prevent the
--	 * reprogram on removal, keep the timer local to the current CPU
--	 * and enforce reprogramming after it is queued no matter whether
--	 * it is the new first expiring timer again or not.
-+	 * (on removal and on enqueue). To avoid that prevent the reprogram
-+	 * on removal, keep the timer local to the current CPU and enforce
-+	 * reprogramming after it is queued no matter whether it is the new
-+	 * first expiring timer again or not.
- 	 */
- 	force_local = base->cpu_base == this_cpu_base;
- 	force_local &= base->cpu_base->next_timer == timer;
-@@ -1266,7 +1260,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 	 * avoids programming the underlying clock event twice (once at
- 	 * removal and once after enqueue).
- 	 */
--	remove_hrtimer(timer, base, true, force_local);
-+	was_armed = remove_hrtimer(timer, base, true, force_local);
- 
- 	if (mode & HRTIMER_MODE_REL)
- 		tim = ktime_add_safe(tim, base->get_time());
-@@ -1283,7 +1277,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 		new_base = base;
- 	}
- 
--	first = enqueue_hrtimer(timer, new_base, mode);
-+	first = enqueue_hrtimer(timer, new_base, mode, was_armed);
- 
- 	/*
- 	 * If the hrtimer interrupt is running, then it will reevaluate the
-@@ -1387,8 +1381,11 @@ int hrtimer_try_to_cancel(struct hrtimer *timer)
- 
- 	base = lock_hrtimer_base(timer, &flags);
- 
--	if (!hrtimer_callback_running(timer))
-+	if (!hrtimer_callback_running(timer)) {
- 		ret = remove_hrtimer(timer, base, false, false);
-+		if (ret)
-+			trace_hrtimer_cancel(timer);
-+	}
- 
- 	unlock_hrtimer_base(timer, &flags);
- 
-@@ -1768,7 +1765,7 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base,
- 	 */
- 	if (restart != HRTIMER_NORESTART &&
- 	    !(timer->state & HRTIMER_STATE_ENQUEUED))
--		enqueue_hrtimer(timer, base, HRTIMER_MODE_ABS);
-+		enqueue_hrtimer(timer, base, HRTIMER_MODE_ABS, false);
- 
- 	/*
- 	 * Separate the ->running assignment from the ->state assignment.
-@@ -2250,7 +2247,7 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
- 	while ((node = timerqueue_getnext(&old_base->active))) {
- 		timer = container_of(node, struct hrtimer, node);
- 		BUG_ON(hrtimer_callback_running(timer));
--		debug_deactivate(timer);
-+		debug_hrtimer_deactivate(timer);
- 
- 		/*
- 		 * Mark it as ENQUEUED not INACTIVE otherwise the
-@@ -2267,7 +2264,7 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
- 		 * sort out already expired timers and reprogram the
- 		 * event device.
- 		 */
--		enqueue_hrtimer(timer, new_base, HRTIMER_MODE_ABS);
-+		enqueue_hrtimer(timer, new_base, HRTIMER_MODE_ABS, true);
- 	}
++drop_ct:
++	nf_conntrack_put(&ct->ct_general);
++	nf_ct_set(skb, NULL, IP_CT_UNTRACKED);
++
++	return false;
  }
  
+ /* Trim the skb to the length specified by the IP/IPv6 header,
 -- 
 2.53.0
 
