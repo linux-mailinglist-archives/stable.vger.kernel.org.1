@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0B0lFYciG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257950-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:47 +0200
+	id 0L4xElEYG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBCE36105C1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE3F60ECD9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8C5003041859
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E297D30CA17D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B8834D38B;
-	Sat, 30 May 2026 17:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E6B34E75C;
+	Sat, 30 May 2026 16:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSclLPTT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpefL8kU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2B33B9DB6;
-	Sat, 30 May 2026 17:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF033A542F;
+	Sat, 30 May 2026 16:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162722; cv=none; b=OaQsrGj1fR7HNWns4G/i5pqLLKf5IFPIvVcs05yJhemNO5B8wIGV+UZZsUrKhfo609Yg1nmFSey/lMrhEOCZaUpOEBWH6/OQDj5+O4p9fsHWsQZs0e8kYrW//Pz/gW08QQ9HoXf6t2PgZPAnZB/T161nymc9xoQxyHXXOjuW7qc=
+	t=1780160198; cv=none; b=WbLG6INVfliZQ9/p3HVBKmoE3YOGkshunmo2rJDhw6zlwAN0czZoQGaoNXUZVSA4p5sFz7YC/KpBVnjbdVchJ2Gecpg3Qke6RVppDCxS53u9z0xWwRKLNYC3QzNzMiU8ag/3mkPCY7Z/MpR3Nv74CT7f6/JhpYkJM9sj2cVr2j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162722; c=relaxed/simple;
-	bh=285/1h02N9DkgwJO82KSaLxsAWc72KmoewzqQWbl/So=;
+	s=arc-20240116; t=1780160198; c=relaxed/simple;
+	bh=cp7o8fbXY0RAQH45ZloItAZdlAeKlr7seNWmFkCyddE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oe9I/lnbMPzg7MXOyWLwcmHldGtsW86YRoqjP1kFgk1/Fn95oEQz+5WBZKn1/sSgMBvmh2YoFYvWSn78TNRMG2SME9BRdN049oSLns/+zOSVDIuJCLjmJ2d/09sclVaB9V+kcUlp0lLYl68NIl8FUNy4Nr6nYGRzBWVW3xtIbik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSclLPTT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5243F1F00893;
-	Sat, 30 May 2026 17:38:40 +0000 (UTC)
+	 MIME-Version; b=nlgZlYdH7LEXZ3BvfS4gM7Rvln8UIuteRubpVTQ/4/exlgBGIWlhZzqG19oR0KEIyvf7Fw59nKzCCKJPd6XaiWcqowqM4POOz3bqmGH0pK2bPNFqcejYLsUSX2LbJ3XsbZUeW4Aqy/MYprBRVcB0coK32wdg3Evhj9PKReGws1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpefL8kU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42EB1F00893;
+	Sat, 30 May 2026 16:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162720;
-	bh=vvH2LdtDIPrpokSNEDQCYGtkPpGQOiOA8QdgLPUjTLc=;
+	s=korg; t=1780160197;
+	bh=1Tfkw3CGSqADUtOWflMUpq9ibblrJ2CGNZhtJZgJxDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CSclLPTT7JFe2kyspA6EyIRyzz7WCkHfSGxvT/SfC+zOLiukvtBlFEWG3cbtbuQ3U
-	 Ij4E63Cqs1XWRnqDW2CjALhZ87FKnzIqvsI0pEU16AL0kK0V/XLGmyVwwxXlaCRnxl
-	 gfhVDXbBpklHoFXmc7hoY8/pJInWJWLQXq/g1uiY=
+	b=ZpefL8kUPW/Cpn2NrJH8HDb6Wn4ACK0GrRE5HHfZHsRuq9S8OlwcCRopqxVKmYGsN
+	 FqKWjne7e8rJIWHI9iq8TNGeultORnFeNoDXKRyuvxZj3XWFeSGT9WhJAWOp2lHB0L
+	 dteLiSLeMXQZnBoACCyVoPy5AAPXGaLJRYX/jCoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 044/776] mips: mm: Allocate tlb_vpn array atomically
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 234/969] KVM: nSVM: Sync interrupt shadow to cached vmcb12 after VMRUN of L2
 Date: Sat, 30 May 2026 17:55:58 +0200
-Message-ID: <20260530160241.443485788@linuxfoundation.org>
+Message-ID: <20260530160306.923628337@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,104 +65,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257211-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257950-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EBCE36105C1
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CDE3F60ECD9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit 01cc50ea5167bb14117257ec084637abe9e5f691 upstream.
+commit 03bee264f8ebfd39e0254c98e112d033a7aa9055 upstream.
 
-Found by DEBUG_ATOMIC_SLEEP:
+After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
+fields written by the CPU from vmcb02 to the cached vmcb12. This is
+because the cached vmcb12 is used as the authoritative copy of some of
+the controls, and is the payload when saving/restoring nested state.
 
-  BUG: sleeping function called from invalid context at /include/linux/sched/mm.h:306
-  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-  preempt_count: 1, expected: 0
-  RCU nest depth: 0, expected: 0
-  no locks held by swapper/1/0.
-  irq event stamp: 0
-  hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-  hardirqs last disabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
-  softirqs last  enabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
-  softirqs last disabled at (0): [<0000000000000000>] 0x0
-  CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.119-d79e757675ec-fct #1
-  Stack : 800000000290bad8 0000000000000000 0000000000000008 800000000290bae8
-          800000000290bae8 800000000290bc78 0000000000000000 0000000000000000
-          ffffffff80c80000 0000000000000001 ffffffff80d8dee8 ffffffff810d09c0
-          784bb2a7ec10647d 0000000000000010 ffffffff80a6fd60 8000000001d8a9c0
-          0000000000000000 0000000000000000 ffffffff80d90000 0000000000000000
-          ffffffff80c9e0e8 0000000007ffffff 0000000000000cc0 0000000000000400
-          ffffffffffffffff 0000000000000001 0000000000000002 ffffffffc0149ed8
-          fffffffffffffffe 8000000002908000 800000000290bae0 ffffffff80a81b74
-          ffffffff80129fb0 0000000000000000 0000000000000000 0000000000000000
-          0000000000000000 0000000000000000 ffffffff80129fd0 0000000000000000
-          ...
-  Call Trace:
-  [<ffffffff80129fd0>] show_stack+0x60/0x158
-  [<ffffffff80a7f894>] dump_stack_lvl+0x88/0xbc
-  [<ffffffff8018d3c8>] __might_resched+0x268/0x288
-  [<ffffffff803648b0>] __kmem_cache_alloc_node+0x2e0/0x330
-  [<ffffffff80302788>] __kmalloc+0x58/0xd0
-  [<ffffffff80a81b74>] r4k_tlb_uniquify+0x7c/0x428
-  [<ffffffff80143e8c>] tlb_init+0x7c/0x110
-  [<ffffffff8012bdb4>] per_cpu_trap_init+0x16c/0x1d0
-  [<ffffffff80133258>] start_secondary+0x28/0x128
+int_state is also written by the CPU, specifically bit 0 (i.e.
+SVM_INTERRUPT_SHADOW_MASK) for nested VMs, but it is not sync'd to
+cached vmcb12. This does not cause a problem if KVM_SET_NESTED_STATE
+preceeds KVM_SET_VCPU_EVENTS in the restore path, as an interrupt shadow
+would be correctly restored to vmcb02 (KVM_SET_VCPU_EVENTS overwrites
+what KVM_SET_NESTED_STATE restored in int_state).
 
-Fixes: 231ac951faba ("MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+However, if KVM_SET_VCPU_EVENTS preceeds KVM_SET_NESTED_STATE, an
+interrupt shadow would be restored into vmcb01 instead of vmcb02. This
+would mostly be benign for L1 (delays an interrupt), but not for L2. For
+L2, the vCPU could hang (e.g. if a wakeup interrupt is delivered before
+a HLT that should have been in an interrupt shadow).
+
+Sync int_state to the cached vmcb12 in nested_sync_control_from_vmcb02()
+to avoid this problem. With that, KVM_SET_NESTED_STATE restores the
+correct interrupt shadow state, and if KVM_SET_VCPU_EVENTS follows it
+would overwrite it with the same value.
+
+Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
+CC: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260225005950.3739782-3-yosry@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/mm/tlb-r4k.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 78e1420471b4e..f782214d23d3b 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -528,7 +528,7 @@ static void __ref r4k_tlb_uniquify(void)
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -400,6 +400,7 @@ void nested_sync_control_from_vmcb02(str
+ 	u32 mask;
+ 	svm->nested.ctl.event_inj      = svm->vmcb->control.event_inj;
+ 	svm->nested.ctl.event_inj_err  = svm->vmcb->control.event_inj_err;
++	svm->nested.ctl.int_state	= svm->vmcb->control.int_state;
  
- 	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
- 	tlb_vpns = (use_slab ?
--		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
-+		    kmalloc(tlb_vpn_size, GFP_ATOMIC) :
- 		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
- 	if (WARN_ON(!tlb_vpns))
- 		return; /* Pray local_flush_tlb_all() is good enough. */
--- 
-2.53.0
-
+ 	/* Only a few fields of int_ctl are written by the processor.  */
+ 	mask = V_IRQ_MASK | V_TPR_MASK;
 
 
 
