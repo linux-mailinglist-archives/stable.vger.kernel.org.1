@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-259038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257624-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGhUIqwvG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259038-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:52 +0200
+	id OMtRIyYeG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257624-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E436124E6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F0260FB9B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5055D30956F5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:39:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D597D30160EB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F09D3546F6;
-	Sat, 30 May 2026 18:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD9033E36A;
+	Sat, 30 May 2026 17:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/51CZ2C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6TuZlj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC2633AD99;
-	Sat, 30 May 2026 18:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B9A332EA7;
+	Sat, 30 May 2026 17:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166382; cv=none; b=vEmhafIf1dMcY/7taCYVMxIRt2sOBrg0UBEym0mzzqc42wikohIsiMZxQiPkaY1t0xfIwET513fSLZb3KQOey5tuCEEIkB1kiPth+4CslNMVuetSORFIeZ6wktLcTp9QBBxR9dvapKH7D4J/0kHoHQKzZKo8/nhGp37V2Yii0DU=
+	t=1780161626; cv=none; b=pNshs1OmLcD3zO75SGDaQWjOHF9q+ApJmUoIr9oclLjDeAUeO3j7qMSGTmeTYPbtNea8KkyhRsakdN0ZJISVIc6B0HI1QHZUzHrqJFHUPeih2id/whR4tSgz7RB2j4080eXVlJkQfL4cBD2ViVdSuB562l4rHAZqd71JONhtOnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166382; c=relaxed/simple;
-	bh=V52BM1fm3obM3o0GfdX1TaX2uifRP6M/eh8+Bw9df1o=;
+	s=arc-20240116; t=1780161626; c=relaxed/simple;
+	bh=8liNpPwTAnFH8sb/9TWpxQYiI9Oe+VrfgitR4mold2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QOxK7kC5Y3FK7L0L/kcwzzudh/v3+FhlTFsA6SPn5REUAm/tm8MU+V42dpm7Svg/de41NH1kdDMhPr7RmFsva6FavIZwIt13LnFCX38KhqWJ7GBNe/wgFC6hh3kR8MtLjvJ0FFeGyCUyJySAemIZdmxYxbPjkJglRe28oVJnE7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/51CZ2C; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFAE1F00893;
-	Sat, 30 May 2026 18:39:40 +0000 (UTC)
+	 MIME-Version; b=LTYVXvqnWj+mU7xL7uzWcSfbq3PKrS4Fsw3lvcTkRQCAqrresv54XK6pEI6hRs23SCkxc1GhmojA4XbPTZJ2l/6nVjwjbtBNW193VpasxhOB3Up+6hdLV76l22oXdRq54scLsXpzxlRfvb6L8eTWzq5PQFy1onJeTgmSDkOnUQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6TuZlj/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457FD1F00893;
+	Sat, 30 May 2026 17:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166381;
-	bh=7GN7+AWz2vkiJwRg4H4/hUhGFWW5qiq8I0sn6t0nHqY=;
+	s=korg; t=1780161624;
+	bh=04f9Nkz1OK+nYBI6yeqpsP1d3v6bRRUR9Ma6pdVv5zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w/51CZ2Cz5IUZhtKerYnC1bmMQy3IM6sKKFeXUOiWxmmMTgQusvaRsjHfVddUuSIT
-	 nNiGuU9N31eMxQv5VFWgkFGjvaG//JLdCBando+MtdlWiaZ70J7itj5Wqq4BXjzNC/
-	 tjksiXUdYBgQZxUPS3wV0Jdw0+OTC51IBUU8Ogpo=
+	b=i6TuZlj/Ioq48F9F8rS/W+euRgfJyZwCBw+5cNpjklBPKAKhuHf6/3pfxT7Ujz9A5
+	 b2IIlTb2hrTDUpXzpjGSrWGYJkMn3Kd9sw+/04brHteRa/a3E3Rrh/fD/Is3bMmTny
+	 9FzoWxjC9soq9eut6JogmXqlUEG7iZGs7tvN2tvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 322/589] dm cache: fix null-deref with concurrent writes in passthrough mode
+Subject: [PATCH 6.1 679/969] arm64: dts: imx8mm-tqma8mqml: Correct PAD settings for PMIC_nINT
 Date: Sat, 30 May 2026 18:03:23 +0200
-Message-ID: <20260530160233.392640044@linuxfoundation.org>
+Message-ID: <20260530160319.248488873@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259038-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257624-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,94 +89,45 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 31E436124E6
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: F1F0260FB9B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 7d1f98d668ee34c1d15bdc0420fdd062f24a27c0 ]
+[ Upstream commit 42a9f5a16328ed78a88e0498556965b6c6ec515c ]
 
-In passthrough mode, when dm-cache starts to invalidate a cache
-entry and bio prison cell lock fails due to concurrent write to
-the same cached block, mg->cell remains NULL. The error path in
-invalidate_complete() attempts to unlock and free the cell
-unconditionally, causing a NULL pointer dereference:
+With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
+there might be interrupt storm for this board. Need to set PAD PUE and PU
+together to make pull up work properly.
 
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 0 UID: 0 PID: 134 Comm: fio Not tainted 6.19.0-rc7 #3 PREEMPT
-RIP: 0010:dm_cell_unlock_v2+0x3f/0x210
-<snip>
-Call Trace:
- invalidate_complete+0xef/0x430
- map_bio+0x130f/0x1a10
- cache_map+0x320/0x6b0
- __map_bio+0x458/0x510
- dm_submit_bio+0x40e/0x16d0
- __submit_bio+0x419/0x870
-<snip>
-
-Reproduce steps:
-
-1. Create a cache device
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. Promote the first data block into cache
-
-fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
---direct=1 --size=64k
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the first cached block concurrently
-
-fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
---randrepeat=0 --direct=1 --numjobs=2 --size 64k
-
-Fix by checking if mg->cell is valid before attempting to unlock it.
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: dfcd1b6f7620e ("arm64: dts: freescale: add initial device tree for TQMa8MQML with i.MX8MM")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index fc6ad47c08b58..a3cb0a68dc1fa 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1518,8 +1518,10 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
- 	struct cache *cache = mg->cache;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi
+index f649dfacb4b69..4d79f388ebd26 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi
+@@ -280,7 +280,7 @@ pinctrl_i2c1_gpio: i2c1gpiogrp {
+ 	};
  
- 	bio_list_init(&bios);
--	if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
--		free_prison_cell(cache, mg->cell);
-+	if (mg->cell) {
-+		if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
-+			free_prison_cell(cache, mg->cell);
-+	}
+ 	pinctrl_pmic: pmicgrp {
+-		fsl,pins = <MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x94>;
++		fsl,pins = <MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x1d4>;
+ 	};
  
- 	if (!success && mg->overwrite_bio)
- 		bio_io_error(mg->overwrite_bio);
+ 	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
 -- 
 2.53.0
 
