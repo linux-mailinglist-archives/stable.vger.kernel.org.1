@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-257338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258143-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LWcDa0YG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:04:45 +0200
+	id 0L6EGSQlG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258143-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DBC60ED96
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:04:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F45610B55
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CDE263018D57
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:04:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E0C03051D51
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34CE2690D5;
-	Sat, 30 May 2026 17:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0323546EA;
+	Sat, 30 May 2026 17:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dERvFS/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bdg2Vew+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00FA32D42B;
-	Sat, 30 May 2026 17:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B079E3AB482;
+	Sat, 30 May 2026 17:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160646; cv=none; b=dnhpsoED36LwFrP339VIppuIPHn4wkQBs9PjSoQZGVGGt51ScW+fKLXzT6dzfPWQdpPthqnixCZYCJto6mGFhtiQjWkUiJVJBxHgZVWfPtbXrps4AvprZLEKqtFO/whiwkujow9xqv81qLFoptqRlqQ9VDuUJC78DyWMuD/h1jo=
+	t=1780163360; cv=none; b=Jfpus7N/ixaYlXUpscX0pUsFAD4EDBm1VSDFk7ZQVZ1XAx+ESFSRKVPv3PGa6Ouj62NdLchsAuJClR/Gmvqwyr1ikdr0yerT5HGqptiokMIqJf3+ktViVnHi6Wc/BKD4vzvZX1IDrhxPh3qY2AG5UcMDpB4KC60F7MgtTVHSzF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160646; c=relaxed/simple;
-	bh=WExSbBd7+srdryRsDCARjlCglsW6U9iNSyzugFiUy+I=;
+	s=arc-20240116; t=1780163360; c=relaxed/simple;
+	bh=8TLJD1TvN0M/K40I/TEVBpMHlrPnUox6UfsCBzl5+FI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HS4A368Uhh5s7CkWDjjbl7HCJSXlA89V3p6yt8sjE/nM20ibFc2/7tL9k/VcyD7KuFqinTtk+4uFg1CrRfpm4lCNV0e1eT27EHQwm/rMimBuUlY96sMhQz9NywnkMRnCRmpX8eHhT+iT3hVUZpc2knbVddvtqJmKvJW6KmHyBr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dERvFS/f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2BC1F00893;
-	Sat, 30 May 2026 17:04:04 +0000 (UTC)
+	 MIME-Version; b=r3tbhsat8O9U9A+PZMESR24/Xae3DQJM1VYy6BnFNjZxE+JjmXcnW+xSYiTqYmwHtyRLfzGyCoxaOAubHf2MxE6Q9TdRBc8dIDWqJ6P4030PhDmiKxbEgCssiIAC/92ikRfQK6Zgmcm0kmuoaVzX9hGwtcYvT1CGKokXzV4h/mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bdg2Vew+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003791F00893;
+	Sat, 30 May 2026 17:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160645;
-	bh=1C8MzHXsqizS4mL84/MmognHjPA0NQVvPIT7u2deH5E=;
+	s=korg; t=1780163359;
+	bh=fjzrFMa5K40Shqu+3/Ll6nH56z5awP7ChbKmlTdX2gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dERvFS/fk9a4g9oI+6IMYh/HS5l2WgwZgqT8Ytr2OjkrLfE3Et53ramsXI+4GNpEP
-	 4ZK/0sTJI6RRfo66CNE4P2lb8F+soJ8itf52aL9Hd0xSI1flD7C0SuPGLlKzqCGfdT
-	 V51ug/eESEbUMiS+T8T+QAX6ET0Vex2hys5EVVa8=
+	b=Bdg2Vew+CEdXM2wpwfEpA6UVYxXIHETsaR0fRTKwKt0P4+J9AshDSqvuk9RqW8N3F
+	 bfm0io/rT9Id5T4pwlCe7geuwhUUoiCrAH5p9NxqsmSaKfo9qs7HDCSVwY1WqWbnF0
+	 xHWt7NdR35G8W1ImuJ6xERNuNVzgflvqRC+lwB3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 394/969] media: pci: zoran: fix potential memory leak in zoran_probe()
+	Josh Law <objecting@objecting.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 204/776] lib/ts_kmp: fix integer overflow in pattern length calculation
 Date: Sat, 30 May 2026 17:58:38 +0200
-Message-ID: <20260530160311.179099848@linuxfoundation.org>
+Message-ID: <20260530160245.782391375@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257338-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258143-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D9DBC60ED96
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,objecting.org:email]
+X-Rspamd-Queue-Id: D9F45610B55
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Josh Law <objecting@objecting.org>
 
-commit 8ea21435fe36fb853706f4935d78bc11beb63fb4 upstream.
+commit 8cdf30813ea8ce881cecc08664144416dbdb3e16 upstream.
 
-The memory allocated for codec in videocodec_attach() is not freed in
-one of the error paths, due to an incorrect goto label. Fix the label
-to free it on error.
+The ts_kmp algorithm stores its prefix_tbl[] table and pattern in a single
+allocation sized from the pattern length.  If the prefix_tbl[] size
+calculation wraps, the resulting allocation can be too small and
+subsequent pattern copies can overflow it.
 
-Fixes: 8f7cc5c0b0eb ("media: staging: media: zoran: introduce zoran_i2c_init")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fix this by rejecting zero-length patterns and by using overflow helpers
+before calculating the combined allocation size.
+
+
+This fixes a potential heap overflow.  The pattern length calculation can
+wrap during a size_t addition, leading to an undersized allocation.
+Because the textsearch library is reachable from userspace via Netfilter's
+xt_string module, this is a security risk that should be backported to LTS
+kernels.
+
+Link: https://lkml.kernel.org/r/20260308202028.2889285-2-objecting@objecting.org
+Signed-off-by: Josh Law <objecting@objecting.org>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/zoran/zoran_card.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/ts_kmp.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/media/pci/zoran/zoran_card.c
-+++ b/drivers/media/pci/zoran/zoran_card.c
-@@ -1377,7 +1377,7 @@ static int zoran_probe(struct pci_dev *p
- 		}
- 		if (zr->codec->type != zr->card.video_codec) {
- 			pci_err(pdev, "%s - wrong codec\n", __func__);
--			goto zr_unreg_videocodec;
-+			goto zr_detach_codec;
- 		}
- 	}
- 	if (zr->card.video_vfe != 0) {
+--- a/lib/ts_kmp.c
++++ b/lib/ts_kmp.c
+@@ -94,8 +94,22 @@ static struct ts_config *kmp_init(const
+ 	struct ts_config *conf;
+ 	struct ts_kmp *kmp;
+ 	int i;
+-	unsigned int prefix_tbl_len = len * sizeof(unsigned int);
+-	size_t priv_size = sizeof(*kmp) + len + prefix_tbl_len;
++	unsigned int prefix_tbl_len;
++	size_t priv_size;
++
++	/* Zero-length patterns would make kmp_find() read beyond kmp->pattern. */
++	if (unlikely(!len))
++		return ERR_PTR(-EINVAL);
++
++	/*
++	 * kmp->pattern is stored immediately after the prefix_tbl[] table.
++	 * Reject lengths that would wrap while sizing either region.
++	 */
++	if (unlikely(check_mul_overflow(len, sizeof(*kmp->prefix_tbl),
++					&prefix_tbl_len) ||
++		     check_add_overflow(sizeof(*kmp), (size_t)len, &priv_size) ||
++		     check_add_overflow(priv_size, prefix_tbl_len, &priv_size)))
++		return ERR_PTR(-EINVAL);
+ 
+ 	conf = alloc_ts_config(priv_size, gfp_mask);
+ 	if (IS_ERR(conf))
 
 
 
