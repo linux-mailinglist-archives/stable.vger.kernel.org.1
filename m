@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-258656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257882-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGbtG64qG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258656-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:34 +0200
+	id OMhQBPogG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257882-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:40:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA8561191E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F40610273
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2880130932BB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B795307FE16
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB13332F770;
-	Sat, 30 May 2026 18:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927823446AD;
+	Sat, 30 May 2026 17:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZrmtBmc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvfMPvYT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB7E17555;
-	Sat, 30 May 2026 18:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B8233F8B4;
+	Sat, 30 May 2026 17:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165087; cv=none; b=m+jqN3x2D8Uwwofj2b7y04676sov+aafl4zXKg+ha3vPbUp7ZHVcrn2nN8HldeGEYYASuAIo5IE5OfIdClOVML5laeSAtzrQO/xGUihIKuy5jU+GzGgbpdp7+CNw9R+4j+4bVsX8VevXyrB8sv1ew2ThJI9zwYViFFTZr6pvClo=
+	t=1780162488; cv=none; b=BlBnj46RqX6Xq2rl529+/qlJARvnNquONZX5XrG4Nry7Rz5wraIBUkIWliTjtuPdUHaJDMlijqfIE7tf3PcYzAarLrYsL/JnPTadFypNShmq3TSEC9ojnkHcb7O4pa+Bd1ZqXaj7nJbggnvnItrk9NReFKzE5TvQxXWyaTvodso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165087; c=relaxed/simple;
-	bh=d8W0B/po5XdCoI9X1UjlQ8fPx+9RCFczPJ+Wts0JZ8c=;
+	s=arc-20240116; t=1780162488; c=relaxed/simple;
+	bh=Xws1MGelZzHqnrVyYLz9LLmWRYjk9YfNrd8OQf4WgSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mjq29OEgbXFEbekGhbhy6eoBkxdXdBAf91EWWnCjtXQQM7lvqcuGOU5aVw4BTJ22hWFW0VOptkYDfWux3lec4S0yihz39w1x0Sm2HHr/7JOb+kHxv2dwD7funzlPoCo5kc8ZYMO+EryENayhN5C1w5jXCq38FbHJn+k3bQDw/eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZrmtBmc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02BA1F00893;
-	Sat, 30 May 2026 18:18:05 +0000 (UTC)
+	 MIME-Version; b=N0FQETwq6OdnWmliFEwNO5DcfDlKEEM8mQgBOkjCjJ6fxBjhe8S3ifvaRSMA6VRL+wR/XYJI6vZCa2ECn5YpNQTa4lwQuBxyGqJHoLK4fZAjXV00ExUKAcCAZlXeHZbY4qEJm7XuVISS2URUCAEq8wDhlMBpeZ9nXlRUeokdaBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvfMPvYT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738DB1F00893;
+	Sat, 30 May 2026 17:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165086;
-	bh=9VOiyT9sy1ZwA671DIO/js7PqctWPmRAEfeGnscUzBs=;
+	s=korg; t=1780162487;
+	bh=U70d22u6WjTb7K+COQGVYnVO0vvokeXHjj2Ys85lJaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bZrmtBmcqwrIMPg4JIXpPrT3cP12FeQHd1QeuwSvS4d0VI6SpKVdP1cAGor8DN+3c
-	 f5ksQhe6fHWR7EZewATonCSFFto1dJepRiNqC+3rKlivqLAy3aYaR3/3vQIMRt87i8
-	 h3mdBLDTaLJCxLF/V2kCxAyZy2mKMF/JEncvVqFQ=
+	b=jvfMPvYT61A/j9bM4pAdohM1sQ5KIN4k9JnBALAljf0rbocUtzJcKH5lY/1WXqTQe
+	 uT/2izYu9CdFIBWXTf82yyUbbxs+fz12HsKstaCvs9bMUZfnw9dGJkH5dORqf9GvqV
+	 tgSGw3s6c0amqAAU7meIoO6vk/NY433dmcOjeDCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	intel-wired-lan@lists.osuosl.org,
-	Bart Van Assche <bvanassche@acm.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Arpana Arland <arpanax.arland@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 745/776] ice: fix locking in ice_dcb_rebuild()
+Subject: [PATCH 6.1 935/969] drm/msm: Fix iommu_map_sgtable() return value check and avoid WARN
 Date: Sat, 30 May 2026 18:07:39 +0200
-Message-ID: <20260530160259.032942490@linuxfoundation.org>
+Message-ID: <20260530160326.569252019@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,81 +73,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258656-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257882-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,acm.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,osuosl.org:email,intel.com:email]
-X-Rspamd-Queue-Id: EBA8561191E
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: 79F40610273
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Mikko Perttunen <mperttunen@nvidia.com>
 
-[ Upstream commit 0ded1f36ba4021cba50513e80be6b6e173710168 ]
+[ Upstream commit 55e0f0d1c1a4ee1e46da7da4d443eb3044fb3851 ]
 
-Move the mutex_lock() call up to prevent that DCB settings change after
-the first ice_query_port_ets() call. The second ice_query_port_ets()
-call in ice_dcb_rebuild() is already protected by pf->tc_mutex.
+Commit "iommu: return full error code from iommu_map_sg[_atomic]()"
+changed iommu_map_sgtable() to return an ssize_t and negative values
+in error cases, rather than a size_t and a zero.
 
-This also fixes a bug in an error path, as before taking the first
-"goto dcb_error" in the function jumped over mutex_lock() to
-mutex_unlock().
+Store the return value in the appropriate type and in case of error,
+return it rather than WARNing.
 
-This bug has been detected by the clang thread-safety analyzer.
-
-Cc: intel-wired-lan@lists.osuosl.org
-Fixes: 242b5e068b25 ("ice: Fix DCB rebuild after reset")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Arpana Arland <arpanax.arland@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-6-a5ea4dc837a9@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ad8f36e4b6b1 ("iommu: return full error code from iommu_map_sg[_atomic]()")
+Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
+Patchwork: https://patchwork.freedesktop.org/patch/719685/
+Message-ID: <20260421-iommu_map_sgtable-return-v1-3-fb484c07d2a1@nvidia.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_dcb_lib.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/msm_iommu.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-index dd4195e964faf..b415e375d6205 100644
---- a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-@@ -450,14 +450,14 @@ void ice_dcb_rebuild(struct ice_pf *pf)
- 	struct ice_dcbx_cfg *err_cfg;
- 	enum ice_status ret;
+diff --git a/drivers/gpu/drm/msm/msm_iommu.c b/drivers/gpu/drm/msm/msm_iommu.c
+index 0de3612135e96..aa69713ea7f80 100644
+--- a/drivers/gpu/drm/msm/msm_iommu.c
++++ b/drivers/gpu/drm/msm/msm_iommu.c
+@@ -359,14 +359,15 @@ static int msm_iommu_map(struct msm_mmu *mmu, uint64_t iova,
+ 		struct sg_table *sgt, size_t len, int prot)
+ {
+ 	struct msm_iommu *iommu = to_msm_iommu(mmu);
+-	size_t ret;
++	ssize_t ret;
  
-+	mutex_lock(&pf->tc_mutex);
-+
- 	ret = ice_query_port_ets(pf->hw.port_info, &buf, sizeof(buf), NULL);
- 	if (ret) {
- 		dev_err(dev, "Query Port ETS failed\n");
- 		goto dcb_error;
- 	}
+ 	/* The arm-smmu driver expects the addresses to be sign extended */
+ 	if (iova & BIT_ULL(48))
+ 		iova |= GENMASK_ULL(63, 49);
  
--	mutex_lock(&pf->tc_mutex);
--
- 	if (!pf->hw.port_info->qos_cfg.is_sw_lldp)
- 		ice_cfg_etsrec_defaults(pf->hw.port_info);
+ 	ret = iommu_map_sgtable(iommu->domain, iova, sgt, prot);
+-	WARN_ON(!ret);
++	if (ret < 0)
++		return ret;
  
+ 	return (ret == len) ? 0 : -EINVAL;
+ }
 -- 
 2.53.0
 
