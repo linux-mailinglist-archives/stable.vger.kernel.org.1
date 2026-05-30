@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259075-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NlCBGMqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:19 +0200
+	id iCHMKuQxG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259075-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A63AD61183A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DA5612AAB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D0D5309DC0F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2697D313C147
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C428A3C3782;
-	Sat, 30 May 2026 18:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FF325B08A;
+	Sat, 30 May 2026 18:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1aCgjLO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1o8MFfC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C953C2761;
-	Sat, 30 May 2026 18:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA663C2B80;
+	Sat, 30 May 2026 18:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164550; cv=none; b=WtBtKNR9x+4/yFfcJhavC2EC/HZD2+ipIF58bKlh6rjIrFBdK7WPe7DpezKtgPDUmkigNpqNLR5iJq1N5xk+oGCdD0oC2FzjhxLU+5KDiG4M3RENPAK1/3kxxI/XfFYNb6ZIyeJ/V0pUclsGWKH7tG4/sqdV8Nbk+bK5trhCqf4=
+	t=1780166507; cv=none; b=M95D7TPbgSmGMtNtHVZyxCKbhuMab4OKTUdnMeO31xg22i/Z9jHxFfr4gq1VXgf55v4WOlMJzH/6qFZK1PSxzrRc7W6xTTN/Z0fPmV0jO/xUJMd7ZOzJ/RAhUXDxXIuOiW8H1R5pRkOYLrWdLdfGf+AxVMYfC6tjWKwH9xm+Emk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164550; c=relaxed/simple;
-	bh=n2ODU8rRXBPpeH3cYPZUPFtMTLTx4o43TEJoEKEiKvU=;
+	s=arc-20240116; t=1780166507; c=relaxed/simple;
+	bh=SlyHKpEXo+j9DLWQNmhcKL0ySh393yuCOghd+B7iySc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASK20ncPjIW+zGWU+I6+KdIDriMzOE4BJKBoYSv0wypZQWG4O+qt1aA/Iejsf+6pvNWAJLq/DxJOn+P3Q1nJ8QHsokj3s9kGr/k9oiiGk2NfkIAN+JfVDqIIPbUELbjdIGunueeCqQezoE4oAgJ+RD3r2vvq8VfA4f9Arf1OmcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1aCgjLO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B001F00893;
-	Sat, 30 May 2026 18:09:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=R81wnZDdVgmwAOUOSS/cbNH/u8KPFPmaRLrFUPe/0clheL3r1Vwu1/gimT9GMcGSb66SvIpy/uV/WT69n6UTkiaUU0R3/+irFL8SfaU0Xi8Gm3n/Ah4wlerTTLWRf3mZOM92AeK0grdJpctsj0vKBcOEF1lZ2uoJCqooCE+BnW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1o8MFfC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CEC1F00898;
+	Sat, 30 May 2026 18:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164547;
-	bh=8GBb+0WFydlACaF6biFDWCm0epNRbDgJ6Y91AhOVioE=;
+	s=korg; t=1780166502;
+	bh=+oFXpa4B8kFe/r4kZX5RdLNd3fIJT+UPazuLLI4CJw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w1aCgjLOdiH29hk5S0hxPGKkvN+hEq3gm5lTCjJ5+mpFT0ASrPZ7nm8UpVi4ASyIK
-	 lL8a497TKBdkxo4HF7orE7rSmAzzHZXRfaIlw6KEe6Z6WP+mqV+vNKb4J/B8qjgnSB
-	 yeT3+CxFMzaZUnvz8Qtc99ludHd1Kdjr6CbEexB8=
+	b=m1o8MFfC8kCQjJK7PSJHbHuiyTiKEIjuf7hFOAOEbGd+ZUQ9Xr515zfqSwr35yfW6
+	 YevQOIP9zLl1pLUlE7CCIMsKOqj6VLBAFpWneiP2x1o6Y3VY9JboTPZpLO0KGpzChf
+	 GfsfZZyifZ5OP1W0CAfvweUz04yM+d7zyFPGIy4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Kurt Kanzenbach <kurt@linutronix.de>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	=?UTF-8?q?Ahelenia=20Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 558/776] net/sched: taprio: continue with other TXQs if one dequeue() failed
+Subject: [PATCH 5.10 391/589] tty: hvc: remove HVC_IUCV_MAGIC
 Date: Sat, 30 May 2026 18:04:32 +0200
-Message-ID: <20260530160254.563039514@linuxfoundation.org>
+Message-ID: <20260530160235.074242971@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +63,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258497-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259075-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,davemloft.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
-X-Rspamd-Queue-Id: A63AD61183A
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 18DA5612AAB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: наб <nabijaczleweli@nabijaczleweli.xyz>
 
-[ Upstream commit 1638bbbe4ececa615b273497d347d59ad71060a2 ]
+[ Upstream commit eef7381d8134f249dc17138bb1794c249aff7f5a ]
 
-This changes the handling of an unlikely condition to not stop dequeuing
-if taprio failed to dequeue the peeked skb in taprio_dequeue().
+According to Greg, in the context of magic numbers as defined in
+magic-number.rst, "the tty layer should not need this and I'll gladly
+take patches"
 
-I've no idea when this can happen, but the only side effect seems to be
-that the atomic_sub_return() call right above will have consumed some
-budget. This isn't a big deal, since either that made us remain without
-any budget (and therefore, we'd exit on the next peeked skb anyway), or
-we could send some packets from other TXQs.
+This stretches that definition slightly, since it multiplexes it with
+the terminal number as a constant offset, but is equivalent
 
-I'm making this change because in a future patch I'll be refactoring the
-dequeue procedure to simplify it, and this corner case will have to go
-away.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 105425b1969c ("net/sched: taprio: fix use-after-free in advance_sched() on schedule switch")
+Acked-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
+Ref: https://lore.kernel.org/linux-doc/YyMlovoskUcHLEb7@kroah.com/
+Link: https://lore.kernel.org/r/8c8a2c9dfc1bfbe6ef3f3237368e483865fc1c29.1663288066.git.nabijaczleweli@nabijaczleweli.xyz
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f2a880e802ad ("tty: hvc_iucv: fix off-by-one in number of supported devices")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/hvc/hvc_iucv.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 8924b439c459d..0a4501854e4b2 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -616,7 +616,7 @@ static struct sk_buff *taprio_dequeue(struct Qdisc *sch)
+diff --git a/drivers/tty/hvc/hvc_iucv.c b/drivers/tty/hvc/hvc_iucv.c
+index 796fbff623f6e..d76dff7eec521 100644
+--- a/drivers/tty/hvc/hvc_iucv.c
++++ b/drivers/tty/hvc/hvc_iucv.c
+@@ -29,7 +29,6 @@
  
- 		skb = child->ops->dequeue(child);
- 		if (unlikely(!skb))
--			goto done;
-+			continue;
  
- skb_found:
- 		qdisc_bstats_update(sch, skb);
+ /* General device driver settings */
+-#define HVC_IUCV_MAGIC		0xc9e4c3e5
+ #define MAX_HVC_IUCV_LINES	HVC_ALLOC_TTY_ADAPTERS
+ #define MEMPOOL_MIN_NR		(PAGE_SIZE / sizeof(struct iucv_tty_buffer)/4)
+ 
+@@ -131,9 +130,9 @@ static struct iucv_handler hvc_iucv_handler = {
+  */
+ static struct hvc_iucv_private *hvc_iucv_get_private(uint32_t num)
+ {
+-	if ((num < HVC_IUCV_MAGIC) || (num - HVC_IUCV_MAGIC > hvc_iucv_devices))
++	if (num > hvc_iucv_devices)
+ 		return NULL;
+-	return hvc_iucv_table[num - HVC_IUCV_MAGIC];
++	return hvc_iucv_table[num];
+ }
+ 
+ /**
+@@ -1119,8 +1118,8 @@ static int __init hvc_iucv_alloc(int id, unsigned int is_console)
+ 	priv->is_console = is_console;
+ 
+ 	/* allocate hvc device */
+-	priv->hvc = hvc_alloc(HVC_IUCV_MAGIC + id, /*		  PAGE_SIZE */
+-			      HVC_IUCV_MAGIC + id, &hvc_iucv_ops, 256);
++	priv->hvc = hvc_alloc(id, /*		 PAGE_SIZE */
++			      id, &hvc_iucv_ops, 256);
+ 	if (IS_ERR(priv->hvc)) {
+ 		rc = PTR_ERR(priv->hvc);
+ 		goto out_error_hvc;
+@@ -1424,7 +1423,7 @@ static int __init hvc_iucv_init(void)
+ 
+ 	/* register the first terminal device as console
+ 	 * (must be done before allocating hvc terminal devices) */
+-	rc = hvc_instantiate(HVC_IUCV_MAGIC, IUCV_HVC_CON_IDX, &hvc_iucv_ops);
++	rc = hvc_instantiate(0, IUCV_HVC_CON_IDX, &hvc_iucv_ops);
+ 	if (rc) {
+ 		pr_err("Registering HVC terminal device as "
+ 		       "Linux console failed\n");
 -- 
 2.53.0
 
