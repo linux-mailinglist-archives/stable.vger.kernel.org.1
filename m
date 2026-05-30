@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-256902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAiWOk3yGmod+AgAu9opvQ
-	(envelope-from <stable+bounces-256902-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:21:01 +0200
+	id AOV3DEHyGmod+AgAu9opvQ
+	(envelope-from <stable+bounces-256904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:20:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A692860D6E5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:21:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D2160D6C7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3349B301EE35
+	by sea.lore.kernel.org (Postfix) with ESMTP id 204E1301DAD3
 	for <lists+stable@lfdr.de>; Sat, 30 May 2026 14:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99BE306752;
-	Sat, 30 May 2026 14:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760243016E1;
+	Sat, 30 May 2026 14:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fnM0WoAY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNppvJF+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92442F7F0C
-	for <stable@vger.kernel.org>; Sat, 30 May 2026 14:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A06D3033DA
+	for <stable@vger.kernel.org>; Sat, 30 May 2026 14:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780150771; cv=none; b=Uw2HZQjzNxdsL4OEEVjJ5qgWyChG8czo+hHLwOx3J91O2mYCLzCSEJhIqE8/hVyOCBcSvRZ3+1q2TgWvKgdPTaTpRBv5jNds2Jx4A8qF2x+2KJOJWglapYzYny9tKPYPaAL0lYSFwt2e55hBXatSgklxDFFY2WczY6VuX9mM9uo=
+	t=1780150772; cv=none; b=QEM+Pd9HPSkoZUyt9U7ub2zK0Hy6TUAx/FBkSD5z0GaaSOppjpgxrbjvppSu1+kwQplfGxJxwSCDdqZd/G2ckgiKRtJbOilxeWzY6hZ6MFPjfA9wcKZehdFF2gV2duLZs8tx0pCBF1IXKgnvNFkvBFNRYlk8Z9zfywB/KSzYEPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780150771; c=relaxed/simple;
-	bh=m9HmJlzU5Ub4qQcM/AeD2SBLRm9wh86NUEbva22MC/o=;
+	s=arc-20240116; t=1780150772; c=relaxed/simple;
+	bh=JGI5cmM3MYuOGgEZWLo90VJVMkX3riq64HrqQUp4lbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBfPdiVPSORXF+6T3gVFotCJg6lrby66ag8EkyBlRhz2jnpCNhwQoWskKeD/2oGf+UkS/Fl3Zl6QBfJj9FiaRHM2TXCwSKyMw83ssGGC7V7RCHbxm5lz983NRnyF1tafU/Y1g6pdQGtrf1CfJNxu9Ypen9wWgcYBZ69Y5daHT6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fnM0WoAY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93D21F00893;
-	Sat, 30 May 2026 14:19:27 +0000 (UTC)
+	 MIME-Version; b=hfo8Ags9TVgHTDN2NBrnqKInNdSNfAgfmQ+oE9vn9chCxAvZtDA8PpaZxluui7giP4Kxn3LQPJzUD+Mkm1Zaiy954RhwHS1Y/1S5h9IquJY79d/GIKlLWIEalX8yZIzhg9SIc1NPCUyOobjmtYbU3ma4Ktp3C6ePbviRV2WvKQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNppvJF+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A65F1F00899;
+	Sat, 30 May 2026 14:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780150768;
-	bh=t5Kb1SBkOqgEOK3b+qkBnz/lLTpflYn9fsCAHw6d3aw=;
+	s=k20260515; t=1780150769;
+	bh=rxcsv9nE/Kw07LvjJ/64vyrbwzdaZ6R8YnnG3tDqWOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fnM0WoAYsrv9fGSDcqOOtme8xV/1E8akoEiz5/GjicTyibl0cM6Cdj0+utmWmqlqW
-	 srT+2AyTS9z57tSPw5JnDnW0fD14YxSnyhbUfHc6q6qjiFpOTaFIcf6Zw0VIN7L4Mb
-	 OFZPnOLypzj+WktgrrP1sGm64+JQqyxYAfzlNr+rpi6cRfeqiDef32o4egMSRZD7W7
-	 h9yKNQtLOBd7a1e4EcPFYvxniThGiMYCyUyiGvd1zlzvbWxSwqBphwBK5QYWocBXu7
-	 Jw8AzfaoN0e/FsK0bHsopB5FsJj55AoBTPDn+7jtJKV3pmPpigAgZGVEeCWH1dDjxs
-	 HaZma2VvWeyuQ==
+	b=NNppvJF++1/aWYoJ5nNBTJDb2Miav6OKsMFymxzFkVgDpChIUNut5HRHrJNgwqq0w
+	 vXyyPSB++1ENraFBOx8oapZDE+Q/NPdEpvJYGQgybWqmB9L+jyjMzF/7j6QJ8rkdNb
+	 9c3b/djQz55JTsQIrI1QIbLriIOkLAE65zv4xKuvej25oAiSndCV9jGHcXhk/Zy5qb
+	 fD66HeQbXQb75Bp2tkDRwCGmlrM+hJwiPFQL3htDqWLHga8oM9tD0x+X62uSBhldBW
+	 KMdKwHWcF+Hc5hgokkQbPa58tc5yYE54zZfIC3VG+BcmT9Scxn4m36IPUOHZJbL4NM
+	 5UHEVJQmh6bUg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
+Cc: Bobby Eshleman <bobby.eshleman@bytedance.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 1/4] use less confusing names for iov_iter direction initializers
-Date: Sat, 30 May 2026 10:19:23 -0400
-Message-ID: <20260530141926.2406669-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y 2/4] virtio/vsock: replace virtio_vsock_pkt with sk_buff
+Date: Sat, 30 May 2026 10:19:24 -0400
+Message-ID: <20260530141926.2406669-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026052842-catering-overfeed-07a0@gregkh>
+In-Reply-To: <20260530141926.2406669-1-sashal@kernel.org>
 References: <2026052842-catering-overfeed-07a0@gregkh>
+ <20260530141926.2406669-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,19 +69,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256902-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-256904-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -86,1547 +89,1872 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.org.uk:email]
-X-Rspamd-Queue-Id: A692860D6E5
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,davemloft.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,poll.work:url]
+X-Rspamd-Queue-Id: 67D2160D6C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Bobby Eshleman <bobby.eshleman@bytedance.com>
 
-[ Upstream commit de4eda9de2d957ef2d6a8365a01e26a435e958cb ]
+[ Upstream commit 71dc9ec9ac7d3eee785cdc986c3daeb821381e20 ]
 
-READ/WRITE proved to be actively confusing - the meanings are
-"data destination, as used with read(2)" and "data source, as
-used with write(2)", but people keep interpreting those as
-"we read data from it" and "we write data to it", i.e. exactly
-the wrong way.
+This commit changes virtio/vsock to use sk_buff instead of
+virtio_vsock_pkt. Beyond better conforming to other net code, using
+sk_buff allows vsock to use sk_buff-dependent features in the future
+(such as sockmap) and improves throughput.
 
-Call them ITER_DEST and ITER_SOURCE - at least that is harder
-to misinterpret...
+This patch introduces the following performance changes:
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Tool: Uperf
+Env: Phys Host + L1 Guest
+Payload: 64k
+Threads: 16
+Test Runs: 10
+Type: SOCK_STREAM
+Before: commit b7bfaa761d760 ("Linux 6.2-rc3")
+
+Before
+------
+g2h: 16.77Gb/s
+h2g: 10.56Gb/s
+
+After
+-----
+g2h: 21.04Gb/s
+h2g: 10.76Gb/s
+
+Signed-off-by: Bobby Eshleman <bobby.eshleman@bytedance.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Stable-dep-of: a4f0b001782b ("vsock/virtio: reset connection on receiving queue overflow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/intel.c    |  2 +-
- crypto/testmgr.c                         |  4 ++--
- drivers/block/drbd/drbd_main.c           |  2 +-
- drivers/block/drbd/drbd_receiver.c       |  2 +-
- drivers/block/loop.c                     | 14 +++++++-------
- drivers/block/nbd.c                      | 10 +++++-----
- drivers/char/random.c                    |  4 ++--
- drivers/fsi/fsi-sbefifo.c                |  6 +++---
- drivers/infiniband/ulp/rtrs/rtrs-clt.c   |  2 +-
- drivers/isdn/mISDN/l1oip_core.c          |  2 +-
- drivers/misc/vmw_vmci/vmci_queue_pair.c  |  6 +++---
- drivers/net/ppp/ppp_generic.c            |  2 +-
- drivers/nvme/host/tcp.c                  |  4 ++--
- drivers/nvme/target/io-cmd-file.c        |  4 ++--
- drivers/nvme/target/tcp.c                |  2 +-
- drivers/scsi/sg.c                        |  2 +-
- drivers/target/iscsi/iscsi_target_util.c |  4 ++--
- drivers/target/target_core_file.c        |  2 +-
- drivers/usb/usbip/usbip_common.c         |  2 +-
- drivers/vhost/net.c                      |  6 +++---
- drivers/vhost/scsi.c                     | 10 +++++-----
- drivers/vhost/vhost.c                    |  6 +++---
- drivers/vhost/vringh.c                   |  4 ++--
- drivers/vhost/vsock.c                    |  4 ++--
- drivers/xen/pvcalls-back.c               |  8 ++++----
- fs/9p/vfs_addr.c                         |  4 ++--
- fs/9p/vfs_dir.c                          |  2 +-
- fs/9p/xattr.c                            |  4 ++--
- fs/afs/cmservice.c                       |  2 +-
- fs/afs/internal.h                        |  4 ++--
- fs/afs/rxrpc.c                           | 12 ++++++------
- fs/aio.c                                 |  4 ++--
- fs/ceph/file.c                           |  4 ++--
- fs/cifs/connect.c                        |  6 +++---
- fs/cifs/file.c                           |  4 ++--
- fs/cifs/smb2ops.c                        |  4 ++--
- fs/cifs/transport.c                      |  6 +++---
- fs/nfsd/vfs.c                            |  4 ++--
- fs/ocfs2/cluster/tcp.c                   |  2 +-
- fs/orangefs/inode.c                      |  6 +++---
- fs/read_write.c                          | 12 ++++++------
- fs/seq_file.c                            |  2 +-
- fs/splice.c                              | 10 +++++-----
- include/linux/uio.h                      |  3 +++
- mm/madvise.c                             |  2 +-
- mm/page_io.c                             |  2 +-
- mm/process_vm_access.c                   |  2 +-
- net/9p/client.c                          |  2 +-
- net/bluetooth/6lowpan.c                  |  2 +-
- net/bluetooth/a2mp.c                     |  2 +-
- net/bluetooth/smp.c                      |  2 +-
- net/ipv4/tcp.c                           |  2 +-
- net/netfilter/ipvs/ip_vs_sync.c          |  2 +-
- net/smc/smc_clc.c                        |  6 +++---
- net/socket.c                             | 12 ++++++------
- net/sunrpc/socklib.c                     |  6 +++---
- net/sunrpc/svcsock.c                     |  4 ++--
- net/sunrpc/xprtsock.c                    |  6 +++---
- net/tipc/topsrv.c                        |  2 +-
- net/tls/tls_device.c                     |  4 ++--
- net/xfrm/espintcp.c                      |  2 +-
- security/keys/keyctl.c                   |  4 ++--
- 62 files changed, 138 insertions(+), 135 deletions(-)
+ drivers/vhost/vsock.c                   | 205 +++++--------
+ include/linux/virtio_vsock.h            | 129 ++++++--
+ net/vmw_vsock/virtio_transport.c        | 149 ++++-----
+ net/vmw_vsock/virtio_transport_common.c | 387 +++++++++++++-----------
+ net/vmw_vsock/vsock_loopback.c          |  51 +---
+ 5 files changed, 471 insertions(+), 450 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
-index 1ba590e6ef7bb..b647b11821828 100644
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -940,7 +940,7 @@ static enum ucode_state request_microcode_fw(int cpu, struct device *device,
- 
- 	kvec.iov_base = (void *)firmware->data;
- 	kvec.iov_len = firmware->size;
--	iov_iter_kvec(&iter, WRITE, &kvec, 1, firmware->size);
-+	iov_iter_kvec(&iter, ITER_SOURCE, &kvec, 1, firmware->size);
- 	ret = generic_load_microcode(cpu, &iter);
- 
- 	release_firmware(firmware);
-diff --git a/crypto/testmgr.c b/crypto/testmgr.c
-index a64a639eddfa4..28a368e346f77 100644
---- a/crypto/testmgr.c
-+++ b/crypto/testmgr.c
-@@ -747,7 +747,7 @@ static int build_cipher_test_sglists(struct cipher_test_sglists *tsgls,
- 	struct iov_iter input;
- 	int err;
- 
--	iov_iter_kvec(&input, WRITE, inputs, nr_inputs, src_total_len);
-+	iov_iter_kvec(&input, ITER_SOURCE, inputs, nr_inputs, src_total_len);
- 	err = build_test_sglist(&tsgls->src, cfg->src_divs, alignmask,
- 				cfg->inplace ?
- 					max(dst_total_len, src_total_len) :
-@@ -1130,7 +1130,7 @@ static int build_hash_sglist(struct test_sglist *tsgl,
- 
- 	kv.iov_base = (void *)vec->plaintext;
- 	kv.iov_len = vec->psize;
--	iov_iter_kvec(&input, WRITE, &kv, 1, vec->psize);
-+	iov_iter_kvec(&input, ITER_SOURCE, &kv, 1, vec->psize);
- 	return build_test_sglist(tsgl, cfg->src_divs, alignmask, vec->psize,
- 				 &input, divs);
- }
-diff --git a/drivers/block/drbd/drbd_main.c b/drivers/block/drbd/drbd_main.c
-index 28ee47d71f1cc..69fab2a09c308 100644
---- a/drivers/block/drbd/drbd_main.c
-+++ b/drivers/block/drbd/drbd_main.c
-@@ -1857,7 +1857,7 @@ int drbd_send(struct drbd_connection *connection, struct socket *sock,
- 
- 	/* THINK  if (signal_pending) return ... ? */
- 
--	iov_iter_kvec(&msg.msg_iter, WRITE, &iov, 1, size);
-+	iov_iter_kvec(&msg.msg_iter, ITER_SOURCE, &iov, 1, size);
- 
- 	if (sock == connection->data.socket) {
- 		rcu_read_lock();
-diff --git a/drivers/block/drbd/drbd_receiver.c b/drivers/block/drbd/drbd_receiver.c
-index b4d4e4a41b086..47d54e69e44eb 100644
---- a/drivers/block/drbd/drbd_receiver.c
-+++ b/drivers/block/drbd/drbd_receiver.c
-@@ -505,7 +505,7 @@ static int drbd_recv_short(struct socket *sock, void *buf, size_t size, int flag
- 	struct msghdr msg = {
- 		.msg_flags = (flags ? flags : MSG_WAITALL | MSG_NOSIGNAL)
- 	};
--	iov_iter_kvec(&msg.msg_iter, READ, &iov, 1, size);
-+	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &iov, 1, size);
- 	return sock_recvmsg(sock, &msg, msg.msg_flags);
- }
- 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index b30f4d525bc85..3db4dad0d072a 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -265,7 +265,7 @@ static int lo_write_bvec(struct file *file, struct bio_vec *bvec, loff_t *ppos)
- 	struct iov_iter i;
- 	ssize_t bw;
- 
--	iov_iter_bvec(&i, WRITE, bvec, 1, bvec->bv_len);
-+	iov_iter_bvec(&i, ITER_SOURCE, bvec, 1, bvec->bv_len);
- 
- 	file_start_write(file);
- 	bw = vfs_iter_write(file, &i, ppos, 0);
-@@ -343,7 +343,7 @@ static int lo_read_simple(struct loop_device *lo, struct request *rq,
- 	ssize_t len;
- 
- 	rq_for_each_segment(bvec, rq, iter) {
--		iov_iter_bvec(&i, READ, &bvec, 1, bvec.bv_len);
-+		iov_iter_bvec(&i, ITER_DEST, &bvec, 1, bvec.bv_len);
- 		len = vfs_iter_read(lo->lo_backing_file, &i, &pos, 0);
- 		if (len < 0)
- 			return len;
-@@ -384,7 +384,7 @@ static int lo_read_transfer(struct loop_device *lo, struct request *rq,
- 		b.bv_offset = 0;
- 		b.bv_len = bvec.bv_len;
- 
--		iov_iter_bvec(&i, READ, &b, 1, b.bv_len);
-+		iov_iter_bvec(&i, ITER_DEST, &b, 1, b.bv_len);
- 		len = vfs_iter_read(lo->lo_backing_file, &i, &pos, 0);
- 		if (len < 0) {
- 			ret = len;
-@@ -508,7 +508,7 @@ static void lo_rw_aio_complete(struct kiocb *iocb, long ret, long ret2)
- }
- 
- static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
--		     loff_t pos, bool rw)
-+		     loff_t pos, int rw)
- {
- 	struct iov_iter iter;
- 	struct req_iterator rq_iter;
-@@ -566,7 +566,7 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
- 	if (cmd->css)
- 		kthread_associate_blkcg(cmd->css);
- 
--	if (rw == WRITE)
-+	if (rw == ITER_SOURCE)
- 		ret = call_write_iter(file, &cmd->iocb, &iter);
- 	else
- 		ret = call_read_iter(file, &cmd->iocb, &iter);
-@@ -611,14 +611,14 @@ static int do_req_filebacked(struct loop_device *lo, struct request *rq)
- 		if (lo->transfer)
- 			return lo_write_transfer(lo, rq, pos);
- 		else if (cmd->use_aio)
--			return lo_rw_aio(lo, cmd, pos, WRITE);
-+			return lo_rw_aio(lo, cmd, pos, ITER_SOURCE);
- 		else
- 			return lo_write_simple(lo, rq, pos);
- 	case REQ_OP_READ:
- 		if (lo->transfer)
- 			return lo_read_transfer(lo, rq, pos);
- 		else if (cmd->use_aio)
--			return lo_rw_aio(lo, cmd, pos, READ);
-+			return lo_rw_aio(lo, cmd, pos, ITER_DEST);
- 		else
- 			return lo_read_simple(lo, rq, pos);
- 	default:
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 649a1e8812652..4c401a0721a63 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -543,7 +543,7 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
- 	u32 nbd_cmd_flags = 0;
- 	int sent = nsock->sent, skip = 0;
- 
--	iov_iter_kvec(&from, WRITE, &iov, 1, sizeof(request));
-+	iov_iter_kvec(&from, ITER_SOURCE, &iov, 1, sizeof(request));
- 
- 	type = req_to_nbd_cmd_type(req);
- 	if (type == U32_MAX)
-@@ -629,7 +629,7 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
- 
- 			dev_dbg(nbd_to_dev(nbd), "request %p: sending %d bytes data\n",
- 				req, bvec.bv_len);
--			iov_iter_bvec(&from, WRITE, &bvec, 1, bvec.bv_len);
-+			iov_iter_bvec(&from, ITER_SOURCE, &bvec, 1, bvec.bv_len);
- 			if (skip) {
- 				if (skip >= iov_iter_count(&from)) {
- 					skip -= iov_iter_count(&from);
-@@ -681,7 +681,7 @@ static int nbd_read_reply(struct nbd_device *nbd, int index,
- 	int result;
- 
- 	reply->magic = 0;
--	iov_iter_kvec(&to, READ, &iov, 1, sizeof(*reply));
-+	iov_iter_kvec(&to, ITER_DEST, &iov, 1, sizeof(*reply));
- 	result = sock_xmit(nbd, index, 0, &to, MSG_WAITALL, NULL);
- 	if (result < 0) {
- 		if (!nbd_disconnected(nbd->config))
-@@ -758,7 +758,7 @@ static struct nbd_cmd *nbd_handle_reply(struct nbd_device *nbd, int index,
- 		struct iov_iter to;
- 
- 		rq_for_each_segment(bvec, req, iter) {
--			iov_iter_bvec(&to, READ, &bvec, 1, bvec.bv_len);
-+			iov_iter_bvec(&to, ITER_DEST, &bvec, 1, bvec.bv_len);
- 			result = sock_xmit(nbd, index, 0, &to, MSG_WAITALL, NULL);
- 			if (result < 0) {
- 				dev_err(disk_to_dev(nbd->disk), "Receive data failed (result %d)\n",
-@@ -1206,7 +1206,7 @@ static void send_disconnects(struct nbd_device *nbd)
- 	for (i = 0; i < config->num_connections; i++) {
- 		struct nbd_sock *nsock = config->socks[i];
- 
--		iov_iter_kvec(&from, WRITE, &iov, 1, sizeof(request));
-+		iov_iter_kvec(&from, ITER_SOURCE, &iov, 1, sizeof(request));
- 		mutex_lock(&nsock->tx_lock);
- 		ret = sock_xmit(nbd, i, 1, &from, 0, NULL);
- 		if (ret < 0)
-diff --git a/drivers/char/random.c b/drivers/char/random.c
-index b54481e667307..f60a4b2ef10d1 100644
---- a/drivers/char/random.c
-+++ b/drivers/char/random.c
-@@ -1237,7 +1237,7 @@ SYSCALL_DEFINE3(getrandom, char __user *, ubuf, size_t, len, unsigned int, flags
- 			return ret;
- 	}
- 
--	ret = import_single_range(READ, ubuf, len, &iov, &iter);
-+	ret = import_single_range(ITER_DEST, ubuf, len, &iov, &iter);
- 	if (unlikely(ret))
- 		return ret;
- 	return get_random_bytes_user(&iter);
-@@ -1348,7 +1348,7 @@ static long random_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
- 			return -EINVAL;
- 		if (get_user(len, p++))
- 			return -EFAULT;
--		ret = import_single_range(WRITE, p, len, &iov, &iter);
-+		ret = import_single_range(ITER_SOURCE, p, len, &iov, &iter);
- 		if (unlikely(ret))
- 			return ret;
- 		ret = write_pool_user(&iter);
-diff --git a/drivers/fsi/fsi-sbefifo.c b/drivers/fsi/fsi-sbefifo.c
-index 97045a8d94224..8572fac300515 100644
---- a/drivers/fsi/fsi-sbefifo.c
-+++ b/drivers/fsi/fsi-sbefifo.c
-@@ -640,7 +640,7 @@ static void sbefifo_collect_async_ffdc(struct sbefifo *sbefifo)
- 	}
-         ffdc_iov.iov_base = ffdc;
- 	ffdc_iov.iov_len = SBEFIFO_MAX_FFDC_SIZE;
--        iov_iter_kvec(&ffdc_iter, READ, &ffdc_iov, 1, SBEFIFO_MAX_FFDC_SIZE);
-+        iov_iter_kvec(&ffdc_iter, ITER_DEST, &ffdc_iov, 1, SBEFIFO_MAX_FFDC_SIZE);
- 	cmd[0] = cpu_to_be32(2);
- 	cmd[1] = cpu_to_be32(SBEFIFO_CMD_GET_SBE_FFDC);
- 	rc = sbefifo_do_command(sbefifo, cmd, 2, &ffdc_iter);
-@@ -737,7 +737,7 @@ int sbefifo_submit(struct device *dev, const __be32 *command, size_t cmd_len,
- 	rbytes = (*resp_len) * sizeof(__be32);
- 	resp_iov.iov_base = response;
- 	resp_iov.iov_len = rbytes;
--        iov_iter_kvec(&resp_iter, READ, &resp_iov, 1, rbytes);
-+        iov_iter_kvec(&resp_iter, ITER_DEST, &resp_iov, 1, rbytes);
- 
- 	/* Perform the command */
- 	mutex_lock(&sbefifo->lock);
-@@ -817,7 +817,7 @@ static ssize_t sbefifo_user_read(struct file *file, char __user *buf,
- 	/* Prepare iov iterator */
- 	resp_iov.iov_base = buf;
- 	resp_iov.iov_len = len;
--	iov_iter_init(&resp_iter, READ, &resp_iov, 1, len);
-+	iov_iter_init(&resp_iter, ITER_DEST, &resp_iov, 1, len);
- 
- 	/* Perform the command */
- 	mutex_lock(&sbefifo->lock);
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-index e8b2b58cc9bc6..adeb2782d70b0 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-@@ -902,7 +902,7 @@ static void rtrs_clt_init_req(struct rtrs_clt_io_req *req,
- 	req->need_inv_comp = false;
- 	req->inv_errno = 0;
- 
--	iov_iter_kvec(&iter, WRITE, vec, 1, usr_len);
-+	iov_iter_kvec(&iter, ITER_SOURCE, vec, 1, usr_len);
- 	len = _copy_from_iter(req->iu->buf, usr_len, &iter);
- 	WARN_ON(len != usr_len);
- 
-diff --git a/drivers/isdn/mISDN/l1oip_core.c b/drivers/isdn/mISDN/l1oip_core.c
-index aec4f2a69c3bd..cfd1d643b443f 100644
---- a/drivers/isdn/mISDN/l1oip_core.c
-+++ b/drivers/isdn/mISDN/l1oip_core.c
-@@ -706,7 +706,7 @@ l1oip_socket_thread(void *data)
- 		printk(KERN_DEBUG "%s: socket created and open\n",
- 		       __func__);
- 	while (!signal_pending(current)) {
--		iov_iter_kvec(&msg.msg_iter, READ, &iov, 1, recvbuf_size);
-+		iov_iter_kvec(&msg.msg_iter, ITER_DEST, &iov, 1, recvbuf_size);
- 		recvlen = sock_recvmsg(socket, &msg, 0);
- 		if (recvlen > 0) {
- 			l1oip_socket_parse(hc, &sin_rx, recvbuf, recvlen);
-diff --git a/drivers/misc/vmw_vmci/vmci_queue_pair.c b/drivers/misc/vmw_vmci/vmci_queue_pair.c
-index d4d388f021ccd..8f4abb1a5c3c2 100644
---- a/drivers/misc/vmw_vmci/vmci_queue_pair.c
-+++ b/drivers/misc/vmw_vmci/vmci_queue_pair.c
-@@ -3028,7 +3028,7 @@ ssize_t vmci_qpair_enqueue(struct vmci_qp *qpair,
- 	if (!qpair || !buf)
- 		return VMCI_ERROR_INVALID_ARGS;
- 
--	iov_iter_kvec(&from, WRITE, &v, 1, buf_size);
-+	iov_iter_kvec(&from, ITER_SOURCE, &v, 1, buf_size);
- 
- 	qp_lock(qpair);
- 
-@@ -3072,7 +3072,7 @@ ssize_t vmci_qpair_dequeue(struct vmci_qp *qpair,
- 	if (!qpair || !buf)
- 		return VMCI_ERROR_INVALID_ARGS;
- 
--	iov_iter_kvec(&to, READ, &v, 1, buf_size);
-+	iov_iter_kvec(&to, ITER_DEST, &v, 1, buf_size);
- 
- 	qp_lock(qpair);
- 
-@@ -3117,7 +3117,7 @@ ssize_t vmci_qpair_peek(struct vmci_qp *qpair,
- 	if (!qpair || !buf)
- 		return VMCI_ERROR_INVALID_ARGS;
- 
--	iov_iter_kvec(&to, READ, &v, 1, buf_size);
-+	iov_iter_kvec(&to, ITER_DEST, &v, 1, buf_size);
- 
- 	qp_lock(qpair);
- 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index b2b5a994dd0ee..bb4b18540ec6a 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -490,7 +490,7 @@ static ssize_t ppp_read(struct file *file, char __user *buf,
- 	ret = -EFAULT;
- 	iov.iov_base = buf;
- 	iov.iov_len = count;
--	iov_iter_init(&to, READ, &iov, 1, count);
-+	iov_iter_init(&to, ITER_DEST, &iov, 1, count);
- 	if (skb_copy_datagram_iter(skb, 0, &to, skb->len))
- 		goto outf;
- 	ret = skb->len;
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 26ede87e95cd3..7d9ebd4f7947b 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -296,7 +296,7 @@ static inline void nvme_tcp_advance_req(struct nvme_tcp_request *req,
- 	if (!iov_iter_count(&req->iter) &&
- 	    req->data_sent < req->data_len) {
- 		req->curr_bio = req->curr_bio->bi_next;
--		nvme_tcp_init_iter(req, WRITE);
-+		nvme_tcp_init_iter(req, ITER_SOURCE);
- 	}
- }
- 
-@@ -766,7 +766,7 @@ static int nvme_tcp_recv_data(struct nvme_tcp_queue *queue, struct sk_buff *skb,
- 				nvme_tcp_init_recv_ctx(queue);
- 				return -EIO;
- 			}
--			nvme_tcp_init_iter(req, READ);
-+			nvme_tcp_init_iter(req, ITER_DEST);
- 		}
- 
- 		/* we can read only from what is left in this bio */
-diff --git a/drivers/nvme/target/io-cmd-file.c b/drivers/nvme/target/io-cmd-file.c
-index c81690b2a681b..9d1acc4a52538 100644
---- a/drivers/nvme/target/io-cmd-file.c
-+++ b/drivers/nvme/target/io-cmd-file.c
-@@ -111,10 +111,10 @@ static ssize_t nvmet_file_submit_bvec(struct nvmet_req *req, loff_t pos,
- 		if (req->cmd->rw.control & cpu_to_le16(NVME_RW_FUA))
- 			ki_flags |= IOCB_DSYNC;
- 		call_iter = req->ns->file->f_op->write_iter;
--		rw = WRITE;
-+		rw = ITER_SOURCE;
- 	} else {
- 		call_iter = req->ns->file->f_op->read_iter;
--		rw = READ;
-+		rw = ITER_DEST;
- 	}
- 
- 	iov_iter_bvec(&iter, rw, req->f.bvec, nr_segs, count);
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 6db9dcdbb3c34..edcc0662c3e57 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -339,7 +339,7 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- 		sg_offset = 0;
- 	}
- 
--	iov_iter_bvec(&cmd->recv_msg.msg_iter, READ, cmd->iov,
-+	iov_iter_bvec(&cmd->recv_msg.msg_iter, ITER_DEST, cmd->iov,
- 		      nr_pages, cmd->pdu_len);
- }
- 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index b24e80a9c8cac..4fed2e996ddbc 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -1728,7 +1728,7 @@ sg_start_req(Sg_request *srp, unsigned char *cmd)
- 	Sg_scatter_hold *rsv_schp = &sfp->reserve;
- 	struct request_queue *q = sfp->parentdp->device->request_queue;
- 	struct rq_map_data *md, map_data;
--	int rw = hp->dxfer_direction == SG_DXFER_TO_DEV ? WRITE : READ;
-+	int rw = hp->dxfer_direction == SG_DXFER_TO_DEV ? ITER_SOURCE : ITER_DEST;
- 	unsigned char *long_cmdp = NULL;
- 
- 	SCSI_LOG_TIMEOUT(4, sg_printk(KERN_INFO, sfp->parentdp,
-diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/iscsi/iscsi_target_util.c
-index 29ad78fcdd5f8..f81cbfe760fa5 100644
---- a/drivers/target/iscsi/iscsi_target_util.c
-+++ b/drivers/target/iscsi/iscsi_target_util.c
-@@ -1247,7 +1247,7 @@ int rx_data(
- 		return -1;
- 
- 	memset(&msg, 0, sizeof(struct msghdr));
--	iov_iter_kvec(&msg.msg_iter, READ, iov, iov_count, data);
-+	iov_iter_kvec(&msg.msg_iter, ITER_DEST, iov, iov_count, data);
- 
- 	while (msg_data_left(&msg)) {
- 		rx_loop = sock_recvmsg(conn->sock, &msg, MSG_WAITALL);
-@@ -1283,7 +1283,7 @@ int tx_data(
- 
- 	memset(&msg, 0, sizeof(struct msghdr));
- 
--	iov_iter_kvec(&msg.msg_iter, WRITE, iov, iov_count, data);
-+	iov_iter_kvec(&msg.msg_iter, ITER_SOURCE, iov, iov_count, data);
- 
- 	while (msg_data_left(&msg)) {
- 		int tx_loop = sock_sendmsg(conn->sock, &msg);
-diff --git a/drivers/target/target_core_file.c b/drivers/target/target_core_file.c
-index eb3eae8f799a0..69547cea25383 100644
---- a/drivers/target/target_core_file.c
-+++ b/drivers/target/target_core_file.c
-@@ -480,7 +480,7 @@ fd_execute_write_same(struct se_cmd *cmd)
- 		len += se_dev->dev_attrib.block_size;
- 	}
- 
--	iov_iter_bvec(&iter, WRITE, bvec, nolb, len);
-+	iov_iter_bvec(&iter, ITER_SOURCE, bvec, nolb, len);
- 	ret = vfs_iter_write(fd_dev->fd_file, &iter, &pos, 0);
- 
- 	kfree(bvec);
-diff --git a/drivers/usb/usbip/usbip_common.c b/drivers/usb/usbip/usbip_common.c
-index 4ce6c6a45eb11..36016068e3223 100644
---- a/drivers/usb/usbip/usbip_common.c
-+++ b/drivers/usb/usbip/usbip_common.c
-@@ -309,7 +309,7 @@ int usbip_recv(struct socket *sock, void *buf, int size)
- 	if (!sock || !buf || !size)
- 		return -EINVAL;
- 
--	iov_iter_kvec(&msg.msg_iter, READ, &iov, 1, size);
-+	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &iov, 1, size);
- 
- 	usbip_dbg_xmit("enter\n");
- 
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index c9f30aa50879d..e139d0bc7d2e5 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -614,7 +614,7 @@ static size_t init_iov_iter(struct vhost_virtqueue *vq, struct iov_iter *iter,
- 	/* Skip header. TODO: support TSO. */
- 	size_t len = iov_length(vq->iov, out);
- 
--	iov_iter_init(iter, WRITE, vq->iov, out, len);
-+	iov_iter_init(iter, ITER_SOURCE, vq->iov, out, len);
- 	iov_iter_advance(iter, hdr_size);
- 
- 	return iov_iter_count(iter);
-@@ -1188,14 +1188,14 @@ static void handle_rx(struct vhost_net *net)
- 			msg.msg_control = vhost_net_buf_consume(&nvq->rxq);
- 		/* On overrun, truncate and discard */
- 		if (unlikely(headcount > UIO_MAXIOV)) {
--			iov_iter_init(&msg.msg_iter, READ, vq->iov, 1, 1);
-+			iov_iter_init(&msg.msg_iter, ITER_DEST, vq->iov, 1, 1);
- 			err = sock->ops->recvmsg(sock, &msg,
- 						 1, MSG_DONTWAIT | MSG_TRUNC);
- 			pr_debug("Discarded rx packet: len %zd\n", sock_len);
- 			continue;
- 		}
- 		/* We don't need to be notified again. */
--		iov_iter_init(&msg.msg_iter, READ, vq->iov, in, vhost_len);
-+		iov_iter_init(&msg.msg_iter, ITER_DEST, vq->iov, in, vhost_len);
- 		fixup = msg.msg_iter;
- 		if (unlikely((vhost_hlen))) {
- 			/* We will supply the header ourselves
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 6956b4e0b9be7..ec9691f6594d1 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -574,7 +574,7 @@ static void vhost_scsi_complete_cmd_work(struct vhost_work *work)
- 		memcpy(v_rsp.sense, cmd->tvc_sense_buf,
- 		       se_cmd->scsi_sense_length);
- 
--		iov_iter_init(&iov_iter, READ, &cmd->tvc_resp_iov,
-+		iov_iter_init(&iov_iter, ITER_DEST, &cmd->tvc_resp_iov,
- 			      cmd->tvc_in_iovs, sizeof(v_rsp));
- 		ret = copy_to_iter(&v_rsp, sizeof(v_rsp), &iov_iter);
- 		if (likely(ret == sizeof(v_rsp))) {
-@@ -883,7 +883,7 @@ vhost_scsi_get_desc(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
- 	 * point at the start of the outgoing WRITE payload, if
- 	 * DMA_TO_DEVICE is set.
- 	 */
--	iov_iter_init(&vc->out_iter, WRITE, vq->iov, vc->out, vc->out_size);
-+	iov_iter_init(&vc->out_iter, ITER_SOURCE, vq->iov, vc->out, vc->out_size);
- 	ret = 0;
- 
- done:
-@@ -1036,7 +1036,7 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
- 			data_direction = DMA_FROM_DEVICE;
- 			exp_data_len = vc.in_size - vc.rsp_size;
- 
--			iov_iter_init(&in_iter, READ, &vq->iov[vc.out], vc.in,
-+			iov_iter_init(&in_iter, ITER_DEST, &vq->iov[vc.out], vc.in,
- 				      vc.rsp_size + exp_data_len);
- 			iov_iter_advance(&in_iter, vc.rsp_size);
- 			data_iter = in_iter;
-@@ -1173,7 +1173,7 @@ vhost_scsi_send_tmf_resp(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
- 	memset(&rsp, 0, sizeof(rsp));
- 	rsp.response = tmf_resp_code;
- 
--	iov_iter_init(&iov_iter, READ, resp_iov, in_iovs, sizeof(rsp));
-+	iov_iter_init(&iov_iter, ITER_DEST, resp_iov, in_iovs, sizeof(rsp));
- 
- 	ret = copy_to_iter(&rsp, sizeof(rsp), &iov_iter);
- 	if (likely(ret == sizeof(rsp)))
-@@ -1268,7 +1268,7 @@ vhost_scsi_send_an_resp(struct vhost_scsi *vs,
- 	memset(&rsp, 0, sizeof(rsp));	/* event_actual = 0 */
- 	rsp.response = VIRTIO_SCSI_S_OK;
- 
--	iov_iter_init(&iov_iter, READ, &vq->iov[vc->out], vc->in, sizeof(rsp));
-+	iov_iter_init(&iov_iter, ITER_DEST, &vq->iov[vc->out], vc->in, sizeof(rsp));
- 
- 	ret = copy_to_iter(&rsp, sizeof(rsp), &iov_iter);
- 	if (likely(ret == sizeof(rsp)))
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 97e00c481870e..95db8232e9979 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -841,7 +841,7 @@ static int vhost_copy_to_user(struct vhost_virtqueue *vq, void __user *to,
- 				     VHOST_ACCESS_WO);
- 		if (ret < 0)
- 			goto out;
--		iov_iter_init(&t, WRITE, vq->iotlb_iov, ret, size);
-+		iov_iter_init(&t, ITER_SOURCE, vq->iotlb_iov, ret, size);
- 		ret = copy_to_iter(from, size, &t);
- 		if (ret == size)
- 			ret = 0;
-@@ -880,7 +880,7 @@ static int vhost_copy_from_user(struct vhost_virtqueue *vq, void *to,
- 			       (unsigned long long) size);
- 			goto out;
- 		}
--		iov_iter_init(&f, READ, vq->iotlb_iov, ret, size);
-+		iov_iter_init(&f, ITER_DEST, vq->iotlb_iov, ret, size);
- 		ret = copy_from_iter(to, size, &f);
- 		if (ret == size)
- 			ret = 0;
-@@ -2132,7 +2132,7 @@ static int get_indirect(struct vhost_virtqueue *vq,
- 			vq_err(vq, "Translation failure %d in indirect.\n", ret);
- 		return ret;
- 	}
--	iov_iter_init(&from, READ, vq->indirect, ret, len);
-+	iov_iter_init(&from, ITER_DEST, vq->indirect, ret, len);
- 	count = len / sizeof desc;
- 	/* Buffers are chained via a 16 bit next field, so
- 	 * we can have at most 2^16 of these. */
-diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
-index 48f4ec2ba40a0..61fcef5a3b031 100644
---- a/drivers/vhost/vringh.c
-+++ b/drivers/vhost/vringh.c
-@@ -1122,7 +1122,7 @@ static inline int copy_from_iotlb(const struct vringh *vrh, void *dst,
- 	if (ret < 0)
- 		return ret;
- 
--	iov_iter_bvec(&iter, READ, iov, ret, len);
-+	iov_iter_bvec(&iter, ITER_DEST, iov, ret, len);
- 
- 	ret = copy_from_iter(dst, len, &iter);
- 
-@@ -1141,7 +1141,7 @@ static inline int copy_to_iotlb(const struct vringh *vrh, void *dst,
- 	if (ret < 0)
- 		return ret;
- 
--	iov_iter_bvec(&iter, WRITE, iov, ret, len);
-+	iov_iter_bvec(&iter, ITER_SOURCE, iov, ret, len);
- 
- 	return copy_to_iter(src, len, &iter);
- }
 diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 4b678dbaa93a1..bc3aaa35b468d 100644
+index bc3aaa35b468d..541061db8b85e 100644
 --- a/drivers/vhost/vsock.c
 +++ b/drivers/vhost/vsock.c
-@@ -155,7 +155,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+@@ -45,8 +45,7 @@ struct vhost_vsock {
+ 	struct hlist_node hash;
+ 
+ 	struct vhost_work send_pkt_work;
+-	spinlock_t send_pkt_list_lock;
+-	struct list_head send_pkt_list;	/* host->guest pending packets */
++	struct sk_buff_head send_pkt_queue; /* host->guest pending packets */
+ 
+ 	atomic_t queued_replies;
+ 
+@@ -99,39 +98,30 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 	vhost_disable_notify(&vsock->dev, vq);
+ 
+ 	do {
+-		struct virtio_vsock_pkt *pkt;
++		struct virtio_vsock_hdr *hdr;
++		size_t iov_len, payload_len;
+ 		struct iov_iter iov_iter;
++		struct sk_buff *skb;
+ 		unsigned out, in;
+ 		size_t nbytes;
+-		size_t iov_len, payload_len;
+ 		int head;
+ 
+-		spin_lock_bh(&vsock->send_pkt_list_lock);
+-		if (list_empty(&vsock->send_pkt_list)) {
+-			spin_unlock_bh(&vsock->send_pkt_list_lock);
++		skb = virtio_vsock_skb_dequeue(&vsock->send_pkt_queue);
++
++		if (!skb) {
+ 			vhost_enable_notify(&vsock->dev, vq);
  			break;
  		}
  
--		iov_iter_init(&iov_iter, READ, &vq->iov[out], in, iov_len);
-+		iov_iter_init(&iov_iter, ITER_DEST, &vq->iov[out], in, iov_len);
- 		payload_len = pkt->len - pkt->off;
+-		pkt = list_first_entry(&vsock->send_pkt_list,
+-				       struct virtio_vsock_pkt, list);
+-		list_del_init(&pkt->list);
+-		spin_unlock_bh(&vsock->send_pkt_list_lock);
+-
+ 		head = vhost_get_vq_desc(vq, vq->iov, ARRAY_SIZE(vq->iov),
+ 					 &out, &in, NULL, NULL);
+ 		if (head < 0) {
+-			spin_lock_bh(&vsock->send_pkt_list_lock);
+-			list_add(&pkt->list, &vsock->send_pkt_list);
+-			spin_unlock_bh(&vsock->send_pkt_list_lock);
++			virtio_vsock_skb_queue_head(&vsock->send_pkt_queue, skb);
+ 			break;
+ 		}
+ 
+ 		if (head == vq->num) {
+-			spin_lock_bh(&vsock->send_pkt_list_lock);
+-			list_add(&pkt->list, &vsock->send_pkt_list);
+-			spin_unlock_bh(&vsock->send_pkt_list_lock);
+-
++			virtio_vsock_skb_queue_head(&vsock->send_pkt_queue, skb);
+ 			/* We cannot finish yet if more buffers snuck in while
+ 			 * re-enabling notify.
+ 			 */
+@@ -143,41 +133,41 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 		}
+ 
+ 		if (out) {
+-			virtio_transport_free_pkt(pkt);
++			kfree_skb(skb);
+ 			vq_err(vq, "Expected 0 output buffers, got %u\n", out);
+ 			break;
+ 		}
+ 
+ 		iov_len = iov_length(&vq->iov[out], in);
+-		if (iov_len < sizeof(pkt->hdr)) {
+-			virtio_transport_free_pkt(pkt);
++		if (iov_len < sizeof(*hdr)) {
++			kfree_skb(skb);
+ 			vq_err(vq, "Buffer len [%zu] too small\n", iov_len);
+ 			break;
+ 		}
+ 
+ 		iov_iter_init(&iov_iter, ITER_DEST, &vq->iov[out], in, iov_len);
+-		payload_len = pkt->len - pkt->off;
++		payload_len = skb->len;
++		hdr = virtio_vsock_hdr(skb);
  
  		/* If the packet is greater than the space available in the
-@@ -337,7 +337,7 @@ vhost_vsock_alloc_pkt(struct vhost_virtqueue *vq,
- 		return NULL;
+ 		 * buffer, we split it using multiple buffers.
+ 		 */
+-		if (payload_len > iov_len - sizeof(pkt->hdr))
+-			payload_len = iov_len - sizeof(pkt->hdr);
++		if (payload_len > iov_len - sizeof(*hdr))
++			payload_len = iov_len - sizeof(*hdr);
  
- 	len = iov_length(vq->iov, out);
--	iov_iter_init(&iov_iter, WRITE, vq->iov, out, len);
-+	iov_iter_init(&iov_iter, ITER_SOURCE, vq->iov, out, len);
+ 		/* Set the correct length in the header */
+-		pkt->hdr.len = cpu_to_le32(payload_len);
++		hdr->len = cpu_to_le32(payload_len);
  
- 	nbytes = copy_from_iter(&pkt->hdr, sizeof(pkt->hdr), &iov_iter);
- 	if (nbytes != sizeof(pkt->hdr)) {
-diff --git a/drivers/xen/pvcalls-back.c b/drivers/xen/pvcalls-back.c
-index 3c435e1bca124..f43a4a3591b2c 100644
---- a/drivers/xen/pvcalls-back.c
-+++ b/drivers/xen/pvcalls-back.c
-@@ -129,13 +129,13 @@ static bool pvcalls_conn_back_read(void *opaque)
- 	if (masked_prod < masked_cons) {
- 		vec[0].iov_base = data->in + masked_prod;
- 		vec[0].iov_len = wanted;
--		iov_iter_kvec(&msg.msg_iter, READ, vec, 1, wanted);
-+		iov_iter_kvec(&msg.msg_iter, ITER_DEST, vec, 1, wanted);
- 	} else {
- 		vec[0].iov_base = data->in + masked_prod;
- 		vec[0].iov_len = array_size - masked_prod;
- 		vec[1].iov_base = data->in;
- 		vec[1].iov_len = wanted - vec[0].iov_len;
--		iov_iter_kvec(&msg.msg_iter, READ, vec, 2, wanted);
-+		iov_iter_kvec(&msg.msg_iter, ITER_DEST, vec, 2, wanted);
- 	}
+-		nbytes = copy_to_iter(&pkt->hdr, sizeof(pkt->hdr), &iov_iter);
+-		if (nbytes != sizeof(pkt->hdr)) {
+-			virtio_transport_free_pkt(pkt);
++		nbytes = copy_to_iter(hdr, sizeof(*hdr), &iov_iter);
++		if (nbytes != sizeof(*hdr)) {
++			kfree_skb(skb);
+ 			vq_err(vq, "Faulted on copying pkt hdr\n");
+ 			break;
+ 		}
  
- 	atomic_set(&map->read, 0);
-@@ -188,13 +188,13 @@ static bool pvcalls_conn_back_write(struct sock_mapping *map)
- 	if (pvcalls_mask(prod, array_size) > pvcalls_mask(cons, array_size)) {
- 		vec[0].iov_base = data->out + pvcalls_mask(cons, array_size);
- 		vec[0].iov_len = size;
--		iov_iter_kvec(&msg.msg_iter, WRITE, vec, 1, size);
-+		iov_iter_kvec(&msg.msg_iter, ITER_SOURCE, vec, 1, size);
- 	} else {
- 		vec[0].iov_base = data->out + pvcalls_mask(cons, array_size);
- 		vec[0].iov_len = array_size - pvcalls_mask(cons, array_size);
- 		vec[1].iov_base = data->out;
- 		vec[1].iov_len = size - vec[0].iov_len;
--		iov_iter_kvec(&msg.msg_iter, WRITE, vec, 2, size);
-+		iov_iter_kvec(&msg.msg_iter, ITER_SOURCE, vec, 2, size);
- 	}
+-		nbytes = copy_to_iter(pkt->buf + pkt->off, payload_len,
+-				      &iov_iter);
++		nbytes = copy_to_iter(skb->data, payload_len, &iov_iter);
+ 		if (nbytes != payload_len) {
+-			virtio_transport_free_pkt(pkt);
++			kfree_skb(skb);
+ 			vq_err(vq, "Faulted on copying pkt buf\n");
+ 			break;
+ 		}
+@@ -185,29 +175,26 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 		/* Deliver to monitoring devices all packets that we
+ 		 * will transmit.
+ 		 */
+-		virtio_transport_deliver_tap_pkt(pkt);
++		virtio_transport_deliver_tap_pkt(skb);
  
- 	atomic_set(&map->write, 0);
-diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
-index cce9ace651a2d..1ab795bf5b748 100644
---- a/fs/9p/vfs_addr.c
-+++ b/fs/9p/vfs_addr.c
-@@ -51,7 +51,7 @@ static int v9fs_fid_readpage(void *data, struct page *page)
- 	if (retval == 0)
- 		return retval;
+-		vhost_add_used(vq, head, sizeof(pkt->hdr) + payload_len);
++		vhost_add_used(vq, head, sizeof(*hdr) + payload_len);
+ 		added = true;
  
--	iov_iter_bvec(&to, READ, &bvec, 1, PAGE_SIZE);
-+	iov_iter_bvec(&to, ITER_DEST, &bvec, 1, PAGE_SIZE);
+-		pkt->off += payload_len;
++		skb_pull(skb, payload_len);
+ 		total_len += payload_len;
  
- 	retval = p9_client_read(fid, page_offset(page), &to, &err);
- 	if (err) {
-@@ -162,7 +162,7 @@ static int v9fs_vfs_writepage_locked(struct page *page)
- 	bvec.bv_page = page;
- 	bvec.bv_offset = 0;
- 	bvec.bv_len = len;
--	iov_iter_bvec(&from, WRITE, &bvec, 1, len);
-+	iov_iter_bvec(&from, ITER_SOURCE, &bvec, 1, len);
+ 		/* If we didn't send all the payload we can requeue the packet
+ 		 * to send it with the next available buffer.
+ 		 */
+-		if (pkt->off < pkt->len) {
+-			/* We are queueing the same virtio_vsock_pkt to handle
++		if (skb->len > 0) {
++			/* We are queueing the same skb to handle
+ 			 * the remaining bytes, and we want to deliver it
+ 			 * to monitoring devices in the next iteration.
+ 			 */
+-			pkt->tap_delivered = false;
+-
+-			spin_lock_bh(&vsock->send_pkt_list_lock);
+-			list_add(&pkt->list, &vsock->send_pkt_list);
+-			spin_unlock_bh(&vsock->send_pkt_list_lock);
++			virtio_vsock_skb_clear_tap_delivered(skb);
++			virtio_vsock_skb_queue_head(&vsock->send_pkt_queue, skb);
+ 		} else {
+-			if (pkt->reply) {
++			if (virtio_vsock_skb_reply(skb)) {
+ 				int val;
  
- 	/* We should have writeback_fid always set */
- 	BUG_ON(!v9inode->writeback_fid);
-diff --git a/fs/9p/vfs_dir.c b/fs/9p/vfs_dir.c
-index 674d22bf4f6f7..67438cef1d34b 100644
---- a/fs/9p/vfs_dir.c
-+++ b/fs/9p/vfs_dir.c
-@@ -108,7 +108,7 @@ static int v9fs_dir_readdir(struct file *file, struct dir_context *ctx)
- 		if (rdir->tail == rdir->head) {
- 			struct iov_iter to;
- 			int n;
--			iov_iter_kvec(&to, READ, &kvec, 1, buflen);
-+			iov_iter_kvec(&to, ITER_DEST, &kvec, 1, buflen);
- 			n = p9_client_read(file->private_data, ctx->pos, &to,
- 					   &err);
- 			if (err)
-diff --git a/fs/9p/xattr.c b/fs/9p/xattr.c
-index ac8ff8ca4c115..bc197159d4a36 100644
---- a/fs/9p/xattr.c
-+++ b/fs/9p/xattr.c
-@@ -32,7 +32,7 @@ ssize_t v9fs_fid_xattr_get(struct p9_fid *fid, const char *name,
- 	struct iov_iter to;
- 	int err;
- 
--	iov_iter_kvec(&to, READ, &kvec, 1, buffer_size);
-+	iov_iter_kvec(&to, ITER_DEST, &kvec, 1, buffer_size);
- 
- 	attr_fid = p9_client_xattrwalk(fid, name, &attr_size);
- 	if (IS_ERR(attr_fid)) {
-@@ -107,7 +107,7 @@ int v9fs_fid_xattr_set(struct p9_fid *fid, const char *name,
- 	struct iov_iter from;
- 	int retval, err;
- 
--	iov_iter_kvec(&from, WRITE, &kvec, 1, value_len);
-+	iov_iter_kvec(&from, ITER_SOURCE, &kvec, 1, value_len);
- 
- 	p9_debug(P9_DEBUG_VFS, "name = %s value_len = %zu flags = %d\n",
- 		 name, value_len, flags);
-diff --git a/fs/afs/cmservice.c b/fs/afs/cmservice.c
-index 2a528b70478c6..6761a0b5f3986 100644
---- a/fs/afs/cmservice.c
-+++ b/fs/afs/cmservice.c
-@@ -298,7 +298,7 @@ static int afs_deliver_cb_callback(struct afs_call *call)
- 		if (call->count2 != call->count && call->count2 != 0)
- 			return afs_protocol_error(call, afs_eproto_cb_count);
- 		call->iter = &call->def_iter;
--		iov_iter_discard(&call->def_iter, READ, call->count2 * 3 * 4);
-+		iov_iter_discard(&call->def_iter, ITER_DEST, call->count2 * 3 * 4);
- 		call->unmarshall++;
- 
- 		fallthrough;
-diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-index 31c7a562147c2..e53de40333d85 100644
---- a/fs/afs/internal.h
-+++ b/fs/afs/internal.h
-@@ -1273,7 +1273,7 @@ static inline void afs_extract_begin(struct afs_call *call, void *buf, size_t si
- {
- 	call->kvec[0].iov_base = buf;
- 	call->kvec[0].iov_len = size;
--	iov_iter_kvec(&call->def_iter, READ, call->kvec, 1, size);
-+	iov_iter_kvec(&call->def_iter, ITER_DEST, call->kvec, 1, size);
- }
- 
- static inline void afs_extract_to_tmp(struct afs_call *call)
-@@ -1288,7 +1288,7 @@ static inline void afs_extract_to_tmp64(struct afs_call *call)
- 
- static inline void afs_extract_discard(struct afs_call *call, size_t size)
- {
--	iov_iter_discard(&call->def_iter, READ, size);
-+	iov_iter_discard(&call->def_iter, ITER_DEST, size);
- }
- 
- static inline void afs_extract_to_buf(struct afs_call *call, size_t size)
-diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
-index 1820b53657a6c..8db3dc9bb5f10 100644
---- a/fs/afs/rxrpc.c
-+++ b/fs/afs/rxrpc.c
-@@ -302,7 +302,7 @@ static void afs_load_bvec(struct afs_call *call, struct msghdr *msg,
- 		offset = 0;
- 	}
- 
--	iov_iter_bvec(&msg->msg_iter, WRITE, bv, nr, bytes);
-+	iov_iter_bvec(&msg->msg_iter, ITER_SOURCE, bv, nr, bytes);
- }
- 
- /*
-@@ -437,7 +437,7 @@ void afs_make_call(struct afs_addr_cursor *ac, struct afs_call *call, gfp_t gfp)
- 
- 	msg.msg_name		= NULL;
- 	msg.msg_namelen		= 0;
--	iov_iter_kvec(&msg.msg_iter, WRITE, iov, 1, call->request_size);
-+	iov_iter_kvec(&msg.msg_iter, ITER_SOURCE, iov, 1, call->request_size);
- 	msg.msg_control		= NULL;
- 	msg.msg_controllen	= 0;
- 	msg.msg_flags		= MSG_WAITALL | (call->send_pages ? MSG_MORE : 0);
-@@ -467,7 +467,7 @@ void afs_make_call(struct afs_addr_cursor *ac, struct afs_call *call, gfp_t gfp)
- 		rxrpc_kernel_abort_call(call->net->socket, rxcall,
- 					RX_USER_ABORT, ret, "KSD");
- 	} else {
--		iov_iter_kvec(&msg.msg_iter, READ, NULL, 0, 0);
-+		iov_iter_kvec(&msg.msg_iter, ITER_DEST, NULL, 0, 0);
- 		rxrpc_kernel_recv_data(call->net->socket, rxcall,
- 				       &msg.msg_iter, false,
- 				       &call->abort_code, &call->service_id);
-@@ -517,7 +517,7 @@ static void afs_deliver_to_call(struct afs_call *call)
- 	       state == AFS_CALL_SV_AWAIT_ACK
- 	       ) {
- 		if (state == AFS_CALL_SV_AWAIT_ACK) {
--			iov_iter_kvec(&call->def_iter, READ, NULL, 0, 0);
-+			iov_iter_kvec(&call->def_iter, ITER_DEST, NULL, 0, 0);
- 			ret = rxrpc_kernel_recv_data(call->net->socket,
- 						     call->rxcall, &call->def_iter,
- 						     false, &remote_abort,
-@@ -854,7 +854,7 @@ void afs_send_empty_reply(struct afs_call *call)
- 
- 	msg.msg_name		= NULL;
- 	msg.msg_namelen		= 0;
--	iov_iter_kvec(&msg.msg_iter, WRITE, NULL, 0, 0);
-+	iov_iter_kvec(&msg.msg_iter, ITER_SOURCE, NULL, 0, 0);
- 	msg.msg_control		= NULL;
- 	msg.msg_controllen	= 0;
- 	msg.msg_flags		= 0;
-@@ -894,7 +894,7 @@ void afs_send_simple_reply(struct afs_call *call, const void *buf, size_t len)
- 	iov[0].iov_len		= len;
- 	msg.msg_name		= NULL;
- 	msg.msg_namelen		= 0;
--	iov_iter_kvec(&msg.msg_iter, WRITE, iov, 1, len);
-+	iov_iter_kvec(&msg.msg_iter, ITER_SOURCE, iov, 1, len);
- 	msg.msg_control		= NULL;
- 	msg.msg_controllen	= 0;
- 	msg.msg_flags		= 0;
-diff --git a/fs/aio.c b/fs/aio.c
-index 93b6bbf01d715..22b6e20322741 100644
---- a/fs/aio.c
-+++ b/fs/aio.c
-@@ -1547,7 +1547,7 @@ static int aio_read(struct kiocb *req, const struct iocb *iocb,
- 	if (unlikely(!file->f_op->read_iter))
- 		return -EINVAL;
- 
--	ret = aio_setup_rw(READ, iocb, &iovec, vectored, compat, &iter);
-+	ret = aio_setup_rw(ITER_DEST, iocb, &iovec, vectored, compat, &iter);
- 	if (ret < 0)
- 		return ret;
- 	ret = rw_verify_area(READ, file, &req->ki_pos, iov_iter_count(&iter));
-@@ -1575,7 +1575,7 @@ static int aio_write(struct kiocb *req, const struct iocb *iocb,
- 	if (unlikely(!file->f_op->write_iter))
- 		return -EINVAL;
- 
--	ret = aio_setup_rw(WRITE, iocb, &iovec, vectored, compat, &iter);
-+	ret = aio_setup_rw(ITER_SOURCE, iocb, &iovec, vectored, compat, &iter);
- 	if (ret < 0)
- 		return ret;
- 	ret = rw_verify_area(WRITE, file, &req->ki_pos, iov_iter_count(&iter));
-diff --git a/fs/ceph/file.c b/fs/ceph/file.c
-index e08805426c808..fcc9b1ad314ad 100644
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -1115,7 +1115,7 @@ static void ceph_aio_complete_req(struct ceph_osd_request *req)
- 				aio_req->total_len = rc + zlen;
+ 				val = atomic_dec_return(&vsock->queued_replies);
+@@ -219,7 +206,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 					restart_tx = true;
  			}
  
--			iov_iter_bvec(&i, READ, osd_data->bvec_pos.bvecs,
-+			iov_iter_bvec(&i, ITER_DEST, osd_data->bvec_pos.bvecs,
- 				      osd_data->num_bvecs,
- 				      osd_data->bvec_pos.iter.bi_size);
- 			iov_iter_advance(&i, rc);
-@@ -1342,7 +1342,7 @@ ceph_direct_read_write(struct kiocb *iocb, struct iov_iter *iter,
- 				int zlen = min_t(size_t, len - ret,
- 						 size - pos - ret);
- 
--				iov_iter_bvec(&i, READ, bvecs, num_pages, len);
-+				iov_iter_bvec(&i, ITER_DEST, bvecs, num_pages, len);
- 				iov_iter_advance(&i, ret);
- 				iov_iter_zero(zlen, &i);
- 				ret += zlen;
-diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-index 769c7759601db..26f8e399593e0 100644
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -747,7 +747,7 @@ cifs_read_from_socket(struct TCP_Server_Info *server, char *buf,
- {
- 	struct msghdr smb_msg = {};
- 	struct kvec iov = {.iov_base = buf, .iov_len = to_read};
--	iov_iter_kvec(&smb_msg.msg_iter, READ, &iov, 1, to_read);
-+	iov_iter_kvec(&smb_msg.msg_iter, ITER_DEST, &iov, 1, to_read);
- 
- 	return cifs_readv_from_socket(server, &smb_msg);
- }
-@@ -762,7 +762,7 @@ cifs_discard_from_socket(struct TCP_Server_Info *server, size_t to_read)
- 	 *  and cifs_readv_from_socket sets msg_control and msg_controllen
- 	 *  so little to initialize in struct msghdr
- 	 */
--	iov_iter_discard(&smb_msg.msg_iter, READ, to_read);
-+	iov_iter_discard(&smb_msg.msg_iter, ITER_DEST, to_read);
- 
- 	return cifs_readv_from_socket(server, &smb_msg);
- }
-@@ -774,7 +774,7 @@ cifs_read_page_from_socket(struct TCP_Server_Info *server, struct page *page,
- 	struct msghdr smb_msg = {};
- 	struct bio_vec bv = {
- 		.bv_page = page, .bv_len = to_read, .bv_offset = page_offset};
--	iov_iter_bvec(&smb_msg.msg_iter, READ, &bv, 1, to_read);
-+	iov_iter_bvec(&smb_msg.msg_iter, ITER_DEST, &bv, 1, to_read);
- 	return cifs_readv_from_socket(server, &smb_msg);
- }
- 
-diff --git a/fs/cifs/file.c b/fs/cifs/file.c
-index 0191ae0ff8c13..0da9c11cae278 100644
---- a/fs/cifs/file.c
-+++ b/fs/cifs/file.c
-@@ -3180,7 +3180,7 @@ static ssize_t __cifs_writev(
- 		ctx->iter = *from;
- 		ctx->len = len;
- 	} else {
--		rc = setup_aio_ctx_iter(ctx, from, WRITE);
-+		rc = setup_aio_ctx_iter(ctx, from, ITER_SOURCE);
- 		if (rc) {
- 			kref_put(&ctx->refcount, cifs_aio_ctx_release);
- 			return rc;
-@@ -3920,7 +3920,7 @@ static ssize_t __cifs_readv(
- 		ctx->iter = *to;
- 		ctx->len = len;
- 	} else {
--		rc = setup_aio_ctx_iter(ctx, to, READ);
-+		rc = setup_aio_ctx_iter(ctx, to, ITER_DEST);
- 		if (rc) {
- 			kref_put(&ctx->refcount, cifs_aio_ctx_release);
- 			return rc;
-diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
-index 5e11362ecc47e..97437cceaa5ee 100644
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -4714,13 +4714,13 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
- 			return 0;
+-			virtio_transport_free_pkt(pkt);
++			consume_skb(skb);
  		}
- 
--		iov_iter_bvec(&iter, WRITE, bvec, npages, data_len);
-+		iov_iter_bvec(&iter, ITER_SOURCE, bvec, npages, data_len);
- 	} else if (buf_len >= data_offset + data_len) {
- 		/* read response payload is in buf */
- 		WARN_ONCE(npages > 0, "read data can be either in buf or in pages");
- 		iov.iov_base = buf + data_offset;
- 		iov.iov_len = data_len;
--		iov_iter_kvec(&iter, WRITE, &iov, 1, data_len);
-+		iov_iter_kvec(&iter, ITER_SOURCE, &iov, 1, data_len);
- 	} else {
- 		/* read response payload cannot be in both buf and pages */
- 		WARN_ONCE(1, "buf can not contain only a part of read data");
-diff --git a/fs/cifs/transport.c b/fs/cifs/transport.c
-index c6fd4223b3bea..9b0fa5fd965a2 100644
---- a/fs/cifs/transport.c
-+++ b/fs/cifs/transport.c
-@@ -362,7 +362,7 @@ __smb_send_rqst(struct TCP_Server_Info *server, int num_rqst,
- 			.iov_base = &rfc1002_marker,
- 			.iov_len  = 4
- 		};
--		iov_iter_kvec(&smb_msg.msg_iter, WRITE, &hiov, 1, 4);
-+		iov_iter_kvec(&smb_msg.msg_iter, ITER_SOURCE, &hiov, 1, 4);
- 		rc = smb_send_kvec(server, &smb_msg, &sent);
- 		if (rc < 0)
- 			goto unmask;
-@@ -383,7 +383,7 @@ __smb_send_rqst(struct TCP_Server_Info *server, int num_rqst,
- 			size += iov[i].iov_len;
- 		}
- 
--		iov_iter_kvec(&smb_msg.msg_iter, WRITE, iov, n_vec, size);
-+		iov_iter_kvec(&smb_msg.msg_iter, ITER_SOURCE, iov, n_vec, size);
- 
- 		rc = smb_send_kvec(server, &smb_msg, &sent);
- 		if (rc < 0)
-@@ -399,7 +399,7 @@ __smb_send_rqst(struct TCP_Server_Info *server, int num_rqst,
- 			rqst_page_get_length(&rqst[j], i, &bvec.bv_len,
- 					     &bvec.bv_offset);
- 
--			iov_iter_bvec(&smb_msg.msg_iter, WRITE,
-+			iov_iter_bvec(&smb_msg.msg_iter, ITER_SOURCE,
- 				      &bvec, 1, bvec.bv_len);
- 			rc = smb_send_kvec(server, &smb_msg, &sent);
- 			if (rc < 0)
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 7739a47356e75..1946814248667 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1043,7 +1043,7 @@ __be32 nfsd_readv(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	ssize_t host_err;
- 
- 	trace_nfsd_read_vector(rqstp, fhp, offset, *count);
--	iov_iter_kvec(&iter, READ, vec, vlen, *count);
-+	iov_iter_kvec(&iter, ITER_DEST, vec, vlen, *count);
- 	host_err = vfs_iter_read(file, &iter, &ppos, 0);
- 	return nfsd_finish_read(rqstp, fhp, file, offset, count, eof, host_err);
+ 	} while(likely(!vhost_exceeds_weight(vq, ++pkts, total_len)));
+ 	if (added)
+@@ -244,28 +231,26 @@ static void vhost_transport_send_pkt_work(struct vhost_work *work)
  }
-@@ -1133,7 +1133,7 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 	if (stable && !use_wgather)
- 		flags |= RWF_SYNC;
  
--	iov_iter_kvec(&iter, WRITE, vec, vlen, *cnt);
-+	iov_iter_kvec(&iter, ITER_SOURCE, vec, vlen, *cnt);
- 	since = READ_ONCE(file->f_wb_err);
- 	if (verf)
- 		nfsd_copy_write_verifier(verf, nn);
-diff --git a/fs/ocfs2/cluster/tcp.c b/fs/ocfs2/cluster/tcp.c
-index 79a2317194600..ddb7ff09312a1 100644
---- a/fs/ocfs2/cluster/tcp.c
-+++ b/fs/ocfs2/cluster/tcp.c
-@@ -902,7 +902,7 @@ static int o2net_recv_tcp_msg(struct socket *sock, void *data, size_t len)
+ static int
+-vhost_transport_send_pkt(struct virtio_vsock_pkt *pkt)
++vhost_transport_send_pkt(struct sk_buff *skb)
  {
- 	struct kvec vec = { .iov_len = len, .iov_base = data, };
- 	struct msghdr msg = { .msg_flags = MSG_DONTWAIT, };
--	iov_iter_kvec(&msg.msg_iter, READ, &vec, 1, len);
-+	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &vec, 1, len);
- 	return sock_recvmsg(sock, &msg, MSG_DONTWAIT);
- }
++	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+ 	struct vhost_vsock *vsock;
+-	int len = pkt->len;
++	int len = skb->len;
  
-diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
-index cd70ded309e47..a06d714a50c4d 100644
---- a/fs/orangefs/inode.c
-+++ b/fs/orangefs/inode.c
-@@ -52,7 +52,7 @@ static int orangefs_writepage_locked(struct page *page,
- 	bv.bv_len = wlen;
- 	bv.bv_offset = off % PAGE_SIZE;
- 	WARN_ON(wlen == 0);
--	iov_iter_bvec(&iter, WRITE, &bv, 1, wlen);
-+	iov_iter_bvec(&iter, ITER_SOURCE, &bv, 1, wlen);
+ 	rcu_read_lock();
  
- 	ret = wait_for_direct_io(ORANGEFS_IO_WRITE, inode, &off, &iter, wlen,
- 	    len, wr, NULL, NULL);
-@@ -110,7 +110,7 @@ static int orangefs_writepages_work(struct orangefs_writepages *ow,
- 		else
- 			ow->bv[i].bv_offset = 0;
+ 	/* Find the vhost_vsock according to guest context id  */
+-	vsock = vhost_vsock_get(le64_to_cpu(pkt->hdr.dst_cid));
++	vsock = vhost_vsock_get(le64_to_cpu(hdr->dst_cid));
+ 	if (!vsock) {
+ 		rcu_read_unlock();
+-		virtio_transport_free_pkt(pkt);
++		kfree_skb(skb);
+ 		return -ENODEV;
  	}
--	iov_iter_bvec(&iter, WRITE, ow->bv, ow->npages, ow->len);
-+	iov_iter_bvec(&iter, ITER_SOURCE, ow->bv, ow->npages, ow->len);
  
- 	WARN_ON(ow->off >= len);
- 	if (ow->off + ow->len > len)
-@@ -275,7 +275,7 @@ static int orangefs_readpage(struct file *file, struct page *page)
- 	bv.bv_page = page;
- 	bv.bv_len = PAGE_SIZE;
- 	bv.bv_offset = 0;
--	iov_iter_bvec(&iter, READ, &bv, 1, PAGE_SIZE);
-+	iov_iter_bvec(&iter, ITER_DEST, &bv, 1, PAGE_SIZE);
+-	if (pkt->reply)
++	if (virtio_vsock_skb_reply(skb))
+ 		atomic_inc(&vsock->queued_replies);
  
- 	ret = wait_for_direct_io(ORANGEFS_IO_READ, inode, &off, &iter,
- 	    read_size, inode->i_size, NULL, &buffer_index, file);
-diff --git a/fs/read_write.c b/fs/read_write.c
-index 0066acb6b380d..51387a6c8f4e8 100644
---- a/fs/read_write.c
-+++ b/fs/read_write.c
-@@ -410,7 +410,7 @@ static ssize_t new_sync_read(struct file *filp, char __user *buf, size_t len, lo
+-	spin_lock_bh(&vsock->send_pkt_list_lock);
+-	list_add_tail(&pkt->list, &vsock->send_pkt_list);
+-	spin_unlock_bh(&vsock->send_pkt_list_lock);
+-
++	virtio_vsock_skb_queue_tail(&vsock->send_pkt_queue, skb);
+ 	vhost_work_queue(&vsock->dev, &vsock->send_pkt_work);
  
- 	init_sync_kiocb(&kiocb, filp);
- 	kiocb.ki_pos = (ppos ? *ppos : 0);
--	iov_iter_init(&iter, READ, &iov, 1, len);
-+	iov_iter_init(&iter, ITER_DEST, &iov, 1, len);
+ 	rcu_read_unlock();
+@@ -276,10 +261,8 @@ static int
+ vhost_transport_cancel_pkt(struct vsock_sock *vsk)
+ {
+ 	struct vhost_vsock *vsock;
+-	struct virtio_vsock_pkt *pkt, *n;
+ 	int cnt = 0;
+ 	int ret = -ENODEV;
+-	LIST_HEAD(freeme);
  
- 	ret = call_read_iter(filp, &kiocb, &iter);
- 	BUG_ON(ret == -EIOCBQUEUED);
-@@ -450,7 +450,7 @@ ssize_t __kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
+ 	rcu_read_lock();
  
- 	init_sync_kiocb(&kiocb, file);
- 	kiocb.ki_pos = pos ? *pos : 0;
--	iov_iter_kvec(&iter, READ, &iov, 1, iov.iov_len);
-+	iov_iter_kvec(&iter, ITER_DEST, &iov, 1, iov.iov_len);
- 	ret = file->f_op->read_iter(&kiocb, &iter);
- 	if (ret > 0) {
- 		if (pos)
-@@ -513,7 +513,7 @@ static ssize_t new_sync_write(struct file *filp, const char __user *buf, size_t
+@@ -288,20 +271,7 @@ vhost_transport_cancel_pkt(struct vsock_sock *vsk)
+ 	if (!vsock)
+ 		goto out;
  
- 	init_sync_kiocb(&kiocb, filp);
- 	kiocb.ki_pos = (ppos ? *ppos : 0);
--	iov_iter_init(&iter, WRITE, &iov, 1, len);
-+	iov_iter_init(&iter, ITER_SOURCE, &iov, 1, len);
+-	spin_lock_bh(&vsock->send_pkt_list_lock);
+-	list_for_each_entry_safe(pkt, n, &vsock->send_pkt_list, list) {
+-		if (pkt->vsk != vsk)
+-			continue;
+-		list_move(&pkt->list, &freeme);
+-	}
+-	spin_unlock_bh(&vsock->send_pkt_list_lock);
+-
+-	list_for_each_entry_safe(pkt, n, &freeme, list) {
+-		if (pkt->reply)
+-			cnt++;
+-		list_del(&pkt->list);
+-		virtio_transport_free_pkt(pkt);
+-	}
++	cnt = virtio_transport_purge_skbs(vsk, &vsock->send_pkt_queue);
  
- 	ret = call_write_iter(filp, &kiocb, &iter);
- 	BUG_ON(ret == -EIOCBQUEUED);
-@@ -546,7 +546,7 @@ ssize_t __kernel_write(struct file *file, const void *buf, size_t count, loff_t
+ 	if (cnt) {
+ 		struct vhost_virtqueue *tx_vq = &vsock->vqs[VSOCK_VQ_TX];
+@@ -318,12 +288,14 @@ vhost_transport_cancel_pkt(struct vsock_sock *vsk)
+ 	return ret;
+ }
  
- 	init_sync_kiocb(&kiocb, file);
- 	kiocb.ki_pos = pos ? *pos : 0;
--	iov_iter_kvec(&iter, WRITE, &iov, 1, iov.iov_len);
-+	iov_iter_kvec(&iter, ITER_SOURCE, &iov, 1, iov.iov_len);
- 	ret = file->f_op->write_iter(&kiocb, &iter);
- 	if (ret > 0) {
- 		if (pos)
-@@ -916,7 +916,7 @@ static ssize_t vfs_readv(struct file *file, const struct iovec __user *vec,
- 	struct iov_iter iter;
- 	ssize_t ret;
+-static struct virtio_vsock_pkt *
+-vhost_vsock_alloc_pkt(struct vhost_virtqueue *vq,
++static struct sk_buff *
++vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
+ 		      unsigned int out, unsigned int in)
+ {
+-	struct virtio_vsock_pkt *pkt;
++	struct virtio_vsock_hdr *hdr;
+ 	struct iov_iter iov_iter;
++	struct sk_buff *skb;
++	size_t payload_len;
+ 	size_t nbytes;
+ 	size_t len;
  
--	ret = import_iovec(READ, vec, vlen, ARRAY_SIZE(iovstack), &iov, &iter);
-+	ret = import_iovec(ITER_DEST, vec, vlen, ARRAY_SIZE(iovstack), &iov, &iter);
- 	if (ret >= 0) {
- 		ret = do_iter_read(file, &iter, pos, flags);
- 		kfree(iov);
-@@ -933,7 +933,7 @@ static ssize_t vfs_writev(struct file *file, const struct iovec __user *vec,
- 	struct iov_iter iter;
- 	ssize_t ret;
+@@ -332,51 +304,48 @@ vhost_vsock_alloc_pkt(struct vhost_virtqueue *vq,
+ 		return NULL;
+ 	}
  
--	ret = import_iovec(WRITE, vec, vlen, ARRAY_SIZE(iovstack), &iov, &iter);
-+	ret = import_iovec(ITER_SOURCE, vec, vlen, ARRAY_SIZE(iovstack), &iov, &iter);
- 	if (ret >= 0) {
- 		file_start_write(file);
- 		ret = do_iter_write(file, &iter, pos, flags);
-diff --git a/fs/seq_file.c b/fs/seq_file.c
-index 472714716be69..804c5cd6d4cad 100644
---- a/fs/seq_file.c
-+++ b/fs/seq_file.c
-@@ -156,7 +156,7 @@ ssize_t seq_read(struct file *file, char __user *buf, size_t size, loff_t *ppos)
- 	ssize_t ret;
+-	pkt = kzalloc(sizeof(*pkt), GFP_KERNEL);
+-	if (!pkt)
++	len = iov_length(vq->iov, out);
++
++	/* len contains both payload and hdr */
++	skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
++	if (!skb)
+ 		return NULL;
  
- 	init_sync_kiocb(&kiocb, file);
--	iov_iter_init(&iter, READ, &iov, 1, size);
-+	iov_iter_init(&iter, ITER_DEST, &iov, 1, size);
+-	len = iov_length(vq->iov, out);
+ 	iov_iter_init(&iov_iter, ITER_SOURCE, vq->iov, out, len);
  
- 	kiocb.ki_pos = *ppos;
- 	ret = seq_read_iter(&kiocb, &iter);
-diff --git a/fs/splice.c b/fs/splice.c
-index 474fb8b5562ac..5b15c25f30527 100644
---- a/fs/splice.c
-+++ b/fs/splice.c
-@@ -304,7 +304,7 @@ ssize_t generic_file_splice_read(struct file *in, loff_t *ppos,
- 	unsigned int i_head;
- 	int ret;
+-	nbytes = copy_from_iter(&pkt->hdr, sizeof(pkt->hdr), &iov_iter);
+-	if (nbytes != sizeof(pkt->hdr)) {
++	hdr = virtio_vsock_hdr(skb);
++	nbytes = copy_from_iter(hdr, sizeof(*hdr), &iov_iter);
++	if (nbytes != sizeof(*hdr)) {
+ 		vq_err(vq, "Expected %zu bytes for pkt->hdr, got %zu bytes\n",
+-		       sizeof(pkt->hdr), nbytes);
+-		kfree(pkt);
++		       sizeof(*hdr), nbytes);
++		kfree_skb(skb);
+ 		return NULL;
+ 	}
  
--	iov_iter_pipe(&to, READ, pipe, len);
-+	iov_iter_pipe(&to, ITER_DEST, pipe, len);
- 	i_head = to.head;
- 	init_sync_kiocb(&kiocb, in);
- 	kiocb.ki_pos = *ppos;
-@@ -685,7 +685,7 @@ iter_file_splice_write(struct pipe_inode_info *pipe, struct file *out,
- 			n++;
+-	if (le16_to_cpu(pkt->hdr.type) == VIRTIO_VSOCK_TYPE_STREAM)
+-		pkt->len = le32_to_cpu(pkt->hdr.len);
++	payload_len = le32_to_cpu(hdr->len);
+ 
+ 	/* No payload */
+-	if (!pkt->len)
+-		return pkt;
+-
+-	/* The pkt is too big */
+-	if (pkt->len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE) {
+-		kfree(pkt);
+-		return NULL;
+-	}
++	if (!payload_len)
++		return skb;
+ 
+-	pkt->buf = kvmalloc(pkt->len, GFP_KERNEL);
+-	if (!pkt->buf) {
+-		kfree(pkt);
++	/* The pkt is too big or the length in the header is invalid */
++	if (payload_len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE ||
++	    payload_len + sizeof(*hdr) > len) {
++		kfree_skb(skb);
+ 		return NULL;
+ 	}
+ 
+-	pkt->buf_len = pkt->len;
++	virtio_vsock_skb_rx_put(skb);
+ 
+-	nbytes = copy_from_iter(pkt->buf, pkt->len, &iov_iter);
+-	if (nbytes != pkt->len) {
+-		vq_err(vq, "Expected %u byte payload, got %zu bytes\n",
+-		       pkt->len, nbytes);
+-		virtio_transport_free_pkt(pkt);
++	nbytes = copy_from_iter(skb->data, payload_len, &iov_iter);
++	if (nbytes != payload_len) {
++		vq_err(vq, "Expected %zu byte payload, got %zu bytes\n",
++		       payload_len, nbytes);
++		kfree_skb(skb);
+ 		return NULL;
+ 	}
+ 
+-	return pkt;
++	return skb;
+ }
+ 
+ /* Is there space left for replies to rx packets? */
+@@ -440,9 +409,9 @@ static void vhost_vsock_handle_tx_kick(struct vhost_work *work)
+ 						  poll.work);
+ 	struct vhost_vsock *vsock = container_of(vq->dev, struct vhost_vsock,
+ 						 dev);
+-	struct virtio_vsock_pkt *pkt;
+ 	int head, pkts = 0, total_len = 0;
+ 	unsigned int out, in;
++	struct sk_buff *skb;
+ 	bool added = false;
+ 
+ 	mutex_lock(&vq->mutex);
+@@ -452,7 +421,7 @@ static void vhost_vsock_handle_tx_kick(struct vhost_work *work)
+ 
+ 	vhost_disable_notify(&vsock->dev, vq);
+ 	do {
+-		u32 len;
++		struct virtio_vsock_hdr *hdr;
+ 
+ 		if (!vhost_vsock_more_replies(vsock)) {
+ 			/* Stop tx until the device processes already
+@@ -475,28 +444,28 @@ static void vhost_vsock_handle_tx_kick(struct vhost_work *work)
+ 			break;
  		}
  
--		iov_iter_bvec(&from, WRITE, array, n, sd.total_len - left);
-+		iov_iter_bvec(&from, ITER_SOURCE, array, n, sd.total_len - left);
- 		ret = vfs_iter_write(out, &from, &sd.pos, 0);
- 		if (ret <= 0)
- 			break;
-@@ -1263,9 +1263,9 @@ static int vmsplice_type(struct fd f, int *type)
- 	if (!f.file)
- 		return -EBADF;
- 	if (f.file->f_mode & FMODE_WRITE) {
--		*type = WRITE;
-+		*type = ITER_SOURCE;
- 	} else if (f.file->f_mode & FMODE_READ) {
--		*type = READ;
-+		*type = ITER_DEST;
- 	} else {
- 		fdput(f);
- 		return -EBADF;
-@@ -1314,7 +1314,7 @@ SYSCALL_DEFINE4(vmsplice, int, fd, const struct iovec __user *, uiov,
+-		pkt = vhost_vsock_alloc_pkt(vq, out, in);
+-		if (!pkt) {
++		skb = vhost_vsock_alloc_skb(vq, out, in);
++		if (!skb) {
+ 			vq_err(vq, "Faulted on pkt\n");
+ 			continue;
+ 		}
  
- 	if (!iov_iter_count(&iter))
- 		error = 0;
--	else if (iov_iter_rw(&iter) == WRITE)
-+	else if (type == ITER_SOURCE)
- 		error = vmsplice_to_pipe(f.file, &iter, flags);
- 	else
- 		error = vmsplice_to_user(f.file, &iter, flags);
-diff --git a/include/linux/uio.h b/include/linux/uio.h
-index cedb68e49e4f9..1b57a7ac9eb60 100644
---- a/include/linux/uio.h
-+++ b/include/linux/uio.h
-@@ -26,6 +26,9 @@ enum iter_type {
- 	ITER_DISCARD = 64,
+-		len = pkt->len;
++		total_len += sizeof(*hdr) + skb->len;
+ 
+ 		/* Deliver to monitoring devices all received packets */
+-		virtio_transport_deliver_tap_pkt(pkt);
++		virtio_transport_deliver_tap_pkt(skb);
++
++		hdr = virtio_vsock_hdr(skb);
+ 
+ 		/* Only accept correctly addressed packets */
+-		if (le64_to_cpu(pkt->hdr.src_cid) == vsock->guest_cid &&
+-		    le64_to_cpu(pkt->hdr.dst_cid) ==
++		if (le64_to_cpu(hdr->src_cid) == vsock->guest_cid &&
++		    le64_to_cpu(hdr->dst_cid) ==
+ 		    vhost_transport_get_local_cid())
+-			virtio_transport_recv_pkt(&vhost_transport, pkt);
++			virtio_transport_recv_pkt(&vhost_transport, skb);
+ 		else
+-			virtio_transport_free_pkt(pkt);
++			kfree_skb(skb);
+ 
+-		len += sizeof(pkt->hdr);
+ 		vhost_add_used(vq, head, 0);
+-		total_len += len;
+ 		added = true;
+ 	} while(likely(!vhost_exceeds_weight(vq, ++pkts, total_len)));
+ 
+@@ -638,8 +607,7 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
+ 		       VHOST_VSOCK_WEIGHT, true, NULL);
+ 
+ 	file->private_data = vsock;
+-	spin_lock_init(&vsock->send_pkt_list_lock);
+-	INIT_LIST_HEAD(&vsock->send_pkt_list);
++	skb_queue_head_init(&vsock->send_pkt_queue);
+ 	vhost_work_init(&vsock->send_pkt_work, vhost_transport_send_pkt_work);
+ 	return 0;
+ 
+@@ -716,16 +684,7 @@ static int vhost_vsock_dev_release(struct inode *inode, struct file *file)
+ 	vhost_vsock_flush(vsock);
+ 	vhost_dev_stop(&vsock->dev);
+ 
+-	spin_lock_bh(&vsock->send_pkt_list_lock);
+-	while (!list_empty(&vsock->send_pkt_list)) {
+-		struct virtio_vsock_pkt *pkt;
+-
+-		pkt = list_first_entry(&vsock->send_pkt_list,
+-				struct virtio_vsock_pkt, list);
+-		list_del_init(&pkt->list);
+-		virtio_transport_free_pkt(pkt);
+-	}
+-	spin_unlock_bh(&vsock->send_pkt_list_lock);
++	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
+ 
+ 	vhost_dev_cleanup(&vsock->dev);
+ 	kfree(vsock->dev.vqs);
+diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+index dc636b7271791..3c1aa0d1f023a 100644
+--- a/include/linux/virtio_vsock.h
++++ b/include/linux/virtio_vsock.h
+@@ -7,6 +7,109 @@
+ #include <net/sock.h>
+ #include <net/af_vsock.h>
+ 
++#define VIRTIO_VSOCK_SKB_HEADROOM (sizeof(struct virtio_vsock_hdr))
++
++struct virtio_vsock_skb_cb {
++	bool reply;
++	bool tap_delivered;
++};
++
++#define VIRTIO_VSOCK_SKB_CB(skb) ((struct virtio_vsock_skb_cb *)((skb)->cb))
++
++static inline struct virtio_vsock_hdr *virtio_vsock_hdr(struct sk_buff *skb)
++{
++	return (struct virtio_vsock_hdr *)skb->head;
++}
++
++static inline bool virtio_vsock_skb_reply(struct sk_buff *skb)
++{
++	return VIRTIO_VSOCK_SKB_CB(skb)->reply;
++}
++
++static inline void virtio_vsock_skb_set_reply(struct sk_buff *skb)
++{
++	VIRTIO_VSOCK_SKB_CB(skb)->reply = true;
++}
++
++static inline bool virtio_vsock_skb_tap_delivered(struct sk_buff *skb)
++{
++	return VIRTIO_VSOCK_SKB_CB(skb)->tap_delivered;
++}
++
++static inline void virtio_vsock_skb_set_tap_delivered(struct sk_buff *skb)
++{
++	VIRTIO_VSOCK_SKB_CB(skb)->tap_delivered = true;
++}
++
++static inline void virtio_vsock_skb_clear_tap_delivered(struct sk_buff *skb)
++{
++	VIRTIO_VSOCK_SKB_CB(skb)->tap_delivered = false;
++}
++
++static inline void virtio_vsock_skb_rx_put(struct sk_buff *skb)
++{
++	u32 len;
++
++	len = le32_to_cpu(virtio_vsock_hdr(skb)->len);
++
++	if (len > 0)
++		skb_put(skb, len);
++}
++
++static inline struct sk_buff *virtio_vsock_alloc_skb(unsigned int size, gfp_t mask)
++{
++	struct sk_buff *skb;
++
++	if (size < VIRTIO_VSOCK_SKB_HEADROOM)
++		return NULL;
++
++	skb = alloc_skb(size, mask);
++	if (!skb)
++		return NULL;
++
++	skb_reserve(skb, VIRTIO_VSOCK_SKB_HEADROOM);
++	return skb;
++}
++
++static inline void
++virtio_vsock_skb_queue_head(struct sk_buff_head *list, struct sk_buff *skb)
++{
++	spin_lock_bh(&list->lock);
++	__skb_queue_head(list, skb);
++	spin_unlock_bh(&list->lock);
++}
++
++static inline void
++virtio_vsock_skb_queue_tail(struct sk_buff_head *list, struct sk_buff *skb)
++{
++	spin_lock_bh(&list->lock);
++	__skb_queue_tail(list, skb);
++	spin_unlock_bh(&list->lock);
++}
++
++static inline struct sk_buff *virtio_vsock_skb_dequeue(struct sk_buff_head *list)
++{
++	struct sk_buff *skb;
++
++	spin_lock_bh(&list->lock);
++	skb = __skb_dequeue(list);
++	spin_unlock_bh(&list->lock);
++
++	return skb;
++}
++
++static inline void virtio_vsock_skb_queue_purge(struct sk_buff_head *list)
++{
++	spin_lock_bh(&list->lock);
++	__skb_queue_purge(list);
++	spin_unlock_bh(&list->lock);
++}
++
++static inline size_t virtio_vsock_skb_len(struct sk_buff *skb)
++{
++	return (size_t)(skb_end_pointer(skb) - skb->head);
++}
++
+ #define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	(1024 * 4)
+ #define VIRTIO_VSOCK_MAX_BUF_SIZE		0xFFFFFFFFUL
+ #define VIRTIO_VSOCK_MAX_PKT_BUF_SIZE		(1024 * 64)
+@@ -35,20 +138,7 @@ struct virtio_vsock_sock {
+ 	u32 last_fwd_cnt;
+ 	u32 rx_bytes;
+ 	u32 buf_alloc;
+-	struct list_head rx_queue;
+-};
+-
+-struct virtio_vsock_pkt {
+-	struct virtio_vsock_hdr	hdr;
+-	struct list_head list;
+-	/* socket refcnt not held, only use for cancellation */
+-	struct vsock_sock *vsk;
+-	void *buf;
+-	u32 buf_len;
+-	u32 len;
+-	u32 off;
+-	bool reply;
+-	bool tap_delivered;
++	struct sk_buff_head rx_queue;
  };
  
-+#define ITER_SOURCE	1	// == WRITE
-+#define ITER_DEST	0	// == READ
+ struct virtio_vsock_pkt_info {
+@@ -67,7 +157,7 @@ struct virtio_transport {
+ 	struct vsock_transport transport;
+ 
+ 	/* Takes ownership of the packet */
+-	int (*send_pkt)(struct virtio_vsock_pkt *pkt);
++	int (*send_pkt)(struct sk_buff *skb);
+ };
+ 
+ ssize_t
+@@ -139,11 +229,10 @@ virtio_transport_dgram_enqueue(struct vsock_sock *vsk,
+ void virtio_transport_destruct(struct vsock_sock *vsk);
+ 
+ void virtio_transport_recv_pkt(struct virtio_transport *t,
+-			       struct virtio_vsock_pkt *pkt);
+-void virtio_transport_free_pkt(struct virtio_vsock_pkt *pkt);
+-void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct virtio_vsock_pkt *pkt);
++			       struct sk_buff *skb);
++void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb);
+ u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
+ void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
+-void virtio_transport_deliver_tap_pkt(struct virtio_vsock_pkt *pkt);
+-
++void virtio_transport_deliver_tap_pkt(struct sk_buff *skb);
++int virtio_transport_purge_skbs(void *vsk, struct sk_buff_head *list);
+ #endif /* _LINUX_VIRTIO_VSOCK_H */
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index e131121533ad9..05c973a63a287 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -42,8 +42,7 @@ struct virtio_vsock {
+ 	bool tx_run;
+ 
+ 	struct work_struct send_pkt_work;
+-	spinlock_t send_pkt_list_lock;
+-	struct list_head send_pkt_list;
++	struct sk_buff_head send_pkt_queue;
+ 
+ 	atomic_t queued_replies;
+ 
+@@ -100,41 +99,31 @@ virtio_transport_send_pkt_work(struct work_struct *work)
+ 	vq = vsock->vqs[VSOCK_VQ_TX];
+ 
+ 	for (;;) {
+-		struct virtio_vsock_pkt *pkt;
+ 		struct scatterlist hdr, buf, *sgs[2];
+ 		int ret, in_sg = 0, out_sg = 0;
++		struct sk_buff *skb;
+ 		bool reply;
+ 
+-		spin_lock_bh(&vsock->send_pkt_list_lock);
+-		if (list_empty(&vsock->send_pkt_list)) {
+-			spin_unlock_bh(&vsock->send_pkt_list_lock);
++		skb = virtio_vsock_skb_dequeue(&vsock->send_pkt_queue);
++		if (!skb)
+ 			break;
+-		}
+-
+-		pkt = list_first_entry(&vsock->send_pkt_list,
+-				       struct virtio_vsock_pkt, list);
+-		list_del_init(&pkt->list);
+-		spin_unlock_bh(&vsock->send_pkt_list_lock);
+ 
+-		virtio_transport_deliver_tap_pkt(pkt);
++		virtio_transport_deliver_tap_pkt(skb);
++		reply = virtio_vsock_skb_reply(skb);
+ 
+-		reply = pkt->reply;
+-
+-		sg_init_one(&hdr, &pkt->hdr, sizeof(pkt->hdr));
++		sg_init_one(&hdr, virtio_vsock_hdr(skb), sizeof(*virtio_vsock_hdr(skb)));
+ 		sgs[out_sg++] = &hdr;
+-		if (pkt->buf) {
+-			sg_init_one(&buf, pkt->buf, pkt->len);
++		if (skb->len > 0) {
++			sg_init_one(&buf, skb->data, skb->len);
+ 			sgs[out_sg++] = &buf;
+ 		}
+ 
+-		ret = virtqueue_add_sgs(vq, sgs, out_sg, in_sg, pkt, GFP_KERNEL);
++		ret = virtqueue_add_sgs(vq, sgs, out_sg, in_sg, skb, GFP_KERNEL);
+ 		/* Usually this means that there is no more space available in
+ 		 * the vq
+ 		 */
+ 		if (ret < 0) {
+-			spin_lock_bh(&vsock->send_pkt_list_lock);
+-			list_add(&pkt->list, &vsock->send_pkt_list);
+-			spin_unlock_bh(&vsock->send_pkt_list_lock);
++			virtio_vsock_skb_queue_head(&vsock->send_pkt_queue, skb);
+ 			break;
+ 		}
+ 
+@@ -163,32 +152,32 @@ virtio_transport_send_pkt_work(struct work_struct *work)
+ }
+ 
+ static int
+-virtio_transport_send_pkt(struct virtio_vsock_pkt *pkt)
++virtio_transport_send_pkt(struct sk_buff *skb)
+ {
++	struct virtio_vsock_hdr *hdr;
+ 	struct virtio_vsock *vsock;
+-	int len = pkt->len;
++	int len = skb->len;
 +
- struct iov_iter_state {
- 	size_t iov_offset;
- 	size_t count;
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 370d0ef719ebe..8b6ed35c1d265 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -1184,7 +1184,7 @@ SYSCALL_DEFINE5(process_madvise, int, pidfd, const struct iovec __user *, vec,
- 		goto out;
++	hdr = virtio_vsock_hdr(skb);
+ 
+ 	rcu_read_lock();
+ 	vsock = rcu_dereference(the_virtio_vsock);
+ 	if (!vsock) {
+-		virtio_transport_free_pkt(pkt);
++		kfree_skb(skb);
+ 		len = -ENODEV;
+ 		goto out_rcu;
  	}
  
--	ret = import_iovec(READ, vec, vlen, ARRAY_SIZE(iovstack), &iov, &iter);
-+	ret = import_iovec(ITER_DEST, vec, vlen, ARRAY_SIZE(iovstack), &iov, &iter);
- 	if (ret < 0)
+-	if (le64_to_cpu(pkt->hdr.dst_cid) == vsock->guest_cid) {
+-		virtio_transport_free_pkt(pkt);
++	if (le64_to_cpu(hdr->dst_cid) == vsock->guest_cid) {
++		kfree_skb(skb);
+ 		len = -ENODEV;
+ 		goto out_rcu;
+ 	}
+ 
+-	if (pkt->reply)
++	if (virtio_vsock_skb_reply(skb))
+ 		atomic_inc(&vsock->queued_replies);
+ 
+-	spin_lock_bh(&vsock->send_pkt_list_lock);
+-	list_add_tail(&pkt->list, &vsock->send_pkt_list);
+-	spin_unlock_bh(&vsock->send_pkt_list_lock);
+-
++	virtio_vsock_skb_queue_tail(&vsock->send_pkt_queue, skb);
+ 	queue_work(virtio_vsock_workqueue, &vsock->send_pkt_work);
+ 
+ out_rcu:
+@@ -200,9 +189,7 @@ static int
+ virtio_transport_cancel_pkt(struct vsock_sock *vsk)
+ {
+ 	struct virtio_vsock *vsock;
+-	struct virtio_vsock_pkt *pkt, *n;
+ 	int cnt = 0, ret;
+-	LIST_HEAD(freeme);
+ 
+ 	rcu_read_lock();
+ 	vsock = rcu_dereference(the_virtio_vsock);
+@@ -211,20 +198,7 @@ virtio_transport_cancel_pkt(struct vsock_sock *vsk)
+ 		goto out_rcu;
+ 	}
+ 
+-	spin_lock_bh(&vsock->send_pkt_list_lock);
+-	list_for_each_entry_safe(pkt, n, &vsock->send_pkt_list, list) {
+-		if (pkt->vsk != vsk)
+-			continue;
+-		list_move(&pkt->list, &freeme);
+-	}
+-	spin_unlock_bh(&vsock->send_pkt_list_lock);
+-
+-	list_for_each_entry_safe(pkt, n, &freeme, list) {
+-		if (pkt->reply)
+-			cnt++;
+-		list_del(&pkt->list);
+-		virtio_transport_free_pkt(pkt);
+-	}
++	cnt = virtio_transport_purge_skbs(vsk, &vsock->send_pkt_queue);
+ 
+ 	if (cnt) {
+ 		struct virtqueue *rx_vq = vsock->vqs[VSOCK_VQ_RX];
+@@ -245,38 +219,28 @@ virtio_transport_cancel_pkt(struct vsock_sock *vsk)
+ 
+ static void virtio_vsock_rx_fill(struct virtio_vsock *vsock)
+ {
+-	int buf_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE;
+-	struct virtio_vsock_pkt *pkt;
+-	struct scatterlist hdr, buf, *sgs[2];
++	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM;
++	struct scatterlist pkt, *p;
+ 	struct virtqueue *vq;
++	struct sk_buff *skb;
+ 	int ret;
+ 
+ 	vq = vsock->vqs[VSOCK_VQ_RX];
+ 
+ 	do {
+-		pkt = kzalloc(sizeof(*pkt), GFP_KERNEL);
+-		if (!pkt)
++		skb = virtio_vsock_alloc_skb(total_len, GFP_KERNEL);
++		if (!skb)
+ 			break;
+ 
+-		pkt->buf = kmalloc(buf_len, GFP_KERNEL);
+-		if (!pkt->buf) {
+-			virtio_transport_free_pkt(pkt);
++		memset(skb->head, 0, VIRTIO_VSOCK_SKB_HEADROOM);
++		sg_init_one(&pkt, virtio_vsock_hdr(skb), total_len);
++		p = &pkt;
++		ret = virtqueue_add_sgs(vq, &p, 0, 1, skb, GFP_KERNEL);
++		if (ret < 0) {
++			kfree_skb(skb);
+ 			break;
+ 		}
+ 
+-		pkt->buf_len = buf_len;
+-		pkt->len = buf_len;
+-
+-		sg_init_one(&hdr, &pkt->hdr, sizeof(pkt->hdr));
+-		sgs[0] = &hdr;
+-
+-		sg_init_one(&buf, pkt->buf, buf_len);
+-		sgs[1] = &buf;
+-		ret = virtqueue_add_sgs(vq, sgs, 0, 2, pkt, GFP_KERNEL);
+-		if (ret) {
+-			virtio_transport_free_pkt(pkt);
+-			break;
+-		}
+ 		vsock->rx_buf_nr++;
+ 	} while (vq->num_free);
+ 	if (vsock->rx_buf_nr > vsock->rx_buf_max_nr)
+@@ -298,12 +262,12 @@ static void virtio_transport_tx_work(struct work_struct *work)
  		goto out;
  
-diff --git a/mm/page_io.c b/mm/page_io.c
-index f0ada4455895c..1c17cece99f31 100644
---- a/mm/page_io.c
-+++ b/mm/page_io.c
-@@ -269,7 +269,7 @@ int __swap_writepage(struct page *page, struct writeback_control *wbc,
- 		};
- 		struct iov_iter from;
+ 	do {
+-		struct virtio_vsock_pkt *pkt;
++		struct sk_buff *skb;
+ 		unsigned int len;
  
--		iov_iter_bvec(&from, WRITE, &bv, 1, PAGE_SIZE);
-+		iov_iter_bvec(&from, ITER_SOURCE, &bv, 1, PAGE_SIZE);
- 		init_sync_kiocb(&kiocb, swap_file);
- 		kiocb.ki_pos = page_file_offset(page);
+ 		virtqueue_disable_cb(vq);
+-		while ((pkt = virtqueue_get_buf(vq, &len)) != NULL) {
+-			virtio_transport_free_pkt(pkt);
++		while ((skb = virtqueue_get_buf(vq, &len)) != NULL) {
++			consume_skb(skb);
+ 			added = true;
+ 		}
+ 	} while (!virtqueue_enable_cb(vq));
+@@ -506,7 +470,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
+ 	do {
+ 		virtqueue_disable_cb(vq);
+ 		for (;;) {
+-			struct virtio_vsock_pkt *pkt;
++			struct sk_buff *skb;
+ 			unsigned int len;
  
-diff --git a/mm/process_vm_access.c b/mm/process_vm_access.c
-index c90d722c61817..32a37a8a842c5 100644
---- a/mm/process_vm_access.c
-+++ b/mm/process_vm_access.c
-@@ -264,7 +264,7 @@ static ssize_t process_vm_rw(pid_t pid,
- 	struct iovec *iov_r = iovstack_r;
- 	struct iov_iter iter;
- 	ssize_t rc;
--	int dir = vm_write ? WRITE : READ;
-+	int dir = vm_write ? ITER_SOURCE : ITER_DEST;
+ 			if (!virtio_transport_more_replies(vsock)) {
+@@ -517,23 +481,22 @@ static void virtio_transport_rx_work(struct work_struct *work)
+ 				goto out;
+ 			}
  
- 	if (flags != 0)
- 		return -EINVAL;
-diff --git a/net/9p/client.c b/net/9p/client.c
-index 3e63f99db7259..f49f5fd98ad82 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -2095,7 +2095,7 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
- 	struct kvec kv = {.iov_base = data, .iov_len = count};
- 	struct iov_iter to;
+-			pkt = virtqueue_get_buf(vq, &len);
+-			if (!pkt) {
++			skb = virtqueue_get_buf(vq, &len);
++			if (!skb)
+ 				break;
+-			}
  
--	iov_iter_kvec(&to, READ, &kv, 1, count);
-+	iov_iter_kvec(&to, ITER_DEST, &kv, 1, count);
+ 			vsock->rx_buf_nr--;
  
- 	p9_debug(P9_DEBUG_9P, ">>> TREADDIR fid %d offset %llu count %d\n",
- 				fid->fid, (unsigned long long) offset, count);
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index 9486d66863264..87b01ade7c21f 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -478,7 +478,7 @@ static int send_pkt(struct l2cap_chan *chan, struct sk_buff *skb,
- 	iv.iov_len = skb->len;
+ 			/* Drop short/long packets */
+-			if (unlikely(len < sizeof(pkt->hdr) ||
+-				     len > sizeof(pkt->hdr) + pkt->len)) {
+-				virtio_transport_free_pkt(pkt);
++			if (unlikely(len < sizeof(struct virtio_vsock_hdr) ||
++				     len > virtio_vsock_skb_len(skb))) {
++				kfree_skb(skb);
+ 				continue;
+ 			}
  
- 	memset(&msg, 0, sizeof(msg));
--	iov_iter_kvec(&msg.msg_iter, WRITE, &iv, 1, skb->len);
-+	iov_iter_kvec(&msg.msg_iter, ITER_SOURCE, &iv, 1, skb->len);
+-			pkt->len = len - sizeof(pkt->hdr);
+-			virtio_transport_deliver_tap_pkt(pkt);
+-			virtio_transport_recv_pkt(&virtio_transport, pkt);
++			virtio_vsock_skb_rx_put(skb);
++			virtio_transport_deliver_tap_pkt(skb);
++			virtio_transport_recv_pkt(&virtio_transport, skb);
+ 		}
+ 	} while (!virtqueue_enable_cb(vq));
  
- 	err = l2cap_chan_send(chan, &msg, skb->len);
- 	if (err > 0) {
-diff --git a/net/bluetooth/a2mp.c b/net/bluetooth/a2mp.c
-index 463bad58478b2..882805df735c1 100644
---- a/net/bluetooth/a2mp.c
-+++ b/net/bluetooth/a2mp.c
-@@ -56,7 +56,7 @@ static void a2mp_send(struct amp_mgr *mgr, u8 code, u8 ident, u16 len, void *dat
+@@ -592,8 +555,7 @@ static int virtio_vsock_probe(struct virtio_device *vdev)
+ 	mutex_init(&vsock->tx_lock);
+ 	mutex_init(&vsock->rx_lock);
+ 	mutex_init(&vsock->event_lock);
+-	spin_lock_init(&vsock->send_pkt_list_lock);
+-	INIT_LIST_HEAD(&vsock->send_pkt_list);
++	skb_queue_head_init(&vsock->send_pkt_queue);
+ 	INIT_WORK(&vsock->rx_work, virtio_transport_rx_work);
+ 	INIT_WORK(&vsock->tx_work, virtio_transport_tx_work);
+ 	INIT_WORK(&vsock->event_work, virtio_transport_event_work);
+@@ -628,7 +590,7 @@ static int virtio_vsock_probe(struct virtio_device *vdev)
+ static void virtio_vsock_remove(struct virtio_device *vdev)
+ {
+ 	struct virtio_vsock *vsock = vdev->priv;
+-	struct virtio_vsock_pkt *pkt;
++	struct sk_buff *skb;
  
- 	memset(&msg, 0, sizeof(msg));
+ 	mutex_lock(&the_virtio_vsock_mutex);
  
--	iov_iter_kvec(&msg.msg_iter, WRITE, &iv, 1, total_len);
-+	iov_iter_kvec(&msg.msg_iter, ITER_SOURCE, &iv, 1, total_len);
+@@ -661,23 +623,16 @@ static void virtio_vsock_remove(struct virtio_device *vdev)
+ 	vdev->config->reset(vdev);
  
- 	l2cap_chan_send(chan, &msg, total_len);
+ 	mutex_lock(&vsock->rx_lock);
+-	while ((pkt = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
+-		virtio_transport_free_pkt(pkt);
++	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
++		kfree_skb(skb);
+ 	mutex_unlock(&vsock->rx_lock);
  
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index 64c8dd2799329..22b5e81808508 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -606,7 +606,7 @@ static void smp_send_cmd(struct l2cap_conn *conn, u8 code, u16 len, void *data)
+ 	mutex_lock(&vsock->tx_lock);
+-	while ((pkt = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_TX])))
+-		virtio_transport_free_pkt(pkt);
++	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_TX])))
++		kfree_skb(skb);
+ 	mutex_unlock(&vsock->tx_lock);
  
- 	memset(&msg, 0, sizeof(msg));
+-	spin_lock_bh(&vsock->send_pkt_list_lock);
+-	while (!list_empty(&vsock->send_pkt_list)) {
+-		pkt = list_first_entry(&vsock->send_pkt_list,
+-				       struct virtio_vsock_pkt, list);
+-		list_del(&pkt->list);
+-		virtio_transport_free_pkt(pkt);
+-	}
+-	spin_unlock_bh(&vsock->send_pkt_list_lock);
++	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
  
--	iov_iter_kvec(&msg.msg_iter, WRITE, iv, 2, 1 + len);
-+	iov_iter_kvec(&msg.msg_iter, ITER_SOURCE, iv, 2, 1 + len);
+ 	/* Delete virtqueues and flush outstanding callbacks if any */
+ 	vdev->config->del_vqs(vdev);
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index cbe8d777d5119..96476230c29b7 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -40,45 +40,48 @@ virtio_transport_get_ops(struct vsock_sock *vsk)
+ 	return container_of(t, struct virtio_transport, transport);
+ }
  
- 	l2cap_chan_send(chan, &msg, 1 + len);
+-static struct virtio_vsock_pkt *
+-virtio_transport_alloc_pkt(struct virtio_vsock_pkt_info *info,
++/* Returns a new packet on success, otherwise returns NULL.
++ *
++ * If NULL is returned, errp is set to a negative errno.
++ */
++static struct sk_buff *
++virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *info,
+ 			   size_t len,
+ 			   u32 src_cid,
+ 			   u32 src_port,
+ 			   u32 dst_cid,
+ 			   u32 dst_port)
+ {
+-	struct virtio_vsock_pkt *pkt;
++	const size_t skb_len = VIRTIO_VSOCK_SKB_HEADROOM + len;
++	struct virtio_vsock_hdr *hdr;
++	struct sk_buff *skb;
++	void *payload;
+ 	int err;
  
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 5998e2b6f5ec7..09f0af574298a 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1812,7 +1812,7 @@ static int tcp_copy_straggler_data(struct tcp_zerocopy_receive *zc,
- 	if (copy_address != zc->copybuf_address)
- 		return -EINVAL;
+-	pkt = kzalloc(sizeof(*pkt), GFP_KERNEL);
+-	if (!pkt)
++	skb = virtio_vsock_alloc_skb(skb_len, GFP_KERNEL);
++	if (!skb)
+ 		return NULL;
  
--	err = import_single_range(READ, (void __user *)copy_address,
-+	err = import_single_range(ITER_DEST, (void __user *)copy_address,
- 				  copylen, &iov, &msg.msg_iter);
- 	if (err)
- 		return err;
-diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
-index 87b1cf69b9c2f..bfb1d04b01519 100644
---- a/net/netfilter/ipvs/ip_vs_sync.c
-+++ b/net/netfilter/ipvs/ip_vs_sync.c
-@@ -1617,7 +1617,7 @@ ip_vs_receive(struct socket *sock, char *buffer, const size_t buflen)
- 	EnterFunction(7);
+-	pkt->hdr.type		= cpu_to_le16(info->type);
+-	pkt->hdr.op		= cpu_to_le16(info->op);
+-	pkt->hdr.src_cid	= cpu_to_le64(src_cid);
+-	pkt->hdr.dst_cid	= cpu_to_le64(dst_cid);
+-	pkt->hdr.src_port	= cpu_to_le32(src_port);
+-	pkt->hdr.dst_port	= cpu_to_le32(dst_port);
+-	pkt->hdr.flags		= cpu_to_le32(info->flags);
+-	pkt->len		= len;
+-	pkt->hdr.len		= cpu_to_le32(len);
+-	pkt->reply		= info->reply;
+-	pkt->vsk		= info->vsk;
++	hdr = virtio_vsock_hdr(skb);
++	hdr->type	= cpu_to_le16(info->type);
++	hdr->op		= cpu_to_le16(info->op);
++	hdr->src_cid	= cpu_to_le64(src_cid);
++	hdr->dst_cid	= cpu_to_le64(dst_cid);
++	hdr->src_port	= cpu_to_le32(src_port);
++	hdr->dst_port	= cpu_to_le32(dst_port);
++	hdr->flags	= cpu_to_le32(info->flags);
++	hdr->len	= cpu_to_le32(len);
  
- 	/* Receive a packet */
--	iov_iter_kvec(&msg.msg_iter, READ, &iov, 1, buflen);
-+	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &iov, 1, buflen);
- 	len = sock_recvmsg(sock, &msg, MSG_DONTWAIT);
- 	if (len < 0)
- 		return len;
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index dca448c98c9de..ee5b72ff9e009 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -361,7 +361,7 @@ int smc_clc_wait_msg(struct smc_sock *smc, void *buf, int buflen,
+ 	if (info->msg && len > 0) {
+-		pkt->buf = kmalloc(len, GFP_KERNEL);
+-		if (!pkt->buf)
+-			goto out_pkt;
+-
+-		pkt->buf_len = len;
+-
+-		err = memcpy_from_msg(pkt->buf, info->msg, len);
++		payload = skb_put(skb, len);
++		err = memcpy_from_msg(payload, info->msg, len);
+ 		if (err)
+ 			goto out;
+ 	}
+ 
++	if (info->reply)
++		virtio_vsock_skb_set_reply(skb);
++
+ 	trace_virtio_transport_alloc_pkt(src_cid, src_port,
+ 					 dst_cid, dst_port,
+ 					 len,
+@@ -86,19 +89,18 @@ virtio_transport_alloc_pkt(struct virtio_vsock_pkt_info *info,
+ 					 info->op,
+ 					 info->flags);
+ 
+-	return pkt;
++	return skb;
+ 
+ out:
+-	kfree(pkt->buf);
+-out_pkt:
+-	kfree(pkt);
++	kfree_skb(skb);
+ 	return NULL;
+ }
+ 
+ /* Packet capture */
+ static struct sk_buff *virtio_transport_build_skb(void *opaque)
+ {
+-	struct virtio_vsock_pkt *pkt = opaque;
++	struct virtio_vsock_hdr *pkt_hdr;
++	struct sk_buff *pkt = opaque;
+ 	struct af_vsockmon_hdr *hdr;
+ 	struct sk_buff *skb;
+ 	size_t payload_len;
+@@ -108,10 +110,11 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
+ 	 * the payload length from the header and the buffer pointer taking
+ 	 * care of the offset in the original packet.
  	 */
- 	krflags = MSG_PEEK | MSG_WAITALL;
- 	clc_sk->sk_rcvtimeo = timeout;
--	iov_iter_kvec(&msg.msg_iter, READ, &vec, 1,
-+	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &vec, 1,
- 			sizeof(struct smc_clc_msg_hdr));
- 	len = sock_recvmsg(smc->clcsock, &msg, krflags);
- 	if (signal_pending(current)) {
-@@ -408,7 +408,7 @@ int smc_clc_wait_msg(struct smc_sock *smc, void *buf, int buflen,
- 	} else {
- 		recvlen = datlen;
+-	payload_len = le32_to_cpu(pkt->hdr.len);
+-	payload_buf = pkt->buf + pkt->off;
++	pkt_hdr = virtio_vsock_hdr(pkt);
++	payload_len = pkt->len;
++	payload_buf = pkt->data;
+ 
+-	skb = alloc_skb(sizeof(*hdr) + sizeof(pkt->hdr) + payload_len,
++	skb = alloc_skb(sizeof(*hdr) + sizeof(*pkt_hdr) + payload_len,
+ 			GFP_ATOMIC);
+ 	if (!skb)
+ 		return NULL;
+@@ -119,16 +122,16 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
+ 	hdr = skb_put(skb, sizeof(*hdr));
+ 
+ 	/* pkt->hdr is little-endian so no need to byteswap here */
+-	hdr->src_cid = pkt->hdr.src_cid;
+-	hdr->src_port = pkt->hdr.src_port;
+-	hdr->dst_cid = pkt->hdr.dst_cid;
+-	hdr->dst_port = pkt->hdr.dst_port;
++	hdr->src_cid = pkt_hdr->src_cid;
++	hdr->src_port = pkt_hdr->src_port;
++	hdr->dst_cid = pkt_hdr->dst_cid;
++	hdr->dst_port = pkt_hdr->dst_port;
+ 
+ 	hdr->transport = cpu_to_le16(AF_VSOCK_TRANSPORT_VIRTIO);
+-	hdr->len = cpu_to_le16(sizeof(pkt->hdr));
++	hdr->len = cpu_to_le16(sizeof(*pkt_hdr));
+ 	memset(hdr->reserved, 0, sizeof(hdr->reserved));
+ 
+-	switch (le16_to_cpu(pkt->hdr.op)) {
++	switch (le16_to_cpu(pkt_hdr->op)) {
+ 	case VIRTIO_VSOCK_OP_REQUEST:
+ 	case VIRTIO_VSOCK_OP_RESPONSE:
+ 		hdr->op = cpu_to_le16(AF_VSOCK_OP_CONNECT);
+@@ -149,7 +152,7 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
+ 		break;
  	}
--	iov_iter_kvec(&msg.msg_iter, READ, &vec, 1, recvlen);
-+	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &vec, 1, recvlen);
- 	krflags = MSG_WAITALL;
- 	len = sock_recvmsg(smc->clcsock, &msg, krflags);
- 	if (len < recvlen || !smc_clc_msg_hdr_valid(clcm, check_trl)) {
-@@ -425,7 +425,7 @@ int smc_clc_wait_msg(struct smc_sock *smc, void *buf, int buflen,
- 		/* receive remaining proposal message */
- 		recvlen = datlen > SMC_CLC_RECV_BUF_LEN ?
- 						SMC_CLC_RECV_BUF_LEN : datlen;
--		iov_iter_kvec(&msg.msg_iter, READ, &vec, 1, recvlen);
-+		iov_iter_kvec(&msg.msg_iter, ITER_DEST, &vec, 1, recvlen);
- 		len = sock_recvmsg(smc->clcsock, &msg, krflags);
- 		if (len < recvlen) {
- 			smc->sk.sk_err = EPROTO;
-diff --git a/net/socket.c b/net/socket.c
-index 2a48aa89c035b..7d2440f4e77ba 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -706,7 +706,7 @@ EXPORT_SYMBOL(sock_sendmsg);
- int kernel_sendmsg(struct socket *sock, struct msghdr *msg,
- 		   struct kvec *vec, size_t num, size_t size)
+ 
+-	skb_put_data(skb, &pkt->hdr, sizeof(pkt->hdr));
++	skb_put_data(skb, pkt_hdr, sizeof(*pkt_hdr));
+ 
+ 	if (payload_len) {
+ 		skb_put_data(skb, payload_buf, payload_len);
+@@ -158,13 +161,13 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
+ 	return skb;
+ }
+ 
+-void virtio_transport_deliver_tap_pkt(struct virtio_vsock_pkt *pkt)
++void virtio_transport_deliver_tap_pkt(struct sk_buff *skb)
  {
--	iov_iter_kvec(&msg->msg_iter, WRITE, vec, num, size);
-+	iov_iter_kvec(&msg->msg_iter, ITER_SOURCE, vec, num, size);
- 	return sock_sendmsg(sock, msg);
- }
- EXPORT_SYMBOL(kernel_sendmsg);
-@@ -732,7 +732,7 @@ int kernel_sendmsg_locked(struct sock *sk, struct msghdr *msg,
- 	if (!sock->ops->sendmsg_locked)
- 		return sock_no_sendmsg_locked(sk, msg, size);
+-	if (pkt->tap_delivered)
++	if (virtio_vsock_skb_tap_delivered(skb))
+ 		return;
  
--	iov_iter_kvec(&msg->msg_iter, WRITE, vec, num, size);
-+	iov_iter_kvec(&msg->msg_iter, ITER_SOURCE, vec, num, size);
- 
- 	return sock->ops->sendmsg_locked(sk, msg, msg_data_left(msg));
+-	vsock_deliver_tap(virtio_transport_build_skb, pkt);
+-	pkt->tap_delivered = true;
++	vsock_deliver_tap(virtio_transport_build_skb, skb);
++	virtio_vsock_skb_set_tap_delivered(skb);
  }
-@@ -943,7 +943,7 @@ int kernel_recvmsg(struct socket *sock, struct msghdr *msg,
- 		   struct kvec *vec, size_t num, size_t size, int flags)
+ EXPORT_SYMBOL_GPL(virtio_transport_deliver_tap_pkt);
+ 
+@@ -179,8 +182,8 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 	u32 src_cid, src_port, dst_cid, dst_port;
+ 	const struct virtio_transport *t_ops;
+ 	struct virtio_vsock_sock *vvs;
+-	struct virtio_vsock_pkt *pkt;
+ 	u32 pkt_len = info->pkt_len;
++	struct sk_buff *skb;
+ 
+ 	t_ops = virtio_transport_get_ops(vsk);
+ 	if (unlikely(!t_ops))
+@@ -209,42 +212,47 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 	if (pkt_len == 0 && info->op == VIRTIO_VSOCK_OP_RW)
+ 		return pkt_len;
+ 
+-	pkt = virtio_transport_alloc_pkt(info, pkt_len,
++	skb = virtio_transport_alloc_skb(info, pkt_len,
+ 					 src_cid, src_port,
+ 					 dst_cid, dst_port);
+-	if (!pkt) {
++	if (!skb) {
+ 		virtio_transport_put_credit(vvs, pkt_len);
+ 		return -ENOMEM;
+ 	}
+ 
+-	virtio_transport_inc_tx_pkt(vvs, pkt);
++	virtio_transport_inc_tx_pkt(vvs, skb);
+ 
+-	return t_ops->send_pkt(pkt);
++	return t_ops->send_pkt(skb);
+ }
+ 
+ static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+-					struct virtio_vsock_pkt *pkt)
++					struct sk_buff *skb)
  {
- 	msg->msg_control_is_user = false;
--	iov_iter_kvec(&msg->msg_iter, READ, vec, num, size);
-+	iov_iter_kvec(&msg->msg_iter, ITER_DEST, vec, num, size);
- 	return sock_recvmsg(sock, msg, flags);
+-	if (vvs->rx_bytes + pkt->len > vvs->buf_alloc)
++	if (vvs->rx_bytes + skb->len > vvs->buf_alloc)
+ 		return false;
+ 
+-	vvs->rx_bytes += pkt->len;
++	vvs->rx_bytes += skb->len;
+ 	return true;
  }
- EXPORT_SYMBOL(kernel_recvmsg);
-@@ -1981,7 +1981,7 @@ int __sys_sendto(int fd, void __user *buff, size_t len, unsigned int flags,
- 	struct iovec iov;
- 	int fput_needed;
  
--	err = import_single_range(WRITE, buff, len, &iov, &msg.msg_iter);
-+	err = import_single_range(ITER_SOURCE, buff, len, &iov, &msg.msg_iter);
- 	if (unlikely(err))
- 		return err;
- 	sock = sockfd_lookup_light(fd, &err, &fput_needed);
-@@ -2042,7 +2042,7 @@ int __sys_recvfrom(int fd, void __user *ubuf, size_t size, unsigned int flags,
- 	int err, err2;
- 	int fput_needed;
- 
--	err = import_single_range(READ, ubuf, size, &iov, &msg.msg_iter);
-+	err = import_single_range(ITER_DEST, ubuf, size, &iov, &msg.msg_iter);
- 	if (unlikely(err))
- 		return err;
- 	sock = sockfd_lookup_light(fd, &err, &fput_needed);
-@@ -2313,7 +2313,7 @@ static int copy_msghdr_from_user(struct msghdr *kmsg,
- 	if (err)
- 		return err;
- 
--	err = import_iovec(save_addr ? READ : WRITE,
-+	err = import_iovec(save_addr ? ITER_DEST : ITER_SOURCE,
- 			    msg.msg_iov, msg.msg_iovlen,
- 			    UIO_FASTIOV, iov, &kmsg->msg_iter);
- 	return err < 0 ? err : 0;
-diff --git a/net/sunrpc/socklib.c b/net/sunrpc/socklib.c
-index d52313af82bc2..eabb95360885c 100644
---- a/net/sunrpc/socklib.c
-+++ b/net/sunrpc/socklib.c
-@@ -213,7 +213,7 @@ static inline int xprt_sendmsg(struct socket *sock, struct msghdr *msg,
- static int xprt_send_kvec(struct socket *sock, struct msghdr *msg,
- 			  struct kvec *vec, size_t seek)
+ static void virtio_transport_dec_rx_pkt(struct virtio_vsock_sock *vvs,
+-					struct virtio_vsock_pkt *pkt)
++					struct sk_buff *skb)
  {
--	iov_iter_kvec(&msg->msg_iter, WRITE, vec, 1, vec->iov_len);
-+	iov_iter_kvec(&msg->msg_iter, ITER_SOURCE, vec, 1, vec->iov_len);
- 	return xprt_sendmsg(sock, msg, seek);
+-	vvs->rx_bytes -= pkt->len;
+-	vvs->fwd_cnt += pkt->len;
++	int len;
++
++	len = skb_headroom(skb) - sizeof(struct virtio_vsock_hdr) - skb->len;
++	vvs->rx_bytes -= len;
++	vvs->fwd_cnt += len;
  }
  
-@@ -226,7 +226,7 @@ static int xprt_send_pagedata(struct socket *sock, struct msghdr *msg,
- 	if (err < 0)
- 		return err;
- 
--	iov_iter_bvec(&msg->msg_iter, WRITE, xdr->bvec, xdr_buf_pagecount(xdr),
-+	iov_iter_bvec(&msg->msg_iter, ITER_SOURCE, xdr->bvec, xdr_buf_pagecount(xdr),
- 		      xdr->page_len + xdr->page_base);
- 	return xprt_sendmsg(sock, msg, base + xdr->page_base);
+-void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct virtio_vsock_pkt *pkt)
++void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb)
+ {
++	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
++
+ 	spin_lock_bh(&vvs->rx_lock);
+ 	vvs->last_fwd_cnt = vvs->fwd_cnt;
+-	pkt->hdr.fwd_cnt = cpu_to_le32(vvs->fwd_cnt);
+-	pkt->hdr.buf_alloc = cpu_to_le32(vvs->buf_alloc);
++	hdr->fwd_cnt = cpu_to_le32(vvs->fwd_cnt);
++	hdr->buf_alloc = cpu_to_le32(vvs->buf_alloc);
+ 	spin_unlock_bh(&vvs->rx_lock);
  }
-@@ -249,7 +249,7 @@ static int xprt_send_rm_and_kvec(struct socket *sock, struct msghdr *msg,
+ EXPORT_SYMBOL_GPL(virtio_transport_inc_tx_pkt);
+@@ -291,29 +299,29 @@ virtio_transport_stream_do_peek(struct vsock_sock *vsk,
+ 				size_t len)
+ {
+ 	struct virtio_vsock_sock *vvs = vsk->trans;
+-	struct virtio_vsock_pkt *pkt;
+ 	size_t bytes, total = 0, off;
++	struct sk_buff *skb, *tmp;
+ 	int err = -EFAULT;
+ 
+ 	spin_lock_bh(&vvs->rx_lock);
+ 
+-	list_for_each_entry(pkt, &vvs->rx_queue, list) {
+-		off = pkt->off;
++	skb_queue_walk_safe(&vvs->rx_queue, skb,  tmp) {
++		off = 0;
+ 
+ 		if (total == len)
+ 			break;
+ 
+-		while (total < len && off < pkt->len) {
++		while (total < len && off < skb->len) {
+ 			bytes = len - total;
+-			if (bytes > pkt->len - off)
+-				bytes = pkt->len - off;
++			if (bytes > skb->len - off)
++				bytes = skb->len - off;
+ 
+ 			/* sk_lock is held by caller so no one else can dequeue.
+ 			 * Unlock rx_lock since memcpy_to_msg() may sleep.
+ 			 */
+ 			spin_unlock_bh(&vvs->rx_lock);
+ 
+-			err = memcpy_to_msg(msg, pkt->buf + off, bytes);
++			err = memcpy_to_msg(msg, skb->data + off, bytes);
+ 			if (err)
+ 				goto out;
+ 
+@@ -340,39 +348,40 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
+ 				   size_t len)
+ {
+ 	struct virtio_vsock_sock *vvs = vsk->trans;
+-	struct virtio_vsock_pkt *pkt;
+ 	size_t bytes, total = 0;
++	struct sk_buff *skb;
++	int err = -EFAULT;
+ 	u32 free_space;
+ 	u32 fwd_cnt_delta;
+ 	bool low_rx_bytes;
+-	int err = -EFAULT;
+ 
+ 	spin_lock_bh(&vvs->rx_lock);
+-	while (total < len && !list_empty(&vvs->rx_queue)) {
+-		pkt = list_first_entry(&vvs->rx_queue,
+-				       struct virtio_vsock_pkt, list);
++	while (total < len && !skb_queue_empty(&vvs->rx_queue)) {
++		skb = __skb_dequeue(&vvs->rx_queue);
+ 
+ 		bytes = len - total;
+-		if (bytes > pkt->len - pkt->off)
+-			bytes = pkt->len - pkt->off;
++		if (bytes > skb->len)
++			bytes = skb->len;
+ 
+ 		/* sk_lock is held by caller so no one else can dequeue.
+ 		 * Unlock rx_lock since memcpy_to_msg() may sleep.
+ 		 */
+ 		spin_unlock_bh(&vvs->rx_lock);
+ 
+-		err = memcpy_to_msg(msg, pkt->buf + pkt->off, bytes);
++		err = memcpy_to_msg(msg, skb->data, bytes);
+ 		if (err)
+ 			goto out;
+ 
+ 		spin_lock_bh(&vvs->rx_lock);
+ 
+ 		total += bytes;
+-		pkt->off += bytes;
+-		if (pkt->off == pkt->len) {
+-			virtio_transport_dec_rx_pkt(vvs, pkt);
+-			list_del(&pkt->list);
+-			virtio_transport_free_pkt(pkt);
++		skb_pull(skb, bytes);
++
++		if (skb->len == 0) {
++			virtio_transport_dec_rx_pkt(vvs, skb);
++			consume_skb(skb);
++		} else {
++			__skb_queue_head(&vvs->rx_queue, skb);
+ 		}
+ 	}
+ 
+@@ -490,7 +499,7 @@ int virtio_transport_do_socket_init(struct vsock_sock *vsk,
+ 
+ 	spin_lock_init(&vvs->rx_lock);
+ 	spin_lock_init(&vvs->tx_lock);
+-	INIT_LIST_HEAD(&vvs->rx_queue);
++	skb_queue_head_init(&vvs->rx_queue);
+ 
+ 	return 0;
+ }
+@@ -697,17 +706,17 @@ void virtio_transport_destruct(struct vsock_sock *vsk)
+ EXPORT_SYMBOL_GPL(virtio_transport_destruct);
+ 
+ static int virtio_transport_reset(struct vsock_sock *vsk,
+-				  struct virtio_vsock_pkt *pkt)
++				  struct sk_buff *skb)
+ {
+ 	struct virtio_vsock_pkt_info info = {
+ 		.op = VIRTIO_VSOCK_OP_RST,
+ 		.type = VIRTIO_VSOCK_TYPE_STREAM,
+-		.reply = !!pkt,
++		.reply = !!skb,
+ 		.vsk = vsk,
  	};
- 	size_t len = iov[0].iov_len + iov[1].iov_len;
  
--	iov_iter_kvec(&msg->msg_iter, WRITE, iov, 2, len);
-+	iov_iter_kvec(&msg->msg_iter, ITER_SOURCE, iov, 2, len);
- 	return xprt_sendmsg(sock, msg, base);
- }
+ 	/* Send RST only if the original pkt is not a RST pkt */
+-	if (pkt && le16_to_cpu(pkt->hdr.op) == VIRTIO_VSOCK_OP_RST)
++	if (skb && le16_to_cpu(virtio_vsock_hdr(skb)->op) == VIRTIO_VSOCK_OP_RST)
+ 		return 0;
  
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index cb0cfcd8a8141..fc16b4a2f5a82 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -271,7 +271,7 @@ static ssize_t svc_tcp_read_msg(struct svc_rqst *rqstp, size_t buflen,
- 	rqstp->rq_respages = &rqstp->rq_pages[i];
- 	rqstp->rq_next_page = rqstp->rq_respages + 1;
- 
--	iov_iter_bvec(&msg.msg_iter, READ, bvec, i, buflen);
-+	iov_iter_bvec(&msg.msg_iter, ITER_DEST, bvec, i, buflen);
- 	if (seek) {
- 		iov_iter_advance(&msg.msg_iter, seek);
- 		buflen -= seek;
-@@ -880,7 +880,7 @@ static ssize_t svc_tcp_read_marker(struct svc_sock *svsk,
- 		want = sizeof(rpc_fraghdr) - svsk->sk_tcplen;
- 		iov.iov_base = ((char *)&svsk->sk_marker) + svsk->sk_tcplen;
- 		iov.iov_len  = want;
--		iov_iter_kvec(&msg.msg_iter, READ, &iov, 1, want);
-+		iov_iter_kvec(&msg.msg_iter, ITER_DEST, &iov, 1, want);
- 		len = sock_recvmsg(svsk->sk_sock, &msg, MSG_DONTWAIT);
- 		if (len < 0)
- 			return len;
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 79ce634017f9a..5dccad3271fe5 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -358,7 +358,7 @@ static ssize_t
- xs_read_kvec(struct socket *sock, struct msghdr *msg, int flags,
- 		struct kvec *kvec, size_t count, size_t seek)
+ 	return virtio_transport_send_pkt_info(vsk, &info);
+@@ -717,29 +726,30 @@ static int virtio_transport_reset(struct vsock_sock *vsk,
+  * attempt was made to connect to a socket that does not exist.
+  */
+ static int virtio_transport_reset_no_sock(const struct virtio_transport *t,
+-					  struct virtio_vsock_pkt *pkt)
++					  struct sk_buff *skb)
  {
--	iov_iter_kvec(&msg->msg_iter, READ, kvec, 1, count);
-+	iov_iter_kvec(&msg->msg_iter, ITER_DEST, kvec, 1, count);
- 	return xs_sock_recvmsg(sock, msg, flags, seek);
- }
+-	struct virtio_vsock_pkt *reply;
++	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+ 	struct virtio_vsock_pkt_info info = {
+ 		.op = VIRTIO_VSOCK_OP_RST,
+-		.type = le16_to_cpu(pkt->hdr.type),
++		.type = le16_to_cpu(hdr->type),
+ 		.reply = true,
+ 	};
++	struct sk_buff *reply;
  
-@@ -367,7 +367,7 @@ xs_read_bvec(struct socket *sock, struct msghdr *msg, int flags,
- 		struct bio_vec *bvec, unsigned long nr, size_t count,
- 		size_t seek)
+ 	/* Send RST only if the original pkt is not a RST pkt */
+-	if (le16_to_cpu(pkt->hdr.op) == VIRTIO_VSOCK_OP_RST)
++	if (le16_to_cpu(hdr->op) == VIRTIO_VSOCK_OP_RST)
+ 		return 0;
+ 
+-	reply = virtio_transport_alloc_pkt(&info, 0,
+-					   le64_to_cpu(pkt->hdr.dst_cid),
+-					   le32_to_cpu(pkt->hdr.dst_port),
+-					   le64_to_cpu(pkt->hdr.src_cid),
+-					   le32_to_cpu(pkt->hdr.src_port));
++	reply = virtio_transport_alloc_skb(&info, 0,
++					   le64_to_cpu(hdr->dst_cid),
++					   le32_to_cpu(hdr->dst_port),
++					   le64_to_cpu(hdr->src_cid),
++					   le32_to_cpu(hdr->src_port));
+ 	if (!reply)
+ 		return -ENOMEM;
+ 
+ 	if (!t) {
+-		virtio_transport_free_pkt(reply);
++		kfree_skb(reply);
+ 		return -ENOTCONN;
+ 	}
+ 
+@@ -750,16 +760,11 @@ static int virtio_transport_reset_no_sock(const struct virtio_transport *t,
+ static void virtio_transport_remove_sock(struct vsock_sock *vsk)
  {
--	iov_iter_bvec(&msg->msg_iter, READ, bvec, nr, count);
-+	iov_iter_bvec(&msg->msg_iter, ITER_DEST, bvec, nr, count);
- 	return xs_sock_recvmsg(sock, msg, flags, seek);
+ 	struct virtio_vsock_sock *vvs = vsk->trans;
+-	struct virtio_vsock_pkt *pkt, *tmp;
+ 
+ 	/* We don't need to take rx_lock, as the socket is closing and we are
+ 	 * removing it.
+ 	 */
+-	list_for_each_entry_safe(pkt, tmp, &vvs->rx_queue, list) {
+-		list_del(&pkt->list);
+-		virtio_transport_free_pkt(pkt);
+-	}
+-
++	__skb_queue_purge(&vvs->rx_queue);
+ 	vsock_remove_sock(vsk);
  }
  
-@@ -375,7 +375,7 @@ static ssize_t
- xs_read_discard(struct socket *sock, struct msghdr *msg, int flags,
- 		size_t count)
+@@ -881,13 +886,14 @@ EXPORT_SYMBOL_GPL(virtio_transport_release);
+ 
+ static int
+ virtio_transport_recv_connecting(struct sock *sk,
+-				 struct virtio_vsock_pkt *pkt)
++				 struct sk_buff *skb)
  {
--	iov_iter_discard(&msg->msg_iter, READ, count);
-+	iov_iter_discard(&msg->msg_iter, ITER_DEST, count);
- 	return sock_recvmsg(sock, msg, flags);
- }
++	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+ 	struct vsock_sock *vsk = vsock_sk(sk);
+-	int err;
+ 	int skerr;
++	int err;
  
-diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
-index d914c5eb25178..93f8ee3446bf5 100644
---- a/net/tipc/topsrv.c
-+++ b/net/tipc/topsrv.c
-@@ -396,7 +396,7 @@ static int tipc_conn_rcv_from_sock(struct tipc_conn *con)
- 	iov.iov_base = &s;
- 	iov.iov_len = sizeof(s);
- 	msg.msg_name = NULL;
--	iov_iter_kvec(&msg.msg_iter, READ, &iov, 1, iov.iov_len);
-+	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &iov, 1, iov.iov_len);
- 	ret = sock_recvmsg(con->sock, &msg, MSG_DONTWAIT);
- 	if (ret == -EWOULDBLOCK)
- 		return -EWOULDBLOCK;
-diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-index 8e89ff403073b..6118859b2a515 100644
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -585,7 +585,7 @@ int tls_device_sendpage(struct sock *sk, struct page *page,
- 	kaddr = kmap(page);
- 	iov.iov_base = kaddr + offset;
- 	iov.iov_len = size;
--	iov_iter_kvec(&msg_iter, WRITE, &iov, 1, size);
-+	iov_iter_kvec(&msg_iter, ITER_SOURCE, &iov, 1, size);
- 	rc = tls_push_data(sk, &msg_iter, size,
- 			   flags, TLS_RECORD_TYPE_DATA);
- 	kunmap(page);
-@@ -660,7 +660,7 @@ static int tls_device_push_pending_record(struct sock *sk, int flags)
+-	switch (le16_to_cpu(pkt->hdr.op)) {
++	switch (le16_to_cpu(hdr->op)) {
+ 	case VIRTIO_VSOCK_OP_RESPONSE:
+ 		sk->sk_state = TCP_ESTABLISHED;
+ 		sk->sk_socket->state = SS_CONNECTED;
+@@ -908,7 +914,7 @@ virtio_transport_recv_connecting(struct sock *sk,
+ 	return 0;
+ 
+ destroy:
+-	virtio_transport_reset(vsk, pkt);
++	virtio_transport_reset(vsk, skb);
+ 	sk->sk_state = TCP_CLOSE;
+ 	sk->sk_err = skerr;
+ 	sk->sk_error_report(sk);
+@@ -917,17 +923,19 @@ virtio_transport_recv_connecting(struct sock *sk,
+ 
+ static void
+ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+-			      struct virtio_vsock_pkt *pkt)
++			      struct sk_buff *skb)
  {
- 	struct iov_iter	msg_iter;
+ 	struct virtio_vsock_sock *vvs = vsk->trans;
+ 	bool can_enqueue, free_pkt = false;
++	struct virtio_vsock_hdr *hdr;
++	u32 len;
  
--	iov_iter_kvec(&msg_iter, WRITE, NULL, 0, 0);
-+	iov_iter_kvec(&msg_iter, ITER_SOURCE, NULL, 0, 0);
- 	return tls_push_data(sk, &msg_iter, 0, flags, TLS_RECORD_TYPE_DATA);
+-	pkt->len = le32_to_cpu(pkt->hdr.len);
+-	pkt->off = 0;
++	hdr = virtio_vsock_hdr(skb);
++	len = le32_to_cpu(hdr->len);
+ 
+ 	spin_lock_bh(&vvs->rx_lock);
+ 
+-	can_enqueue = virtio_transport_inc_rx_pkt(vvs, pkt);
++	can_enqueue = virtio_transport_inc_rx_pkt(vvs, skb);
+ 	if (!can_enqueue) {
+ 		free_pkt = true;
+ 		goto out;
+@@ -937,60 +945,60 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+ 	 * to avoid wasting memory queueing the entire buffer with a small
+ 	 * payload.
+ 	 */
+-	if (pkt->len <= GOOD_COPY_LEN && !list_empty(&vvs->rx_queue)) {
+-		struct virtio_vsock_pkt *last_pkt;
++	if (len <= GOOD_COPY_LEN && !skb_queue_empty(&vvs->rx_queue)) {
++		struct virtio_vsock_hdr *last_hdr;
++		struct sk_buff *last_skb;
+ 
+-		last_pkt = list_last_entry(&vvs->rx_queue,
+-					   struct virtio_vsock_pkt, list);
++		last_skb = skb_peek_tail(&vvs->rx_queue);
++		last_hdr = virtio_vsock_hdr(last_skb);
+ 
+ 		/* If there is space in the last packet queued, we copy the
+ 		 * new packet in its buffer.
+ 		 */
+-		if (pkt->len <= last_pkt->buf_len - last_pkt->len) {
+-			memcpy(last_pkt->buf + last_pkt->len, pkt->buf,
+-			       pkt->len);
+-			last_pkt->len += pkt->len;
++		if (skb->len < skb_tailroom(last_skb)) {
++			memcpy(skb_put(last_skb, skb->len), skb->data, skb->len);
+ 			free_pkt = true;
++			last_hdr->len = cpu_to_le32(last_skb->len);
+ 			goto out;
+ 		}
+ 	}
+ 
+-	list_add_tail(&pkt->list, &vvs->rx_queue);
++	__skb_queue_tail(&vvs->rx_queue, skb);
+ 
+ out:
+ 	spin_unlock_bh(&vvs->rx_lock);
+ 	if (free_pkt)
+-		virtio_transport_free_pkt(pkt);
++		kfree_skb(skb);
  }
  
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index 24ca49ecebea3..e423159dacee7 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -356,7 +356,7 @@ static int espintcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 	*((__be16 *)buf) = cpu_to_be16(msglen);
- 	pfx_iov.iov_base = buf;
- 	pfx_iov.iov_len = sizeof(buf);
--	iov_iter_kvec(&pfx_iter, WRITE, &pfx_iov, 1, pfx_iov.iov_len);
-+	iov_iter_kvec(&pfx_iter, ITER_SOURCE, &pfx_iov, 1, pfx_iov.iov_len);
+ static int
+ virtio_transport_recv_connected(struct sock *sk,
+-				struct virtio_vsock_pkt *pkt)
++				struct sk_buff *skb)
+ {
++	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+ 	struct vsock_sock *vsk = vsock_sk(sk);
+ 	int err = 0;
  
- 	err = sk_msg_memcopy_from_iter(sk, &pfx_iter, &emsg->skmsg,
- 				       pfx_iov.iov_len);
-diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-index c283474ecea56..07811bd74d3a5 100644
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -1256,7 +1256,7 @@ long keyctl_instantiate_key(key_serial_t id,
- 		struct iov_iter from;
- 		int ret;
+-	switch (le16_to_cpu(pkt->hdr.op)) {
++	switch (le16_to_cpu(hdr->op)) {
+ 	case VIRTIO_VSOCK_OP_RW:
+-		virtio_transport_recv_enqueue(vsk, pkt);
++		virtio_transport_recv_enqueue(vsk, skb);
+ 		sk->sk_data_ready(sk);
+ 		return err;
+ 	case VIRTIO_VSOCK_OP_CREDIT_UPDATE:
+ 		sk->sk_write_space(sk);
+ 		break;
+ 	case VIRTIO_VSOCK_OP_SHUTDOWN:
+-		if (le32_to_cpu(pkt->hdr.flags) & VIRTIO_VSOCK_SHUTDOWN_RCV)
++		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SHUTDOWN_RCV)
+ 			vsk->peer_shutdown |= RCV_SHUTDOWN;
+-		if (le32_to_cpu(pkt->hdr.flags) & VIRTIO_VSOCK_SHUTDOWN_SEND)
++		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SHUTDOWN_SEND)
+ 			vsk->peer_shutdown |= SEND_SHUTDOWN;
+ 		if (vsk->peer_shutdown == SHUTDOWN_MASK &&
+ 		    vsock_stream_has_data(vsk) <= 0 &&
+ 		    !sock_flag(sk, SOCK_DONE)) {
+ 			(void)virtio_transport_reset(vsk, NULL);
+-
+ 			virtio_transport_do_close(vsk, true);
+ 		}
+-		if (le32_to_cpu(pkt->hdr.flags))
++		if (le32_to_cpu(virtio_vsock_hdr(skb)->flags))
+ 			sk->sk_state_change(sk);
+ 		break;
+ 	case VIRTIO_VSOCK_OP_RST:
+@@ -1001,29 +1009,31 @@ virtio_transport_recv_connected(struct sock *sk,
+ 		break;
+ 	}
  
--		ret = import_single_range(WRITE, (void __user *)_payload, plen,
-+		ret = import_single_range(ITER_SOURCE, (void __user *)_payload, plen,
- 					  &iov, &from);
- 		if (unlikely(ret))
- 			return ret;
-@@ -1288,7 +1288,7 @@ long keyctl_instantiate_key_iov(key_serial_t id,
- 	if (!_payload_iov)
- 		ioc = 0;
+-	virtio_transport_free_pkt(pkt);
++	kfree_skb(skb);
+ 	return err;
+ }
  
--	ret = import_iovec(WRITE, _payload_iov, ioc,
-+	ret = import_iovec(ITER_SOURCE, _payload_iov, ioc,
- 				    ARRAY_SIZE(iovstack), &iov, &from);
- 	if (ret < 0)
+ static void
+ virtio_transport_recv_disconnecting(struct sock *sk,
+-				    struct virtio_vsock_pkt *pkt)
++				    struct sk_buff *skb)
+ {
++	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+ 	struct vsock_sock *vsk = vsock_sk(sk);
+ 
+-	if (le16_to_cpu(pkt->hdr.op) == VIRTIO_VSOCK_OP_RST)
++	if (le16_to_cpu(hdr->op) == VIRTIO_VSOCK_OP_RST)
+ 		virtio_transport_do_close(vsk, true);
+ }
+ 
+ static int
+ virtio_transport_send_response(struct vsock_sock *vsk,
+-			       struct virtio_vsock_pkt *pkt)
++			       struct sk_buff *skb)
+ {
++	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+ 	struct virtio_vsock_pkt_info info = {
+ 		.op = VIRTIO_VSOCK_OP_RESPONSE,
+ 		.type = VIRTIO_VSOCK_TYPE_STREAM,
+-		.remote_cid = le64_to_cpu(pkt->hdr.src_cid),
+-		.remote_port = le32_to_cpu(pkt->hdr.src_port),
++		.remote_cid = le64_to_cpu(hdr->src_cid),
++		.remote_port = le32_to_cpu(hdr->src_port),
+ 		.reply = true,
+ 		.vsk = vsk,
+ 	};
+@@ -1032,8 +1042,9 @@ virtio_transport_send_response(struct vsock_sock *vsk,
+ }
+ 
+ static bool virtio_transport_space_update(struct sock *sk,
+-					  struct virtio_vsock_pkt *pkt)
++					  struct sk_buff *skb)
+ {
++	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+ 	struct vsock_sock *vsk = vsock_sk(sk);
+ 	struct virtio_vsock_sock *vvs = vsk->trans;
+ 	bool space_available;
+@@ -1048,8 +1059,8 @@ static bool virtio_transport_space_update(struct sock *sk,
+ 
+ 	/* buf_alloc and fwd_cnt is always included in the hdr */
+ 	spin_lock_bh(&vvs->tx_lock);
+-	vvs->peer_buf_alloc = le32_to_cpu(pkt->hdr.buf_alloc);
+-	vvs->peer_fwd_cnt = le32_to_cpu(pkt->hdr.fwd_cnt);
++	vvs->peer_buf_alloc = le32_to_cpu(hdr->buf_alloc);
++	vvs->peer_fwd_cnt = le32_to_cpu(hdr->fwd_cnt);
+ 	space_available = virtio_transport_has_space(vsk);
+ 	spin_unlock_bh(&vvs->tx_lock);
+ 	return space_available;
+@@ -1057,21 +1068,22 @@ static bool virtio_transport_space_update(struct sock *sk,
+ 
+ /* Handle server socket */
+ static int
+-virtio_transport_recv_listen(struct sock *sk, struct virtio_vsock_pkt *pkt,
++virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
+ 			     struct virtio_transport *t)
+ {
++	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+ 	struct vsock_sock *vsk = vsock_sk(sk);
+ 	struct vsock_sock *vchild;
+ 	struct sock *child;
+ 	int ret;
+ 
+-	if (le16_to_cpu(pkt->hdr.op) != VIRTIO_VSOCK_OP_REQUEST) {
+-		virtio_transport_reset_no_sock(t, pkt);
++	if (le16_to_cpu(hdr->op) != VIRTIO_VSOCK_OP_REQUEST) {
++		virtio_transport_reset_no_sock(t, skb);
+ 		return -EINVAL;
+ 	}
+ 
+ 	if (sk_acceptq_is_full(sk)) {
+-		virtio_transport_reset_no_sock(t, pkt);
++		virtio_transport_reset_no_sock(t, skb);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -1079,13 +1091,13 @@ virtio_transport_recv_listen(struct sock *sk, struct virtio_vsock_pkt *pkt,
+ 	 * Subsequent enqueues would lead to a memory leak.
+ 	 */
+ 	if (sk->sk_shutdown == SHUTDOWN_MASK) {
+-		virtio_transport_reset_no_sock(t, pkt);
++		virtio_transport_reset_no_sock(t, skb);
+ 		return -ESHUTDOWN;
+ 	}
+ 
+ 	child = vsock_create_connected(sk);
+ 	if (!child) {
+-		virtio_transport_reset_no_sock(t, pkt);
++		virtio_transport_reset_no_sock(t, skb);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -1096,10 +1108,10 @@ virtio_transport_recv_listen(struct sock *sk, struct virtio_vsock_pkt *pkt,
+ 	child->sk_state = TCP_ESTABLISHED;
+ 
+ 	vchild = vsock_sk(child);
+-	vsock_addr_init(&vchild->local_addr, le64_to_cpu(pkt->hdr.dst_cid),
+-			le32_to_cpu(pkt->hdr.dst_port));
+-	vsock_addr_init(&vchild->remote_addr, le64_to_cpu(pkt->hdr.src_cid),
+-			le32_to_cpu(pkt->hdr.src_port));
++	vsock_addr_init(&vchild->local_addr, le64_to_cpu(hdr->dst_cid),
++			le32_to_cpu(hdr->dst_port));
++	vsock_addr_init(&vchild->remote_addr, le64_to_cpu(hdr->src_cid),
++			le32_to_cpu(hdr->src_port));
+ 
+ 	ret = vsock_assign_transport(vchild, vsk);
+ 	/* Transport assigned (looking at remote_addr) must be the same
+@@ -1107,17 +1119,17 @@ virtio_transport_recv_listen(struct sock *sk, struct virtio_vsock_pkt *pkt,
+ 	 */
+ 	if (ret || vchild->transport != &t->transport) {
+ 		release_sock(child);
+-		virtio_transport_reset_no_sock(t, pkt);
++		virtio_transport_reset_no_sock(t, skb);
+ 		sock_put(child);
  		return ret;
+ 	}
+ 
+-	if (virtio_transport_space_update(child, pkt))
++	if (virtio_transport_space_update(child, skb))
+ 		child->sk_write_space(child);
+ 
+ 	vsock_insert_connected(vchild);
+ 	vsock_enqueue_accept(sk, child);
+-	virtio_transport_send_response(vchild, pkt);
++	virtio_transport_send_response(vchild, skb);
+ 
+ 	release_sock(child);
+ 
+@@ -1129,29 +1141,30 @@ virtio_transport_recv_listen(struct sock *sk, struct virtio_vsock_pkt *pkt,
+  * lock.
+  */
+ void virtio_transport_recv_pkt(struct virtio_transport *t,
+-			       struct virtio_vsock_pkt *pkt)
++			       struct sk_buff *skb)
+ {
++	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+ 	struct sockaddr_vm src, dst;
+ 	struct vsock_sock *vsk;
+ 	struct sock *sk;
+ 	bool space_available;
+ 
+-	vsock_addr_init(&src, le64_to_cpu(pkt->hdr.src_cid),
+-			le32_to_cpu(pkt->hdr.src_port));
+-	vsock_addr_init(&dst, le64_to_cpu(pkt->hdr.dst_cid),
+-			le32_to_cpu(pkt->hdr.dst_port));
++	vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
++			le32_to_cpu(hdr->src_port));
++	vsock_addr_init(&dst, le64_to_cpu(hdr->dst_cid),
++			le32_to_cpu(hdr->dst_port));
+ 
+ 	trace_virtio_transport_recv_pkt(src.svm_cid, src.svm_port,
+ 					dst.svm_cid, dst.svm_port,
+-					le32_to_cpu(pkt->hdr.len),
+-					le16_to_cpu(pkt->hdr.type),
+-					le16_to_cpu(pkt->hdr.op),
+-					le32_to_cpu(pkt->hdr.flags),
+-					le32_to_cpu(pkt->hdr.buf_alloc),
+-					le32_to_cpu(pkt->hdr.fwd_cnt));
+-
+-	if (le16_to_cpu(pkt->hdr.type) != VIRTIO_VSOCK_TYPE_STREAM) {
+-		(void)virtio_transport_reset_no_sock(t, pkt);
++					le32_to_cpu(hdr->len),
++					le16_to_cpu(hdr->type),
++					le16_to_cpu(hdr->op),
++					le32_to_cpu(hdr->flags),
++					le32_to_cpu(hdr->buf_alloc),
++					le32_to_cpu(hdr->fwd_cnt));
++
++	if (le16_to_cpu(hdr->type) != VIRTIO_VSOCK_TYPE_STREAM) {
++		(void)virtio_transport_reset_no_sock(t, skb);
+ 		goto free_pkt;
+ 	}
+ 
+@@ -1162,7 +1175,7 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+ 	if (!sk) {
+ 		sk = vsock_find_bound_socket(&dst);
+ 		if (!sk) {
+-			(void)virtio_transport_reset_no_sock(t, pkt);
++			(void)virtio_transport_reset_no_sock(t, skb);
+ 			goto free_pkt;
+ 		}
+ 	}
+@@ -1176,13 +1189,13 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+ 	 */
+ 	if (sock_flag(sk, SOCK_DONE) ||
+ 	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
+-		(void)virtio_transport_reset_no_sock(t, pkt);
++		(void)virtio_transport_reset_no_sock(t, skb);
+ 		release_sock(sk);
+ 		sock_put(sk);
+ 		goto free_pkt;
+ 	}
+ 
+-	space_available = virtio_transport_space_update(sk, pkt);
++	space_available = virtio_transport_space_update(sk, skb);
+ 
+ 	/* Update CID in case it has changed after a transport reset event */
+ 	if (vsk->local_addr.svm_cid != VMADDR_CID_ANY)
+@@ -1193,23 +1206,23 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+ 
+ 	switch (sk->sk_state) {
+ 	case TCP_LISTEN:
+-		virtio_transport_recv_listen(sk, pkt, t);
+-		virtio_transport_free_pkt(pkt);
++		virtio_transport_recv_listen(sk, skb, t);
++		kfree_skb(skb);
+ 		break;
+ 	case TCP_SYN_SENT:
+-		virtio_transport_recv_connecting(sk, pkt);
+-		virtio_transport_free_pkt(pkt);
++		virtio_transport_recv_connecting(sk, skb);
++		kfree_skb(skb);
+ 		break;
+ 	case TCP_ESTABLISHED:
+-		virtio_transport_recv_connected(sk, pkt);
++		virtio_transport_recv_connected(sk, skb);
+ 		break;
+ 	case TCP_CLOSING:
+-		virtio_transport_recv_disconnecting(sk, pkt);
+-		virtio_transport_free_pkt(pkt);
++		virtio_transport_recv_disconnecting(sk, skb);
++		kfree_skb(skb);
+ 		break;
+ 	default:
+-		(void)virtio_transport_reset_no_sock(t, pkt);
+-		virtio_transport_free_pkt(pkt);
++		(void)virtio_transport_reset_no_sock(t, skb);
++		kfree_skb(skb);
+ 		break;
+ 	}
+ 
+@@ -1222,16 +1235,42 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+ 	return;
+ 
+ free_pkt:
+-	virtio_transport_free_pkt(pkt);
++	kfree_skb(skb);
+ }
+ EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
+ 
+-void virtio_transport_free_pkt(struct virtio_vsock_pkt *pkt)
++/* Remove skbs found in a queue that have a vsk that matches.
++ *
++ * Each skb is freed.
++ *
++ * Returns the count of skbs that were reply packets.
++ */
++int virtio_transport_purge_skbs(void *vsk, struct sk_buff_head *queue)
+ {
+-	kvfree(pkt->buf);
+-	kfree(pkt);
++	struct sk_buff_head freeme;
++	struct sk_buff *skb, *tmp;
++	int cnt = 0;
++
++	skb_queue_head_init(&freeme);
++
++	spin_lock_bh(&queue->lock);
++	skb_queue_walk_safe(queue, skb, tmp) {
++		if (vsock_sk(skb->sk) != vsk)
++			continue;
++
++		__skb_unlink(skb, queue);
++		__skb_queue_tail(&freeme, skb);
++
++		if (virtio_vsock_skb_reply(skb))
++			cnt++;
++	}
++	spin_unlock_bh(&queue->lock);
++
++	__skb_queue_purge(&freeme);
++
++	return cnt;
+ }
+-EXPORT_SYMBOL_GPL(virtio_transport_free_pkt);
++EXPORT_SYMBOL_GPL(virtio_transport_purge_skbs);
+ 
+ MODULE_LICENSE("GPL v2");
+ MODULE_AUTHOR("Asias He");
+diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopback.c
+index a45f7ffca8c56..0db38373bae94 100644
+--- a/net/vmw_vsock/vsock_loopback.c
++++ b/net/vmw_vsock/vsock_loopback.c
+@@ -16,7 +16,7 @@ struct vsock_loopback {
+ 	struct workqueue_struct *workqueue;
+ 
+ 	spinlock_t pkt_list_lock; /* protects pkt_list */
+-	struct list_head pkt_list;
++	struct sk_buff_head pkt_queue;
+ 	struct work_struct pkt_work;
+ };
+ 
+@@ -27,13 +27,13 @@ static u32 vsock_loopback_get_local_cid(void)
+ 	return VMADDR_CID_LOCAL;
+ }
+ 
+-static int vsock_loopback_send_pkt(struct virtio_vsock_pkt *pkt)
++static int vsock_loopback_send_pkt(struct sk_buff *skb)
+ {
+ 	struct vsock_loopback *vsock = &the_vsock_loopback;
+-	int len = pkt->len;
++	int len = skb->len;
+ 
+ 	spin_lock_bh(&vsock->pkt_list_lock);
+-	list_add_tail(&pkt->list, &vsock->pkt_list);
++	skb_queue_tail(&vsock->pkt_queue, skb);
+ 	spin_unlock_bh(&vsock->pkt_list_lock);
+ 
+ 	queue_work(vsock->workqueue, &vsock->pkt_work);
+@@ -44,21 +44,8 @@ static int vsock_loopback_send_pkt(struct virtio_vsock_pkt *pkt)
+ static int vsock_loopback_cancel_pkt(struct vsock_sock *vsk)
+ {
+ 	struct vsock_loopback *vsock = &the_vsock_loopback;
+-	struct virtio_vsock_pkt *pkt, *n;
+-	LIST_HEAD(freeme);
+ 
+-	spin_lock_bh(&vsock->pkt_list_lock);
+-	list_for_each_entry_safe(pkt, n, &vsock->pkt_list, list) {
+-		if (pkt->vsk != vsk)
+-			continue;
+-		list_move(&pkt->list, &freeme);
+-	}
+-	spin_unlock_bh(&vsock->pkt_list_lock);
+-
+-	list_for_each_entry_safe(pkt, n, &freeme, list) {
+-		list_del(&pkt->list);
+-		virtio_transport_free_pkt(pkt);
+-	}
++	virtio_transport_purge_skbs(vsk, &vsock->pkt_queue);
+ 
+ 	return 0;
+ }
+@@ -109,20 +96,18 @@ static void vsock_loopback_work(struct work_struct *work)
+ {
+ 	struct vsock_loopback *vsock =
+ 		container_of(work, struct vsock_loopback, pkt_work);
+-	LIST_HEAD(pkts);
++	struct sk_buff_head pkts;
++	struct sk_buff *skb;
++
++	skb_queue_head_init(&pkts);
+ 
+ 	spin_lock_bh(&vsock->pkt_list_lock);
+-	list_splice_init(&vsock->pkt_list, &pkts);
++	skb_queue_splice_init(&vsock->pkt_queue, &pkts);
+ 	spin_unlock_bh(&vsock->pkt_list_lock);
+ 
+-	while (!list_empty(&pkts)) {
+-		struct virtio_vsock_pkt *pkt;
+-
+-		pkt = list_first_entry(&pkts, struct virtio_vsock_pkt, list);
+-		list_del_init(&pkt->list);
+-
+-		virtio_transport_deliver_tap_pkt(pkt);
+-		virtio_transport_recv_pkt(&loopback_transport, pkt);
++	while ((skb = __skb_dequeue(&pkts))) {
++		virtio_transport_deliver_tap_pkt(skb);
++		virtio_transport_recv_pkt(&loopback_transport, skb);
+ 	}
+ }
+ 
+@@ -136,7 +121,7 @@ static int __init vsock_loopback_init(void)
+ 		return -ENOMEM;
+ 
+ 	spin_lock_init(&vsock->pkt_list_lock);
+-	INIT_LIST_HEAD(&vsock->pkt_list);
++	skb_queue_head_init(&vsock->pkt_queue);
+ 	INIT_WORK(&vsock->pkt_work, vsock_loopback_work);
+ 
+ 	ret = vsock_core_register(&loopback_transport.transport,
+@@ -154,19 +139,13 @@ static int __init vsock_loopback_init(void)
+ static void __exit vsock_loopback_exit(void)
+ {
+ 	struct vsock_loopback *vsock = &the_vsock_loopback;
+-	struct virtio_vsock_pkt *pkt;
+ 
+ 	vsock_core_unregister(&loopback_transport.transport);
+ 
+ 	flush_work(&vsock->pkt_work);
+ 
+ 	spin_lock_bh(&vsock->pkt_list_lock);
+-	while (!list_empty(&vsock->pkt_list)) {
+-		pkt = list_first_entry(&vsock->pkt_list,
+-				       struct virtio_vsock_pkt, list);
+-		list_del(&pkt->list);
+-		virtio_transport_free_pkt(pkt);
+-	}
++	virtio_vsock_skb_queue_purge(&vsock->pkt_queue);
+ 	spin_unlock_bh(&vsock->pkt_list_lock);
+ 
+ 	destroy_workqueue(vsock->workqueue);
 -- 
 2.53.0
 
