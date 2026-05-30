@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-258974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBeYGlkwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-258974-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:45 +0200
+	id kFwcBgseG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41986126EB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6546260FB3E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5D52301702C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DAEAF308ED51
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513C941A8F;
-	Sat, 30 May 2026 18:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F78730E847;
+	Sat, 30 May 2026 17:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qymalb3F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16xh31id"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C06A349CCF;
-	Sat, 30 May 2026 18:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7120F263F44;
+	Sat, 30 May 2026 17:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166170; cv=none; b=Mo1spHPRgUquAsh5jDuCQmR8dr7fI6PQyLgizoTJYVw0UL8Wiy55w/mhB86W+FYBkkoCiFKXgiGKJQ8qjRSzLoFPc9o9nPM0eeuI0PdaoQbUlcGg5cffz/KjjaHFuufLMnS3gcY+ZMz6JL3CkleBPTQK4k/ZbZbC9+unw+DbBAo=
+	t=1780161536; cv=none; b=KaQXAK9Csl6GRHBXbfQ5LcR7QOoElneIoWx1be/64/KwYNoHt6JuN97ihhFJB6wfecJCPOx79LL9pi5BEZjMEPYewD2G76DkU6R+eICMtpzUuUU1LvVxkaKU1v1oldXI1SoenDhL/NjiUDYCpxeoBaddLZcLXEWiDtrinkgiurQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166170; c=relaxed/simple;
-	bh=a7t0yMAKAlw5ZQ+Cm8Y2t50xO0C9rq3oYAu71mAYTsE=;
+	s=arc-20240116; t=1780161536; c=relaxed/simple;
+	bh=9kx14YUg8z1inOvCNchb9Mxe9wzB7wr76uHSrH+Rufo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dw+0EJUOH399U1zklXwyhGq5vnLMrRIeiyeHbiyKWo7CD9+is0yKqL5KDpFQiKaX+mPvu3NBlskvu87MGtGA2TGOXXEgZC4Fse9C154PI4Rsatym12gvPzmMRXZhnJQ3isn5biFCIS0Ou5dKQoFu79Gu+P0ZghDJLBR0goWvtHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qymalb3F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810B21F00893;
-	Sat, 30 May 2026 18:36:08 +0000 (UTC)
+	 MIME-Version; b=geWqVvghpC648PUpqCoGbGmrJazTO5XMIDu/HdkJi1RWuQbeVeLjvrAhSA5PLV2VzfasaMqoan2jBAid6C47593ITlXlw8TBRYubun35ZUhPZCNAu9xUfmOvCksSg4ko34i2IkWhF6bPj2uHOqukn5wl2pF5Tkxw9qSGULrlbN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16xh31id; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AF31F00893;
+	Sat, 30 May 2026 17:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166169;
-	bh=xL9J2GkCXUmDc6c+svOot0tFHELnzCs0ogxAWYaEX5U=;
+	s=korg; t=1780161535;
+	bh=EEKBbWpNKnU3cdK56XOL5fWYe9fz4CFrJxf8oYdagtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Qymalb3Fv0Tq6zNVsaZAVa2RzsD6MayAIgw4IncuWKjQKvRV0NDWe7PTJNNk8e7Md
-	 wCm2/OE0A9ipJrpawcOtzpF66geT/klOwuOOcINDFjIhncPJR+D5QPmQHkNuwdK0Af
-	 Poxu9RvUG3lep2lgb9TDgUqmRbDUjrlOhFCF7NpY=
+	b=16xh31idG9M0leoDxC0EJS4L7VDwYtPhP4WI5ySx+5XuDdl5KmuHtpT4uAByEnrHs
+	 3qqlpmTMD9igzWrQ/VdH+PBJ2WFP0QgLe2h0zJ09U/m4ug9WI9N0PVE2VQ/VzOL8bL
+	 8gHQKSdd2A1IsHCF5XrGZtn8Q7ueKUYOHveDlvf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
+	Val Packett <val@packett.cool>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 295/589] devres: fix missing node debug info in devm_krealloc()
+Subject: [PATCH 6.1 652/969] dt-bindings: clock: qcom,gcc-sc8180x: Add missing GDSCs
 Date: Sat, 30 May 2026 18:02:56 +0200
-Message-ID: <20260530160232.694741638@linuxfoundation.org>
+Message-ID: <20260530160318.472177490@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,61 +74,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257598-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258974-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E41986126EB
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,packett.cool:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6546260FB3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit f813ec9e84b4d0ca81ec1da94ab07bfb4a29266c ]
+[ Upstream commit 76404ffbf07f28a5ec04748e18fce3dac2e78ef6 ]
 
-Fix missing call to set_node_dbginfo() for new devres nodes created by
-devm_krealloc().
+There are 5 more GDSCs that we were ignoring and not putting to sleep,
+which are listed in downstream DTS. Add them.
 
-Fixes: f82485722e5d ("devres: provide devm_krealloc()")
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/20260202235210.55176-2-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Val Packett <val@packett.cool>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260312112321.370983-2-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 3565741eb985 ("clk: qcom: gcc-sc8180x: Add missing GDSCs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/devres.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/dt-bindings/clock/qcom,gcc-sc8180x.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index e3a735d0213a8..4bfc7f670ab0c 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -911,6 +911,8 @@ void *devm_krealloc(struct device *dev, void *ptr, size_t new_size, gfp_t gfp)
- 	if (!new_dr)
- 		return NULL;
+diff --git a/include/dt-bindings/clock/qcom,gcc-sc8180x.h b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
+index 2569f874fe13c..be97a0ca2ade4 100644
+--- a/include/dt-bindings/clock/qcom,gcc-sc8180x.h
++++ b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
+@@ -308,5 +308,10 @@
+ #define USB30_MP_GDSC						8
+ #define USB30_PRIM_GDSC						9
+ #define USB30_SEC_GDSC						10
++#define HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC		11
++#define HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC		12
++#define HLOS1_VOTE_MMNOC_MMU_TBU_SF_GDSC		13
++#define HLOS1_VOTE_TURING_MMU_TBU0_GDSC			14
++#define HLOS1_VOTE_TURING_MMU_TBU1_GDSC			15
  
-+	set_node_dbginfo(&new_dr->node, "devm_krealloc_release", new_size);
-+
- 	/*
- 	 * The spinlock protects the linked list against concurrent
- 	 * modifications but not the resource itself.
+ #endif
 -- 
 2.53.0
 
