@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-257989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJ9bIqshG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257989-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:07 +0200
+	id QSqMMHQZG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F71610392
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22BA960EEF4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A3DC9300CF0B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:40:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 017BC30F274A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D073469FC;
-	Sat, 30 May 2026 17:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8E2332EA7;
+	Sat, 30 May 2026 16:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2dA+PpW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCr0ibh/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB5E2E7379;
-	Sat, 30 May 2026 17:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F402E92B3;
+	Sat, 30 May 2026 16:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162853; cv=none; b=CxboV9yzkoiEYc8JuHbAl5bvrp3SDmbmkCmT56XRzf9DzOua/qAq4yoLfCStBRvWRrX6RdPoGjvkdjgj9W2TWQDZgpClrEuBnJGFHZSSMxoHUQwlRAXs6hkFk0JSNWEaTzzHg3elKOFjslfK2UPc1u7VJDDGHLukEH/rH6UbQYI=
+	t=1780160323; cv=none; b=tcKqpfHGeq92SMqn9/7SNE6G9cJ8lQwEo8MfxxFww+egFd8Sd39SXqF3EUpcDUawfLQi5pPcAWOWBgMIpnYIwh2g5m+l8LeD+ILMiAuzFqgZojixfx8cK+XQ4bH0Lt49rrSZEXAFxTKpEwzVntpQe4rOocr65DAVpjc1A1BM2C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162853; c=relaxed/simple;
-	bh=GRfz2p4B3PSXmM2PgeuaaFkxn08E+YrNliCSpemBADM=;
+	s=arc-20240116; t=1780160323; c=relaxed/simple;
+	bh=wyezjWNchmOb6DWxMynh7H2fX8NP7slkeSjkOVRGWNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jmWrTqKeL8BLxgYj3A3lehgK4W07yh5/ZGJggL4c3uT8+jBbl657KA8P6/2cMUx9KbRpgqwZWgkuQAKjTr1TQP5A1+Z2Z4I0LG+Yg6ycKOdhkNTDDC4K/bXP1fzMMZG5hegeWW5saN4Xk1grRSWT/RYXXothiUKWpp6OrbLNRdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2dA+PpW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703761F00893;
-	Sat, 30 May 2026 17:40:51 +0000 (UTC)
+	 MIME-Version; b=hqjcfmU7VLG0OwQi4gSBjqG5gYFqGQ1P5mqj0g9diHUwLp32fqcLjdSournzro2L098px0NkL4nV7rtkVDHPWSfsqLPKzfNrtywK26IRjkQ/Pv+legbYRQFia+p/2OHQKvpKpYVO3w6EC3NlpZ/nixh2Np4hupV8pV4Q6QJU0fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCr0ibh/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650181F00893;
+	Sat, 30 May 2026 16:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162852;
-	bh=69OuostZCDnQFyMF1l5oGjRQOWYnJzXx31pHU3rKauY=;
+	s=korg; t=1780160322;
+	bh=2EimBkK//SqMm+VixKPdRXMYqCSNOpumQlJjbkfFZAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C2dA+PpWhCWPeoI5pgOVpNS7U5bPRHw9BFfZDcIwbAT8hEhE98GQy4tEsgx6szg8x
-	 CZddKNtlsPooK9RIv6O4bqVudzT9FL6IRngVW9koRN9mb5QabtGauYvo160JjkqCCK
-	 jKpu6sTxA9bb7RtQULu/wIS1q/CYFTC8+/1hCmT8=
+	b=bCr0ibh/mfhT6ksW/jKQ1p7r/m4XYCETgVFdM3JID40YCbCx/c05FWd16rBcau9JU
+	 l/V5MpAMEdr6ZkrYzHkNpxwy41HKd7gNpiDzR6y9x8KUcyrxJx79NvuxGV071WU0UD
+	 gFQvjKxxOGMVT2G/E88KCVe9t6vSZ62KlG7B5IdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c025d34b8eaa54c571b8@syzkaller.appspotmail.com,
-	Abhishek Kumar <abhishek_sts8@yahoo.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.15 083/776] media: em28xx: fix use-after-free in em28xx_v4l2_open()
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 273/969] ALSA: caiaq: Dont abort when no input device is available
 Date: Sat, 30 May 2026 17:56:37 +0200
-Message-ID: <20260530160242.479862582@linuxfoundation.org>
+Message-ID: <20260530160308.019966249@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +62,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257989-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,yahoo.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257245-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,c025d34b8eaa54c571b8,cisco];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 86F71610392
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 22BA960EEF4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhishek Kumar <abhishek_sts8@yahoo.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit a66485a934c7187ae8e36517d40615fa2e961cff upstream.
+commit b32ae47a2b0a1fb4bd4942242847966d9b178222 upstream.
 
-em28xx_v4l2_open() reads dev->v4l2 without holding dev->lock,
-creating a race with em28xx_v4l2_init()'s error path and
-em28xx_v4l2_fini(), both of which free the em28xx_v4l2 struct
-and set dev->v4l2 to NULL under dev->lock.
+The previous fix to handle the error from setup_card() caused a
+regression for the models that have no dedicated input device;
+snd_usb_caiaq_input_init() just returns -EINVAL, and we treat it as a
+fatal error although it should be ignored.
 
-This race leads to two issues:
- - use-after-free in v4l2_fh_init() when accessing vdev->ctrl_handler,
-   since the video_device is embedded in the freed em28xx_v4l2 struct.
- - NULL pointer dereference in em28xx_resolution_set() when accessing
-   v4l2->norm, since dev->v4l2 has been set to NULL.
+As a regression fix, change the error code to -ENODEV, and ignore this
+error in the callee, to continue probing.
 
-Fix this by moving the mutex_lock() before the dev->v4l2 read and
-adding a NULL check for dev->v4l2 under the lock.
-
-Reported-by: syzbot+c025d34b8eaa54c571b8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c025d34b8eaa54c571b8
-Fixes: 8139a4d583ab ("[media] em28xx: move v4l2 user counting fields from struct em28xx to struct v4l2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abhishek Kumar <abhishek_sts8@yahoo.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 28abd224db4a ("ALSA: caiaq: Handle probe errors properly")
+Cc: <stable@vger.kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221423
+Link: https://patch.msgid.link/20260427145642.6637-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/em28xx/em28xx-video.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ sound/usb/caiaq/device.c |    2 +-
+ sound/usb/caiaq/input.c  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/usb/em28xx/em28xx-video.c
-+++ b/drivers/media/usb/em28xx/em28xx-video.c
-@@ -2136,7 +2136,7 @@ static int em28xx_v4l2_open(struct file
- {
- 	struct video_device *vdev = video_devdata(filp);
- 	struct em28xx *dev = video_drvdata(filp);
--	struct em28xx_v4l2 *v4l2 = dev->v4l2;
-+	struct em28xx_v4l2 *v4l2;
- 	enum v4l2_buf_type fh_type = 0;
- 	int ret;
+--- a/sound/usb/caiaq/device.c
++++ b/sound/usb/caiaq/device.c
+@@ -366,7 +366,7 @@ static int setup_card(struct snd_usb_cai
  
-@@ -2153,13 +2153,19 @@ static int em28xx_v4l2_open(struct file
- 		return -EINVAL;
+ #ifdef CONFIG_SND_USB_CAIAQ_INPUT
+ 	ret = snd_usb_caiaq_input_init(cdev);
+-	if (ret < 0) {
++	if (ret < 0 && ret != -ENODEV) {
+ 		dev_err(dev, "Unable to set up input system (ret=%d)\n", ret);
+ 		return ret;
+ 	}
+--- a/sound/usb/caiaq/input.c
++++ b/sound/usb/caiaq/input.c
+@@ -804,7 +804,7 @@ int snd_usb_caiaq_input_init(struct snd_
+ 
+ 	default:
+ 		/* no input methods supported on this device */
+-		ret = -EINVAL;
++		ret = -ENODEV;
+ 		goto exit_free_idev;
  	}
  
-+	if (mutex_lock_interruptible(&dev->lock))
-+		return -ERESTARTSYS;
-+
-+	v4l2 = dev->v4l2;
-+	if (!v4l2) {
-+		mutex_unlock(&dev->lock);
-+		return -ENODEV;
-+	}
-+
- 	em28xx_videodbg("open dev=%s type=%s users=%d\n",
- 			video_device_node_name(vdev), v4l2_type_names[fh_type],
- 			v4l2->users);
- 
--	if (mutex_lock_interruptible(&dev->lock))
--		return -ERESTARTSYS;
--
- 	ret = v4l2_fh_open(filp);
- 	if (ret) {
- 		dev_err(&dev->intf->dev,
 
 
 
