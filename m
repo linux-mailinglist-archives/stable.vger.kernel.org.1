@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-259238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259240-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMq2I74xG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259238-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:42 +0200
+	id IPAZIcMxG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259240-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0837612A34
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5CC612A5A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CCC7730161B2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 57691300F275
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616FB27A907;
-	Sat, 30 May 2026 18:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25496238D52;
+	Sat, 30 May 2026 18:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6OtkQDI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o50dkzev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA24261B91;
-	Sat, 30 May 2026 18:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C43137750;
+	Sat, 30 May 2026 18:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167072; cv=none; b=YqCCfucWr20HBowA22PocYFL4+jNGkPKVLxMBPQf6F9L1Y2WGQDeUirPMQd1LYZpRvTCHI4YcZf3JpjhYhOb8Rt6Eq+br6Le7E1RmyyI/KdKS1Dh4Czhy1W85TsErGrtTKJz+qjjls2rWLZC8Bnlp6XgrEliuoMM4/ITX9ThsQc=
+	t=1780167078; cv=none; b=PDImBu/J/Tnj+tZr1T/XFQ3D1cw4dfdVVl3z/99ehWcMRhTFcARbuhZf3iqsd7Q5d0Uf8u3lgw+jzFpYoVQZuxHflwrQaXIltClzlQjp/rQSEaOEDd9CjK473u0YFM63kpFTINa7Ezfj/r8f+ByLRgurGNhG8FOfKOGlh2n3IWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167072; c=relaxed/simple;
-	bh=w8XFKEGTQE66A2jgp2h82ltMk2TfiIFeSWrBmmKrddc=;
+	s=arc-20240116; t=1780167078; c=relaxed/simple;
+	bh=+QmCEB5sEPg0TFyn7r1V9F6nczKDivTZA6Ob2l9jtdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ESKUav5aE0Qaox1EHBRyQFKvOon4MUr5T+fqcFHkynesyVSPJXobCvCY+cKzuP1Hdw45yHt1q1rpxptB8qmCALjAtIk7nmKU73oRhAMoo5riitbVrxmRLqeVHWMEM3mfjAxuPz4raYJgynRGNFwKw2UNbkXSXXN3zduMVmILOBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6OtkQDI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708851F00893;
-	Sat, 30 May 2026 18:51:10 +0000 (UTC)
+	 MIME-Version; b=SyfoxshPCZ3RDQjWzCS9w84ceLK5jVU2omFUcVcUfLlciV0F/fG91+4N9QdGuSjXZqqs0SIdjx4GP1gFC3ojyIaZAkYTCS1h7ANmN3AlUv0Ns45S3df0W0mj7cJj6QrGTk3oQpEdq1wJqXlO6quBHrrESFOLEGRTOxsZfb+yD/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o50dkzev; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4419A1F00893;
+	Sat, 30 May 2026 18:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167071;
-	bh=zOs+UJ9MB5QUAgL/QzkXvnpTk4r9yTmMUs22R1U38dY=;
+	s=korg; t=1780167077;
+	bh=USLZvLZIUAnh6cWKC7rxUkAjiu63hrh5SI0S7YNzkyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u6OtkQDI7JU2wvY1AmyX4TzHEoRf5Ou5yc98MFFjiz/YOFl7ZXm0h1MfeYa+jyhbv
-	 /JuwcQUngKcb9WfFcYDyGrLNvItAFPUkrdROFqKyGRX2wqZ5J6DpYrrPRHrq+Zntm4
-	 w9g+zunK1mLkN8jA/yXp5iPvldfzjGFnj/ZPKPfs=
+	b=o50dkzevnzYDCGq/jjNODZDFflPBo+2pKyXRkkQwT2bGKQU+6LRz1lnLImhtYtKXH
+	 nJoBE7PRSZl/ODf5FEGGgYDhaimBsaPisoYr/6VP4M5+jRGZNWiQYaSH6U45U9Fe93
+	 lzgzfOuGqk0JLekTBD3W3bznAZHC4P/wtgs1IF+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Simon Wunderlich <sw@simonwunderlich.de>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
 	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.10 556/589] batman-adv: bla: fix report_work leak on backbone_gw purge
-Date: Sat, 30 May 2026 18:07:17 +0200
-Message-ID: <20260530160239.270943041@linuxfoundation.org>
+Subject: [PATCH 5.10 557/589] batman-adv: tp_meter: avoid use of uninit sender vars
+Date: Sat, 30 May 2026 18:07:18 +0200
+Message-ID: <20260530160239.295329034@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
 References: <20260530160224.570625122@linuxfoundation.org>
@@ -73,25 +76,26 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-259240-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259238-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,narfation.org:email,simonwunderlich.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B0837612A34
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,narfation.org:email]
+X-Rspamd-Queue-Id: AF5CC612A5A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,112 +105,62 @@ X-Rspamd-Server: lfdr
 
 From: Sven Eckelmann <sven@narfation.org>
 
-commit 0459430add32ea41f3e2ef9351610e6d33627a6b upstream.
+commit 6c65cf23d4c6170fcf5714c32aa64689718cb142 upstream.
 
-batadv_bla_purge_backbone_gw() removes stale backbone gateway entries,
-but fails to properly handle their associated report_work:
+batadv_tp_recv_ack() and batadv_tp_stop() are only valid for tp_vars in the
+BATADV_TP_SENDER role. When called with a BATADV_TP_RECEIVER role, it
+proceeds to read sender-only members that were never initialized, leading
+to undefined behavior.
 
-- If report_work is running, the purge must wait for it to finish before
-  freeing the backbone_gw, otherwise the worker may access freed memory
-  (e.g. bat_priv).
-- If report_work is pending, the purge must cancel it and release the
-  reference held for that pending work item.
+This can be triggered when a node that is currently acting as a receiver in
+an ongoing tp_meter session receives a malicious ACK packet.
 
-The previous implementation called hlist_for_each_entry_safe() inside a
-spin_lock_bh() section, but cancel_work_sync() may sleep and therefore
-cannot be called from within a spinlock-protected region.
-
-Restructure the loop to handle one entry per spinlock critical section:
-acquire the lock, find the next entry to purge, remove it from the hash
-list, then release the lock before calling cancel_work_sync() and
-dropping the hash_entry reference. Repeat until no more entries require
-purging.
+Guard against this by checking tp_vars->role immediately after the
+lookup and bailing out if it is not BATADV_TP_SENDER, before any of
+those members are accessed.
 
 Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Reviewed-by: Simon Wunderlich <sw@simonwunderlich.de>
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c |   60 ++++++++++++++++++++-------------
- 1 file changed, 38 insertions(+), 22 deletions(-)
+ net/batman-adv/tp_meter.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -1229,6 +1229,7 @@ static void batadv_bla_purge_backbone_gw
- 	struct hlist_head *head;
- 	struct batadv_hashtable *hash;
- 	spinlock_t *list_lock;	/* protects write access to the hash lists */
-+	bool purged;
- 	int i;
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -647,6 +647,9 @@ static void batadv_tp_recv_ack(struct ba
+ 	if (unlikely(!tp_vars))
+ 		return;
  
- 	hash = bat_priv->bla.backbone_hash;
-@@ -1239,30 +1240,45 @@ static void batadv_bla_purge_backbone_gw
- 		head = &hash->table[i];
- 		list_lock = &hash->list_locks[i];
++	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
++		goto out;
++
+ 	if (unlikely(atomic_read(&tp_vars->sending) == 0))
+ 		goto out;
  
--		spin_lock_bh(list_lock);
--		hlist_for_each_entry_safe(backbone_gw, node_tmp,
--					  head, hash_entry) {
--			if (now)
--				goto purge_now;
--			if (!batadv_has_timed_out(backbone_gw->lasttime,
--						  BATADV_BLA_BACKBONE_TIMEOUT))
--				continue;
--
--			batadv_dbg(BATADV_DBG_BLA, backbone_gw->bat_priv,
--				   "%s(): backbone gw %pM timed out\n",
--				   __func__, backbone_gw->orig);
-+		do {
-+			purged = false;
-+
-+			spin_lock_bh(list_lock);
-+			hlist_for_each_entry_safe(backbone_gw, node_tmp,
-+						  head, hash_entry) {
-+				if (now)
-+					goto purge_now;
-+				if (!batadv_has_timed_out(backbone_gw->lasttime,
-+							  BATADV_BLA_BACKBONE_TIMEOUT))
-+					continue;
-+
-+				batadv_dbg(BATADV_DBG_BLA, backbone_gw->bat_priv,
-+					   "%s(): backbone gw %pM timed out\n",
-+					   __func__, backbone_gw->orig);
- 
- purge_now:
--			/* don't wait for the pending request anymore */
--			if (atomic_read(&backbone_gw->request_sent))
--				atomic_dec(&bat_priv->bla.num_requests);
--
--			batadv_bla_del_backbone_claims(backbone_gw);
--
--			hlist_del_rcu(&backbone_gw->hash_entry);
--			batadv_backbone_gw_put(backbone_gw);
--		}
--		spin_unlock_bh(list_lock);
-+				purged = true;
-+
-+				/* don't wait for the pending request anymore */
-+				if (atomic_read(&backbone_gw->request_sent))
-+					atomic_dec(&bat_priv->bla.num_requests);
-+
-+				batadv_bla_del_backbone_claims(backbone_gw);
-+
-+				hlist_del_rcu(&backbone_gw->hash_entry);
-+				break;
-+			}
-+			spin_unlock_bh(list_lock);
-+
-+			if (purged) {
-+				/* reference for pending report_work */
-+				if (cancel_work_sync(&backbone_gw->report_work))
-+					batadv_backbone_gw_put(backbone_gw);
-+
-+				/* reference for hash_entry */
-+				batadv_backbone_gw_put(backbone_gw);
-+			}
-+		} while (purged);
+@@ -1085,12 +1088,16 @@ void batadv_tp_stop(struct batadv_priv *
+ 	if (!tp_vars) {
+ 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 			   "Meter: trying to interrupt an already over connection\n");
+-		goto out;
++		goto out_put_orig_node;
  	}
+ 
++	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
++		goto out_put_tp_vars;
++
+ 	batadv_tp_sender_shutdown(tp_vars, return_value);
++out_put_tp_vars:
+ 	batadv_tp_vars_put(tp_vars);
+-out:
++out_put_orig_node:
+ 	batadv_orig_node_put(orig_node);
  }
  
 
