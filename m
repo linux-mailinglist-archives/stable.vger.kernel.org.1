@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-257584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EK08FYYdG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257584-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:26 +0200
+	id AHsWLRgoG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D852F60F9A3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27BC86112A4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C7E1E30DD283
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:18:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D957A30E8558
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712CB30E847;
-	Sat, 30 May 2026 17:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD43D33032B;
+	Sat, 30 May 2026 17:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbfdW3cw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjFyLrZN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D68A3242D7;
-	Sat, 30 May 2026 17:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE3621E098;
+	Sat, 30 May 2026 17:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161489; cv=none; b=UcrEYN8QP5jYU/W05b5G833ssHMPT6BmHd2JlQF7gD4OCZiQPkBNIrMTeU2DHoDOxEhu75jS1WrbRFCM6kVkWnmlmgIIRppbkgXjER/9gZ1VOicnx+Cb7sYTE3d63wyPYU0ZPNc2+3U2OwGnCMnXgNxHz5qG33MGypZiF4sn7sw=
+	t=1780163941; cv=none; b=J+X1RHDkW8jlvzN46xoMj1wpdUv+bRrFsME/fObU7Rd8o2NtsZ9lV146u6pix0Zf8Tt5S4rwb77h/vhUkHeT5y1vzrMUFV5yo9+ZgL10mcYEiN58NTEJuhf02O/TPqV0m18wN1ytZp7BskTUu6gt/j/ATJSsFWJC8YBCHDqwd8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161489; c=relaxed/simple;
-	bh=r6UgYIcY4oQG3qAHaXp/4ehTYDvwtNhoXnihMYO8V5E=;
+	s=arc-20240116; t=1780163941; c=relaxed/simple;
+	bh=tAHB5kOrtk2gy67EDH18TU9pBysJM3BTBT8hvc2ii6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RVd6BWvFqdv1LkrgaIAFvu9evJbfMdXuB+SkY1Zo7wKxrWwSVO1lOPFDz6G4NyIOXUrIEE7KpueZa8pJwJdrb6J69LM/bwObmUx+mY+22bfZsKzKaA7WS326Qlts4ovRbEy8hrjkihfRIy0ZmZjXxeXoWn6HAVfzKLRcV13IBa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbfdW3cw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20471F00893;
-	Sat, 30 May 2026 17:18:07 +0000 (UTC)
+	 MIME-Version; b=lMWwFO/Ql5/Kw/Cb5+usdJLSKO1XfMhXa+VGKE/XYd8mhVhaAF6JQqer2P5G8aHDNJ0rTI2hCqmNXq/O4LAyUyYBf3YQ+NE5qoQ7hcQwr5nUYb15GPKobrWcXCKHA+Qk0z5P3f+T96P0zx99fv4JrkuE/lGWdCK9f8CgL/PuAoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjFyLrZN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D650B1F00899;
+	Sat, 30 May 2026 17:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161488;
-	bh=bwlIo3hNc2gj5YPwM7GEcLOa3tfmfOd/CXFs3UUclnA=;
+	s=korg; t=1780163940;
+	bh=t7TDn62qHQ1XHWaJuhjVJKd6hysWKGCVPvEhuKO+Il0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NbfdW3cwoZ0RkTB977BOicYBK4ZbujPmHynxlPU+ZPwd/Ivu1VwGMbcWDx4HCHCVY
-	 6F0kKlsykN4WfoVwetWvSjb/6GVOXA+9jk2czprt+CxLD5TiaG1/o9VXN0cKskVLGU
-	 lzJXuHN16wQv6+i6UDyHKDa8V45Qd3ZxhvPyLddg=
+	b=TjFyLrZNWTsErtg06HSAvkQZ3q/845MvlBajW3nTHSkrTq5krkwnl2sjq7JW+DSMG
+	 15WZEZUrWY/Zd4iPcEMy61W39EZ3lN+ebol1bY/q9w2GFLPkO7M1ZGxikkvcIEHgyg
+	 VyupdZedJ//8JDoPZvL40e/L+UAqp7mxL9YDySGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Sun Jian <sun.jian.kdev@gmail.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 598/969] dmaengine: mxs-dma: Fix missing return value from of_dma_controller_register()
+Subject: [PATCH 5.15 408/776] bpf: fix end-of-list detection in cgroup_storage_get_next_key()
 Date: Sat, 30 May 2026 18:02:02 +0200
-Message-ID: <20260530160316.935432513@linuxfoundation.org>
+Message-ID: <20260530160251.037945050@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +67,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257584-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258316-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D852F60F9A3
+X-Rspamd-Queue-Id: 27BC86112A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit ab2bf6d4c0a0152907b18d25c1b118ea5ea779df ]
+[ Upstream commit 5828b9e5b272ecff7cf5d345128d3de7324117f7 ]
 
-Propagate the return value of of_dma_controller_register() in probe()
-instead of ignoring it.
+list_next_entry() never returns NULL -- when the current element is the
+last entry it wraps to the list head via container_of(). The subsequent
+NULL check is therefore dead code and get_next_key() never returns
+-ENOENT for the last element, instead reading storage->key from a bogus
+pointer that aliases internal map fields and copying the result to
+userspace.
 
-Fixes: a580b8c5429a6 ("dmaengine: mxs-dma: add dma support for i.MX23/28")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260225-mxsdma-module-v3-2-8f798b13baa6@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Replace it with list_entry_is_head() so the function correctly returns
+-ENOENT when there are no more entries.
+
+Fixes: de9cbbaadba5 ("bpf: introduce cgroup storage maps")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Sun Jian <sun.jian.kdev@gmail.com>
+Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/20260403132951.43533-2-bestswngs@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/mxs-dma.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/local_storage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/mxs-dma.c b/drivers/dma/mxs-dma.c
-index dc147cc2436e9..5d34440b9e127 100644
---- a/drivers/dma/mxs-dma.c
-+++ b/drivers/dma/mxs-dma.c
-@@ -827,6 +827,7 @@ static int mxs_dma_probe(struct platform_device *pdev)
- 	if (ret) {
- 		dev_err(mxs_dma->dma_device.dev,
- 			"failed to register controller\n");
-+		return ret;
- 	}
+diff --git a/kernel/bpf/local_storage.c b/kernel/bpf/local_storage.c
+index 035e9e3a7132e..85e1b5fba0d57 100644
+--- a/kernel/bpf/local_storage.c
++++ b/kernel/bpf/local_storage.c
+@@ -259,7 +259,7 @@ static int cgroup_storage_get_next_key(struct bpf_map *_map, void *key,
+ 			goto enoent;
  
- 	dev_info(mxs_dma->dma_device.dev, "initialized\n");
+ 		storage = list_next_entry(storage, list_map);
+-		if (!storage)
++		if (list_entry_is_head(storage, &map->list, list_map))
+ 			goto enoent;
+ 	} else {
+ 		storage = list_first_entry(&map->list,
 -- 
 2.53.0
 
