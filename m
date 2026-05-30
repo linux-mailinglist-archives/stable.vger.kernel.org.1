@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-258328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258931-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMk4B/0nG2rM/ggAu9opvQ
-	(envelope-from <stable+bounces-258328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:05 +0200
+	id gAIhEeAwG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-258931-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C5A661122B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA7461284A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3075313DE1C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:59:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0B7230E29DA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CC334041A;
-	Sat, 30 May 2026 17:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA9E3242BA;
+	Sat, 30 May 2026 18:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9N0OZN7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvW7cO1C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C1C320CAD;
-	Sat, 30 May 2026 17:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A06329E79;
+	Sat, 30 May 2026 18:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163981; cv=none; b=WaxrZTkTWZCHmXvvs4+rK4lDCLp8KV/UdmBBKZUzZOZKVi+/brs797Fq4koJog+GiSYDNpxZuYF7pdXhMeYkLN1TN492wW+HRIDcHfT5/Ym9sG0MF3wVMyoTvaz3mORiOpW/JotBdPrBTRUdRT58vApY7zBLpp2AnwDdw1D4/+Q=
+	t=1780166025; cv=none; b=Go9ZQkFCyAui2AQ9aE8m6dJ0xri1OsiHNPrCqze1pEQ/MkerFB/+rtyG2mIviO2O20aQJEgCt+IconT+4NcgGDvbUdhO/Wgt8kDTqFeAojtVCvP2fdOwajYWWViaMOhTZyh/jWj7ksHHNK/tUJz2mec3W0CQhbfkS9Pa9akEjS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163981; c=relaxed/simple;
-	bh=pFEqJGHwE/HD/TUDUb0ZR9GQBIp+goHrV4z/JWy5VLQ=;
+	s=arc-20240116; t=1780166025; c=relaxed/simple;
+	bh=LKfwHGHJIqcaIxcgtPKJS4ZPoOssKXTc4GcVqVe6Fz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JuBOadEo1Rk8XLCn0znmCO/yeGZM1kpN5YvN5QTaF8O6BOO+KoEa+UIF8I/6YAZzhCe7nUCaviM++gYNyyTsdXAXraDlawUhX0BhoBA6N0Q3ShkaUCJzlrWYZTZGj6N+Odi62vE47BEM8pQf5discnqBMy10C/KBAbhhGczP86M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9N0OZN7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2CF1F00893;
-	Sat, 30 May 2026 17:59:39 +0000 (UTC)
+	 MIME-Version; b=jci4jVPt1bO48/k9VYqNTjI7bNj9c+Xt2QmjborhBqKVMrQyM5OFB/JijsNoE8ksZaDRh9wHqb9YznuvFCGQWngKi114MDFvqJfA3pmlj5ZVnPrG3s31uL8Fozwx2wLY+l3JNVWzLiClcxFi/UvtFY7rDpSqXz+iXS1HSjSypq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvW7cO1C; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BADE01F00893;
+	Sat, 30 May 2026 18:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163980;
-	bh=7kBbzPKP+sO6rEAVjJA+qf6MKJFs1pyyAx6t0G4niZc=;
+	s=korg; t=1780166024;
+	bh=MVbxjiA5kGzDurtdvhXQQ+UFBc81RnXUWTjG1NqhFbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=y9N0OZN7Zu+okH9QBVmL6MRu/+GAwhM5Y0zWrC/xwGfHItF+cnBjGTHVQhXKCTnLH
-	 y0RQN2Gks/ypYGsid8w3gtux1Ly3jNzLrZ10mcB7p23w1hAcHp40QtUW2+JP22Kyhc
-	 woKxvsefLg+VBeKUJHEf5/OqsM8Pz8k12ebFtwiI=
+	b=MvW7cO1C7v7M4Rm3reJdy0oK0cj7K26/Z2sIABj2JmDCkRaKhSOCRHR08dW53skqA
+	 o8GDdDPtFYCu5X606JV3UCwxOs2OGxwMqGHwKoaHFKW9yWQxiG02jLN+o5G0UhMKOR
+	 opqnLBCKIFn4RTFBcUqul8l2255EMFg1TSdYsOlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-	Somasundaram Krishnasamy <somasundaram.krishnasamy@oracle.com>,
-	Gerd Rausch <gerd.rausch@oracle.com>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 419/776] net/rds: Optimize rds_ib_laddr_check
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.10 252/589] isofs: validate block number from NFS file handle in isofs_export_iget
 Date: Sat, 30 May 2026 18:02:13 +0200
-Message-ID: <20260530160251.298507941@linuxfoundation.org>
+Message-ID: <20260530160231.608041055@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,222 +62,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-258328-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258931-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 9C5A661122B
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,suse.cz:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9EA7461284A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Håkon Bugge <haakon.bugge@oracle.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 236f718ac885965fa886440b9898dfae185c9733 ]
+commit 24376458138387fb251e782e624c7776e9826796 upstream.
 
-rds_ib_laddr_check() creates a CM_ID and attempts to bind the address
-in question to it. This in order to qualify the allegedly local
-address as a usable IB/RoCE address.
+isofs_fh_to_dentry() and isofs_fh_to_parent() pass an attacker-
+controlled block number (ifid->block or ifid->parent_block) from
+the NFS file handle to isofs_export_iget(), which only rejects
+block == 0 before calling isofs_iget() and ultimately sb_bread().
+A crafted file handle with fh_len sufficient to pass the check
+added by commit 0405d4b63d08 ("isofs: Prevent the use of too small
+fid") can still drive the server to read any in-range block on the
+backing device as if it were an iso_directory_record.  That earlier
+fix was assigned CVE-2025-37780.
 
-In the field, ExaWatcher runs rds-ping to all ports in the fabric from
-all local ports. This using all active ToS'es. In a full rack system,
-we have 14 cell servers and eight db servers. Typically, 6 ToS'es are
-used. This implies 528 rds-ping invocations per ExaWatcher's "RDSinfo"
-interval.
+sb_bread() on an out-of-range block returns NULL cleanly via the
+EIO path, so there is no memory-safety violation.  For in-range
+reads of adjacent-partition data on the same block device, the
+unrelated bytes end up in iso_inode_info fields that reach the NFS
+client as dentry metadata.  The deployment surface (isofs exported
+over NFS from loop-mounted images) is narrow and requires an
+authenticated NFS peer, but the malformed-file-handle class is
+reportable as hardening next to the existing CVE-2025-37780 fix.
 
-Adding to this, each rds-ping invocation creates eight sockets and
-binds the local address to them:
+Reject block >= ISOFS_SB(sb)->s_nzones in isofs_export_iget() so
+the check covers both isofs_fh_to_dentry() and isofs_fh_to_parent()
+call sites with a single line.
 
-socket(AF_RDS, SOCK_SEQPACKET, 0)       = 3
-bind(3, {sa_family=AF_INET, sin_port=htons(0),
-	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
-socket(AF_RDS, SOCK_SEQPACKET, 0)       = 4
-bind(4, {sa_family=AF_INET, sin_port=htons(0),
-	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
-socket(AF_RDS, SOCK_SEQPACKET, 0)       = 5
-bind(5, {sa_family=AF_INET, sin_port=htons(0),
-	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
-socket(AF_RDS, SOCK_SEQPACKET, 0)       = 6
-bind(6, {sa_family=AF_INET, sin_port=htons(0),
-	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
-socket(AF_RDS, SOCK_SEQPACKET, 0)       = 7
-bind(7, {sa_family=AF_INET, sin_port=htons(0),
-	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
-socket(AF_RDS, SOCK_SEQPACKET, 0)       = 8
-bind(8, {sa_family=AF_INET, sin_port=htons(0),
-	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
-socket(AF_RDS, SOCK_SEQPACKET, 0)       = 9
-bind(9, {sa_family=AF_INET, sin_port=htons(0),
-	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
-socket(AF_RDS, SOCK_SEQPACKET, 0)       = 10
-bind(10, {sa_family=AF_INET, sin_port=htons(0),
-	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
-
-So, at every interval ExaWatcher executes rds-ping's, 4224 CM_IDs are
-allocated, considering this full-rack system. After the a CM_ID has
-been allocated, rdma_bind_addr() is called, with the port number being
-zero. This implies that the CMA will attempt to search for an un-used
-ephemeral port. Simplified, the algorithm is to start at a random
-position in the available port space, and then if needed, iterate
-until an un-used port is found.
-
-The book-keeping of used ports uses the idr system, which again uses
-slab to allocate new struct idr_layer's. The size is 2092 bytes and
-slab tries to reduce the wasted space. Hence, it chooses an order:3
-allocation, for which 15 idr_layer structs will fit and only 1388
-bytes are wasted per the 32KiB order:3 chunk.
-
-Although this order:3 allocation seems like a good space/speed
-trade-off, it does not resonate well with how it used by the CMA. The
-combination of the randomized starting point in the port space (which
-has close to zero spatial locality) and the close proximity in time of
-the 4224 invocations of the rds-ping's, creates a memory hog for
-order:3 allocations.
-
-These costly allocations may need reclaims and/or compaction. At
-worst, they may fail and produce a stack trace such as (from uek4):
-
-[<ffffffff811a72d5>] __inc_zone_page_state+0x35/0x40
-[<ffffffff811c2e97>] page_add_file_rmap+0x57/0x60
-[<ffffffffa37ca1df>] remove_migration_pte+0x3f/0x3c0 [ksplice_6cn872bt_vmlinux_new]
-[<ffffffff811c3de8>] rmap_walk+0xd8/0x340
-[<ffffffff811e8860>] remove_migration_ptes+0x40/0x50
-[<ffffffff811ea83c>] migrate_pages+0x3ec/0x890
-[<ffffffff811afa0d>] compact_zone+0x32d/0x9a0
-[<ffffffff811b00ed>] compact_zone_order+0x6d/0x90
-[<ffffffff811b03b2>] try_to_compact_pages+0x102/0x270
-[<ffffffff81190e56>] __alloc_pages_direct_compact+0x46/0x100
-[<ffffffff8119165b>] __alloc_pages_nodemask+0x74b/0xaa0
-[<ffffffff811d8411>] alloc_pages_current+0x91/0x110
-[<ffffffff811e3b0b>] new_slab+0x38b/0x480
-[<ffffffffa41323c7>] __slab_alloc+0x3b7/0x4a0 [ksplice_s0dk66a8_vmlinux_new]
-[<ffffffff811e42ab>] kmem_cache_alloc+0x1fb/0x250
-[<ffffffff8131fdd6>] idr_layer_alloc+0x36/0x90
-[<ffffffff8132029c>] idr_get_empty_slot+0x28c/0x3d0
-[<ffffffff813204ad>] idr_alloc+0x4d/0xf0
-[<ffffffffa051727d>] cma_alloc_port+0x4d/0xa0 [rdma_cm]
-[<ffffffffa0517cbe>] rdma_bind_addr+0x2ae/0x5b0 [rdma_cm]
-[<ffffffffa09d8083>] rds_ib_laddr_check+0x83/0x2c0 [ksplice_6l2xst5i_rds_rdma_new]
-[<ffffffffa05f892b>] rds_trans_get_preferred+0x5b/0xa0 [rds]
-[<ffffffffa05f09f2>] rds_bind+0x212/0x280 [rds]
-[<ffffffff815b4016>] SYSC_bind+0xe6/0x120
-[<ffffffff815b4d3e>] SyS_bind+0xe/0x10
-[<ffffffff816b031a>] system_call_fastpath+0x18/0xd4
-
-To avoid these excessive calls to rdma_bind_addr(), we optimize
-rds_ib_laddr_check() by simply checking if the address in question has
-been used before. The rds_rdma module keeps track of addresses
-associated with IB devices, and the function rds_ib_get_device() is
-used to determine if the address already has been qualified as a valid
-local address. If not found, we call the legacy rds_ib_laddr_check(),
-now renamed to rds_ib_laddr_check_cm().
-
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
-Signed-off-by: Somasundaram Krishnasamy <somasundaram.krishnasamy@oracle.com>
-Signed-off-by: Gerd Rausch <gerd.rausch@oracle.com>
-Signed-off-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260408080420.540032-2-achender@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: ebf71dd4aff4 ("net/rds: Restrict use of RDS/IB to the initial network namespace")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0405d4b63d08 ("isofs: Prevent the use of too small fid")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260419212155.2169382-3-michael.bommarito@gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/ib.c      | 20 ++++++++++++++++++--
- net/rds/ib.h      |  1 +
- net/rds/ib_rdma.c |  2 +-
- 3 files changed, 20 insertions(+), 3 deletions(-)
+ fs/isofs/export.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rds/ib.c b/net/rds/ib.c
-index 24c9a9005a6fb..dbc63493ade70 100644
---- a/net/rds/ib.c
-+++ b/net/rds/ib.c
-@@ -403,8 +403,8 @@ static void rds6_ib_ic_info(struct socket *sock, unsigned int len,
-  * allowed to influence which paths have priority.  We could call userspace
-  * asserting this policy "routing".
-  */
--static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
--			      __u32 scope_id)
-+static int rds_ib_laddr_check_cm(struct net *net, const struct in6_addr *addr,
-+				 __u32 scope_id)
+--- a/fs/isofs/export.c
++++ b/fs/isofs/export.c
+@@ -24,7 +24,7 @@ isofs_export_iget(struct super_block *sb
  {
- 	int ret;
- 	struct rdma_cm_id *cm_id;
-@@ -489,6 +489,22 @@ static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
- 	return ret;
- }
+ 	struct inode *inode;
  
-+static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
-+			      __u32 scope_id)
-+{
-+	struct rds_ib_device *rds_ibdev = NULL;
-+
-+	if (ipv6_addr_v4mapped(addr)) {
-+		rds_ibdev = rds_ib_get_device(addr->s6_addr32[3]);
-+		if (rds_ibdev) {
-+			rds_ib_dev_put(rds_ibdev);
-+			return 0;
-+		}
-+	}
-+
-+	return rds_ib_laddr_check_cm(net, addr, scope_id);
-+}
-+
- static void rds_ib_unregister_client(void)
- {
- 	ib_unregister_client(&rds_ib_client);
-diff --git a/net/rds/ib.h b/net/rds/ib.h
-index 2ba71102b1f1f..d6c1197731c1c 100644
---- a/net/rds/ib.h
-+++ b/net/rds/ib.h
-@@ -384,6 +384,7 @@ void rds_ib_cm_connect_complete(struct rds_connection *conn,
- 	__rds_ib_conn_error(conn, KERN_WARNING "RDS/IB: " fmt)
- 
- /* ib_rdma.c */
-+struct rds_ib_device *rds_ib_get_device(__be32 ipaddr);
- int rds_ib_update_ipaddr(struct rds_ib_device *rds_ibdev,
- 			 struct in6_addr *ipaddr);
- void rds_ib_add_conn(struct rds_ib_device *rds_ibdev, struct rds_connection *conn);
-diff --git a/net/rds/ib_rdma.c b/net/rds/ib_rdma.c
-index 30fca2169aa7a..468fd60d818ff 100644
---- a/net/rds/ib_rdma.c
-+++ b/net/rds/ib_rdma.c
-@@ -47,7 +47,7 @@ struct rds_ib_dereg_odp_mr {
- 
- static void rds_ib_odp_mr_worker(struct work_struct *work);
- 
--static struct rds_ib_device *rds_ib_get_device(__be32 ipaddr)
-+struct rds_ib_device *rds_ib_get_device(__be32 ipaddr)
- {
- 	struct rds_ib_device *rds_ibdev;
- 	struct rds_ib_ipaddr *i_ipaddr;
--- 
-2.53.0
-
+-	if (block == 0)
++	if (block == 0 || block >= ISOFS_SB(sb)->s_nzones)
+ 		return ERR_PTR(-ESTALE);
+ 	inode = isofs_iget(sb, block, offset);
+ 	if (IS_ERR(inode))
 
 
 
