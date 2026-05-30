@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-258566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257763-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAdELQopG2rg/ggAu9opvQ
-	(envelope-from <stable+bounces-258566-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:34 +0200
+	id EN1dI48eG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257763-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C304611504
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C894260FCB4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2764F305DB79
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:12:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AD2BA300980F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C768B3B7B72;
-	Sat, 30 May 2026 18:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D5B3AE1A3;
+	Sat, 30 May 2026 17:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caA0FaP+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxAoajz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4697223DC6;
-	Sat, 30 May 2026 18:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56CD33B6C4;
+	Sat, 30 May 2026 17:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164778; cv=none; b=HaxM6YoqVKf11Hsw+nDHsnhkxADKTcLePWICQBkcjhCT7Mqt6gqZuoSE1WQpO06F5mjmrQyyBZi5+BVZjtl7lMOXCqnvVwh9zo3U3BdLJH352v17WUJGUGjo5q+glBYJKXDqVri7iInr0W2JHrCcU715MCcC8tgzfju0oaOZnH0=
+	t=1780162090; cv=none; b=OGHxKWzXuzbZrg04cf6vjUgnCku5a3c6CEGmRygr7n1RFLtDasNKEbi6AflcL5Y1ymW/KG4TmUJs9BTICcwBg5NYic4lMWFjWUJj2+pftHU4N3nMcqzh+B8dZ9znLXY+Zhv69eJmgUM4T5E99B+kcPlejeVe4fhdFD6TVHnZSLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164778; c=relaxed/simple;
-	bh=Qu6FLZfv+I+OOjYg9yMpiKfDYQ4SJAHCpPwBLb4+Loo=;
+	s=arc-20240116; t=1780162090; c=relaxed/simple;
+	bh=ILMde/bEhk0rxIuuoH9kq06Hqomgvc2b2cW5A0iYNEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AAbDjDc4pGNCnm7QEEgYJMNbQrqqriDGsC07eMltMdblAlk2/cJW1phQNT3OMEbU4yULIgvVJ6GLy7xMOFMnRxI1ngLnQv5xJ8YES282E5gXYvWX5CeqyS8cr0HGV4T/tUyKT55XF2lIqqz8aanykklGlRFj8N100moQp9ttMMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caA0FaP+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6AA1F00898;
-	Sat, 30 May 2026 18:12:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kaOaBU9D6OrVGsbx+tZSQijoH3RBj5+vMWT1jGr3QB56uijfdNTRR+W0HEaLDI66NqLGZ6KYDLMPu+Dkkat4xMnyw93S25sHS39mm+kX/5mQ2vvoTLv0CYHk0rXuVUxF5JS26PcQaILeWZ+drVEu9746+qIhsLvSpDVY5RHv0rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxAoajz8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237901F00893;
+	Sat, 30 May 2026 17:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164777;
-	bh=ZyAUfWgdzbGdlgSESkd+fPTyKdTcsdJ24dQnPSlBphE=;
+	s=korg; t=1780162089;
+	bh=0dPNziJ+zld+yXkUeugTGffaDWoAnGKOdWxGEClXrfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=caA0FaP+khbbmhNk1LmVs2LuJQs0Ii5d8wZuv/Q9bNTbZ3TVmcjYb5eFF0kB4VtHK
-	 mIUSTY+wjCBNXO5LA8VHcyYXAJhBDf/zdzbm6Qf2Tsz1P2HskQK0Pou3MReEUeRErG
-	 rdvEnKSaO9TRCwCEgnr8F6fLBv4WOAPvkYZBE/N4=
+	b=MxAoajz8NuCKUdWjsYk+D4jqUhGu3pJaH2VMknkmNj/2AINy8dUHn216J/iB/VsF6
+	 D+HEBejpkdUD/ZTAGj4s5JM0C4weHbGU6PcbTRghi2uGw/jv79R9R5BsB1t6T4n00R
+	 5rO6VMQSkqNa63m2auWImn6s2I/XWKz0IRsC3Pvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 627/776] netfilter: skip recording stale or retransmitted INIT
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 817/969] ALSA: usb-audio: Bound MIDI endpoint descriptor scans
 Date: Sat, 30 May 2026 18:05:41 +0200
-Message-ID: <20260530160256.178686636@linuxfoundation.org>
+Message-ID: <20260530160323.201017941@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +62,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258566-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-257763-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5C304611504
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C894260FCB4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit 576a5d2bad4814c881a829576b1261b9b8159d2b ]
+commit d6854daa67be623860f4e1873fd3d3c275aba4ed upstream.
 
-An INIT whose init_tag matches the peer's vtag does not provide new state
-information. It indicates either:
+snd_usbmidi_get_ms_info() validates the internal MIDIStreaming endpoint
+descriptor size before using baAssocJackID[], but the descriptor walker can
+still return a class-specific endpoint descriptor whose bLength exceeds the
+remaining bytes in the endpoint-extra scan.
 
-- a stale INIT (after INIT-ACK has already been seen on the same side), or
-- a retransmitted INIT (after INIT has already been recorded on the same
-  side).
+That leaves later flexible-array reads bounded by bLength, but not by the
+remaining bytes in the endpoint-extra scan.
 
-In both cases, the INIT must not update ct->proto.sctp.init[] state, since
-it does not advance the handshake tracking and may otherwise corrupt
-INIT/INIT-ACK validation logic.
+Stop walking when bLength is zero or
+extends past the remaining endpoint-extra scan.
 
-Allow INIT processing only when the conntrack entry is newly created
-(SCTP_CONNTRACK_NONE), or when the init_tag differs from the stored peer
-vtag.
-
-Note it skips the check for the ct with old_state SCTP_CONNTRACK_NONE in
-nf_conntrack_sctp_packet(), as it is just created in sctp_new() where it
-set ct->proto.sctp.vtag[IP_CT_DIR_REPLY] = ih->init_tag.
-
-Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Acked-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/ee56c3e416452b2a40589a2a85245ac2ad5e9f4b.1777214801.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5c6cd7021a05 ("ALSA: usb-audio: Fix case when USB MIDI interface has more than one extra endpoint descriptor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260507-usb-midi-endpoint-scan-bounds-v1-1-329d7348160e@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_proto_sctp.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ sound/usb/midi.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-index 90458799324ec..ae89f3c590e8b 100644
---- a/net/netfilter/nf_conntrack_proto_sctp.c
-+++ b/net/netfilter/nf_conntrack_proto_sctp.c
-@@ -484,9 +484,13 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
- 			if (!ih)
- 				goto out_unlock;
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -1974,15 +1974,17 @@ static struct usb_ms_endpoint_descriptor
+ 	while (extralen > 3) {
+ 		struct usb_ms_endpoint_descriptor *ms_ep =
+ 				(struct usb_ms_endpoint_descriptor *)extra;
++		int length = ms_ep->bLength;
  
--			if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir])
--				ct->proto.sctp.init[!dir] = 0;
--			ct->proto.sctp.init[dir] = 1;
-+			/* Do not record INIT matching peer vtag (stale or retransmitted INIT). */
-+			if (old_state == SCTP_CONNTRACK_NONE ||
-+			    ct->proto.sctp.vtag[!dir] != ih->init_tag) {
-+				if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir])
-+					ct->proto.sctp.init[!dir] = 0;
-+				ct->proto.sctp.init[dir] = 1;
-+			}
- 
- 			pr_debug("Setting vtag %x for dir %d\n", ih->init_tag, !dir);
- 			ct->proto.sctp.vtag[!dir] = ih->init_tag;
--- 
-2.53.0
-
+-		if (ms_ep->bLength > 3 &&
++		if (!length || length > extralen)
++			break;
++
++		if (length > 3 &&
+ 		    ms_ep->bDescriptorType == USB_DT_CS_ENDPOINT &&
+ 		    ms_ep->bDescriptorSubtype == UAC_MS_GENERAL)
+ 			return ms_ep;
+-		if (!extra[0])
+-			break;
+-		extralen -= extra[0];
+-		extra += extra[0];
++		extralen -= length;
++		extra += length;
+ 	}
+ 	return NULL;
+ }
 
 
 
