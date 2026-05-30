@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAtoGWsqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258626-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:27 +0200
+	id 8BHfNz4gG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE344611849
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A40610058
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8A0FE3028F56
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C29D30578DE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFACF32F770;
-	Sat, 30 May 2026 18:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8776B325701;
+	Sat, 30 May 2026 17:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpS/YOFg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhHRLIpY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E5D284690;
-	Sat, 30 May 2026 18:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E56B2E7379;
+	Sat, 30 May 2026 17:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164985; cv=none; b=lrY/a6+8U5fRr1B4x9c81N6WhgBEDs033A5r2MT6bT/3hK16DoFfLGM4PyOX/BVKYWFF8Le0aQ+k2Q1m/U3ZEupsQJ1IYFG2cTerk8GzuI9PkszFZT3+x56wrm4pMYCmVfX9jSM4nSh1KMP/6JOPNS3iG+6sctw9n9XevzQ4e0I=
+	t=1780162283; cv=none; b=c2VWmXHebIcFxD/AsdLLXRmvj8WKwDNIP8+8pX7A/ffI8JniiieFmRKRrtHRQxECcBEr/ei5DLzx6AIXpgYQAZfpErdbCpS4fGojhzLMCuZMURic6MjaTRthMdlb5JDZRhPT1zFK4jGQ53/ExfHjROQ1Sqy9B5rqoZYPnlKqQs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164985; c=relaxed/simple;
-	bh=zFShmFc/FVFRFVKtT5cl6JACoFxQAYv0lHrd5M4Eq8Q=;
+	s=arc-20240116; t=1780162283; c=relaxed/simple;
+	bh=YsleyhcKVJ3kE80JIp6VBq4wPkA3vlytittg72D6FGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k3O2iV4o1DgrzXmPssgjl2RYetGC7eFTXZ9uE73REKFe1iGSoOSNaQLJ0A7bfm/gX0uficRBQG24+ewZKXu7bz64N2L/aHLJRjHlRbYW3AlV64NdZQadvIYgXIEYovTyJc1erwmZxP8lYZpMr9jEYGMMg12OKiXE7kQRujY9ItI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpS/YOFg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094E81F00893;
-	Sat, 30 May 2026 18:16:23 +0000 (UTC)
+	 MIME-Version; b=OaU7AMKfda3+OGe0On3VXJvT0/KsnHy+5oFB3uPNfi8dBmA6HgPSb2pFhW0A7F4cCMNWb8rLNHMyqNV0geWAEY+Ud2keFZ1SwlaMV9dXIWpbb5H2E5PUo4ssHM+gU6zZVRVviSCaMcYUZD0En16wUaqg9WHhMC4i+YOe/Y2m9sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhHRLIpY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D941F00893;
+	Sat, 30 May 2026 17:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164984;
-	bh=HuU56/OMMmoeMcazSU4bH80E+BgmIg3PWU7UyVmcvwc=;
+	s=korg; t=1780162282;
+	bh=UKI0GcAOQOkk3qNHQJyey01tOARsk7AODGsOoLxZVA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FpS/YOFgU1NAtEMW4zK0OD3Jh5e1A4sROyiZwB4XVL996vBJQbOG8086Ek6cxk93I
-	 Y4wG6Zhv1mcwZgJCg/SRpFoE4bZuuq4vSV2FeQPej2qEh0beMnIRMbjhx82NIRftQL
-	 W1VGsdMaJuO0u7ULStlz9A8r3J/DtrQErAIPURc8=
+	b=jhHRLIpYDrRfLjWi9GSXiOknizdMrcBubTw4dUogYAepe0RtVuMTwmDEAHMbnAsl9
+	 vM2H95l0jlOE1Halj1KOeVnhcsxjrs0tl4OofITDdLQvG5ee9WQKkelq3Y6P4pcctc
+	 isEWXmGWWjoLrUMZIngDgdvO5HYjznwffTzc16w8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 686/776] net: bcmgenet: keep RBUF EEE/PM disabled
+	Osama Abdelkader <osama.abdelkader@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Ian Ray <ian.ray@gehealthcare.com>
+Subject: [PATCH 6.1 876/969] drm/bridge: megachips: remove bridge when irq request fails
 Date: Sat, 30 May 2026 18:06:40 +0200
-Message-ID: <20260530160257.587292060@linuxfoundation.org>
+Message-ID: <20260530160324.876304422@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +64,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258626-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257821-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,gehealthcare.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,broadcom.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DE344611849
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 57A40610058
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolai Buchwitz <nb@tipi-net.de>
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
 
-commit 9a1730245e416d11ad5c0f2c100061d61cc43f60 upstream.
+commit d45d5c819f2cd0b6b5d76a194a537a5f4aeefecb upstream.
 
-Setting RBUF_EEE_EN | RBUF_PM_EN in RBUF_ENERGY_CTRL breaks the RX
-path on GENET hardware once MAC EEE becomes active. RX traffic stops
-flowing while the link stays up and the usual descriptor/RX error
-counters remain quiet. In that state the MAC still accepts frames
-(rbuf_ovflow_cnt keeps climbing) but RBUF no longer forwards them to
-DMA, so rx_packets is no longer incremented at the netdev level. On
-some boards the corruption ends up as a paging fault in
-skb_release_data via bcmgenet_rx_poll on an LPI exit.
+If devm_request_threaded_irq() fails after drm_bridge_add(), remove the
+bridge before returning.
 
-Reproduced on Pi 4B (BCM2711 + BCM54213PE) and confirmed by Florian
-Fainelli on an internal Broadcom 4908-family board with the same crash
-signature. RBUF_PM_EN is not publicly documented.
+Keep drm_bridge_add() rather than devm_drm_bridge_add(): registration is
+tied to the STDP4028 device while ge_b850v3_register() may complete from
+either I2C probe; devm would not unwind the bridge if the other client's
+probe fails.
 
-This shows up more often now that phy_support_eee() enables EEE by
-default, but it also affects older kernels as soon as TX LPI is
-turned on via ethtool, so it is not specific to recent changes.
-
-Always clear RBUF_EEE_EN | RBUF_PM_EN in bcmgenet_eee_enable_set so
-the bits stay off across resets. UMAC and TBUF setup is left alone so
-TX-side EEE keeps working.
-
-Link: https://github.com/raspberrypi/linux/issues/7304
-Fixes: 6ef398ea60d9 ("net: bcmgenet: add EEE support")
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+Fixes: fcfa0ddc18ed ("drm/bridge: Drivers for megachips-stdpxxxx-ge-b850v3-fw (LVDS-DP++)")
 Cc: stable@vger.kernel.org
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260520184320.652053-1-nb@tipi-net.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Tested-by: Ian Ray <ian.ray@gehealthcare.com>
+Link: https://patch.msgid.link/20260430195700.80317-1-osama.abdelkader@gmail.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c |   16 +++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1275,13 +1275,12 @@ void bcmgenet_eee_enable_set(struct net_
- 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
- 	bcmgenet_writel(reg, priv->base + off);
+--- a/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
++++ b/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
+@@ -302,7 +302,6 @@ static void ge_b850v3_lvds_remove(void)
+ 		goto out;
  
--	/* Do the same for thing for RBUF */
-+	/* RBUF EEE/PM can break the RX path on GENET. Keep it disabled. */
- 	reg = bcmgenet_rbuf_readl(priv, RBUF_ENERGY_CTRL);
--	if (enable)
--		reg |= RBUF_EEE_EN | RBUF_PM_EN;
--	else
-+	if (reg & (RBUF_EEE_EN | RBUF_PM_EN)) {
- 		reg &= ~(RBUF_EEE_EN | RBUF_PM_EN);
--	bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
-+		bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
-+	}
+ 	drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
+-
+ 	ge_b850v3_lvds_ptr = NULL;
+ out:
+ 	mutex_unlock(&ge_b850v3_lvds_dev_mutex);
+@@ -312,6 +311,7 @@ static int ge_b850v3_register(void)
+ {
+ 	struct i2c_client *stdp4028_i2c = ge_b850v3_lvds_ptr->stdp4028_i2c;
+ 	struct device *dev = &stdp4028_i2c->dev;
++	int ret;
  
- 	if (!enable && priv->clk_eee_enabled) {
- 		clk_disable_unprepare(priv->clk_eee);
+ 	/* drm bridge initialization */
+ 	ge_b850v3_lvds_ptr->bridge.funcs = &ge_b850v3_lvds_funcs;
+@@ -329,11 +329,15 @@ static int ge_b850v3_register(void)
+ 	if (!stdp4028_i2c->irq)
+ 		return 0;
+ 
+-	return devm_request_threaded_irq(&stdp4028_i2c->dev,
+-			stdp4028_i2c->irq, NULL,
+-			ge_b850v3_lvds_irq_handler,
+-			IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+-			"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
++	ret = devm_request_threaded_irq(&stdp4028_i2c->dev,
++					stdp4028_i2c->irq, NULL,
++					ge_b850v3_lvds_irq_handler,
++					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
++	if (ret)
++		drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
++
++	return ret;
+ }
+ 
+ static int stdp4028_ge_b850v3_fw_probe(struct i2c_client *stdp4028_i2c,
 
 
 
