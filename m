@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257756-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAR4GuUoG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:57 +0200
+	id GBMLAf8eG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257756-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0441C61147E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F6260FD96
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 035F7303AF89
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 559843028C33
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E40C3BFE4D;
-	Sat, 30 May 2026 18:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B96D340298;
+	Sat, 30 May 2026 17:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ox5QX5G1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7dgm/N4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3082F90E0;
-	Sat, 30 May 2026 18:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784F133B6C4;
+	Sat, 30 May 2026 17:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164715; cv=none; b=ok8zHKs1u3MOFXG8qihppGPue8EKOsEB8TdSYn7ebEJLm70F0UCBka+dFLkRO7ixJYC9TwgTuNvGRzLfVP+jD4YQU5LxdZu5Im36o3aWQP+3YIEh998I/oTcI1o1c7nU6lqurZG8XW1KygN4XLue2Z6lh3RD6apyB/4dlFlpxz0=
+	t=1780162066; cv=none; b=Ct3+4GEkfgajLPsmmoq68+4nXKkZ79Ugob45uxOFyHe5tSI7CEC0mcHaaZNRaqZnGxV3lV2AvgiYNmWoOka7+FjXjZSToFSQfgdPBFE55fsPrxkN9vp0BXsWR+66PCumN+1A99HBP5BcrE/DX825HESR8AY+O+nV2bywtuaEDdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164715; c=relaxed/simple;
-	bh=DBinf9gI/AQ6dI9CXumfyO6haZn2cVJqzPKrGox8JJE=;
+	s=arc-20240116; t=1780162066; c=relaxed/simple;
+	bh=BU1Jz0W23Ny7XQFBgGXIkVGxJ/apV+iRZARTDEXwors=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jbx8T2Qopfu2ojL9Z6kcehqv6O2CQzskaZDjkkwdM0Pi3hqzif0UyTtbHegEPwQbXy/fkAluieH543XYa1AG9pGV7C1GA6GXMPW9M7JeygvVrFXxq8hKiZ45UvI9y1o/pbQTQjRKrxjRnOKUJOJ44GziYcBPBGhbC47VFOkkpow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ox5QX5G1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE561F00893;
-	Sat, 30 May 2026 18:11:53 +0000 (UTC)
+	 MIME-Version; b=t1xp3Sp0i10A6ZRHmZw+NVR9ikAR8I78rTFdJzZER5Pe1Czjs/8rbinwP99WKJHkkIDs47Ccmi8CrVQFUvnanqBGGs0jM6LM5fDrT9gfI7DVrjpCH+jXHEnCI90/I1YY2Vslazi4kTKwzrp3wKj2NBqOOGYEv9CjIGz1SyVGePY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7dgm/N4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1AC41F00893;
+	Sat, 30 May 2026 17:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164714;
-	bh=wqIh99atCrVMgr2hp4x5s9HlL5sdpEL8MRzWLP8q7H8=;
+	s=korg; t=1780162065;
+	bh=RAt5bLryQvZkhShUJVR58AUPKUQOnqveaoYqu/lnXYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ox5QX5G1cIhAP1/phNrR53GQuCyc1tcox+UEFtKzZ5n6NTM/8zI05uPYij4w0pGCs
-	 iJohLwHqMhwi2spjYArDWQDVKE3VwPmpWjxb7Fk2uJX2o9xH5menVSt/sWjx/b51kO
-	 8XIFfN+mS5sO2kHGMqE43zwHBknrCURRI4HDoq/k=
+	b=b7dgm/N458RjrmSFDetiBUwAdb+aket4fdmgFshA/Bsj51uOiVgdf9LiEz0IT5/Kz
+	 uGvjafTGMZ7zREoSO0GX0BGOV5by893YYQ4lw4VsTx4lbQl5czjIQI+gCZrF12tAq2
+	 ff8xR1YxEVHcnHQIi4z7LS6FlVc4XGgfe34WG1ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 620/776] net/sched: sch_fq_pie: annotate data-races in fq_pie_dump_stats()
-Date: Sat, 30 May 2026 18:05:34 +0200
-Message-ID: <20260530160256.011414801@linuxfoundation.org>
+	Ricardo Robaina <rrobaina@redhat.com>,
+	Sergio Correia <scorreia@redhat.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.1 811/969] audit: enforce AUDIT_LOCKED for AUDIT_TRIM and AUDIT_MAKE_EQUIV
+Date: Sat, 30 May 2026 18:05:35 +0200
+Message-ID: <20260530160323.029653477@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +68,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258547-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257756-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 0441C61147E
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,paul-moore.com:email]
+X-Rspamd-Queue-Id: 87F6260FD96
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Sergio Correia <scorreia@redhat.com>
 
-[ Upstream commit 59b145771c7982cfe9020d4e9e22da92d6b5ae31 ]
+commit f9e1c1324b4d98d591a6f7568fdebf5cf456dfc2 upstream.
 
-fq_codel_dump_stats() acquires the qdisc spinlock a bit too late.
+AUDIT_ADD_RULE and AUDIT_DEL_RULE correctly check for AUDIT_LOCKED
+and return -EPERM, but AUDIT_TRIM and AUDIT_MAKE_EQUIV do not. This
+allows a process with CAP_AUDIT_CONTROL to modify directory tree
+watches and equivalence mappings even when the audit configuration
+has been locked, undermining the purpose of the lock.
 
-Move this acquisition before we fill tc_fq_pie_xstats with live data.
+Add AUDIT_LOCKED checks to both commands.
 
-Alternative would be to add READ_ONCE() and WRITE_ONCE() annotations,
-but the spinlock is needed anyway to scan q->new_flows and q->old_flows.
-
-Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260423063527.2568262-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ricardo Robaina <rrobaina@redhat.com>
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Sergio Correia <scorreia@redhat.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_fq_pie.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ kernel/audit.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
-index 30259c8756451..910efc0630a14 100644
---- a/net/sched/sch_fq_pie.c
-+++ b/net/sched/sch_fq_pie.c
-@@ -499,18 +499,19 @@ static int fq_pie_dump(struct Qdisc *sch, struct sk_buff *skb)
- static int fq_pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- {
- 	struct fq_pie_sched_data *q = qdisc_priv(sch);
--	struct tc_fq_pie_xstats st = {
--		.packets_in	= q->stats.packets_in,
--		.overlimit	= q->stats.overlimit,
--		.overmemory	= q->overmemory,
--		.dropped	= q->stats.dropped,
--		.ecn_mark	= q->stats.ecn_mark,
--		.new_flow_count = q->new_flow_count,
--		.memory_usage   = q->memory_usage,
--	};
-+	struct tc_fq_pie_xstats st = { 0 };
- 	struct list_head *pos;
+--- a/kernel/audit.c
++++ b/kernel/audit.c
+@@ -1428,6 +1428,8 @@ static int audit_receive_msg(struct sk_b
+ 		err = audit_list_rules_send(skb, seq);
+ 		break;
+ 	case AUDIT_TRIM:
++		if (audit_enabled == AUDIT_LOCKED)
++			return -EPERM;
+ 		audit_trim_trees();
+ 		audit_log_common_recv_msg(audit_context(), &ab,
+ 					  AUDIT_CONFIG_CHANGE);
+@@ -1440,6 +1442,8 @@ static int audit_receive_msg(struct sk_b
+ 		size_t msglen = data_len;
+ 		char *old, *new;
  
- 	sch_tree_lock(sch);
-+
-+	st.packets_in	= q->stats.packets_in;
-+	st.overlimit	= q->stats.overlimit;
-+	st.overmemory	= q->overmemory;
-+	st.dropped	= q->stats.dropped;
-+	st.ecn_mark	= q->stats.ecn_mark;
-+	st.new_flow_count = q->new_flow_count;
-+	st.memory_usage   = q->memory_usage;
-+
- 	list_for_each(pos, &q->new_flows)
- 		st.new_flows_len++;
- 
--- 
-2.53.0
-
++		if (audit_enabled == AUDIT_LOCKED)
++			return -EPERM;
+ 		err = -EINVAL;
+ 		if (msglen < 2 * sizeof(u32))
+ 			break;
 
 
 
