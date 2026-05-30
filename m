@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-259008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CD86JHwxG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-259008-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:36 +0200
+	id UBv9GYAnG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10843612967
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88E5761109C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:07:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D8FD831166C9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B26E13004635
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E25D3AE18D;
-	Sat, 30 May 2026 18:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADF13AFCE3;
+	Sat, 30 May 2026 18:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUHbOz8T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVVYUL/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DEC3ACA4D;
-	Sat, 30 May 2026 18:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44850341AC7;
+	Sat, 30 May 2026 18:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166287; cv=none; b=XzjAi2F8w4th1m9bkkSuGEhHnc5dt00hlLnsHjUmvC+G09pGuaPQmcPQzZiGH0LFfsi+r5Pq3FGR0Nc/tJMTE13I2O8mYz9ZzcD4TIgPyBcLK6+r7yDvyNnR+lvJZ0sYtDsjK9wBq2Gz+U7OSXYKePD/FBY2ilvKr20rB4eFIX0=
+	t=1780164341; cv=none; b=iTPRfQMPd4oXEv76k1eZJ9TNKIYWLExvVzRo6FFGgp15/cxXOhTdkLODVTjF6sHOpRgNbPvc775A3gcBjJyMFnVTzgAGtCHlgNpx5wIjAskGY7sao4EfFfJOXEO91wC5ymPNxEhJQE6ya8PFTTEEZQ8DQIHDIY45Akt0hnMv5fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166287; c=relaxed/simple;
-	bh=Z7mEWRqvDIB3Ye5PQxuA1VlGhi9ld4wxIRp23eETF1U=;
+	s=arc-20240116; t=1780164341; c=relaxed/simple;
+	bh=cAfyDD/yFuzf1Z4PHlladBaFGA6+peXbM3wq3AXiOkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4FjqufUHnpfcRxb1TSxLeKcFtt6vhezdoCGYbVWqT+snt2s2dG8KOv8VjZRDBjLEh3f3EctPsJeGkPP9doIZKLNJ6SrsVILaDGHXPZTtegzEHFsrQnRoh1dnL23+uPk+T6exhbGe543SZIrXf2wqlt/ijOnNkv/+g6woyZalhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUHbOz8T; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7531F00893;
-	Sat, 30 May 2026 18:38:05 +0000 (UTC)
+	 MIME-Version; b=mohulp7zaMgzhAX4XRIlzPfVaQTJNaslOOaE1wYytWXxX3dCFICTdcidJURPYcegdF40kOUF6jHLm4RrvAnGtWIGb93I5m+OnaeqrpYX7jTGV2bqUZulkAdE7pFEWzCry8EYQScj0Acf8i9jrrTarHPA0AQAIuF4Ipl2l/NeGmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVVYUL/+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DE91F00893;
+	Sat, 30 May 2026 18:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166286;
-	bh=uZ6MlU11qPf9noqdt3LH2kWec10bo7X4d3T0smtG9K0=;
+	s=korg; t=1780164340;
+	bh=HY5V0BNEWtf0Buy0EEu4p15isEg40yD+GnjEufgjYJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hUHbOz8Tv1xwv808jvDanXzhoZK+u3/mkWTXe6V8ESp7ZEOob0+7/TwU/hgybjmK1
-	 f2UTMN/hEu+rELBNPBN6AXc8GeghT1OMcm4JfkS3SrOhS+MsueLURte/yK08zZC8il
-	 Usez7KxrGhuJ13gvVBg4n5HLbaLSMndAAs8rp6tM=
+	b=UVVYUL/+j1sIDRI6+RrHT8m2KdxjCq4o+SNPGCMBkZciXD01pFxwbbB2i4wAmoKbc
+	 mNlsTNfnHjvVTUnzI8CUrH7bmliw3Q6tN2/CrZlvlCjONVVLdW1JqmGdtcQzhzASLr
+	 3/G2ykOTSTvWMSKC4N0Rc+zVcD+Tp7iRRUlbk7YI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 329/589] dm log: fix out-of-bounds write due to region_count overflow
+Subject: [PATCH 5.15 496/776] soc: qcom: aoss: compare against normalized cooling state
 Date: Sat, 30 May 2026 18:03:30 +0200
-Message-ID: <20260530160233.562215244@linuxfoundation.org>
+Message-ID: <20260530160253.124037974@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,111 +69,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-259008-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258435-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 10843612967
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 88E5761109C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit c20e36b7631d83e7535877f08af8b0af72c44b1a ]
+[ Upstream commit cd3c4670db3ffe997be9548c7a9db3952563cf14 ]
 
-The local variable region_count in create_log_context() is declared as
-unsigned int (32-bit), but dm_sector_div_up() returns sector_t (64-bit).
-When a device-mapper target has a sufficiently large ti->len with a small
-region_size, the division result can exceed UINT_MAX. The truncated
-value is then used to calculate bitset_size, causing clean_bits,
-sync_bits, and recovering_bits to be allocated far smaller than needed
-for the actual number of regions.
+qmp_cdev_set_cur_state() normalizes the requested state to a boolean
+(cdev_state = !!state). The existing early-return check compares
+qmp_cdev->state == state, which can be wrong if state is non-boolean
+(any non-zero value). Compare qmp_cdev->state against cdev_state instead,
+so the check matches the effective state and avoids redundant updates.
 
-Subsequent log operations (log_set_bit, log_clear_bit, log_test_bit) use
-region indices derived from the full untruncated region space, causing
-out-of-bounds writes to kernel heap memory allocated by vmalloc.
-
-This can be reproduced by creating a mirror target whose region_count
-overflows 32 bits:
-
-  dmsetup create bigzero --table '0 8589934594 zero'
-  dmsetup create mymirror --table '0 8589934594 mirror \
-    core 2 2 nosync 2 /dev/mapper/bigzero 0 \
-    /dev/mapper/bigzero 0'
-
-The status output confirms the truncation (sync_count=1 instead of
-4294967297, because 0x100000001 was truncated to 1):
-
-  $ dmsetup status mymirror
-  0 8589934594 mirror 2 254:1 254:1 1/4294967297 ...
-
-This leads to a kernel crash in core_in_sync:
-
-  BUG: scheduling while atomic: (udev-worker)/9150/0x00000000
-  RIP: 0010:core_in_sync+0x14/0x30 [dm_log]
-  CR2: 0000000000000008
-  Fixing recursive fault but reboot is needed!
-
-Fix by widening the local region_count to sector_t and adding an
-explicit overflow check before the value is assigned to lc->region_count.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Fixes: 05589b30b21a ("soc: qcom: Extend AOSS QMP driver to support resources that are used to wake up the SoC.")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260329195333.1478090-1-alok.a.tiwari@oracle.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-log.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/qcom_aoss.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-log.c b/drivers/md/dm-log.c
-index fe3a9473f3387..ade7e9a2b11b1 100644
---- a/drivers/md/dm-log.c
-+++ b/drivers/md/dm-log.c
-@@ -368,7 +368,7 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
+diff --git a/drivers/soc/qcom/qcom_aoss.c b/drivers/soc/qcom/qcom_aoss.c
+index 3973accdc9820..dbef3b27e594a 100644
+--- a/drivers/soc/qcom/qcom_aoss.c
++++ b/drivers/soc/qcom/qcom_aoss.c
+@@ -436,7 +436,7 @@ static int qmp_cdev_set_cur_state(struct thermal_cooling_device *cdev,
+ 	/* Normalize state */
+ 	cdev_state = !!state;
  
- 	struct log_c *lc;
- 	uint32_t region_size;
--	unsigned int region_count;
-+	sector_t region_count;
- 	size_t bitset_size, buf_size;
- 	int r;
- 	char dummy;
-@@ -397,6 +397,10 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
- 	}
+-	if (qmp_cdev->state == state)
++	if (qmp_cdev->state == cdev_state)
+ 		return 0;
  
- 	region_count = dm_sector_div_up(ti->len, region_size);
-+	if (region_count > UINT_MAX) {
-+		DMWARN("region count exceeds limit of %u", UINT_MAX);
-+		return -EINVAL;
-+	}
- 
- 	lc = kmalloc(sizeof(*lc), GFP_KERNEL);
- 	if (!lc) {
+ 	snprintf(buf, sizeof(buf),
 -- 
 2.53.0
 
