@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-257883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259275-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UB84F8wgG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257883-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:24 +0200
+	id II3IER4yG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259275-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E15F36101DB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 133E8612BCF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BAFF33007353
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 708703003D0A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F328A349CCF;
-	Sat, 30 May 2026 17:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93305241C8C;
+	Sat, 30 May 2026 18:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4gCGNrj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nf6A7GJx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FC53469FC;
-	Sat, 30 May 2026 17:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B85C4315F;
+	Sat, 30 May 2026 18:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162491; cv=none; b=vByU7SkMjEex4DCWBmC3Nkunfq9u4JxHU6b9kVphrDExOiw6euz5MdtD2LksMzOWPZnIQ9u6SvEdt1HBfYtF84hEauNa3fmH0IHsxPaW68YcuUimqXX/ZwqLZm6LzLBQsHUnpxLVvKnGlw5Y/mjdmgfjU07vEBEhJrZTykmqI38=
+	t=1780167196; cv=none; b=phxYimBWSqlkk8kw/1bWnpQz4W+Z8sX+N67+5VMKRGvmeP3w4KRHlKgVw3sz2szuxNJU8wOh0wp4iGMXkfTPaYICGU+x4nsh1i8Vd7c03jgAGGNgvDTUXYH5bxJdVVXhdlwU7vYQBviEt3blFQMm9TMLwBHhut1pi8WiBewRAiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162491; c=relaxed/simple;
-	bh=FtFmVYpDJk2n9Uj5VD1BakFmsQn8/EdrMNXi4pxDHy4=;
+	s=arc-20240116; t=1780167196; c=relaxed/simple;
+	bh=wI/TQX/d0bif79gpHKLmVnfvqZIeE9eIWdv01TLTXAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BuZnlAGy4bMzo5YRwdEpM9Mdjg1TTIiC5WQqZESlknJ999rQAK1ZZc5uJeK5bh6u0FKYF9vK7wp7bcIZXnGuNMtzK+KD69oxPfvhLPFpqXtI0TA3yrlVX08s+5l0ANiQXZNjtTQBwvNyT/GK2WPlDfVcJxnp1iNb4Jn+lR85e1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4gCGNrj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4A61F00893;
-	Sat, 30 May 2026 17:34:49 +0000 (UTC)
+	 MIME-Version; b=TTtWYEaMFBAIZl0YGN7IiwfqANfvTc9WUSBOnXe9SSZuB+LDumWbBhrW848/XD6diMIqk+SN7o/88J0BTJCnvGveD7hrFcLTNM+ekU3BWXZnveAOmHU89y3Uw0O5r5zLeJ/RyLfAOH65aPxCfXz9nXz8DIlMnG9fqFJd5opu2E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nf6A7GJx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FF91F00893;
+	Sat, 30 May 2026 18:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162490;
-	bh=mv4/0hlmkEzXWVAHn2kdb6gBQzyki+xCR22d4B3AEUU=;
+	s=korg; t=1780167195;
+	bh=k9gHuoEeYdPKNbGPlw4ePF7KBmcEmj1EbzPBlyuMtcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=a4gCGNrjaX4GqkviRv8WgDeNXYMx7YtZDuNpjD5Gjo4tjIItRJpqO81eJnu8sjPbp
-	 hD6u0JfZbzcMuuj/+HS91gOz1X/Dt1jsK4jp6eV4aZRYZdvecJN41uCzOE965z2wnW
-	 ZjZu9MHYOSxBPfx54wZ0Qv95FYsqpo0gfM85W+SM=
+	b=nf6A7GJxRAVRzDPpf/oASlq+z/py8AUeQDaxLNZv/YR2OZXyeeNa4aaXA5g+hXefz
+	 IcXKV87Nk3kmRFfAAfN9nNICjOrgu4v3ZgKw9IFNZmwWaNognIHaRSuL7f7F73sGtA
+	 /Fqv0UYbrV63Rv2RQv5kPK+VvU4g0lMb5IpQiKEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Sayali Patil <sayalip@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 936/969] powerpc/time: Remove redundant preempt_disable|enable() calls from arch_irq_work_raise()
+Subject: [PATCH 5.10 579/589] HID: quirks: really enable the intended work around for appledisplay
 Date: Sat, 30 May 2026 18:07:40 +0200
-Message-ID: <20260530160326.598089207@linuxfoundation.org>
+Message-ID: <20260530160239.817638556@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,132 +64,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257883-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259275-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E15F36101DB
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
+X-Rspamd-Queue-Id: 133E8612BCF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sayali Patil <sayalip@linux.ibm.com>
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-[ Upstream commit 31467b23823ffec1f6fff407f8e3ca9af8b7491a ]
+[ Upstream commit 5f90dcfa8dc32a488581b78e575cdd7808ba5c78 ]
 
-A kernel panic is observed when handling machine check exceptions from
-real mode.
+Commit c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for
+appledisplay") intends to add a quirk for kernels built with Apple Cinema
+Display support, but it refers to the non-existing config option
+CONFIG_APPLEDISPLAY, whereas the config option for Apple Cinema Display
+support is named CONFIG_USB_APPLEDISPLAY.
 
-  BUG: Unable to handle kernel data access on read at 0xc00000006be21300
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 88222248  XER: 00000005
-  CFAR: c00000000003ffc4 DAR: c00000006be21300 DSISR: 40000000 IRQMASK: 0
-  NIP [c000000000029e40] arch_irq_work_raise+0x10/0x70
-  LR [c00000000003ffc8] machine_check_queue_event+0xa8/0x150
-  Call Trace:
-  [c0000000179d3c70] [c00000000003ff64] machine_check_queue_event+0x44/0x150
-  [c0000000179d3d30] [c0000000000084e0] machine_check_early_common+0x1f0/0x2c0
+Refer to the intended config option CONFIG_USB_APPLEDISPLAY in the ifdef
+directive.
 
-The crash occurs because arch_irq_work_raise() calls preempt_disable()
-from machine check exception (MCE) handlers running in real mode. In
-this context, accessing the preempt_count can fault, leading to the panic.
-
-The preempt_disable()/preempt_enable() pair in arch_irq_work_raise()
-was originally added by commit 0fe1ac48bef0 ("powerpc/perf_event: Fix
-oops due to perf_event_do_pending call") to avoid races while raising
-irq work from exception context.
-
-Later, commit 471ba0e686cb ("irq_work: Do not raise an IPI when
-queueing work on the local CPU") added preemption protection in
-irq_work_queue() path, while commit 20b876918c06 ("irq_work: Use per
-cpu atomics instead of regular atomics") added equivalent
-protection in irq_work_queue_on() before reaching arch_irq_work_raise():
-
-  irq_work_queue() / irq_work_queue_on()
-    -> preempt_disable()
-      -> __irq_work_queue_local()
-        -> irq_work_raise()
-          -> arch_irq_work_raise()
-
-As a result, callers other than mce_irq_work_raise() already execute
-with preemption disabled, making the additional
-preempt_disable()/preempt_enable() pair in arch_irq_work_raise()
-redundant.
-
-The arch_irq_work_raise() function executes in NMI context when called
-from MCE handler. Hence we will not be preempted or scheduled out since
-we are in NMI context with MSR[EE]=0. Therefore, it is safe to remove
-the preempt_disable()/preempt_enable() calls from here.
-
-Remove it to avoid accessing preempt_count from real mode context.
-
-Fixes: cc15ff327569 ("powerpc/mce: Avoid using irq_work_queue() in realmode")
-Suggested-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Acked-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
-[Maddy: Fixed the commit title]
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260513081413.222490-1-sayalip@linux.ibm.com
+Fixes: c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for appledisplay")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/time.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hid/hid-quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-index 285159e65a3ba..6628b65b9ecad 100644
---- a/arch/powerpc/kernel/time.c
-+++ b/arch/powerpc/kernel/time.c
-@@ -454,6 +454,10 @@ DEFINE_PER_CPU(u8, irq_work_pending);
- 
- #endif /* 32 vs 64 bit */
- 
-+/*
-+ * Must be called with preemption disabled since it updates
-+ * per-CPU irq_work state and programs the local CPU decrementer.
-+ */
- void arch_irq_work_raise(void)
- {
- 	/*
-@@ -467,10 +471,8 @@ void arch_irq_work_raise(void)
- 	 * which could get tangled up if we're messing with the same state
- 	 * here.
- 	 */
--	preempt_disable();
- 	set_irq_work_pending_flag();
- 	set_dec(1);
--	preempt_enable();
- }
- 
- static void set_dec_or_work(u64 val)
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 84a9c9e761bcd..3a7b231759098 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -222,7 +222,7 @@ static const struct hid_device_id hid_quirks[] = {
+  * used as a driver. See hid_scan_report().
+  */
+ static const struct hid_device_id hid_have_special_driver[] = {
+-#if IS_ENABLED(CONFIG_APPLEDISPLAY)
++#if IS_ENABLED(CONFIG_USB_APPLEDISPLAY)
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
 -- 
 2.53.0
 
