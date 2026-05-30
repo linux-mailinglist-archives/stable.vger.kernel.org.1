@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHMsLrEbG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:37 +0200
+	id mAmNFzYtG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EDDF60F51F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F43D611ED2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E872C30FD9AD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:09:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 808003011A6E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26DDD3191D0;
-	Sat, 30 May 2026 17:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A68E3C5859;
+	Sat, 30 May 2026 18:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KseXHtsk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxNCke0o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04DA3AA4FE;
-	Sat, 30 May 2026 17:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A55279DC9;
+	Sat, 30 May 2026 18:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160996; cv=none; b=eXcJnpT8EWbVzSQZ/qmCfoAcgA+RWLHwqa9A+SUBFvEGAYi7QR36ZhXssZHjjkUn1fRhgyiT6rSbwUa12tde6AQ+kWKRgRtad2lQ/3B8Wp4WUNAWFlO52wuea+ZZx1UughifyBgcxI4gJy+jdeaHYAPVjZ2N8FiJEkl+lPwBI7k=
+	t=1780165767; cv=none; b=qMyO2EwCMdVPJ0U4VXBc184Lunea7A5P7wk/S2aQAjtFI1RAVNlKiKssbDXBsKz1hOvc4QuflTPUegGG2NahhsgzSx0VlQ0p0fra5vQFGFwBRDpc6w/55XzK2faK0wfjEsPljDvdf2LXDBVKLVXcdDEd4nBjE3lbhUUFVC9pwsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160996; c=relaxed/simple;
-	bh=fNJG7jdgY2i2u4XEOxFHRuh61p902tbjSQJrBd/kaTM=;
+	s=arc-20240116; t=1780165767; c=relaxed/simple;
+	bh=Z8eVvl7M2RQ/Pd6q+FDl+hHmizcgLCqlXxAfEIu1f7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EJ7u1th8vd/KVu7FRQv9dqqg3PrL88EXs+XxGFOy3YZCzBF3O3XgriH4Ij3JY9b0OpC7rZ9rGu44lWoOTo9Y9/g+RAX4NrIwcTA28Bge4KxgAsDRPfa/XTyfWvx+IxBi+EfrF8iwRtGmh4pMCQPHFMlXjqjPeZt8RxppqQ36Odw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KseXHtsk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323C81F00893;
-	Sat, 30 May 2026 17:09:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NtCTQ6j5fHtHr9g/FzCOXxBEvH+fHSB5OF/pqTsXQ5mZ2a2xDNGMWGDz60C1DGznZf5q6o9rVbd+qkvTXkrJiWHW80emxbubkVWwBy4jQh/6KVQPr3Ie81bIJOVZoD1MtAypkXv/b/8VdK9SmpR1a+1BrHg2parg+mVEHSbApYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxNCke0o; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F871F00893;
+	Sat, 30 May 2026 18:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160995;
-	bh=FKRuitYipG9Dw4bOmqFHGPuRhdl9D99+Dd6KiPYFsvM=;
+	s=korg; t=1780165765;
+	bh=UMvSiXCzwb5CIJlK6jl9wZGe6zfcHeVLdFTiYb4ZWoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KseXHtskYCEIts5WbKhAX9ZddfBSOQtfeHvA6smjxW9ul/cENW4pq8YXtXJui9BlU
-	 WR9zav2dt3gMg92i59ZjOCHpN4O5dIKnwzKy/3hfPSGAC7JXTR/UNVDVe3Bro362XE
-	 ezgjpt5KdlmtPlbcCfao4Jk2XBRBbm/4llTPG2SU=
+	b=vxNCke0o5Uo0awVkCtJ+RLPhSC6DN8Rq17YNvQbOueRaJAT4DmINYsKxyubsQfBq+
+	 KwxTOZyTQ3UVkma4rLyQ2K+jzoUymYQHkFX1jw98tdqp1xslHMhOYXIbW7BJ9wYnly
+	 +LIO/RPB8WJhkiPwgpvZMG07ib2IzaNYA/TP8HgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 495/969] dm cache: fix null-deref with concurrent writes in passthrough mode
-Date: Sat, 30 May 2026 18:00:19 +0200
-Message-ID: <20260530160313.989221318@linuxfoundation.org>
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 139/589] ALSA: usb-audio: Fix Audio Advantage Micro II SPDIF switch
+Date: Sat, 30 May 2026 18:00:20 +0200
+Message-ID: <20260530160228.433170957@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257438-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258855-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5EDDF60F51F
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2F43D611ED2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit 7d1f98d668ee34c1d15bdc0420fdd062f24a27c0 ]
+commit a9224f26b754b5034719248891ff3c2ea0d11144 upstream.
 
-In passthrough mode, when dm-cache starts to invalidate a cache
-entry and bio prison cell lock fails due to concurrent write to
-the same cached block, mg->cell remains NULL. The error path in
-invalidate_complete() attempts to unlock and free the cell
-unconditionally, causing a NULL pointer dereference:
+snd_microii_spdif_switch_put() returns 0 when the requested
+vendor register value differs from the cached one.
 
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 0 UID: 0 PID: 134 Comm: fio Not tainted 6.19.0-rc7 #3 PREEMPT
-RIP: 0010:dm_cell_unlock_v2+0x3f/0x210
-<snip>
-Call Trace:
- invalidate_complete+0xef/0x430
- map_bio+0x130f/0x1a10
- cache_map+0x320/0x6b0
- __map_bio+0x458/0x510
- dm_submit_bio+0x40e/0x16d0
- __submit_bio+0x419/0x870
-<snip>
+This comparison was inverted by the resume-support conversion,
+so real SPDIF switch toggles are ignored while no-op writes still
+issue SET_CUR and report success.
 
-Reproduce steps:
+Return early only when the requested value matches the cached one.
 
-1. Create a cache device
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. Promote the first data block into cache
-
-fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
---direct=1 --size=64k
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the first cached block concurrently
-
-fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
---randrepeat=0 --direct=1 --numjobs=2 --size 64k
-
-Fix by checking if mg->cell is valid before attempting to unlock it.
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 288673beae6c ("ALSA: usb-audio: Add resume support for MicroII SPDIF ctls")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260421-microii-spdif-switch-fix-v1-1-5c50dc28b88f@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/usb/mixer_quirks.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index 66608b42ee1ad..e0373522cb88c 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1440,8 +1440,10 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
- 	struct cache *cache = mg->cache;
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -1925,7 +1925,7 @@ static int snd_microii_spdif_switch_put(
+ 	int err;
  
- 	bio_list_init(&bios);
--	if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
--		free_prison_cell(cache, mg->cell);
-+	if (mg->cell) {
-+		if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
-+			free_prison_cell(cache, mg->cell);
-+	}
+ 	reg = ucontrol->value.integer.value[0] ? 0x28 : 0x2a;
+-	if (reg != list->kctl->private_value)
++	if (reg == list->kctl->private_value)
+ 		return 0;
  
- 	if (!success && mg->overwrite_bio)
- 		bio_io_error(mg->overwrite_bio);
--- 
-2.53.0
-
+ 	kcontrol->private_value = reg;
 
 
 
