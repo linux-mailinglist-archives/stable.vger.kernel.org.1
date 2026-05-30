@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGI4EmMfG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:23 +0200
+	id GA5ECbQpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF7760FE84
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FF46116C7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F049E30060BB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1AB4A3010F2A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4A132B106;
-	Sat, 30 May 2026 17:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2263B241C8C;
+	Sat, 30 May 2026 18:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVL2Jhdv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1+nUNI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27932E7379;
-	Sat, 30 May 2026 17:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE983274FDC;
+	Sat, 30 May 2026 18:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162329; cv=none; b=p9U8hMalO3y4qkMYpdHKBCVJgu/UdH9V0jv4z7A64iNzC/8l7JGaFSjFAe6SAD+UUF4IjekmcKDXsaTxFkTiW2x79d+Fjdd2BJmF/1lC3IfAhUr1URKQw6qIl9vvTNMCk7VAHJBBT9QLeDzJhXkTOkl4KGjHs01FsT47gFfY5k0=
+	t=1780164919; cv=none; b=uPjZB5Gc16myA3A9T3WocCHjJFMHokqxSdEsc01z0O2RrUT8C8C4kYWHjqjI1v73HLHEmq7cSMvHh8CZkt8jirhW8/ahGNH91ah7DYGnIMAHqp6vNewjgu06Ua3n05y9klW0k86frLR5q1kNVrK3DAa2/EzmoOny4D3aCSrprGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162329; c=relaxed/simple;
-	bh=mpDcMZHjy6Q5gnDUOIM8iyHxsfIbBcZKxxUOJH+Var4=;
+	s=arc-20240116; t=1780164919; c=relaxed/simple;
+	bh=OFNqE33IrSHpwkjTJZeI28w+5b1nobviMnEAY2o0wD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XkhrLv4nHfBW6xq7pkk+5O8P/SSwRkBpfOOGq2n7he3oySMc7jyddbJHTDU7dweKUh+y9pKERpa+PM6n7wK7v5KuJQJM0Gmx0lBBZRks0LOnRdmYcGdGxn4xSR/ZvE48ggodix5WDdsDC+XG4kSXeSZbPtwg2wQC/fDiLs81P3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVL2Jhdv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05761F00893;
-	Sat, 30 May 2026 17:32:07 +0000 (UTC)
+	 MIME-Version; b=RSI2dcw6Gvp0ipyoyCyEMEaDZfXJAW6Bu7LnNfTav7DjZJ6AjMVbWvzraA97kJ2ZlC2D0qMpbxioYevBKO940RKw3hrfuWW22Ez1tW2TcdHIIlhM4clK5vzaZqxlppplQhzxfJTu1/gTtXZxrTBrJouZP0uh1hH4RFL5xjFPMA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1+nUNI7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2A11F00893;
+	Sat, 30 May 2026 18:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162328;
-	bh=cPocOez+RvvE/5Jn6r2t6h1W9jLCXWJh89+q8zR1Vr0=;
+	s=korg; t=1780164918;
+	bh=9/oOi+bjgIwHOQj9H2xaAAOwMvwIhF2BLySS4mHYm4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pVL2JhdvL0pI2lIHPsB6q40osR6sGXTiUjpCdm6u3QWfUT/ffh19Th6rSLPUBC1W3
-	 Ya5mU+vpUhx8UFkU6JIXyBQE+bxZDqvotEzNWDM2zklCdMOMkX9FY+VPAUnlurrptv
-	 gXGh2m0fDAuWDkfyIa98R/mtpiU/59p6LmdfKtEE=
+	b=S1+nUNI7YpioZHFc2ryR8fk65agsD0RCbu9Hx5itDnQFuTYbjQkZIlWr28wmvvFEy
+	 oD8Pmt9KBz/RM+szf27vkFSoQ0xpEHpnOko7ZtVEg3Rp5Kw/EdVbSO5A+QfyGQPx5o
+	 5MpTI+2zSCiKonvQe2mq4guGFeTqwJhpF8/QkDX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.1 888/969] batman-adv: tt: fix negative last_changeset_len
+	Lanqing Liu <lanqing.liu@unisoc.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 698/776] spi: sprd: fix error pointer deref after DMA setup failure
 Date: Sat, 30 May 2026 18:06:52 +0200
-Message-ID: <20260530160325.220093612@linuxfoundation.org>
+Message-ID: <20260530160257.867983279@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,63 +78,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257835-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258607-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4CF7760FE84
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,unisoc.com:email]
+X-Rspamd-Queue-Id: 17FF46116C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit fc92cdfcb295cefa4344d71a527d61b638b7bfc4 upstream.
+commit 3d67fffb74267772d461c02c67f1eff893ad547d upstream.
 
-batadv_piv_tt::last_changeset_len len was declared as s16, but the field is
-never intended to hold a negative value. When a value greater than 32767 is
-assigned, it wraps to a negative signed integer.
+The driver falls back to PIO mode if DMA setup fails during probe.
 
-In batadv_send_my_tt_response(), last_changeset_len is temporarily widened
-to s32. The incorrectly negative s16 value propagates into the s32, causing
-batadv_tt_prepare_tvlv_local_data() to allocate a full sized buffer but
-populates only a small portion of it with the collected changeset. All
-remaining bits are kept uninitialized.
+Make sure to check the dma.enabled flag before trying to release the DMA
+channels also on late probe errors to avoid dereferencing an error
+pointer (or attempting to release a channel a second time).
 
-Using an u16 avoids this type confusion and ensures that no (negative) sign
-extension is performed in batadv_send_my_tt_response().
+This issue was flagged by Sashiko when reviewing a devres allocation
+conversion patch.
 
-Cc: stable@kernel.org
-Fixes: a73105b8d4c7 ("batman-adv: improved client announcement mechanism")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: 386119bc7be9 ("spi: sprd: spi: sprd: Add DMA mode support")
+Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=10
+Cc: stable@vger.kernel.org	# 5.1
+Cc: Lanqing Liu <lanqing.liu@unisoc.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260512074733.915029-1-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/types.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-sprd.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -993,7 +993,7 @@ struct batadv_priv_tt {
- 	 * @last_changeset_len: length of last tt changeset this host has
- 	 *  generated
- 	 */
--	s16 last_changeset_len;
-+	u16 last_changeset_len;
+--- a/drivers/spi/spi-sprd.c
++++ b/drivers/spi/spi-sprd.c
+@@ -995,7 +995,8 @@ err_rpm_put:
+ disable_clk:
+ 	clk_disable_unprepare(ss->clk);
+ release_dma:
+-	sprd_spi_dma_release(ss);
++	if (ss->dma.enable)
++		sprd_spi_dma_release(ss);
+ free_controller:
+ 	spi_controller_put(sctlr);
  
- 	/**
- 	 * @last_changeset_lock: lock protecting last_changeset &
 
 
 
