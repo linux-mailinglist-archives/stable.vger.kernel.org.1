@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-257793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ACVULIEfG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:53 +0200
+	id 4I2SJ8QxG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BCD760FEEF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5B3612A66
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B9AD03068FC8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:29:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C587E3088159
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650EF344DA4;
-	Sat, 30 May 2026 17:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709A7233952;
+	Sat, 30 May 2026 18:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlF2FNHx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDMLowIK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A97334695;
-	Sat, 30 May 2026 17:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DA918FDBD;
+	Sat, 30 May 2026 18:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162190; cv=none; b=GERLJFA8ZKE53AePw9sj4VRSGahCKU8orOE5kxrZlbG1S7il79Ou3ZX5dKFjFUKNBBpFeWX/ymMprwqLvPev2QiPAiVTMBRNEZnmnzGimX7UaqxdlIyiV/wUE7XrsCqXwvwfbmWssizKiJK2a1giiUErR4U5B77sp4wsF1NwDAk=
+	t=1780166848; cv=none; b=HVQmuFn/Eaozy9lCuOU3nqimOHmXPHgMq9p1BbboFWERhJutJDf/SrnfJ7ATVOFw43bk2/8N/3AnEmTs8AwWjTDtyUKLe2IMbr9AnCY1GxmuHqZRHfkA93MqKrN17CsKhfHOvJfac8PetaMPg2lnz++Yy+1g5/DLrhQOstEstSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162190; c=relaxed/simple;
-	bh=R0FYGSPfzA9Ru1fBKL782BwyD8M2lhC5t+UpwBBMMhM=;
+	s=arc-20240116; t=1780166848; c=relaxed/simple;
+	bh=MWkcytdFjYUkIZSzwEp/ZOYiXdKAcvLZnji0uO1KPoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpcfwZWaWIjWRLzRUQQ2ulKhqKVjNNQcJmH/FbOjKstxMjk+EKXUg0ZrmYHAkWZItI7qRQ6bzfoXtO+i6U3BUZOVmvZvLXWbDvjP3tWzKpYxvC64xY5i9g1gJ+ZFIG5qsi+/QD1pymCvLsg8ukbrKL2xO0XDZ827aiSDypP1/VI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlF2FNHx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD6A1F00893;
-	Sat, 30 May 2026 17:29:48 +0000 (UTC)
+	 MIME-Version; b=hkA6/TpkZ9mfl18GQLpRC18kdgHcJ51KqywQnc3loR9t6F1bbSuk8yyq825Mb4WOLsnTf1XCG99CGdwsllyK67V4arU9xTACSlzkCKqejIE1JUIMC/l2Jymt1I7HOfJeTka7+cx94TMjzY4RzZrIrJcMbvq/AX7ex0QEekA70NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDMLowIK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD0E1F00893;
+	Sat, 30 May 2026 18:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162189;
-	bh=NAf5C4z5zYCMXKkHC2Iax6Fbu+IexaXGXkYL5XMBkJE=;
+	s=korg; t=1780166847;
+	bh=jwUFGibqeIC0JStA5hAi6G0N2i+kCnIoZpO5yMR9RKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jlF2FNHx/2Eo92JQCHPdYv9TDwX1hTmFYJWONK1g+z/BIxGcbxnwllx4IKpRbYUZA
-	 3uqG9pK8z27W/+tUUtVpDNZ3zuQ2rKB434YVUE9MdpUPhpXvx9a+7aPEpkp1tr/+ga
-	 stO18LH+h2bEX2dwyzUgQsYEMAF4WpGGNqG441W8=
+	b=QDMLowIKQUl8Oo5Ay7RW+04u5Y/8xz6zOJ6zn9GWo2NK96+7wNAB5PTytHPZp/Pch
+	 1Nw0/gROsnlzmITj6Y/6dXs0kpc8pCACQpOqiEQkxE7iXHU7mKONv++FU4SQrrzrp1
+	 hPqgnJ4UOSy3Ry+Z7xx91gD4zkWBgKy41u0dhiqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 847/969] Bluetooth: hci_uart: fix UAFs and race conditions in close and init paths
+	Guillaume Nault <gnault@redhat.com>,
+	Beniamino Galvani <b.galvani@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 490/589] ipv4: add new arguments to udp_tunnel_dst_lookup()
 Date: Sat, 30 May 2026 18:06:11 +0200
-Message-ID: <20260530160324.050836369@linuxfoundation.org>
+Message-ID: <20260530160237.513344484@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,209 +66,183 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257793-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259172-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org,davemloft.net];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,xidian.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3BCD760FEEF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,davemloft.net:email]
+X-Rspamd-Queue-Id: 3E5B3612A66
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+From: Beniamino Galvani <b.galvani@gmail.com>
 
-commit c1bb9336ae6b54a5f6a353c4bd4ed9a4307e429b upstream.
+[ Upstream commit 72fc68c6356b663a8763f02d9b0ec773d59a4949 ]
 
-Vulnerabilities leading to Use-After-Free (UAF) and Null Pointer
-Dereference (NPD) conditions were observed in the lifecycle management
-of hci_uart.
+We want to make the function more generic so that it can be used by
+other UDP tunnel implementations such as geneve and vxlan. To do that,
+add the following arguments:
 
-The primary issue arises because the workqueues (init_ready and
-write_work) are only flushed/cancelled if the HCI_UART_PROTO_READY
-flag is set during TTY close. If a hangup occurs before setup completes,
-hci_uart_tty_close() skips the teardown of these workqueues and
-proceeds to free the `hu` struct. When the scheduled work executes
-later, it blindly dereferences the freed `hu` struct.
+ - source and destination UDP port;
+ - ifindex of the output interface, needed by vxlan;
+ - the tos, because in some cases it is not taken from struct
+   ip_tunnel_info (for example, when it's inherited from the inner
+   packet);
+ - the dst cache, because not all tunnel types (e.g. vxlan) want to
+   use the one from struct ip_tunnel_info.
 
-Furthermore, several data races and UAFs were identified in the teardown
-sequence:
-1. Calling hci_uart_flush() from hci_uart_close() without effectively
-   disabling write_work causes a race condition where both can concurrently
-   double-free hu->tx_skb. This happens because protocol timers can
-   concurrently invoke hci_uart_tx_wakeup() and requeue write_work.
-2. Calling hci_free_dev(hdev) before hu->proto->close(hu) causes a UAF
-   when vendor specific protocol close callbacks dereference hu->hdev.
-3. In the initialization error paths, failing to take the proto_lock
-   write lock before clearing PROTO_READY leads to races with active
-   readers. Additionally, hci_uart_tty_receive() accesses hu->hdev
-   outside the read lock, leading to UAFs if the initialization error
-   path frees hdev concurrently.
+With these parameters, the function no longer needs the full struct
+ip_tunnel_info as argument and we can pass only the relevant part of
+it (struct ip_tunnel_key).
 
-Fix these synchronization and lifecycle issues by:
-1. Re-ordering hci_uart_tty_close() to clear HCI_UART_PROTO_READY first,
-   followed immediately by a cancel_work_sync(&hu->write_work). Clearing
-   the flag locks out concurrent protocol timers from successfully invoking
-   hci_uart_tx_wakeup(), effectively rendering the cancellation permanent
-   and preventing the tx_skb double-free.
-2. Note: Clearing PROTO_READY early causes hci_uart_close() to skip
-   hu->proto->flush(). This is perfectly safe in the tty_close path
-   because hu->proto->close() executes shortly after, which intrinsically
-   purges all protocol SKB queues and tears down the state.
-3. Relocating hu->proto->close(hu) strictly prior to hci_free_dev(hdev)
-   across all close and error paths to prevent vendor-level UAFs.
-4. Moving the hdev->stat.byte_rx increment in hci_uart_tty_receive()
-   inside the proto_lock read-side critical section to safely synchronize
-   with device unregistration.
-5. Adding cancel_work_sync(&hu->write_work) to hci_uart_close() to safely
-   flush the workqueue before hci_uart_flush() is invoked via the HCI core.
-6. Utilizing cancel_work_sync() instead of disable_work_sync() across
-   all paths to prevent permanently breaking user-space retry capabilities.
-
-Fixes: 3b799254cf6f ("Bluetooth: hci_uart: Cancel init work before unregistering")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: aa6c6d9ee064 ("bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_ldisc.c |   48 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 40 insertions(+), 8 deletions(-)
+ drivers/net/bareudp.c      | 11 +++++++----
+ include/net/udp_tunnel.h   |  8 +++++---
+ net/ipv4/udp_tunnel_core.c | 26 +++++++++++++-------------
+ 3 files changed, 25 insertions(+), 20 deletions(-)
 
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -194,7 +194,15 @@ void hci_uart_init_work(struct work_stru
- 	err = hci_register_dev(hu->hdev);
- 	if (err < 0) {
- 		BT_ERR("Can't register HCI device");
-+
-+		percpu_down_write(&hu->proto_lock);
- 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
-+		percpu_up_write(&hu->proto_lock);
-+
-+		/* Safely cancel work after clearing flags */
-+		cancel_work_sync(&hu->write_work);
-+
-+		/* Close protocol before freeing hdev */
- 		hu->proto->close(hu);
- 		hdev = hu->hdev;
- 		hu->hdev = NULL;
-@@ -263,8 +271,12 @@ static int hci_uart_open(struct hci_dev
- /* Close device */
- static int hci_uart_close(struct hci_dev *hdev)
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index 1ed25e1afd246..5c8412d835792 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -317,8 +317,10 @@ static int bareudp_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	if (!sock)
+ 		return -ESHUTDOWN;
+ 
+-	rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, &saddr, info,
+-				   use_cache);
++	rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, 0, &saddr, &info->key,
++				   0, 0, key->tos,
++				   use_cache ?
++				   (struct dst_cache *)&info->dst_cache : NULL);
+ 
+ 	if (IS_ERR(rt))
+ 		return PTR_ERR(rt);
+@@ -497,8 +499,9 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
+ 		struct rtable *rt;
+ 		__be32 saddr;
+ 
+-		rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, &saddr,
+-					   info, use_cache);
++		rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, 0, &saddr,
++					   &info->key, 0, 0, info->key.tos,
++					   use_cache ? &info->dst_cache : NULL);
+ 		if (IS_ERR(rt))
+ 			return PTR_ERR(rt);
+ 
+diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
+index 4d4f1a67d4b26..ad92ae0dd9863 100644
+--- a/include/net/udp_tunnel.h
++++ b/include/net/udp_tunnel.h
+@@ -155,9 +155,11 @@ void udp_tunnel_sock_release(struct socket *sock);
+ 
+ struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
+ 				     struct net_device *dev,
+-				     struct net *net, __be32 *saddr,
+-				     const struct ip_tunnel_info *info,
+-				     bool use_cache);
++				     struct net *net, int oif,
++				     __be32 *saddr,
++				     const struct ip_tunnel_key *key,
++				     __be16 sport, __be16 dport, u8 tos,
++				     struct dst_cache *dst_cache);
+ 
+ struct metadata_dst *udp_tun_rx_dst(struct sk_buff *skb, unsigned short family,
+ 				    __be16 flags, __be64 tunnel_id,
+diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
+index 50c83f90487db..4b6f44c481abf 100644
+--- a/net/ipv4/udp_tunnel_core.c
++++ b/net/ipv4/udp_tunnel_core.c
+@@ -224,31 +224,31 @@ EXPORT_SYMBOL_GPL(udp_tun_rx_dst);
+ 
+ struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
+ 				     struct net_device *dev,
+-				     struct net *net, __be32 *saddr,
+-				     const struct ip_tunnel_info *info,
+-				     bool use_cache)
++				     struct net *net, int oif,
++				     __be32 *saddr,
++				     const struct ip_tunnel_key *key,
++				     __be16 sport, __be16 dport, u8 tos,
++				     struct dst_cache *dst_cache)
  {
-+	struct hci_uart *hu = hci_get_drvdata(hdev);
-+
- 	BT_DBG("hdev %p", hdev);
+-#ifdef CONFIG_DST_CACHE
+-	struct dst_cache *dst_cache;
+-#endif
+ 	struct rtable *rt = NULL;
+ 	struct flowi4 fl4;
+-	__u8 tos;
  
-+	cancel_work_sync(&hu->write_work);
-+
- 	hci_uart_flush(hdev);
- 	hdev->flush = NULL;
- 	return 0;
-@@ -528,6 +540,7 @@ static void hci_uart_tty_close(struct tt
- {
- 	struct hci_uart *hu = tty->disc_data;
- 	struct hci_dev *hdev;
-+	bool proto_ready;
- 
- 	BT_DBG("tty %p", tty);
- 
-@@ -537,24 +550,38 @@ static void hci_uart_tty_close(struct tt
- 	if (!hu)
- 		return;
- 
--	hdev = hu->hdev;
--	if (hdev)
--		hci_uart_close(hdev);
-+	/* Wait for init_ready to finish to prevent registration races */
-+	cancel_work_sync(&hu->init_ready);
- 
--	if (test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
-+	proto_ready = test_bit(HCI_UART_PROTO_READY, &hu->flags);
-+	if (proto_ready) {
- 		percpu_down_write(&hu->proto_lock);
- 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
- 		percpu_up_write(&hu->proto_lock);
-+	}
- 
--		cancel_work_sync(&hu->init_ready);
--		cancel_work_sync(&hu->write_work);
-+	/*
-+	 * Unconditionally cancel write_work AFTER clearing PROTO_READY.
-+	 * This ensures that concurrent protocol timers cannot requeue
-+	 * write_work via hci_uart_tx_wakeup(), permanently preventing
-+	 * double-free races and UAFs.
-+	 */
-+	cancel_work_sync(&hu->write_work);
-+
-+	hdev = hu->hdev;
-+	if (hdev)
-+		hci_uart_close(hdev); /* proto->flush is safely skipped */
- 
-+	if (proto_ready) {
- 		if (hdev) {
- 			if (test_bit(HCI_UART_REGISTERED, &hu->flags))
- 				hci_unregister_dev(hdev);
--			hci_free_dev(hdev);
- 		}
-+		/* Close protocol before freeing hdev (intrinsically purges queues) */
- 		hu->proto->close(hu);
-+
-+		if (hdev)
-+			hci_free_dev(hdev);
+ #ifdef CONFIG_DST_CACHE
+-	dst_cache = (struct dst_cache *)&info->dst_cache;
+-	if (use_cache) {
++	if (dst_cache) {
+ 		rt = dst_cache_get_ip4(dst_cache, saddr);
+ 		if (rt)
+ 			return rt;
  	}
- 	clear_bit(HCI_UART_PROTO_SET, &hu->flags);
- 
-@@ -622,11 +649,12 @@ static void hci_uart_tty_receive(struct
- 	 * tty caller
- 	 */
- 	hu->proto->recv(hu, data, count);
--	percpu_up_read(&hu->proto_lock);
- 
- 	if (hu->hdev)
- 		hu->hdev->stat.byte_rx += count;
- 
-+	percpu_up_read(&hu->proto_lock);
+ #endif
 +
- 	tty_unthrottle(tty);
- }
+ 	memset(&fl4, 0, sizeof(fl4));
+ 	fl4.flowi4_mark = skb->mark;
+ 	fl4.flowi4_proto = IPPROTO_UDP;
+-	fl4.daddr = info->key.u.ipv4.dst;
+-	fl4.saddr = info->key.u.ipv4.src;
+-	tos = info->key.tos;
++	fl4.flowi4_oif = oif;
++	fl4.daddr = key->u.ipv4.dst;
++	fl4.saddr = key->u.ipv4.src;
++	fl4.fl4_dport = dport;
++	fl4.fl4_sport = sport;
+ 	fl4.flowi4_tos = RT_TOS(tos);
  
-@@ -697,6 +725,10 @@ static int hci_uart_register_dev(struct
- 		percpu_down_write(&hu->proto_lock);
- 		clear_bit(HCI_UART_PROTO_INIT, &hu->flags);
- 		percpu_up_write(&hu->proto_lock);
-+		/* Cancel work after clearing flags */
-+		cancel_work_sync(&hu->write_work);
-+
-+		/* Close protocol before freeing hdev */
- 		hu->proto->close(hu);
- 		hu->hdev = NULL;
- 		hci_free_dev(hdev);
+ 	rt = ip_route_output_key(net, &fl4);
+@@ -262,7 +262,7 @@ struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
+ 		return ERR_PTR(-ELOOP);
+ 	}
+ #ifdef CONFIG_DST_CACHE
+-	if (use_cache)
++	if (dst_cache)
+ 		dst_cache_set_ip4(dst_cache, &rt->dst, fl4.saddr);
+ #endif
+ 	*saddr = fl4.saddr;
+-- 
+2.53.0
+
 
 
 
