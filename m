@@ -1,65 +1,68 @@
-Return-Path: <stable+bounces-258178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258782-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOpWEu4kG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258178-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:02 +0200
+	id QGb2FwMsG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258782-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB03610B0D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05958611C40
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 22BBF3036E5C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFBFA301A402
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C7B349CCF;
-	Sat, 30 May 2026 17:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A04279DC9;
+	Sat, 30 May 2026 18:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMVbCFUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAenK7Tk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BD5320CAD;
-	Sat, 30 May 2026 17:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42EC217704;
+	Sat, 30 May 2026 18:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163476; cv=none; b=aK0UeqSZzatbSlBSDVHamb0kUuD39N76/A1ch96aoAhlkdcnW/4YH7nKh5Cqr5LWKJZpk8tdTOa3XV1lGV0YbKKjOTnJkek5vzOzZfsY/PwmodzkGLL6g1/qDfcVvaNj/VtgmkRXDwVTt8EYomhqXvZaNftRgFknziKz1sF4OrU=
+	t=1780165520; cv=none; b=Ys/7NuXoy+410672KUZqMXMoHtL6J25IXwQB67iHKQxdgdPAdSiJwHcDjwGkyAf5Jniuqep+NeeC5YoaP1Hzz8vjakU+SCooDj5r8E2KkmlF0UEfDabSqzp4QOAyNcCA250iu8K6ZboK5GctVlOt3ZOpmJE/PF3jCVo3dDQrXEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163476; c=relaxed/simple;
-	bh=2yu6VQTy7OCxmoXUn/8JhgO/dAjmald1E4Bg7fQ6k54=;
+	s=arc-20240116; t=1780165520; c=relaxed/simple;
+	bh=jrfx24vcy2bxl72x/YYkslksLu5hIWYgFluydn5Vz+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7AK0STD7JshsLAyTh9M28hF0+FkOjKI6uUUEyLc3bTgPvPdmLe7FxRPXSDNCGCpH9VACwD20PDxLtelwOwIT2FRDPIWb0nzdNZCkyagEtBptK8RlL3ZDfvS7EprLZaB9DWkehIh1fDTZzoCjID/f1zInmkeofZ8o41AG4L/7+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMVbCFUA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4341F00893;
-	Sat, 30 May 2026 17:51:14 +0000 (UTC)
+	 MIME-Version; b=cdwRk9jlieGSKc7URPOlWYX7pFZtpI9qaGgx4dmUDB2G6BMU7JZLt+lkeAUvt0hOWQNYULbF/C+gSiHcMR6RiP3cTy8FD5LouqIhcUcyyJnMEaF+yLdzU3iqdTH70uh2ac4S7JzKM6WkuU2HKBojTZo0k4avvDjaYeoBUuj3q6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAenK7Tk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C0A1F00893;
+	Sat, 30 May 2026 18:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163475;
-	bh=YpJAm/fNLF7kgd7Ft//sVJoghP2r2WZNmS1/SYY71h0=;
+	s=korg; t=1780165519;
+	bh=4B93x6S7eyH2PujCdl9lXnb9gKTRQR1CXZUNTP9tkDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yMVbCFUAMQXwCyv8Y2fuGFWpK+wqGU7gDtpAyJP+usnIbNclxUWJc6KRUAALttwcX
-	 tYupBCgs/TNePyUPfI6sJhcb3b4pTA+CYZC1XSe5B1crOrfQ+UPAKZLX40TnsvD1tY
-	 Ke2VKUojvJDBuk194NxKIMgWghxKxPwlAmE2EL4E=
+	b=fAenK7TkXjWD5qtFNnX8lnzCcLH9dBu8eO51N/9iDBt4wV308w/7oj8xMa6vkvCM1
+	 f+qQel2WoVxXIsF/1FVok0Vc1iM8r9RXhju5BrqYzdnIvwusQHgNW5anHONcEfN7Sw
+	 w+VL1pRL2o7seow2c8olrqn5K9AtTuBP0HI2Unuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Kai Ma <k4729.23098@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 270/776] netfilter: reject zero shift in nft_bitwise
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joseph Qi <jiangqi903@gmail.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 103/589] ocfs2: add inline inode consistency check to ocfs2_validate_inode_block()
 Date: Sat, 30 May 2026 17:59:44 +0200
-Message-ID: <20260530160247.536382910@linuxfoundation.org>
+Message-ID: <20260530160227.432822838@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,10 +84,10 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-258178-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-258782-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,suse.de,netfilter.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yandex.ru,syzkaller.appspotmail.com,linux.alibaba.com,gmail.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
@@ -93,62 +96,65 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,c16daba279a1161acfb0];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lzu.edu.cn:email,suse.de:email,netfilter.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BCB03610B0D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 05958611C40
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Ma <k4729.23098@gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit fe11e5c40817b84abaa5d83bfb6586d8412bfd07 upstream.
+[ Upstream commit a2b1c419ff72ec62ff5831684e30cd1d4f0b09ee ]
 
-Reject zero shift operands for nft_bitwise left and right shift
-expressions during initialization.
+In 'ocfs2_validate_inode_block()', add an extra check whether an inode
+with inline data (i.e.  self-contained) has no clusters, thus preventing
+an invalid inode from being passed to 'ocfs2_evict_inode()' and below.
 
-The carry propagation logic computes the carry from the adjacent 32-bit
-word using BITS_PER_TYPE(u32) - shift. A zero shift operand turns this
-into a 32-bit shift, which is undefined behaviour.
-
-Reject zero shift operands in the control plane, alongside the existing
-check for values greater than or equal to 32, so malformed rules never
-reach the packet path.
-
-Fixes: 567d746b55bc ("netfilter: bitwise: add support for shifts.")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Kai Ma <k4729.23098@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://lkml.kernel.org/r/20251023141650.417129-1-dmantipov@yandex.ru
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reported-by: syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c16daba279a1161acfb0
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7bc5da4842be ("ocfs2: fix out-of-bounds write in ocfs2_write_end_inline")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_bitwise.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ocfs2/inode.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/netfilter/nft_bitwise.c
-+++ b/net/netfilter/nft_bitwise.c
-@@ -149,7 +149,8 @@ static int nft_bitwise_init_shift(struct
- 	if (err < 0)
- 		return err;
- 
--	if (priv->data.data[0] >= BITS_PER_TYPE(u32)) {
-+	if (!priv->data.data[0] ||
-+	    priv->data.data[0] >= BITS_PER_TYPE(u32)) {
- 		nft_data_release(&priv->data, desc.type);
- 		return -EINVAL;
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -1418,6 +1418,14 @@ int ocfs2_validate_inode_block(struct su
+ 		goto bail;
  	}
+ 
++	if ((le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) &&
++	    le32_to_cpu(di->i_clusters)) {
++		rc = ocfs2_error(sb, "Invalid dinode %llu: %u clusters\n",
++				 (unsigned long long)bh->b_blocknr,
++				 le32_to_cpu(di->i_clusters));
++		goto bail;
++	}
++
+ 	rc = 0;
+ 
+ bail:
 
 
 
