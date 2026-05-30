@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259097-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOCeGyofG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257717-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:26 +0200
+	id cPxlD88vG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259097-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C61B460FDE3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D14E9612573
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 369973055C08
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:25:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 26AA93013B92
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8184340298;
-	Sat, 30 May 2026 17:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11AF21B191;
+	Sat, 30 May 2026 18:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVofXo17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JimzXUVv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22B733F5A0;
-	Sat, 30 May 2026 17:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A810F29E11A;
+	Sat, 30 May 2026 18:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161936; cv=none; b=XSh+uthJf4EuDZZjdrSgjwsVIIYGtKeLFzmQX6vZJoickHLs2I5+eLMNSFRCNk8WkGZY8srXM1TrXSonNuyBTyUiTcO4m1H8pl+Uc5CAaLOEZAmy8XJN6JmYIwYOhyimbkoKeL1P1anGTdzwnnzKNYS0bmxOQUBP4XW8R6E9p/c=
+	t=1780166602; cv=none; b=WqhfZh+kDQzcSJdGUstl1fuGfT77BrGB69tq9kpTtX+cCT9W/Z6qiqVswPmxz40cfuxcwscEQeb26f28DzTwOiXUA3pFp9QsKawAm56GdKRpZOQ2SL2Ym6tVPxkQq092SpA6xI3vAdt/XQJgNNIaoOHBN2YvgkFc1xioQrc5gX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161936; c=relaxed/simple;
-	bh=aWZ9czGLWXxRw1VMAcO3Uh3thzyom3h7no66EclsJWU=;
+	s=arc-20240116; t=1780166602; c=relaxed/simple;
+	bh=R5bABUT/j1sbuP9ilZyPZxRXzC4mgZSyv7R/tgqTaco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQjDj/XVkMnvOfUhsQsRtVbY+Phtpjhkt8ObhmoLVzfWwDDv9xy7agaPKMEDIBmbIh5V0N3Z2JzHzmLzVdJJudUdMLDz6MLidkAybfaY9EDBAK6bVnCTe7JDDA1Fs94imXYEUCWItkqo/btwhUP4NQvNAOqby3Qxu34Xn7D//qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVofXo17; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25551F00893;
-	Sat, 30 May 2026 17:25:34 +0000 (UTC)
+	 MIME-Version; b=ESwQcke5ZhcCXKvUYt3rsNNifH/1AaRz4oO316sj3k7NRsmMbsJ7OPNwHcTgpAX1awnK4kOjmjxzaskIYve9/2z2O/vr6sGyc1GbHPfkSXWVxPD2wXSCHmjhMORRtbaYO7gAQGfDzObpoLpWBTdFHuGktYAbJZTIgt5IYVtU9Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JimzXUVv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78381F00893;
+	Sat, 30 May 2026 18:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161935;
-	bh=cxRxQ7Aj07AcZGivHll8cnIGj8WdJn/ittCAlcAeF8U=;
+	s=korg; t=1780166601;
+	bh=aYDu3QzJWxmQLsQQu/qjkQ+piFR0WVj5lH+l9iD7vJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hVofXo17dtltQ+wvN+tjhaqdiqxCtxdX5AX5geKvSCAMn76Bpf4AYc5PyXgC1CpfD
-	 kYsQvRQMbf5OKC4ZVN0AintPWFNjpOrf7Q6mJDdARbT6VX5tlGGUwl4hufCzFYHrmZ
-	 Na2kc6fGWoLLUFE059DQdTX1DdvUE7Vvta72S0UY=
+	b=JimzXUVvVY8ho0ox+5gQHOaO6o2j5STxKRi7rf1d77VTHfQ173a0AsOKnYz5aspB5
+	 +U/9dKWVUIEnOZEuKUU+niNnTP+k3fH2HSU7MSoJ1FRS11/DtsDDB/m+cWXaXuMB+j
+	 75UNvwELKFEIQF2P6Slgl9OPcI59bUGpD9TKr0AA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oldherl Oh <me@oldherl.one>,
-	Takashi Iwai <tiwai@suse.de>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 772/969] ALSA: hda/conexant: fix some typos
+Subject: [PATCH 5.10 415/589] taprio: Handle short intervals and large packets
 Date: Sat, 30 May 2026 18:04:56 +0200
-Message-ID: <20260530160321.902062218@linuxfoundation.org>
+Message-ID: <20260530160235.657559624@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257717-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259097-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,72 +89,159 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email]
-X-Rspamd-Queue-Id: C61B460FDE3
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D14E9612573
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oldherl Oh <me@oldherl.one>
+From: Kurt Kanzenbach <kurt@linutronix.de>
 
-[ Upstream commit 73253f2fd1d0a44708735c842e37163712e3f03b ]
+[ Upstream commit 497cc00224cfaff89282ec8bfdfb8b797415f72a ]
 
-Fix some typos in patch_conexant.c
+When using short intervals e.g. below one millisecond, large packets won't be
+transmitted at all. The software implementations checks whether the packet can
+be fit into the remaining interval. Therefore, it takes the packet length and
+the transmission speed into account. That is correct.
 
-Signed-off-by: Oldherl Oh <me@oldherl.one>
-Link: https://patch.msgid.link/20240930084132.3373750-1-me@oldherl.one
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: b0e2333a2311 ("ALSA: hda/conexant: Fix missing error check for jack detection")
+However, for large packets it may be that the transmission time exceeds the
+interval resulting in no packet transmission. The same situation works fine with
+hardware offloading applied.
+
+The problem has been observed with the following schedule and iperf3:
+
+|tc qdisc replace dev lan1 parent root handle 100 taprio \
+|   num_tc 8 \
+|   map 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 \
+|   queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 \
+|   base-time $base \
+|   sched-entry S 0x40 500000 \
+|   sched-entry S 0xbf 500000 \
+|   clockid CLOCK_TAI \
+|   flags 0x00
+
+[...]
+
+|root@tsn:~# iperf3 -c 192.168.2.105
+|Connecting to host 192.168.2.105, port 5201
+|[  5] local 192.168.2.121 port 52610 connected to 192.168.2.105 port 5201
+|[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+|[  5]   0.00-1.00   sec  45.2 KBytes   370 Kbits/sec    0   1.41 KBytes
+|[  5]   1.00-2.00   sec  0.00 Bytes  0.00 bits/sec    0   1.41 KBytes
+
+After debugging, it seems that the packet length stored in the SKB is about
+7000-8000 bytes. Using a 100 Mbit/s link the transmission time is about 600us
+which larger than the interval of 500us.
+
+Therefore, segment the SKB into smaller chunks if the packet is too big. This
+yields similar results than the hardware offload:
+
+|root@tsn:~# iperf3 -c 192.168.2.105
+|Connecting to host 192.168.2.105, port 5201
+|- - - - - - - - - - - - - - - - - - - - - - - - -
+|[ ID] Interval           Transfer     Bitrate         Retr
+|[  5]   0.00-10.00  sec  48.9 MBytes  41.0 Mbits/sec    0             sender
+|[  5]   0.00-10.02  sec  48.7 MBytes  40.7 Mbits/sec                  receiver
+
+Furthermore, the segmentation can be skipped for the full offload case, as the
+driver or the hardware is expected to handle this.
+
+Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 105425b1969c ("net/sched: taprio: fix use-after-free in advance_sched() on schedule switch")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ net/sched/sch_taprio.c | 64 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 54 insertions(+), 10 deletions(-)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index e5837e47aa227..394932123b51d 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -166,18 +166,18 @@ static void cxt_init_gpio_led(struct hda_codec *codec)
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 16ab7b1480661..66348b1083ed5 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -415,18 +415,10 @@ static long get_packet_txtime(struct sk_buff *skb, struct Qdisc *sch)
+ 	return txtime;
+ }
  
- static void cx_fixup_headset_recog(struct hda_codec *codec)
+-static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+-			  struct sk_buff **to_free)
++static int taprio_enqueue_one(struct sk_buff *skb, struct Qdisc *sch,
++			      struct Qdisc *child, struct sk_buff **to_free)
  {
--	unsigned int mic_persent;
-+	unsigned int mic_present;
+ 	struct taprio_sched *q = qdisc_priv(sch);
+-	struct Qdisc *child;
+-	int queue;
+-
+-	queue = skb_get_queue_mapping(skb);
+-
+-	child = q->qdiscs[queue];
+-	if (unlikely(!child))
+-		return qdisc_drop(skb, sch, to_free);
  
- 	/* fix some headset type recognize fail issue, such as EDIFIER headset */
--	/* set micbiasd output current comparator threshold from 66% to 55%. */
-+	/* set micbias output current comparator threshold from 66% to 55%. */
- 	snd_hda_codec_write(codec, 0x1c, 0, 0x320, 0x010);
--	/* set OFF voltage for DFET from -1.2V to -0.8V, set headset micbias registor
-+	/* set OFF voltage for DFET from -1.2V to -0.8V, set headset micbias register
- 	 * value adjustment trim from 2.2K ohms to 2.0K ohms.
- 	 */
- 	snd_hda_codec_write(codec, 0x1c, 0, 0x3b0, 0xe10);
- 	/* fix reboot headset type recognize fail issue */
--	mic_persent = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
--	if (mic_persent & AC_PINSENSE_PRESENCE)
-+	mic_present = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
-+	if (mic_present & AC_PINSENSE_PRESENCE)
- 		/* enable headset mic VREF */
- 		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24);
- 	else
-@@ -247,9 +247,9 @@ static void cx_update_headset_mic_vref(struct hda_codec *codec, struct hda_jack_
+ 	/* sk_flags are only safe to use on full sockets. */
+ 	if (skb->sk && sk_fullsock(skb->sk) && sock_flag(skb->sk, SOCK_TXTIME)) {
+@@ -444,6 +436,58 @@ static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	return qdisc_enqueue(skb, child, to_free);
+ }
+ 
++static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
++			  struct sk_buff **to_free)
++{
++	struct taprio_sched *q = qdisc_priv(sch);
++	struct Qdisc *child;
++	int queue;
++
++	queue = skb_get_queue_mapping(skb);
++
++	child = q->qdiscs[queue];
++	if (unlikely(!child))
++		return qdisc_drop(skb, sch, to_free);
++
++	/* Large packets might not be transmitted when the transmission duration
++	 * exceeds any configured interval. Therefore, segment the skb into
++	 * smaller chunks. Skip it for the full offload case, as the driver
++	 * and/or the hardware is expected to handle this.
++	 */
++	if (skb_is_gso(skb) && !FULL_OFFLOAD_IS_ENABLED(q->flags)) {
++		unsigned int slen = 0, numsegs = 0, len = qdisc_pkt_len(skb);
++		netdev_features_t features = netif_skb_features(skb);
++		struct sk_buff *segs, *nskb;
++		int ret;
++
++		segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
++		if (IS_ERR_OR_NULL(segs))
++			return qdisc_drop(skb, sch, to_free);
++
++		skb_list_walk_safe(segs, segs, nskb) {
++			skb_mark_not_on_list(segs);
++			qdisc_skb_cb(segs)->pkt_len = segs->len;
++			slen += segs->len;
++
++			ret = taprio_enqueue_one(segs, sch, child, to_free);
++			if (ret != NET_XMIT_SUCCESS) {
++				if (net_xmit_drop_count(ret))
++					qdisc_qstats_drop(sch);
++			} else {
++				numsegs++;
++			}
++		}
++
++		if (numsegs > 1)
++			qdisc_tree_reduce_backlog(sch, 1 - numsegs, len - slen);
++		consume_skb(skb);
++
++		return numsegs > 0 ? NET_XMIT_SUCCESS : NET_XMIT_DROP;
++	}
++
++	return taprio_enqueue_one(skb, sch, child, to_free);
++}
++
+ static struct sk_buff *taprio_peek_soft(struct Qdisc *sch)
  {
- 	unsigned int mic_present;
- 
--	/* In cx8070 and sn6140, the node 16 can only be config to headphone or disabled,
--	 * the node 19 can only be config to microphone or disabled.
--	 * Check hp&mic tag to process headset pulgin&plugout.
-+	/* In cx8070 and sn6140, the node 16 can only be configured to headphone or disabled,
-+	 * the node 19 can only be configured to microphone or disabled.
-+	 * Check hp&mic tag to process headset plugin & plugout.
- 	 */
- 	mic_present = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
- 	if (!(mic_present & AC_PINSENSE_PRESENCE)) /* mic plugout */
+ 	struct taprio_sched *q = qdisc_priv(sch);
 -- 
 2.53.0
 
