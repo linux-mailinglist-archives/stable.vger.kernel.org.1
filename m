@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-259122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CeOH7UwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259122-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:17 +0200
+	id 2CWuHOwnG2rM/ggAu9opvQ
+	(envelope-from <stable+bounces-258481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F149D6127ED
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F1BF6111F9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D7E92301A14F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 151323056C35
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD47233E36A;
-	Sat, 30 May 2026 18:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4546340A6F;
+	Sat, 30 May 2026 18:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MaZInvqz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIKvc9jc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97E62773DE;
-	Sat, 30 May 2026 18:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BA33AFCE3;
+	Sat, 30 May 2026 18:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166684; cv=none; b=LLXF9uTPlZoi0N/bjrq2/MsHV2rJ8XdKxnMRUa/LzaZ2JG8t7PwjTZ6j1zZlmPmLynIP+8bQDykrvm7QVS5cj29W3uJMRlovHpAJsyE7jrnAuPoAdKJLc3S4eY3vtcChub8Qhi9YKVuwuhzV+phawW2KVoa3JnrQYQqDzvZDyGU=
+	t=1780164494; cv=none; b=PZop8oszpLd/y8VKWCenM/D+im4d2u3FfrHa3QWpWpqxrWMQBYEKpwSolb68yCnOwh5vEVvObB0mKjTmZUh+dQEwXmIc2AWw1iztwssabbihu14QL8cKlGWkW3ejzk64fdpOFHyrYkIWXi9Ud2sHRHUgASLFmbAD5jaaMzj6Das=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166684; c=relaxed/simple;
-	bh=Dz4dX71lT/nSS2nOQ+ymXEujZkMD9Hvgdwb7rHiirHs=;
+	s=arc-20240116; t=1780164494; c=relaxed/simple;
+	bh=yDanUJyU1ngofApfu+0DQuDxO1SShozO1bTMk1/euak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R1oVZgXfyNkkL7GSy5avGrLYIE/xdCs54Yf78xUVnApFvEL+FDYLaRDPl3aAij0uqB2GFCzD1ya9cMgkdNbNeeYNpZyJuql/1XWa0uA0dAVOHZlobbKCjrkq3VnpMKdzI6GzYAlTQLGP+dtXpVeCfAfUvP69LMIlr+2h3M7op8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaZInvqz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE64E1F00893;
-	Sat, 30 May 2026 18:44:42 +0000 (UTC)
+	 MIME-Version; b=iWurllEOLzhbvN4ftaZ//F9Apq509BfQc/PzmueNUtLjxu1xfiSXkhxhGmOekHseecr1+LyW+Hd1RRO2DRy3xGy7r21ulF6hrjUVZ10yquPLkG9o62Tr8c18fDNh7eHn0diApKvz4Hh3h58SkHTK4lBj7ApmZEesW/dlzerlA8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIKvc9jc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA0361F00893;
+	Sat, 30 May 2026 18:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166683;
-	bh=9dmufkLK/wvnVowsZr2ahjvD9tKp38CEjrAnZT5qkDs=;
+	s=korg; t=1780164493;
+	bh=xEol1fP9iu1uIM/6zfg39RQsdX0FHPmAsw1cqG+fSIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MaZInvqzFza96U1uHszFgMSFdypmSgTGcTBo8rUQOsLuHiASW8cHGluJ+scXyjT49
-	 UVhaMambciREw3UeOi5FbF3N0bMmZ8gv9srqjSrb23SNgc45AVP7LdoyTKxXjS/Wq7
-	 2Sn9VJKl6gtODSltYVSD0st+VtoyTxl4sf5vmx9s=
+	b=UIKvc9jc15efCwHdJIToXfQiBirkPGvf0vCoR67tfLOZudUuuiRj3qIwBuc/02+7O
+	 F//J5DWlTyWScnqOy/3BvUtQWNxS/h0Ay+1g3YLyzu9ySvCpSsE/qXdTkwMqw9IIzd
+	 oFsLkLAqr+a4ii64Wqa4Emz4wghaKFrFP7tFKVpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Brian Masney <bmasney@redhat.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 405/589] clk: xgene: Fix mapping leak in xgene_pllclk_init()
+Subject: [PATCH 5.15 572/776] netfilter: nft_osf: restrict it to ipv4
 Date: Sat, 30 May 2026 18:04:46 +0200
-Message-ID: <20260530160235.408980171@linuxfoundation.org>
+Message-ID: <20260530160254.889166400@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +65,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-259122-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258481-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,glider.be:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: F149D6127ED
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 1F1BF6111F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit f520a492e07bc6718e26cfb7543ab4cadd8bb0e2 ]
+[ Upstream commit b336fdbb7103fb1484e1dcb6741151d4b5a41e35 ]
 
-If xgene_register_clk_pll() fails, the mapped register block is never
-unmapped.
+This expression only supports for ipv4, restrict it.
 
-Fixes: 308964caeebc45eb ("clk: Add APM X-Gene SoC clock driver")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Brian Masney <bmasney@redhat.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: b96af92d6eaf ("netfilter: nf_tables: implement Passive OS fingerprint module in nft_osf")
+Acked-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-xgene.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nft_osf.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-xgene.c b/drivers/clk/clk-xgene.c
-index 3fd53057c01fe..fca5ce22611ca 100644
---- a/drivers/clk/clk-xgene.c
-+++ b/drivers/clk/clk-xgene.c
-@@ -187,6 +187,8 @@ static void xgene_pllclk_init(struct device_node *np, enum xgene_pll_type pll_ty
- 		of_clk_add_provider(np, of_clk_src_simple_get, clk);
- 		clk_register_clkdev(clk, clk_name, NULL);
- 		pr_debug("Add %s clock PLL\n", clk_name);
-+	} else {
-+		iounmap(reg);
- 	}
- }
+diff --git a/net/netfilter/nft_osf.c b/net/netfilter/nft_osf.c
+index c9c124200a4db..8ee6a97fc7eeb 100644
+--- a/net/netfilter/nft_osf.c
++++ b/net/netfilter/nft_osf.c
+@@ -28,6 +28,11 @@ static void nft_osf_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 	struct nf_osf_data data;
+ 	struct tcphdr _tcph;
  
++	if (nft_pf(pkt) != NFPROTO_IPV4) {
++		regs->verdict.code = NFT_BREAK;
++		return;
++	}
++
+ 	if (pkt->tprot != IPPROTO_TCP) {
+ 		regs->verdict.code = NFT_BREAK;
+ 		return;
+@@ -119,7 +124,6 @@ static int nft_osf_validate(const struct nft_ctx *ctx,
+ 
+ 	switch (ctx->family) {
+ 	case NFPROTO_IPV4:
+-	case NFPROTO_IPV6:
+ 	case NFPROTO_INET:
+ 		hooks = (1 << NF_INET_LOCAL_IN) |
+ 			(1 << NF_INET_PRE_ROUTING) |
 -- 
 2.53.0
 
