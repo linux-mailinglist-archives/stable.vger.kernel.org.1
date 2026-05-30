@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-257904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258679-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aK+KIUQgG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257904-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:08 +0200
+	id 6D3GDtMqG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258679-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5773161006D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A87836119C0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A35B230187B1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:36:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9671230AA4B6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13843AD520;
-	Sat, 30 May 2026 17:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB10D32F770;
+	Sat, 30 May 2026 18:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKQl0Lr2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gpABz+B0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779C52E7379;
-	Sat, 30 May 2026 17:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79E324EA90;
+	Sat, 30 May 2026 18:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162561; cv=none; b=ANyt1A5L6fEapp75rA64d2N4Le+g4CQHNJ3/HK3RA8HWyHZzOogCuMvRBp2L78qH3O5xwqGue3d5kGtMqQ+TI6XDoc3wwkZRO0JxBEvrWnP00IFzkn9tSk0LKe5rNeFs6WDuUU5q95VJ7MnI/CN1jyjR0VaomrV4BpMIvDRP/Ro=
+	t=1780165170; cv=none; b=CxOTYgT56oUT820V+47G/GffM+U0bfoFDKlNOIoymwnNYnkgpd4BL0p0epB6Gfoh7dzC20H7qpR7oEbTZ668AdcbuPEVgNvk1oQeGS8SZnAfDyH2sOOpJba/e9ksW//O5gX/pqEsjLs9cGtfDc9uzdF2OD8WxWib+R/BZApaqu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162561; c=relaxed/simple;
-	bh=m6v+MJDrM2RIqGx9wFmLPTUdixdn8VT/Lh7XTcme8iw=;
+	s=arc-20240116; t=1780165170; c=relaxed/simple;
+	bh=QXRIoGf0IY46rAiBMio/q/TBWHBOFi79QDnKAmtsYCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dENwnD7obR2kLUczLRlVJgJzYEOsVxp1egQr3Igu7zK+rfEa3feZ7UT76l4oH1qFkZB0/oy8ruXQ6b0l/6i3Wa+bRfGxnpW5nFliIgxSbwwt6EDlAUmjyngT3K9BiVdbYhD8dwu2DIvF8bL4o4kPMK7NKeEnjsKuwC5uURmbhgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKQl0Lr2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F9C1F00893;
-	Sat, 30 May 2026 17:35:59 +0000 (UTC)
+	 MIME-Version; b=VW46lL/7gDYzh7kJsF1/VWyBQjxD6q4FgWcEWkXyTqlj2pvqlGrm03q444045X7bcQR7qvhH3clkyjdfOSWWcOuURcrGTjzUQgIg0WU82UnXyd6UvQHDowN62fezbqlFbxm1zFB2VJOtDMUKB5U+Xtz8KfNxU57jEnXFTF9NXls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpABz+B0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE691F00893;
+	Sat, 30 May 2026 18:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162560;
-	bh=wSRQAvjbTqZtnv27B1OykwDfHUZmM2UP93ZgUJ9rpOM=;
+	s=korg; t=1780165169;
+	bh=Nk+x45snCFSq3bNijvMkrj8ubIPnBB6uo2QbHyJSF+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tKQl0Lr2siwbb65AbQp6Sg8KvAE+P9x5BiJp1pNh0wjZn0maAalHSO3E7/+uxP/kT
-	 05bsWSoTDpSC8MBQZviWAGdLMUTraMmxKRyEdWQUHiPqS7bCFR3bzHQhK2+N74hdMt
-	 fGdhVOw46MN0ojJeWuSjNu0QlSZFY0Xxn1paCyis=
+	b=gpABz+B09To2FXkfGbRz57/mZT0ko90fDjwc4eMR8iCpvgra/0aU7z2bnjI+tLhvV
+	 AvRbd1AV2DVXyupkLRLSmdV59mnplmhNYWeYP13E3p4wwkLZyqVz7Jv5YbARDCmEML
+	 Ci2po68m/uj7GYb8t/ZKFQEjclX10uBdNOpC3STo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 959/969] platform/x86: intel-vbtn: Check ACPI_HANDLE() against NULL
+Subject: [PATCH 5.15 769/776] net: bridge: Flush multicast groups when snooping is disabled
 Date: Sat, 30 May 2026 18:08:03 +0200
-Message-ID: <20260530160327.251531469@linuxfoundation.org>
+Message-ID: <20260530160259.593441575@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +65,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257904-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258679-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5773161006D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: A87836119C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit a9f305c5a355efeb240d406d378491d9eec02d07 ]
+[ Upstream commit 68800bbf583f26f71491141e4b3c8582f9cfcbde ]
 
-Every platform driver can be forced to match a device that doesn't match
-its list of device IDs because of device_match_driver_override(), so
-platform drivers that rely on the existence of a device's ACPI companion
-object need to verify its presence.
+When forwarding multicast packets, the bridge takes MDB into account when
+IGMP / MLD snooping is enabled. Currently, when snooping is disabled, the
+MDB is retained, even though it is not used anymore.
 
-Accordingly, add a requisite ACPI_HANDLE() check against NULL to the
-platform/x86 intel-vbtn driver.
+At the same time, during the time that snooping is disabled, the IGMP / MLD
+control packets are obviously ignored, and after the snooping is reenabled,
+the administrator has to assume it is out of sync. In particular, missed
+join and leave messages would lead to traffic being forwarded to wrong
+interfaces.
 
-Fixes: 26173179fae1 ("platform/x86: intel-vbtn: Eval VBDL after registering our notifier")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/3426431.aeNJFYEL58@rafael.j.wysocki
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Keeping the MDB entries around thus serves no purpose, and just takes
+memory. Note also that disabling per-VLAN snooping does actually flush the
+relevant MDB entries.
+
+This patch flushes non-permanent MDB entries as global snooping is
+disabled.
+
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/5e992df1bb93b88e19c0ea5819e23b669e3dde5d.1761228273.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 4df78ff02629 ("bridge: mcast: Fix a possible use-after-free when removing a bridge port")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/vbtn.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/bridge/br_multicast.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
-index 224139006a433..1b590bbbd8f8f 100644
---- a/drivers/platform/x86/intel/vbtn.c
-+++ b/drivers/platform/x86/intel/vbtn.c
-@@ -272,12 +272,16 @@ static bool intel_vbtn_has_switches(acpi_handle handle, bool dual_accel)
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index b8fb1e23b107e..38e1efb20aef5 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -4442,6 +4442,14 @@ static void br_multicast_start_querier(struct net_bridge_mcast *brmctx,
+ 	rcu_read_unlock();
+ }
  
- static int intel_vbtn_probe(struct platform_device *device)
- {
--	acpi_handle handle = ACPI_HANDLE(&device->dev);
- 	bool dual_accel, has_buttons, has_switches;
- 	struct intel_vbtn_priv *priv;
-+	acpi_handle handle;
- 	acpi_status status;
- 	int err;
- 
-+	handle = ACPI_HANDLE(&device->dev);
-+	if (!handle)
-+		return -ENODEV;
++static void br_multicast_del_grps(struct net_bridge *br)
++{
++	struct net_bridge_port *port;
 +
- 	dual_accel = dual_accel_detect();
- 	has_buttons = acpi_has_method(handle, "VBDL");
- 	has_switches = intel_vbtn_has_switches(handle, dual_accel);
++	list_for_each_entry(port, &br->port_list, list)
++		__br_multicast_disable_port_ctx(&port->multicast_ctx);
++}
++
+ int br_multicast_toggle(struct net_bridge *br, unsigned long val,
+ 			struct netlink_ext_ack *extack)
+ {
+@@ -4462,6 +4470,7 @@ int br_multicast_toggle(struct net_bridge *br, unsigned long val,
+ 	br_opt_toggle(br, BROPT_MULTICAST_ENABLED, !!val);
+ 	if (!br_opt_get(br, BROPT_MULTICAST_ENABLED)) {
+ 		change_snoopers = true;
++		br_multicast_del_grps(br);
+ 		goto unlock;
+ 	}
+ 
 -- 
 2.53.0
 
