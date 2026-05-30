@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-258582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCrqAzopG2rg/ggAu9opvQ
-	(envelope-from <stable+bounces-258582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:22 +0200
+	id aAt8GkUfG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B1E6115AF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09BC360FE24
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0505A30377BF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:13:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 53F323010639
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDDB31F98D;
-	Sat, 30 May 2026 18:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C47E30676E;
+	Sat, 30 May 2026 17:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3hHWk+R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bq7sxi4w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C72175A6B;
-	Sat, 30 May 2026 18:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7890732B106;
+	Sat, 30 May 2026 17:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164833; cv=none; b=mmwHVwTJ2x6eMCFVxqiQFH3qdX4//uwMo1Bk9M3fBpgwgan0nAM2zR3THqworkHI4Wh0lBOPlsDcrixdFbMQh4WfoYo4VtmwoZ9lSBqcD1JNmBFrPmFhSpKAadxOF/SKHUFbfaSSMQl4ZjBKFMAc1ylsCc1/sirbu+plLGQ64MA=
+	t=1780162370; cv=none; b=doDnSRxsfoCq4ZfkX1hCq0HHMitRFP6dK16xEyOKIwMaQrIWyKvN4bEC6gDk+pdtW9cupdEW+NPoySOPEQ3ZTgKkVExrZ8iCCR3n+FuKm5geTBHXsVPiz+E3iE9GqEDZnS80/nwqyFCQPdmqMIZRvT3xKUUPIZr7ATdLBPny5SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164833; c=relaxed/simple;
-	bh=eeVZ3EL1N2YmryYXUhcl3wRvkrtLfFQWMG7ommm/lVU=;
+	s=arc-20240116; t=1780162370; c=relaxed/simple;
+	bh=QFw+ZPOTEjrLdHiJOAIbijvJIOpAQcuMPJ4GOSDrKmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YL+UrgYzYGIgi/jDQFHF7FzPhXgYMxg+bk28jIrBYX3OXnFJvfN8iaiwvTWcxaC+q0jQj+ekmnjdZ2iLdaVO4q4Ku085PPpXli3lwuQc0T96M4hpPjfEwNSIo6uwezpRq6wrmHamVEmOqF5XYpGZpUn+T71q+6KqXCYfKx/+uzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3hHWk+R; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF841F00893;
-	Sat, 30 May 2026 18:13:51 +0000 (UTC)
+	 MIME-Version; b=MAiZS5Njh9wdwPxowJ4PBuyc/R4Ra83GQABtQR+HO84VYS+VK5hraLAoY2XUGX0aOHJhrmzI+hg6tZst0iJeyE/QVJp6Jegew9/9Xaba2bz+4kx4AFnTAec8GcXkDWztS2QLa3xLYaE08TFHDE5FF+G/KlY5gZCWPYrcBFiWfV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bq7sxi4w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3DC1F00893;
+	Sat, 30 May 2026 17:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164832;
-	bh=utdQaEgyZcLvOyqCcncqEZiL6nSHLx9cEP/LbTbu6lQ=;
+	s=korg; t=1780162369;
+	bh=F1GRNvUDnwpSV9bvOM6YWs8Zb7gtUlFbB8hI6MH0i60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z3hHWk+Rw/layB+te423JPIGVH7BvSwYr75CzqE4yXtE0C6Jk0LSfceU/DwQdCXxe
-	 DRNXAAeQi1veseIFT0PhgjoHTEWtJm7c0sJiVl2VRtMk3Otje7s2CLq+VkOGOZH7jq
-	 lQJclq9t1jz2+7QgR9fKiRdKhitIzMBn/iZnmWWA=
+	b=Bq7sxi4wUlAActiLghD2cmYBHOY0PuEWSqSXFio71Jcv8ns1wljTfFl+YBUBdwSXZ
+	 Rcnk6Ag0Gzdsfx5rEs9sTMtBQ1akWdRP/nXT45uN96NcZ64C3CJjy9gVHVTmXwUJRr
+	 /PcYaI6kjCn2Ju7c8hqZukZV3QmdeWHk/7TF+TbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Marcin Szycik <marcin.szycik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Rajani Kantha <681739313@139.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 672/776] net: dsa: sja1105: fix kasan out-of-bounds warning in sja1105_table_delete_entry()
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.1 862/969] ice: fix setting promisc mode while adding VID filter
 Date: Sat, 30 May 2026 18:06:26 +0200
-Message-ID: <20260530160257.240117873@linuxfoundation.org>
+Message-ID: <20260530160324.474394433@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,84 +71,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,kernel.org,139.com];
-	TAGGED_FROM(0.00)[bounces-258582-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257847-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nxp.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,139.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 99B1E6115AF
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 09BC360FE24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Marcin Szycik <marcin.szycik@intel.com>
 
-[ Upstream commit 5f2b28b79d2d1946ee36ad8b3dc0066f73c90481 ]
+commit ebc8de716c9ec2be384abdc2dd866da26c6580d1 upstream.
 
-There are actually 2 problems:
-- deleting the last element doesn't require the memmove of elements
-  [i + 1, end) over it. Actually, element i+1 is out of bounds.
-- The memmove itself should move size - i - 1 elements, because the last
-  element is out of bounds.
+There are at least two paths through which VSI promiscuous mode can be
+independently configured via ice_fltr_set_vsi_promisc():
+- ice_vlan_rx_add_vid() (netdev op)
+- ice_service_task() -> ... -> ice_set_promisc()
 
-The out-of-bounds element still remains out of bounds after being
-accessed, so the problem is only that we touch it, not that it becomes
-in active use. But I suppose it can lead to issues if the out-of-bounds
-element is part of an unmapped page.
+Both paths may try to program promiscuous mode concurrently. One such
+scenario is:
 
-Fixes: 6666cebc5e30 ("net: dsa: sja1105: Add support for VLAN operations")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+1. Add ice netdev to bond
+2. Add the bond netdev to bridge
+3. ice netdev enters allmulticast mode (IFF_ALLMULTI)
+4. Service task programs promisc mode filter
+5. Bridge -> bond calls ice_vlan_rx_add_vid()
+
+Crucially, ice_vlan_rx_add_vid() fails if ice_fltr_set_vsi_promisc()
+returns any error, including -EEXIST. This causes VLAN filtering setup
+to fail on the bond interface. ice_set_promisc() already handles -EEXIST
+correctly.
+
+Fix by adding the same -EEXIST check to ice_vlan_rx_add_vid(): if the
+promisc filter is already programmed, continue without returning error.
+
+Fixes: 1273f89578f2 ("ice: Fix broken IFF_ALLMULTI handling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marcin Szycik <marcin.szycik@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250318115716.2124395-4-vladimir.oltean@nxp.com
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-4-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Rajani Kantha <681739313@139.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_static_config.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_static_config.c b/drivers/net/dsa/sja1105/sja1105_static_config.c
-index baba204ad62f6..2ac91fe2a79bc 100644
---- a/drivers/net/dsa/sja1105/sja1105_static_config.c
-+++ b/drivers/net/dsa/sja1105/sja1105_static_config.c
-@@ -1921,8 +1921,10 @@ int sja1105_table_delete_entry(struct sja1105_table *table, int i)
- 	if (i > table->entry_count)
- 		return -ERANGE;
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -3616,7 +3616,7 @@ ice_vlan_rx_add_vid(struct net_device *n
+ 		ret = ice_fltr_set_vsi_promisc(&vsi->back->hw, vsi->idx,
+ 					       ICE_MCAST_VLAN_PROMISC_BITS,
+ 					       vid);
+-		if (ret)
++		if (ret && ret != -EEXIST)
+ 			goto finish;
+ 	}
  
--	memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
--		(table->entry_count - i) * entry_size);
-+	if (i + 1 < table->entry_count) {
-+		memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
-+			(table->entry_count - i - 1) * entry_size);
-+	}
- 
- 	table->entry_count--;
- 
--- 
-2.53.0
-
 
 
 
