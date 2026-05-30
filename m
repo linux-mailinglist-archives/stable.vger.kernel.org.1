@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCPFMD0sG2ow/wgAu9opvQ
-	(envelope-from <stable+bounces-258687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:13 +0200
+	id aB9PGuAgG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 289BD611CAD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C015A610222
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A1FA30179F6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:19:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 04DBE3015C88
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0D332F770;
-	Sat, 30 May 2026 18:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF1AA34389F;
+	Sat, 30 May 2026 17:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwjWukGi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cn5I3jXJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15BE24EA90;
-	Sat, 30 May 2026 18:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F5F30E853;
+	Sat, 30 May 2026 17:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165197; cv=none; b=tg9DQEuti3SKv+B3yWydJPBvjKrzRFR9++jsNr5bvADbewU+RS1eKNf6LkculOoE3JExntRhCGe0ssJa+dauXOiS77dB71hXoUXCFyIVAEh+h7a7B5pwJX1NQ3qAbYTL1VkKNwqTIRjwB3qJCs2weoefPxfuTfFuu3auzT0ccMs=
+	t=1780162511; cv=none; b=c1y6d7iVHrOEOS3ZqoN9sVJI+Aid0NKe6uVkyS6OnUiwxjZdYOTzSwnPw6lv/1xIGy4MzI8gXoMZG/SE7i2/mBgx66qcp7jK1fI/Jdqx3ZO7nBSiZ8eTXKcO3s/QZM7txzKRGLF+FKKueSD3+yh5xPCt/kElKZGm47EUp+PYV2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165197; c=relaxed/simple;
-	bh=Aq090uecciokUzBlB1tr/6aXmjMS28OB7K5PXt86tPs=;
+	s=arc-20240116; t=1780162511; c=relaxed/simple;
+	bh=Q93a8XYrazAHfc6qN1awtNLnuLUl2IBRHMlQuCM6/gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5n36YUgYrPulcTJeO8YLFTH/E07Mo8dqMZ2o59+rYRNLHjrfKKMo2BdKSxOtp24oxfmRR2CZLSDGf/z7cc/M6wChjKCpBUxXMpmhLXVZrBwsl7C1NOwpiNtWr51QmWKdi6xj6WbiQgJ0wUnoa4OWndk6UqWmlC4LlMLrb4uwVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwjWukGi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0463F1F00893;
-	Sat, 30 May 2026 18:19:55 +0000 (UTC)
+	 MIME-Version; b=iFPtyf7yMlFT7MpH+cpEVC9CAYTxXjIcEDFDL0uKXGZ1tTqoCweTbB0MhQjhMkQMDQZlYKFKCgMojj3jNEDHrnf1d83f8kXaiNNs6Dzi5wHpM4AgcoRobV6qEhoJFXO8rhfBkOF7D5jED2ILC4v6cfnj05kXxWh0iCetKqfLyxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cn5I3jXJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF8F1F00893;
+	Sat, 30 May 2026 17:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165196;
-	bh=tZkHhVy4FJVMMkM+0PfULC8o9Bwf4Y6QqnxzYFUWpio=;
+	s=korg; t=1780162510;
+	bh=RdlP88Fhi3VVwOM5Syq6SWCG9kDAcU9CXn/8KZkRinE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MwjWukGiql0pdp8HohRVJM8/KBfJ3Yr/xwUBtwAbqFH6Z2nSJpBRtQ86RIVdR+6A2
-	 K32BXYoGvyXTlcBB7nNlZbJ4X3SoVHCFStDQT4KjnnIeNWVn3fOFWRGTxcmt1cVzhK
-	 01o3dDcOI0Pi+OOi5LZDbXPzOLUscp9YKsATEO1g=
+	b=cn5I3jXJKr6GO75HgMjzWXsAzrn91fjjUOjJcF0w70mafFF0aZIHzzyYAX+NvkB5T
+	 Xg3xzaDLr3lZshZWm8Sp/Y2Hx074FfMuvAsKVER8V1K1chTTzLM+DZPM1DzUAXWa49
+	 UnyuaYPZ4hildkCcj980yKzehSw2eKthurcXOnsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Salendarsingh Gaud <sgaud@qti.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 751/776] net: ethernet: cs89x0: remove stale CONFIG_MACH_MX31ADS reference
+Subject: [PATCH 6.1 941/969] drm/msm/snapshot: fix dumping of the unaligned regions
 Date: Sat, 30 May 2026 18:07:45 +0200
-Message-ID: <20260530160259.171233473@linuxfoundation.org>
+Message-ID: <20260530160326.741590071@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +67,135 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258687-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257889-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 289BD611CAD
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C015A610222
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 36a8d04a8293afcb9304cf0cd3741f67698f2a1a ]
+[ Upstream commit 76824d2467feb1828b745d6add2541918d7be3da ]
 
-The legacy ARM board file for MACH_MX31ADS was removed in commit
-c93197b0041d ("ARM: imx: Remove i.MX31 board files"), but a reference
-to it remained in the cs89x0 driver. Drop this unused code.
+The snapshotting code internally aligns data segment to 16 bytes. This
+works fine for DPU code (where most of the regions are aligned), but
+fails for snapshotting of the DSI data (because DSI data region is
+shifted by 4 bytes). Fix the code by removing length alignment and by
+accurately printing last registers in the region. While reworking the
+code also fix the 16x memory overallocation in
+msm_disp_state_dump_regs().
 
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Fixes: c93197b0041d ("ARM: imx: Remove i.MX31 board files")
-Link: https://patch.msgid.link/20260509023732.42256-1-enelsonmoore@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
+Reported-by: Salendarsingh Gaud <sgaud@qti.qualcomm.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/725449/
+Message-ID: <20260516-msm-fix-dsi-dump-2-v2-1-9e49fb2d240e@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cirrus/cs89x0.c | 2 --
- 1 file changed, 2 deletions(-)
+ .../gpu/drm/msm/disp/msm_disp_snapshot_util.c | 24 ++++++++++++++-----
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/cirrus/cs89x0.c b/drivers/net/ethernet/cirrus/cs89x0.c
-index d0c4c8b7a15ab..9795f959c9bde 100644
---- a/drivers/net/ethernet/cirrus/cs89x0.c
-+++ b/drivers/net/ethernet/cirrus/cs89x0.c
-@@ -1270,7 +1270,6 @@ static const struct net_device_ops net_ops = {
+diff --git a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+index 4d55e3cf570f0..a966a03167cc0 100644
+--- a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
++++ b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+@@ -9,7 +9,7 @@
  
- static void __init reset_chip(struct net_device *dev)
+ #include "msm_disp_snapshot.h"
+ 
+-static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *base_addr)
++static void msm_disp_state_dump_regs(u32 **reg, u32 len, void __iomem *base_addr)
  {
--#if !defined(CONFIG_MACH_MX31ADS)
- 	struct net_local *lp = netdev_priv(dev);
- 	unsigned long reset_start_time;
+ 	u32 len_padded;
+ 	u32 num_rows;
+@@ -19,11 +19,11 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
+ 	void __iomem *end_addr;
+ 	int i;
  
-@@ -1297,7 +1296,6 @@ static void __init reset_chip(struct net_device *dev)
- 	while ((readreg(dev, PP_SelfST) & INIT_DONE) == 0 &&
- 	       time_before(jiffies, reset_start_time + 2))
- 		;
--#endif /* !CONFIG_MACH_MX31ADS */
+-	len_padded = aligned_len * REG_DUMP_ALIGN;
+-	num_rows = aligned_len / REG_DUMP_ALIGN;
++	len_padded = round_up(len, REG_DUMP_ALIGN);
++	num_rows = DIV_ROUND_UP(len, REG_DUMP_ALIGN);
+ 
+ 	addr = base_addr;
+-	end_addr = base_addr + aligned_len;
++	end_addr = base_addr + len;
+ 
+ 	if (!(*reg))
+ 		*reg = kvzalloc(len_padded, GFP_KERNEL);
+@@ -51,8 +51,8 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
+ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
+ 		void __iomem *base_addr, struct drm_printer *p)
+ {
++	void __iomem *addr, *end_addr;
+ 	int i;
+-	void __iomem *addr;
+ 	u32 num_rows;
+ 
+ 	if (!dump_addr) {
+@@ -61,6 +61,7 @@ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
+ 	}
+ 
+ 	addr = base_addr;
++	end_addr = base_addr + len;
+ 	num_rows = len / REG_DUMP_ALIGN;
+ 
+ 	for (i = 0; i < num_rows; i++) {
+@@ -70,6 +71,17 @@ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
+ 				dump_addr[i * 4 + 2], dump_addr[i * 4 + 3]);
+ 		addr += REG_DUMP_ALIGN;
+ 	}
++
++	if (addr != end_addr) {
++		drm_printf(p, "0x%lx : %08x",
++			   (unsigned long)(addr - base_addr),
++			   dump_addr[i * 4]);
++		if (addr + 0x4 < end_addr)
++			drm_printf(p, " %08x", dump_addr[i * 4 + 1]);
++		if (addr + 0x8 < end_addr)
++			drm_printf(p, " %08x", dump_addr[i * 4 + 2]);
++		drm_printf(p, "\n");
++	}
  }
  
- /* This is the real probe routine.
+ void msm_disp_state_print(struct msm_disp_state *state, struct drm_printer *p)
+@@ -189,7 +201,7 @@ void msm_disp_snapshot_add_block(struct msm_disp_state *disp_state, u32 len,
+ 	va_end(va);
+ 
+ 	INIT_LIST_HEAD(&new_blk->node);
+-	new_blk->size = ALIGN(len, REG_DUMP_ALIGN);
++	new_blk->size = len;
+ 	new_blk->base_addr = base_addr;
+ 
+ 	msm_disp_state_dump_regs(&new_blk->state, new_blk->size, base_addr);
 -- 
 2.53.0
 
