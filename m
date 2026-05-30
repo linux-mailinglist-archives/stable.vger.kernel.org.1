@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-259067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGA3G5kxG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-259067-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:05 +0200
+	id 4PNdLb0nG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A226129A2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DCB611154
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 614F8312ECC3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6219E301E57F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89641B87C0;
-	Sat, 30 May 2026 18:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0DF3AFCE3;
+	Sat, 30 May 2026 18:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YR/ULmrp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6Mzq2Y0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7AC21B191;
-	Sat, 30 May 2026 18:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8323112C1;
+	Sat, 30 May 2026 18:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166475; cv=none; b=rO5FIYp9CIYKjXWxbjSLU2hE5KQEBb8sm8ELnx/8KPZZXCoTbJofgnQRArufOo34sEiFgAgBwgo4SHy8i/B4RPs5zr2jXoJlTyy9XtiOyx9Jjj+CTgpJf/1kWyIsT8dqBdW8OYjVsfGx8b+e5VI09paFU4j9ygp96MjgRHDx2co=
+	t=1780164431; cv=none; b=bIfKuO0Myrxp2JqynSlx1E+KNYUpzpRdTm4kIoFR1XJiApvItxRVNEyvs3TLL40CfB1JHjI8HEIIW2woZ5nQjGR1pXJjy38bODFwKc1OwUOZu/sDMYMvS0SQukzmWDIKplBDCNUKtMlOd6ihhtOXklDL+N/a41/ObJVagp6MRF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166475; c=relaxed/simple;
-	bh=f4TlGzUUvwj8vdR2PpKhMmX2h8jyAnuuP4E4quJoSQY=;
+	s=arc-20240116; t=1780164431; c=relaxed/simple;
+	bh=3yt9Bszo6BS1ah436x68mdzysPo/E959Mv3DomZX7As=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aMJkI3tQEZp60Lw/tnf9+cCftW08CNP/IoHupiD1XKVmlBDuMY/+FugrMEP2uNpWa6wh89aSgBsh5efVW54nUTVIBjSCSFYp2Iyews7qOq9ge5L8IFdirHSs1wlxb9MWuU0cvFv5sqbRGO4moPrxaIqRx1TltlXWj3rcb3nTNEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YR/ULmrp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E451F00893;
-	Sat, 30 May 2026 18:41:13 +0000 (UTC)
+	 MIME-Version; b=NlP7uio7RKQCtuRGeFE69LwnUGNUWAui43eCibzDXcUE2W70I2609uxOf7KCKdnsYOFdKhQg0pmOCRMy9fTIDsq/zSgmMoIMP6zDWTffhmFR2+doEPzrn3maYR7fCXPmsx2dvV0jd6NzrlsZlDQTtrgqnfHyd+PIcJ5PmTUhvy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6Mzq2Y0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8233C1F00893;
+	Sat, 30 May 2026 18:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166474;
-	bh=69Mom6/04XiZvpFkvtXlMD5TuLOIU2tXrdQ8b9Tr7RE=;
+	s=korg; t=1780164430;
+	bh=hi/UWteIXCKCyQkj3uhysY0uq6OdMs4MG8/kI7Cb/Vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YR/ULmrpmPL4rnloaDXxIwLwW+GcbQ1k7nar5LUsrzwfpkMNVXDh5yqpDji3shGl6
-	 6+NTdngi3KVt+YZVhtzY+sWG+N8t1v7a7u2YvPJlNijzCc3+uzxvJlQf+xxyHrHhpu
-	 ialdRpmenWe0vPajmJxxHtcKXb4sxnp8ywe34PEg=
+	b=H6Mzq2Y0kGLeKMadeQKjoPJddi+N6h2mkRY8rkdGaRP3gIgc62bnZG3vI5bF8KpEB
+	 S3+oY2JR+Q956GTfnDx51c/KzSMYY/9TmAnyiwWhMUBrURUFuFb79ua66jhexKZ8qs
+	 Oxy5rX1Buo82S4Jbi8ymDBaa7uIi7riZHpiZRPjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Paul Moses <p@1g4.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 384/589] perf expr: Return -EINVAL for syntax error in expr__find_ids()
-Date: Sat, 30 May 2026 18:04:25 +0200
-Message-ID: <20260530160234.894106721@linuxfoundation.org>
+Subject: [PATCH 5.15 552/776] crypto: ccp - copy IV using skcipher ivsize
+Date: Sat, 30 May 2026 18:04:26 +0200
+Message-ID: <20260530160254.420596535@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,83 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258462-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259067-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email]
-X-Rspamd-Queue-Id: E0A226129A2
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A0DCB611154
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Paul Moses <p@1g4.org>
 
-[ Upstream commit 3a61fd866ef9aaa1d3158b460f852b74a2df07f4 ]
+[ Upstream commit a7a1f3cdd64d8a165d9b8c9e9ad7fb46ac19dfc4 ]
 
-expr__find_ids() propagates the parser return value directly.  For syntax
-errors, the parser can return a positive value, but callers treat it as
-success, e.g., for below case on Arm64 platform:
+AF_ALG rfc3686-ctr-aes-ccp requests pass an 8-byte IV to the driver.
 
-  metric expr 100 * (STALL_SLOT_BACKEND / (CPU_CYCLES * #slots) - BR_MIS_PRED * 3 / CPU_CYCLES) for backend_bound
-  parsing metric: 100 * (STALL_SLOT_BACKEND / (CPU_CYCLES * #slots) - BR_MIS_PRED * 3 / CPU_CYCLES)
-  Failure to read '#slots' literal: #slots = nan
-  syntax error
+ccp_aes_complete() restores AES_BLOCK_SIZE bytes into the caller's IV
+buffer while RFC3686 skciphers expose an 8-byte IV, so the restore
+overruns the provided buffer.
 
-Convert positive parser returns in expr__find_ids() to -EINVAL, as a
-result, the error value will be respected by callers.
+Use crypto_skcipher_ivsize() to copy only the algorithm's IV length.
 
-Before:
-
-  perf stat -C 5
-  Failure to read '#slots'Failure to read '#slots'Failure to read '#slots'Failure to read '#slots'Segmentation fault
-
-After:
-
-  perf stat -C 5
-  Failure to read '#slots'Cannot find metric or group `Default'
-
-Fixes: ded80bda8bc9 ("perf expr: Migrate expr ids table to a hashmap")
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 2b789435d7f3 ("crypto: ccp - CCP AES crypto API support")
+Signed-off-by: Paul Moses <p@1g4.org>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/expr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/crypto/ccp/ccp-crypto-aes.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/expr.c b/tools/perf/util/expr.c
-index 53482ef53c411..15f857fb0e713 100644
---- a/tools/perf/util/expr.c
-+++ b/tools/perf/util/expr.c
-@@ -239,5 +239,6 @@ int expr__find_other(const char *expr, const char *one,
- 	if (one)
- 		expr__del_id(ctx, one);
+diff --git a/drivers/crypto/ccp/ccp-crypto-aes.c b/drivers/crypto/ccp/ccp-crypto-aes.c
+index e6dcd8cedd53e..b03ed5e83c3e9 100644
+--- a/drivers/crypto/ccp/ccp-crypto-aes.c
++++ b/drivers/crypto/ccp/ccp-crypto-aes.c
+@@ -28,8 +28,11 @@ static int ccp_aes_complete(struct crypto_async_request *async_req, int ret)
+ 	if (ret)
+ 		return ret;
  
--	return ret;
-+	/* A positive value means syntax error, convert to -EINVAL */
-+	return ret > 0 ? -EINVAL : ret;
+-	if (ctx->u.aes.mode != CCP_AES_MODE_ECB)
+-		memcpy(req->iv, rctx->iv, AES_BLOCK_SIZE);
++	if (ctx->u.aes.mode != CCP_AES_MODE_ECB) {
++		size_t ivsize = crypto_skcipher_ivsize(crypto_skcipher_reqtfm(req));
++
++		memcpy(req->iv, rctx->iv, ivsize);
++	}
+ 
+ 	return 0;
  }
 -- 
 2.53.0
