@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMIcK7AhG2oN/ggAu9opvQ
-	(envelope-from <stable+bounces-257991-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:12 +0200
+	id SAbjLYUYG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:04:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B066061039B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31E6460ED56
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1C2DA300D772
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:41:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F3E3F309D11C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEC0344DB9;
-	Sat, 30 May 2026 17:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480D933FE15;
+	Sat, 30 May 2026 16:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBk+mLH0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNUb8etJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139452E7379;
-	Sat, 30 May 2026 17:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E550332919;
+	Sat, 30 May 2026 16:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162860; cv=none; b=dqdGMQnZilScIwVFznku0f7ifsekiAEB/FhIZyZ5UFNFf3ojdl2ZL3Po4ei7386WcEGT0LZwdGpFacNDtlBQukg59Fk+uHpE9QM8THGP9saTLS25IyEa7oBrY6faxTJ9cWw5rxWLF5Kr82zoz3qD3VlFfz2Vic8vrBsEHgb5L8Q=
+	t=1780160152; cv=none; b=dUjaGCIioaRFcUErP0sM01HESXFSv5Jz9tltbuvsjH+hZlc8tpNraSlAAlwswOWBbVIMEhbY4imAIQWR4dZqoZwXEu3wkBea27mpAoDIt7WxV3q6nPe1419V98tgoCXnSpu7YYoi1y9XetLZliWWbC3SRXPPB1cCwOVyA3PV0Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162860; c=relaxed/simple;
-	bh=tOlcIhzb84TzznIH1wcjCrojK30N5Z/MWrJCk4FwDxA=;
+	s=arc-20240116; t=1780160152; c=relaxed/simple;
+	bh=ESd9cmxTs6Ajx6Ojx2/C+YyfZB/Xzx/RfNImwtQRk6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9e7B1npk0LLGeIYxtPOdSvPJFkzGoSU1NuRbHca2+pQAFtpRQPmaT7qUGVXuxXvhBctYQgShgJCpz+8sVudcMxN4n0OiQWo3aZEwPRwUlcVylTiwbieW7zqGErsDe2D3QQgpBDOYBQkaCLTeA5IDF3oh13Wvkj9bwRnXqfTWe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBk+mLH0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0F11F00893;
-	Sat, 30 May 2026 17:40:57 +0000 (UTC)
+	 MIME-Version; b=Am8YMKOgELsA0LJqH8fbBqopLSFG5QCR87l1zHMSzMVElETg6jFjxh4NJjOtwdCiAYSIik8zVbhLHIXDoi95fSq+qQjfsz5VX8lzljy8IADvLnvu5PpotKzB0dHimZ4YHim67Gih9x9Gle3SkrzqBIn8F5RsQzpvYMY7+qACny4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNUb8etJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784611F00893;
+	Sat, 30 May 2026 16:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162858;
-	bh=whGWo8EVAiJXX8FK2d+Gy6uY/HAwpSUuvE75n3JFv5c=;
+	s=korg; t=1780160151;
+	bh=Lutj7V27ybBh6Yl/+izrOghFq9pbEtEOXEi0LnlcM80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WBk+mLH0eqPRwrWE7V3ZafeFzBSsWqMlaOdNs2Dt0r2gFVPWSNSF+NPJW1tatvdI/
-	 GezeyeJVhENoT0UNRURSNKi/EtiTcuMjabbxa7H3zZV55ZwH7V6fPi4j1Ds2mYONjk
-	 GGoVsiHq9ARJfklsAibVi5qXiYNLsOGxtWhoFS58=
+	b=QNUb8etJez9xzygzMth61CkSFx6aFChc1K66avQ7/LvHWGqZT/G2laS9lmz1WqR3/
+	 e5f6FCPUo4NyxA6+p1EHWnfEIO7vL6crtKHmqV4DuVwUqYbLOtuRxAx6Hm/OTWjR7y
+	 9AEzIMDBEOQtWaIxGgPoPRCBiiRIaKyfKcnymN3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernie Thompson <bernie@plugable.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 067/776] fbdev: udlfb: avoid divide-by-zero on FBIOPUT_VSCREENINFO
-Date: Sat, 30 May 2026 17:56:21 +0200
-Message-ID: <20260530160242.049771983@linuxfoundation.org>
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.1 258/969] crypto: hisilicon - Fix dma_unmap_single() direction
+Date: Sat, 30 May 2026 17:56:22 +0200
+Message-ID: <20260530160307.606553679@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +64,72 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257991-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,plugable.com,gmx.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257198-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,gondor.apana.org.au];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,plugable.com:email]
-X-Rspamd-Queue-Id: B066061039B
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 31E6460ED56
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit a31e4518bec70333a0a98f2946a12b53b45fe5b9 upstream.
+commit 1ee57ab93b75eb59f426aef37b5498a7ffc28278 upstream.
 
-Much like commit 19f953e74356 ("fbdev: fb_pm2fb: Avoid potential divide
-by zero error"), we also need to prevent that same crash from happening
-in the udlfb driver as it uses pixclock directly when dividing, which
-will crash.
+The direction used to map the buffer skreq->iv is DMA_TO_DEVICE but it is
+unmapped with direction DMA_BIDIRECTIONAL in the error path.
 
-Cc: Bernie Thompson <bernie@plugable.com>
-Cc: Helge Deller <deller@gmx.de>
-Fixes: 59277b679f8b ("Staging: udlfb: add dynamic modeset support")
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Change the unmap to match the mapping.
+
+Fixes: 915e4e8413da ("crypto: hisilicon - SEC security accelerator driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/udlfb.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/crypto/hisilicon/sec/sec_algs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/udlfb.c
-+++ b/drivers/video/fbdev/udlfb.c
-@@ -1077,6 +1077,9 @@ static int dlfb_ops_check_var(struct fb_
- 	struct fb_videomode mode;
- 	struct dlfb_data *dlfb = info->par;
- 
-+	if (!var->pixclock)
-+		return -EINVAL;
-+
- 	/* set device-specific elements of var unrelated to mode */
- 	dlfb_var_color_format(var);
- 
+--- a/drivers/crypto/hisilicon/sec/sec_algs.c
++++ b/drivers/crypto/hisilicon/sec/sec_algs.c
+@@ -844,7 +844,7 @@ err_free_elements:
+ 	if (crypto_skcipher_ivsize(atfm))
+ 		dma_unmap_single(info->dev, sec_req->dma_iv,
+ 				 crypto_skcipher_ivsize(atfm),
+-				 DMA_BIDIRECTIONAL);
++				 DMA_TO_DEVICE);
+ err_unmap_out_sg:
+ 	if (split)
+ 		sec_unmap_sg_on_err(skreq->dst, steps, splits_out,
 
 
 
