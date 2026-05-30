@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257377-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBUnNsAkG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:16 +0200
+	id QJrgNRoZG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257377-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:06:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A94610ACA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D91260EE4B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:06:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A20D3063C44
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 54549301255A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752F1261B9E;
-	Sat, 30 May 2026 17:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E34234104B;
+	Sat, 30 May 2026 17:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BI1QBG9t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhiC7+zT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B382304BCB;
-	Sat, 30 May 2026 17:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5781F481DD;
+	Sat, 30 May 2026 17:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163387; cv=none; b=SrXgPnPt1Gwk/opOLezcwCx3OmokNy7EFTbzSof2rfMLpFMXv5aoTh3VqrFy73UYHkXPOiLoKwOwoUydiN1EAjmdQb3DvonapVpdEch4WEudPV+eVWb+ebc/DDIqO/2nHORkb5f5SMJykeqw5Vyg2hwjt4q9aYnuVsq2siNVk04=
+	t=1780160787; cv=none; b=GewAy0kMyTvqB8v9+2xYB4677M+B2iAQFSO38IMcT6hkuvSd69nY+7Ume5KIimuyhmau+6b5XonkFobjedgd0Y29/f4iBufvSnvmUzhm7eBebxTLejhD3E46rEaiVrjgpJoyTito6Eqg93wr2VDtdYbk9tDtawdrUKnqZs6yjWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163387; c=relaxed/simple;
-	bh=Gu6onoC0YavmA7GIH9V9quoBGKzI3QVwPc0C6xvkj+g=;
+	s=arc-20240116; t=1780160787; c=relaxed/simple;
+	bh=xS5sbRN4yxp7EooOKrr16k74ISaZtSVU0wRf14WFoxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BuDyRFXBZsC0ltPR7LFU69A/G9s6fFel6Z2IlFZtdUO7TVLAtO9OI8mb+f/9zGFEuGCaCLWAyNYgFfe+x5mxLdR8diYIqDU/KLedKQROx1HgsCKXAHLF0aWQWYETTjn83g93RR6AdXtcbWMDMNX1XuFdvM22zlNqKHsHyTc2lxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BI1QBG9t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622F31F00893;
-	Sat, 30 May 2026 17:49:45 +0000 (UTC)
+	 MIME-Version; b=YBTu2iy+oqU40rpSw3vZKp+f3YuqyO9foBZi4NO9p6WMeN/ziSz/P9RtoSsNzrkvywfOiol7hbQtwgholOuNswX0CF3YPBraKoLREbsY+sQt01yq4cY9YSyyDKVt8/j9Tf7cMHf+QB94CcHecmqlnyLEbGYSTj49auJPaS8tijw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhiC7+zT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997301F00893;
+	Sat, 30 May 2026 17:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163386;
-	bh=DWgOk7n88mjSe8TKkcn1r3JOMW4LXYj0aM4KmIOnd8U=;
+	s=korg; t=1780160786;
+	bh=YAD3HR8Ta8fuWF8DymqG4W59tNDfO2e5vV8J+M7+bb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BI1QBG9tOXUFqVtOfyIWlXGGyOGkZAhssGnkpyKtzlb1dbqnL6gFipRBr17QegX2i
-	 cQkgwkYQ/Naw7CtEg1u3voY9KiQ/KW7f6K3Y/witadRdGUETehQKxfMbYdRnjpXnBV
-	 p+ytnLze5x7XrQQjLrh98ECa7f8lYRqlPQalVW/M=
+	b=lhiC7+zTsqmD11yXq+eGr0x7MmvSYJyrrKSDk6yY3qri8cA6o8FEEPowGbQpZG3/w
+	 ey1dBgrG1O4jUC8n6bD5yO7myJpiZa0O7gE/GyL3Oy74ibd5c2LBE6SE1rF8VxGypW
+	 J0ZnORxhkR8trmsBhRMrS9EyfKm09gTxvl5R8cL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Kim <james010kim@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Hyungjung Joo <jhj140711@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 243/776] mtd: docg3: fix use-after-free in docg3_release()
+Subject: [PATCH 6.1 433/969] fs/omfs: reject s_sys_blocksize smaller than OMFS_DIR_START
 Date: Sat, 30 May 2026 17:59:17 +0200
-Message-ID: <20260530160246.811467450@linuxfoundation.org>
+Message-ID: <20260530160312.216548776@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +69,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258151-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257377-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 75A94610ACA
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7D91260EE4B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Kim <james010kim@gmail.com>
+From: HyungJung Joo <jhj140711@gmail.com>
 
-[ Upstream commit ca19808bc6fac7e29420d8508df569b346b3e339 ]
+[ Upstream commit 0621c385fda1376e967f37ccd534c26c3e511d14 ]
 
-In docg3_release(), the docg3 pointer is obtained from
-cascade->floors[0]->priv before the loop that calls
-doc_release_device() on each floor. doc_release_device() frees the
-docg3 struct via kfree(docg3) at line 1881. After the loop,
-docg3->cascade->bch dereferences the already-freed pointer.
+omfs_fill_super() rejects oversized s_sys_blocksize values (> PAGE_SIZE),
+but it does not reject values smaller than OMFS_DIR_START (0x1b8 = 440).
 
-Fix this by accessing cascade->bch directly, which is equivalent
-since docg3->cascade points back to the same cascade struct, and
-is already available as a local variable. This also removes the
-now-unused docg3 local variable.
+Later, omfs_make_empty() uses
 
-Fixes: c8ae3f744ddc ("lib/bch: Rework a little bit the exported function names")
-Cc: stable@vger.kernel.org
-Signed-off-by: James Kim <james010kim@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+    sbi->s_sys_blocksize - OMFS_DIR_START
+
+as the length argument to memset().  Since s_sys_blocksize is u32,
+a crafted filesystem image with s_sys_blocksize < OMFS_DIR_START causes
+an unsigned underflow there, wrapping to a value near 2^32.  That drives
+a ~4 GiB memset() from bh->b_data + OMFS_DIR_START and overwrites kernel
+memory far beyond the backing block buffer.
+
+Add the corresponding lower-bound check alongside the existing upper-bound
+check in omfs_fill_super(), so that malformed images are rejected during
+superblock validation before any filesystem data is processed.
+
+Fixes: a3ab7155ea21 ("omfs: add directory routines")
+Signed-off-by: Hyungjung Joo <jhj140711@gmail.com>
+Link: https://patch.msgid.link/20260317054827.1822061-1-jhj140711@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/devices/docg3.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/omfs/inode.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
-index 25a7df6448028..7de576404b14f 100644
---- a/drivers/mtd/devices/docg3.c
-+++ b/drivers/mtd/devices/docg3.c
-@@ -2041,7 +2041,6 @@ static int __init docg3_probe(struct platform_device *pdev)
- static void docg3_release(struct platform_device *pdev)
- {
- 	struct docg3_cascade *cascade = platform_get_drvdata(pdev);
--	struct docg3 *docg3 = cascade->floors[0]->priv;
- 	int floor;
+diff --git a/fs/omfs/inode.c b/fs/omfs/inode.c
+index 2a0e83236c011..9773846daa4bc 100644
+--- a/fs/omfs/inode.c
++++ b/fs/omfs/inode.c
+@@ -515,6 +515,12 @@ static int omfs_fill_super(struct super_block *sb, void *data, int silent)
+ 		goto out_brelse_bh;
+ 	}
  
- 	doc_unregister_sysfs(pdev, cascade);
-@@ -2049,7 +2048,7 @@ static void docg3_release(struct platform_device *pdev)
- 		if (cascade->floors[floor])
- 			doc_release_device(cascade->floors[floor]);
- 
--	bch_free(docg3->cascade->bch);
-+	bch_free(cascade->bch);
- }
- 
- #ifdef CONFIG_OF
++	if (sbi->s_sys_blocksize < OMFS_DIR_START) {
++		printk(KERN_ERR "omfs: sysblock size (%d) is too small\n",
++			sbi->s_sys_blocksize);
++		goto out_brelse_bh;
++	}
++
+ 	if (sbi->s_blocksize < sbi->s_sys_blocksize ||
+ 	    sbi->s_blocksize > OMFS_MAX_BLOCK_SIZE) {
+ 		printk(KERN_ERR "omfs: block size (%d) is out of range\n",
 -- 
 2.53.0
 
