@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-257225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258005-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eIA0D00ZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:25 +0200
+	id 0LCvLggjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258005-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A01A60EEBA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 379D36106E3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0B0130EDE8B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:57:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B42BA3070C94
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633A0348C72;
-	Sat, 30 May 2026 16:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2949E34389F;
+	Sat, 30 May 2026 17:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cg1Kpt9J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqkanQU4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBEC32D42B;
-	Sat, 30 May 2026 16:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA133469FC;
+	Sat, 30 May 2026 17:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160250; cv=none; b=i2NsKB8bSn2wPYeO3ukJosPWplp7wwiEbgkCrovZrsTj6VAz6SIb8t6b3Z4TVk8Z+hYpdLgHArK77YPG4vkwOuKsI5LuAYxZQCieV96YGW93W2UaFljI8BzxJ7f0rHPQ3v0M5SR4+Gx1jJ35CmUuJh/cjhKkTbKkz5h3Z1Zbb4A=
+	t=1780162906; cv=none; b=OFFbQJWUsK67hzkE6BMUe9j/KqvXUhXlpTcrY4BLHZ/MyhOSQIsxz5M7hJqeIHv2dqZAMnwW5YeWfSgNliLHPaSJdfECyrqcK8WaHh8JSSemVO1DaS3sN9FPqharRGpLrRXfAUoCAYmHECzyGIfbhivprVdLlCziHVI4A8xvTxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160250; c=relaxed/simple;
-	bh=FNHLphEDBCvHoKCku0ayR00H6HTPAuVzXSnypDoH7mE=;
+	s=arc-20240116; t=1780162906; c=relaxed/simple;
+	bh=iR0Ylar8laYByO2o5HetGmW8FQB3y5TDbnTO/l/U6ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bfv6OHc5Q+1FVEJveuLraIf+jJgE6HJOwtt+NTfl219Ns+hSIWJDgKMZZWUuiBoqMEcXjj6T3gZc8mg2w2iJTMzX4DSj17HU113vAJI9AmKyVPJAOuyBiqFBd2gA4cOv50EcQx80GmBzAZT8QLqLNL0QkZHD84H1a5M1sUZ5Jhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cg1Kpt9J; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A71D1F00893;
-	Sat, 30 May 2026 16:57:28 +0000 (UTC)
+	 MIME-Version; b=juZh8FDXYVE4tzxxDaXhICBkzNC3h00oDhxu8PldgPvv01cxeK6PPGTpynRx18uP0B7DqnWcqhbWU7PwzChazDyFbmwdIqPrfuppu0pSB51gc+/YaB/Bxy5d9B32z8Ud+DUzOA0wVWMYDVOGer987ka4AdZmVuRp5R1AAu/uafk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqkanQU4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F27D1F00893;
+	Sat, 30 May 2026 17:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160249;
-	bh=KTePyPEEIvz1g3MeT8jsXPT4Q7FtIWaoLgJytcIxtz4=;
+	s=korg; t=1780162904;
+	bh=nJ897vgiGptu+E/FQCa9iuEEgmcEnqhA9w1g+jJKlMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Cg1Kpt9J+x2a95f99fMaQ3w0ZsI28relaP1iul7yU4nVkmGrq+D8DhU5vs6yAQS2q
-	 PuvvHIigIiDYQVPSAT1Zl8haOI9WJZDqPyRp75gcQwbm+l3XKD5cwwjKO3H5qpbJDo
-	 /O/ZjPNrX3lvjkDgVXXVaiiCXtusnos5z/EKNanU=
+	b=FqkanQU4QL+ITqr/RUBMJQCRr6jGoeOgVkMT+ULypldW56nfV02q1YWd2jBEsA4uh
+	 5lf3lCOMx7RSkzNO6q0rERAh7mvldqSKH+zBuZkZaTm1O4TUPKnI+TbHHw8lC7f4N9
+	 xuWbSJ39Fkms3Rads3GEz1U9HxvuZlXiEyp1VzaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 287/969] ASoC: SOF: Dont allow pointer operations on unconfigured streams
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Li hongliang <1468888505@139.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 097/776] wifi: mac80211: always free skb on ieee80211_tx_prepare_skb() failure
 Date: Sat, 30 May 2026 17:56:51 +0200
-Message-ID: <20260530160308.385796510@linuxfoundation.org>
+Message-ID: <20260530160242.846191509@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +67,142 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nbd.name,intel.com,139.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258005-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257225-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9A01A60EEBA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 379D36106E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit c5b6285aae050ff1c3ea824ca3d88ac4be1e69c8 upstream.
+[ Upstream commit d5ad6ab61cbd89afdb60881f6274f74328af3ee9 ]
 
-When reporting the pointer for a compressed stream we report the current
-I/O frame position by dividing the position by the number of channels
-multiplied by the number of container bytes. These values default to 0 and
-are only configured as part of setting the stream parameters so this allows
-a divide by zero to be configured. Validate that they are non zero,
-returning an error if not
+ieee80211_tx_prepare_skb() has three error paths, but only two of them
+free the skb. The first error path (ieee80211_tx_prepare() returning
+TX_DROP) does not free it, while invoke_tx_handlers() failure and the
+fragmentation check both do.
 
-Fixes: c1a731c71359 ("ASoC: SOF: compress: Add support for computing timestamps")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260326-asoc-compress-tstamp-params-v1-1-3dc735b3d599@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add kfree_skb() to the first error path so all three are consistent,
+and remove the now-redundant frees in callers (ath9k, mt76,
+mac80211_hwsim) to avoid double-free.
+
+Document the skb ownership guarantee in the function's kdoc.
+
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20260314065455.2462900-1-nbd@nbd.name
+Fixes: 06be6b149f7e ("mac80211: add ieee80211_tx_prepare_skb() helper function")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Exclude changes to drivers/net/wireless/mediatek/mt76/scan.c as this file is first
+ introduced by commit 31083e38548f("wifi: mt76: add code for emulating hardware scanning")
+ after linux-6.14.]
+Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/compress.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath9k/channel.c | 6 ++----
+ drivers/net/wireless/mac80211_hwsim.c    | 1 -
+ include/net/mac80211.h                   | 4 ++++
+ net/mac80211/tx.c                        | 4 +++-
+ 4 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/sound/soc/sof/compress.c
-+++ b/sound/soc/sof/compress.c
-@@ -366,6 +366,9 @@ static int sof_compr_pointer(struct snd_
- 	if (!spcm)
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/ath/ath9k/channel.c b/drivers/net/wireless/ath/ath9k/channel.c
+index 6cf0875221572..31b7921bf34f3 100644
+--- a/drivers/net/wireless/ath/ath9k/channel.c
++++ b/drivers/net/wireless/ath/ath9k/channel.c
+@@ -1011,7 +1011,7 @@ static void ath_scan_send_probe(struct ath_softc *sc,
+ 	skb_set_queue_mapping(skb, IEEE80211_AC_VO);
  
-+	if (!sstream->channels || !sstream->sample_container_bytes)
-+		return -EBUSY;
-+
- 	tstamp->sampling_rate = sstream->sampling_rate;
- 	tstamp->copied_total = sstream->copied_total;
- 	tstamp->pcm_io_frames = div_u64(spcm->stream[cstream->direction].posn.dai_posn,
+ 	if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, NULL))
+-		goto error;
++		return;
+ 
+ 	txctl.txq = sc->tx.txq_map[IEEE80211_AC_VO];
+ 	if (ath_tx_start(sc->hw, skb, &txctl))
+@@ -1124,10 +1124,8 @@ ath_chanctx_send_vif_ps_frame(struct ath_softc *sc, struct ath_vif *avp,
+ 
+ 		skb->priority = 7;
+ 		skb_set_queue_mapping(skb, IEEE80211_AC_VO);
+-		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta)) {
+-			dev_kfree_skb_any(skb);
++		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta))
+ 			return false;
+-		}
+ 		break;
+ 	default:
+ 		return false;
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 7d73502586839..ed4d83775fe70 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -2347,7 +2347,6 @@ static void hw_scan_work(struct work_struct *work)
+ 						      hwsim->tmp_chan->band,
+ 						      NULL)) {
+ 				rcu_read_unlock();
+-				kfree_skb(probe);
+ 				continue;
+ 			}
+ 
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index f101ef4a1fd69..a4ef9f93a53c4 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -6454,6 +6454,10 @@ void ieee80211_report_wowlan_wakeup(struct ieee80211_vif *vif,
+  * @band: the band to transmit on
+  * @sta: optional pointer to get the station to send the frame to
+  *
++ * Return: %true if the skb was prepared, %false otherwise.
++ * On failure, the skb is freed by this function; callers must not
++ * free it again.
++ *
+  * Note: must be called under RCU lock
+  */
+ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index a5be5fe5c6b4e..0544931613763 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1882,8 +1882,10 @@ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
+ 	struct ieee80211_tx_data tx;
+ 	struct sk_buff *skb2;
+ 
+-	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP)
++	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP) {
++		kfree_skb(skb);
+ 		return false;
++	}
+ 
+ 	info->band = band;
+ 	info->control.vif = vif;
+-- 
+2.53.0
+
 
 
 
