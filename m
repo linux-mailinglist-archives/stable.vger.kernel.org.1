@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-257844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMerNJ0gG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:37 +0200
+	id aCGFCjYpG2rg/ggAu9opvQ
+	(envelope-from <stable+bounces-258581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468D561014E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1706115A1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17C853051C6B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE2A930309AB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C5B3403F9;
-	Sat, 30 May 2026 17:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5238831F98D;
+	Sat, 30 May 2026 18:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0mKFUxo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVydT2Hb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9123E344D80;
-	Sat, 30 May 2026 17:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DAB223DC6;
+	Sat, 30 May 2026 18:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162360; cv=none; b=MbWMT5YnAsgbZ3Ai9bh/a7I7ajz7aDQXEstPaUjy41rfXF1ShM3PpgiFHx89M+r0Q7ja/BpmMEYjJIEIwZRm9HQ8mg2kDef4aysLLjQbeHXOQnsjhZtraAyhQDy0be3wpDZp/6uhbBOWftwQOxGQ6x/0LGkVGZs/fGAj2m+KMMk=
+	t=1780164829; cv=none; b=LQ3oZKbWvhKuQPKe6Y9SFZ1qnOKBxlvD2odu9sbhVs7vtijzwNfdqzzA3vbV7MaYhC7otATLlwOpcrXyedmfCCmRDeDgCEiVdpKNAkPgTe6XMqeNQlht7v803jDVVmJ2lFdm9F2mzi7jc4fpSOhyC/3IqDDRmcqExgkk7Ijo/Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162360; c=relaxed/simple;
-	bh=E+plqgqkKj5VFzydXFE+mjMERPKs1yzILO4jUHv2kE4=;
+	s=arc-20240116; t=1780164829; c=relaxed/simple;
+	bh=QBsv9wtkW6bU0c0uB8ht6r8JcOVDW7U1jKP6LZrkRwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mXGqCac3S/lPSeUA2Q9kLZNlhv1dAM3BMRhp9O533bqxj8ExbDdlw9YWcm3vT34s8to0laslSKvWQMzIOa8bK2V+xESmV2BjdUOKjyT1Gkb3PXNqB52oAnaEfwZ2kBhET78+yUxWGF2g5igRz2q5nAQv4T9k2NJUseSQTsE+haU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0mKFUxo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54101F00893;
-	Sat, 30 May 2026 17:32:38 +0000 (UTC)
+	 MIME-Version; b=PEEA04fHzg6jUIn1+iiCJBUDFLHGs2++gTl6YhWThJJ/eUjvJ84Jwm45AHZsO2R5iSC8/HWCF+GW2D+3sf7JYlvP9c0uISwbCwZmnqQu8BGbwHN0BLICy4LoXgzPJ+tQ7eeaPT+sN9ouTA3a1P++4o2KdD4ky2V62vW1ZRlQZCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVydT2Hb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6836D1F00893;
+	Sat, 30 May 2026 18:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162359;
-	bh=RjEih5NZWNLabGn3x712SQxGP+clpAJHeNnlRbgDbYQ=;
+	s=korg; t=1780164828;
+	bh=YR4/qBRxGM7wwX8FXcpzRIh9Gukr7QD9ZUiHEw4j2lU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d0mKFUxohd8aqY4oJhfoKYrWcaPEn4fzcRna415QT1ZrqS48LK+cvL8g+N18i2LBN
-	 CWWViOXdTI5GkUBedrHk2r8gApIZWz0EpFpcX1yrYglcGFVLvHYM7Z2EljSsQLpeBB
-	 uJtp3fwOdUqXm32IQrVz2QKafxOZtaQslzMJ7vHg=
+	b=lVydT2Hbplqhn1v6+TPP84StSqnXDLsRI/e2CBoYX4zE8w9y6U0pRas1zD5Cp1i3/
+	 bJq9Z/FtuOwMN7MDUEoZNzoaggM3rSoHXlZ5+A4gWjGAlY3LdAhVH5DHUIekxehGxA
+	 FpRiYqJUmLGpdsVzULTPHEP5SkJ9QQWzyvgK1gSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 861/969] ixgbevf: fix use-after-free in VEPA multicast source pruning
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 671/776] Revert "x86/vdso: Fix output operand size of RDPID"
 Date: Sat, 30 May 2026 18:06:25 +0200
-Message-ID: <20260530160324.446745735@linuxfoundation.org>
+Message-ID: <20260530160257.218073240@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +62,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257844-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,intel.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258581-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 468D561014E
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: AB1706115A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+This reverts commit 64f14b1ab6f39a704b62bf9b3fa28803cf2b3ebe.
 
-commit 5d49b568c188dc77199d8d2b959c91da8cc27cf1 upstream.
-
-ixgbevf_clean_rx_irq() prunes frames whose source MAC matches the VF's
-own address (VEPA multicast workaround) by freeing the skb and
-continuing to the next descriptor:
-
-    dev_kfree_skb_irq(skb);
-    continue;
-
-The skb pointer is declared outside the while loop and persists across
-iterations.  Because the continue skips the "skb = NULL" reset at the
-bottom of the loop, the next iteration enters the "else if (skb)" path
-and calls ixgbevf_add_rx_frag() on the freed skb, dereferencing
-skb_shinfo(skb)->nr_frags - a use-after-free in NAPI softirq context.
-
-The sibling driver iavf already handles this correctly by nulling the
-pointer before continuing.  Apply the same pattern here.
-
-I do not have ixgbevf hardware; the bug was found by static analysis
-(scan_drop_continue_loops.py + semgrep drop_continue_in_loop, multi-tool
-corroboration with the highest score in the scan).  The UAF was confirmed
-under KASAN by loading a test module that reproduces the exact code
-pattern (alloc skb, kfree_skb, then read skb_shinfo(skb)->nr_frags):
-
-  BUG: KASAN: slab-use-after-free in ixgbevf_uaf_test_init+0x100/0x1000
-  Read of size 8 at addr 000000006163ae78 by task insmod/30
-  freed 208-byte region [000000006163adc0, 000000006163ae90)
-
-QEMU emulates igb (82576) but not ixgbe (82599), and the igbvf VF
-driver does not include the VEPA source pruning path, so a full
-end-to-end reproduction with emulated hardware was not possible.
-
-Fixes: bad17234ba70 ("ixgbevf: Change receive model to use double buffered page based receives")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20260515182419.1597859-8-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/segment.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -1225,6 +1225,7 @@ static int ixgbevf_clean_rx_irq(struct i
- 		    ether_addr_equal(rx_ring->netdev->dev_addr,
- 				     eth_hdr(skb)->h_source)) {
- 			dev_kfree_skb_irq(skb);
-+			skb = NULL;
- 			continue;
- 		}
+diff --git a/arch/x86/include/asm/segment.h b/arch/x86/include/asm/segment.h
+index 879be4ffa06c7..8dd8e8ec9fa55 100644
+--- a/arch/x86/include/asm/segment.h
++++ b/arch/x86/include/asm/segment.h
+@@ -242,7 +242,7 @@ static inline unsigned long vdso_encode_cpunode(int cpu, unsigned long node)
  
+ static inline void vdso_read_cpunode(unsigned *cpu, unsigned *node)
+ {
+-	unsigned long p;
++	unsigned int p;
+ 
+ 	/*
+ 	 * Load CPU and node number from the GDT.  LSL is faster than RDTSCP
+@@ -252,10 +252,10 @@ static inline void vdso_read_cpunode(unsigned *cpu, unsigned *node)
+ 	 *
+ 	 * If RDPID is available, use it.
+ 	 */
+-	alternative_io ("lsl %[seg],%k[p]",
+-			"rdpid %[p]",
++	alternative_io ("lsl %[seg],%[p]",
++			".byte 0xf3,0x0f,0xc7,0xf8", /* RDPID %eax/rax */
+ 			X86_FEATURE_RDPID,
+-			[p] "=r" (p), [seg] "r" (__CPUNODE_SEG));
++			[p] "=a" (p), [seg] "r" (__CPUNODE_SEG));
+ 
+ 	if (cpu)
+ 		*cpu = (p & VDSO_CPUNODE_MASK);
+-- 
+2.53.0
+
 
 
 
