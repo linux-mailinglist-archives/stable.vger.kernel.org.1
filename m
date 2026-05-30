@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EKtxKE4eG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:46 +0200
+	id OKLfCfsnG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 618C260FC28
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 937EC611224
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8DDC830B16D6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:24:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8575B30120C0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E5433FE15;
-	Sat, 30 May 2026 17:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245D83AB26B;
+	Sat, 30 May 2026 18:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gnc7pz4X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/QzXBI5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF343161A3;
-	Sat, 30 May 2026 17:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BBB31F98D;
+	Sat, 30 May 2026 18:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161840; cv=none; b=IfzB81owzZt6v3t3yTKK+d5PGF/cfbMu7z0SECWIxpyTiKfZzDRtXdFNuDmNisygdO1sNj8u7fnUuvzhOQTPDx+Oj8oZLk2zb/RSdQQElxKGJrYraZfmGeet+hqzikmoi5XtIfEnCK/l/Oto6RhhS6xaGZ7QhUWeSszqUTUBiW0=
+	t=1780164568; cv=none; b=A2VLR4oJML/daHHDvmcUpNvIajyFYrQ5q8XQdMMkzMTS1wtvJ+eFCL6GnWQwWXUUR+xmmvB7rMK1vt3MN9fM3pMnmg3OEj5OTKoHWDRjzijc2BiQ6t5TrQvRKX6VUro6qM8RqVowPI6Lsu7t64NuOfAH0JPfZ57yxLoYRdTOsxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161840; c=relaxed/simple;
-	bh=KTpwkW5YwEodiBizZUmdoe39v8XB1zBCo9ihR8UNH+E=;
+	s=arc-20240116; t=1780164568; c=relaxed/simple;
+	bh=ofciWMdzVc50FZWt2AIbswuKk8sbvgsAr39A+glQHfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YiJu04AwoFDnzpzEXmxoaOuoKWa0kfD4nogycXfEopHGPx1oSUuIZGIRexRUrz9NvVnC+4U6rnBtPmwUqFBSdehaRwe6CjMvs0IStOTgu5FB6groYjGTaoXWsBOzrvQXKAh6NNyB+UXrghCSFujy765CezhWdICrWNlnlAqTAs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gnc7pz4X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 554D11F00893;
-	Sat, 30 May 2026 17:23:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QpUBDWa4ZGZ5p0v7czzxXfmORo9G7War9mCmxiXgyf+2TVPeugHtHYRSgV9LI9sJUs5Tz7bbxtFxKI4Qiap4Q2b5fnWxHKaAKSUm4//oQ64ssVkfvSQpRwOoq6F30UlSwMFvLNYPYi7ouW4ykBqH8tswgfyqn9YRNIXKNQgGQDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/QzXBI5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE7B1F00893;
+	Sat, 30 May 2026 18:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161839;
-	bh=uAcnVBK6cDt6ahJo9Cy4oYb/nQopA3Noz+uurNO78A0=;
+	s=korg; t=1780164567;
+	bh=sFyrgkF8gNcEwb009dVASUQo+ZHmMAOjPGGJUaSEXTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gnc7pz4XAo5/txfQlLaJ2LI3FEobHOcUHYyo1oOPkIqBcoJnm2o/yFjDXD4uIIUx/
-	 2NYWgw58qz2tgdjInn/ifGH0QCOYOWK5XPRM0sJtlc5XJ/rAHIBZbSsWG3u+9hr6u3
-	 unwtgS2sDJ0FRFRPZsUjae1iCwK23Xmp4mLMojqM=
+	b=C/QzXBI5yAkYHx9r3AKmY7wRdTQ7NYSvd7ZBPOEt5Je6nSt4Dg3AH3I6mElydb4DP
+	 zd1j2LZCSeY8WZJUlW/tt4JNVynX7mUoMignh/Jq6ENULvjbgd4xhrameoLiT/jeiJ
+	 xB1PpOiHD3x2CRGqAJe3vpeKSDssCPTMsa8pjz8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Madieu <john.madieu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dudu Lu <phx0fer@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 743/969] spi: rockchip: Read ISR, not IMR, to detect cs-inactive IRQ
-Date: Sat, 30 May 2026 18:04:27 +0200
-Message-ID: <20260530160321.076001700@linuxfoundation.org>
+Subject: [PATCH 5.15 554/776] net/sched: sch_cake: fix NAT destination port not being updated in cake_update_flowkeys
+Date: Sat, 30 May 2026 18:04:28 +0200
+Message-ID: <20260530160254.466888247@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +64,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257688-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,toke.dk,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258503-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 618C260FC28
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 937EC611224
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Madieu <john.madieu@gmail.com>
+From: Dudu Lu <phx0fer@gmail.com>
 
-[ Upstream commit b4683a239a409d65f88052f5630c748a8ba070cd ]
+[ Upstream commit f9e40664706927d7ae22a448a3383e23c38a4c0b ]
 
-rockchip_spi_isr() decides whether the current interrupt was the
-cs-inactive event by reading IMR:
+cake_update_flowkeys() is supposed to update the flow dissector keys
+with the NAT-translated addresses and ports from conntrack, so that
+CAKE's per-flow fairness correctly identifies post-NAT flows as
+belonging to the same connection.
 
-	if (rs->cs_inactive &&
-	    readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE)
-		ctlr->target_abort(ctlr);
+For the source port, this works correctly:
+    keys->ports.src = port;
 
-IMR is the interrupt mask register: it tells which sources are enabled,
-not which one fired. In the PIO path, rockchip_spi_prepare_irq() enables
-both INT_RF_FULL and INT_CS_INACTIVE in IMR when rs->cs_inactive is true:
+But for the destination port, the assignment is reversed:
+    port = keys->ports.dst;
 
-	if (rs->cs_inactive)
-		writel_relaxed(INT_RF_FULL | INT_CS_INACTIVE,
-			       rs->regs + ROCKCHIP_SPI_IMR);
+This means the NAT destination port is never updated in the flow keys.
+As a result, when multiple connections are NATed to the same destination,
+CAKE treats them as separate flows because the original (pre-NAT)
+destination ports differ. This breaks CAKE's NAT-aware flow isolation
+when using the "nat" mode.
 
-so the IMR check is always true once cs_inactive is enabled, and every
-PIO interrupt - including normal RF_FULL completions - is dispatched to
-ctlr->target_abort(), aborting the transfer. The bug is reachable on
-ROCKCHIP_SPI_VER2_TYPE2 in target mode with a DMA-capable controller
-when the transfer is short enough to fall back to PIO
-(rockchip_spi_can_dma() returns false below fifo_len).
+The bug was introduced in commit b0c19ed6088a ("sch_cake: Take advantage
+of skb->hash where appropriate") which refactored the original direct
+assignment into a compare-and-conditionally-update pattern, but wrote
+the destination port update backwards.
 
-Read ISR (which is RISR masked by IMR) so the check actually reflects
-which interrupt fired, and parenthesise the expression for clarity while
-at it.
+Fix by reversing the assignment direction to match the source port
+pattern.
 
-Fixes: 869f2c94db92 ("spi: rockchip: Stop spi slave dma receiver when cs inactive")
-Signed-off-by: John Madieu <john.madieu@gmail.com>
-Link: https://patch.msgid.link/20260425092936.2590132-2-john.madieu@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b0c19ed6088a ("sch_cake: Take advantage of skb->hash where appropriate")
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Link: https://patch.msgid.link/20260413110041.44704-1-phx0fer@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/sch_cake.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 6383451b6612c..c38d515e4399e 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -350,7 +350,8 @@ static irqreturn_t rockchip_spi_isr(int irq, void *dev_id)
- 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 
- 	/* When int_cs_inactive comes, spi target abort */
--	if (rs->cs_inactive && readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE) {
-+	if (rs->cs_inactive &&
-+	    (readl_relaxed(rs->regs + ROCKCHIP_SPI_ISR) & INT_CS_INACTIVE)) {
- 		ctlr->target_abort(ctlr);
- 		writel_relaxed(0, rs->regs + ROCKCHIP_SPI_IMR);
- 		writel_relaxed(0xffffffff, rs->regs + ROCKCHIP_SPI_ICR);
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index cfeda7b50cc2e..87578d05a0925 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -619,7 +619,7 @@ static bool cake_update_flowkeys(struct flow_keys *keys,
+ 		}
+ 		port = rev ? tuple.src.u.all : tuple.dst.u.all;
+ 		if (port != keys->ports.dst) {
+-			port = keys->ports.dst;
++			keys->ports.dst = port;
+ 			upd = true;
+ 		}
+ 	}
 -- 
 2.53.0
 
