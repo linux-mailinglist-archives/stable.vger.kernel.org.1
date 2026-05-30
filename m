@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-257998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257220-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qI96G8EhG2oN/ggAu9opvQ
-	(envelope-from <stable+bounces-257998-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:29 +0200
+	id OBIOG/MYG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257220-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 686356103D2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA0C60EE19
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2E6733012E6E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:41:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B58A130E95D3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C37B348C5E;
-	Sat, 30 May 2026 17:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B6633F5A3;
+	Sat, 30 May 2026 16:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6Lj6B23"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plAVjEfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52BC34389F;
-	Sat, 30 May 2026 17:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7C432BF24;
+	Sat, 30 May 2026 16:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162882; cv=none; b=a+2TX6FXCSJS7DJ1aquD5qgAO5esiD0yzZWZj/WrsKdVjM04COGZiWIMKjbJfT7xdA1r0KDSGS6Yis+Dlxb+/bNOEMqubdvE6fESZILVGBMZtCNotLzBhsNOMcoXortC7Gspnqx0GjQgnNf+CBCvZzW+HG22jCCYXufo31qXyEk=
+	t=1780160231; cv=none; b=YxTSds3vLp5+A30X8EE2+iKZ1jL1guRIDGiOKbgOSSFKP24RVpBzpGFapiECfyRp4NbZJLPYD6cN2/3DjNY6WjgImUIFel1P0nwWRk2dOqig8pxNcgPykgSbidhy4YvXofvqZDjIrkFbAS0Ynr6THn7/huYsiE6qQmGTW5wy1Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162882; c=relaxed/simple;
-	bh=0+aY/znyy0cURpqsvnTBCKvk/AiPUfQf2Rge6mlRATY=;
+	s=arc-20240116; t=1780160231; c=relaxed/simple;
+	bh=+Ty66//CuJElMKyAldqD70OeYfpl5B/3nErHpHQyPAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OI9qZeYq3K8WlsHIJv2KmUoMB1R0ltYld/F8qLqwleys4vvJhVSbyun/Lu1xnwqlEThk7d94zAgrSK4Y8ZnEsYrmfANq9RIVHQ89hFJWQ8v4evkPmnRwr3hO5Ycby1LnQn71wlFHssVt5Gx+OggwR0wpR5QU2kGEg28PB7UU768=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6Lj6B23; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D421F00893;
-	Sat, 30 May 2026 17:41:20 +0000 (UTC)
+	 MIME-Version; b=s8BxKy2yyybf1yOoUySD1DO0xpIIhyAPJ7d4ovcXLLWGJaOs7qG/XigiOpMzT9URgEEn77gc5l4JTCW1+qqC9j9lJ4noLEXjGHGcOzHvZzg+Hg3/zBr9AuK3/y3JLCAeojmsH2SjyiuhM54KIJ8htei08puyBBz8WG7MsUQ3VBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plAVjEfe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8C61F00893;
+	Sat, 30 May 2026 16:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162881;
-	bh=nhoB8y4zTYseBXs+umPB21s2z5qB5YMLIU1WWFkVy3s=;
+	s=korg; t=1780160230;
+	bh=0NpthxVCdsy2MRPX9Tzd9fDF4XM4FrIAjdpt8hKmjmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y6Lj6B23XA3NjtY//PcDUZoInjSsofvZfxK63U1qn/RB5d4RWg6SzX1+oWBw8dOLH
-	 mpWrbb3JM39PPOqN0ik97tFhy9Zrv8RBy8zY2Uo2re3Yox8i1SziFREjDuiOoO68bv
-	 p83VjpbNvEDA3eEegR1oUT1vv5dqegb8YR4GYyzc=
+	b=plAVjEfePzf1ZN5kW/GAfTXQXwPsLvEDdYkYCzgdmhXwipDDRYfaPiGuTGp88GYMG
+	 r0RH+tlLE6LduNJdmkK6M6e9eNGqoXLxdCIW6c/oG2hZpaJfOlI4M1S93Cx888cxaZ
+	 QAbG1riQPz7BK2R76KivWyZysmU5hdmeKrp8ewUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 091/776] PCI: endpoint: pci-epf-vntb: Remove duplicate resource teardown
-Date: Sat, 30 May 2026 17:56:45 +0200
-Message-ID: <20260530160242.688929816@linuxfoundation.org>
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 6.1 282/969] ipmi:si: Return state to normal if message allocation fails
+Date: Sat, 30 May 2026 17:56:46 +0200
+Message-ID: <20260530160308.255895001@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,131 +64,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257998-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257220-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,valinux.co.jp:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 686356103D2
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: DBA0C60EE19
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Corey Minyard <corey@minyard.net>
 
-[ Upstream commit 0da63230d3ec1ec5fcc443a2314233e95bfece54 ]
+commit 09dd798270ff582d7309f285d4aaf5dbebae01cb upstream.
 
-epf_ntb_epc_destroy() duplicates the teardown that the caller is
-supposed to perform later. This leads to an oops when .allow_link fails
-or when .drop_link is performed. The following is an example oops of the
-former case:
+There were places where nothing would get started if a message
+allocation failed, so the driver needs to return to normal state.
 
-  Unable to handle kernel paging request at virtual address dead000000000108
-  [...]
-  [dead000000000108] address between user and kernel address ranges
-  Internal error: Oops: 0000000096000044 [#1]  SMP
-  [...]
-  Call trace:
-   pci_epc_remove_epf+0x78/0xe0 (P)
-   pci_primary_epc_epf_link+0x88/0xa8
-   configfs_symlink+0x1f4/0x5a0
-   vfs_symlink+0x134/0x1d8
-   do_symlinkat+0x88/0x138
-   __arm64_sys_symlinkat+0x74/0xe0
-  [...]
-
-Remove the helper, and drop pci_epc_put(). EPC device refcounting is
-tied to the configfs EPC group lifetime, and pci_epc_put() in the
-.drop_link path is sufficient.
-
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260226084142.2226875-2-den@valinux.co.jp
-[ context mismatch in deletion hunk ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+ drivers/char/ipmi/ipmi_si_intf.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-index 45530bca50fb8..e9402b5dc8359 100644
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -650,18 +650,6 @@ static void epf_ntb_mw_bar_clear(struct epf_ntb *ntb)
- 	}
- }
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -481,15 +481,19 @@ retry:
+ 	} else if (smi_info->msg_flags & RECEIVE_MSG_AVAIL) {
+ 		/* Messages available. */
+ 		smi_info->curr_msg = alloc_msg_handle_irq(smi_info);
+-		if (!smi_info->curr_msg)
++		if (!smi_info->curr_msg) {
++			smi_info->si_state = SI_NORMAL;
+ 			return;
++		}
  
--/**
-- * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
-- * @ntb: NTB device that facilitates communication between HOST and vHOST
-- *
-- * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
-- */
--static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
--{
--	pci_epc_remove_epf(ntb->epf->epc, ntb->epf, 0);
--	pci_epc_put(ntb->epf->epc);
--}
--
- /**
-  * epf_ntb_init_epc_bar() - Identify BARs to be used for each of the NTB
-  * constructs (scratchpad region, doorbell, memorywindow)
-@@ -1289,7 +1277,7 @@ static int epf_ntb_bind(struct pci_epf *epf)
- 	ret = epf_ntb_init_epc_bar(ntb);
- 	if (ret) {
- 		dev_err(dev, "Failed to create NTB EPC\n");
--		goto err_bar_init;
-+		return ret;
- 	}
+ 		start_getting_msg_queue(smi_info);
+ 	} else if (smi_info->msg_flags & EVENT_MSG_BUFFER_FULL) {
+ 		/* Events available. */
+ 		smi_info->curr_msg = alloc_msg_handle_irq(smi_info);
+-		if (!smi_info->curr_msg)
++		if (!smi_info->curr_msg) {
++			smi_info->si_state = SI_NORMAL;
+ 			return;
++		}
  
- 	ret = epf_ntb_config_spad_bar_alloc(ntb);
-@@ -1326,9 +1314,6 @@ static int epf_ntb_bind(struct pci_epf *epf)
- err_bar_alloc:
- 	epf_ntb_config_spad_bar_free(ntb);
- 
--err_bar_init:
--	epf_ntb_epc_destroy(ntb);
--
- 	return ret;
- }
- 
-@@ -1344,7 +1329,6 @@ static void epf_ntb_unbind(struct pci_epf *epf)
- 
- 	epf_ntb_epc_cleanup(ntb);
- 	epf_ntb_config_spad_bar_free(ntb);
--	epf_ntb_epc_destroy(ntb);
- 
- 	pci_unregister_driver(&vntb_pci_driver);
- }
--- 
-2.53.0
-
+ 		start_getting_events(smi_info);
+ 	} else if (smi_info->msg_flags & OEM_DATA_AVAIL &&
 
 
 
