@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-258104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2F0iFjskG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258104-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:03 +0200
+	id mFdhMX4sG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:29:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B039D6109B0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D529611D3F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:29:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B460630D1DAA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1331B3039C82
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685B53546EA;
-	Sat, 30 May 2026 17:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB4824EAB1;
+	Sat, 30 May 2026 18:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+7Bm/vq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlsBYwFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097E4223DC6;
-	Sat, 30 May 2026 17:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C584217704;
+	Sat, 30 May 2026 18:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163230; cv=none; b=U7f7gbKj0bOWj+BHNhUOdRbW8Lg6ETBoXgs771Gx8LbWusgvBeLnAw7pCSxLfusMn1AR5Y/ek/GcKjIQvQajQ/pfasi1zARzslRCy+AlF2aQI6AeL3h8NkMtS6vxC4L2hcSDQu6eKD4FNlvRd+x2xLYakRFn/7nSGeJlEnhq9bw=
+	t=1780165269; cv=none; b=KDB3b+gOwDM4CrI6tNYril2o3Ml4cHxEbfzYDaW86pMVQ+UtsuHwKtYxbU2ZwtDBZReHpIizE+JRrN/iNP0jztVsfoDTI2wPf+o3xQZOHpAXRI5btvwAVIQuPMghaELZRqBv1IU7Sng0BqgFNoyr1lUHDoKlxIGAbAWpJeLo0IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163230; c=relaxed/simple;
-	bh=f1l4T07XW08icysFzXw0FOYBq8oGmQBft8YlcMhm5po=;
+	s=arc-20240116; t=1780165269; c=relaxed/simple;
+	bh=w0McELRg1S5hKSlO92G526FUE34vJa9MXv8q0G1TV4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ip8edbWvIVWEyrLG/ysdoTMVAZMgol0COx1SuBarWoMQ77sY53DDOanZNgqQkJYtvLROaf8N+Zkvf5yBX50NiyouAnoKo3LARKv7NTKWW8+D3gtJSYvZJiwPoPqVVw1ipGE5j3RSL9EqGGZ31oInhDGRQnagRmjeTqpVaHl4ZQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+7Bm/vq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E5131F00893;
-	Sat, 30 May 2026 17:47:08 +0000 (UTC)
+	 MIME-Version; b=rnrazWaOoSYSLevsB/o2nHomiq68zg5sUm9Yxg06IG2VYFNhHYZW90w//qxMjwZoGcP/dysmYPtNKs63TYEfYCVSQZnOM2l4y3XLxBrrLuUSE2i8vwxc429SOQzaqFiEfjqH96QN++pIr+Kdst1x7KNRL5WAInBBT0fmjdmYR0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlsBYwFb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99CE1F00893;
+	Sat, 30 May 2026 18:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163228;
-	bh=E0SBpN6BoYZec0mBJU+Vo+yeSlNlBpx8Wf/LIX3Cck4=;
+	s=korg; t=1780165268;
+	bh=dEAUYBguE3RKG4B+OGnqukhhgmef9Qg0/kANRwxN2T8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u+7Bm/vqrJC5Iv6HgC1gOsuDqonFb4PFM0K8jWqgOVjC+VIUZpuVCqTdTv7eC1oOr
-	 Ke7/oCMzNzSAoF2RAaJYtCkm/7R0E4dUnZ6nlgRg8Nx4saqrooKrhGW2pSuiEZxhGm
-	 CWFZJo9OdsXAlS7NM2PYhf0NfEzJVIjx2XQ9gzPA=
+	b=XlsBYwFbiBHxEMmmMJ+iRA3nOVyzmFCpr1T67DNbfXYKGViTjKLDOTkNO1iRGUybT
+	 GL9jumEF5dqNqIC2RgR/zWEgvebm8wlNGY8XIYxkReyn8GciuSKxRS06yTGnarxEIM
+	 AS1bspnJr5uzUNMcIQyMyZyZr6fSzObQimsPfv9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
-	Bin Lan <lanbincn@139.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 194/776] padata: Fix pd UAF once and for all
-Date: Sat, 30 May 2026 17:58:28 +0200
-Message-ID: <20260530160245.520895265@linuxfoundation.org>
+Subject: [PATCH 5.10 028/589] xfrm_user: fix info leak in build_mapping()
+Date: Sat, 30 May 2026 17:58:29 +0200
+Message-ID: <20260530160225.322332048@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,311 +71,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258104-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gondor.apana.org.au,139.com,kernel.org];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258708-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B039D6109B0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email,secunet.com:email]
+X-Rspamd-Queue-Id: 2D529611D3F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 71203f68c7749609d7fc8ae6ad054bdedeb24f91 ]
+[ Upstream commit 1beb76b2053b68c491b78370794b8ff63c8f8c02 ]
 
-There is a race condition/UAF in padata_reorder that goes back
-to the initial commit.  A reference count is taken at the start
-of the process in padata_do_parallel, and released at the end in
-padata_serial_worker.
+struct xfrm_usersa_id has a one-byte padding hole after the proto
+field, which ends up never getting set to zero before copying out to
+userspace.  Fix that up by zeroing out the whole structure before
+setting individual variables.
 
-This reference count is (and only is) required for padata_replace
-to function correctly.  If padata_replace is never called then
-there is no issue.
-
-In the function padata_reorder which serves as the core of padata,
-as soon as padata is added to queue->serial.list, and the associated
-spin lock released, that padata may be processed and the reference
-count on pd would go away.
-
-Fix this by getting the next padata before the squeue->serial lock
-is released.
-
-In order to make this possible, simplify padata_reorder by only
-calling it once the next padata arrives.
-
-Fixes: 16295bec6398 ("padata: Generic parallelization/serialization interface")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ Adjust context of padata_find_next(). Replace
-cpumask_next_wrap(cpu, pd->cpumask.pcpu) with
-cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false) in padata_reorder() in
-v5.15 according to dc5bb9b769c9 ("cpumask: deprecate cpumask_next_wrap()") and
-f954a2d37637 ("padata: switch padata_find_next() to using cpumask_next_wrap()")
-. ]
-Signed-off-by: Bin Lan <lanbincn@139.com>
+Fixes: 3a2dfbe8acb1 ("xfrm: Notify changes in UDP encapsulation via netlink")
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/padata.h |   3 -
- kernel/padata.c        | 136 +++++++++++------------------------------
- 2 files changed, 37 insertions(+), 102 deletions(-)
+ net/xfrm/xfrm_user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/padata.h b/include/linux/padata.h
-index 495b16b6b4d72..9ca779d7e310e 100644
---- a/include/linux/padata.h
-+++ b/include/linux/padata.h
-@@ -91,7 +91,6 @@ struct padata_cpumask {
-  * @cpu: Next CPU to be processed.
-  * @cpumask: The cpumasks in use for parallel and serial workers.
-  * @reorder_work: work struct for reordering.
-- * @lock: Reorder lock.
-  */
- struct parallel_data {
- 	struct padata_shell		*ps;
-@@ -102,8 +101,6 @@ struct parallel_data {
- 	unsigned int			processed;
- 	int				cpu;
- 	struct padata_cpumask		cpumask;
--	struct work_struct		reorder_work;
--	spinlock_t                      ____cacheline_aligned lock;
- };
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index a55f8fe3e052f..ab79a739b3638 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -3493,6 +3493,7 @@ static int build_mapping(struct sk_buff *skb, struct xfrm_state *x,
  
- /**
-diff --git a/kernel/padata.c b/kernel/padata.c
-index 5453f57509067..93af1e9bb3aeb 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -253,20 +253,17 @@ EXPORT_SYMBOL(padata_do_parallel);
-  *   be parallel processed by another cpu and is not yet present in
-  *   the cpu's reorder queue.
-  */
--static struct padata_priv *padata_find_next(struct parallel_data *pd,
--					    bool remove_object)
-+static struct padata_priv *padata_find_next(struct parallel_data *pd, int cpu,
-+					    unsigned int processed)
- {
- 	struct padata_priv *padata;
- 	struct padata_list *reorder;
--	int cpu = pd->cpu;
+ 	um = nlmsg_data(nlh);
  
- 	reorder = per_cpu_ptr(pd->reorder_list, cpu);
- 
- 	spin_lock(&reorder->lock);
--	if (list_empty(&reorder->list)) {
--		spin_unlock(&reorder->lock);
--		return NULL;
--	}
-+	if (list_empty(&reorder->list))
-+		goto notfound;
- 
- 	padata = list_entry(reorder->list.next, struct padata_priv, list);
- 
-@@ -274,101 +271,52 @@ static struct padata_priv *padata_find_next(struct parallel_data *pd,
- 	 * Checks the rare case where two or more parallel jobs have hashed to
- 	 * the same CPU and one of the later ones finishes first.
- 	 */
--	if (padata->seq_nr != pd->processed) {
--		spin_unlock(&reorder->lock);
--		return NULL;
--	}
--
--	if (remove_object) {
--		list_del_init(&padata->list);
--		++pd->processed;
--		/* When sequence wraps around, reset to the first CPU. */
--		if (unlikely(pd->processed == 0))
--			pd->cpu = cpumask_first(pd->cpumask.pcpu);
--		else
--			pd->cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
--	}
-+	if (padata->seq_nr != processed)
-+		goto notfound;
- 
-+	list_del_init(&padata->list);
- 	spin_unlock(&reorder->lock);
- 	return padata;
-+
-+notfound:
-+	pd->processed = processed;
-+	pd->cpu = cpu;
-+	spin_unlock(&reorder->lock);
-+	return NULL;
- }
- 
--static void padata_reorder(struct parallel_data *pd)
-+static void padata_reorder(struct padata_priv *padata)
- {
-+	struct parallel_data *pd = padata->pd;
- 	struct padata_instance *pinst = pd->ps->pinst;
--	int cb_cpu;
--	struct padata_priv *padata;
--	struct padata_serial_queue *squeue;
--	struct padata_list *reorder;
-+	unsigned int processed;
-+	int cpu;
- 
--	/*
--	 * We need to ensure that only one cpu can work on dequeueing of
--	 * the reorder queue the time. Calculating in which percpu reorder
--	 * queue the next object will arrive takes some time. A spinlock
--	 * would be highly contended. Also it is not clear in which order
--	 * the objects arrive to the reorder queues. So a cpu could wait to
--	 * get the lock just to notice that there is nothing to do at the
--	 * moment. Therefore we use a trylock and let the holder of the lock
--	 * care for all the objects enqueued during the holdtime of the lock.
--	 */
--	if (!spin_trylock_bh(&pd->lock))
--		return;
-+	processed = pd->processed;
-+	cpu = pd->cpu;
- 
--	while (1) {
--		padata = padata_find_next(pd, true);
-+	do {
-+		struct padata_serial_queue *squeue;
-+		int cb_cpu;
- 
--		/*
--		 * If the next object that needs serialization is parallel
--		 * processed by another cpu and is still on it's way to the
--		 * cpu's reorder queue, nothing to do for now.
--		 */
--		if (!padata)
--			break;
-+		cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
-+		processed++;
- 
- 		cb_cpu = padata->cb_cpu;
- 		squeue = per_cpu_ptr(pd->squeue, cb_cpu);
- 
- 		spin_lock(&squeue->serial.lock);
- 		list_add_tail(&padata->list, &squeue->serial.list);
--		spin_unlock(&squeue->serial.lock);
--
- 		queue_work_on(cb_cpu, pinst->serial_wq, &squeue->work);
--	}
- 
--	spin_unlock_bh(&pd->lock);
--
--	/*
--	 * The next object that needs serialization might have arrived to
--	 * the reorder queues in the meantime.
--	 *
--	 * Ensure reorder queue is read after pd->lock is dropped so we see
--	 * new objects from another task in padata_do_serial.  Pairs with
--	 * smp_mb in padata_do_serial.
--	 */
--	smp_mb();
--
--	reorder = per_cpu_ptr(pd->reorder_list, pd->cpu);
--	if (!list_empty(&reorder->list) && padata_find_next(pd, false)) {
- 		/*
--		 * Other context(eg. the padata_serial_worker) can finish the request.
--		 * To avoid UAF issue, add pd ref here, and put pd ref after reorder_work finish.
-+		 * If the next object that needs serialization is parallel
-+		 * processed by another cpu and is still on it's way to the
-+		 * cpu's reorder queue, end the loop.
- 		 */
--		padata_get_pd(pd);
--		if (!queue_work(pinst->serial_wq, &pd->reorder_work))
--			padata_put_pd(pd);
--	}
--}
--
--static void invoke_padata_reorder(struct work_struct *work)
--{
--	struct parallel_data *pd;
--
--	local_bh_disable();
--	pd = container_of(work, struct parallel_data, reorder_work);
--	padata_reorder(pd);
--	local_bh_enable();
--	/* Pairs with putting the reorder_work in the serial_wq */
--	padata_put_pd(pd);
-+		padata = padata_find_next(pd, cpu, processed);
-+		spin_unlock(&squeue->serial.lock);
-+	} while (padata);
- }
- 
- static void padata_serial_worker(struct work_struct *serial_work)
-@@ -419,6 +367,7 @@ void padata_do_serial(struct padata_priv *padata)
- 	struct padata_list *reorder = per_cpu_ptr(pd->reorder_list, hashed_cpu);
- 	struct padata_priv *cur;
- 	struct list_head *pos;
-+	bool gotit = true;
- 
- 	spin_lock(&reorder->lock);
- 	/* Sort in ascending order of sequence number. */
-@@ -428,17 +377,14 @@ void padata_do_serial(struct padata_priv *padata)
- 		if ((signed int)(cur->seq_nr - padata->seq_nr) < 0)
- 			break;
- 	}
--	list_add(&padata->list, pos);
-+	if (padata->seq_nr != pd->processed) {
-+		gotit = false;
-+		list_add(&padata->list, pos);
-+	}
- 	spin_unlock(&reorder->lock);
- 
--	/*
--	 * Ensure the addition to the reorder list is ordered correctly
--	 * with the trylock of pd->lock in padata_reorder.  Pairs with smp_mb
--	 * in padata_reorder.
--	 */
--	smp_mb();
--
--	padata_reorder(pd);
-+	if (gotit)
-+		padata_reorder(padata);
- }
- EXPORT_SYMBOL(padata_do_serial);
- 
-@@ -625,9 +571,7 @@ static struct parallel_data *padata_alloc_pd(struct padata_shell *ps)
- 	padata_init_squeues(pd);
- 	pd->seq_nr = -1;
- 	refcount_set(&pd->refcnt, 1);
--	spin_lock_init(&pd->lock);
- 	pd->cpu = cpumask_first(pd->cpumask.pcpu);
--	INIT_WORK(&pd->reorder_work, invoke_padata_reorder);
- 
- 	return pd;
- 
-@@ -1137,12 +1081,6 @@ void padata_free_shell(struct padata_shell *ps)
- 	if (!ps)
- 		return;
- 
--	/*
--	 * Wait for all _do_serial calls to finish to avoid touching
--	 * freed pd's and ps's.
--	 */
--	synchronize_rcu();
--
- 	mutex_lock(&ps->pinst->lock);
- 	list_del(&ps->list);
- 	pd = rcu_dereference_protected(ps->pd, 1);
++	memset(&um->id, 0, sizeof(um->id));
+ 	memcpy(&um->id.daddr, &x->id.daddr, sizeof(um->id.daddr));
+ 	um->id.spi = x->id.spi;
+ 	um->id.family = x->props.family;
 -- 
 2.53.0
 
