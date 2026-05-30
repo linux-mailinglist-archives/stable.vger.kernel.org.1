@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLJRKY8gG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257841-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:23 +0200
+	id ON9NMbIzG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242D3610138
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D74612EC3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C6F930205F4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F5F730D22B5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F0F33F8B4;
-	Sat, 30 May 2026 17:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50AB32367DF;
+	Sat, 30 May 2026 18:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIqo4VUV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1SU25Ag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E6F2E7379;
-	Sat, 30 May 2026 17:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DCA2E7389;
+	Sat, 30 May 2026 18:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162350; cv=none; b=P4fqP9NFnU9hPzGT48ImJatRcQtz2xlZzz1ql02y57AARN7DE5Y4fZVm40J/sqeY6kjsSA7ttrl5QYuzwxHKBzbbBB4Kg632PlW3uQ/WzxkR4tktZnsETUG8vCzcJWxmqi4xxXn2S/Ab8aslbYUD9ud0yclgpoiIY5siBszs6HU=
+	t=1780167166; cv=none; b=SoB7LvubqhvTNCLBcBnCC3mDQNAcMEpz26fBMeX1abnnX9SuUPTfqno+DBLKm0hZpF3Sp+Ga73Dt4thtKxdGWuEXQ0OIYve86UbN0brN3i5jvTj4quIjyGicC2R77iikWya5eyiVVmseDCPTHNOeNgU5uTpMzTBTd1dDvC5RxqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162350; c=relaxed/simple;
-	bh=eQ3Cye2jnWlltySVwz3+S5prZCxRyOJ3iFnyiLPEw7k=;
+	s=arc-20240116; t=1780167166; c=relaxed/simple;
+	bh=FaTihR+UPmeNp4KQU/qrX6xjawvBqpwnpcEZTi/phLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxxfgWTVYoLWSx8eIR3S1f65fDRuXKNBZYJWKxYxXB0GVZFt2th38gB317ZndJ4Y/htmgwss/dxbmseJ1gpRKgUYeHqdw/dcfFV11b0OLxmjG8B3elljcTxpOtU17XuQS0be7TcB5WgvGj4Fs8KPdwB9ek0FBVwtCZfbsfbWep4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIqo4VUV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5EF31F00893;
-	Sat, 30 May 2026 17:32:27 +0000 (UTC)
+	 MIME-Version; b=qhOFb4orgOjb8AAyU6J/9pb5omwH+Ro/ehlVuzpSeZNqT0pTddWeqpz94NatYvPsvPQJmj2VhcrPy2CI2v9yOjyMUIQrxO31p4vYdZzxNPhrwnxFrQBhdulU3fOykMDSNgNGubfgmMdCANAwipRAfy5GU2EwwF3Jgryw0VLmOOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1SU25Ag; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E8C1F00893;
+	Sat, 30 May 2026 18:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162349;
-	bh=/1pYjem+MzQUWKPtwmJAsszbp5Va2b7LtlGZPf9p+gY=;
+	s=korg; t=1780167165;
+	bh=bbh+Sk1CkPxCDvthpphZ5yKlRHGU6nT3nMCsZPNKSjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DIqo4VUVhYv7OgUuJ7klLPNS1zFvGucLQ3PNM0q5OjSH5+12bZvX53viBAchuTHpI
-	 4/SIWJaWXMO0UlkBSCauajHDACZynFTBNTROCdLyZuA7Qck5c0N7PQpsVC1qdb8o0l
-	 2vHH4KyCGGepgIwgZddu0tKxrxa85aWnOedFUYHk=
+	b=K1SU25AgaRAtG11Nh1Uj/99i9nK+JCXTDmlpqMTxyBcD0ch2qIVINy6/7EuOg5Vq0
+	 heLubFCenyypC51baFh6t9Ki0HpILJm03JsE9vbHEX6FWV9fCCBlnprWCOHP3OcEj5
+	 s/raD7aVaP7baUL3uBwrRxLh9ldlW4yfWPVMmGTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 894/969] hwmon: (pmbus/adm1266) cap PDIO scan in get_multiple at ADM1266_PDIO_NR
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 5.10 537/589] ring-buffer: Fix reporting of missed events in iterator
 Date: Sat, 30 May 2026 18:06:58 +0200
-Message-ID: <20260530160325.390905981@linuxfoundation.org>
+Message-ID: <20260530160238.806607094@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,87 +68,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257841-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259266-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 242D3610138
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,efficios.com:email]
+X-Rspamd-Queue-Id: 39D74612EC3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit d7834d92251baade796812876e95555e2066fa9f upstream.
+commit a254b6d13b0edd6272926674d2afc46d46e496b7 upstream.
 
-adm1266_gpio_get_multiple() iterates the PDIO portion of the
-caller-supplied mask using
+When tracing is active while reading the trace file, if the iterator
+reading the buffer detects that the writer has passed the iterator head,
+it will reset and set a "missed events" flag. This flag is passed to the
+output processing to show the user that events were missed:
 
-	for_each_set_bit_from(gpio_nr, mask,
-			      ADM1266_GPIO_NR + ADM1266_PDIO_STATUS) {
-		...
-	}
+  CPU:4 [LOST EVENTS]
 
-where ADM1266_PDIO_STATUS is the PMBus command code (0xE9, i.e. 233),
-not the number of PDIO pins.  The intended upper bound is
-ADM1266_GPIO_NR + ADM1266_PDIO_NR = 25.
+The problem is that the flag is reset after it is checked in
+ring_buffer_iter_dropped(). But the "trace" file iterates over all the CPU
+ring buffers and it will check if they are dropped when figuring out which
+buffer to print next. This prematurely clears the missed_events flag if
+the CPU buffer with the missed events is not the one that is printed next.
 
-gpiolib hands in a mask sized for gc.ngpio (= 25 bits on this chip),
-so the iteration walks find_next_bit() up to 242, reading up to 217
-extra bits (a handful of unsigned-long words: four on 64-bit, seven
-on 32-bit) of whatever lives past the end of the mask in the
-caller's stack.  Any incidental set bit in that range then drives a
-set_bit(gpio_nr, bits) call that writes past the end of the
-caller-supplied bits array too -- both out-of-bounds.
+On the iteration where the CPU buffer with the missed events is printed,
+the check if it had missed events would return false and the output does
+not show that events were missed.
 
-Substitute ADM1266_PDIO_NR for the constant so the scan stops at the
-last real PDIO bit.
+Do not reset the missed_events flag when checking if there were missed
+events, but instead clear it when moving the iterator head to the next
+event.
 
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-1-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20260520220801.4fd09d13@fedora
+Fixes: c9b7a4a72ff64 ("ring-buffer/tracing: Have iterator acknowledge dropped events")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/ring_buffer.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -212,7 +212,7 @@ static int adm1266_gpio_get_multiple(str
- 	status = read_buf[0] + (read_buf[1] << 8);
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -4167,6 +4167,7 @@ static void rb_iter_reset(struct ring_bu
+ 	iter->head_page = cpu_buffer->reader_page;
+ 	iter->head = cpu_buffer->reader_page->read;
+ 	iter->next_event = iter->head;
++	iter->missed_events = 0;
  
- 	*bits = 0;
--	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_STATUS) {
-+	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
- 		if (test_bit(gpio_nr - ADM1266_GPIO_NR, &status))
- 			set_bit(gpio_nr, bits);
- 	}
+ 	iter->cache_reader_page = iter->head_page;
+ 	iter->cache_read = cpu_buffer->read;
+@@ -4776,10 +4777,7 @@ ring_buffer_peek(struct trace_buffer *bu
+  */
+ bool ring_buffer_iter_dropped(struct ring_buffer_iter *iter)
+ {
+-	bool ret = iter->missed_events != 0;
+-
+-	iter->missed_events = 0;
+-	return ret;
++	return iter->missed_events != 0;
+ }
+ EXPORT_SYMBOL_GPL(ring_buffer_iter_dropped);
+ 
+@@ -4996,7 +4994,7 @@ void ring_buffer_iter_advance(struct rin
+ 	unsigned long flags;
+ 
+ 	raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
+-
++	iter->missed_events = 0;
+ 	rb_advance_iter(iter);
+ 
+ 	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
 
 
 
