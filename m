@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-257038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257006-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ePWUG5ISG2rM+wgAu9opvQ
-	(envelope-from <stable+bounces-257038-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:42 +0200
+	id cIl6J8oQG2q/+ggAu9opvQ
+	(envelope-from <stable+bounces-257006-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF56160E527
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC4E60E377
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C7D46300CCB5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:38:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5F08A301135D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF3732B11E;
-	Sat, 30 May 2026 16:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3BD34A79D;
+	Sat, 30 May 2026 16:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfNb8SOo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1IlIjiF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0881DE4EF;
-	Sat, 30 May 2026 16:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E361DE4EF;
+	Sat, 30 May 2026 16:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159117; cv=none; b=lvB9YSzQfuOLvUf3tAA6NZuZGEkDMgvqZOol3YJU0jlt9TevWsdexDZhSkAcMnoseHRc836rIOBu+vxd4ZHFFijzqzr9+kSPXu3ShsrxPiS1taehW8cW5kaKm+H14TlXx7GoAOKoxRosPVbuVBm2HHOx6x7wf17o2nuTyXlxWpI=
+	t=1780158664; cv=none; b=oIaarNovto9wE5ydwfxzX14c1lOsT55J0gFLgGYYW1H0dAqSw9nlFxPmxHGllAy367GdjTQzgbOICjABNozh4mfRsPAEsetIMAqrpq05K6/yjy/OVk40C24ZgPeydDlAoR/ujMRDP+0+vTRacSkMJ7Xt0bzfecthRdcwrbSL5v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159117; c=relaxed/simple;
-	bh=O8ehI9aL0m9gSqta6fYzF2hvFOdY4cCIt8TkmvbC1Jo=;
+	s=arc-20240116; t=1780158664; c=relaxed/simple;
+	bh=84ehuYt9KAam/TSbfGT4U2oWcUI0vzWLrNu9c+oqyXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7Pr1NTHx+90B8x702QFvWBdlWguhSPpPi7RRCF9GrM0J0fuWNW7klGDNiP2Z9F9p4rNJJ0cDZnx6HKySw5iCHj6tmjnQlKU//YVykFuFmznjMmCCCdKZK497o0VEmEXD0Pd74rm0yQY/sv0wzcn7RYmgJh8mX6o+q4HSt/8gW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfNb8SOo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2604B1F00893;
-	Sat, 30 May 2026 16:38:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LkWaVM6+XqLG1/g5mRrXElWeKZYpz/iGOb/ZuYfbQac09cqbRwbVWlDsU+LLf5mbr4P0LptS4HKPPbmjxVxlhzr8x/c8nFjYCoZdOtbVVjNvh6J0lXCcS14i7z17H/zaH1MApVhQRyDKgQytKX94vSwjUFJsGvjaNpRjQmaohVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1IlIjiF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83E31F00893;
+	Sat, 30 May 2026 16:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159116;
-	bh=Jcd03JEdvpWwkZFJOcHrzGgJ3ZvSHbNoeFLcUm3j6TU=;
+	s=korg; t=1780158663;
+	bh=+mQGl1HuVfA76+N32j24d+/1fce1IWFI2hdZg1DKNlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EfNb8SOo+nGAc2yJI+vcsY3hwRokRvLgGsOtIwRxHVvbc4Aiw+mDS75tH4DTo5rii
-	 M+5eQ57zP8MSD98cEsrsGHPPx6Ik/r3nX8+/x4hIKUyHpBH8KbdeoyJHGY4xyK+j1y
-	 JEYDNkjyR6RNnxG+Ke/MPy2ekXZth/dYsdcqqT3Q=
+	b=Z1IlIjiFoOzEQU/iXJXm1bFtMQwllOkSv4ficsf0ENOpHWagynOue2su1PF0hFUCG
+	 AhZ60ctcsmihdAG7VCBjFats5N/aIpquW4JPxIMvoPqrKCSeCan+2eHslOyX/1gTuJ
+	 jsLZBUsFYDZ8VW3bhEqL/HFcX2xSu/enQvteJJ2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Thierry Escande <thierry.escande@linux.intel.com>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	stable <stable@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 063/969] NFC: digital: Bounds check NFC-A cascade depth in SDD response handler
-Date: Sat, 30 May 2026 17:53:07 +0200
-Message-ID: <20260530160302.121691647@linuxfoundation.org>
+	Maxime Ripard <mripard@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 064/969] drm/vc4: platform_get_irq_byname() returns an int
+Date: Sat, 30 May 2026 17:53:08 +0200
+Message-ID: <20260530160302.151015629@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -66,35 +69,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257038-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257006-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,raspberrypi.com,igalia.com,linux.intel.com,suse.de,gmail.com,ffwll.ch];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: DF56160E527
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ffwll.ch:email]
+X-Rspamd-Queue-Id: 1EC4E60E377
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,57 +108,60 @@ X-Rspamd-Server: lfdr
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 46ce8be2ced389bccd84bcc04a12cf2f4d0c22d1 upstream.
+commit e597a809a2b97e927060ba182f58eb3e6101bc70 upstream.
 
-The NFC-A anti-collision cascade in digital_in_recv_sdd_res() appends 3
-or 4 bytes to target->nfcid1 on each round, but the number of cascade
-rounds is controlled entirely by the peer device.  The peer sets the
-cascade tag in the SDD_RES (deciding 3 vs 4 bytes) and the
-cascade-incomplete bit in the SEL_RES (deciding whether another round
-follows).
+platform_get_irq_byname() will return a negative value if an error
+happens, so it should be checked and not just passed directly into
+devm_request_threaded_irq() hoping all will be ok.
 
-ISO 14443-3 limits NFC-A to three cascade levels and target->nfcid1 is
-sized accordingly (NFC_NFCID1_MAXSIZE = 10), but nothing in the driver
-actually enforces this.  This means a malicious peer can keep the
-cascade running, writing past the heap-allocated nfc_target with each
-round.
-
-Fix this by rejecting the response when the accumulated UID would exceed
-the buffer.
-
-Commit e329e71013c9 ("NFC: nci: Bounds check struct nfc_target arrays")
-fixed similar missing checks against the same field on the NCI path.
-
-Cc: Simon Horman <horms@kernel.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Thierry Escande <thierry.escande@linux.intel.com>
-Cc: Samuel Ortiz <sameo@linux.intel.com>
-Fixes: 2c66daecc409 ("NFC Digital: Add NFC-A technology support")
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Cc: Maíra Canal <mcanal@igalia.com>
+Cc: Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
 Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
+Assisted-by: gkh_clanker_2000
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026040913-figure-seducing-bd3f@gregkh
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/2026022339-cornflake-t-shirt-2471@gregkh
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/digital_technology.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/vc4/vc4_hdmi.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/net/nfc/digital_technology.c
-+++ b/net/nfc/digital_technology.c
-@@ -424,6 +424,12 @@ static void digital_in_recv_sdd_res(stru
- 		size = 4;
- 	}
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -2614,17 +2614,23 @@ static int vc4_hdmi_hotplug_init(struct
+ 	int ret;
  
-+	if (target->nfcid1_len + size > NFC_NFCID1_MAXSIZE) {
-+		PROTOCOL_ERR("4.7.2.1");
-+		rc = -EPROTO;
-+		goto exit;
-+	}
+ 	if (vc4_hdmi->variant->external_irq_controller) {
+-		unsigned int hpd_con = platform_get_irq_byname(pdev, "hpd-connected");
+-		unsigned int hpd_rm = platform_get_irq_byname(pdev, "hpd-removed");
++		int hpd = platform_get_irq_byname(pdev, "hpd-connected");
+ 
+-		ret = devm_request_threaded_irq(&pdev->dev, hpd_con,
++		if (hpd < 0)
++			return hpd;
 +
- 	memcpy(target->nfcid1 + target->nfcid1_len, sdd_res->nfcid1 + offset,
- 	       size);
- 	target->nfcid1_len += size;
++		ret = devm_request_threaded_irq(&pdev->dev, hpd,
+ 						NULL,
+ 						vc4_hdmi_hpd_irq_thread, IRQF_ONESHOT,
+ 						"vc4 hdmi hpd connected", vc4_hdmi);
+ 		if (ret)
+ 			return ret;
+ 
+-		ret = devm_request_threaded_irq(&pdev->dev, hpd_rm,
++		hpd = platform_get_irq_byname(pdev, "hpd-removed");
++		if (hpd < 0)
++			return hpd;
++
++		ret = devm_request_threaded_irq(&pdev->dev, hpd,
+ 						NULL,
+ 						vc4_hdmi_hpd_irq_thread, IRQF_ONESHOT,
+ 						"vc4 hdmi hpd disconnected", vc4_hdmi);
 
 
 
