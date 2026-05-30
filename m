@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-257845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258617-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDwnLXQfG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:40 +0200
+	id UOjHBEkqG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258617-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0848560FECC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 959066117DD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D5669300AD7C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 559A3304F43E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8503469FC;
-	Sat, 30 May 2026 17:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0144C3AB26B;
+	Sat, 30 May 2026 18:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvVbp5Pv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5+3nlwP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82732E7379;
-	Sat, 30 May 2026 17:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99333BE175;
+	Sat, 30 May 2026 18:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162363; cv=none; b=phz/hI0hWXQEUmpalf1P18h0cECQoTcDvy+NX+QiZNzeg3SbZb5pehfdizSUUcOYIKULJchE22jHlHv0MlxfSpnLWX+pCt3Hq+YgUhSa4UH2P7U/f+qpW9hZum8KLgyfLxyNSiX0iZeNg0y7k5rjNXSoeuc/P+MHcR310TYbaeQ=
+	t=1780164954; cv=none; b=fvnsP131EAnNEf5tzZ268fvZ8j0xBYkvX64SkVunWOFvx1E/5/YCurjglx8vSsLp1w7wFKxnUoie7y0Kg+iJboT+jUR64/cSTY8J2YwZmvRWak5MqcfBS+078VwJJlYEJuirAwpmq1lcs/3ZDYyL8PSIPun+Tx+dqiIF4pqaNO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162363; c=relaxed/simple;
-	bh=Gg2v05oG4ncMhXt/+hZy1MuYZLjzy1tADmRQ43febT0=;
+	s=arc-20240116; t=1780164954; c=relaxed/simple;
+	bh=QGC2er1p2hFpw9w1gR2PF3IYsHweEUwtuDUOZdl9IAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EFKyjd/XpC1HrKRdeZzjmJDkwSijiyLCe/1Z2R0/Yq5CJOJ/dmT3iEFK0ZN/jvOYnkHAdmlzuumW1u1NxRe2l+jKLBfbt+tmTMldR6td9j6d10bwxltQ8COKALSvIvlGfm18C//oExnmTIOiJCvRqXmZ7a2zRFCiGzvdMINI4AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvVbp5Pv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A95C1F00893;
-	Sat, 30 May 2026 17:32:41 +0000 (UTC)
+	 MIME-Version; b=c9Eqhn/8rDXez09NLN3W9pvpcgJthcmaOWcINh8TrZbNw2mpfKmzKfSeMlcJbEsbviDe2YS0swfhms75pnhK/+n6DJOFGFsP5rYbvUYRqG+0a7FDy+r4I+oa6klA2lMP8u7gmR9FVXshLAi+Q35SkyewpcyT9n6KYctm3Rv2F10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5+3nlwP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F051F00893;
+	Sat, 30 May 2026 18:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162362;
-	bh=YP9IzbTG2ZcMSfS/JXs9t15tadv5Krzj8K83IAw97EM=;
+	s=korg; t=1780164953;
+	bh=2x5CtFsgTuGkF8V6HRLU+fdSr6kb3S4biDRcWdRxYo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lvVbp5Pvjm1uw0C+p8686I8UnbcJo5tNCLdZt0gDPGl5g5E3EvUha6JGmC2P8xWW4
-	 9Dwwij/zmx5TtbYX+mRd92ANNqOzuGQiAX+NvWJqANZVSVtEc7RogYEKA/+8NYQcbZ
-	 nP1CYE1yXkdULZGp8/+bDjEbw2FwQ+AFD9p+lDNo=
+	b=i5+3nlwPP6O3ZKxUZeeX2KUeT35+JyKZydluqedDYqSSOCDYw4XZXqeIlz4wO5qve
+	 jKrvyxhInfWVRXPj9vE0hZ29Xb8m/mbxegeKsYh+MsP4PqRu1sp4NOvwbty2Eq5Lrf
+	 ovh9BjAhmhwl2hyKOia8apNRt1uhASH7MbyIHWS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 897/969] hwmon: (pmbus/adm1266) register the nvmem device after pmbus_do_probe()
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruijie Li <ruijieli51@gmail.com>,
+	Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.15 707/776] batman-adv: clear current gateway during teardown
 Date: Sat, 30 May 2026 18:07:01 +0200
-Message-ID: <20260530160325.477378362@linuxfoundation.org>
+Message-ID: <20260530160258.118825730@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +72,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258617-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257845-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,roeck-us.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0848560FECC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 959066117DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Ruijie Li <ruijieli51@gmail.com>
 
-commit 6af713af91d5c34ec049eb3cc2c5b3f5eba953b8 upstream.
+commit a340a51ed801eab7bb454150c226323b865263cc upstream.
 
-adm1266_probe() calls adm1266_config_nvmem() -- which goes on to
-devm_nvmem_register() and exposes adm1266_nvmem_read() to userspace --
-before pmbus_do_probe() has initialised the per-client PMBus state.
+batadv_gw_node_free() removes the gateway list entries during mesh teardown,
+but it does not clear the currently selected gateway. This leaves stale
+gateway state behind across cleanup and can break a later mesh recreation.
 
-Same latent hazard as the gpio_chip one fixed in the previous patch:
-once the nvmem device is registered, gpiolib's nvmem char-dev / sysfs
-interface is reachable, and any concurrent read triggers
-adm1266_nvmem_read() -> adm1266_nvmem_read_blackbox(), which issues
-PMBus traffic that races pmbus_do_probe()'s own device accesses with
-no serialisation.
+Clear bat_priv->gw.curr_gw before walking the gateway list so the selected
+gateway reference is dropped as part of teardown.
 
-Move adm1266_config_nvmem() down past pmbus_do_probe() so the nvmem
-device isn't reachable from userspace until the PMBus state the
-nvmem accessors depend on is fully initialised.
-
-Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-5-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 2265c1410864 ("batman-adv: gateway election code refactoring")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
+Signed-off-by: Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/batman-adv/gateway_client.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -472,14 +472,14 @@ static int adm1266_probe(struct i2c_clie
- 	if (ret < 0)
- 		return ret;
+--- a/net/batman-adv/gateway_client.c
++++ b/net/batman-adv/gateway_client.c
+@@ -478,10 +478,14 @@ void batadv_gw_node_delete(struct batadv
+  */
+ void batadv_gw_node_free(struct batadv_priv *bat_priv)
+ {
++	struct batadv_gw_node *curr_gw;
+ 	struct batadv_gw_node *gw_node;
+ 	struct hlist_node *node_tmp;
  
--	ret = adm1266_config_nvmem(data);
--	if (ret < 0)
--		return ret;
--
- 	ret = pmbus_do_probe(client, &data->info);
- 	if (ret)
- 		return ret;
- 
-+	ret = adm1266_config_nvmem(data);
-+	if (ret < 0)
-+		return ret;
+ 	spin_lock_bh(&bat_priv->gw.list_lock);
++	curr_gw = rcu_replace_pointer(bat_priv->gw.curr_gw, NULL, true);
++	batadv_gw_node_put(curr_gw);
 +
- 	ret = adm1266_config_gpio(data);
- 	if (ret < 0)
- 		return ret;
+ 	hlist_for_each_entry_safe(gw_node, node_tmp,
+ 				  &bat_priv->gw.gateway_list, list) {
+ 		hlist_del_init_rcu(&gw_node->list);
 
 
 
