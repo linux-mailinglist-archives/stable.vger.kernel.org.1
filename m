@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-257816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wO7uOdweG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257816-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:08 +0200
+	id oMGfJgQpG2rg/ggAu9opvQ
+	(envelope-from <stable+bounces-258592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866CB60FD47
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FBF6114EB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D51FB3004DE6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8C6F2300B5AC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382682E7379;
-	Sat, 30 May 2026 17:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DEF39A7FE;
+	Sat, 30 May 2026 18:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cmw1ZUNO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzBEDPeD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FC0341AB8;
-	Sat, 30 May 2026 17:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6276223DC6;
+	Sat, 30 May 2026 18:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162267; cv=none; b=cKC34FQqchtPgBxI9inEFt2kv8frRt7WEro7U6AWuZ40vAp48su0LmiDTWfBkDfIp6ucjdNsHrMVKlPD9Ys1nGIZKTV+DK7Tryi1qbotNKeAOrWsPl1H5PG1F3ttekW6e+MrfUWJ8qGGZIEX/pZ1ddr9sBSDE8xehe1Pr/x3ggM=
+	t=1780164866; cv=none; b=NLqZhZQ5nV4S9y8Q/MlRaZ0x50Bge6sIpoOtDBr+BmWMlsz6uWm7h3Hae3CCMqjQsq6wn9iYOqiUUgCEkfaL6jnfU7SvXcC/VYeQgrMU5ZLvuHYHUXXfGLPMJiQlK4zyFQiIl+xzLGcsj0UHKKTk4s1cWw12UWJK0DtQ/SGCoFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162267; c=relaxed/simple;
-	bh=/nA3tn9ShRcRzSB6O51XXGOF8m2mCok5y3dOwNpcLkA=;
+	s=arc-20240116; t=1780164866; c=relaxed/simple;
+	bh=1Qb1vXFSYh5rq6nXhVWYZES14X1QBZQYwmFatMcuah8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RBnlenJjFnFoiEFMs7fCSKiBF7Z4++ca71ZC9yY04ARX3t39WR9deobgkS45vuUweicHeZnJQ8cEiBNCfX88bymNMMzyqqPq9/YCBqKbT3CpmrnsBDRGJECy8CpQaT7Fg9Lujc5dy1bjaV7N5sZPFHHkaiRh+MQOspB2/GRPfqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cmw1ZUNO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E34C91F00898;
-	Sat, 30 May 2026 17:31:04 +0000 (UTC)
+	 MIME-Version; b=ew6kcQAhUUoQuSIY5iITLc3LqSEuXTgBj2hi/DpGhJvKNye2eWMUO2jwcXW3kS2kfzItl7mmgattcK3yi2u57WmktQqvr31v5yIvlWJlUa2x2EqBFrylZM3bRBRB3ziu4w5nFavf+QLAKZ9S7UKeXL3Da/GJK3X2vPGvEXBqesY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzBEDPeD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB841F00898;
+	Sat, 30 May 2026 18:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162265;
-	bh=GGspNVWzEfWxPxgK5329GrV29na5yP/1Xk+cP9H2eQo=;
+	s=korg; t=1780164865;
+	bh=KVYM9AVvCP0vXUgpyoQGfafq9TkHBhAp2zQxoP9zWq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Cmw1ZUNOaJo/1tWu3EhMxs92isbz8bGvqAHfyaIUtD4d2iOsiuN+Y9O/6kYrXhXwy
-	 QoTWb0VHJNpGWJQhbyIbfpItOZHGQs6riQZf1MWSj/hJ027ZpSYnZrQxBhr/CTMqqy
-	 HoVTJ+fiKvFxTU/6DO4imLICvzvi9HSprIUg/VDg=
+	b=TzBEDPeDCpDg5rQdQ8R3zcLiOpZa0MyffnsDjrI/hQzizi8ZuuxzDuGun5/iSuY1c
+	 odAc/iHQhb+wgcWyHdg/Q23HXLmUBqHNCbapSDLdZxybi8oSZhQ7no6tZqbTgxEQgs
+	 YRRGkrTwLxI9JsqL/2YM4ERJQHL4bRHLlqZNNoCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Bernard Metzler <bernard.metzler@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.1 871/969] RDMA/siw: Reject MPA FPDU length underflow before signed receive math
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 681/776] ALSA: asihpi: Fix potential OOB array access at reading cache
 Date: Sat, 30 May 2026 18:06:35 +0200
-Message-ID: <20260530160324.735609152@linuxfoundation.org>
+Message-ID: <20260530160257.467219036@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,139 +62,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257816-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258592-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 866CB60FD47
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sashiko.dev:url]
+X-Rspamd-Queue-Id: 40FBF6114EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 0ce1bc9e46ecabe84772bb561e373c0d9876d6f2 upstream.
+commit 7b7d6572145c1dab2dd9bfb550b188e5f0ff3c3f upstream.
 
-A malicious connected siw peer can send an iWARP FPDU whose MPA length
-field (c_hdr->mpa_len, 16 bit big-endian, peer-controlled) is smaller
-than the fixed DDP/RDMAP header for the announced opcode. Soft-iWARP
-parses the full header in siw_get_hdr() based on iwarp_pktinfo[opcode]
-.hdr_len, but never compares mpa_len against that header length.
+find_control() to retrieve a cached info accesses the array with the
+given index blindly, which may lead to an OOB array access.
+Add a sanity check for avoiding it.
 
-siw_tcp_rx_data() then derives
-
-    srx->fpdu_part_rem = be16_to_cpu(mpa_len) - fpdu_part_rcvd
-                         + MPA_HDR_SIZE;
-
-where fpdu_part_rcvd equals iwarp_pktinfo[opcode].hdr_len at this
-point. For a tagged WRITE (hdr_len 16, MPA_HDR_SIZE 2) the smallest
-on-wire mpa_len of 0 yields fpdu_part_rem = -14, and any mpa_len below
-hdr_len - MPA_HDR_SIZE underflows to a negative int.
-
-The signed value then flows into siw_proc_write()/siw_proc_rresp() as
-
-    bytes = min(srx->fpdu_part_rem, srx->skb_new);
-
-is handed to siw_check_mem() as an int len (whose interval check
-addr + len > mem->va + mem->len is satisfied for a valid base when
-len is negative), and reaches siw_rx_data() -> siw_rx_kva() /
-siw_rx_umem() -> skb_copy_bits() as a signed copy length. The header
-copy branch in skb_copy_bits() promotes that to size_t, producing a
-multi-gigabyte read.
-
-KASAN under a KUnit harness that drives the real kernel TCP receive
-path -- a loopback AF_INET socketpair, the malformed FPDU written via
-kernel_sendmsg, sk_data_ready firing in softirq, tcp_read_sock
-dispatching to siw_tcp_rx_data -- reports:
-
-    BUG: KASAN: use-after-free in skb_copy_bits+0x284/0x480
-    Read of size 4294967295 at addr ffff888...
-    Call Trace:
-     skb_copy_bits
-     siw_rx_kva
-     siw_rx_data
-     siw_check_mem
-     siw_proc_write
-     siw_tcp_rx_data
-     __tcp_read_sock
-     siw_qp_llp_data_ready
-     tcp_data_ready
-     tcp_data_queue
-
-Add the missing invariant at the earliest point where the peer header
-is fully assembled. iwarp_pktinfo[*].hdr_len - MPA_HDR_SIZE is exactly
-the value the siw transmitter uses as the minimum mpa_len for each
-opcode (drivers/infiniband/sw/siw/siw_qp.c:33), so this matches the
-protocol contract. Out-of-range FPDUs terminate the connection with
-TERM_ERROR_LAYER_LLP / LLP_ETYPE_MPA / LLP_ECODE_FPDU_START -- which
-is RFC 5044 Section 8 error code 3 ("Marker and ULPDU Length fields
-do not agree on the start of an FPDU"), the correct framing-error
-class for this inconsistency.
-
-Fixes: 8b6a361b8c48 ("rdma/siw: receive path")
-Link: https://patch.msgid.link/r/20260513175325.2042630-2-michael.bommarito@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Assisted-by: Claude:claude-opus-4-7
-Acked-by: Bernard Metzler <bernard.metzler@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://sashiko.dev/#/patchset/20260511230121.28606-1-rosenp%40gmail.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260515085606.242284-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/siw/siw_qp_rx.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ sound/pci/asihpi/hpicmn.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/infiniband/sw/siw/siw_qp_rx.c
-+++ b/drivers/infiniband/sw/siw/siw_qp_rx.c
-@@ -1102,6 +1102,21 @@ static int siw_get_hdr(struct siw_rx_str
+--- a/sound/pci/asihpi/hpicmn.c
++++ b/sound/pci/asihpi/hpicmn.c
+@@ -276,6 +276,12 @@ static short find_control(u16 control_in
+ 		return 0;
  	}
  
- 	/*
-+	 * Peer-controlled mpa_len must not underflow srx->fpdu_part_rem
-+	 * in siw_tcp_rx_data(); a negative value flows as a signed copy
-+	 * length into siw_check_mem() and skb_copy_bits().
-+	 */
-+	if (unlikely(be16_to_cpu(c_hdr->mpa_len) + MPA_HDR_SIZE <
-+		     iwarp_pktinfo[opcode].hdr_len)) {
-+		pr_warn_ratelimited("siw: short mpa_len %u for opcode %u (hdr_len %u)\n",
-+				    be16_to_cpu(c_hdr->mpa_len), opcode,
-+				    iwarp_pktinfo[opcode].hdr_len);
-+		siw_init_terminate(rx_qp(srx), TERM_ERROR_LAYER_LLP,
-+				   LLP_ETYPE_MPA, LLP_ECODE_FPDU_START, 0);
-+		return -EINVAL;
++	if (control_index >= p_cache->control_count) {
++		HPI_DEBUG_LOG(VERBOSE, "control_index out of bounce %d\n",
++			control_index);
++		return 0;
 +	}
 +
-+	/*
- 	 * DDP/RDMAP header receive completed. Check if the current
- 	 * DDP segment starts a new RDMAP message or continues a previously
- 	 * started RDMAP message.
+ 	*pI = p_cache->p_info[control_index];
+ 	if (!*pI) {
+ 		HPI_DEBUG_LOG(VERBOSE, "Uncached Control %d\n",
 
 
 
