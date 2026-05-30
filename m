@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-257807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259175-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJ3lMw4gG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257807-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:14 +0200
+	id CHDLB84wG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259175-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3628F61000E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD1D461282C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 188F130834FA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:30:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 126173014AA0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF691FBC8E;
-	Sat, 30 May 2026 17:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E2F231A21;
+	Sat, 30 May 2026 18:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbTUymWe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCqNltSE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E203AD520;
-	Sat, 30 May 2026 17:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A40C18FDBD;
+	Sat, 30 May 2026 18:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162239; cv=none; b=B3kiiU+EppfkmyVLkAKvBd/GKMHsuEra0cYx4lCpy7zxSBJfwZcp/u2sLVYMJUKaRwIdyuvxQ5SwW99JnvPMTrdWtof70TEUuA/fka2I9WLvT1OqOVemyDTR8pwsULQSkwRmQZb1vOUxr8wh3KQ88o/M0wcYofKuGrLK+O8W5QY=
+	t=1780166858; cv=none; b=eQj0qHzmQYEW8DigzwKEtPkcUXgPWhLW8LpMyIqyUYByKBlukVYKaThqFwcK/E379sb9+UcCMTVKT++1N00fOcy9/4OaeEplNURXXsNWkmzlMZ/fz0VWLn2DGPeBqnNt/0pDXbdf+8LfrOwPD/qlNXXW3nigkfnu0aSqBn6BcMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162239; c=relaxed/simple;
-	bh=tgieQTDofmrSz/CNprYKBfSlWpnNnKLwCxadUc0R650=;
+	s=arc-20240116; t=1780166858; c=relaxed/simple;
+	bh=GdKChLMAMkurcmBwe7r76uky1LPqqDJnhSkBdH90zAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AtQuCYlAk5a6tKrN9Fpd2KVmCcpG4NvMsOuiZswn/+91lSsBJwUiQDVKrwQBdG8m0R8PMW8qg11/IPeVK3NOw4GISN9jCtQf+BlLJHtxUl1txm6vNnpqJnHE2O9qxn2W7PoNQs+7A262ZMZl5G9jKV3txmwuBGsDpo/QK054ToU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbTUymWe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0337E1F00893;
-	Sat, 30 May 2026 17:30:34 +0000 (UTC)
+	 MIME-Version; b=WDezz97zdFIFfFYro+tvjNFFFjHhefpZh+3N1ZqmaxuJkOtjMbpj7HMCIzTmFBlelh3bkRBjBkY+tIb+cmIe2wFLPlSSIrHFhn3aLUtyjJFk6Z9M+7MCWblaQg51OUhYd4ZDzToR6ZSNJIM6ZDUmUu+ahG2QO9xcyU71pHsh1+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCqNltSE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71AD71F00893;
+	Sat, 30 May 2026 18:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162235;
-	bh=urVYQVKvY7mb0gupV2+BodTC0j9PbKegP8DywxE3FpY=;
+	s=korg; t=1780166857;
+	bh=YTdF4UcOUGXThAp9pwrj+QeB8bm2ODNsqIZkRJLzG2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QbTUymWeP7rOKbXO8cFdMZs3msQQthgP5z1GO70enOMJNBXciqZL8sBJrFc9dwGQX
-	 2zdiXKFsA/EKqK8g7CVT312EkXcPo4FExVCNK0Tw3/lcXyVBABkwq3fk+e6siJENBs
-	 klF7mXIV4qKmQnM7EAnBpRfsEGsUw92TFad+wRIw=
+	b=RCqNltSEH5m1C45HcHE4mFW5wiuWkv1yQGPF6UVZGToozZp8UPIotnYUp2HrTy9sS
+	 VOTVNSr3TVmORfMVfCUd02zOF9ODyHOGHQg0DrYwkt8iqOCLmbYi7GcSpipnILASR5
+	 8wt6fqyRMdR0NRcFZ1tzRUeQZqgVA1KAcyr0jFME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Li Zetao <lizetao1@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Robert Garcia <rob_garcia@163.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 832/969] io_uring: prevent opcode speculation
+Subject: [PATCH 5.10 475/589] net/sched: netem: fix queue limit check to include reordered packets
 Date: Sat, 30 May 2026 18:05:56 +0200
-Message-ID: <20260530160323.621294303@linuxfoundation.org>
+Message-ID: <20260530160237.129691635@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +65,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257807-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com,kernel.dk,163.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259175-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,kernel.dk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3628F61000E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BD1D461282C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-[ Upstream commit 1e988c3fe1264708f4f92109203ac5b1d65de50b ]
+[ Upstream commit 4185701fcce6b426b6c3630b25330dddd9c47b0d ]
 
-sqe->opcode is used for different tables, make sure we santitise it
-against speculations.
+The queue limit check in netem_enqueue() uses q->t_len which only
+counts packets in the internal tfifo. Packets placed in sch->q by
+the reorder path (__qdisc_enqueue_head) are not counted, allowing
+the total queue occupancy to exceed sch->limit under reordering.
 
-Cc: stable@vger.kernel.org
-Fixes: d3656344fea03 ("io_uring: add lookup table for various opcode needs")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Li Zetao <lizetao1@huawei.com>
-Link: https://lore.kernel.org/r/7eddbf31c8ca0a3947f8ed98271acc2b4349c016.1739568408.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Include sch->q.qlen in the limit check.
+
+Fixes: f8d4bc455047 ("net/sched: netem: account for backlog updates from child qdisc")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-3-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/sched/sch_netem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index d0d9ff6b87a08..fdb8afdb01353 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2031,6 +2031,8 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 		req->opcode = 0;
- 		return io_init_fail_req(req, -EINVAL);
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 1f47711cb1667..64542c9c15340 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -512,7 +512,7 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			1<<(prandom_u32() % 8);
  	}
-+	opcode = array_index_nospec(opcode, IORING_OP_LAST);
-+
- 	def = &io_op_defs[opcode];
- 	if (unlikely(sqe_flags & ~SQE_COMMON_FLAGS)) {
- 		/* enforce forwards compatibility on users */
+ 
+-	if (unlikely(q->t_len >= sch->limit)) {
++	if (unlikely(sch->q.qlen >= sch->limit)) {
+ 		/* re-link segs, so that qdisc_drop_all() frees them all */
+ 		skb->next = segs;
+ 		qdisc_drop_all(skb, sch, to_free);
 -- 
 2.53.0
 
