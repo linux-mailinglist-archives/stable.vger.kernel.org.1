@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-258325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257582-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CB55EAgmG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:44 +0200
+	id +PJVD0kcG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257582-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2919610D7E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF18C60F6A9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 411DC303BDC5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:59:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A5BA83034215
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C0C362157;
-	Sat, 30 May 2026 17:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED662263F44;
+	Sat, 30 May 2026 17:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWW9r8K/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bZOQYx8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699D1320CAD;
-	Sat, 30 May 2026 17:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCAE30E829;
+	Sat, 30 May 2026 17:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163971; cv=none; b=q+KHVY0CDU1cYEtnr8KS3uF/5Nd3vz6/Wn8pZ2Cp87DII0P2UoLsYIvajzmxQXmwBTRCOCpFyOL4uTgpt2D9S+Arjs9GPv6y1E7DxThjOrjE8iMWkkxHgI3hTPO2G3aivIqkRq4tvH0fMMRrs63RgZdZtLu7TpZ5PHfCRw+aJ3k=
+	t=1780161482; cv=none; b=tnhgZYpq0vRvRTtYwjN3cpD9DwcWvkO95gN+BpXHRGKsCITxazAVXmQP/BvJPSDsvsTzYkDCCJF9B2Iqz4mb+nGICbBmB0KhRMPJNWCpYr7AI4YKaZt903G/XP3sPDvgEANufENzob2JVyKqwtY3GZkw6o+s+Zi4Bu8iOl3z7nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163971; c=relaxed/simple;
-	bh=hCG+OIRnaalrgvox5qxUnmKarMAoNkiizvztOdxVyOE=;
+	s=arc-20240116; t=1780161482; c=relaxed/simple;
+	bh=1D1d3uF53dbM9hELnvb9BlpqWoQCXp+9bOUzI4PK2dI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kjs+/3FhQK8fEtFuuZbCoFBmwD/jagO4NEzK0r5X/Ujz6FZsM3S8SzQlDPNoxQD0qhpm7V2q74Jpw050+BMa5AtsC1c5GbHG59kAsfhkm0DQd2T+gYl+mUW1s1UDtzBxTgmeSa9OLBkR8cJzl7olrW/dMqetz7hb1TFJxHSWrHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aWW9r8K/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC921F00893;
-	Sat, 30 May 2026 17:59:29 +0000 (UTC)
+	 MIME-Version; b=cQUU7czOs00XnxxkX9GGiWYEQkRSKqgS1oxFn5g1fvvLIAjXMxw2glCQsp2jPcothWGhO0GO6KF+NRj68iG6yHO5ZzXm/yfYd0vsnwUo6NAGnqwi4o9tzwzRTf+6wsZv7CaDUod2CvNAP8CyLsJK+c6F2+2cLny26r4OmDy6T04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bZOQYx8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136921F00893;
+	Sat, 30 May 2026 17:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163970;
-	bh=3yetR+r2N+u+1MYJrfeFDpiLwk3zQ5nbQn/Bif/B7+k=;
+	s=korg; t=1780161481;
+	bh=C5XuAYSJG2Qp7oTJPHsG1+lA+s6x5LljQP7uoEPDSPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aWW9r8K//BPDhf8tMyRuFbEdnAL/eQKwAyI4bFY3i0dEHixifCVPgn3GwJTXrSic0
-	 XrxFo3jYDDuYMkYmc2OYHjTgkJCBtBqsSe1V5wcVoGi2sfThn70kiqf/YPu18weaWM
-	 IJwmNe7hGGPutdNqnIRGgLjQR/TV/kle2IzsQGL0=
+	b=2bZOQYx81IqjeyMdRblKK/2LUbt0u7Qoj03qAa/mJVvpZSHGkRN9Xc5Yi1eSBPW+Z
+	 iMb20pH6ifXwTdOeMhZ7ZXTbSuVZLWIUwugAFf6wSMblj3hv0TxNSHvB1HoRl1AKK8
+	 4ZIypTBl9R5y0fc/yS8LUc3rLAS2HcLHmK32rYJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Andreas Koensgen <ajk@comnets.uni-bremen.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-hams@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Tudor Ambarus <tudor.ambarus@microchip.com>,
+	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 416/776] 6pack: propagage new tty types
+Subject: [PATCH 6.1 606/969] mtd: spi-nor: spansion: Replace hardcoded values for addr_nbytes/addr_mode_nbytes
 Date: Sat, 30 May 2026 18:02:10 +0200
-Message-ID: <20260530160251.226092026@linuxfoundation.org>
+Message-ID: <20260530160317.166090832@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,163 +69,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258325-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257582-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B2919610D7E
+X-Rspamd-Queue-Id: CF18C60F6A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-[ Upstream commit 1241b384efa53f4b7a95fe2b34d69359bb3ae1b5 ]
+[ Upstream commit 05ebc1ccb8affcbaaa9f8b8fe56839cbfc9b9144 ]
 
-In tty, u8 is now used for data, ssize_t for sizes (with possible
-negative error codes). Propagate these types to 6pack.
+We track in the core the internal address mode of the flash. Stop using
+hardcoded values for the number of bytes of address and use
+nor->addr_nbytes and nor->params->addr_mode_nbytes instead.
 
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Andreas Koensgen <ajk@comnets.uni-bremen.de>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: linux-hams@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Reviewed-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://lore.kernel.org/r/20240808103549.429349-12-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: bf9a38803b26 ("net: hamradio: 6pack: fix uninit-value in sixpack_receive_buf")
+Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Tested-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+Link: https://lore.kernel.org/r/20220728041451.85559-2-tudor.ambarus@microchip.com
+Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hamradio/6pack.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ drivers/mtd/spi-nor/spansion.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/hamradio/6pack.c b/drivers/net/hamradio/6pack.c
-index 36a9fbb704029..7ccf56a7f0e0c 100644
---- a/drivers/net/hamradio/6pack.c
-+++ b/drivers/net/hamradio/6pack.c
-@@ -94,8 +94,8 @@ struct sixpack {
- 	unsigned char		*xhead;         /* next byte to XMIT */
- 	int			xleft;          /* bytes left in XMIT queue  */
+diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
+index 0109fccca7ea2..faa8a49545be7 100644
+--- a/drivers/mtd/spi-nor/spansion.c
++++ b/drivers/mtd/spi-nor/spansion.c
+@@ -54,11 +54,13 @@ static int cypress_nor_octal_dtr_en(struct spi_nor *nor)
+ 	struct spi_mem_op op;
+ 	u8 *buf = nor->bouncebuf;
+ 	int ret;
++	u8 addr_mode_nbytes = nor->params->addr_mode_nbytes;
  
--	unsigned char		raw_buf[4];
--	unsigned char		cooked_buf[400];
-+	u8			raw_buf[4];
-+	u8			cooked_buf[400];
+ 	/* Use 24 dummy cycles for memory array reads. */
+ 	*buf = SPINOR_REG_CYPRESS_CFR2V_MEMLAT_11_24;
+ 	op = (struct spi_mem_op)
+-		CYPRESS_NOR_WR_ANY_REG_OP(3, SPINOR_REG_CYPRESS_CFR2V, 1, buf);
++		CYPRESS_NOR_WR_ANY_REG_OP(addr_mode_nbytes,
++					  SPINOR_REG_CYPRESS_CFR2V, 1, buf);
  
- 	unsigned int		rx_count;
- 	unsigned int		rx_count_cooked;
-@@ -112,8 +112,8 @@ struct sixpack {
- 	unsigned char		slottime;
- 	unsigned char		duplex;
- 	unsigned char		led_state;
--	unsigned char		status;
--	unsigned char		status1;
-+	u8			status;
-+	u8			status1;
- 	unsigned char		status2;
- 	unsigned char		tx_enable;
- 	unsigned char		tnc_state;
-@@ -127,7 +127,7 @@ struct sixpack {
+ 	ret = spi_nor_write_any_volatile_reg(nor, &op, nor->reg_proto);
+ 	if (ret)
+@@ -69,14 +71,16 @@ static int cypress_nor_octal_dtr_en(struct spi_nor *nor)
+ 	/* Set the octal and DTR enable bits. */
+ 	buf[0] = SPINOR_REG_CYPRESS_CFR5V_OCT_DTR_EN;
+ 	op = (struct spi_mem_op)
+-		CYPRESS_NOR_WR_ANY_REG_OP(3, SPINOR_REG_CYPRESS_CFR5V, 1, buf);
++		CYPRESS_NOR_WR_ANY_REG_OP(addr_mode_nbytes,
++					  SPINOR_REG_CYPRESS_CFR5V, 1, buf);
  
- #define AX25_6PACK_HEADER_LEN 0
+ 	ret = spi_nor_write_any_volatile_reg(nor, &op, nor->reg_proto);
+ 	if (ret)
+ 		return ret;
  
--static void sixpack_decode(struct sixpack *, const unsigned char[], int);
-+static void sixpack_decode(struct sixpack *, const u8 *, size_t);
- static int encode_sixpack(unsigned char *, unsigned char *, int, unsigned char);
- 
- /*
-@@ -332,7 +332,7 @@ static void sp_bump(struct sixpack *sp, char cmd)
+ 	/* Read flash ID to make sure the switch was successful. */
+-	ret = spi_nor_read_id(nor, 4, 3, buf, SNOR_PROTO_8_8_8_DTR);
++	ret = spi_nor_read_id(nor, nor->addr_nbytes, 3, buf,
++			      SNOR_PROTO_8_8_8_DTR);
+ 	if (ret) {
+ 		dev_dbg(nor->dev, "error %d reading JEDEC ID after enabling 8D-8D-8D mode\n", ret);
+ 		return ret;
+@@ -102,7 +106,8 @@ static int cypress_nor_octal_dtr_dis(struct spi_nor *nor)
+ 	buf[0] = SPINOR_REG_CYPRESS_CFR5V_OCT_DTR_DS;
+ 	buf[1] = 0;
+ 	op = (struct spi_mem_op)
+-		CYPRESS_NOR_WR_ANY_REG_OP(4, SPINOR_REG_CYPRESS_CFR5V, 2, buf);
++		CYPRESS_NOR_WR_ANY_REG_OP(nor->addr_nbytes,
++					  SPINOR_REG_CYPRESS_CFR5V, 2, buf);
+ 	ret = spi_nor_write_any_volatile_reg(nor, &op, SNOR_PROTO_8_8_8_DTR);
+ 	if (ret)
+ 		return ret;
+@@ -196,7 +201,8 @@ static int cypress_nor_quad_enable_volatile(struct spi_nor *nor)
+ static int cypress_nor_set_page_size(struct spi_nor *nor)
  {
- 	struct sk_buff *skb;
- 	int count;
--	unsigned char *ptr;
-+	u8 *ptr;
+ 	struct spi_mem_op op =
+-		CYPRESS_NOR_RD_ANY_REG_OP(3, SPINOR_REG_CYPRESS_CFR3V,
++		CYPRESS_NOR_RD_ANY_REG_OP(nor->params->addr_mode_nbytes,
++					  SPINOR_REG_CYPRESS_CFR3V,
+ 					  nor->bouncebuf);
+ 	int ret;
  
- 	count = sp->rcount + 1;
- 
-@@ -430,7 +430,7 @@ static void sixpack_receive_buf(struct tty_struct *tty,
- 	const unsigned char *cp, const char *fp, int count)
- {
- 	struct sixpack *sp;
--	int count1;
-+	size_t count1;
- 
- 	if (!count)
- 		return;
-@@ -818,9 +818,9 @@ static int encode_sixpack(unsigned char *tx_buf, unsigned char *tx_buf_raw,
- 
- /* decode 4 sixpack-encoded bytes into 3 data bytes */
- 
--static void decode_data(struct sixpack *sp, unsigned char inbyte)
-+static void decode_data(struct sixpack *sp, u8 inbyte)
- {
--	unsigned char *buf;
-+	u8 *buf;
- 
- 	if (sp->rx_count != 3) {
- 		sp->raw_buf[sp->rx_count++] = inbyte;
-@@ -846,9 +846,9 @@ static void decode_data(struct sixpack *sp, unsigned char inbyte)
- 
- /* identify and execute a 6pack priority command byte */
- 
--static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
-+static void decode_prio_command(struct sixpack *sp, u8 cmd)
- {
--	int actual;
-+	ssize_t actual;
- 
- 	if ((cmd & SIXP_PRIO_DATA_MASK) != 0) {     /* idle ? */
- 
-@@ -896,9 +896,9 @@ static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
- 
- /* identify and execute a standard 6pack command byte */
- 
--static void decode_std_command(struct sixpack *sp, unsigned char cmd)
-+static void decode_std_command(struct sixpack *sp, u8 cmd)
- {
--	unsigned char checksum = 0, rest = 0;
-+	u8 checksum = 0, rest = 0;
- 	short i;
- 
- 	switch (cmd & SIXP_CMD_MASK) {     /* normal command */
-@@ -944,10 +944,10 @@ static void decode_std_command(struct sixpack *sp, unsigned char cmd)
- /* decode a 6pack packet */
- 
- static void
--sixpack_decode(struct sixpack *sp, const unsigned char *pre_rbuff, int count)
-+sixpack_decode(struct sixpack *sp, const u8 *pre_rbuff, size_t count)
- {
--	unsigned char inbyte;
--	int count1;
-+	size_t count1;
-+	u8 inbyte;
- 
- 	for (count1 = 0; count1 < count; count1++) {
- 		inbyte = pre_rbuff[count1];
 -- 
 2.53.0
 
