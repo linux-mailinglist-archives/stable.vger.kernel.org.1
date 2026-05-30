@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-259126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258521-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KB6eDCoyG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:30 +0200
+	id AD06BhkoG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258521-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3901612BF8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3DF6112A7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75CAA30804FE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 83C693008262
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FD62F3C3E;
-	Sat, 30 May 2026 18:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E813BFE3B;
+	Sat, 30 May 2026 18:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufs4ipdC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMkEJ0JJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E40E3A7848;
-	Sat, 30 May 2026 18:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08548352027;
+	Sat, 30 May 2026 18:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166697; cv=none; b=Us4l2JaluQKDnDamkDb8Zr7FKWJ9HMEATkIqoah7pzUhY0kCx1NjD0mdBMr4JJcHLMXenuNTXXdV8WIQXp/UVDeEjzKu2M73Cg++RbEL7V9QeBpV2hYhko2YCaEuQS5GdQrRKzCuG8YowcDZKVPkot642QPAJ1wDJrvXR4cIcyw=
+	t=1780164629; cv=none; b=oiBFQPBBpATgo9sPpN5DJTIDXhAnJTfCZ0MLF5+IZXm0979j2U0KxDB/5hAlhIzBskrm1MLvP/tzvmKY4HDOGvKBOa5ONJ90loSC+Zn5BuQ8xFmMNQMBjo9omTqv+vfiUlWeukZ2c3WnA4tNJzSITz+zYUWyjE+iiu6mLU2T8iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166697; c=relaxed/simple;
-	bh=nR2N1tZ4RTmEHP+xa+2RLLzfVbfcDsGo6e3OX1kXMZM=;
+	s=arc-20240116; t=1780164629; c=relaxed/simple;
+	bh=bYpx/nsx1iJR22/L1tGtNSgtuyN1vgn3EKWGFN0R7JM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4K6foDlFpEUfXMeJctgB5JpHmOez712/700oNyRVf414v2m/pqVWhB73/tQyEiJxPmy4bs0j8nHfVyh//sqqgKBgXqMISXdOlVcDrV8G61XPUx/iuDvxOD8SsmxpmJ2Nd/qEn6yk8KS/NiynRfYh1kIPxXFdGp7c7K0QGjMyQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufs4ipdC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09891F00893;
-	Sat, 30 May 2026 18:44:55 +0000 (UTC)
+	 MIME-Version; b=Qk+eyzOoZLZUFykPJnnikYlQgZLqMDibY4LTERMQCl9L+V5OBlrSijgajTNurnQay9lMs3gPDhok9MzX2YkBuHW2y9CqV0Eti8SmcRd7k5cJn+X0NicmgNui3KQHxolMNdx7MenM96dgmzmgD5rJbWVgd57FOtzLgDfyGW6EsKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMkEJ0JJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC9F1F00893;
+	Sat, 30 May 2026 18:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166696;
-	bh=9fOsppD6M4ZEnDEHdhXK27fQGn129wH30Z7Qq4K55xM=;
+	s=korg; t=1780164627;
+	bh=W7lx938apYuxNb34ZCZ4M3x1e+sRsINYiOXsSvaBOSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ufs4ipdCw/gWRyhTkE/ePTu1uFnabOGBib4wBGRt73dh18VUN+DD5+mwLQU0F9wAf
-	 dY8Uar0ylBnvA5typj8qS2LQZeANgW9rZjeqVEua/xxC6yN8s/VDxdXlQ4TcoPaCjV
-	 89vkS03n5tLpvJ61Y0it56TGiDz3PmhHkOE3ERVI=
+	b=YMkEJ0JJ7TDQkBs3aUPmPplU8gcQkWe38PEFNsRYt30PKHoheuXb/kI/eHh4rKE5h
+	 4Dbw1wawKEHXZA+1z4LRBQllBAYxMlm/SXT5WA+80VFUuz0K+VowkaylyN8OslbEqa
+	 kPn9nypO+VjH39SPd4q7V7qilrbLaVVSyeilnuSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Enze Li <lienze@kylinos.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 444/589] net_sched: sch_hhf: annotate data-races in hhf_dump_stats()
+Subject: [PATCH 5.15 611/776] scsi: sr: Add memory allocation failure handling for get_capabilities()
 Date: Sat, 30 May 2026 18:05:25 +0200
-Message-ID: <20260530160236.369147621@linuxfoundation.org>
+Message-ID: <20260530160255.800368334@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,123 +66,117 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259126-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258521-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email]
-X-Rspamd-Queue-Id: C3901612BF8
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BF3DF6112A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Enze Li <lienze@kylinos.cn>
 
-[ Upstream commit a6edf2cd4156b71e07258876b7626692e158f7e8 ]
+[ Upstream commit ebc95c790653508ad7e031cfb9de5d0fa39135e2 ]
 
-hhf_dump_stats() only runs with RTNL held,
-reading fields that can be changed in qdisc fast path.
+The function get_capabilities() has the possibility of failing to allocate
+the transfer buffer but it does not currently handle this. This may lead to
+exceptions when accessing the buffer.
 
-Add READ_ONCE()/WRITE_ONCE() annotations.
+Add error handling when memory allocation fails.
 
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260421143349.4052215-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20220427025647.298358-1-lienze@kylinos.cn
+Signed-off-by: Enze Li <lienze@kylinos.cn>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 0898a817621a ("cdrom, scsi: sr: propagate read-only status to block layer via set_disk_ro()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hhf.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/scsi/sr.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
-index 433bddcbc0c72..73cabb4451ce7 100644
---- a/net/sched/sch_hhf.c
-+++ b/net/sched/sch_hhf.c
-@@ -198,7 +198,8 @@ static struct hh_flow_state *seek_list(const u32 hash,
- 				return NULL;
- 			list_del(&flow->flowchain);
- 			kfree(flow);
--			q->hh_flows_current_cnt--;
-+			WRITE_ONCE(q->hh_flows_current_cnt,
-+				   q->hh_flows_current_cnt - 1);
- 		} else if (flow->hash_id == hash) {
- 			return flow;
- 		}
-@@ -226,7 +227,7 @@ static struct hh_flow_state *alloc_new_hh(struct list_head *head,
- 	}
+diff --git a/drivers/scsi/sr.c b/drivers/scsi/sr.c
+index af210910dadf2..529d4169b373b 100644
+--- a/drivers/scsi/sr.c
++++ b/drivers/scsi/sr.c
+@@ -118,7 +118,7 @@ static int sr_open(struct cdrom_device_info *, int);
+ static void sr_release(struct cdrom_device_info *);
  
- 	if (q->hh_flows_current_cnt >= q->hh_flows_limit) {
--		q->hh_flows_overlimit++;
-+		WRITE_ONCE(q->hh_flows_overlimit, q->hh_flows_overlimit + 1);
- 		return NULL;
- 	}
- 	/* Create new entry. */
-@@ -234,7 +235,7 @@ static struct hh_flow_state *alloc_new_hh(struct list_head *head,
- 	if (!flow)
- 		return NULL;
+ static void get_sectorsize(struct scsi_cd *);
+-static void get_capabilities(struct scsi_cd *);
++static int get_capabilities(struct scsi_cd *);
  
--	q->hh_flows_current_cnt++;
-+	WRITE_ONCE(q->hh_flows_current_cnt, q->hh_flows_current_cnt + 1);
- 	INIT_LIST_HEAD(&flow->flowchain);
- 	list_add_tail(&flow->flowchain, head);
+ static unsigned int sr_check_events(struct cdrom_device_info *cdi,
+ 				    unsigned int clearing, int slot);
+@@ -710,8 +710,9 @@ static int sr_probe(struct device *dev)
  
-@@ -309,7 +310,7 @@ static enum wdrr_bucket_idx hhf_classify(struct sk_buff *skb, struct Qdisc *sch)
- 			return WDRR_BUCKET_FOR_NON_HH;
- 		flow->hash_id = hash;
- 		flow->hit_timestamp = now;
--		q->hh_flows_total_cnt++;
-+		WRITE_ONCE(q->hh_flows_total_cnt, q->hh_flows_total_cnt + 1);
+ 	sdev->sector_size = 2048;	/* A guess, just in case */
  
- 		/* By returning without updating counters in q->hhf_arrays,
- 		 * we implicitly implement "shielding" (see Optimization O1).
-@@ -403,7 +404,7 @@ static int hhf_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return NET_XMIT_SUCCESS;
+-	/* FIXME: need to handle a get_capabilities failure properly ?? */
+-	get_capabilities(cd);
++	error = -ENOMEM;
++	if (get_capabilities(cd))
++		goto fail_minor;
+ 	sr_vendor_init(cd);
  
- 	prev_backlog = sch->qstats.backlog;
--	q->drop_overlimit++;
-+	WRITE_ONCE(q->drop_overlimit, q->drop_overlimit + 1);
- 	/* Return Congestion Notification only if we dropped a packet from this
- 	 * bucket.
- 	 */
-@@ -681,10 +682,10 @@ static int hhf_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	set_capacity(disk, cd->capacity);
+@@ -831,7 +832,7 @@ static void get_sectorsize(struct scsi_cd *cd)
+ 	return;
+ }
+ 
+-static void get_capabilities(struct scsi_cd *cd)
++static int get_capabilities(struct scsi_cd *cd)
  {
- 	struct hhf_sched_data *q = qdisc_priv(sch);
- 	struct tc_hhf_xstats st = {
--		.drop_overlimit = q->drop_overlimit,
--		.hh_overlimit	= q->hh_flows_overlimit,
--		.hh_tot_count	= q->hh_flows_total_cnt,
--		.hh_cur_count	= q->hh_flows_current_cnt,
-+		.drop_overlimit = READ_ONCE(q->drop_overlimit),
-+		.hh_overlimit	= READ_ONCE(q->hh_flows_overlimit),
-+		.hh_tot_count	= READ_ONCE(q->hh_flows_total_cnt),
-+		.hh_cur_count	= READ_ONCE(q->hh_flows_current_cnt),
- 	};
+ 	unsigned char *buffer;
+ 	struct scsi_mode_data data;
+@@ -856,7 +857,7 @@ static void get_capabilities(struct scsi_cd *cd)
+ 	buffer = kmalloc(512, GFP_KERNEL);
+ 	if (!buffer) {
+ 		sr_printk(KERN_ERR, cd, "out of memory.\n");
+-		return;
++		return -ENOMEM;
+ 	}
  
- 	return gnet_stats_copy_app(d, &st, sizeof(st));
+ 	/* eat unit attentions */
+@@ -876,7 +877,7 @@ static void get_capabilities(struct scsi_cd *cd)
+ 				 CDC_MRW | CDC_MRW_W | CDC_RAM);
+ 		kfree(buffer);
+ 		sr_printk(KERN_INFO, cd, "scsi-1 drive");
+-		return;
++		return 0;
+ 	}
+ 
+ 	n = data.header_length + data.block_descriptor_length;
+@@ -935,6 +936,7 @@ static void get_capabilities(struct scsi_cd *cd)
+ 	}
+ 
+ 	kfree(buffer);
++	return 0;
+ }
+ 
+ /*
 -- 
 2.53.0
 
