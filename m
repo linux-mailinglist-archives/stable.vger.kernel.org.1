@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCL6K3AdG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:04 +0200
+	id kDeWC7kpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728FF60F969
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D6C6116DD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1912330188BA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:21:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29E353123AAD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BDC33FE15;
-	Sat, 30 May 2026 17:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D039339A4A4;
+	Sat, 30 May 2026 18:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEAEGTaj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhDjbklZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012B5263F44;
-	Sat, 30 May 2026 17:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AF423392B;
+	Sat, 30 May 2026 18:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161715; cv=none; b=SCUSlc7GxZpG1UQ3gvkysULbcMIPwG+4yM83gEmwSPQcDkHL1dsEiG+lG8UXnCDIkfVSVDiSy+qjZbY1LUwzhnsFMdfwouKbVMg+je/lOt460MANWYmjnXCU/7h5zkNIL2SULQ2H4mqi1Dz6ydmW/N9wpO68UvX+T6Ghx5CGvis=
+	t=1780164311; cv=none; b=q+AFkpVToWo8hImHB+lHuWX9TK/PX2tcFFATfqMwnux0AJfHwel5sKqg07yQ9wWtcT3DSE6yeLUh+TtRFzKr4kSCueWWiZFpV/0N8fMOtbFIvHRWDZpysWeWYiXAVpc133DYGXyQ+8CWPtngXzRtobrfNylVZDOzA4fXmGiEhhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161715; c=relaxed/simple;
-	bh=Y7CqHk9L1KrvRVm2TeQpwW7qfYqLM70ysvuxVuNzb84=;
+	s=arc-20240116; t=1780164311; c=relaxed/simple;
+	bh=PQwQqWrWTaU148Du+tyUVXeJmPLNfKZWyIlf9oafoQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SH85u+95TTkuLWGBVzVC/bnK5zyeaIyefSPhWqOz2UBo6b86ffqfSVV9Fr3UZUohY6jnDrwww11IkoWHFTdLDY55Eppny0+wxvmlpVA2TtbeDsWcFl7nIRUiS+7g7vSmMMSFKkn0uv4vFVSpmA4k8pRvIjqA7Rr1lSKRpl0+xTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEAEGTaj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419E81F00893;
-	Sat, 30 May 2026 17:21:54 +0000 (UTC)
+	 MIME-Version; b=lY3CCkLsLuecrLQbQdlMw4/MCc9ffqg2hUuycLaXG1zdWQ5UrS6GdKhyim5UnpI11fHiFrQGDLxxem6uHitpEnQSoy0pVHh+zF+xIOt8INy5ybHg60/nDbZdSDiGmz9dMfU8xykVZdV03fDxDKf8AreKbjPRoq8UlV5k5lF2QAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VhDjbklZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104E01F00893;
+	Sat, 30 May 2026 18:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161714;
-	bh=EyX89lOhA5T3TB8ghm0Nk4i3+Kjq58IT29NvXpTZ7vY=;
+	s=korg; t=1780164310;
+	bh=8xO4+ERICRdqQLXlZHYHKHj3HsevCc/hpSMOpQxsLcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CEAEGTajAiAZcf6QxQ3HUHqdU7XrxbVPjMmbaXsXQAskzDHJvzpcv0ZwXKFDqqmdr
-	 GXQdI3pJ9Fgive4LwPAMP4d7gy9RQjP7+aYPjhiSSozH/olNHsbFYDVV0NKf7pE3Up
-	 9Gz9ctflUxSo58MguOxaD745P57s/8bcalqs3aRI=
+	b=VhDjbklZzSmvw6TZSJeB+gSuM5ZKrMFQTDde8NaCgLEoxv516PCOgvYUk6HULDbbX
+	 8GCqTCzipGhvGcjSWTHmJpOZanxWBcGlhWF/PmiM1ppjiSeQrlGu2TirUnLNM5zP5+
+	 qB4eBAYOrehy3XLT4Cuo6qx9ZMs8N6uR3k24fdeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kito Xu (veritas501)" <hxzene@gmail.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 706/969] netfilter: nfnetlink_osf: fix potential NULL dereference in ttl check
+Subject: [PATCH 5.15 516/776] pinctrl: abx500: Fix type of argument variable
 Date: Sat, 30 May 2026 18:03:50 +0200
-Message-ID: <20260530160320.019027594@linuxfoundation.org>
+Message-ID: <20260530160253.582383983@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,105 +66,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258426-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257651-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,netfilter.org,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 728FF60F969
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A0D6C6116DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit 711987ba281fd806322a7cd244e98e2a81903114 ]
+[ Upstream commit 34006f77890d050e6d80cbee365b5d703c1140b4 ]
 
-The nf_osf_ttl() function accessed skb->dev to perform a local interface
-address lookup without verifying that the device pointer was valid.
+The argument variable is assigned the return value of
+pinconf_to_config_argument(), which returns a u32. Change its type from
+enum pin_config_param to unsigned int to correctly store the configuration
+argument.
 
-Additionally, the implementation utilized an in_dev_for_each_ifa_rcu
-loop to match the packet source address against local interface
-addresses. It assumed that packets from the same subnet should not see a
-decrement on the initial TTL. A packet might appear it is from the same
-subnet but it actually isn't especially in modern environments with
-containers and virtual switching.
-
-Remove the device dereference and interface loop. Replace the logic with
-a switch statement that evaluates the TTL according to the ttl_check.
-
-Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
-Reported-by: Kito Xu (veritas501) <hxzene@gmail.com>
-Closes: https://lore.kernel.org/netfilter-devel/20260414074556.2512750-1-hxzene@gmail.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 03b054e9696c ("pinctrl: Pass all configs to driver on pin_config_set()")
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_osf.c | 22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ drivers/pinctrl/nomadik/pinctrl-abx500.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index 2207bda442d54..6d3dfbeb398cb 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -31,26 +31,18 @@ EXPORT_SYMBOL_GPL(nf_osf_fingers);
- static inline int nf_osf_ttl(const struct sk_buff *skb,
- 			     int ttl_check, unsigned char f_ttl)
- {
--	struct in_device *in_dev = __in_dev_get_rcu(skb->dev);
- 	const struct iphdr *ip = ip_hdr(skb);
--	const struct in_ifaddr *ifa;
--	int ret = 0;
+diff --git a/drivers/pinctrl/nomadik/pinctrl-abx500.c b/drivers/pinctrl/nomadik/pinctrl-abx500.c
+index 7aa534576a459..609313d93e31a 100644
+--- a/drivers/pinctrl/nomadik/pinctrl-abx500.c
++++ b/drivers/pinctrl/nomadik/pinctrl-abx500.c
+@@ -850,7 +850,7 @@ static int abx500_pin_config_set(struct pinctrl_dev *pctldev,
+ 	int ret = -EINVAL;
+ 	int i;
+ 	enum pin_config_param param;
+-	enum pin_config_param argument;
++	unsigned int argument;
  
--	if (ttl_check == NF_OSF_TTL_TRUE)
-+	switch (ttl_check) {
-+	case NF_OSF_TTL_TRUE:
- 		return ip->ttl == f_ttl;
--	if (ttl_check == NF_OSF_TTL_NOCHECK)
--		return 1;
--	else if (ip->ttl <= f_ttl)
-+		break;
-+	case NF_OSF_TTL_NOCHECK:
- 		return 1;
--
--	in_dev_for_each_ifa_rcu(ifa, in_dev) {
--		if (inet_ifa_match(ip->saddr, ifa)) {
--			ret = (ip->ttl == f_ttl);
--			break;
--		}
-+	case NF_OSF_TTL_LESS:
-+	default:
-+		return ip->ttl <= f_ttl;
- 	}
--
--	return ret;
- }
- 
- struct nf_osf_hdr_ctx {
+ 	for (i = 0; i < num_configs; i++) {
+ 		param = pinconf_to_config_param(configs[i]);
 -- 
 2.53.0
 
