@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-258778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258174-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YLM7EBItG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258778-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:46 +0200
+	id UKGeM5ElG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258174-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF484611E69
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E7FF610C73
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 64FE130C5559
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C85E3088D3C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2DC2773DE;
-	Sat, 30 May 2026 18:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD1C3AB482;
+	Sat, 30 May 2026 17:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7H9WS7K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0wwe5UZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B78A217704;
-	Sat, 30 May 2026 18:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C59341AC7;
+	Sat, 30 May 2026 17:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165507; cv=none; b=cOKzFJTud4lbLskkFPmyTa52Rh6eOMbGBRuMzArb85NzWdHgPAeTma+TKS7y6clCZK3t2l2vW1tv5AwpSe8kbgaarevyO9oq8x51tX9O0sxYBmjYZ11S8t3TnJqFVkUfmAlz/e/TaRo15xrmDKJo5MzBHcuZg7nJ8+4M8/P7JY4=
+	t=1780163462; cv=none; b=YnM9FArSjhx0dGL4LlDOSCqEYZ3mGmkxd+JcHULFCoLpQcIuykqJbuww6RN3WmflcoBaavP9NsRNmGSoJT1e/UBlG9Zgd7ijryKL2/RCPULDLi1i6TQyPC2/Wo78KyAiOltHnEoZnkkshw7sSdITi6FFYa40v+oyusSPL2hG3mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165507; c=relaxed/simple;
-	bh=bR539SMJXneRC6SDNeLdESacRLWITrA+W5zJvMJoKMg=;
+	s=arc-20240116; t=1780163462; c=relaxed/simple;
+	bh=31bf+vrSLiyi7gPpFooDMIWt80GxMnpgJaRbEcUClZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kko1mqxShIS20cXrt9fgPACjhOv01vFHSP3oGZp0/AQVeQQkaj/aEYrtVvRTaASElx6AOOCOOV09Uxd+mX7TEEpmAYLLb0S5i23u+oYUBo6krrBrNeWyZweR+bntQtcf0erfBuBWYifuIjFRrSGJk+2i+CpY2StvY62q/lNUURs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7H9WS7K; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A079E1F00893;
-	Sat, 30 May 2026 18:25:05 +0000 (UTC)
+	 MIME-Version; b=KTCMWXId265gUu6nxatSIPA5kLwOEMtGP3fc5cwQNEEMgjChVcapZe2JaFGHXox1qxLy+8m++rZHpBmxy75hn0VhfYGyROa5cdZ4E5OY2klbYnyvLSZAphyq6R/+5o5+yfYswkowvx42S5o9MyPaVNS6BuGTZ59Z6R73LavLYmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0wwe5UZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DEF1F00893;
+	Sat, 30 May 2026 17:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165506;
-	bh=nwPRPz7HRgFQcMgZqMnCJ9A8ieMLRLMVbgZi586S8Kc=;
+	s=korg; t=1780163461;
+	bh=8bVtsaH0stdXCBXoqomRAcnLAnkB0dImmB3thhhvmGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n7H9WS7KtKcv0vOnPc/nsntRblXgWoFBI2y9ubdLRygE/aG61PKnjYoZT3zIXfj54
-	 g8VzJp+PGOAWer/gj8SHqHKBoXQMu6kW+I1//n2UK2nOq4DBs1E7UmmAPhKpTu3cRQ
-	 MvE4lx2oorTuPny+LZldHbEyPJM/EXJPob23Lw2I=
+	b=X0wwe5UZ/W13+Kfl6wdp/o7eub7kKodWtSF6YUFpr+kk7Q0MMrmrnxM3ynhYRwCeT
+	 5bWSiW3TVcDAF9p8P3PavDPTg1KKsuEll2nEGSCI0olclrx2I27u0t8LKGM3T5ES67
+	 jZbN1jIw4T+ZYM6HBBJLCDJZp3piHoctm5OSsf3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guocai He <guocai.he.cn@windriver.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 069/589] Revert "wifi: cfg80211: stop NAN and P2P in cfg80211_leave"
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.15 236/776] KVM: nSVM: Ensure AVIC is inhibited when restoring a vCPU to guest mode
 Date: Sat, 30 May 2026 17:59:10 +0200
-Message-ID: <20260530160226.416922252@linuxfoundation.org>
+Message-ID: <20260530160246.628949472@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +65,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258174-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258778-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,windriver.com:email]
-X-Rspamd-Queue-Id: CF484611E69
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2E7FF610C73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guocai He <guocai.he.cn@windriver.com>
+From: Yosry Ahmed <yosry@kernel.org>
 
-This reverts commit d91240f24e831d3bd36954599ada6b456fb1bd0a which is commit
-e1696c8bd0056bc1a5f7766f58ac333adc203e8a upstream.
+commit 24f7d36b824b65cf1a2db3db478059187b2a37b0 upstream.
 
-The reverted patch introduced a deadlock. The locking situation in mainline is
-totally different, so it is incorrect to directly backport the commit from mainline.
+On nested VMRUN, KVM ensures AVIC is inhibited by requesting
+KVM_REQ_APICV_UPDATE, triggering a check of inhibit reasons, finding
+APICV_INHIBIT_REASON_NESTED, and disabling AVIC.
 
-Signed-off-by: Guocai He <guocai.he.cn@windriver.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, when KVM_SET_NESTED_STATE is performed on a vCPU not in guest
+mode with AVIC enabled, KVM_REQ_APICV_UPDATE is not requested, and AVIC
+is not inhibited.
+
+Request KVM_REQ_APICV_UPDATE in the KVM_SET_NESTED_STATE path if AVIC is
+active, similar to the nested VMRUN path.
+
+Fixes: f44509f849fe ("KVM: x86: SVM: allow AVIC to co-exist with a nested guest running")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260224225017.3303870-1-yosry@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/core.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/x86/kvm/svm/nested.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 019f9767eda5f..c6c5dd4e35209 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1208,10 +1208,8 @@ void __cfg80211_leave(struct cfg80211_registered_device *rdev,
- 		/* must be handled by mac80211/driver, has no APIs */
- 		break;
- 	case NL80211_IFTYPE_P2P_DEVICE:
--		cfg80211_stop_p2p_device(rdev, wdev);
--		break;
- 	case NL80211_IFTYPE_NAN:
--		cfg80211_stop_nan(rdev, wdev);
-+		/* cannot happen, has no netdev */
- 		break;
- 	case NL80211_IFTYPE_AP_VLAN:
- 	case NL80211_IFTYPE_MONITOR:
--- 
-2.53.0
-
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1407,6 +1407,9 @@ static int svm_set_nested_state(struct k
+ 		goto out_free;
+ 
+ 
++	if (kvm_vcpu_apicv_active(vcpu))
++		kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
++
+ 	kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
+ 	ret = 0;
+ out_free:
 
 
 
