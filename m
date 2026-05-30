@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-259101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257721-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AK9iEd4vG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:42 +0200
+	id 0LdAKDsfG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257721-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DE6612598
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18FE60FDFF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7B0E630080B5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:43:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3C3B3058FD1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB68331A56;
-	Sat, 30 May 2026 18:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4C23438AE;
+	Sat, 30 May 2026 17:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NoQtHqX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9KG1NY8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FD12773DE;
-	Sat, 30 May 2026 18:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13E7334695;
+	Sat, 30 May 2026 17:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166615; cv=none; b=pmG6mzyo7S2Gjv8JvWJsGhskeatQU+TuhgdKhsHwRt67R1CreraMTyZMna2Euocef9C4SeTw2uSk5HAWKfqn7WD6joM2UKHrVIUmr6Yd+CVPQjS41xTLY49o142CGRXssJb7kclBKO6PoXJVNqiOdK20jiqQR0cvluPQEwLDAaY=
+	t=1780161949; cv=none; b=XrHG/7dubrRmlOI6A6oz7dfbTtiU+XfZde9ZTGI3YyRQnWOjehY8qi+cQke63+ypvFp5EfeLlFzYHToxSoYdTFWhsddzqo680rpqR0KRr8/zuIFcT7iKDvMlooMXT66xKe6hN8O0Hykt1Vw5QFumDMVunxwH/tAXlF3Ile1mveA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166615; c=relaxed/simple;
-	bh=yiS5F5rG+1f93if6c+XqVMEI9PSB3SIVruFRdcxpPf8=;
+	s=arc-20240116; t=1780161949; c=relaxed/simple;
+	bh=8ayD1ZpoRhr5OxNVtKSFp0rYPqoNMP6JMDz/aPSIcvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjRU2M4H1cJHdJJ24QdoHkkvq5/KGIWPfRnYQqe2YrDece9vVm9aUd5znoKFVbqXCllb0bz11wzdZnXg0mDiZwiutBuzUFKFDE+HNWLqTEvuzARUh3C7XxNuMbKpR6xU01AbHQFqwlHmImqFnlzAdSYSJBRpAYh6+6X33BSDrf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NoQtHqX5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68F01F00893;
-	Sat, 30 May 2026 18:43:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EMHwKCGQ2cIKvLlPVkHs/VCOxFXrdBP9ylBGoiUU5n/O1eiEK5OV1sI67oBv7nY2BLOLl3LmAdlMyAZ3m4uJ5IMyQYFVEmdec6h1DYL9tFGOqrrkfEcd0wcMByILyLCIDe+07WeGAsJkNEyx1hI+uTzdI10MCKOGko9do7kV5/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9KG1NY8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA2C1F00893;
+	Sat, 30 May 2026 17:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166614;
-	bh=CO0bfo//mrzBHFN2hUf8VIhGcU5tE89FdrBX4y3SIbo=;
+	s=korg; t=1780161948;
+	bh=DT6yI6yt5oclgu8UGbyhFmD/vjAr9X/YaIUhEJ4Zfhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NoQtHqX58ybxuLCL3WB1HwfQ2x0MKbWr9hPAVdFKRDWL8BMxgXVjygXDUG5zbVa++
-	 uiKOjo4UtvYkDEwznfqLq+Jr/dFj4oaQXIam2y/HRgdsUa1sBoVk8VSKIl256gvPo5
-	 FpqzdnnxLP7+rMXsMejHHmbcwT0foQHfW2jpoleM=
+	b=i9KG1NY8ALGRcRbjYqmYXHtpoiEeWwlYwd+Orpk/NOh0BYWV175IJ6Ja1ejv/l/3P
+	 m4HP4riuZlTj/SDCvlmS1BGnWY2Xr5iNFXR8HI5eltgQIGfR/LmCeQq++dM4DIoWJy
+	 AvDNXK7Q2dwnaDDokG99Fh1rXLpvpBAbZQWc3x5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 418/589] net/sched: taprio: replace safety precautions with comments
-Date: Sat, 30 May 2026 18:04:59 +0200
-Message-ID: <20260530160235.732535362@linuxfoundation.org>
+Subject: [PATCH 6.1 776/969] drm/amd/display: Allow DCE link encoder without AUX registers
+Date: Sat, 30 May 2026 18:05:00 +0200
+Message-ID: <20260530160322.016933672@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +63,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257721-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259101-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 77DE6612598
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gitlab.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: F18FE60FDFF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 2c08a4f898d0a8e08f431709a1ae728a6fddaabd ]
+[ Upstream commit ac27e3f99035f132f23bc0409d0e57f11f054c70 ]
 
-The WARN_ON_ONCE() checks introduced in commit 13511704f8d7 ("net:
-taprio offload: enforce qdisc to netdev queue mapping") take a small
-toll on performance, but otherwise, the conditions are never expected to
-happen. Replace them with comments, such that the information is still
-conveyed to developers.
+Allow constructing the DCE link encoder without DDC,
+which means the AUX registers array will be NULL.
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 105425b1969c ("net/sched: taprio: fix use-after-free in advance_sched() on schedule switch")
+This is necessary to support embedded connectors without DDC.
+
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 87f30b101af62590faf6020d106da07efdda199b)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index b3b62ee6093d2..62251ae4f4407 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -434,6 +434,9 @@ static int taprio_enqueue_one(struct sk_buff *skb, struct Qdisc *sch,
- 	return qdisc_enqueue(skb, child, to_free);
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+index 85926d2300444..e089407e24531 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+@@ -992,7 +992,9 @@ void dce110_link_encoder_hw_init(
+ 		ASSERT(result == BP_RESULT_OK);
  
-+/* Will not be called in the full offload case, since the TX queues are
-+ * attached to the Qdisc created using qdisc_create_dflt()
-+ */
- static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			  struct sk_buff **to_free)
- {
-@@ -441,11 +444,6 @@ static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct Qdisc *child;
- 	int queue;
+ 	}
+-	aux_initialize(enc110);
++
++	if (enc110->aux_regs)
++		aux_initialize(enc110);
  
--	if (unlikely(FULL_OFFLOAD_IS_ENABLED(q->flags))) {
--		WARN_ONCE(1, "Trying to enqueue skb into the root of a taprio qdisc configured with full offload\n");
--		return qdisc_drop(skb, sch, to_free);
--	}
--
- 	queue = skb_get_queue_mapping(skb);
- 
- 	child = q->qdiscs[queue];
-@@ -491,6 +489,9 @@ static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	return taprio_enqueue_one(skb, sch, child, to_free);
- }
- 
-+/* Will not be called in the full offload case, since the TX queues are
-+ * attached to the Qdisc created using qdisc_create_dflt()
-+ */
- static struct sk_buff *taprio_peek(struct Qdisc *sch)
- {
- 	struct taprio_sched *q = qdisc_priv(sch);
-@@ -500,11 +501,6 @@ static struct sk_buff *taprio_peek(struct Qdisc *sch)
- 	u32 gate_mask;
- 	int i;
- 
--	if (unlikely(FULL_OFFLOAD_IS_ENABLED(q->flags))) {
--		WARN_ONCE(1, "Trying to peek into the root of a taprio qdisc configured with full offload\n");
--		return NULL;
--	}
--
- 	rcu_read_lock();
- 	entry = rcu_dereference(q->current_entry);
- 	gate_mask = entry ? entry->gate_mask : TAPRIO_ALL_GATES_OPEN;
-@@ -547,6 +543,9 @@ static void taprio_set_budget(struct taprio_sched *q, struct sched_entry *entry)
- 			     atomic64_read(&q->picos_per_byte)));
- }
- 
-+/* Will not be called in the full offload case, since the TX queues are
-+ * attached to the Qdisc created using qdisc_create_dflt()
-+ */
- static struct sk_buff *taprio_dequeue(struct Qdisc *sch)
- {
- 	struct taprio_sched *q = qdisc_priv(sch);
-@@ -556,11 +555,6 @@ static struct sk_buff *taprio_dequeue(struct Qdisc *sch)
- 	u32 gate_mask;
- 	int i;
- 
--	if (unlikely(FULL_OFFLOAD_IS_ENABLED(q->flags))) {
--		WARN_ONCE(1, "Trying to dequeue from the root of a taprio qdisc configured with full offload\n");
--		return NULL;
--	}
--
- 	rcu_read_lock();
- 	entry = rcu_dereference(q->current_entry);
- 	/* if there's no entry, it means that the schedule didn't
+ 	/* reinitialize HPD.
+ 	 * hpd_initialize() will pass DIG_FE id to HW context.
 -- 
 2.53.0
 
