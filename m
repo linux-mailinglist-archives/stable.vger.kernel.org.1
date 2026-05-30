@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-258327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257554-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOD8Bx4mG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258327-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:06 +0200
+	id OAnGB/QbG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257554-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB370610DA4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B441360F5C9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BABF0304B68E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:59:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A37D63013BA0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DDD341AC7;
-	Sat, 30 May 2026 17:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53973546F6;
+	Sat, 30 May 2026 17:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6K5b1Vv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uyxxnzzC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1A2329C6D;
-	Sat, 30 May 2026 17:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CF9263F44;
+	Sat, 30 May 2026 17:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163977; cv=none; b=CXqWn0oVYHCYvongALrDXv6eZlZqBTbTH4P7jIos2D5Fx2aPBto6/f+2ZJpHwRL9772HKD7f6BlHDFWKVCmAxhConTbLrG2xUpqjre7ai0lrRh40sRzyd4edyMk25n5PbQfdcyfPAVsc+xm9zD9MTp+3bpXgQaNO0Qfe2WH9vaE=
+	t=1780161386; cv=none; b=qSAC0Afz7B70eIcAD9ugCqvrj2MMpPNWXGIfuFlLNGx9dp2IctPhWybf0IZXLHJio5/prR+SAOyCHZ6U7ql1SB3nktpmSn0tvFU2gLZW09ZBqepEpSrxFR2VuGk7fMwXJuy/kjF8tQQIx+s4nfl/gfCnp6FGNmqj6OoN/qjfgtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163977; c=relaxed/simple;
-	bh=y3Iqx5t2H2mgkwSHA8/yYmgIJJyy9k3klMALzkAhdFE=;
+	s=arc-20240116; t=1780161386; c=relaxed/simple;
+	bh=O9xxMjdpqM+QGYCLf5HLMNkDO2p4D+eJ7AQlctlrs30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZrDf75jgX8TvuLghepKmwpr0Jv8Inggehvc1X9aaTdADTQECCDNpUOZoOxjawDZ5yB6CT5mCFN/9faaUw6ziC3EqKNynpNtpyd7FpKyh2cA3EBC6hU4gKzgmIso+Y7ZrZ1rJFD12Cv87Rb9T7Tdu/b77+Wb08Q51MAeek7X1H1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6K5b1Vv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A7A21F00893;
-	Sat, 30 May 2026 17:59:35 +0000 (UTC)
+	 MIME-Version; b=a42ZTQKeJa7uld62szdto7YqxWNdbdoc6nUSd1S4d3eEkbvfOxvAyxz6wEFFF3TXY6hkJ1Z9wkF7cJBZ24E7UeO7PDj0L5G3etSE14xDp3OV7pJUV1tZj/k2hT5gdJetMdnMGKvMD5FS+8qH2jYSZ553u9LM4bAalvhRoJJ4sVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uyxxnzzC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFAD1F00893;
+	Sat, 30 May 2026 17:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163976;
-	bh=+Yp+GKCvALTSlOTlLlLZ2yCVvH/ILErRBld00D/n8/E=;
+	s=korg; t=1780161385;
+	bh=/5t7VNJ2fvAJIwvGdZY4UgnEM+iqjCK7BXWL0F39Ii4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D6K5b1VvdllnlQclQgCe23sQJXasQKRViElsxmEKLjjb/Ql8Tyyu59M9p1dT/L/Cq
-	 YEcBTV+pJr2SiYWyv4R7A8pbE/EnXQvTR518E7eEIcFHS6InQ3edue5QeUD7UFgwxC
-	 t383nChUkuT7zXJEtWozUbbUjhL66zSfO3CRpbuk=
+	b=uyxxnzzC8w+4UgxwGVwoJGdbrU81tUHBO/oiL37Tp9hJVJXIG9wdtW57+HPbrpICl
+	 uYkG3lU96rr3y4fafpbjsi9mufYqlAT0ONd3sF8mFeDg3dJyyRHb88OXp6WEqLtS30
+	 v5ntL4urERZ/9109oNJtPhHHoWH888aXNdntNclg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zdi-disclosures@trendmicro.com,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 418/776] net/sched: act_ct: Only release RCU read lock after ct_ft
-Date: Sat, 30 May 2026 18:02:12 +0200
-Message-ID: <20260530160251.276393257@linuxfoundation.org>
+Subject: [PATCH 6.1 609/969] mtd: spi-nor: Allow post_sfdp hook to return errors
+Date: Sat, 30 May 2026 18:02:13 +0200
+Message-ID: <20260530160317.245967752@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,161 +65,192 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258327-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257554-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,trendmicro.com:email,mojatatu.com:email]
-X-Rspamd-Queue-Id: AB370610DA4
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B441360F5C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit f462dca0c8415bf0058d0ffa476354c4476d0f09 ]
+[ Upstream commit e570f7872a34dc290014c80c7bad365d6577836b ]
 
-When looking up a flow table in act_ct in tcf_ct_flow_table_get(),
-rhashtable_lookup_fast() internally opens and closes an RCU read critical
-section before returning ct_ft.
-The tcf_ct_flow_table_cleanup_work() can complete before refcount_inc_not_zero()
-is invoked on the returned ct_ft resulting in a UAF on the already freed ct_ft
-object. This vulnerability can lead to privilege escalation.
+Multi die flashes like s25hl02gt need to determine the page_size at
+run-time by querying a configuration register for each die. Since the
+number of dice is determined in an optional SFDP table, SCCR MC, the
+page size configuration must be done in the post_sfdp hook. Allow
+post_sfdp to return errors, as reading the configuration register might
+return errors.
 
-Analysis from zdi-disclosures@trendmicro.com:
-When initializing act_ct, tcf_ct_init() is called, which internally triggers
-tcf_ct_flow_table_get().
-
-static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
-
-{
-                struct zones_ht_key key = { .net = net, .zone = params->zone };
-                struct tcf_ct_flow_table *ct_ft;
-                int err = -ENOMEM;
-
-                mutex_lock(&zones_mutex);
-                ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params); // [1]
-                if (ct_ft && refcount_inc_not_zero(&ct_ft->ref)) // [2]
-                                goto out_unlock;
-                ...
-}
-
-static __always_inline void *rhashtable_lookup_fast(
-                struct rhashtable *ht, const void *key,
-                const struct rhashtable_params params)
-{
-                void *obj;
-
-                rcu_read_lock();
-                obj = rhashtable_lookup(ht, key, params);
-                rcu_read_unlock();
-
-                return obj;
-}
-
-At [1], rhashtable_lookup_fast() looks up and returns the corresponding ct_ft
-from zones_ht . The lookup is performed within an RCU read critical section
-through rcu_read_lock() / rcu_read_unlock(), which prevents the object from
-being freed. However, at the point of function return, rcu_read_unlock() has
-already been called, and there is nothing preventing ct_ft from being freed
-before reaching refcount_inc_not_zero(&ct_ft->ref) at [2]. This interval becomes
-the race window, during which ct_ft can be freed.
-
-Free Process:
-
-tcf_ct_flow_table_put() is executed through the path tcf_ct_cleanup() call_rcu()
-tcf_ct_params_free_rcu() tcf_ct_params_free() tcf_ct_flow_table_put().
-
-static void tcf_ct_flow_table_put(struct tcf_ct_flow_table *ct_ft)
-{
-                if (refcount_dec_and_test(&ct_ft->ref)) {
-                                rhashtable_remove_fast(&zones_ht, &ct_ft->node, zones_params);
-                                INIT_RCU_WORK(&ct_ft->rwork, tcf_ct_flow_table_cleanup_work); // [3]
-                                queue_rcu_work(act_ct_wq, &ct_ft->rwork);
-                }
-}
-
-At [3], tcf_ct_flow_table_cleanup_work() is scheduled as RCU work
-
-static void tcf_ct_flow_table_cleanup_work(struct work_struct *work)
-
-{
-                struct tcf_ct_flow_table *ct_ft;
-                struct flow_block *block;
-
-                ct_ft = container_of(to_rcu_work(work), struct tcf_ct_flow_table,
-                                                                rwork);
-                nf_flow_table_free(&ct_ft->nf_ft);
-                block = &ct_ft->nf_ft.flow_block;
-                down_write(&ct_ft->nf_ft.flow_block_lock);
-                WARN_ON(!list_empty(&block->cb_list));
-                up_write(&ct_ft->nf_ft.flow_block_lock);
-                kfree(ct_ft); // [4]
-
-                module_put(THIS_MODULE);
-}
-
-tcf_ct_flow_table_cleanup_work() frees ct_ft at [4]. When this function executes
-between [1] and [2], UAF occurs.
-
-This race condition has a very short race window, making it generally
-difficult to trigger. Therefore, to trigger the vulnerability an msleep(100) was
-inserted after[1]
-
-Fixes: 138470a9b2cc2 ("net/sched: act_ct: fix lockdep splat in tcf_ct_flow_table_get")
-Reported-by: zdi-disclosures@trendmicro.com
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260410111627.46611-1-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/924ab710f128448ec62537cfbb377336e390043c.1680849425.git.Takahiro.Kuwano@infineon.com
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_ct.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/mtd/spi-nor/core.h      |  2 +-
+ drivers/mtd/spi-nor/micron-st.c |  4 +++-
+ drivers/mtd/spi-nor/sfdp.c      | 17 ++++++++++++-----
+ drivers/mtd/spi-nor/spansion.c  | 12 +++++++++---
+ 4 files changed, 25 insertions(+), 10 deletions(-)
 
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index 171ebf4594793..1639cc2869ef1 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -290,9 +290,13 @@ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
- 	int err = -ENOMEM;
+diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
+index 290613fd63ae7..cc70a2092494c 100644
+--- a/drivers/mtd/spi-nor/core.h
++++ b/drivers/mtd/spi-nor/core.h
+@@ -424,7 +424,7 @@ struct spi_nor_fixups {
+ 	int (*post_bfpt)(struct spi_nor *nor,
+ 			 const struct sfdp_parameter_header *bfpt_header,
+ 			 const struct sfdp_bfpt *bfpt);
+-	void (*post_sfdp)(struct spi_nor *nor);
++	int (*post_sfdp)(struct spi_nor *nor);
+ 	void (*late_init)(struct spi_nor *nor);
+ };
  
- 	mutex_lock(&zones_mutex);
--	ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params);
--	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref))
-+	rcu_read_lock();
-+	ct_ft = rhashtable_lookup(&zones_ht, &key, zones_params);
-+	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref)) {
-+		rcu_read_unlock();
- 		goto out_unlock;
+diff --git a/drivers/mtd/spi-nor/micron-st.c b/drivers/mtd/spi-nor/micron-st.c
+index 3c9681a3f7a33..f8f6e14452d58 100644
+--- a/drivers/mtd/spi-nor/micron-st.c
++++ b/drivers/mtd/spi-nor/micron-st.c
+@@ -127,7 +127,7 @@ static void mt35xu512aba_default_init(struct spi_nor *nor)
+ 	nor->params->octal_dtr_enable = micron_st_nor_octal_dtr_enable;
+ }
+ 
+-static void mt35xu512aba_post_sfdp_fixup(struct spi_nor *nor)
++static int mt35xu512aba_post_sfdp_fixup(struct spi_nor *nor)
+ {
+ 	/* Set the Fast Read settings. */
+ 	nor->params->hwcaps.mask |= SNOR_HWCAPS_READ_8_8_8_DTR;
+@@ -145,6 +145,8 @@ static void mt35xu512aba_post_sfdp_fixup(struct spi_nor *nor)
+ 	 * disable it.
+ 	 */
+ 	nor->params->quad_enable = NULL;
++
++	return 0;
+ }
+ 
+ static const struct spi_nor_fixups mt35xu512aba_fixups = {
+diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
+index 78110387be0b5..6f47982105bd9 100644
+--- a/drivers/mtd/spi-nor/sfdp.c
++++ b/drivers/mtd/spi-nor/sfdp.c
+@@ -1239,14 +1239,21 @@ static int spi_nor_parse_sccr(struct spi_nor *nor,
+  * Used to tweak various flash parameters when information provided by the SFDP
+  * tables are wrong.
+  */
+-static void spi_nor_post_sfdp_fixups(struct spi_nor *nor)
++static int spi_nor_post_sfdp_fixups(struct spi_nor *nor)
+ {
++	int ret;
++
+ 	if (nor->manufacturer && nor->manufacturer->fixups &&
+-	    nor->manufacturer->fixups->post_sfdp)
+-		nor->manufacturer->fixups->post_sfdp(nor);
++	    nor->manufacturer->fixups->post_sfdp) {
++		ret = nor->manufacturer->fixups->post_sfdp(nor);
++		if (ret)
++			return ret;
 +	}
-+	rcu_read_unlock();
  
- 	ct_ft = kzalloc(sizeof(*ct_ft), GFP_KERNEL);
- 	if (!ct_ft)
+ 	if (nor->info->fixups && nor->info->fixups->post_sfdp)
+-		nor->info->fixups->post_sfdp(nor);
++		return nor->info->fixups->post_sfdp(nor);
++
++	return 0;
+ }
+ 
+ /**
+@@ -1429,7 +1436,7 @@ int spi_nor_parse_sfdp(struct spi_nor *nor)
+ 		}
+ 	}
+ 
+-	spi_nor_post_sfdp_fixups(nor);
++	err = spi_nor_post_sfdp_fixups(nor);
+ exit:
+ 	kfree(param_headers);
+ 	return err;
+diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
+index 5914a6074a11e..af97e3741f987 100644
+--- a/drivers/mtd/spi-nor/spansion.c
++++ b/drivers/mtd/spi-nor/spansion.c
+@@ -258,7 +258,7 @@ s25fs256t_post_bfpt_fixup(struct spi_nor *nor,
+ 	return cypress_nor_set_page_size(nor);
+ }
+ 
+-static void s25fs256t_post_sfdp_fixup(struct spi_nor *nor)
++static int s25fs256t_post_sfdp_fixup(struct spi_nor *nor)
+ {
+ 	struct spi_nor_flash_parameter *params = nor->params;
+ 
+@@ -267,6 +267,8 @@ static void s25fs256t_post_sfdp_fixup(struct spi_nor *nor)
+ 	spi_nor_set_pp_settings(&params->page_programs[SNOR_CMD_PP_1_1_4],
+ 				SPINOR_OP_PP_1_1_4_4B,
+ 				SNOR_PROTO_1_1_4);
++
++	return 0;
+ }
+ 
+ static void s25fs256t_late_init(struct spi_nor *nor)
+@@ -297,7 +299,7 @@ s25hx_t_post_bfpt_fixup(struct spi_nor *nor,
+ 	return cypress_nor_set_page_size(nor);
+ }
+ 
+-static void s25hx_t_post_sfdp_fixup(struct spi_nor *nor)
++static int s25hx_t_post_sfdp_fixup(struct spi_nor *nor)
+ {
+ 	struct spi_nor_erase_type *erase_type =
+ 					nor->params->erase_map.erase_type;
+@@ -319,6 +321,8 @@ static void s25hx_t_post_sfdp_fixup(struct spi_nor *nor)
+ 			break;
+ 		}
+ 	}
++
++	return 0;
+ }
+ 
+ static void s25hx_t_late_init(struct spi_nor *nor)
+@@ -351,7 +355,7 @@ static int cypress_nor_octal_dtr_enable(struct spi_nor *nor, bool enable)
+ 			cypress_nor_octal_dtr_dis(nor);
+ }
+ 
+-static void s28hx_t_post_sfdp_fixup(struct spi_nor *nor)
++static int s28hx_t_post_sfdp_fixup(struct spi_nor *nor)
+ {
+ 	/*
+ 	 * On older versions of the flash the xSPI Profile 1.0 table has the
+@@ -377,6 +381,8 @@ static void s28hx_t_post_sfdp_fixup(struct spi_nor *nor)
+ 	 * actual value for that is 4.
+ 	 */
+ 	nor->params->rdsr_addr_nbytes = 4;
++
++	return 0;
+ }
+ 
+ static int s28hx_t_post_bfpt_fixup(struct spi_nor *nor,
 -- 
 2.53.0
 
