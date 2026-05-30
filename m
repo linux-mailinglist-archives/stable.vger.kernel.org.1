@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHpLAsYjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258081-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:06 +0200
+	id eNFxDU8aG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 992DD6108B3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A31660F15A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9310430C3375
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:45:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B44CE30785D0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A499351C2F;
-	Sat, 30 May 2026 17:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F4039E162;
+	Sat, 30 May 2026 17:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VM4QD3+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7e7ynRe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0985A223DC6;
-	Sat, 30 May 2026 17:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED37532B11D;
+	Sat, 30 May 2026 17:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163157; cv=none; b=Bzimo9atd71hnoZhE4SstVRk3l+FWQlrxwHooE3Giuqida2LNrDuxNFjsdbVomowbF8k0e0VDpjgklRjHE2uikoTyHVZJS3OBEE09j1fvdT3K6L7dUvSluGRvNSxKzAqUtWOVj6JWk83lpApiLLOZAiE+obGBJVJJyVJw1xL/Es=
+	t=1780160536; cv=none; b=a6ngqZkFyynlkuuIxCjnqJOJnpLj5qfP0bs4TyilHxpnniJOBYlYE6TUIct3HNe3AB2iU0wvFKtJydH/RdyEG4alwDDalLHEZTh84lSh4OBRQBNWvrCNMpzNrpo2z1Gcu2Plg0ps6G+UyBxr2rX3+ZQWrvqLVYKr3ajK2rkPta4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163157; c=relaxed/simple;
-	bh=iBx8hafQ2vwsyC6mx1yOM25Vqx4IfAUY+YzN05BMw3c=;
+	s=arc-20240116; t=1780160536; c=relaxed/simple;
+	bh=lxIyP4er5hsdwHNPqVK3nOHzShfCspTLcnnAEcbGuss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eolixvRcohZRJHDy0zZ5yn/qitqLrnZsxeDcrrng09pr0rM2SyIYX0LBTuq593/I4yLcXQ+L40FJxf7QzOCoUjBPF30XpCR5mfrUcZHoo7Owz/3H+FTNF25tcCk8r2XHqGpHrFkZuTnjkFgW9+4CiDxTCdILAB1FLVl3v2AWKEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VM4QD3+9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EBC1F00893;
-	Sat, 30 May 2026 17:45:55 +0000 (UTC)
+	 MIME-Version; b=psv3d73JW/c/T2pM4EJ+GTTf18bx7Kb3zxNv1MCk+4TkMf/Pww744vFLhxRyWatNbIxu+k7nrUQPNWTXGBGLuJXTsLr+lOwhZ2RLfg1ISp1WVV9FMkAlM7m5ikwV6IcZNV2nhvS+Vh24nab7dgxKEBNqBeHJ9TGTbQ0a9wWsxdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7e7ynRe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBAE1F00893;
+	Sat, 30 May 2026 17:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163155;
-	bh=JgMqU9WYo3yC/l8C6+JIpIyr5bfPry43Pm9h8vyG0i8=;
+	s=korg; t=1780160534;
+	bh=MQuctCjU3QoFx4HyAMPkwVVuHYkB6pWXrpDHEEdz1O4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VM4QD3+9TBAQkBSqM4/Ke3ViZXgxid9pOm6uY48ez5DUMSCtFZiTCMMK7lZqGwE1J
-	 sT+LOOUle1kbZscACzFXPVMx/Vj+FZsDhvSv563DKID2NSuSWW+EkGJQCU7xruhlbA
-	 Zy9zaNiB8APHG7maep6Sz+1aVrEOkEVvuZVTSab8=
+	b=I7e7ynReFYewyce9W2zl1mG1LBLngt4atRiI1XmEz1uXw7wsYMZuYWRjzwLuhUP68
+	 Ds90Z30IMbtEv8JxgDvnVXZuP72YLBByWqL9zus3sgM69r2gm0KecKuM9GTm8BqCiZ
+	 zzWPegXQ7lnkmi4WAiCvXk9NMIOAiYA57rSCCCN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Berk Cem Goksel <berkcgoksel@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 174/776] ALSA: caiaq: take a reference on the USB device in create_card()
+	Lukas Wunner <lukas@wunner.de>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: [PATCH 6.1 364/969] PCI/AER: Clear only error bits in PCIe Device Status
 Date: Sat, 30 May 2026 17:58:08 +0200
-Message-ID: <20260530160244.995866822@linuxfoundation.org>
+Message-ID: <20260530160310.380158492@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +67,97 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258081-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257303-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 992DD6108B3
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 8A31660F15A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berk Cem Goksel <berkcgoksel@gmail.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 80bb50e2d459213cccff3111d5ef98ed4238c0d5 upstream.
+commit a8aeea1bf3c80cc87983689e0118770e019bd4f3 upstream.
 
-The caiaq driver stores a pointer to the parent USB device in
-cdev->chip.dev but never takes a reference on it. The card's
-private_free callback, snd_usb_caiaq_card_free(), can run
-asynchronously via snd_card_free_when_closed() after the USB
-device has already been disconnected and freed, so any access to
-cdev->chip.dev in that path dereferences a freed usb_device.
+Currently, pcie_clear_device_status() clears the entire PCIe Device Status
+register (PCI_EXP_DEVSTA) by writing back the value read from the register,
+which affects not only the error status bits but also other writable bits.
 
-On top of the refcounting issue, the current card_free implementation
-calls usb_reset_device(cdev->chip.dev). A reset in a free callback
-is inappropriate: the device is going away, the call takes the
-device lock in a teardown context, and the reset races with the
-disconnect path that the callback is already cleaning up after.
+According to PCIe r7.0, sec 7.5.3.5, this register contains:
 
-Take a reference on the USB device in create_card() with
-usb_get_dev(), drop it with usb_put_dev() in the free callback,
-and remove the usb_reset_device() call.
+  - RW1C error status bits (CED, NFED, FED, URD at bits 0-3): These are the
+    four error status bits that need to be cleared.
 
-Fixes: b04dcbb7f7b1 ("ALSA: caiaq: Use snd_card_free_when_closed() at disconnection")
+  - Read-only bits (AUXPD at bit 4, TRPND at bit 5): Writing to these has
+    no effect.
+
+  - Emergency Power Reduction Detected (bit 6): A RW1C non-error bit
+    introduced in PCIe r5.0 (2019). This is currently the only writable
+    non-error bit in the Device Status register. Unconditionally clearing
+    this bit can interfere with other software components that rely on this
+    power management indication.
+
+  - Reserved bits (RsvdZ): These bits are required to be written as zero.
+    Writing 1s to them (as the current implementation may do) violates the
+    specification.
+
+To prevent unintended side effects, modify pcie_clear_device_status() to
+only write 1s to the four error status bits (CED, NFED, FED, URD), leaving
+the Emergency Power Reduction Detected bit and reserved bits unaffected.
+
+Fixes: ec752f5d54d7 ("PCI/AER: Clear device status bits during ERR_FATAL and ERR_NONFATAL")
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
 Cc: stable@vger.kernel.org
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Link: https://patch.msgid.link/20260413034941.1131465-3-berkcgoksel@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260211124624.49656-1-xueshuai@linux.alibaba.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/caiaq/device.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/pci.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -384,7 +384,7 @@ static void card_free(struct snd_card *c
- 	snd_usb_caiaq_input_free(cdev);
- #endif
- 	snd_usb_caiaq_audio_free(cdev);
--	usb_reset_device(cdev->chip.dev);
-+	usb_put_dev(cdev->chip.dev);
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -2396,10 +2396,9 @@ EXPORT_SYMBOL_GPL(pci_set_pcie_reset_sta
+ #ifdef CONFIG_PCIEAER
+ void pcie_clear_device_status(struct pci_dev *dev)
+ {
+-	u16 sta;
+-
+-	pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &sta);
+-	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta);
++	pcie_capability_write_word(dev, PCI_EXP_DEVSTA,
++				   PCI_EXP_DEVSTA_CED | PCI_EXP_DEVSTA_NFED |
++				   PCI_EXP_DEVSTA_FED | PCI_EXP_DEVSTA_URD);
  }
+ #endif
  
- static int create_card(struct usb_device *usb_dev,
-@@ -410,7 +410,7 @@ static int create_card(struct usb_device
- 		return err;
- 
- 	cdev = caiaqdev(card);
--	cdev->chip.dev = usb_dev;
-+	cdev->chip.dev = usb_get_dev(usb_dev);
- 	cdev->chip.card = card;
- 	cdev->chip.usb_id = USB_ID(le16_to_cpu(usb_dev->descriptor.idVendor),
- 				  le16_to_cpu(usb_dev->descriptor.idProduct));
 
 
 
