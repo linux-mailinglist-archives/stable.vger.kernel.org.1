@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-257944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257143-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aF/THishG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:40:59 +0200
+	id 6J5gBKAXG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257143-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803C16102B6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:40:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C9D60EB24
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2BEF53016692
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A5C1301F196
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622F334A3C4;
-	Sat, 30 May 2026 17:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A64C3438AE;
+	Sat, 30 May 2026 16:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m06U6Wyf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAxw++Vz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A5134389F;
-	Sat, 30 May 2026 17:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C46395AE2;
+	Sat, 30 May 2026 16:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162702; cv=none; b=AfYrkmBl8uyfV+iIeIbL4T1jH+UAh5ynzGUiOvRfsvx8Qn5Uf0t5spMZ/G/MCkRdM+r3kvNeEScNHXBmVlo0o6lGs8S4+QVcjEKABds8iCD+F1mUUnNeu+fpHwX14xpARpTcWNTKBeE1ELJ/dxDa+lP6wVc4mzvFkl1b4XoShAo=
+	t=1780159955; cv=none; b=BokGVWLVcsZrAyPafBhf6Ui2U4ebFMi42PVpCOB69Dli8mZ8Dwnr7noJKV+d+vfArb0nqoEEa5d8OSSbHiZMFGdOY+/tS4Vb+XrbwDaSJGKC0jHTafzZeOLfFQ5blAIv0cINaNNlR6Nesfoi7M0oghbqv2dO3HARJ6KlwwBwQWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162702; c=relaxed/simple;
-	bh=kByyoITatBwucsAyng83N2FI68DsYvPb9DIBOq3egwY=;
+	s=arc-20240116; t=1780159955; c=relaxed/simple;
+	bh=YtGnqfCs9aJXvYFVFzr5blna7/gM+CTr7DczFf3VKEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lrpGcVT6uvlUgRaj27PZS72iiIZK8e8l1CgagCVL0mj9OXXK86UTfPdVEutubQQI++L0GFi9wdvguZI9AhN/T1XAhg551Y8i19l5/JmvFL2/hhqNjvMqzn++Nx8shjrlKiNJGxcP6b0YLg0vzSGe5f4dlDBylIUDlAWwX/nyFoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m06U6Wyf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BB11F00893;
-	Sat, 30 May 2026 17:38:20 +0000 (UTC)
+	 MIME-Version; b=JFHf0nsyRAlKl4XOrRF95l/NCLQk4g2zVpk1JGan1YJEbYvafkYBFJj7LwvXoZ0CQzHDR8GwlvCmeSYGqixFES5gxB9h+yBA6DqvM9Ncc4yDy6aC6jfg6ve/nJCDJEXHIb6P/RvpRcCXDRwEqvru+gHqGNPslsI3WDvLe+YYr30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAxw++Vz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4A91F00899;
+	Sat, 30 May 2026 16:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162701;
-	bh=mDZ9um9NxgXq3iJAIh10mmYOLWkNrtLJkjb3+G3iMek=;
+	s=korg; t=1780159953;
+	bh=2XmM8NLOc5/UYy5/87B6Qi9daJ8Ft0xl5zhrffonvfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m06U6WyfoB5gA72RYlxadEGUeePkoDyPRMrnqAwwAtIe/hjWDbdj6UJoTuI4YUSsT
-	 myLdRfaOMRGRC8KEyqW5hWGqTKJGprKxfh7dtqN9fYNN5oiEc/0JNt7SQy2Vla7rUs
-	 OolRLF1Zm6kzQxZHgD0hxpbiriGr+UY4KLNNEPpM=
+	b=SAxw++Vza55bwrMN7FoUUpK3FtRHzRbAy3TqwjTvoRfgEtJ/dnC12Ztz2GxvMDtSH
+	 HcvKXjBcX82zpmz+YjI2Y9rI6+rpulvTZ6aTp3BFo9ose38clM3CDUwUPL7SE6y8zf
+	 QBjJvdXfvml74WiQ8F9r0+U9z1y8eetwVSOUwvS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 015/776] wifi: brcmfmac: validate bsscfg indices in IF events
-Date: Sat, 30 May 2026 17:55:29 +0200
-Message-ID: <20260530160240.656384206@linuxfoundation.org>
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Longxuan Yu <ylong030@ucr.edu>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 206/969] io_uring/poll: fix signed comparison in io_poll_get_ownership()
+Date: Sat, 30 May 2026 17:55:30 +0200
+Message-ID: <20260530160306.162794621@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +70,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257944-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257143-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,ucr.edu,kernel.dk];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,broadcom.com:email,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 803C16102B6
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 68C9D60EB24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Longxuan Yu <ylong030@ucr.edu>
 
-[ Upstream commit 304950a467d83678bd0b0f46331882e2ac23b12d ]
+commit 326941b22806cbf2df1fbfe902b7908b368cce42 upstream.
 
-brcmf_fweh_handle_if_event() validates the firmware-provided interface
-index before it touches drvr->iflist[], but it still uses the raw
-bsscfgidx field as an array index without a matching range check.
+io_poll_get_ownership() uses a signed comparison to check whether
+poll_refs has reached the threshold for the slowpath:
 
-Reject IF events whose bsscfg index does not fit in drvr->iflist[]
-before indexing the interface array.
+    if (unlikely(atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
 
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20260323074551.93530-1-pengpeng@iscas.ac.cn
-[add missing wifi prefix]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+atomic_read() returns int (signed). When IO_POLL_CANCEL_FLAG
+(BIT(31)) is set in poll_refs, the value becomes negative in
+signed arithmetic, so the >= 128 comparison always evaluates to
+false and the slowpath is never taken.
+
+Fix this by casting the atomic_read() result to unsigned int
+before the comparison, so that the cancel flag is treated as a
+large positive value and correctly triggers the slowpath.
+
+Fixes: a26a35e9019f ("io_uring: make poll refs more robust")
+Cc: stable@vger.kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Longxuan Yu <ylong030@ucr.edu>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://patch.msgid.link/3a3508b08bcd7f1bc3beff848ae6e1d73d355043.1775965597.git.ylong030@ucr.edu
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ io_uring/poll.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
-index dac7eb77799bd..e6be192dc0af2 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
-@@ -151,6 +151,11 @@ static void brcmf_fweh_handle_if_event(struct brcmf_pub *drvr,
- 		bphy_err(drvr, "invalid interface index: %u\n", ifevent->ifidx);
- 		return;
- 	}
-+	if (ifevent->bsscfgidx >= BRCMF_MAX_IFS) {
-+		bphy_err(drvr, "invalid bsscfg index: %u\n",
-+			 ifevent->bsscfgidx);
-+		return;
-+	}
- 
- 	ifp = drvr->iflist[ifevent->bsscfgidx];
- 
--- 
-2.53.0
-
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -88,7 +88,7 @@ static bool io_poll_get_ownership_slowpa
+  */
+ static inline bool io_poll_get_ownership(struct io_kiocb *req)
+ {
+-	if (unlikely(atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
++	if (unlikely((unsigned int)atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
+ 		return io_poll_get_ownership_slowpath(req);
+ 	return !(atomic_fetch_inc(&req->poll_refs) & IO_POLL_REF_MASK);
+ }
 
 
 
