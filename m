@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-258189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LKBHNMlG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:51 +0200
+	id qMvcCcMbG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A47610CF7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8835B60F54A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC44C30BF7F5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 413FC31014CF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2563B0ADF;
-	Sat, 30 May 2026 17:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FDE34EF07;
+	Sat, 30 May 2026 17:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpuzPBrQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7xw3hfE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813821A680F;
-	Sat, 30 May 2026 17:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2201481DD;
+	Sat, 30 May 2026 17:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163512; cv=none; b=ALPFxFbzYeC9HeRuQO6Fc3lzrChRtDvO96/uOtpto713529LxLxu4SRS+njII1H6bb5goTjgzqb3glMHeiUzoe0XH9ozpnsygsUhubUSTk49NRESldeueJ9lPOZwCqIVyy4bcX9iyREkXTbMZVicSsFB3hM5rxAa59o0q22mjJU=
+	t=1780161013; cv=none; b=BhRBD30nPxkLwyuGaRQRH/EfNtGjtr9WFx6jQLa1NsqfCKJQxzdGFaRFhlP9T8UmXIMkRK+dFpQ5c6Zct48WoL1ibhf2SeRsRslQH22K6IYQmk2D7JW+AWzXbRf6hW08ASI1Cr8qUfcgW4F4p6giON8SGjK8b35PTV88Kuik2mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163512; c=relaxed/simple;
-	bh=f7eSejIyPXbcWL6rEIcYuQx3v2c/36dKCcQT4k0GQPM=;
+	s=arc-20240116; t=1780161013; c=relaxed/simple;
+	bh=FP3yI2uYRp9jyoui/UklKdvfa+hoVP2kiA53TRwyN7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c3To+7kJ4AThCghjvzcwUk52JJI3f1Zpul0PhS9tY+qXCee4NLZ8ZBXyfyq6ArkfaxYT8CevLIpKVW5Ihw47myep4RvSUZ49UPGK3G34sq/6GHLHHleyF1vp/ioutB59E6cgakxXf4oA2uy9aKMzr0IJQ/IFsGO+aPnnwCtrKqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpuzPBrQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43951F00893;
-	Sat, 30 May 2026 17:51:50 +0000 (UTC)
+	 MIME-Version; b=cJYQQ+xXLg/YXQWb+kLhFG2chetiZpxXTEsp60IDHYB2QgY/ngQF7y+NDtokY1tKV4xq5maAmmaXMyoQ2DGL75/wHshVSHSJ9Hnc5elfleiuC3w2pXwZ03NHtbPQg7tCcSf1jUy0KFWMAo9aoIJNs4VmD7oUd+YlptIBKDKIbf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7xw3hfE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A4D1F00893;
+	Sat, 30 May 2026 17:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163511;
-	bh=FbRetxYA6Nf1/Iwp8Hb72SQ6aAT1TFA1Ez5eKhJR1RE=;
+	s=korg; t=1780161012;
+	bh=FSojE+g9oT93DRGtxrvo8lgz+wvAQ7q+cvYh6gFJi2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jpuzPBrQ6EU/E/Pr+21dAf3DJpFdhV+oV8jP5heCiLZpn51yBzrb/oJmWO8gB032K
-	 dsujiheXoV6NLgTbNVDObDFVcGRymOatQUoFJoTbPI3exdubNLDiUdjmfMGL7Lk27t
-	 ellmALufOOj8x4zXrEjHIyGMfW0t99gMJ7rL14o8=
+	b=x7xw3hfEUkFTs8oSIbfCEKKXVN31MQ+TZZGrWevh6EHpyFjkcFyuMSKt+YJF8PTJX
+	 AnDskZ+dhNQAg8XbHB+avraJB/EvlRRe4QkMVqprfBKVqE+iHcSt6jPSiYXYSw3KUE
+	 /Alc9FL93zkZXjXxYmVJ/xWE8O2lh+C6RIdXp3Io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Li hongliang <1468888505@139.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 280/776] ksmbd: do not expire session on binding failure
+Subject: [PATCH 6.1 470/969] net: bcmgenet: Remove custom ndo_poll_controller()
 Date: Sat, 30 May 2026 17:59:54 +0200
-Message-ID: <20260530160247.794102213@linuxfoundation.org>
+Message-ID: <20260530160313.270327853@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,83 +70,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258189-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com,139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257443-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 06A47610CF7
+X-Rspamd-Queue-Id: 8835B60F54A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-[ Upstream commit 9bbb19d21ded7d78645506f20d8c44895e3d0fb9 ]
+[ Upstream commit 19537e125cc7cf2da43a606f5bcebbe0c9aea4cc ]
 
-When a multichannel session binding request fails (e.g. wrong password),
-the error path unconditionally sets sess->state = SMB2_SESSION_EXPIRED.
-However, during binding, sess points to the target session looked up via
-ksmbd_session_lookup_slowpath() -- which belongs to another connection's
-user. This allows a remote attacker to invalidate any active session by
-simply sending a binding request with a wrong password (DoS).
+The driver gained a .ndo_poll_controller() at a time where the TX
+cleaning process was always done from NAPI which makes this unnecessary.
+See commit ac3d9dd034e5 ("netpoll: make ndo_poll_controller() optional")
+for more background.
 
-Fix this by skipping session expiration when the failed request was
-a binding attempt, since the session does not belong to the current
-connection. The reference taken by ksmbd_session_lookup_slowpath() is
-still correctly released via ksmbd_user_session_put().
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 5393b2b5bee2 ("net: bcmgenet: fix racing timeout handler")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/smb2pdu.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ .../net/ethernet/broadcom/genet/bcmgenet.c    | 20 -------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index 700c8070f57a7..9fef4d88ee8ba 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -1938,8 +1938,14 @@ int smb2_sess_setup(struct ksmbd_work *work)
- 			if (sess->user && sess->user->flags & KSMBD_USER_FLAG_DELAY_SESSION)
- 				try_delay = true;
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 1d679de9c3235..4d76c9aebd439 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -3250,23 +3250,6 @@ static irqreturn_t bcmgenet_wol_isr(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
  
--			sess->last_active = jiffies;
--			sess->state = SMB2_SESSION_EXPIRED;
-+			/*
-+			 * For binding requests, session belongs to another
-+			 * connection. Do not expire it.
-+			 */
-+			if (!(req->Flags & SMB2_SESSION_REQ_FLAG_BINDING)) {
-+				sess->last_active = jiffies;
-+				sess->state = SMB2_SESSION_EXPIRED;
-+			}
- 			ksmbd_user_session_put(sess);
- 			work->sess = NULL;
- 			if (try_delay) {
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-static void bcmgenet_poll_controller(struct net_device *dev)
+-{
+-	struct bcmgenet_priv *priv = netdev_priv(dev);
+-
+-	/* Invoke the main RX/TX interrupt handler */
+-	disable_irq(priv->irq0);
+-	bcmgenet_isr0(priv->irq0, priv);
+-	enable_irq(priv->irq0);
+-
+-	/* And the interrupt handler for RX/TX priority queues */
+-	disable_irq(priv->irq1);
+-	bcmgenet_isr1(priv->irq1, priv);
+-	enable_irq(priv->irq1);
+-}
+-#endif
+-
+ static void bcmgenet_umac_reset(struct bcmgenet_priv *priv)
+ {
+ 	u32 reg;
+@@ -3736,9 +3719,6 @@ static const struct net_device_ops bcmgenet_netdev_ops = {
+ 	.ndo_set_mac_address	= bcmgenet_set_mac_addr,
+ 	.ndo_eth_ioctl		= phy_do_ioctl_running,
+ 	.ndo_set_features	= bcmgenet_set_features,
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-	.ndo_poll_controller	= bcmgenet_poll_controller,
+-#endif
+ 	.ndo_get_stats		= bcmgenet_get_stats,
+ 	.ndo_change_carrier	= bcmgenet_change_carrier,
+ };
 -- 
 2.53.0
 
