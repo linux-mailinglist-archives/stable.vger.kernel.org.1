@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PjKAOsoG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:03 +0200
+	id 8H5DDKEdG2qW/QgAu9opvQ
+	(envelope-from <stable+bounces-257571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6265A61148C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD35A60F9F9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9D3830EB436
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:02:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93DA23067154
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549F239A4A4;
-	Sat, 30 May 2026 18:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C753998B1;
+	Sat, 30 May 2026 17:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWXYVrWE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egYGGEJd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF8623392B;
-	Sat, 30 May 2026 18:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8CD263F44;
+	Sat, 30 May 2026 17:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164131; cv=none; b=MbdW5WzkTO6EogLbyjLyZeKkxQEENoMsJyLMjrbbMJHJ1YAwm4SvFcN40fvV1hiG0J2Lw8YsNh2lsoj4j9eXV72Z4ezlOBBZAtlclHEwqLZWt9EXFPmkzohCMyx/bRk+X8rb2YVN+GMwND2+7c+4w2CRSdJ1wWRw7of5ZLZX8f0=
+	t=1780161444; cv=none; b=oVyEnBFmUJuEL6w3X7wSKOFjWSsHxw2d+qPD0CSW+ECDPoOTFRphonQekgVryH6B4QkgvjgrGnJ9+ml73Yl4wWZWCs6USUyHAfBnixdPVC9D8Vh47Ss84kBrjiWr8vLt9DTZNzDcVSaCeuHhZBHFQZ+R528QH/dPpC6ZS/b0+fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164131; c=relaxed/simple;
-	bh=Wp5XM9p+oBoFCHsXpNAWD5uuQpck8Tvu8X5crusUdKo=;
+	s=arc-20240116; t=1780161444; c=relaxed/simple;
+	bh=H4Fva58wXg5I3DGPmHWIgIbuieLDikxcVWVLGS2K4Y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNrFoV92y4GpZpE3tkQRlNMZ7pCfBdBQsgGQHkdH3kulx2OSGvTlBlonr9Abf2jO69iu2uMUqNYjtGTKgOUk5fFO6ydBvXHSZ8H/wy/rDhUOF04ncKk+FPAJXKQ5DAid41QJ6MMnlV4OYv2ar0HVtopvE6TN009DkYCsZ2JPHX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWXYVrWE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7671F00893;
-	Sat, 30 May 2026 18:02:09 +0000 (UTC)
+	 MIME-Version; b=gvJkxQV/eaVcuGG3ZsC2H3LIcjCtuoArQe6kdA3YK4cYbRRxUj1FfM0GCDb+iv6LAR2OUuZmoZMqBtiaqPK9/eMUxigPCgn6IeJw+34wZaqYi00aksPf3YoWyswua3UwQAc83z8zP56cp+8sPIfIPj92luO2L1tu/IHL7tbm7/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egYGGEJd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06601F00893;
+	Sat, 30 May 2026 17:17:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164130;
-	bh=/6Qk1Dt3sdEE2/pqHu836jZycKcVzY9JAK8/cB5pGwI=;
+	s=korg; t=1780161443;
+	bh=d1paDe/LO9pMQrXGPS0QJw8HdFPhMYY1/hTKQFBctS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QWXYVrWEBc459DC6KzgWHMNNw/DTVc5HVsTXBM2zaFXNiHKq06qkCuoxIzLKr/5tT
-	 5A1D2AyuV4474EIN1r+a5GlJROk+qwW4ZUXvm2e/44KejcoTINMGnY7wgEFS48Y/6x
-	 Cps3LWyLYieaoe2nKbF3jQUJLdM3+ZC/eEOIrPOw=
+	b=egYGGEJdJ5dbgkkBxnelu1+ehUXqp6o84zFyuq2Fzmye6FsvV7HMANlgyIWJ74AhQ
+	 XGlv1iioRhyMQa3NLQotyKOaYBA1up3z7QeHzOpCWANFEh6ENw/kfsbTZU7f/AYrQq
+	 mjhlROuGVLhFT8bJpoGzK2FV+HOax5XzjHbOnrNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 434/776] dm cache: fix write path cache coherency in passthrough mode
-Date: Sat, 30 May 2026 18:02:28 +0200
-Message-ID: <20260530160251.646912173@linuxfoundation.org>
+Subject: [PATCH 6.1 625/969] pinctrl: pinctrl-pic32: Fix resource leak
+Date: Sat, 30 May 2026 18:02:29 +0200
+Message-ID: <20260530160317.705472567@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,116 +66,103 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258372-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257571-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6265A61148C
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CD35A60F9F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit 0c5eef0aad508231d8e43ff8392692925e131b68 ]
+[ Upstream commit fe5560688f3ba98364c7de7b4f8dc240ffd1ff75 ]
 
-In passthrough mode, dm-cache defers write bio submission until cache
-invalidation completes to maintain existing coherency, requiring the
-target map function to return DM_MAPIO_SUBMITTED. The current map_bio()
-returns DM_MAPIO_REMAPPED, violating the required ordering constraint.
+Fix three possible resource leaks by using the devres version of
+clk_prepare_enable(). Also, update error message accordingly.
 
-Reproduce steps:
+Detected by Smatch:
+drivers/pinctrl/pinctrl-pic32.c:2211 pic32_pinctrl_probe() warn:
+'pctl->clk' from clk_prepare_enable() not released on lines: 2208.
 
-1. Create a cache device
+drivers/pinctrl/pinctrl-pic32.c:2274 pic32_gpio_probe() warn:
+'bank->clk' from clk_prepare_enable() not released on lines: 2264,2272.
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. Promote the first data block into the cache
-
-fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
---direct=1 --size=64k
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the first data block, and check io ordering using ftrace
-
-echo 1 > /sys/kernel/debug/tracing/events/block/block_bio_queue/enable
-echo 1 > /sys/kernel/debug/tracing/events/block/block_bio_complete/enable
-echo 1 > /sys/kernel/debug/tracing/events/block/block_rq_complete/enable
-fio --filename=/dev/mapper/cache --name=test --rw=write --bs=64k \
---direct=1 --size 64k
-
-5. ftrace logs show that write operations to the cache origin (252:2)
-   and metadata operations (252:0) are unsynchronized: the origin write
-   occurs before metadata commit.
-
- <snip>
-       fio-146  [000] .....  420.139562: block_bio_queue: 252,3 WS 0 + 128 [fio]
-       fio-146  [000] .....  420.149395: block_bio_queue: 252,2 WS 0 + 128 [fio]
-       fio-146  [000] .....  420.149763: block_bio_queue: 8,32 WS 262144 + 128 [fio]
-       fio-146  [000] dNh1.  420.151446: block_rq_complete: 8,32 WS () 262144 + 128 be,0,4 [0]
-       fio-146  [000] dNh1.  420.152731: block_bio_complete: 252,2 WS 0 + 128 [0]
-       fio-146  [000] dNh1.  420.154229: block_bio_complete: 252,3 WS 0 + 128 [0]
- kworker/0:0-9  [000] .....  420.160530: block_bio_queue: 252,0 W 408 + 8 [kworker/0:0]
- kworker/0:0-9  [000] .....  420.161641: block_bio_queue: 8,32 W 408 + 8 [kworker/0:0]
- kworker/0:0-9  [000] .....  420.162533: block_bio_queue: 252,0 W 416 + 8 [kworker/0:0]
- kworker/0:0-9  [000] .....  420.162821: block_bio_queue: 8,32 W 416 + 8 [kworker/0:0]
- <snip>
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 2ba384e6c3810 ("pinctrl: pinctrl-pic32: Add PIC32 pin control driver")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pinctrl/pinctrl-pic32.c | 20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index 8571c095793b5..783722a4c3364 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1684,6 +1684,7 @@ static int map_bio(struct cache *cache, struct bio *bio, dm_oblock_t block,
- 				bio_drop_shared_lock(cache, bio);
- 				atomic_inc(&cache->stats.demotion);
- 				invalidate_start(cache, cblock, block, bio);
-+				return DM_MAPIO_SUBMITTED;
- 			} else
- 				remap_to_origin_clear_discard(cache, bio, block);
- 		} else {
+diff --git a/drivers/pinctrl/pinctrl-pic32.c b/drivers/pinctrl/pinctrl-pic32.c
+index 37acfdfc2cae0..ee9082a499c5f 100644
+--- a/drivers/pinctrl/pinctrl-pic32.c
++++ b/drivers/pinctrl/pinctrl-pic32.c
+@@ -2162,16 +2162,10 @@ static int pic32_pinctrl_probe(struct platform_device *pdev)
+ 	if (IS_ERR(pctl->reg_base))
+ 		return PTR_ERR(pctl->reg_base);
+ 
+-	pctl->clk = devm_clk_get(&pdev->dev, NULL);
++	pctl->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(pctl->clk)) {
+ 		ret = PTR_ERR(pctl->clk);
+-		dev_err(&pdev->dev, "clk get failed\n");
+-		return ret;
+-	}
+-
+-	ret = clk_prepare_enable(pctl->clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "clk enable failed\n");
++		dev_err(&pdev->dev, "Failed to get and enable clock\n");
+ 		return ret;
+ 	}
+ 
+@@ -2227,16 +2221,10 @@ static int pic32_gpio_probe(struct platform_device *pdev)
+ 	if (irq < 0)
+ 		return irq;
+ 
+-	bank->clk = devm_clk_get(&pdev->dev, NULL);
++	bank->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(bank->clk)) {
+ 		ret = PTR_ERR(bank->clk);
+-		dev_err(&pdev->dev, "clk get failed\n");
+-		return ret;
+-	}
+-
+-	ret = clk_prepare_enable(bank->clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "clk enable failed\n");
++		dev_err(&pdev->dev, "Failed to get and enable clock\n");
+ 		return ret;
+ 	}
+ 
 -- 
 2.53.0
 
