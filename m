@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-258272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDHaOs4mG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:02 +0200
+	id YHaUMBAtG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61275610F20
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 893FE611E62
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F1CB302BDEC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:56:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6B8CB305BB0D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D283C09F5;
-	Sat, 30 May 2026 17:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D9D3D16F8;
+	Sat, 30 May 2026 18:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqmAJMNM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0dJws+2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C565D3C1405;
-	Sat, 30 May 2026 17:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E34C3D091F;
+	Sat, 30 May 2026 18:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163792; cv=none; b=k0jmNO4vbRuBusZloEJeyfhDzq35EIqJiUC5gKgsFQk+c3pgGCXbHwnPc6dw00vtaERoK4/ZlNxh7fAC4JYw/+b/9IrrUB1GNWz3B+WaDfo6DvG0nQrvBZiQwiv52Hd9w5juN2iZHeRC8C+PkNiqiky8qYa4VBSIDuRieYsh1fY=
+	t=1780165736; cv=none; b=WYfrsJuDZH63Wo8SRu77TOduois++bIiGxw9ERHVOmrM89GnCTaHaZADdIe0XwK9N77g6vTEfibNkt3eBfY0RHUbb48xEzfnJ2AxkFYS/RsdjJl46EcpIKsw4Mgr0OS5P8YMla0mFuWkqgDbPNR1BhJJXLWgZqfbQPOO+w1Im/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163792; c=relaxed/simple;
-	bh=QaT09MCLhTLnv8QlHr/oZENmtjqszkIBnyUmesiAfRY=;
+	s=arc-20240116; t=1780165736; c=relaxed/simple;
+	bh=ZFjAsSCWmmK5mxLxP9Sl5uqezr1Vr0qJsYBoNP1RLok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RpddJvZSW7TVXjj+osqJKfsLHEF9HNMjwsHMqZutuhKPJGMLqGcKuX9YcIg7lYJs6L9bW+6DLIJw6U4qQy9ODhwKjX0K9gSMR/7d2vq9YihK8INuMFx1iU5R7pZKFU+sklHq0Rmvd1SUhMTGBDe1KX8nG3YqpbCzlaQ1yXegoPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqmAJMNM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150EB1F00893;
-	Sat, 30 May 2026 17:56:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fg/YOxvj8em4oxy18awpGQFww4c0b+1e4H2+a1yW3nxD8HJ6uxOZe4sZpNcQxt47yY+nBlmgVPvWN38QLw9I7+br7DaQ4X/WrosJPLxwC9QeSB7iYXlJqevW1W8wyA2KMHnwGX64w5Inwpco+v6nBv4GHvgQvrPAWZp0/kU284c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0dJws+2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1CA1F0089A;
+	Sat, 30 May 2026 18:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163791;
-	bh=tNDPocNxlJJxLCuqwqURINf3rVG4hJKCWB1tb07rexM=;
+	s=korg; t=1780165735;
+	bh=Tfn94C58H9z9/gQ3BhcR5nSdTOyQCvFwV4T6iNOcPgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FqmAJMNMa0xLcRRxvZ8UpaSZgqtOga/gBzScCz4Qa3NhENqV8YwMi6Kfkt51IFOwX
-	 m1wi2FXfPE4ZeLrqTSJl6KAxGByuTjpuaztmRPQkMIvyBZE4fKUQ7nnlwHdOcOZmPr
-	 dvoV4fMBTImMH4lcBkZUYa6BPn1O5jDPMZ//9OZg=
+	b=i0dJws+2A17tDwmmyTLFDFKM857zAh9IuYNWvfTq0GoTnxSzx/bDDBm9Yqz8+VYOX
+	 YkZ+5lBfBTgMv6xTetJtKdwMty5/PCMGUwuMiVncNFwP0i0FUoIvW22hEGY1fp5rwY
+	 9ycdldJD88lKQheRh9mOJ9VefofdLyvdN/Lc9xLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.15 332/776] isofs: validate Rock Ridge CE continuation extent against volume size
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 165/589] ALSA: caiaq: Fix control_put() result and cache rollback
 Date: Sat, 30 May 2026 18:00:46 +0200
-Message-ID: <20260530160249.154860560@linuxfoundation.org>
+Message-ID: <20260530160229.123326967@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,159 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258272-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258846-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.994];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.cz:email,msgid.link:url]
-X-Rspamd-Queue-Id: 61275610F20
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 893FE611E62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit a36d990f591320e9dd379ab30063ebfe91d47e1f upstream.
+commit a3542d1b30f92307f545f2def14e8d988dffdff0 upstream.
 
-rock_continue() reads rs->cont_extent verbatim from the Rock Ridge CE
-record and passes it to sb_bread() without checking that the block
-number is within the mounted ISO 9660 volume.  commit e595447e177b
-("[PATCH] rock.c: handle corrupted directories") added cont_offset
-and cont_size rejection for the CE continuation but did not validate
-the extent block number itself.  commit f54e18f1b831 ("isofs: Fix
-infinite looping over CE entries") later capped the CE chain length
-at RR_MAX_CE_ENTRIES = 32 but again left the block number unchecked.
+control_put() always returns 1 and updates cdev->control_state[]
+before sending the USB command. It also ignores transport errors
+from usb_bulk_msg(), snd_usb_caiaq_send_command(), and
+snd_usb_caiaq_send_command_bank().
 
-With a crafted ISO mounted via udisks2 (desktop optical auto-mount)
-or via CAP_SYS_ADMIN mount, rs->cont_extent can therefore point at
-an out-of-range block or at blocks belonging to an adjacent
-filesystem on the same block device.  sb_bread() on an out-of-range
-block returns NULL cleanly via the block layer EIO path, so there
-is no memory-safety violation.  For in-range reads of adjacent-
-filesystem data, the CE buffer is parsed as Rock Ridge records and
-only the text of SL sub-records reaches userspace through
-readlink(), which makes the info-leak channel narrow and difficult
-to exploit; still, rejecting the malformed CE outright matches the
-rejection shape already present in the same function for
-cont_offset and cont_size.
+That breaks the ALSA .put() contract and can leave control_get()
+reporting a cached value the device never accepted.
 
-Add an ISOFS_SB(sb)->s_nzones bounds check to rock_continue() next
-to the existing offset/size rejection, printing the same
-corrupted-directory-entry notice.
+Return 0 for unchanged values, propagate transport failures,
+and restore the cached byte when the write fails.
 
-Fixes: f54e18f1b831 ("isofs: Fix infinite looping over CE entries")
+Fixes: 8e3cd08ed8e59 ("[ALSA] caiaq - add control API and more input features")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260419212155.2169382-2-michael.bommarito@gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260417-caiaq-control-put-v1-1-c37826e92447@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/isofs/rock.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ sound/usb/caiaq/control.c |   54 +++++++++++++++++++++++++++++++---------------
+ 1 file changed, 37 insertions(+), 17 deletions(-)
 
---- a/fs/isofs/rock.c
-+++ b/fs/isofs/rock.c
-@@ -101,6 +101,15 @@ static int rock_continue(struct rock_sta
- 		goto out;
+--- a/sound/usb/caiaq/control.c
++++ b/sound/usb/caiaq/control.c
+@@ -87,6 +87,7 @@ static int control_put(struct snd_kcontr
+ 	struct snd_usb_caiaqdev *cdev = caiaqdev(chip->card);
+ 	int pos = kcontrol->private_value;
+ 	int v = ucontrol->value.integer.value[0];
++	int ret;
+ 	unsigned char cmd;
+ 
+ 	switch (cdev->chip.usb_id) {
+@@ -103,6 +104,10 @@ static int control_put(struct snd_kcontr
+ 
+ 	if (pos & CNT_INTVAL) {
+ 		int i = pos & ~CNT_INTVAL;
++		unsigned char old = cdev->control_state[i];
++
++		if (old == v)
++			return 0;
+ 
+ 		cdev->control_state[i] = v;
+ 
+@@ -113,10 +118,11 @@ static int control_put(struct snd_kcontr
+ 			cdev->ep8_out_buf[0] = i;
+ 			cdev->ep8_out_buf[1] = v;
+ 
+-			usb_bulk_msg(cdev->chip.dev,
+-				     usb_sndbulkpipe(cdev->chip.dev, 8),
+-				     cdev->ep8_out_buf, sizeof(cdev->ep8_out_buf),
+-				     &actual_len, 200);
++			ret = usb_bulk_msg(cdev->chip.dev,
++					   usb_sndbulkpipe(cdev->chip.dev, 8),
++					   cdev->ep8_out_buf,
++					   sizeof(cdev->ep8_out_buf),
++					   &actual_len, 200);
+ 		} else if (cdev->chip.usb_id ==
+ 			USB_ID(USB_VID_NATIVEINSTRUMENTS, USB_PID_MASCHINECONTROLLER)) {
+ 
+@@ -128,21 +134,36 @@ static int control_put(struct snd_kcontr
+ 				offset = MASCHINE_BANK_SIZE;
+ 			}
+ 
+-			snd_usb_caiaq_send_command_bank(cdev, cmd, bank,
+-					cdev->control_state + offset,
+-					MASCHINE_BANK_SIZE);
++			ret = snd_usb_caiaq_send_command_bank(cdev, cmd, bank,
++							      cdev->control_state + offset,
++							      MASCHINE_BANK_SIZE);
+ 		} else {
+-			snd_usb_caiaq_send_command(cdev, cmd,
+-					cdev->control_state, sizeof(cdev->control_state));
++			ret = snd_usb_caiaq_send_command(cdev, cmd,
++							 cdev->control_state,
++							 sizeof(cdev->control_state));
+ 		}
+-	} else {
+-		if (v)
+-			cdev->control_state[pos / 8] |= 1 << (pos % 8);
+-		else
+-			cdev->control_state[pos / 8] &= ~(1 << (pos % 8));
+ 
+-		snd_usb_caiaq_send_command(cdev, cmd,
+-				cdev->control_state, sizeof(cdev->control_state));
++		if (ret < 0) {
++			cdev->control_state[i] = old;
++			return ret;
++		}
++	} else {
++		int idx = pos / 8;
++		unsigned char mask = 1 << (pos % 8);
++		unsigned char old = cdev->control_state[idx];
++		unsigned char val = v ? (old | mask) : (old & ~mask);
++
++		if (old == val)
++			return 0;
++
++		cdev->control_state[idx] = val;
++		ret = snd_usb_caiaq_send_command(cdev, cmd,
++						 cdev->control_state,
++						 sizeof(cdev->control_state));
++		if (ret < 0) {
++			cdev->control_state[idx] = old;
++			return ret;
++		}
  	}
  
-+	if ((unsigned)rs->cont_extent >= ISOFS_SB(rs->inode->i_sb)->s_nzones) {
-+		printk(KERN_NOTICE "rock: corrupted directory entry. "
-+			"extent=%u out of volume (nzones=%lu)\n",
-+			(unsigned)rs->cont_extent,
-+			ISOFS_SB(rs->inode->i_sb)->s_nzones);
-+		ret = -EIO;
-+		goto out;
-+	}
-+
- 	if (rs->cont_extent) {
- 		struct buffer_head *bh;
+ 	return 1;
+@@ -640,4 +661,3 @@ int snd_usb_caiaq_control_init(struct sn
  
+ 	return ret;
+ }
+-
 
 
 
