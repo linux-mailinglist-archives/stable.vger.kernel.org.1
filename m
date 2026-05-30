@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-257607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AtIIqEcG2qQ/QgAu9opvQ
-	(envelope-from <stable+bounces-257607-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:37 +0200
+	id 6JOTIoYmG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0F560F7B6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B3F610E44
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9BAF9301F7D1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:19:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A3DC3017535
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD07A263F44;
-	Sat, 30 May 2026 17:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E4D342CB3;
+	Sat, 30 May 2026 18:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akpIOsnv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uiqZWBTp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D2230E847;
-	Sat, 30 May 2026 17:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE61623392B;
+	Sat, 30 May 2026 18:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161566; cv=none; b=qvLbWmIaCdoPW0q2vyK8zYxqSohxCG27KR3h6vjIBGrrjZBANix5mpoEQdMDcV4g9/5lQ4fUvLNF/eF2GE/SeaCjyRJJChWqfFuXbML2ruk44lzcPHqO9JPI81GbTGa4Wttwm4521eZkGX5D+PfknZ7inHOvHIEjha/AM4d+tXY=
+	t=1780164063; cv=none; b=bu5LgXOAMbH5FpolFHwh1uVSy8+Ce078cnd4WA7dduCnpa65SAttPM+jSRGVRfk1EHKY2dfA8CCw1TWw22SnbmDOuC30BAQpqVARhlpVKm7ji9Xxz6YTDJW3DNjCxLLTiD58EJhxHGmF4w9SDeFmsp8tY9hxGN81OrHusggKp30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161566; c=relaxed/simple;
-	bh=NQVPyv+3ABIzZAawP3JR29w/V3USXqvh2NKUoyzAKas=;
+	s=arc-20240116; t=1780164063; c=relaxed/simple;
+	bh=9BrOShu2XlnB3L2gK9PFuJcZc3zNCIR455wH9nb9lPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S6zL/FMyVTKSbSCcTSzb9f9TZMNUSveuG6zjICyjqJ1oWZl057U4/vVURQ+qQ0YFhR0MeBpkY9d0OiP5L0us2oxFHkRIPyGAZ37S8vYmwWlNjNYJ6LjKuP4V53iZ3O9Mfq3GtQ/NrvJ2GWiNJles6NyxwpLRAsxPa4uukmgu9Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akpIOsnv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC13D1F00893;
-	Sat, 30 May 2026 17:19:24 +0000 (UTC)
+	 MIME-Version; b=E4iRxNNt483BHyLOpzTS7hSRzOGwHhpqMb2cKWY5esFBZsrAtLjBhX5oHfwXmgwfnl88bNwMUv6a1P/j9HlNVfkfTxWirEEag5866CAsKvPBPTp9DJQSxdEiWNoTxiLQhHp/7mzlL2F4twRZXoCEXMB3+JVSdR64Zp5xh8m8e7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uiqZWBTp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318021F00893;
+	Sat, 30 May 2026 18:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161565;
-	bh=E/pZUk9fQoJffeZce9Pi5mLHUkVmiW/F/GIgzIYIvtM=;
+	s=korg; t=1780164062;
+	bh=7oC0LpH7jbBTDQLzRPv9oogjbhvA31u2+L45852w1tI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=akpIOsnvHJl4CusUIoKigQgNmlWJSaR+HIJ1WgfJpWZU9CXq0iChq3swaqV63d1Wz
-	 cIW3untBzA9RtoIRzGnIaqr95x0V+vdrTnb8m070B6s5pSXXgQdZ1OpKHIVLtpUaPJ
-	 uj7abWepr7blzI0ho6uNRcHBJAOVJKiVCgsoidME=
+	b=uiqZWBTpQ6qMnmo/XwprmlbLIEXssZM1pX7DDbxthKZFZzA72g2A8BstToi6ce1u8
+	 yU4lTxRLtbJBf7uF+4oqF5HFdm3ohf3uUW6+C/8umSmjWJwrYOg944Hl+6C0HQxthD
+	 KaboxKuCo9Z+NBg6ZtehMLkj1z+2Xotcx5J1aU4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jason Yan <yanaijie@huawei.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 634/969] i3c: mipi-i3c-hci: fix IBI payload length calculation for final status
+Subject: [PATCH 5.15 444/776] fbdev: matroxfb: Mark variable with __maybe_unused to avoid W=1 build break
 Date: Sat, 30 May 2026 18:02:38 +0200
-Message-ID: <20260530160317.957865634@linuxfoundation.org>
+Message-ID: <20260530160251.883369274@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,20 +69,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257607-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,huawei.com,gmx.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258352-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,62 +92,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3E0F560F7B6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,huawei.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 10B3F610E44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Billy Tsai <billy_tsai@aspeedtech.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit d35a6db887eeae7c57b719521e39d64f929c6dc3 ]
+[ Upstream commit caf6144053b4e1c815aa56afb54745a176f999df ]
 
-In DMA mode, the IBI status descriptor encodes the payload using
-CHUNKS (number of chunks) and DATA_LENGTH (valid bytes in the last
-chunk). All preceding chunks are implicitly full-sized.
+Clang is not happy about set but unused variable:
 
-The current code accumulates full chunk sizes for non-final status
-descriptors, but for the final status descriptor it only adds
-DATA_LENGTH. This ignores the contribution of the preceding full
-chunks described by the same final status entry.
+drivers/video/fbdev/matrox/g450_pll.c:412:18: error: variable 'mnp' set but not used
+   412 |         unsigned int mnp;
+       |                      ^
+1 error generated.
 
-As a result, the computed IBI payload length is truncated whenever
-the final status spans multiple chunks. For example, with a chunk
-size of 4 bytes, CHUNKS=2 and DATA_LENGTH=1 should result in a total
-payload size of 5 bytes, but the current code reports only 1 byte.
+Since the commit 7b987887f97b ("video: fbdev: matroxfb: remove dead code
+and set but not used variable") the 'mnp' became unused, but eliminating
+that code might have side-effects. The question here is what should we do
+with 'mnp'? The easiest way out is just mark it with __maybe_unused which
+will shut the compiler up and won't change any possible IO flow. So does
+this change.
 
-Fix the calculation by adding the size of (CHUNKS - 1) full chunks
-plus DATA_LENGTH for the last chunk.
+A dive into the history of the driver:
 
-Fixes: 9ad9a52cce28 ("i3c/master: introduce the mipi-i3c-hci driver")
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260407-i3c-hci-dma-v2-1-a583187b9d22@aspeedtech.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+The problem was revealed when the #if 0 guarded code along with unused
+pixel_vco variable was removed. That code was introduced in the original
+commit 213d22146d1f ("[PATCH] (1/3) matroxfb for 2.5.3"). And then guarded
+in the commit 705e41f82988 ("matroxfb DVI updates: Handle DVI output on
+G450/G550. Powerdown unused portions of G450/G550 DAC. Split G450/G550 DAC
+from older DAC1064 handling. Modify PLL setting when both CRTCs use same
+pixel clocks.").
+
+NOTE: The two commits mentioned above pre-date Git era and available in
+history.git repository for archaeological purposes.
+
+Even without that guard the modern compilers may see that the pixel_vco
+wasn't ever used and seems a leftover after some debug or review made
+25 years ago.
+
+The g450_mnp2vco() doesn't have any IO and as Jason said doesn't seem
+to have any side effects either than some unneeded CPU processing during
+runtime. I agree that's unlikely that timeout (or heating up the CPU) has
+any effect on the HW (GPU/display) functionality.
+
+Fixes: 7b987887f97b ("video: fbdev: matroxfb: remove dead code and set but not used variable")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jason Yan <yanaijie@huawei.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/dma.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/matrox/g450_pll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
-index e270fcd0f7c38..624d00b853a51 100644
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -636,7 +636,10 @@ static void hci_dma_process_ibi(struct i3c_hci *hci, struct hci_rh_data *rh)
- 		if (!(ibi_status & IBI_LAST_STATUS)) {
- 			ibi_size += chunks * rh->ibi_chunk_sz;
- 		} else {
--			ibi_size += FIELD_GET(IBI_DATA_LENGTH, ibi_status);
-+			if (chunks) {
-+				ibi_size += (chunks - 1) * rh->ibi_chunk_sz;
-+				ibi_size += FIELD_GET(IBI_DATA_LENGTH, ibi_status);
-+			}
- 			last_ptr = ptr;
- 			break;
- 		}
+diff --git a/drivers/video/fbdev/matrox/g450_pll.c b/drivers/video/fbdev/matrox/g450_pll.c
+index ff8e321a22cef..b2d3f7328ea83 100644
+--- a/drivers/video/fbdev/matrox/g450_pll.c
++++ b/drivers/video/fbdev/matrox/g450_pll.c
+@@ -407,7 +407,7 @@ static int __g450_setclk(struct matrox_fb_info *minfo, unsigned int fout,
+ 		case M_VIDEO_PLL:
+ 			{
+ 				u_int8_t tmp;
+-				unsigned int mnp;
++				unsigned int mnp __maybe_unused;
+ 				unsigned long flags;
+ 				
+ 				matroxfb_DAC_lock_irqsave(flags);
 -- 
 2.53.0
 
