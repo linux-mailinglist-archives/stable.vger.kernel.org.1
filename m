@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-257719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258495-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNkmADQfG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257719-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:36 +0200
+	id SBujAwAoG2rM/ggAu9opvQ
+	(envelope-from <stable+bounces-258495-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FFE760FDF1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14766611234
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8AD203019522
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:25:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BAFF03014261
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 617D433F5A0;
-	Sat, 30 May 2026 17:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A54A3B9D80;
+	Sat, 30 May 2026 18:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbiUQPtD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSRgToOp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1D6334695;
-	Sat, 30 May 2026 17:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2055E31F98D;
+	Sat, 30 May 2026 18:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161943; cv=none; b=S4pnM6yKvzr2Pk0eoXCN7VTyL19IkWY9xrKLWz+FKOdEbDmUJeJZqq/OhqKc9xWdgRUHPWj4UiiuNHN0wXsYXfdl4tdJTxLvwLFu41HmPy2nCCOHpm/VvcgRVormF30dCDCqYBtJS6/zaDPhM6ehWK2AjehSnsele2gPJQDwp/c=
+	t=1780164542; cv=none; b=Ee4su9P1kAAV1wZNIIyQpEmn9Nk7r/sHmvaHH1jpccJtWo6Gc4armocndJfX9ziZB9szqF5qzEe+Cyh1acl71oSD+HSB7OCKRVLQMJDVcnbQeTGowtqrp3dHVUzyoe1bb7bpdIr/u5O+VPal9uRFW/gLbgxdh6IWUmJfc7ElvZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161943; c=relaxed/simple;
-	bh=NdIxStAn4ioEe9YwG25o8Z9CK/AcltMXKO9F8gqISKA=;
+	s=arc-20240116; t=1780164542; c=relaxed/simple;
+	bh=jtd9Tfd0frYLb/Nv5Y6akt1Q+kGD2xATAObzRvL8Aio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgnWrXmzlx4UdZpXRClUF45+Pf6PNb8/G3LQUF0YAOCZCkt4H7opPMduJvJzP8sQHUkvf58CNz01WYSVXrcdYIhkq1vulS3Ayd910VhehFwoxgIp70fLc3DGH/MALGU8NU/SPaUBC+hI2F13X7FdQcFEclW7uylFNM3pfMMmst4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbiUQPtD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819761F00898;
-	Sat, 30 May 2026 17:25:41 +0000 (UTC)
+	 MIME-Version; b=gTCTTiJHpOWO5j5nOrKxR1Uh/SSAzwhPysgaFsXdeNIiCwPcokRAUAxi1JKHzHkX63zxkVch5ftFtMRYu0H0skWoaR6IwW+H1xMTy53tWjmmnIX36RAjcmDNQ96mq9CwpjVX4L+Izz1QfhQSFPEEAbQ+RgISpcfBwyvM6PwNazA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSRgToOp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64EF11F00898;
+	Sat, 30 May 2026 18:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161942;
-	bh=B+H3DzcoPFvodWmFobDWnueXUwHFEUAOsxqG2l3ffl8=;
+	s=korg; t=1780164541;
+	bh=dYS2Z0nmHF/LRGcEcz2qkT4Ilq1zLROqNQJ2jAx2ezE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cbiUQPtDxnrCyYlkNVcwaBXoGIO4A/A5Pp4cRZFlFpWEQdPp8dfJsOf4Yj9SzBWHx
-	 7Py7zZ2hDaknXgxtlAWF9V1mKfZt2ELp0qzvqw2C9SVgt+VwUJsJbt1IjvZBnGHbjV
-	 64ZwN2JbPRT10xUF/1GejNPObdLSmfME2WXsn1TI=
+	b=fSRgToOptm1VPrd1dN8Jd6MC8vKszIyizvdIQUe+/woK0xv1sUfhs/3kLpNG5VJe3
+	 uh7W194FFZaDy6V+HOEP6kLi6Sfuty9r2auNmFd8oddlSS8HdJx7lUs3HhfYzq5DN8
+	 f1YjvmjzOWr4/Fk6SFmt+YnfQd1WU1vscYOl4aVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangdicheng <wangdicheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 774/969] ALSA: hda/conexant: Fix missing error check for jack detection
+Subject: [PATCH 5.15 584/776] net/rds: zero per-item info buffer before handing it to visitors
 Date: Sat, 30 May 2026 18:04:58 +0200
-Message-ID: <20260530160321.956661481@linuxfoundation.org>
+Message-ID: <20260530160255.171142280@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +66,145 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257719-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-258495-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email]
-X-Rspamd-Queue-Id: 8FFE760FDF1
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 14766611234
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangdicheng <wangdicheng@kylinos.cn>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit b0e2333a231107adedd38c6fcfe1adc6162716fc ]
+[ Upstream commit c88eb7e8d8397a8c1db59c425332c5a30b2a1682 ]
 
-In cx_probe(), the return value of snd_hda_jack_detect_enable_callback()
-is ignored. This function returns a pointer, and if it fails (e.g., due
-to memory allocation failure), it returns an error pointer which must
-be checked using IS_ERR().
+rds_for_each_conn_info() and rds_walk_conn_path_info() both hand a
+caller-allocated on-stack u64 buffer to a per-connection visitor and
+then copy the full item_len bytes back to user space via
+rds_info_copy() regardless of how much of the buffer the visitor
+actually wrote.
 
-If the registration fails, the driver continues to probe, but the jack
-detection callback will not be registered. This can lead to a kernel
-crash later when the driver attempts to handle jack events or accesses
-the uninitialized structure.
+rds_ib_conn_info_visitor() and rds6_ib_conn_info_visitor() only
+write a subset of their output struct when the underlying
+rds_connection is not in state RDS_CONN_UP (src/dst addr, tos, sl
+and the two GIDs via explicit memsets). Several u32 fields
+(max_send_wr, max_recv_wr, max_send_sge, rdma_mr_max, rdma_mr_size,
+cache_allocs) and the 2-byte alignment hole between sl and
+cache_allocs remain as whatever stack contents preceded the visitor
+call and are then memcpy_to_user()'d out to user space.
 
-Check the return value using IS_ERR() and propagate the error via
-PTR_ERR() to the probe caller.
+struct rds_info_rdma_connection and struct rds6_info_rdma_connection
+are the only rds_info_* structs in include/uapi/linux/rds.h that are
+not marked __attribute__((packed)), so they have a real alignment
+hole. The other info visitors (rds_conn_info_visitor,
+rds6_conn_info_visitor, rds_tcp_tc_info, ...) write all fields of
+their packed output struct today and are not known to be vulnerable,
+but a future visitor that adds a conditional write-path would have
+the same bug.
 
-Fixes: 7aeb25908648 ("ALSA: hda/conexant: Fix headset auto detect fail in cx8070 and SN6140")
-Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
-Link: https://patch.msgid.link/20260428080450.108801-1-wangdich9700@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reproduction on a kernel built without CONFIG_INIT_STACK_ALL_ZERO=y:
+a local unprivileged user opens AF_RDS, sets SO_RDS_TRANSPORT=IB,
+binds to a local address on an RDMA-capable netdev (rxe soft-RoCE on
+any netdev is sufficient), sendto()'s any peer on the same subnet
+(fails cleanly but installs an rds_connection in the global hash in
+RDS_CONN_CONNECTING), then calls getsockopt(SOL_RDS,
+RDS_INFO_IB_CONNECTIONS). The returned 68-byte item contains 26
+bytes of stack garbage including kernel text/data pointers:
+
+    0..7   0a 63 00 01 0a 63 00 02     src=10.99.0.1 dst=10.99.0.2
+    8..39  00 ...                      gids (memset-zeroed)
+    40..47 e0 92 a3 81 ff ff ff ff     kernel pointer (max_send_wr)
+    48..55 7f 37 b5 81 ff ff ff ff     kernel pointer (rdma_mr_max)
+    56..59 01 00 08 00                 rdma_mr_size (garbage)
+    60..61 00 00                       tos, sl
+    62..63 00 00                       alignment padding
+    64..67 18 00 00 00                 cache_allocs (garbage)
+
+Fix by zeroing the per-item buffer in both rds_for_each_conn_info()
+and rds_walk_conn_path_info() before invoking the visitor. This
+covers the IPv4/IPv6 IB visitors and hardens all current and future
+visitors against the same class of bug.
+
+No functional change for visitors that fully populate their output.
+
+Changes in v2:
+- retarget at the net tree (subject prefix "[PATCH net v2]",
+  net/rds: prefix in the title)
+- pick up Reviewed-by tags from Sharath Srinivasan and
+  Allison Henderson
+
+Fixes: ec16227e1414 ("RDS/IB: Infiniband transport")
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Reviewed-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Assisted-by: Claude:claude-opus-4-7
+Link: https://patch.msgid.link/20260418141047.3398203-1-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/rds/connection.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index 7aeaccc9189c8..82186c4364c9b 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -1199,6 +1199,7 @@ static void add_cx5051_fake_mutes(struct hda_codec *codec)
- static int patch_conexant_auto(struct hda_codec *codec)
- {
- 	struct conexant_spec *spec;
-+	struct hda_jack_callback *callback;
- 	int err;
+diff --git a/net/rds/connection.c b/net/rds/connection.c
+index 98c0d5ff9de9c..cd41f83863c89 100644
+--- a/net/rds/connection.c
++++ b/net/rds/connection.c
+@@ -673,6 +673,13 @@ void rds_for_each_conn_info(struct socket *sock, unsigned int len,
+ 	     i++, head++) {
+ 		hlist_for_each_entry_rcu(conn, head, c_hash_node) {
  
- 	codec_info(codec, "%s: BIOS auto-probing.\n", codec->core.chip_name);
-@@ -1215,7 +1216,12 @@ static int patch_conexant_auto(struct hda_codec *codec)
- 	case 0x14f11f86:
- 	case 0x14f11f87:
- 		spec->is_cx11880_sn6140 = true;
--		snd_hda_jack_detect_enable_callback(codec, 0x19, cx_update_headset_mic_vref);
-+		callback = snd_hda_jack_detect_enable_callback(codec, 0x19,
-+				cx_update_headset_mic_vref);
-+		if (IS_ERR(callback)) {
-+			err = PTR_ERR(callback);
-+			goto error;
-+		}
- 		break;
- 	}
++			/* Zero the per-item buffer before handing it to the
++			 * visitor so any field the visitor does not write -
++			 * including implicit alignment padding - cannot leak
++			 * stack contents to user space via rds_info_copy().
++			 */
++			memset(buffer, 0, item_len);
++
+ 			/* XXX no c_lock usage.. */
+ 			if (!visitor(conn, buffer))
+ 				continue;
+@@ -722,6 +729,13 @@ static void rds_walk_conn_path_info(struct socket *sock, unsigned int len,
+ 			 */
+ 			cp = conn->c_path;
  
++			/* Zero the per-item buffer for the same reason as
++			 * rds_for_each_conn_info(): any byte the visitor
++			 * does not write (including alignment padding) must
++			 * not leak stack contents via rds_info_copy().
++			 */
++			memset(buffer, 0, item_len);
++
+ 			/* XXX no cp_lock usage.. */
+ 			if (!visitor(cp, buffer))
+ 				continue;
 -- 
 2.53.0
 
