@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMiXNh8kG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:35 +0200
+	id uML0MJ0bG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B750C61096D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F62660F504
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8CB50300AB1A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:53:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E0ECD30F5D68
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FDC3AEB5C;
-	Sat, 30 May 2026 17:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062B8481DD;
+	Sat, 30 May 2026 17:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smzRwTds"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KznRchGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63589320CAD;
-	Sat, 30 May 2026 17:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16FC3AFCFB;
+	Sat, 30 May 2026 17:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163579; cv=none; b=jsW9veebH4mLQjbr8JjiDvgSAgMy21hNTaFmLSaNu4AU98WnSvQUe0e7tT/yzpuuxd2tbxjXD2zGwpMxdsLY6Ox86eWY0vgL4Ouwo//E+mHdEw/3yh6wA2Hs6mq+HF4zhMMynVLFBsRWezya2oTyqSx1dS/AIySW20qGcewJLko=
+	t=1780160953; cv=none; b=RZAXhDGL8vphx4ilA3igkYyVS7gA2ZsKLC+qA13zMbKPAwKNdN46WvloxEwktWe5f5CjK5Bt5uUtr1lNJu29NEbD15U8Vex7cqyv69NWvRLDy8OL5RJBXjTU1/lpVMPlRD7RBwbRiQZBeXtradyTu6RsPR5Tv0q+Ja6XAk4OoXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163579; c=relaxed/simple;
-	bh=MRdTwtXI/M8uJg75A5Ld7fDVnEktZqLEAMAPfewTO0Y=;
+	s=arc-20240116; t=1780160953; c=relaxed/simple;
+	bh=mUvOx+MaaLjZ5LmLNlRMGEQs5liWWgKLwBalP8ZFaBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XC9D96BMBBWWuh3n7N+dNEusFK+g4IjelETdsnNsAf9gBmtK+qLdBuZHlbBwm74gMBppphDXEzt4wjwlMvjT3vSkOnyviZHklvSPxAAfIilcRUTYHeuy3no/aa974q4+w14gKNlKothXLfIrqM+AVK0MdWFXK+sPhIw9guCsmIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smzRwTds; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66FC1F00893;
-	Sat, 30 May 2026 17:52:57 +0000 (UTC)
+	 MIME-Version; b=NIx0F1sS28PnO/VDfY2H8RH2mq5Ubo3klgxXlOUuQ2sxQMVeH3tGk3OIr8XXIbM+kuUuQJ69Ual916TwZ0OIf8mAeZWR/tkWkZqu/sdqp2GS14DwGXm06Jrhsy05FGSSaK4P8G7+EwMLjEi05EQ6ufPf7oTVxukUKtJgmJo6Ifs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KznRchGQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED52A1F00893;
+	Sat, 30 May 2026 17:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163578;
-	bh=GE6BTOateg2O+st+ageyD55D+p/5HjAAdtOQAqVl8II=;
+	s=korg; t=1780160952;
+	bh=rUC46mSl69a5od/KAs/WqW9k+ZXdtrLJo78WGUkRGRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=smzRwTds1e5dI6TmGfC8uILCbbr+h9NQkHEJvuitJ0Rg3Ke2ZiT1xsTOnjg2tASno
-	 mTIVYOhIuQ6TYy8NtS6cvbXdY2ePwYcE9Li4ivkxekFvXt47e+M0X6aOXfvf9mNN6p
-	 mTvz2WoUjKaaWQEIOm7/mDlNUT63kL+8Vc5H4dik=
+	b=KznRchGQedW6uBe+SZ1sEtG8y2oe1A+qe8GtYjiI2LFlQX4Z+cPEqf5I+Jp0aChUO
+	 KR+VDMMsse9OeYfDbaLxvOuFMCNzS24gwBehxvtWNwaAHR7DTNZs6orU3gS0buJCDX
+	 J4HWyo8vB86k+sCAhrRKZNql0E5uFGd2IBzSSOJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pete Zaitcev <zaitcev@redhat.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 293/776] usb: usblp: fix heap leak in IEEE 1284 device ID via short response
+	Taegu Ha <hataegu0826@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 483/969] ppp: require CAP_NET_ADMIN in target netns for unattached ioctls
 Date: Sat, 30 May 2026 18:00:07 +0200
-Message-ID: <20260530160248.131326810@linuxfoundation.org>
+Message-ID: <20260530160313.641061670@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +69,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258209-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257425-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B750C61096D
+X-Rspamd-Queue-Id: 5F62660F504
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Taegu Ha <hataegu0826@gmail.com>
 
-commit 7a400c6fe3617e31e690e3f7ca37bb335e0498f3 upstream.
+[ Upstream commit 2bb6379416fd19f44c3423a00bfd8626259f6067 ]
 
-usblp_ctrl_msg() collapses the usb_control_msg() return value to
-0/-errno, discarding the actual number of bytes transferred.  A broken
-printer can complete the GET_DEVICE_ID control transfer short and the
-driver has no way to know.
+/dev/ppp open is currently authorized against file->f_cred->user_ns,
+while unattached administrative ioctls operate on current->nsproxy->net_ns.
 
-usblp_cache_device_id_string() reads the 2-byte big-endian length prefix
-from the response and trusts it (clamped only to the buffer bounds).
-The buffer is kmalloc(1024) at probe time. A device that sends exactly
-two bytes (e.g. 0x03 0xFF, claiming a 1023-byte ID) leaves
-device_id_string[2..1022] holding stale kmalloc heap.
+As a result, a local unprivileged user can create a new user namespace
+with CLONE_NEWUSER, gain CAP_NET_ADMIN only in that new user namespace,
+and still issue PPPIOCNEWUNIT, PPPIOCATTACH, or PPPIOCATTCHAN against
+an inherited network namespace.
 
-That stale data is then exposed:
-  - via the ieee1284_id sysfs attribute (sprintf("%s", buf+2), truncated
-    at the first NUL in the stale heap), and
-  - via the IOCNR_GET_DEVICE_ID ioctl, which copy_to_user()s the full
-    claimed length regardless of NULs, up to 1021 bytes of uninitialized
-    heap, with the leak size chosen by the device.
+Require CAP_NET_ADMIN in the user namespace that owns the target network
+namespace before handling unattached PPP administrative ioctls.
 
-Fix this up by just zapping the buffer with zeros before each request
-sent to the device.
+This preserves normal pppd operation in the network namespace it is
+actually privileged in, while rejecting the userns-only inherited-netns
+case.
 
-Cc: Pete Zaitcev <zaitcev@redhat.com>
-Assisted-by: gkh_clanker_t1000
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/2026042002-unicorn-greedily-3c63@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 273ec51dd7ce ("net: ppp_generic - introduce net-namespace functionality v2")
+Signed-off-by: Taegu Ha <hataegu0826@gmail.com>
+Link: https://patch.msgid.link/20260409071117.4354-1-hataegu0826@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/usblp.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ppp/ppp_generic.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/class/usblp.c
-+++ b/drivers/usb/class/usblp.c
-@@ -1365,6 +1365,7 @@ static int usblp_cache_device_id_string(
- {
- 	int err, length;
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index f184368d5c5e7..89973d0959a68 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -1062,6 +1062,9 @@ static int ppp_unattached_ioctl(struct net *net, struct ppp_file *pf,
+ 	struct ppp_net *pn;
+ 	int __user *p = (int __user *)arg;
  
-+	memset(usblp->device_id_string, 0, USBLP_DEVICE_ID_SIZE);
- 	err = usblp_get_id(usblp, 0, usblp->device_id_string, USBLP_DEVICE_ID_SIZE - 1);
- 	if (err < 0) {
- 		dev_dbg(&usblp->intf->dev,
++	if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
++		return -EPERM;
++
+ 	switch (cmd) {
+ 	case PPPIOCNEWUNIT:
+ 		/* Create a new ppp unit */
+-- 
+2.53.0
+
 
 
 
