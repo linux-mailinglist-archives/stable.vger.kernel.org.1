@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-256997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8ASMH70QG2q/+ggAu9opvQ
-	(envelope-from <stable+bounces-256997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:53 +0200
+	id YNJtLWUQG2q/+ggAu9opvQ
+	(envelope-from <stable+bounces-256998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:29:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2CDD60E34C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE0260E2F0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:29:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C4D18304AF88
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:29:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8AE093002B69
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43A4346A04;
-	Sat, 30 May 2026 16:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D163341AC7;
+	Sat, 30 May 2026 16:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="InDEItsx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkTyNnhG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F4A34104B;
-	Sat, 30 May 2026 16:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC0933F8A4;
+	Sat, 30 May 2026 16:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780158548; cv=none; b=lfx81n0EiTI4spN69S0NM83VKcuX/6Yy9JPSg6LLrl9skWOvj0s8rrFQS1Dc6yCWGVSUAquyqAuIbgnPuILJebGEAB4T2f2HjvU82Nofr47Ir8GLvNG1YcHIVXhUGP9Gg2MslrE80un5w9QBQpj9CPDHfFgUd4W0zK0XoiiBvqo=
+	t=1780158559; cv=none; b=mCHrDR+rlRzooCLqcrXACwdz5/f54kMSpTWh2Ljs+YTZ7eXer/twCElAOVjHiSSqoFU4Qf/FzyJSGC+AFpgw5kUdTBwM2ROaCzSPpN/uw+P7g2TBwsm5luPV9YEkJnJB5LXhOduhC7zeTK93IruHM0GfWIeKiza5qTOJFqo0N84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780158548; c=relaxed/simple;
-	bh=05Eya/EBDtoXIuSegbfIN2nFrZdn9VDYP+m+0PAgxtQ=;
+	s=arc-20240116; t=1780158559; c=relaxed/simple;
+	bh=gSopnPRNNlRFcgWWs+ShXMeN75UsUE1PuPfb15AWCms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IoTYsh6XB4l2TTIZJS+1DUXjuvafIyCUoqY9EDZkhmM61q1mKh/eU+E0qtBSIQrJLt9NhBklUI0Rp788EqrCsCQqxyJVhFWQV1SOyoVRQsU8dmQp7TLP9DTEs0nv/x+rqhJTwxXSfMtSFR9KD5w1gE5A2IqDLrB/a7ChxW8OiPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InDEItsx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564C11F00893;
-	Sat, 30 May 2026 16:29:04 +0000 (UTC)
+	 MIME-Version; b=CCe9BxdkGJQ1jh8bIU3VK5mvuBdVvk4b03rM2/jF4d9pZCCJx5TEYbgdZobZCthQmzehn5YX0Xe6Ucf2YYNUI9Fkr972HJnhWckJftEY7lFvA0jHnYAELnKGtmdx7gSs/DGSri2Fq6eTmGvnIYL+oFGnG0XW3uZ8WsFkVxOWKAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkTyNnhG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9BE1F00893;
+	Sat, 30 May 2026 16:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780158547;
-	bh=CDC9TD84QTRA7BOZPoL6nk12qfsNcv+B12O2Es1BKxQ=;
+	s=korg; t=1780158558;
+	bh=x34wlP6I+PBV2D390VWGQdtSzkKBn0O4ahLDtsLD1/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=InDEItsxmsLACBcW1XACVKCu0h8cB69hwa5Fwk4wH4V/vQIrzRXXJo/AxXOzOaXeE
-	 kQjQcy2FeJtY11Y9IXLHrGdxOgXgKJfZ+y8ADrfghrWP45f0mvbkVqHHDi5yBaegCK
-	 1IC6GrgJ/EhGuzAuHmlw3nqBnJnETTQCnlCDYd6U=
+	b=NkTyNnhGl7a34xfO6CfmK74VGZ8svtFYy6aR8ZE/o+XcBrTkICGvc1YzvMIfE2qWG
+	 5VTuzjzPuRGHdDcQVz9xo0OMli9Wzdjnp0eew4yg4fdcy0GKvmG0kljgkmQos6H1rh
+	 2Bs6SSNnr1k8e2h+yOvbKHzYbalrsfC53XIpEibI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	linux-input@vger.kernel.org,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.1 061/969] HID: core: clamp report_size in s32ton() to avoid undefined shift
-Date: Sat, 30 May 2026 17:53:05 +0200
-Message-ID: <20260530160302.067582740@linuxfoundation.org>
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 062/969] net: usb: cdc-phonet: fix skb frags[] overflow in rx_complete()
+Date: Sat, 30 May 2026 17:53:06 +0200
+Message-ID: <20260530160302.095398848@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -66,34 +67,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-256998-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256997-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: F2CDD60E34C
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email]
+X-Rspamd-Queue-Id: BDE0260E2F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,47 +105,53 @@ X-Rspamd-Server: lfdr
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 69c02ffde6ed4d535fa4e693a9e572729cad3d0d upstream.
+commit 600dc40554dc5ad1e6f3af51f700228033f43ea7 upstream.
 
-s32ton() shifts by n-1 where n is the field's report_size, a value that
-comes directly from a HID device.  The HID parser bounds report_size
-only to <= 256, so a broken HID device can supply a report descriptor
-with a wide field that triggers shift exponents up to 256 on a 32-bit
-type when an output report is built via hid_output_field() or
-hid_set_field().
+A malicious USB device claiming to be a CDC Phonet modem can overflow
+the skb_shared_info->frags[] array by sending an unbounded sequence of
+full-page bulk transfers.
 
-Commit ec61b41918587 ("HID: core: fix shift-out-of-bounds in
-hid_report_raw_event") added the same n > 32 clamp to the function
-snto32(), but s32ton() was never given the same fix as I guess syzbot
-hadn't figured out how to fuzz a device the same way.
+Drop the skb and increment the length error when the frag limit is
+reached.  This matches the same fix that commit f0813bcd2d9d ("net:
+wwan: t7xx: fix potential skb->frags overflow in RX path") did for the
+t7xx driver.
 
-Fix this up by just clamping the max value of n, just like snto32()
-does.
-
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
 Cc: stable <stable@kernel.org>
-Cc: Jiri Kosina <jikos@kernel.org>
-Cc: Benjamin Tissoires <bentiss@kernel.org>
-Cc: linux-input@vger.kernel.org
 Assisted-by: gregkh_clanker_t1000
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Link: https://patch.msgid.link/2026041134-dreamboat-buddhism-d1ec@gregkh
+Fixes: 87cf65601e17 ("USB host CDC Phonet network interface driver")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/cdc-phonet.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1358,6 +1358,9 @@ static u32 s32ton(__s32 value, unsigned
- 	if (!value || !n)
- 		return 0;
- 
-+	if (n > 32)
-+		n = 32;
-+
- 	a = value >> (n - 1);
- 
- 	if (a && a != -1)
+--- a/drivers/net/usb/cdc-phonet.c
++++ b/drivers/net/usb/cdc-phonet.c
+@@ -157,11 +157,16 @@ static void rx_complete(struct urb *req)
+ 						PAGE_SIZE);
+ 				page = NULL;
+ 			}
+-		} else {
++		} else if (skb_shinfo(skb)->nr_frags < MAX_SKB_FRAGS) {
+ 			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+ 					page, 0, req->actual_length,
+ 					PAGE_SIZE);
+ 			page = NULL;
++		} else {
++			dev_kfree_skb_any(skb);
++			pnd->rx_skb = NULL;
++			skb = NULL;
++			dev->stats.rx_length_errors++;
+ 		}
+ 		if (req->actual_length < PAGE_SIZE)
+ 			pnd->rx_skb = NULL; /* Last fragment */
 
 
 
