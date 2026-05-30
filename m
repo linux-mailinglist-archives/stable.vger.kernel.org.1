@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-257639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCKvC+IdG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:58 +0200
+	id ENmrJPkdG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DB560FB11
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10AD360FB28
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6FFDB307CDAB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:21:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 58952308B7E4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B82E263F44;
-	Sat, 30 May 2026 17:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88CC33FE15;
+	Sat, 30 May 2026 17:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnPIGyR7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fj1d5SGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E8C33E36A;
-	Sat, 30 May 2026 17:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC8D3242D7;
+	Sat, 30 May 2026 17:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161676; cv=none; b=Tz8qErQJfapgyLUTLM4PqCDYx5zXvkpyCf2X1PhB/pCiNBbN7vIGId3gZRBKvEU9Om5c1d9nm8q1W2FCEy7uvfFqfZeF5gw0pVeTnleAylB1Kkl8xyhQM8OQSqctZtJAJUovnpcXyfQUJuzSXRtJpLf9xfpdJd13jYZlfH4x9dQ=
+	t=1780161682; cv=none; b=vEyPsI+owLxjKpTIqoSssnYjLyqRRlabr7fNvawYAqn+lvof9e79gatcbd6wgYDRUjLGZH5YyP3EZ/6CyL8Iv1dk3GAHmyVsWVfygOR73lJfKcHItXZwzv2Y1vzALKrUi/ePT9XSG16MkBumoxXvxxELKrIzwqdVcGuiiXuQxYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161676; c=relaxed/simple;
-	bh=K1pPmuplptRng2H0CV5zU3gY8QTtBXaAP5HbdRjs4Us=;
+	s=arc-20240116; t=1780161682; c=relaxed/simple;
+	bh=egDFBmb/WpkI+ah4Tbcl6OxVOExttMcYzmLu9Z0LmKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CLnOWmDAPGP/7W+ZVDUBXtd1jGwMZtOUiUdsY16ynLfoT6VLMZV1QQoSBlCWWkPiUIFhJAZHAhZEsIU1j4fN4k821S1xmTZzGCAJOdIA/qYAKmyBElrCEtENxJxQgmCuPbi7+Ejw4ukwHQ2m98rM+Wv8OjES0gO5L7C3WR0zgmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnPIGyR7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010E01F00893;
-	Sat, 30 May 2026 17:21:13 +0000 (UTC)
+	 MIME-Version; b=bW9/TfEhc3YEaagFfSSttTu1zWYcANqFMgoNzAfMPLQOQY/92yGJPDslNB83FC2qMFC7UjbDIlQPlbOFFUaa9XJ+96tzxlw+Ofh7JW3wNwk4ZFk90A/emu9H/VPTxldSKiJmfTy0Iqjyip+/cudy+3PvTBGaTLE2tT3Xiriheqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fj1d5SGQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A261F00898;
+	Sat, 30 May 2026 17:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161675;
-	bh=rRCyWsiKTtboVfzUZZXJEtCDn3Hoh9PN9xsyoCRkGl4=;
+	s=korg; t=1780161681;
+	bh=t3OdX4m1qdN+bu7ylPmF/uKYum2GkP/bUhy6W4a2KFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mnPIGyR7uvuprihSr7UX2A/VToN3p3adwLtYeFgggSN+9GvGP3xdOBr288yHvQxYd
-	 4zWlCPOUQAcDPe+WRj/Qs7qMdjsv1THiNQANDpCfjJl5mbjHm2AevI+bQtpIIx1kwe
-	 yUdC0p3dw4DgOeRtWPsSbLFoyDciDuKcjl7MeME4=
+	b=fj1d5SGQUraaGPKEJaHQPzk3KyAGWOc+LIOBMNr/SbWlNbfkOCmxcTrJuU6fXJ+D3
+	 W05UwU+zxwnwZctsPhl7+M+oMBpEXcj/91KHJ/XiIkIKeDop0OyDH+jFm2n4L00qev
+	 I7GUXWIh2Y3s+IFaGCKtPzQ4etXMQUmqiyJCyImI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
+	Kohei Enju <kohei@enjuk.jp>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 693/969] tcp: annotate data-races around (tp->write_seq - tp->snd_nxt)
-Date: Sat, 30 May 2026 18:03:37 +0200
-Message-ID: <20260530160319.647422297@linuxfoundation.org>
+Subject: [PATCH 6.1 694/969] i40e: dont advertise IFF_SUPP_NOFCS
+Date: Sat, 30 May 2026 18:03:38 +0200
+Message-ID: <20260530160319.675582722@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -66,31 +69,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257639-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257641-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D9DB560FB11
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,enjuk.jp:email]
+X-Rspamd-Queue-Id: 10AD360FB28
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,38 +102,51 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kohei Enju <kohei@enjuk.jp>
 
-[ Upstream commit 3a63b3d160560ef51e43fb4c880a5cde8078053c ]
+[ Upstream commit a24162f18825684ad04e3a5d0531f8a50d679347 ]
 
-tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE() annotations to keep KCSAN happy.
+i40e advertises IFF_SUPP_NOFCS, allowing users to use the SO_NOFCS
+socket option. However, this option is silently ignored, as the driver
+does not check skb->no_fcs, and always enables FCS insertion offload.
 
-WRITE_ONCE() annotations are already present.
+Fix this by removing the advertisement of IFF_SUPP_NOFCS.
 
-Fixes: e08ab0b377a1 ("tcp: add bytes not sent to SCM_TIMESTAMPING_OPT_STATS")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-14-edumazet@google.com
+This behavior can be reproduced with a simple AF_PACKET socket:
+
+  import socket
+  s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW)
+  s.setsockopt(socket.SOL_SOCKET, 43, 1) # SO_NOFCS
+  s.bind(("eth0", 0))
+  s.send(b'\xff' * 64)
+
+Previously, send() succeeds but the driver ignores SO_NOFCS.
+With this change, send() fails with -EPROTONOSUPPORT, as expected.
+
+Fixes: 41c445ff0f48 ("i40e: main driver core")
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-9-686c33c9828d@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 518b439531b16..076aa73c99fa8 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4117,7 +4117,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
- 	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
- 	nla_put_u32(stats, TCP_NLA_BYTES_NOTSENT,
--		    max_t(int, 0, tp->write_seq - tp->snd_nxt));
-+		    max_t(int, 0,
-+			  READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_nxt)));
- 	nla_put_u64_64bit(stats, TCP_NLA_EDT, orig_skb->skb_mstamp_ns,
- 			  TCP_NLA_PAD);
- 	if (ack_skb)
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index be4471072fe28..a1a0e7c9fb7f2 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -13864,7 +13864,6 @@ static int i40e_config_netdev(struct i40e_vsi *vsi)
+ 	netdev->neigh_priv_len = sizeof(u32) * 4;
+ 
+ 	netdev->priv_flags |= IFF_UNICAST_FLT;
+-	netdev->priv_flags |= IFF_SUPP_NOFCS;
+ 	/* Setup netdev TC information */
+ 	i40e_vsi_config_netdev_tc(vsi, vsi->tc_config.enabled_tc);
+ 
 -- 
 2.53.0
 
