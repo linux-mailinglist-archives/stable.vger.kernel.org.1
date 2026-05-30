@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259099-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLdbHVMqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258493-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:03 +0200
+	id yPg3G9UvG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259099-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4FA9611800
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4B3612588
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B844A30528A4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6F8083013B92
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B42B3BFE4D;
-	Sat, 30 May 2026 18:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA4B331A56;
+	Sat, 30 May 2026 18:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5LLF4JG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBEFuEsP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9B93191D0;
-	Sat, 30 May 2026 18:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244332F6184;
+	Sat, 30 May 2026 18:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164535; cv=none; b=nf/uFpvpSHqN7gApe1+lwlt/iYZWvNgqBEymw4O7MshBOJh9AlZ6yaTuCTXyB8ziDdmsfFX2csHftDPes8xFw6mjKNxuzyAx7a+ybmd9KQAHbuuxq2rZO9yvsG3JZBgqbmgsoSMgQSLgHWrBLKT6GLGsfvlXHe14h5hl1SbYVzw=
+	t=1780166609; cv=none; b=ugtpYcL6AKyWmlIy9BJ/RKeJPB4k0PgamlGPS2tFNN/K6z+Osw963rwkt+e2b9cF+aNKqKn4cBCwJRlFDYaQynq9DCraCsm3XdZ1JPYFIYn49s7MzYpa1veP4eyuNVyG9TmSCQ04d2GGObIgtwSIAqUeEFk1hIvxtAZ0F4tjmCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164535; c=relaxed/simple;
-	bh=p671LR28dbrt0TD0MTJXYK5uu4O/KnkcLbX6/Ih3n1w=;
+	s=arc-20240116; t=1780166609; c=relaxed/simple;
+	bh=f/QGURznALl3Et2/eBv88PWf/dGNamZzpbhjd3+DlxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tUhkpSy0ZqFIenfsegr4C0eqMlQtbV2Oa/PYwaguxNwWjCKA+qySe5Eb8zHdQSGnRMfBIyjXXIX7uXPfh5Gg5yQ898UGzJ1mY/wK8CTTDgBqAJqpbZY8mu09qV2ioD08gVXXz4YDQdEZg4yBp1E0VA3Vk6c0RybzpNuFFr1oEak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5LLF4JG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909701F00893;
-	Sat, 30 May 2026 18:08:53 +0000 (UTC)
+	 MIME-Version; b=lyShUNr1+k5RB3bPLbDFk0VXpC9JAhvqnkjLnKTLsyEPC9jH9ns8qQwzrXDzVjkcPyxuY1YNLiYl8ofOfbDE4AKFtEt4HR62bhawE6sKJVVj5YuGUvNKuYc6Z9/mFsYu7X+QwjjTA2/Lvp9F3L1UMOcqBEhyEmkbHIrL3nVNAxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBEFuEsP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298111F00893;
+	Sat, 30 May 2026 18:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164534;
-	bh=BbyE6iEFmsLqBv/MPTxq+/w8cO0yvRXZFRz6iYcdpIk=;
+	s=korg; t=1780166607;
+	bh=AgedMDAmjdG7Jx6U86VE3t11YX/JaD/3+Fa3z4IhL88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s5LLF4JGa9IztVrZ9YHREqbeHspAyDo1deXFBpWpXk+pt45DGTeJE5iYKvpHPpbvA
-	 RGUHuVtJeIdR+cZBxyZ7PLdHcekDUOH+ofV2Zm4wk9SSJ/5irYn8czA4/EZkW9Wxts
-	 khF4Z4cUXvSfXokWHIM+GTyoy0YdY73d9MZkejiM=
+	b=nBEFuEsPKYtbbVufVMa1BUzDKhwUppaAptVRIaHCh1WOsGU8TiYehqqzmk/0Kx6db
+	 ZlLhQ80DmDNSCnPZTuGUl0rLMYwkHuZcpWhyIUq8KrivFNozk9JN2I/a+8qYN+YfFC
+	 mOFLnTDa+Dy4ceSx5j9eJfWV+tH0kc8mK8XvcfSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Yannick Vignon <yannick.vignon@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 583/776] ksmbd: scope conn->binding slowpath to bound sessions only
+Subject: [PATCH 5.10 416/589] net: taprio offload: enforce qdisc to netdev queue mapping
 Date: Sat, 30 May 2026 18:04:57 +0200
-Message-ID: <20260530160255.149057278@linuxfoundation.org>
+Message-ID: <20260530160235.683662456@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +68,199 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-258493-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-259099-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E4FA9611800
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,nxp.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2D4B3612588
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Yannick Vignon <yannick.vignon@nxp.com>
 
-[ Upstream commit b0da97c034b6107d14e537e212d4ce8b22109a58 ]
+[ Upstream commit 13511704f8d7591faf19fdb84f0902dff0535ccb ]
 
-When the binding SESSION_SETUP sets conn->binding = true, the flag stays
-set after the call so that the global session lookup in
-ksmbd_session_lookup_all() can find the session, which was not added to
-conn->sessions. Because the flag is connection-wide, the global lookup
-path will also resolve any other session by id if asked.
+Even though the taprio qdisc is designed for multiqueue devices, all the
+queues still point to the same top-level taprio qdisc. This works and is
+probably required for software taprio, but at least with offload taprio,
+it has an undesirable side effect: because the whole qdisc is run when a
+packet has to be sent, it allows packets in a best-effort class to be
+processed in the context of a task sending higher priority traffic. If
+there are packets left in the qdisc after that first run, the NET_TX
+softirq is raised and gets executed immediately in the same process
+context. As with any other softirq, it runs up to 10 times and for up to
+2ms, during which the calling process is waiting for the sendmsg call (or
+similar) to return. In my use case, that calling process is a real-time
+task scheduled to send a packet every 2ms, so the long sendmsg calls are
+leading to missed timeslots.
 
-Tighten the global lookup so that the returned session must have this
-connection registered in its channel xarray (sess->ksmbd_chann_list).
-The channel entry is installed by the existing binding_session path in
-ntlm_authenticate()/krb5_authenticate() when a SESSION_SETUP completes
-successfully, so this condition is a strict equivalent of "this
-connection has been accepted as a channel of this session". Connections
-that have not bound to a given session cannot reach it via the global
-table.
+By attaching each netdev queue to its own qdisc, as it is done with
+the "classic" mq qdisc, each traffic class can be processed independently
+without touching the other classes. A high-priority process can then send
+packets without getting stuck in the sendmsg call anymore.
 
-The existing conn->binding gate for entering the slowpath is preserved
-so that non-binding connections keep the fast-path-only behavior, and
-the session->state check is unchanged.
-
-Fixes: f5a544e3bab7 ("ksmbd: add support for SMB3 multichannel")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Yannick Vignon <yannick.vignon@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 105425b1969c ("net/sched: taprio: fix use-after-free in advance_sched() on schedule switch")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/mgmt/user_session.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/sched/sch_taprio.c | 85 ++++++++++++++++++++++--------------------
+ 1 file changed, 45 insertions(+), 40 deletions(-)
 
-diff --git a/fs/ksmbd/mgmt/user_session.c b/fs/ksmbd/mgmt/user_session.c
-index 23a0662bbfd32..b6b6572d402d3 100644
---- a/fs/ksmbd/mgmt/user_session.c
-+++ b/fs/ksmbd/mgmt/user_session.c
-@@ -301,8 +301,13 @@ struct ksmbd_session *ksmbd_session_lookup_all(struct ksmbd_conn *conn,
- 	struct ksmbd_session *sess;
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 66348b1083ed5..a92dab2fa6ff4 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -443,6 +443,11 @@ static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct Qdisc *child;
+ 	int queue;
  
- 	sess = ksmbd_session_lookup(conn, id);
--	if (!sess && conn->binding)
-+	if (!sess && conn->binding) {
- 		sess = ksmbd_session_lookup_slowpath(id);
-+		if (sess && !xa_load(&sess->ksmbd_chann_list, (long)conn)) {
-+			ksmbd_user_session_put(sess);
-+			sess = NULL;
-+		}
++	if (unlikely(FULL_OFFLOAD_IS_ENABLED(q->flags))) {
++		WARN_ONCE(1, "Trying to enqueue skb into the root of a taprio qdisc configured with full offload\n");
++		return qdisc_drop(skb, sch, to_free);
 +	}
- 	if (sess && sess->state != SMB2_SESSION_VALID) {
- 		ksmbd_user_session_put(sess);
- 		sess = NULL;
++
+ 	queue = skb_get_queue_mapping(skb);
+ 
+ 	child = q->qdiscs[queue];
+@@ -534,23 +539,7 @@ static struct sk_buff *taprio_peek_soft(struct Qdisc *sch)
+ 
+ static struct sk_buff *taprio_peek_offload(struct Qdisc *sch)
+ {
+-	struct taprio_sched *q = qdisc_priv(sch);
+-	struct net_device *dev = qdisc_dev(sch);
+-	struct sk_buff *skb;
+-	int i;
+-
+-	for (i = 0; i < dev->num_tx_queues; i++) {
+-		struct Qdisc *child = q->qdiscs[i];
+-
+-		if (unlikely(!child))
+-			continue;
+-
+-		skb = child->ops->peek(child);
+-		if (!skb)
+-			continue;
+-
+-		return skb;
+-	}
++	WARN_ONCE(1, "Trying to peek into the root of a taprio qdisc configured with full offload\n");
+ 
+ 	return NULL;
+ }
+@@ -659,27 +648,7 @@ static struct sk_buff *taprio_dequeue_soft(struct Qdisc *sch)
+ 
+ static struct sk_buff *taprio_dequeue_offload(struct Qdisc *sch)
+ {
+-	struct taprio_sched *q = qdisc_priv(sch);
+-	struct net_device *dev = qdisc_dev(sch);
+-	struct sk_buff *skb;
+-	int i;
+-
+-	for (i = 0; i < dev->num_tx_queues; i++) {
+-		struct Qdisc *child = q->qdiscs[i];
+-
+-		if (unlikely(!child))
+-			continue;
+-
+-		skb = child->ops->dequeue(child);
+-		if (unlikely(!skb))
+-			continue;
+-
+-		qdisc_bstats_update(sch, skb);
+-		qdisc_qstats_backlog_dec(sch, skb);
+-		sch->q.qlen--;
+-
+-		return skb;
+-	}
++	WARN_ONCE(1, "Trying to dequeue from the root of a taprio qdisc configured with full offload\n");
+ 
+ 	return NULL;
+ }
+@@ -1774,6 +1743,37 @@ static int taprio_init(struct Qdisc *sch, struct nlattr *opt,
+ 	return taprio_change(sch, opt, extack);
+ }
+ 
++static void taprio_attach(struct Qdisc *sch)
++{
++	struct taprio_sched *q = qdisc_priv(sch);
++	struct net_device *dev = qdisc_dev(sch);
++	unsigned int ntx;
++
++	/* Attach underlying qdisc */
++	for (ntx = 0; ntx < dev->num_tx_queues; ntx++) {
++		struct Qdisc *qdisc = q->qdiscs[ntx];
++		struct Qdisc *old;
++
++		if (FULL_OFFLOAD_IS_ENABLED(q->flags)) {
++			qdisc->flags |= TCQ_F_ONETXQUEUE | TCQ_F_NOPARENT;
++			old = dev_graft_qdisc(qdisc->dev_queue, qdisc);
++			if (ntx < dev->real_num_tx_queues)
++				qdisc_hash_add(qdisc, false);
++		} else {
++			old = dev_graft_qdisc(qdisc->dev_queue, sch);
++			qdisc_refcount_inc(sch);
++		}
++		if (old)
++			qdisc_put(old);
++	}
++
++	/* access to the child qdiscs is not needed in offload mode */
++	if (FULL_OFFLOAD_IS_ENABLED(q->flags)) {
++		kfree(q->qdiscs);
++		q->qdiscs = NULL;
++	}
++}
++
+ static struct netdev_queue *taprio_queue_get(struct Qdisc *sch,
+ 					     unsigned long cl)
+ {
+@@ -1800,8 +1800,12 @@ static int taprio_graft(struct Qdisc *sch, unsigned long cl,
+ 	if (dev->flags & IFF_UP)
+ 		dev_deactivate(dev);
+ 
+-	*old = q->qdiscs[cl - 1];
+-	q->qdiscs[cl - 1] = new;
++	if (FULL_OFFLOAD_IS_ENABLED(q->flags)) {
++		*old = dev_graft_qdisc(dev_queue, new);
++	} else {
++		*old = q->qdiscs[cl - 1];
++		q->qdiscs[cl - 1] = new;
++	}
+ 
+ 	if (new)
+ 		new->flags |= TCQ_F_ONETXQUEUE | TCQ_F_NOPARENT;
+@@ -2035,6 +2039,7 @@ static struct Qdisc_ops taprio_qdisc_ops __read_mostly = {
+ 	.change		= taprio_change,
+ 	.destroy	= taprio_destroy,
+ 	.reset		= taprio_reset,
++	.attach		= taprio_attach,
+ 	.peek		= taprio_peek,
+ 	.dequeue	= taprio_dequeue,
+ 	.enqueue	= taprio_enqueue,
 -- 
 2.53.0
 
