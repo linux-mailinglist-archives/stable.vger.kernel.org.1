@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258550-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHfpOrgfG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:48 +0200
+	id IHmhH4YoG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258550-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C98D60FF79
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A2161137D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9983E3081135
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:30:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 74F67300C328
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40DF33AEB5C;
-	Sat, 30 May 2026 17:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B66631F98D;
+	Sat, 30 May 2026 18:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGvyGXin"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzAQidJy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7E134389F;
-	Sat, 30 May 2026 17:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E75223DC6;
+	Sat, 30 May 2026 18:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162227; cv=none; b=RnoytL0xA+ouyA1svU1YNQkVguE0ZK+72awzzqMdR8Z1Xe67Pb8Zb4fZKdMjZVWZdukOB8CKDkv+JHpOvgtHN5mj1y3XcBbTXqcm3CGE3NGpisr8VLCYFfF/v9KIXd/t2u9a60nz64ZxcGC/pDQyAjHsWJC/LEieqpHtV8MgJNA=
+	t=1780164725; cv=none; b=MyLHksT8T3ATrYYC8RNzWfVizmV1p06vLJZAvtepQF9P2oWz5usF5NJt6cM4eC6yhAzsill1qEuojn/+GRoD7p3tmPd5vGNhOX8fL8fhUqk8AiMfUeZHDIZ+qb6Ckay36MwlM8/uVkMPs3HyMO36kj9uS03KKidYjbLxwTKQ9wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162227; c=relaxed/simple;
-	bh=w7UHs81cvBpQY13tlke3OMNdVU0DYkPEfIeK/saPwjc=;
+	s=arc-20240116; t=1780164725; c=relaxed/simple;
+	bh=XN8EgmBDcdBEgxaDNJQGPg75Xr78f+3ajLhQCO23Qhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lo97A7DnTAcVlEy059Ablp9Jcvi/mYrOrmV5Dgj2//bQsbKjW2bSTZslEpDkIp3kb5aUiBndpitK6mki85NnN9lMwZkkCG+oGDMHIEJCL0BFqUohIqeR5TJ5qrtPVjT2Jpy7zCPi/Z4ZBVw8fP9fc7tty8QWRBJiDp860hB4NDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGvyGXin; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C42F1F00893;
-	Sat, 30 May 2026 17:30:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MhTtomhXtYD0cZgK1MVOoqdA8okSrP+jkFWlVE6C/I7vah9t/Kv5VpXP4YmF0WdAmSmfgbErvLHzbpeshYTGlNEl59hYIEfiw2SNGKzWHch7xJ9eIms+pPj0WGlPzPM7Pr2JbFSh35KX3MB3R0G4O2rI4P8yA2BtNf26I0sWYMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzAQidJy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50DC1F00893;
+	Sat, 30 May 2026 18:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162225;
-	bh=Xv4bGUQI/8aJoenoOSVCUkpZcEPJtD2SyJnJQcFpb+s=;
+	s=korg; t=1780164724;
+	bh=F4YiZes3+DMvMZRg41X5gMoCMt0EDYOUwQeAUmsWGyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eGvyGXinQXj/XX1/BYqu8tQSqt1idzrFjcXYLA++aAUgSVm+7AMJD5c3kT8SgpoD8
-	 j32MYoMPIUNbqQX7jt53fjq/To57YvpRNq0sCWNzlUuJzJIkXWKEpwgDGCUmEWQgrE
-	 8c9Pr1hEfwDFOslMN+vIMIygJHuY9qIQPs+99Tw0=
+	b=dzAQidJyfyZGAu5iAwtlhdCbFRFLABCBegBPksNJ9kW/G21mfIsl5YIaZZjyZm9Gv
+	 p1jUY9j1x7vsq73yH4Av05QojDT8fI0Gj2q+JwxiHm9feKWHp/28fzKtCK/io2vdJW
+	 dWDZZZ/zn8MrsYP39n2ZYXLQulcDrshSjdVArsIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Subject: [PATCH 6.1 829/969] drm/gma500/oaktrail_lvds: fix i2c adapter leaks on init
-Date: Sat, 30 May 2026 18:05:53 +0200
-Message-ID: <20260530160323.535960544@linuxfoundation.org>
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 640/776] drm/amd/display: Read EDID from VBIOS embedded panel info
+Date: Sat, 30 May 2026 18:05:54 +0200
+Message-ID: <20260530160256.491564421@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,173 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257804-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258550-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6C98D60FF79
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 37A2161137D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 84d1c9b416d54afe760ca4c378bd95c89261254c upstream.
+[ Upstream commit 9ea16f64189bf7b6ba50fc7f0325b3c1f836d105 ]
 
-The LVDS init code looks up an I2C adapter using i2c_get_adapter() and
-tries to read the EDID before falling back to allocating and registering
-its own adapter.
+Some board manufacturers hardcode the EDID for the embedded
+panel in the VBIOS. This EDID should be used when the panel
+doesn't have a DDC.
 
-Make sure to drop the references taken by i2c_get_adapter() when falling
-back to allocating an adapter as well as on late errors to allow the
-looked up adapter to be deregistered.
+For reference, see the legacy non-DC display code:
+amdgpu_atombios_encoder_get_lcd_info()
 
-Fixes: 1b082ccf5901 ("gma500: Add Oaktrail support")
-Cc: stable@vger.kernel.org	# 3.3
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patch.msgid.link/20260508144446.59722-4-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is necessary to support embedded connectors without DDC.
+
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit eb105e63b474c11ef6a84a1c6b18100d851ff364)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/gma500/oaktrail_lvds.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ .../gpu/drm/amd/display/dc/bios/bios_parser.c | 62 +++++++++++++++++++
+ .../display/include/grph_object_ctrl_defs.h   |  4 ++
+ 2 files changed, 66 insertions(+)
 
---- a/drivers/gpu/drm/gma500/oaktrail_lvds.c
-+++ b/drivers/gpu/drm/gma500/oaktrail_lvds.c
-@@ -367,6 +367,8 @@ void oaktrail_lvds_init(struct drm_devic
- 	if (edid == NULL && dev_priv->lpc_gpio_base) {
- 		ddc_bus = oaktrail_lvds_i2c_init(dev);
- 		if (!IS_ERR(ddc_bus)) {
-+			if (i2c_adap)
-+				i2c_put_adapter(i2c_adap);
- 			i2c_adap = &ddc_bus->base;
- 			edid = drm_get_edid(connector, i2c_adap);
- 		}
-@@ -423,6 +425,8 @@ err_unlock:
- 	mutex_unlock(&dev->mode_config.mutex);
- 	if (!IS_ERR_OR_NULL(ddc_bus))
- 		gma_i2c_destroy(ddc_bus);
-+	else if (i2c_adap)
-+		i2c_put_adapter(i2c_adap);
- 	drm_encoder_cleanup(encoder);
- err_connector_cleanup:
- 	drm_connector_cleanup(connector);
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+index 0f686e363d308..d8982aca8ef68 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+@@ -1215,6 +1215,60 @@ static enum bp_result bios_parser_get_embedded_panel_info(
+ 	return BP_RESULT_FAILURE;
+ }
+ 
++static enum bp_result get_embedded_panel_extra_info(
++	struct bios_parser *bp,
++	struct embedded_panel_info *info,
++	const uint32_t table_offset)
++{
++	uint8_t *record = bios_get_image(&bp->base, table_offset, 1);
++	ATOM_PANEL_RESOLUTION_PATCH_RECORD *panel_res_record;
++	ATOM_FAKE_EDID_PATCH_RECORD *fake_edid_record;
++
++	while (*record != ATOM_RECORD_END_TYPE) {
++		switch (*record) {
++		case LCD_MODE_PATCH_RECORD_MODE_TYPE:
++			record += sizeof(ATOM_PATCH_RECORD_MODE);
++			break;
++		case LCD_RTS_RECORD_TYPE:
++			record += sizeof(ATOM_LCD_RTS_RECORD);
++			break;
++		case LCD_CAP_RECORD_TYPE:
++			record += sizeof(ATOM_LCD_MODE_CONTROL_CAP);
++			break;
++		case LCD_FAKE_EDID_PATCH_RECORD_TYPE:
++			fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
++			if (fake_edid_record->ucFakeEDIDLength) {
++				if (fake_edid_record->ucFakeEDIDLength == 128)
++					info->fake_edid_size =
++						fake_edid_record->ucFakeEDIDLength;
++				else
++					info->fake_edid_size =
++						fake_edid_record->ucFakeEDIDLength * 128;
++
++				info->fake_edid = fake_edid_record->ucFakeEDIDString;
++
++				record += struct_size(fake_edid_record,
++						      ucFakeEDIDString,
++						      info->fake_edid_size);
++			} else {
++				/* empty fake edid record must be 3 bytes long */
++				record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
++			}
++			break;
++		case LCD_PANEL_RESOLUTION_RECORD_TYPE:
++			panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
++			info->panel_width_mm = panel_res_record->usHSize;
++			info->panel_height_mm = panel_res_record->usVSize;
++			record += sizeof(ATOM_PANEL_RESOLUTION_PATCH_RECORD);
++			break;
++		default:
++			return BP_RESULT_BADBIOSTABLE;
++		}
++	}
++
++	return BP_RESULT_OK;
++}
++
+ static enum bp_result get_embedded_panel_info_v1_2(
+ 	struct bios_parser *bp,
+ 	struct embedded_panel_info *info)
+@@ -1331,6 +1385,10 @@ static enum bp_result get_embedded_panel_info_v1_2(
+ 	if (ATOM_PANEL_MISC_API_ENABLED & lvds->ucLVDS_Misc)
+ 		info->lcd_timing.misc_info.API_ENABLED = true;
+ 
++	if (lvds->usExtInfoTableOffset)
++		return get_embedded_panel_extra_info(bp, info,
++			le16_to_cpu(lvds->usExtInfoTableOffset) + DATA_TABLES(LCD_Info));
++
+ 	return BP_RESULT_OK;
+ }
+ 
+@@ -1456,6 +1514,10 @@ static enum bp_result get_embedded_panel_info_v1_3(
+ 			(uint32_t) (ATOM_PANEL_MISC_V13_GREY_LEVEL &
+ 				lvds->ucLCD_Misc) >> ATOM_PANEL_MISC_V13_GREY_LEVEL_SHIFT;
+ 
++	if (lvds->usExtInfoTableOffset)
++		return get_embedded_panel_extra_info(bp, info,
++			le16_to_cpu(lvds->usExtInfoTableOffset) + DATA_TABLES(LCD_Info));
++
+ 	return BP_RESULT_OK;
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
+index 792652236c61b..d42b61ada427e 100644
+--- a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
++++ b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
+@@ -153,6 +153,10 @@ struct embedded_panel_info {
+ 	uint32_t drr_enabled;
+ 	uint32_t min_drr_refresh_rate;
+ 	bool realtek_eDPToLVDS;
++	uint16_t panel_width_mm;
++	uint16_t panel_height_mm;
++	uint16_t fake_edid_size;
++	const uint8_t *fake_edid;
+ };
+ 
+ struct dc_firmware_info {
+-- 
+2.53.0
+
 
 
 
