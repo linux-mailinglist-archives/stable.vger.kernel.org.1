@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257935-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2M00AicWG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257157-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:59 +0200
+	id MPBTDnsgG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257935-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C4C60E8F5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE96E6100F9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9C31B301D027
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:53:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7BB22301AFD3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971E632BF24;
-	Sat, 30 May 2026 16:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E083BD62F;
+	Sat, 30 May 2026 17:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgFpw9wO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yy4LHziw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2A232D42B;
-	Sat, 30 May 2026 16:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6623B6359;
+	Sat, 30 May 2026 17:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160003; cv=none; b=nZ7hr8MlFer5FVUjLi76c12Y+tj0x/KDiGJmTSW2uM+SGiLAK0GFW9uuFvSVNIF8hgCWtcZYG3yMD6jRFK605gV0qPbV981iuNVP8ssNOE5PQiYLs3QpYKxgk2oU3lNl8OFuLQAag7sVIwcHf+nUbNZNuNk275v8EsTpdqSgQGc=
+	t=1780162670; cv=none; b=VUA94Hq95MIJrHZqNvJ3nOBNIglBM4usMU3jqQNmnKf4KPeZZBJ90Tqid9+raoCinTvLYu9joZbxxAXhpE9JkjPxDOpZOSbzqIHVQ45Ewu0gB3LuwxOYXP+Pq4ahDreY7miZEQSS21oKGpre5O43Qlc3DTt7PxlleT+4n+sKwoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160003; c=relaxed/simple;
-	bh=WQ73ENz03Z0feadYVHqqWFd+62QeeK6LRZaF97L4u+4=;
+	s=arc-20240116; t=1780162670; c=relaxed/simple;
+	bh=34IOL2aRnUnuxbJZgro7sYnQEImNnmwGLgMjf0UsXsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0Y0KtlbDqHCaIztvYRt7eQuVsmVgbrNXOukZ3ONLxkzy60FgfmwyXet6UdkG3VbZG9MO3i9NH/BFT7imedZJWIe2ykUGc6ysqkD+QYLFkbardOdbHWimF9tECugCIRfDWYBfzwmDiPugQ9rPbylvh2nSMJccsNSpCCAXCbMyyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgFpw9wO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BC41F00893;
-	Sat, 30 May 2026 16:53:21 +0000 (UTC)
+	 MIME-Version; b=bdGjVXjj2cJ4I5lTR2B4gxzhUBmg7xgG1HUfDedMKPgVT27tjsFGzJ8iw3QfxJ9rHHSj5f8+g9JcQ7e37MckmeN2qixXdLEj0hbdwtkGW4b9I43Jr2cqJ+5tzYSfovYS03fOqH8qIEiUVshBu+bUd1e4VdrSxlKhCYXHizJECC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yy4LHziw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7332A1F00899;
+	Sat, 30 May 2026 17:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160002;
-	bh=SJFHK4EVTsU39Yhjn/Vagg52oyLXuIaLO/IncmYYzqc=;
+	s=korg; t=1780162669;
+	bh=nf4c6WmzOkMi208xUw0XTGjVshRFFdfhIdMEd+biOZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LgFpw9wOd5o4D7P8BGRN6EnDWW4b5JJPIVUMcLlpHF9qjdpEu9wr2fMK48yPVUpVc
-	 lSQVl6dKN3ULXJLEVzvJc2GuaPGPxY5m2DcpWb5UUfnP/gjxF6udzDW2qDbT8/SMUk
-	 /cBgg/22CZhXd1oDzE3z5SKITCqroD59TMOI636c=
+	b=yy4LHziwk7VtkizS3CTf9Y2UokUMyBBqAHh/wPdmDhqGZL7q81hmV/FZxBnKCMIHm
+	 bW7P1tNpqyfZDI/2jTU1BFb66pvsJFjcQgBI2ab2nYHtdE6u15x4vE7x4uIftatxu5
+	 jpfeoG4fJZNwGHqAdGSVEbBGkBh0ZT5PqGIP9Zmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH 6.1 218/969] drm/arcpgu: fix device node leak
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 028/776] nfc: s3fwrn5: allocate rx skb before consuming bytes
 Date: Sat, 30 May 2026 17:55:42 +0200
-Message-ID: <20260530160306.473244374@linuxfoundation.org>
+Message-ID: <20260530160240.998929103@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +66,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257157-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257935-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 94C4C60E8F5
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CE96E6100F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-commit ad3ac32a3893a2bbcad545efc005a8e4e7ecf10c upstream.
+[ Upstream commit 5c14a19d5b1645cce1cb1252833d70b23635b632 ]
 
-This function gets a device_node reference via
-of_graph_get_remote_port_parent() and stores it in encoder_node, but never
-puts that reference. Add it.
+s3fwrn82_uart_read() reports the number of accepted bytes to the serdev
+core. The current code consumes bytes into recv_skb and may already
+deliver a complete frame before allocating a fresh receive buffer.
 
-There used to be a of_node_put(encoder_node) but it has been removed by
-mistake during a rework in commit 3ea66a794fdc ("drm/arc: Inline
-arcpgu_drm_hdmi_init").
+If that alloc_skb() fails, the callback returns 0 even though it has
+already consumed bytes, and it leaves recv_skb as NULL for the next
+receive callback. That breaks the receive_buf() accounting contract and
+can also lead to a NULL dereference on the next skb_put_u8().
 
-Fixes: 3ea66a794fdc ("drm/arc: Inline arcpgu_drm_hdmi_init")
-Cc: stable@vger.kernel.org
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Link: https://patch.msgid.link/20260402-drm-arcgpu-fix-device-node-leak-v2-1-d773cf754ae5@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Allocate the receive skb lazily before consuming the next byte instead.
+If allocation fails, return the number of bytes already accepted.
+
+Fixes: 3f52c2cb7e3a ("nfc: s3fwrn5: Support a UART interface")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Link: https://patch.msgid.link/20260402042148.65236-1-pengpeng@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tiny/arcpgu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/nfc/s3fwrn5/uart.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/tiny/arcpgu.c
-+++ b/drivers/gpu/drm/tiny/arcpgu.c
-@@ -248,7 +248,8 @@ DEFINE_DRM_GEM_DMA_FOPS(arcpgu_drm_ops);
- static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
- {
- 	struct platform_device *pdev = to_platform_device(arcpgu->drm.dev);
--	struct device_node *encoder_node = NULL, *endpoint_node = NULL;
-+	struct device_node *encoder_node __free(device_node) = NULL;
-+	struct device_node *endpoint_node = NULL;
- 	struct drm_connector *connector = NULL;
- 	struct drm_device *drm = &arcpgu->drm;
- 	struct resource *res;
+diff --git a/drivers/nfc/s3fwrn5/uart.c b/drivers/nfc/s3fwrn5/uart.c
+index 82ea35d748a5d..dde1a87ed1e47 100644
+--- a/drivers/nfc/s3fwrn5/uart.c
++++ b/drivers/nfc/s3fwrn5/uart.c
+@@ -59,6 +59,12 @@ static int s3fwrn82_uart_read(struct serdev_device *serdev,
+ 	size_t i;
+ 
+ 	for (i = 0; i < count; i++) {
++		if (!phy->recv_skb) {
++			phy->recv_skb = alloc_skb(NCI_SKB_BUFF_LEN, GFP_KERNEL);
++			if (!phy->recv_skb)
++				return i;
++		}
++
+ 		skb_put_u8(phy->recv_skb, *data++);
+ 
+ 		if (phy->recv_skb->len < S3FWRN82_NCI_HEADER)
+@@ -70,9 +76,7 @@ static int s3fwrn82_uart_read(struct serdev_device *serdev,
+ 
+ 		s3fwrn5_recv_frame(phy->common.ndev, phy->recv_skb,
+ 				   phy->common.mode);
+-		phy->recv_skb = alloc_skb(NCI_SKB_BUFF_LEN, GFP_KERNEL);
+-		if (!phy->recv_skb)
+-			return 0;
++		phy->recv_skb = NULL;
+ 	}
+ 
+ 	return i;
+-- 
+2.53.0
+
 
 
 
