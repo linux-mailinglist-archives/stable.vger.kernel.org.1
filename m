@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258948-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8H5DDKEdG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257571-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:53 +0200
+	id wO/tDAAuG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258948-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD35A60F9F9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6EB46120B6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93DA23067154
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:17:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4C9183024E1C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C753998B1;
-	Sat, 30 May 2026 17:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3965033AD99;
+	Sat, 30 May 2026 18:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egYGGEJd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLvaGgc4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8CD263F44;
-	Sat, 30 May 2026 17:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D99E41A8F;
+	Sat, 30 May 2026 18:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161444; cv=none; b=oVyEnBFmUJuEL6w3X7wSKOFjWSsHxw2d+qPD0CSW+ECDPoOTFRphonQekgVryH6B4QkgvjgrGnJ9+ml73Yl4wWZWCs6USUyHAfBnixdPVC9D8Vh47Ss84kBrjiWr8vLt9DTZNzDcVSaCeuHhZBHFQZ+R528QH/dPpC6ZS/b0+fo=
+	t=1780166083; cv=none; b=ZKPfGfhFPCHlRe5EUmrxIcniyfEUVT+8ktalkyZdxl+xQ4gAK/bh4kZWA66pnLWgspNQrUAHkCb/A0Llrxkx6RY0g965lFEZoA96zGkXOBj/NPSVyc3RkVDq3VanVKisupQ6NfTukhZBEveMF/lenu4nK1TEH2VMcjwiXP7ffTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161444; c=relaxed/simple;
-	bh=H4Fva58wXg5I3DGPmHWIgIbuieLDikxcVWVLGS2K4Y4=;
+	s=arc-20240116; t=1780166083; c=relaxed/simple;
+	bh=4jPYPN38eMO4x0+7jB8JaSjLjnY9SqZ5uL1ai1iV39Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gvJkxQV/eaVcuGG3ZsC2H3LIcjCtuoArQe6kdA3YK4cYbRRxUj1FfM0GCDb+iv6LAR2OUuZmoZMqBtiaqPK9/eMUxigPCgn6IeJw+34wZaqYi00aksPf3YoWyswua3UwQAc83z8zP56cp+8sPIfIPj92luO2L1tu/IHL7tbm7/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egYGGEJd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06601F00893;
-	Sat, 30 May 2026 17:17:22 +0000 (UTC)
+	 MIME-Version; b=k/QJqAh7sesEzoDv14QplZVIpFlahF9fhDvz5zXN7CWfwmqTZ7umjfxhSJ5t/LYymqVnZ70FW4cF2GpipeluGOZ+zjKQP9+RlgHcy2vUN8aoLFr+RtE283j5l3iy6B3KVunSOHOt/2Sepi1PjvPpn6nIXci5NWp1vVDa9dpvei4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLvaGgc4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D3F1F00893;
+	Sat, 30 May 2026 18:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161443;
-	bh=d1paDe/LO9pMQrXGPS0QJw8HdFPhMYY1/hTKQFBctS0=;
+	s=korg; t=1780166082;
+	bh=bc983a29zUuszsIYZvkdL5eIf/2N9p+qTOR8/K0WG6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=egYGGEJdJ5dbgkkBxnelu1+ehUXqp6o84zFyuq2Fzmye6FsvV7HMANlgyIWJ74AhQ
-	 XGlv1iioRhyMQa3NLQotyKOaYBA1up3z7QeHzOpCWANFEh6ENw/kfsbTZU7f/AYrQq
-	 mjhlROuGVLhFT8bJpoGzK2FV+HOax5XzjHbOnrNI=
+	b=ZLvaGgc4l/IC80gqGTohMF0b172fVxaxO8KcRP4XGZAVACcV8ER7iBb1RCleDyBlS
+	 HM5X0ZLrjBOyvtWibpkK/pI9zuYuKPQ84MbPuDO65q8/Q0q6HQUFuwCkdyyPcLNlH6
+	 sYrizUYOOyuEzsjPAVOh21/YNuKqAo5vWFrpW0S8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 625/969] pinctrl: pinctrl-pic32: Fix resource leak
+	Wenyou Yang <wenyou.yang@atmel.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 268/589] regulator: act8945a: fix OF node reference imbalance
 Date: Sat, 30 May 2026 18:02:29 +0200
-Message-ID: <20260530160317.705472567@linuxfoundation.org>
+Message-ID: <20260530160232.030395195@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,106 +66,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257571-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258948-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CD35A60F9F9
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,atmel.com:email]
+X-Rspamd-Queue-Id: E6EB46120B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit fe5560688f3ba98364c7de7b4f8dc240ffd1ff75 ]
+commit 0d15ce31375ccef4162f960b34547a821b7619d2 upstream.
 
-Fix three possible resource leaks by using the devres version of
-clk_prepare_enable(). Also, update error message accordingly.
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-Detected by Smatch:
-drivers/pinctrl/pinctrl-pic32.c:2211 pic32_pinctrl_probe() warn:
-'pctl->clk' from clk_prepare_enable() not released on lines: 2208.
+Fix this by using the intended helper for reusing OF nodes.
 
-drivers/pinctrl/pinctrl-pic32.c:2274 pic32_gpio_probe() warn:
-'bank->clk' from clk_prepare_enable() not released on lines: 2264,2272.
-
-Fixes: 2ba384e6c3810 ("pinctrl: pinctrl-pic32: Add PIC32 pin control driver")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 38c09961048b ("regulator: act8945a: add regulator driver for ACT8945A")
+Cc: stable@vger.kernel.org	# 4.6
+Cc: Wenyou Yang <wenyou.yang@atmel.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260408073055.5183-7-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-pic32.c | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
+ drivers/regulator/act8945a-regulator.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-pic32.c b/drivers/pinctrl/pinctrl-pic32.c
-index 37acfdfc2cae0..ee9082a499c5f 100644
---- a/drivers/pinctrl/pinctrl-pic32.c
-+++ b/drivers/pinctrl/pinctrl-pic32.c
-@@ -2162,16 +2162,10 @@ static int pic32_pinctrl_probe(struct platform_device *pdev)
- 	if (IS_ERR(pctl->reg_base))
- 		return PTR_ERR(pctl->reg_base);
- 
--	pctl->clk = devm_clk_get(&pdev->dev, NULL);
-+	pctl->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(pctl->clk)) {
- 		ret = PTR_ERR(pctl->clk);
--		dev_err(&pdev->dev, "clk get failed\n");
--		return ret;
--	}
--
--	ret = clk_prepare_enable(pctl->clk);
--	if (ret) {
--		dev_err(&pdev->dev, "clk enable failed\n");
-+		dev_err(&pdev->dev, "Failed to get and enable clock\n");
- 		return ret;
+--- a/drivers/regulator/act8945a-regulator.c
++++ b/drivers/regulator/act8945a-regulator.c
+@@ -302,8 +302,9 @@ static int act8945a_pmic_probe(struct pl
+ 		num_regulators = ARRAY_SIZE(act8945a_regulators);
  	}
  
-@@ -2227,16 +2221,10 @@ static int pic32_gpio_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
- 
--	bank->clk = devm_clk_get(&pdev->dev, NULL);
-+	bank->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(bank->clk)) {
- 		ret = PTR_ERR(bank->clk);
--		dev_err(&pdev->dev, "clk get failed\n");
--		return ret;
--	}
--
--	ret = clk_prepare_enable(bank->clk);
--	if (ret) {
--		dev_err(&pdev->dev, "clk enable failed\n");
-+		dev_err(&pdev->dev, "Failed to get and enable clock\n");
- 		return ret;
- 	}
- 
--- 
-2.53.0
-
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
++
+ 	config.dev = &pdev->dev;
+-	config.dev->of_node = pdev->dev.parent->of_node;
+ 	config.driver_data = act8945a;
+ 	for (i = 0; i < num_regulators; i++) {
+ 		rdev = devm_regulator_register(&pdev->dev, &regulators[i],
 
 
 
