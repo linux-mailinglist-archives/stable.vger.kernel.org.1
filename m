@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257736-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8D6BO+0nG2rM/ggAu9opvQ
-	(envelope-from <stable+bounces-258508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:49 +0200
+	id OIrVNTkeG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257736-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BF7611200
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD0D60FBD4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EBCA5300144F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 99426300AD98
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382A0352027;
-	Sat, 30 May 2026 18:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D45E633F5A0;
+	Sat, 30 May 2026 17:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbZI7CGS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxsu0aaP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0242531F98D;
-	Sat, 30 May 2026 18:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD88433E36A;
+	Sat, 30 May 2026 17:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164586; cv=none; b=ED6yJz9sVsuz5dqYccUSrXJcg8rzGZ7D3HYvP3mcHZfV5RHjIBFKL03hEuFdvpyFAdvGxLYcsphYrgAqNbvqXQfuvf14gz1QjKfBss7MhX6tu6JfXKN3k3gbHVI5PGHNQY1FRxy/CgwFKCeLDK0Jv7xVvILdKqACKwWR7RboCcI=
+	t=1780161999; cv=none; b=YZSE3o5ohh1Dd/xRtZOdgImWtRio/yKBcF0heVYbtX1cDudMaXNbeMnepBOeihkK0VEGJnewZ7Gr1cvvu9irctSwfpArA1SF3T6h5kzWekwVMILnKRvxgpgbfRvb9t1LZ7OCgNuHCDpCjOzmHsbCfW50OMu1CxrwQWhiTw6YYJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164586; c=relaxed/simple;
-	bh=jGkSFU+PjOSesU16Z2n8wg1NGTfh8WxHRp7stX+qfDI=;
+	s=arc-20240116; t=1780161999; c=relaxed/simple;
+	bh=6zAfUUYNgh2bHMfMamlo+zPAoTTJiGFa1A8HQWF4sso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M2+B2Mu+/iRUGgeO0zPsqoiTagUSCGp46Uqyy3lPkefcqOB1Nx/e7TKMsxydSeJuBeLqE+iIl3jd+3XKGO0bexFcK5TxFGCmIHtwLrWqY0IITtPSFlGZ+ifNU45AEGVxlfQLtGksvf8TA3hUaqgjkun2rJq+uhc5/U9qQm2kMtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbZI7CGS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED66F1F00893;
-	Sat, 30 May 2026 18:09:43 +0000 (UTC)
+	 MIME-Version; b=MwGn7tqCdQqU2oKwM18TJkWHhcAd+Yb/G9A4zBo5ENEnDC2iQ1RzfdclkcY4Cb2anvRmNjJ6YRzFdZAy8z5+m6REM/a0VEIacQXYzj/lfoQRoFVjas7HTSaoeAvqo6isLU8OhV3GuvD5wZBqxULRFU5O5oIAo6tat052VQmCFKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxsu0aaP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C301F00893;
+	Sat, 30 May 2026 17:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164584;
-	bh=t/Agsxf2cMVZlFcPmvv0NiKuMnjQprv7gymQhW+tBuc=;
+	s=korg; t=1780161998;
+	bh=NUW4GcmUryAl6yg06dmw7b29xagW5IDaKwRwCDYlgq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DbZI7CGStlcSzuQEWXXwcDvRrLgtDTIw312eJ6hkhT3o7pXq8Kqyil/VmCA0TW7SH
-	 IwnulXqIP0maWTws3uuQED4Ilqzt9ceLq7NLcXbg41MJErh9j1oG7ZEZG1W7Dgs2MN
-	 capmPdha2q6NFobjy7EHZCoBKQzanfw/r+JgwmeE=
+	b=bxsu0aaPDnCnBj2C253l4rYkCKrPr4UR2zqnMxesA1d8nhTqMNjSqENylmtoQN2Uw
+	 Z6AbLf3wlhZIEYs/3skYXdy+1+TUu/X/y9oxBWAei2AS1k4qQ8Ze29iReFVWjxqGOD
+	 ZybJkV/NJJrwV7N6iTmXs22gTZct/mrvnAew24bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 599/776] mailbox: add sanity check for channel array
-Date: Sat, 30 May 2026 18:05:13 +0200
-Message-ID: <20260530160255.516864397@linuxfoundation.org>
+Subject: [PATCH 6.1 790/969] net/sched: cls_flower: revert unintended changes
+Date: Sat, 30 May 2026 18:05:14 +0200
+Message-ID: <20260530160322.427063353@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +64,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,glider.be,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258508-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257736-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A3BF7611200
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,codeconstruct.com.au:email]
+X-Rspamd-Queue-Id: EDD0D60FBD4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit c1aad75595fb67edc7fda8af249d3b886efa1be9 ]
+[ Upstream commit 1e01abec856593e02cd69fd95b784c10dd46880c ]
 
-Fail gracefully if there is no channel array attached to the mailbox
-controller. Otherwise the later dereference will cause an OOPS which
-might not be seen because mailbox controllers might instantiate very
-early. Remove the comment explaining the obvious while here.
+While applying the blamed commit 4ca07b9239bd ("net: mctp i2c: check
+length before marking flow active"), I unintentionally included
+unrelated and unacceptable changes.
 
-Fixes: 2b6d83e2b8b7 ("mailbox: Introduce framework for mailbox")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Revert them.
+
+Fixes: 4ca07b9239bd ("net: mctp i2c: check length before marking flow active")
+Reported-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Closes: https://lore.kernel.org/netdev/bd8704fe0bd53e278add5cde4873256656623e2e.camel@codeconstruct.com.au/
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/043026a53ff84da88b17648c4b0d17f0331749cb.1777447863.git.pabeni@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/sched/cls_flower.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 090795c1b65db..363eaf3c962ec 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -484,8 +484,7 @@ int mbox_controller_register(struct mbox_controller *mbox)
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index fd8c2f0f3256e..a40a9e84c75f4 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -537,7 +537,6 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
+ 		       struct netlink_ext_ack *extack)
  {
- 	int i, txdone;
+ 	struct cls_fl_head *head = fl_head_dereference(tp);
+-	struct fl_flow_mask *mask;
  
--	/* Sanity check */
--	if (!mbox || !mbox->dev || !mbox->ops || !mbox->num_chans)
-+	if (!mbox || !mbox->dev || !mbox->ops || !mbox->chans || !mbox->num_chans)
- 		return -EINVAL;
+ 	*last = false;
  
- 	if (mbox->txdone_irq)
+@@ -554,12 +553,11 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
+ 	list_del_rcu(&f->list);
+ 	spin_unlock(&tp->lock);
+ 
+-	mask = f->mask;
++	*last = fl_mask_put(head, f->mask);
+ 	if (!tc_skip_hw(f->flags))
+ 		fl_hw_destroy_filter(tp, f, rtnl_held, extack);
+ 	tcf_unbind_filter(tp, &f->res);
+ 	__fl_put(f);
+-	*last = fl_mask_put(head, mask);
+ 
+ 	return 0;
+ }
 -- 
 2.53.0
 
