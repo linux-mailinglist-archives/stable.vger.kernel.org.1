@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-257319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sEeyD5waG2pR/QgAu9opvQ
-	(envelope-from <stable+bounces-257319-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:00 +0200
+	id kGnsHksrG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F69C60F279
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECF9B611A6C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C544E308A964
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AE7733036CFD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3CA032D42B;
-	Sat, 30 May 2026 17:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594EF24EA90;
+	Sat, 30 May 2026 18:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4/+oeRi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICDV9YhL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6720026F288;
-	Sat, 30 May 2026 17:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2092817555;
+	Sat, 30 May 2026 18:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160598; cv=none; b=L3yDKsXUGsSYTQsTQ+c+1F6zKKtNjoC7WpRr9ISgHJ/81JzAiPl2oXPu08zE1d4Ia08UsYOvAQHaOQ97O2rtAPhNa2wtJAl2t6i54Qe/lQFsBeypcrjSX6umriNX8a46dydEVB5+DWMr20jGj45DJJ6t3vFb0oLaRBxpmx9Rm3M=
+	t=1780165256; cv=none; b=lxqic0gQIhU4VIXOio/W0aVGSQE1rjzqaV3ZvIBGwZegDLFe8IHQQ9I1rfrIEBm55CbpYqIVJoe0rbfGWLW1GZqS5NskeNBhk0CsBt4OvSG8VUsRUBoxtMbyuDwp07PqfsZscOZX5fG9qXHpr8OqlrKYTV0eIe2/5C0COXshr90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160598; c=relaxed/simple;
-	bh=Ir7ZcUqMejNM9EtmsOPBf/aVwz731fE2Xx/gGKrdGOA=;
+	s=arc-20240116; t=1780165256; c=relaxed/simple;
+	bh=6uv6z0S5kIHpP+smzH6nHWBXycpa933uZon18Ig0c9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zb+moSnOIz7WDYnf0ExrGf90Dj8ouX636dGxX+ckt2ONI/Wp6n3xm/yX8/I0wgJZwnVlU2HD6Gx8H7if2ngf92CSOrd/kC2HVlpmTfoJVjPHh2b28FuszoofuLPB43vkBKF68Siv8oLBeBPt4paFSa4+0B25dAOdsB62VHlEvSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4/+oeRi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9607B1F00893;
-	Sat, 30 May 2026 17:03:15 +0000 (UTC)
+	 MIME-Version; b=GeUBxsqh6oVLAj1aroDTYG4fayUTXF/iGYkrid317o6p9dIgOO8fEJTb6A9ZBhcr1jOCvuROX1O9JuxY8c8ox2epZS4Q0Tj7udMWZ5tOVk+3ifUivuYOQX0AEhxZyZuaYF/bKImweosDsWPqFmwQNxP25MA9qgb0PKb08zTaq0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICDV9YhL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BC31F00893;
+	Sat, 30 May 2026 18:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160597;
-	bh=r4QWLAefLiHPmsIsvKy8C0XyX2yLezl1iW+4MDyEVWE=;
+	s=korg; t=1780165255;
+	bh=ANykXJ7syG1pVntCZgkkRvakQnlqrNJCcBfNqHwhYpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S4/+oeRil8wTZG5OEhqd553t3SMnFFX3kmT6eF0dv4s7M1A9EG//Zr1ROWzs6yWiF
-	 knFk71ps1rPdi96zyCJ7iY98OunM3g6diM+12IexWR+bZ3mvPurUsFs9MwvWb1l0nN
-	 /dhsyXLuv9xrszWrYkgbMkAhV8/rFw/G0LhrXM/Q=
+	b=ICDV9YhLH2j401cJmWuAZbAjWiVEEYzFSY0UA5DQfSgBFvlues4ysCPciuV/1pYkb
+	 HwZqDfFjULEeDPPTD7CV3ot7R/hIBLuj8VzB1bgZrZ8voaVaOptU8tKX5hWiyoyE0z
+	 hEoSct/P533epXbdbimtqNH8H0x2zMt1PpkgIBKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Baocong Liu <baocong.liu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Bin Lan <lanbincn@139.com>,
+	Iskhakov Daniil <dish@amicon.ru>,
+	Agalakov Daniil <ade@amicon.ru>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 381/969] f2fs: compress: change the first parameter of page_array_{alloc,free} to sbi
-Date: Sat, 30 May 2026 17:58:25 +0200
-Message-ID: <20260530160310.816459868@linuxfoundation.org>
+Subject: [PATCH 5.10 025/589] e1000: check return value of e1000_read_eeprom
+Date: Sat, 30 May 2026 17:58:26 +0200
+Message-ID: <20260530160225.243459586@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,228 +66,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [7.84 / 15.00];
+	URIBL_BLACK(7.50)[linuxtesting.org:url];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257319-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,unisoc.com,kernel.org,139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-258704-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	GREYLIST(0.00)[pass,meta];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_SPAM(0.00)[0.985];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9F69C60F279
-X-Rspamd-Action: no action
+	RCPT_COUNT_SEVEN(0.00)[8];
+	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
+	TAGGED_RCPT(0.00)[stable];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxtesting.org:url,amicon.ru:email]
+X-Rspamd-Queue-Id: ECF9B611A6C
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Agalakov Daniil <ade@amicon.ru>
 
-[ Upstream commit 8e2a9b656474d67c55010f2c003ea2cf889a19ff ]
+[ Upstream commit d3baa34a470771399c1495bc04b1e26ac15d598e ]
 
-No logic changes, just cleanup and prepare for fixing the UAF issue
-in f2fs_free_dic.
+[Why]
+e1000_set_eeprom() performs a read-modify-write operation when the write
+range is not word-aligned. This requires reading the first and last words
+of the range from the EEPROM to preserve the unmodified bytes.
 
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Baocong Liu <baocong.liu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Bin Lan <lanbincn@139.com>
+However, the code does not check the return value of e1000_read_eeprom().
+If the read fails, the operation continues using uninitialized data from
+eeprom_buff. This results in corrupted data being written back to the
+EEPROM for the boundary words.
+
+Add the missing error checks and abort the operation if reading fails.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Co-developed-by: Iskhakov Daniil <dish@amicon.ru>
+Signed-off-by: Iskhakov Daniil <dish@amicon.ru>
+Signed-off-by: Agalakov Daniil <ade@amicon.ru>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/compress.c | 40 ++++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/intel/e1000/e1000_ethtool.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 4dcd0870e0c74..1e90286212866 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -23,20 +23,18 @@
- static struct kmem_cache *cic_entry_slab;
- static struct kmem_cache *dic_entry_slab;
+diff --git a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
+index f976e9daa3d88..3a06834e57221 100644
+--- a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
++++ b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
+@@ -496,14 +496,19 @@ static int e1000_set_eeprom(struct net_device *netdev,
+ 		 */
+ 		ret_val = e1000_read_eeprom(hw, first_word, 1,
+ 					    &eeprom_buff[0]);
++		if (ret_val)
++			goto out;
++
+ 		ptr++;
+ 	}
+-	if (((eeprom->offset + eeprom->len) & 1) && (ret_val == 0)) {
++	if ((eeprom->offset + eeprom->len) & 1) {
+ 		/* need read/modify/write of last changed EEPROM word
+ 		 * only the first byte of the word is being modified
+ 		 */
+ 		ret_val = e1000_read_eeprom(hw, last_word, 1,
+ 					    &eeprom_buff[last_word - first_word]);
++		if (ret_val)
++			goto out;
+ 	}
  
--static void *page_array_alloc(struct inode *inode, int nr)
-+static void *page_array_alloc(struct f2fs_sb_info *sbi, int nr)
- {
--	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
- 	unsigned int size = sizeof(struct page *) * nr;
+ 	/* Device's eeprom is always little-endian, word addressable */
+@@ -522,6 +527,7 @@ static int e1000_set_eeprom(struct net_device *netdev,
+ 	if ((ret_val == 0) && (first_word <= EEPROM_CHECKSUM_REG))
+ 		e1000_update_eeprom_checksum(hw);
  
- 	if (likely(size <= sbi->page_array_slab_size))
- 		return f2fs_kmem_cache_alloc(sbi->page_array_slab,
--					GFP_F2FS_ZERO, false, F2FS_I_SB(inode));
-+					GFP_F2FS_ZERO, false, sbi);
- 	return f2fs_kzalloc(sbi, size, GFP_NOFS);
++out:
+ 	kfree(eeprom_buff);
+ 	return ret_val;
  }
- 
--static void page_array_free(struct inode *inode, void *pages, int nr)
-+static void page_array_free(struct f2fs_sb_info *sbi, void *pages, int nr)
- {
--	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
- 	unsigned int size = sizeof(struct page *) * nr;
- 
- 	if (!pages)
-@@ -145,13 +143,13 @@ int f2fs_init_compress_ctx(struct compress_ctx *cc)
- 	if (cc->rpages)
- 		return 0;
- 
--	cc->rpages = page_array_alloc(cc->inode, cc->cluster_size);
-+	cc->rpages = page_array_alloc(F2FS_I_SB(cc->inode), cc->cluster_size);
- 	return cc->rpages ? 0 : -ENOMEM;
- }
- 
- void f2fs_destroy_compress_ctx(struct compress_ctx *cc, bool reuse)
- {
--	page_array_free(cc->inode, cc->rpages, cc->cluster_size);
-+	page_array_free(F2FS_I_SB(cc->inode), cc->rpages, cc->cluster_size);
- 	cc->rpages = NULL;
- 	cc->nr_rpages = 0;
- 	cc->nr_cpages = 0;
-@@ -640,6 +638,7 @@ static void *f2fs_vmap(struct page **pages, unsigned int count)
- 
- static int f2fs_compress_pages(struct compress_ctx *cc)
- {
-+	struct f2fs_sb_info *sbi = F2FS_I_SB(cc->inode);
- 	struct f2fs_inode_info *fi = F2FS_I(cc->inode);
- 	const struct f2fs_compress_ops *cops =
- 				f2fs_cops[fi->i_compress_algorithm];
-@@ -660,7 +659,7 @@ static int f2fs_compress_pages(struct compress_ctx *cc)
- 	cc->nr_cpages = DIV_ROUND_UP(max_len, PAGE_SIZE);
- 	cc->valid_nr_cpages = cc->nr_cpages;
- 
--	cc->cpages = page_array_alloc(cc->inode, cc->nr_cpages);
-+	cc->cpages = page_array_alloc(sbi, cc->nr_cpages);
- 	if (!cc->cpages) {
- 		ret = -ENOMEM;
- 		goto destroy_compress_ctx;
-@@ -742,7 +741,7 @@ static int f2fs_compress_pages(struct compress_ctx *cc)
- 		if (cc->cpages[i])
- 			f2fs_compress_free_page(cc->cpages[i]);
- 	}
--	page_array_free(cc->inode, cc->cpages, cc->nr_cpages);
-+	page_array_free(sbi, cc->cpages, cc->nr_cpages);
- 	cc->cpages = NULL;
- destroy_compress_ctx:
- 	if (cops->destroy_compress_ctx)
-@@ -1308,7 +1307,7 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
- 	cic->magic = F2FS_COMPRESSED_PAGE_MAGIC;
- 	cic->inode = inode;
- 	atomic_set(&cic->pending_pages, cc->valid_nr_cpages);
--	cic->rpages = page_array_alloc(cc->inode, cc->cluster_size);
-+	cic->rpages = page_array_alloc(sbi, cc->cluster_size);
- 	if (!cic->rpages)
- 		goto out_put_cic;
- 
-@@ -1401,13 +1400,13 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
- 	spin_unlock(&fi->i_size_lock);
- 
- 	f2fs_put_rpages(cc);
--	page_array_free(cc->inode, cc->cpages, cc->nr_cpages);
-+	page_array_free(sbi, cc->cpages, cc->nr_cpages);
- 	cc->cpages = NULL;
- 	f2fs_destroy_compress_ctx(cc, false);
- 	return 0;
- 
- out_destroy_crypt:
--	page_array_free(cc->inode, cic->rpages, cc->cluster_size);
-+	page_array_free(sbi, cic->rpages, cc->cluster_size);
- 
- 	for (--i; i >= 0; i--)
- 		fscrypt_finalize_bounce_page(&cc->cpages[i]);
-@@ -1425,7 +1424,7 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
- 		f2fs_compress_free_page(cc->cpages[i]);
- 		cc->cpages[i] = NULL;
- 	}
--	page_array_free(cc->inode, cc->cpages, cc->nr_cpages);
-+	page_array_free(sbi, cc->cpages, cc->nr_cpages);
- 	cc->cpages = NULL;
- 	return -EAGAIN;
- }
-@@ -1455,7 +1454,7 @@ void f2fs_compress_write_end_io(struct bio *bio, struct page *page)
- 		end_page_writeback(cic->rpages[i]);
- 	}
- 
--	page_array_free(cic->inode, cic->rpages, cic->nr_rpages);
-+	page_array_free(sbi, cic->rpages, cic->nr_rpages);
- 	kmem_cache_free(cic_entry_slab, cic);
- 
- 	/*
-@@ -1601,7 +1600,7 @@ static int f2fs_prepare_decomp_mem(struct decompress_io_ctx *dic,
- 	if (!allow_memalloc_for_decomp(F2FS_I_SB(dic->inode), pre_alloc))
- 		return 0;
- 
--	dic->tpages = page_array_alloc(dic->inode, dic->cluster_size);
-+	dic->tpages = page_array_alloc(F2FS_I_SB(dic->inode), dic->cluster_size);
- 	if (!dic->tpages)
- 		return -ENOMEM;
- 
-@@ -1663,7 +1662,7 @@ struct decompress_io_ctx *f2fs_alloc_dic(struct compress_ctx *cc)
- 	if (!dic)
- 		return ERR_PTR(-ENOMEM);
- 
--	dic->rpages = page_array_alloc(cc->inode, cc->cluster_size);
-+	dic->rpages = page_array_alloc(sbi, cc->cluster_size);
- 	if (!dic->rpages) {
- 		kmem_cache_free(dic_entry_slab, dic);
- 		return ERR_PTR(-ENOMEM);
-@@ -1684,7 +1683,7 @@ struct decompress_io_ctx *f2fs_alloc_dic(struct compress_ctx *cc)
- 		dic->rpages[i] = cc->rpages[i];
- 	dic->nr_rpages = cc->cluster_size;
- 
--	dic->cpages = page_array_alloc(dic->inode, dic->nr_cpages);
-+	dic->cpages = page_array_alloc(sbi, dic->nr_cpages);
- 	if (!dic->cpages) {
- 		ret = -ENOMEM;
- 		goto out_free;
-@@ -1719,6 +1718,7 @@ static void f2fs_free_dic(struct decompress_io_ctx *dic,
- 		bool bypass_destroy_callback)
- {
- 	int i;
-+	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
- 
- 	f2fs_release_decomp_mem(dic, bypass_destroy_callback, true);
- 
-@@ -1730,7 +1730,7 @@ static void f2fs_free_dic(struct decompress_io_ctx *dic,
- 				continue;
- 			f2fs_compress_free_page(dic->tpages[i]);
- 		}
--		page_array_free(dic->inode, dic->tpages, dic->cluster_size);
-+		page_array_free(sbi, dic->tpages, dic->cluster_size);
- 	}
- 
- 	if (dic->cpages) {
-@@ -1739,10 +1739,10 @@ static void f2fs_free_dic(struct decompress_io_ctx *dic,
- 				continue;
- 			f2fs_compress_free_page(dic->cpages[i]);
- 		}
--		page_array_free(dic->inode, dic->cpages, dic->nr_cpages);
-+		page_array_free(sbi, dic->cpages, dic->nr_cpages);
- 	}
- 
--	page_array_free(dic->inode, dic->rpages, dic->nr_rpages);
-+	page_array_free(sbi, dic->rpages, dic->nr_rpages);
- 	kmem_cache_free(dic_entry_slab, dic);
- }
- 
 -- 
 2.53.0
 
