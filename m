@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-257208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FXRJUgYG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257208-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:04 +0200
+	id WAEhF5giG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2082960ECB0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3066105E8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4495F30C85B0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB3D4306A889
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18ADF39D3D9;
-	Sat, 30 May 2026 16:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F29348C5E;
+	Sat, 30 May 2026 17:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRmnKJRD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6ptAePQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC20362157;
-	Sat, 30 May 2026 16:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393C421B191;
+	Sat, 30 May 2026 17:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160187; cv=none; b=E9PUgxpvjWHv5fyp9DeTQh+FBmRFsi73Czsfv1U+2HyWoDgNrZk3z8qT2q5Dv9iQJdqql0Nc3aUCmEebg/5cIDWP+cu13Ils5Pr1xL94ZmU21bveuPFea6YkXOzwF6hFBthAPM87/fIN0eDU/MkylHtESUm4coFSCQLHISO+GEE=
+	t=1780162836; cv=none; b=IUnFaPY7XPXPp2E2cO/ds0ZjJ/9RVEsRdLfxvjGQLWmJPBdbwtssSFJas3H9O00F8YzrleX87JVQTjJgy6z4rGbFLjA4stHvcMfF1Wjat2+E0cqFRCP8EXnTE9LhEXIL1Ewp8cARneRMUVRC7FkCWd3zZY6bEByXUq2ay8WkPfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160187; c=relaxed/simple;
-	bh=RcQ9AeMccPZV/XBL/aHPjOtHnv0NoH/tFvpomuTFmzs=;
+	s=arc-20240116; t=1780162836; c=relaxed/simple;
+	bh=SUaDV/XjOhPUWZGqIQo8s20wYdbHgbYXStyMlyFmBW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGWxICWWe+6jh8loUPWq5dfFiOTnxlYta3hFCe/qOUYdkZFHYADlhHEiBicnoGG37FJT5KkfWV02P3jtDjqzvpyBF8uNQgBd8mqiBSiWdUb9i2PGnsHkr3Iz5ORQUxXUaoBJF+R2UrOd3dB6nrl/hqcJzTl8ryQqK7MwYRY8OKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRmnKJRD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234A11F00893;
-	Sat, 30 May 2026 16:56:25 +0000 (UTC)
+	 MIME-Version; b=dAhyh5xF+z2xCDYDK+wp3gw+sbHSaPwaaktt9XixMKkvDLUYc0likUmoWgpptc4EIRqbjYz2x5iE4k+3lKbD7lBrJ55d8b1Kgd+79NJCOzMU4VPAjwQh/SVN7o1mOaPgBPZt+aKD53wegqJITVDYIlw4QbzKY96Gnc/pM8ykVy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6ptAePQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7B51F00893;
+	Sat, 30 May 2026 17:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160186;
-	bh=eZAvPdmcnkXD0QIix+GNzIoWn2Dd1rizR1rnLQZ3sxU=;
+	s=korg; t=1780162835;
+	bh=yf59mr5uOPr/8Zzy/Jsiuvu/ofWsGq3s6ktu8p/0tno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mRmnKJRD2CsuGmpi2qYyPlLf8zKp/zVB+iq6vgzZ0Jz/ZCuePEBm4NhwRB6zySy/a
-	 xsCS076XDijsbxJZjrXJrzjpEOR2LDTjP2ZkfwNN7T7v+aweFfITb+WQJtUjWFsOIH
-	 RNZSGDP7hyR8+ohfsH5I6AmUxh/UDwYNvHNv5NK8=
+	b=V6ptAePQ/OVOxZb02kEQ/5Eeef1ZidBRIJrHMR/drBd7STknpjHGj8ugWElBKyiOi
+	 wKhzXlw0dR5Ch/jvBIkU2+4N3UTNmvnxC+RQHlO1FT+pEuxLfN2D6iy/hs1yy/vC0s
+	 u2ha0y9P93r4xAhDUYpXRHhEy9zRsRUOs2WZkb5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [PATCH 6.1 267/969] rtmutex: Use waiter::task instead of current in remove_waiter()
-Date: Sat, 30 May 2026 17:56:31 +0200
-Message-ID: <20260530160307.847441791@linuxfoundation.org>
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 078/776] rxrpc: proc: size address buffers for %pISpc output
+Date: Sat, 30 May 2026 17:56:32 +0200
+Message-ID: <20260530160242.343231446@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,115 +74,187 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257208-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-257984-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2082960ECB0
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,auristor.com:email,infradead.org:email,iscas.ac.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BD3066105E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keenan Dong <keenanat2000@gmail.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-commit 3bfdc63936dd4773109b7b8c280c0f3b5ae7d349 upstream.
+[ Upstream commit a44ce6aa2efb61fe44f2cfab72bb01544bbca272 ]
 
-remove_waiter() is used by the slowlock paths, but it is also used for
-proxy-lock rollback in rt_mutex_start_proxy_lock() when invoked from
-futex_requeue().
+The AF_RXRPC procfs helpers format local and remote socket addresses into
+fixed 50-byte stack buffers with "%pISpc".
 
-In the latter case waiter::task is not current, but remove_waiter()
-operates on current for the dequeue operation. That results in several
-problems:
+That is too small for the longest current-tree IPv6-with-port form the
+formatter can produce. In lib/vsprintf.c, the compressed IPv6 path uses a
+dotted-quad tail not only for v4mapped addresses, but also for ISATAP
+addresses via ipv6_addr_is_isatap().
 
-  1) the rbtree dequeue happens without waiter::task::pi_lock being held
+As a result, a case such as
 
-  2) the waiter task's pi_blocked_on state is not cleared, which leaves a
-     dangling pointer primed for UAF around.
+  [ffff:ffff:ffff:ffff:0:5efe:255.255.255.255]:65535
 
-  3) rt_mutex_adjust_prio_chain() operates on the wrong top priority waiter
-     task
+is possible with the current formatter. That is 50 visible characters, so
+51 bytes including the trailing NUL, which does not fit in the existing
+char[50] buffers used by net/rxrpc/proc.c.
 
-Use waiter::task instead of current in all related operations in
-remove_waiter() to cure those problems.
+Size the buffers from the formatter's maximum textual form and switch the
+call sites to scnprintf().
 
-[ tglx: Fixup rt_mutex_adjust_prio_chain(), add a comment and amend the
-  	changelog ]
+Changes since v1:
+- correct the changelog to cite the actual maximum current-tree case
+  explicitly
+- frame the proof around the ISATAP formatting path instead of the earlier
+  mapped-v4 example
 
-Fixes: 8161239a8bcc ("rtmutex: Simplify PI algorithm and make highest prio task get lock")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 75b54cb57ca3 ("rxrpc: Add IPv6 support")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Anderson Nascimento <anderson@allelesecurity.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-22-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted address accessors and variable declarations ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/locking/rtmutex.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ net/rxrpc/proc.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -1511,20 +1511,23 @@ static bool rtmutex_spin_on_owner(struct
-  *
-  * Must be called with lock->wait_lock held and interrupts disabled. It must
-  * have just failed to try_to_take_rt_mutex().
-+ *
-+ * When invoked from rt_mutex_start_proxy_lock() waiter::task != current !
-  */
- static void __sched remove_waiter(struct rt_mutex_base *lock,
- 				  struct rt_mutex_waiter *waiter)
+diff --git a/net/rxrpc/proc.c b/net/rxrpc/proc.c
+index 245418943e01c..47d36554ad311 100644
+--- a/net/rxrpc/proc.c
++++ b/net/rxrpc/proc.c
+@@ -10,6 +10,10 @@
+ #include <net/af_rxrpc.h>
+ #include "ar-internal.h"
+ 
++#define RXRPC_PROC_ADDRBUF_SIZE \
++	(sizeof("[xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:255.255.255.255]") + \
++	 sizeof(":12345"))
++
+ static const char *const rxrpc_conn_states[RXRPC_CONN__NR_STATES] = {
+ 	[RXRPC_CONN_UNUSED]			= "Unused  ",
+ 	[RXRPC_CONN_CLIENT]			= "Client  ",
+@@ -55,7 +59,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+ 	unsigned long timeout = 0;
+ 	rxrpc_seq_t tx_hard_ack, rx_hard_ack;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == &rxnet->calls) {
+ 		seq_puts(seq,
+@@ -72,7 +76,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 	if (rx) {
+ 		local = READ_ONCE(rx->local);
+ 		if (local)
+-			sprintf(lbuff, "%pISpc", &local->srx.transport);
++			scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 		else
+ 			strcpy(lbuff, "no_local");
+ 	} else {
+@@ -81,7 +85,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 
+ 	peer = call->peer;
+ 	if (peer)
+-		sprintf(rbuff, "%pISpc", &peer->srx.transport);
++		scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
+ 	else
+ 		strcpy(rbuff, "no_connection");
+ 
+@@ -152,7 +156,7 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
  {
- 	bool is_top_waiter = (waiter == rt_mutex_top_waiter(lock));
- 	struct task_struct *owner = rt_mutex_owner(lock);
-+	struct task_struct *waiter_task = waiter->task;
- 	struct rt_mutex_base *next_lock;
+ 	struct rxrpc_connection *conn;
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
  
- 	lockdep_assert_held(&lock->wait_lock);
+ 	if (v == &rxnet->conn_proc_list) {
+ 		seq_puts(seq,
+@@ -171,9 +175,9 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
+ 		goto print;
+ 	}
  
--	raw_spin_lock(&current->pi_lock);
--	rt_mutex_dequeue(lock, waiter);
--	current->pi_blocked_on = NULL;
--	raw_spin_unlock(&current->pi_lock);
-+	scoped_guard(raw_spinlock, &waiter_task->pi_lock) {
-+		rt_mutex_dequeue(lock, waiter);
-+		waiter_task->pi_blocked_on = NULL;
-+	}
+-	sprintf(lbuff, "%pISpc", &conn->params.local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &conn->params.local->srx.transport);
  
- 	/*
- 	 * Only update priority if the waiter was the highest priority
-@@ -1560,7 +1563,7 @@ static void __sched remove_waiter(struct
- 	raw_spin_unlock_irq(&lock->wait_lock);
+-	sprintf(rbuff, "%pISpc", &conn->params.peer->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &conn->params.peer->srx.transport);
+ print:
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %-47.47s %4x %08x %s %3u"
+@@ -210,7 +214,7 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_peer *peer;
+ 	time64_t now;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
  
- 	rt_mutex_adjust_prio_chain(owner, RT_MUTEX_MIN_CHAINWALK, lock,
--				   next_lock, NULL, current);
-+				   next_lock, NULL, waiter_task);
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -223,9 +227,9 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
  
- 	raw_spin_lock_irq(&lock->wait_lock);
- }
+ 	peer = list_entry(v, struct rxrpc_peer, hash_link);
+ 
+-	sprintf(lbuff, "%pISpc", &peer->local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &peer->local->srx.transport);
+ 
+-	sprintf(rbuff, "%pISpc", &peer->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
+ 
+ 	now = ktime_get_seconds();
+ 	seq_printf(seq,
+@@ -335,7 +339,7 @@ const struct seq_operations rxrpc_peer_seq_ops = {
+ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_local *local;
+-	char lbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -346,7 +350,7 @@ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
+ 
+ 	local = hlist_entry(v, struct rxrpc_local, link);
+ 
+-	sprintf(lbuff, "%pISpc", &local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %3u %3u\n",
+-- 
+2.53.0
+
 
 
 
