@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-257743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMA1K4sfG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:03 +0200
+	id MCD/BTsqG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C4260FF13
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 922B86117A8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8593130830AF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D8C2E30EDFD4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4B12FDC5E;
-	Sat, 30 May 2026 17:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E1C3B7B72;
+	Sat, 30 May 2026 18:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mF2ziVPz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRLy/x2y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7BE33B6C4;
-	Sat, 30 May 2026 17:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15313AFCE3;
+	Sat, 30 May 2026 18:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162023; cv=none; b=q3hu44dCdtYpjLHF4S9l5I30tCw0pOTUbAlo2dzC6mfUVwqU9LaX4ylUldNAdaf0ujLoQx3tIJ18PaF0TiVLqeb83ZRxKhUYEi7jP/DpCLdYK0m0+haA0q7l4VLzEQlD4Z1czH0PK9wEnGm2TaXcWBUZSXevoVSLRAH/OgReCn8=
+	t=1780164517; cv=none; b=uj9zHkA3Fg4LoxtjOUKb0aVNVSY+ROJx+VTBMxfNS6bwQUiiMQD1W7ho7uLs7G1hsb5CM2B1RHvYuj9wrd9JY2QngtXXBJqEHy3EtE5TQZG88eEjohTx4GxHMQ/exMUaINyVZBfjl8jRpV5tZnMXQtC4yEaA9GpeO5v7HeSpkFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162023; c=relaxed/simple;
-	bh=M1nI+4tpjv0uJ9tLbHx2T4ZKbCHEgmiuRaq0oB2Z2dQ=;
+	s=arc-20240116; t=1780164517; c=relaxed/simple;
+	bh=S4tXdE5B6AiguL8g/I48HSlpZ53whSHzOAM5Snf02PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zwq5mfATg49DyMXh2v5/5AoiXVUSYKluFgukj2xT8ai7+oSBuTguEILWrBT61660DuQE51+uNhOEwDBgpx7RRFjWS58oWsItis4/P8KauE9QP5WiLswFwIrAExDJuGYJHmT/EYnShP5FwFhm/xq+lnzLADT/XakrHfHWd64d0jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mF2ziVPz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CC11F00893;
-	Sat, 30 May 2026 17:27:01 +0000 (UTC)
+	 MIME-Version; b=eymXdKeMW0VyoYedbVUiW+sHF0BIHZk+dQ4sGK1vZCI4OO7WQXEkh3AOQj1e3ieT+covB6rvd1Jf6mM+/bkqTueDKavdkhGcs3x+kTQs9Rux0Se3Q4Rp2vVXJAb8X3N2CKOe0T7fysPB7bbBEL8iBgqp//1blxlA0u/7F8raqEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRLy/x2y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077291F00893;
+	Sat, 30 May 2026 18:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162022;
-	bh=2tlWUXBcUavi4b+A4p0spU0fuH7QsooWuluDAJ/MdBc=;
+	s=korg; t=1780164516;
+	bh=vv0gAIJCDxVS+zXp6gCPcZZWhmhWEhQZQAaiMdO4yh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mF2ziVPzAIcErn4zYG/0qlxP4C8EBfKSU9qT+dPMTVTjHd8kFPHzT8cXIPPDVqEJ4
-	 TwVR8qST6HBspVvubWU+rYMKLLWgcXFiaj6zAVBDiBRpRYi2RP8CD3oHNvGObP6jAj
-	 OsMO3e21eYAohc2KPdZojtPjPDTAEAmsm5qjX7rk=
+	b=FRLy/x2yO1k62rubgLR8PFYqs5W7rXjx5H6c2ZdrF83AmTY9k9baRccfCs30t8wcB
+	 W1fXRRN9NjyR6AJIWwARoJEtx5V8SVqRf7bznGxboJPTHHZGo7MyOUpABqJwD07Nhc
+	 ZzxnIjBE9T/dBqZOtN/A66I812neuDmB9qqeqsZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Kito Xu (veritas501)" <hxzene@gmail.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 768/969] bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()
+Subject: [PATCH 5.15 578/776] netfilter: nfnetlink_osf: fix potential NULL dereference in ttl check
 Date: Sat, 30 May 2026 18:04:52 +0200
-Message-ID: <20260530160321.786104382@linuxfoundation.org>
+Message-ID: <20260530160255.028218444@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,8 +75,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-257743-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258488-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -88,73 +86,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,asu.edu:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 21C4260FF13
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 922B86117A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit aa6c6d9ee064aabfede4402fd1283424e649ca19 ]
+[ Upstream commit 711987ba281fd806322a7cd244e98e2a81903114 ]
 
-bareudp_fill_metadata_dst() passes bareudp->sock to
-udp_tunnel6_dst_lookup() in the IPv6 path without a NULL check.
-The socket is only created in bareudp_open() and NULLed in
-bareudp_stop(), so calling this function while the device is down
-triggers a NULL dereference via sock->sk.
+The nf_osf_ttl() function accessed skb->dev to perform a local interface
+address lookup without verifying that the device pointer was valid.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000018
- RIP: 0010:udp_tunnel6_dst_lookup (net/ipv6/ip6_udp_tunnel.c:160)
- Call Trace:
-  <TASK>
-  bareudp_fill_metadata_dst (drivers/net/bareudp.c:532)
-  do_execute_actions (net/openvswitch/actions.c:901)
-  ovs_execute_actions (net/openvswitch/actions.c:1589)
-  ovs_packet_cmd_execute (net/openvswitch/datapath.c:700)
-  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1114)
-  genl_rcv_msg (net/netlink/genetlink.c:1209)
-  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-  </TASK>
+Additionally, the implementation utilized an in_dev_for_each_ifa_rcu
+loop to match the packet source address against local interface
+addresses. It assumed that packets from the same subnet should not see a
+decrement on the initial TTL. A packet might appear it is from the same
+subnet but it actually isn't especially in modern environments with
+containers and virtual switching.
 
-Add a NULL check returning -ESHUTDOWN, consistent with the xmit paths
-in the same driver.
+Remove the device dereference and interface loop. Replace the logic with
+a switch statement that evaluates the TTL according to the ttl_check.
 
-Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260426165350.1663137-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
+Reported-by: Kito Xu (veritas501) <hxzene@gmail.com>
+Closes: https://lore.kernel.org/netfilter-devel/20260414074556.2512750-1-hxzene@gmail.com/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bareudp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/netfilter/nfnetlink_osf.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index 150049d9a81a7..b181c03368153 100644
---- a/drivers/net/bareudp.c
-+++ b/drivers/net/bareudp.c
-@@ -520,6 +520,9 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
- 		struct in6_addr saddr;
- 		struct socket *sock = rcu_dereference(bareudp->sock);
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index 2207bda442d54..6d3dfbeb398cb 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -31,26 +31,18 @@ EXPORT_SYMBOL_GPL(nf_osf_fingers);
+ static inline int nf_osf_ttl(const struct sk_buff *skb,
+ 			     int ttl_check, unsigned char f_ttl)
+ {
+-	struct in_device *in_dev = __in_dev_get_rcu(skb->dev);
+ 	const struct iphdr *ip = ip_hdr(skb);
+-	const struct in_ifaddr *ifa;
+-	int ret = 0;
  
-+		if (!sock)
-+			return -ESHUTDOWN;
-+
- 		dst = udp_tunnel6_dst_lookup(skb, dev, bareudp->net, sock,
- 					     &saddr, info, IPPROTO_UDP,
- 					     use_cache);
+-	if (ttl_check == NF_OSF_TTL_TRUE)
++	switch (ttl_check) {
++	case NF_OSF_TTL_TRUE:
+ 		return ip->ttl == f_ttl;
+-	if (ttl_check == NF_OSF_TTL_NOCHECK)
+-		return 1;
+-	else if (ip->ttl <= f_ttl)
++		break;
++	case NF_OSF_TTL_NOCHECK:
+ 		return 1;
+-
+-	in_dev_for_each_ifa_rcu(ifa, in_dev) {
+-		if (inet_ifa_match(ip->saddr, ifa)) {
+-			ret = (ip->ttl == f_ttl);
+-			break;
+-		}
++	case NF_OSF_TTL_LESS:
++	default:
++		return ip->ttl <= f_ttl;
+ 	}
+-
+-	return ret;
+ }
+ 
+ struct nf_osf_hdr_ctx {
 -- 
 2.53.0
 
