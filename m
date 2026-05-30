@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-257471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOZUBRocG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257471-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:22 +0200
+	id WO6QMhYcG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E70F60F636
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F84E60F628
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 17E723109003
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 41B57306CF48
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B1C34104B;
-	Sat, 30 May 2026 17:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27B3395AD8;
+	Sat, 30 May 2026 17:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IT7TdwtS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aa45h4zu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3249E3148DA;
-	Sat, 30 May 2026 17:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E573148DA;
+	Sat, 30 May 2026 17:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161111; cv=none; b=CBjTf+uvmuG1PnihdmwWr0/zSG4xAA2Lw2LiP+JwTlE8gZmKCSbuoFnKcBPElKK5EujNZA4W7sYlu0Tj81OZB94N6DaePCRGGnEhc3crst5HYIZElSC7oaHr5B5F92pBVuHDLQWDEnLhWRoPkQn7kKGrvvZb1ovf2i7fzEnKtRA=
+	t=1780161117; cv=none; b=Li5+YNiv0FEIn0elbyjRLNqAkOdtMH3mZQJatBfPqyOmdWs3ykHhavtP00Hav1YxppGhMj+lUimqBGjVwqfTlpTLkV0Rb5ONTXJxS/ulSPgSM4HE5QpCGwg5sHYuUji2KadWlKTB8xgagLHo4Rg9DnODzLckeyDEuFNbdu6QM3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161111; c=relaxed/simple;
-	bh=hO4BnrTcpgUpEvn286iUGhtDqVHbds/R2rnjxRxHU8M=;
+	s=arc-20240116; t=1780161117; c=relaxed/simple;
+	bh=EPW5fgzJ0zXtsfBJsIeMSMPUWA5JbjOHl4F7v3PrQ6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hAvah2GOEEv/4rP+on1z4aXNvC8N4yq38I8bRm2/6NHuHmh78Bh4LBPuAM+urH6omoaUiYcJfNUj6S3Gkoyvp0Uwao+SDc+oq7PA/RXnn3p+cfobqKG3oAWeDkutpck8MfydOmLGS09Y1PyDXJbafYlo6f4Tok11v6IOKtI9GdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IT7TdwtS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C141F00893;
-	Sat, 30 May 2026 17:11:49 +0000 (UTC)
+	 MIME-Version; b=Qye/uSuAMhKvtzdQMc553wRvOHHYRUQYqKxcAhIdjnIJXrMMvNKhPLEQ1rA0yEicKibbl4yMFf+G3dMMAl5mTRPhc3GIG5cM7ms/Qv1ChdW5GknaRAiSK3CdPiIWYr8XQHtU4gNNR8zGmuhc5HpJxJgGmV0XmBvfWQaGaPoOkJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aa45h4zu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143D51F00893;
+	Sat, 30 May 2026 17:11:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161110;
-	bh=9bzMnpprKtnyVfpHlkvJDKTBqYzTfBO1pWYm5KdtliE=;
+	s=korg; t=1780161116;
+	bh=ivpjZPYDPb2lawo4SQjwxuudGvXMoivrYN/N7njLjMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IT7TdwtSrzxiDTpSWsnXgsFdRKD9iC1RTHZdKZz3BTMPmgCrmMziN/ug1aot9GXUX
-	 GhF4K2u6GzQ5jyrP3Int/WhBw58GIL5VZA4lgvZ1uv6vsnu846UBFmu/elCcVtF/UK
-	 DFc1LboThUbB9tq9obKBEjInw9jqLXrLpQ+6jd1E=
+	b=Aa45h4zu9IO31zV5HguZD0TxQM56rbqB0pQYuM31TpvgHX8/yD1eDI3LjRgvvJrIe
+	 1mXYVeP2Fm97aqep/AIuFgAq8tF5br7okOz135EU9yDk1eFTdFtwzfrEXvKCqnNz5U
+	 xcgt1m/CbA56D9R1FAuTJ7R4S/I8LZFE3hb7LrWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Felix Gu <gu_0233@qq.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 528/969] drm/msm/a6xx: Use barriers while updating HFI Q headers
-Date: Sat, 30 May 2026 18:00:52 +0200
-Message-ID: <20260530160314.939574530@linuxfoundation.org>
+Subject: [PATCH 6.1 529/969] pmdomain: ti: omap_prm: Fix a reference leak on device node
+Date: Sat, 30 May 2026 18:00:53 +0200
+Message-ID: <20260530160314.967692213@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -69,28 +69,29 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257471-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257473-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,linaro.org,kernel.org];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8E70F60F636
+X-Rspamd-Queue-Id: 3F84E60F628
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,70 +99,34 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Felix Gu <gu_0233@qq.com>
 
-[ Upstream commit dc78b35d5ec09d1b0b8a937e6e640d2c5a030915 ]
+[ Upstream commit 44c28e1c52764fef6dd1c1ada3a248728812e67f ]
 
-To avoid harmful compiler optimizations and IO reordering in the HW, use
-barriers and READ/WRITE_ONCE helpers as necessary while accessing the HFI
-queue index variables.
+When calling of_parse_phandle_with_args(), the caller is responsible
+to call of_node_put() to release the reference of device node.
+In omap_prm_domain_attach_dev, it does not release the reference.
 
-Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714653/
-Message-ID: <20260327-a8xx-gpu-batch2-v2-1-2b53c38d2101@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: 58cbff023bfa ("soc: ti: omap-prm: Add basic power domain support")
+Signed-off-by: Felix Gu <gu_0233@qq.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_hfi.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/soc/ti/omap_prm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-index 2cc83e0496133..753a1bcc835cb 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-@@ -29,7 +29,7 @@ static int a6xx_hfi_queue_read(struct a6xx_gmu *gmu,
- 	struct a6xx_hfi_queue_header *header = queue->header;
- 	u32 i, hdr, index = header->read_index;
+diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
+index 33ef58195955d..1a85ae3507691 100644
+--- a/drivers/soc/ti/omap_prm.c
++++ b/drivers/soc/ti/omap_prm.c
+@@ -652,6 +652,7 @@ static int omap_prm_domain_attach_dev(struct generic_pm_domain *domain,
+ 	if (pd_args.args_count != 0)
+ 		dev_warn(dev, "%s: unusupported #power-domain-cells: %i\n",
+ 			 prmd->pd.name, pd_args.args_count);
++	of_node_put(pd_args.np);
  
--	if (header->read_index == header->write_index) {
-+	if (header->read_index == READ_ONCE(header->write_index)) {
- 		header->rx_request = 1;
- 		return 0;
- 	}
-@@ -57,7 +57,10 @@ static int a6xx_hfi_queue_read(struct a6xx_gmu *gmu,
- 	if (!gmu->legacy)
- 		index = ALIGN(index, 4) % header->size;
- 
--	header->read_index = index;
-+	/* Ensure all memory operations are complete before updating the read index */
-+	dma_mb();
-+
-+	WRITE_ONCE(header->read_index, index);
- 	return HFI_HEADER_SIZE(hdr);
- }
- 
-@@ -69,7 +72,7 @@ static int a6xx_hfi_queue_write(struct a6xx_gmu *gmu,
- 
- 	spin_lock(&queue->lock);
- 
--	space = CIRC_SPACE(header->write_index, header->read_index,
-+	space = CIRC_SPACE(header->write_index, READ_ONCE(header->read_index),
- 		header->size);
- 	if (space < dwords) {
- 		header->dropped++;
-@@ -90,7 +93,10 @@ static int a6xx_hfi_queue_write(struct a6xx_gmu *gmu,
- 			queue->data[index] = 0xfafafafa;
- 	}
- 
--	header->write_index = index;
-+	/* Ensure all memory operations are complete before updating the write index */
-+	dma_mb();
-+
-+	WRITE_ONCE(header->write_index, index);
- 	spin_unlock(&queue->lock);
- 
- 	gmu_write(gmu, REG_A6XX_GMU_HOST2GMU_INTR_SET, 0x01);
+ 	genpd_data = dev_gpd_data(dev);
+ 	genpd_data->data = NULL;
 -- 
 2.53.0
 
