@@ -1,69 +1,56 @@
-Return-Path: <stable+bounces-257064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257065-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKysGhYUG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257064-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:10 +0200
+	id uORIKSYUG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257065-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D385260E62E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D7760E635
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B9D443010B94
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:45:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F190E3010251
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A27342530;
-	Sat, 30 May 2026 16:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEA5332EA7;
+	Sat, 30 May 2026 16:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcS4h/Ol"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jpw0DINe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB7132BF24;
-	Sat, 30 May 2026 16:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0481726F288;
+	Sat, 30 May 2026 16:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159508; cv=none; b=AL2QgmHOLuu6/8cTX6KA4+DdhAQj+yzdoXFci23Bqqp3WE6ZknO/MYXwkDj+j3S3p5993ajrBqtsatcR6lp9ZXP1hn3jOcIu7npAW7EsnOZfFlk5stfP+3aqL50Y7ztwuKCDoO/i05gMFk+qWZeKK6Pzc7IizXIcd51ud9QFR+s=
+	t=1780159524; cv=none; b=V06vT3iyRJJmPyn8+2zfO+JnrCe8CKDYciVctHKmTbrRzufrD8fBKYbgz1CZrCuT4EfVRX9IwunD1l1Y+dXfYNZY11+COgOeP4cYZ+iqiBqlzZsXvPbmNsS29SshcRGqTXBvywbyjqtlrCX85KMoOa9UlisatzmJUUrGLfNFnn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159508; c=relaxed/simple;
-	bh=eCdyhFr12Hm0koHID1vjgSy7mesOwAHeTrbz8LoyNCY=;
+	s=arc-20240116; t=1780159524; c=relaxed/simple;
+	bh=bzkT/7dAklLoEBUs7gws91C9i3pVRca+cDIpdUNSKjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tK1RtNvDEeZYwzUqy2XZXWP4OQdyNli1Vzygt1BSL+yY1SI5GupFFKegHWC4DvHGaGEsKdCa34qq9UTOiJnwVKYtx42F3uYvWp13hLmYoL7BOCy/bc4lOHLJ6MGG150CJhWHVNclpyOH86SmggaGhoHuIqXQgKsiA52asx3W/nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcS4h/Ol; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23EAF1F00893;
-	Sat, 30 May 2026 16:45:03 +0000 (UTC)
+	 MIME-Version; b=PD23GAKelZ/CuCYuAYjCd2M8AIaNxnqgbFFZt+XTrxMFRlzXFojwsHIhuwCSa9r/5MILOTMu79cVfXdgUFx2+B10KtRkp7dqHk1vqFUlz2L6b0kDFZs0yqNjhWUm159uiRkmUK//RhSR4OroQQPBIJMXydVBlJK0MG447oJdlcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jpw0DINe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E07A1F00893;
+	Sat, 30 May 2026 16:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159506;
-	bh=Zfqqa6s4zxWPFJSq2FoWle3agMyugx2A3XMKqKjVAkg=;
+	s=korg; t=1780159522;
+	bh=wCunCpVIVbiLuXPcu80EPg6Tsrc09lbLxmzhcFOh8PI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VcS4h/Ol6y2CWzAwAaQz+zE0YD/4dJmLx7Z7Vtm/vmLe4gwLHcibFD/XgEjxFUvKi
-	 4KRhzZhKY8qU3l1v7IpP/8IGxYNvnvaWGfWKpIMcFCTxQTCYnP3+Na3hDVt4HixH+6
-	 419yXsnRjrJa4k+4pxkt/P8gywjL5x1g6+f2Xe9w=
+	b=Jpw0DINeuERYE38BTglQBzHM0DZQ/2CELH9RVwsTy4PK9zlw7P0WetyrvsVDOOXFI
+	 Xi/kr+0at49wLjrxmsPW1LFbYDBh8+D5f7tyBhAyOcDJv+J7614B4xETzZonC7C22h
+	 lEIIQImGM35l+9UQO8EE1uHsCd8aFEvU/B/gP8so=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 100/969] mm: blk-cgroup: fix use-after-free in cgwb_release_workfn()
-Date: Sat, 30 May 2026 17:53:44 +0200
-Message-ID: <20260530160303.089169315@linuxfoundation.org>
+	syzbot+639ebc6ec75e96674741@syzkaller.appspotmail.com,
+	Ruslan Valiyev <linuxoid@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 101/969] media: vidtv: fix nfeeds state corruption on start_streaming failure
+Date: Sat, 30 May 2026 17:53:45 +0200
+Message-ID: <20260530160303.116463010@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -77,35 +64,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257064-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,debian.org,kernel.org,linux.dev,kernel.dk,cmpxchg.org,toxicpanda.com,gmail.com,oracle.com,suse.com,google.com,linux-foundation.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257065-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,639ebc6ec75e96674741,cisco];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D385260E62E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 20D7760E635
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -113,88 +101,63 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Ruslan Valiyev <linuxoid@gmail.com>
 
-commit 8f5857be99f1ed1fa80991c72449541f634626ee upstream.
+commit a0e5a598fe9a4612b852406b51153b881592aede upstream.
 
-cgwb_release_workfn() calls css_put(wb->blkcg_css) and then later accesses
-wb->blkcg_css again via blkcg_unpin_online().  If css_put() drops the last
-reference, the blkcg can be freed asynchronously (css_free_rwork_fn ->
-blkcg_css_free -> kfree) before blkcg_unpin_online() dereferences the
-pointer to access blkcg->online_pin, resulting in a use-after-free:
+syzbot reported a memory leak in vidtv_psi_service_desc_init [1].
 
-  BUG: KASAN: slab-use-after-free in blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
-  Write of size 4 at addr ff11000117aa6160 by task kworker/71:1/531
-   Workqueue: cgwb_release cgwb_release_workfn
-   Call Trace:
-    <TASK>
-     blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
-     cgwb_release_workfn (mm/backing-dev.c:629)
-     process_scheduled_works (kernel/workqueue.c:3278 kernel/workqueue.c:3385)
+When vidtv_start_streaming() fails inside vidtv_start_feed(), the
+nfeeds counter is left incremented even though no feed was actually
+started. This corrupts the driver state: subsequent start_feed calls
+see nfeeds > 1 and skip starting the mux, while stop_feed calls
+eventually try to stop a non-existent stream.
 
-   Freed by task 1016:
-    kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6246 mm/slub.c:6561)
-    css_free_rwork_fn (kernel/cgroup/cgroup.c:5542)
-    process_scheduled_works (kernel/workqueue.c:3302 kernel/workqueue.c:3385)
+This state corruption can also lead to memory leaks, since the mux
+and channel resources may be partially allocated during a failed
+start_streaming but never cleaned up, as the stop path finds
+dvb->streaming == false and returns early.
 
-** Stack based on commit 66672af7a095 ("Add linux-next specific files
-for 20260410")
+Fix by decrementing nfeeds back when start_streaming fails, keeping
+the counter in sync with the actual number of active feeds.
 
-I am seeing this crash sporadically in Meta fleet across multiple kernel
-versions.  A full reproducer is available at:
-https://github.com/leitao/debug/blob/main/reproducers/repro_blkcg_uaf.sh
+[1]
+BUG: memory leak
+unreferenced object 0xffff888145b50820 (size 32):
+ comm "syz.0.17", pid 6068, jiffies 4294944486
+ backtrace (crc 90a0c7d4):
+  vidtv_psi_service_desc_init+0x74/0x1b0 drivers/media/test-drivers/vidtv/vidtv_psi.c:288
+  vidtv_channel_s302m_init+0xb1/0x2a0 drivers/media/test-drivers/vidtv/vidtv_channel.c:83
+  vidtv_channels_init+0x1b/0x40 drivers/media/test-drivers/vidtv/vidtv_channel.c:524
+  vidtv_mux_init+0x516/0xbe0 drivers/media/test-drivers/vidtv/vidtv_mux.c:518
+  vidtv_start_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:194 [inline]
+  vidtv_start_feed+0x33e/0x4d0 drivers/media/test-drivers/vidtv/vidtv_bridge.c:239
 
-(The race window is narrow.  To make it easily reproducible, inject a
-msleep(100) between css_put() and blkcg_unpin_online() in
-cgwb_release_workfn().  With that delay and a KASAN-enabled kernel, the
-reproducer triggers the splat reliably in less than a second.)
-
-Fix this by moving blkcg_unpin_online() before css_put(), so the
-cgwb's CSS reference keeps the blkcg alive while blkcg_unpin_online()
-accesses it.
-
-Link: https://lore.kernel.org/20260413-blkcg-v1-1-35b72622d16c@debian.org
-Fixes: 59b57717fff8 ("blkcg: delay blkg destruction until after writeback has finished")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Dennis Zhou <dennis@kernel.org>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: JP Kobryn <inwardvessel@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+639ebc6ec75e96674741@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=639ebc6ec75e96674741
+Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/backing-dev.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/test-drivers/vidtv/vidtv_bridge.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/backing-dev.c
-+++ b/mm/backing-dev.c
-@@ -399,12 +399,13 @@ static void cgwb_release_workfn(struct w
- 	wb_shutdown(wb);
+--- a/drivers/media/test-drivers/vidtv/vidtv_bridge.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
+@@ -237,8 +237,10 @@ static int vidtv_start_feed(struct dvb_d
  
- 	css_put(wb->memcg_css);
--	css_put(wb->blkcg_css);
--	mutex_unlock(&wb->bdi->cgwb_release_mutex);
+ 	if (dvb->nfeeds == 1) {
+ 		ret = vidtv_start_streaming(dvb);
+-		if (ret < 0)
++		if (ret < 0) {
++			dvb->nfeeds--;
+ 			rc = ret;
++		}
+ 	}
  
- 	/* triggers blkg destruction if no online users left */
- 	blkcg_unpin_online(wb->blkcg_css);
- 
-+	css_put(wb->blkcg_css);
-+	mutex_unlock(&wb->bdi->cgwb_release_mutex);
-+
- 	fprop_local_destroy_percpu(&wb->memcg_completions);
- 
- 	spin_lock_irq(&cgwb_lock);
+ 	mutex_unlock(&dvb->feed_lock);
 
 
 
