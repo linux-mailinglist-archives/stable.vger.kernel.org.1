@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-256959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256960-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGdKDbsQG2q/+ggAu9opvQ
-	(envelope-from <stable+bounces-256959-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:51 +0200
+	id QNVSEL0QG2q/+ggAu9opvQ
+	(envelope-from <stable+bounces-256960-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8498160E342
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A2C60E34B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 61DD730440AD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:22:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57269301ECF3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD223403E1;
-	Sat, 30 May 2026 16:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451283093A6;
+	Sat, 30 May 2026 16:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpEAvsl9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7hJDs8I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C424B343884;
-	Sat, 30 May 2026 16:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF76D344D80;
+	Sat, 30 May 2026 16:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780158134; cv=none; b=aLcjPRju61F/vXvtrRVq5iexi5+4XdXOpv9xesPd1r+1cC+sUOje22dBq8+Q7EL2pi9KDfHA/k55hTPpOYUB61coeURf6OY4ytUA2q07ZblX48j60Aw5yScNb6EM4QVZu15nbx6ald17a7/6olPkJptXj/iLMCWRiD7N+aJKGJQ=
+	t=1780158142; cv=none; b=rwuLrSE8QGyMhN+Yqg9f0XbbNhUESsXAr/ZJl+6r5v7cttwc/1mQsfscKnee8hjc7aHxrFC1bs2TK7Up2krAKf34ehENhpOMSAvriEUfh6rlU+9U8oCwlg5MPytWaSnjh9oGkZlaIjcfnf8ufmgEsB86HM4e3JsPAd3BUsqYiKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780158134; c=relaxed/simple;
-	bh=83JoSxI7LM6gSe86yKIy+0AtD9NvguKkEAXAFZhTvfw=;
+	s=arc-20240116; t=1780158142; c=relaxed/simple;
+	bh=qWZ0VHnNPay+L0A2FC2wjitLxNIS5NEpjqDkqHcjG6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VLCLThH4BBvnT7pkFuQCKWwb3dfCkG6PLvIYAA4y92aU9ZJgAlIVwA8HduoB/QjxsE/Rhk+pI4tDn6PCTZkLEI72t5Jd4Bmt6nwTNNosU9I4rdYpYy/qPrIJT2dHlJp2O367/Ql5/vjVjqWgBmvDfQx3zt/grskoTtF6Z7369sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpEAvsl9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E72F1F00893;
-	Sat, 30 May 2026 16:22:11 +0000 (UTC)
+	 MIME-Version; b=NMGa/AUawPEqbpZ3//eX3DTAwPoOLroLOW4yDAgayILNyRaULxtD7/xjPdP10bZq0TtdxS+iKJs1RWnuSdzKbllF2j6ikMyj6lFFwX/MWV9NBvDV+ThNbnvKJvpdMXaL1C/S/YIREHsiJ5BcDkpPQY09vDU4Xevq0voYrSn+Nq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7hJDs8I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8699E1F00893;
+	Sat, 30 May 2026 16:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780158133;
-	bh=0/9d/+T5vMSmCa/lwoLjHpEErco4nKLb48OrkV19osQ=;
+	s=korg; t=1780158140;
+	bh=rfG/L77EsyD79xF3ERrGcUgXUwGWZQ0asQlbZ5oPwZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JpEAvsl929nK99QPwnT2o+z60h7JXIxAR6tnMpzaziX8kVKVKv12MDmLGgBRyv+VP
-	 fomH1Ihx9fFbr5ZyCUIj6hMDDTElvAu7yRQ/0AnVjhKX+HRtCN5qdHJJFNnMYzF8G7
-	 KiHTlZQ5PWqhVELqYRgVoi3qNTMZWVb7TzZVifMU=
+	b=C7hJDs8Iq859V8AGj8Fc/iuRGK7PZqkzmpTMlKO8djb0O4TR0V3te+6AWCyHJoA/x
+	 OK056ybV+36U/kObhdxDHhxXeXrxAZSEAFgzFRwwFXlySdaMf4Jof2xw0AGJgLRDGv
+	 ZsT/5lpJv76RqDyvAEH9vrgjdn4rMyPpXiVY0yNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Potin Lai <potin.lai.pt@gmail.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+	Peng Fan <peng.fan@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/969] soc: aspeed: socinfo: Mask table entries for accurate SoC ID matching
-Date: Sat, 30 May 2026 17:52:28 +0200
-Message-ID: <20260530160301.118118817@linuxfoundation.org>
+Subject: [PATCH 6.1 025/969] arm64: dts: imx8mq: Set the correct gpu_ahb clock frequency
+Date: Sat, 30 May 2026 17:52:29 +0200
+Message-ID: <20260530160301.142864562@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -64,36 +66,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256959-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,codeconstruct.com.au,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,puri.sm,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-256960-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,codeconstruct.com.au:email]
-X-Rspamd-Queue-Id: 8498160E342
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,2.67.213.128:email,nxp.com:email,puri.sm:email]
+X-Rspamd-Queue-Id: A4A2C60E34B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,43 +102,36 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Potin Lai <potin.lai.pt@gmail.com>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-[ Upstream commit 7ec1bd3d9be671d04325b9e06149b8813f6a4836 ]
+[ Upstream commit 1f99b5d93d99ca17d50b386a674d0ce1f20932d8 ]
 
-The siliconid_to_name() function currently masks the input silicon ID
-with 0xff00ffff, but compares it against unmasked table entries. This
-causes matching to fail if the table entries contain non-zero values in
-the bits covered by the mask (bits 16-23).
+According to i.MX 8M Quad Reference Manual, GPU_AHB_CLK_ROOT's maximum
+frequency is 400MHz.
 
-Update the logic to apply the 0xff00ffff mask to the table entries
-during comparison. This ensures that only the relevant model and
-revision bits are considered, providing a consistent match across
-different manufacturing batches.
-
-[arj: Add Fixes: tag, fix 'soninfo' typo, clarify function reference]
-
-Fixes: e0218dca5787 ("soc: aspeed: Add soc info driver")
-Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
-Link: https://patch.msgid.link/20260122-soc_aspeed_name_fix-v1-1-33a847f2581c@gmail.com
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Fixes: 45d2c84eb3a2 ("arm64: dts: imx8mq: add GPU node")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/aspeed/aspeed-socinfo.c | 2 +-
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/aspeed/aspeed-socinfo.c b/drivers/soc/aspeed/aspeed-socinfo.c
-index 67e9ac3d08ecc..a90b100f4d101 100644
---- a/drivers/soc/aspeed/aspeed-socinfo.c
-+++ b/drivers/soc/aspeed/aspeed-socinfo.c
-@@ -39,7 +39,7 @@ static const char *siliconid_to_name(u32 siliconid)
- 	unsigned int i;
- 
- 	for (i = 0 ; i < ARRAY_SIZE(rev_table) ; ++i) {
--		if (rev_table[i].id == id)
-+		if ((rev_table[i].id & 0xff00ffff) == id)
- 			return rev_table[i].name;
- 	}
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+index e642cb7d54d77..25b0017eb7363 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+@@ -1411,7 +1411,7 @@ gpu: gpu@38000000 {
+ 			                         <&clk IMX8MQ_GPU_PLL_OUT>,
+ 			                         <&clk IMX8MQ_GPU_PLL>;
+ 			assigned-clock-rates = <800000000>, <800000000>,
+-			                       <800000000>, <800000000>, <0>;
++			                       <800000000>, <400000000>, <0>;
+ 			power-domains = <&pgc_gpu>;
+ 		};
  
 -- 
 2.53.0
