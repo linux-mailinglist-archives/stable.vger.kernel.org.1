@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257335-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJ9xERYrG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:23:18 +0200
+	id OC6pMdoaG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257335-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455A7611A2B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:23:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39DE360F2FE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 31F073004685
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:23:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8327E30E2DF4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C1F2641C6;
-	Sat, 30 May 2026 18:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1752C34BA42;
+	Sat, 30 May 2026 17:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0W4+RBxP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrRKZxzk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA61317555;
-	Sat, 30 May 2026 18:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25652690D5;
+	Sat, 30 May 2026 17:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165389; cv=none; b=iWK3c0jHSIzUONl+XxVyxTPeDTflhsb67GhDAyy+wof/pFjOU6/GvgfNXP87D2DLNb4r+XbVrxpp1NLlCW2hDP3cUPLUEf/YtNJ2aoGuV7bPf4RdYRV6vTiRNNsTHzbXvRXiAzahdKthWFEHD2o0TrjQvwIy+w/x1z+yEvF27jM=
+	t=1780160636; cv=none; b=jv8E+U09stVmnXBzEXpW7nMg4DnBy7SqW0iY/oFmCbIdL5RIYKaBHJ4/nMrY4pnzOiUL/C+ZjEThYQlhLCSp+c5UlNm93H7TW7ymRRaneAdlDExXcXXv5L5SjeKo8wgGHP7hZ0NqXwsZfgxuAY9BaAfnAPo9B8mEzJJCn2T9ROY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165389; c=relaxed/simple;
-	bh=Vj3lZF1gsJOYLKCSrw9d4chgfZaRtTvmrC1VBDGCrgk=;
+	s=arc-20240116; t=1780160636; c=relaxed/simple;
+	bh=rOhqd24pIyFbt12ez3lJyTaFWBjK+UyaCeSaOCpRxRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMQpBGiaML4EGvlfrnP2yITxQ17qq4qMTwxDAC1xYI3SI4tu1t29xSH+XXLieBuoPawniYYNwriwK3yV4jrvy4QHX7u8H6+982Iv52GUJOBaakqDEdiLK3Ur3C7JqbFJXBJCw7ucy6vAPkvOvhMbZKLjuhhchK6tZdwYq+tt3do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0W4+RBxP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E966D1F00893;
-	Sat, 30 May 2026 18:23:07 +0000 (UTC)
+	 MIME-Version; b=auIiN7FE7wXVGf5eqznYiVyluv9Ul6JCxfSWq2H/hlohZwp0GovZKon9ShNv/JIsex8mskE9hEnxAv/EKvWf3Q8JmsAS8yzkIQJ100NwGuMCU48zmUx1D1AQAIROeH1hDxEio69ZQ2RFy8ommr8m3qonwv95rrTtr4/Ll1kIc34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrRKZxzk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5F01F00893;
+	Sat, 30 May 2026 17:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165388;
-	bh=+2DcQvs764hduMOIep5vOBovT26LTFmKPZ1yh0N3epk=;
+	s=korg; t=1780160635;
+	bh=3Wyr3LEmuYBcKhi3NjDFOWppHd3Uy5gQrq22Yu2r1H4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0W4+RBxPj51ctMi8NopJECu1QvQ/D3tSKXCm6x9ELTMijjpJTnnNZ0CWPJKz9OZSP
-	 mG/Y2J/e+T1njKdWmSxCHGfdmn34XDKRf0SjclueQOl3iwJEPwE7tfe1GSZIPZA8Kc
-	 m/Ygx1HHHegoPHOtDBO94kYDwzqzd3I2hQ/yVz1Q=
+	b=hrRKZxzk8VPqQdD9+P7B0gArUAL/20cHQNN5bQhr0Qwn2KDIPRObAJghoXdH8D/Jx
+	 5kKWAc388wZ70EntsvY81rhSgzMiVRHt88IZtNrZG0XSDBCfsAUuz1aDggiT1xh3+c
+	 XjsxGJHSJMsLIjxLvDW9s/U/1TSXLFjvZAh8od/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 034/589] netfilter: conntrack: add missing netlink policy validations
+	Marek Vasut <marek.vasut@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 391/969] regulator: bd9571mwv: fix OF node reference imbalance
 Date: Sat, 30 May 2026 17:58:35 +0200
-Message-ID: <20260530160225.480820224@linuxfoundation.org>
+Message-ID: <20260530160311.098856052@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +64,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258743-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257335-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 455A7611A2B
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 39DE360F2FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit f900e1d77ee0ef87bfb5ab3fe60f0b3d8ad5ba05 ]
+commit 8498100ee1d00422b8c5b161b3e332278b92a59a upstream.
 
-Hyunwoo Kim reports out-of-bounds access in sctp and ctnetlink.
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-These attributes are used by the kernel without any validation.
-Extend the netlink policies accordingly.
+Fix this by using the intended helper for reusing OF nodes.
 
-Quoting the reporter:
-  nlattr_to_sctp() assigns the user-supplied CTA_PROTOINFO_SCTP_STATE
-  value directly to ct->proto.sctp.state without checking that it is
-  within the valid range. [..]
-
-  and: ... with exp->dir = 100, the access at
-  ct->master->tuplehash[100] reads 5600 bytes past the start of a
-  320-byte nf_conn object, causing a slab-out-of-bounds read confirmed by
-  UBSAN.
-
-Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
-Fixes: a258860e01b8 ("netfilter: ctnetlink: add full support for SCTP to ctnetlink")
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e85c5a153fe2 ("regulator: Add ROHM BD9571MWV-M PMIC regulator driver")
+Cc: stable@vger.kernel.org	# 4.12
+Cc: Marek Vasut <marek.vasut@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260408073055.5183-8-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_netlink.c    | 2 +-
- net/netfilter/nf_conntrack_proto_sctp.c | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/regulator/bd9571mwv-regulator.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index befc9d2bc0b52..46bdc38081164 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3474,7 +3474,7 @@ ctnetlink_change_expect(struct nf_conntrack_expect *x,
+--- a/drivers/regulator/bd9571mwv-regulator.c
++++ b/drivers/regulator/bd9571mwv-regulator.c
+@@ -288,8 +288,9 @@ static int bd9571mwv_regulator_probe(str
  
- #if IS_ENABLED(CONFIG_NF_NAT)
- static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
--	[CTA_EXPECT_NAT_DIR]	= { .type = NLA_U32 },
-+	[CTA_EXPECT_NAT_DIR]	= NLA_POLICY_MAX(NLA_BE32, IP_CT_DIR_REPLY),
- 	[CTA_EXPECT_NAT_TUPLE]	= { .type = NLA_NESTED },
- };
- #endif
-diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-index 6b2a215b27862..2a1d00e702d1b 100644
---- a/net/netfilter/nf_conntrack_proto_sctp.c
-+++ b/net/netfilter/nf_conntrack_proto_sctp.c
-@@ -595,7 +595,8 @@ static int sctp_to_nlattr(struct sk_buff *skb, struct nlattr *nla,
- }
+ 	platform_set_drvdata(pdev, bdreg);
  
- static const struct nla_policy sctp_nla_policy[CTA_PROTOINFO_SCTP_MAX+1] = {
--	[CTA_PROTOINFO_SCTP_STATE]	    = { .type = NLA_U8 },
-+	[CTA_PROTOINFO_SCTP_STATE]	    = NLA_POLICY_MAX(NLA_U8,
-+							 SCTP_CONNTRACK_HEARTBEAT_SENT),
- 	[CTA_PROTOINFO_SCTP_VTAG_ORIGINAL]  = { .type = NLA_U32 },
- 	[CTA_PROTOINFO_SCTP_VTAG_REPLY]     = { .type = NLA_U32 },
- };
--- 
-2.53.0
-
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
++
+ 	config.dev = &pdev->dev;
+-	config.dev->of_node = pdev->dev.parent->of_node;
+ 	config.driver_data = bdreg;
+ 	config.regmap = bdreg->regmap;
+ 
 
 
 
