@@ -1,60 +1,68 @@
-Return-Path: <stable+bounces-257654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259035-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YK3KInkeG2q4/QgAu9opvQ
-	(envelope-from <stable+bounces-257654-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:29 +0200
+	id gG60NKMvG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259035-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8C760FC9F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C416124CE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87E8630AF687
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:22:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A9E8A30D1AA9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0099114A62B;
-	Sat, 30 May 2026 17:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5437539A7FE;
+	Sat, 30 May 2026 18:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tj50Ju/y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCCE89ez"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F4130E847;
-	Sat, 30 May 2026 17:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF64026738C;
+	Sat, 30 May 2026 18:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161725; cv=none; b=hM+b31+7gbKVcOFhNSlfw7EF9CVHijWuNJJovNpOFgwfs+KJtRr1RD58BALQlZyx5Xyag9BWpmFg3wnSbuu6DXpFM1XsvlKFbDT2Ed8Zn+wbos9UXaeMkiEbvLCMVU61MfRWfAK/8DQeI4DwWOqyAf7Ys1DMOmnhTiVKvv0mtv0=
+	t=1780166372; cv=none; b=OHVfOtuUDyfzMLxOSR2drMPhdrgSdFYRMPRh5YZ+7k4JeIEuxBovNbzAifbDw8csFcWDDy77w6kE7haOiwY4O8/RgK8MhJgAEo/hh6gQY7YlFYCFB/RCPvtpLKi419g5m/Mbs36IFDqbspMX5yjsNQ5WLIwlDneT0EaYSLF7BDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161725; c=relaxed/simple;
-	bh=tawY1J5sOA6re14/cWjBiuZV6BIlJPuZyCZ/Qo8tob0=;
+	s=arc-20240116; t=1780166372; c=relaxed/simple;
+	bh=VG2lvgonPhEpB9oDWGUu9FVH3V5XzCCFQpkBlQE8I6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXwhznALSZUJGp8Q/aTnPH7KU3DP414npSyi3XtvCKh8qn4q6JXCzrSPqgdZKswcGjpUnx4h5VSLN55gswN8Ssuj9x0EBAfW4UM0Y0OQyRilLvmc0lwFzdHcjUzH9P1z0nEb8ZOPoKCgN6U+/pmtNep/1i2dToD8JnAsHP/7r8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tj50Ju/y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288B61F00893;
-	Sat, 30 May 2026 17:22:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ShAfzaxlNGtJUGV24tG1wmGDLCT9fjdajJH7QbagGZLjDDqSx1zFdAs1myePjk0nNzYqi23J/B7kbvDzu2HNk0sx6/vvpEaRX6auDq/GngRom7jzOAEqjQZavddodcPgOY+/pq3p0dAQGxWI3fp1tSnwLr9+X584gQzQBtuZ69g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCCE89ez; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B931F00893;
+	Sat, 30 May 2026 18:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161724;
-	bh=YegqxE6r3EOVHvDNpxLDv17wtQBAXJRWWnGPpBB268g=;
+	s=korg; t=1780166370;
+	bh=9U3CoSY0fjuXZbBBMAYaNSY/fU76HRCmnaThbSRDBl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Tj50Ju/y5qUOw/LZwKLOLQcXF6kKGm0ECPp7CThyZxg+TU1uug+RZobKSD3iBi5aN
-	 HeeuykkULvi6X0eXb5KDIn2jlggkTb9GRqY340YwA68YhRqFEDwY2TPgv+mFxQUVa+
-	 7JPGzqaLgKLFdVk74os2xeblnz4ilkR9wOFmdW1s=
+	b=YCCE89ezJQgk8GazbBVw3bAcPTL/q3tceC6CxsUTuzns9viujl0+qAVqsp6m8AdIN
+	 7M/VxWHeiD4rOXC6h8fOy8bfX/C1m8StTYx31B6Qmm9w5xkRSaCLjxPaKl5nK2BRDe
+	 2V9qkyyK6csrzfDIt8PQIee6zaoRQSl4gmMIJfvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jun Yan <jerrysteve1101@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Waiman Long <longman@redhat.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shuah Khan <shuah@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 709/969] arm64: dts: meson-gxl-p230: fix ethernet PHY interrupt number
+Subject: [PATCH 5.10 352/589] selftest: memcg: skip memcg_sock test if address family not supported
 Date: Sat, 30 May 2026 18:03:53 +0200
-Message-ID: <20260530160320.107581315@linuxfoundation.org>
+Message-ID: <20260530160234.117141135@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +72,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257654-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,googlemail.com,linaro.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-259035-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,msgid.link:url,0.0.0.0:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CF8C760FC9F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,linux-foundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,cmpxchg.org:email]
+X-Rspamd-Queue-Id: 53C416124CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jun Yan <jerrysteve1101@gmail.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 174a0ef3b33434f475c87e66f37980e39b73805a ]
+[ Upstream commit 2d028f3e4bbbfd448928a8d3d2814b0b04c214f4 ]
 
-Correct the interrupt number assigned to the Realtek PHY in the p230
+The test_memcg_sock test in memcontrol.c sets up an IPv6 socket and send
+data over it to consume memory and verify that memory.stat.sock and
+memory.current values are close.
 
-following the same logic as commit 3106507e1004 ("ARM64: dts: meson-gxm:
-fix q200 interrupt number"),as reported in [PATCH 0/2] Ethernet PHY
-interrupt improvements [1].
+On systems where IPv6 isn't enabled or not configured to support
+SOCK_STREAM, the test_memcg_sock test always fails.  When the socket()
+call fails, there is no way we can test the memory consumption and verify
+the above claim.  I believe it is better to just skip the test in this
+case instead of reporting a test failure hinting that there may be
+something wrong with the memcg code.
 
-[1] https://lore.kernel.org/all/20171202214037.17017-1-martin.blumenstingl@googlemail.com/
-
-Fixes: b94d22d94ad2 ("ARM64: dts: meson-gx: add external PHY interrupt on some platforms")
-Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://patch.msgid.link/20260330145111.115318-1-jerrysteve1101@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lkml.kernel.org/r/20260311200526.885899-1-longman@redhat.com
+Fixes: 5f8f019380b8 ("selftests: cgroup/memcontrol: add basic test for socket accounting")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Acked-by: Michal Koutný <mkoutny@suse.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Michal Koutný <mkoutny@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/cgroup/test_memcontrol.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts b/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts
-index c1470416faade..36e97ed585ae7 100644
---- a/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts
-@@ -84,7 +84,8 @@ external_phy: ethernet-phy@0 {
- 		reset-gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_LOW>;
+diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+index c19a97dd02d49..07ce722b2533b 100644
+--- a/tools/testing/selftests/cgroup/test_memcontrol.c
++++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+@@ -833,8 +833,11 @@ static int tcp_server(const char *cgroup, void *arg)
+ 	saddr.sin6_port = htons(srv_args->port);
  
- 		interrupt-parent = <&gpio_intc>;
--		interrupts = <29 IRQ_TYPE_LEVEL_LOW>;
-+		/* MAC_INTR on GPIOZ_15 */
-+		interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
- 		eee-broken-1000t;
- 	};
- };
+ 	sk = socket(AF_INET6, SOCK_STREAM, 0);
+-	if (sk < 0)
++	if (sk < 0) {
++		/* Pass back errno to the ctl_fd */
++		write(ctl_fd, &errno, sizeof(errno));
+ 		return ret;
++	}
+ 
+ 	if (setsockopt(sk, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0)
+ 		goto cleanup;
+@@ -964,6 +967,12 @@ static int test_memcg_sock(const char *root)
+ 			goto cleanup;
+ 		close(args.ctl[0]);
+ 
++		/* Skip if address family not supported by protocol */
++		if (err == EAFNOSUPPORT) {
++			ret = KSFT_SKIP;
++			goto cleanup;
++		}
++
+ 		if (!err)
+ 			break;
+ 		if (err != EADDRINUSE)
 -- 
 2.53.0
 
