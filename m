@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-258207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258820-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MAJuHlUkG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:29 +0200
+	id MMsPCR8sG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258820-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8E6610A00
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E0B611C71
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A0D373021393
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:52:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B75123011A54
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BD73B1EC0;
-	Sat, 30 May 2026 17:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202E729D291;
+	Sat, 30 May 2026 18:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZxJxZIM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oi++MJ4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6933B3C01;
-	Sat, 30 May 2026 17:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EE827E05E;
+	Sat, 30 May 2026 18:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163572; cv=none; b=L1riWUrS/Ol1kGXMgcGjCI6A/ikPXV0oo8Z06Q3ZG6/nWHi0YoyphUoNxZiXH9VMkxW8xsBIsnOO4Ye/WWxoikd7sBPZhU6W4o55ch1ycdmkE4gBmIMN0772riFMgkR3hsK1wBoZiNTUssVDPSkhvBKgoD6bsx5uOLupw6tnNOI=
+	t=1780165648; cv=none; b=cpseC5a6NzL3AI0C9y2SEStto1Np4XsOugW9Kn6FClRDVQjwGRGYGi4wNwURFpaR/cr3l72b2ibMLmsyJ7y0g5vHZu/t1CSWq3yriauLQ7ZHoAc2b1g+H0MmgeTZcBA9UEh9+WOkuHFr2u/AvW2lIMqTcPwAxchuQiDmD4cZifk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163572; c=relaxed/simple;
-	bh=MBbPtRG6aDZcuTuzZW6zYwKAcONRC2FZJSADLvnn3i4=;
+	s=arc-20240116; t=1780165648; c=relaxed/simple;
+	bh=RSVHDFyafrPotO6f5tOad1go6yqPm7D13AHU80JJiaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iV+CdUfn5Cja1fyHdg3i57O0yhD6g1uL5kqwRSMXjh5hct6uJuFdOY/4QDYliNMtxvYXsusfAAQ/JUdSK+Is1HqBjFBwG5hQtNx8v2o4PVaZjwudeMuy7QAsiT8ziM239/WG0jEl6dT7mTmfBpVRw5cm8XbitIhjc2OpImQ1VzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZxJxZIM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D24AF1F00893;
-	Sat, 30 May 2026 17:52:50 +0000 (UTC)
+	 MIME-Version; b=P+ayz3Z5iYeOefkJgx1BOkbYGsEQk+WMyKA2LXRLXeznplbAgt5PGhXhewFVjXQp93135etIECYNefZ0ItXtQZ8sMqrcGdWA3bQlUZ0Ss0jLrJdDsEVaUDm0eAoHjozsDMIxRJGT0QDEBEhYeTn0XhhoHumej+ejztHTSlc6ifg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oi++MJ4x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98CF1F00893;
+	Sat, 30 May 2026 18:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163571;
-	bh=4EWL/7vk5BBne4JWkGMOvV/JyW1l5DHiYGrIcXRBR5I=;
+	s=korg; t=1780165647;
+	bh=xpuBm4q+SzTTWltQTWYvoXiS9IKspH0xGtSUB5c1Uig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NZxJxZIM2Ee7EHDWS00kLD+BpzHCcIorMv3pPvF520j8ejmSaC2nhzpwsiLQ9S0u/
-	 FR5vND4QAZ5PLDc8lRi6NSRe5I0g3Kdnq/KiyHDO8sWTZDD5b8AaWfEzS9KLoR2071
-	 rZAf1tXQ1lOh+h9PtLziGA9GwhrY/p//Sk5HG9b8=
+	b=oi++MJ4x/UKzUcH5q5CAwxZXjPy+JVbsb6PHHh1IiEd6pkmzRA1jB4ncdlLPQnP45
+	 +f9qnLMLi2xpicXuBrpgPcC0x0DLHBOol4NremdsKi7c1GQ/Vg5MEAIp9s4iNPNuLB
+	 hhZDrVkEXmgEhqPE6bhx1zngeLqvEeQHPzsmZ+vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Yasuaki Torimaru <yasuakitorimaru@gmail.com>,
 	Simon Horman <horms@kernel.org>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 269/776] net: ipv6: fix NOREF dst use in seg6 and rpl lwtunnels
+	Breno Leitao <leitao@debian.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 102/589] xfrm: clear trailing padding in build_polexpire()
 Date: Sat, 30 May 2026 17:59:43 +0200
-Message-ID: <20260530160247.509621126@linuxfoundation.org>
+Message-ID: <20260530160227.395857382@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,159 +66,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,uniroma2.it,kernel.org,gmail.com,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258207-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,debian.org,secunet.com];
+	TAGGED_FROM(0.00)[bounces-258820-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7E8E6610A00
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C6E0B611C71
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
+From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
 
-commit f9c52a6ba9780bd27e0bf4c044fd91c13c778b6e upstream.
+[ Upstream commit 71a98248c63c535eaa4d4c22f099b68d902006d0 ]
 
-seg6_input_core() and rpl_input() call ip6_route_input() which sets a
-NOREF dst on the skb, then pass it to dst_cache_set_ip6() invoking
-dst_hold() unconditionally.
-On PREEMPT_RT, ksoftirqd is preemptible and a higher-priority task can
-release the underlying pcpu_rt between the lookup and the caching
-through a concurrent FIB lookup on a shared nexthop.
-Simplified race sequence:
+build_expire() clears the trailing padding bytes of struct
+xfrm_user_expire after setting the hard field via memset_after(),
+but the analogous function build_polexpire() does not do this for
+struct xfrm_user_polexpire.
 
-  ksoftirqd/X                       higher-prio task (same CPU X)
-  -----------                       --------------------------------
-  seg6_input_core(,skb)/rpl_input(skb)
-    dst_cache_get()
-      -> miss
-    ip6_route_input(skb)
-      -> ip6_pol_route(,skb,flags)
-         [RT6_LOOKUP_F_DST_NOREF in flags]
-        -> FIB lookup resolves fib6_nh
-           [nhid=N route]
-        -> rt6_make_pcpu_route()
-           [creates pcpu_rt, refcount=1]
-             pcpu_rt->sernum = fib6_sernum
-             [fib6_sernum=W]
-           -> cmpxchg(fib6_nh.rt6i_pcpu,
-                      NULL, pcpu_rt)
-              [slot was empty, store succeeds]
-      -> skb_dst_set_noref(skb, dst)
-         [dst is pcpu_rt, refcount still 1]
+The padding bytes after the __u8 hard field are left
+uninitialized from the heap allocation, and are then sent to
+userspace via netlink multicast to XFRMNLGRP_EXPIRE listeners,
+leaking kernel heap memory contents.
 
-                                    rt_genid_bump_ipv6()
-                                      -> bumps fib6_sernum
-                                         [fib6_sernum from W to Z]
-                                    ip6_route_output()
-                                      -> ip6_pol_route()
-                                        -> FIB lookup resolves fib6_nh
-                                           [nhid=N]
-                                        -> rt6_get_pcpu_route()
-                                             pcpu_rt->sernum != fib6_sernum
-                                             [W <> Z, stale]
-                                          -> prev = xchg(rt6i_pcpu, NULL)
-                                          -> dst_release(prev)
-                                             [prev is pcpu_rt,
-                                              refcount 1->0, dead]
+Add the missing memset_after() call, matching build_expire().
 
-    dst = skb_dst(skb)
-    [dst is the dead pcpu_rt]
-    dst_cache_set_ip6(dst)
-      -> dst_hold() on dead dst
-      -> WARN / use-after-free
-
-For the race to occur, ksoftirqd must be preemptible (PREEMPT_RT without
-PREEMPT_RT_NEEDS_BH_LOCK) and a concurrent task must be able to release
-the pcpu_rt. Shared nexthop objects provide such a path, as two routes
-pointing to the same nhid share the same fib6_nh and its rt6i_pcpu
-entry.
-
-Fix seg6_input_core() and rpl_input() by calling skb_dst_force() after
-ip6_route_input() to force the NOREF dst into a refcounted one before
-caching.
-The output path is not affected as ip6_route_output() already returns a
-refcounted dst.
-
-Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
-Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
-Link: https://patch.msgid.link/20260421094735.20997-1-andrea.mayer@uniroma2.it
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+[ replaced `memset_after()` macro with equivalent manual `memset()` call ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/rpl_iptunnel.c  |    9 +++++++++
- net/ipv6/seg6_iptunnel.c |    9 +++++++++
- 2 files changed, 18 insertions(+)
+ net/xfrm/xfrm_user.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/ipv6/rpl_iptunnel.c
-+++ b/net/ipv6/rpl_iptunnel.c
-@@ -286,7 +286,16 @@ static int rpl_input(struct sk_buff *skb
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -3290,6 +3290,8 @@ static int build_polexpire(struct sk_buf
+ 		return err;
+ 	}
+ 	upe->hard = !!hard;
++	/* clear the padding bytes */
++	memset(&upe->hard + 1, 0, sizeof(*upe) - offsetofend(typeof(*upe), hard));
  
- 	if (!dst) {
- 		ip6_route_input(skb);
-+
-+		/* ip6_route_input() sets a NOREF dst; force a refcount on it
-+		 * before caching or further use.
-+		 */
-+		skb_dst_force(skb);
- 		dst = skb_dst(skb);
-+		if (unlikely(!dst)) {
-+			err = -ENETUNREACH;
-+			goto drop;
-+		}
- 
- 		/* cache only if we don't create a dst reference loop */
- 		if (!dst->error && lwtst != dst->lwtstate) {
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -500,7 +500,16 @@ static int seg6_input_core(struct net *n
- 
- 	if (!dst) {
- 		ip6_route_input(skb);
-+
-+		/* ip6_route_input() sets a NOREF dst; force a refcount on it
-+		 * before caching or further use.
-+		 */
-+		skb_dst_force(skb);
- 		dst = skb_dst(skb);
-+		if (unlikely(!dst)) {
-+			err = -ENETUNREACH;
-+			goto drop;
-+		}
- 
- 		/* cache only if we don't create a dst reference loop */
- 		if (!dst->error && lwtst != dst->lwtstate) {
+ 	nlmsg_end(skb, nlh);
+ 	return 0;
 
 
 
