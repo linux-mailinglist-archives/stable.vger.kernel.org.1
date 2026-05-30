@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258608-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Pu1LH0gG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257836-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:05 +0200
+	id eOLtJZQpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258608-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5549061010D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A78B611686
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C678230480F3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D9BC33073A2C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B703403F9;
-	Sat, 30 May 2026 17:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678FA274FDC;
+	Sat, 30 May 2026 18:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvpaeYs6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5Hmf5Hj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9982E7379;
-	Sat, 30 May 2026 17:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CD23AB285;
+	Sat, 30 May 2026 18:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162333; cv=none; b=R+cuanVA2N9ncw2IHwLwg+dycuhynEElRqSr0Axr8HZLCGXrE2tkvAvE+KEh3yNk7SDSqcIROjC7k/dgKNq8wic2nTTLh6mm/+VKzINDTXVu11zSr0qn6CKsNybvbGLChy6S7iNjl+GVOAzt+E+GCVvRGdgS7nqi3e1I6fMKmUk=
+	t=1780164923; cv=none; b=Lgp7cpFDvIoTyraF9h1DmPngfVUXWDlEYsGNOVxCBUlj9Y4h2g75DifSBv1poK8dkxWNC2NYC3Nz7LDTFlwY4J1t/GjAKVV9IhXP429Zk1XRX6jKGM1ffv0h3XcJzF5IH+uoBPpe4cpkhG0MWpxpOW29IYlEZZeusaisSqtu8aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162333; c=relaxed/simple;
-	bh=bkp/YjXO0g7C0/uEpd/Bi+uSzTUzG6p4PzyHa9Ez2ek=;
+	s=arc-20240116; t=1780164923; c=relaxed/simple;
+	bh=BBWXDfno3MBKhbGS4Ll/k+k8iK3Oo7FICGmHGmh7C5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hC7nH/VKzK/e+oaA2ON0+rSLZU3+2lj8YhMgtpviw71u9zlZPxsSlTT3rr/42i1/q/cCmPOxHTXdiiAFzDkp6TaSPGzPX7TQWrfM6Vb1+bHmNMBoRZo7hKMBiG9Cf/dbHPL20ncxQMNlnu4U/OV3a6c1qQD9Wogc2xgyey2a8DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvpaeYs6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BCAE1F00893;
-	Sat, 30 May 2026 17:32:10 +0000 (UTC)
+	 MIME-Version; b=h0/C+/QH0GiGDkGAsQ05vrQCtH79tLtpmuTYS+7HBjIeyPstoxlMdvhQCzpF4E/kZNQB3Wu4syErYAd9BWvXLefm0bh6U28kLGtrchXxrQ9w1kaRjlqx7/RhSxEjcoQ/ktSPdVK/WwF84O/1GwvrvGqNP88ouFAhctZHZLinF8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5Hmf5Hj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870A91F00893;
+	Sat, 30 May 2026 18:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162331;
-	bh=DZWF0uJm08rCmV54Q+3jpiFevzW8kthmN3yRwscUAR0=;
+	s=korg; t=1780164922;
+	bh=dc4adUPtYddPC/49VwViYZ2drAo2u+bxO41Aihi4isY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YvpaeYs6+VctKcKhtZpeyo3n26CWCewtGhT1VSFVmKUZSA8l+O4NwD//BwbLt3OSk
-	 XTmVqoh3Z3ctK1Jj2cLU/lWNOT8qygG6aUl5w0lNhrY09gZCZ0MnelV5Xma6YmRWcd
-	 E5E7mEeqpA0JNR2uf/s0DNnxtJEETxr2tAbWKS7A=
+	b=F5Hmf5HjiqZ8g0eqtT2tJsqYCSrUV2I0o8RW1xu7O+OnfjOik0mLdjYQfHqgNU8Ia
+	 blGFf0rYC9No8lKRewAGMmw5/fhykI3mtu1MLx56GjIzNw7aUKsC7CSsiyFTsx7aXl
+	 mbynMKWJZQZgJ1OeXASMV8Ca/ZnNE+7j8f+7UWaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.1 889/969] batman-adv: tt: fix negative tt_buff_len
+	Vignesh R <vigneshr@ti.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 699/776] spi: ti-qspi: fix use-after-free after DMA setup failure
 Date: Sat, 30 May 2026 18:06:53 +0200
-Message-ID: <20260530160325.249846209@linuxfoundation.org>
+Message-ID: <20260530160257.895303095@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,63 +78,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257836-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258608-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5549061010D
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,ti.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url]
+X-Rspamd-Queue-Id: 2A78B611686
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit b64963a2ceeb7529310b6cf253a1e540784422f4 upstream.
+commit ea6ec3343e05f7937a53eb6d7617b3abdb4abc19 upstream.
 
-batadv_orig_node::tt_buff_len was declared as s16, but the field is never
-intended to hold a negative value. When a value greater than 32767 is
-assigned, it wraps to a negative signed integer.
+The driver falls back to PIO mode if DMA setup fails during probe.
 
-In batadv_send_other_tt_response(), tt_buff_len is temporarily widened to
-s32. The incorrectly negative s16 value propagates into the s32, causing
-batadv_tt_prepare_tvlv_global_data() to allocate a full sized buffer but
-populates only a small portion of it with the collected changeset. All
-remaining bits are kept uninitialized.
+Make sure to clear the DMA channel pointer also if buffer allocation
+fails to avoid passing a pointer to the released channel to the DMA
+engine (or trying to free the channel a second time on late probe errors
+or driver unbind).
 
-Using an u16 avoids this type confusion and ensures that no (negative) sign
-extension is performed in batadv_send_other_tt_response().
+This issue was flagged by Sashiko when reviewing a devres allocation
+conversion patch.
 
-Cc: stable@kernel.org
-Fixes: a73105b8d4c7 ("batman-adv: improved client announcement mechanism")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: c687c46e9e45 ("spi: spi-ti-qspi: Use bounce buffer if read buffer is not DMA'ble")
+Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=17
+Cc: stable@vger.kernel.org	# 4.12
+Cc: Vignesh R <vigneshr@ti.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260512074809.915084-1-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/types.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-ti-qspi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -445,7 +445,7 @@ struct batadv_orig_node {
- 	 * @tt_buff_len: length of the last tt changeset this node received
- 	 *  from the orig node
- 	 */
--	s16 tt_buff_len;
-+	u16 tt_buff_len;
- 
- 	/** @tt_buff_lock: lock that protects tt_buff and tt_buff_len */
- 	spinlock_t tt_buff_lock;
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -873,6 +873,7 @@ static int ti_qspi_probe(struct platform
+ 		dev_err(qspi->dev,
+ 			"dma_alloc_coherent failed, using PIO mode\n");
+ 		dma_release_channel(qspi->rx_chan);
++		qspi->rx_chan = NULL;
+ 		goto no_dma;
+ 	}
+ 	master->dma_rx = qspi->rx_chan;
 
 
 
