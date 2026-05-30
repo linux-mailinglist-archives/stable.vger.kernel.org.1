@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPWEAo0hG2oN/ggAu9opvQ
-	(envelope-from <stable+bounces-257903-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:37 +0200
+	id uMqTOQQsG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B48061033C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79908611C47
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B65130E55E5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:36:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78D5230528BF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E196349CCF;
-	Sat, 30 May 2026 17:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6DA93C2B80;
+	Sat, 30 May 2026 18:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXSwgaCr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgmuWiQU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A752E7379;
-	Sat, 30 May 2026 17:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727823242BE;
+	Sat, 30 May 2026 18:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162557; cv=none; b=by00rNj4UL2j77ZSW1GE7vkcLEz2WY1k/nLoWVr6OxWP/WSASt+jTlWAkwtsbqbkTGbZ8YvOM99pz2zN5QdE5F0Ohec+5Tl/QVfXk3HB+Xfk0KOws7E5B5Mbe6k3Y1d7sJrDIF+mNvh8VRXGAywo+JXG5vuvAgQvQpJEWviMVdA=
+	t=1780165167; cv=none; b=QdhR54btCHIr0i9ytsYVw6d+3lctjXy41MH58DGO4RkK/aX2UoAVmB5mcrTE8+pQ434aD56VdbLyTf0G59AYQ1n0ojMJLdlahTd8IjxtHR5w7/CpW0Yea1SpjSadILTcesvID7suTE5lPT1vBc7dwR3O/+fEagNzOvFQ4TuCl48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162557; c=relaxed/simple;
-	bh=Jhvx2u8xlbwHEPySYVVV8L1BHxkL9NLHmjl22oFbh2M=;
+	s=arc-20240116; t=1780165167; c=relaxed/simple;
+	bh=FgHdVxFT69f7FZlqAO3n2HuX494kW07Pj6Vupi557+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MKkeJQC7uNTMDyyNeQmP19eo1GOaxXrv/9IoODy4hwSago4PX1V9AO6KWToowdxFsJhMBUfnn7XdQOC90yRYQDMqk+FTMGTSy9d/lcurWksHEMMDR8hTNE70JpJD/3m6Gjofr9B7E7GhWigFpskYKWzdppbVi8/b2atkWcO/PPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXSwgaCr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340431F00893;
-	Sat, 30 May 2026 17:35:55 +0000 (UTC)
+	 MIME-Version; b=k4q/PzHUPdEy4nmUS5/FAFoaGggvFdJjvNdlTIMU6zgnnY9dZMlhnAzzVLCHTFPSgPimdT5lL4mTKKAYgDdI8sqwAgFa+5Xeprn7J94Dk47JnRnVfn/iSFs8YVYbua9qpehRKA9RfkIO91m2bpV+K/LnepjCDmHpwWsthW77EdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgmuWiQU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79CC1F00893;
+	Sat, 30 May 2026 18:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162556;
-	bh=EuGqE3AnyOKfEvvWOtWnYFBFWd2Fy9JpD3ICxcsYX0k=;
+	s=korg; t=1780165166;
+	bh=E2Wc5LhiFGNm1VldT+c/ukYSw6tollpKjrRfaw8RHTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IXSwgaCrhvG6ez2U2ZEwIXfwT5hZ5IQPzAI1qNRFrBKutiXATiR1RVxekIS0Ja4yd
-	 wgFRcMVJne11NbXg8BHP+D6FVqdJVpTphHoKtKrBm+CK1Ijjzd1tlmSLFcW9FNgNqn
-	 gLu9RcZBixgQNMzQv945k8wngm2TrmQ50h1SEu0E=
+	b=tgmuWiQUD2dYgjvsFV0Bma5M3lk6C1pk80gxhpA2hHED8oTo7PypwSbOnjMlKB2FV
+	 AbIJmMsDvkFl6a+dOy0BBus4anzd9EDqnlmCO9qtJ8sf2+fgOyIZdy1P3NZn6xR3TN
+	 cnibwIpA1T54ZTRndPDMRDy9UtHAfuU9mnM5dQ50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 958/969] platform/x86: intel-hid: Check ACPI_HANDLE() against NULL
+Subject: [PATCH 5.15 768/776] RDMA/rtrs: Fix use-after-free in path file creation cleanup
 Date: Sat, 30 May 2026 18:08:02 +0200
-Message-ID: <20260530160327.224276955@linuxfoundation.org>
+Message-ID: <20260530160259.570798542@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +63,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257903-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258678-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5B48061033C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 79908611C47
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit 5c69e090ae5dd93d910f70db0796357080707d26 ]
+[ Upstream commit 5b74373390113fba798a76b483837029ab010fef ]
 
-Every platform driver can be forced to match a device that doesn't match
-its list of device IDs because of device_match_driver_override(), so
-platform drivers that rely on the existence of a device's ACPI companion
-object need to verify its presence.
+In the error path of rtrs_srv_create_path_files(), the sysfs root folders
+may already have been created and srv_path->kobj may already have been
+initialized. If a later step fails, the cleanup currently calls
+kobject_put(&srv_path->kobj) before
+rtrs_srv_destroy_once_sysfs_root_folders(srv_path).
 
-Accordingly, add a requisite ACPI_HANDLE() check against NULL to the
-platform/x86 intel-hid driver.
+kobject_put() may drop the last reference to srv_path->kobj and invoke the
+release callback, rtrs_srv_release(), which frees srv_path. The following
+call to rtrs_srv_destroy_once_sysfs_root_folders(srv_path) then
+dereferences srv_path internally to access srv_path->srv, resulting in a
+use-after-free.
 
-Fixes: ecc83e52b28c ("intel-hid: new hid event driver for hotkeys")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/1971512.tdWV9SEqCh@rafael.j.wysocki
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+This failure path is reached before rtrs_srv_create_path_files() returns
+success, so the successful-path lifetime handling is not involved.
+
+Fix this by destroying the sysfs root folders before calling
+kobject_put(&srv_path->kobj), so srv_path is still valid while the helper
+accesses it.
+
+This issue was found by a static analysis tool I am developing.
+
+Fixes: ae4c81644e91 ("RDMA/rtrs-srv: Rename rtrs_srv_sess to rtrs_srv_path")
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://patch.msgid.link/20260514113834.865530-1-lgs201920130244@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/hid.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index 761d88929ef97..ddf46fceb1c37 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -638,12 +638,16 @@ static bool button_array_present(struct platform_device *device)
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c b/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c
+index 309080184aac7..d42659a2e9058 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c
+@@ -294,8 +294,8 @@ int rtrs_srv_create_path_files(struct rtrs_srv_path *srv_path)
+ put_kobj:
+ 	kobject_del(&srv_path->kobj);
+ destroy_root:
+-	kobject_put(&srv_path->kobj);
+ 	rtrs_srv_destroy_once_sysfs_root_folders(srv_path);
++	kobject_put(&srv_path->kobj);
  
- static int intel_hid_probe(struct platform_device *device)
- {
--	acpi_handle handle = ACPI_HANDLE(&device->dev);
- 	unsigned long long mode, dummy;
- 	struct intel_hid_priv *priv;
-+	acpi_handle handle;
- 	acpi_status status;
- 	int err;
- 
-+	handle = ACPI_HANDLE(&device->dev);
-+	if (!handle)
-+		return -ENODEV;
-+
- 	intel_hid_init_dsm(handle);
- 
- 	if (!intel_hid_evaluate_method(handle, INTEL_HID_DSM_HDMM_FN, &mode)) {
+ 	return err;
+ }
 -- 
 2.53.0
 
