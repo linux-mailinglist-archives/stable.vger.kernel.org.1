@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-257820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJtkEfEeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:29 +0200
+	id IFDDF1wqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC6F360FD79
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBCCF61181E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CF64730071CF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2181B3059A67
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0084230E0DC;
-	Sat, 30 May 2026 17:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844073ACA4D;
+	Sat, 30 May 2026 18:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JkyWs2+X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVdmM+Q9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71D82E7379;
-	Sat, 30 May 2026 17:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4540B241C8C;
+	Sat, 30 May 2026 18:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162279; cv=none; b=Rma6XGVVSE7+N/A4K/nlB52OonIuVMQppFUn9ZGGmr3Om4IAzoqIrmLlztL1La1kgcvk95RRHy7ij1VDbsWzRkRiBuvyxwOZve7QgEMqsiIM000MY92wYEU5gBz+WZPL/SVKyomOx9lcCW7645d5eDNVZiYu50/k9QQmPhJfyq4=
+	t=1780164971; cv=none; b=KFOr1q5fFyFgaSaKpq2x7gEovdogjhLWQ/M2u+iQcmQrPL14GUhglmmNudE6RK2HS114h8u76ZIJadK6gz8F3dsst4WSjjWU9JzU3b+cHFtmZhK08Xe1sP2vHk17FYt2l9SriIytP7iTJprXuvSdha4yGrWVMC9TvRh5Tzf0COk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162279; c=relaxed/simple;
-	bh=cw2tSEn55O5BHCDasa8ob5hlRUEuyR3QctZZOKqlwP0=;
+	s=arc-20240116; t=1780164971; c=relaxed/simple;
+	bh=3xrIUiwcwJ5bkrpZueKOdawRnncOuM9laCzu5fRm/lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/CjbZ6OqwIHfGZJBy+msnZpbcaQNH18WbOqtHHMm+jzV0MAfchpjeAAXCyB72Z51kOoIDDYNrwZo3uYHgVdwvTEP+pH21Ina76aJGvMKAjQtVuW3/ASYARCxGPRdz20Hgua3WxNvlQ9QIakBF+FOuXPQySy88d3Meq6EKKnN/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JkyWs2+X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F25D1F00893;
-	Sat, 30 May 2026 17:31:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iAa86u515HSI48TTSh4wuxSFqA3sDz0hMRbJG6QantsH5sbmaMbwnjjlwo3w4dw1o2wCI6Xnqlhc6hVA4blDr00K1ExhK2WyeQU+foHgr2kNOw7owsYp6XU9sLtAlhhR607mKmrNak5RnEjkRe0o4vgXa6gTgIMbc+eFaEAEbLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVdmM+Q9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4881B1F00893;
+	Sat, 30 May 2026 18:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162278;
-	bh=i1oXHJY+3r4W57X/EKv8t4uiSEHRVpVc29+zoCzIbBs=;
+	s=korg; t=1780164969;
+	bh=w0rrCmHAd5BlwLt/jSS+coT2C5BAWy3alHmvJCH/R8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JkyWs2+XGTDjkdiyCrbfPa35McxtLg86jFluTBA/tGJXQ05FZAADepYaP12tFRAE/
-	 iK8v56ir1GCKFbp3I6u4Dzib7o/Tq/YEg2scXhZChSp7qrpSst/A6PhspqYE1oVQ+9
-	 6ejoVV+eZCcv5fkyUcyQe0VqJeadKKKHTSNcWzE4=
+	b=BVdmM+Q9okFedG1FG0uTC/823cddVboPiB+hI9Ae0K3kRWYtqjFmp7glZqjLTapJ2
+	 pFGQFAPYBLHy859uaGQkprSGBn2/MtEvuAznE+McZvm5/xmZOp0ZQbGqk2g7Ul8hkP
+	 jl2QNGqTo5JdfjYR4xkMa/762foj3lVWHlYHIWZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julien Chauveau <chauveau.julien@gmail.com>,
-	Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH 6.1 875/969] drm/bridge: it66121: acquire reset GPIO in probe
+	Zijing Yin <yzjaurora@gmail.com>,
+	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
+	syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 685/776] phonet/pep: disable BH around forwarded sk_receive_skb()
 Date: Sat, 30 May 2026 18:06:39 +0200
-Message-ID: <20260530160324.849518893@linuxfoundation.org>
+Message-ID: <20260530160257.564424626@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +65,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257820-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,remlab.net,syzkaller.appspotmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258622-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,9f4a135646b66c509935];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DC6F360FD79
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,pastebin.com:url,remlab.net:email]
+X-Rspamd-Queue-Id: CBCCF61181E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julien Chauveau <chauveau.julien@gmail.com>
+From: Zijing Yin <yzjaurora@gmail.com>
 
-commit e02b5262fd288cc235f14e12233ea54e78c04611 upstream.
+commit dbc81608e3a653dea6cf403f20cae35468b8ab9c upstream.
 
-The it66121_ctx structure has a gpio_reset field, and it66121_hw_reset()
-calls gpiod_set_value() on it. However, the GPIO descriptor is never
-acquired via devm_gpiod_get(), leaving gpio_reset as NULL throughout
-the driver lifetime.
+The networking receive path is usually run from softirq context, but
+protocols that take the socket lock may have packets stored in the
+backlog and processed later from process context. In that case
+release_sock() -> __release_sock() drops the slock with spin_unlock_bh()
+and then calls sk->sk_backlog_rcv() with bottom halves enabled.
 
-gpiod_set_value() silently returns when passed a NULL descriptor, so
-the hardware reset sequence in it66121_hw_reset() is a no-op. This
-leaves the chip in an undefined state at probe time, which can prevent
-it from responding on the I2C bus.
+Typical sk_backlog_rcv handlers process the socket whose backlog is
+being drained, so the BH state at entry is irrelevant for the slocks
+they touch. pep_do_rcv() is different: when the inbound skb targets an
+existing PEP pipe, it forwards the skb to a different *child* socket
+via sk_receive_skb(). That helper takes the child slock with
+bh_lock_sock_nested(), which is just spin_lock_nested() and assumes BH
+is already off. The same child slock therefore ends up acquired with
+BH on (process path) and with BH off (softirq path):
 
-The DT binding marks reset-gpios as a required property, so all
-compliant device trees provide this GPIO. Add the missing
-devm_gpiod_get() call after enabling power supplies and before the
-hardware reset, so the chip is properly reset with power applied.
+  process context                   softirq context
+  ---------------                   ---------------
+  release_sock(listener)            __netif_receive_skb()
+   __release_sock()                  phonet_rcv()
+    spin_unlock_bh()                  __sk_receive_skb(listener)
+    [BH now ENABLED]                  [BH already disabled]
+    sk_backlog_rcv:                   sk_backlog_rcv:
+     pep_do_rcv()                      pep_do_rcv()
+      sk_receive_skb(child)             sk_receive_skb(child)
+       bh_lock_sock_nested(child)        bh_lock_sock_nested(child)
+       => SOFTIRQ-ON-W                   => IN-SOFTIRQ-W
 
-Fixes: 988156dc2fc9 ("drm: bridge: add it66121 driver")
+Lockdep flags this as inconsistent lock state, and it can become a real
+self-deadlock if a softirq on the same CPU tries to receive to the same
+child socket while its slock is held in the BH-enabled path:
+
+  WARNING: inconsistent lock state
+  inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+   (slock-AF_PHONET/1){+.?.}-{3:3}, at: __sk_receive_skb+0x1cf/0x900
+    __sk_receive_skb              net/core/sock.c:563
+    sk_receive_skb                include/net/sock.h:2022 [inline]
+    pep_do_rcv                    net/phonet/pep.c:675
+    sk_backlog_rcv                include/net/sock.h:1190
+    __release_sock                net/core/sock.c:3216
+    release_sock                  net/core/sock.c:3815
+    pep_sock_accept               net/phonet/pep.c:879
+
+Wrap the forwarded sk_receive_skb() in local_bh_disable() /
+local_bh_enable() so the child slock is always acquired with BH off.
+local_bh_disable() nests safely on the softirq path.
+
+Discovered via in-house syzkaller fuzzing; the same root cause also
+on the linux-6.1.y syzbot dashboard as extid 44f0626dd6284f02663c.
+Reproduced under KASAN + LOCKDEP + PROVE_LOCKING, reproducer:
+https://pastebin.com/A3t8xzCR
+
+Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
+Link: https://syzkaller.appspot.com/bug?extid=44f0626dd6284f02663c
 Cc: stable@vger.kernel.org
-Signed-off-by: Julien Chauveau <chauveau.julien@gmail.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Tested-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patch.msgid.link/20260324193011.16583-1-chauveau.julien@gmail.com
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
+Acked-by: Rémi Denis-Courmont <remi@remlab.net>
+Reported-by: syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260519172635.86304-1-yzjaurora@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ite-it66121.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/phonet/pep.c |   19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/bridge/ite-it66121.c
-+++ b/drivers/gpu/drm/bridge/ite-it66121.c
-@@ -1582,6 +1582,11 @@ static int it66121_probe(struct i2c_clie
- 	if (ret)
- 		return ret;
+--- a/net/phonet/pep.c
++++ b/net/phonet/pep.c
+@@ -671,8 +671,23 @@ static int pep_do_rcv(struct sock *sk, s
  
-+	ctx->gpio_reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
-+	if (IS_ERR(ctx->gpio_reset))
-+		return dev_err_probe(dev, PTR_ERR(ctx->gpio_reset),
-+				     "Failed to get reset GPIO\n");
+ 	/* Look for an existing pipe handle */
+ 	sknode = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
+-	if (sknode)
+-		return sk_receive_skb(sknode, skb, 1);
++	if (sknode) {
++		int rc;
 +
- 	it66121_hw_reset(ctx);
++		/* pep_do_rcv() runs from two contexts: from softirq via
++		 * phonet_rcv() -> __sk_receive_skb() with BH disabled,
++		 * and from process context via
++		 * release_sock() -> __release_sock(), which drops
++		 * the listener slock with spin_unlock_bh() before draining
++		 * the backlog.  The child pipe slock is taken below via
++		 * bh_lock_sock_nested(), which does not itself disable BH, so
++		 * disable BH here to keep both acquire contexts consistent.
++		 */
++		local_bh_disable();
++		rc = sk_receive_skb(sknode, skb, 1);
++		local_bh_enable();
++		return rc;
++	}
  
- 	ctx->regmap = devm_regmap_init_i2c(client, &it66121_regmap_config);
+ 	switch (hdr->message_id) {
+ 	case PNS_PEP_CONNECT_REQ:
 
 
 
