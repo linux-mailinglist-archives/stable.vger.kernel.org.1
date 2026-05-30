@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4L0wNgUsG2ow/wgAu9opvQ
-	(envelope-from <stable+bounces-258815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:17 +0200
+	id iIxeKDYlG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB707611C48
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C19610B73
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E1A723007ADF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:27:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16E813019CA4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFA529D291;
-	Sat, 30 May 2026 18:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3B7342CA7;
+	Sat, 30 May 2026 17:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybWi8zsG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sogSMy5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C971E2773DE;
-	Sat, 30 May 2026 18:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C65C261B9E;
+	Sat, 30 May 2026 17:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165631; cv=none; b=uOYPF20cJZthHG0yBZANZxc6KLCIbJFmXd7LS1Unvz74M1qiUEJudpjJ3nhYpBhWla7t4ikeXgszi/54SektZyQGPRFFGDAqpXMhUtgsLIcJ2IBq1/z7ejzGzlb9IE2UDZa1/LGYzeb95SbwB3lD10G0ZVX7++oXg+4rrJkfwJk=
+	t=1780163679; cv=none; b=APRs3+LwuATqhOnHgkRkqbF7Zz6kDEHdCLSP6wUVY+t0jCIjpyzMxYIJbozfhqlfIpIFHJ0lDC0hI7+J2TTahPOaeVvp9wPI8Ol+v2zRozTgVZlCEFdTQ/xd6a9DkJ5PvuimGwwCihf3J5RqdNSTKrV/D7cnLnIa+KgqBOnQJiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165631; c=relaxed/simple;
-	bh=OhkxC7dWqTZ2G6U6sHtMv1KUANU9fSba4HGbqpHBtag=;
+	s=arc-20240116; t=1780163679; c=relaxed/simple;
+	bh=ssZ4awLMfkFm6c4j+OntExXCL6mE9BYHnVWwMxyenT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lwxo6fTcaVbkImQSDJkKe+Po1OUYmbj+OExtSmJHWkAZxpe0YksMuKEcMtKFcsmwKNKQQqx8y0gpp4d7BK1brxhZVmVfaiVdWBPjr4gRIhxyNg8rgsabO+w8k/AS1fr1slHbvjT9ub3o3KB+W0NxGqi5mBQWPsGpJFyj3Ud2HcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybWi8zsG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10F61F00893;
-	Sat, 30 May 2026 18:27:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FTQwC7tpD9BzSKA09NTpljDrsAilGiR8MiFPLVkoeUryra7O5TmWo2zHUk7U1LHdeGoOo/VYVzLm52emcEwD1fR6EIEOM52RzYARt0okeK2lN5y5GGqs0WN7vKQ47M3PsNPZLGDSNhrvD1CrDTd9dLpimap4yteqw4WpmDRaW+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sogSMy5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE081F00893;
+	Sat, 30 May 2026 17:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165630;
-	bh=pR7cwve6CON/EOZrWfUXmUblEYIK1iq7PW2FeKrzllU=;
+	s=korg; t=1780163678;
+	bh=Bz5C08J8ejY64ZpwdxmrOKistZjhwW32sJ4ypCgVE5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ybWi8zsGyy6GfOrDQbOh7jzvsbAfZgaESHFRwu81TFmg9tOIFotdcqRYRzMEH7whl
-	 f3rdQ+5EvRowzPgAZ8TEuALx5qNWA7n/rd8SaB5y8fIq+YuBefgjOsMwRisixM5Ffz
-	 xLBiWFPysvROSGmRFld45DUBwQY0qalKKTn5BwGc=
+	b=1sogSMy55g6N18pnCuvjY+ISjdTQYoXGdee6Qm+GEjux8l4V3JgnzpfnjU9oqSVx3
+	 xiTEIIUuqLn89aagHoMbI/LSLZ8rOymGposOo5ejWT2UkT9a9FPcTDsEspleLvh7ij
+	 7E6FggcN/1hNBT3DjvmFDnTXFuSlqhMpSruBpn34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Sebastian Alba Vives <sebasjosue84@gmail.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.10 133/589] crypto: ccp: Dont attempt to copy CSR to userspace if PSP command failed
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 300/776] ALSA: firewire-tascam: Do not drop unread control events
 Date: Sat, 30 May 2026 18:00:14 +0200
-Message-ID: <20260530160228.275223004@linuxfoundation.org>
+Message-ID: <20260530160248.316830852@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,122 +63,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
-	TAGGED_FROM(0.00)[bounces-258815-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258238-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sakamocchi.jp,gmail.com,suse.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DB707611C48
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email]
+X-Rspamd-Queue-Id: C4C19610B73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit abe4a6d6f606113251868c2c4a06ba904bb41eed upstream.
+commit 0749daa8eb5ab90334aaad3b0671efd7150d43b1 upstream.
 
-When retrieving the PEK CSR, don't attempt to copy the blob to userspace
-if the firmware command failed.  If the failure was due to an invalid
-length, i.e. the userspace buffer+length was too small, copying the number
-of bytes _firmware_ requires will overflow the kernel-allocated buffer and
-leak data to userspace.
+tscm_hwdep_read_queue() copies as many queued control events as fit in
+the userspace buffer. When the buffer is smaller than the current
+contiguous queue segment, length is rounded down to the number of bytes
+that can be copied.
 
-  BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-  BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-  BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-  Read of size 2084 at addr ffff898144612e20 by task syz.9.219/21405
+However, after copying that shortened length, the code advances pull_pos
+to the original tail_pos, marking the whole contiguous segment as
+consumed. Any events between the copied portion and tail_pos are lost.
 
-  CPU: 14 UID: 0 PID: 21405 Comm: syz.9.219 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
-  Tainted: [U]=USER, [O]=OOT_MODULE
-  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
-   print_address_description ../mm/kasan/report.c:378 [inline]
-   print_report+0xbc/0x260 ../mm/kasan/report.c:482
-   kasan_report+0xa2/0xe0 ../mm/kasan/report.c:595
-   check_region_inline ../mm/kasan/generic.c:-1 [inline]
-   kasan_check_range+0x264/0x2c0 ../mm/kasan/generic.c:200
-   instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-   _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-   _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-   copy_to_user ../include/linux/uaccess.h:236 [inline]
-   sev_ioctl_do_pek_csr+0x31f/0x590 ../drivers/crypto/ccp/sev-dev.c:1872
-   sev_ioctl+0x3a4/0x490 ../drivers/crypto/ccp/sev-dev.c:2562
-   vfs_ioctl ../fs/ioctl.c:51 [inline]
-   __do_sys_ioctl ../fs/ioctl.c:597 [inline]
-   __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
-   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xe0/0x800 ../arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   </TASK>
+Limit tail_pos to the position after the entries actually copied before
+updating pull_pos. When the whole segment fits, this is equivalent to the
+old tail_pos update; when the buffer is smaller, the remaining events
+stay queued for the next read.
 
-WARN if the driver says the command succeeded, but the firmware error code
-says otherwise, as __sev_do_cmd_locked() is expected to return -EIO on any
-firwmware error.
-
-Reported-by: Alexander Potapenko <glider@google.com>
-Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
-Fixes: e799035609e1 ("crypto: ccp: Implement SEV_PEK_CSR ioctl command")
+Fixes: a8c0d13267a4 ("ALSA: firewire-tascam: notify events of change of state for userspace applications")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Suggested-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Co-developed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260503-alsa-firewire-tascam-read-queue-v2-1-126c6efd7642@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/ccp/sev-dev.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/firewire/tascam/tascam-hwdep.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -458,7 +458,10 @@ cmd:
+--- a/sound/firewire/tascam/tascam-hwdep.c
++++ b/sound/firewire/tascam/tascam-hwdep.c
+@@ -73,6 +73,7 @@ static long tscm_hwdep_read_queue(struct
+ 			length = rounddown(remained, sizeof(*entries));
+ 		if (length == 0)
+ 			break;
++		tail_pos = head_pos + length / sizeof(*entries);
  
- 	ret = __sev_do_cmd_locked(SEV_CMD_PEK_CSR, &data, &argp->error);
- 
--	 /* If we query the CSR length, FW responded with expected data. */
-+	/*
-+	 * Firmware will returns the length of the CSR blob (either the minimum
-+	 * required length or the actual length written), return it to the user.
-+	 */
- 	input.length = data.len;
- 
- 	if (copy_to_user((void __user *)argp->data, &input, sizeof(input))) {
-@@ -466,6 +469,9 @@ cmd:
- 		goto e_free_blob;
- 	}
- 
-+	if (ret || WARN_ON_ONCE(argp->error))
-+		goto e_free_blob;
-+
- 	if (blob) {
- 		if (copy_to_user(input_address, blob, input.length))
- 			ret = -EFAULT;
+ 		spin_unlock_irq(&tscm->lock);
+ 		if (copy_to_user(pos, &entries[head_pos], length))
 
 
 
