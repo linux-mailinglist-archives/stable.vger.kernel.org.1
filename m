@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOKGK24jG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258049-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:38 +0200
+	id sNLOA8QZG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E25661080C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 698DE60EFF9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C855E30B4B40
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DB4C3047043
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C4E348C5E;
-	Sat, 30 May 2026 17:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447B5366567;
+	Sat, 30 May 2026 17:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLCnn+Mv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9IC5Ago"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4941E34389F;
-	Sat, 30 May 2026 17:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB5A2690D5;
+	Sat, 30 May 2026 17:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163050; cv=none; b=XbOT4yOTlb31XT0p0yi04ClAdwVRK1cXMUFtGXep/ld/9azGAW9JMpxbdW/u/Zxn+CMrTU5j+llqXqQstpqFHQGjc5DsKsDgHKu6Cu41nIeLt6IdkhIKXkvelcDaTVSNIM8ENTCI1238ZbEoxzBRjrSmxnf0YKIHwMfoxGB5Ecc=
+	t=1780160415; cv=none; b=nB/QAQrorYhdTDZqQ0fYCD9Jk/e5TJEpgJiWnbVDYTcnWVIOa/g61wp+DeV+CrZeEjgij9yp1T9DL/RbLFIBPng+LzCy47w4sQS5J9IOUJa4OP3wpLqgWiwMZULUuk8qrtU5aCjdcWYW/ybmi2gzSB4JmEoInYgA5ou7QDiZ20M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163050; c=relaxed/simple;
-	bh=DYsA9zcui1Ipsxxd7kdwnwgDm+KtUYRuOXGjI8rNuaM=;
+	s=arc-20240116; t=1780160415; c=relaxed/simple;
+	bh=irpIlgnaVHAPO7a5fZtfJnKlDLByA84ZpjQOy3aivOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lNqL+FOrHALuY2FzOfQ+hyyQ7Z12LTYCe2OJnut5vZogIj/czfnQkFRztvqLibLODaai/XCeobF2IU5s1k1qKR79329FvKZJleBlHd/NnxKgOjW4Ys5+VizGWskDKQEeZYnHjzt/cVJfLs4JCcMHqFdLagVybGN86ABv1CnR+rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLCnn+Mv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFB31F00893;
-	Sat, 30 May 2026 17:44:08 +0000 (UTC)
+	 MIME-Version; b=LCD0YOyc0pp0OL8tyT55PTIdx8LOHiKkNx0FWEyTU0z/KrxNNlawNZO8IuYyy4pVcWuNLLXUwh/1f62ct02plRRDFDFnHIABRbk17cQkV4AT9+nTZ7WDxHoeEoY40QrRSQ+6EMww3UP7+pGh7tU2dIuKMtLYpG9NfZM34+mMBoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9IC5Ago; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254E91F00893;
+	Sat, 30 May 2026 17:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163049;
-	bh=+/rjSjJRcO3wkUgnqzZNc/iw9oL64nx+A3Zl3MRfTng=;
+	s=korg; t=1780160413;
+	bh=OxU3zjOEtvGCIyvmPOHcypM5dpvYzH4buy/vnjR3bAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bLCnn+Mvs6TbX53SpGpsDmgbJioFb4IrtwSNPHDF0IiVX5RkHQ46MYiwOmwhvGpyZ
-	 JFgG28868a2Orp7m1wSXeygEVAtHIq1LcWrByPsQy/+0V4P35GMmoUBQm+hmMJ+F7w
-	 /7IpQslyBGHinFooyzDF5f/i6yPwElnmlFwlpZzE=
+	b=a9IC5Ago1z7fI8BqJFpJf+xqj5d5dBTBDRCUueOSxgCdWbHdd8yo93/f4JDDBXjrc
+	 lPwjyktWgUCJgN+FwaHgXoB+ErTT2x/wAjPMZvPXdComD9QYqSXkLvmhBWP5PMazol
+	 53kJEzdua+KbY4rzBoN8D/wd0VFcR3Aq1CsSYhQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lang Yu <Lang.Yu@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Johnny Hao <johnny_haocn@sina.com>
-Subject: [PATCH 5.15 140/776] drm/amdgpu: unmap and remove csa_va properly
-Date: Sat, 30 May 2026 17:57:34 +0200
-Message-ID: <20260530160244.035293316@linuxfoundation.org>
+	Bharath SM <bharathsm@microsoft.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 331/969] cifs: abort open_cached_dir if we dont request leases
+Date: Sat, 30 May 2026 17:57:35 +0200
+Message-ID: <20260530160309.521844920@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,159 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,sina.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258049-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257270-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sina.com:email,amd.com:email,csa_tv.bo:url]
-X-Rspamd-Queue-Id: 1E25661080C
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 698DE60EFF9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lang Yu <Lang.Yu@amd.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 5daff15cd013422bc6d1efcfe82b586800025384 ]
+commit d68ce834f8cf6cb2e77f3331df65166b35466b53 upstream.
 
-Root PD BO should be reserved before unmap and remove
-a bo_va from VM otherwise lockdep will complain.
+It is possible that SMB2_open_init may not set lease context based
+on the requested oplock level. This can happen when leases have been
+temporarily or permanently disabled. When this happens, we will have
+open_cached_dir making an open without lease context and the response
+will anyway be rejected by open_cached_dir (thereby forcing a close to
+discard this open). That's unnecessary two round-trips to the server.
 
-v2: check fpriv->csa_va is not NULL instead of amdgpu_mcbp (christian)
+This change adds a check before making the open request to the server
+to make sure that SMB2_open_init did add the expected lease context
+to the open in open_cached_dir.
 
-[14616.936827] WARNING: CPU: 6 PID: 1711 at drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c:1762 amdgpu_vm_bo_del+0x399/0x3f0 [amdgpu]
-[14616.937096] Call Trace:
-[14616.937097]  <TASK>
-[14616.937102]  amdgpu_driver_postclose_kms+0x249/0x2f0 [amdgpu]
-[14616.937187]  drm_file_free+0x1d6/0x300 [drm]
-[14616.937207]  drm_close_helper.isra.0+0x62/0x70 [drm]
-[14616.937220]  drm_release+0x5e/0x100 [drm]
-[14616.937234]  __fput+0x9f/0x280
-[14616.937239]  ____fput+0xe/0x20
-[14616.937241]  task_work_run+0x61/0x90
-[14616.937246]  exit_to_user_mode_prepare+0x215/0x220
-[14616.937251]  syscall_exit_to_user_mode+0x2a/0x60
-[14616.937254]  do_syscall_64+0x48/0x90
-[14616.937257]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ The context change is due to the commit e56694f718f0
-("drm/amdgpu: rename amdgpu_vm_bo_rmv to _del")
-in v5.18 and the proper adoption is done which
-is irrelevant to the logic of this patch. ]
-Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c |   38 ++++++++++++++++++++++++++++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h |    3 ++
- drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c |   10 +++-----
- 3 files changed, 45 insertions(+), 6 deletions(-)
+ fs/smb/client/cached_dir.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-@@ -106,3 +106,41 @@ int amdgpu_map_static_csa(struct amdgpu_
- 	ttm_eu_backoff_reservation(&ticket, &list);
- 	return 0;
- }
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -228,6 +228,14 @@ int open_cached_dir(unsigned int xid, st
+ 			    &rqst[0], &oplock, &oparms, utf16_path);
+ 	if (rc)
+ 		goto oshr_free;
 +
-+int amdgpu_unmap_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
-+			    struct amdgpu_bo *bo, struct amdgpu_bo_va *bo_va,
-+			    uint64_t csa_addr)
-+{
-+	struct ww_acquire_ctx ticket;
-+	struct list_head list;
-+	struct amdgpu_bo_list_entry pd;
-+	struct ttm_validate_buffer csa_tv;
-+	int r;
-+
-+	INIT_LIST_HEAD(&list);
-+	INIT_LIST_HEAD(&csa_tv.head);
-+	csa_tv.bo = &bo->tbo;
-+	csa_tv.num_shared = 1;
-+
-+	list_add(&csa_tv.head, &list);
-+	amdgpu_vm_get_pd_bo(vm, &list, &pd);
-+
-+	r = ttm_eu_reserve_buffers(&ticket, &list, true, NULL);
-+	if (r) {
-+		DRM_ERROR("failed to reserve CSA,PD BOs: err=%d\n", r);
-+		return r;
++	if (oplock != SMB2_OPLOCK_LEVEL_II) {
++		rc = -EINVAL;
++		cifs_dbg(FYI, "%s: Oplock level %d not suitable for cached directory\n",
++			 __func__, oplock);
++		goto oshr_free;
 +	}
 +
-+	r = amdgpu_vm_bo_unmap(adev, bo_va, csa_addr);
-+	if (r) {
-+		DRM_ERROR("failed to do bo_unmap on static CSA, err=%d\n", r);
-+		ttm_eu_backoff_reservation(&ticket, &list);
-+		return r;
-+	}
-+
-+	amdgpu_vm_bo_rmv(adev, bo_va);
-+
-+	ttm_eu_backoff_reservation(&ticket, &list);
-+
-+	return 0;
-+}
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h
-@@ -34,6 +34,9 @@ int amdgpu_allocate_static_csa(struct am
- int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
- 			  struct amdgpu_bo *bo, struct amdgpu_bo_va **bo_va,
- 			  uint64_t csa_addr, uint32_t size);
-+int amdgpu_unmap_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
-+			    struct amdgpu_bo *bo, struct amdgpu_bo_va *bo_va,
-+			    uint64_t csa_addr);
- void amdgpu_free_static_csa(struct amdgpu_bo **bo);
+ 	smb2_set_next_command(tcon, &rqst[0]);
  
- #endif
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-@@ -1273,14 +1273,12 @@ void amdgpu_driver_postclose_kms(struct
- 	if (amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_VCE) != NULL)
- 		amdgpu_vce_free_handles(adev, file_priv);
- 
--	amdgpu_vm_bo_rmv(adev, fpriv->prt_va);
-+	if (fpriv->csa_va) {
-+		uint64_t csa_addr = amdgpu_csa_vaddr(adev) & AMDGPU_GMC_HOLE_MASK;
- 
--	if (amdgpu_mcbp || amdgpu_sriov_vf(adev)) {
--		/* TODO: how to handle reserve failure */
--		BUG_ON(amdgpu_bo_reserve(adev->virt.csa_obj, true));
--		amdgpu_vm_bo_rmv(adev, fpriv->csa_va);
-+		WARN_ON(amdgpu_unmap_static_csa(adev, &fpriv->vm, adev->virt.csa_obj,
-+						fpriv->csa_va, csa_addr));
- 		fpriv->csa_va = NULL;
--		amdgpu_bo_unreserve(adev->virt.csa_obj);
- 	}
- 
- 	pasid = fpriv->vm.pasid;
+ 	memset(&qi_iov, 0, sizeof(qi_iov));
 
 
 
