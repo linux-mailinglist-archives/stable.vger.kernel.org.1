@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-259188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257844-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iBtRFfowG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-259188-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:26 +0200
+	id qMerNJ0gG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257844-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F224861288C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 468D561014E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4552B301D033
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:48:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17C853051C6B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BF121E098;
-	Sat, 30 May 2026 18:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C5B3403F9;
+	Sat, 30 May 2026 17:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="giBUFtCL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0mKFUxo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADDD137750;
-	Sat, 30 May 2026 18:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9123E344D80;
+	Sat, 30 May 2026 17:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166902; cv=none; b=sad+4WUaxECY9ba4WY5gUFs9qTuIAM3y1KlggJiQkkPLXCV8GkDOx3GIqRUACecfTqUkd2VXDUBoVr2htXOyEJftUY1vR7E1xBlbFnpURxT24j3jawEDpmVBKbxMNVa2ySsT/7glNhmY56liMwsCYF98H+F8S/k2VVRwyqDhEyE=
+	t=1780162360; cv=none; b=MbWMT5YnAsgbZ3Ai9bh/a7I7ajz7aDQXEstPaUjy41rfXF1ShM3PpgiFHx89M+r0Q7ja/BpmMEYjJIEIwZRm9HQ8mg2kDef4aysLLjQbeHXOQnsjhZtraAyhQDy0be3wpDZp/6uhbBOWftwQOxGQ6x/0LGkVGZs/fGAj2m+KMMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166902; c=relaxed/simple;
-	bh=AMtYRJyfyVlabEz7gRvHKg8iWYwqYWU6WvAO/0y+2wc=;
+	s=arc-20240116; t=1780162360; c=relaxed/simple;
+	bh=E+plqgqkKj5VFzydXFE+mjMERPKs1yzILO4jUHv2kE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=btaiEu0zxl4KOirSuabiKUkOmwkI0eaebyfJ+40X4L/a1whwOnRj/daryLNT5heecdemeN+NKTcKw26yEuopepTNOT9s5vBHhvEvouLsSrZMXErOqP62hn/2pxpXgcEODHlSMJ9FZRGGBJAYlGrtg8fAht3eR36e38RTZsEFDNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=giBUFtCL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDDF1F00893;
-	Sat, 30 May 2026 18:48:19 +0000 (UTC)
+	 MIME-Version; b=mXGqCac3S/lPSeUA2Q9kLZNlhv1dAM3BMRhp9O533bqxj8ExbDdlw9YWcm3vT34s8to0laslSKvWQMzIOa8bK2V+xESmV2BjdUOKjyT1Gkb3PXNqB52oAnaEfwZ2kBhET78+yUxWGF2g5igRz2q5nAQv4T9k2NJUseSQTsE+haU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0mKFUxo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54101F00893;
+	Sat, 30 May 2026 17:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166900;
-	bh=t/D77fe2mkFD4GBqTd4FMOi3pbvSyuuadXBGuJF4q1w=;
+	s=korg; t=1780162359;
+	bh=RjEih5NZWNLabGn3x712SQxGP+clpAJHeNnlRbgDbYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=giBUFtCLGVnANrq5Y+k5i1i/cCp3H8c8K9LWx13UopRxsmOROwHx+sibjmUjBskse
-	 OAskDBnR32VttcoXFE5K8j8THIywcKe4u2ewDU1Ex8f1cvBF+gxZ3VLOe68nO7qhy7
-	 OOs67PwSW4XjtVvVTaYdunYU2rS35ytx763i1GcM=
+	b=d0mKFUxohd8aqY4oJhfoKYrWcaPEn4fzcRna415QT1ZrqS48LK+cvL8g+N18i2LBN
+	 CWWViOXdTI5GkUBedrHk2r8gApIZWz0EpFpcX1yrYglcGFVLvHYM7Z2EljSsQLpeBB
+	 uJtp3fwOdUqXm32IQrVz2QKafxOZtaQslzMJ7vHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Robaina <rrobaina@redhat.com>,
-	Sergio Correia <scorreia@redhat.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.10 504/589] audit: fix incorrect inheritable capability in CAPSET records
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 861/969] ixgbevf: fix use-after-free in VEPA multicast source pruning
 Date: Sat, 30 May 2026 18:06:25 +0200
-Message-ID: <20260530160237.853486281@linuxfoundation.org>
+Message-ID: <20260530160324.446745735@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +66,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259188-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257844-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,intel.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,paul-moore.com:email]
-X-Rspamd-Queue-Id: F224861288C
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 468D561014E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergio Correia <scorreia@redhat.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit e4a640475e43f406fdfd56d370b1f34b0cbbc18d upstream.
+commit 5d49b568c188dc77199d8d2b959c91da8cc27cf1 upstream.
 
-__audit_log_capset() records the effective capability set into the
-inheritable field due to a copy-paste error. Every CAPSET audit
-record therefore reports cap_pi (process inheritable) with the value
-of cap_effective instead of cap_inheritable.
+ixgbevf_clean_rx_irq() prunes frames whose source MAC matches the VF's
+own address (VEPA multicast workaround) by freeing the skb and
+continuing to the next descriptor:
 
-This silently corrupts audit data used for compliance and forensic
-analysis: an attacker who modifies inheritable capabilities to
-prepare for a privilege-escalating exec would have the change masked
-in the audit trail.
+    dev_kfree_skb_irq(skb);
+    continue;
 
-The bug has been present since the original introduction of CAPSET
-audit records in 2008.
+The skb pointer is declared outside the while loop and persists across
+iterations.  Because the continue skips the "skb = NULL" reset at the
+bottom of the loop, the next iteration enters the "else if (skb)" path
+and calls ixgbevf_add_rx_frag() on the freed skb, dereferencing
+skb_shinfo(skb)->nr_frags - a use-after-free in NAPI softirq context.
 
+The sibling driver iavf already handles this correctly by nulling the
+pointer before continuing.  Apply the same pattern here.
+
+I do not have ixgbevf hardware; the bug was found by static analysis
+(scan_drop_continue_loops.py + semgrep drop_continue_in_loop, multi-tool
+corroboration with the highest score in the scan).  The UAF was confirmed
+under KASAN by loading a test module that reproduces the exact code
+pattern (alloc skb, kfree_skb, then read skb_shinfo(skb)->nr_frags):
+
+  BUG: KASAN: slab-use-after-free in ixgbevf_uaf_test_init+0x100/0x1000
+  Read of size 8 at addr 000000006163ae78 by task insmod/30
+  freed 208-byte region [000000006163adc0, 000000006163ae90)
+
+QEMU emulates igb (82576) but not ixgbe (82599), and the igbvf VF
+driver does not include the VEPA source pruning path, so a full
+end-to-end reproduction with emulated hardware was not possible.
+
+Fixes: bad17234ba70 ("ixgbevf: Change receive model to use double buffered page based receives")
 Cc: stable@vger.kernel.org
-Fixes: e68b75a027bb ("When the capset syscall is used it is not possible for audit to record the actual capbilities being added/removed.  This patch adds a new record type which emits the target pid and the eff, inh, and perm cap sets.")
-Reviewed-by: Ricardo Robaina <rrobaina@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Sergio Correia <scorreia@redhat.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-8-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/auditsc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -2582,7 +2582,7 @@ void __audit_log_capset(const struct cre
- 	struct audit_context *context = audit_context();
- 	context->capset.pid = task_tgid_nr(current);
- 	context->capset.cap.effective   = new->cap_effective;
--	context->capset.cap.inheritable = new->cap_effective;
-+	context->capset.cap.inheritable = new->cap_inheritable;
- 	context->capset.cap.permitted   = new->cap_permitted;
- 	context->capset.cap.ambient     = new->cap_ambient;
- 	context->type = AUDIT_CAPSET;
+--- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
++++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+@@ -1225,6 +1225,7 @@ static int ixgbevf_clean_rx_irq(struct i
+ 		    ether_addr_equal(rx_ring->netdev->dev_addr,
+ 				     eth_hdr(skb)->h_source)) {
+ 			dev_kfree_skb_irq(skb);
++			skb = NULL;
+ 			continue;
+ 		}
+ 
 
 
 
