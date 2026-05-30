@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOEsCG4qG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258696-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:30 +0200
+	id IFzvOckiG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E27611851
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B4761065C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C8243012231
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8470F3011A56
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C2C3AB285;
-	Sat, 30 May 2026 18:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5D53546EA;
+	Sat, 30 May 2026 17:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npDSm4zo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9OGoOgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6EE233D9E;
-	Sat, 30 May 2026 18:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5554A32BF24;
+	Sat, 30 May 2026 17:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165228; cv=none; b=bdAj2gOqRB/VqVt43aJO10TG9RHBN7hUUmlqzgg18eTp9/IC5KfALgKnnf5YquWKZsBAI/greG/vZp9r+87tbbvrGAkPfSupiLn7V/FAKbslFZfVFb8US3wQ0QFkmnNLPgNaqEFh4PJm27nJgqnFKvANzjWkRt+BDSKmLWrIyuo=
+	t=1780163193; cv=none; b=K+kcpdTdMjZoNoV5Qe09ZvR4vN2xRh2G7kYBsaYk3SdY1TFEmvEwV17zGanT6Up4UArja3NFWa2H86AzS9XocW3wz20fwI9U9IaT67mvAPitqOvwis4pG2pavvpQ69YY4cp/562rSCTmnTVAyzfvJsjP49gVvKEGPdUsPplbCVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165228; c=relaxed/simple;
-	bh=vvfTcrsp7DkGHTPAPPCDh5/qmpVo19C9f2bDSRK8Wbs=;
+	s=arc-20240116; t=1780163193; c=relaxed/simple;
+	bh=kYHgJ3fSEhuv3voU21bCaXkiXiZA0MYN8J1fl+lSuRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YWVrdpHZVtQXyzFypPtNtWFQyyuSPiKGrqP1zpMlub2fyXeHfQCacxycgy/Gvza7o+clowpI8zUM9re64mGocpxnrrzuP2qAhxw23DFeDRCxSL0bIV9PpQV/DCRVIJCqLVTXX4qBZlAtwuqFUbDjY8OpRQ+H7wysCOMeX9B7U1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npDSm4zo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC221F00893;
-	Sat, 30 May 2026 18:20:26 +0000 (UTC)
+	 MIME-Version; b=RV6dpjhT1vmQTQQCg0kbtrSXm4S2Wbttf/Bc5qykHTugywIHmZfdNrXo0AZNXyWmlDhb8i1WcTCtzXY4MJmlRYuxdqzNhvbH5taiLkXonguuDXDtdlw2YFNIuyYat3cwKL3uSIhsszBkXQYCyFgapJCEApQXbA/DZP1l+dM5aHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9OGoOgF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCC51F00893;
+	Sat, 30 May 2026 17:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165226;
-	bh=gRZFJIYWZjp0fA3zKnYrVWngFmNCqBPz6L5Z5SI2PMY=;
+	s=korg; t=1780163192;
+	bh=BX3O1mFErEhRVNsDXPbJO/+twTt+MD+9+Yl7nqRTh8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=npDSm4zo2dLUZ0THvnAL36o/VILBjDH4cUj9UH268HY1TwrKJMCSikrb3BkbwN/FD
-	 uTRnVEJFtKyOYaJxiGuuCazVyJL0bwISiadhBf55IKb6WRXPlTUOdBhZkfPHNsw/EA
-	 W4Fem2IEcj6s4xcyr0u9UM5xYkSfAGtAtEaxrFm0=
+	b=D9OGoOgFOJZHGIgv4QNNgpoSxDKZ6V5L71il5sZwr4s/lC1yaAjJ4MFAH7J8m70fO
+	 DsqN8SCQ5j+RdqqFSmbIR1tbmrG88/bRLqe/1rSLK7HEXDya0jtDY+wbklag1TabEg
+	 8OJCUUo/DGC6jV/fgOvauldZMlqEzWaItThe6A6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 017/589] drm/vc4: Fix a memory leak in hang state error path
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.15 184/776] usb: xhci: Make usb_host_endpoint.hcpriv survive endpoint_disable()
 Date: Sat, 30 May 2026 17:58:18 +0200
-Message-ID: <20260530160225.033994605@linuxfoundation.org>
+Message-ID: <20260530160245.256065212@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +62,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258696-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-258092-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,igalia.com:email]
-X-Rspamd-Queue-Id: D3E27611851
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 92B4761065C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit 9525d169e5fd481538cf8c663cc5839e54f2e481 ]
+commit 25e531b422dc2ac90cdae3b6e74b5cdeb081440d upstream.
 
-When vc4_save_hang_state() encounters an early return condition, it
-returns without freeing the previously allocated `kernel_state`,
-leaking memory.
+xHCI hardware maintains its endpoint state between add_endpoint()
+and drop_endpoint() calls followed by successful check_bandwidth().
+So does the driver.
 
-Add the missing kfree() calls by consolidating the early return paths
-into a single place.
+Core may call endpoint_disable() during xHCI endpoint life, so don't
+clear host_ep->hcpriv then, because this breaks endpoint_reset().
 
-Fixes: 214613656b51 ("drm/vc4: Add an interface for capturing the GPU state after a hang.")
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-3-92defc940a29@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If a driver calls usb_set_interface(), submits URBs which make host
+sequence state non-zero and calls usb_clear_halt(), the device clears
+its sequence state but xhci_endpoint_reset() bails out. The next URB
+malfunctions: USB2 loses one packet, USB3 gets Transaction Error or
+may not complete at all on some (buggy?) HCs from ASMedia and AMD.
+This is triggered by uvcvideo on bulk video devices.
+
+The code was copied from ehci_endpoint_disable() but it isn't needed
+here - hcpriv should only be NULL on emulated root hub endpoints.
+It might prevent resetting and inadvertently enabling a disabled and
+dropped endpoint, but core shouldn't try to reset dropped endpoints.
+
+Document xhci requirements regarding hcpriv. They are currently met.
+
+Fixes: 18b74067ac78 ("xhci: Fix use-after-free regression in xhci clear hub TT implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20260402131342.2628648-26-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vc4/vc4_gem.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/usb/host/xhci.c |    1 -
+ include/linux/usb.h     |    3 ++-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_gem.c b/drivers/gpu/drm/vc4/vc4_gem.c
-index 788f64154119b..e4f20b93c33e7 100644
---- a/drivers/gpu/drm/vc4/vc4_gem.c
-+++ b/drivers/gpu/drm/vc4/vc4_gem.c
-@@ -166,10 +166,8 @@ vc4_save_hang_state(struct drm_device *dev)
- 	spin_lock_irqsave(&vc4->job_lock, irqflags);
- 	exec[0] = vc4_first_bin_job(vc4);
- 	exec[1] = vc4_first_render_job(vc4);
--	if (!exec[0] && !exec[1]) {
--		spin_unlock_irqrestore(&vc4->job_lock, irqflags);
--		return;
--	}
-+	if (!exec[0] && !exec[1])
-+		goto err_free_state;
- 
- 	/* Get the bos from both binner and renderer into hang state. */
- 	state->bo_count = 0;
-@@ -186,10 +184,8 @@ vc4_save_hang_state(struct drm_device *dev)
- 	kernel_state->bo = kcalloc(state->bo_count,
- 				   sizeof(*kernel_state->bo), GFP_ATOMIC);
- 
--	if (!kernel_state->bo) {
--		spin_unlock_irqrestore(&vc4->job_lock, irqflags);
--		return;
--	}
-+	if (!kernel_state->bo)
-+		goto err_free_state;
- 
- 	k = 0;
- 	for (i = 0; i < 2; i++) {
-@@ -281,6 +277,12 @@ vc4_save_hang_state(struct drm_device *dev)
- 		vc4->hang_state = kernel_state;
- 		spin_unlock_irqrestore(&vc4->job_lock, irqflags);
- 	}
-+
-+	return;
-+
-+err_free_state:
-+	spin_unlock_irqrestore(&vc4->job_lock, irqflags);
-+	kfree(kernel_state);
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -3233,7 +3233,6 @@ rescan:
+ 		xhci_dbg(xhci, "endpoint disable with ep_state 0x%x\n",
+ 			 ep->ep_state);
+ done:
+-	host_ep->hcpriv = NULL;
+ 	spin_unlock_irqrestore(&xhci->lock, flags);
  }
  
- static void
--- 
-2.53.0
-
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -54,7 +54,8 @@ struct ep_device;
+  * @ssp_isoc_ep_comp: SuperSpeedPlus isoc companion descriptor for this endpoint
+  * @urb_list: urbs queued to this endpoint; maintained by usbcore
+  * @hcpriv: for use by HCD; typically holds hardware dma queue head (QH)
+- *	with one or more transfer descriptors (TDs) per urb
++ *	with one or more transfer descriptors (TDs) per urb; must be preserved
++ *	by core while BW is allocated for the endpoint
+  * @ep_dev: ep_device for sysfs info
+  * @extra: descriptors following this endpoint in the configuration
+  * @extralen: how many bytes of "extra" are valid
 
 
 
