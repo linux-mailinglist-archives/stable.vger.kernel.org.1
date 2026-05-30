@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-259275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id II3IER4yG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259275-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:18 +0200
+	id QAvHEPUpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133E8612BCF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D92611731
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 708703003D0A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6E7E73011EB4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93305241C8C;
-	Sat, 30 May 2026 18:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB7D274FDC;
+	Sat, 30 May 2026 18:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nf6A7GJx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aeUf290G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B85C4315F;
-	Sat, 30 May 2026 18:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6394A17555;
+	Sat, 30 May 2026 18:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167196; cv=none; b=phxYimBWSqlkk8kw/1bWnpQz4W+Z8sX+N67+5VMKRGvmeP3w4KRHlKgVw3sz2szuxNJU8wOh0wp4iGMXkfTPaYICGU+x4nsh1i8Vd7c03jgAGGNgvDTUXYH5bxJdVVXhdlwU7vYQBviEt3blFQMm9TMLwBHhut1pi8WiBewRAiQ=
+	t=1780165091; cv=none; b=rFJG7BlmTVw1uFQgx9sOuukI+EbQOpbjF6mKAD+RuaiaTDVVs5ruRtW1klee9ttNsM8HbVCBNK0ptcVmi/wRwpOk3xL1VXB/tVQJSoTmWEsG50IU4oDR35DZx2vvxnu3zs3Ds4C1uxV1RF05O/C6nqUJ3dE4eOxA79/3f+uNBrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167196; c=relaxed/simple;
-	bh=wI/TQX/d0bif79gpHKLmVnfvqZIeE9eIWdv01TLTXAk=;
+	s=arc-20240116; t=1780165091; c=relaxed/simple;
+	bh=SfMxFhxnpIOxF/O/fr1IqdAeGN5kYYm2LUpdqto7Kf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TTtWYEaMFBAIZl0YGN7IiwfqANfvTc9WUSBOnXe9SSZuB+LDumWbBhrW848/XD6diMIqk+SN7o/88J0BTJCnvGveD7hrFcLTNM+ekU3BWXZnveAOmHU89y3Uw0O5r5zLeJ/RyLfAOH65aPxCfXz9nXz8DIlMnG9fqFJd5opu2E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nf6A7GJx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FF91F00893;
-	Sat, 30 May 2026 18:53:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h8/Oe2j4sbcsj42iEqTFaS9k3BQTNe0KVKrV4RstaHVowZ/Gi6jfbiKiKsaV6k5iNNxr6Z6cTQlurwWIgUGbhxrk/b4jpCgF4nuvOO9QXdkbB4hIHwFw6Ezkep7vPAz1KqFktbeoGHwUDh7nOJjDl73ApMVI1c9fPp8HvpKvokw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aeUf290G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F451F00893;
+	Sat, 30 May 2026 18:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167195;
-	bh=k9gHuoEeYdPKNbGPlw4ePF7KBmcEmj1EbzPBlyuMtcs=;
+	s=korg; t=1780165090;
+	bh=l/RrxdHM04W9lCvoQuAWePregifV0Th/gXRzQRAHIko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nf6A7GJxRAVRzDPpf/oASlq+z/py8AUeQDaxLNZv/YR2OZXyeeNa4aaXA5g+hXefz
-	 IcXKV87Nk3kmRFfAAfN9nNICjOrgu4v3ZgKw9IFNZmwWaNognIHaRSuL7f7F73sGtA
-	 /Fqv0UYbrV63Rv2RQv5kPK+VvU4g0lMb5IpQiKEI=
+	b=aeUf290GRe444+JaRDldyMwAtULtbLnVs5SihE4p6cCD5Os1ncCrkKz/A6i1NtmkT
+	 KxVqQ+VWKQ7TShkYa0JWOPGClOpqgfzqMGV67nSIS0eXtgLy0kPlmF59HC6hGzFjuy
+	 9m+bkVPtFANYaah7IJBba9O75thmLu4j22MsEGOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 579/589] HID: quirks: really enable the intended work around for appledisplay
+Subject: [PATCH 5.15 746/776] phy: marvell: mvebu-a3700-utmi: fix incorrect USB2_PHY_CTRL register access
 Date: Sat, 30 May 2026 18:07:40 +0200
-Message-ID: <20260530160239.817638556@linuxfoundation.org>
+Message-ID: <20260530160259.057161073@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +64,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259275-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-258657-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
-X-Rspamd-Queue-Id: 133E8612BCF
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,bootlin.com:email]
+X-Rspamd-Queue-Id: 04D92611731
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 5f90dcfa8dc32a488581b78e575cdd7808ba5c78 ]
+[ Upstream commit 91ddf6f722084383fb05be731c0107814b055c0c ]
 
-Commit c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for
-appledisplay") intends to add a quirk for kernels built with Apple Cinema
-Display support, but it refers to the non-existing config option
-CONFIG_APPLEDISPLAY, whereas the config option for Apple Cinema Display
-support is named CONFIG_USB_APPLEDISPLAY.
+The mvebu_a3700_utmi_phy_power_off() function tries to modify the
+USB2_PHY_CTRL register by using the IO address of the PHY IP block along
+with the readl/writel IO accessors. However, the register exist in the
+USB miscellaneous register space, and as such it must be accessed via
+regmap like it is done in the mvebu_a3700_utmi_phy_power_on() function.
 
-Refer to the intended config option CONFIG_USB_APPLEDISPLAY in the ifdef
-directive.
+Change the code to use regmap_update_bits() for modífying the register
+to fix this.
 
-Fixes: c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for appledisplay")
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: cc8b7a0ae866 ("phy: add A3700 UTMI PHY driver")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20260321-a3700-utmi-fix-usb2_phy_ctrl-access-v1-1-6005ff4b5058@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/marvell/phy-mvebu-a3700-utmi.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 84a9c9e761bcd..3a7b231759098 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -222,7 +222,7 @@ static const struct hid_device_id hid_quirks[] = {
-  * used as a driver. See hid_scan_report().
-  */
- static const struct hid_device_id hid_have_special_driver[] = {
--#if IS_ENABLED(CONFIG_APPLEDISPLAY)
-+#if IS_ENABLED(CONFIG_USB_APPLEDISPLAY)
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
+diff --git a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
+index 8834436bc9dbc..e3a9278c06842 100644
+--- a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
++++ b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
+@@ -168,9 +168,8 @@ static int mvebu_a3700_utmi_phy_power_off(struct phy *phy)
+ 	u32 reg;
+ 
+ 	/* Disable PHY pull-up and enable USB2 suspend */
+-	reg = readl(utmi->regs + USB2_PHY_CTRL(usb32));
+-	reg &= ~(RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32));
+-	writel(reg, utmi->regs + USB2_PHY_CTRL(usb32));
++	regmap_update_bits(utmi->usb_misc, USB2_PHY_CTRL(usb32),
++			   RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32), 0);
+ 
+ 	/* Power down OTG module */
+ 	if (usb32) {
 -- 
 2.53.0
 
