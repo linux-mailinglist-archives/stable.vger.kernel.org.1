@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-257602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258980-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WCIqHw4eG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257602-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:42 +0200
+	id 6CODDCQxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-258980-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:49:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83AA60FB45
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954A96128D3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:49:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0CD6B3092850
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:19:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D974302C6E8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAFC334695;
-	Sat, 30 May 2026 17:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1436039478D;
+	Sat, 30 May 2026 18:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0ksNKBw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWEmQF/G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A273E1C5799;
-	Sat, 30 May 2026 17:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81F339989B;
+	Sat, 30 May 2026 18:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161549; cv=none; b=qfeztuSXI0LpsKs6Wlb/aeAsReCumstND6LEAwr9gtNA6OHWPS+QWGKSgs8N5UkecgDC7bP9BEhR+YV+KRcbp0G4MsHSuQPs494ZFBIL8paMxeTslK4rXcSjrEIuLPvdWwiuB9y4S8ckEqP4dNwsg1RKo4uVsKznD0n+K0Sa2yQ=
+	t=1780166190; cv=none; b=a1PQhADgSbqpuCSn5+ByI8U9fP5t9oAgzt9A6wx3y1qSYhPtSbdJU1c44KOd0nBDdUIoQmeJ+PKqHiEH/QlHNmgkETnQCGzGLe+BQamNUm86xdASy42xHwaRuY8QGHsD8jyQoDUy58S1MSimuub/cY1j7CrMNPeDKaVwhAsYvbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161549; c=relaxed/simple;
-	bh=4Xz8HbGKuSUykI2WkRLFUcNSlYJeYUXzNaTx/rlp5tQ=;
+	s=arc-20240116; t=1780166190; c=relaxed/simple;
+	bh=VPuLUagSYJU4CprStvNX31bK6z0krzb87XkXQHv5Pew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acm5qN5NEzH4/+99k1Fb9gvX9SAjoW8I9qWvBAmsA3lObGXzpe8DReInziAWjNUNz5OtQbOmWn5BtNqngDZg80l3WT16m9IuzUjXjvIRx8qqkpIvvJiDYUsEn9cMauXA2yWHMouJTdfglYc8fRauej919o02sgCO8KomwpCOf6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0ksNKBw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C201F00893;
-	Sat, 30 May 2026 17:19:07 +0000 (UTC)
+	 MIME-Version; b=QutgKgm9+03o8pVwp+3o0KVP7n97977rb3m9JGfsEYb3XKs1UmZWiRD/vct18QflklxArRo/5kA9x41idt9WUe6sDpK2VeAqakxa5iosjisFLdizI1lQ6b3pGCMrrSvHQWcz0TapQ5x79Ha6g8U2xhu+xOg9SVR1zDWQbWWv+ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWEmQF/G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041C11F00893;
+	Sat, 30 May 2026 18:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161548;
-	bh=g5qRUeeP5rGwiA9fTtrOlzNPCnc1aIowKO5490hkVSI=;
+	s=korg; t=1780166189;
+	bh=Jjyj3tN8zpobGjdOwkfs0IE8GQqVYR82YFdc4pOSiaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U0ksNKBw/0DnNnniahOqXVL+X1eBcawjzVkjOVj8z+RCUy+5abxz3gyGLV56LYD8q
-	 pTiDAVTc6qS7yG3NFMv6AwB6KEmX3fGdH102eJMzSu7CdgambCO4qJq9ouEIwDUzDA
-	 ZFa9aU+FOwZpwpfMEjVOwvaeRqYJJU/gCa+uugIU=
+	b=zWEmQF/Ggl9/etCckoEcysi9VrO0/On+oLMBbN8cWPkFqRd+wJDMy6fTgptDfHFmO
+	 uzlr1Ci76zZUNng5AmBtUYnEN2svLk1XNaA0ThUuTeHlnCvpgVVJn2ngDuhxa/S1aU
+	 64Cfaon7QFN3a1oaoJ7h1E4sjjrJb3ymWIXXIRpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Jeff Chen <jeff.chen_1@nxp.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 656/969] clk: qcom: dispcc-sm8250: Use shared ops on the mdss vsync clk
-Date: Sat, 30 May 2026 18:03:00 +0200
-Message-ID: <20260530160318.589511409@linuxfoundation.org>
+Subject: [PATCH 5.10 300/589] wifi: mwifiex: Fix memory leak in mwifiex_11n_aggregate_pkt()
+Date: Sat, 30 May 2026 18:03:01 +0200
+Message-ID: <20260530160232.848439051@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257602-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258980-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,56 +86,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,packett.cool:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D83AA60FB45
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,intel.com:email,seu.edu.cn:email]
+X-Rspamd-Queue-Id: 954A96128D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 8c522da70f0c2e5148c4c13ccb1c64cca57a6fdb ]
+[ Upstream commit 990a73dec3fdc145fef6c827c29205437d533ece ]
 
-mdss_gdsc can get stuck on boot due to RCGs being left on from last boot.
-As a fix, commit 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon
-registration") introduced a callback to ensure the RCG is off upon init.
-However, the fix depends on all shared RCGs being marked as such in code.
+In mwifiex_11n_aggregate_pkt(), skb_aggr is allocated via
+mwifiex_alloc_dma_align_buf(). If mwifiex_is_ralist_valid() returns false,
+the function currently returns -1 immediately without freeing the
+previously allocated skb_aggr, causing a memory leak.
 
-For SM8150/SC8180X/SM8250 the MDSS vsync clock was using regular ops,
-unlike the same clock in the SC7180 code. This was causing display to
-frequently fail to initialize after rebooting on the Surface Pro X.
-Fix by using shared ops for this clock.
+Since skb_aggr has not yet been queued via skb_queue_tail(), no other
+references to this memory exist. Therefore, it has to be freed locally
+before returning the error.
 
-Fixes: 80a18f4a8567 ("clk: qcom: Add display clock controller driver for SM8150 and SM8250")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260312112321.370983-8-val@packett.cool
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fix this by calling mwifiex_write_data_complete() to free skb_aggr before
+returning the error status.
+
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
+
+Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Jeff Chen <jeff.chen_1@nxp.com>
+Link: https://patch.msgid.link/20260119092625.1349934-1-zilin@seu.edu.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8250.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/11n_aggr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/dispcc-sm8250.c b/drivers/clk/qcom/dispcc-sm8250.c
-index dcd76977a73b3..b7d3d3bd1f2af 100644
---- a/drivers/clk/qcom/dispcc-sm8250.c
-+++ b/drivers/clk/qcom/dispcc-sm8250.c
-@@ -618,7 +618,7 @@ static struct clk_rcg2 disp_cc_mdss_vsync_clk_src = {
- 		.parent_data = disp_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+diff --git a/drivers/net/wireless/marvell/mwifiex/11n_aggr.c b/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
+index 46f41dbcf30dd..54662bc5bc152 100644
+--- a/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
+@@ -215,6 +215,7 @@ mwifiex_11n_aggregate_pkt(struct mwifiex_private *priv,
+ 
+ 		if (!mwifiex_is_ralist_valid(priv, pra_list, ptrindex)) {
+ 			spin_unlock_bh(&priv->wmm.ra_list_spinlock);
++			mwifiex_write_data_complete(adapter, skb_aggr, 1, -1);
+ 			return -1;
+ 		}
  
 -- 
 2.53.0
