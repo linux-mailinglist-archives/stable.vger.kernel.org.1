@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-257674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259052-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iB75LSkeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:09 +0200
+	id ECPPKqYxG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259052-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2247160FBA4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 387BB6129EC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 60A54309F0A7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:23:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D39C308845E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0937C33FE15;
-	Sat, 30 May 2026 17:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4991639A7FE;
+	Sat, 30 May 2026 18:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPsPsPl3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iz2DLqC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B37263F44;
-	Sat, 30 May 2026 17:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3C221B191;
+	Sat, 30 May 2026 18:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161793; cv=none; b=hO1kFxi0E6S3S/Jv0XToWQ4qOwFCZaPCOfvvuPtniyZZFQg1t/2f6mBSp5c3VREJL4+pbYeKtqRsCUH/VHsrLNZwao1ldY/me1iAay5qvLmH69vsmnWfAhaNpe587q/Mv9FOJnH7VAqmCKKCtl/fooiVVaqrDgX3wlWatKKU+Z8=
+	t=1780166429; cv=none; b=If+CEtGlUDp51g3jV1nMp53c6r3vUVSZtMP6kX92KE0nTxJZ1AWyRlWVzeXI6Bofpdyd+g9Pl28bvZfb9QriSZKIHBL6jEutoz5k4Pcq60gMzejA6ovGtFdUXbAZFC6fFNyAkQxCnHkFgzbHIku628/g/zVucHbYifJv8e3RIyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161793; c=relaxed/simple;
-	bh=hDEk6Vt0Vju1otv4Iq1nLRHcDTNzQStNSlMXFL0+FGU=;
+	s=arc-20240116; t=1780166429; c=relaxed/simple;
+	bh=W3Vz0NYI0MyRHaOC6G8jeJK3WlKEARtOf9Q2SZkA6Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sQQZcbdBQESyDJKPEgdML5XSjz9NNuR3YgOqV2lraikMVrWqCrNdbFo3OK/kC2oUtYwBf+3aCmv35knEih6PlAdH8wFO9f2vdzxpDy5ZtX1y8S0h5lyIq06vlYVpAYdOgqc6RXGRr6I2AQfRKFHDZix8ZPqEU/6lDrsZtRCloZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPsPsPl3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2431D1F00893;
-	Sat, 30 May 2026 17:23:11 +0000 (UTC)
+	 MIME-Version; b=nLIn4NdaCSjhA0IhjA1oJ1wlNqalG2Qav3k0EBGSPgDwv0MVUTDnI1GAa3s23RDOGfXrH6wX2OrUkc4VYvo1hxScHonLHzzKrd/X0tOKmbIzH9b1zOjcE4ewk3NJxfA3vA/38duKn8NZsumPFvGHDBKtKFEu9tRPE5w9NCL7ZvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iz2DLqC4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6B51F00893;
+	Sat, 30 May 2026 18:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161792;
-	bh=g2mh84x+oTkOPa1ufjdMuvK+1ucfBU9dfhkkhIK3/PA=;
+	s=korg; t=1780166427;
+	bh=df4ykMegQve/fAHWbSDsITWrWCSvcCNk2tmf1WjgMmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EPsPsPl3/G281JK3H15At+e+rx6ZrJGiuppC54nmyk745wbt9Nmmn5BrETMployRU
-	 XWdqLm6YIVld4NYNM+QnBxFA3l3cCDtpHMLgrVoLnoSJnur3CcGurmFWri4vzwjOHI
-	 SMxbbJUBqFCo5sf8+o5rwxZK+dgPKp6JENiIQZB0=
+	b=iz2DLqC4iRJa2UrZyB10fqvooxCjAFllmZoz/WrX8Z8Ix8elLMxso7j9DcE8CxBy+
+	 6BDQrKoqt5gbBDcn7XHhZfzp5yGmu0sAKcWVmnm2M539g347sT8cYZPn73+zrR+4PN
+	 yYua5CfwcSaeKWYg/POPL/GAO0V2xSPGBRZRqE+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	ZhengYuan Huang <gality369@gmail.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 727/969] mailbox: add sanity check for channel array
-Date: Sat, 30 May 2026 18:04:11 +0200
-Message-ID: <20260530160320.618769380@linuxfoundation.org>
+Subject: [PATCH 5.10 371/589] ocfs2: validate group add input before caching
+Date: Sat, 30 May 2026 18:04:12 +0200
+Message-ID: <20260530160234.573070985@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +71,144 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-259052-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257674-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,glider.be,gmail.com,kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,glider.be:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sang-engineering.com:email]
-X-Rspamd-Queue-Id: 2247160FBA4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,live.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 387BB6129EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-[ Upstream commit c1aad75595fb67edc7fda8af249d3b886efa1be9 ]
+[ Upstream commit 70b672833f4025341c11b22c7f83778a5cd611bc ]
 
-Fail gracefully if there is no channel array attached to the mailbox
-controller. Otherwise the later dereference will cause an OOPS which
-might not be seen because mailbox controllers might instantiate very
-early. Remove the comment explaining the obvious while here.
+[BUG]
+OCFS2_IOC_GROUP_ADD can trigger a BUG_ON in
+ocfs2_set_new_buffer_uptodate():
 
-Fixes: 2b6d83e2b8b7 ("mailbox: Introduce framework for mailbox")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+kernel BUG at fs/ocfs2/uptodate.c:509!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+RIP: 0010:ocfs2_set_new_buffer_uptodate+0x194/0x1e0 fs/ocfs2/uptodate.c:509
+Code: ffffe88f 42b9fe4c 89e64889 dfe8b4df
+Call Trace:
+ ocfs2_group_add+0x3f1/0x1510 fs/ocfs2/resize.c:507
+ ocfs2_ioctl+0x309/0x6e0 fs/ocfs2/ioctl.c:887
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
+ x64_sys_call+0x1144/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:17
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7bbfb55a966d
+
+[CAUSE]
+ocfs2_group_add() calls ocfs2_set_new_buffer_uptodate() on a
+user-controlled group block before ocfs2_verify_group_and_input()
+validates that block number. That helper is only valid for newly
+allocated metadata and asserts that the block is not already present in
+the chosen metadata cache. The code also uses INODE_CACHE(inode) even
+though the group descriptor belongs to main_bm_inode and later journal
+accesses use that cache context instead.
+
+[FIX]
+Validate the on-disk group descriptor before caching it, then add it to
+the metadata cache tracked by INODE_CACHE(main_bm_inode). Keep the
+validation failure path separate from the later cleanup path so we only
+remove the buffer from that cache after it has actually been inserted.
+This keeps the group buffer lifetime consistent across validation,
+journaling, and cleanup.
+
+Link: https://lkml.kernel.org/r/20260410020209.3786348-1-gality369@gmail.com
+Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/ocfs2/resize.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index ac8c162b689b2..c5b9d24efb69c 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -524,8 +524,7 @@ int mbox_controller_register(struct mbox_controller *mbox)
- {
- 	int i, txdone;
+diff --git a/fs/ocfs2/resize.c b/fs/ocfs2/resize.c
+index 3d85d0b52034b..763aff7e2d5a4 100644
+--- a/fs/ocfs2/resize.c
++++ b/fs/ocfs2/resize.c
+@@ -502,14 +502,14 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
+ 		goto out_unlock;
+ 	}
  
--	/* Sanity check */
--	if (!mbox || !mbox->dev || !mbox->ops || !mbox->num_chans)
-+	if (!mbox || !mbox->dev || !mbox->ops || !mbox->chans || !mbox->num_chans)
- 		return -EINVAL;
+-	ocfs2_set_new_buffer_uptodate(INODE_CACHE(inode), group_bh);
+-
+ 	ret = ocfs2_verify_group_and_input(main_bm_inode, fe, input, group_bh);
+ 	if (ret) {
+ 		mlog_errno(ret);
+ 		goto out_free_group_bh;
+ 	}
  
- 	if (mbox->txdone_irq)
++	ocfs2_set_new_buffer_uptodate(INODE_CACHE(main_bm_inode), group_bh);
++
+ 	trace_ocfs2_group_add((unsigned long long)input->group,
+ 			       input->chain, input->clusters, input->frees);
+ 
+@@ -517,7 +517,7 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
+ 	if (IS_ERR(handle)) {
+ 		mlog_errno(PTR_ERR(handle));
+ 		ret = -EINVAL;
+-		goto out_free_group_bh;
++		goto out_remove_cache;
+ 	}
+ 
+ 	cl_bpc = le16_to_cpu(fe->id2.i_chain.cl_bpc);
+@@ -571,9 +571,11 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
+ out_commit:
+ 	ocfs2_commit_trans(osb, handle);
+ 
+-out_free_group_bh:
++out_remove_cache:
+ 	if (ret < 0)
+-		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
++		ocfs2_remove_from_cache(INODE_CACHE(main_bm_inode), group_bh);
++
++out_free_group_bh:
+ 	brelse(group_bh);
+ 
+ out_unlock:
 -- 
 2.53.0
 
