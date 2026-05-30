@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-258858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOc+IyAvG2paAAkAu9opvQ
-	(envelope-from <stable+bounces-258858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:32 +0200
+	id gDcyJWUkG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D6B61238B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B65610A25
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED9873185252
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 145BB300D4E1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F713A6EF0;
-	Sat, 30 May 2026 18:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C21A342CA7;
+	Sat, 30 May 2026 17:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mc1GA+ne"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+ItWhCO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7615279DC9;
-	Sat, 30 May 2026 18:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB33320CAD;
+	Sat, 30 May 2026 17:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165776; cv=none; b=D35F71daPpmSHtF6vWS8ElhkoULkZmMCnvoDY5+w9+evju1dwI9lYi7dHYI8cg60Pc2j566zTOZLj3ov6lkNe4wqSmbG6AxhkfnYRLennXG8MgoZYsLd7vusqRQUWHGXx+upj41qb6kn93LX6VtMW5z9ywHSAaT8medtKmlZ7C0=
+	t=1780163606; cv=none; b=tFbJqxNWZg0esZcEDhvjLkHeTUiftAz9mVxNeDDqRMlCe5naMLUx6lR7KvfXnv4ZdEBSL5IMvs2wsStZ/b9lA//G8dgf6ebgzFJ68rAAp8GVyF0IqLebncAFswECBYbo0GY8rHMzFgf+QjbkeKiJmKWmgt9H9Ad22iO5bv71YqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165776; c=relaxed/simple;
-	bh=ESPVgnmnoZPhaXOUooNnC6pO2liQsIfsJF4OZdwtCDU=;
+	s=arc-20240116; t=1780163606; c=relaxed/simple;
+	bh=LOB5TplWHFUBFzgcHx3yN8EBbQIJ8q45TVCAkWZIH6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fI6ZLPa/etWypOpgAmtWo0czb2oIORe001gv4GN4M/imCg9Exu4FCmEKhTrMNdE6lOayoPzPhyO/IjOfsuRjldDbgBEDnD8hQDSKkvDy7AkDgtA0kbnb02/hcwO2Kbi7zXbhjBmx+OEy6TGsUctcHt+m2Xc+7A/nbzkeJHiZafk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mc1GA+ne; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274851F00893;
-	Sat, 30 May 2026 18:29:34 +0000 (UTC)
+	 MIME-Version; b=CyojaK+TV5umhuphI9iKYcLp3POKtxvemXi9vj525u/MP5g2fi7Dnq2FiId4Q01YWv1+9oY0+1w5y8/uMZ8cgbQ3On8h/wmpdKeCILlcle+CxEutkFayrVKg7bUqdHTUIxx0pZcu2JfwANwGXMVhf0DGG3t7wx82CDRlxlCBM38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+ItWhCO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8CE1F00893;
+	Sat, 30 May 2026 17:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165775;
-	bh=0DpCrlK++1FTxteZziFpk7bvQfhV6Etn58W8ulBEK8E=;
+	s=korg; t=1780163605;
+	bh=E98nFmX7fzG02Wn5PszC4mcBl/cBCbiCDwrLUPttlMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mc1GA+neKjrLz/MtWfUM98LRRFLqFv9bP7IKXAKHki3LVKMXuz4Y4LzhL3PMm97x1
-	 6tXl9H8XfwYIpDQd6WuheXhzXRCxEPilIXWYeTOHcvmaxgJZUKQkrI3NWb1oz9ZDq+
-	 OQ1ws0h7WZYvwYjVuEy7Cpm/Kjh9M8C7p//SjlT8=
+	b=Z+ItWhCOHQHuZN1DVQTtlS6QpzHgR8/venDVl4b5DE8x7mLdMzr1uHHJNp5oSSq3i
+	 57XuaM4DMQnmgR2hE4jPvHNV7QuBWJC4X+Y7dXrGcibmQ9bgXl74w2wFF91TIqRENj
+	 VEpupa1jIifhBk4r8XVPGGTPGqgq9xiMOd6+aFlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Tyllis Xu <LivelyCarpet87@gmail.com>
-Subject: [PATCH 5.10 142/589] ibmasm: fix OOB reads in command_file_write due to missing size checks
+	Kai Zen <kai.aizen.dev@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 309/776] net: rtnetlink: zero ifla_vf_broadcast to avoid stack infoleak in rtnl_fill_vfinfo
 Date: Sat, 30 May 2026 18:00:23 +0200
-Message-ID: <20260530160228.510853743@linuxfoundation.org>
+Message-ID: <20260530160248.552465153@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258858-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258217-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E7D6B61238B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B2B65610A25
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tyllis Xu <livelycarpet87@gmail.com>
+From: Kai Zen <kai.aizen.dev@gmail.com>
 
-commit 0eb09f737428e482a32a2e31e5e223f2b35a71d3 upstream.
+commit 4b9e327991815e128ad3af75c3a04630a63ce3e0 upstream.
 
-The command_file_write() handler allocates a kernel buffer of exactly
-count bytes and copies user data into it, but does not validate the
-buffer against the dot command protocol before passing it to
-get_dot_command_size() and get_dot_command_timeout().
+rtnl_fill_vfinfo() declares struct ifla_vf_broadcast on the stack
+without initialisation:
 
-Since both the allocation size (count) and the header fields (command_size,
-data_size) are independently user-controlled, an attacker can cause
-get_dot_command_size() to return a value exceeding the allocation,
-triggering OOB reads in get_dot_command_timeout() and an out-of-bounds
-memcpy_toio() that leaks kernel heap memory to the service processor.
+	struct ifla_vf_broadcast vf_broadcast;
 
-Fix with two guards: reject writes smaller than sizeof(struct
-dot_command_header) before allocation, then after copying user data
-reject commands where the buffer is smaller than the total size declared
-by the header (sizeof(header) + command_size + data_size). This ensures
-all subsequent header and payload field accesses stay within the buffer.
+The struct contains a single fixed 32-byte field:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+	/* include/uapi/linux/if_link.h */
+	struct ifla_vf_broadcast {
+		__u8 broadcast[32];
+	};
+
+The function then copies dev->broadcast into it using dev->addr_len
+as the length:
+
+	memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
+
+On Ethernet devices (the overwhelming majority of SR-IOV NICs)
+dev->addr_len is 6, so only the first 6 bytes of broadcast[] are
+written. The remaining 26 bytes retain whatever was previously on
+the kernel stack. The full struct is then handed to userspace via:
+
+	nla_put(skb, IFLA_VF_BROADCAST,
+		sizeof(vf_broadcast), &vf_broadcast)
+
+leaking up to 26 bytes of uninitialised kernel stack per VF per
+RTM_GETLINK request, repeatable.
+
+The other vf_* structs in the same function are explicitly zeroed
+for exactly this reason - see the memset() calls for ivi,
+vf_vlan_info, node_guid and port_guid a few lines above.
+vf_broadcast was simply missed when it was added.
+
+Reachability: any unprivileged local process can open AF_NETLINK /
+NETLINK_ROUTE without capabilities and send RTM_GETLINK with an
+IFLA_EXT_MASK attribute carrying RTEXT_FILTER_VF. The kernel walks
+each VF and emits IFLA_VF_BROADCAST, leaking 26 bytes of stack per
+VF per request. Stack residue at this call site can include return
+addresses and transient sensitive data; KASAN with stack
+instrumentation, or KMSAN, will flag the nla_put() when reproduced.
+
+Zero the on-stack struct before the partial memcpy, matching the
+existing pattern used for the other vf_* structs in the same
+function.
+
+Fixes: 75345f888f70 ("ipoib: show VF broadcast address")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
-Link: https://patch.msgid.link/20260314165355.548119-1-LivelyCarpet87@gmail.com
+Signed-off-by: Kai Zen <kai.aizen.dev@gmail.com>
+Link: https://patch.msgid.link/3c506e8f936e52b57620269b55c348af05d413a2.1777557228.git.kai.aizen.dev@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/ibmasm/ibmasmfs.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ net/core/rtnetlink.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/misc/ibmasm/ibmasmfs.c
-+++ b/drivers/misc/ibmasm/ibmasmfs.c
-@@ -303,6 +303,8 @@ static ssize_t command_file_write(struct
- 		return -EINVAL;
- 	if (count == 0 || count > IBMASM_CMD_MAX_BUFFER_SIZE)
- 		return 0;
-+	if (count < sizeof(struct dot_command_header))
-+		return -EINVAL;
- 	if (*offset != 0)
- 		return 0;
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -1309,6 +1309,7 @@ static noinline_for_stack int rtnl_fill_
+ 		port_guid.vf = ivi.vf;
  
-@@ -319,6 +321,11 @@ static ssize_t command_file_write(struct
- 		return -EFAULT;
- 	}
- 
-+	if (count < get_dot_command_size(cmd->buffer)) {
-+		command_put(cmd);
-+		return -EINVAL;
-+	}
-+
- 	spin_lock_irqsave(&command_data->sp->lock, flags);
- 	if (command_data->command) {
- 		spin_unlock_irqrestore(&command_data->sp->lock, flags);
+ 	memcpy(vf_mac.mac, ivi.mac, sizeof(ivi.mac));
++	memset(&vf_broadcast, 0, sizeof(vf_broadcast));
+ 	memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
+ 	vf_vlan.vlan = ivi.vlan;
+ 	vf_vlan.qos = ivi.qos;
 
 
 
