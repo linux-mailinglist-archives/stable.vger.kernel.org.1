@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-257782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259192-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOt2LGIfG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:22 +0200
+	id AEvYDgcxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259192-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFCB60FE85
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F656128A1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A0FB3306B756
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:29:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4AFE0301DCC1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0040334695;
-	Sat, 30 May 2026 17:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61428233943;
+	Sat, 30 May 2026 18:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z90uvxHX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/2jhBK7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0CE30148B;
-	Sat, 30 May 2026 17:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A311D63E4;
+	Sat, 30 May 2026 18:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162153; cv=none; b=WaPWWmgoQjM6UDPrB1zlTC15o849dKVYl5V2ZkRZKk0Od2e9VrnRO37O2WhcAprZ/EWQ0MIcOg0PJDrBeuP3Sg0+rLGQQ05QIe2Cj5GXxnSoCTUIWic3xHeMdEf0E6e4tVAne7MOUr4FvNq/k8tD2fI49DPUvs739z2aB2FmCS4=
+	t=1780166915; cv=none; b=iN/7zqgDDFmrCGfnj73/auPTKp0/IHg42jQ0sQr1qkKtt3nwn0GXJ0plciTeQrrJXB7sRRsDbTE6/Bgl6ghrqu3FDscayJqapEnoCaNrHZtAzYsoRSFtB1Aj/sKbsN5w6HzWAR32fWrRPVWDYkdb4S2gk5+YGtMuX/oFEKfNT7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162153; c=relaxed/simple;
-	bh=xM3UllfaRtTVwYT32qm4c4wviENWL8yyqSNspgqOVm8=;
+	s=arc-20240116; t=1780166915; c=relaxed/simple;
+	bh=xK8rNTCJlo175EeORuWcS2D2Xid8DsbxnOUidk9knGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pw1Pdd2CCqAR043tjyD/OujfwLwoQYdC0qDjSC4aZtaBvJJOwUD4MscrslOjOhB/Zjuqm+t3+KNoMKZPgFWMzuUERQKaZ3RuWLbVcuu1IUfuB7nx/vAsVZcWXXLoZVNafSCpUFDy6ZsSTPVVmKnteZylPJ/M3FboIpMhl1TEL4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z90uvxHX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED9F1F00893;
-	Sat, 30 May 2026 17:29:11 +0000 (UTC)
+	 MIME-Version; b=f9WLpxlshOrMwofhpVyeAsZSHlTAuStiESjoH6tI8AAML8XhmAGX7+5ixJuJFj28L3uf3jcIsnbobJCAqu9f0iBdBuLyCbMsrhhZXH6XiPlGM6r9e2FP/G8j+4/IXzbjkCQT5EiAW9iwrZGfFoCwkE2ZIVrNx/xLKnFKbZpm0/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/2jhBK7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BABC1F00893;
+	Sat, 30 May 2026 18:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162152;
-	bh=hb+2m8Cz5CV2FYGX0O/KX1DVgJ3r/tbn5o68r+BTFR4=;
+	s=korg; t=1780166914;
+	bh=GNJ4VnU0Be/NzEEOxYxsX+e+kqSIDbZOV0AvPyr3d28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z90uvxHXweUx9fRBM9C9/hj7gi7LxBDukrz9LLduzRjekqDr9S6jTayqkVJ69OmI/
-	 PtjR6Cv27Y+QE/N2MJI+I2xFvN2N+lIg6kUZLX03xcvnMZZDBjdzSRNfyp1t5O0lKL
-	 aIxsSvG1fooJsCxoEtWmtgY4OaYtdtHSj93AELn4=
+	b=u/2jhBK7qSoKgtDZEVW9ZNh0l1Io8y9Oz9Lsed8wyKo/lBKXKoFMhtirbBnFX/uxj
+	 uhkfxmf8mpSF16i/FsJhOZzdJb7k1oQMss7Ah1ZrO4QLyNYR15CwOAVyeak56VW3IM
+	 5fNSjHhp9/MoQ8yB7KTjnGQQXFrm6/7m+/tOYAks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 837/969] smb: client: reject userspace cifs.spnego descriptions
+	Haoze Xie <royenheart@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 480/589] vrf: Fix a potential NPD when removing a port from a VRF
 Date: Sat, 30 May 2026 18:06:01 +0200
-Message-ID: <20260530160323.762877675@linuxfoundation.org>
+Message-ID: <20260530160237.257347956@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,98 +73,148 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-259192-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257782-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4CFCB60FE85
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email]
+X-Rspamd-Queue-Id: 00F656128A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asim Viladi Oglu Manizada <manizada@pm.me>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 3da1fdf4efbc490041eb4f836bf596201203f8f2 upstream.
+[ Upstream commit 2674d603a9e6970463b2b9ebcf8e31e90beae169 ]
 
-cifs.spnego key descriptions contain authority-bearing fields such as
-pid, uid, creduid, and upcall_target that cifs.upcall treats as
-kernel-originating inputs. However, userspace can also create keys of
-this type through request_key(2) or add_key(2), allowing those fields to
-be supplied without CIFS origin.
+RCU readers that identified a net device as a VRF port using
+netif_is_l3_slave() assume that a subsequent call to
+netdev_master_upper_dev_get_rcu() will return a VRF device. They then
+continue to dereference its l3mdev operations.
 
-Only accept cifs.spnego descriptions while CIFS is using its private
-spnego_cred to request the key.
+This assumption is not always correct and can result in a NPD [1]. There
+is no RCU synchronization when removing a port from a VRF, so it is
+possible for an RCU reader to see a new master device (e.g., a bridge)
+that does not have l3mdev operations.
 
-Fixes: f1d662a7d5e5 ("[CIFS] Add upcall files for cifs to use spnego/kerberos")
-Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by adding RCU synchronization after clearing the IFF_L3MDEV_SLAVE
+flag. Skip this synchronization when a net device is removed from a VRF
+as part of its deletion and when the VRF device itself is deleted. In
+the latter case an RCU grace period will pass by the time RTNL is
+released.
+
+[1]
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+[...]
+RIP: 0010:l3mdev_fib_table_rcu (net/l3mdev/l3mdev.c:181)
+[...]
+Call Trace:
+<TASK>
+l3mdev_fib_table_by_index (net/l3mdev/l3mdev.c:201 net/l3mdev/l3mdev.c:189)
+__inet_bind (net/ipv4/af_inet.c:499 (discriminator 3))
+inet_bind_sk (net/ipv4/af_inet.c:469)
+__sys_bind (./include/linux/file.h:62 (discriminator 1) ./include/linux/file.h:83 (discriminator 1) net/socket.c:1951 (discriminator 1))
+__x64_sys_bind (net/socket.c:1969 (discriminator 1) net/socket.c:1967 (discriminator 1) net/socket.c:1967 (discriminator 1))
+do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+Fixes: fdeea7be88b1 ("net: vrf: Set slave's private flag before linking")
+Reported-by: Haoze Xie <royenheart@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Closes: https://lore.kernel.org/netdev/20260419145332.3988923-1-n05ec@lzu.edu.cn/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260423063607.1208202-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifs_spnego.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/net/vrf.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/fs/smb/client/cifs_spnego.c
-+++ b/fs/smb/client/cifs_spnego.c
-@@ -8,6 +8,7 @@
-  */
+diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+index b43e8041fda34..d1a2b3dcd00c9 100644
+--- a/drivers/net/vrf.c
++++ b/drivers/net/vrf.c
+@@ -1143,6 +1143,7 @@ static int do_vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
  
- #include <linux/list.h>
-+#include <linux/cred.h>
- #include <linux/slab.h>
- #include <linux/string.h>
- #include <keys/user-type.h>
-@@ -46,12 +47,27 @@ cifs_spnego_key_destroy(struct key *key)
- 	kfree(key->payload.data[0]);
+ err:
+ 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
++	synchronize_net();
+ 	return ret;
  }
  
-+static int
-+cifs_spnego_key_vet_description(const char *description)
-+{
-+	/*
-+	 * cifs.spnego descriptions are authority-bearing inputs to cifs.upcall.
-+	 * They are only valid when produced by CIFS while using the private
-+	 * spnego_cred installed below.  Do not let userspace create this type
-+	 * of key through request_key(2)/add_key(2), since the helper treats
-+	 * pid/uid/creduid/upcall_target as kernel-originating fields.
-+	 */
-+	if (current_cred() != spnego_cred)
-+		return -EPERM;
-+	return 0;
-+}
+@@ -1162,10 +1163,16 @@ static int vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
+ }
  
- /*
-  * keytype for CIFS spnego keys
-  */
- struct key_type cifs_spnego_key_type = {
- 	.name		= "cifs.spnego",
-+	.vet_description = cifs_spnego_key_vet_description,
- 	.instantiate	= cifs_spnego_key_instantiate,
- 	.destroy	= cifs_spnego_key_destroy,
- 	.describe	= user_describe,
+ /* inverse of do_vrf_add_slave */
+-static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
++static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev,
++			    bool needs_sync)
+ {
+ 	netdev_upper_dev_unlink(port_dev, dev);
+ 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
++	/* Make sure that concurrent RCU readers that identified the device
++	 * as a VRF port see a VRF master or no master at all.
++	 */
++	if (needs_sync)
++		synchronize_net();
+ 
+ 	cycle_netdev(port_dev, NULL);
+ 
+@@ -1174,7 +1181,7 @@ static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
+ 
+ static int vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
+ {
+-	return do_vrf_del_slave(dev, port_dev);
++	return do_vrf_del_slave(dev, port_dev, true);
+ }
+ 
+ static void vrf_dev_uninit(struct net_device *dev)
+@@ -1666,7 +1673,7 @@ static void vrf_dellink(struct net_device *dev, struct list_head *head)
+ 	struct list_head *iter;
+ 
+ 	netdev_for_each_lower_dev(dev, port_dev, iter)
+-		vrf_del_slave(dev, port_dev);
++		do_vrf_del_slave(dev, port_dev, false);
+ 
+ 	vrf_map_unregister_dev(dev);
+ 
+@@ -1797,7 +1804,7 @@ static int vrf_device_event(struct notifier_block *unused,
+ 			goto out;
+ 
+ 		vrf_dev = netdev_master_upper_dev_get(dev);
+-		vrf_del_slave(vrf_dev, dev);
++		do_vrf_del_slave(vrf_dev, dev, false);
+ 	}
+ out:
+ 	return NOTIFY_DONE;
+-- 
+2.53.0
+
 
 
 
