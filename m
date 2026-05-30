@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-258128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257382-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KCiF+AkG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258128-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:48 +0200
+	id CHc8MD8aG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257382-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9513610AFD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E16260F126
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60430302DA08
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:48:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C83C530680B8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F383546EA;
-	Sat, 30 May 2026 17:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A51535200B;
+	Sat, 30 May 2026 17:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ha80hOTF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EswgRxr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6E7342CA7;
-	Sat, 30 May 2026 17:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BDD481DD;
+	Sat, 30 May 2026 17:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163310; cv=none; b=pUIfzDJZENIlbTWxUn7e4obHehCvxwiuXoEpDMq4LKxOnVq7SsMO3exsp2rMpZAtizTnrydYQFtjRa3ggtJzfcmnrbIGpGZ5EXXM3v1peAb/R/zu718bgUO56RIboHzXNXLRu+qthC2u7CRobSRYXfXMjiQu9U877rY2OAwC9Ms=
+	t=1780160805; cv=none; b=cGH5RRUo4y4/9mBLCvjSKYHUZ/2D5fhc8hn/L+EA+v0QOftifMgZ9z74h6k1W30SuTY3cmrSJ7W/MYGg6AqFylD/B6oB6PDImutk0YbFrxHRoioCaDAXX6Ls/ASKukTq0snrbgiJ2DNf2AjSjpV7HBWxzk6mgZF8hJRrUBdiugI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163310; c=relaxed/simple;
-	bh=GaEMNNZFJVkYl2q1g+qSZSWqauBqqwk37/xgrgi+r70=;
+	s=arc-20240116; t=1780160805; c=relaxed/simple;
+	bh=0+mK1fSbvDglIYNrK55rLXE/dd/R2fN0Eh/Z2+Ocku4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1WFMeeFxVVu/mnX5SXpsS3zVhmOmtK21VYBkcZKGNzwWrDxeRQ/Um4MkpwLPICs1WEL6m0JSEjvRr0IrAAJnnLuS953QdqfjkUaZFPyOuSdqeqSqoayiI3rlOl/ufgQLzJDXMoxTL4OXLgfTxDNmf+ZGtXI2b/nPOExbaP9v6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ha80hOTF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5501F00893;
-	Sat, 30 May 2026 17:48:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C+pTi3EA+6Gfc2Rw8kJWRqE6YYmWDsncC8BAIkpEKsvrK8ySqcHyV9+TMU8ArJ4uW4OlgSSY3SlqVt/NevspIWYwIiadIDNff+u4q+oTpAtAdv1n14H664OC+RylSSPmfP+WQ/HaG++PEBLfZquO6ZoGxojm2TvHImTrdITt08M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EswgRxr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393BF1F00893;
+	Sat, 30 May 2026 17:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163309;
-	bh=mzrIL+8tkfVbBn/qKXkXJpb6mHzvOiffq/G6mf3acac=;
+	s=korg; t=1780160803;
+	bh=r7Km+oDBdGzxGX1TpQH+rPoMpWV/XtWx1bI8Cus9pfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ha80hOTFZ91A+yQYa4U108Qv8Tcv1kZDpcQ+mFLxTEh54K5vwXKSrEKnPUqe7i3in
-	 JbQnNhYd+aEW180Lo3Y45o/RxFHGkAnFpXwZGFMiB5qNG07YaO/Uc8OWKYLzt9MHJg
-	 yEuzDipHj2uffC/knEwW9pmNsdCiGXRpVUu9AZxQ=
+	b=1EswgRxrJiM8cYoNEgmuFSOzut6rrAIG3zYcXSfpHVYQnb3TEFCmx3pOal0MkH/gl
+	 aGCFBi0h4Y7YKr4YIEB1rzFpkxgBiEcdM+g1uAwDfx28qAfKE3qtenfo8vJWtwXFNl
+	 lgLjmrdHXL7qzKdpFmiXcv8azcSC+XBDZC2U47/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ao Zhou <draw51280@163.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 219/776] net: rds: fix MR cleanup on copy error
-Date: Sat, 30 May 2026 17:58:53 +0200
-Message-ID: <20260530160246.180498437@linuxfoundation.org>
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 410/969] drm/amdgpu: zero-initialize GART table on allocation
+Date: Sat, 30 May 2026 17:58:54 +0200
+Message-ID: <20260530160311.604199030@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,85 +64,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258128-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,163.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257382-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B9513610AFD
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 3E16260F126
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ao Zhou <draw51280@163.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-commit 8141a2dc70080eda1aedc0389ed2db2b292af5bd upstream.
+commit e6c2e6c2e1fa066968a16aca1cb66cd1bdde7741 upstream.
 
-__rds_rdma_map() hands sg/pages ownership to the transport after
-get_mr() succeeds. If copying the generated cookie back to user space
-fails after that point, the error path must not free those resources
-again before dropping the MR reference.
+GART TLB is flushed after unmapping but not after mapping. Since
+amdgpu_bo_create_kernel() does not zero-initialize the buffer, when a
+single PTE is written the TLB may speculatively load other uninitialized
+entries from the same cacheline. Those garbage entries can appear valid,
+and a subsequent write to another PTE in the same cacheline may cause the
+GPU to use a stale garbage PTE from the TLB.
 
-Remove the duplicate unpin/free from the put_user() failure branch so
-that MR teardown is handled only through the existing final cleanup
-path.
+Fix this by calling memset_io() to zero-initialize the GART table with
+gart_pte_flags immediately after allocation.
 
-Fixes: 0d4597c8c5ab ("net/rds: Track user mapped pages through special API")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ao Zhou <draw51280@163.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/79c8ef73ec8e5844d71038983940cc2943099baf.1776764247.git.draw51280@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Using AMDGPU_GEM_CREATE_VRAM_CLEARED, SDMA-based clear will not work
+since SDMA needs GART to be initialized to work.
+
+Suggested-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d9af8263b82b6eaa60c5718e0c6631c5037e4b24)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/rdma.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/net/rds/rdma.c
-+++ b/net/rds/rdma.c
-@@ -326,10 +326,6 @@ static int __rds_rdma_map(struct rds_soc
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
+@@ -114,12 +114,19 @@ void amdgpu_gart_dummy_page_fini(struct
+  */
+ int amdgpu_gart_table_vram_alloc(struct amdgpu_device *adev)
+ {
++	int r;
++
+ 	if (adev->gart.bo != NULL)
+ 		return 0;
  
- 	if (args->cookie_addr &&
- 	    put_user(cookie, (u64 __user *)(unsigned long)args->cookie_addr)) {
--		if (!need_odp) {
--			unpin_user_pages(pages, nr_pages);
--			kfree(sg);
--		}
- 		ret = -EFAULT;
- 		goto out;
- 	}
+-	return amdgpu_bo_create_kernel(adev,  adev->gart.table_size, PAGE_SIZE,
+-				       AMDGPU_GEM_DOMAIN_VRAM, &adev->gart.bo,
+-				       NULL, (void *)&adev->gart.ptr);
++	r = amdgpu_bo_create_kernel(adev,  adev->gart.table_size, PAGE_SIZE,
++				    AMDGPU_GEM_DOMAIN_VRAM, &adev->gart.bo,
++				    NULL, (void *)&adev->gart.ptr);
++	if (r)
++		return r;
++
++	memset_io(adev->gart.ptr, adev->gart.gart_pte_flags, adev->gart.table_size);
++	return 0;
+ }
+ 
+ /**
 
 
 
