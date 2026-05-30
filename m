@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257952-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yAZ9HecYG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257213-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:43 +0200
+	id AMDxEVchG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257952-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:41:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D181860EE03
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E686102D3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:41:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76D8430B4507
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5E404301C6A3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841D334BA42;
-	Sat, 30 May 2026 16:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3D539478D;
+	Sat, 30 May 2026 17:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INJNH/py"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvgTcKw9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DDE32BF24;
-	Sat, 30 May 2026 16:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19C8349CCF;
+	Sat, 30 May 2026 17:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160205; cv=none; b=XMAOFHtgVvLlROPpJiDfUlDmM9tJfKvFYKPUmmQrfEw9KngZ6hGelhF0mRzhgldvDmEvoIKCfvSwJX+RvixFWo92Fz+SRDUXDTkfxI4+Aj9EmKAZcpIpgRD0sGzClz/kzcJG1sLMGXf7Smxu+lbgFyxA5CyeNW1BUbdBSIVieh0=
+	t=1780162728; cv=none; b=jFmtU6sfx8rFjLIguVU3NaqUN/jVBkVRxj9YwXh4ECXNHgfZDqesp+w+TBJJjn5o1ihi/dyZ5eKrxZNBOPF/IzJQ+GJ6Md3BZ7leFiqIT2ctMUwBG5vR8o53AszPp2iZsGiz/aIEoD8BI1elxI8BhAfwJKTmUxh1yp0O5IuUCdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160205; c=relaxed/simple;
-	bh=8liFkPs7MHsQxOeOSs6e/8zLlZCJ5kkgCUrv3rhuGP8=;
+	s=arc-20240116; t=1780162728; c=relaxed/simple;
+	bh=2mUclnkMKgMMcmmE6wa+fIVyyyo6RjL0HHSykrRb10g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YUqM7rFUKalAQCokcM0eXSkp6wqdZ0JBs1xmKpiooqyXntjNaK1GxW+fNqjWnAHQJ8sRkSfnzGM4OQox8k4lRriQcgEoCSGfcYAX6e/QZHJ6/p8Gnzz5xvLswFanXVrsxgCBHRUxiKxmXnmpqDKwu1dXSu1oXyd3jK0ywuaL6XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INJNH/py; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DFE51F00893;
-	Sat, 30 May 2026 16:56:43 +0000 (UTC)
+	 MIME-Version; b=ZtPYmj1vDfz4xzO/ggJSth8gI/DIQhsO55XRG849t4lDKGSkSb+QapCCqwItjf4oiN8YlbtyxviNoMRAKCS/ITAM7bqeHhXLwjF3mgbdDxV/unQ1egVa37457Ei3rGuK3IlIgiVK/HiI1L2cCzSSttD0g3oEl94M5ubFSUpgTng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvgTcKw9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44F31F00893;
+	Sat, 30 May 2026 17:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160204;
-	bh=dncTRQhfdAEja++bXuEaXkmWnB1eXEGqEGU3Blk2c9o=;
+	s=korg; t=1780162727;
+	bh=MG2iaVgRQTktagaBKex1ziKo+JHebej1pRLAhzvrbbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=INJNH/pyWte5Qz/XEAA48jgKNk5JZXLsDLLRxXc7jmOH5oQ2c9zRNTyFkyAMYKntv
-	 STm27/3Z/yJa2jyIWnOFuHUnulmWzHk3fzYjLe/1s8EVvethchNvrWkJmBE5M4naj1
-	 JsBcSsiEY9ACEEJxoxSTi7emdhcv48Ty7XKxq/TA=
+	b=KvgTcKw9L3ZqHZuYAFb9h3j76FB9uenr58u3n8cMEXVBXh9niilUk7uSgXckiMalg
+	 zPhW5XE5aWALax51XXKJpmP236cAo2yk7ghVbQRe+b2ZWyJ+7OabsfdEbAupI4BvbD
+	 OlqhbkSSWimt6J5XNofT6oiS9SJNymANHG+oI40E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 236/969] KVM: SVM: Explicitly mark vmcb01 dirty after modifying VMCB intercepts
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 046/776] MIPS: mm: Suppress TLB uniquification on EHINV hardware
 Date: Sat, 30 May 2026 17:56:00 +0200
-Message-ID: <20260530160306.978131429@linuxfoundation.org>
+Message-ID: <20260530160241.496131940@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +66,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257213-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257952-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D181860EE03
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 44E686102D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit d5bde6113aed8315a2bfe708730b721be9c2f48b upstream.
+commit 74283cfe216392c7b776ebf6045b5b15ed9dffcd upstream.
 
-When reacting to an intercept update, explicitly mark vmcb01's intercepts
-dirty, as KVM always initially operates on vmcb01, and nested_svm_vmexit()
-isn't guaranteed to mark VMCB_INTERCEPTS as dirty.  I.e. if L2 is active,
-KVM will modify the intercepts for L1, but might not mark them as dirty
-before the next VMRUN of L1.
+Hardware that supports the EHINV feature, mandatory for R6 ISA and FTLB
+implementation, lets software mark TLB entries invalid, which eliminates
+the need to ensure no duplicate matching entries are ever created.  This
+feature is already used by local_flush_tlb_all(), via the UNIQUE_ENTRYHI
+macro, making the preceding call to r4k_tlb_uniquify() superfluous.
 
-Fixes: 116a0a23676e ("KVM: SVM: Add clean-bit for intercetps, tsc-offset and pause filter count")
-Cc: stable@vger.kernel.org
-Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20260218230958.2877682-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The next change will also modify uniquification code such that it'll
+become incompatible with the FTLB and MMID features, as well as MIPSr6
+CPUs that do not implement 4KiB pages.
+
+Therefore prevent r4k_tlb_uniquify() from being used on EHINV hardware,
+as denoted by `cpu_has_tlbinv'.
+
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/mips/mm/tlb-r4k.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -128,11 +128,13 @@ void recalc_intercepts(struct vcpu_svm *
- 	struct vmcb_ctrl_area_cached *g;
- 	unsigned int i;
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index f782214d23d3b..ae7436b860b58 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -630,7 +630,8 @@ static void r4k_tlb_configure(void)
+ 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
  
--	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
-+	vmcb_mark_dirty(svm->vmcb01.ptr, VMCB_INTERCEPTS);
+ 	/* From this point on the ARC firmware is dead.	 */
+-	r4k_tlb_uniquify();
++	if (!cpu_has_tlbinv)
++		r4k_tlb_uniquify();
+ 	local_flush_tlb_all();
  
- 	if (!is_guest_mode(&svm->vcpu))
- 		return;
- 
-+	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
-+
- 	c = &svm->vmcb->control;
- 	h = &svm->vmcb01.ptr->control;
- 	g = &svm->nested.ctl;
+ 	/* Did I tell you that ARC SUCKS?  */
+-- 
+2.53.0
+
 
 
 
