@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-258283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257551-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHsvFOkmG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258283-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:29 +0200
+	id gHJQDdwbG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257551-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1EBA610F45
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B9460F58E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E855A312D96B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4616B3038B9F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25A534041A;
-	Sat, 30 May 2026 17:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ACC6263F44;
+	Sat, 30 May 2026 17:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkVs0X7E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2ppIrWy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C96C30E0DC;
-	Sat, 30 May 2026 17:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694F4350A05;
+	Sat, 30 May 2026 17:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163829; cv=none; b=m3ZEBkPtAxSTIdTHNqvkxI316dQFgq6Cw/CYTD3X4wq7Kwdwb5KNRu4OJOczOy/U3s17FWr64z1224Kt3b+huZ+AdX5Uvt5zf5e7kq0RzKv8DI9FSXiITTPoE5j+BFVJvqH2nXXBtinVZEKwt7sXJ/GXiGbVI7RyyxyMZCivXyk=
+	t=1780161375; cv=none; b=ZXwjbVTCRVsMBlb5GX6C3ceCZsa8I+7Ir/6w172PxlEC5rJAf5FP5Hty5pGxLHnW8qSW3WDRuDSjVj+Op7zp31/5pXhRAfUVFvgkySqTUKmQA0cx+90NpFg6STngRkweA0EY3Z7DPaV4J3e2qjZQ/Aek9LUt7dI0U5LijydSBDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163829; c=relaxed/simple;
-	bh=ry410egQFfymrlBgEUNLMeBUcce3TiB+gCOUd7vE7I8=;
+	s=arc-20240116; t=1780161375; c=relaxed/simple;
+	bh=5F1GJcDDMf1DDpe+EjyGhWm43LtippPszM+Jj+ocYXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rRxlQLFauJ5kOouD4Ld0yMwwt4TFcMuHB61iuy+Rys1KiV/VH7obTdL5UfbZJpXfbmYE9kUvQ3vFaXfrFS24BgFjCNqlIDHSEEG+1O3o9BjWzhjTVpUZsvW8p9okjFcDzCrqWxWP63CWs7u2JujPNvSLvo+UsuhOobQSDpfUl60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkVs0X7E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14E81F00893;
-	Sat, 30 May 2026 17:57:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CPL5XqU5C2lnON8tMckM1IiLSxnClYzJkAzJDS2izAb5Ndvzcz5AUvxAtnCegjGZkITLKohSykE89l5vbDTCuvZoc4Oh8YeprZlsZJ3cAAFNux3EONWHqYUdGuJlGYGkSmmnPNW7R+OL4Ir9eEUQYr0nNxGJtvkr2qDo3TisoeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2ppIrWy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBFA1F00893;
+	Sat, 30 May 2026 17:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163828;
-	bh=x9pwzOLq5j6VZbKWWB9W6KXwd81EWUTmzdztZHxb3a0=;
+	s=korg; t=1780161374;
+	bh=8qS1VrhKIwKQvcKk+0Mh4CIgZyQobi227iuJc1Viz0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wkVs0X7E9oydJvaaVmiHVgqWLmG5ClUGsp0uw14EdyuWRoJlcBhpWI/VLVA8N34mE
-	 BY3eDk4s5sOUYxgIXLONiV7ivfK3UpfeX03mxDuUHVuWVOtCqWSNxuavDgc+EYSWso
-	 xAi8s5IuNCcEbsbA0CPOT56oHcMNZOsRApHNcUoU=
+	b=S2ppIrWy+RQwIIEUoqN+GhBHbsmg2Nz9oup01nwyWr1xXV4OSKxnTSA84wcrYycbI
+	 ywznIa7CrGEf3TRIXM3PPALBVqawZWGxMMpabVpy088CNeF6N4nLQCbd+vzA35CigY
+	 SyTQ2KGk+rf/yxRDb1DVcNlr1W7ORqyErfZVJWPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxing Yin <tr0jan@lzu.edu.cn>,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.15 375/776] batman-adv: reject new tp_meter sessions during teardown
+	John Hawley <warthog9@eaglescrag.net>,
+	Andrea Righi <arighi@nvidia.com>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 565/969] ktest: Honor empty per-test option overrides
 Date: Sat, 30 May 2026 18:01:29 +0200
-Message-ID: <20260530160250.224091183@linuxfoundation.org>
+Message-ID: <20260530160315.994487480@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,115 +69,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258283-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-257551-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: A1EBA610F45
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: C9B9460F58E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-commit 3243543592425beec83d453793e9d27caa0d8e66 upstream.
+[ Upstream commit a2de57a3c8192dcd67cccaff6c341b93748d799b ]
 
-Prevent tp_meter from starting new sender or receiver sessions after
-mesh_state has left BATADV_MESH_ACTIVE.
+A per-test override can clear an inherited default option by assigning an
+empty value, but __set_test_option() still used option_defined() to decide
+whether a per-test key existed. That turned an empty per-test assignment
+back into "fall back to the default", so tests still could not clear
+inherited settings.
 
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For example:
+
+  DEFAULTS
+  (...)
+  LOG_FILE = /tmp/ktest-empty-override.log
+  CLEAR_LOG = 1
+  ADD_CONFIG = /tmp/.config
+
+  TEST_START
+  TEST_TYPE = build
+  BUILD_TYPE = nobuild
+  ADD_CONFIG =
+
+This would run the test with ADD_CONFIG[1] = /tmp/.config
+
+Fix by checking whether the per-test key exists before falling back. If it
+does exist but is empty, treat it as unset for that test and stop the
+fallback chain there.
+
+Cc: John Hawley <warthog9@eaglescrag.net>
+Cc: Andrea Righi <arighi@nvidia.com>
+Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Link: https://patch.msgid.link/20260307-ktest-fixes-v1-4-565d412f4925@suse.com
+Fixes: 22c37a9ac49d ("ktest: Allow tests to undefine default options")
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tp_meter.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ tools/testing/ktest/ktest.pl | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -947,6 +947,13 @@ void batadv_tp_start(struct batadv_priv
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index d752c4bd0d8b3..28eebfa32621d 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -4106,7 +4106,8 @@ sub __set_test_option {
  
- 	/* look for an already existing test towards this node */
- 	spin_lock_bh(&bat_priv->tp_list_lock);
-+	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE) {
-+		spin_unlock_bh(&bat_priv->tp_list_lock);
-+		batadv_tp_batctl_error_notify(BATADV_TP_REASON_DST_UNREACHABLE,
-+					      dst, bat_priv, session_cookie);
-+		return;
-+	}
-+
- 	tp_vars = batadv_tp_list_find(bat_priv, dst);
- 	if (tp_vars) {
- 		spin_unlock_bh(&bat_priv->tp_list_lock);
-@@ -1329,9 +1336,12 @@ static struct batadv_tp_vars *
- batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 		    const struct batadv_icmp_tp_packet *icmp)
- {
--	struct batadv_tp_vars *tp_vars;
-+	struct batadv_tp_vars *tp_vars = NULL;
+     my $option = "$name\[$i\]";
  
- 	spin_lock_bh(&bat_priv->tp_list_lock);
-+	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE)
-+		goto out_unlock;
-+
- 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
- 					      icmp->session);
- 	if (tp_vars)
-@@ -1464,6 +1474,9 @@ void batadv_tp_meter_recv(struct batadv_
- {
- 	struct batadv_icmp_tp_packet *icmp;
+-    if (option_defined($option)) {
++    if (exists($opt{$option})) {
++	return undef if (!option_defined($option));
+ 	return $opt{$option};
+     }
  
-+	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE)
-+		goto out;
-+
- 	icmp = (struct batadv_icmp_tp_packet *)skb->data;
- 
- 	switch (icmp->subtype) {
-@@ -1478,6 +1491,8 @@ void batadv_tp_meter_recv(struct batadv_
- 			   "Received unknown TP Metric packet type %u\n",
- 			   icmp->subtype);
+@@ -4114,7 +4115,8 @@ sub __set_test_option {
+ 	if ($i >= $test &&
+ 	    $i < $test + $repeat_tests{$test}) {
+ 	    $option = "$name\[$test\]";
+-	    if (option_defined($option)) {
++	    if (exists($opt{$option})) {
++		return undef if (!option_defined($option));
+ 		return $opt{$option};
+ 	    }
  	}
-+
-+out:
- 	consume_skb(skb);
- }
- 
+-- 
+2.53.0
+
 
 
 
