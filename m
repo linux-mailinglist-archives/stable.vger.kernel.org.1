@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-258092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257348-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFzvOckiG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:53 +0200
+	id IOjwLhcbG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257348-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B4761065C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31EE560F38F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8470F3011A56
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:46:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE27F309C659
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5D53546EA;
-	Sat, 30 May 2026 17:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342E635200B;
+	Sat, 30 May 2026 17:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9OGoOgF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RoQnNma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5554A32BF24;
-	Sat, 30 May 2026 17:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1662E2690D5;
+	Sat, 30 May 2026 17:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163193; cv=none; b=K+kcpdTdMjZoNoV5Qe09ZvR4vN2xRh2G7kYBsaYk3SdY1TFEmvEwV17zGanT6Up4UArja3NFWa2H86AzS9XocW3wz20fwI9U9IaT67mvAPitqOvwis4pG2pavvpQ69YY4cp/562rSCTmnTVAyzfvJsjP49gVvKEGPdUsPplbCVY=
+	t=1780160681; cv=none; b=gAGvJ6b2sAd/uUgJB94mYnTlhGWYbTYQonHqJgl7UFVNmGnwGlJF8gJBbqwmoGmlbbScIj+CHLimxDnQQJSPJyOhR0z2bU3+Avdp6iXPZLQGIQRRxG6YPOXq75zQvrcsOEDaqxnpsjkqLckkO2rSRRj+8FZ8WhpTBO2zRTdB4eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163193; c=relaxed/simple;
-	bh=kYHgJ3fSEhuv3voU21bCaXkiXiZA0MYN8J1fl+lSuRA=;
+	s=arc-20240116; t=1780160681; c=relaxed/simple;
+	bh=Dflnvh7IKZOh2wdeDJcgfmZwWBdUw5gO6df08lg0wKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RV6dpjhT1vmQTQQCg0kbtrSXm4S2Wbttf/Bc5qykHTugywIHmZfdNrXo0AZNXyWmlDhb8i1WcTCtzXY4MJmlRYuxdqzNhvbH5taiLkXonguuDXDtdlw2YFNIuyYat3cwKL3uSIhsszBkXQYCyFgapJCEApQXbA/DZP1l+dM5aHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9OGoOgF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCC51F00893;
-	Sat, 30 May 2026 17:46:31 +0000 (UTC)
+	 MIME-Version; b=TtFTFHIaKbrwdnrsbhWLmDw+X3TItHp3jVXoYJIePk9yoK0ve+aZPsHCF934K5jn1BqtBnl5y+rGsslGOpxPBOYC2M0wxiqjfrOPkeFsnfwM2QaiBGeCxCIzlIBKeQJXUDXcg265digO936Wqf87WodFW2fHpxJzAMAaleav+/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RoQnNma; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2FE1F00893;
+	Sat, 30 May 2026 17:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163192;
-	bh=BX3O1mFErEhRVNsDXPbJO/+twTt+MD+9+Yl7nqRTh8A=;
+	s=korg; t=1780160680;
+	bh=E107YxtzCEbfDAZIj/bRvi1NrpZhpO4/BTkbP/b2TUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D9OGoOgFOJZHGIgv4QNNgpoSxDKZ6V5L71il5sZwr4s/lC1yaAjJ4MFAH7J8m70fO
-	 DsqN8SCQ5j+RdqqFSmbIR1tbmrG88/bRLqe/1rSLK7HEXDya0jtDY+wbklag1TabEg
-	 8OJCUUo/DGC6jV/fgOvauldZMlqEzWaItThe6A6U=
+	b=1RoQnNmaB18w6sCZiPKaYdIDlfkq7w/POZEOVeUwvXrLlc5Gith56aax/eOsNzjow
+	 NhOvq8RPKqSdN6OZLW9OMk7ZHw50rtAVeVLw55BWKvMvCs6LGH2V9nIEhe/Pe72Kpe
+	 l94z3/WEOPnu82JYZnVZ34+2IbNDqxXsQMojBdCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.15 184/776] usb: xhci: Make usb_host_endpoint.hcpriv survive endpoint_disable()
+	Sashiko <sashiko-bot@kernel.org>,
+	Gang Yan <yangang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 374/969] mptcp: fix scheduling with atomic in timestamp sockopt
 Date: Sat, 30 May 2026 17:58:18 +0200
-Message-ID: <20260530160245.256065212@linuxfoundation.org>
+Message-ID: <20260530160310.637592843@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +65,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258092-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257348-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 92B4761065C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 31EE560F38F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Gang Yan <yangang@kylinos.cn>
 
-commit 25e531b422dc2ac90cdae3b6e74b5cdeb081440d upstream.
+commit b5c52908d52c6c8eb8933264aa6087a0600fd892 upstream.
 
-xHCI hardware maintains its endpoint state between add_endpoint()
-and drop_endpoint() calls followed by successful check_bandwidth().
-So does the driver.
+Using lock_sock_fast() (atomic context) around sock_set_timestamp()
+and sock_set_timestamping() is unsafe, as both helpers can sleep.
 
-Core may call endpoint_disable() during xHCI endpoint life, so don't
-clear host_ep->hcpriv then, because this breaks endpoint_reset().
+Replace lock_sock_fast() with sleepable lock_sock()/release_sock()
+to avoid scheduling while atomic panic.
 
-If a driver calls usb_set_interface(), submits URBs which make host
-sequence state non-zero and calls usb_clear_halt(), the device clears
-its sequence state but xhci_endpoint_reset() bails out. The next URB
-malfunctions: USB2 loses one packet, USB3 gets Transaction Error or
-may not complete at all on some (buggy?) HCs from ASMedia and AMD.
-This is triggered by uvcvideo on bulk video devices.
-
-The code was copied from ehci_endpoint_disable() but it isn't needed
-here - hcpriv should only be NULL on emulated root hub endpoints.
-It might prevent resetting and inadvertently enabling a disabled and
-dropped endpoint, but core shouldn't try to reset dropped endpoints.
-
-Document xhci requirements regarding hcpriv. They are currently met.
-
-Fixes: 18b74067ac78 ("xhci: Fix use-after-free regression in xhci clear hub TT implementation")
+Fixes: 9061f24bf82e ("mptcp: sockopt: propagate timestamp request to subflows")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://patch.msgid.link/20260402131342.2628648-26-mathias.nyman@linux.intel.com
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260420093343.16443-1-gang.yan@linux.dev
+Signed-off-by: Gang Yan <yangang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260427-net-mptcp-misc-fixes-7-1-rc2-v1-2-7432b7f279fa@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci.c |    1 -
- include/linux/usb.h     |    3 ++-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/mptcp/sockopt.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -3233,7 +3233,6 @@ rescan:
- 		xhci_dbg(xhci, "endpoint disable with ep_state 0x%x\n",
- 			 ep->ep_state);
- done:
--	host_ep->hcpriv = NULL;
- 	spin_unlock_irqrestore(&xhci->lock, flags);
- }
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -157,10 +157,10 @@ static int mptcp_setsockopt_sol_socket_t
+ 	lock_sock(sk);
+ 	mptcp_for_each_subflow(msk, subflow) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+-		bool slow = lock_sock_fast(ssk);
  
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -54,7 +54,8 @@ struct ep_device;
-  * @ssp_isoc_ep_comp: SuperSpeedPlus isoc companion descriptor for this endpoint
-  * @urb_list: urbs queued to this endpoint; maintained by usbcore
-  * @hcpriv: for use by HCD; typically holds hardware dma queue head (QH)
-- *	with one or more transfer descriptors (TDs) per urb
-+ *	with one or more transfer descriptors (TDs) per urb; must be preserved
-+ *	by core while BW is allocated for the endpoint
-  * @ep_dev: ep_device for sysfs info
-  * @extra: descriptors following this endpoint in the configuration
-  * @extralen: how many bytes of "extra" are valid
++		lock_sock(ssk);
+ 		sock_set_timestamp(ssk, optname, !!val);
+-		unlock_sock_fast(ssk, slow);
++		release_sock(ssk);
+ 	}
+ 
+ 	release_sock(sk);
+@@ -233,10 +233,10 @@ static int mptcp_setsockopt_sol_socket_t
+ 
+ 	mptcp_for_each_subflow(msk, subflow) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+-		bool slow = lock_sock_fast(ssk);
+ 
++		lock_sock(ssk);
+ 		sock_set_timestamping(ssk, optname, timestamping);
+-		unlock_sock_fast(ssk, slow);
++		release_sock(ssk);
+ 	}
+ 
+ 	release_sock(sk);
 
 
 
