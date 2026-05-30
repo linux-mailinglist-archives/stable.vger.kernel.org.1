@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-258919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sF4+OqouG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:34 +0200
+	id WNj/LlgdG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6A1612299
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C7860F911
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 025FF30031CA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:33:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 00F77303EC24
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C543242BA;
-	Sat, 30 May 2026 18:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E503ACA4D;
+	Sat, 30 May 2026 17:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKNq2dEc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFpbk89i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B1841A8F;
-	Sat, 30 May 2026 18:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB5533FE15;
+	Sat, 30 May 2026 17:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165985; cv=none; b=VwxyT/Rz3lWnymF1nRaWKOGBQ1uDz9C3vD/EaDuipQWv4nOEhLwgPCq5ybJr4UBkMdUmckH3Y87MS2FXv74J3pvZDdmo9m8uaOm9LEi5JIzCpMlgAxAY1Z3LwE7uGypcfiPXoafdfrd/2EXdZK4/lWENAokrMWT8rZb04onQFgA=
+	t=1780161354; cv=none; b=mV7S9268Ct5dGL3+KekB3fE93PWreWBJryLjaa9ziN9+nyiXP6njGCj7HlwOCQ0JpheNJspTljuKa4VFsAIyESj5YG0oEi8757bfxOjPdKWz9anYIQgDzDr06iM098F8nqjuaL/zugta4/vvnvMzWi5bp602471iaw3raGrNnnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165985; c=relaxed/simple;
-	bh=YNa7/OVthe1/wPHFguGNMqTr0MGYQHVjhAbxgxaAOFc=;
+	s=arc-20240116; t=1780161354; c=relaxed/simple;
+	bh=+pdVr9bYkv5QwCkPSEfY18qMuhZ4R/HqrFC8jkjervc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9Nt3aGkD+083G+epPZdAUSLCFHz6MC7jRGBAhnMuJJgQjwD4ZVmlUsM/uphr9kNoxV81rw/yETEU9PMrqkY6Y/8pjWntvgIjX0+Zw7Ka2jjxsoBd0ervDmZy9RQUnX3yTu6Oqr1806vEUvJhR3hDbfmpl2KS2xcx9ZLwqxL5gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKNq2dEc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B251F00893;
-	Sat, 30 May 2026 18:33:03 +0000 (UTC)
+	 MIME-Version; b=XGE6GxhXjARcf5ARtI5Hf4kKQrWexfg4rRFODmnb4Hh0wJ+evTryLaD2xp1iqVhO9cbcAKVA2ChBQP1aAo6xaakyx/fm9ozsNEdmJ2MBOEXq42EQW/6CpfVg9DsV8n8gnKfldmnhpFMKPp6WbEKFptcF9nref/BPRReU4rHLA/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFpbk89i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F57E1F00893;
+	Sat, 30 May 2026 17:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165983;
-	bh=+r/PgIhIYEf0M+T24hcYrBmkPjTmXRUIDq/TMdOEcts=;
+	s=korg; t=1780161353;
+	bh=uNPT6xSI19bQy88gAhrPs6DvRPIOEBZKJFV8pXVN1ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CKNq2dEcUgvAGUJmgPACB/Qp4DMiUmlV9pzQ6lzukk2yGP9c1uTAq8nDZeStC+pjM
-	 wlj+zbdEdYlBGijo/60ght5VNa2ODWUJbTIos/wQXmtOVuwWYx3FjoL2gXQMQ/Jcy/
-	 0fj/iEL3CN22KU9UX5LYdzqX0PjmahLssfXrs+Y0=
+	b=WFpbk89iMFCrJgQVJ0vZYpCGyr7ZCUzOPXpDXglSQ9p2EDFNFvcypil+DWpdV6Tfw
+	 TAbKkDjEhxUrvmpMfMTHoGNYZrUBrHPQd0jcQ8sNmGOIS4S4nIJAXGdxVie+ClnzBr
+	 qnP6fwMZSoU8sKwqcn0arbPXzs3ubLq5aTeltoCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corey Minyard <cminyard@mvista.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 212/589] ipmi:ssif: Fix a shutdown race
+Subject: [PATCH 6.1 569/969] gfs2: prevent NULL pointer dereference during unmount
 Date: Sat, 30 May 2026 18:01:33 +0200
-Message-ID: <20260530160230.538936285@linuxfoundation.org>
+Message-ID: <20260530160316.109681881@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,81 +69,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257545-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,redhat.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258919-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,minyard.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mvista.com:email]
-X-Rspamd-Queue-Id: 6A6A1612299
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 26C7860F911
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-It was possible for the SSIF thread to stop and quit before the
-kthread_stop() call because ssif->stopping was set before the
-stop.  So only exit the SSIF thread is kthread_should_stop()
-returns true.
+[ Upstream commit 74b4dbb946060a3233604d91859a9abd3708141d ]
 
-In the mainstream kernel this was fixed in 6bd0eb6d759b ("ipmi:ssif:
-Fix a shutdown race").  However, that requires a fix in kernel
-version 6.1 has a fix to kthread stop to cause interruptible waits
-to return -ERESTARTSYS on a stop.  This has not been backported to
-older kernels, and that would probably be a bad idea.  But it means
-that the mainstrem kernel fix for this will not work.
+When flushing out outstanding glock work during an unmount, gfs2_log_flush()
+can be called when sdp->sd_jdesc has already been deallocated and sdp->sd_jdesc
+is NULL.  Commit 35264909e9d1 ("gfs2: Fix NULL pointer dereference in
+gfs2_log_flush") added a check for that to gfs2_log_flush() itself, but it
+missed the sdp->sd_jdesc dereference in gfs2_log_release().  Fix that.
 
-Instead, wait for kthread_should_stop() to return true before exiting
-the thread.
-
-Signed-off-by: Corey Minyard <cminyard@mvista.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202604071139.HNJiCaAi-lkp@intel.com/
+Fixes: 35264909e9d1 ("gfs2: Fix NULL pointer dereference in gfs2_log_flush")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_ssif.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/gfs2/log.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
-index a811b5bdba259..42cbf761fa749 100644
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -522,6 +522,16 @@ static int ipmi_ssif_thread(void *data)
- 		}
- 	}
- 
-+	/*
-+	 * The thread can break out of the loop if stopping is set,
-+	 * and this can be before kthread_stop() gets called and thus
-+	 * kthread_should_stop() will not be set.  This can cause
-+	 * spinning calling this function and other bad things.  So
-+	 * wait for kthread_should_stop() to be set.
-+	 */
-+	while (!kthread_should_stop())
-+		msleep_interruptible(1);
-+
- 	return 0;
+diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+index de6f38523db33..229ceed689f69 100644
+--- a/fs/gfs2/log.c
++++ b/fs/gfs2/log.c
+@@ -478,8 +478,9 @@ void gfs2_log_release(struct gfs2_sbd *sdp, unsigned int blks)
+ {
+ 	atomic_add(blks, &sdp->sd_log_blks_free);
+ 	trace_gfs2_log_blocks(sdp, blks);
+-	gfs2_assert_withdraw(sdp, atomic_read(&sdp->sd_log_blks_free) <=
+-				  sdp->sd_jdesc->jd_blocks);
++	gfs2_assert_withdraw(sdp, !sdp->sd_jdesc ||
++			atomic_read(&sdp->sd_log_blks_free) <=
++			sdp->sd_jdesc->jd_blocks);
+ 	if (atomic_read(&sdp->sd_log_blks_needed))
+ 		wake_up(&sdp->sd_log_waitq);
  }
- 
 -- 
 2.53.0
 
