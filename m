@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257255-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOwWGrchG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258032-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:19 +0200
+	id OEs2MqUZG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257255-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173F76103B0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD9260EF96
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 847103003D3B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:43:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A344E30F5EA3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608AF344DB9;
-	Sat, 30 May 2026 17:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C153403F3;
+	Sat, 30 May 2026 16:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTilf98n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzWLD49x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445CA27A477;
-	Sat, 30 May 2026 17:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F223832D42B;
+	Sat, 30 May 2026 16:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162997; cv=none; b=unjYPNnFG4fFXFnpmcR60rx1SI5GFSLpYYLh6mPrmuEggRuNLG1pX1PAyILFkobyoK3Rm67PuUXDlewqCFEGCzhJHajmxlDkTw2sKwoCoUv+qks/CjBMKw3x4PWg2X++XJkPHvSCD62S9nj+iFXKpIPihZwAFPUJEB++6Qkt004=
+	t=1780160359; cv=none; b=ljB8ezP3sqTqqstl0F/yGC7li3TG5gp1npFtyiFMq41e/U5bSIGNMNLBkrdiY2JxqdGMuOCHpGxrpRH/ycIGd9eEfnuYtU0bIctBHVwicJazjFqUBva+Wk1b1fW2e1APTJsPabRXWEOe2elgGj8ko6sQaaAfNUtJnGa6AJuHjm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162997; c=relaxed/simple;
-	bh=JUa2KFXFFItBsQWs8wy+jVG++waJsitfg4f5eUN6BZ0=;
+	s=arc-20240116; t=1780160359; c=relaxed/simple;
+	bh=tkr0Zbf3vz7iMfwKYZodtoqds+gbGZd2LpAYlK15Vg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RasTGHuNv22bW2IuN2Dej47Nz0CpWqR38S+RLz9qEpNq7OLCdmR72Jpz8/ooyAXUyITKIQHsYtaxQs1SFtIxp7VdlZFfujCMd6x69Y7yKIHD2YQRZs/ZONeTmLLy/C6wphz2pXdzPg7koO9sBrmWetTKuZCXqSKj81VkekF/Bek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTilf98n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883C41F00893;
-	Sat, 30 May 2026 17:43:15 +0000 (UTC)
+	 MIME-Version; b=sFgQdoPv0lIXbpqL5z2i4Am4+VGfQw49eRMwL0iM0OOHna0yHpwx/HbtudhE81hl7GdrLIw+XTJQyfI0f844wwkHCFA9WNK47sVPxae7e3sQ2P+Mn5ajIKwd9yO27o0Amnn+hPKLxsFeDRcqwbUChqgtPv2fuQtodGyy+vYowKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzWLD49x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A131F00893;
+	Sat, 30 May 2026 16:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162996;
-	bh=evwSfqe38RvyXN101sbBnfVQDerwndRCM6E8bPR1FcQ=;
+	s=korg; t=1780160357;
+	bh=uw0mvup6QCsVzsWpfcgEHF1oSyWsk1cTMiPOCth0fcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fTilf98nwdCL6ti/arbxjP+n0kCsjY0QupwuGO6QQFCytWc/lOH3Pf5A1JCz2vqW7
-	 Jw4t5Xfwi6DsQd6lKVOgV0nbHL2e9G8A4rLP/rFgFgGBOAMSEivSn2rlxTqVbm18Tl
-	 4JPWlzu2Y5dmry57m8X5rUHXqzyjVXysKKJHuxPs=
+	b=CzWLD49xzfuiwQDAjLW1t6zkvbKyKewQQM7DSS3HwZ/ZvhX3pixgQ68cawhtVzEFe
+	 QXiKTWfx1mwTP0lxZDGgxWfcNfyg2J7yAltAfaZONP3CC/+DXcHp2wHMd7/cvMG3je
+	 Dkk+obmMCBYeXLO5HAXsDlGcP1wKZjts/XK/QlEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 5.15 126/776] net: add skb_header_pointer_careful() helper
-Date: Sat, 30 May 2026 17:57:20 +0200
-Message-ID: <20260530160243.633477123@linuxfoundation.org>
+	Soenke Huster <soenke.huster@eknoes.de>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 317/969] Bluetooth: virtio_bt: validate rx pkt_type header length
+Date: Sat, 30 May 2026 17:57:21 +0200
+Message-ID: <20260530160309.161009638@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +64,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258032-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,139.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257255-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,eknoes.de,gmail.com,intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,139.com:email]
-X-Rspamd-Queue-Id: 173F76103B0
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2CD9260EF96
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 13e00fdc9236bd4d0bff4109d2983171fbcb74c4 ]
+commit daf23014e5d975e72ea9c02b5160d3fcf070ea47 upstream.
 
-This variant of skb_header_pointer() should be used in contexts
-where @offset argument is user-controlled and could be negative.
+virtbt_rx_handle() reads the leading pkt_type byte from the RX skb
+and forwards the remainder to hci_recv_frame() for every
+event/ACL/SCO/ISO type, without checking that the remaining payload
+is at least the fixed HCI header for that type.
 
-Negative offsets are supported, as long as the zone starts
-between skb->head and skb->data.
+After the preceding patch bounds the backend-supplied used.len to
+[1, VIRTBT_RX_BUF_SIZE], a one-byte completion still reaches
+hci_recv_frame() with skb->len already pulled to 0. If the byte
+happened to be HCI_ACLDATA_PKT, the ACL-vs-ISO classification
+fast-path in hci_dev_classify_pkt_type() dereferences
+hci_acl_hdr(skb)->handle whenever the HCI device has an active
+CIS_LINK, BIS_LINK, or PA_LINK connection, reading two bytes of
+uninitialized RX-buffer data. The same hazard exists for every
+packet type the driver accepts because none of the switch cases in
+virtbt_rx_handle() check skb->len against the per-type minimum HCI
+header size before handing the frame to the core.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260128141539.3404400-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
-Signed-off-by: Bin Lan <lanbincn@139.com>
+After stripping pkt_type, require skb->len to cover the fixed
+header size for the selected type (event 2, ACL 4, SCO 3, ISO 4)
+before calling hci_recv_frame(); drop ratelimited otherwise.
+Unknown pkt_type values still take the original kfree_skb() default
+path.
+
+Use bt_dev_err_ratelimited() because both the length and pkt_type
+values come from an untrusted backend that can otherwise flood the
+kernel log.
+
+Fixes: 160fbcf3bfb9 ("Bluetooth: virtio_bt: Use skb_put to set length")
+Cc: stable@vger.kernel.org
+Cc: Soenke Huster <soenke.huster@eknoes.de>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/skbuff.h |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/bluetooth/virtio_bt.c |   23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -3869,6 +3869,18 @@ skb_header_pointer(const struct sk_buff
- 				    skb_headlen(skb), buffer);
+--- a/drivers/bluetooth/virtio_bt.c
++++ b/drivers/bluetooth/virtio_bt.c
+@@ -190,6 +190,7 @@ static int virtbt_shutdown_generic(struc
+ 
+ static void virtbt_rx_handle(struct virtio_bluetooth *vbt, struct sk_buff *skb)
+ {
++	size_t min_hdr;
+ 	__u8 pkt_type;
+ 
+ 	pkt_type = *((__u8 *) skb->data);
+@@ -197,16 +198,32 @@ static void virtbt_rx_handle(struct virt
+ 
+ 	switch (pkt_type) {
+ 	case HCI_EVENT_PKT:
++		min_hdr = sizeof(struct hci_event_hdr);
++		break;
+ 	case HCI_ACLDATA_PKT:
++		min_hdr = sizeof(struct hci_acl_hdr);
++		break;
+ 	case HCI_SCODATA_PKT:
++		min_hdr = sizeof(struct hci_sco_hdr);
++		break;
+ 	case HCI_ISODATA_PKT:
+-		hci_skb_pkt_type(skb) = pkt_type;
+-		hci_recv_frame(vbt->hdev, skb);
++		min_hdr = sizeof(struct hci_iso_hdr);
+ 		break;
+ 	default:
+ 		kfree_skb(skb);
+-		break;
++		return;
+ 	}
++
++	if (skb->len < min_hdr) {
++		bt_dev_err_ratelimited(vbt->hdev,
++				       "rx pkt_type 0x%02x payload %u < hdr %zu\n",
++				       pkt_type, skb->len, min_hdr);
++		kfree_skb(skb);
++		return;
++	}
++
++	hci_skb_pkt_type(skb) = pkt_type;
++	hci_recv_frame(vbt->hdev, skb);
  }
  
-+/* Variant of skb_header_pointer() where @offset is user-controlled
-+ * and potentially negative.
-+ */
-+static inline void * __must_check
-+skb_header_pointer_careful(const struct sk_buff *skb, int offset,
-+			   int len, void *buffer)
-+{
-+	if (unlikely(offset < 0 && -offset > skb_headroom(skb)))
-+		return NULL;
-+	return skb_header_pointer(skb, offset, len, buffer);
-+}
-+
- /**
-  *	skb_needs_linearize - check if we need to linearize a given skb
-  *			      depending on the given device features.
+ static void virtbt_rx_work(struct work_struct *work)
 
 
 
