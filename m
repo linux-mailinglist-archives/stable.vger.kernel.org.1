@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PNdLb0nG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:01 +0200
+	id MGj+GBowG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0DCB611154
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B746612633
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6219E301E57F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0C8E93018422
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0DF3AFCE3;
-	Sat, 30 May 2026 18:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2073AB285;
+	Sat, 30 May 2026 18:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6Mzq2Y0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBvWQzN/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8323112C1;
-	Sat, 30 May 2026 18:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F6F39478D;
+	Sat, 30 May 2026 18:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164431; cv=none; b=bIfKuO0Myrxp2JqynSlx1E+KNYUpzpRdTm4kIoFR1XJiApvItxRVNEyvs3TLL40CfB1JHjI8HEIIW2woZ5nQjGR1pXJjy38bODFwKc1OwUOZu/sDMYMvS0SQukzmWDIKplBDCNUKtMlOd6ihhtOXklDL+N/a41/ObJVagp6MRF4=
+	t=1780166483; cv=none; b=gQWbPT9LL265k1vf80CTMmglyBOYyMNwcuCbpIKbmjuvi9cyOW8BRV7Tcx+N9vBwm6IBRbpkfAuZNxWxmpvBT1S471PeV3y4BwgEvHN6m3fLAiWtQH3F6LFdhQpTi7WoiZ3vkxgzNzg6mSBtubYEDHE8ymhNRsiD/zyhltkKdJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164431; c=relaxed/simple;
-	bh=3yt9Bszo6BS1ah436x68mdzysPo/E959Mv3DomZX7As=;
+	s=arc-20240116; t=1780166483; c=relaxed/simple;
+	bh=eJeyJY6j9Mt626q90tAIyDhUe3CHzWix3HMjafvyi70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NlP7uio7RKQCtuRGeFE69LwnUGNUWAui43eCibzDXcUE2W70I2609uxOf7KCKdnsYOFdKhQg0pmOCRMy9fTIDsq/zSgmMoIMP6zDWTffhmFR2+doEPzrn3maYR7fCXPmsx2dvV0jd6NzrlsZlDQTtrgqnfHyd+PIcJ5PmTUhvy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6Mzq2Y0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8233C1F00893;
-	Sat, 30 May 2026 18:07:09 +0000 (UTC)
+	 MIME-Version; b=NH0QX8yzJ1DN7DpEMoF9g4kGmKFWTy2VXrkhGV5KiCCekSBagwzCibAD3TR2nWckyQ58uJdrkqRIDbVIERsd3sKzvc1hPcJEMjFnBzox5DICST3rIP+l7iTTYO9nbQzqJAwYgSFNzg9scF79LhB5i0kQe2bpRnO5X/GPhEKJ70E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBvWQzN/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACEA01F00893;
+	Sat, 30 May 2026 18:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164430;
-	bh=hi/UWteIXCKCyQkj3uhysY0uq6OdMs4MG8/kI7Cb/Vs=;
+	s=korg; t=1780166481;
+	bh=3xot3XrCsK9RNLrDIxGTjSyGQPTAYwWooqU5PaE/3Os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H6Mzq2Y0kGLeKMadeQKjoPJddi+N6h2mkRY8rkdGaRP3gIgc62bnZG3vI5bF8KpEB
-	 S3+oY2JR+Q956GTfnDx51c/KzSMYY/9TmAnyiwWhMUBrURUFuFb79ua66jhexKZ8qs
-	 Oxy5rX1Buo82S4Jbi8ymDBaa7uIi7riZHpiZRPjU=
+	b=dBvWQzN/tyXP06fMDO/TLiVL/ozLA0f6HGU0PYqzwTf1NGv2FzUsT6orS79ZpZwX0
+	 0kQypp22dF0xDt6pauzBL0hZ9tujwm4EW6z056Mdy8CLlJaGr6CeTxH/ryQkZyoiAE
+	 cK8nxT7VtcJOvMdfcel7LjDPoW7SCjAfkZelf3Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Moses <p@1g4.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 552/776] crypto: ccp - copy IV using skcipher ivsize
+Subject: [PATCH 5.10 385/589] perf util: Kill die() prototype, dead for a long time
 Date: Sat, 30 May 2026 18:04:26 +0200
-Message-ID: <20260530160254.420596535@linuxfoundation.org>
+Message-ID: <20260530160234.919148105@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +69,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258462-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259069-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A0DCB611154
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0B746612633
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Moses <p@1g4.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit a7a1f3cdd64d8a165d9b8c9e9ad7fb46ac19dfc4 ]
+[ Upstream commit e5cce1b9c82fbd48e2f1f7a25a9fad8ee228176f ]
 
-AF_ALG rfc3686-ctr-aes-ccp requests pass an 8-byte IV to the driver.
+In fef2a735167a827a ("perf tools: Kill die()") the die() function was
+removed, but not the prototype in util.h, now when building with
+LIBPERL=1, during a 'make -C tools/perf build-test' routine test, it is
+failing as perl likes die() calls and then this clashes with this
+remnant, remove it.
 
-ccp_aes_complete() restores AES_BLOCK_SIZE bytes into the caller's IV
-buffer while RFC3686 skciphers expose an 8-byte IV, so the restore
-overruns the provided buffer.
-
-Use crypto_skcipher_ivsize() to copy only the algorithm's IV length.
-
-Fixes: 2b789435d7f3 ("crypto: ccp - CCP AES crypto API support")
-Signed-off-by: Paul Moses <p@1g4.org>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: fef2a735167a827a ("perf tools: Kill die()")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/ccp-crypto-aes.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/perf/util/util.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/crypto/ccp/ccp-crypto-aes.c b/drivers/crypto/ccp/ccp-crypto-aes.c
-index e6dcd8cedd53e..b03ed5e83c3e9 100644
---- a/drivers/crypto/ccp/ccp-crypto-aes.c
-+++ b/drivers/crypto/ccp/ccp-crypto-aes.c
-@@ -28,8 +28,11 @@ static int ccp_aes_complete(struct crypto_async_request *async_req, int ret)
- 	if (ret)
- 		return ret;
+diff --git a/tools/perf/util/util.h b/tools/perf/util/util.h
+index 9f0d36ba77f2d..130c68dff4ce0 100644
+--- a/tools/perf/util/util.h
++++ b/tools/perf/util/util.h
+@@ -14,7 +14,6 @@
  
--	if (ctx->u.aes.mode != CCP_AES_MODE_ECB)
--		memcpy(req->iv, rctx->iv, AES_BLOCK_SIZE);
-+	if (ctx->u.aes.mode != CCP_AES_MODE_ECB) {
-+		size_t ivsize = crypto_skcipher_ivsize(crypto_skcipher_reqtfm(req));
-+
-+		memcpy(req->iv, rctx->iv, ivsize);
-+	}
+ /* General helper functions */
+ void usage(const char *err) __noreturn;
+-void die(const char *err, ...) __noreturn __printf(1, 2);
  
- 	return 0;
- }
+ struct dirent;
+ struct strlist;
 -- 
 2.53.0
 
