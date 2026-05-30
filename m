@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-258126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FInNygjG2pa/ggAu9opvQ
-	(envelope-from <stable+bounces-258126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:28 +0200
+	id gJRiEIsrG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:25:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3902610757
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE82611AEA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:25:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0EEBA301584D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:48:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 701CC301BEF7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4EA351C2F;
-	Sat, 30 May 2026 17:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E287C219303;
+	Sat, 30 May 2026 18:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/Q0dfJf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3zn+3q4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A516261B9E;
-	Sat, 30 May 2026 17:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F85217704;
+	Sat, 30 May 2026 18:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163304; cv=none; b=laBkl9ninGo1uI0mZ+e2zqmz/5WC13vHGgL6FgMmd00mC2i0f8ynUfOXYmqLpZLUvs5xRcs386+NebtmcUcLlqbICjMTMTKa0vvnItt5miUOzkl/xXTOLB0yAE6F+bysfUvri4v6xx8HTsxOcE7vwxZwbC9P6RePAfy7B1djlEs=
+	t=1780165344; cv=none; b=MiH39xSyIyad4GU1/Kcl5cfECJZfb6jl2F3vSCy2/3LAmaE9bSh8klzG93e4qCI3ytIgzYnNoh3xdfBY9DjGaDjru1tPRyBt31GRR1geoGgsV3hZJkb2nO0Jx4ovpuZ8dm0MG4wAEDsKVxmNfQJnoEUd9azHBl6l7dprQJHk6gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163304; c=relaxed/simple;
-	bh=SL4gxPI7OTfCtgfLKMBG2VQx+7IxxlvPWytt1OeAxug=;
+	s=arc-20240116; t=1780165344; c=relaxed/simple;
+	bh=v/hK87NwVpJ8UpPmuf7LuVJ2XrBD3lHhKxOj9ZqSwww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M7DGkTGzWblTgaz+Ga/qnbJTUbkcOVlDdCARQvMCAzs4qqaMggq/CTeKuaqG0pSK+qH2yMW7ZoR+jXJ6Q/p0nGd3/GHgiUQ1WPZ4uNbyTGQ1tmQ18SYs6b97P4xcQVf4Bl+6UsZSLcuASUSfyTc3t6cCFflp2gdmr7hYiuwDdE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/Q0dfJf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703341F00893;
-	Sat, 30 May 2026 17:48:22 +0000 (UTC)
+	 MIME-Version; b=bSafG2etvtCPQL9U2x6Q3poSaAkzYM0hm0WgYrSOBRGMW9MRDPFU7ReToBRYnIBQyYEOdypcd+yzIr7HpU3iFxeC6cgrB9JXgPb2U9RaAvORwyxRPeIVto7q8CFgGc6tJYCWLRORkkYNJ5Y6FPHYZlgvQR3AO/r94rOsLdr3NsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3zn+3q4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132221F00893;
+	Sat, 30 May 2026 18:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163303;
-	bh=ycvtkGWTsi4Ca1MDK+OA0LO0BgB9DroLiyhfVZ20xhs=;
+	s=korg; t=1780165343;
+	bh=/wVRaw3IklSJu5RStWUFCQN/3+wQZNBMBPhAOdrYdpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V/Q0dfJfCjcuVaYdBZbO5EeoTKgWUekBqTMofwbzF4dsqiLN8nH3hZZNljwZ2QTZ2
-	 HUdWR2YddxAaX3KG0zY4sexLmR0kwh/eOoztIexXEw6ZyRH8lb6Bc9PY3+Yr1LVotd
-	 ZOtJ/oBaf102BBF05YVak1FnZF3wJARTSuwO3c5w=
+	b=l3zn+3q4oDnlEgMKx/R68M+/3uFbXETH1MaWVLwJUVO2B9gSFj1UIar4OEmYSZDS5
+	 TGGtKoWabLtXtB8viIo0ighbxbpXKEqVhZsJaT3wPP03jnEw/2PewAc692JX8yHLQM
+	 OLFE2quYB2Fv54dMZON6+G9W8Q7McSgpdQx3ZTFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 217/776] ALSA: 6fire: Fix input volume change detection
+	Simon Horman <horms@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Thierry Escande <thierry.escande@linux.intel.com>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	stable <stable@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 050/589] NFC: digital: Bounds check NFC-A cascade depth in SDD response handler
 Date: Sat, 30 May 2026 17:58:51 +0200
-Message-ID: <20260530160246.127580393@linuxfoundation.org>
+Message-ID: <20260530160225.906268473@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +66,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258126-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258730-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C3902610757
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: CCE82611AEA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit dc88eef8f55e85e92d016cdf7e291f5560efd79b upstream.
+commit 46ce8be2ced389bccd84bcc04a12cf2f4d0c22d1 upstream.
 
-usb6fire_control_input_vol_put() stores the analog capture volume
-as a signed offset in rt->input_vol[] (-15..+15), but it compares
-the cached value against the user-visible mixer value (0..30)
-before subtracting 15.
+The NFC-A anti-collision cascade in digital_in_recv_sdd_res() appends 3
+or 4 bytes to target->nfcid1 on each round, but the number of cascade
+rounds is controlled entirely by the peer device.  The peer sets the
+cascade tag in the SDD_RES (deciding 3 vs 4 bytes) and the
+cascade-incomplete bit in the SEL_RES (deciding whether another round
+follows).
 
-This mixes two domains in the change detection path. Since the
-runtime is zero-initialized, the visible default is 15; writing 0
-right after probe is ignored, while writing 15 is reported as a
-change even though the cached value remains 0.
+ISO 14443-3 limits NFC-A to three cascade levels and target->nfcid1 is
+sized accordingly (NFC_NFCID1_MAXSIZE = 10), but nothing in the driver
+actually enforces this.  This means a malicious peer can keep the
+cascade running, writing past the heap-allocated nfc_target with each
+round.
 
-Normalize the user value before comparing it with the cached offset.
+Fix this by rejecting the response when the accumulated UID would exceed
+the buffer.
 
-Fixes: 06bb4e743501 ("ALSA: snd-usb-6fire: add analog input volume control")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260416-alsa-6fire-input-volume-change-detection-v1-1-ec78299168df@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Commit e329e71013c9 ("NFC: nci: Bounds check struct nfc_target arrays")
+fixed similar missing checks against the same field on the NCI path.
+
+Cc: Simon Horman <horms@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Thierry Escande <thierry.escande@linux.intel.com>
+Cc: Samuel Ortiz <sameo@linux.intel.com>
+Fixes: 2c66daecc409 ("NFC Digital: Add NFC-A technology support")
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026040913-figure-seducing-bd3f@gregkh
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/6fire/control.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/nfc/digital_technology.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/sound/usb/6fire/control.c
-+++ b/sound/usb/6fire/control.c
-@@ -290,15 +290,17 @@ static int usb6fire_control_input_vol_pu
- 		struct snd_ctl_elem_value *ucontrol)
- {
- 	struct control_runtime *rt = snd_kcontrol_chip(kcontrol);
-+	int vol0 = ucontrol->value.integer.value[0] - 15;
-+	int vol1 = ucontrol->value.integer.value[1] - 15;
- 	int changed = 0;
+--- a/net/nfc/digital_technology.c
++++ b/net/nfc/digital_technology.c
+@@ -424,6 +424,12 @@ static void digital_in_recv_sdd_res(stru
+ 		size = 4;
+ 	}
  
--	if (rt->input_vol[0] != ucontrol->value.integer.value[0]) {
--		rt->input_vol[0] = ucontrol->value.integer.value[0] - 15;
-+	if (rt->input_vol[0] != vol0) {
-+		rt->input_vol[0] = vol0;
- 		rt->ivol_updated &= ~(1 << 0);
- 		changed = 1;
- 	}
--	if (rt->input_vol[1] != ucontrol->value.integer.value[1]) {
--		rt->input_vol[1] = ucontrol->value.integer.value[1] - 15;
-+	if (rt->input_vol[1] != vol1) {
-+		rt->input_vol[1] = vol1;
- 		rt->ivol_updated &= ~(1 << 1);
- 		changed = 1;
- 	}
++	if (target->nfcid1_len + size > NFC_NFCID1_MAXSIZE) {
++		PROTOCOL_ERR("4.7.2.1");
++		rc = -EPROTO;
++		goto exit;
++	}
++
+ 	memcpy(target->nfcid1 + target->nfcid1_len, sdd_res->nfcid1 + offset,
+ 	       size);
+ 	target->nfcid1_len += size;
 
 
 
