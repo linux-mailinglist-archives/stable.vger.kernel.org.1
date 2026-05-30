@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-259278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKevK9gzG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:40 +0200
+	id WLztFssfG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:35:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DD5612EF6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058E960FF93
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:35:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C75A309C54C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4F97F3013BBA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CB8248F66;
-	Sat, 30 May 2026 18:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21EC33F8B4;
+	Sat, 30 May 2026 17:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aaVhEL8Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sq+b2ovs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3FC137750;
-	Sat, 30 May 2026 18:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8501C5799;
+	Sat, 30 May 2026 17:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167206; cv=none; b=OAo8elC8T8r1AuvM0g+j290rRrAg95aqwU5N33m7469QgZSPfINXbcOXMRSMp5To8JM43qlr7FTERU/vJjTFMP+a1RbbUQJJWOzUHN93JcrTWK/Nu9i0gjAPr6Lb7zF35iEyKyBZlxgGsr1HuII5RwrMiSrsknOTxp9CQURo00o=
+	t=1780162504; cv=none; b=NcLLx6iKWpN7CR/rFerEx66X1BNhmmeo6pk48f+awt0kZD5tceTXuQyBwLRSvAnZXZZRbSHXlf5wtNzo++uhOkFuQig8sj6Pxh/wbwSuFHe2kz1/9rNMEDpOImuF7Ih3vE3cdr8tyzYua39Nz2hBMV+XrXriqDCXTIyOjT9m18c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167206; c=relaxed/simple;
-	bh=qaeN2pTMF2ixFaJcBqSdy+fds2o4u7q1bEWuetNjBqc=;
+	s=arc-20240116; t=1780162504; c=relaxed/simple;
+	bh=EV2vt5u2M//kULiYPzqNBRyZDU2fjuoDiHalPFrCcB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQLTfIMh1dG3z7uQUspFrLFy9a8yYJPqsGAqT8SD4eK6F/4RLj7qpLv/tWfEI6L6PeFWTrYG+n7okbVATA8cu9DkoH/gxOPN6x5mLdwB9FCs0gn07fo3sfIOM5HtmHexTPP/Xz+M+Ho1SsHCTlBurgUy19W13ROfe7JOAP/Z8Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aaVhEL8Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64231F00893;
-	Sat, 30 May 2026 18:53:24 +0000 (UTC)
+	 MIME-Version; b=tDGBp7PXOZZEuW0YDsADKjSY4s44IjN8+pL1EAoxARNfkWYPDBrApAL1oT4I5aoaCgJR5trBloXzV0WeOwi/ljXfFJ2auWD19mzQ6fIs34hxpo0ynSMy8QNbhPMZiv5Vhxl7KlGNrOXuiMv2oKhSgqpKkvcQ1svhJ6c83y1DT28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sq+b2ovs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323971F00893;
+	Sat, 30 May 2026 17:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167205;
-	bh=MzFuaW7hXiPSUPwNZXSMRMpvQxsD+X4dqvnBDmaqAjE=;
+	s=korg; t=1780162503;
+	bh=3DpKCEEGxMNpKwj124pQH8ersXQqE2XevZxi7ew0oj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aaVhEL8QcRxoH7qCcIUqF2/pV5rAiuCLsyACaG9j4LWjOGvnxm3A7Dc1KtcDD0tjM
-	 EPeoW4YgPjDtTacUPXPDxzJotMOah005mjR2glJxRRn4Yr4Gx6DhU636Qm7L7SJknS
-	 tWTRAd7fc9eP/+4qHVrWIQjwcftDX8ITEcONeqwc=
+	b=Sq+b2ovsTV1Q1efKQgkx1SczFZIvExi3zAKqATYaxiUoGv/ByY4FQzhoKTOYYXRU8
+	 oibEGGEA390VMQ9zLqaV1sCU0VWQImjRIuGbqp2dm9LUj7F7fNA6xv7/1Tq8ar6YIo
+	 uDLdybIBd6FaXlEw/6qWfkXP5mT1X4rqPJgRFIAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 582/589] net: tls: prevent chain-after-chain in plain text SG
+Subject: [PATCH 6.1 939/969] net: tls: prevent chain-after-chain in plain text SG
 Date: Sat, 30 May 2026 18:07:43 +0200
-Message-ID: <20260530160239.891487544@linuxfoundation.org>
+Message-ID: <20260530160326.683038280@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259278-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257887-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,17 +86,17 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 31DD5612EF6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 058E960FF93
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -142,10 +142,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 18 insertions(+), 6 deletions(-)
 
 diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 9969222dd2150..1b8e003d5e70b 100644
+index a46f3cc4b3f14..de85e26d9675d 100644
 --- a/net/tls/tls_sw.c
 +++ b/net/tls/tls_sw.c
-@@ -730,21 +730,33 @@ static int tls_push_record(struct sock *sk, int flags,
+@@ -790,21 +790,33 @@ static int tls_push_record(struct sock *sk, int flags,
  	i = msg_pl->sg.end;
  	sk_msg_iter_var_prev(i);
  
