@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFgQKdIgG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257865-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:30 +0200
+	id qPyJEoczG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:59:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D0F06101F0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF513612E9E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:59:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 257B3305E880
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:33:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 51B5D309B532
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E55733F8B4;
-	Sat, 30 May 2026 17:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BD024468C;
+	Sat, 30 May 2026 18:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h93PLgbh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vlb9XnbV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC86B33A9DA;
-	Sat, 30 May 2026 17:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE10623C4F2;
+	Sat, 30 May 2026 18:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162433; cv=none; b=WsweDuwvLj5/44qqfRPstAgOvtQdv7PL0iLifa8UTUQ27QDpcHauylsrIdnxe/dzTW/Aiyw3nJyx4POvtOP1M+t1MPHj+w5NDID0gTXo+xp9GhQz2++a6ReN8rKEUp+c6+NyIAR75ckUGXqtEiF0jD0ouqlRLV9eM7CfuVT2mxg=
+	t=1780167095; cv=none; b=kUCpSPcLaxhlwx7iKOr5PFk6yW+7MvxAJrrs2EpgLIiJ03ecLYkd1KJkvsZE0I9CBHLe3JEwMtbDMVaK28l5VMVcH/Ga+srAZRTP4e7myQyQYpNkuDXxWaiF9Dvt6vwsUyS82Y6JMZBD4HYHNDh5EVwscrsZkYyBk/67GUrXfjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162433; c=relaxed/simple;
-	bh=HjEOZy8InILKwYVU+iR5qkJrS50PJGjxqOfK5WId5RA=;
+	s=arc-20240116; t=1780167095; c=relaxed/simple;
+	bh=hXx/1BfuAeYNm7pUQWkj+w0glE92Y4NvNvs/VBtT+Rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XvAa1PRjF9PxfqU3IEzfRhY1BNfVnTr1tzeAMT4Lvi/mpzXG7d77uy1OqayV9lbsy9YM8y35zpI0MAr+nRAMSJQFE1gydc+OqsbdDwDVGTU1zF7T63r6MSZLAHGPOEGTgBiRkPcN3esmHAGNJfumf/CC1l5ERfHPowgI3UopTgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h93PLgbh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2579A1F00893;
-	Sat, 30 May 2026 17:33:49 +0000 (UTC)
+	 MIME-Version; b=mAQoD/O3tb5TXUuhP+UO4xjQHu6gSVr0Dbz45DFrrzZJXFn+cc2rv0bJIOUUGMmizylDZaoOjJSgqqRrKJkqEX7M6g17w1IrmqUQcV79iyJk1oJXpEK8CkVHUEwHX5tptIOHvnPcSzIdb7spDNVWGb6T52+Gc6tgvnGHrS5s9Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vlb9XnbV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA041F00893;
+	Sat, 30 May 2026 18:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162430;
-	bh=5lqv+UIvyU89UigqBQDWU8ZdIHZdf7iruKyH2OHNHTk=;
+	s=korg; t=1780167094;
+	bh=2bjoxR4kq8egti2ekMZ621PRA0ACtBE4omU5X8Kbfyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h93PLgbhDacc13XIXmWhrwQvTIRsp+6FckS6D8thUpbnvCJqUNLa9vWsuxqTHyJ9S
-	 uTNVfuUMjHZJl66ouehRqnXe/JVEr6AOY7C7FbFgXNGw40MfhPij+kzEG+ZDeUMtzR
-	 FtCq7Q/lSOy4BdSkRS3/MpBOomn+pFXXboIqqYpI=
+	b=Vlb9XnbVnBHaepCMfGi8CvfOX1kehtTOBfdb4ECrGtU+dLWT1S4ZBCuQtzQ+YYpBm
+	 IISIorc7CS7wjykHkEQ41HcC+8MzoFvB6YNiqJ9m3sT1H2jPqPoiWSFTk5LsAKNdSz
+	 Y00CZropndaqtrf1NemEofxPd7qdyEYLI4ToR5uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 919/969] netfilter: bridge: eb_tables: close module init race
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.10 562/589] hwmon: (pmbus/adm1266) include PEC byte in pmbus_block_xfer read buffer
 Date: Sat, 30 May 2026 18:07:23 +0200
-Message-ID: <20260530160326.114571211@linuxfoundation.org>
+Message-ID: <20260530160239.414198134@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,78 +77,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257865-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259245-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.996];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,netfilter.org:email,strlen.de:email]
-X-Rspamd-Queue-Id: 1D0F06101F0
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: AF513612E9E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-[ Upstream commit 27414ff1b287ea9a2a11675149ec28e05539f3cc ]
+commit 487566cb1ccdf3756fdd7bf8d875e612ff3169bb upstream.
 
-sashiko reports for unrelated patch:
- Does the core ebtables initialization in ebtables.c suffer from a similar race?
- Once nf_register_sockopt() completes, the sockopts are exposed globally.
+adm1266_pmbus_block_xfer() sets up the read transaction with
 
-sockopt has to be registered last, just like in ip/ip6/arptables.
+	.buf = data->read_buf,
+	.len = ADM1266_PMBUS_BLOCK_MAX + 2,
 
-Fixes: 5b53951cfc85 ("netfilter: ebtables: use net_generic infra")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+but read_buf in struct adm1266_data is declared as
+
+	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 1];
+
+For a max-length block response (length byte = 255 + up to 1 PEC
+byte), the i2c controller is told to write 257 bytes into a 256-byte
+buffer, putting one byte past the end of read_buf.  The same response
+also makes the subsequent PEC compare
+
+	if (crc != msgs[1].buf[msgs[1].buf[0] + 1])
+
+read a byte beyond the array.
+
+Bump the read_buf declaration to ADM1266_PMBUS_BLOCK_MAX + 2 so the
+buffer can hold the length byte, up to 255 payload bytes, and the PEC
+byte the i2c_msg length already accounts for.
+
+Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-4-1c1ea1349cfe@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/netfilter/ebtables.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/hwmon/pmbus/adm1266.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index ec286e54229b7..ca426e49ea1a1 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -2583,19 +2583,20 @@ static int __init ebtables_init(void)
- {
- 	int ret;
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -61,7 +61,7 @@ struct adm1266_data {
+ 	u8 *dev_mem;
+ 	struct mutex buf_mutex;
+ 	u8 write_buf[ADM1266_PMBUS_BLOCK_MAX + 1] ____cacheline_aligned;
+-	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 1] ____cacheline_aligned;
++	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 2] ____cacheline_aligned;
+ };
  
--	ret = xt_register_target(&ebt_standard_target);
-+	ret = register_pernet_subsys(&ebt_net_ops);
- 	if (ret < 0)
- 		return ret;
--	ret = nf_register_sockopt(&ebt_sockopts);
-+
-+	ret = xt_register_target(&ebt_standard_target);
- 	if (ret < 0) {
--		xt_unregister_target(&ebt_standard_target);
-+		unregister_pernet_subsys(&ebt_net_ops);
- 		return ret;
- 	}
- 
--	ret = register_pernet_subsys(&ebt_net_ops);
-+	ret = nf_register_sockopt(&ebt_sockopts);
- 	if (ret < 0) {
--		nf_unregister_sockopt(&ebt_sockopts);
- 		xt_unregister_target(&ebt_standard_target);
-+		unregister_pernet_subsys(&ebt_net_ops);
- 		return ret;
- 	}
- 
--- 
-2.53.0
-
+ static const struct nvmem_cell_info adm1266_nvmem_cells[] = {
 
 
 
