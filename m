@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-257670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAmsAm4dG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257670-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:02 +0200
+	id oNqrCxMnG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094EF60F94B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9063610FD3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8003D300A252
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:23:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 271623002328
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB0E3161A3;
-	Sat, 30 May 2026 17:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21483C2761;
+	Sat, 30 May 2026 18:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sv8RYcgJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjnpGKAn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BFB30E847;
-	Sat, 30 May 2026 17:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA42C3AC0FC;
+	Sat, 30 May 2026 18:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161780; cv=none; b=MJXHR1a0rD3OQp34tDu+rG6Dwi0W4U8wz1Kqw025rjFW7OnKwJnO06+t3y5UHVJaRF/Z0BFarX8vhCaaIeDuVtZuCtauJYyPuWmXdxWdUtCGxcNzgxl3BfUA4WcLG8X2wbPOjMKLFN5l18x6eRDkZqJ++JpxzayiSEAVUQnqSt0=
+	t=1780164368; cv=none; b=tFjtzS7D5LjziG1LfZrrYa6DhAxMyHj7GNcmGbC0v6eCIDatu8HWdfMrIPZ1o9YnXML1DWxMnPr72yuo4uHLAz5BppoU2nsjUhWolM/jngB9ymIwWPSk4nRj/A99ck7WE5r/Kyf9/EJxA8TxobACkj2cf15auxuGMk0Cqb7LVIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161780; c=relaxed/simple;
-	bh=qOuzr4i5PEAU7V3rFBGnq+xJ2cFB3R/bMZcitoZTVcI=;
+	s=arc-20240116; t=1780164368; c=relaxed/simple;
+	bh=1D4bQqr2fuRECXjs8LuNZd97Dj9G5ysDWMD6yf0wjHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sjs9XyI9DHBDLo8InKxPJcKnLvWq0gHwjo6h7BBJeuCB95V7BikAinbV7UIo1ucFA40aHGjy13ii3fm4AHZ0RRS6E95yjSPm7UctrDd5StGLh1GMz0e01vXs3s2MNrt6vkbIG2674DQPxz3kyepKuVNyZFxGThscPg/PfiT97jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sv8RYcgJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73251F00893;
-	Sat, 30 May 2026 17:22:58 +0000 (UTC)
+	 MIME-Version; b=aspBJhKShoqh/mrSHn0JOf9a/EYHfnACeYcUvQDgBg1R1Zt/e+jU8TLPUTRWJxWTPJGS05hbugVJOVOJAqGKRu5TSnlWSMvVAucItW5zWzlvRV7BvosJCCyrtR3E9I60gsMYLhPyoTCHKec6ibFoXGCRPmO5NlWLCtYwWX9FVTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjnpGKAn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A6B1F00898;
+	Sat, 30 May 2026 18:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161779;
-	bh=5uL3QV4R8HDFWRh63zFd/XSb5aX6TgSRizlwtS/4ji8=;
+	s=korg; t=1780164366;
+	bh=+yvRIBwdegq4p+xGSJYK0Mg3/Jl9C4QYuz4ljX9r8aI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Sv8RYcgJYnFrIW6aA7Xy9hcL91FxjdliR2M1IjxbqHZbvsekevB8t2iZC04op7MmV
-	 nDysYwPrJJZa5KJcqcv7oP+1QOfIcgR/EeYiHk4O8RePX8zYW6tS4hT7jybMc5erQX
-	 QMDotJT/OkoW8e46Z4gWCkCG8oSOBHF8GlT9V5bE=
+	b=JjnpGKAnEpR7D1bzCA3ZePzDeV/sZu90Jdbysb6ZtfcJpXBb9AugjzHrVWYvb3Ck1
+	 gfGR4eHF30gCTbF/sP4TmFulT+vfGoPxvf24DUePolmitduvZNMalOkjzZjFvL/VxP
+	 J6pVgSywCmT779aROO9BD6srHqP8nhWYdTkPmRxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Myeonghun Pak <mhun512@gmail.com>,
-	Ijae Kim <ae878000@gmail.com>,
-	Taegyu Kim <tmk5904@psu.edu>,
-	Yuho Choi <dbgh9129@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+	Florian Westphal <fw@strlen.de>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 724/969] fbdev: offb: fix PCI device reference leak on probe failure
+Subject: [PATCH 5.15 534/776] RDMA/core: Prefer NLA_NUL_STRING
 Date: Sat, 30 May 2026 18:04:08 +0200
-Message-ID: <20260530160320.531613113@linuxfoundation.org>
+Message-ID: <20260530160253.999702776@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,81 +68,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257670-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,psu.edu,gmx.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258443-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 094EF60F94B
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,strlen.de:email,nvidia.com:email]
+X-Rspamd-Queue-Id: C9063610FD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuho Choi <dbgh9129@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 869b93ba04088713596e68453c1146f52f713290 ]
+[ Upstream commit 6ed3d14fc45d3da6025e7fe4a6a09066856698e2 ]
 
-offb_init_nodriver() gets a referenced PCI device with pci_get_device().
-If pci_enable_device() fails, the function returns without dropping that
-reference.
+These attributes are evaluated as c-string (passed to strcmp), but
+NLA_STRING doesn't check for the presence of a \0 terminator.
 
-Release the PCI device reference before returning from the
-pci_enable_device() failure path.
+Either this needs to switch to nla_strcmp() and needs to adjust printf fmt
+specifier to not use plain %s, or this needs to use NLA_NUL_STRING.
 
-Fixes: 5bda8f7b5468 ("video: fbdev: offb: Call pci_enable_device() before using the PCI VGA device")
-Co-developed-by: Myeonghun Pak <mhun512@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Co-developed-by: Taegyu Kim <tmk5904@psu.edu>
-Signed-off-by: Taegyu Kim <tmk5904@psu.edu>
-Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+As the code has been this way for long time, it seems to me that userspace
+does include the terminating nul, even tough its not enforced so far, and
+thus NLA_NUL_STRING use is the simpler solution.
+
+Fixes: 30dc5e63d6a5 ("RDMA/core: Add support for iWARP Port Mapper user space service")
+Link: https://patch.msgid.link/r/20260330122742.13315-1-fw@strlen.de
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/offb.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/iwpm_msg.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
-index ea232395e226f..e151b0d7b53c2 100644
---- a/drivers/video/fbdev/offb.c
-+++ b/drivers/video/fbdev/offb.c
-@@ -646,8 +646,13 @@ static void offb_init_nodriver(struct platform_device *parent, struct device_nod
- 			vid = be32_to_cpup(vidp);
- 			did = be32_to_cpup(didp);
- 			pdev = pci_get_device(vid, did, NULL);
--			if (!pdev || pci_enable_device(pdev))
-+			if (!pdev)
- 				return;
-+
-+			if (pci_enable_device(pdev)) {
-+				pci_dev_put(pdev);
-+				return;
-+			}
- 		}
- #endif
- 		/* kludge for valkyrie */
+diff --git a/drivers/infiniband/core/iwpm_msg.c b/drivers/infiniband/core/iwpm_msg.c
+index 3c9a9869212bb..feb09008eb9ca 100644
+--- a/drivers/infiniband/core/iwpm_msg.c
++++ b/drivers/infiniband/core/iwpm_msg.c
+@@ -365,9 +365,9 @@ int iwpm_remove_mapping(struct sockaddr_storage *local_addr, u8 nl_client)
+ /* netlink attribute policy for the received response to register pid request */
+ static const struct nla_policy resp_reg_policy[IWPM_NLA_RREG_PID_MAX] = {
+ 	[IWPM_NLA_RREG_PID_SEQ]     = { .type = NLA_U32 },
+-	[IWPM_NLA_RREG_IBDEV_NAME]  = { .type = NLA_STRING,
++	[IWPM_NLA_RREG_IBDEV_NAME]  = { .type = NLA_NUL_STRING,
+ 					.len = IWPM_DEVNAME_SIZE - 1 },
+-	[IWPM_NLA_RREG_ULIB_NAME]   = { .type = NLA_STRING,
++	[IWPM_NLA_RREG_ULIB_NAME]   = { .type = NLA_NUL_STRING,
+ 					.len = IWPM_ULIBNAME_SIZE - 1 },
+ 	[IWPM_NLA_RREG_ULIB_VER]    = { .type = NLA_U16 },
+ 	[IWPM_NLA_RREG_PID_ERR]     = { .type = NLA_U16 }
+@@ -677,7 +677,7 @@ int iwpm_remote_info_cb(struct sk_buff *skb, struct netlink_callback *cb)
+ 
+ /* netlink attribute policy for the received request for mapping info */
+ static const struct nla_policy resp_mapinfo_policy[IWPM_NLA_MAPINFO_REQ_MAX] = {
+-	[IWPM_NLA_MAPINFO_ULIB_NAME] = { .type = NLA_STRING,
++	[IWPM_NLA_MAPINFO_ULIB_NAME] = { .type = NLA_NUL_STRING,
+ 					.len = IWPM_ULIBNAME_SIZE - 1 },
+ 	[IWPM_NLA_MAPINFO_ULIB_VER]  = { .type = NLA_U16 }
+ };
 -- 
 2.53.0
 
