@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-257997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kD5KFOgiG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:24 +0200
+	id wKQsD14YG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E90CE61069C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B073160ED0A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F1153023A75
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:41:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E4C723047BDD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14C4344DB9;
-	Sat, 30 May 2026 17:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22EA633FE15;
+	Sat, 30 May 2026 16:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inNpD/+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdNh4I8V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5453438AE;
-	Sat, 30 May 2026 17:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03AA32D42B;
+	Sat, 30 May 2026 16:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162879; cv=none; b=LctLV4nM/lhn07oC/yCJvbPPhq8IHL5SHHCeHUzWQvn8t1VR39Y/1or5czXLXxmzsjPM0+ld/ghqwH2SV555y9DI4bHg+Twlw5/0MG1su3YvvXqEMgcwKmxBFL3DyI/Smn2EXLW1MHGeWEcbRZlcCjODh//raEaR4FqgmRzhz3g=
+	t=1780160224; cv=none; b=oElOFEmHRD+zYUlJeh6IAkf1IQx/u5+MDGhnzZnOoxEMyIYhbXfClaQui7qLTcAL6Re+p7dlHlnPJYokTCAs4hF3GB30Zzt3HI74/cViu9arE1cxJIqAjnty6m57BE0OMjMpijYJuU36McckWcDzeCSxnqwWSBKjHT36OUKXNxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162879; c=relaxed/simple;
-	bh=cLgWMYVZCQ74nH/hxP6Ntx0Q3NzL7QwxE/XUwxcKgtU=;
+	s=arc-20240116; t=1780160224; c=relaxed/simple;
+	bh=YOKJXE/8Er5pmd/wzp7y/x8/IINkWWIYfoOFFQRZWz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTWznyQWfirFvmuPJzXb6kaI+kXojkuFKJnuXqVynSv0QwkmsXKzNbinbHM/7XhUEu8eIJGLaPs5xlc2ok45enanIlStJx8rKBg6hdbZ4rNNRKzgdFGphS5CJs5nrn9RA1c166vFcbL+CGREWLeouG3SxjHOBRPzM+e2rRhDrnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inNpD/+o; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18FD1F00893;
-	Sat, 30 May 2026 17:41:17 +0000 (UTC)
+	 MIME-Version; b=tt6EfC8qiyi0TOUfBFUctZ6MqrLvPPzWNoWJqUCJsHhHn+QVbr1aJWcSej1wTWBx607gyvFCvnqfrH3p2XaSM5+96i9SCIHDkD+XU8iKmwtERvsJKGdY46kCmpGafO4XaFQobPL58ws9jUzNLhFlIxCEThAYGFMZkqLwFSYIuz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdNh4I8V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99AAC1F00893;
+	Sat, 30 May 2026 16:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162878;
-	bh=SR9HnDclxjSp5EeRfcRAsIQVIfp2GGUgGczbr008ZJA=;
+	s=korg; t=1780160223;
+	bh=XaYu//ZksSsDkT3UYSOlNYnbAsp31p5yWtV3gOBOiz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=inNpD/+oejQdbxd9+6YY6svNehgu8EpFMiUz8KOnt8dxlmfs5erGB2jukWY1HBOui
-	 /EdUjk1fgrngCMVw7ElIOXlKLQ3fhZ5eliWt1KIzBN/G9GNUioNMVnNFaOdoRzTPVm
-	 zFqGkS54ElVafvwUl9R8pOCHOeRkkbAq5YduVVlo=
+	b=zdNh4I8VVUFBP65WzUUS/V5ElNE+m+dlNmpss1FiYEYKXgIeD+SktjzgOpuAoaXw2
+	 DAkPf03yhqxrPq00x7nCiskAMaLVQlb/ba3SAubQbzOAhh0vMGiFywYyMAbGNvZEMP
+	 DoKZn1q+358bPSymMBvsENZiN1UFuaEg1JoPo2Bo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezar Bulinaru <cbulinaru@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 090/776] net: tap: NULL pointer derefence in dev_parse_header_protocol when skb->dev is null
+	Matt Fleming <mfleming@cloudflare.com>,
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 6.1 280/969] ipmi: Add limits to event and receive message requests
 Date: Sat, 30 May 2026 17:56:44 +0200
-Message-ID: <20260530160242.662292699@linuxfoundation.org>
+Message-ID: <20260530160308.203451878@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,150 +65,242 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,davemloft.net,altlinux.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-257997-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257218-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,davemloft.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E90CE61069C
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B073160ED0A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezar Bulinaru <cbulinaru@gmail.com>
+From: Corey Minyard <corey@minyard.net>
 
-commit 4f61f133f354853bc394ec7d6028adb9b02dd701 upstream.
+commit c4cca236968683eb0d59abfb12d5c7e4d8514227 upstream.
 
-Fixes a NULL pointer derefence bug triggered from tap driver.
-When tap_get_user calls virtio_net_hdr_to_skb the skb->dev is null
-(in tap.c skb->dev is set after the call to virtio_net_hdr_to_skb)
-virtio_net_hdr_to_skb calls dev_parse_header_protocol which
-needs skb->dev field to be valid.
+The driver would just fetch events and receive messages until the
+BMC said it was done.  To avoid issues with BMCs that never say they are
+done, add a limit of 10 fetches at a time.
 
-The line that trigers the bug is in dev_parse_header_protocol
-(dev is at offset 0x10 from skb and is stored in RAX register)
-  if (!dev->header_ops || !dev->header_ops->parse_protocol)
-  22e1:   mov    0x10(%rbx),%rax
-  22e5:	  mov    0x230(%rax),%rax
+In addition, an si interface has an attn state it can return from the
+hardware which is supposed to cause a flag fetch to see if the driver
+needs to fetch events or message or a few other things.  If the attn
+bit gets stuck, it's a similar problem.  So allow messages in between
+flag fetches so the driver itself doesn't get stuck.
 
-Setting skb->dev before the call in tap.c fixes the issue.
+This is a more general fix than the previous fix for the specific bad
+BMC, but should fix the more general issue of a BMC that won't stop
+saying it has data.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000230
-RIP: 0010:virtio_net_hdr_to_skb.constprop.0+0x335/0x410 [tap]
-Code: c0 0f 85 b7 fd ff ff eb d4 41 39 c6 77 cf 29 c6 48 89 df 44 01 f6 e8 7a 79 83 c1 48 85 c0 0f 85 d9 fd ff ff eb b7 48 8b 43 10 <48> 8b 80 30 02 00 00 48 85 c0 74 55 48 8b 40 28 48 85 c0 74 4c 48
-RSP: 0018:ffffc90005c27c38 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff888298f25300 RCX: 0000000000000010
-RDX: 0000000000000005 RSI: ffffc90005c27cb6 RDI: ffff888298f25300
-RBP: ffffc90005c27c80 R08: 00000000ffffffea R09: 00000000000007e8
-R10: ffff88858ec77458 R11: 0000000000000000 R12: 0000000000000001
-R13: 0000000000000014 R14: ffffc90005c27e08 R15: ffffc90005c27cb6
-FS:  0000000000000000(0000) GS:ffff88858ec40000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000230 CR3: 0000000281408006 CR4: 00000000003706e0
-Call Trace:
- tap_get_user+0x3f1/0x540 [tap]
- tap_sendmsg+0x56/0x362 [tap]
- ? get_tx_bufs+0xc2/0x1e0 [vhost_net]
- handle_tx_copy+0x114/0x670 [vhost_net]
- handle_tx+0xb0/0xe0 [vhost_net]
- handle_tx_kick+0x15/0x20 [vhost_net]
- vhost_worker+0x7b/0xc0 [vhost]
- ? vhost_vring_call_reset+0x40/0x40 [vhost]
- kthread+0xfa/0x120
- ? kthread_complete_and_exit+0x20/0x20
- ret_from_fork+0x1f/0x30
+This has been there from the beginning of the driver.  It's not a bug
+per-se, but it is accounting for bugs in BMCs.
 
-Fixes: 924a9bc362a5 ("net: check if protocol extracted by virtio_net_hdr_set_proto is correct")
-Signed-off-by: Cezar Bulinaru <cbulinaru@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[ kovalev: bp to fix CVE-2022-50073 ]
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Matt Fleming <mfleming@cloudflare.com>
+Closes: https://lore.kernel.org/lkml/20260415115930.3428942-1-matt@readmodwrite.com/
+Fixes: <1da177e4c3f4> ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/tap.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/char/ipmi/ipmi_si_intf.c |   54 +++++++++++++++++++++++++++++++--------
+ drivers/char/ipmi/ipmi_ssif.c    |   23 +++++++++++++++-
+ 2 files changed, 64 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index 53eadd82f9b8c..a08adca412b41 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -703,11 +703,22 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 	skb_reset_mac_header(skb);
- 	skb->protocol = eth_hdr(skb)->h_proto;
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -162,6 +162,10 @@ struct smi_info {
+ 			     OEM2_DATA_AVAIL)
+ 	unsigned char       msg_flags;
  
-+	rcu_read_lock();
-+	tap = rcu_dereference(q->tap);
-+	if (!tap) {
-+		kfree_skb(skb);
-+		rcu_read_unlock();
-+		return total_len;
-+	}
-+	skb->dev = tap->dev;
++	/* When requesting events and messages, don't do it forever. */
++	unsigned int        num_requests_in_a_row;
++	bool		    last_was_flag_fetch;
 +
- 	if (vnet_hdr_len) {
- 		err = virtio_net_hdr_to_skb(skb, &vnet_hdr,
- 					    tap_is_little_endian(q));
--		if (err)
-+		if (err) {
-+			rcu_read_unlock();
- 			goto err_kfree;
-+		}
+ 	/* Does the BMC have an event buffer? */
+ 	bool		    has_event_buffer;
+ 
+@@ -394,7 +398,10 @@ static void start_getting_msg_queue(stru
+ 
+ 	start_new_msg(smi_info, smi_info->curr_msg->data,
+ 		      smi_info->curr_msg->data_size);
+-	smi_info->si_state = SI_GETTING_MESSAGES;
++	if (smi_info->si_state != SI_GETTING_MESSAGES) {
++		smi_info->num_requests_in_a_row = 0;
++		smi_info->si_state = SI_GETTING_MESSAGES;
++	}
+ }
+ 
+ static void start_getting_events(struct smi_info *smi_info)
+@@ -405,7 +412,10 @@ static void start_getting_events(struct
+ 
+ 	start_new_msg(smi_info, smi_info->curr_msg->data,
+ 		      smi_info->curr_msg->data_size);
+-	smi_info->si_state = SI_GETTING_EVENTS;
++	if (smi_info->si_state != SI_GETTING_EVENTS) {
++		smi_info->num_requests_in_a_row = 0;
++		smi_info->si_state = SI_GETTING_EVENTS;
++	}
+ }
+ 
+ /*
+@@ -579,6 +589,7 @@ static void handle_transaction_done(stru
+ 			smi_info->si_state = SI_NORMAL;
+ 		} else {
+ 			smi_info->msg_flags = msg[3];
++			smi_info->last_was_flag_fetch = true;
+ 			handle_flags(smi_info);
+ 		}
+ 		break;
+@@ -624,6 +635,11 @@ static void handle_transaction_done(stru
+ 		} else {
+ 			smi_inc_stat(smi_info, events);
+ 
++			smi_info->num_requests_in_a_row++;
++			if (smi_info->num_requests_in_a_row > 10)
++				/* Stop if we do this too many times. */
++				smi_info->msg_flags &= ~EVENT_MSG_BUFFER_FULL;
++
+ 			/*
+ 			 * Do this before we deliver the message
+ 			 * because delivering the message releases the
+@@ -662,6 +678,11 @@ static void handle_transaction_done(stru
+ 		} else {
+ 			smi_inc_stat(smi_info, incoming_messages);
+ 
++			smi_info->num_requests_in_a_row++;
++			if (smi_info->num_requests_in_a_row > 10)
++				/* Stop if we do this too many times. */
++				smi_info->msg_flags &= ~RECEIVE_MSG_AVAIL;
++
+ 			/*
+ 			 * Do this before we deliver the message
+ 			 * because delivering the message releases the
+@@ -790,6 +811,26 @@ restart:
  	}
  
- 	skb_probe_transport_header(skb);
-@@ -717,8 +728,6 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
- 		skb_set_network_header(skb, depth);
- 
--	rcu_read_lock();
--	tap = rcu_dereference(q->tap);
- 	/* copy skb_ubuf_info for callback when skb has no error */
- 	if (zerocopy) {
- 		skb_zcopy_init(skb, msg_control);
-@@ -727,14 +736,8 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 		uarg->callback(NULL, uarg, false);
+ 	/*
++	 * If we are currently idle, or if the last thing that was
++	 * done was a flag fetch and there is a message pending, try
++	 * to start the next message.
++	 *
++	 * We do the waiting message check to avoid a stuck flag
++	 * completely wedging the driver.  Let a message through
++	 * in between flag operations if that happens.
++	 */
++	if (si_sm_result == SI_SM_IDLE ||
++	    (si_sm_result == SI_SM_ATTN && smi_info->waiting_msg &&
++	     smi_info->last_was_flag_fetch)) {
++		smi_info->last_was_flag_fetch = false;
++		smi_inc_stat(smi_info, idles);
++
++		si_sm_result = start_next_msg(smi_info);
++		if (si_sm_result != SI_SM_IDLE)
++			goto restart;
++	}
++
++	/*
+ 	 * We prefer handling attn over new messages.  But don't do
+ 	 * this if there is not yet an upper layer to handle anything.
+ 	 */
+@@ -822,15 +863,6 @@ restart:
+ 		}
  	}
  
--	if (tap) {
--		skb->dev = tap->dev;
--		dev_queue_xmit(skb);
--	} else {
--		kfree_skb(skb);
--	}
-+	dev_queue_xmit(skb);
- 	rcu_read_unlock();
+-	/* If we are currently idle, try to start the next message. */
+-	if (si_sm_result == SI_SM_IDLE) {
+-		smi_inc_stat(smi_info, idles);
 -
- 	return total_len;
+-		si_sm_result = start_next_msg(smi_info);
+-		if (si_sm_result != SI_SM_IDLE)
+-			goto restart;
+-	}
+-
+ 	if ((si_sm_result == SI_SM_IDLE)
+ 	    && (atomic_read(&smi_info->req_events))) {
+ 		/*
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -225,6 +225,9 @@ struct ssif_info {
+ 	bool		    has_event_buffer;
+ 	bool		    supports_alert;
  
- err_kfree:
--- 
-2.53.0
-
++	/* When requesting events and messages, don't do it forever. */
++	unsigned int        num_requests_in_a_row;
++
+ 	/*
+ 	 * Used to tell what we should do with alerts.  If we are
+ 	 * waiting on a response, read the data immediately.
+@@ -413,7 +416,10 @@ static void start_event_fetch(struct ssi
+ 	}
+ 
+ 	ssif_info->curr_msg = msg;
+-	ssif_info->ssif_state = SSIF_GETTING_EVENTS;
++	if (ssif_info->ssif_state != SSIF_GETTING_EVENTS) {
++		ssif_info->num_requests_in_a_row = 0;
++		ssif_info->ssif_state = SSIF_GETTING_EVENTS;
++	}
+ 	ipmi_ssif_unlock_cond(ssif_info, flags);
+ 
+ 	msg->data[0] = (IPMI_NETFN_APP_REQUEST << 2);
+@@ -436,7 +442,10 @@ static void start_recv_msg_fetch(struct
+ 	}
+ 
+ 	ssif_info->curr_msg = msg;
+-	ssif_info->ssif_state = SSIF_GETTING_MESSAGES;
++	if (ssif_info->ssif_state != SSIF_GETTING_MESSAGES) {
++		ssif_info->num_requests_in_a_row = 0;
++		ssif_info->ssif_state = SSIF_GETTING_MESSAGES;
++	}
+ 	ipmi_ssif_unlock_cond(ssif_info, flags);
+ 
+ 	msg->data[0] = (IPMI_NETFN_APP_REQUEST << 2);
+@@ -843,6 +852,11 @@ static void msg_done_handler(struct ssif
+ 			ssif_info->msg_flags &= ~EVENT_MSG_BUFFER_FULL;
+ 			handle_flags(ssif_info, flags);
+ 		} else {
++			ssif_info->num_requests_in_a_row++;
++			if (ssif_info->num_requests_in_a_row > 10)
++				/* Stop if we do this too many times. */
++				ssif_info->msg_flags &= ~EVENT_MSG_BUFFER_FULL;
++
+ 			handle_flags(ssif_info, flags);
+ 			ssif_inc_stat(ssif_info, events);
+ 			deliver_recv_msg(ssif_info, msg);
+@@ -876,6 +890,11 @@ static void msg_done_handler(struct ssif
+ 			ssif_info->msg_flags &= ~RECEIVE_MSG_AVAIL;
+ 			handle_flags(ssif_info, flags);
+ 		} else {
++			ssif_info->num_requests_in_a_row++;
++			if (ssif_info->num_requests_in_a_row > 10)
++				/* Stop if we do this too many times. */
++				ssif_info->msg_flags &= ~RECEIVE_MSG_AVAIL;
++
+ 			ssif_inc_stat(ssif_info, incoming_messages);
+ 			handle_flags(ssif_info, flags);
+ 			deliver_recv_msg(ssif_info, msg);
 
 
 
