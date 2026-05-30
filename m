@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-257352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257317-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FMhKScbG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257352-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:19 +0200
+	id CH08G40aG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257317-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09EC660F3AD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD62760F21A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 950D130A3B6D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:04:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4655C308845E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95F5366567;
-	Sat, 30 May 2026 17:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D1C34BA42;
+	Sat, 30 May 2026 17:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gazhJfXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pq8wIZYB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4012690D5;
-	Sat, 30 May 2026 17:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6549532D42B;
+	Sat, 30 May 2026 17:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160695; cv=none; b=oHdUdDmp2oZMxsOtYbOkGZz2+fOCVcpJbahIE38ha2LApeKVYWqrAkXYXYTt0Dd6UGWpS2oMpdSzEU3ukEh952kx6wM3091QVENORXlwE7pBQDWwXF6XFSESwqusiCEs9Un+ZMe3WABbBRLaw0MCdzdLQ+FPU7if25qJspxwzBA=
+	t=1780160589; cv=none; b=dCXG2yFFbhuTcH8s6OE2PdQSj7tRgJPAdo8Ftltr2eFoWCPTyQ1iPgGdQ4D6x5q4ogtDveD165fbFgQnKDn4C9muK8g+d5Vz8d+5YVmaK2Az6v02NzS0mFAEppudWaAWQS7v+RPo1ufzFupEAhy+o0dCBBZHQ1kbopae3Y5DlHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160695; c=relaxed/simple;
-	bh=btAn/3MUUgpN9QgVPwDeYuM98I7Mf/0npcteWLykBR8=;
+	s=arc-20240116; t=1780160589; c=relaxed/simple;
+	bh=hlJma0sLS8cz1XwvhLlcjhGY/rp7kq4WH51b1XOCZDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MExkyge7PfgYl71IYeDxcGejeVj/gx9utDKEVrQN6WnEitEB6Y8tJjpgS06oC4m+I3WCExqD3iCQJFYz61qqe1rrJjYQ8LpD8gnPIdRfxNEmfIZ66rH2rmHQdm7XgFhcy4JMHjD8K9mLTDtZ+qIuDkKh1ShX2Fvyfo44XATGWgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gazhJfXe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF5E1F00893;
-	Sat, 30 May 2026 17:04:53 +0000 (UTC)
+	 MIME-Version; b=CxnTRrvdkU4V9VJx0bKpNxSUAx12LtwYFzQW9prHTo6/zwnIRWOIkXnmt/Dhqy0OtnrxTqPpxU9azwhImG02fd1DoSNv67WltEkA7Vl/HHQvyhAw0b4pKY4X/3rbQhTZZKhpiAGQZLzMmjVCZGhOTeKHHNr5rinxEWxkeF6WKxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pq8wIZYB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C03B1F00893;
+	Sat, 30 May 2026 17:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160694;
-	bh=32Ivv3MpeqKdMJsBBCo88V35ct+q9hkFUyhjcO7t2RI=;
+	s=korg; t=1780160588;
+	bh=XTaNVMoePQMUOONLrghF0TmFiF2KErCY+QUyrZbzoJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gazhJfXe/y02SfPtMEeIGGsu2BsXsUSyupYLR0z7zKZ94vmEw7cXJqwIal0WU1a0D
-	 fNPhXpCJ6zv62B+TyXNPQsIDK3GCtcf1lBgpQpO3e6z/3Q0fs7tFyZo6mAUK60Fin+
-	 tkefhe2pMUa9L6ocQ4c1u0su92Rjp6s3zvaFT9Z4=
+	b=Pq8wIZYBE1XGShey9m9VXkSZD4X6wjJd4i/WOl1udNmG5nsY0Z8gWl9iY8tJl9Mnm
+	 Mr7QemBq5BvFrdkiIvcrlrJrspenbs0P2wxRLSpOCitOhaQbeZ97ntfE40BrC5WPsC
+	 iayCLFF0AiqvZwbrbcjtlcNvxsvQQSal2q12aicg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.1 378/969] KVM: arm64: vgic: Fix IIDR revision field extracted from wrong value
-Date: Sat, 30 May 2026 17:58:22 +0200
-Message-ID: <20260530160310.739463342@linuxfoundation.org>
+	Wentao Guan <guanwentao@uniontech.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 379/969] LoongArch: Fix potential ADE in loongson_gpu_fixup_dma_hang()
+Date: Sat, 30 May 2026 17:58:23 +0200
+Message-ID: <20260530160310.765563799@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -62,34 +62,34 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257352-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257317-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 09EC660F3AD
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CD62760F21A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -97,52 +97,104 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Wentao Guan <guanwentao@uniontech.com>
 
-commit a0e6ae45af17e8b27958830595799c702ffbab8d upstream.
+commit 8dfa2f8780e486d05b9a0ffce70b8f5fbd62053e upstream.
 
-The uaccess write handlers for GICD_IIDR in both GICv2 and GICv3
-extract the revision field from 'reg' (the current IIDR value read back
-from the emulated distributor) instead of 'val' (the value userspace is
-trying to write). This means userspace can never actually change the
-implementation revision — the extracted value is always the current one.
+The switch case in loongson_gpu_fixup_dma_hang() may not DC2 or DC3, and
+readl(crtc_reg) will access with random address, because the "device" is
+from "base+PCI_DEVICE_ID", "base" is from "pdev->devfn+1". This is wrong
+when my platform inserts a discrete GPU:
 
-Fix the FIELD_GET to use 'val' so that userspace can select a different
-revision for migration compatibility.
+lspci -tv
+-[0000:00]-+-00.0  Loongson Technology LLC Hyper Transport Bridge Controller
+...
+           +-06.0  Loongson Technology LLC LG100 GPU
+           +-06.2  Loongson Technology LLC Device 7a37
+...
 
-Fixes: 49a1a2c70a7f ("KVM: arm64: vgic-v3: Advertise GICR_CTLR.{IR, CES} as a new GICD_IIDR revision")
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Link: https://patch.msgid.link/20260407210949.2076251-2-dwmw2@infradead.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Add a default switch case to fix the panic as below:
+
+ Kernel ade access[#1]:
+ CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.6.136-loong64-desktop-hwe+ #4
+ pc 90000000017e5534 ra 90000000017e54c0 tp 90000001002f8000 sp 90000001002fb6c0
+ a0 80000efe00003100 a1 0000000000003100 a2 0000000000000000 a3 0000000000000002
+ a4 90000001002fb6b4 a5 900000087cdb58fd a6 90000000027af000 a7 0000000000000001
+ t0 00000000000085b9 t1 000000000000ffff t2 0000000000000000 t3 0000000000000000
+ t4 fffffffffffffffd t5 00000000fffb6d9c t6 0000000000083b00 t7 00000000000070c0
+ t8 900000087cdb4d94 u0 900000087cdb58fd s9 90000001002fb826 s0 90000000031c12c8
+ s1 7fffffffffffff00 s2 90000000031c12d0 s3 0000000000002710 s4 0000000000000000
+ s5 0000000000000000 s6 9000000100053000 s7 7fffffffffffff00 s8 90000000030d4000
+    ra: 90000000017e54c0 loongson_gpu_fixup_dma_hang+0x40/0x210
+   ERA: 90000000017e5534 loongson_gpu_fixup_dma_hang+0xb4/0x210
+  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
+  PRMD: 00000004 (PPLV0 +PIE -PWE)
+  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
+ ESTAT: 00480000 [ADEM] (IS= ECode=8 EsubCode=1)
+  BADV: 7fffffffffffff00
+  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
+ Modules linked in:
+ Process swapper/0 (pid: 1, threadinfo=(____ptrval____), task=(____ptrval____))
+ Stack : 0000000000000006 90000001002fb778 90000001002fb704 0000000000000007
+         0000000016a65700 90000000017e5690 000000000000ffff ffffffffffffffff
+         900000000209f7c0 9000000100053000 900000000209f7a8 9000000000eebc08
+         0000000000000000 0000000000000000 0000000000000006 90000001002fb778
+         90000001000530b8 90000000027af000 0000000000000000 9000000100054000
+         9000000100053000 9000000000ebb70c 9000000100004c00 9000000004000001
+         90000001002fb7e4 bae765461f31cb12 0000000000000000 0000000000000000
+         0000000000000006 90000000027af000 0000000000000030 90000000027af000
+         900000087cd6f800 9000000100053000 0000000000000000 9000000000ebc560
+         7a2500147cdaf720 bae765461f31cb12 0000000000000001 0000000000000030
+         ...
+ Call Trace:
+ [<90000000017e5534>] loongson_gpu_fixup_dma_hang+0xb4/0x210
+ [<9000000000eebc08>] pci_fixup_device+0x108/0x280
+ [<9000000000ebb70c>] pci_setup_device+0x24c/0x690
+ [<9000000000ebc560>] pci_scan_single_device+0xe0/0x140
+ [<9000000000ebc684>] pci_scan_slot+0xc4/0x280
+ [<9000000000ebdd00>] pci_scan_child_bus_extend+0x60/0x3f0
+ [<9000000000f5bc94>] acpi_pci_root_create+0x2b4/0x420
+ [<90000000017e5e74>] pci_acpi_scan_root+0x2d4/0x440
+ [<9000000000f5b02c>] acpi_pci_root_add+0x21c/0x3a0
+ [<9000000000f4ee54>] acpi_bus_attach+0x1a4/0x3c0
+ [<90000000010e200c>] device_for_each_child+0x6c/0xe0
+ [<9000000000f4bbf4>] acpi_dev_for_each_child+0x44/0x70
+ [<9000000000f4ef40>] acpi_bus_attach+0x290/0x3c0
+ [<90000000010e200c>] device_for_each_child+0x6c/0xe0
+ [<9000000000f4bbf4>] acpi_dev_for_each_child+0x44/0x70
+ [<9000000000f4ef40>] acpi_bus_attach+0x290/0x3c0
+ [<9000000000f5211c>] acpi_bus_scan+0x6c/0x280
+ [<900000000189c028>] acpi_scan_init+0x194/0x310
+ [<900000000189bc6c>] acpi_init+0xcc/0x140
+ [<9000000000220cdc>] do_one_initcall+0x4c/0x310
+ [<90000000018618fc>] kernel_init_freeable+0x258/0x2d4
+ [<900000000184326c>] kernel_init+0x28/0x13c
+ [<9000000000222008>] ret_from_kernel_thread+0xc/0xa4
+
 Cc: stable@vger.kernel.org
+Fixes: 95db0c9f526d ("LoongArch: Workaround LS2K/LS7A GPU DMA hang bug")
+Link: https://gist.github.com/opsiff/ebf2dac51b4013d22462f2124c55f807
+Link: https://gist.github.com/opsiff/a62f2a73db0492b3c49bf223a339b133
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/vgic/vgic-mmio-v2.c |    2 +-
- arch/arm64/kvm/vgic/vgic-mmio-v3.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/pci/pci.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/arm64/kvm/vgic/vgic-mmio-v2.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
-@@ -91,7 +91,7 @@ static int vgic_mmio_uaccess_write_v2_mi
- 		 * migration from old kernels to new kernels with legacy
- 		 * userspace.
- 		 */
--		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, reg);
-+		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, val);
- 		switch (reg) {
- 		case KVM_VGIC_IMP_REV_2:
- 		case KVM_VGIC_IMP_REV_3:
---- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-@@ -167,7 +167,7 @@ static int vgic_mmio_uaccess_write_v3_mi
- 		if ((reg ^ val) & ~GICD_IIDR_REVISION_MASK)
- 			return -EINVAL;
+--- a/arch/loongarch/pci/pci.c
++++ b/arch/loongarch/pci/pci.c
+@@ -133,6 +133,9 @@ static void loongson_gpu_fixup_dma_hang(
+ 		crtc_reg = regbase;
+ 		crtc_offset = 0x400;
+ 		break;
++	default:
++		iounmap(regbase);
++		return;
+ 	}
  
--		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, reg);
-+		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, val);
- 		switch (reg) {
- 		case KVM_VGIC_IMP_REV_2:
- 		case KVM_VGIC_IMP_REV_3:
+ 	for (i = 0; i < CRTC_NUM_MAX; i++, crtc_reg += crtc_offset) {
 
 
 
