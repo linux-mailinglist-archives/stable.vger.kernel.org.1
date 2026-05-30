@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257616-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kGVfBaYoG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258358-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:54 +0200
+	id cJnYCbQdG2qW/QgAu9opvQ
+	(envelope-from <stable+bounces-257616-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A046113CD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD05E60FA47
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F4753149CF6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:01:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B059E306C108
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D023AC0FA;
-	Sat, 30 May 2026 18:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B794334695;
+	Sat, 30 May 2026 17:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8d6ht9Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9rvkg+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8022823392B;
-	Sat, 30 May 2026 18:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AE23242D7;
+	Sat, 30 May 2026 17:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164084; cv=none; b=E1jXwFMth/uZHMYh2BgIk0v9+IlZx47pAbU8wBr6sl8DuNXAGjGTyQIHI2zaaOuUA49wXRu92VIoGI6kPWq0p/6UsrjOdaBZ0xVPgbUUy3fF/x1SftZaCzM9/djr5ua5eekFoMSuXe6MkzwJgEXDIQF4LMh6mi2hA9kUY8ZI8lQ=
+	t=1780161598; cv=none; b=oTNU7fO1JsHBlV2/h4KM4ehiTL7n6Z4yOepisld93GqVmzEBKTJ1b7EkrZ5Ht60+RVQ0fDgnnahDH5y+B7+1Q/vuw506/3M1IliOx4IJDnaXETgxtOKk7cu3OvJhlT1R58psr5AKh7kvvlDaieMgKdhlfk49qMZXWuLhRR+aY0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164084; c=relaxed/simple;
-	bh=yN1GoSbjTwK4bmps1YfXGfbYLyF8AQElRuKCO2PQH+E=;
+	s=arc-20240116; t=1780161598; c=relaxed/simple;
+	bh=GwggiXMEWXZu/Mdvt3ustn7HUda9aDhM0R1w8E+YL5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bFHUoI5uAOTxZl/z+pE/cStzk49BcXP2U14JKe+iswXgY9/cReMRF3mLZzmzu7/yOBqqiBpEmhO/HyaRJt7CEKX0O3lENRkW2nEsbXreeCJ75iev33AtOGPgPF/wJrUpRjUS4LXNYFsEZs63bbq6euAuikGK9KbMCUUhs72NVlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8d6ht9Y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FA11F00893;
-	Sat, 30 May 2026 18:01:22 +0000 (UTC)
+	 MIME-Version; b=haIH5vmopZHcafNqg+nEJhPq46rStqHfmDOt47Ff4y5isFCk2pkc3UFzXfS6Gl/zziRgdJ4rKQpQK+G1eu7Q9t2CtonKXO1jsmG73+1a5mMKYZur9jDe+EYuemk0fH5acyG3qHMDU6veNhSULLgv49q28V/e9iVQz99clN6w5Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9rvkg+w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A82D1F00898;
+	Sat, 30 May 2026 17:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164083;
-	bh=RiXZuuks3LDZXDYTFcROuF6XKe+Xeg5ONBLPXDu8ZU0=;
+	s=korg; t=1780161597;
+	bh=p80xcMtUH5++Qlib5N42rs1W7eqehJ+bA8sGdLDIIJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D8d6ht9YXSaXPPQukmr65aAeHhkszWh/NELY15u0xm+yUxjk0dM0EV7anDS2bfvUq
-	 +d/z9p93OGCsUpi90iR9I+ga6SG6+i+zVJK2Ovx4NfremLYZHo9SPSHJjenrXNlAK4
-	 pVlceZrlJ6FOwkb03DgwYJori5b775SR1gSshac0=
+	b=N9rvkg+wMOOkxXoDIN7Av7G9O4l6wntdwqLb91G4u1k3joZtbZ6LWaBYA1/6FBPdM
+	 DPE3aHY5e16//rWkt/1gyiNv98dmLNg+hqVE9oFDMYTT0VL6c7+VdKeLpdZOgfFZrN
+	 5sdiBGXaoO519bJF4XQ5lv9X5JgZ2Wt235Edfysg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 449/776] drm/amd/pm/ci: Use highest MCLK on CI when MCLK DPM is disabled
-Date: Sat, 30 May 2026 18:02:43 +0200
-Message-ID: <20260530160251.999081338@linuxfoundation.org>
+Subject: [PATCH 6.1 640/969] leds: lgm-sso: Remove duplicate assignments for priv->mmap
+Date: Sat, 30 May 2026 18:02:44 +0200
+Message-ID: <20260530160318.127909818@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258358-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257616-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: 97A046113CD
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CD05E60FA47
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 894f0d34d66cb47fe718fe2ae5c18729d22c5218 ]
+[ Upstream commit 7186d0330c3f3e86de577687a82f4ebd96dcb5ac ]
 
-When MCLK DPM is disabled for any reason, populate the MCLK
-table with the highest MCLK DPM level, so that the ASIC can
-use the highest possible memory clock to get good performance
-even when MCLK DPM is disabled.
+Remove duplicate assignment of priv->mmap in intel_sso_led_probe().
 
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: fba8a6f2263b ("leds: lgm-sso: Fix clock handling")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://patch.msgid.link/20260226033048.3715915-1-nichen@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/leds/blink/leds-lgm-sso.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-index 7cce5d200527e..a6d2c6256c347 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -1321,6 +1321,14 @@ static int ci_populate_all_memory_levels(struct pp_hwmgr *hwmgr)
- 			return result;
- 	}
+diff --git a/drivers/leds/blink/leds-lgm-sso.c b/drivers/leds/blink/leds-lgm-sso.c
+index 6f270c0272fb1..a33a97c2abb65 100644
+--- a/drivers/leds/blink/leds-lgm-sso.c
++++ b/drivers/leds/blink/leds-lgm-sso.c
+@@ -807,8 +807,6 @@ static int intel_sso_led_probe(struct platform_device *pdev)
  
-+	if (data->mclk_dpm_key_disabled && dpm_table->mclk_table.count) {
-+		/* Populate the table with the highest MCLK level when MCLK DPM is disabled */
-+		for (i = 0; i < dpm_table->mclk_table.count - 1; i++) {
-+			levels[i] = levels[dpm_table->mclk_table.count - 1];
-+			levels[i].DisplayWatermark = PPSMC_DISPLAY_WATERMARK_HIGH;
-+		}
-+	}
-+
- 	smu_data->smc_state_table.MemoryLevel[0].EnabledForActivity = 1;
+ 	priv->fpid_clkrate = clk_get_rate(priv->clocks[1].clk);
  
- 	dev_id = adev->pdev->device;
+-	priv->mmap = syscon_node_to_regmap(dev->of_node);
+-
+ 	priv->mmap = syscon_node_to_regmap(dev->of_node);
+ 	if (IS_ERR(priv->mmap)) {
+ 		dev_err(dev, "Failed to map iomem!\n");
 -- 
 2.53.0
 
