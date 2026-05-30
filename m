@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259103-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LZgLQ8oG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258504-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:23 +0200
+	id yM6cNeQvG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259103-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D239C611276
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F32A46125A6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DA387300468C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ED23F3008C8B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65FED3B7B72;
-	Sat, 30 May 2026 18:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9262F3C3E;
+	Sat, 30 May 2026 18:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJFidjP3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFmX9iRe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CAF29B799;
-	Sat, 30 May 2026 18:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C6F2773DE;
+	Sat, 30 May 2026 18:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164572; cv=none; b=B4l7fx6L1HW6fLCO9vCPlTzlNCyRuwXqJjd73CMh1vw4UEg5SuK47RVgqSUMn1rKvvK0ayYMJ/WWZgj7eZ2JRIIgh0q1MTaQ7kEue4Hb4wGnOeLqELZ/kFmHos+8DKPzpZvu0FfxljX8iDVrsnbeFRcfA5nij7nMLnLYWsc5rMM=
+	t=1780166621; cv=none; b=GeBBkJlFHtCzfbOXMG6Uxh4NLOMRMLNM9UWsp5irxPMd1Kkmxd7eJ6bzthk5Pha07FwhakusgSlYw8NT3F+mFZuc2OQ4Zi/n3mrqH2wxyJER0fA/Bd7v8mJ17l+oe28ontXF73pD6zh0pheNirOJFrgsvlAbYwSCKPneFDQqGdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164572; c=relaxed/simple;
-	bh=RDi1d5hOMUzzJHf7W62pbltLbgYu6a8xjYX+xVchjFU=;
+	s=arc-20240116; t=1780166621; c=relaxed/simple;
+	bh=RrFDuAHDty+UmutVVd4rcrdNqKRWuNqfuBvLnbMmemY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AlPEqP5+KHTRQ56V5XGSK74jRxQuEU6WMPjk6UysXTSkKUC96B+Eb6qxBPb6RhhR/WQkhcgcbABfEZmlsLaeOjUA/q9az4eJYbtDGJMHRHFL7xXqc1ZAx8houczSoAX+igmaotuz/titYlYHxZJqD6wFfXZv6rMXBM5toioM93A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJFidjP3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896371F00893;
-	Sat, 30 May 2026 18:09:30 +0000 (UTC)
+	 MIME-Version; b=QNlBvlOvl/zNgZ2h7sYUYxDdTQi2gf0+hNymp8SK/WTU6XVbID2nwKATNDJO9DX/T0lK2aqOCVHr4yx5ASNPUgxkuYh49zdQtGAyXygrer/U5+lTNhXAcMeaWqzVgu4o5qRKb/cJP30M0oOaL919OuKYkd7j9y6+p5+jwsRaI54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFmX9iRe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE821F00893;
+	Sat, 30 May 2026 18:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164571;
-	bh=QRjrrGsJq5qBAn0hftxIeEmJ6IZfqwZ3x6NKeOo/dKU=;
+	s=korg; t=1780166620;
+	bh=wAELdzVFzevWXX0A2ebbwR4WK2d/LrKOgeAjQAUHfSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PJFidjP34ZUXU5kF7H/b36TwbltdofGufd8J5tnsxNzOPl5nRSyHHGaFlRBmxABLF
-	 6BzCNruOIQlSZ2D4Bhx94S2VwFHY2ILO/NRkaM3ojERuAv8dAM4bMxc+Cjksb5BL5k
-	 yeaWKxGkcb97i4A2F7YJaZhlg6orsJmbqB2+z5XQ=
+	b=TFmX9iReBkvyASnCt8YVKH4oTVlSBsQduQRyWZnScyTnvD8xp4LO4WhYhBqv5BIib
+	 xprUZTf9iNmkoU/YzZhlSryS/9iUhOHhQYGa3UXHOlvOEv5iL3/SNQtsEA3DjRdiSl
+	 EDXddJh4S7kCZqJMZ/baDTY5e+EYpuqgj+9ie7Uo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 587/776] net/sched: sch_fq_codel: remove data-races from fq_codel_dump_stats()
+Subject: [PATCH 5.10 420/589] net/sched: taprio: refactor one skb dequeue from TXQ to separate function
 Date: Sat, 30 May 2026 18:05:01 +0200
-Message-ID: <20260530160255.240048531@linuxfoundation.org>
+Message-ID: <20260530160235.779619005@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +69,196 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258504-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259103-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D239C611276
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,linutronix.de:email,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: F32A46125A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit bbfaa73ea6871db03dc05d7f05f00557a8981f25 ]
+[ Upstream commit 92f966674f6a257eddfa60a85f9b6741d6087ccb ]
 
-fq_codel_dump_stats() acquires the qdisc spinlock a bit too late.
+Future changes will refactor the TXQ selection procedure, and a lot of
+stuff will become messy, the indentation of the bulk of the dequeue
+procedure would increase, etc.
 
-Move this acquisition before we fill st.qdisc_stats with live data.
+Break out the bulk of the function into a new one, which knows the TXQ
+(child qdisc) we should perform a dequeue from.
 
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260421142509.3967231-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 105425b1969c ("net/sched: taprio: fix use-after-free in advance_sched() on schedule switch")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_fq_codel.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/sch_taprio.c | 121 +++++++++++++++++++++--------------------
+ 1 file changed, 63 insertions(+), 58 deletions(-)
 
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-index e56f80b8fefe6..5e773e5993850 100644
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -559,6 +559,8 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 	};
- 	struct list_head *pos;
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 8fe4dea86ad98..b876b950c62e8 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -543,6 +543,66 @@ static void taprio_set_budget(struct taprio_sched *q, struct sched_entry *entry)
+ 			     atomic64_read(&q->picos_per_byte)));
+ }
  
-+	sch_tree_lock(sch);
++static struct sk_buff *taprio_dequeue_from_txq(struct Qdisc *sch, int txq,
++					       struct sched_entry *entry,
++					       u32 gate_mask)
++{
++	struct taprio_sched *q = qdisc_priv(sch);
++	struct net_device *dev = qdisc_dev(sch);
++	struct Qdisc *child = q->qdiscs[txq];
++	struct sk_buff *skb;
++	ktime_t guard;
++	int prio;
++	int len;
++	u8 tc;
 +
- 	st.qdisc_stats.maxpacket = q->cstats.maxpacket;
- 	st.qdisc_stats.drop_overlimit = q->drop_overlimit;
- 	st.qdisc_stats.ecn_mark = q->cstats.ecn_mark;
-@@ -567,7 +569,6 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 	st.qdisc_stats.memory_usage  = q->memory_usage;
- 	st.qdisc_stats.drop_overmemory = q->drop_overmemory;
++	if (unlikely(!child))
++		return NULL;
++
++	if (TXTIME_ASSIST_IS_ENABLED(q->flags)) {
++		skb = child->ops->dequeue(child);
++		if (!skb)
++			return NULL;
++		goto skb_found;
++	}
++
++	skb = child->ops->peek(child);
++	if (!skb)
++		return NULL;
++
++	prio = skb->priority;
++	tc = netdev_get_prio_tc_map(dev, prio);
++
++	if (!(gate_mask & BIT(tc)))
++		return NULL;
++
++	len = qdisc_pkt_len(skb);
++	guard = ktime_add_ns(taprio_get_time(q), length_to_duration(q, len));
++
++	/* In the case that there's no gate entry, there's no
++	 * guard band ...
++	 */
++	if (gate_mask != TAPRIO_ALL_GATES_OPEN &&
++	    ktime_after(guard, entry->close_time))
++		return NULL;
++
++	/* ... and no budget. */
++	if (gate_mask != TAPRIO_ALL_GATES_OPEN &&
++	    atomic_sub_return(len, &entry->budget) < 0)
++		return NULL;
++
++	skb = child->ops->dequeue(child);
++	if (unlikely(!skb))
++		return NULL;
++
++skb_found:
++	qdisc_bstats_update(sch, skb);
++	qdisc_qstats_backlog_dec(sch, skb);
++	sch->q.qlen--;
++
++	return skb;
++}
++
+ /* Will not be called in the full offload case, since the TX queues are
+  * attached to the Qdisc created using qdisc_create_dflt()
+  */
+@@ -568,64 +628,9 @@ static struct sk_buff *taprio_dequeue(struct Qdisc *sch)
+ 		goto done;
  
--	sch_tree_lock(sch);
- 	list_for_each(pos, &q->new_flows)
- 		st.qdisc_stats.new_flows_len++;
+ 	for (i = 0; i < dev->num_tx_queues; i++) {
+-		struct Qdisc *child = q->qdiscs[i];
+-		ktime_t guard;
+-		int prio;
+-		int len;
+-		u8 tc;
+-
+-		if (unlikely(!child))
+-			continue;
+-
+-		if (TXTIME_ASSIST_IS_ENABLED(q->flags)) {
+-			skb = child->ops->dequeue(child);
+-			if (!skb)
+-				continue;
+-			goto skb_found;
+-		}
+-
+-		skb = child->ops->peek(child);
+-		if (!skb)
+-			continue;
+-
+-		prio = skb->priority;
+-		tc = netdev_get_prio_tc_map(dev, prio);
+-
+-		if (!(gate_mask & BIT(tc))) {
+-			skb = NULL;
+-			continue;
+-		}
+-
+-		len = qdisc_pkt_len(skb);
+-		guard = ktime_add_ns(taprio_get_time(q),
+-				     length_to_duration(q, len));
+-
+-		/* In the case that there's no gate entry, there's no
+-		 * guard band ...
+-		 */
+-		if (gate_mask != TAPRIO_ALL_GATES_OPEN &&
+-		    ktime_after(guard, entry->close_time)) {
+-			skb = NULL;
+-			continue;
+-		}
+-
+-		/* ... and no budget. */
+-		if (gate_mask != TAPRIO_ALL_GATES_OPEN &&
+-		    atomic_sub_return(len, &entry->budget) < 0) {
+-			skb = NULL;
+-			continue;
+-		}
+-
+-		skb = child->ops->dequeue(child);
+-		if (unlikely(!skb))
+-			continue;
+-
+-skb_found:
+-		qdisc_bstats_update(sch, skb);
+-		qdisc_qstats_backlog_dec(sch, skb);
+-		sch->q.qlen--;
+-
+-		goto done;
++		skb = taprio_dequeue_from_txq(sch, i, entry, gate_mask);
++		if (skb)
++			goto done;
+ 	}
  
+ done:
 -- 
 2.53.0
 
