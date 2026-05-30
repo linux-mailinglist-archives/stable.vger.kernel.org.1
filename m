@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-258975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258403-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Jv0OT8uG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258975-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:47 +0200
+	id GF65FvYoG2rg/ggAu9opvQ
+	(envelope-from <stable+bounces-258403-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81D1612172
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35C66114AA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6779430095ED
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90EB530FECB8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F120D39A7FE;
-	Sat, 30 May 2026 18:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9132129B78B;
+	Sat, 30 May 2026 18:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eoHu/kwP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLhq4NcC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D5D32F770;
-	Sat, 30 May 2026 18:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72ED23AB26B;
+	Sat, 30 May 2026 18:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166173; cv=none; b=qQSVQL0LDTm81EoLHvGcWjK7BswsfH6glFHD06YSbFSkKDIrXPnCKENAjp8S90xhCCiANfH9otfvov8P3ig4dCaivtdF40DG9Hl1cxq120JQZ0Mhr1EllxIdin0bF9iInDk49tDG309Uzk4zsx2x7pNCqh1NSyLpHUaHX+KBNhM=
+	t=1780164233; cv=none; b=kWyFHezmOzC21O3y9zmRAIwHs6v1e9oZqA4RQW8wY3M4YD/CdQTmudYv8aaBq9UhxvD50AusmVYLEIjoelWsjOUzUi1pG28ZaWiZKPDnWH4V6ymqXAoLVLcDJDEDM0meX8hyONqpXO7lKwo1ytvmZuzhVznT9jwUuvPCkonYygI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166173; c=relaxed/simple;
-	bh=NpfiIGHkC28c4/TYcuXaLFT+fKMJOyBBeay4SLefoF8=;
+	s=arc-20240116; t=1780164233; c=relaxed/simple;
+	bh=jsDbqPh+lKro2Wg7NRaa1/eVQIqSJ7q8lZ1QHSqynxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mpPQjbKog891pABP4G4ngEdvC4QFBwYNwBh2x5sbFBROiTYTUuWOTIkjy4WccDdsSrkMpk1x293t1Miv50pFuh35OcR54ZAO/b1tfb29QoEc/WynHuVivYPw3n735kZb4Fmy0rrwS9K4wk1C+FIj2jW4Swfzz1c9qqTFi+MSMYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eoHu/kwP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95901F00893;
-	Sat, 30 May 2026 18:36:11 +0000 (UTC)
+	 MIME-Version; b=rIpCRSnFqk/rYjl4EWzThYmhs6J96O7ZhMrrxYDbLeZgc0FSjkpTdzmUxLUBVrGnG09NOevm1uYKu/TQ3PGC/RVnF69gd2ZSOK4Vksne9dupuHK8AOYl5O8SvnGtqTKWLbe8bsUrNCrn/6D2JiKlnd+h5fy6PZ35wlPeGhefqmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLhq4NcC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73381F00893;
+	Sat, 30 May 2026 18:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166172;
-	bh=MiQui6zzxP5DsUMI56BpW01ZeyicnRqyRN8+gr81jC8=;
+	s=korg; t=1780164232;
+	bh=yX82XhA6UbnjlNPjyd3wd6TAbjGnl8+9C/7fKP133xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eoHu/kwPNrAQG+RJPcV485tp7fRvNTy1ke79Kh1ILgxNWn9j5qnyk8mxI2vZSp1bW
-	 McRyPJyxiEYhqMXN92bNgvZzixVYo/K+6l9Bp/ha55sUK9Bhv0hccS/yucybmLEgsL
-	 mvllzLb/IIb5MeVNfkVr1a2KjkfaJk+B3GHG1RzM=
+	b=JLhq4NcCJQoo8yXuuxedaMRTBk5HEBWB67C66IR1C795YqdO4e/4FVAUnyFrQCmZ5
+	 I7oZGChsp7VnS7RAl2vkx0RqNUjIlkR9mjDEyIA5iudX/kmxLBAmW+HfY8YobpfzxQ
+	 a32/dUUX3qdsUFYTTISNovUTJ9XLdsTAAhZnEKCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gopi Krishna Menon <krishnagopi487@gmail.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 296/589] thermal/drivers/spear: Fix error condition for reading st,thermal-flags
-Date: Sat, 30 May 2026 18:02:57 +0200
-Message-ID: <20260530160232.720127339@linuxfoundation.org>
+Subject: [PATCH 5.15 464/776] ASoC: fsl_easrc: Check the variable range in fsl_easrc_iec958_put_bits()
+Date: Sat, 30 May 2026 18:02:58 +0200
+Message-ID: <20260530160252.349346072@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,71 +68,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nxp.com,arm.com];
-	TAGGED_FROM(0.00)[bounces-258975-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-258403-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.995];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,arm.com:email,msgid.link:url,nxp.com:email]
-X-Rspamd-Queue-Id: E81D1612172
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: A35C66114AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit da2c4f332a0504d9c284e7626a561d343c8d6f57 ]
+[ Upstream commit 00541b86fb578d4949cfdd6aff1f82d43fcf07af ]
 
-of_property_read_u32 returns 0 on success. The current check returns
--EINVAL if the property is read successfully.
+Add check of input value's range in fsl_easrc_iec958_put_bits(),
+otherwise the wrong value may be written from user space.
 
-Fix the check by removing ! from of_property_read_u32
-
-Fixes: b9c7aff481f1 ("drivers/thermal/spear_thermal.c: add Device Tree probing capability")
-Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
-Suggested-by: Daniel Baluta <daniel.baluta@nxp.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Link: https://patch.msgid.link/20260327090526.59330-1-krishnagopi487@gmail.com
+Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20260401094226.2900532-10-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/spear_thermal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/fsl_easrc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/thermal/spear_thermal.c b/drivers/thermal/spear_thermal.c
-index ee33ed692e4f7..42d8736d5ba49 100644
---- a/drivers/thermal/spear_thermal.c
-+++ b/drivers/thermal/spear_thermal.c
-@@ -94,7 +94,7 @@ static int spear_thermal_probe(struct platform_device *pdev)
- 	struct resource *res;
- 	int ret = 0, val;
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index 792884006f6bc..c144f99927705 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -54,6 +54,9 @@ static int fsl_easrc_iec958_put_bits(struct snd_kcontrol *kcontrol,
+ 	unsigned int regval = ucontrol->value.integer.value[0];
+ 	int ret;
  
--	if (!np || !of_property_read_u32(np, "st,thermal-flags", &val)) {
-+	if (!np || of_property_read_u32(np, "st,thermal-flags", &val)) {
- 		dev_err(&pdev->dev, "Failed: DT Pdata not passed\n");
- 		return -EINVAL;
- 	}
++	if (regval < EASRC_WIDTH_16_BIT || regval > EASRC_WIDTH_24_BIT)
++		return -EINVAL;
++
+ 	ret = (easrc_priv->bps_iec958[mc->regbase] != regval);
+ 
+ 	easrc_priv->bps_iec958[mc->regbase] = regval;
 -- 
 2.53.0
 
