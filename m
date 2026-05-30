@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257388-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJLfIGwlG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:08 +0200
+	id uHD+AFUZG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257388-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62DE610C36
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9529560EEC8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 878B63091C62
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0199D301DCD5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AEA7349CCF;
-	Sat, 30 May 2026 17:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47553AFB13;
+	Sat, 30 May 2026 17:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCmvNcOP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsUZayTr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7033C341AC7;
-	Sat, 30 May 2026 17:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A074481DD;
+	Sat, 30 May 2026 17:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163433; cv=none; b=TFzxMLRvEniSsNOlMTVDxi8X6zxezZSEKQEZTtoACuiBVF6S9OX3Km8fTDHZp3MFB221UE0TUpLZFPEA4NqGoqxu3qyCmpdU/4NMIiSOfBkOxGG7UXSlBLQs8FTjATDCcTk9cbVZHTAeYVlP+zZZUgFR6oIu5JRFw7u1QlW/myA=
+	t=1780160825; cv=none; b=GL357lByaPhFdVEqVIw08N/VfVglhIdRKaQVjfwjEb/7qlIxLhdK2CdvFauVwvypDbf5P6PILBagbcyD+ko9L7C6XORhJN6pZ83t42wJ5KkqfSbRLnutLcRVnKJrMjEyCQJKymFe8Q1zYtt68QJ3P4gZZ5vL6jAM5o13+onZQp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163433; c=relaxed/simple;
-	bh=WMAau8OiUcpZRS9xuXNkigh3byVlXBqyhA9oXgsn9ck=;
+	s=arc-20240116; t=1780160825; c=relaxed/simple;
+	bh=THYi1h6wOv3PTkw2fQy8hAAW8geWlSrb1ycMM3944xQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPzCM2vy1QWx/3oWH4sgRtfkSDrfB3XMaqAy/vPEwVqdZV1ocgPNcMcDsCJYGUbqH+TY/93WrWNHbORtphk5NqTamY7sJL7+QnUjbixZcz34tKZqBbJUdwLwdOXoOmRKE8JxbCdoitikQvVSEktVHtl+8foxFNylOs6w2jqlBec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCmvNcOP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63FE21F00893;
-	Sat, 30 May 2026 17:50:31 +0000 (UTC)
+	 MIME-Version; b=jHKPlQBFK9G1ZcapVmzoUzSljd0gLzs0QSth5ElMsthaCIYYm2F80iAc0b9eeq0rIvWkDE7bw0UZKGJfjLY5Sbk/XhFglHbjuPnuTmFTMzs+DEPO669ITnuYx1rFgRce45kgiHV2zG2sOAWRz+G82axtwDaNpqIfFgo4AIDIXp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsUZayTr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1531F0089F;
+	Sat, 30 May 2026 17:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163432;
-	bh=kntr1amWGt/3xxeyFuWQGHcwIFAopF6nE5dTQSYyfqs=;
+	s=korg; t=1780160824;
+	bh=6KcXKhYhLglromLpnxu6wdB7hnu9LXIqbgUuYONRN1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UCmvNcOPdy7QlkOC1nQlunndqZcahu2uNJa7o+EowF60OMOp1pWfN5pMv2Yf940Z2
-	 7KTageJGfDCUCA6WmZpnLWdDuqbjfUp6yC3OzTNTtWGuJQ5RhkVWGvY0jR/Baj4dmm
-	 DHrrQoi21h0/c/4gpQNIqMT904JabJGEyIZasKHc=
+	b=zsUZayTrKfLt94oPiR5OiNdGDppFMrXmphAtbP8tEZtmBgUKiW3N83+7yS80eIF9u
+	 hmB3jm9zO6GoQ0CleRHylv7rx1MwgT3G9IvJr8i/tDAXkKOF2p5vscEzfLCUcIlTXj
+	 pR8wbDFkonIsxK/NSTPT7YMNFF8fQUMbo3F0h6Uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.15 256/776] dm mirror: fix integer overflow in create_dirty_log()
+	Zilin Guan <zilin@seu.edu.cn>,
+	Jeff Chen <jeff.chen_1@nxp.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 446/969] wifi: mwifiex: Fix memory leak in mwifiex_11n_aggregate_pkt()
 Date: Sat, 30 May 2026 17:59:30 +0200
-Message-ID: <20260530160247.152249204@linuxfoundation.org>
+Message-ID: <20260530160312.591338416@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,84 +70,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258165-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257388-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E62DE610C36
+X-Rspamd-Queue-Id: 9529560EEC8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 4c788c6f921b22f9b6c3f316c4a071c05683e7de upstream.
+[ Upstream commit 990a73dec3fdc145fef6c827c29205437d533ece ]
 
-The argument count calculation in create_dirty_log() performs
-`*args_used = 2 + param_count` before validating against argc. When a
-user provides a param_count close to UINT_MAX via the device mapper
-table string, this unsigned addition wraps around to a small value,
-causing the subsequent `argc < *args_used` check to be bypassed.
+In mwifiex_11n_aggregate_pkt(), skb_aggr is allocated via
+mwifiex_alloc_dma_align_buf(). If mwifiex_is_ralist_valid() returns false,
+the function currently returns -1 immediately without freeing the
+previously allocated skb_aggr, causing a memory leak.
 
-The overflowed param_count is then passed as argc to dm_dirty_log_create(),
-where it can cause out-of-bounds reads on the argv array.
+Since skb_aggr has not yet been queued via skb_queue_tail(), no other
+references to this memory exist. Therefore, it has to be freed locally
+before returning the error.
 
-Fix by comparing param_count against argc - 2 before performing the
-addition, following the same pattern used by parse_features() in the
-same file. Since argc >= 2 is already guaranteed, the subtraction is
-safe.
+Fix this by calling mwifiex_write_data_complete() to free skb_aggr before
+returning the error status.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reviewed-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
+
+Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Jeff Chen <jeff.chen_1@nxp.com>
+Link: https://patch.msgid.link/20260119092625.1349934-1-zilin@seu.edu.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-raid1.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/11n_aggr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/md/dm-raid1.c
-+++ b/drivers/md/dm-raid1.c
-@@ -981,13 +981,13 @@ static struct dm_dirty_log *create_dirty
- 		return NULL;
- 	}
+diff --git a/drivers/net/wireless/marvell/mwifiex/11n_aggr.c b/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
+index 34b4b34276d6d..042b1fe5f0d67 100644
+--- a/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
+@@ -203,6 +203,7 @@ mwifiex_11n_aggregate_pkt(struct mwifiex_private *priv,
  
--	*args_used = 2 + param_count;
--
--	if (argc < *args_used) {
-+	if (param_count > argc - 2) {
- 		ti->error = "Insufficient mirror log arguments";
- 		return NULL;
- 	}
+ 		if (!mwifiex_is_ralist_valid(priv, pra_list, ptrindex)) {
+ 			spin_unlock_bh(&priv->wmm.ra_list_spinlock);
++			mwifiex_write_data_complete(adapter, skb_aggr, 1, -1);
+ 			return -1;
+ 		}
  
-+	*args_used = 2 + param_count;
-+
- 	dl = dm_dirty_log_create(argv[0], ti, mirror_flush, param_count,
- 				 argv + 2);
- 	if (!dl) {
+-- 
+2.53.0
+
 
 
 
