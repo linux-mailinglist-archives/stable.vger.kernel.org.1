@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-257282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258030-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KP0LBg0aG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257282-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:37 +0200
+	id 8D/HFy4jG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258030-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7009160F097
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B984D610775
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 409723029AD1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:01:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD628309BDE6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045FF394E8A;
-	Sat, 30 May 2026 17:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5125634389F;
+	Sat, 30 May 2026 17:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWN4N7Aj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wTKZCLWj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68CE481DD;
-	Sat, 30 May 2026 17:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B21267B05;
+	Sat, 30 May 2026 17:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160458; cv=none; b=gmqSD/FPgvFgorArLKxtXdNhszriJMRGrMfRH2+RBOK3zvANojIVwoBi4vVESmnwKK1AMSM2Lnhs8Zp6jGFN10Br4hgrBhJL5UvJN/1LneeTvgfrqGW1CCr0oz2meY9Ygt8My0x/2HphOzZv++PMYD9Pejd9Sap98cAXii27mVk=
+	t=1780162990; cv=none; b=lSCwxsQAhURBFBD4Q9tSSjfeDgl06PljljSqHH2e/98m5kv06W9y+lcjepwrOl/+Yn8IjXiOI/SrkvwRgNpglE5STZmTxhfrK5VGSAQCzdSJHW8cE/o8Lt2zNzKRLlEc+aRgCgVQLUunJQxNpIYo8cRYtEuz6pe3Y31VLXYM7EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160458; c=relaxed/simple;
-	bh=xEPccIyVkoJEugpAxL9NyDDMBvHL5SPrSoWePEQnLhc=;
+	s=arc-20240116; t=1780162990; c=relaxed/simple;
+	bh=qfpLXBnzMjudIxViUzcD4VDU69rVrYogadW7TGnl6Kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LWB7iS+rDEMDAZ2EnTFAZUHV+WU0sp7nTt38brLDcF5kD7AvluM0m618/2RX/42ff0dtykz6BSZwzGTGM1KF06Ke1hVEGkWudQCSq77UPSRDHX+OsxFK5do8AFsUsZIqKjXQj+ZULUymn2Eyfmr+hOAkfP6RTZ6IycUuyGMVMUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWN4N7Aj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33631F00893;
-	Sat, 30 May 2026 17:00:56 +0000 (UTC)
+	 MIME-Version; b=jlReSiij0T3agW2qlNiS4fqzHwTh1E/Q2RYPshtY8/jlBcJPH2YDa6bQuWofR15WtaSJNNDQXQ0AjTL3LBldJnf7VtMjnKOmsKooxalz8uHMoOpJmOH2lLf4+PHd63gMAkKOZvkjRFH/Cw6O/EHY4D1sed9297TS01ycnxmie38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTKZCLWj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473A31F00893;
+	Sat, 30 May 2026 17:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160457;
-	bh=Bzex0ePy/W5uvX3yzbbaHObR6MrGuJE1zFGpsnCDvfE=;
+	s=korg; t=1780162989;
+	bh=QUgee3/O+JisQ/hDfTMC4E0tSXnf+ftZYjhBOrCIFmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xWN4N7AjWzIcL4CVS/BT0V+ZSL5hOYuM0S575MRhgdObwwDvqC1XqjR55VJYHb128
-	 5k+YTFdNmKqSWIOZF86qD34+I12ne2Kxyyy2Y9YS+FvE0wY4ZKQgDyVfE9ccjJ8ps4
-	 qwj0MV/HJVv4NcDkhmku26bDr6VQDsqcf3Tuhai0=
+	b=wTKZCLWjIlDhxWfv8eYgVOUrELs/RbZFLeBnRva1wD8KFSkJqS79EkE2TazqAOmKH
+	 KajhR71BHkN7Sv18YKawuOcp7fm+7B0MGdPXBFmg4WzJxMtkiTyRDmTlrxaXdlF8sp
+	 snlyxqYLdANGgDbNaVBfQ5x9/804wF3+HranNyVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.1 313/969] powerpc/kdump: fix KASAN sanitization flag for core_$(BITS).o
-Date: Sat, 30 May 2026 17:57:17 +0200
-Message-ID: <20260530160309.055084503@linuxfoundation.org>
+	Keith Busch <kbusch@kernel.org>,
+	Ming Lei <ming.lei@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 5.15 124/776] blk-mq: use quiesced elevator switch when reinitializing queues
+Date: Sat, 30 May 2026 17:57:18 +0200
+Message-ID: <20260530160243.581252463@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,88 +65,149 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	SUBJECT_HAS_CURRENCY(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,gmail.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257282-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,redhat.com,lst.de,kernel.dk,foxmail.com];
+	TAGGED_FROM(0.00)[bounces-258030-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 7009160F097
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,foxmail.com:email,kernel.dk:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B984D610775
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Keith Busch <kbusch@kernel.org>
 
-commit b3a97f9484080c6e71db9e803e3cc1bb372a9bc7 upstream.
+[ Upstream commit 8237c01f1696bc53c470493bf1fe092a107648a6 ]
 
-KASAN instrumentation is intended to be disabled for the kexec core
-code, but the existing Makefile entry misses the object suffix. As a
-result, the flag is not applied correctly to core_$(BITS).o.
+The hctx's run_work may be racing with the elevator switch when
+reinitializing hardware queues. The queue is merely frozen in this
+context, but that only prevents requests from allocating and doesn't
+stop the hctx work from running. The work may get an elevator pointer
+that's being torn down, and can result in use-after-free errors and
+kernel panics (example below). Use the quiesced elevator switch instead,
+and make the previous one static since it is now only used locally.
 
-So when KASAN is enabled, kexec_copy_flush and copy_segments in
-kexec/core_64.c are instrumented, which can result in accesses to
-shadow memory via normal address translation paths. Since these run
-with the MMU disabled, such accesses may trigger page faults
-(bad_page_fault) that cannot be handled in the kdump path, ultimately
-causing a hang and preventing the kdump kernel from booting. The same
-is true for kexec as well, since the same functions are used there.
+  nvme nvme0: resetting controller
+  nvme nvme0: 32/0/0 default/read/poll queues
+  BUG: kernel NULL pointer dereference, address: 0000000000000008
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 80000020c8861067 P4D 80000020c8861067 PUD 250f8c8067 PMD 0
+  Oops: 0000 [#1] SMP PTI
+  Workqueue: kblockd blk_mq_run_work_fn
+  RIP: 0010:kyber_has_work+0x29/0x70
 
-Update the entry to include the “.o” suffix so that KASAN
-instrumentation is properly disabled for this object file.
+...
 
-Fixes: 2ab2d5794f14 ("powerpc/kasan: Disable address sanitization in kexec paths")
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Closes: https://lore.kernel.org/all/1dee8891-8bcc-46b4-93f3-fc3a774abd5b@linux.ibm.com/
-Cc: stable@vger.kernel.org
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260407124349.1698552-1-sourabhjain@linux.ibm.com
+  Call Trace:
+   __blk_mq_do_dispatch_sched+0x83/0x2b0
+   __blk_mq_sched_dispatch_requests+0x12e/0x170
+   blk_mq_sched_dispatch_requests+0x30/0x60
+   __blk_mq_run_hw_queue+0x2b/0x50
+   process_one_work+0x1ef/0x380
+   worker_thread+0x2d/0x3e0
+
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20220927155652.3260724-1-kbusch@fb.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ Adjust context ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kexec/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-mq.c   |    6 +++---
+ block/blk.h      |    3 +--
+ block/elevator.c |    4 ++--
+ 3 files changed, 6 insertions(+), 7 deletions(-)
 
---- a/arch/powerpc/kexec/Makefile
-+++ b/arch/powerpc/kexec/Makefile
-@@ -14,4 +14,4 @@ GCOV_PROFILE_core_$(BITS).o := n
- KCOV_INSTRUMENT_core_$(BITS).o := n
- UBSAN_SANITIZE_core_$(BITS).o := n
- KASAN_SANITIZE_core.o := n
--KASAN_SANITIZE_core_$(BITS) := n
-+KASAN_SANITIZE_core_$(BITS).o := n
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -3732,14 +3732,14 @@ static bool blk_mq_elv_switch_none(struc
+ 
+ 	mutex_lock(&q->sysfs_lock);
+ 	/*
+-	 * After elevator_switch_mq, the previous elevator_queue will be
++	 * After elevator_switch, the previous elevator_queue will be
+ 	 * released by elevator_release. The reference of the io scheduler
+ 	 * module get by elevator_get will also be put. So we need to get
+ 	 * a reference of the io scheduler module here to prevent it to be
+ 	 * removed.
+ 	 */
+ 	__module_get(qe->type->elevator_owner);
+-	elevator_switch_mq(q, NULL);
++	elevator_switch(q, NULL);
+ 	mutex_unlock(&q->sysfs_lock);
+ 
+ 	return true;
+@@ -3764,7 +3764,7 @@ static void blk_mq_elv_switch_back(struc
+ 	kfree(qe);
+ 
+ 	mutex_lock(&q->sysfs_lock);
+-	elevator_switch_mq(q, t);
++	elevator_switch(q, t);
+ 	mutex_unlock(&q->sysfs_lock);
+ }
+ 
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -189,8 +189,7 @@ void blk_account_io_done(struct request
+ 
+ void blk_insert_flush(struct request *rq);
+ 
+-int elevator_switch_mq(struct request_queue *q,
+-			      struct elevator_type *new_e);
++int elevator_switch(struct request_queue *q, struct elevator_type *new_e);
+ void __elevator_exit(struct request_queue *, struct elevator_queue *);
+ int elv_register_queue(struct request_queue *q, bool uevent);
+ void elv_unregister_queue(struct request_queue *q);
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -581,7 +581,7 @@ void elv_unregister(struct elevator_type
+ }
+ EXPORT_SYMBOL_GPL(elv_unregister);
+ 
+-int elevator_switch_mq(struct request_queue *q,
++static int elevator_switch_mq(struct request_queue *q,
+ 			      struct elevator_type *new_e)
+ {
+ 	int ret;
+@@ -719,7 +719,7 @@ void elevator_init_mq(struct request_que
+  * need for the new one. this way we have a chance of going back to the old
+  * one, if the new one fails init for some reason.
+  */
+-static int elevator_switch(struct request_queue *q, struct elevator_type *new_e)
++int elevator_switch(struct request_queue *q, struct elevator_type *new_e)
+ {
+ 	int err;
+ 
 
 
 
