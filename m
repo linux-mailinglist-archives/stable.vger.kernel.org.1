@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-257120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257121-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UI6xHxgWG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:44 +0200
+	id UDS0IdMVG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257121-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F131260E8C7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EEDE60E856
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6ADF13019837
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:51:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9393D3008602
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E76332EA7;
-	Sat, 30 May 2026 16:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212F734D38B;
+	Sat, 30 May 2026 16:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBB3rgw8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPjV7uxM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1237B33F5A3;
-	Sat, 30 May 2026 16:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26AC33A9DA;
+	Sat, 30 May 2026 16:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159871; cv=none; b=CKcKlPZEDG2rC2Q+Nh5nRxnB9VnGd74klqoxj0reP3Mwu1cKSWzr4W95jHYRmkgkrpkSHlDdtXkHZUGhzvGunKJrQggL5wM3dntuwtT4hdUuvG+36xucWSgf4sF4xvTSUeu2qs6KmlO4evUQzBAMHeJAfDs2ukyYAm98/y0VX68=
+	t=1780159874; cv=none; b=OlgCtj0PLTNbS68o9TUWPitgUERNPKL46hQihMGZPlb5fOPIQVRYZx6ObvnwoCLlXKECHv08lyRQc10dZs1L1ri2wNFBytloDIYNXJWNuUNXuNvrQFgTNgBYyoVkjknRmtE0mXr1pQYYLYWc7I6TMjniKR1qvBYVoVFm1cyGhfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159871; c=relaxed/simple;
-	bh=xDB/74RosMhiLsM3d2Bn9g8dZlfW0snTP1y/fR+k9Mc=;
+	s=arc-20240116; t=1780159874; c=relaxed/simple;
+	bh=ecmysMnh2FD2sOzk9b8O1U2NSuxYnVDFJNkMOxwKaNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XhfUMoqXa6ZjjTw83wb8/C5ilM2CE/4MJq0n1iPc4nb6agTz22tLIOevfKA+ga0BsZORPevuKheJ3MpOZI1MEfly66EUlzY3SoEYiCPkjFzeTWSnKb4Kx+5kkgKa8XF27xU5nB7+cSrBXicJYigWyNq6TtG6qiixcYFOUMSjc+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBB3rgw8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0C21F00898;
-	Sat, 30 May 2026 16:51:09 +0000 (UTC)
+	 MIME-Version; b=pjgJ0HDeFhiF5eMszZz0h0F1iGFEs2/mDxBttwFo1RZC/bbQvGURXLeeGXsE7uxN/rtKlpl3xWslFhxKoZ0nFnbraAl6UUn0lciBOTwky7UQq5lUkZz+fM0xFXfplrjL+YBQpX4Gj4RztKVOU7HqaKX62suTCxTCy7sS7zyRYWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPjV7uxM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 225711F00898;
+	Sat, 30 May 2026 16:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159870;
-	bh=ZNmlmXOQjq6iDIIEnjv6rWB7ZptFc8VIY+PZwnk6k/k=;
+	s=korg; t=1780159873;
+	bh=C5kprFLeZ1Dbpe7MJHsqlj/A3tpHkpmWNr2YQDfMNww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OBB3rgw8aWDdyYE1p/RFhOVun0OsJpZFdnpDMwZNSrfTVS8zpKL3d5lE7sK1NBuu+
-	 0KPyvZFwzQYHmylZrSMpcJacuQ+2snAJl2tilUW6lCMU1l+C6bnNG1OwAiHLsmQtuu
-	 c44sdsHyE4YW5aNrNt8YWU/wSLW4jGbhhSTrYy6Y=
+	b=sPjV7uxMrJyUg/DOPoyQWs0eaVDdG12AsGUYRC4607yahdMdeznW9wPRAyJB2lQbe
+	 RJ2fOIh5/RGTIq/aacg2kXsUDHqIopb0o6Xhcj8fbcY/ha9NSUbFVwCmMXvWHNdCUh
+	 jY66Q9OrG5YH+WMg2hXIA9i7IQGK6iXafWALosK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.1 183/969] crypto: pcrypt - Fix handling of MAY_BACKLOG requests
-Date: Sat, 30 May 2026 17:55:07 +0200
-Message-ID: <20260530160305.541864246@linuxfoundation.org>
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 184/969] media: amphion: Fix race between m2m job_abort and device_run
+Date: Sat, 30 May 2026 17:55:08 +0200
+Message-ID: <20260530160305.569928500@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -64,23 +64,23 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257120-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gondor.apana.org.au,kernel.org];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257121-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -88,10 +88,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F131260E8C7
+X-Rspamd-Queue-Id: 9EEDE60E856
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,52 +99,69 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-commit 915b692e6cb723aac658c25eb82c58fd81235110 upstream.
+commit 8cd35ceadcfc8c5da2eb7f7ce24525ce9d4ee62e upstream.
 
-MAY_BACKLOG requests can return EBUSY.  Handle them by checking
-for that value and filtering out EINPROGRESS notifications.
+Fix kernel panic caused by race condition where v4l2_m2m_ctx_release()
+frees m2m_ctx while v4l2_m2m_try_run() is about to call device_run
+with the same context.
 
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Fixes: 5a1436beec57 ("crypto: pcrypt - call the complete function on error")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Eric Biggers <ebiggers@kernel.org>
+Race sequence:
+  v4l2_m2m_try_run():           v4l2_m2m_ctx_release():
+    lock/unlock                   v4l2_m2m_cancel_job()
+                                    job_abort()
+                                      v4l2_m2m_job_finish()
+                                  kfree(m2m_ctx)  <- frees ctx
+    device_run()  <- use-after-free crash at 0x538
+
+Crash trace:
+  Unable to handle kernel read from unreadable memory at virtual address
+  0000000000000538
+  v4l2_m2m_try_run+0x78/0x138
+  v4l2_m2m_device_run_work+0x14/0x20
+
+The amphion vpu driver does not rely on the m2m framework's device_run
+callback to perform encode/decode operations.
+
+Fix the race by preventing m2m framework job scheduling entirely:
+- Add job_ready callback returning 0 (no jobs ready for m2m framework)
+- Remove job_abort callback to avoid the race condition
+
+Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/pcrypt.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/media/platform/amphion/vpu_v4l2.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/crypto/pcrypt.c
-+++ b/crypto/pcrypt.c
-@@ -69,6 +69,9 @@ static void pcrypt_aead_done(struct cryp
- 	struct pcrypt_request *preq = aead_request_ctx(req);
- 	struct padata_priv *padata = pcrypt_request_padata(preq);
+--- a/drivers/media/platform/amphion/vpu_v4l2.c
++++ b/drivers/media/platform/amphion/vpu_v4l2.c
+@@ -356,17 +356,14 @@ static void vpu_m2m_device_run(void *pri
+ {
+ }
  
-+	if (err == -EINPROGRESS)
-+		return;
-+
- 	padata->info = err;
+-static void vpu_m2m_job_abort(void *priv)
++static int vpu_m2m_job_ready(void *priv)
+ {
+-	struct vpu_inst *inst = priv;
+-	struct v4l2_m2m_ctx *m2m_ctx = inst->fh.m2m_ctx;
+-
+-	v4l2_m2m_job_finish(m2m_ctx->m2m_dev, m2m_ctx);
++	return 0;
+ }
  
- 	padata_do_serial(padata);
-@@ -82,7 +85,7 @@ static void pcrypt_aead_enc(struct padat
+ static const struct v4l2_m2m_ops vpu_m2m_ops = {
+ 	.device_run = vpu_m2m_device_run,
+-	.job_abort = vpu_m2m_job_abort
++	.job_ready = vpu_m2m_job_ready,
+ };
  
- 	ret = crypto_aead_encrypt(req);
- 
--	if (ret == -EINPROGRESS)
-+	if (ret == -EINPROGRESS || ret == -EBUSY)
- 		return;
- 
- 	padata->info = ret;
-@@ -133,7 +136,7 @@ static void pcrypt_aead_dec(struct padat
- 
- 	ret = crypto_aead_decrypt(req);
- 
--	if (ret == -EINPROGRESS)
-+	if (ret == -EINPROGRESS || ret == -EBUSY)
- 		return;
- 
- 	padata->info = ret;
+ static int vpu_vb2_queue_setup(struct vb2_queue *vq,
 
 
 
