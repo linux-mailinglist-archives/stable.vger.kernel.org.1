@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJhjF/QaG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257474-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:28 +0200
+	id 8EcIBngwG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-258896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6705260F33E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F9E5612734
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 000AC301AF23
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:12:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3127230C6152
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A8D3148DA;
-	Sat, 30 May 2026 17:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F906329E79;
+	Sat, 30 May 2026 18:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i8dLeGOm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+mtOo9E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFC8EEA8;
-	Sat, 30 May 2026 17:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9C441A8F;
+	Sat, 30 May 2026 18:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161121; cv=none; b=l1D6XUYJ8MXH2CKRMZ8Bk2q90qg9dnbcO1HtQqxRpomY3wtPjUqvooXb1bt0tZkHWPv00ISqi3qKRCGbvt+VC3lxUzilmu7OOv5U84++Uc1McnL6ZX0HEVWRPIa2+OQ+Y15XslaL9JdQxPOV8bOAUafVthM9NkiVHB4pEwxg9wI=
+	t=1780165906; cv=none; b=YPKsewQBkkN+Fq+eUQ77Hd9oUsjpMLBLgO9cheTRA/Htskb46NNBhr1igXZl03g+N8dd5KvWFPkopv3ia1t/yax8ctuoyPL4W4kWvac7RSQOVwBwA1JE+IoY3t3r9ifwmSEj0dMj9zZN5W4iFUBcMhIWQhXg5ehvyK4vFG8RfDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161121; c=relaxed/simple;
-	bh=0LqS3oOu8TWZpf1vagLCc9xHwYFcVdr3o+4qlvRRnog=;
+	s=arc-20240116; t=1780165906; c=relaxed/simple;
+	bh=iUM2kZx0Nor50FvZZ12jj+bKfFTUt+iJnub61m+hed0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WkurdSyW5LwePuGJuKzv2eOc7FxNGciB1m16A/k9xmYfq5Zq7xK/RNRfXMgic2Ql27tLC9n94R74dKE9VQQeXB8HY7NVNWACnn249bhnX7cT6RQHoUZ4D4z2QgLADPsoztWV6n5WW2elQItzgEjOy6FSDE//gXpQ+q09iXd+wrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8dLeGOm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF0F1F00893;
-	Sat, 30 May 2026 17:11:59 +0000 (UTC)
+	 MIME-Version; b=AM6IwsA3hFA0cHEwjYIDD7c4bRbsfHYauhja1E8s6GHiAqfmzU24DudkIm0L2baUwdmPu+6wv80rfwq40/TNTLNDnrgf/GA4d85uzGorXoJfbkH4cS8Em7fmfGBwbrgFwSt7CnWJQs1vpj2xfaEnqqwSqVjMl3ltRhlrajoasrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+mtOo9E; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E1D1F00893;
+	Sat, 30 May 2026 18:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161120;
-	bh=RHKH8buQPHDFBuBHX0kMvUciwlRW0NxOdu55CBlZ26w=;
+	s=korg; t=1780165904;
+	bh=WNAyAACgCmQKzT0RtCgXnb8WNRkqbnQYZ7+qWp6c2Cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i8dLeGOmGPQPgfMOscXWogM9edMVKha2hlO6Dl2MCjBsJNy0h3kB/9ySNi21a3urq
-	 gObdC9d4uky8EUz7hOmiklXEto7CwPU9znmgJLSi+QVgKPobMBjdmzcrO2x2RapWKJ
-	 lzTVS7stmv9ULIdhiK8oTba0msZAeXUX8GfyTeVc=
+	b=T+mtOo9E/CbblN3awknADTS9sj46Lezsb1HExfDWq3xzR05z+e0Sg8V0hl8n+z7a7
+	 +en5IjwsSoRE5eOXvWJ8mLegDhb4oVomWDKbJLV0NtpHt+z7TBpf0vZGH4jLs6aekU
+	 ZaqOgzzP7Q+gkmNf7cmgCOn2w5uShncsZLYV+urI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 530/969] pmdomain: imx: scu-pd: Fix device_node reference leak during ->probe()
+	Jens Axboe <axboe@kernel.dk>,
+	Bin Liu <b-liu@ti.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 173/589] mmc: block: use single block write in retry
 Date: Sat, 30 May 2026 18:00:54 +0200
-Message-ID: <20260530160314.999129591@linuxfoundation.org>
+Message-ID: <20260530160229.362609847@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +64,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,linaro.org,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257474-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258896-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6705260F33E
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email,ti.com:url,ti.com:email]
+X-Rspamd-Queue-Id: 8F9E5612734
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Bin Liu <b-liu@ti.com>
 
-[ Upstream commit c8e9b6a55702be6c6d034e973d519c52c3848415 ]
+commit c7c6d4f5103864f73ee3a78bfd6da241f84197dd upstream.
 
-When calling of_parse_phandle_with_args(), the caller is responsible
-to call of_node_put() to release the reference of device node.
-In imx_sc_pd_get_console_rsrc(), it does not release the reference.
+Due to errata i2493[0], multi-block write would still fail in retries.
 
-Fixes: 893cfb99734f ("firmware: imx: scu-pd: do not power off console domain")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+With i2493, the MMC interface has the potential of write failures when
+issuing multi-block writes operating in HS200 mode with excessive IO
+supply noise.
+
+While the errata provides guidance in hardware design and layout to
+minimize the IO supply noise, in theory the write failure cannot be
+resolved in hardware. The software solution to ensure the data integrity
+is to add minimum 5us delay between block writes. Single-block write is
+the practical way to introduce the delay.
+
+This patch reuses recovery_mode flag, and switches to single-block
+write in retry when multi-block write fails. It covers both CQE and
+non-CQE cases.
+
+[0] https://www.ti.com/lit/pdf/sprz582
+Cc: stable@vger.kernel.org
+Suggested-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Bin Liu <b-liu@ti.com>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/imx/scu-pd.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/core/block.c |   12 ++++++++++--
+ drivers/mmc/core/queue.h |    3 +++
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/imx/scu-pd.c b/drivers/firmware/imx/scu-pd.c
-index af3d057e64217..f1977861cd429 100644
---- a/drivers/firmware/imx/scu-pd.c
-+++ b/drivers/firmware/imx/scu-pd.c
-@@ -235,6 +235,7 @@ static void imx_sc_pd_get_console_rsrc(void)
- 		return;
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -1316,6 +1316,9 @@ static void mmc_blk_data_prep(struct mmc
+ 		    rq_data_dir(req) == WRITE &&
+ 		    (md->flags & MMC_BLK_REL_WR);
  
- 	imx_con_rsrc = specs.args[0];
-+	of_node_put(specs.np);
- }
++	if (mqrq->flags & MQRQ_XFER_SINGLE_BLOCK)
++		recovery_mode = 1;
++
+ 	memset(brq, 0, sizeof(struct mmc_blk_request));
  
- static int imx_sc_pd_power(struct generic_pm_domain *domain, bool power_on)
--- 
-2.53.0
-
+ 	brq->mrq.data = &brq->data;
+@@ -1453,10 +1456,13 @@ static void mmc_blk_cqe_complete_rq(stru
+ 		err = 0;
+ 
+ 	if (err) {
+-		if (mqrq->retries++ < MMC_CQE_RETRIES)
++		if (mqrq->retries++ < MMC_CQE_RETRIES) {
++			if (rq_data_dir(req) == WRITE)
++				mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
+ 			blk_mq_requeue_request(req, true);
+-		else
++		} else {
+ 			blk_mq_end_request(req, BLK_STS_IOERR);
++		}
+ 	} else if (mrq->data) {
+ 		if (blk_update_request(req, BLK_STS_OK, mrq->data->bytes_xfered))
+ 			blk_mq_requeue_request(req, true);
+@@ -1941,6 +1947,8 @@ static void mmc_blk_mq_complete_rq(struc
+ 	} else if (!blk_rq_bytes(req)) {
+ 		__blk_mq_end_request(req, BLK_STS_IOERR);
+ 	} else if (mqrq->retries++ < MMC_MAX_RETRIES) {
++		if (rq_data_dir(req) == WRITE)
++			mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
+ 		blk_mq_requeue_request(req, true);
+ 	} else {
+ 		if (mmc_card_removed(mq->card))
+--- a/drivers/mmc/core/queue.h
++++ b/drivers/mmc/core/queue.h
+@@ -61,6 +61,8 @@ enum mmc_drv_op {
+ 	MMC_DRV_OP_GET_EXT_CSD,
+ };
+ 
++#define	MQRQ_XFER_SINGLE_BLOCK		BIT(0)
++
+ struct mmc_queue_req {
+ 	struct mmc_blk_request	brq;
+ 	struct scatterlist	*sg;
+@@ -69,6 +71,7 @@ struct mmc_queue_req {
+ 	void			*drv_op_data;
+ 	unsigned int		ioc_count;
+ 	int			retries;
++	u32			flags;
+ };
+ 
+ struct mmc_queue {
 
 
 
