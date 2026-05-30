@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-257017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODFwMKQRG2qC+wgAu9opvQ
-	(envelope-from <stable+bounces-257017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:34:44 +0200
+	id UL8XH5kSG2rz+wgAu9opvQ
+	(envelope-from <stable+bounces-257019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 444A360E437
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:34:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0023560E52E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9363630387B0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:33:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70DF93024A49
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA78A349CF8;
-	Sat, 30 May 2026 16:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA66930EF7B;
+	Sat, 30 May 2026 16:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koy7I0rM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veN4sOdc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78F1157A5A;
-	Sat, 30 May 2026 16:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ED730E84A;
+	Sat, 30 May 2026 16:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780158807; cv=none; b=QnxASAiLmqMTb5lmHR5YboY61PrZX/vma7yfLetdVoeewjXuyolRbGKrvN+JoRDfiZ8RSEpOxqqoJPPn0oIKPAxcEIFknmMJTEuGjGSzux6jHFumnYO0kb4TezRjnCxzqZq7ntfknX45w06RCpxP2VU5kPxFpwfnLKf/QqhPADA=
+	t=1780158845; cv=none; b=sdJAyC9KnzSeDyKU/xYD1lycudGj10hmnwD/5YPoOKZW3iPd7MrP5dN5t0qDxQ+Vv6g6qFs9n2zMomRhnc33f8Z0keP5HAIH6/6/Q5JkSsPv9pcesdXEnxJztPfch8/BYThx8ti7+hkkoF3ez50sXis2rQandcQ9Rt+edQ/tPb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780158807; c=relaxed/simple;
-	bh=TuOb9dwlILkc9cc4F5bdSk9o4rf0t40iLUIb1N3AEbg=;
+	s=arc-20240116; t=1780158845; c=relaxed/simple;
+	bh=Rvxmlh4LxG9iNTy6fQoIIURxf3TuLWYj69fse3aXFKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bpqQOnrf1rvI8czldYDVCv2nfoNB6YzoGTtenA1xJZSV7m4ryw3hb8YvUoMNJR+wqEaVA6PHLqVMbhIdJmyWoxNqpQe2tgSYaCVQnqnv9auDV+bX2/c5WXJuXiV5cBndZ1Ixm41W7z718SW5F+qbuqeZN6XvOWRQzD50xyklXtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koy7I0rM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE35A1F00893;
-	Sat, 30 May 2026 16:33:23 +0000 (UTC)
+	 MIME-Version; b=XJ5XFIraCw40c1QLYqNCzQP7fINjJWM0/Xnvyp/yTl1yBq34vcObcMqocIJuRxUpKcbP/E0N+q4uGgcL+r4Vzss/e0qrhRR1hNw9Lak/dGRJoj4a4Bb70vMPIgcnzO4RjtX7mYaj+Hx/swddGR98YnrtL0bh7FoyvHYTrtPM5gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veN4sOdc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869AC1F00893;
+	Sat, 30 May 2026 16:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780158806;
-	bh=1gtSYNufyTZDaCoYZqAOtehGrEPevo3gPjwgxiquOHw=;
+	s=korg; t=1780158844;
+	bh=Uo3mwydW0g8zCqUABXqfCRYhfH7gdQTXPFyWEPZj+Pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=koy7I0rMPYqN7Mq8MGbxUoHcJbFrydD7SSJGLx2RRh77nrkkQieEdaxPXOYT06kNI
-	 63Si/zLJ5bqOW1kBhKR1AK0L7J688c31MaKRETo+AWLlRGxR+9iFbNAy4O0yYdiUcK
-	 li7o+8MzY+A6xY75faiNgHNZrhXJxVv6kK3CDHjg=
+	b=veN4sOdcB6ZXE7dlAAn08kutfVzhotBLBhp/+RjCkP8oPc79lXfQlN6OWQ8W9ceTU
+	 lQklZmoUGEX5C5smZTFCgfXKQbJEtm9UpeDOYNWsKsqJ+Lrqu+MA+w1xb956klRBaP
+	 AJUPLer8F7xfwusu7AbSpByUhEX8lC9j/n78aaJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Yang Erkun <yangerkun@huawei.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 082/969] dcache: Limit the minimal number of bucket to two
-Date: Sat, 30 May 2026 17:53:26 +0200
-Message-ID: <20260530160302.610185625@linuxfoundation.org>
+	syzbot+1f5bcc7c919ec578777a@syzkaller.appspotmail.com,
+	Ruslan Valiyev <linuxoid@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 083/969] media: vidtv: fix NULL pointer dereference in vidtv_channel_pmt_match_sections
+Date: Sat, 30 May 2026 17:53:27 +0200
+Message-ID: <20260530160302.636945034@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -64,34 +64,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257017-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257019-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,1f5bcc7c919ec578777a,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email]
-X-Rspamd-Queue-Id: 444A360E437
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0023560E52E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,78 +101,57 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Ruslan Valiyev <linuxoid@gmail.com>
 
-commit f08fe8891c3eeb63b73f9f1f6d97aa629c821579 upstream.
+commit f8e1fc918a9fe67103bcda01d20d745f264d00a7 upstream.
 
-There is an OOB read problem on dentry_hashtable when user sets
-'dhash_entries=1':
-  BUG: unable to handle page fault for address: ffff888b30b774b0
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  Oops: Oops: 0000 [#1] SMP PTI
-  RIP: 0010:__d_lookup+0x56/0x120
-   Call Trace:
-    d_lookup.cold+0x16/0x5d
-    lookup_dcache+0x27/0xf0
-    lookup_one_qstr_excl+0x2a/0x180
-    start_dirop+0x55/0xa0
-    simple_start_creating+0x8d/0xa0
-    debugfs_start_creating+0x8c/0x180
-    debugfs_create_dir+0x1d/0x1c0
-    pinctrl_init+0x6d/0x140
-    do_one_initcall+0x6d/0x3d0
-    kernel_init_freeable+0x39f/0x460
-    kernel_init+0x2a/0x260
+syzbot reported a general protection fault in vidtv_psi_desc_assign [1].
 
-There will be only one bucket in dentry_hashtable when dhash_entries is
-set as one, and d_hash_shift is calculated as 32 by dcache_init(). Then,
-following process will access more than one buckets(which memory region
-is not allocated) in dentry_hashtable:
- d_lookup
-  b = d_hash(hash)
-    dentry_hashtable + ((u32)hashlen >> d_hash_shift)
-    // The C standard defines the behavior of right shift amounts
-    // exceeding the bit width of the operand as undefined. The
-    // result of '(u32)hashlen >> d_hash_shift' becomes 'hashlen',
-    // so 'b' will point to an unallocated memory region.
-  hlist_bl_for_each_entry_rcu(b)
-   hlist_bl_first_rcu(head)
-    h->first  // read OOB!
+vidtv_psi_pmt_stream_init() can return NULL on memory allocation
+failure, but vidtv_channel_pmt_match_sections() does not check for
+this. When tail is NULL, the subsequent call to
+vidtv_psi_desc_assign(&tail->descriptor, desc) dereferences a NULL
+pointer offset, causing a general protection fault.
 
-Fix it by limiting the minimal number of dentry_hashtable bucket to two,
-so that 'd_hash_shift' won't exceeds the bit width of type u32.
+Add a NULL check after vidtv_psi_pmt_stream_init(). On failure, clean
+up the already-allocated stream chain and return.
 
+[1]
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+RIP: 0010:vidtv_psi_desc_assign+0x24/0x90 drivers/media/test-drivers/vidtv/vidtv_psi.c:629
+Call Trace:
+ <TASK>
+ vidtv_channel_pmt_match_sections drivers/media/test-drivers/vidtv/vidtv_channel.c:349 [inline]
+ vidtv_channel_si_init+0x1445/0x1a50 drivers/media/test-drivers/vidtv/vidtv_channel.c:479
+ vidtv_mux_init+0x526/0xbe0 drivers/media/test-drivers/vidtv/vidtv_mux.c:519
+ vidtv_start_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:194 [inline]
+ vidtv_start_feed+0x33e/0x4d0 drivers/media/test-drivers/vidtv/vidtv_bridge.c:239
+
+Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Link: https://patch.msgid.link/20260130034853.215819-1-chengzhihao1@huawei.com
-Reviewed-by: Yang Erkun <yangerkun@huawei.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: syzbot+1f5bcc7c919ec578777a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1f5bcc7c919ec578777a
+Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dcache.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/test-drivers/vidtv/vidtv_channel.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -3299,7 +3299,7 @@ static void __init dcache_init_early(voi
- 					HASH_EARLY | HASH_ZERO,
- 					&d_hash_shift,
- 					NULL,
--					0,
-+					2,
- 					0);
- 	d_hash_shift = 32 - d_hash_shift;
- }
-@@ -3327,7 +3327,7 @@ static void __init dcache_init(void)
- 					HASH_ZERO,
- 					&d_hash_shift,
- 					NULL,
--					0,
-+					2,
- 					0);
- 	d_hash_shift = 32 - d_hash_shift;
- }
+--- a/drivers/media/test-drivers/vidtv/vidtv_channel.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_channel.c
+@@ -341,6 +341,10 @@ vidtv_channel_pmt_match_sections(struct
+ 					tail = vidtv_psi_pmt_stream_init(tail,
+ 									 s->type,
+ 									 e_pid);
++					if (!tail) {
++						vidtv_psi_pmt_stream_destroy(head);
++						return;
++					}
+ 
+ 					if (!head)
+ 						head = tail;
 
 
 
