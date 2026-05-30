@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-257656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259037-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EE0iHHgdG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257656-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:12 +0200
+	id U+sVKqkvG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259037-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C6F60F980
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BBB36124DD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6BD9C301EE05
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:22:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4BA4A30D2B51
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B5F332EA7;
-	Sat, 30 May 2026 17:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E851D39478D;
+	Sat, 30 May 2026 18:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGd0VHRI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mK9bKL59"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BFE334695;
-	Sat, 30 May 2026 17:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EBD26738C;
+	Sat, 30 May 2026 18:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161732; cv=none; b=LCvtxSLbE2sEYH1rWpyrBLs6edMtX3TaVEJ4zLI9C72mSyLjKwCDxQjvS4KZLVMgV9Z42rQMM28hSuNz03fWMRteV4Hblev7f00GUy1HKIak8h4/Bj8q41PhRGTbho9UDqpS8Zo1BVxWnB4B3yeCTSZabCQieiqrQ27JjGZLAEs=
+	t=1780166378; cv=none; b=AIRI/FJT47djqzrZjqO1n3wurlSrWEJmNcd52hs8d6/UMW3oni9f9yxPteW6bZdUt38Wrf+Y8TrBV6xe7EFLF17vNYdDyhZ8auwbQNprmVokGirD9imrXvBIgetk3hIWIdVPUAFEu9Tnb81IROjyZ7PS85Y4nfpx/KhvjXBO8ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161732; c=relaxed/simple;
-	bh=ecOF30m10JLxh01ktUyPujcR3tuFZ+knYMhgtyw7HjM=;
+	s=arc-20240116; t=1780166378; c=relaxed/simple;
+	bh=sljzszU0LGWFJM0rs7Ee8sUXvABZidil/XUw1p/QgwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPdEZ3UCVfVnufmYN0XRZX34GSCgK4pFXj3a8cFXAfVwsPQkEOTyXhymfsrUYxIl16YT/18fqcCTjmAeA9/3yBYAU8czDni49NQF3FyBzv5j9FyEZoYhgyP2tvO6vNb6pNGxG7eO0usLy9VEdkznWri6pxdMMHyjMeZ1OJSkjuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGd0VHRI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0061F00893;
-	Sat, 30 May 2026 17:22:10 +0000 (UTC)
+	 MIME-Version; b=X+Si3YrvUA1vpMLKSOTPfmQMuY59HIXMUunV+H0J9zqkO9qN77CX0/4AVJzXszYtpNI6WytYyj04yYA22+KqYenwgIhPAYYq82WnOUHbrfOYvm1jqM3rIYcoz0IKD6UV2FZA3mtvTCQGI5akT8+yIpIYVgOJxK8FSrpQeQOEAYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mK9bKL59; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178E61F00893;
+	Sat, 30 May 2026 18:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161731;
-	bh=ncr3+kbU2k6AIbqO9P8LAjQ2FvZUE2wT5Sw6ZCF0kXQ=;
+	s=korg; t=1780166377;
+	bh=IoqZhp8Yj8mJRnex91WMBoQjEeW6Vpj9jQPlGksuieM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rGd0VHRIkByEfLp+rkpuQaMSALn9nEOrN8UH2kyMWRiXzS5b+1KhzCYZsw5YPtII7
-	 Hrk2bbBnclLn7gB3hiBr0oLdiKaL2sa6rWH6ZMmVWTiqrG+xZ6oIhV7QwAQI+BY+cq
-	 /7bonqZBZbeuIZMuExClLUQi9dR5PnzZ9+95NUnA=
+	b=mK9bKL59BvV+Z5oGk0KIWTbQwkKhcwZM9cQimN9d4v2Eq5At3zfiba0iOe+WR5Yca
+	 aMnv/GM1Jco2c4LJr7Oh9TORG35yDjNrc4kELMWadrtgekxP5xytuovm3nyg72mFh4
+	 9egBRGoDyQ9KmynWeHgCRgRwBxICvZ0cTKuky6ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 711/969] ksmbd: scope conn->binding slowpath to bound sessions only
+Subject: [PATCH 5.10 354/589] PCI: tegra194: Disable direct speed change for Endpoint mode
 Date: Sat, 30 May 2026 18:03:55 +0200
-Message-ID: <20260530160320.164582490@linuxfoundation.org>
+Message-ID: <20260530160234.165267229@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,88 +71,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257656-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259037-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 57C6F60F980
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email]
+X-Rspamd-Queue-Id: 3BBB36124DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit b0da97c034b6107d14e537e212d4ce8b22109a58 ]
+[ Upstream commit 976f6763f57970388bcd7118931f33f447916927 ]
 
-When the binding SESSION_SETUP sets conn->binding = true, the flag stays
-set after the call so that the global session lookup in
-ksmbd_session_lookup_all() can find the session, which was not added to
-conn->sessions. Because the flag is connection-wide, the global lookup
-path will also resolve any other session by id if asked.
+Pre-silicon simulation showed the controller operating in Endpoint mode
+initiating link speed change after completing Secondary Bus Reset. Ideally,
+the Root Port or the Switch Downstream Port should initiate the link speed
+change post SBR, not the Endpoint.
 
-Tighten the global lookup so that the returned session must have this
-connection registered in its channel xarray (sess->ksmbd_chann_list).
-The channel entry is installed by the existing binding_session path in
-ntlm_authenticate()/krb5_authenticate() when a SESSION_SETUP completes
-successfully, so this condition is a strict equivalent of "this
-connection has been accepted as a channel of this session". Connections
-that have not bound to a given session cannot reach it via the global
-table.
+So, as per the hardware team recommendation, disable direct speed change
+for the Endpoint mode to prevent it from initiating speed change after the
+physical layer link is up at Gen1, leaving speed change ownership with the
+host.
 
-The existing conn->binding gate for entering the slowpath is preserved
-so that non-binding connections keep the fast-path-only behavior, and
-the session->state check is unchanged.
-
-Fixes: f5a544e3bab7 ("ksmbd: add support for SMB3 multichannel")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+[mani: commit log]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-8-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/mgmt/user_session.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
-index f7ba243c854e2..08eeca8ab0042 100644
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -323,8 +323,13 @@ struct ksmbd_session *ksmbd_session_lookup_all(struct ksmbd_conn *conn,
- 	struct ksmbd_session *sess;
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index ee8f25c07f2e1..e59939ec2022c 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1771,6 +1771,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
  
- 	sess = ksmbd_session_lookup(conn, id);
--	if (!sess && conn->binding)
-+	if (!sess && conn->binding) {
- 		sess = ksmbd_session_lookup_slowpath(id);
-+		if (sess && !xa_load(&sess->ksmbd_chann_list, (long)conn)) {
-+			ksmbd_user_session_put(sess);
-+			sess = NULL;
-+		}
-+	}
- 	if (sess && sess->state != SMB2_SESSION_VALID) {
- 		ksmbd_user_session_put(sess);
- 		sess = NULL;
+ 	reset_control_deassert(pcie->core_rst);
+ 
++	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
++	val &= ~PORT_LOGIC_SPEED_CHANGE;
++	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
++
+ 	if (pcie->update_fc_fixup) {
+ 		val = dw_pcie_readl_dbi(pci, CFG_TIMER_CTRL_MAX_FUNC_NUM_OFF);
+ 		val |= 0x1 << CFG_TIMER_CTRL_ACK_NAK_SHIFT;
 -- 
 2.53.0
 
