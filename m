@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-258171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YF3pJn8jG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258171-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:55 +0200
+	id 4F5/KHsrG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622E161082A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 743EF611ABE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B09A83004931
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 98AF53014263
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6B1341AC7;
-	Sat, 30 May 2026 17:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F745274FDC;
+	Sat, 30 May 2026 18:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFNtd3B5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZypNYVyc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19370342CA7;
-	Sat, 30 May 2026 17:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7483F17555;
+	Sat, 30 May 2026 18:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163453; cv=none; b=KqeZt3kk2D7Mr/0q5yKEcW/smf7Ifv8xFDbelB/DmjNy4X5XY5WAjTbAXMSgwl9oKL0HSqVn1DVFxZiFQN7+FXJT9RlqUhywfwDQCZVxMqvlNbZYfhA1LdMY2TgX/v4Nq44nd9+FY7ruA+dZBq+2sc8X/14pUMFTtGuEGENrqI8=
+	t=1780165497; cv=none; b=YldOop+BhmpnljzLx7xKgmr67q+ZaYMgmvlQxEWqScp4RePdpQh0cpcu4tCgc3B8NdQ/1yWjL/FDao5hEvyU4Qu+NRL84ivrtY+mLn8DcUgUzlP0FSu+0jYVS6twgFft2T0XUJHT49TF2Q6ZbEf+g6U6llLeu37MNGZTf3DACak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163453; c=relaxed/simple;
-	bh=Ol3ZyhnnDF3KCGydRZQSHB6ySK6uIJM9EunO6zDsL08=;
+	s=arc-20240116; t=1780165497; c=relaxed/simple;
+	bh=C58atzpYPE360QQE4BguFKXhb80ShZ2T4Hn9jBcGnPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otYtCP6Dv0xPwH5eqca0iyO4nx+SrRrhP1Anp8iz5SnKtiPPPXJEXx7FqoNFHvRBY+yA3Jx/9jS+DjxuCvMftF3wwcbemeE6e/tu/7HO9XcH4fKkoxEBnNnLxCaYAXTLWxrozeH2wFCfeB0WG4zyr1Jt+GQJc7qf/ZBLZ4jOyJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFNtd3B5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9FB1F00893;
-	Sat, 30 May 2026 17:50:50 +0000 (UTC)
+	 MIME-Version; b=BIbckTWt2P3P13evsuSpIEBiLpLnaFbVW4yCv1US+8wy7lKJNpAPzMhC3LPwmjKHbUHkf7oBVlByhlodDVvwwsH7Ex8Q39RO3Ufz9hAPaHgA/Y1VMiUr5z9AQ5LGfURyEF0rOms7RTgPGvTVrlJ3JxnpHy9puCywBfNHr/6RR/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZypNYVyc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99CC1F00893;
+	Sat, 30 May 2026 18:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163451;
-	bh=cN/drgxB8ag2j07dfx52rbXYN0hCjqbMMTnNssKwzXs=;
+	s=korg; t=1780165496;
+	bh=X04e7vKrO5U5bLJJ7d5HGbInkjDCHS4Auc5+oGR0/0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FFNtd3B5w8hBp28IS70ox0bmbJ1nCR4OVfBvYMEHzG0th6xmE8cUWcECd8MtsRPaO
-	 Q35RMGncQcn0hahy3rVpO1L2RCPCgpZyDIDkatc7g66UZEsN7Db9CRFlrwiFW2Ovmh
-	 ZZ9G5VOa5Ecso5BWpwq2ONKKSE0UaYo+xeEUpNrM=
+	b=ZypNYVycDl66KP2Lpy5CQvuCVvCfwb6r07O3CB75kyZIO52IixAtjujQ/XTiSl8of
+	 MZDvUfDF1cGUFVOhj9AxW7WY5lRQhDwdPZvjjh4aZrbvLrnmlKk4zu0nCHjqJyDNFQ
+	 kCR2fHVqe2SJkinA2JaG/ckhecHg39RRhBa2w7gU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.15 233/776] KVM: nSVM: Sync interrupt shadow to cached vmcb12 after VMRUN of L2
+	kernel test robot <lkp@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 066/589] ACPI: property: Constify stubs for CONFIG_ACPI=n case
 Date: Sat, 30 May 2026 17:59:07 +0200
-Message-ID: <20260530160246.552303201@linuxfoundation.org>
+Message-ID: <20260530160226.334699224@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,79 +75,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258775-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258171-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 622E161082A
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 743EF611ABE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 03bee264f8ebfd39e0254c98e112d033a7aa9055 upstream.
+commit 5c1a72a0fbe1b02c3ce0537f85f92ea935e0beec upstream.
 
-After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
-fields written by the CPU from vmcb02 to the cached vmcb12. This is
-because the cached vmcb12 is used as the authoritative copy of some of
-the controls, and is the payload when saving/restoring nested state.
+There is a few stubs that left untouched during constification of
+the fwnode related APIs. Constify three more stubs here.
 
-int_state is also written by the CPU, specifically bit 0 (i.e.
-SVM_INTERRUPT_SHADOW_MASK) for nested VMs, but it is not sync'd to
-cached vmcb12. This does not cause a problem if KVM_SET_NESTED_STATE
-preceeds KVM_SET_VCPU_EVENTS in the restore path, as an interrupt shadow
-would be correctly restored to vmcb02 (KVM_SET_VCPU_EVENTS overwrites
-what KVM_SET_NESTED_STATE restored in int_state).
-
-However, if KVM_SET_VCPU_EVENTS preceeds KVM_SET_NESTED_STATE, an
-interrupt shadow would be restored into vmcb01 instead of vmcb02. This
-would mostly be benign for L1 (delays an interrupt), but not for L2. For
-L2, the vCPU could hang (e.g. if a wakeup interrupt is delivered before
-a HLT that should have been in an interrupt shadow).
-
-Sync int_state to the cached vmcb12 in nested_sync_control_from_vmcb02()
-to avoid this problem. With that, KVM_SET_NESTED_STATE restores the
-correct interrupt shadow state, and if KVM_SET_VCPU_EVENTS follows it
-would overwrite it with the same value.
-
-Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
-CC: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260225005950.3739782-3-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8b9d6802583a ("ACPI: Constify acpi_bus helper functions, switch to macros")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+[ rjw: Subject edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/linux/acpi.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -336,6 +336,7 @@ void nested_sync_control_from_vmcb02(str
- 	u32 mask;
- 	svm->nested.ctl.event_inj      = svm->vmcb->control.event_inj;
- 	svm->nested.ctl.event_inj_err  = svm->vmcb->control.event_inj_err;
-+	svm->nested.ctl.int_state	= svm->vmcb->control.int_state;
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 9c184dbceba47..c5b51d8dcbe18 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -753,7 +753,7 @@ static inline bool is_acpi_device_node(struct fwnode_handle *fwnode)
+ 	return false;
+ }
  
- 	/* Only a few fields of int_ctl are written by the processor.  */
- 	mask = V_IRQ_MASK | V_TPR_MASK;
+-static inline struct acpi_device *to_acpi_device_node(struct fwnode_handle *fwnode)
++static inline struct acpi_device *to_acpi_device_node(const struct fwnode_handle *fwnode)
+ {
+ 	return NULL;
+ }
+@@ -763,12 +763,12 @@ static inline bool is_acpi_data_node(struct fwnode_handle *fwnode)
+ 	return false;
+ }
+ 
+-static inline struct acpi_data_node *to_acpi_data_node(struct fwnode_handle *fwnode)
++static inline struct acpi_data_node *to_acpi_data_node(const struct fwnode_handle *fwnode)
+ {
+ 	return NULL;
+ }
+ 
+-static inline bool acpi_data_node_match(struct fwnode_handle *fwnode,
++static inline bool acpi_data_node_match(const struct fwnode_handle *fwnode,
+ 					const char *name)
+ {
+ 	return false;
+-- 
+2.53.0
+
 
 
 
