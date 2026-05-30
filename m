@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-259134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258536-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EmbM0gyG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259134-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:00 +0200
+	id 4MD3NJUoG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258536-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38240612C38
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 740D16113A8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C81ED3118D6D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C66EE301939C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D14315E5BB;
-	Sat, 30 May 2026 18:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259642F90E0;
+	Sat, 30 May 2026 18:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXVrgl3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3xgz44I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785A62E7398;
-	Sat, 30 May 2026 18:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED441352027;
+	Sat, 30 May 2026 18:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166723; cv=none; b=OKQ2XkGSa16AwaAJ0gmldbkxUpshXSKEbldpdciTU5PzLPVDM4H+ncnU9Vsvl0ItziENDCNQ/47XPWlEeEn2bx701VqCQEvkFXAVnYWA5lfjNjzzf/LAoJ6fYMWhhbJlft0/sPnIUfeljBPRsey8gKXZUMpnPRT7/emokbjIqrg=
+	t=1780164678; cv=none; b=hGuPI+ZvSEwzWJPtE4F1iwG6IhivdgP/t1LM9sSaIM686PHm8oMH61+6ormp3B0MDiDJFGBDM2c5GXTrKDRs50vqV0BrP5Bu2zia3A2F44Ap3HyQhbnMwUboG4+Db1+qkUk8HENINdcYoJYo861zHw6aod373rPrHf2VpsDS39k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166723; c=relaxed/simple;
-	bh=OzIIeHQvKrcgfcEr0L9I6z8lLaUXEsYWY7d5o1FUIIQ=;
+	s=arc-20240116; t=1780164678; c=relaxed/simple;
+	bh=Bio73BAwVIzRX7aAaEW5Y9Mgryk+SpkPsqHJIjygbYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfw1+Z6hZIfPs52Tk7oOa1ssqoNiwi/S3+No7YrUBMsS6ON/DE2vvkW/NZ8Uq9NABTwS/WyhEHnAZxLP5GI1XBp8V4uvZBomlX29yEUhqZsxx5lhAsq5Jux+obxvOu1PCv3BXlKW0e68hSQCqHO0QQctjgjoFEKYdlbXlX+4+UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXVrgl3Y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22C01F00893;
-	Sat, 30 May 2026 18:45:21 +0000 (UTC)
+	 MIME-Version; b=nwuZDVtHaGEtbZRoPcdO86Mq1p7wvogcKDzSklD3OT4h4Pt2fIRpSMfsqIfdLEQsLvTDUEvXxPBQZOHP4rt7fggoApa16FWdMo0Ajl785eB94NAbBaAol3Dbnv04mYhtF47ytsuoJ2KcRljM5dZTxMmATTzcQ9AearwVzZvSeeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3xgz44I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA181F00893;
+	Sat, 30 May 2026 18:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166722;
-	bh=F9eKCYj05M2nsasRL8uC8pFgvGFZcugTBHWZCLbO4Ao=;
+	s=korg; t=1780164677;
+	bh=Xz02JDiyUivYO1XlfK+5kBNMcMDBMJEYNi2H7UdAf0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SXVrgl3Yq5ZVF8FL3U3h+xCmfKujYvIaozWWAsnbGgs7Z574ALE2SbhvSd4mTcbg5
-	 Z9/qlento5GLEScG+WjtxXFkLVdViTfUluG2mCTjik7St/HMbcf/YaczZfBrbfdThL
-	 eIhiFMATeewpqtZFx6KdcuYKDoyTyAwGh6pS0dyQ=
+	b=s3xgz44INOjSy3UiUHHS7BVPOtM0/kz/cIo4vvFJO0UCklEBhCwMUJbkLFsTOLgCc
+	 4qz96VrKP7NaCSM0rjTGqV64KI9Kd6q/Nodig3EBsLyjflrmO9ADsAhVlbZS6Wm9YD
+	 TFYdFyC4rIeG3ghFgoEdpdEhJctmHIoNL9OJ9TYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com,
-	Kohei Enju <kohei@enjuk.jp>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 452/589] vhost_net: fix sleeping with preempt-disabled in vhost_net_busy_poll()
+Subject: [PATCH 5.15 619/776] net/sched: sch_choke: annotate data-races in choke_dump_stats()
 Date: Sat, 30 May 2026 18:05:33 +0200
-Message-ID: <20260530160236.567576631@linuxfoundation.org>
+Message-ID: <20260530160255.987140414@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,97 +65,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-259134-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258536-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,6985cb8e543ea90ba8ee];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,enjuk.jp:email]
-X-Rspamd-Queue-Id: 38240612C38
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 740D16113A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e08a9fac5cf8c3fecf4755e7e3ac059f78b8f83d ]
+[ Upstream commit d3aeb889dcbd78e95f500d383799a23d949796e0 ]
 
-syzbot reported "sleeping function called from invalid context" in
-vhost_net_busy_poll().
+choke_dump_stats() only runs with RTNL held.
+It reads fields that can be changed in qdisc fast path.
+Add READ_ONCE()/WRITE_ONCE() annotations.
 
-Commit 030881372460 ("vhost_net: basic polling support") introduced a
-busy-poll loop and preempt_{disable,enable}() around it, where each
-iteration calls a sleepable function inside the loop.
-
-The purpose of disabling preemption was to keep local_clock()-based
-timeout accounting on a single CPU, rather than as a requirement of
-busy-poll itself:
-
-https://lore.kernel.org/1448435489-5949-4-git-send-email-jasowang@redhat.com
-
->From this perspective, migrate_disable() is sufficient here, so replace
-preempt_disable() with migrate_disable(), avoiding sleepable accesses
-from a preempt-disabled context.
-
-Fixes: 030881372460 ("vhost_net: basic polling support")
-Tested-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
-Reported-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69e6a414.050a0220.24bfd3.002d.GAE@google.com/T/
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260423062839.2524324-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/net.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sched/sch_choke.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index c9f30aa50879d..dbc2228939265 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -544,7 +544,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
- 	busyloop_timeout = poll_rx ? rvq->busyloop_timeout:
- 				     tvq->busyloop_timeout;
+diff --git a/net/sched/sch_choke.c b/net/sched/sch_choke.c
+index e38cf34287018..7283f96dead62 100644
+--- a/net/sched/sch_choke.c
++++ b/net/sched/sch_choke.c
+@@ -229,7 +229,7 @@ static int choke_enqueue(struct sk_buff *skb, struct Qdisc *sch,
  
--	preempt_disable();
-+	migrate_disable();
- 	endtime = busy_clock() + busyloop_timeout;
+ 		/* Draw a packet at random from queue and compare flow */
+ 		if (choke_match_random(q, skb, &idx)) {
+-			q->stats.matched++;
++			WRITE_ONCE(q->stats.matched, q->stats.matched + 1);
+ 			choke_drop_by_idx(sch, idx, to_free);
+ 			goto congestion_drop;
+ 		}
+@@ -241,11 +241,13 @@ static int choke_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			qdisc_qstats_overlimit(sch);
+ 			if (use_harddrop(q) || !use_ecn(q) ||
+ 			    !INET_ECN_set_ce(skb)) {
+-				q->stats.forced_drop++;
++				WRITE_ONCE(q->stats.forced_drop,
++					   q->stats.forced_drop + 1);
+ 				goto congestion_drop;
+ 			}
  
- 	while (vhost_can_busy_poll(endtime)) {
-@@ -561,7 +561,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
- 		cpu_relax();
+-			q->stats.forced_mark++;
++			WRITE_ONCE(q->stats.forced_mark,
++				   q->stats.forced_mark + 1);
+ 		} else if (++q->vars.qcount) {
+ 			if (red_mark_probability(p, &q->vars, q->vars.qavg)) {
+ 				q->vars.qcount = 0;
+@@ -253,11 +255,13 @@ static int choke_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 
+ 				qdisc_qstats_overlimit(sch);
+ 				if (!use_ecn(q) || !INET_ECN_set_ce(skb)) {
+-					q->stats.prob_drop++;
++					WRITE_ONCE(q->stats.prob_drop,
++					           q->stats.prob_drop + 1);
+ 					goto congestion_drop;
+ 				}
+ 
+-				q->stats.prob_mark++;
++				WRITE_ONCE(q->stats.prob_mark,
++					   q->stats.prob_mark + 1);
+ 			}
+ 		} else
+ 			q->vars.qR = red_random(p);
+@@ -272,7 +276,7 @@ static int choke_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return NET_XMIT_SUCCESS;
  	}
  
--	preempt_enable();
-+	migrate_enable();
+-	q->stats.pdrop++;
++	WRITE_ONCE(q->stats.pdrop, q->stats.pdrop + 1);
+ 	return qdisc_drop(skb, sch, to_free);
  
- 	if (poll_rx || sock_has_rx_data(sock))
- 		vhost_net_busy_poll_try_queue(net, vq);
+ congestion_drop:
+@@ -460,10 +464,12 @@ static int choke_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ {
+ 	struct choke_sched_data *q = qdisc_priv(sch);
+ 	struct tc_choke_xstats st = {
+-		.early	= q->stats.prob_drop + q->stats.forced_drop,
+-		.marked	= q->stats.prob_mark + q->stats.forced_mark,
+-		.pdrop	= q->stats.pdrop,
+-		.matched = q->stats.matched,
++		.early	= READ_ONCE(q->stats.prob_drop) +
++			  READ_ONCE(q->stats.forced_drop),
++		.marked	= READ_ONCE(q->stats.prob_mark) +
++			  READ_ONCE(q->stats.forced_mark),
++		.pdrop	= READ_ONCE(q->stats.pdrop),
++		.matched = READ_ONCE(q->stats.matched),
+ 	};
+ 
+ 	return gnet_stats_copy_app(d, &st, sizeof(st));
 -- 
 2.53.0
 
