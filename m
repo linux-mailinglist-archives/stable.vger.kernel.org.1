@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-258930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258327-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GElIdctG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258930-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:03 +0200
+	id SOD8Bx4mG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258327-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D029612055
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB370610DA4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D0D6230437E5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:33:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BABF0304B68E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EB721E098;
-	Sat, 30 May 2026 18:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DDD341AC7;
+	Sat, 30 May 2026 17:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7POEkOW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6K5b1Vv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D873329E79;
-	Sat, 30 May 2026 18:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1A2329C6D;
+	Sat, 30 May 2026 17:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166022; cv=none; b=CDPfwlckWfuCa78f8vjfHtuXQYOIj4I2lDG3PrM3qOIBBt71PFKXkCJuYqXvagmYuDegzcOq07eD87+nU/9RbK0fkj0IXQJblvZYG9H6dVxkIb6ErnHwvdwO7bhW/d8gMmUgXq9ysc9Rm+nPgO39UsJUX3+uiitvDQt1g9D6gjU=
+	t=1780163977; cv=none; b=CXqWn0oVYHCYvongALrDXv6eZlZqBTbTH4P7jIos2D5Fx2aPBto6/f+2ZJpHwRL9772HKD7f6BlHDFWKVCmAxhConTbLrG2xUpqjre7ai0lrRh40sRzyd4edyMk25n5PbQfdcyfPAVsc+xm9zD9MTp+3bpXgQaNO0Qfe2WH9vaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166022; c=relaxed/simple;
-	bh=Z3j6yxkNyMgiTuHNL+UUDMNaBZG3k4lUSa0+RIJEnNI=;
+	s=arc-20240116; t=1780163977; c=relaxed/simple;
+	bh=y3Iqx5t2H2mgkwSHA8/yYmgIJJyy9k3klMALzkAhdFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MwZJ6k0rm+X0CYewrhp9f510QbdZ6zk4WffMz7LFfXjyZGjJSMqTpvTRHF5Zo+BCXP61PcvSfSSdEHm0YOfYKzN1ImL67Y/virFjbkiF8cf6nB374f9chUtY69JYYv4JDnOcnWkMreBe78uvr7tywPzvDDzsFlhNaVR1qdIGuEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7POEkOW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C871F00893;
-	Sat, 30 May 2026 18:33:40 +0000 (UTC)
+	 MIME-Version; b=ZrDf75jgX8TvuLghepKmwpr0Jv8Inggehvc1X9aaTdADTQECCDNpUOZoOxjawDZ5yB6CT5mCFN/9faaUw6ziC3EqKNynpNtpyd7FpKyh2cA3EBC6hU4gKzgmIso+Y7ZrZ1rJFD12Cv87Rb9T7Tdu/b77+Wb08Q51MAeek7X1H1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6K5b1Vv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A7A21F00893;
+	Sat, 30 May 2026 17:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166021;
-	bh=qUaxRnxxVrkiQ+UIGrcLyKXwZUR5ogKm8cAQbcGOL2k=;
+	s=korg; t=1780163976;
+	bh=+Yp+GKCvALTSlOTlLlLZ2yCVvH/ILErRBld00D/n8/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I7POEkOWqWwOp+O+FYFSgVWaE6UHuaSosybqeZyaHakmX87BR54XKyJWcX3owYUIn
-	 qpKcal6HZP27+cKX1WRC8G0LACCkjc2x82j+TcoLv54kHJ58KtIOGjsj4XpI0XM+8U
-	 IIAFCjFBuQF8ZUtUGfCsTig+foCCvn3v14a+6kpI=
+	b=D6K5b1VvdllnlQclQgCe23sQJXasQKRViElsxmEKLjjb/Ql8Tyyu59M9p1dT/L/Cq
+	 YEcBTV+pJr2SiYWyv4R7A8pbE/EnXQvTR518E7eEIcFHS6InQ3edue5QeUD7UFgwxC
+	 t383nChUkuT7zXJEtWozUbbUjhL66zSfO3CRpbuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.10 251/589] isofs: validate Rock Ridge CE continuation extent against volume size
+	zdi-disclosures@trendmicro.com,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 418/776] net/sched: act_ct: Only release RCU read lock after ct_ft
 Date: Sat, 30 May 2026 18:02:12 +0200
-Message-ID: <20260530160231.583253754@linuxfoundation.org>
+Message-ID: <20260530160251.276393257@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +66,166 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258930-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258327-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2D029612055
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,trendmicro.com:email,mojatatu.com:email]
+X-Rspamd-Queue-Id: AB370610DA4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-commit a36d990f591320e9dd379ab30063ebfe91d47e1f upstream.
+[ Upstream commit f462dca0c8415bf0058d0ffa476354c4476d0f09 ]
 
-rock_continue() reads rs->cont_extent verbatim from the Rock Ridge CE
-record and passes it to sb_bread() without checking that the block
-number is within the mounted ISO 9660 volume.  commit e595447e177b
-("[PATCH] rock.c: handle corrupted directories") added cont_offset
-and cont_size rejection for the CE continuation but did not validate
-the extent block number itself.  commit f54e18f1b831 ("isofs: Fix
-infinite looping over CE entries") later capped the CE chain length
-at RR_MAX_CE_ENTRIES = 32 but again left the block number unchecked.
+When looking up a flow table in act_ct in tcf_ct_flow_table_get(),
+rhashtable_lookup_fast() internally opens and closes an RCU read critical
+section before returning ct_ft.
+The tcf_ct_flow_table_cleanup_work() can complete before refcount_inc_not_zero()
+is invoked on the returned ct_ft resulting in a UAF on the already freed ct_ft
+object. This vulnerability can lead to privilege escalation.
 
-With a crafted ISO mounted via udisks2 (desktop optical auto-mount)
-or via CAP_SYS_ADMIN mount, rs->cont_extent can therefore point at
-an out-of-range block or at blocks belonging to an adjacent
-filesystem on the same block device.  sb_bread() on an out-of-range
-block returns NULL cleanly via the block layer EIO path, so there
-is no memory-safety violation.  For in-range reads of adjacent-
-filesystem data, the CE buffer is parsed as Rock Ridge records and
-only the text of SL sub-records reaches userspace through
-readlink(), which makes the info-leak channel narrow and difficult
-to exploit; still, rejecting the malformed CE outright matches the
-rejection shape already present in the same function for
-cont_offset and cont_size.
+Analysis from zdi-disclosures@trendmicro.com:
+When initializing act_ct, tcf_ct_init() is called, which internally triggers
+tcf_ct_flow_table_get().
 
-Add an ISOFS_SB(sb)->s_nzones bounds check to rock_continue() next
-to the existing offset/size rejection, printing the same
-corrupted-directory-entry notice.
+static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
 
-Fixes: f54e18f1b831 ("isofs: Fix infinite looping over CE entries")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260419212155.2169382-2-michael.bommarito@gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+{
+                struct zones_ht_key key = { .net = net, .zone = params->zone };
+                struct tcf_ct_flow_table *ct_ft;
+                int err = -ENOMEM;
+
+                mutex_lock(&zones_mutex);
+                ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params); // [1]
+                if (ct_ft && refcount_inc_not_zero(&ct_ft->ref)) // [2]
+                                goto out_unlock;
+                ...
+}
+
+static __always_inline void *rhashtable_lookup_fast(
+                struct rhashtable *ht, const void *key,
+                const struct rhashtable_params params)
+{
+                void *obj;
+
+                rcu_read_lock();
+                obj = rhashtable_lookup(ht, key, params);
+                rcu_read_unlock();
+
+                return obj;
+}
+
+At [1], rhashtable_lookup_fast() looks up and returns the corresponding ct_ft
+from zones_ht . The lookup is performed within an RCU read critical section
+through rcu_read_lock() / rcu_read_unlock(), which prevents the object from
+being freed. However, at the point of function return, rcu_read_unlock() has
+already been called, and there is nothing preventing ct_ft from being freed
+before reaching refcount_inc_not_zero(&ct_ft->ref) at [2]. This interval becomes
+the race window, during which ct_ft can be freed.
+
+Free Process:
+
+tcf_ct_flow_table_put() is executed through the path tcf_ct_cleanup() call_rcu()
+tcf_ct_params_free_rcu() tcf_ct_params_free() tcf_ct_flow_table_put().
+
+static void tcf_ct_flow_table_put(struct tcf_ct_flow_table *ct_ft)
+{
+                if (refcount_dec_and_test(&ct_ft->ref)) {
+                                rhashtable_remove_fast(&zones_ht, &ct_ft->node, zones_params);
+                                INIT_RCU_WORK(&ct_ft->rwork, tcf_ct_flow_table_cleanup_work); // [3]
+                                queue_rcu_work(act_ct_wq, &ct_ft->rwork);
+                }
+}
+
+At [3], tcf_ct_flow_table_cleanup_work() is scheduled as RCU work
+
+static void tcf_ct_flow_table_cleanup_work(struct work_struct *work)
+
+{
+                struct tcf_ct_flow_table *ct_ft;
+                struct flow_block *block;
+
+                ct_ft = container_of(to_rcu_work(work), struct tcf_ct_flow_table,
+                                                                rwork);
+                nf_flow_table_free(&ct_ft->nf_ft);
+                block = &ct_ft->nf_ft.flow_block;
+                down_write(&ct_ft->nf_ft.flow_block_lock);
+                WARN_ON(!list_empty(&block->cb_list));
+                up_write(&ct_ft->nf_ft.flow_block_lock);
+                kfree(ct_ft); // [4]
+
+                module_put(THIS_MODULE);
+}
+
+tcf_ct_flow_table_cleanup_work() frees ct_ft at [4]. When this function executes
+between [1] and [2], UAF occurs.
+
+This race condition has a very short race window, making it generally
+difficult to trigger. Therefore, to trigger the vulnerability an msleep(100) was
+inserted after[1]
+
+Fixes: 138470a9b2cc2 ("net/sched: act_ct: fix lockdep splat in tcf_ct_flow_table_get")
+Reported-by: zdi-disclosures@trendmicro.com
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260410111627.46611-1-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/isofs/rock.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/sched/act_ct.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/isofs/rock.c
-+++ b/fs/isofs/rock.c
-@@ -101,6 +101,15 @@ static int rock_continue(struct rock_sta
- 		goto out;
- 	}
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 171ebf4594793..1639cc2869ef1 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -290,9 +290,13 @@ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
+ 	int err = -ENOMEM;
  
-+	if ((unsigned)rs->cont_extent >= ISOFS_SB(rs->inode->i_sb)->s_nzones) {
-+		printk(KERN_NOTICE "rock: corrupted directory entry. "
-+			"extent=%u out of volume (nzones=%lu)\n",
-+			(unsigned)rs->cont_extent,
-+			ISOFS_SB(rs->inode->i_sb)->s_nzones);
-+		ret = -EIO;
-+		goto out;
+ 	mutex_lock(&zones_mutex);
+-	ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params);
+-	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref))
++	rcu_read_lock();
++	ct_ft = rhashtable_lookup(&zones_ht, &key, zones_params);
++	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref)) {
++		rcu_read_unlock();
+ 		goto out_unlock;
 +	}
-+
- 	if (rs->cont_extent) {
- 		struct buffer_head *bh;
++	rcu_read_unlock();
  
+ 	ct_ft = kzalloc(sizeof(*ct_ft), GFP_KERNEL);
+ 	if (!ct_ft)
+-- 
+2.53.0
+
 
 
 
