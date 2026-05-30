@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-257849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLKVELIgG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:58 +0200
+	id iJYJKCUpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B08610191
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D49561156D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55B82305E1A4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A7991300515C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52D930676E;
-	Sat, 30 May 2026 17:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68AF72F90E0;
+	Sat, 30 May 2026 18:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tMu7BdHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvHXqm4s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C081341AB8;
-	Sat, 30 May 2026 17:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACF63B9D80;
+	Sat, 30 May 2026 18:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162378; cv=none; b=o78sA+17ewwt9YP9zxiElddQT3vv2DWR+VGfaA1b9+IGaVxwE1aU+eKtKtKlSu3+hCrO86uye+MguZqsvO5D+sMb2nrP9+z731o+6F230ldxiA3cIiUpiZQdHITOphzxGlPSkcvm8YJ80GEprMx9K2p0Gqcj5HzqRz+2b1V5eEk=
+	t=1780164843; cv=none; b=qHh3BcPOms9eW+Kra31afLamci3zUQasVznD/a7lMjMitdfXPI5OnFLor7A/hsnjNRlrci0B3rB/RUygFJH/saPM8xK1OpZNpttRQvgaVrl4ALntBgzvTEx3k3OL2gBj1qjhUnRja+1YPfrmhKKyX3jKyJzbvrXHVT4x6T3lvIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162378; c=relaxed/simple;
-	bh=p18zNCR7TS4wqYh2j5Pz847LResno5VJqKJqOZs/S84=;
+	s=arc-20240116; t=1780164843; c=relaxed/simple;
+	bh=hUnp9x8PTVX8EbVk8+LC8VovePvTypDgZ1lnuIsYuOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hNyXBsfXsZ/DesYLvjC4zR2Df46Ljsk/fJl/0u4nitslgrFauJxM4JeQ9KsiDKOkRaqSWfrTH3p4oMOW1BbX3IaHSRpfaKyf5bk/cgoA+kAZYiR85Fu8N4oCeH+HOlbKQkkzaqrx4P8rUkOI5wU9SZBpCa6TIwMB1znOC7+oEtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMu7BdHW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7187A1F00893;
-	Sat, 30 May 2026 17:32:56 +0000 (UTC)
+	 MIME-Version; b=dCqsVYBCHV1/PnBZ+T6v1ms8eLnKmRlQJuBRcmRQ6QwQolTfWdIwpno8W6RZKtc0dQyW7wxrzIo4ZeEbA1w+hp7POeFoiZTuJhB2zXtN/Qx4pttZjvh+azkL7mq8yyvceaQRsNi9izPxDAy3WQO2T+abV//fjBiA+LV+T0SQs7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvHXqm4s; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28631F00893;
+	Sat, 30 May 2026 18:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162377;
-	bh=0/VYM5ZEtI1lvGUe13Ay198vkcVEDCSI+u6KjgRdtDA=;
+	s=korg; t=1780164842;
+	bh=WE9kXCcEGJPqEFzNcb551JlPvWI+2ZgfG2Qlknu3rGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tMu7BdHWjgzKL30py/aTejQiIoFjcmeKGriSxlCj8kvGzbJ/KbajBKjBtfFveDcxl
-	 HBFHMj9pNEN9dkoed6MR+GMN4IvjbOp51MV1/H3RBApO8TodMSr5Qs+qtZsAZFD0yR
-	 +5V0uKpoBELFfdQorWhnM/hFgbruBZvqhW7c2GaY=
+	b=yvHXqm4sqCPWy33b+sJTXpJGB3wTIZtUjP93CRrqXFT/bavmuP1+g1lJMeYJPQeAD
+	 LVOU5kZEMPZBsaklnExhnlAc7jPuqISTsyk9ioHNODRCPwy40pWvi7Y+3aXWR8LF5t
+	 xx2gIF2b+pAFhK15cfpiKZ6xZtdY9v44hbie88zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 864/969] cifs: Fix busy dentry used after unmounting
-Date: Sat, 30 May 2026 18:06:28 +0200
-Message-ID: <20260530160324.533276294@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 675/776] Revert "s390/cio: Fix device lifecycle handling in css_alloc_subchannel()"
+Date: Sat, 30 May 2026 18:06:29 +0200
+Message-ID: <20260530160257.312889979@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,105 +66,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258585-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257849-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B7B08610191
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3D49561156D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+This reverts commit b1d4e6fb241672850296956c4d782a69363a3807.
 
-commit c68337442f03953237a94577beb468ab2662a851 upstream.
-
-Since commit 340cea84f691c ("cifs: open files should not hold ref on
-superblock"), cifs file only holds the dentry ref_cnt, the cifs file
-close work(cfile->deferred) could be executed after unmounting, which
-will trigger a warning in generic_shutdown_super:
- BUG: Dentry 00000000a14a6845{i=c,n=file}  still in use (1) [unmount of
- cifs cifs]
-
-The detailed processs is:
-   process A           process B           kworker
- fd = open(PATH)
-  vfs_open
-   file->__f_path = *path // dentry->d_lockref.count = 1
-   cifs_open
-    cifs_new_fileinfo
-     cfile->dentry = dget(dentry) // dentry->d_lockref.count = 2
- close(fd)
-  __fput
-  cifs_close
-   queue_delayed_work(deferredclose_wq, cfile->deferred)
-  dput(dentry) // dentry->d_lockref.count = 1
-			                 smb2_deferred_work_close
-					  _cifsFileInfo_put
-					   list_del(&cifs_file->flist)
-                    umount
-		     cleanup_mnt
-		      deactivate_super
-		       cifs_kill_sb
-		        cifs_close_all_deferred_files_sb
-			 cifs_close_all_deferred_files
-			  // cannot find cfile, skip _cifsFileInfo_put
-			kill_anon_super
-			 generic_shutdown_super
-			  shrink_dcache_for_umount
-			   umount_check
-			    WARN ! // dentry->d_lockref.count = 1
-					   cifsFileInfo_put_final
-					    dput(cifs_file->dentry)
-		                            // dentry->d_lockref.count = 0
-
-Fix it by flushing 'deferredclose_wq' before calling kill_anon_super.
-
-Fetch a reproducer in https://bugzilla.kernel.org/show_bug.cgi?id=221548.
-
-Fixes: 340cea84f691c ("cifs: open files should not hold ref on superblock")
-Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsfs.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/s390/cio/css.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -296,6 +296,8 @@ static void cifs_kill_sb(struct super_bl
+diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
+index 4c3fde0bd5512..3c499136af657 100644
+--- a/drivers/s390/cio/css.c
++++ b/drivers/s390/cio/css.c
+@@ -247,7 +247,7 @@ struct subchannel *css_alloc_subchannel(struct subchannel_id schid,
+ err_lock:
+ 	kfree(sch->lock);
+ err:
+-	put_device(&sch->dev);
++	kfree(sch);
+ 	return ERR_PTR(ret);
+ }
  
- 		/* Wait for all pending oplock breaks to complete */
- 		flush_workqueue(cifsoplockd_wq);
-+		/* Wait for all opened files to release */
-+		flush_workqueue(deferredclose_wq);
- 
- 		/* finally release root dentry */
- 		dput(cifs_sb->root);
+-- 
+2.53.0
+
 
 
 
