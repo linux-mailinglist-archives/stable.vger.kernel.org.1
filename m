@@ -1,63 +1,66 @@
-Return-Path: <stable+bounces-257633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yK/yK80dG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257633-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:37 +0200
+	id KINaGPsmG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 289BD60FAB3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 119A7610F85
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9AFBF3058897
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:20:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5DB853006159
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24789344DA4;
-	Sat, 30 May 2026 17:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D483BFE4D;
+	Sat, 30 May 2026 18:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFxWT1WS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="docsP3ux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB44814A62B;
-	Sat, 30 May 2026 17:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEE2348C5E;
+	Sat, 30 May 2026 18:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161655; cv=none; b=Wx6eEbEPzb4Qyw5/vxC+GyAx7simO7rRFN1D8GCiywwdmTR9bbC8+kgFrkLS4YKQFyX2+8bSE2sHO1BaIDwDGvh6Qgyoi/I24hAETWmY6q40s9z62irKxrn09Q2d3T1n4+UgBDH+zMFzHrNGx7ZXTyKMVGhYXomVcsEpX57LOu0=
+	t=1780164344; cv=none; b=qnIOXeq26eYNgq/707jGyL26DLZ7n1NIuKrbLYX8Ec4WBq+PKK/+z85qFYhYh5iRTGzPi/zBxKg0dmcoyOqQzItZcNLksDINCUa3+ygIQhkYJl9KBvFe5h8IWcYkEdAJU/7T0jngp3UGG4CWCJxrZc+YnHvSnkDJttaKG/lh+hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161655; c=relaxed/simple;
-	bh=yDUHe0UKbvWAtfIS1kvJY7mdsAyM6ghZ4VPi5TYUaWU=;
+	s=arc-20240116; t=1780164344; c=relaxed/simple;
+	bh=oSBsLYeJM2oY5FglEVAvp4/dGRHXLWhdUMMyQsKSesM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNijE35qDwjtOwNacSguhfHI/3qDFcpRArfDryg9aC/BwLhgeGEo41ZaT6pjYkeSMwN+qTXDC8WlN5LANc1DB3M38AROK0ayW4XGq5h5SF7pDAlj/BEz8HGLY6IqzoN5SI7rIZd7xtawH7KZ6YQA6Akv17M9xgFssJEyTOD4f+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFxWT1WS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315AD1F00893;
-	Sat, 30 May 2026 17:20:53 +0000 (UTC)
+	 MIME-Version; b=ViOht6nXmhUf+rgLv351HZkF7ny5TDI1UlVxH8kGnR9ipPOPkd+iP+SC5wrZWiH7zbfjC63S94vZdrnxTgvn6zkNUrDAWno60WdPRN0Uun4RLEWtowmzmbLhCei1HBfai0INhkh8/0oV7fL/qxEw2kuXgD+rqZvYxCcwuTNdktA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=docsP3ux; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C611F00893;
+	Sat, 30 May 2026 18:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161654;
-	bh=eeFot4DXHstXAKA6oNY0m4a/aFSPVNqs9ooLK7if568=;
+	s=korg; t=1780164343;
+	bh=MEzBuwWPRtndKrUvxXnD9jTGjQ3Q51M9+t9IKgqd0AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UFxWT1WSuWuplBOxhKWdeOfDzSt3VBDIVMBbMO2rUg50Cp0gQdMtrPvDCkP5nke++
-	 NyxCmmAvpLFEigedpSk5PmQ5xdAS/t1XmDdR5xERbeI5P/EalYqAf9vbeuDuHT5Dyf
-	 S8d7H9YEORdPOvnP2jr2u4ZGn6aSYK8c5ytDAZCc=
+	b=docsP3uxWSEPg0dsQ18n7W5yxAoVIxcNub0+CiY6OCgOIZ7TOJ1g3vBjb8q7Qzdwe
+	 UrKW1O7Dnr8zgnGdFCw+K9f22P4an23S+b+tkSVtR2z5fgGBtVMFQJaqvvRJobk5aH
+	 5WC2z52RGR/nc4Km6waqAHHN9Cm5AUI3XJeFCsms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+	ZhengYuan Huang <gality369@gmail.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 687/969] container_of: add container_of_const() that preserves const-ness of the pointer
+Subject: [PATCH 5.15 497/776] ocfs2: fix listxattr handling when the buffer is full
 Date: Sat, 30 May 2026 18:03:31 +0200
-Message-ID: <20260530160319.478218722@linuxfoundation.org>
+Message-ID: <20260530160253.145595814@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,86 +73,121 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257633-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258436-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 289BD60FAB3
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,linux-foundation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.com:email]
+X-Rspamd-Queue-Id: 119A7610F85
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-[ Upstream commit 64f6a5d1922bf6d2b2d845de20d4563a6f328e2d ]
+[ Upstream commit d12f558e6200b3f47dbef9331ed6d115d2410e59 ]
 
-container_of does not preserve the const-ness of a pointer that is
-passed into it, which can cause C code that passes in a const pointer to
-get a pointer back that is not const and then scribble all over the data
-in it.  To prevent this, container_of_const() will preserve the const
-status of the pointer passed into it using the newly available _Generic()
-method.
+[BUG]
+If an OCFS2 inode has both inline and block-based xattrs, listxattr()
+can return a size larger than the caller's buffer when the inline names
+consume that buffer exactly.
 
-Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
-Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Link: https://lore.kernel.org/r/20221205121206.166576-1-gregkh@linuxfoundation.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 21e92a38cfd8 ("tcp: add data-race annotations around tp->data_segs_out and tp->total_retrans")
+kernel BUG at mm/usercopy.c:102!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+RIP: 0010:usercopy_abort+0xb7/0xd0 mm/usercopy.c:102
+Call Trace:
+ __check_heap_object+0xe3/0x120 mm/slub.c:8243
+ check_heap_object mm/usercopy.c:196 [inline]
+ __check_object_size mm/usercopy.c:250 [inline]
+ __check_object_size+0x5c5/0x780 mm/usercopy.c:215
+ check_object_size include/linux/ucopysize.h:22 [inline]
+ check_copy_size include/linux/ucopysize.h:59 [inline]
+ copy_to_user include/linux/uaccess.h:219 [inline]
+ listxattr+0xb0/0x170 fs/xattr.c:926
+ filename_listxattr fs/xattr.c:958 [inline]
+ path_listxattrat+0x137/0x320 fs/xattr.c:988
+ __do_sys_listxattr fs/xattr.c:1001 [inline]
+ __se_sys_listxattr fs/xattr.c:998 [inline]
+ __x64_sys_listxattr+0x7f/0xd0 fs/xattr.c:998
+ ...
+
+[CAUSE]
+Commit 936b8834366e ("ocfs2: Refactor xattr list and remove
+ocfs2_xattr_handler().") replaced the old per-handler list accounting
+with ocfs2_xattr_list_entry(), but it kept using size == 0 to detect
+probe mode.
+
+That assumption stops being true once ocfs2_listxattr() finishes the
+inline-xattr pass. If the inline names fill the caller buffer exactly,
+the block-xattr pass runs with a non-NULL buffer and a remaining size of
+zero. ocfs2_xattr_list_entry() then skips the bounds check, keeps
+counting block names, and returns a positive size larger than the
+supplied buffer.
+
+[FIX]
+Detect probe mode by testing whether the destination buffer pointer is
+NULL instead of whether the remaining size is zero.
+
+That restores the pre-refactor behavior and matches the OCFS2 getxattr
+helpers. Once the remaining buffer reaches zero while more names are
+left, the block-xattr pass now returns -ERANGE instead of reporting a
+size larger than the allocated list buffer.
+
+Link: https://lkml.kernel.org/r/20260410040339.3837162-1-gality369@gmail.com
+Fixes: 936b8834366e ("ocfs2: Refactor xattr list and remove ocfs2_xattr_handler().")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/container_of.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ fs/ocfs2/xattr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/container_of.h b/include/linux/container_of.h
-index a6f242137b116..c8d7cf8b8522c 100644
---- a/include/linux/container_of.h
-+++ b/include/linux/container_of.h
-@@ -21,4 +21,17 @@
- 		      "pointer type mismatch in container_of()");	\
- 	((type *)(__mptr - offsetof(type, member))); })
+diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
+index 7ac7cb6117d4f..1f22ad21ae608 100644
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -911,8 +911,8 @@ static int ocfs2_xattr_list_entry(struct super_block *sb,
+ 	total_len = prefix_len + name_len + 1;
+ 	*result += total_len;
  
-+/**
-+ * container_of_const - cast a member of a structure out to the containing
-+ *			structure and preserve the const-ness of the pointer
-+ * @ptr:		the pointer to the member
-+ * @type:		the type of the container struct this is embedded in.
-+ * @member:		the name of the member within the struct.
-+ */
-+#define container_of_const(ptr, type, member)				\
-+	_Generic(ptr,							\
-+		const typeof(*(ptr)) *: ((const type *)container_of(ptr, type, member)),\
-+		default: ((type *)container_of(ptr, type, member))	\
-+	)
-+
- #endif	/* _LINUX_CONTAINER_OF_H */
+-	/* we are just looking for how big our buffer needs to be */
+-	if (!size)
++	/* No buffer means we are only looking for the required size. */
++	if (!buffer)
+ 		return 0;
+ 
+ 	if (*result > size)
 -- 
 2.53.0
 
