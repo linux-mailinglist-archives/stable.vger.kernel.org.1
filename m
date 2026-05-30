@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-259095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257716-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aO0aK0cwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259095-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:27 +0200
+	id KMVULOEdG2qW/QgAu9opvQ
+	(envelope-from <stable+bounces-257716-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 588336126B9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE5060FB0B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DB41330598EE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:43:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3DF4E3020295
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDA621B191;
-	Sat, 30 May 2026 18:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8683438AE;
+	Sat, 30 May 2026 17:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orVv4GhJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K11vyrgI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039072F3C3E;
-	Sat, 30 May 2026 18:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AB52FDC5E;
+	Sat, 30 May 2026 17:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166596; cv=none; b=JqL3RL1Go2USyY+t9ZSom1OQc668FbsWN6bDUjDHP8wKzNSIiP0PUmieLNOxru0gTDDG7fUqeKXJ2l33UpC2hYtkhVk9g/zrY11eSQbRFxSlC1aSYYMpQKf39qAbPEy74B/b+rVxq8kPLl+y1BtqjYZpDPQ7XHM9qOUPzIsHcD0=
+	t=1780161933; cv=none; b=rztD0n1PxwUBw0smES7apN7D1Ld/GktsQd47h5TCzlx0/rtZhvWGcTJSSrU092qdgaCzWJIoued4Up9g33dLV0JRLKShU0TwJwGtTKPX0oNeGt+8A1I1Z7RDKXEkh+TEsZU44LgICEXRRp4KrGKBZSigVQViXidEpzmc52/oKFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166596; c=relaxed/simple;
-	bh=t9xZkmdH4uqLaol+OnXyrvKUPOgUxpxkWFHkP/ZAYK4=;
+	s=arc-20240116; t=1780161933; c=relaxed/simple;
+	bh=R3vvLJKe4ZEX/c73Bh520vR1lM3E9eWQr9PMrPXl31M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oxrIEdukpxAh4drd+mC0HxrQfl/TKMwUKdKX4z3FrsoMWHf6YSKYRgzk0XvMjRH9ieUIwahgE967Ydvb62Jx0g49z7bZjMkJHBxgbyOlQ4+sG0mgvi3Iq2abE1Ih5UCaJGJ2zpHE1NEEqHaUWER5QXJMP5J/8j+xfMQz7/XuZiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orVv4GhJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C6E91F00893;
-	Sat, 30 May 2026 18:43:14 +0000 (UTC)
+	 MIME-Version; b=foYwLnqlGwXwSP6Qur4PVKLYVC77w79Flhi1gKRjsNDe8fjza4KFcs96xVlKdTa7xaWZMqr/qRWTYrkdXPSN5ZvWXQbpMekobNIxfm9N36K1cR6V2VBi3xhDuIioog5WQagRJ87DvH1gh7cu3ajKFNocyej5Y6FX/oGFi4vCsu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K11vyrgI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A74D1F00893;
+	Sat, 30 May 2026 17:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166594;
-	bh=7ll23bGkzhFcev5dTea9jsdQwIy0mFH14R6Tl4b4VHQ=;
+	s=korg; t=1780161932;
+	bh=4yqiWc794ImEZxX/RRkNpCHq7RlAIWc0Qu5N2aAV90U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=orVv4GhJ3rnOPGeroagxMZ3h6mXbg9u4X55T1n9+NPOuccx0WAnqX3jfyD3lnWYs/
-	 PidrQIEz7cwNK/jlIouXHT695tPbk0GdSYl0x1eN4lCsHZp6Lwx0d9L1yQhdTsv+QG
-	 byDqmtC4Cyv6NbWZeCiz5/24NVvQ/1t2MxDa2vS8=
+	b=K11vyrgIM0pvSxgh7YtlmgPQc9X+nP10/5B812Fi8+9lqHa2xEY14Vt/UF7wQ4TWm
+	 yxQAuvQqOZcYMT2XP60OnB5rDSACnWIUYB9baZiJBoo59CdUbwQuXBdfKOmCdbvmtk
+	 rN9KmOk/IktTpp29BA3w0CZ/hqYPrD043gl2Oeso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@gmail.com>,
+	Breno Leitao <leitao@debian.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 413/589] nexthop: Emit a notification when a nexthop group is modified
-Date: Sat, 30 May 2026 18:04:54 +0200
-Message-ID: <20260530160235.606342984@linuxfoundation.org>
+Subject: [PATCH 6.1 771/969] netconsole: propagate device name truncation in dev_name_store()
+Date: Sat, 30 May 2026 18:04:55 +0200
+Message-ID: <20260530160321.873190598@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,132 +66,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-259095-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257716-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 588336126B9
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6AE5060FB0B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit f17bc33d7412bcca58825273d9f4abf84a87c4cb ]
+[ Upstream commit 92ceb7bff62c2606f664c204750eca0b85d44112 ]
 
-When a single nexthop is replaced, the configuration of all the groups
-using the nexthop is effectively modified. In this case, emit a
-notification in the nexthop notification chain for each modified group
-so that listeners would not need to keep track of which nexthops are
-member in which groups.
+dev_name_store() calls strscpy(nt->np.dev_name, buf, IFNAMSIZ) without
+checking the return value. If userspace writes an interface name longer
+than IFNAMSIZ - 1, strscpy() silently truncates and returns -E2BIG, but
+the function ignores it and reports a fully successful write back to
+userspace.
 
-The notification can only be emitted after the new configuration (i.e.,
-'struct nh_info') is pointed at by the old shell (i.e., 'struct
-nexthop'). Before that the configuration of the nexthop groups is still
-the same as before the replacement.
+If a real interface happens to match the truncated name, netconsole will
+bind to the wrong device on the next enable, sending kernel logs and
+panic output to an unintended network segment with no indication to
+userspace that anything was rewritten.
 
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@gmail.com>
+Reject writes whose length cannot fit in nt->np.dev_name up front:
+
+	if (count >= IFNAMSIZ)
+		return -ENAMETOOLONG;
+
+This is not a big deal of a problem, but, it is still the correct
+approach.
+
+Fixes: 0bcc1816188e57 ("[NET] netconsole: Support dynamic reconfiguration using configfs")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20260427-netconsole_ai_fixes-v2-3-59965f29d9cc@debian.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 29c95185ba32 ("nexthop: fix IPv6 route referencing IPv4 nexthop")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/nexthop.c | 32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ drivers/net/netconsole.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 75e1c8d3bd835..29f95987b68d5 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -1014,7 +1014,9 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
- 				  struct nexthop *new,
- 				  struct netlink_ext_ack *extack)
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index f9bf2c9a3ae2a..d150287c01a7d 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -414,6 +414,13 @@ static ssize_t dev_name_store(struct config_item *item, const char *buf,
+ 		size_t count)
  {
-+	u8 old_protocol, old_nh_flags;
- 	struct nh_info *oldi, *newi;
-+	struct nh_grp_entry *nhge;
- 	int err;
- 
- 	if (new->is_group) {
-@@ -1044,18 +1046,29 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
- 	newi->nh_parent = old;
- 	oldi->nh_parent = new;
- 
-+	old_protocol = old->protocol;
-+	old_nh_flags = old->nh_flags;
+ 	struct netconsole_target *nt = to_target(item);
++	size_t len = count;
 +
- 	old->protocol = new->protocol;
- 	old->nh_flags = new->nh_flags;
++	/* Account for a trailing newline appended by tools like echo */
++	if (len && buf[len - 1] == '\n')
++		len--;
++	if (len >= IFNAMSIZ)
++		return -ENAMETOOLONG;
  
- 	rcu_assign_pointer(old->nh_info, newi);
- 	rcu_assign_pointer(new->nh_info, oldi);
- 
-+	/* Send a replace notification for all the groups using the nexthop. */
-+	list_for_each_entry(nhge, &old->grp_list, nh_list) {
-+		struct nexthop *nhp = nhge->nh_parent;
-+
-+		err = call_nexthop_notifiers(net, NEXTHOP_EVENT_REPLACE, nhp,
-+					     extack);
-+		if (err)
-+			goto err_notify;
-+	}
-+
- 	/* When replacing an IPv4 nexthop with an IPv6 nexthop, potentially
- 	 * update IPv4 indication in all the groups using the nexthop.
- 	 */
- 	if (oldi->family == AF_INET && newi->family == AF_INET6) {
--		struct nh_grp_entry *nhge;
--
- 		list_for_each_entry(nhge, &old->grp_list, nh_list) {
- 			struct nexthop *nhp = nhge->nh_parent;
- 			struct nh_group *nhg;
-@@ -1066,6 +1079,21 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
- 	}
- 
- 	return 0;
-+
-+err_notify:
-+	rcu_assign_pointer(new->nh_info, newi);
-+	rcu_assign_pointer(old->nh_info, oldi);
-+	old->nh_flags = old_nh_flags;
-+	old->protocol = old_protocol;
-+	oldi->nh_parent = old;
-+	newi->nh_parent = new;
-+	list_for_each_entry_continue_reverse(nhge, &old->grp_list, nh_list) {
-+		struct nexthop *nhp = nhge->nh_parent;
-+
-+		call_nexthop_notifiers(net, NEXTHOP_EVENT_REPLACE, nhp, extack);
-+	}
-+	call_nexthop_notifiers(net, NEXTHOP_EVENT_REPLACE, old, extack);
-+	return err;
- }
- 
- static void __nexthop_replace_notify(struct net *net, struct nexthop *nh,
+ 	mutex_lock(&dynamic_netconsole_mutex);
+ 	if (nt->enabled) {
 -- 
 2.53.0
 
