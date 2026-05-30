@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258294-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOOACm8dG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:03 +0200
+	id 0ME4ML0lG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258294-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F5060F954
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B12610CCC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C21223055915
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:16:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DA45A30120FF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9792C39A4A4;
-	Sat, 30 May 2026 17:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1813B7B72;
+	Sat, 30 May 2026 17:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4oa1vKd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwydmZDj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDED350A05;
-	Sat, 30 May 2026 17:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC6A352027;
+	Sat, 30 May 2026 17:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161372; cv=none; b=DtEoDAS/OeLKQWM1pTGBxH+m4CBKhyEDN65xnxvL0V3jg5T4A+xtA6n4zWXtmR0P3GXUFgehygbb0IWmosvmXznFg5QYJRj9dgpUzs8q3Ow2gA4153h2Maemkdur5U4KC2VUUzcmOmDqUR54pejYtpkb2YPyygJFk58dDzIvIHs=
+	t=1780163866; cv=none; b=mE8RT6vnCXD/mdCOCpvl1aG7SmAGBZDy8duqpAXEpzPxTDGWmxiq+ZzO07/yBHnTedZo8SwcnJWH0hZzCzzeDs7HPLhYxa7NFjSErw6gnHBJNlaAZZ+9OsKZEr4lMt9WbFxcv9sZ7OqcTNVahhw4z7mRJvVIgLMXYRHT0El89yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161372; c=relaxed/simple;
-	bh=xWzKgDdNRpVC4EpdF0WCE5UgcI0ucTJ9XcOrVsODosw=;
+	s=arc-20240116; t=1780163866; c=relaxed/simple;
+	bh=FyxGDZ8Rc9LZrq2vLmxS4JQ/5QOygSVjz5BVUvkBb70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kufWfkVoQIjXFNyGOQcrz6ownGzRssVPo2kmtz+wILzqh8qUQ8cOhD5H/N+YbnAjw1mklDNqBl64IIvg78KYw5TGrR89QdAPmRA4YhFliheFsBLVHFmwM6oAPfi/STFbMLV0zDaFoUG0x5eI5PkyNoB96Df/YvwnqIhjrABvbpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4oa1vKd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B513A1F00893;
-	Sat, 30 May 2026 17:16:09 +0000 (UTC)
+	 MIME-Version; b=preur1ez0YpwxSXc7+MyydmahjU/uGdFnj8XXhfz5sLP720+92e+OYVmVX9AExv7cjMYpD6ZeLX4SwayMTs3qFrISETNJQtrfRWAvi46yqnppve8UAATcSp4ywJ4LcLH9ZBEupgsuycJhYGxrvQlnhiYhsZQRvMFvwLiaenA+lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwydmZDj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B03A1F00893;
+	Sat, 30 May 2026 17:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161370;
-	bh=czLuF9PU/B2aown5nJ0G6Z8PZ6sHFDq1BULMKkFK0A0=;
+	s=korg; t=1780163865;
+	bh=nALtJp+MFsfwtGd4K4Gz8v5URs2FC72knv/Q1D5jaYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g4oa1vKdA25qzvBXRfExLdFEdaiELsfz21L7qSZihUymvDpQqmY5a4DssUj6+rsWD
-	 Ivnqkc4WGabJIcBfGOkusBJqRyh6gYWPQUv12j/uwjrtEt2T6hz7PlvEU+Z4AAlk8r
-	 CwE9Q+eB+S26nsYG1WP7uVy6WX/VRw7ORAKpFZ7s=
+	b=CwydmZDj5bOht1fx8JQDxu08DW5/ZEQqkrBcdJoSclqlJYIPsPO+wfDp/X5flKlRo
+	 aNUBHRyNyGRKL0H+1mwLABhQSd6EF0p7T+cxZWtHIkrUzu3/dcZMPHmE590JVx29QT
+	 pVXQCe+v07UnOw7/1MMqIBKTIC2jo2Y4LXBhG4Dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	Hyungjung Joo <jhj140711@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 574/969] memory: tegra30-emc: Fix dll_change check
-Date: Sat, 30 May 2026 18:01:38 +0200
-Message-ID: <20260530160316.253014149@linuxfoundation.org>
+Subject: [PATCH 5.15 385/776] fs/omfs: reject s_sys_blocksize smaller than OMFS_DIR_START
+Date: Sat, 30 May 2026 18:01:39 +0200
+Message-ID: <20260530160250.460095922@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,74 +69,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257550-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258294-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 79F5060F954
+X-Rspamd-Queue-Id: 45B12610CCC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Perttunen <mperttunen@nvidia.com>
+From: HyungJung Joo <jhj140711@gmail.com>
 
-[ Upstream commit 0a93f2355cf4922ad2399dbef5ea1049fef116d4 ]
+[ Upstream commit 0621c385fda1376e967f37ccd534c26c3e511d14 ]
 
-The code checking whether the specified memory timing enables DLL
-in the EMRS register was reversed. DLL is enabled if bit A0 is low.
-Fix the check.
+omfs_fill_super() rejects oversized s_sys_blocksize values (> PAGE_SIZE),
+but it does not reject values smaller than OMFS_DIR_START (0x1b8 = 440).
 
-Fixes: e34212c75a68 ("memory: tegra: Introduce Tegra30 EMC driver")
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Link: https://patch.msgid.link/20260126-fix-emc-dllchange-v1-2-47ad3bb63262@nvidia.com
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Later, omfs_make_empty() uses
+
+    sbi->s_sys_blocksize - OMFS_DIR_START
+
+as the length argument to memset().  Since s_sys_blocksize is u32,
+a crafted filesystem image with s_sys_blocksize < OMFS_DIR_START causes
+an unsigned underflow there, wrapping to a value near 2^32.  That drives
+a ~4 GiB memset() from bh->b_data + OMFS_DIR_START and overwrites kernel
+memory far beyond the backing block buffer.
+
+Add the corresponding lower-bound check alongside the existing upper-bound
+check in omfs_fill_super(), so that malformed images are rejected during
+superblock validation before any filesystem data is processed.
+
+Fixes: a3ab7155ea21 ("omfs: add directory routines")
+Signed-off-by: Hyungjung Joo <jhj140711@gmail.com>
+Link: https://patch.msgid.link/20260317054827.1822061-1-jhj140711@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/tegra/tegra30-emc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/omfs/inode.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/memory/tegra/tegra30-emc.c b/drivers/memory/tegra/tegra30-emc.c
-index 1ea3792beb86d..fb09e8a463bd5 100644
---- a/drivers/memory/tegra/tegra30-emc.c
-+++ b/drivers/memory/tegra/tegra30-emc.c
-@@ -554,14 +554,14 @@ static int emc_prepare_timing_change(struct tegra_emc *emc, unsigned long rate)
- 	emc->emc_cfg = readl_relaxed(emc->regs + EMC_CFG);
- 	emc_dbg = readl_relaxed(emc->regs + EMC_DBG);
+diff --git a/fs/omfs/inode.c b/fs/omfs/inode.c
+index 2a0e83236c011..9773846daa4bc 100644
+--- a/fs/omfs/inode.c
++++ b/fs/omfs/inode.c
+@@ -515,6 +515,12 @@ static int omfs_fill_super(struct super_block *sb, void *data, int silent)
+ 		goto out_brelse_bh;
+ 	}
  
--	if (emc->dll_on == !!(timing->emc_mode_1 & 0x1))
-+	if (emc->dll_on == !(timing->emc_mode_1 & 0x1))
- 		dll_change = DLL_CHANGE_NONE;
--	else if (timing->emc_mode_1 & 0x1)
-+	else if (!(timing->emc_mode_1 & 0x1))
- 		dll_change = DLL_CHANGE_ON;
- 	else
- 		dll_change = DLL_CHANGE_OFF;
- 
--	emc->dll_on = !!(timing->emc_mode_1 & 0x1);
-+	emc->dll_on = !(timing->emc_mode_1 & 0x1);
- 
- 	if (timing->data[80] && !readl_relaxed(emc->regs + EMC_ZCAL_INTERVAL))
- 		emc->zcal_long = true;
++	if (sbi->s_sys_blocksize < OMFS_DIR_START) {
++		printk(KERN_ERR "omfs: sysblock size (%d) is too small\n",
++			sbi->s_sys_blocksize);
++		goto out_brelse_bh;
++	}
++
+ 	if (sbi->s_blocksize < sbi->s_sys_blocksize ||
+ 	    sbi->s_blocksize > OMFS_MAX_BLOCK_SIZE) {
+ 		printk(KERN_ERR "omfs: block size (%d) is out of range\n",
 -- 
 2.53.0
 
