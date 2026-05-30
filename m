@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258232-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OUPIRgtG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:52 +0200
+	id IHIXEJkkG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258232-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02927611E78
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8D4610AA6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5C43F30D01DB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:28:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 09B6F3018F65
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD8A3C3BFF;
-	Sat, 30 May 2026 18:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E9A341AC7;
+	Sat, 30 May 2026 17:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BH1JnhaP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAuQ/zFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB8D33E36A;
-	Sat, 30 May 2026 18:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0025261B9E;
+	Sat, 30 May 2026 17:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165698; cv=none; b=cfMQw52SD7d9NkIHZrGsc/a2lx49HoHGFTYz6yrVfbjfEATx7VEdnePKFii7OXOjvJ2iEfLby2W5Iieuvs/juU8SvpraPMzforiAXIv00DOQLMt6h8CCcQKwPdvQktoAizNTqtcW58TTzKJ6yDTxqZAy/eyuaSLqU+zO82YeL5Q=
+	t=1780163657; cv=none; b=WVH6/+8mCd7eYgwOSvsUQ8ZRmt/3MXrO3n850kCR2sJACJPLJkgu6Gg2T1oe58wwi0PyBsvmKnKZ17ejtPHUDENNY4Rw8Xam899rnQPCAuoVEgU0IJ84rBnusDOgfVVwKhg+nRxlC7mc+dwGiMOmguuDCEeUpE5c2E4ed1ZtUtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165698; c=relaxed/simple;
-	bh=QTDQIn89BEyH3XfC7q0Uo4+KbUx0acLrTAMIc7SOLKY=;
+	s=arc-20240116; t=1780163657; c=relaxed/simple;
+	bh=USFktYoybA5D9ZhqIdBmLY+j6AiOfWW+xHVocyj9XcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VezvBIT+xzQIiDTcLSqSg9Qm93mEMrn6J8g4brpoPlIqUBdVR9VCU9T3XUWOtks3/j3w/z58rguIdDUs9lV+yKUkiNvyvk7RlB1zPsvbmn7t/gCMJ73Q+xvEL1tW6zjir9LqUFjtoeos6KthtOv8ET582r0qz9bxuU+Yi+2vQ7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BH1JnhaP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA111F00893;
-	Sat, 30 May 2026 18:28:16 +0000 (UTC)
+	 MIME-Version; b=fHdbpnyFB/XO3N83IDMPV3Mss0QClj1/1gS5WA03UdoccIenxw6SDwSwBYPsj/im0lVgUJM+uZKd2QdEEkyM/Z2VQOVgTWaeyTiHgGhvBs3KzvNImdu7E9ITdJDvh6RkGYJP/z/PwScexPzp+e4Z4BTYdPHf3p4UbmFD/efkP1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAuQ/zFn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0176D1F00893;
+	Sat, 30 May 2026 17:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165697;
-	bh=b8yHTFT3oUhT3JeFgP23QjjpQklN6SAnbsdgS+gH4n8=;
+	s=korg; t=1780163656;
+	bh=WjrRbAFIhaCKibjZQ2bfX7A/vaIEGwPdSJIY3I8pSY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BH1JnhaP+zuyz34z6rvlqG+/tBt0U0dK/uMQYv9zo2R7+sAmrs2iZhNAob5fDHihm
-	 VICgMJNwBQDT7ZYszg4y87r6/w9I8wjiKnGwMuFRzxwpMqRwyx13j/n3QyQwQHdYdQ
-	 YTj+I9bJJO5xEGflJi0TJyjVzOi2ht3af3lwqqp8=
+	b=KAuQ/zFn1y8IxkPwJAmM+DTJNarGXd7Nxs1ToThr4e1pri56dPzjDQ0AdA3J4ZMi4
+	 a7pfR/gmszLNB7vBfCO74LwzIeNZnXhs59aDYUuZpLl5V0rd+56uh0o9tsKC8m8Qhp
+	 WpvDwkTQtYrbBEd/LoosWCBvxREU21EDSzbdwMQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rong Zhang <i@rong.moe>,
-	Arun Raghavan <arunr@valvesoftware.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 155/589] Revert "ALSA: usb: Increase volume range that triggers a warning"
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: [PATCH 5.15 322/776] thermal/drivers/sprd: Fix raw temperature clamping in sprd_thm_rawdata_to_temp
 Date: Sat, 30 May 2026 18:00:36 +0200
-Message-ID: <20260530160228.859850438@linuxfoundation.org>
+Message-ID: <20260530160248.889877344@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,69 +78,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258835-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258232-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,valvesoftware.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 02927611E78
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux.dev:email,alibaba.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5A8D4610AA6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Zhang <i@rong.moe>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 41d78cb724f4b40b7548af420ccfe524b14023bb upstream.
+commit b3414148bbc1f9cd56217e58a558c6ac4fd1b4a6 upstream.
 
-UAC uses 2 bytes to store volume values, so the maximum volume range is
-0xFFFF (65535, val = -32768/32767/1).
+The raw temperature data was never clamped to SPRD_THM_RAW_DATA_LOW or
+SPRD_THM_RAW_DATA_HIGH because the return value of clamp() was not used.
+Fix this by assigning the clamped value to 'rawdata'.
 
-The reverted commit bumpped the range of triggering the warning to >
-65535, effectively making the range check a no-op. It didn't fix
-anything but covered any potential problems and deviated from the
-original intention of the range check.
+Casting SPRD_THM_RAW_DATA_LOW and SPRD_THM_RAW_DATA_HIGH to u32 is also
+redundant and can be removed.
 
-This reverts commit 6b971191fcfc9e3c2c0143eea22534f1f48dbb62.
-
-Fixes: 6b971191fcfc ("ALSA: usb: Increase volume range that triggers a warning")
+Fixes: 554fdbaf19b1 ("thermal: sprd: Add Spreadtrum thermal driver support")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Rong Zhang <i@rong.moe>
-Acked-by: Arun Raghavan <arunr@valvesoftware.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260303194805.266158-2-i@rong.moe
+Link: https://patch.msgid.link/20260307102422.306055-2-thorsten.blum@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/thermal/sprd_thermal.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1748,10 +1748,11 @@ static void __build_feature_ctl(struct u
+--- a/drivers/thermal/sprd_thermal.c
++++ b/drivers/thermal/sprd_thermal.c
+@@ -178,7 +178,7 @@ static int sprd_thm_sensor_calibration(s
+ static int sprd_thm_rawdata_to_temp(struct sprd_thermal_sensor *sen,
+ 				    u32 rawdata)
+ {
+-	clamp(rawdata, (u32)SPRD_THM_RAW_DATA_LOW, (u32)SPRD_THM_RAW_DATA_HIGH);
++	rawdata = clamp(rawdata, SPRD_THM_RAW_DATA_LOW, SPRD_THM_RAW_DATA_HIGH);
  
- 	range = (cval->max - cval->min) / cval->res;
  	/*
--	 * There are definitely devices with a range of ~20,000, so let's be
--	 * conservative and allow for a bit more.
-+	 * Are there devices with volume range more than 255? I use a bit more
-+	 * to be sure. 384 is a resolution magic number found on Logitech
-+	 * devices. It will definitively catch all buggy Logitech devices.
- 	 */
--	if (range > 65535) {
-+	if (range > 384) {
- 		usb_audio_warn(mixer->chip,
- 			       "Warning! Unlikely big volume range (=%u), cval->res is probably wrong.",
- 			       range);
+ 	 * According to the thermal datasheet, the formula of converting
 
 
 
