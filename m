@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-257839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258612-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKTjJpUgG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:29 +0200
+	id aPpKNBIqG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258612-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD6A61013F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7620961174E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E58B30A0CAC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 67C1B3040CA3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA012E7379;
-	Sat, 30 May 2026 17:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9B4274FDC;
+	Sat, 30 May 2026 18:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tc4QBjp5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUncJo2j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C395F341AB8;
-	Sat, 30 May 2026 17:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAC33BE175;
+	Sat, 30 May 2026 18:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162342; cv=none; b=G9F3HV2FzDTSQPHrcSaf34wwL0jSGFj0JJ0RKxk8ruHYi5qwOar/GsW5L4UCArlPz3X0Dan7XA3FmBVm4o4fuZI2i2dRf8JF89Wl8BgN60M9s5SMva85FuTT/GBJY2nC/xoczC5uUeDsyBTR/QbbOSHf7vpbIXy4phSjPGsn3+w=
+	t=1780164936; cv=none; b=jq7+IpU4t1bTdYgZMtYt/Vswar4gXL57qxM4jNCNOvRU+ITpRnbT9MRNb9CFKsxP5WR8DYVif2mzEoDI3vDO7IyQhqOq8XgjuH5606k02L+ZHHBirfgdmk/VDlcKXg/inxXyBLkw6p1ukNteb26C7DeCjz9xmJ0Za5Onoqagcn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162342; c=relaxed/simple;
-	bh=VIQ003I6a1tY19bLMcQsAIE99rTV75QPr3B0rUeA/vQ=;
+	s=arc-20240116; t=1780164936; c=relaxed/simple;
+	bh=/F5LDO1oJl130X+TRshRecCIhaXaGAuvfD5v8/K9nEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VzPfVj+gu/+ueSY0Wvd0fKhAGJ87f+TWb/FltmPtPzZFuXolmCcCt9pXpKutRG9Mc5eBBaQ1bQizeQI6C26eXt/EqX88fK5ERRFAt8rF0d+TTBLz2tsNDxA6u8rsqHsuU1BOv9mEwqC5V8cHvXwIDjiyPlqXjYhnamraxE946TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tc4QBjp5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A69F1F00893;
-	Sat, 30 May 2026 17:32:20 +0000 (UTC)
+	 MIME-Version; b=MsnUSi/JN7fW7B0Cc8GESnDrz01Yt9Y6+K+1h5aRbgaFRGT6PsnIxFxwyjZRezHcZ2S+v2jrBFFEDJdv+yK5JH0OO5abb5Um2BCtsinnkvsH+b4/2vtrkeq8ZkjkaZ4G1iUuQ6dtpTrYOug0G0B9aUO4CYga+DeoP9dArm2JVAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUncJo2j; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED4B1F00893;
+	Sat, 30 May 2026 18:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162341;
-	bh=vST3PBE5z8Y/BzE2hZDo+igBt4bDOFvHBIc0iuDcIKw=;
+	s=korg; t=1780164935;
+	bh=mYrDseRq+LQwbI/bnh9grBBjT6q5V7sLrWC+czoCJJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Tc4QBjp5gu8yqLV7y7BMFc2R+md/wpmDEtxBF2zLULRb1zmgCmoQvjzbpLqd69ck1
-	 N870IpSU3Koz5+7sSU/jJ5WlzJ7ZseV2nKcIKLWJiASDecIRriZklSgiguzH/jVou4
-	 682iBVVYYuTA+FP1ioMdmvKbbBnPVEW36AM4GfOM=
+	b=xUncJo2j9c+iYAIbArslXEATaxuKZQcL1vqxSiNp+PjmSDI8ELjQDradlcy8bGiRl
+	 HL246WLC0nArqJjZQ7sv+hsm+yJcVRsVvvQPh0UVx2D00RFrUR53zMzZiSK+bwSd42
+	 QGHlSwVMQOJP2vgFjjaTVvfAzTr5wmSNl3bMEjlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 892/969] hwmon: (pmbus/adm1266) include PEC byte in pmbus_block_xfer read buffer
+	Julien Chauveau <chauveau.julien@gmail.com>,
+	Javier Martinez Canillas <javierm@redhat.com>
+Subject: [PATCH 5.15 702/776] drm/bridge: it66121: acquire reset GPIO in probe
 Date: Sat, 30 May 2026 18:06:56 +0200
-Message-ID: <20260530160325.335356876@linuxfoundation.org>
+Message-ID: <20260530160257.983181242@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257839-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258612-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,roeck-us.net:email,nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0FD6A61013F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7620961174E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Julien Chauveau <chauveau.julien@gmail.com>
 
-commit 487566cb1ccdf3756fdd7bf8d875e612ff3169bb upstream.
+commit e02b5262fd288cc235f14e12233ea54e78c04611 upstream.
 
-adm1266_pmbus_block_xfer() sets up the read transaction with
+The it66121_ctx structure has a gpio_reset field, and it66121_hw_reset()
+calls gpiod_set_value() on it. However, the GPIO descriptor is never
+acquired via devm_gpiod_get(), leaving gpio_reset as NULL throughout
+the driver lifetime.
 
-	.buf = data->read_buf,
-	.len = ADM1266_PMBUS_BLOCK_MAX + 2,
+gpiod_set_value() silently returns when passed a NULL descriptor, so
+the hardware reset sequence in it66121_hw_reset() is a no-op. This
+leaves the chip in an undefined state at probe time, which can prevent
+it from responding on the I2C bus.
 
-but read_buf in struct adm1266_data is declared as
+The DT binding marks reset-gpios as a required property, so all
+compliant device trees provide this GPIO. Add the missing
+devm_gpiod_get() call after enabling power supplies and before the
+hardware reset, so the chip is properly reset with power applied.
 
-	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 1];
-
-For a max-length block response (length byte = 255 + up to 1 PEC
-byte), the i2c controller is told to write 257 bytes into a 256-byte
-buffer, putting one byte past the end of read_buf.  The same response
-also makes the subsequent PEC compare
-
-	if (crc != msgs[1].buf[msgs[1].buf[0] + 1])
-
-read a byte beyond the array.
-
-Bump the read_buf declaration to ADM1266_PMBUS_BLOCK_MAX + 2 so the
-buffer can hold the length byte, up to 255 payload bytes, and the PEC
-byte the i2c_msg length already accounts for.
-
-Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
+Fixes: 988156dc2fc9 ("drm: bridge: add it66121 driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-4-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Julien Chauveau <chauveau.julien@gmail.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Tested-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patch.msgid.link/20260324193011.16583-1-chauveau.julien@gmail.com
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/ite-it66121.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -61,7 +61,7 @@ struct adm1266_data {
- 	u8 *dev_mem;
- 	struct mutex buf_mutex;
- 	u8 write_buf[ADM1266_PMBUS_BLOCK_MAX + 1] ____cacheline_aligned;
--	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 1] ____cacheline_aligned;
-+	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 2] ____cacheline_aligned;
- };
+--- a/drivers/gpu/drm/bridge/ite-it66121.c
++++ b/drivers/gpu/drm/bridge/ite-it66121.c
+@@ -955,6 +955,11 @@ static int it66121_probe(struct i2c_clie
+ 	if (ret)
+ 		return ret;
  
- static const struct nvmem_cell_info adm1266_nvmem_cells[] = {
++	ctx->gpio_reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
++	if (IS_ERR(ctx->gpio_reset))
++		return dev_err_probe(dev, PTR_ERR(ctx->gpio_reset),
++				     "Failed to get reset GPIO\n");
++
+ 	it66121_hw_reset(ctx);
+ 
+ 	ctx->regmap = devm_regmap_init_i2c(client, &it66121_regmap_config);
 
 
 
