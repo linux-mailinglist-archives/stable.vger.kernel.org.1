@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257676-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDuVIBAnG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258419-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:08 +0200
+	id wBRVIS4eG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257676-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 839D2610FB6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D05260FBB8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1FAAB300FB3A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:04:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 433C130A1315
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94DB2FDC5E;
-	Sat, 30 May 2026 18:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BB933E36A;
+	Sat, 30 May 2026 17:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HutV+PZ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NlyI08D5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A857A29B78B;
-	Sat, 30 May 2026 18:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53413242D7;
+	Sat, 30 May 2026 17:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164288; cv=none; b=FO6td5mNP+jNN8/w2lIqcbLZ2LnavknSvd5r/tzPZPR0B34VOYZfFNoJ6m6bvHUsjHxX2VYHtOuY9m5hsF6A+2uo6MhSfmfq/Zfe3sPOc4fp9Z29ZukWXsjowncm471A0wVV0krgAbd+toguV48WyiukMvzmxgVw+h/+4Bm0a1U=
+	t=1780161800; cv=none; b=onqa01dicyNdSYtjNIJXAFY50uwmSkB+dYQdyFnEjStK98moesFG2QsYgn0cxuIqaEPtdLq08NJ0nytO/k9jm9Mz3AdYlJR7L5mNIGEAvgva1rhz5apnqURffbEwtTrAT0fApXcZ9ZZdUupl3L8kbOmDV6ykOTSy+vWOaxlhSJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164288; c=relaxed/simple;
-	bh=dZ2G64nK6AUxIxCpx2VfFqhL3mxTpaiTx0CAwlEW3yM=;
+	s=arc-20240116; t=1780161800; c=relaxed/simple;
+	bh=Wqpck2rC7bSFEWn/til3G0sFdykuAZMtEIh9yH9JAMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PbQUcxQPV5QEDu+sJbPwYZyNwVwZ8bltLQrvyogieVS46MR/CqRYEt61BiVNdndJnP3gCkJ0Vbrf1IxUd5PEJtoaWkgWtyn0W2GDSVogVUCGZ2PGm0oEh55enw+R76T7LYigxaRxYH2DGt8GaaY6qqeR38SS3UpOa95IP9+SZEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HutV+PZ4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDBE1F00893;
-	Sat, 30 May 2026 18:04:46 +0000 (UTC)
+	 MIME-Version; b=Q8MtgtGpQORFenkgrXJMBJWVsgsapGxPQi5fPC8ZND1ob7FX6tCmV1BOeiynBvPMer+bHWI0lLxlg+9Yn3Ogv6PdrFn2aEF62murVgwERfgweRns6NL1Gl3S+v5azRd7uwOU+l7TT7QOy/tLyElrhHlYXTxvJCQ2aj/8BI/WP9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NlyI08D5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66051F00893;
+	Sat, 30 May 2026 17:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164287;
-	bh=swATJNOUrFs8qtri9Ku4yYkF40hthu6kuTG+vq23geg=;
+	s=korg; t=1780161799;
+	bh=KYvgTKpK7IU9NVMX3Hnwzsf9Ojj/q7QmGfEqQdLrz4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HutV+PZ4IC07DDMikuwdEXd9qm/Rh+uSv0I1/d+FNZ4NKgXbZQThDuh2SBTfQjvKN
-	 qfsi80KxJ0uYPtQMJBTMMjOvp+/lyyxvb915gtvOuaovCxmnFOfxPda2M+9d1Hy3H4
-	 8i/uFpY9IV7H2G6vQnOrYZZaWSYjZ/BgY42Ly9ZE=
+	b=NlyI08D5m0IZMkbbAIo2cyd7Js3Z6fydRHaVzuU8TkMvt6DcOvW2WCb1KBqyoDyOS
+	 XBrSxnmk1BqXISMsony5eEfUdVnoPc243Sn+AzGd0GhvzTXduOjeGQ3Pnjo5oghyOo
+	 ykYqpS9uVOC6NLUZcDuPKbi9JLJE+0KqfABMrddM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Florian Westphal <fw@strlen.de>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 510/776] mtd: parsers: ofpart: call of_node_get() for dedicated subpartitions
+Subject: [PATCH 6.1 700/969] netfilter: nft_osf: restrict it to ipv4
 Date: Sat, 30 May 2026 18:03:44 +0200
-Message-ID: <20260530160253.444827939@linuxfoundation.org>
+Message-ID: <20260530160319.847266570@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,91 +67,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258419-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257676-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_PROHIBIT(0.00)[0.0.0.0:email];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,renesas.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,4.196.207.88:email]
-X-Rspamd-Queue-Id: 839D2610FB6
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,strlen.de:email,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
+X-Rspamd-Queue-Id: 1D05260FBB8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit e882626c1747653f1f01ea9d12e278e613b11d0f ]
+[ Upstream commit b336fdbb7103fb1484e1dcb6741151d4b5a41e35 ]
 
-In order to parse sub-partitions, add_mtd_partitions() calls
-parse_mtd_partitions() for all previously found partitions.
+This expression only supports for ipv4, restrict it.
 
-Each partition will end up being passed to parse_fixed_partitions(), and
-its of_node will be treated as the ofpart_node.
-
-Commit 7cce81df7d26 ("mtd: parsers: ofpart: fix OF node refcount leak in
-parse_fixed_partitions()") added of_node_put() calls for ofpart_node on
-all exit paths.
-
-In the case where the partition passed to parse_fixed_partitions() has a
-parent, it is treated as a dedicated partitions node, and of_node_put()
-is wrongly called for it, even if of_node_get() was not called
-explicitly.
-
-On repeated bind / unbinds of the MTD, the extra of_node_put() ends up
-decrementing the refcount down to 0, which should never happen,
-resulting in the following error:
-
-OF: ERROR: of_node_release() detected bad of_node_put() on
-/soc/spi@80007000/flash@0/partitions/partition@0
-
-Call of_node_get() to balance the call to of_node_put() done for
-dedicated partitions nodes.
-
-Fixes: 7cce81df7d26 ("mtd: parsers: ofpart: fix OF node refcount leak in parse_fixed_partitions()")
-Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Tested-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: b96af92d6eaf ("netfilter: nf_tables: implement Passive OS fingerprint module in nft_osf")
+Acked-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/parsers/ofpart_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_osf.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/parsers/ofpart_core.c b/drivers/mtd/parsers/ofpart_core.c
-index 7ac5ba6edd63d..c024346df0c59 100644
---- a/drivers/mtd/parsers/ofpart_core.c
-+++ b/drivers/mtd/parsers/ofpart_core.c
-@@ -71,7 +71,7 @@ static int parse_fixed_partitions(struct mtd_info *master,
- 			dedicated = false;
- 		}
- 	} else { /* Partition */
--		ofpart_node = mtd_node;
-+		ofpart_node = of_node_get(mtd_node);
- 	}
+diff --git a/net/netfilter/nft_osf.c b/net/netfilter/nft_osf.c
+index adacf95b6e2bd..9bf2dfd351846 100644
+--- a/net/netfilter/nft_osf.c
++++ b/net/netfilter/nft_osf.c
+@@ -28,6 +28,11 @@ static void nft_osf_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 	struct nf_osf_data data;
+ 	struct tcphdr _tcph;
  
- 	of_id = of_match_node(parse_ofpart_match_table, ofpart_node);
++	if (nft_pf(pkt) != NFPROTO_IPV4) {
++		regs->verdict.code = NFT_BREAK;
++		return;
++	}
++
+ 	if (pkt->tprot != IPPROTO_TCP) {
+ 		regs->verdict.code = NFT_BREAK;
+ 		return;
+@@ -119,7 +124,6 @@ static int nft_osf_validate(const struct nft_ctx *ctx,
+ 
+ 	switch (ctx->family) {
+ 	case NFPROTO_IPV4:
+-	case NFPROTO_IPV6:
+ 	case NFPROTO_INET:
+ 		hooks = (1 << NF_INET_LOCAL_IN) |
+ 			(1 << NF_INET_PRE_ROUTING) |
 -- 
 2.53.0
 
