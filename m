@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-258692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259272-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHsmIU8sG2ow/wgAu9opvQ
-	(envelope-from <stable+bounces-258692-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:31 +0200
+	id mMbUOsAzG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259272-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E394B611CD0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E68E612EE1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 342433062F5E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54DE530D4A22
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2E6284690;
-	Sat, 30 May 2026 18:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6556231A21;
+	Sat, 30 May 2026 18:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtJ3eSPh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEtWmj51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD16F24EA90;
-	Sat, 30 May 2026 18:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8DE2E7389;
+	Sat, 30 May 2026 18:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165214; cv=none; b=FJ+Frdtb4JrOKDZvZEF/3lKESpHQhZYRunhb9075bhP6T0WuwEGHVZHhoWtG1x8o59h3t0xGhxF+XdI5RekW4fx/2TdjFViRI5Lz8P0n35vXT9utxeStvjNCVi9j+T9XEIz8gmaJVZb74kEatLJZsh8imR0dK4yVHqvjPQ3sD4c=
+	t=1780167186; cv=none; b=jo8sQx3rtMxJgj7PH9nVDEjTmworAj6vWaVxHrqu51sBuXAZWjyx2sIjOdXAIxd1mvGWWUYNnYd7wyl006rbi/9tgHl7jfMOEWJZDKYcFyYwzL2SZr3eqxYjjDzYTAQbaAJABKjpr3qnQM37LbcGKhiSZGvC3LnMZGAnjdbSd/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165214; c=relaxed/simple;
-	bh=Y6KZrnv8OP9R7oJWonmtgq3Azw+ST2XFTsPmKL8Ga/U=;
+	s=arc-20240116; t=1780167186; c=relaxed/simple;
+	bh=5c+mUAmKYH7lPhtVds1ezuHVKXxkGCE4mONym8SUwZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lgij47CYPJNQwQL/W+eDe7Byooio/Wzjvn2ZpnHEAJKdr+zjV4OOB6nJVhUsbqR+zXRqb4xu+EJUicQ2HUcCoOz0TqCJpeCdXyd5eWRnRxhZvJDn4d2RwRd8esy7K+5HusI+ApmSAKPWQ2aIO75ssWxM4tTL9TsK0iRx4jnNRsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtJ3eSPh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1881F00893;
-	Sat, 30 May 2026 18:20:12 +0000 (UTC)
+	 MIME-Version; b=SOHWlaAvzlBhYq5LpGRviqt4OEhWQVK0tYzR++VXFdxPoofbmJjHWb8xAcTRm8iiAvmHZXN4PEp73Z0JEpQTYMHzWl1e4/8HkVDKwWeCmbD3E5WAHk6CyzsXVVSf7KjyhssIRsJI6OgY5J26yNtpVukW+6Hwz9im4UhYaiC+w5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEtWmj51; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB941F00893;
+	Sat, 30 May 2026 18:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165213;
-	bh=43vjvAmPSiRZDz48TLXmsy78hSNb3MbfIv0rrZnXfnI=;
+	s=korg; t=1780167185;
+	bh=64K7rWFtG6GpsGAQqiOclbLGvLPQ1dH9EYd0W15R8s4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AtJ3eSPhZKRbmo/Ltwp+FBraO51QvIlS8cBoZzUMYC8IIBfm9VBS6SLrkd2H1lXPt
-	 ssi4NnYA0JCDkNPJV7wXgtSZGwSYsV7WWz8Llf5Q3dnAXr4bmyRAl+2EYd64nDSCN0
-	 xlRCINknpQe7wQZ95+YYDcH9XBkwKs5hY6FJo/OY=
+	b=nEtWmj51bRykbeHcWugFlSZ3B0UJSZVmNlchPnOqjyLynOyOAEgnavgFEIsNLNSYZ
+	 MbQ9B2FaC4iWNhNTpmL3eQH6a34QUebvqCvIZY0cDmfEPG5dFaiqhHXlqc57se6vGL
+	 OTWGOSEVsaOScfI3/x3y4EJFIBcUaZ5KEUumVtpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E9=92=B1=E4=B8=80=E9=93=AD?= <yimingqian591@gmail.com>,
+	John Efstathiades <john.efstathiades@pebblebay.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Wenshan Lan <jetlan9@163.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 756/776] net: tls: fix off-by-one in sg_chain entry count for wrapped sk_msg ring
+Subject: [PATCH 5.10 589/589] net: usb: lan78xx: Fix double free issue with interrupt buffer allocation
 Date: Sat, 30 May 2026 18:07:50 +0200
-Message-ID: <20260530160259.287724408@linuxfoundation.org>
+Message-ID: <20260530160240.062963614@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,111 +65,138 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,queasysnail.net,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258692-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,pebblebay.com,pengutronix.de,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-259272-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E394B611CD0
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4E68E612EE1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 285943c6e7ca309bbea84b253745154241d9788a ]
+[ Upstream commit 03819abbeb11117dcbba40bfe322b88c0c88a6b6 ]
 
-When an sk_msg scatterlist ring wraps (sg.end < sg.start),
-tls_push_record() chains the tail portion of the ring to the head
-using sg_chain(). An extra entry in the sg array is reserved for
-this:
+In lan78xx_probe(), the buffer `buf` was being freed twice: once
+implicitly through `usb_free_urb(dev->urb_intr)` with the
+`URB_FREE_BUFFER` flag and again explicitly by `kfree(buf)`. This caused
+a double free issue.
 
-  struct sk_msg_sg {
-        [...]
-        /* The extra two elements:
-         * 1) used for chaining the front and sections when the list becomes
-         *    partitioned (e.g. end < start). The crypto APIs require the
-         *    chaining;
-         * 2) to chain tailer SG entries after the message.
-         */
-        struct scatterlist              data[MAX_MSG_FRAGS + 2];
+To resolve this, reordered `kmalloc()` and `usb_alloc_urb()` calls to
+simplify the initialization sequence and removed the redundant
+`kfree(buf)`.  Now, `buf` is allocated after `usb_alloc_urb()`, ensuring
+it is correctly managed by  `usb_fill_int_urb()` and freed by
+`usb_free_urb()` as intended.
 
-The current code uses MAX_SKB_FRAGS + 1 as the ring size:
-
-    sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
-             MAX_SKB_FRAGS - msg_pl->sg.start + 1,
-             msg_pl->sg.data);
-
-This places the chain pointer at
-
-  sg_chain(data[start], (MAX_SKB_FRAGS - msg_start + 1) .. =
-  &data[start] + (MAX_SKB_FRAGS - msg_start + 1) - 1 =
-  data[start + (MAX_SKB_FRAGS - start + 1) - 1] =
-  data[MAX_SKB_FRAGS]
-
-instead of the true last entry. This is likely due to a "race" of
-the commit under Fixes landing close to
-commit 031097d9e079 ("bpf: sk_msg, zap ingress queue on psock down")
-
-Convert to ARRAY_SIZE and drop the data[start] / - start (as suggested
-by Sabrina).
-
-Reported-by: 钱一铭 <yimingqian591@gmail.com>
-Fixes: 9aaaa56845a0 ("bpf: Sockmap/tls, skmsg can have wrapped skmsg that needs extra chaining")
+Fixes: a6df95cae40b ("lan78xx: Fix memory allocation bug")
+Cc: John Efstathiades <john.efstathiades@pebblebay.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20241116130558.1352230-1-o.rempel@pengutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20260511174920.433155-2-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Adjust context. Make the function usb_alloc_urb() call before
+kmalloc(). ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/usb/lan78xx.c | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 002806908aa82..33b8afa2048ce 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -784,11 +784,9 @@ static int tls_push_record(struct sock *sk, int flags,
- 		sg_mark_end(sk_msg_elem(msg_pl, i));
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index f0643d9d8ff94..af0622e942584 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -4057,29 +4057,30 @@ static int lan78xx_probe(struct usb_interface *intf,
+ 
+ 	period = ep_intr->desc.bInterval;
+ 	maxp = usb_maxpacket(dev->udev, dev->pipe_intr, 0);
+-	buf = kmalloc(maxp, GFP_KERNEL);
+-	if (!buf) {
++
++	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
++	if (!dev->urb_intr) {
+ 		ret = -ENOMEM;
+ 		goto out3;
  	}
  
--	if (msg_pl->sg.end < msg_pl->sg.start) {
--		sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
--			 MAX_SKB_FRAGS - msg_pl->sg.start + 1,
-+	if (msg_pl->sg.end < msg_pl->sg.start)
-+		sg_chain(msg_pl->sg.data, ARRAY_SIZE(msg_pl->sg.data),
- 			 msg_pl->sg.data);
--	}
+-	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
+-	if (!dev->urb_intr) {
++	buf = kmalloc(maxp, GFP_KERNEL);
++	if (!buf) {
+ 		ret = -ENOMEM;
+-		goto out4;
+-	} else {
+-		usb_fill_int_urb(dev->urb_intr, dev->udev,
+-				 dev->pipe_intr, buf, maxp,
+-				 intr_complete, dev, period);
+-		dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
++		goto free_urbs;
+ 	}
  
- 	i = msg_pl->sg.start;
- 	sg_chain(rec->sg_aead_in, 2, &msg_pl->sg.data[i]);
++	usb_fill_int_urb(dev->urb_intr, dev->udev,
++			 dev->pipe_intr, buf, maxp,
++			 intr_complete, dev, period);
++	dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
++
+ 	dev->maxpacket = usb_maxpacket(dev->udev, dev->pipe_out, 1);
+ 
+ 	/* Reject broken descriptors. */
+ 	if (dev->maxpacket == 0) {
+ 		ret = -ENODEV;
+-		goto out5;
++		goto free_urbs;
+ 	}
+ 
+ 	/* driver requires remote-wakeup capability during autosuspend. */
+@@ -4087,7 +4088,7 @@ static int lan78xx_probe(struct usb_interface *intf,
+ 
+ 	ret = lan78xx_phy_init(dev);
+ 	if (ret < 0)
+-		goto out5;
++		goto free_urbs;
+ 
+ 	ret = register_netdev(netdev);
+ 	if (ret != 0) {
+@@ -4109,10 +4110,8 @@ static int lan78xx_probe(struct usb_interface *intf,
+ 
+ out6:
+ 	phy_disconnect(netdev->phydev);
+-out5:
++free_urbs:
+ 	usb_free_urb(dev->urb_intr);
+-out4:
+-	kfree(buf);
+ out3:
+ 	lan78xx_unbind(dev, intf);
+ out2:
 -- 
 2.53.0
 
