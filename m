@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-257866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258639-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AM4GHNUgG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:33 +0200
+	id kO3vBbUpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258639-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E23F26101FE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A4A6116CE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D9E27306E180
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:33:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 49B30301415D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A293446AD;
-	Sat, 30 May 2026 17:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FA1284690;
+	Sat, 30 May 2026 18:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0djUT0d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7jtZiuL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B4A1C5799;
-	Sat, 30 May 2026 17:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43995233D9E;
+	Sat, 30 May 2026 18:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162435; cv=none; b=oWUJB/J1iAoluusxIxNFEOEHEdJlykNyZ/2VeApn4R3wihXGwSMKO6GsuQoCagO/atxck0zzFsXT7vvX+zCITT3vQ5QqJNkuRBC1bTn31v7N8LssNtW5Y3URCO0VQsrNBCSF5U1V7v/Uy1dLgp0COAEBEcZYbEojdSfqDhgnnmU=
+	t=1780165030; cv=none; b=ZutVsuHKW+Av8+m7ncms4TungU8hRHJ5Fuq+KgAW5Pqs7Y3YQ/nke5QJdwvWEHjAtk6RgL8zHckEkNKnfQdwUfAtEO0KuHK16tmZ3+1KUdhdJHCFx9qLwp+zTi4LxCwc24mp62eIk2XLJkzRxe+SXstTRJSa9/yXwA36+AyW0/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162435; c=relaxed/simple;
-	bh=dFOT1xrpY/ZrOeF22Z4jfv835nvtI+etdY8Kt6d1EA0=;
+	s=arc-20240116; t=1780165030; c=relaxed/simple;
+	bh=JZQ6qM3fVDnMRAZf+T2m+an5c0fVTdQkm+e4t/TaqmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUgn49HOqxiGWBCUgwJ8/6cDhFvMDXTm+Sg3UnUNlCh2bp65qn7Uwf750AGix8V+ouHkl4ElXFXkt9smAm/I57f0AZvl+x6bG5mmLu1E2b0yyiZ0FQGEAOpO1u7y6yfKztZqzJ365cZ7dJJGeU5MuaWux85WsMfg9ChE84DDH1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0djUT0d; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BB41F00893;
-	Sat, 30 May 2026 17:33:53 +0000 (UTC)
+	 MIME-Version; b=OLqwnOVKW2tql8oZnxzpdzpokyMsV5E9KoxtmRiPv2T0vgEtS8E+Iw333yTpUx6laotdvSXZwA3gFbAp/l1vCnSNoiDh218jI5PoAj86cPw60yjZ0so91bujcs4xzdW2kIUZaaKSPlak7wnfuhatweovZnD4dO9aIdwYew2ME9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7jtZiuL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBF01F00893;
+	Sat, 30 May 2026 18:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162434;
-	bh=8Zk+kCsLlv3dJsiy+1Id3Gp+AtRcRTyKS3qAYZv16cA=;
+	s=korg; t=1780165028;
+	bh=sF8fZoCxlv9F4AtBNnBUw2e6tK35olnSsMU23Rq6R8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V0djUT0dRbkxD63ryOPqzjccnPI/eDXeEgAwr2jAmLGX19SGc3xdpgsCNQz31S80P
-	 afsh/bOq/qKLzSgdOcVFv9Q4sZRAQsLMuxnK71mezWbFOav8FlYJNTdYeT46Xs6zTU
-	 c0g/ey8AO9xn9+V9yktd2fHHJCJhP9/0fBiD3g+0=
+	b=S7jtZiuLSCuPvGgExGsBZWXRtoJptYs9JUQXAnmiOuHQAj4V/uQ/N3IoX+E767L/T
+	 w3TXY4ggnDPxxtkiZLUy6nWsaQ5fdsTc6o5DkYyAJewwi5SvheV2V2LhFnRELOSBhC
+	 evS/CCGsn6h9c/5Rc2f4ovmyePr1c8KK7pI3N4S8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damiano Melotti <melotti@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tristan Madani <tristan@talencesecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 920/969] tcp: Fix imbalanced icsk_accept_queue count.
+Subject: [PATCH 5.15 730/776] netfilter: x_tables: unregister the templates first
 Date: Sat, 30 May 2026 18:07:24 +0200
-Message-ID: <20260530160326.142330329@linuxfoundation.org>
+Message-ID: <20260530160258.685448919@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257866-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258639-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,56 +86,174 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E23F26101FE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
+X-Rspamd-Queue-Id: D6A4A6116CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 7eca3292cac7c26dad4c236f51ba225c39a0523f ]
+[ Upstream commit d338693d778579b676a61346849bebd892427158 ]
 
-When TCP socket migration happens in reqsk_timer_handler(),
-@sk_listener will be updated with the new listener.
+When the module is going away we need to zap the template
+first.  Else there is a small race window where userspace
+could instantiate a new table after the pernet exit function
+has removed the current table.
 
-When we call __inet_csk_reqsk_queue_drop(), the listener must
-be the one stored in req->rsk_listener.
-
-The cited commit accidentally replaced oreq->rsk_listener with
-sk_listener, leading to imbalanced icsk_accept_queue count.
-
-Let's pass the correct listener to __inet_csk_reqsk_queue_drop().
-
-Fixes: e8c526f2bdf1 ("tcp/dccp: Don't use timer_pending() in reqsk_queue_unlink().")
-Reported-by: Damiano Melotti <melotti@google.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260506035954.1563147-3-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
+Reported-by: Tristan Madani <tristan@talencesecurity.com>
+Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
+Closes: https://lore.kernel.org/netfilter-devel/20260429175613.1459342-1-tristmd@gmail.com/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_connection_sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/netfilter/arptable_filter.c   | 2 +-
+ net/ipv4/netfilter/iptable_filter.c    | 2 +-
+ net/ipv4/netfilter/iptable_mangle.c    | 2 +-
+ net/ipv4/netfilter/iptable_raw.c       | 2 +-
+ net/ipv4/netfilter/iptable_security.c  | 2 +-
+ net/ipv6/netfilter/ip6table_filter.c   | 2 +-
+ net/ipv6/netfilter/ip6table_mangle.c   | 2 +-
+ net/ipv6/netfilter/ip6table_raw.c      | 2 +-
+ net/ipv6/netfilter/ip6table_security.c | 2 +-
+ 9 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index dc32a3d8ef874..a275ab5321a96 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -1112,7 +1112,7 @@ static void reqsk_timer_handler(struct timer_list *t)
- 	}
+diff --git a/net/ipv4/netfilter/arptable_filter.c b/net/ipv4/netfilter/arptable_filter.c
+index 3de78416ec762..771eec4629352 100644
+--- a/net/ipv4/netfilter/arptable_filter.c
++++ b/net/ipv4/netfilter/arptable_filter.c
+@@ -90,8 +90,8 @@ static int __init arptable_filter_init(void)
  
- drop:
--	__inet_csk_reqsk_queue_drop(sk_listener, oreq, true);
-+	__inet_csk_reqsk_queue_drop(oreq->rsk_listener, oreq, true);
- 	reqsk_put(oreq);
+ static void __exit arptable_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&arptable_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&arptable_filter_net_ops);
+ 	kfree(arpfilter_ops);
+ }
+ 
+diff --git a/net/ipv4/netfilter/iptable_filter.c b/net/ipv4/netfilter/iptable_filter.c
+index 0eb0e2ab9bfc4..9155c5b5318d7 100644
+--- a/net/ipv4/netfilter/iptable_filter.c
++++ b/net/ipv4/netfilter/iptable_filter.c
+@@ -108,8 +108,8 @@ static int __init iptable_filter_init(void)
+ 
+ static void __exit iptable_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&iptable_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&iptable_filter_net_ops);
+ 	kfree(filter_ops);
+ }
+ 
+diff --git a/net/ipv4/netfilter/iptable_mangle.c b/net/ipv4/netfilter/iptable_mangle.c
+index 40417a3f930b2..f2997709c08b1 100644
+--- a/net/ipv4/netfilter/iptable_mangle.c
++++ b/net/ipv4/netfilter/iptable_mangle.c
+@@ -134,8 +134,8 @@ static int __init iptable_mangle_init(void)
+ 
+ static void __exit iptable_mangle_fini(void)
+ {
+-	unregister_pernet_subsys(&iptable_mangle_net_ops);
+ 	xt_unregister_template(&packet_mangler);
++	unregister_pernet_subsys(&iptable_mangle_net_ops);
+ 	kfree(mangle_ops);
+ }
+ 
+diff --git a/net/ipv4/netfilter/iptable_raw.c b/net/ipv4/netfilter/iptable_raw.c
+index 8265c67657053..4749ecc9a416d 100644
+--- a/net/ipv4/netfilter/iptable_raw.c
++++ b/net/ipv4/netfilter/iptable_raw.c
+@@ -108,9 +108,9 @@ static int __init iptable_raw_init(void)
+ 
+ static void __exit iptable_raw_fini(void)
+ {
++	xt_unregister_template(&packet_raw);
+ 	unregister_pernet_subsys(&iptable_raw_net_ops);
+ 	kfree(rawtable_ops);
+-	xt_unregister_template(&packet_raw);
+ }
+ 
+ module_init(iptable_raw_init);
+diff --git a/net/ipv4/netfilter/iptable_security.c b/net/ipv4/netfilter/iptable_security.c
+index f519162a2fa51..3e85be8cc9803 100644
+--- a/net/ipv4/netfilter/iptable_security.c
++++ b/net/ipv4/netfilter/iptable_security.c
+@@ -96,9 +96,9 @@ static int __init iptable_security_init(void)
+ 
+ static void __exit iptable_security_fini(void)
+ {
++	xt_unregister_template(&security_table);
+ 	unregister_pernet_subsys(&iptable_security_net_ops);
+ 	kfree(sectbl_ops);
+-	xt_unregister_template(&security_table);
+ }
+ 
+ module_init(iptable_security_init);
+diff --git a/net/ipv6/netfilter/ip6table_filter.c b/net/ipv6/netfilter/ip6table_filter.c
+index 727ee80970124..477982fcc04ae 100644
+--- a/net/ipv6/netfilter/ip6table_filter.c
++++ b/net/ipv6/netfilter/ip6table_filter.c
+@@ -108,8 +108,8 @@ static int __init ip6table_filter_init(void)
+ 
+ static void __exit ip6table_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&ip6table_filter_net_ops);
+ 	kfree(filter_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_mangle.c b/net/ipv6/netfilter/ip6table_mangle.c
+index 9b518ce37d6ae..bf062c01041ec 100644
+--- a/net/ipv6/netfilter/ip6table_mangle.c
++++ b/net/ipv6/netfilter/ip6table_mangle.c
+@@ -127,8 +127,8 @@ static int __init ip6table_mangle_init(void)
+ 
+ static void __exit ip6table_mangle_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_mangle_net_ops);
+ 	xt_unregister_template(&packet_mangler);
++	unregister_pernet_subsys(&ip6table_mangle_net_ops);
+ 	kfree(mangle_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_raw.c b/net/ipv6/netfilter/ip6table_raw.c
+index 4f2a04af71d32..6214c0b97f123 100644
+--- a/net/ipv6/netfilter/ip6table_raw.c
++++ b/net/ipv6/netfilter/ip6table_raw.c
+@@ -106,8 +106,8 @@ static int __init ip6table_raw_init(void)
+ 
+ static void __exit ip6table_raw_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_raw_net_ops);
+ 	xt_unregister_template(&packet_raw);
++	unregister_pernet_subsys(&ip6table_raw_net_ops);
+ 	kfree(rawtable_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_security.c b/net/ipv6/netfilter/ip6table_security.c
+index 931674034d8be..36b62f848897a 100644
+--- a/net/ipv6/netfilter/ip6table_security.c
++++ b/net/ipv6/netfilter/ip6table_security.c
+@@ -95,8 +95,8 @@ static int __init ip6table_security_init(void)
+ 
+ static void __exit ip6table_security_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_security_net_ops);
+ 	xt_unregister_template(&security_table);
++	unregister_pernet_subsys(&ip6table_security_net_ops);
+ 	kfree(sectbl_ops);
  }
  
 -- 
