@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-257505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OC8kGoMcG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257505-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:07 +0200
+	id YHOwITobG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D768D60F76E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F5F60F3F6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 051B3301F782
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:13:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 886DE301EE33
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C70C34BA42;
-	Sat, 30 May 2026 17:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7B1340414;
+	Sat, 30 May 2026 17:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzPxINTT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUEgfiu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086E43148DA;
-	Sat, 30 May 2026 17:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507233148DA;
+	Sat, 30 May 2026 17:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161227; cv=none; b=IqyqIRp9K37WS6bbFTPgkKCqqdR9xRr28CrKupDegV6nwj9I+KYMnnCTOO6AhIIhkI0tSXZTJg32Tpkp7kX4GFLl9i01aEsc6preYuiDJEaZqfZ16cuBu2R7vNIM+RmPMPIIS0GeC8qCkY1vVmrk8VJ2E7JJrBLHPjao2aQMTlg=
+	t=1780161242; cv=none; b=HIw9gvf4zU3yg73/YajQaCMg8Z+RkUbmLD6fr9/QPO3+u/JLWzHh2NRXkumXx+dTO+7gUfhJZqSwVWBGQVnFcfXCXfgPsSDGLDu8dtAdst7E5DlD8ooVmVcrN+fF7U0tMNSeuQXs0HDzax6iS8gAvTzl+5DCjHTEab7UvTCS9IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161227; c=relaxed/simple;
-	bh=t2jDMXcwilPtuJt4SLEw6USoM4rtGPhy+bZj7iU/oJ8=;
+	s=arc-20240116; t=1780161242; c=relaxed/simple;
+	bh=C6857qMhoiJA2hHIUcWZ+AgLTaHd7wuYevmRIu3UfUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n8w4GpYThBAFn+luAJEtXD3m/xW1jqdEY9dX9MzgabcOFo/QzEdBQgfWMlQT5YJ+H04EMHReTQ8wShh8/MF9n95t+2/1ik1DCPhv23pYvoaQSboYiSIjl385zlJqMN4VzSsFhXJXUvHd+17J8pbontsW1T/KDKm9CgelMhshiTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzPxINTT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48EEB1F00898;
-	Sat, 30 May 2026 17:13:46 +0000 (UTC)
+	 MIME-Version; b=B+M6YBsPswu0R5EE11TLK5cIswir5n1CCCFthxWzBKLbBO4HdQxkRDOACDbszF4RPk4ulHM7aZOVGB6xyUce+sDFIz19As8zSCy2Cq0VL+SkWr2gnOKyAHREdny+Sp5Ba+ayhN3bkIyULOKYX/BtWJEVd4914W5fAsulIF6ywZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUEgfiu4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A491F00893;
+	Sat, 30 May 2026 17:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161226;
-	bh=1BHOxmurWVDJExdCMJz5owPrrJGZdyJkUv7P3zKs39M=;
+	s=korg; t=1780161241;
+	bh=Od+Mq/W7cd/RBi18LtoIuOhsLfZzmrvoKIhHLO6SU8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LzPxINTTmmbW87xs/j4iidKG+W385kYAhAaL6qI7xX7wdCtYdGCZH0tdO8ReNCoHv
-	 QaAyNWvHirnN5r7niMKaFeD+Kyz+50dNIOqrhb7fmz3kIOw/MyDFnv4P8YP2vRd8Xu
-	 icNnwpuMCXaWMP4JMjYOYIRpblZULUI218mk/Be4=
+	b=yUEgfiu4t/Fn1ns9aD6460HCmb5I8bQIZAOzBwEFFH6AF5w+BcQMviQGb2wPEieQF
+	 l+C3kQk9+phNzVIlxTT7EHNR6Ghos4MkdsDVGyWrfS179lllE0jiJZvnE7byW1RnbN
+	 jk69EZT4iJx1GdxQrAqL+/8cIql4Ams69Dc1P4Ds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Shengjiu Wang <shengjiu.wang@nxp.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 535/969] ASoC: fsl_easrc: Fix value type in fsl_easrc_iec958_get_bits()
-Date: Sat, 30 May 2026 18:00:59 +0200
-Message-ID: <20260530160315.140971795@linuxfoundation.org>
+Subject: [PATCH 6.1 536/969] ASoC: fsl_easrc: Change the type for iec958 channel status controls
+Date: Sat, 30 May 2026 18:01:00 +0200
+Message-ID: <20260530160315.168669172@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257505-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257509-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,7 +90,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D768D60F76E
+X-Rspamd-Queue-Id: 51F5F60F3F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,33 +100,185 @@ X-Rspamd-Server: lfdr
 
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit aa21fe4a81458cf469c2615b08cbde5997dde25a ]
+[ Upstream commit 47f28a5bd154a95d5aa563dde02a801bd32ddb81 ]
 
-The value type of controls "Context 0 IEC958 Bits Per Sample" should be
-integer, not enumerated, the issue is found by the mixer-test.
+Use the type SNDRV_CTL_ELEM_TYPE_IEC958 for iec958 channel status
+controls, the original type will cause mixer-test to iterate all 32bit
+values, which costs a lot of time. And using IEC958 type can reduce the
+control numbers.
+
+Also enable pm runtime before updating registers to make the regmap cache
+data align with the value in hardware.
 
 Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20260401094226.2900532-11-shengjiu.wang@nxp.com
+Link: https://patch.msgid.link/20260401094226.2900532-12-shengjiu.wang@nxp.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_easrc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/fsl_easrc.c | 118 +++++++++++++++++++++++++++-----------
+ 1 file changed, 84 insertions(+), 34 deletions(-)
 
 diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index bb8bad04fb47d..05aacebee884f 100644
+index 05aacebee884f..4c3b462512461 100644
 --- a/sound/soc/fsl/fsl_easrc.c
 +++ b/sound/soc/fsl/fsl_easrc.c
-@@ -73,7 +73,7 @@ static int fsl_easrc_iec958_get_bits(struct snd_kcontrol *kcontrol,
+@@ -78,17 +78,47 @@ static int fsl_easrc_iec958_get_bits(struct snd_kcontrol *kcontrol,
+ 	return 0;
+ }
+ 
++static int fsl_easrc_iec958_info(struct snd_kcontrol *kcontrol,
++				 struct snd_ctl_elem_info *uinfo)
++{
++	uinfo->type = SNDRV_CTL_ELEM_TYPE_IEC958;
++	uinfo->count = 1;
++	return 0;
++}
++
+ static int fsl_easrc_get_reg(struct snd_kcontrol *kcontrol,
+ 			     struct snd_ctl_elem_value *ucontrol)
+ {
+ 	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
  	struct soc_mreg_control *mc =
  		(struct soc_mreg_control *)kcontrol->private_value;
+-	unsigned int regval;
++	struct fsl_asrc *easrc = snd_soc_component_get_drvdata(component);
++	unsigned int *regval = (unsigned int *)ucontrol->value.iec958.status;
++	int ret;
++
++	ret = regmap_read(easrc->regmap, REG_EASRC_CS0(mc->regbase), &regval[0]);
++	if (ret)
++		return ret;
++
++	ret = regmap_read(easrc->regmap, REG_EASRC_CS1(mc->regbase), &regval[1]);
++	if (ret)
++		return ret;
++
++	ret = regmap_read(easrc->regmap, REG_EASRC_CS2(mc->regbase), &regval[2]);
++	if (ret)
++		return ret;
  
--	ucontrol->value.enumerated.item[0] = easrc_priv->bps_iec958[mc->regbase];
-+	ucontrol->value.integer.value[0] = easrc_priv->bps_iec958[mc->regbase];
+-	regval = snd_soc_component_read(component, mc->regbase);
++	ret = regmap_read(easrc->regmap, REG_EASRC_CS3(mc->regbase), &regval[3]);
++	if (ret)
++		return ret;
++
++	ret = regmap_read(easrc->regmap, REG_EASRC_CS4(mc->regbase), &regval[4]);
++	if (ret)
++		return ret;
+ 
+-	ucontrol->value.integer.value[0] = regval;
++	ret = regmap_read(easrc->regmap, REG_EASRC_CS5(mc->regbase), &regval[5]);
++	if (ret)
++		return ret;
  
  	return 0;
  }
+@@ -100,22 +130,62 @@ static int fsl_easrc_set_reg(struct snd_kcontrol *kcontrol,
+ 	struct soc_mreg_control *mc =
+ 		(struct soc_mreg_control *)kcontrol->private_value;
+ 	struct fsl_asrc *easrc = snd_soc_component_get_drvdata(component);
+-	unsigned int regval = ucontrol->value.integer.value[0];
+-	bool changed;
++	unsigned int *regval = (unsigned int *)ucontrol->value.iec958.status;
++	bool changed, changed_all = false;
+ 	int ret;
+ 
+-	ret = regmap_update_bits_check(easrc->regmap, mc->regbase,
+-				       GENMASK(31, 0), regval, &changed);
+-	if (ret != 0)
++	ret = pm_runtime_resume_and_get(component->dev);
++	if (ret)
+ 		return ret;
+ 
+-	return changed;
++	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS0(mc->regbase),
++				       GENMASK(31, 0), regval[0], &changed);
++	if (ret != 0)
++		goto err;
++	changed_all |= changed;
++
++	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS1(mc->regbase),
++				       GENMASK(31, 0), regval[1], &changed);
++	if (ret != 0)
++		goto err;
++	changed_all |= changed;
++
++	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS2(mc->regbase),
++				       GENMASK(31, 0), regval[2], &changed);
++	if (ret != 0)
++		goto err;
++	changed_all |= changed;
++
++	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS3(mc->regbase),
++				       GENMASK(31, 0), regval[3], &changed);
++	if (ret != 0)
++		goto err;
++	changed_all |= changed;
++
++	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS4(mc->regbase),
++				       GENMASK(31, 0), regval[4], &changed);
++	if (ret != 0)
++		goto err;
++	changed_all |= changed;
++
++	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS5(mc->regbase),
++				       GENMASK(31, 0), regval[5], &changed);
++	if (ret != 0)
++		goto err;
++	changed_all |= changed;
++err:
++	pm_runtime_put_autosuspend(component->dev);
++
++	if (ret != 0)
++		return ret;
++	else
++		return changed_all;
+ }
+ 
+ #define SOC_SINGLE_REG_RW(xname, xreg) \
+ {	.iface = SNDRV_CTL_ELEM_IFACE_PCM, .name = (xname), \
+ 	.access = SNDRV_CTL_ELEM_ACCESS_READWRITE, \
+-	.info = snd_soc_info_xr_sx, .get = fsl_easrc_get_reg, \
++	.info = fsl_easrc_iec958_info, .get = fsl_easrc_get_reg, \
+ 	.put = fsl_easrc_set_reg, \
+ 	.private_value = (unsigned long)&(struct soc_mreg_control) \
+ 		{ .regbase = xreg, .regcount = 1, .nbits = 32, \
+@@ -146,30 +216,10 @@ static const struct snd_kcontrol_new fsl_easrc_snd_controls[] = {
+ 	SOC_SINGLE_VAL_RW("Context 2 IEC958 Bits Per Sample", 2),
+ 	SOC_SINGLE_VAL_RW("Context 3 IEC958 Bits Per Sample", 3),
+ 
+-	SOC_SINGLE_REG_RW("Context 0 IEC958 CS0", REG_EASRC_CS0(0)),
+-	SOC_SINGLE_REG_RW("Context 1 IEC958 CS0", REG_EASRC_CS0(1)),
+-	SOC_SINGLE_REG_RW("Context 2 IEC958 CS0", REG_EASRC_CS0(2)),
+-	SOC_SINGLE_REG_RW("Context 3 IEC958 CS0", REG_EASRC_CS0(3)),
+-	SOC_SINGLE_REG_RW("Context 0 IEC958 CS1", REG_EASRC_CS1(0)),
+-	SOC_SINGLE_REG_RW("Context 1 IEC958 CS1", REG_EASRC_CS1(1)),
+-	SOC_SINGLE_REG_RW("Context 2 IEC958 CS1", REG_EASRC_CS1(2)),
+-	SOC_SINGLE_REG_RW("Context 3 IEC958 CS1", REG_EASRC_CS1(3)),
+-	SOC_SINGLE_REG_RW("Context 0 IEC958 CS2", REG_EASRC_CS2(0)),
+-	SOC_SINGLE_REG_RW("Context 1 IEC958 CS2", REG_EASRC_CS2(1)),
+-	SOC_SINGLE_REG_RW("Context 2 IEC958 CS2", REG_EASRC_CS2(2)),
+-	SOC_SINGLE_REG_RW("Context 3 IEC958 CS2", REG_EASRC_CS2(3)),
+-	SOC_SINGLE_REG_RW("Context 0 IEC958 CS3", REG_EASRC_CS3(0)),
+-	SOC_SINGLE_REG_RW("Context 1 IEC958 CS3", REG_EASRC_CS3(1)),
+-	SOC_SINGLE_REG_RW("Context 2 IEC958 CS3", REG_EASRC_CS3(2)),
+-	SOC_SINGLE_REG_RW("Context 3 IEC958 CS3", REG_EASRC_CS3(3)),
+-	SOC_SINGLE_REG_RW("Context 0 IEC958 CS4", REG_EASRC_CS4(0)),
+-	SOC_SINGLE_REG_RW("Context 1 IEC958 CS4", REG_EASRC_CS4(1)),
+-	SOC_SINGLE_REG_RW("Context 2 IEC958 CS4", REG_EASRC_CS4(2)),
+-	SOC_SINGLE_REG_RW("Context 3 IEC958 CS4", REG_EASRC_CS4(3)),
+-	SOC_SINGLE_REG_RW("Context 0 IEC958 CS5", REG_EASRC_CS5(0)),
+-	SOC_SINGLE_REG_RW("Context 1 IEC958 CS5", REG_EASRC_CS5(1)),
+-	SOC_SINGLE_REG_RW("Context 2 IEC958 CS5", REG_EASRC_CS5(2)),
+-	SOC_SINGLE_REG_RW("Context 3 IEC958 CS5", REG_EASRC_CS5(3)),
++	SOC_SINGLE_REG_RW("Context 0 IEC958 CS", 0),
++	SOC_SINGLE_REG_RW("Context 1 IEC958 CS", 1),
++	SOC_SINGLE_REG_RW("Context 2 IEC958 CS", 2),
++	SOC_SINGLE_REG_RW("Context 3 IEC958 CS", 3),
+ };
+ 
+ /*
 -- 
 2.53.0
 
