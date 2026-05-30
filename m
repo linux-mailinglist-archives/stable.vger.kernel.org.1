@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-257002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257003-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wHTnBgYRG2q/+ggAu9opvQ
-	(envelope-from <stable+bounces-257002-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:32:06 +0200
+	id EIbtA6sQG2q/+ggAu9opvQ
+	(envelope-from <stable+bounces-257003-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DEE60E3C0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:32:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B470360E31D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B7C623057D6B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:30:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2BB3B3011367
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33FB363C5B;
-	Sat, 30 May 2026 16:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9CF34C806;
+	Sat, 30 May 2026 16:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyugTKrk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q02+ZMFo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00763A254D;
-	Sat, 30 May 2026 16:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1240B30EF7B;
+	Sat, 30 May 2026 16:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780158615; cv=none; b=R/zIrVgp4kAsw8pLXtuljMS8hgB6xZvvvHm7lmNSFsStotYPGU8Y9Rl3zChjtB41SAQz0sAWV7Y6Zf1pZyak9X9ECQuoDKjNtSJ//+i0unU2aZQwedLMjJ5B0d4JIB3SUvUFXHd5uTpQ0qH75640wnR06W+4/UxMuEZnYAx+2gk=
+	t=1780158633; cv=none; b=uaic6DioUr0mVZzqr1gMXJja8E1RJol8pBZQS72xK5Ssns6IVrU2IvxzAWqNrWBFnbgpIJXXfP9WaDaYGynyAFl/8CnETo025aPykmIqxlj4KFWXtWxhzyzXECrCMJTMTm1KtEud/cf9NPj8ziwkgNItnP4rghpk4LYS2QB1Vvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780158615; c=relaxed/simple;
-	bh=KfB5/V4//7cKiERSDaz02tXKptF7c2aruVxObObf67c=;
+	s=arc-20240116; t=1780158633; c=relaxed/simple;
+	bh=yqWqZnqj9WD1vOVi13XaQWOvO/3LVr2dRbDf1V5gNYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7XLgvW8XkX40NaVuCodBk48Hn2zOwRRvxdUDC4pAJSUTJsr8BuGQoTEUxda/ZFhzMypHa7NbEXRIjCMSUF/dw5yJei6zjj7GxPtC9ALXgy6KCntSEj9VgrRmEHoJo6XDRpq3vaR3+KtDCTrlKuX0xXISKXzU/BWwcEXiJ28b3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyugTKrk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD1C1F00893;
-	Sat, 30 May 2026 16:30:11 +0000 (UTC)
+	 MIME-Version; b=og4e74Ga/+wdzJ1+k6MxFAfrsO4bK7PmNZTxPxtLjkRbwflShzoBz/tiTKtjch/7xMQFbiNDePCaumEk+OluFEukELl3e15FKqjSsZFElUyRWBOSmbjRO7JL5u5DNuwlnSII1h8ikJRSrdUiE8TZJgm4qyxn0BmGdiA+cugQuec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q02+ZMFo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A141F00893;
+	Sat, 30 May 2026 16:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780158614;
-	bh=j+g+vHj1az37VhAuXgTyPE0ygQmQEl7pPEjx88KDYyA=;
+	s=korg; t=1780158632;
+	bh=D+NhftjYi1YslEDviCRM9fyYs5IQFWZtnTxlX6VIbOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vyugTKrkxRboOzPp3Bs5pf7XmO86+iq0m1xQkPNMVJp9KFIsBFtE2tVMZgsy9/bxP
-	 zEx2lGM5vuAcNSTjfVZc8CZVMLisGnicp37NX6Pt2oJ+hsiRK7FihD86SQ748kKIyn
-	 oo1zlmX0Rj6ndb9YihU9VuvmZ3BNU23qvmrjxbTA=
+	b=q02+ZMFox11N0OxQNkNxuTndibP4AAmXBOWE2PoWrMoFga4SeczABePbkazztp9Uf
+	 uL5oVu6ZgausMhJqiTYOE4i7k+MZYRkGpFjfBUq0fmXdi3rPjYjATIs7iksfAOSNYp
+	 VXTvVttZRIeoYr0e3DD5ti1gHB1qwD4YdOi3l5ZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Xiaoqiang Xiong <xxiong@redhat.com>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/969] tracing/probe: reject non-closed empty immediate strings
-Date: Sat, 30 May 2026 17:52:42 +0200
-Message-ID: <20260530160301.475182040@linuxfoundation.org>
+Subject: [PATCH 6.1 039/969] ixgbevf: add missing negotiate_features op to Hyper-V ops table
+Date: Sat, 30 May 2026 17:52:43 +0200
+Message-ID: <20260530160301.500808764@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257002-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257003-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,13 +87,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 07DEE60E3C0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: B470360E31D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,41 +101,76 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-[ Upstream commit 4346be6577aaa04586167402ae87bbdbe32484a4 ]
+[ Upstream commit 4821d563cd7f251ae728be1a6d04af82a294a5b9 ]
 
-parse_probe_arg() accepts quoted immediate strings and passes the body
-after the opening quote to __parse_imm_string(). That helper currently
-computes strlen(str) and immediately dereferences str[len - 1], which
-underflows when the body is empty and not closed with double-quotation.
+Commit a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by
+negotiating supported features") added the .negotiate_features callback
+to ixgbe_mac_operations and populated it in ixgbevf_mac_ops, but forgot
+to add it to ixgbevf_hv_mac_ops. This leaves the function pointer NULL
+on Hyper-V VMs.
 
-Reject empty non-closed immediate strings before checking for the closing quote.
+During probe, ixgbevf_negotiate_api() calls ixgbevf_set_features(),
+which unconditionally dereferences hw->mac.ops.negotiate_features().
+On Hyper-V this results in a NULL pointer dereference:
 
-Link: https://lore.kernel.org/all/20260401160315.88518-1-pengpeng@iscas.ac.cn/
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  [...]
+  Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine [...]
+  Workqueue: events work_for_cpu_fn
+  RIP: 0010:0x0
+  [...]
+  Call Trace:
+   ixgbevf_negotiate_api+0x66/0x160 [ixgbevf]
+   ixgbevf_sw_init+0xe4/0x1f0 [ixgbevf]
+   ixgbevf_probe+0x20f/0x4a0 [ixgbevf]
+   local_pci_probe+0x50/0xa0
+   work_for_cpu_fn+0x1a/0x30
+   [...]
 
-Fixes: a42e3c4de964 ("tracing/probe: Add immediate string parameter support")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Add ixgbevf_hv_negotiate_features_vf() that returns -EOPNOTSUPP and
+wire it into ixgbevf_hv_mac_ops. The caller already handles -EOPNOTSUPP
+gracefully.
+
+Fixes: a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by negotiating supported features")
+Reported-by: Xiaoqiang Xiong <xxiong@redhat.com>
+Closes: https://issues.redhat.com/browse/RHEL-155455
+Assisted-by: Claude:claude-4.6-opus-high Cursor
+Tested-by: Xiaoqiang Xiong <xxiong@redhat.com>
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_probe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ixgbevf/vf.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
-index 3888a59c9dfe9..280e3d0f61b29 100644
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -366,7 +366,7 @@ static int __parse_imm_string(char *str, char **pbuf, int offs)
- {
- 	size_t len = strlen(str);
+diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.c b/drivers/net/ethernet/intel/ixgbevf/vf.c
+index 708d5dd921acc..70dfda13b7885 100644
+--- a/drivers/net/ethernet/intel/ixgbevf/vf.c
++++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
+@@ -709,6 +709,12 @@ static int ixgbevf_negotiate_features_vf(struct ixgbe_hw *hw, u32 *pf_features)
+ 	return err;
+ }
  
--	if (str[len - 1] != '"') {
-+	if (!len || str[len - 1] != '"') {
- 		trace_probe_log_err(offs + len, IMMSTR_NO_CLOSE);
- 		return -EINVAL;
- 	}
++static int ixgbevf_hv_negotiate_features_vf(struct ixgbe_hw *hw,
++					    u32 *pf_features)
++{
++	return -EOPNOTSUPP;
++}
++
+ /**
+  *  ixgbevf_set_vfta_vf - Set/Unset VLAN filter table address
+  *  @hw: pointer to the HW structure
+@@ -1142,6 +1148,7 @@ static const struct ixgbe_mac_operations ixgbevf_hv_mac_ops = {
+ 	.setup_link		= ixgbevf_setup_mac_link_vf,
+ 	.check_link		= ixgbevf_hv_check_mac_link_vf,
+ 	.negotiate_api_version	= ixgbevf_hv_negotiate_api_version_vf,
++	.negotiate_features	= ixgbevf_hv_negotiate_features_vf,
+ 	.set_rar		= ixgbevf_hv_set_rar_vf,
+ 	.update_mc_addr_list	= ixgbevf_hv_update_mc_addr_list_vf,
+ 	.update_xcast_mode	= ixgbevf_hv_update_xcast_mode,
 -- 
 2.53.0
 
