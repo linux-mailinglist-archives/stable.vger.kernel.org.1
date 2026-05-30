@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-257508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBgZIokcG2qQ/QgAu9opvQ
-	(envelope-from <stable+bounces-257508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:13 +0200
+	id wGSIOXIvG2paAAkAu9opvQ
+	(envelope-from <stable+bounces-258889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F29960F775
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5269961244F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7D02D3099667
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:13:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A99A31A59F7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AB534BA42;
-	Sat, 30 May 2026 17:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8419329E79;
+	Sat, 30 May 2026 18:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7gaKypw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNfSmkSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BF334EF07;
-	Sat, 30 May 2026 17:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A775241A8F;
+	Sat, 30 May 2026 18:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161239; cv=none; b=bnYMekUSMAUOo2yu1sZB0ptmS23DDn5Q6yIys37fStKw0ZMKWTBOgv0aRhYh0rqhmHwhQDWRGd9rWTZUkC8kHxMZv7QzU+Wi7N+88FDHkHAPVN+KPcC+MkIgFGGTxt3cXz+wiWGrjShLMeGnRykNFQzTFTDaIJ5//pivAW2jpdQ=
+	t=1780165881; cv=none; b=mOqfMMH8wbWwnGWL2ajvHMVHNUshXfSUigdzC5Ee+lyxbgZkiYkfvaKkR7AFiwzyCQVHGcyHJsJ7/r1EWjw7AY/Nm1NPAG4jdrGO43J7RNsNhuM1UwZNDnu4IL7pIg5fFbyM6yKU1ExniCgPCQWeYF0YGtbS6B4cIpoLFntXPIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161239; c=relaxed/simple;
-	bh=omRfopVejZgPNDU8dvQ0gQ2PFIx6YxwNZqQ0vvyKpYs=;
+	s=arc-20240116; t=1780165881; c=relaxed/simple;
+	bh=eEozmi75EPV/bM6qq3KGnehD5MkypRXyw20xsIrFi8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lqpC0+a90/inQRcDTCqGQYBg92qT94FD5OpsrXLMQqgzG0GJBmqutdS+jASiibmCvASNSwkn6siS89yfT4oaM0ci4KF91k09/Mgme62eLZz7TvteC9szYuc5or/VLF6/7/g4ci4VMQvmZB5fGlPwhvFYdQ6Jt4fCDn/lSvaIick=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7gaKypw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307EE1F00893;
-	Sat, 30 May 2026 17:13:56 +0000 (UTC)
+	 MIME-Version; b=nNhcK10ckp/lYgRcrqUmiZbT6KzKsdkWuhAXk6WjAlLhXoOHKv1kkCKGaNkwbs/vhGxvvOOydSQ59XoVWvkr6Bya5AMMBDjm9WMoviPTGcxCzN5oiLdxmik1DUR/qLluquvYuhEBt8YqnXTiLhfSnnxug1JxsiXG4IlhlMd3E4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNfSmkSa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B4C1F00893;
+	Sat, 30 May 2026 18:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161237;
-	bh=ncY9R+Dfi2TK1c4BvYmhUrG75uYvkTGF3BWPLFeKHfw=;
+	s=korg; t=1780165880;
+	bh=AQzrA0taGQlIWkZYo/R9A92MqGFjP/iAynwKk0jZysw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=J7gaKypw52IQ2CIdZXM6pBbGZhfnJpTOAfCi1pWTAEat1VCArYEMdZLtw1OzXRZXK
-	 MTGfdzk5bHg0MfROAzQN4kUMXkOjEPEbQyJYjaAj4nQrvDoATWQRX6v99l5IMIxW47
-	 r4V8g8TEk/HY4g61dDVQMZgzs2fAndYfxkkz0JRQ=
+	b=lNfSmkSawMZPHMphTDcWa/+QUdbrhPu0XncMiWbD8ebspmIw7xb7/cTS/wnAUoG9D
+	 SKKoyKsKY8kH/CZEQkSZc1ro2Y9pWUdmtfbDuJOsHwLfVRfJyxY8x2WThizdkMWf2P
+	 Sge+9rUDGaqJ2z60QF3RUfpNMIZhH0rmCnzsJ2KM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hawley <warthog9@eaglescrag.net>,
-	Andrea Righi <arighi@nvidia.com>,
-	Marcos Paulo de Souza <mpdesouza@suse.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 564/969] ktest: Avoid undef warning when WARNINGS_FILE is unset
-Date: Sat, 30 May 2026 18:01:28 +0200
-Message-ID: <20260530160315.963395607@linuxfoundation.org>
+	Rajat Gupta <rajgupt@qti.qualcomm.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 208/589] fbdev: udlfb: add vm_ops to dlfb_ops_mmap to prevent use-after-free
+Date: Sat, 30 May 2026 18:01:29 +0200
+Message-ID: <20260530160230.419024734@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +62,149 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257508-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258889-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qti.qualcomm.com,gmx.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 2F29960F775
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: 5269961244F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Rajat Gupta <rajgupt@qti.qualcomm.com>
 
-[ Upstream commit 057854f8a595160656fe77ed7bf0d2403724b915 ]
+commit 8de779dc40d35d39fa07387b6f921eb11df0f511 upstream.
 
-check_buildlog() probes $warnings_file with -f even when WARNINGS_FILE is
-not configured. Perl warns about the uninitialized value and adds noise to
-the test log, which can hide the output we actually care about.
+dlfb_ops_mmap() uses remap_pfn_range() to map vmalloc framebuffer pages
+to userspace but sets no vm_ops on the VMA. This means the kernel cannot
+track active mmaps. When dlfb_realloc_framebuffer() replaces the backing
+buffer via FBIOPUT_VSCREENINFO, existing mmap PTEs are not invalidated.
+On USB disconnect, dlfb_ops_destroy() calls vfree() on the old pages
+while userspace PTEs still reference them, resulting in a use-after-free:
+the process retains read/write access to freed kernel pages.
 
-Check that WARNINGS_FILE is defined before testing whether the file exists.
+Add vm_operations_struct with open/close callbacks that maintain an
+atomic mmap_count on struct dlfb_data. In dlfb_realloc_framebuffer(),
+check mmap_count and return -EBUSY if the buffer is currently mapped,
+preventing buffer replacement while userspace holds stale PTEs.
 
-Cc: John Hawley <warthog9@eaglescrag.net>
-Cc: Andrea Righi <arighi@nvidia.com>
-Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Link: https://patch.msgid.link/20260307-ktest-fixes-v1-1-565d412f4925@suse.com
-Fixes: 4283b169abfb ("ktest: Add make_warnings_file and process full warnings")
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested with PoC using dummy_hcd + raw_gadget USB device emulation.
+
+Signed-off-by: Rajat Gupta <rajgupt@qti.qualcomm.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/ktest.pl | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/udlfb.c |   31 ++++++++++++++++++++++++++++++-
+ include/video/udlfb.h       |    1 +
+ 2 files changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index b1bd8be3cf666..d752c4bd0d8b3 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -2465,7 +2465,7 @@ sub check_buildlog {
-     my $save_no_reboot = $no_reboot;
-     $no_reboot = 1;
+--- a/drivers/video/fbdev/udlfb.c
++++ b/drivers/video/fbdev/udlfb.c
+@@ -321,12 +321,32 @@ static int dlfb_set_video_mode(struct dl
+ 	return retval;
+ }
  
--    if (-f $warnings_file) {
-+    if (defined($warnings_file) && -f $warnings_file) {
- 	open(IN, $warnings_file) or
- 	    dodie "Error opening $warnings_file";
++static void dlfb_vm_open(struct vm_area_struct *vma)
++{
++	struct dlfb_data *dlfb = vma->vm_private_data;
++
++	atomic_inc(&dlfb->mmap_count);
++}
++
++static void dlfb_vm_close(struct vm_area_struct *vma)
++{
++	struct dlfb_data *dlfb = vma->vm_private_data;
++
++	atomic_dec(&dlfb->mmap_count);
++}
++
++static const struct vm_operations_struct dlfb_vm_ops = {
++	.open  = dlfb_vm_open,
++	.close = dlfb_vm_close,
++};
++
+ static int dlfb_ops_mmap(struct fb_info *info, struct vm_area_struct *vma)
+ {
+ 	unsigned long start = vma->vm_start;
+ 	unsigned long size = vma->vm_end - vma->vm_start;
+ 	unsigned long offset = vma->vm_pgoff << PAGE_SHIFT;
+ 	unsigned long page, pos;
++	struct dlfb_data *dlfb = info->par;
  
--- 
-2.53.0
-
+ 	if (vma->vm_pgoff > (~0UL >> PAGE_SHIFT))
+ 		return -EINVAL;
+@@ -353,6 +373,9 @@ static int dlfb_ops_mmap(struct fb_info
+ 			size = 0;
+ 	}
+ 
++	vma->vm_ops = &dlfb_vm_ops;
++	vma->vm_private_data = dlfb;
++	atomic_inc(&dlfb->mmap_count);
+ 	return 0;
+ }
+ 
+@@ -1218,7 +1241,6 @@ static void dlfb_deferred_vfree(struct d
+ 
+ /*
+  * Assumes &info->lock held by caller
+- * Assumes no active clients have framebuffer open
+  */
+ static int dlfb_realloc_framebuffer(struct dlfb_data *dlfb, struct fb_info *info, u32 new_len)
+ {
+@@ -1230,6 +1252,13 @@ static int dlfb_realloc_framebuffer(stru
+ 	new_len = PAGE_ALIGN(new_len);
+ 
+ 	if (new_len > old_len) {
++		if (atomic_read(&dlfb->mmap_count) > 0) {
++			dev_warn(info->dev,
++				"refusing realloc: %d active mmaps\n",
++				atomic_read(&dlfb->mmap_count));
++			return -EBUSY;
++		}
++
+ 		/*
+ 		 * Alloc system memory for virtual framebuffer
+ 		 */
+--- a/include/video/udlfb.h
++++ b/include/video/udlfb.h
+@@ -56,6 +56,7 @@ struct dlfb_data {
+ 	spinlock_t damage_lock;
+ 	struct work_struct damage_work;
+ 	struct fb_ops ops;
++	atomic_t mmap_count;
+ 	/* blit-only rendering path metrics, exposed through sysfs */
+ 	atomic_t bytes_rendered; /* raw pixel-bytes driver asked to render */
+ 	atomic_t bytes_identical; /* saved effort with backbuffer comparison */
 
 
 
