@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-259168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257788-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDp/KrQwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:16 +0200
+	id 2AKZHQEgG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257788-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF836127E6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE42C60FFF2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AD96A3019132
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B475A3052B55
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85A414A60F;
-	Sat, 30 May 2026 18:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF65E33B6C4;
+	Sat, 30 May 2026 17:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jc6iyoJv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ry4gMGyL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4CEB18FDBD;
-	Sat, 30 May 2026 18:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DFE30148B;
+	Sat, 30 May 2026 17:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166834; cv=none; b=cPzgVc9/pW6YxRQ7Gd3mcrAra5ybNKG7I3u1NEhpMN/g+mkthckyDWAqZVUJwF2QCM4mKcU6mfoqmX2qz/5OJYD8NWFd9h0lTqzym8qIlzruMROghhanz57dvbnEr1Nqsy0D0NBHOcXlwJgNnOcNqmr13ynlo2ATfAdiyowPRjg=
+	t=1780162173; cv=none; b=FLY+awBObhTyUpk61M6YkIAXxoTdixCr+Dp3MI9x+6Ly5tICXT0k3G90j3wD2bvSREmkybUaGElPknuPA69lVVKbQzDUn0lQCjWHwMAq7a4ggzvFC2wP3mVAFAytzesRSqlyfYPttmiQsoIZyvzwjre90mV/35RtSOOKGr1sdJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166834; c=relaxed/simple;
-	bh=XkoMfsVM6dGPwe0Z5oBTJmJ4gni0MYu+9A2mHuwnfkg=;
+	s=arc-20240116; t=1780162173; c=relaxed/simple;
+	bh=eqwCpnsioG2JQfAK8owim8ofqXfMHbpzrQTl0891PbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HO5FHmnXVXUR+iSLzGzJPYgO6Q9l6TOJwYeX/yw5PZMC94bWWv1juTJubUGt2gTB3aJ/4Jrs6sjWK9GGQ39rOmljlniZZ0zb7SCTBw68LP8paG5cNhGkYqRjNEabD/Jgnd1s/RKdgdV0kifTxm5vxVdBkaseJeurNKHm5Ekosos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jc6iyoJv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12ECF1F00893;
-	Sat, 30 May 2026 18:47:12 +0000 (UTC)
+	 MIME-Version; b=aadzHvgcMpeMruxIvREczA+vhG93iqqsYR8p0wDhRUjPmAq6CwFcrTuBMF4D4c60S0M6Pqzil7oHrKfjmnSDViLI1QggNtmHsagSZ9NLpLbAynWUh0pqfAah4q0KXNM+wtn+VgeTjUPwZ5oJq4d73SblCQ7gKa9HyX5YPGEBTqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ry4gMGyL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59B01F00893;
+	Sat, 30 May 2026 17:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166833;
-	bh=2z+60bS3sPQXh+eBSwMfwZOaXCaFp7K2yjelL5CN6ww=;
+	s=korg; t=1780162172;
+	bh=D5z/JS1zN/FTZHE4fMD3NSNnb6GQDoWrhGUI647R99Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jc6iyoJvjNo4sdkbm3bfoM87uUSUygQxJNAnnTZ35YODlDYpgzYr7vwMCBQtf6mJ7
-	 6QgXkibav2fbJTq2s5A+S1Nga9uHRZkscWs8OCckuMCeJt3KGVAi4WS7HRgRisxSTG
-	 qbVJbL8tmikw8ZrbubYbQK5VK8OBZv04jtyFXi0s=
+	b=ry4gMGyLk4HL7ZLBhpW8NI2YaMRZE2Bdgm1FloRS00ucqzuDAsW5NFVPqZnD4STUx
+	 d1IonjP3mLLtDxoxEkXe0siyt6xmrjCAD3mPBF82001JlYQTHk6+lI4g2VmmyPSSIB
+	 uW23iDEFB7YLkmswVuSOd9pvtHbTZYCYM1GNdQrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 486/589] netfilter: skip recording stale or retransmitted INIT
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 843/969] net: wwan: iosm: fix potential memory leaks in ipc_imem_init()
 Date: Sat, 30 May 2026 18:06:07 +0200
-Message-ID: <20260530160237.414810302@linuxfoundation.org>
+Message-ID: <20260530160323.933833707@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,101 +63,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-259168-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257788-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6BF836127E6
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,iitm.ac.in:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CE42C60FFF2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 576a5d2bad4814c881a829576b1261b9b8159d2b ]
+commit c5d93b2c40355e999715262a824965aac025a427 upstream.
 
-An INIT whose init_tag matches the peer's vtag does not provide new state
-information. It indicates either:
+The memory allocated in ipc_protocol_init() is not freed on the error
+paths that follow in ipc_imem_init(). Fix that by calling the
+corresponding release function ipc_protocol_deinit() in the error path.
 
-- a stale INIT (after INIT-ACK has already been seen on the same side), or
-- a retransmitted INIT (after INIT has already been recorded on the same
-  side).
-
-In both cases, the INIT must not update ct->proto.sctp.init[] state, since
-it does not advance the handshake tracking and may otherwise corrupt
-INIT/INIT-ACK validation logic.
-
-Allow INIT processing only when the conntrack entry is newly created
-(SCTP_CONNTRACK_NONE), or when the init_tag differs from the stored peer
-vtag.
-
-Note it skips the check for the ct with old_state SCTP_CONNTRACK_NONE in
-nf_conntrack_sctp_packet(), as it is just created in sctp_new() where it
-set ct->proto.sctp.vtag[IP_CT_DIR_REPLY] = ih->init_tag.
-
-Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Acked-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/ee56c3e416452b2a40589a2a85245ac2ad5e9f4b.1777214801.git.lucien.xin@gmail.com
+Fixes: 3670970dd8c6 ("net: iosm: shared memory IPC interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Link: https://patch.msgid.link/20260519062815.55545-1-nihaal@cse.iitm.ac.in
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_proto_sctp.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/wwan/iosm/iosm_ipc_imem.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-index 2a1d00e702d1b..4a376c9a6c73c 100644
---- a/net/netfilter/nf_conntrack_proto_sctp.c
-+++ b/net/netfilter/nf_conntrack_proto_sctp.c
-@@ -484,9 +484,13 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
- 			if (!ih)
- 				goto out_unlock;
- 
--			if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir])
--				ct->proto.sctp.init[!dir] = 0;
--			ct->proto.sctp.init[dir] = 1;
-+			/* Do not record INIT matching peer vtag (stale or retransmitted INIT). */
-+			if (old_state == SCTP_CONNTRACK_NONE ||
-+			    ct->proto.sctp.vtag[!dir] != ih->init_tag) {
-+				if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir])
-+					ct->proto.sctp.init[!dir] = 0;
-+				ct->proto.sctp.init[dir] = 1;
-+			}
- 
- 			pr_debug("Setting vtag %x for dir %d\n", ih->init_tag, !dir);
- 			ct->proto.sctp.vtag[!dir] = ih->init_tag;
--- 
-2.53.0
-
+--- a/drivers/net/wwan/iosm/iosm_ipc_imem.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_imem.c
+@@ -1423,6 +1423,8 @@ imem_config_fail:
+ protocol_init_fail:
+ 	cancel_work_sync(&ipc_imem->run_state_worker);
+ 	ipc_task_deinit(ipc_imem->ipc_task);
++	if (ipc_imem->ipc_protocol)
++		ipc_protocol_deinit(ipc_imem->ipc_protocol);
+ ipc_task_init_fail:
+ 	kfree(ipc_imem->ipc_task);
+ ipc_task_fail:
 
 
 
