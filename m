@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258746-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0L6EGSQlG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258143-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:56 +0200
+	id CApMHx4rG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258746-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:23:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F45610B55
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3581611A3A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E0C03051D51
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B47143002D3A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0323546EA;
-	Sat, 30 May 2026 17:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01AD5274FDC;
+	Sat, 30 May 2026 18:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bdg2Vew+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/QouLQL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B079E3AB482;
-	Sat, 30 May 2026 17:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EEB17555;
+	Sat, 30 May 2026 18:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163360; cv=none; b=Jfpus7N/ixaYlXUpscX0pUsFAD4EDBm1VSDFk7ZQVZ1XAx+ESFSRKVPv3PGa6Ouj62NdLchsAuJClR/Gmvqwyr1ikdr0yerT5HGqptiokMIqJf3+ktViVnHi6Wc/BKD4vzvZX1IDrhxPh3qY2AG5UcMDpB4KC60F7MgtTVHSzF8=
+	t=1780165399; cv=none; b=FWzA3jeB9zf9xHuWKRzgAuq3infl1M6fGG7qgGWnw0F9u+WPd5ESudciUksMvkxvqi89flj6FBXY1VddeLHh5th3DwJI3LUr82QbwXWmugglIUQo3NNd+WoeAEwhiOzOV3D/uvtUaOyEAWHa5Wpwo3g6qM2eiKZGpmPMSXSW1JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163360; c=relaxed/simple;
-	bh=8TLJD1TvN0M/K40I/TEVBpMHlrPnUox6UfsCBzl5+FI=;
+	s=arc-20240116; t=1780165399; c=relaxed/simple;
+	bh=LSa+UKTFxEKDeGMDTb/zbyG3+h/NkA97f7G0ln3YyE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r3tbhsat8O9U9A+PZMESR24/Xae3DQJM1VYy6BnFNjZxE+JjmXcnW+xSYiTqYmwHtyRLfzGyCoxaOAubHf2MxE6Q9TdRBc8dIDWqJ6P4030PhDmiKxbEgCssiIAC/92ikRfQK6Zgmcm0kmuoaVzX9hGwtcYvT1CGKokXzV4h/mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bdg2Vew+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003791F00893;
-	Sat, 30 May 2026 17:49:18 +0000 (UTC)
+	 MIME-Version; b=YxbLD/yMefDPVFN9bYmqEqykLmDds5buaXhU6XFoS+pFmM+9dHwRPcGvUWlZspySjHRtQ5RpFgpspMMr/mKYnPqocJgT/m+esK52Nkp6oqfQ4I2HbEHujB92X2tyzjQRnQ3i+gebq/UgPds2PvRrmkmr+/GXaZPU1SxOCILVvw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/QouLQL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125B81F00893;
+	Sat, 30 May 2026 18:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163359;
-	bh=fjzrFMa5K40Shqu+3/Ll6nH56z5awP7ChbKmlTdX2gk=;
+	s=korg; t=1780165398;
+	bh=7yR+8vUlMjfqslzgbH4WAJP3qBvJpfc53U0LAxzcQVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Bdg2Vew+CEdXM2wpwfEpA6UVYxXIHETsaR0fRTKwKt0P4+J9AshDSqvuk9RqW8N3F
-	 bfm0io/rT9Id5T4pwlCe7geuwhUUoiCrAH5p9NxqsmSaKfo9qs7HDCSVwY1WqWbnF0
-	 xHWt7NdR35G8W1ImuJ6xERNuNVzgflvqRC+lwB3w=
+	b=s/QouLQLInsFWm6ATmwanIoUazZYB6yZVHWmrNQgoTV3aWewwpp1lnCu/8Uq2j+js
+	 uFPx/JUjorMe6Z3MmELK/p6aV9MFfSM4FMnR3AgM9n/bd2PlMadUoqFp+sCIr1jDbr
+	 +m1pfqYoDrnUgl+wWwDiJHtrLWx/7VRmpw7updk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Law <objecting@objecting.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 204/776] lib/ts_kmp: fix integer overflow in pattern length calculation
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 037/589] mips: mm: Allocate tlb_vpn array atomically
 Date: Sat, 30 May 2026 17:58:38 +0200
-Message-ID: <20260530160245.782391375@linuxfoundation.org>
+Message-ID: <20260530160225.562411607@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,83 +78,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258143-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258746-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,objecting.org:email]
-X-Rspamd-Queue-Id: D9F45610B55
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nokia.com:email]
+X-Rspamd-Queue-Id: C3581611A3A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Law <objecting@objecting.org>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-commit 8cdf30813ea8ce881cecc08664144416dbdb3e16 upstream.
+commit 01cc50ea5167bb14117257ec084637abe9e5f691 upstream.
 
-The ts_kmp algorithm stores its prefix_tbl[] table and pattern in a single
-allocation sized from the pattern length.  If the prefix_tbl[] size
-calculation wraps, the resulting allocation can be too small and
-subsequent pattern copies can overflow it.
+Found by DEBUG_ATOMIC_SLEEP:
 
-Fix this by rejecting zero-length patterns and by using overflow helpers
-before calculating the combined allocation size.
+  BUG: sleeping function called from invalid context at /include/linux/sched/mm.h:306
+  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+  preempt_count: 1, expected: 0
+  RCU nest depth: 0, expected: 0
+  no locks held by swapper/1/0.
+  irq event stamp: 0
+  hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+  hardirqs last disabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
+  softirqs last  enabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
+  softirqs last disabled at (0): [<0000000000000000>] 0x0
+  CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.119-d79e757675ec-fct #1
+  Stack : 800000000290bad8 0000000000000000 0000000000000008 800000000290bae8
+          800000000290bae8 800000000290bc78 0000000000000000 0000000000000000
+          ffffffff80c80000 0000000000000001 ffffffff80d8dee8 ffffffff810d09c0
+          784bb2a7ec10647d 0000000000000010 ffffffff80a6fd60 8000000001d8a9c0
+          0000000000000000 0000000000000000 ffffffff80d90000 0000000000000000
+          ffffffff80c9e0e8 0000000007ffffff 0000000000000cc0 0000000000000400
+          ffffffffffffffff 0000000000000001 0000000000000002 ffffffffc0149ed8
+          fffffffffffffffe 8000000002908000 800000000290bae0 ffffffff80a81b74
+          ffffffff80129fb0 0000000000000000 0000000000000000 0000000000000000
+          0000000000000000 0000000000000000 ffffffff80129fd0 0000000000000000
+          ...
+  Call Trace:
+  [<ffffffff80129fd0>] show_stack+0x60/0x158
+  [<ffffffff80a7f894>] dump_stack_lvl+0x88/0xbc
+  [<ffffffff8018d3c8>] __might_resched+0x268/0x288
+  [<ffffffff803648b0>] __kmem_cache_alloc_node+0x2e0/0x330
+  [<ffffffff80302788>] __kmalloc+0x58/0xd0
+  [<ffffffff80a81b74>] r4k_tlb_uniquify+0x7c/0x428
+  [<ffffffff80143e8c>] tlb_init+0x7c/0x110
+  [<ffffffff8012bdb4>] per_cpu_trap_init+0x16c/0x1d0
+  [<ffffffff80133258>] start_secondary+0x28/0x128
 
-
-This fixes a potential heap overflow.  The pattern length calculation can
-wrap during a size_t addition, leading to an undersized allocation.
-Because the textsearch library is reachable from userspace via Netfilter's
-xt_string module, this is a security risk that should be backported to LTS
-kernels.
-
-Link: https://lkml.kernel.org/r/20260308202028.2889285-2-objecting@objecting.org
-Signed-off-by: Josh Law <objecting@objecting.org>
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 231ac951faba ("MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/ts_kmp.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ arch/mips/mm/tlb-r4k.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/ts_kmp.c
-+++ b/lib/ts_kmp.c
-@@ -94,8 +94,22 @@ static struct ts_config *kmp_init(const
- 	struct ts_config *conf;
- 	struct ts_kmp *kmp;
- 	int i;
--	unsigned int prefix_tbl_len = len * sizeof(unsigned int);
--	size_t priv_size = sizeof(*kmp) + len + prefix_tbl_len;
-+	unsigned int prefix_tbl_len;
-+	size_t priv_size;
-+
-+	/* Zero-length patterns would make kmp_find() read beyond kmp->pattern. */
-+	if (unlikely(!len))
-+		return ERR_PTR(-EINVAL);
-+
-+	/*
-+	 * kmp->pattern is stored immediately after the prefix_tbl[] table.
-+	 * Reject lengths that would wrap while sizing either region.
-+	 */
-+	if (unlikely(check_mul_overflow(len, sizeof(*kmp->prefix_tbl),
-+					&prefix_tbl_len) ||
-+		     check_add_overflow(sizeof(*kmp), (size_t)len, &priv_size) ||
-+		     check_add_overflow(priv_size, prefix_tbl_len, &priv_size)))
-+		return ERR_PTR(-EINVAL);
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index 8bc98c311ca62..3aef6acd57bdd 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -528,7 +528,7 @@ static void __ref r4k_tlb_uniquify(void)
  
- 	conf = alloc_ts_config(priv_size, gfp_mask);
- 	if (IS_ERR(conf))
+ 	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
+ 	tlb_vpns = (use_slab ?
+-		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
++		    kmalloc(tlb_vpn_size, GFP_ATOMIC) :
+ 		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
+ 	if (WARN_ON(!tlb_vpns))
+ 		return; /* Pray local_flush_tlb_all() is good enough. */
+-- 
+2.53.0
+
 
 
 
