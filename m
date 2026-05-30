@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-257501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCELHigbG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257501-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:20 +0200
+	id QKqQNGAuG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:37:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F8A60F3B6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB9B6121D6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EB2C2301D58D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:13:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2AC6A313386B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E3C3148DA;
-	Sat, 30 May 2026 17:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44733BD646;
+	Sat, 30 May 2026 18:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYB+HP8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1JMIcBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FEE3016E1;
-	Sat, 30 May 2026 17:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDBE3242BA;
+	Sat, 30 May 2026 18:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161214; cv=none; b=mq1Cmb2Tw8ZlwNXCd8i3C0RLXM9UZYm/7sgYIc7TkHXA9ApDRKYK0OE6adzJqjBk68hjoAEMH0csQuSgQcXYLCnne4oOx8hgkABOdfdkU12B9ZaEdHlIRs2wDKHFTopO6imaaxvKfu8fnh/LQj4P1YPPPAXsX62Rg+02SsLLhTs=
+	t=1780165853; cv=none; b=kXC7XWDVyuygUN1L/wyZ9Iy+F+ONsZwEHc32fojMEms6GL1OFU2izwuRwgBiUlvpRK2kxiCsWAcyHMpX038uyeoG7kDFpIk+FHy7gEzG3TApbWRqmHa01hOhJaseqCUdJFb+XE8yJfaPUnNj2SaUEG11/Q885Yo8m6Kkw2fCFfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161214; c=relaxed/simple;
-	bh=MgmcBPehXcf7IHkL/7o0Hfuw76jeQBocQHqmc93J7eU=;
+	s=arc-20240116; t=1780165853; c=relaxed/simple;
+	bh=kTwAhrtK/iw9fee+JhZAGVUaUwAUb+AL/2lbqbGsiVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frzIglwSf6mtgqIzLRl78cUTtFipnUUxJp72rJ8jrWFs0WhcQmnpUrXoHaXwabGMMTwdIMUvtjUwYH+L/2ra69A5Fo/fympo68tvznT/0ksdnY8qigThTy5P+SHckcqUXomynS9bZC+Rwd5zBad/eQCVSr2VB7YI6Nr9iLAQWuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYB+HP8P; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D725D1F00893;
-	Sat, 30 May 2026 17:13:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ckqsRmXj3HIxAqeTjkdJY8loqWtaGuXYWoTvv22Xaaez1yaQzYT6OSAytPbrZupi8VjesJY7qOSx9D+bQcFe8YvuTfO9A7vpxgbbERQMJga91NdWZf/gg23G5LEOb33rh8s3M8PklW8txgKm6b10h9JDqCQoixyqwXWItnP+F7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1JMIcBu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3AE1F00893;
+	Sat, 30 May 2026 18:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161213;
-	bh=bLaRuzJ/GaXwCd8CGcxAD1yKu0j7em19gPlyYU+N40w=;
+	s=korg; t=1780165852;
+	bh=4MdfQhojuwySg9AiwVy5l+FmGHi7hFxgWFsidQ6W2y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NYB+HP8Pzr3EIG55QTCIxrlTL2pVvCMhsShfQPQDN+Dn9//d1xIQc4udnJzWFpzAA
-	 6UySfbi8gnQmcxRiZ6OH70sA8lzWPLosuiEegvFTWTOJIZRoWFn4zTkejs9danOlB0
-	 EK7VVBFtlhSjyB1YBsAxkbkTo8BZi83N2UtrIBaE=
+	b=i1JMIcBujajmn1xPNieznCRZ342KQkorwCI4WzPhS3v2mtk5WTbDnehx4XnAHeyoY
+	 VBjAaaxBKd6oraKsbsEL/XdSfjDmVLOG2o5AxFVZGHX4iTvKDQmkI//1adBkKVsbe9
+	 CO0NyoSxmHL4E5qu0Dcg6Q9ef7++fUoq0FtPyeN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 558/969] PCI: tegra194: Allow system suspend when the Endpoint link is not up
+	Arjan van de Ven <arjan@linux.intel.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.10 201/589] drm/amdgpu: fix zero-size GDS range init on RDNA4
 Date: Sat, 30 May 2026 18:01:22 +0200
-Message-ID: <20260530160315.792938241@linuxfoundation.org>
+Message-ID: <20260530160230.207293194@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,144 +66,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258881-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257501-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 17F8A60F3B6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,fenrus.org:url,lists.freedesktop.org:email]
+X-Rspamd-Queue-Id: 4DB9B6121D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Arjan van de Ven <arjan@linux.intel.com>
 
-[ Upstream commit c76f8eae7d4695b1176c4ea5eb93c17e16a20272 ]
+commit 095a8b0ad3c3b5cdc3850d961adb8a8f735220bb upstream.
 
-Host software initiates the L2 sequence. PCIe link is kept in L2 state
-during suspend. If Endpoint mode is enabled and the link is up, the
-software cannot proceed with suspend. However, when the PCIe Endpoint
-driver is probed, but the PCIe link is not up, Tegra can go into suspend
-state. So, allow system to suspend in this case.
+RDNA4 (GFX 12) hardware removes the GDS, GWS, and OA on-chip memory
+resources. The gfx_v12_0 initialisation code correctly leaves
+adev->gds.gds_size, adev->gds.gws_size, and adev->gds.oa_size at
+zero to reflect this.
 
-Fixes: de2bbf2b71bb ("PCI: tegra194: Don't allow suspend when Tegra PCIe is in EP mode")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-10-mmaddireddy@nvidia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+amdgpu_ttm_init() unconditionally calls amdgpu_ttm_init_on_chip() for
+each of these resources regardless of size. When the size is zero,
+amdgpu_ttm_init_on_chip() forwards the call to ttm_range_man_init(),
+which calls drm_mm_init(mm, 0, 0). drm_mm_init() immediately fires
+DRM_MM_BUG_ON(start + size <= start) -- trivially true when size is
+zero -- crashing the kernel during modprobe of amdgpu on an RX 9070 XT.
+
+Guard against this by returning 0 early from
+amdgpu_ttm_init_on_chip() when size_in_page is zero. This skips TTM
+resource manager registration for hardware resources that are absent,
+without affecting any other GPU type.
+
+DRM_MM_BUG_ON() only asserts if CONFIG_DRM_DEBUG_MM is enabled in
+the kernel config.  This is apparently rarely enabled as these chips
+have been in the market for over a year and this issue was only reported
+now.
+
+Link: https://lore.kernel.org/all/bug-221376-2300@https.bugzilla.kernel.org%2F/
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221376
+Oops-Analysis: http://oops.fenrus.org/reports/bugzilla.korg/221376/report.html
+Assisted-by: GitHub Copilot:Claude Sonnet 4.6 linux-kernel-oops-x86.
+Signed-off-by: Arjan van de Ven <arjan@linux.intel.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: amd-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5719ce5865279cad4fd5f01011fe037168503f2d)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 31 +++++++++++++++++-----
- 1 file changed, 25 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 431ae321ba055..076d44c7c46ba 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -2287,16 +2287,28 @@ static int tegra_pcie_dw_remove(struct platform_device *pdev)
- 	return 0;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -71,6 +71,9 @@ static int amdgpu_ttm_init_on_chip(struc
+ 				    unsigned int type,
+ 				    uint64_t size_in_page)
+ {
++	if (!size_in_page)
++		return 0;
++
+ 	return ttm_range_man_init(&adev->mman.bdev, type,
+ 				  false, size_in_page);
  }
- 
--static int tegra_pcie_dw_suspend_late(struct device *dev)
-+static int tegra_pcie_dw_suspend(struct device *dev)
- {
- 	struct tegra_pcie_dw *pcie = dev_get_drvdata(dev);
--	u32 val;
- 
- 	if (pcie->of_data->mode == DW_PCIE_EP_TYPE) {
--		dev_err(dev, "Failed to Suspend as Tegra PCIe is in EP mode\n");
--		return -EPERM;
-+		if (pcie->ep_state == EP_STATE_ENABLED) {
-+			dev_err(dev, "Tegra PCIe is in EP mode, suspend not allowed\n");
-+			return -EPERM;
-+		}
-+
-+		disable_irq(pcie->pex_rst_irq);
-+		return 0;
- 	}
- 
-+	return 0;
-+}
-+
-+static int tegra_pcie_dw_suspend_late(struct device *dev)
-+{
-+	struct tegra_pcie_dw *pcie = dev_get_drvdata(dev);
-+	u32 val;
-+
- 	if (!pcie->link_state)
- 		return 0;
- 
-@@ -2316,6 +2328,9 @@ static int tegra_pcie_dw_suspend_noirq(struct device *dev)
- {
- 	struct tegra_pcie_dw *pcie = dev_get_drvdata(dev);
- 
-+	if (pcie->of_data->mode == DW_PCIE_EP_TYPE)
-+		return 0;
-+
- 	if (!pcie->link_state)
- 		return 0;
- 
-@@ -2330,6 +2345,9 @@ static int tegra_pcie_dw_resume_noirq(struct device *dev)
- 	struct tegra_pcie_dw *pcie = dev_get_drvdata(dev);
- 	int ret;
- 
-+	if (pcie->of_data->mode == DW_PCIE_EP_TYPE)
-+		return 0;
-+
- 	if (!pcie->link_state)
- 		return 0;
- 
-@@ -2362,8 +2380,8 @@ static int tegra_pcie_dw_resume_early(struct device *dev)
- 	u32 val;
- 
- 	if (pcie->of_data->mode == DW_PCIE_EP_TYPE) {
--		dev_err(dev, "Suspend is not supported in EP mode");
--		return -ENOTSUPP;
-+		enable_irq(pcie->pex_rst_irq);
-+		return 0;
- 	}
- 
- 	if (!pcie->link_state)
-@@ -2468,6 +2486,7 @@ static const struct of_device_id tegra_pcie_dw_of_match[] = {
- };
- 
- static const struct dev_pm_ops tegra_pcie_dw_pm_ops = {
-+	.suspend = tegra_pcie_dw_suspend,
- 	.suspend_late = tegra_pcie_dw_suspend_late,
- 	.suspend_noirq = tegra_pcie_dw_suspend_noirq,
- 	.resume_noirq = tegra_pcie_dw_resume_noirq,
--- 
-2.53.0
-
 
 
 
