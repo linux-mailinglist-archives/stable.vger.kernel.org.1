@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-259006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258395-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Bd2A3cxG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-259006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:31 +0200
+	id 0MECOY8mG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258395-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C20612959
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A88C610E80
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC5EA307C7E9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 341873016C51
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B3C39989B;
-	Sat, 30 May 2026 18:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7E9348C5E;
+	Sat, 30 May 2026 18:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J0RRO9/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlCdrBav"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7147C33E36A;
-	Sat, 30 May 2026 18:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4109A33F5A0;
+	Sat, 30 May 2026 18:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166280; cv=none; b=CDrckG3im/9DGDF2sR10Rbcm126/gU9PgJtOq8DG3tJiaOs452Vyq9V7JoCgUr7hBN6/y6Si8Udq9gRg1FHV7nUydBbhrFh8LwyOV/CZT5o6Y9Pkq6Y76x4ebv3AOcWMjVbBPsoEh6OC3lzHmhhWD7vMvh+RJqS8wuQ5GkFQQ8s=
+	t=1780164209; cv=none; b=mqw1rVGnmhLmj8jjv14y2UVZgtb6fxy//+0qHWchlGJalkvUh93lLwslFip+4ekpzRnn07rLgswzlnCJxeBI2SGbXVUgdsHgTyLFcplywyea+Np2HdbeCl0gY+4mf73DBkBuAU5f4w72NyQcsbQHdVkCpYASlZdCk8VcAkZFOBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166280; c=relaxed/simple;
-	bh=/UW6mHbtcgNRAi63F5TSFvyjl10VQZBhidhrI8BoxSw=;
+	s=arc-20240116; t=1780164209; c=relaxed/simple;
+	bh=sqDCke8sDrYgXvlYx4bJ9njt8mx72/btgiA17xkcyQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lpcSuZ7IWimAsWWyXozqAPchz/g5Dp5GHJ2vp/0oymnqdpQAEH1HJs4OI4AhRbZP9IKKKEZXqn3YJs5GFdeC+jO/wTP4Zo4U3dEzeh7rWvR4eRtzdU0C+sUwL+DUO+d4FKUMxi+RqDfY5GbseBp8RrGfdsfM0zBE3K9KzoeaVMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J0RRO9/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B545B1F00893;
-	Sat, 30 May 2026 18:37:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SSrKq+T41OzzD9e12XPZOyd4zAIWm6GWmSRHdcE3VwbEM6ndbAUIEMTX/AlE3bMcgwCt3g/XM8oz63hFGLjYq0vsxd+K/1bachx7XpVlGKDYsbY6a3StpvTv+7t0hccpNAQPpMAt6m66EquQ3HiiV/Yrvws1ozYTZl3UrzLOIo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlCdrBav; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6BF1F00893;
+	Sat, 30 May 2026 18:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166279;
-	bh=ZmL8sACOeafROQ6ixzyXYjepkPyX7AxUuo4Ceazp/zc=;
+	s=korg; t=1780164208;
+	bh=TWZhVCKUFsKx7xZijaKKKSeC2KAnE2r3ALVo1rjUw6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1J0RRO9/cPro6sfXK3Tu7GWfKQDJd+mgq2tPG7cptP5bmIEZNM3Eeo6MSPS5N0bSj
-	 sGYJD5P0KVmF/sq/EbNlT0NNaZ5ES4qOjOKTLj33M26cnU9LKgaz02p1uoRhnuBVsE
-	 uPaH6bqDJqV+Y8Xh3FYkRl6ioA5D8q1qZYa7RVms=
+	b=JlCdrBavmFOP01qB1GUOILadj1X5z2akjJgE5uyCHHLmJzDCZ2nP4LwPLJ8SfC47W
+	 z7M5Q3U8kVOpKMD7/O7+d5n6aIldHHHD+wQ2qEZaVEG0zzHC7dYN+F/Hlj+0UbAaK8
+	 JKHyJS4bHIQXbgBncAhUso5gMG/6SQ/DRWN7AAdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Konyukhov <Alexander.Konyukhov@kaspersky.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 319/589] drm/komeda: fix integer overflow in AFBC framebuffer size check
+Subject: [PATCH 5.15 486/776] ARM: dts: mediatek: mt7623: fix efuse fallback compatible
 Date: Sat, 30 May 2026 18:03:20 +0200
-Message-ID: <20260530160233.317930262@linuxfoundation.org>
+Message-ID: <20260530160252.889076873@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [7.84 / 15.00];
-	URIBL_BLACK(7.50)[linuxtesting.org:url];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259006-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258395-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_COUNT_THREE(0.00)[4];
-	GREYLIST(0.00)[pass,meta];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_SPAM(0.00)[0.885];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_PROHIBIT(0.00)[0.155.164.36:email];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxtesting.org:url,arm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 60C20612959
-X-Rspamd-Action: add header
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,milecki.pl:email,devicetree.org:url,0.155.187.48:email]
+X-Rspamd-Queue-Id: 8A88C610E80
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Konyukhov <Alexander.Konyukhov@kaspersky.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 779ec12c85c9e4547519e3903a371a3b26a289de ]
+[ Upstream commit 5978ff33cc6f0988388a2830dc5cd2ea4e81f36a ]
 
-The AFBC framebuffer size validation calculates the minimum required
-buffer size by adding the AFBC payload size to the framebuffer offset.
-This addition is performed without checking for integer overflow.
+Fix following validation error:
+arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: compatible: 'oneOf' conditional failed, one must be fixed:
+        ['mediatek,mt7623-efuse', 'mediatek,mt8173-efuse'] is too long
+        'mediatek,mt8173-efuse' was expected
+        'mediatek,efuse' was expected
+        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
+arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: Unevaluated properties are not allowed ('compatible' was unexpected)
+        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
 
-If the addition oveflows, the size check may incorrectly succed and
-allow userspace to provide an undersized drm_gem_object, potentially
-leading to out-of-bounds memory access.
-
-Add usage of check_add_overflow() to safely compute the minimum
-required size and reject the framebuffer if an overflow is detected.
-This makes the AFBC size validation more robust against malformed.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 65ad2392dd6d ("drm/komeda: Added AFBC support for komeda driver")
-Signed-off-by: Alexander Konyukhov <Alexander.Konyukhov@kaspersky.com>
-Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://lore.kernel.org/r/20260203134907.1587067-1-Alexander.Konyukhov@kaspersky.com
+Fixes: 43c7a91b4b3a ("arm: dts: mt7623: add efuse nodes to the mt7623.dtsi file")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/mt7623.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c b/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c
-index 170f9dc8ec19c..9ca65f94503fb 100644
---- a/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c
-+++ b/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c
-@@ -4,6 +4,8 @@
-  * Author: James.Qian.Wang <james.qian.wang@arm.com>
-  *
-  */
-+#include <linux/overflow.h>
-+
- #include <drm/drm_device.h>
- #include <drm/drm_fb_cma_helper.h>
- #include <drm/drm_gem.h>
-@@ -92,7 +94,9 @@ komeda_fb_afbc_size_check(struct komeda_fb *kfb, struct drm_file *file,
- 	kfb->afbc_size = kfb->offset_payload + n_blocks *
- 			 ALIGN(bpp * AFBC_SUPERBLK_PIXELS / 8,
- 			       AFBC_SUPERBLK_ALIGNMENT);
--	min_size = kfb->afbc_size + fb->offsets[0];
-+	if (check_add_overflow(kfb->afbc_size, fb->offsets[0], &min_size)) {
-+		goto check_failed;
-+	}
- 	if (min_size > obj->size) {
- 		DRM_DEBUG_KMS("afbc size check failed, obj_size: 0x%zx. min_size 0x%llx.\n",
- 			      obj->size, min_size);
+diff --git a/arch/arm/boot/dts/mt7623.dtsi b/arch/arm/boot/dts/mt7623.dtsi
+index 64756888fd0d1..3c2064f7e50e2 100644
+--- a/arch/arm/boot/dts/mt7623.dtsi
++++ b/arch/arm/boot/dts/mt7623.dtsi
+@@ -329,7 +329,7 @@ sysirq: interrupt-controller@10200100 {
+ 
+ 	efuse: efuse@10206000 {
+ 		compatible = "mediatek,mt7623-efuse",
+-			     "mediatek,mt8173-efuse";
++			     "mediatek,efuse";
+ 		reg = <0 0x10206000 0 0x1000>;
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
 -- 
 2.53.0
 
