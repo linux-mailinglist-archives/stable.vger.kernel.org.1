@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBycM50jG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:25 +0200
+	id qEDRJ24aG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B67D610865
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7D260F1D6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5354D308F348
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 096643080F99
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04011348C5E;
-	Sat, 30 May 2026 17:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FCF395AEA;
+	Sat, 30 May 2026 17:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UU90Wi+R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCzcn/Vd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAF833F8A4;
-	Sat, 30 May 2026 17:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D7832D42B;
+	Sat, 30 May 2026 17:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163089; cv=none; b=QzMhiyUb5VUkbt9phJEz2jzI/htQqOVibJE7vHtjEA/h9y3WMPd+ztqWWnaLCitJpClWoBXrj4t65lFb2/TK3igVi1FtBE5423XABjkybWBSmEJUXF0azhNAYRhUlU6skqXcQagPQVkYG6Pgs5lZ3qerHyTXf5Lrs37x0GbLVXA=
+	t=1780160558; cv=none; b=Zx6f6bIA+WusCU3PrnLxnX/37SgRaovi+dzsnzpkHGd8lUj2znqCxEavKIJuTL9HrO38Etqwtrp/k4e0EdUj5bzbQZdKvwfy7BgaSFWn2TavWJ9JMmTxjjwsHe7S4RhWfSIqM6QHtk6C06HVvuVtce7+y/QZU9N8s0+Q3bPXK7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163089; c=relaxed/simple;
-	bh=YCg8vbrGxw9WoaTLWwDi6O2R+zYNfl5VRFsCR9SUy7I=;
+	s=arc-20240116; t=1780160558; c=relaxed/simple;
+	bh=bm3XJXx+kUPW5Ac3GhDUjCxqq/z7Kws1xjGEWgOLpEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dkeFdGGJ6vDBEv7MQgH6buBpeiGVgBCXOl3/E1ppl88m2B7AaAy2mmJYIjJEOrbgtNjGRh+H2nfGM6NbzWM0srJj/flmJfHTAGIsdDLe8XcYzwxx7+FaN+pA76OD68faDWUPmn2Z/rpdQOYC6wmqkX+/jU38d8fMWPoHrBHuQ1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UU90Wi+R; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2881F00893;
-	Sat, 30 May 2026 17:44:47 +0000 (UTC)
+	 MIME-Version; b=Uc02ZmuXE58//NSx0dCWeuVfUixkL2ZQuQVPQUCZkEU2aMiYCa1S2aq8wDVKDXFwYD9IS1AawGDAswZdm2DhQ4ARRnUxtb38uCtHWsCu7Iudzl3FU2rpkKe9e6XjB9PeBDmQ7OfRoWF/yn0UxZtvqEmzqJRIAtWwP8H31/DxNw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCzcn/Vd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C201F00893;
+	Sat, 30 May 2026 17:02:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163088;
-	bh=nGgF4VCKHlUK+QP3iCNG5ORWKXrhvOBNKCA7GMfN7xI=;
+	s=korg; t=1780160557;
+	bh=YlhUYaVdP/WI+D4K0Y3KoKMkrcLE4dExDTd7X9Papr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UU90Wi+R4rhAVaLlNJLHNVpiwtGo//tFetV/Ed5R7Go2xkHLRmEXtuXwratTnQlkK
-	 zdipGdeT406z0I+KPTAg8XqbAtO7R+h4FYlvXmxYYh+LEDe/nNqGjZkXrNyAW6a0WC
-	 zhq0P30iNgqKJ3+HhLcrwNrmdNp9M8uIo+nNAY3o=
+	b=PCzcn/Vd+TB7KuP3ojdPj1gIJqRhyetb5oPlyYGE2Vi/uG1Keq2os9DjKwEtN9STd
+	 Nb0maN/eJaDOpXQWEdX09U3imMpNYGwQbdWJmqJOfVxOZPM9NM9hRheJdz7LAs+Knv
+	 mcYwFJNuxCttFeoyQwqoxVq9xiUnZR2GSoIgq4wI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 5.15 151/776] f2fs: fix to trigger foreground gc during f2fs_map_blocks() in lfs mode
+	"Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.1 341/969] cpuidle: powerpc: avoid double clear when breaking snooze
 Date: Sat, 30 May 2026 17:57:45 +0200
-Message-ID: <20260530160244.361182742@linuxfoundation.org>
+Message-ID: <20260530160309.784724237@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,100 +66,93 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,163.com];
-	TAGGED_FROM(0.00)[bounces-258061-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-257309-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6B67D610865
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0C7D260F1D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-[ Upstream commit 1005a3ca28e90c7a64fa43023f866b960a60f791 ]
+commit 64ed1e3e728afb57ba9acb59e69de930ead847d9 upstream.
 
-w/ "mode=lfs" mount option, generic/299 will cause system panic as below:
+snooze_loop is done often in any system which has fair bit of
+idle time. So it qualifies for even micro-optimizations.
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/segment.c:2835!
-Call Trace:
- <TASK>
- f2fs_allocate_data_block+0x6f4/0xc50
- f2fs_map_blocks+0x970/0x1550
- f2fs_iomap_begin+0xb2/0x1e0
- iomap_iter+0x1d6/0x430
- __iomap_dio_rw+0x208/0x9a0
- f2fs_file_write_iter+0x6b3/0xfa0
- aio_write+0x15d/0x2e0
- io_submit_one+0x55e/0xab0
- __x64_sys_io_submit+0xa5/0x230
- do_syscall_64+0x84/0x2f0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0010:new_curseg+0x70f/0x720
+When breaking the snooze due to timeout, TIF_POLLING_NRFLAG is cleared
+twice. Clearing the bit invokes atomics. Avoid double clear and thereby
+avoid one atomic write.
 
-The root cause of we run out-of-space is: in f2fs_map_blocks(), f2fs may
-trigger foreground gc only if it allocates any physical block, it will be
-a little bit later when there is multiple threads writing data w/
-aio/dio/bufio method in parallel, since we always use OPU in lfs mode, so
-f2fs_map_blocks() does block allocations aggressively.
+dev->poll_time_limit indicates whether the loop was broken due to
+timeout. Use that instead of defining a new variable.
 
-In order to fix this issue, let's give a chance to trigger foreground
-gc in prior to block allocation in f2fs_map_blocks().
-
-Fixes: 36abef4e796d ("f2fs: introduce mode=lfs mount option")
-Cc: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ The context change is due to the commit 2f51ade9524c
-("f2fs: f2fs_do_map_lock") in v6.3 which is irrelevant to
-the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Fixes: 7ded429152e8 ("cpuidle: powerpc: no memory barrier after break from idle")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260311061709.1230440-1-sshegde@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/cpuidle/cpuidle-powernv.c |    5 ++++-
+ drivers/cpuidle/cpuidle-pseries.c |    5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -1523,8 +1523,11 @@ int f2fs_map_blocks(struct inode *inode,
+--- a/drivers/cpuidle/cpuidle-powernv.c
++++ b/drivers/cpuidle/cpuidle-powernv.c
+@@ -93,7 +93,10 @@ static int snooze_loop(struct cpuidle_de
+ 
+ 	HMT_medium();
+ 	ppc64_runlatch_on();
+-	clear_thread_flag(TIF_POLLING_NRFLAG);
++
++	/* Avoid double clear when breaking */
++	if (!dev->poll_time_limit)
++		clear_thread_flag(TIF_POLLING_NRFLAG);
+ 
+ 	local_irq_disable();
+ 
+--- a/drivers/cpuidle/cpuidle-pseries.c
++++ b/drivers/cpuidle/cpuidle-pseries.c
+@@ -61,7 +61,10 @@ static int snooze_loop(struct cpuidle_de
  	}
  
- next_dnode:
--	if (map->m_may_create)
-+	if (map->m_may_create) {
-+		if (f2fs_lfs_mode(sbi))
-+			f2fs_balance_fs(sbi, true);
- 		f2fs_do_map_lock(sbi, flag, true);
-+	}
+ 	HMT_medium();
+-	clear_thread_flag(TIF_POLLING_NRFLAG);
++
++       /* Avoid double clear when breaking */
++	if (!dev->poll_time_limit)
++		clear_thread_flag(TIF_POLLING_NRFLAG);
  
- 	/* When reading holes, we need its node page */
- 	set_new_dnode(&dn, inode, NULL, NULL, 0);
+ 	local_irq_disable();
+ 
 
 
 
