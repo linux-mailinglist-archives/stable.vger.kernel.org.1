@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-259020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258415-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GcpJ30vG2paAAkAu9opvQ
-	(envelope-from <stable+bounces-259020-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:05 +0200
+	id 4A5cNyonG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258415-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F51F61246C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6151261101E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1796630C1CE4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 927953019113
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181E33AEB26;
-	Sat, 30 May 2026 18:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9D823392B;
+	Sat, 30 May 2026 18:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTIkn3/L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4AstRDr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58E339A7FE;
-	Sat, 30 May 2026 18:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E243AB291;
+	Sat, 30 May 2026 18:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166321; cv=none; b=SesnZ+jsykbg2js3GrZtItNeZ3acs4WLtiFb/Qvs3Je50quHX5BR+RMhHgMaaFq4lMqpS/T+1fqPrH6nab9JYP4S+5nkU9r+Tzh3CAyn9KUz1OMV8saq0hYfRaYeiWEpyBc7VXdzVCFGniAtgZ0bplc7otczAVkpFk19sPLE8Xo=
+	t=1780164275; cv=none; b=uWj8UZUaAagfvNCb429j/VU9Gfx1fa3gXO85m9FL7PiDMuu7Qw7MVKKBRR1GSuRbq/No+MMTMRrkzmY92ufmCFsgYzf1tQEUAyP8VvILtC1wWRYvisdbsvC2sDnM5ml4EV8r54ErGx4jXkbDrVVxYH9sIR8B2dPg93K+yhibriY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166321; c=relaxed/simple;
-	bh=qpW4k2k9eHHwxPS1YG3rC9F2gpnMbu7JpQYM4uref/k=;
+	s=arc-20240116; t=1780164275; c=relaxed/simple;
+	bh=/9GqUJNeM8upjZFzywJs6p4cI8TOwmGld1oTXqkTILg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pfSqzWk/0sLbhKJlFWiVKlr+TPkT4YFqAQJNUveMGfM1SrBAwSead8R8S+1JnkkVByPxkd383Sb/BG7EiZMy1wcTIL4NLvWbQfoGhdDwaJQIOUV/BcMdhaLWFDy5uQAXUY5m9S47+0ytF6jAzRq2u70ExXjSScmFKhrLgYCGFIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTIkn3/L; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2CE1F00893;
-	Sat, 30 May 2026 18:38:39 +0000 (UTC)
+	 MIME-Version; b=Q+Jv6Ye8+mWTRy0hjf/dwtR+MkT7iRBbsgiEmj98ODrLNOyI9bUoaepC2cm55X9whhvFntSMLTa26eH3zfgubc5kgwqnAVU82siLtEH/q7VONgk80Ulnhv27UPTLFrBzOiG4i5tpkp6g0+JmI5ZTs7GtS2hsDGiW3nUAHEb6tcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4AstRDr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6312B1F00893;
+	Sat, 30 May 2026 18:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166320;
-	bh=PTpxhNFGQWkUReamohgID5QCsy556nNme8mWMuITkc4=;
+	s=korg; t=1780164274;
+	bh=Ye3/V/mp1UFXuwXg6N7Fi8wBe6rM9ElhMqDPraxtB6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OTIkn3/LM/fwGi3AM5d1+51LcaH9htunr6WXIz62bmeaSrAfGVnKbI79pFtL78Sdq
-	 kdNx4xd4U+WQTB3U1P0OI9319obWy2j6PWT4EtWA5Gibegv73T3HI8J/o9z8uVgeYn
-	 V4b4Hjv3PW8yvNrb+/rHxRMItQS0Pp0cpARdeBd0=
+	b=I4AstRDrdRgGuJ3lMUKBPMBzLsAdhsr+0HWDK/LQKTEKXk3qezODGegIqfCi3V863
+	 dfbUrmkTJRZ6lzay5le9lWaQqR/+MizqVMxo8TkXmV8M5fC9sOg3Z1lMHyREsAaOn0
+	 DBP8CLuOiY29SAb9EgL0tm8j6cLYNx7UzZlHwB+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Linus Walleij <linusw@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 338/589] drm/amd/pm/ci: Disable MCLK DPM on problematic CI ASICs
-Date: Sat, 30 May 2026 18:03:39 +0200
-Message-ID: <20260530160233.782146291@linuxfoundation.org>
+Subject: [PATCH 5.15 506/776] mtd: physmap_of_gemini: Fix disabled pinctrl state check
+Date: Sat, 30 May 2026 18:03:40 +0200
+Message-ID: <20260530160253.355454979@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +64,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259020-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258415-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1F51F61246C
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 6151261101E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 9851f29cb06c09f7dad3867d8b0feec3fc71b6c8 ]
+[ Upstream commit b7c0982184b0661f5b1b805f3a56f1bd3757b63e ]
 
-There are two known cases where MCLK DPM can causes issues:
+The condition for checking the disabled pinctrl state incorrectly checks
+gf->enabled_state instead of gf->disabled_state. This causes misleading
+error messages and could lead to incorrect behavior when only one of the
+pinctrl states is defined.
 
-Radeon R9 M380 found in iMac computers from 2015.
-The SMU in this GPU just hangs as soon as we send it the
-PPSMC_MSG_MCLKDPM_Enable command, even when MCLK switching is
-disabled, and even when we only populate one MCLK DPM level.
-Apply workaround to all devices with the same subsystem ID.
+Fix the condition to properly check gf->disabled_state.
 
-Radeon R7 260X due to old memory controller microcode.
-We only flash the MC ucode when it isn't set up by the VBIOS,
-therefore there is no way to make sure that it has the correct
-ucode version.
-
-I verified that this patch fixes the SMU hang on the R9 M380
-which would previously fail to boot. This also fixes the UVD
-initialization error on that GPU which happened because the
-SMU couldn't ungate the UVD after it hung.
-
-Fixes: 86457c3b21cb ("drm/amd/powerplay: Add support for CI asics to hwmgr")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 9d3b5086f6d4 ("mtd: physmap_of_gemini: Handle pin control")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/mtd/maps/physmap-gemini.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
-index f48fdc7f0382e..974a17a953249 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
-@@ -108,6 +108,21 @@ int hwmgr_early_init(struct pp_hwmgr *hwmgr)
- 					 PP_GFXOFF_MASK);
- 		hwmgr->pp_table_version = PP_TABLE_V0;
- 		hwmgr->od_enabled = false;
-+		switch (hwmgr->chip_id) {
-+		case CHIP_BONAIRE:
-+			/* R9 M380 in iMac 2015: SMU hangs when enabling MCLK DPM
-+			 * R7 260X cards with old MC ucode: MCLK DPM is unstable
-+			 */
-+			if (adev->pdev->subsystem_vendor == 0x106B ||
-+			    adev->pdev->device == 0x6658) {
-+				dev_info(adev->dev, "disabling MCLK DPM on quirky ASIC");
-+				adev->pm.pp_feature &= ~PP_MCLK_DPM_MASK;
-+				hwmgr->feature_mask &= ~PP_MCLK_DPM_MASK;
-+			}
-+			break;
-+		default:
-+			break;
-+		}
- 		smu7_init_function_pointers(hwmgr);
- 		break;
- 	case AMDGPU_FAMILY_CZ:
+diff --git a/drivers/mtd/maps/physmap-gemini.c b/drivers/mtd/maps/physmap-gemini.c
+index d4a46e159d38f..8d5b791dd08d4 100644
+--- a/drivers/mtd/maps/physmap-gemini.c
++++ b/drivers/mtd/maps/physmap-gemini.c
+@@ -181,7 +181,7 @@ int of_flash_probe_gemini(struct platform_device *pdev,
+ 		dev_err(dev, "no enabled pin control state\n");
+ 
+ 	gf->disabled_state = pinctrl_lookup_state(gf->p, "disabled");
+-	if (IS_ERR(gf->enabled_state)) {
++	if (IS_ERR(gf->disabled_state)) {
+ 		dev_err(dev, "no disabled pin control state\n");
+ 	} else {
+ 		ret = pinctrl_select_state(gf->p, gf->disabled_state);
 -- 
 2.53.0
 
