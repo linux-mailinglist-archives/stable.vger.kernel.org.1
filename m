@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257386-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MB3KdwkG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:44 +0200
+	id wPNpFFUaG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257386-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16AC7610AEF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA44D60F169
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EE0023076F28
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 33E1A3069F3E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4D33546EA;
-	Sat, 30 May 2026 17:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6C7366567;
+	Sat, 30 May 2026 17:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZlTf5T/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hR3cJm2K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D527320CAD;
-	Sat, 30 May 2026 17:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D83481DD;
+	Sat, 30 May 2026 17:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163426; cv=none; b=J/bc13uJ7UEcgxRxX7R/IkUja+AQuwmzM2mE+ZM6P7Hz0HNUdSEq5Y/Q+S5PsxpA4Fi8wpbfp803soc4LkB1Rx+D92LhKA5mkfxM0wXPoHU3FEF9aluSwlu9ZKVdVe4whEuGClHcKBnq6+nakZ4YdD5ww5UMo2Gtlu8+2ULULf8=
+	t=1780160818; cv=none; b=YNTRE+aOxc/zllV8CHSb39JJtt8JU+8cszVgx4fGsKOS27aEZSwlNZE2R/kqf1s1WWIg3gnSreNcCWt/SoAquQ19JJA4Mg6GBklNgq2Mhjastd3vDWJkXet1PEogLyEW5WC8M1EZTTMad/t+YcT6Mh+gz+GovYCIAudUHhSQx+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163426; c=relaxed/simple;
-	bh=ZSsdJulcfqbb0NEqxoB37M/F0f+djhBcS6BbcBChR2A=;
+	s=arc-20240116; t=1780160818; c=relaxed/simple;
+	bh=o5Nsxu4AoWJxrmC9anRcUs06FZ3CIXxPYXSfyZWZ4c0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQwZ0xSO7PXveJXGZnZOB2V9fHPmurLYbbfM61BY6nwRJuwJRL8w3+lqm2DJsGOvJ0zbkvsddDZZ9k7wlW7YpVRo12cbzPWdNbDf17xLOlgUChEsiJ2cjVtlsdFNlsLXAe60vf8FK++6Vyi7/skzJaCEvTqoJvjiuRnchmMnLlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZlTf5T/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB7A1F00893;
-	Sat, 30 May 2026 17:50:24 +0000 (UTC)
+	 MIME-Version; b=odqoVMa6A1Ig0qdLIWn7q60i/P30wDjus3Y+hTIddzOHrnZKUQMf7HQG5ayT27LPRz6mhgnnt5unHdeuuvZui6O+29bYshQ5AA4of1PLr+KEnZy//Ni8SN1mh9G8hTxj8CJ98ohGdjIIfRFzCPQp2g05NU9lN+o6RS7g84c92oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hR3cJm2K; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47821F00893;
+	Sat, 30 May 2026 17:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163425;
-	bh=JPun9QEQnLz9HSPFDFChC7/SgAM3EaJg4+S52Hl8CcE=;
+	s=korg; t=1780160817;
+	bh=pxQ3gho75td2ofoqEWupuVpeSLZUAM1QU+qVoEGqyLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2ZlTf5T/21/NamtjsgGs/A39M+MjgqxFglXadJ8ydhlL1bv8um8QQcdEDKWlhBsAK
-	 GHkVEIlb/HLVtRW7XSE+BrCBDjkrPfk7IcZOVAtpSCBpmZVIKX8QqU8gVXpaklVRCo
-	 s6/adNmFZ4klwbMaZHFlyooJCwYJ5/CS2tCUvl8c=
+	b=hR3cJm2K/sjQwjCqQxJY+TiZyf7smHvFRUEXfGVs6nBLe8KiMfmbxwTBsdOpMp9ve
+	 72QPwbGRzRNsfGogAL03+HBn233V+6QvDQ/DNmYl8H2eNQOv/ls+mfUV46V7u+o+ww
+	 4TAJaSvnCwNzN4NsGdp9I6JHN/HhWErP0BbiatYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.15 254/776] crypto: ccree - fix a memory leak in cc_mac_digest()
+	Bart Van Assche <bvanassche@acm.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 444/969] locking: Fix rwlock support in <linux/spinlock_up.h>
 Date: Sat, 30 May 2026 17:59:28 +0200
-Message-ID: <20260530160247.098000195@linuxfoundation.org>
+Message-ID: <20260530160312.532582409@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +66,108 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257386-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258163-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 16AC7610AEF
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: DA44D60F169
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 02c64052fad03699b9c6d1df2f9b444d17e4ac50 upstream.
+[ Upstream commit 756a0e011cfca0b45a48464aa25b05d9a9c2fb0b ]
 
-Add cc_unmap_result() if cc_map_hash_request_final()
-fails to prevent potential memory leak.
+Architecture support for rwlocks must be available whether or not
+CONFIG_DEBUG_SPINLOCK has been defined. Move the definitions of the
+arch_{read,write}_{lock,trylock,unlock}() macros such that these become
+visbile if CONFIG_DEBUG_SPINLOCK=n.
 
-Fixes: 63893811b0fc ("crypto: ccree - add ahash support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch prepares for converting do_raw_{read,write}_trylock() into
+inline functions. Without this patch that conversion triggers a build
+failure for UP architectures, e.g. arm-ep93xx. I used the following
+kernel configuration to build the kernel for that architecture:
+
+	CONFIG_ARCH_MULTIPLATFORM=y
+	CONFIG_ARCH_MULTI_V7=n
+	CONFIG_ATAGS=y
+	CONFIG_MMU=y
+	CONFIG_ARCH_MULTI_V4T=y
+	CONFIG_CPU_LITTLE_ENDIAN=y
+	CONFIG_ARCH_EP93XX=y
+
+Fixes: fb1c8f93d869 ("[PATCH] spinlock consolidation")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260313171510.230998-2-bvanassche@acm.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccree/cc_hash.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/linux/spinlock_up.h | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/crypto/ccree/cc_hash.c
-+++ b/drivers/crypto/ccree/cc_hash.c
-@@ -1448,6 +1448,7 @@ static int cc_mac_digest(struct ahash_re
- 	if (cc_map_hash_request_final(ctx->drvdata, state, req->src,
- 				      req->nbytes, 1, flags)) {
- 		dev_err(dev, "map_ahash_request_final() failed\n");
-+		cc_unmap_result(dev, state, digestsize, req->result);
- 		cc_unmap_req(dev, state, ctx);
- 		return -ENOMEM;
- 	}
+diff --git a/include/linux/spinlock_up.h b/include/linux/spinlock_up.h
+index c87204247592f..a132fc562297a 100644
+--- a/include/linux/spinlock_up.h
++++ b/include/linux/spinlock_up.h
+@@ -48,16 +48,6 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
+ 	lock->slock = 1;
+ }
+ 
+-/*
+- * Read-write spinlocks. No debug version.
+- */
+-#define arch_read_lock(lock)		do { barrier(); (void)(lock); } while (0)
+-#define arch_write_lock(lock)		do { barrier(); (void)(lock); } while (0)
+-#define arch_read_trylock(lock)	({ barrier(); (void)(lock); 1; })
+-#define arch_write_trylock(lock)	({ barrier(); (void)(lock); 1; })
+-#define arch_read_unlock(lock)		do { barrier(); (void)(lock); } while (0)
+-#define arch_write_unlock(lock)	do { barrier(); (void)(lock); } while (0)
+-
+ #else /* DEBUG_SPINLOCK */
+ #define arch_spin_is_locked(lock)	((void)(lock), 0)
+ /* for sched/core.c and kernel_lock.c: */
+@@ -68,4 +58,14 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
+ 
+ #define arch_spin_is_contended(lock)	(((void)(lock), 0))
+ 
++/*
++ * Read-write spinlocks. No debug version.
++ */
++#define arch_read_lock(lock)		do { barrier(); (void)(lock); } while (0)
++#define arch_write_lock(lock)		do { barrier(); (void)(lock); } while (0)
++#define arch_read_trylock(lock)	({ barrier(); (void)(lock); 1; })
++#define arch_write_trylock(lock)	({ barrier(); (void)(lock); 1; })
++#define arch_read_unlock(lock)		do { barrier(); (void)(lock); } while (0)
++#define arch_write_unlock(lock)	do { barrier(); (void)(lock); } while (0)
++
+ #endif /* __LINUX_SPINLOCK_UP_H */
+-- 
+2.53.0
+
 
 
 
