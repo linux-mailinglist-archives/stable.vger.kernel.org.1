@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-256944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258080-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCEAGVkOG2q/+ggAu9opvQ
-	(envelope-from <stable+bounces-256944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:41 +0200
+	id iBZ/CsYjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258080-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6448A60E17C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 823866108B2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 37EAC3012C60
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:17:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D547930C3367
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84BD349AF5;
-	Sat, 30 May 2026 16:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD73351C2F;
+	Sat, 30 May 2026 17:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cmqu7hgJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pi991Bv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0E834028B;
-	Sat, 30 May 2026 16:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80488223DC6;
+	Sat, 30 May 2026 17:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780157835; cv=none; b=IpVmk/4j8fZelSeGuK/KoWA4DYHUFui4rK7mfhsc2qqaMkltPuwUAHh4vHwITIi7cJ+rlxXaHDHJXergyRRVwYIxg6w5COG7eaNUgo/Ed2sA6lf495c/NIJqELIaxb6LPYMXSQa5+SpZ9hWtPY6Z4tLFX5KBSyJOJS68VFyL8Aw=
+	t=1780163153; cv=none; b=Weq7EIXfqRCtW+9b20beXh2bJMk7enDOldp8Wo3+OE2loSlLYKbr4exc2Zbe+fw9mFfbUYFC2HcUUoxe9wIcqGwaa+dtJmRyTOkB1BNMPK69IukrrBjviCxwoL672tFGb4yVrl47CKAjHsQP3DEx2L2O0HKjHPUzVVeAGgo44rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780157835; c=relaxed/simple;
-	bh=H/DaAWRmZgBnu3ld8VblA9mgfojRoboG9HBEMyF4Jlw=;
+	s=arc-20240116; t=1780163153; c=relaxed/simple;
+	bh=9InC5VP0fGKirA8sU1ideJNA6Gdsyk51PbBvfl+lwi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kwkb07mB0ypuk36nxUfQ+9fsWYjePbvlncbfFBzxKr8mGwFqLBn9NB6h238/F1emUP0S7AceYG7IaHKwrFMI03E2nZIaSqFfeWnVCpy0NM3WIvkG1ugkMW14hLIvHsNUfNC33dKUJ6ZxMZsdpJjWTp7HC7fN+GririWGcXGEEXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cmqu7hgJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DAE1F00893;
-	Sat, 30 May 2026 16:16:58 +0000 (UTC)
+	 MIME-Version; b=Y0ofbK7JBnt2xWYQl1YYFn8Lq4p85/E53uhdo/0lHfNjh6quVeaeA9EGlbNXx2L+NXNAfaL96v/ZLU1y4gUMPzh0Vm3cBHNVXECvDBmoOdQDAmC7HnFpS0mfDa90KurGpCgB11r56xt2SSJZIu+jhD/2NY7MObD04lsR75rrOGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pi991Bv2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E121F00893;
+	Sat, 30 May 2026 17:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780157820;
-	bh=FA0nBLqYeLkrFM9HGdlQ8+agJaf+DSgLmzwwpigVMtQ=;
+	s=korg; t=1780163152;
+	bh=1AdLXkgiQkzcYQO8NItT6OrXVDI/4+Vh6pqnMn5MY2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Cmqu7hgJt4CumG4nXHVqJ6XsYVYd7qf2mXLPUKkqksWpEm+Uk3bCzSf3PcWu8rvLI
-	 /XrzWKNThEgKfZHkzF8kTcLwYK2OsKlIdRYLy7UkniMzNr9m0wdOgqt9YXCdJLcDBN
-	 DyN26VLQrpz+0z84rPa1X2/ZPVvKIUGsALm54f7Y=
+	b=Pi991Bv2mWktIx2XTslf5269iP//kDcfJ5PV3rN5KBczxhNJ99hVYAIPMTdbXraVs
+	 QQymRowg1pE6LLuv9cG0WTJg/R6otIQkN7Gp7/Bf2o6lN5O4/H3/VVFIzlGvp3ISCx
+	 LRmiTcRvuvqSwJ3DBDUmZDw4z2bqToFJWRgM4hRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 006/589] netfilter: nft_set_pipapo_avx2: dont return non-matching entry on expiry
+	Kagura <me@mail.kagurach.uk>,
+	Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 173/776] ALSA: usb-audio: apply quirk for MOONDROP JU Jiu
 Date: Sat, 30 May 2026 17:58:07 +0200
-Message-ID: <20260530160224.743902329@linuxfoundation.org>
+Message-ID: <20260530160244.969097915@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,192 +68,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256944-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258080-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,strlen.de:email]
-X-Rspamd-Queue-Id: 6448A60E17C
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linux.dev:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kagurach.uk:email]
+X-Rspamd-Queue-Id: 823866108B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
 
-[ Upstream commit d3c0037ffe1273fa1961e779ff6906234d6cf53c ]
+commit 4513d3e0bbc0585b86ccf2631902593ff97e88f5 upstream.
 
-New test case fails unexpectedly when avx2 matching functions are used.
+It(ID 31b2:0111 JU Jiu) reports a MIN value -12800 for volume control, but
+will mute when setting it less than -10880.
 
-The test first loads a ranomly generated pipapo set
-with 'ipv4 . port' key, i.e.  nft -f foo.
+Thanks to my girlfriend Kagura for reporting this issue.
 
-This works.  Then, it reloads the set after a flush:
-(echo flush set t s; cat foo) | nft -f -
-
-This is expected to work, because its the same set after all and it was
-already loaded once.
-
-But with avx2, this fails: nft reports a clashing element.
-
-The reported clash is of following form:
-
-    We successfully re-inserted
-      a . b
-      c . d
-
-Then we try to insert a . d
-
-avx2 finds the already existing a . d, which (due to 'flush set') is marked
-as invalid in the new generation.  It skips the element and moves to next.
-
-Due to incorrect masking, the skip-step finds the next matching
-element *only considering the first field*,
-
-i.e. we return the already reinserted "a . b", even though the
-last field is different and the entry should not have been matched.
-
-No such error is reported for the generic c implementation (no avx2) or when
-the last field has to use the 'nft_pipapo_avx2_lookup_slow' fallback.
-
-Bisection points to
-7711f4bb4b36 ("netfilter: nft_set_pipapo: fix range overlap detection")
-but that fix merely uncovers this bug.
-
-Before this commit, the wrong element is returned, but erronously
-reported as a full, identical duplicate.
-
-The root-cause is too early return in the avx2 match functions.
-When we process the last field, we should continue to process data
-until the entire input size has been consumed to make sure no stale
-bits remain in the map.
-
-Link: https://lore.kernel.org/netfilter-devel/20260321152506.037f68c0@elisabeth/
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Kagura <me@mail.kagurach.uk>
+Cc: stable@vger.kernel.org
+Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+Link: https://patch.msgid.link/20260402-syy-v1-1-068d3bc30ddc@linux.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ sound/usb/mixer.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index 7da371587f9a8..3f01952a3e10b 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -242,7 +242,7 @@ static int nft_pipapo_avx2_lookup_4b_2(unsigned long *map, unsigned long *fill,
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1220,6 +1220,13 @@ static void volume_control_quirks(struct
+ 			cval->res = 16;
+ 		}
+ 		break;
++	case USB_ID(0x31b2, 0x0111): /* MOONDROP JU Jiu */
++		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
++			usb_audio_info(chip,
++				       "set volume quirk for MOONDROP JU Jiu\n");
++			cval->min = -10880; /* Mute under it */
++		}
++		break;
+ 	}
+ }
  
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -318,7 +318,7 @@ static int nft_pipapo_avx2_lookup_4b_4(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -412,7 +412,7 @@ static int nft_pipapo_avx2_lookup_4b_8(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -502,7 +502,7 @@ static int nft_pipapo_avx2_lookup_4b_12(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -637,7 +637,7 @@ static int nft_pipapo_avx2_lookup_4b_32(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -694,7 +694,7 @@ static int nft_pipapo_avx2_lookup_8b_1(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -758,7 +758,7 @@ static int nft_pipapo_avx2_lookup_8b_2(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -832,7 +832,7 @@ static int nft_pipapo_avx2_lookup_8b_4(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -917,7 +917,7 @@ static int nft_pipapo_avx2_lookup_8b_6(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -1010,7 +1010,7 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
--- 
-2.53.0
-
 
 
 
