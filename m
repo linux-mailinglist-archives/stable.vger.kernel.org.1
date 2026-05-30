@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-257813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258588-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gEemLXYgG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257813-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:58 +0200
+	id WEpwLvkoG2rg/ggAu9opvQ
+	(envelope-from <stable+bounces-258588-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 518396100F0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5252D6114BE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 73D2D3088CBF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:30:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9B94B3008260
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C20130676E;
-	Sat, 30 May 2026 17:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8DE3B7B72;
+	Sat, 30 May 2026 18:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+62upgt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8VCFSpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E101D2E7379;
-	Sat, 30 May 2026 17:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D519175A6B;
+	Sat, 30 May 2026 18:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162256; cv=none; b=tQcekjVUMOr5r62Xvm2oUAadOfMAGUAkwAY90bDXaihY0ydCC13U5dogKJ1yZI9Xg1/ytBKQ1kAA9cl7JMpszZj7XOzdU0kfDt2ITEJpu6ic+6e1aiClMzqBwMgKMNbD4dljzPnL/7fKr3DNoFHIpZD1D3oFLTSBSEgn/4Og7PA=
+	t=1780164853; cv=none; b=Ijhd3jdl34hwixdaVPT1C1YxKetGY3L8DGXvaoS0QuW0u0VrRTYhLWctXUmjygGiLV3b1cKi56RnbJOFxQQ/9LVL2m2g3/QuLAHeNj3Mi7lvFcbVO4KigJGJOgZkiyaAmI0XM8G7t6VF1xxIw8rMSPFUCVHk0b/S7nEwC+pxolI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162256; c=relaxed/simple;
-	bh=X5ckjMDl6kLWXMMTwC1gGN2/R+0Uch500lDVcLea75Q=;
+	s=arc-20240116; t=1780164853; c=relaxed/simple;
+	bh=Yvbpf/GiOdUm903y3qK/cAWPqcsZlDD0XRcrgzZIrag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGGBvbiNcj5JSGyENN0HnC9s/vUH3V5CyBSumVre0NGtiuW4O5tyuh+vbe98TcU7ly+dVB/CKV1/R1x+cJPMxqmpILqIUIaMOG/Vi/ookkS0LMQm7fvOgUx9KpHVgQykDzbm+OTFEoRuifa7QZDf0xO9jqmiD63mMKZGSLOQ31U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+62upgt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B821F00893;
-	Sat, 30 May 2026 17:30:54 +0000 (UTC)
+	 MIME-Version; b=ap9JXoyD0+kIotScM/cYU8UaHlvH/fNHHeRkFPj/ZzDkY/5EgpMA6PkCE5yo6VESVueDVpqryOOC+5xWEGreLtFEM8rbNAfbpKm58/NpLgoaw63+KIkgIPyAxsUdKT2U5tobY5gHLqRlW1iO1k/X/DANQsT5vBGr332JuKAoaFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8VCFSpP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF0B1F00893;
+	Sat, 30 May 2026 18:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162255;
-	bh=Us9G9Bm7J+epRUv799Q7/gZodtKjZKrf1C/gLU2hSig=;
+	s=korg; t=1780164852;
+	bh=wKKRhPGx0h07JhCGiRRIC1RI46QI/pVXMAso/Oa1YGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q+62upgteU7bOdSyto1piMIZqDi81qAre2l16ajtLU5UKNJh0TvpdHeu9fKQ0A2/X
-	 23XuHWofQ8zuC3jbo91yIaGm70/UYTHpf9hCV9bZbVruwQYkMvVz3Bfb1UMLI+fAKG
-	 qxr6KZWP8ciVgQJvtHaxqhU67JEtqUYIi1qVU+EE=
+	b=e8VCFSpPa9H6skl0uFYkzX7voeW6vFjKWO+SFaRtw3lzoyYAIlGZlC54mJ8hnnhe0
+	 ucfI9iIBRAH6cGG/qlDXlvkTtVs+psehY930LNoYmnTSnefW5pwV5PSL3L0O5nnx8k
+	 B0s0UhS94biFS2/Ru3ORJr2rT+Lg3OEmos7I8ZlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 868/969] scsi: isci: Fix use-after-free in device removal path
+	Rajat Jain <rajatja@google.com>,
+	stable <stable@kernel.org>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 5.15 678/776] sysfs: dont remove existing directory on update failure
 Date: Sat, 30 May 2026 18:06:32 +0200
-Message-ID: <20260530160324.648258168@linuxfoundation.org>
+Message-ID: <20260530160257.389766587@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +65,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257813-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258588-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
-X-Rspamd-Queue-Id: 518396100F0
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5252D6114BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit b52a8d52c3125ec9a93106ed816582368de34426 upstream.
+commit 237557b8a81ab948e8332f7c0058e758f081c0a3 upstream.
 
-The ISCI completion tasklet is initialized in isci_host_alloc()
-(drivers/scsi/isci/init.c:496) and scheduled from both MSI-X and legacy
-interrupt handlers (drivers/scsi/isci/host.c:223,613).
+When sysfs_update_group() is called for a named group and create_files()
+fails (e.g. -ENOMEM), internal_create_group() calls kernfs_remove(kn) on
+the group directory.  In the update path, kn was obtained via
+kernfs_find_and_get() and refers to a directory that already existed
+before this call.  Removing it silently destroys a sysfs group that the
+caller did not create.
 
-isci_host_deinit() stops the controller and waits for stop completion,
-but it never kills completion_tasklet before teardown continues. A
-top-of-function tasklet_kill() is not sufficient here: interrupts are
-only disabled when isci_host_stop_complete() runs, so until
-wait_for_stop() returns the IRQ handlers can still requeue the
-tasklet. The tasklet callback also re-enables interrupts after draining
-completions, so killing the tasklet before the source is quiesced leaves
-the same race open.
+Only remove the directory if we created it ourselves.  On update failure
+the directory remains as it is left empty by remove_files() inside
+create_files(), but can be repopulated by a retry.
 
-Once wait_for_stop() returns, no further IRQ-driven scheduling can
-occur. Kill completion_tasklet there so teardown cannot race a queued
-tasklet running on a dead ihost. On remove or unload, the stale callback
-can otherwise dereference ihost and touch ihost->smu_registers after the
-host lifetime ends.
-
-A UML + KASAN analogue reproduced the failure class both with no
-tasklet_kill() and with tasklet_kill() placed before source quiesce, and
-stayed clean once the kill happened after quiescing the scheduling
-source.
-
-This mirrors commit f6ab594672d4 ("scsi: aic94xx: fix use-after-free in
-device removal path"), but ISCI needs the kill after wait_for_stop().
-
-Fixes: 6f231dda6808 ("isci: Intel(R) C600 Series Chipset Storage Control Unit Driver")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260419210420.2134639-1-michael.bommarito@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Rajat Jain <rajatja@google.com>
+Fixes: c855cf2759d2 ("sysfs: Fix internal_create_group() for named group updates")
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_t1000
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patch.msgid.link/2026052003-uniquely-hastily-c093@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/isci/host.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/sysfs/group.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/isci/host.c
-+++ b/drivers/scsi/isci/host.c
-@@ -1252,6 +1252,9 @@ void isci_host_deinit(struct isci_host *
- 
- 	wait_for_stop(ihost);
- 
-+	/* No further IRQ-driven scheduling can happen past wait_for_stop(). */
-+	tasklet_kill(&ihost->completion_tasklet);
-+
- 	/* phy stop is after controller stop to allow port and device to
- 	 * go idle before shutting down the phys, but the expectation is
- 	 * that i/o has been shut off well before we reach this
+--- a/fs/sysfs/group.c
++++ b/fs/sysfs/group.c
+@@ -148,7 +148,7 @@ static int internal_create_group(struct
+ 	kernfs_get(kn);
+ 	error = create_files(kn, kobj, uid, gid, grp, update);
+ 	if (error) {
+-		if (grp->name)
++		if (grp->name && !update)
+ 			kernfs_remove(kn);
+ 	}
+ 	kernfs_put(kn);
 
 
 
