@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-259203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPQ0LA4yG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259203-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:02 +0200
+	id YOXTGEogG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1A0612B8D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB3BB610074
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F028B30D4E34
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 712D4308F931
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7FA21E098;
-	Sat, 30 May 2026 18:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CFE230E853;
+	Sat, 30 May 2026 17:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yyRTccY0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAWizVU3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2BE137750;
-	Sat, 30 May 2026 18:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162442E7379;
+	Sat, 30 May 2026 17:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166952; cv=none; b=Qr8R1IIQAlhHubSytEsm4MeDwxvi3tYon9DhxaXYmXYtwfLaAfO1xocRDlxiFCERHKfecbTW+J4UVVSZXTTWYogg7BujaQrlhC+nZx/bABKftWHIMLAw976eA2u74nhPnvp5dH2GLftvWdVfw4fwB556exdnA+x34RlOzyyoX5s=
+	t=1780162293; cv=none; b=WAmKVZeMA+IifTf8xWTSM3MThyeLOVMCoHsOTHRShv3K+MArYoXvIkYwUz8ru/NQM3VQuEQ6mATg1i2rS+eiR2R69gryKewvEvkFKdoIIxJ87OEpCoR196M2b3oL9I3IjXzw88xiCD2Gtg/Y4WFGKA+n0QDDdpw9OwEhz4AvkcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166952; c=relaxed/simple;
-	bh=ViX5VdLJuiTK/dMoJlPpyS1DU9vv2ri9Nc3vBnmZWS4=;
+	s=arc-20240116; t=1780162293; c=relaxed/simple;
+	bh=cnwsB7EaUyhJdAliMVuzoKB5xIr+vBUTbVWwT7Ul0f8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dh+Lh9TkDBajMCDNYhdU1BbavKBFelqcrKj2Xmrp12gmU9/6T6t/18md3eWGc5XO7WmjsWVbPpVsPxKmWuQn8hKxXGaHdn8yFfVvLWN8d13PadyNb+dqe4Enst2PnT07lKtxfnxNDfE9bs4eS1KVT99/fFkUh7YjMPukko7wnMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yyRTccY0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6C41F00893;
-	Sat, 30 May 2026 18:49:10 +0000 (UTC)
+	 MIME-Version; b=XEtzajrG1X5H9ciJSwvQnNDjJDc0UfhQM6m+s3iCHWWdPZYIlp1R7jY3y6Vdi+vM8ElUteUrAesILMlF7c9pP3lQPWmdvXg1XAACskEtMYpopiD3jyWA+TGj+MTWLqgn654WmyZa4bQaAGDx7b3k5mUXsbVZI5q1W8NSQ+KKRrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAWizVU3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515A31F00893;
+	Sat, 30 May 2026 17:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166951;
-	bh=FarddmOWscuFnz8E4mlbCQMTcIDaL4X5GEbIouEdqhs=;
+	s=korg; t=1780162291;
+	bh=oVTS3zN0cUURECSOL0yGdor5M2tb9hzKAnbfuZJLiBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yyRTccY0yzkWw9S0lN1qbE1GN7WDh8ldH52uqn/Y8+Z4reEwPDWE/bCQGWl4d2wk0
-	 9jlp8A2o3hYarTPSi9a2bI+qxMhIbhDJZYjHefLVYZ//G9qjsloTMBEoQQ6Z2sKeKe
-	 GgEHPvRx8YYaEYPI8XJ7CpYMHF0JDTNpU0EMuHOo=
+	b=NAWizVU36ukAWQq54h65RweVjuy6KYKI/MJVcIKfeQ//reb3BBF5nl3FbNl9VNH2c
+	 T3J1tO7ANpQHY8bMoTTZdtvrdDYAQyxidIvyDqv81/nK9c0+BLhZMVHTaSQ0qfKSVb
+	 HZqwqnuPM9CWDf9bt6YEphAGMUVV0PGlARDtxeD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Benjamin Block <bblock@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 521/589] s390/debug: Reject zero-length input before trimming a newline
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 878/969] drm/amd/display: Validate GPIO pin LUT table size before iterating
 Date: Sat, 30 May 2026 18:06:42 +0200
-Message-ID: <20260530160238.310839706@linuxfoundation.org>
+Message-ID: <20260530160324.932355756@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259203-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257824-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,64 +87,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 3A1A0612B8D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: DB3BB610074
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Harry Wentland <harry.wentland@amd.com>
 
-[ Upstream commit c366a7b5ed7564e41345c380285bd3f6cb98971b ]
+commit 86d2b20644b11d21fe52c596e6e922b4590a3e3f upstream.
 
-debug_get_user_string() copies the userspace buffer into a newly
-allocated NUL-terminated buffer and then unconditionally looks at
-buffer[user_len - 1] to strip a trailing newline.
+[Why&How]
+The GPIO pin table parsers in get_gpio_i2c_info() and
+bios_parser_get_gpio_pin_info() derive an element count from the VBIOS
+table_header.structuresize field, then iterate over gpio_pin[] entries.
+However, GET_IMAGE() only validates that the table header itself fits
+within the BIOS image. If the VBIOS reports a structuresize larger than
+the actual mapped data, the loop reads past the end of the BIOS image,
+causing an out-of-bounds read.
 
-A zero-length write reaches this helper unchanged, so the newline trim
-reads before the start of the allocated buffer.
+Fix this by calling bios_get_image() to validate that the full claimed
+structuresize is accessible within the BIOS image before entering the
+loop in both functions.
 
-Reject empty writes before accessing the last input byte.
-
-Fixes: 66a464dbc8e0 ("[PATCH] s390: debug feature changes")
+Assisted-by: GitHub Copilot:claude-opus-4-6
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ba5e95b43b773ae1bf1f66ee6b31eb774e65afe3)
 Cc: stable@vger.kernel.org
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
-Tested-by: Vasily Gorbik <gor@linux.ibm.com>
-Link: https://lore.kernel.org/r/20260417073530.96002-1-pengpeng@iscas.ac.cn
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/debug.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/s390/kernel/debug.c b/arch/s390/kernel/debug.c
-index ece21ebf6558f..a347f6244654a 100644
---- a/arch/s390/kernel/debug.c
-+++ b/arch/s390/kernel/debug.c
-@@ -1211,6 +1211,9 @@ static inline char *debug_get_user_string(const char __user *user_buf,
- {
- 	char *buffer;
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -490,6 +490,10 @@ static enum bp_result get_gpio_i2c_info(
+ 			- sizeof(struct atom_common_table_header))
+ 				/ sizeof(struct atom_gpio_pin_assignment);
  
-+	if (!user_len)
-+		return ERR_PTR(-EINVAL);
++	if (!bios_get_image(&bp->base, DATA_TABLES(gpio_pin_lut),
++			    le16_to_cpu(header->table_header.structuresize)))
++		return BP_RESULT_BADBIOSTABLE;
 +
- 	buffer = kmalloc(user_len + 1, GFP_KERNEL);
- 	if (!buffer)
- 		return ERR_PTR(-ENOMEM);
--- 
-2.53.0
-
+ 	pin = (struct atom_gpio_pin_assignment *) header->gpio_pin;
+ 
+ 	for (table_index = 0; table_index < count; table_index++) {
+@@ -680,6 +684,11 @@ static enum bp_result bios_parser_get_gp
+ 	count = (le16_to_cpu(header->table_header.structuresize)
+ 			- sizeof(struct atom_common_table_header))
+ 				/ sizeof(struct atom_gpio_pin_assignment);
++
++	if (!bios_get_image(&bp->base, DATA_TABLES(gpio_pin_lut),
++			    le16_to_cpu(header->table_header.structuresize)))
++		return BP_RESULT_BADBIOSTABLE;
++
+ 	for (i = 0; i < count; ++i) {
+ 		if (header->gpio_pin[i].gpio_id != gpio_id)
+ 			continue;
 
 
 
