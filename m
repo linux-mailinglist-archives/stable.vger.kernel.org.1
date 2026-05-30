@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-259228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258616-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJo4NTUzG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259228-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:57 +0200
+	id wKFSKEUqG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258616-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64628612E31
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D426117C5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4116E304B112
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 40F53304DACE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD55F2367DF;
-	Sat, 30 May 2026 18:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9748F2E62B7;
+	Sat, 30 May 2026 18:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aV1BzsbQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIeLwFzl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40261D63E4;
-	Sat, 30 May 2026 18:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B01A241C8C;
+	Sat, 30 May 2026 18:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167038; cv=none; b=kjS04Zl6QmMQzbkJPdIdV4VDhsIqwXSM46nXDlGmVfBzFtLswTH9Etnw2VZY0oYUVx8QBUXLeHN7uekuHQCVFI5K0Fwav6X4klTUzrk0QjjdoOHrc2YTE/zjsW8flz/SOjsPEmrg73YpIax5lidhvuwCpeJOmDsQeFhzFDnT3+4=
+	t=1780164951; cv=none; b=N5ta2UMVXHsNslzOdt0VmmIW4zC1DdNUoMWDJoMaiQ6V4VWqIAFgy+HctscyyAM8IbNtV/8XzeyNSjFS8J/9TkBRE6dGQZgmd4mkFVLCPgFPWKEMQKNA4mMBWZyvlHgomesGqV8dbnEzsUqpF6AXJxcS1Afw/1oFYlTUMEJENUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167038; c=relaxed/simple;
-	bh=Ww1rYVA0a3Hp3oC8TifdagWuFmtBM6mvdmQiIGLnRqI=;
+	s=arc-20240116; t=1780164951; c=relaxed/simple;
+	bh=ysKx1o+2m/u8QvtaPiZZLyzk5osjEyw02VT4XXhgyqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pHh12P89SgGNtLGFTeE4bpstn2DrbX6ZW/A1CDz3XvCW6DH+lmTTpxd1RzaWNuN6paeBY0OmCOaliOS1UxTPAFGB3bNxDDFQeMQ/49S8ckO3TYji58Q33t2WrL+a3u1Ph+w9Z8csDxQFGY1RxJrlPB289g7BrcmaBmnErUt/I94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aV1BzsbQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04ACA1F00893;
-	Sat, 30 May 2026 18:50:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oZEIttrIK8VtII7lJOfW0eJ312K5RXk+3fDJ+RkENk/jrVD924koCAe41WNBOsjv0pmwU4TkXFvOy6NX64uXPuHtUUrZb+p964goo5a3ot9rRlQLc1RmFFmFoppEjf3wkMWGo+/1OU+k6e/l3JJcHncyUUHxZBn+PC2UCcHn53A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIeLwFzl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC0E1F00893;
+	Sat, 30 May 2026 18:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167037;
-	bh=I9t32nd3mQeGUZOalHv1h4qBEO5DLcuGw5Un7s4jf6k=;
+	s=korg; t=1780164950;
+	bh=bcv4wWOzuCr4qoBVfvJEgNQKzJ/gPbpQgRMIWQ4HXuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aV1BzsbQHZlBuHswfFg/S3jZJvcc6szTyhdzEpiQWe1CTDzOpgnBTSdbs2Drp5sIb
-	 /kIRFZ6Hpv/PgeQC6uX1Z9o3ROj/T5+jQc/z4dTOqXh02Gx6yudt+qCg8c6pDJxfxo
-	 3h+JMzPtbtu9NzfWXXVVXAS1LDjKEvsglshuRX34=
+	b=QIeLwFzldIhHLptxEPQkEyY8g3cuyZHRr3ywA5f1jaCRWF+Gh8P3OAecX+MoEFd4V
+	 pQEKUNuYl/xCpg7L9uFEaEe+sAxI8y1v/I0HK+CaoGEUY0xfNlLyYHobyWxNstad/Q
+	 PWfQ+wwvQ0zJl/jMItxFts/fUVT5NFUcIJ8iqBbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minh Nguyen <minhnguyen.080505@gmail.com>,
-	Bryan Tan <bryan-bt.tan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 538/589] vsock/vmci: fix UAF when peer resets connection during handshake
-Date: Sat, 30 May 2026 18:06:59 +0200
-Message-ID: <20260530160238.833252523@linuxfoundation.org>
+	stable@kernel.org,
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.15 706/776] batman-adv: mcast: fix use-after-free in orig_node RCU release
+Date: Sat, 30 May 2026 18:07:00 +0200
+Message-ID: <20260530160258.091073736@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259228-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258616-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 64628612E31
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,c0d3.blue:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 20D426117C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minh Nguyen <minhnguyen.080505@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 99e22ddf4edb63dc8382bc028af928056d3450cf upstream.
+commit 20c2d6a20ca936f5aaa6dd40f73f262ac45c87cc upstream.
 
-vmci_transport_recv_connecting_server() returned err = 0 for a peer
-RST in its default switch arm:
+batadv_mcast_purge_orig() removes entries from RCU-protected hlists but
+does not wait for an RCU grace period before returning. Concurrent RCU
+readers may still accesses references to those entries at the point of
+removal. RCU-protected readers trying to operate on entries like
+orig->mcast_want_all_ipv6_node will then access already freed memory.
 
-	err = pkt->type == VMCI_TRANSPORT_PACKET_TYPE_RST ? 0 : -EINVAL;
+Fix this by moving batadv_mcast_purge_orig() to batadv_orig_node_release(),
+just before the call_rcu() invocation. This ensures RCU readers that were
+active at purge time have drained before the orig_node memory is reclaimed.
 
-That made vmci_transport_recv_listen() skip vsock_remove_pending(),
-leaving the pending socket on the listener's pending_links with
-sk_state = TCP_CLOSE while destroy: still dropped the explicit
-reference taken before schedule_delayed_work().
-
-One second later vsock_pending_work() observed is_pending=true and
-performed full cleanup: vsock_remove_pending() then the two trailing
-sock_put(sk) calls -- the first reached refcount 0 and __sk_freed
-the socket, and the second wrote into the freed object:
-
-  BUG: KASAN: slab-use-after-free in refcount_warn_saturate
-  Write of size 4 at addr ffff88800b1cac80 by task kworker
-  Workqueue: events vsock_pending_work
-
-Treat peer RST like any other unexpected packet type (err = -EINVAL).
-All destroy: arms now return err < 0, so vmci_transport_recv_listen()
-removes pending from pending_links synchronously and
-vsock_pending_work() takes the is_pending=false / !rejected branch,
-dropping only its own work reference.  This also closes the
-multi-packet race Sashiko reported on v2: pending is removed from
-the list before any subsequent packet can find it.
-
-The pre-existing sk_acceptq_removed() gap on the err < 0 path of
-vmci_transport_recv_listen() that Sashiko also noted is not
-introduced or changed by this patch.
-
-Tested on lts-6.12.79 with KASAN: 52/100 unpatched -> 0/100 patched.
-
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
-Acked-by: Bryan Tan <bryan-bt.tan@broadcom.com>
-Link: https://patch.msgid.link/20260519102310.237181-1-minhnguyen.080505@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@kernel.org
+Fixes: ab49886e3da7 ("batman-adv: Add IPv4 link-local/IPv6-ll-all-nodes multicast support")
+Acked-by: Linus Lüssing <linus.luessing@c0d3.blue>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/vmci_transport.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/originator.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -1158,7 +1158,7 @@ vmci_transport_recv_connecting_server(st
- 		/* Close and cleanup the connection. */
- 		vmci_transport_send_reset(pending, pkt);
- 		skerr = EPROTO;
--		err = pkt->type == VMCI_TRANSPORT_PACKET_TYPE_RST ? 0 : -EINVAL;
-+		err = -EINVAL;
- 		goto destroy;
- 	}
+--- a/net/batman-adv/originator.c
++++ b/net/batman-adv/originator.c
+@@ -823,8 +823,6 @@ static void batadv_orig_node_free_rcu(st
+ 
+ 	orig_node = container_of(rcu, struct batadv_orig_node, rcu);
+ 
+-	batadv_mcast_purge_orig(orig_node);
+-
+ 	batadv_frag_purge_orig(orig_node, NULL);
+ 
+ 	kfree(orig_node->tt_buff);
+@@ -878,6 +876,8 @@ void batadv_orig_node_release(struct kre
+ 	/* Free nc_nodes */
+ 	batadv_nc_purge_orig(orig_node->bat_priv, orig_node, NULL);
+ 
++	batadv_mcast_purge_orig(orig_node);
++
+ 	call_rcu(&orig_node->rcu, batadv_orig_node_free_rcu);
+ }
  
 
 
