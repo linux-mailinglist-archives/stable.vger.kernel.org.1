@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-257092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBI/LB0VG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:33 +0200
+	id UAEgByQVG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC4460E73F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A94CD60E74E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 51D5C301ABAF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:49:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 86864301A2A6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82BE331A56;
-	Sat, 30 May 2026 16:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1740033FE15;
+	Sat, 30 May 2026 16:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dt14T1Gf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1HD15Su"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6443242BE;
-	Sat, 30 May 2026 16:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0773264DC;
+	Sat, 30 May 2026 16:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159765; cv=none; b=ppDNidspOqClJvACSdDaR2uGJ3Z4lzXy8fm02+2M7bj/WRqsD8te0tjSkIEjYxUnKSQu2Y4QASA6qkpxsxFG87sHLg7CGkkl9ygEg74i2wt1HbrraqN/FKCZtLTJxi1+w9a6d7bvxCamTSuv7JwDDH+Cg+vT1eAmOab0TaDNSFA=
+	t=1780159773; cv=none; b=PLF6V4EDomTA52m/rRlgzvVPGv3Bna69V5Ff3lNAUMrywKD0RUR6T6zlHXY/7LGNJ9qZxOBC/Be+rlAd8N0pnDx0Gh1oFKHokuoEFDIH4rC8FwGox2tIegiZQzqrcbrVhnhrn+zmequWR6paXwGaGuhZz+tzd/0mCuHZ3jl3Dn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159765; c=relaxed/simple;
-	bh=I8S1N8uejRXSrBzhZdzPJYJmlJa46nFKkuKzVfFDmlE=;
+	s=arc-20240116; t=1780159773; c=relaxed/simple;
+	bh=i2JX1fcaH/Vmk4ajMK2a1GrSXi9BTZSXW0NYn0eguyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AY/MlCNKdNvERa2kXQ6e7Eo2XQB0BWXTkkOCUk9Cny7WsQUs2vU0h62CqPTJA7cF1prFn05yz+JN2MnOAEiDkG9XRvGL0Jk0+qm+Pd+4sCZKU7ZJD5Qkkwx/+IMZ718EOfzQRtPHSicYYiW5d72SkbGjF6oeMgp9JWsk1rhSiak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dt14T1Gf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1031F00893;
-	Sat, 30 May 2026 16:49:23 +0000 (UTC)
+	 MIME-Version; b=l9FDJ05qqoUO/er8NwuNDXhuDMLCFeuoWk7Cb3A2bv2SC63vTyayJ2f0UyREkTHAb2zevbGtefaBXSAv1mcemqNZ+mqYnkrRYs3YG5DjkvFJZtRKT6kJUrdhcuf3pTWitzgsO7j4Ikwn+m3c3aUQ3HVnJAa8ErQwZ3QjCmqsjio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1HD15Su; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A206A1F00893;
+	Sat, 30 May 2026 16:49:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159764;
-	bh=pHnPB9SK7Kerymuk9un5AZPB6vSlPdkQfjJBcw4UhTs=;
+	s=korg; t=1780159772;
+	bh=CU/sTqdPBCGGe+1CBHNARHE08PDxABQ6xCLnS5n6krY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dt14T1Gf0ZPMIbwu8I/jkTJtkPeTxhqphRQf9ZMkvYns2JvwcPYzt9hMbxPcqCXsj
-	 u7xaxubhnk24GacJU32vSQJ6hWIIfgKHhdAUCXhbMK8LklykL1PG9GeYoj/BOVnWcD
-	 rP9C1V9fOmds5xAQYIrN/sDzRl4laPefVzUU1wVo=
+	b=I1HD15SupB3P/aq8XxK0N3lukzD1P6pIQ7+t0DQBbUEA/j7zhX7XgGG6TI7qTGQX9
+	 uyKsEeCuqB/xY3F1Rr2b7AGBkMDHepHNbRX6c4BQiTx5bOrqOVuHUlg5+1CIv7u8OM
+	 Wy6dfn+5LoRuu/hzZ+aKDZ12RYO0HJATGWiYHVVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sebastian Alba Vives <sebasjosue84@gmail.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 155/969] crypto: ccp: Dont attempt to copy CSR to userspace if PSP command failed
-Date: Sat, 30 May 2026 17:54:39 +0200
-Message-ID: <20260530160304.822235841@linuxfoundation.org>
+Subject: [PATCH 6.1 156/969] crypto: ccp: Dont attempt to copy PDH cert to userspace if PSP command failed
+Date: Sat, 30 May 2026 17:54:40 +0200
+Message-ID: <20260530160304.847984856@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257092-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257094-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -92,7 +92,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2CC4460E73F
+X-Rspamd-Queue-Id: A94CD60E74E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,9 +102,9 @@ X-Rspamd-Server: lfdr
 
 From: Sean Christopherson <seanjc@google.com>
 
-commit abe4a6d6f606113251868c2c4a06ba904bb41eed upstream.
+commit e76239fed3cffd6d304d8ca3ce23984fd24f57d3 upstream.
 
-When retrieving the PEK CSR, don't attempt to copy the blob to userspace
+When retrieving the PDH cert, don't attempt to copy the blobs to userspace
 if the firmware command failed.  If the failure was due to an invalid
 length, i.e. the userspace buffer+length was too small, copying the number
 of bytes _firmware_ requires will overflow the kernel-allocated buffer and
@@ -113,11 +113,11 @@ leak data to userspace.
   BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
   BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
   BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-  Read of size 2084 at addr ffff898144612e20 by task syz.9.219/21405
+  Read of size 2084 at addr ffff8885c4ab8aa0 by task syz.0.186/21033
 
-  CPU: 14 UID: 0 PID: 21405 Comm: syz.9.219 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
+  CPU: 51 UID: 0 PID: 21033 Comm: syz.0.186 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
   Tainted: [U]=USER, [O]=OOT_MODULE
-  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
+  Hardware name: Google, Inc.                                                       Arcadia_IT_80/Arcadia_IT_80, BIOS 34.84.12-0 11/17/2025
   Call Trace:
    <TASK>
    dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
@@ -130,8 +130,8 @@ leak data to userspace.
    _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
    _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
    copy_to_user ../include/linux/uaccess.h:236 [inline]
-   sev_ioctl_do_pek_csr+0x31f/0x590 ../drivers/crypto/ccp/sev-dev.c:1872
-   sev_ioctl+0x3a4/0x490 ../drivers/crypto/ccp/sev-dev.c:2562
+   sev_ioctl_do_pdh_export+0x3d3/0x7c0 ../drivers/crypto/ccp/sev-dev.c:2347
+   sev_ioctl+0x2a2/0x490 ../drivers/crypto/ccp/sev-dev.c:2568
    vfs_ioctl ../fs/ioctl.c:51 [inline]
    __do_sys_ioctl ../fs/ioctl.c:597 [inline]
    __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
@@ -146,7 +146,7 @@ firwmware error.
 
 Reported-by: Alexander Potapenko <glider@google.com>
 Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
-Fixes: e799035609e1 ("crypto: ccp: Implement SEV_PEK_CSR ioctl command")
+Fixes: 76a2b524a4b1 ("crypto: ccp: Implement SEV_PDH_CERT_EXPORT ioctl command")
 Cc: stable@vger.kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
@@ -157,28 +157,28 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/crypto/ccp/sev-dev.c
 +++ b/drivers/crypto/ccp/sev-dev.c
-@@ -669,7 +669,10 @@ cmd:
+@@ -1041,7 +1041,10 @@ static int sev_ioctl_do_pdh_export(struc
+ cmd:
+ 	ret = __sev_do_cmd_locked(SEV_CMD_PDH_CERT_EXPORT, &data, &argp->error);
  
- 	ret = __sev_do_cmd_locked(SEV_CMD_PEK_CSR, &data, &argp->error);
- 
--	 /* If we query the CSR length, FW responded with expected data. */
+-	/* If we query the length, FW responded with expected data. */
 +	/*
-+	 * Firmware will returns the length of the CSR blob (either the minimum
-+	 * required length or the actual length written), return it to the user.
++	 * Firmware will return the length of the blobs (either the minimum
++	 * required length or the actual length written), return 'em to the user.
 +	 */
- 	input.length = data.len;
+ 	input.cert_chain_len = data.cert_chain_len;
+ 	input.pdh_cert_len = data.pdh_cert_len;
  
- 	if (copy_to_user((void __user *)argp->data, &input, sizeof(input))) {
-@@ -677,6 +680,9 @@ cmd:
- 		goto e_free_blob;
+@@ -1050,6 +1053,9 @@ cmd:
+ 		goto e_free_cert;
  	}
  
 +	if (ret || WARN_ON_ONCE(argp->error))
-+		goto e_free_blob;
++		goto e_free_cert;
 +
- 	if (blob) {
- 		if (copy_to_user(input_address, blob, input.length))
- 			ret = -EFAULT;
+ 	if (pdh_blob) {
+ 		if (copy_to_user(input_pdh_cert_address,
+ 				 pdh_blob, input.pdh_cert_len)) {
 
 
 
