@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259129-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMy/NEMeG2q4/QgAu9opvQ
-	(envelope-from <stable+bounces-257748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:35 +0200
+	id cHu3OcgwG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259129-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40BD60FBF9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6941B612818
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E0116301F7DF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 29ABC302447E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FB2344DB9;
-	Sat, 30 May 2026 17:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7340834EF07;
+	Sat, 30 May 2026 18:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8giFRTz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUvbHfdf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C12533E36A;
-	Sat, 30 May 2026 17:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545782F3C3E;
+	Sat, 30 May 2026 18:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162040; cv=none; b=p20krZEe7/xmD5DWK0cSdAYdfaeMdpKbw7ysa2eplrintp4IxP/YZe1ooRp+lXCxgjfbuEXhMBzYAn2/4hSlhhccN8CQo5ejhJysxn4lf4fOUsC73r9lY/OJVB56OKxYzAld7M8LnPJal58OX+4AOkngH1auxI1bPgLzXAfDlSQ=
+	t=1780166707; cv=none; b=NjUWpZsa/bd8uTgSh/x9KsVmThd1nJQvN+FdkdFwEORmQ/xYuutDBQYjqAR0SrvpYndFcgh24BOG+X9vGmZRVsjzpu0nglvxcJRGUSyaS779mr9lGO5TPKXQEi1e9Y/jlgOEn2Q09tH8n1K3I4HFZ5HrWBuNHwmyrkzZhkanuB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162040; c=relaxed/simple;
-	bh=CbOw6TFrSFKhp8Lo+/zrU4Z7DBlnF2gyNa/NRijSHe0=;
+	s=arc-20240116; t=1780166707; c=relaxed/simple;
+	bh=StBCUKD+cxQEREzHrZET+3f6NEiNEilluRoJZJVf65E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rJ7KAAL3rl+YPpysWKG2FSGNtk9Q2vsRPG8dwaSiofybarRlwjoMu7obJauda0N3F6sa9maiBdeCQCziZq0M5qeZD6o/h6LdS+UJmUBG/3Ep3uLVm7Yf5MvW27/tGvsB1hSV7T2IO+0sptS4bLhu1sIzYAMiGbQYfRF9ZZJ5/+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8giFRTz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507831F00893;
-	Sat, 30 May 2026 17:27:18 +0000 (UTC)
+	 MIME-Version; b=URNgIyHrY+TTl12ItDMT8AwaaNuccFz0iiiK121sKkltG/1omAhtJj+wPrnQ9orpfTwhIjB96ZHs8vZW8Sswtg5/tk1cUZChTIvveLehMIJOx42QeS3XrGdZLCMqr954Ufjl7tz5EraGBxuzbmT7J3j2E7eg8rk6XGBk5o9vQVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUvbHfdf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9DA1F00893;
+	Sat, 30 May 2026 18:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162038;
-	bh=jTFnTYGQ7Y7rQrWb0c4j0SSsC9GFG7k8ZGXobeY2dwk=;
+	s=korg; t=1780166706;
+	bh=W0GgRugKPx0xd5JL7+CgT0PBUHR6B3tOgR6GpX8uHoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n8giFRTzL9/rYranqokUkCi7Ai/jW+C1X54+62Xd2MzLyqfURYJIfGnl+0PMLdo/t
-	 JGxLKIJ2o/xAG4OB+Bq42zXMeDIBXdlZ6TDcgNqZUGIzXZP5EPk3/M1/kHBzhcqjP6
-	 yLNamc2clWvq+Qa0K5HAhnqsLY0bB+uayBjER7ac=
+	b=VUvbHfdfYpjASYaIxfHrDBhsohJ0eDpAjrptcDDI1JiXWJo2RilUV+HzRhq4t2EK4
+	 GYIfPJOpITT76F9ZTNIRRT0n9W9rgLghjIbDbbzODjOD5v9BgCXmcf6xEo0x4yuWHl
+	 BkektDOTF/YtgDIkBWsh4eVSWS7yo6aSlIGxEy1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liang Li <liali@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 803/969] bonding: fix NULL pointer dereference in actor_port_prio setting
-Date: Sat, 30 May 2026 18:05:27 +0200
-Message-ID: <20260530160322.804040003@linuxfoundation.org>
+Subject: [PATCH 5.10 447/589] net: sched: gred/red: remove unused variables in struct red_stats
+Date: Sat, 30 May 2026 18:05:28 +0200
+Message-ID: <20260530160236.446868400@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +63,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257748-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259129-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B40BD60FBF9
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6941B612818
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit 067bf016e99ad72aa4ff869d6dec1fd62a9c6202 ]
+[ Upstream commit 4516c873e3b55856012ddd6db9d4366ce3c60c5d ]
 
-Liang reported an issue where setting a slave’s actor_port_prio to
-predefined values such as 0, 255, or 65535 would cause a system crash.
+The variable "other" in the struct red_stats is not used. Remove it.
 
-The problem occurs because in bond_opt_parse(), when the provided value
-matches a predefined table entry, the function returns that table entry,
-which does not contain slave information. Later, in
-bond_option_actor_port_prio_set(), calling bond_slave_get_rtnl() leads
-to a NULL pointer dereference.
-
-Since actor_port_prio is defined as a u16 and initialized to the default
-value of 255 in ad_initialize_port(), there is no need for the
-bond_actor_port_prio_tbl. Using the BOND_OPTFLAG_RAWVAL flag is sufficient.
-
-Fixes: 6b6dc81ee7e8 ("bonding: add support for per-port LACP actor priority")
-Reported-by: Liang Li <liali@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20251105072620.164841-1-liuhangbin@gmail.com
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a8f5192809ca ("net/sched: sch_red: annotate data-races in red_dump_stats()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_options.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ include/net/red.h    | 1 -
+ net/sched/sch_gred.c | 3 ---
+ net/sched/sch_red.c  | 1 -
+ 3 files changed, 5 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 2991290f450ee..40731d180bb50 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -225,13 +225,6 @@ static const struct bond_opt_value bond_ad_actor_sys_prio_tbl[] = {
- 	{ NULL,      -1,    0},
+diff --git a/include/net/red.h b/include/net/red.h
+index cc9f6b0d7f1e9..2fc217a07ade4 100644
+--- a/include/net/red.h
++++ b/include/net/red.h
+@@ -122,7 +122,6 @@ struct red_stats {
+ 	u32		forced_drop;	/* Forced drops, qavg > max_thresh */
+ 	u32		forced_mark;	/* Forced marks, qavg > max_thresh */
+ 	u32		pdrop;          /* Drops due to queue limits */
+-	u32		other;          /* Drops due to drop() calls */
  };
  
--static const struct bond_opt_value bond_actor_port_prio_tbl[] = {
--	{ "minval",  0,     BOND_VALFLAG_MIN},
--	{ "maxval",  65535, BOND_VALFLAG_MAX},
--	{ "default", 255,   BOND_VALFLAG_DEFAULT},
--	{ NULL,      -1,    0},
--};
--
- static const struct bond_opt_value bond_ad_user_port_key_tbl[] = {
- 	{ "minval",  0,     BOND_VALFLAG_MIN | BOND_VALFLAG_DEFAULT},
- 	{ "maxval",  1023,  BOND_VALFLAG_MAX},
-@@ -497,7 +490,7 @@ static const struct bond_option bond_opts[BOND_OPT_LAST] = {
- 		.id = BOND_OPT_ACTOR_PORT_PRIO,
- 		.name = "actor_port_prio",
- 		.unsuppmodes = BOND_MODE_ALL_EX(BIT(BOND_MODE_8023AD)),
--		.values = bond_actor_port_prio_tbl,
-+		.flags = BOND_OPTFLAG_RAWVAL,
- 		.set = bond_option_actor_port_prio_set,
- 	},
- 	[BOND_OPT_AD_ACTOR_SYSTEM] = {
+ struct red_parms {
+diff --git a/net/sched/sch_gred.c b/net/sched/sch_gred.c
+index f4132dc25ac05..db3b695d072be 100644
+--- a/net/sched/sch_gred.c
++++ b/net/sched/sch_gred.c
+@@ -817,7 +817,6 @@ static int gred_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 		opt.Wlog	= q->parms.Wlog;
+ 		opt.Plog	= q->parms.Plog;
+ 		opt.Scell_log	= q->parms.Scell_log;
+-		opt.other	= q->stats.other;
+ 		opt.early	= q->stats.prob_drop;
+ 		opt.forced	= q->stats.forced_drop;
+ 		opt.pdrop	= q->stats.pdrop;
+@@ -883,8 +882,6 @@ static int gred_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 			goto nla_put_failure;
+ 		if (nla_put_u32(skb, TCA_GRED_VQ_STAT_PDROP, q->stats.pdrop))
+ 			goto nla_put_failure;
+-		if (nla_put_u32(skb, TCA_GRED_VQ_STAT_OTHER, q->stats.other))
+-			goto nla_put_failure;
+ 
+ 		nla_nest_end(skb, vq);
+ 	}
+diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
+index 063431a5ae1dd..a2c1db8ac3945 100644
+--- a/net/sched/sch_red.c
++++ b/net/sched/sch_red.c
+@@ -463,7 +463,6 @@ static int red_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	}
+ 	st.early = q->stats.prob_drop + q->stats.forced_drop;
+ 	st.pdrop = q->stats.pdrop;
+-	st.other = q->stats.other;
+ 	st.marked = q->stats.prob_mark + q->stats.forced_mark;
+ 
+ 	return gnet_stats_copy_app(d, &st, sizeof(st));
 -- 
 2.53.0
 
