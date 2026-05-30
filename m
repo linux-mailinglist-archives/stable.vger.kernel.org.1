@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDEZF0UmG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258367-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:45 +0200
+	id cN7DFaQcG2qQ/QgAu9opvQ
+	(envelope-from <stable+bounces-257593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1193F610DDF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 648FE60F7BD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7E5B03014377
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:01:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 292ED300F24D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4FA355F53;
-	Sat, 30 May 2026 18:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56E2380FEC;
+	Sat, 30 May 2026 17:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUa3hw5c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXiCgSbe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E8E23392B;
-	Sat, 30 May 2026 18:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAE33242D7;
+	Sat, 30 May 2026 17:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164114; cv=none; b=ONyCafSneiVYSozPPbhuK19B1Ho0OLa6bOpVytqJGTiWMm64upvRGuFyjMpdI1mKgBKquTLmJ3QqVm0SJv3PfJIiao2AqcVEFibbVtZdjwIun/5/+YO/TE5GIIkOhKk/hGK5AaDIG8vIq0uTn2BtCbVqIk0m7px25CE7+Tr6FSg=
+	t=1780161519; cv=none; b=ke2uy48SPwhpwUintUWXvC+oEiMJLtnvp7eMwQWdKYeriIc1w3FhG70vAhqGy5nB0sMbO6YgSPluaM5qQesps7fiU3xV3vTjhre7f0dM96dBQUm59kn/RsvWpYfKnWia2ih9KLh7l84ELjuYUCTxi4f3ejO9YM9AflSHZe9uTYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164114; c=relaxed/simple;
-	bh=6JeRpeRkiNCevFYqT2/HRb8krOZXHVIP12gtMH5X9PA=;
+	s=arc-20240116; t=1780161519; c=relaxed/simple;
+	bh=kGCiBuQujOl2Dz56FmAg8yPzAmn5SAU1NIcpEjqy+eM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fk7SqSSCCKaUd8YKxiJ0Hn05KXZ5XWCkb/OnYgwlP+ogPp1JSVz2RWvTvtzJSOIgwhOsne2RGoy4+voXVgbj0L5FoQzTqRhWTV5ddYG77iAVcEvyVZqXFQPHPcCBfbEToQgkbLioHV1/XIyKsj5q8GDw/W/86B0GCjZ7hGzwhMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUa3hw5c; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AD01F00893;
-	Sat, 30 May 2026 18:01:52 +0000 (UTC)
+	 MIME-Version; b=GwfjARYQ5M4VP611En6otab6M82KuU8/rJ7En39A1vn4eB0SaLo3T65BPGCq2KaABJi4KzcRKCVdoTuzIIttH/raqcyFg0unKy2v3tQmZVCTWh96NQu3s+2fpwqkUKwH47P7XsbAVNHiLqz1Z26ZSUr4S0zkLabnxO1Eo19ymOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXiCgSbe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58DF1F00893;
+	Sat, 30 May 2026 17:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164113;
-	bh=SxNG+flpkDGJRtp9R9ZBlCXZkB6x/z48htZv46cNpq4=;
+	s=korg; t=1780161518;
+	bh=ZX+Guv9BBT98xtouhDPFiYwmIfnKW3TN56AgGLutdLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aUa3hw5c0mtldbMz60rvkoBnth7O+V1oA06N1zhGsgsPn226pMFXj/s7OWz55TIqb
-	 bbUtjIzr4PhXILZiRKBD/qV0AaCiwPGC/VTn0sPG3jxwjwQbveqeTfxqv+Ve6A+7U4
-	 Q7OGMcbmJBB59dB466EvZ01HI0gzu2slCY6UA7FA=
+	b=HXiCgSbe+8yv88wNCpTlzjWm1gWHZpx8pD7mTQZygiyJjQMhvz5ZienHDRbXMcgB8
+	 iZD0bX3mPyS1vhHo9TXxhqM/6iBAzp1uqjTIet5W6Q3w2fQRiAgfv7JEGiWvyyi/fX
+	 z+w+VKFu9ihkdFm4ZhwOfCK5yWthgsNtus2lZBoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lei Huang <huanglei@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 457/776] ALSA: hda/realtek: fix code style (ERROR: else should follow close brace })
-Date: Sat, 30 May 2026 18:02:51 +0200
-Message-ID: <20260530160252.182878040@linuxfoundation.org>
+Subject: [PATCH 6.1 648/969] RDMA/core: Prefer NLA_NUL_STRING
+Date: Sat, 30 May 2026 18:02:52 +0200
+Message-ID: <20260530160318.356204219@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +66,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257593-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258367-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
-X-Rspamd-Queue-Id: 1193F610DDF
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 648FE60F7BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lei Huang <huanglei@kylinos.cn>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit d1888bf848ade6a9e71c7ba516fd215aa1bd8d65 ]
+[ Upstream commit 6ed3d14fc45d3da6025e7fe4a6a09066856698e2 ]
 
-Fix checkpatch code style errors:
+These attributes are evaluated as c-string (passed to strcmp), but
+NLA_STRING doesn't check for the presence of a \0 terminator.
 
-  ERROR: else should follow close brace '}'
-  #2300: FILE: sound/hda/codecs/realtek/alc269.c:2300:
-  +       }
-  +       else
+Either this needs to switch to nla_strcmp() and needs to adjust printf fmt
+specifier to not use plain %s, or this needs to use NLA_NUL_STRING.
 
-Fixes: 31278997add6 ("ALSA: hda/realtek - Add headset quirk for Dell DT")
-Signed-off-by: Lei Huang <huanglei@kylinos.cn>
-Link: https://patch.msgid.link/20260331075405.78148-1-huanglei814@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+As the code has been this way for long time, it seems to me that userspace
+does include the terminating nul, even tough its not enforced so far, and
+thus NLA_NUL_STRING use is the simpler solution.
+
+Fixes: 30dc5e63d6a5 ("RDMA/core: Add support for iWARP Port Mapper user space service")
+Link: https://patch.msgid.link/r/20260330122742.13315-1-fw@strlen.de
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/core/iwpm_msg.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index c847e9ab36b31..bd8878f4896c8 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6011,9 +6011,9 @@ static void alc_fixup_headset_mode_alc255_no_hp_mic(struct hda_codec *codec,
- 		struct alc_spec *spec = codec->spec;
- 		spec->parse_flags |= HDA_PINCFG_HEADSET_MIC;
- 		alc255_set_default_jack_type(codec);
--	}
--	else
-+	} else {
- 		alc_fixup_headset_mode(codec, fix, action);
-+	}
- }
+diff --git a/drivers/infiniband/core/iwpm_msg.c b/drivers/infiniband/core/iwpm_msg.c
+index 3c9a9869212bb..feb09008eb9ca 100644
+--- a/drivers/infiniband/core/iwpm_msg.c
++++ b/drivers/infiniband/core/iwpm_msg.c
+@@ -365,9 +365,9 @@ int iwpm_remove_mapping(struct sockaddr_storage *local_addr, u8 nl_client)
+ /* netlink attribute policy for the received response to register pid request */
+ static const struct nla_policy resp_reg_policy[IWPM_NLA_RREG_PID_MAX] = {
+ 	[IWPM_NLA_RREG_PID_SEQ]     = { .type = NLA_U32 },
+-	[IWPM_NLA_RREG_IBDEV_NAME]  = { .type = NLA_STRING,
++	[IWPM_NLA_RREG_IBDEV_NAME]  = { .type = NLA_NUL_STRING,
+ 					.len = IWPM_DEVNAME_SIZE - 1 },
+-	[IWPM_NLA_RREG_ULIB_NAME]   = { .type = NLA_STRING,
++	[IWPM_NLA_RREG_ULIB_NAME]   = { .type = NLA_NUL_STRING,
+ 					.len = IWPM_ULIBNAME_SIZE - 1 },
+ 	[IWPM_NLA_RREG_ULIB_VER]    = { .type = NLA_U16 },
+ 	[IWPM_NLA_RREG_PID_ERR]     = { .type = NLA_U16 }
+@@ -677,7 +677,7 @@ int iwpm_remote_info_cb(struct sk_buff *skb, struct netlink_callback *cb)
  
- static void alc288_update_headset_jack_cb(struct hda_codec *codec,
+ /* netlink attribute policy for the received request for mapping info */
+ static const struct nla_policy resp_mapinfo_policy[IWPM_NLA_MAPINFO_REQ_MAX] = {
+-	[IWPM_NLA_MAPINFO_ULIB_NAME] = { .type = NLA_STRING,
++	[IWPM_NLA_MAPINFO_ULIB_NAME] = { .type = NLA_NUL_STRING,
+ 					.len = IWPM_ULIBNAME_SIZE - 1 },
+ 	[IWPM_NLA_MAPINFO_ULIB_VER]  = { .type = NLA_U16 }
+ };
 -- 
 2.53.0
 
