@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-258589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259224-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QP0uB1cpG2rg/ggAu9opvQ
-	(envelope-from <stable+bounces-258589-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:51 +0200
+	id ULaGLCczG2rIAAkAu9opvQ
+	(envelope-from <stable+bounces-259224-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A79E66115FC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41750612DDB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3B21E308AD50
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97C2A3043459
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EDE3C2761;
-	Sat, 30 May 2026 18:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30361231A21;
+	Sat, 30 May 2026 18:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLGL2nq9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnlkBEWQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460913C1961;
-	Sat, 30 May 2026 18:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175E62E7398;
+	Sat, 30 May 2026 18:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164856; cv=none; b=q45fisFJlzz2V3oF7+Rw+vrAT3gI/oaCzGCR0gDB5En8QFhCey+SDhn4VtZx7NM5BflFU8Dh2V5QUzfgTij4hGODKBhok6d5HnfUOc225NxBDq0pjG9ljDhatIEVqfNeYBGbnUn3C9A3ZMH2ceiuY8vLfOZj5yWFxoeYYD+p6uc=
+	t=1780167025; cv=none; b=VpphgACCIhjU/j7ODXX+kzqlg5YanELu7oaiTDTo0YoqVMIeEIL6xHD/xMP5C7morfHDY+78LhW9FmyVZltRRgFkB/D2KU9s3gz4S3v2Uu1jW/E2ujKoZ3Rj146DmCmExYrrljVK/2tOxSoHN/Ps2efKCavL2OU/knAP/FdTzWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164856; c=relaxed/simple;
-	bh=ytb0OnppV+hVR4NOlPn1pUuoEb10+xrWJ3UT03KGJN0=;
+	s=arc-20240116; t=1780167025; c=relaxed/simple;
+	bh=clpeoREoidau1ZxPu8DsXvPCE+NVF2TYkkAQCxe1rps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4xaiR7piJZ7G0bT/ZvNg/OsXbxjbkTDnX6jukrtqy5+T92S3vD6n3ObvjHfS0EUd5d8fDvloiguBIrrDY8zNvTjg8FL0S5feiMU/k7s4srrn900RtlcSZ8zriBaau0szCwvqjoaco8CyGu4N3CzJ9eG8LB7SoOyNpJYZuO27vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLGL2nq9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914651F00893;
-	Sat, 30 May 2026 18:14:14 +0000 (UTC)
+	 MIME-Version; b=OMizOrsj1LizIoy4wnojYB1JYc0+Ha44EuoHyY554XAourTWw+NN4vaqcib0nHmTf86kM9SJRPwa1XiO5ULp+XNaSsnYXYM1SMgusPCe3E1V5f/G2sdMVI6/dO/5VG/RvOlEBka43hTAoNPXtr+AW7AK42kxe5GE8yjFiMqB/1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnlkBEWQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDDF1F00893;
+	Sat, 30 May 2026 18:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164855;
-	bh=ze6nqYumVDnvARo+1QHebO5CVUNh60loEMBpBc3RzU8=;
+	s=korg; t=1780167024;
+	bh=qcDXkLt1LjK9p1JeZ0iwPWkp6pGvhH9A2KjNym5IQ7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zLGL2nq9P/1aXb17sK6mIMCLgT151GGiXZAPBBOxrfgMI1TUQx050YDYO3F05Q7uA
-	 K2fZSlw5d2MA/Ea3WSjVyMCO9rxYiVe7rhHvbHewZajsJLFFc3Le4RFxQqJ9Oi9ptm
-	 I7d2CQTTc9Adz+kyu4/xQs75C4mnQ1q0qn3yGCtk=
+	b=dnlkBEWQjVdkGHvjgc0XN/3S7t9/iIlSUz1Tbv9WusKC/shhDQSCcwCgKkfS4rsai
+	 FYW4KrwuzEWEgOkeafVT905hSES5dUDVl9unBv/B7qLxDoXLV9jcddGWZ6swdU1Tw1
+	 hOb9WfLCU6DWMsUsUhok5mvmW/4MvSj1kjOcSfcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.15 679/776] hwmon: (pmbus/adm1266) widen blackbox-info buffer to I2C_SMBUS_BLOCK_MAX
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.10 512/589] libceph: Fix potential out-of-bounds access in osdmap_decode()
 Date: Sat, 30 May 2026 18:06:33 +0200
-Message-ID: <20260530160257.414745043@linuxfoundation.org>
+Message-ID: <20260530160238.089614500@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +65,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-259224-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258589-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,roeck-us.net:email]
-X-Rspamd-Queue-Id: A79E66115FC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,tu-ilmenau.de:email]
+X-Rspamd-Queue-Id: 41750612DDB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-commit eee213daa1e1b402eb631bcd1b8c5aa340a6b081 upstream.
+commit 35d0ed82d03e5ee77ea4f31f20e29562a7721649 upstream.
 
-adm1266_nvmem_read_blackbox() declares a 5-byte stack buffer and
-passes it to i2c_smbus_read_block_data() to retrieve the 4-byte
-BLACKBOX_INFO response.  i2c_smbus_read_block_data() does not honour
-caller buffer sizes -- it memcpy()s data.block[0] bytes from the
-SMBus transaction (where data.block[0] is the length byte returned by
-the slave device, up to I2C_SMBUS_BLOCK_MAX = 32):
+When decoding osd_state and osd_weight from an incoming osdmap in
+osdmap_decode(), both are decoded for each osd, i.e., map->max_osd
+times. The ceph_decode_need() check only accounts for
+sizeof(*map->osd_weight) once. This can potentially result in an
+out-of-bounds memory access if the incoming message is corrupted such
+that the max_osd value exceeds the actual content of the osdmap message.
 
-	memcpy(values, &data.block[1], data.block[0]);
+This patch fixes the issue by changing the corresponding part in the
+ceph_decode_need() check to account for
+map->max_osd*sizeof(*map->osd_weight).
 
-If the device returns any block length above 5, the call overflows
-the caller's 5-byte stack buffer before the post-call
-
-	if (ret != 4)
-		return -EIO;
-
-check has a chance to reject the response.
-
-Widen the local buffer to I2C_SMBUS_BLOCK_MAX so the helper has room
-for any well-formed SMBus block response, matching the convention used
-by the other i2c_smbus_read_block_data() callers in this driver.
-
-Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
 Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-2-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: dcbc919a5dc8 ("libceph: switch osdmap decoding to use ceph_decode_entity_addr")
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    2 +-
+ net/ceph/osdmap.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -351,7 +351,7 @@ static int adm1266_nvmem_read_blackbox(s
- {
- 	int record_count;
- 	char index;
--	u8 buf[5];
-+	u8 buf[I2C_SMBUS_BLOCK_MAX];
- 	int ret;
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -1688,7 +1688,7 @@ static int osdmap_decode(void **p, void
+ 	ceph_decode_need(p, end, 3*sizeof(u32) +
+ 			 map->max_osd*(struct_v >= 5 ? sizeof(u32) :
+ 						       sizeof(u8)) +
+-				       sizeof(*map->osd_weight), e_inval);
++			 map->max_osd*sizeof(*map->osd_weight), e_inval);
+ 	if (ceph_decode_32(p) != map->max_osd)
+ 		goto e_inval;
  
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_BLACKBOX_INFO, buf);
 
 
 
