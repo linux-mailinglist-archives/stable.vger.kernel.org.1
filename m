@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-257399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eEYBJ5kZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:41 +0200
+	id IH7AMhAmG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DAD660EF5D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B699610D8D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3806230202AE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:07:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4A2430C46E3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C317A366567;
-	Sat, 30 May 2026 17:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F830342CA7;
+	Sat, 30 May 2026 17:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ceX+D7u+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9/u0hL7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A619A34104B;
-	Sat, 30 May 2026 17:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7093F261B9E;
+	Sat, 30 May 2026 17:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160863; cv=none; b=D3juoeh2nNoEbRGUqqSsQ78dKfNxmaWTl+gidz5eZ82WbzE3Wka8I3Fh3sp/ogEAfrR2rUiFVSIVCDQXh1adyp6eBFRsUVRyPFkG4WgLEDzK1mvind2yNt3NiFhtInTIdwxFOdkFbLHkoi+OwMi77vXKY++PnZvQdVc54HFsl/s=
+	t=1780163562; cv=none; b=H5ZDeCPCy7FHXzv9B5Z+QaSFF6wzcxcqoqW/epLYI2VtHaQco4/clLRRPeom2wjmGObx0+TCFWaajJDbvkY6/PDlMYi0UZgMDqP2rvVy+leR7LUiABs68zvf+1D+TtY8CyqssH2M+Qu31sZMti5oHJ8vttzfqopkNr/lLfaOA7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160863; c=relaxed/simple;
-	bh=VSAODh/vCvaKL/apxHWGzql+MBS/hThSMpfb1EA2iW4=;
+	s=arc-20240116; t=1780163562; c=relaxed/simple;
+	bh=pemr5yaiuuOmg8GHUxZhM/xklpCDlxJKaTCzUNC71to=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fKPEaREAnFc4TzBkBCdZQuwamy7YNR2eXHRbVMTp/XhE1ZB/Q8cOIzUq4X+8hFP+kNgzLj4hxioYRS2ns+CuKp4hjYldkxME4Txhn3cUUyXB7q9qg1a9rOhX2XNR/p1vUNwNQavLOkeBYBR9EL75AFjzRA3fQOmUVyV1gjR+i8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ceX+D7u+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC111F00893;
-	Sat, 30 May 2026 17:07:41 +0000 (UTC)
+	 MIME-Version; b=pvISp5uaexPBBaZrr5SCMz+uz+/Aigw1xoQX5DdTmfQ+khyxBEVIabuDxOj0c917whuyUzFsEcxponH8B+QSTxXAujJWYKFSKpybjIZvVNhjmWTFY3QKqbChmgKP+FwtblnEIjK/f+AZgS/KSbEyMLWdsRNwHvUJPi7Og0gOTdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9/u0hL7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B573A1F00893;
+	Sat, 30 May 2026 17:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160862;
-	bh=4fP4rPjdh68DrbtL11tY+ZuE2orTBtrhHhq0hdU8ozk=;
+	s=korg; t=1780163561;
+	bh=dbROgYu1NheMRhyo+6MT1mY801AKVTDqel/fIo95Wa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ceX+D7u+bEZ1Eky/gpmXxPAhGXaATXvmTk+2Vt6GOsoUfy4RhG2r+V+VYB+ptkiMC
-	 Sl91igc2SBmK0NYPOxkXylETpVniS7sEFNTsJHb+ebBZiJfcvCFdijts+GypnVskmk
-	 n/RRWVXB2Po+TpVjBtZnxdwnRKnIkAbgzJh9giak=
+	b=x9/u0hL7Ez9q53dBOHYpwv+avTGtIUp34QW5E3/KKgoMlbiTfkIe4MNqTvbj3HjQP
+	 7z/otrbp4ExhyUNW6w5SkOXMGotiVlSZhORLY5ufW5PdLp0HV/4UiAzjOFtA5LaimQ
+	 6Wfh3WS8eB2XedE7PRMKBL004D2g700n16WbSMQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@toblux.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 456/969] bpf, devmap: Remove unnecessary if check in for loop
+	stable <stable@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 266/776] ipv6: rpl: reserve mac_len headroom when recompressed SRH grows
 Date: Sat, 30 May 2026 17:59:40 +0200
-Message-ID: <20260530160312.873311922@linuxfoundation.org>
+Message-ID: <20260530160247.415815968@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +62,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-257399-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258204-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 6DAD660EF5D
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6B699610D8D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@toblux.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 2317dc2c22cc353b699c7d1db47b2fe91f54055c ]
+commit 9e6bf146b55999a095bb14f73a843942456d1adc upstream.
 
-The iterator variable dst cannot be NULL and the if check can be removed.
-Remove it and fix the following Coccinelle/coccicheck warning reported
-by itnull.cocci:
+ipv6_rpl_srh_rcv() decompresses an RFC 6554 Source Routing Header, swaps
+the next segment into ipv6_hdr->daddr, recompresses, then pulls the old
+header and pushes the new one plus the IPv6 header back.  The
+recompressed header can be larger than the received one when the swap
+reduces the common-prefix length the segments share with daddr (CmprI=0,
+CmprE>0, seg[0][0] != daddr[0] gives the maximum +8 bytes).
 
-	ERROR: iterator variable bound on line 762 cannot be NULL
+pskb_expand_head() was gated on segments_left == 0, so on earlier
+segments the push consumed unchecked headroom.  Once skb_push() leaves
+fewer than skb->mac_len bytes in front of data,
+skb_mac_header_rebuild()'s call to:
 
-Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/20240529101900.103913-2-thorsten.blum@toblux.com
-Stable-dep-of: 8ed82f807bb0 ("bpf: Use RCU-safe iteration in dev_map_redirect_multi() SKB path")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	skb_set_mac_header(skb, -skb->mac_len);
+
+will store (data - head) - mac_len into the u16 mac_header field, which
+wraps to ~65530, and the following memmove() writes mac_len bytes ~64KiB
+past skb->head.
+
+A single AF_INET6/SOCK_RAW/IPV6_HDRINCL packet over lo with a two
+segment type-3 SRH (CmprI=0, CmprE=15) reaches headroom 8 after one
+pass; KASAN reports a 14-byte OOB write in ipv6_rthdr_rcv.
+
+Fix this by expanding the head whenever the remaining room is less than
+the push size plus mac_len, and request that much extra so the rebuilt
+MAC header fits afterwards.
+
+Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
+Cc: stable <stable@kernel.org>
+Reported-by: Anthropic
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026042133-gout-unvented-1bd9@gregkh
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/devmap.c | 3 ---
- 1 file changed, 3 deletions(-)
+ net/ipv6/exthdrs.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
-index 5e05732db2368..71025d1311a57 100644
---- a/kernel/bpf/devmap.c
-+++ b/kernel/bpf/devmap.c
-@@ -759,9 +759,6 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
- 		for (i = 0; i < dtab->n_buckets; i++) {
- 			head = dev_map_index_hash(dtab, i);
- 			hlist_for_each_entry_safe(dst, next, head, index_hlist) {
--				if (!dst)
--					continue;
--
- 				if (is_ifindex_excluded(excluded_devices, num_excluded,
- 							dst->dev->ifindex))
- 					continue;
--- 
-2.53.0
-
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -493,6 +493,7 @@ static int ipv6_rpl_srh_rcv(struct sk_bu
+ 	struct inet6_dev *idev;
+ 	struct ipv6hdr *oldhdr;
+ 	struct in6_addr addr;
++	unsigned int chdr_len;
+ 	unsigned char *buf;
+ 	int accept_rpl_seg;
+ 	int i, err;
+@@ -614,8 +615,10 @@ looped_back:
+ 	skb_pull(skb, ((hdr->hdrlen + 1) << 3));
+ 	skb_postpull_rcsum(skb, oldhdr,
+ 			   sizeof(struct ipv6hdr) + ((hdr->hdrlen + 1) << 3));
+-	if (unlikely(!hdr->segments_left)) {
+-		if (pskb_expand_head(skb, sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3), 0,
++	chdr_len = sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3);
++	if (unlikely(!hdr->segments_left ||
++		     skb_headroom(skb) < chdr_len + skb->mac_len)) {
++		if (pskb_expand_head(skb, chdr_len + skb->mac_len, 0,
+ 				     GFP_ATOMIC)) {
+ 			__IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)), IPSTATS_MIB_OUTDISCARDS);
+ 			kfree_skb(skb);
+@@ -625,7 +628,7 @@ looped_back:
+ 
+ 		oldhdr = ipv6_hdr(skb);
+ 	}
+-	skb_push(skb, ((chdr->hdrlen + 1) << 3) + sizeof(struct ipv6hdr));
++	skb_push(skb, chdr_len);
+ 	skb_reset_network_header(skb);
+ 	skb_mac_header_rebuild(skb);
+ 	skb_set_transport_header(skb, sizeof(struct ipv6hdr));
 
 
 
