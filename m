@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-259077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMINOXQvG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259077-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:56 +0200
+	id GF8PGm4qG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EBA0612456
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9662611852
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A9C4F300F5DC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5AC2D309A62F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0472029E11A;
-	Sat, 30 May 2026 18:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714912F90E0;
+	Sat, 30 May 2026 18:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j15k1Pgq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddXySWNP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634433AB26B;
-	Sat, 30 May 2026 18:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C55F352027;
+	Sat, 30 May 2026 18:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166514; cv=none; b=pY73U9hb35CManHd1QeJFgEhZsSRkQtXxVEa8FDqPYrxNe3ljbOcz0NPUdqoiHcW98dPkeTZTk3i2Y1AZjwGePtv54quu99PigptxNPItw0qJ1Z62sPQ2aD4Sck2OXpGBoowhJd9Ti4WJeDMepUVkhxBU+Ha6pp6V/IvFxMo0vw=
+	t=1780164562; cv=none; b=oIXtDOSLzW6uDCEf6u5m5+wNOcYnRj3MjB/RMeMr+Ibif9y1K1KIotE1N0Obk714FZXe9M0aq4O0RrijK70Zt2MoSnCVkVulsKfEA9yFnw5s4PNpa69RIqqa01a3OSHAStf4KeC78enDVcOQPYaqSX3ccaAbegf9JWidlL6RTug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166514; c=relaxed/simple;
-	bh=711tM16cQT1zH9bIvsh9xgHA0nH/geET11cdShpVBnA=;
+	s=arc-20240116; t=1780164562; c=relaxed/simple;
+	bh=m/K1REEzZjA9GBujtQrFxHeUaVUwz+lSY9bWVOTzlB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2BRywxOnu0E6pWCepd8kxtGDQl/CjF9mcRop9nrtxIO+i/Ovb3JLjWGt+H4I6Pxh/O1O9GKpE3toEG2ax2Lqt2ILxAgAKxwy4mKT1KZnL4upKpeUQtzHx4WOngkPE2HIiMIEyVpK0yrhdKqxgxDdzGAx1fuxSVzmk4GQNagaEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j15k1Pgq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E29A1F00899;
-	Sat, 30 May 2026 18:41:51 +0000 (UTC)
+	 MIME-Version; b=GuZqqRbaUnR9mOmC+qsUb1QDpE65M90uqdv+2CFJCya9P431HuJedC8OYhOg/D7BJ68sXjQ5rLHrU+arhVl0bBFEfRRNJam8jguqdLEyQjwxDZafoJNiLwnvgAmMSGx3dxLSadCGLUxra4upNt/0y0XJTJW4yamFQR8xqnHC9Hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddXySWNP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A072E1F00893;
+	Sat, 30 May 2026 18:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166512;
-	bh=u6VxJKyAMcXFt3wvSGjQ0+nrKvOVZvWN47lBLZkoIM8=;
+	s=korg; t=1780164561;
+	bh=dR9Rv1xKw8bbjQ5jmIMBK0DhFyEZzgyeokEoj3Lyy6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j15k1PgqQcJogkmRk/WrMiUamV1+pS8w4tX0cqXpKnuv3VWbCOGtXqCg1IAyAGxm2
-	 izmNGFAZeXUoBhybx5i3kOzHyTaLxycSLg1ywfEwuwDSEdmxSveQmqQT84Y948ATZC
-	 jbFg1KRMu+J2fcUS4Uc0xn5xzv668tqGdEG5zDGA=
+	b=ddXySWNPofpyiKWmLJlWGPK3qmOwzV+/CA2gb0/2VVMDQZagkPSW4GRU+NHQMNoYv
+	 Gj6WCrZidMT1JOzzvOg0BHdQDOgg/0AFmA6dbJMdlRxkxT+YG4Wobyj2WMjQjBlMjj
+	 5xrkkS0cf8o9unUTqWtR7W6CCDiAzp4OURTTYOps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anna Schumaker <anna.schumkaer@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 394/589] nfs/blocklayout: Fix compilation error (`make W=1`) in bl_write_pagelist()
-Date: Sat, 30 May 2026 18:04:35 +0200
-Message-ID: <20260530160235.144316340@linuxfoundation.org>
+Subject: [PATCH 5.15 562/776] tcp: annotate data-races around (tp->write_seq - tp->snd_nxt)
+Date: Sat, 30 May 2026 18:04:36 +0200
+Message-ID: <20260530160254.656262893@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,86 +68,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259077-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258501-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: 8EBA0612456
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E9662611852
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f83c8dda456ce4863f346aa26d88efa276eda35d ]
+[ Upstream commit 3a63b3d160560ef51e43fb4c880a5cde8078053c ]
 
-Clang compiler is not happy about set but unused variable
-(when dprintk() is no-op):
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() annotations to keep KCSAN happy.
 
-.../blocklayout/blocklayout.c:384:9: error: variable 'count' set but not used [-Werror,-Wunused-but-set-variable]
+WRITE_ONCE() annotations are already present.
 
-Remove a leftover from the previous cleanup.
-
-Fixes: 3a6fd1f004fc ("pnfs/blocklayout: remove read-modify-write handling in bl_write_pagelist")
-Acked-by: Anna Schumaker <anna.schumkaer@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: e08ab0b377a1 ("tcp: add bytes not sent to SCM_TIMESTAMPING_OPT_STATS")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-14-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/blocklayout/blocklayout.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/ipv4/tcp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
-index a853711bcad27..145608a373193 100644
---- a/fs/nfs/blocklayout/blocklayout.c
-+++ b/fs/nfs/blocklayout/blocklayout.c
-@@ -404,14 +404,13 @@ bl_write_pagelist(struct nfs_pgio_header *header, int sync)
- 	sector_t isect, extent_length = 0;
- 	struct parallel_io *par = NULL;
- 	loff_t offset = header->args.offset;
--	size_t count = header->args.count;
- 	struct page **pages = header->args.pages;
- 	int pg_index = header->args.pgbase >> PAGE_SHIFT;
- 	unsigned int pg_len;
- 	struct blk_plug plug;
- 	int i;
- 
--	dprintk("%s enter, %zu@%lld\n", __func__, count, offset);
-+	dprintk("%s enter, %u@%lld\n", __func__, header->args.count, offset);
- 
- 	/* At this point, header->page_aray is a (sequential) list of nfs_pages.
- 	 * We want to write each, and if there is an error set pnfs_error
-@@ -453,7 +452,6 @@ bl_write_pagelist(struct nfs_pgio_header *header, int sync)
- 		}
- 
- 		offset += pg_len;
--		count -= pg_len;
- 		isect += (pg_len >> SECTOR_SHIFT);
- 		extent_length -= (pg_len >> SECTOR_SHIFT);
- 	}
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 36981a3e9013f..dbb834d7eaee4 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3961,7 +3961,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
+ 	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
+ 	nla_put_u32(stats, TCP_NLA_BYTES_NOTSENT,
+-		    max_t(int, 0, tp->write_seq - tp->snd_nxt));
++		    max_t(int, 0,
++			  READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_nxt)));
+ 	nla_put_u64_64bit(stats, TCP_NLA_EDT, orig_skb->skb_mstamp_ns,
+ 			  TCP_NLA_PAD);
+ 	if (ack_skb)
 -- 
 2.53.0
 
