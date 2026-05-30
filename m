@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-257236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNU3MqwXG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:28 +0200
+	id gPgDJNEjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA3E60EB49
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C236108C7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D7914304AB08
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:58:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3EA783048DCB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1AA33F5A3;
-	Sat, 30 May 2026 16:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6DE632BF24;
+	Sat, 30 May 2026 17:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X16D0I09"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ez27Xl8A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9F02E92B3;
-	Sat, 30 May 2026 16:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB5C25B0BC;
+	Sat, 30 May 2026 17:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160290; cv=none; b=QdE4Tk/k9ZL5FwRjYYKo13c2TvxgtOuXugjsVd8oj9vDyCK/50dlI/QFklEx901LssoBDG3v14y7xiPHNYFLxrp/udFeo0fVgL6ZYVTjxhxF6gI1T4+SGpABhp/Jp6+NPj7l8z1h7XrrTXyzxgcDHb7xzi0s9f0K/3k76ChdhN8=
+	t=1780163132; cv=none; b=VcSrf+n8003Tvq+MQ8EBGwgRWZYhWDTXDcGb6k+D2Y909ngyJqivSyW/S0hGUlQkX0bHcIXFiwUbEu00uNAy3PaYQ53psb4MWAWwdjgu+nKU5bx7XQ3sE7c2u9jTwKCe5FW3I7Iy+e0WjDNuKfmjzkr7Pi/vpwY8YeKP9ZtZg6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160290; c=relaxed/simple;
-	bh=Z8BbxuFORijXHVdn3jul7Gt4gwctv7K7XIRPve5qJE0=;
+	s=arc-20240116; t=1780163132; c=relaxed/simple;
+	bh=nvKN+3VA3sKSh5j/1EkpdcUPjbTPvepv8rWId3yH4co=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+JJTH4P+EMrVVwpcB8buDDrc3c4swBh5z2lyBtaIGXDD/6pBDkLC2hRJyILN0ZYTpFwEgckG7MlDU4vt2F6OxOOVJnRT6UNoQGRRlzTKEVuzjGJUS+B4YKpDSsutM9iiMcQR51XyvvXo+4BpwRtytPSvmL4jr5RcFSR0kkBZL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X16D0I09; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6E11F00893;
-	Sat, 30 May 2026 16:58:08 +0000 (UTC)
+	 MIME-Version; b=BQVl3tSvZU91bi9Wl8ujhxsAcQZP2V/BCHbz8F9TqIzC9khwmuVqIDt5UA9cA403HxLdCoOX4HMT90Qo61k8bJCrJedZhH8x5/M/yCxh8pFr6A0WH/GFddpX6Wp3wKhI7PIRdEvWd3bt3ftzfcoyWfm8lMPyy69a6QV/ixiO494=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ez27Xl8A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51251F00893;
+	Sat, 30 May 2026 17:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160289;
-	bh=FOw32Q5hwgSGSnx4A/BQFX39DtKZvbeiHz1A65LNYDw=;
+	s=korg; t=1780163131;
+	bh=7GnB0htdpWnN7laDNzKLJ7MbX6yVXbA4eta0pmvqjuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X16D0I09KOSvGhYjy4MeUeXdmI7dbQzeHdp8gR4aCkXt8E1bqaLbvdYYiUDBgC3Rr
-	 vfNPhROYoYO/DFapcxxBz8fpBgc9TaY+qKmSj6UZI6O90/fa9WWUIkZdtJwPRjIIJD
-	 DuDFzlMFPu0akGlFw4p1yZFVeMfCdbjhMjVwjOrw=
+	b=Ez27Xl8AOQk5WLtpiIAmyF1s6AU2j4ju1W/J/k9oNa0rTibn3t+xaNToafC9oyK4r
+	 aChRONGg1ofhOK9nBDkIv+34Bv/TebzVDsLTcC4n8yf/Y1H+NhD68sBqI0fNJIOFo4
+	 7v4uCbxJjllAmvJWjcxirm3KJk/vEppLvcYvGFX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cen Zhang <zzzccc427@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Fang Wang <32840572@qq.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	syzbot+62c1793956716ea8b28a@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 297/969] Bluetooth: btintel: serialize btintel_hw_error() with hci_req_sync_lock
+Subject: [PATCH 5.15 107/776] ocfs2: fix out-of-bounds write in ocfs2_write_end_inline
 Date: Sat, 30 May 2026 17:57:01 +0200
-Message-ID: <20260530160308.643645229@linuxfoundation.org>
+Message-ID: <20260530160243.119040600@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,137 +71,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257236-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,qq.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-258074-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.alibaba.com,syzkaller.appspotmail.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,62c1793956716ea8b28a];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8BA3E60EB49
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 00C236108C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cen Zhang <zzzccc427@gmail.com>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-[ Upstream commit 94d8e6fe5d0818e9300e514e095a200bd5ff93ae ]
+[ Upstream commit 7bc5da4842bed3252d26e742213741a4d0ac1b14 ]
 
-btintel_hw_error() issues two __hci_cmd_sync() calls (HCI_OP_RESET
-and Intel exception-info retrieval) without holding
-hci_req_sync_lock().  This lets it race against
-hci_dev_do_close() -> btintel_shutdown_combined(), which also runs
-__hci_cmd_sync() under the same lock.  When both paths manipulate
-hdev->req_status/req_rsp concurrently, the close path may free the
-response skb first, and the still-running hw_error path hits a
-slab-use-after-free in kfree_skb().
+KASAN reports a use-after-free write of 4086 bytes in
+ocfs2_write_end_inline, called from ocfs2_write_end_nolock during a
+copy_file_range splice fallback on a corrupted ocfs2 filesystem mounted on
+a loop device.  The actual bug is an out-of-bounds write past the inode
+block buffer, not a true use-after-free.  The write overflows into an
+adjacent freed page, which KASAN reports as UAF.
 
-Wrap the whole recovery sequence in hci_req_sync_lock/unlock so it
-is serialized with every other synchronous HCI command issuer.
+The root cause is that ocfs2_try_to_write_inline_data trusts the on-disk
+id_count field to determine whether a write fits in inline data.  On a
+corrupted filesystem, id_count can exceed the physical maximum inline data
+capacity, causing writes to overflow the inode block buffer.
 
-Below is the data race report and the kasan report:
+Call trace (crash path):
 
-  BUG: data-race in __hci_cmd_sync_sk / btintel_shutdown_combined
+   vfs_copy_file_range (fs/read_write.c:1634)
+     do_splice_direct
+       splice_direct_to_actor
+         iter_file_splice_write
+           ocfs2_file_write_iter
+             generic_perform_write
+               ocfs2_write_end
+                 ocfs2_write_end_nolock (fs/ocfs2/aops.c:1949)
+                   ocfs2_write_end_inline (fs/ocfs2/aops.c:1915)
+                     memcpy_from_folio     <-- KASAN: write OOB
 
-  read of hdev->req_rsp at net/bluetooth/hci_sync.c:199
-  by task kworker/u17:1/83:
-   __hci_cmd_sync_sk+0x12f2/0x1c30 net/bluetooth/hci_sync.c:200
-   __hci_cmd_sync+0x55/0x80 net/bluetooth/hci_sync.c:223
-   btintel_hw_error+0x114/0x670 drivers/bluetooth/btintel.c:254
-   hci_error_reset+0x348/0xa30 net/bluetooth/hci_core.c:1030
+So add id_count upper bound check in ocfs2_validate_inode_block() to
+alongside the existing i_size check to fix it.
 
-  write/free by task ioctl/22580:
-   btintel_shutdown_combined+0xd0/0x360
-    drivers/bluetooth/btintel.c:3648
-   hci_dev_close_sync+0x9ae/0x2c10 net/bluetooth/hci_sync.c:5246
-   hci_dev_do_close+0x232/0x460 net/bluetooth/hci_core.c:526
-
-  BUG: KASAN: slab-use-after-free in
-   sk_skb_reason_drop+0x43/0x380 net/core/skbuff.c:1202
-  Read of size 4 at addr ffff888144a738dc
-  by task kworker/u17:1/83:
-   __hci_cmd_sync_sk+0x12f2/0x1c30 net/bluetooth/hci_sync.c:200
-   __hci_cmd_sync+0x55/0x80 net/bluetooth/hci_sync.c:223
-   btintel_hw_error+0x186/0x670 drivers/bluetooth/btintel.c:260
-
-Fixes: 973bb97e5aee ("Bluetooth: btintel: Add generic function for handling hardware errors")
-Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Fang Wang <32840572@qq.com>
+Link: https://lkml.kernel.org/r/20260403063830.3662739-1-joseph.qi@linux.alibaba.com
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: syzbot+62c1793956716ea8b28a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=62c1793956716ea8b28a
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btintel.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ fs/ocfs2/inode.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
-index 7a9d2da3c8146..1cba08e9403a4 100644
---- a/drivers/bluetooth/btintel.c
-+++ b/drivers/bluetooth/btintel.c
-@@ -225,11 +225,13 @@ static void btintel_hw_error(struct hci_dev *hdev, u8 code)
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -1427,6 +1427,16 @@ int ocfs2_validate_inode_block(struct su
+ 			goto bail;
+ 		}
  
- 	bt_dev_err(hdev, "Hardware error 0x%2.2x", code);
- 
-+	hci_req_sync_lock(hdev);
++		if (le16_to_cpu(data->id_count) >
++		    ocfs2_max_inline_data_with_xattr(sb, di)) {
++			rc = ocfs2_error(sb,
++					 "Invalid dinode #%llu: inline data id_count %u exceeds max %d\n",
++					 (unsigned long long)bh->b_blocknr,
++					 le16_to_cpu(data->id_count),
++					 ocfs2_max_inline_data_with_xattr(sb, di));
++			goto bail;
++		}
 +
- 	skb = __hci_cmd_sync(hdev, HCI_OP_RESET, 0, NULL, HCI_INIT_TIMEOUT);
- 	if (IS_ERR(skb)) {
- 		bt_dev_err(hdev, "Reset after hardware error failed (%ld)",
- 			   PTR_ERR(skb));
--		return;
-+		goto unlock;
- 	}
- 	kfree_skb(skb);
- 
-@@ -237,18 +239,21 @@ static void btintel_hw_error(struct hci_dev *hdev, u8 code)
- 	if (IS_ERR(skb)) {
- 		bt_dev_err(hdev, "Retrieving Intel exception info failed (%ld)",
- 			   PTR_ERR(skb));
--		return;
-+		goto unlock;
- 	}
- 
- 	if (skb->len != 13) {
- 		bt_dev_err(hdev, "Exception info size mismatch");
- 		kfree_skb(skb);
--		return;
-+		goto unlock;
- 	}
- 
- 	bt_dev_err(hdev, "Exception info %s", (char *)(skb->data + 1));
- 
- 	kfree_skb(skb);
-+
-+unlock:
-+	hci_req_sync_unlock(hdev);
- }
- 
- int btintel_version_info(struct hci_dev *hdev, struct intel_version *ver)
--- 
-2.53.0
-
+ 		if (le64_to_cpu(di->i_size) > le16_to_cpu(data->id_count)) {
+ 			rc = ocfs2_error(sb,
+ 					 "Invalid dinode #%llu: inline data i_size %llu exceeds id_count %u\n",
 
 
 
