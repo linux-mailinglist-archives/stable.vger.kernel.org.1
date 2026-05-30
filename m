@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-259109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENL+BXowG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:18 +0200
+	id CHKrL9knG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974B6612744
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C989C6111B7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 12BF33090024
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5288E3002F4B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B722F3C3E;
-	Sat, 30 May 2026 18:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64B43112C1;
+	Sat, 30 May 2026 18:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRZTVmh+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0A6OG45k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8947621B191;
-	Sat, 30 May 2026 18:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90081340A6F;
+	Sat, 30 May 2026 18:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166641; cv=none; b=XeDFQtgq6kGHjLyth2lGN73z0bWnpDq7eiE3H6Z/9tErEe0Vj4tMQNMOufFcWLe94470HVpHH/HnNLNWOKK2Q4KNs2f2xzoJtBc1RDy45S79CzMLZYfk6SPhUOhjbs3i6MDqilbNjTWoZrW8gDjNfD1ytfi04WaTCq1fcTaFp78=
+	t=1780164474; cv=none; b=DR5wkuhcfsn4OUrJsq04rTXEqRbLPynsPe2xtEW3w2DiS/wZPw3tsThZRSoeFGVkMTrroyKuO/nM3dLbiL5GJT1h2L4zLklAFHu9F98ZdUjgwzYYQLAvd0x7B18XaYkoVqS06jvGNUQVWQJyzrdqY+n18vFeeyycPbZ1oGuvgCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166641; c=relaxed/simple;
-	bh=kFbdbcEcaLxhaW9v2t9I2DL3X9yitGZb1M8kzJddvYg=;
+	s=arc-20240116; t=1780164474; c=relaxed/simple;
+	bh=urZG8H9Kuup2xafrsQXjvWXm28yEhgaqPmYNaJWDPgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqCHlfVLHrf1dPidVQBiJNfd1REo1MuH+FuoeNSfRTe6TO95w9bcia1HMpP3t3kCSJXlrirH08no3gqVEP2Xnbia7WNNU2dMPnoNS7wBptKoxtIXhYLMbsHn0KQMzV2iefLNQaB2y4PYe07W970SLKXH0hDHS3+lVWoJ4vewrUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRZTVmh+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4FC1F00893;
-	Sat, 30 May 2026 18:43:59 +0000 (UTC)
+	 MIME-Version; b=tcY/eTH395a0E/PgoAwqijxNI+Ydd9xdhDgE89eW54KhAMEZdH1zd4FAGuj6i/MUCWya4DgBUWh5tImcTYnz3evwXX1CVXig4Ym+pTZPKGfs0jhUGxPb0LuPhUIqu/X+GKTnELdefXLfOsoQeZwLRDufmCST3mJuWQtSO6TSVIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0A6OG45k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57151F00893;
+	Sat, 30 May 2026 18:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166640;
-	bh=N75BHeP60Y0uhRIEx1KLTk6KzEIBVhDuigY1qmqGBQg=;
+	s=korg; t=1780164473;
+	bh=swfTEc/uqTQnDoNvKUOE7+Er9S7xX0rke4LBmppM4eY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SRZTVmh+H6hksx1xedbRBZIUDkwvOnZ1Vb9szaGT3EfiSV4v+VLmeptXtBaWpzCAQ
-	 PKjd/Kd5FRytIXYFUDHXNAKOYDh+GLv5N6U2DjXv8uURmQi1lxRoSieF+1nE9RGhcu
-	 3zdtA8zaVL4s9CIjp6K8j+wMOV/XJrbNP1qDp9g4=
+	b=0A6OG45kn8nmVt5bRdJVy9VOXnRWG0dEFYMtn//FMOVJwOhtKzfr9GxrjTxcWZrfu
+	 iYjTlnQ+QmmkDqbpO3gHhGuomM6rclhz//JLA2hYCgGrQxy4a7lURAZ0A9omm6yGz+
+	 u49nIP7EJ9Lg+liK+HoSfNc8AuImL81ec1l4ecNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 399/589] clk: qcom: dispcc-sm8250: Use shared ops on the mdss vsync clk
+Subject: [PATCH 5.15 566/776] sctp: fix OOB write to userspace in sctp_getsockopt_peer_auth_chunks
 Date: Sat, 30 May 2026 18:04:40 +0200
-Message-ID: <20260530160235.265831936@linuxfoundation.org>
+Message-ID: <20260530160254.748511498@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +65,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259109-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258475-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 974B6612744
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C989C6111B7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 8c522da70f0c2e5148c4c13ccb1c64cca57a6fdb ]
+[ Upstream commit 0cf004ffb61cd32d140531c3a84afe975f9fc7ea ]
 
-mdss_gdsc can get stuck on boot due to RCGs being left on from last boot.
-As a fix, commit 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon
-registration") introduced a callback to ensure the RCG is off upon init.
-However, the fix depends on all shared RCGs being marked as such in code.
+sctp_getsockopt_peer_auth_chunks() checks that the caller's optval
+buffer is large enough for the peer AUTH chunk list with
 
-For SM8150/SC8180X/SM8250 the MDSS vsync clock was using regular ops,
-unlike the same clock in the SC7180 code. This was causing display to
-frequently fail to initialize after rebooting on the Surface Pro X.
-Fix by using shared ops for this clock.
+    if (len < num_chunks)
+            return -EINVAL;
 
-Fixes: 80a18f4a8567 ("clk: qcom: Add display clock controller driver for SM8150 and SM8250")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260312112321.370983-8-val@packett.cool
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+but then writes num_chunks bytes to p->gauth_chunks, which lives
+at offset offsetof(struct sctp_authchunks, gauth_chunks) == 8
+inside optval.  The check is missing the sizeof(struct
+sctp_authchunks) = 8-byte header.  When the caller supplies
+len == num_chunks (for any num_chunks > 0) the test passes but
+copy_to_user() writes sizeof(struct sctp_authchunks) = 8 bytes
+past the declared buffer.
+
+The sibling function sctp_getsockopt_local_auth_chunks() at the
+next line already has the correct check:
+
+    if (len < sizeof(struct sctp_authchunks) + num_chunks)
+            return -EINVAL;
+
+Align the peer variant with its sibling.
+
+Reproducer confirms on v7.0-13-generic: an unprivileged userspace
+caller that opens a loopback SCTP association with AUTH enabled,
+queries num_chunks with a short optval, then issues the real
+getsockopt with len == num_chunks and sentinel bytes painted past
+the buffer observes those sentinel bytes overwritten with the
+peer's AUTH chunk type.  The bytes written are under the peer's
+control but land in the caller's own userspace; this is not a
+kernel memory corruption, but it is a kernel-side contract
+violation that can silently corrupt adjacent userspace data.
+
+Fixes: 65b07e5d0d09 ("[SCTP]: API updates to suport SCTP-AUTH extensions.")
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20260416031903.1447072-1-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8250.c | 2 +-
+ net/sctp/socket.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sm8250.c b/drivers/clk/qcom/dispcc-sm8250.c
-index bbdd27946bf1f..4e29004a7e44b 100644
---- a/drivers/clk/qcom/dispcc-sm8250.c
-+++ b/drivers/clk/qcom/dispcc-sm8250.c
-@@ -446,7 +446,7 @@ static struct clk_rcg2 disp_cc_mdss_vsync_clk_src = {
- 		.parent_data = disp_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index a78bb0be8bf43..11040232ee937 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -6991,7 +6991,7 @@ static int sctp_getsockopt_peer_auth_chunks(struct sock *sk, int len,
  
+ 	/* See if the user provided enough room for all the data */
+ 	num_chunks = ntohs(ch->param_hdr.length) - sizeof(struct sctp_paramhdr);
+-	if (len < num_chunks)
++	if (len < sizeof(struct sctp_authchunks) + num_chunks)
+ 		return -EINVAL;
+ 
+ 	if (copy_to_user(to, ch->chunks, num_chunks))
 -- 
 2.53.0
 
