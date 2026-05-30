@@ -1,35 +1,35 @@
-Return-Path: <stable+bounces-257536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id dYwYEwkdG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:21 +0200
+	id ALPdLRAdG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0473B60F89E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5497C60F8B2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 66A0030C89FB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 39DAD304AC13
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB953AA195;
-	Sat, 30 May 2026 17:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5843AFAEA;
+	Sat, 30 May 2026 17:15:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
+Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13390350A05;
-	Sat, 30 May 2026 17:15:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D3633FE15;
+	Sat, 30 May 2026 17:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161331; cv=none; b=k8+a7ScvHauPjkaf65KHf8iwFZx+Aa5GgBQjmDnGkxaGuwmJln6pID/ia9YA5k+S8VjdOkVohdjjfGv3dyNYP2s2Zv5bKw6jgtlpl5QaMNg00F5ZEO0vqXl9fY44gsknfFWv/hzcIPyuD0ugpNLemfQDq2YRJ3vPUcx8Ca5JE90=
+	t=1780161332; cv=none; b=jkStBiEVbqDHaAaFo5BaGhTPUM1bTDh8lGGEVZVRDMeum5axGjJPO3e1X8cOxtzM0b1QOnD4S/lTxsz4etUnedOZ7/i8x0y48RPSewKK1+1LWL8PrdM9ZUYiSXwn6Eh0i1YWjrQs2TkzW8BCiiFhqYut3IUZxhU3GqvGRTkWb1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161331; c=relaxed/simple;
-	bh=QclX6lMiWy00EHvlboDAml3APm3kRVEd6yt2PAYlvK8=;
+	s=arc-20240116; t=1780161332; c=relaxed/simple;
+	bh=iA90yT/OV87fU14NkI4rjKmvx9RfNdWoTSlQrGXtRS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zf8Cx7XiVF1xIzBAw1njxwqghZnvjqmepOCKg5+eCdVZC7iTdJBh/vRPbjhyt2J1iI9G2kJv0COC+bRI+2GzXlZ0BZ2NbWoPpURz8kms2p8HSUH8dpIAAFK9T/z580F7eV218o0oKq3wfhFbaGYxJSx5x5RIdXouuqSSqU9S+hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
+	 MIME-Version; b=WusYJBTsPSOHAAPTvJeFdCf4GD4voGd4r5FcyzX/mrU1vfvhLPpwSwNiyTj6UgmBFKAT5pG1xMqQP79ex1Pf8sUtghrImPqedZIJdmoAhHLQHygWVvZBGgAXlapmORru4S+rMCIH4aGyFTnfejC4Pjr98tGXzjByU3iXJa9RTQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
 From: Brett A C Sheffield <bacs@librecast.net>
@@ -54,12 +54,12 @@ Cc: stable@vger.kernel.org,
 	achill@achill.org,
 	sr@sladewatkins.com,
 	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 5.10 000/589] 5.10.258-rc1 review
-Date: Sat, 30 May 2026 17:15:08 +0000
-Message-ID: <20260530171512.20060-1-bacs@librecast.net>
+Subject: Re: [PATCH 5.15 000/776] 5.15.209-rc1 review
+Date: Sat, 30 May 2026 17:15:14 +0000
+Message-ID: <20260530171517.20100-1-bacs@librecast.net>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257536-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257537-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[21];
 	DMARC_NA(0.00)[librecast.net];
@@ -93,7 +93,7 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	R_DKIM_NA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0473B60F89E
+X-Rspamd-Queue-Id: 5497C60F8B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,7 +103,7 @@ X-Rspamd-Server: lfdr
 010/010 [ OK ] libmld
 120/120 [ OK ] liblibrecast
 
-CPU/kernel: Linux auntie 5.10.258-rc1-00600-g01c1356f563d #1 SMP Sat May 30 16:59:39 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+CPU/kernel: Linux auntie 5.15.209-rc1-00789-g0e93b47df78b #1 SMP Sat May 30 17:02:18 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
 
 Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
