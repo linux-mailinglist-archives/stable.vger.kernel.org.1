@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-258233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKxJO3smG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:39 +0200
+	id kLU/Fn8mG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78705610E18
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4B1610E2D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ACA263101B8C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADB883103747
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EEC3B1EC0;
-	Sat, 30 May 2026 17:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621183BF66D;
+	Sat, 30 May 2026 17:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRFcPVR6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1NiD/G6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F3B341AC7;
-	Sat, 30 May 2026 17:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FAD3546EA;
+	Sat, 30 May 2026 17:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163665; cv=none; b=DZDDDoWRHn7M5eKBUjmpaHAs/kzAzVKGeYuSNMACxKfT9J5IUAkMzySjTHtFEH+zz8xnqO6x/ocq29EzFSNgFTbW0R0Hi8mF3X7N6JC631WG6BK6k6HVPK5TKe9FcYHqceBm8Vtrj/zONVZ0vqnp+BN9kj1B5+94zYq0pYaVoAM=
+	t=1780163669; cv=none; b=tqNmAkgCydtwEX/IZcvWi0au49yJp9e4Km9M3+Hn6qNsndTBwbm4/Uwju7WnlecxnSohAtvMFBtkKC20i8QkFkfTK/yTOXwAJdrDyvq4UPFltugw+WsAJck7jRSnmdFAfhEDdWvkKn+a9Ta494pbxfV7oURpBFA8zJMOSTXaKkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163665; c=relaxed/simple;
-	bh=6EY1Np2MMWwsHG4DuKEuF+TXoxYXTXicuPXm8nDLx/I=;
+	s=arc-20240116; t=1780163669; c=relaxed/simple;
+	bh=glmAUAXtl4nAWYIPmuKhUbXPiP1DmbjO1CzW4AgMK+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=crHYVF8/DfgFmaYGQ6DW5NW6UFxdnSqTnl2uqVGHMZXXcsWVQ1OJIQNdYdfemg/ftt1RFfYVkHGJNHoKRqk7wENvoSxYz6U3qiYwqCwWzW8N9vBMXDZ/fwYxdBkCtbIvDgs9tg3I/nZ4NMfXcHDF9mDEOeh0kGNvwi5sjD3ATPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRFcPVR6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226181F00898;
-	Sat, 30 May 2026 17:54:23 +0000 (UTC)
+	 MIME-Version; b=NKpgDf9lwc5jYKtEcfMklkKZPExf4uBS3u/5cXyCmUvAz9t+grpJAMgzzIb9zq68Kjmos31rxm29GuGv844BkHKhPBRQnRdn7icW/IdJiebZdMgQmtHDB7Xjp2FSwAr9/dysMHybl1ASQ8wvliRXRKtV2/tXBdslIEVFK//QoJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1NiD/G6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5281F00898;
+	Sat, 30 May 2026 17:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163664;
-	bh=sQ72OfCeN9rQV+VsBiDN6i73vKB2EBKZU8aR3ZZatMo=;
+	s=korg; t=1780163668;
+	bh=NJht8fY/hhVSXBMkORNDine+wuuXEcXQAmL9FweYiYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZRFcPVR6Gwqik7aUrdAuipMuIE66PXqmLb8GvKVoKGq/fsHVyFHmeBqf8yGEpXzZY
-	 HrBWOSO4EKitRY1dVVRp3TsMvypbulWRQTIGB6oQv/23FijlEBpBeNEuMSxXIWoLtd
-	 v7k9cEWXJWa7mEAl+lG/WCNiVIJzH8xJ1OEl40Xg=
+	b=t1NiD/G6UYXP039mwAqe1Rxjz82KjWI7ju0qQZwsPIFkgjPbzwN/okJa2UHfWHqc0
+	 g9fQbPdOlz+bL3043MvBY1AJnbbUBcz6QnLuLWxl0TeR1sZULZZY8giBtorKo7v2vu
+	 gfjf+rFeGsy14zH9PxzSF6Cu0PC9Ahd6lzkSaaaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 296/776] ALSA: usb-audio: Fix UAC3 cluster descriptor size check
-Date: Sat, 30 May 2026 18:00:10 +0200
-Message-ID: <20260530160248.212153571@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH 5.15 297/776] USB: omap_udc: DMA: Dont enable burst 4 mode
+Date: Sat, 30 May 2026 18:00:11 +0200
+Message-ID: <20260530160248.240615571@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
 References: <20260530160240.228940103@linuxfoundation.org>
@@ -62,36 +62,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258233-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258235-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 78705610E18
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,iki.fi:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: AB4B1610E2D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,44 +98,61 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-commit 26265dd69da32d88a88d21987853cec899d9e21f upstream.
+commit 3f91484f6c13c434bd573ca6b6779c26adb0ddab upstream.
 
-The UAC3 cluster descriptor length check in
-snd_usb_get_audioformat_uac3()was added to
-make sure that the buffer is large enough for
-a struct uac3_cluster_header_descriptor before the
-returned data is cast and used.
+Commit 65111084c63d7 ("USB: more omap_udc updates (dma and omap1710)")
+added setting for DMA burst 4 mode. But I think this should be undone for
+two reasons:
 
-However, the check uses sizeof(cluster), where cluster
-is a pointer, not the size of the descriptor header.
-This makes the validation depend on the architecture
-pointer size and does not match the intended object size.
+- It breaks DMA on 15xx boards - transfers just silently stall.
 
-Check against sizeof(*cluster) instead.
+- On newer OMAP1 boards, like Nokia 770 (omap1710), there is no measurable
+performance impact when testing TCP throughput with g_ether with large
+15000 byte MTU size.
 
-Fixes: fb4e2a6e8f28 ("ALSA: usb-audio: Fix out-of-bounds read in snd_usb_get_audioformat_uac3()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260424-alsa-usb-uac3-cluster-size-v1-1-99a5808898a3@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+It's also worth noting that when the original change was made, the
+OMAP_DMA_DATA_BURST_4 handling in arch/arm/plat-omap/dma.c was broken, and
+actually resulted in the same as the OMAP_DMA_DATA_BURST_DIS i.e. burst
+disabled. This was fixed not until a couple kernel releases later in an
+unrelated commit 1a8bfa1eb998a ("[ARM] 3142/1: OMAP 2/5: Update files
+common to omap1 and omap2").
+
+So based on this it seems there was never really a very good reason to
+enable this burst mode in omap_udc, so remove it now to allow 15xx DMA
+to work again (it provides 2x throughput compared to PIO mode).
+
+Fixes: 65111084c63d ("[PATCH] USB: more omap_udc updates (dma and omap1710)")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Link: https://patch.msgid.link/ad06qHLclWHeSGnV@darkstar.musicnaut.iki.fi
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/stream.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/udc/omap_udc.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -993,7 +993,7 @@ snd_usb_get_audioformat_uac3(struct snd_
- 	 * and request Cluster Descriptor
- 	 */
- 	wLength = le16_to_cpu(hc_header.wLength);
--	if (wLength < sizeof(cluster))
-+	if (wLength < sizeof(*cluster))
- 		return NULL;
- 	cluster = kzalloc(wLength, GFP_KERNEL);
- 	if (!cluster)
+--- a/drivers/usb/gadget/udc/omap_udc.c
++++ b/drivers/usb/gadget/udc/omap_udc.c
+@@ -731,8 +731,6 @@ static void dma_channel_claim(struct oma
+ 		if (status == 0) {
+ 			omap_writew(reg, UDC_TXDMA_CFG);
+ 			/* EMIFF or SDRC */
+-			omap_set_dma_src_burst_mode(ep->lch,
+-						OMAP_DMA_DATA_BURST_4);
+ 			omap_set_dma_src_data_pack(ep->lch, 1);
+ 			/* TIPB */
+ 			omap_set_dma_dest_params(ep->lch,
+@@ -754,8 +752,6 @@ static void dma_channel_claim(struct oma
+ 				UDC_DATA_DMA,
+ 				0, 0);
+ 			/* EMIFF or SDRC */
+-			omap_set_dma_dest_burst_mode(ep->lch,
+-						OMAP_DMA_DATA_BURST_4);
+ 			omap_set_dma_dest_data_pack(ep->lch, 1);
+ 		}
+ 	}
 
 
 
