@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-257367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258776-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHliNfMYG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257367-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:55 +0200
+	id UHzqFgMtG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258776-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7166360EE1B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7ACD611E2C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7590E300B9C5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:05:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 881EA301AD0E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63DD34104B;
-	Sat, 30 May 2026 17:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF6121B191;
+	Sat, 30 May 2026 18:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmuPiTHb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybobzYJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A40481DD;
-	Sat, 30 May 2026 17:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD784217704;
+	Sat, 30 May 2026 18:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160752; cv=none; b=uasf2gNQyrrUN5RYHtZIUxGznEueulC4HPxPCCHJDIvKY0lttb49O3ynIlWBFy2tGhOAdc07rLN3+vEqQv6ffv3BQkxL38ATI6/AuGbi28LQxrtTV+7InfR6XSkCSFjdu3AK1JOLCCdZRC037071mYjuZq7OYMcyjAaGgh+KgJ0=
+	t=1780165500; cv=none; b=Els6Vgo1kyqhU2LYS39JAvxRAA58l8TzpPrMZiwAYy/i2Pss9ZZQraks0wbWpoYwm/9aKrvffjYRt4fXjTjxNeqQOgeelqOapL0aK+5SgcgwzMkoGdIovYE72YdQcRj/Lw/YJVRpux2vp934kS2T9fEXAqzFcAL/Q92G0QdJEho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160752; c=relaxed/simple;
-	bh=PYSzRLuRVjHnISvZVJuJ4YjPQz9gIaHTOANNBLdi0Ys=;
+	s=arc-20240116; t=1780165500; c=relaxed/simple;
+	bh=yN2qZITi/K+Obe4W/ehtfYc+5OY+S4ANH91ifXxYbFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ggwLmJi5DwyP3BpcMaCL5yU4d1kxCYtuQnZLLW26YgXgdP7tMH49Ql0/Q/j2CWdgj+INU6+UOfygPQyBVOlEwczSfliSGbSUzU8lfQA3zekk0XcuA6B0cvPG+hi0jv4MqdCSehgzYCYlkmgbEdtRtXeDAD0Hn2X3ISUCwxUpTLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmuPiTHb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C0F1F00893;
-	Sat, 30 May 2026 17:05:50 +0000 (UTC)
+	 MIME-Version; b=oE0OGGTp0gdzuUmP2aopaGI6tsxch1QLCYTuPj1c13hP8TFzKPwjXesOV3PQVAptOoxJwakN7EapMl2lDGu/QxTep3EvaOxZy155FD+hoRDriD7zILCTZHyLk14ncuvViJE+98dGaYXWzRulPSC0yvS9il7nrONE0+cV4q0W0i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybobzYJV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC2C1F00893;
+	Sat, 30 May 2026 18:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160751;
-	bh=RPfzTXHh/UClxmxGRGIaVzEm2KcsO67SRRH44GR3uVQ=;
+	s=korg; t=1780165499;
+	bh=Q9ZSE1Ay+Qp/icOgEH+ms2XmtPnk++0vzYCebz/Zq0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wmuPiTHbrw6/Iio+Ai3ADgrqJiUhK+XWEzc4MEjSaXvVGZ1jqCYtXdqC5rJfiC/Rq
-	 eSJPUX6hxoS4dOja56mcYRsdDWOMGOzM0QGifdOd+bdpCHmuiGqmpCivpBv4VT54tL
-	 da+xusdG0o61RDY3JyNqi7TH7DWamFXT8MgtOttA=
+	b=ybobzYJV4uPUmb8fGiQx9lmpgThu5gaMj2BI0ukZE4FIxbX9PF4plZJaVw1hGKP9d
+	 cjoglh5z+1i8HA413fgnvNgMFG3/JAYKg5L2FAT2QTYTcEmbi0e/EveyML/AuRXm2h
+	 xgDE5Cw4EJlxSOmFQyxv4yYtJ+Qq8oPqoAt2/Qzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanjaikumar V S <sanjaikumar.vs@dicortech.com>,
-	Hendrik Donner <hd@os-cillation.de>,
-	"Pratyush Yadav (Google)" <pratyush@kernel.org>
-Subject: [PATCH 6.1 424/969] mtd: spi-nor: sst: Fix write enable before AAI sequence
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 067/589] rxrpc: Fix call removal to use RCU safe deletion
 Date: Sat, 30 May 2026 17:59:08 +0200
-Message-ID: <20260530160311.971978841@linuxfoundation.org>
+Message-ID: <20260530160226.362038036@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +72,128 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257367-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258776-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7166360EE1B
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,auristor.com:email,linux-foundation.org:email,infradead.org:email]
+X-Rspamd-Queue-Id: B7ACD611E2C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
+From: David Howells <dhowells@redhat.com>
 
-commit a0f64241d3566a49c0a9b33ba7ae458ae22003a9 upstream.
+[ Upstream commit 146d4ab94cf129ee06cd467cb5c71368a6b5bad6 ]
 
-When writing to SST flash starting at an odd address, a single byte is
-first programmed using the byte program (BP) command. After this
-operation completes, the flash hardware automatically clears the Write
-Enable Latch (WEL) bit.
+Fix rxrpc call removal from the rxnet->calls list to use list_del_rcu()
+rather than list_del_init() to prevent stuffing up reading
+/proc/net/rxrpc/calls from potentially getting into an infinite loop.
 
-If an AAI (Auto Address Increment) word program sequence follows, it
-requires WEL to be set. Without re-enabling writes, the AAI sequence
-fails.
+This, however, means that list_empty() no longer works on an entry that's
+been deleted from the list, making it harder to detect prior deletion.  Fix
+this by:
 
-Add spi_nor_write_enable() after the odd-address byte program when more
-data needs to be written. Use a local boolean for clarity.
+Firstly, make rxrpc_destroy_all_calls() only dump the first ten calls that
+are unexpectedly still on the list.  Limiting the number of steps means
+there's no need to call cond_resched() or to remove calls from the list
+here, thereby eliminating the need for rxrpc_put_call() to check for that.
 
-Fixes: b199489d37b2 ("mtd: spi-nor: add the framework for SPI NOR")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
-Tested-by: Hendrik Donner <hd@os-cillation.de>
-Reviewed-by: Hendrik Donner <hd@os-cillation.de>
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+rxrpc_put_call() can then be fixed to unconditionally delete the call from
+the list as it is the only place that the deletion occurs.
+
+Fixes: 2baec2c3f854 ("rxrpc: Support network namespacing")
+Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Linus Torvalds <torvalds@linux-foundation.org>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-5-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted spin_lock/spin_unlock to write_lock/write_unlock ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/sst.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/rxrpc/call_object.c | 22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
---- a/drivers/mtd/spi-nor/sst.c
-+++ b/drivers/mtd/spi-nor/sst.c
-@@ -153,6 +153,8 @@ static int sst_nor_write(struct mtd_info
+diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
+index 10dad2834d5b6..2240e93b0048a 100644
+--- a/net/rxrpc/call_object.c
++++ b/net/rxrpc/call_object.c
+@@ -634,11 +634,9 @@ void rxrpc_put_call(struct rxrpc_call *call, enum rxrpc_call_trace op)
+ 		_debug("call %d dead", call->debug_id);
+ 		ASSERTCMP(call->state, ==, RXRPC_CALL_COMPLETE);
  
- 	/* Start write from odd address. */
- 	if (to % 2) {
-+		bool needs_write_enable = (len > 1);
-+
- 		/* write one byte. */
- 		ret = sst_nor_write_data(nor, to, 1, buf);
- 		if (ret < 0)
-@@ -160,6 +162,17 @@ static int sst_nor_write(struct mtd_info
+-		if (!list_empty(&call->link)) {
+-			write_lock(&rxnet->call_lock);
+-			list_del_init(&call->link);
+-			write_unlock(&rxnet->call_lock);
+-		}
++		write_lock(&rxnet->call_lock);
++		list_del_rcu(&call->link);
++		write_unlock(&rxnet->call_lock);
  
- 		to++;
- 		actual++;
-+
-+		/*
-+		 * Byte program clears the write enable latch. If more
-+		 * data needs to be written using the AAI sequence,
-+		 * re-enable writes.
-+		 */
-+		if (needs_write_enable) {
-+			ret = spi_nor_write_enable(nor);
-+			if (ret)
-+				goto out;
-+		}
+ 		rxrpc_cleanup_call(call);
  	}
+@@ -709,24 +707,20 @@ void rxrpc_destroy_all_calls(struct rxrpc_net *rxnet)
+ 	_enter("");
  
- 	/* Write out most of the data here. */
+ 	if (!list_empty(&rxnet->calls)) {
+-		write_lock(&rxnet->call_lock);
++		int shown = 0;
+ 
+-		while (!list_empty(&rxnet->calls)) {
+-			call = list_entry(rxnet->calls.next,
+-					  struct rxrpc_call, link);
+-			_debug("Zapping call %p", call);
++		write_lock(&rxnet->call_lock);
+ 
++		list_for_each_entry(call, &rxnet->calls, link) {
+ 			rxrpc_see_call(call);
+-			list_del_init(&call->link);
+ 
+ 			pr_err("Call %p still in use (%d,%s,%lx,%lx)!\n",
+ 			       call, refcount_read(&call->ref),
+ 			       rxrpc_call_states[call->state],
+ 			       call->flags, call->events);
+ 
+-			write_unlock(&rxnet->call_lock);
+-			cond_resched();
+-			write_lock(&rxnet->call_lock);
++			if (++shown >= 10)
++				break;
+ 		}
+ 
+ 		write_unlock(&rxnet->call_lock);
+-- 
+2.53.0
+
 
 
 
