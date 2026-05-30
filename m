@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-257387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258769-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJGuMVkaG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:53 +0200
+	id YPDBM/crG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258769-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4411D60F182
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C20D611C1B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C5F27306B50D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:07:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43D4F303D08A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AEBA35200B;
-	Sat, 30 May 2026 17:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936A921B191;
+	Sat, 30 May 2026 18:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rez6j6/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8q/MCnu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB75D481DD;
-	Sat, 30 May 2026 17:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7016D17555;
+	Sat, 30 May 2026 18:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160821; cv=none; b=NPS5+XvjHZbGzN5VzgKYs4uDvDryh4I4FzFnsxlx+T9oXOoMX1Sh4WMxIFuhxHl29LuoXEvyu2OAT6nugfIvw6VGfNySZJqljwMQ6uvI78uzcLqe7FqvoOXF+72f8dTKeoiyYme2w+9m+ZHE9ceWU1EAqbErp/l7S8pn8xPf+sY=
+	t=1780165477; cv=none; b=msrtUPrwvE6Y/LiCLLQCTjfFqeUrCXmf1T53YiN0lTZkiK1Kq7v4GTm5ln4Qmbcnv/qnb0x9vW4rBIDhYCcD0qSaSB1E/Niiph2icpPadZQJOPnF62GdMnynceybG7aLzUBYMEojUtAaA6ExM4gB6iFXX4OewdK+BP+7lpf+76A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160821; c=relaxed/simple;
-	bh=/zHa9WO2yDHLS+AGqKXONEiZRFEh9iRxFmHZqHTjX+U=;
+	s=arc-20240116; t=1780165477; c=relaxed/simple;
+	bh=SNgIyiLvDdLKa6blhu6T3WxnWH8XxqDs/8dbIDZNn04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Frzq6SvoqYsAvISS7QTXfAwwyY+CX5qUZ8tjqVHKKlCRdUQHYyNDuATgvabxj9p9mZA9j6eTSZUw71gqrPuNA7kSYTDKJ2gRhVa8/c5Odnfd6mRHlHW6Ta14NPv0g7yRACHDsr9rtGXM0rSwUqqsBKUXwf6FzXaH2sDSBM3RdYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rez6j6/w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA0C1F00893;
-	Sat, 30 May 2026 17:06:59 +0000 (UTC)
+	 MIME-Version; b=KKt4uHqD0nqLLrEXScQ8F+upcFpmOWZJapZasrTLHdO/UP8oqEzCF7giw03PqgIJIzP76uzcl0syF4lI63Itms9YWlIolqr0ZkM5/n9LWS9FULTyEgEzj0hkP4RVu99lpvgX47SuRdozixRhw0az0HzLTf2zlQuhd2lFa80IxJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8q/MCnu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42641F00893;
+	Sat, 30 May 2026 18:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160820;
-	bh=qUcPK8e/8k291Hz99id7XhQwHYIA7h4n5m0koXicezE=;
+	s=korg; t=1780165476;
+	bh=hfxtN2CurQXz63Z5kEtpPLNpusuZG9nD/Mv++0h/uwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rez6j6/wuhVmEyojlY4YnNvBzidgUEcwBCgvnufJ8IGY/TZbNcYFUdFc/jOP3/JKJ
-	 yHNMxV8G1ss7WlDJlOBZtMbIDs67jL1eBw7/4lUlCFoXmhgLwW8Z5DyKVHLmhu3kdX
-	 +0r3nOEp0i94E9XAh+IIeTw3y+SOD7P3sH5KggyU=
+	b=o8q/MCnuOMhmQSxD6T8ZvKh7iJ+1jxxoMiw6/SRMQDI9KijckMHcewxq57AFxy/J3
+	 f1z9VoqLQe8mZvnBxYbClMfTs/rpvtxdaMEV0g3Q4fOgZEccwuUedx7ezLPLJPEt7g
+	 +gMsYPY+CmCb8pW4Xcz+AqQd/Q1WdGQX+kO8UT5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Jean Delvare <jdelvare@suse.de>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Minhong He <heminhong@kylinos.cn>,
+	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Li hongliang <1468888505@139.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 445/969] firmware: dmi: Correct an indexing error in dmi.h
-Date: Sat, 30 May 2026 17:59:29 +0200
-Message-ID: <20260530160312.562877604@linuxfoundation.org>
+Subject: [PATCH 5.10 089/589] ipv6: add NULL checks for idev in SRv6 paths
+Date: Sat, 30 May 2026 17:59:30 +0200
+Message-ID: <20260530160227.025783704@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +65,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-257387-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kylinos.cn,uniroma2.it,kernel.org,139.com];
+	TAGGED_FROM(0.00)[bounces-258769-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 4411D60F182
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,uniroma2.it:email,139.com:email]
+X-Rspamd-Queue-Id: 5C20D611C1B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Minhong He <heminhong@kylinos.cn>
 
-[ Upstream commit c064abc68e009d2cc18416e7132d9c25e03125b6 ]
+[ Upstream commit 06413793526251870e20402c39930804f14d59c0 ]
 
-The entries later in enum dmi_entry_type don't match the SMBIOS
-specification¹.
+__in6_dev_get() can return NULL when the device has no IPv6 configuration
+(e.g. MTU < IPV6_MIN_MTU or after NETDEV_UNREGISTER).
 
-The entry for type 33: `64-Bit Memory Error Information` is not present and
-thus the index for all later entries is incorrect.
+Add NULL checks for idev returned by __in6_dev_get() in both
+seg6_hmac_validate_skb() and ipv6_srh_rcv() to prevent potential NULL
+pointer dereferences.
 
-Add it.
-
-Also, add missing entry types 43-46, while at it.
-
-  ¹ Search for "System Management BIOS (SMBIOS) Reference Specification"
-
-  [ bp: Drop the flaky SMBIOS spec URL. ]
-
-Fixes: 93c890dbe5287 ("firmware: Add DMI entry types to the headers")
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Jean Delvare <jdelvare@suse.de>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Link: https://patch.msgid.link/20260307141024.819807-2-superm1@kernel.org
+Fixes: 1ababeba4a21 ("ipv6: implement dataplane support for rthdr type 4 (Segment Routing Header)")
+Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
+Signed-off-by: Minhong He <heminhong@kylinos.cn>
+Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Link: https://patch.msgid.link/20260316073301.106643-1-heminhong@kylinos.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dmi.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv6/exthdrs.c   | 4 ++++
+ net/ipv6/seg6_hmac.c | 2 ++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/include/linux/dmi.h b/include/linux/dmi.h
-index 927f8a8b7a1dd..2eedf44e68012 100644
---- a/include/linux/dmi.h
-+++ b/include/linux/dmi.h
-@@ -60,6 +60,7 @@ enum dmi_entry_type {
- 	DMI_ENTRY_OOB_REMOTE_ACCESS,
- 	DMI_ENTRY_BIS_ENTRY,
- 	DMI_ENTRY_SYSTEM_BOOT,
-+	DMI_ENTRY_64_MEM_ERROR,
- 	DMI_ENTRY_MGMT_DEV,
- 	DMI_ENTRY_MGMT_DEV_COMPONENT,
- 	DMI_ENTRY_MGMT_DEV_THRES,
-@@ -69,6 +70,10 @@ enum dmi_entry_type {
- 	DMI_ENTRY_ADDITIONAL,
- 	DMI_ENTRY_ONBOARD_DEV_EXT,
- 	DMI_ENTRY_MGMT_CONTROLLER_HOST,
-+	DMI_ENTRY_TPM_DEVICE,
-+	DMI_ENTRY_PROCESSOR_ADDITIONAL,
-+	DMI_ENTRY_FIRMWARE_INVENTORY,
-+	DMI_ENTRY_STRING_PROPERTY,
- 	DMI_ENTRY_INACTIVE = 126,
- 	DMI_ENTRY_END_OF_TABLE = 127,
- };
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index cdad9019c77c4..dfa0fb3d6c35f 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -361,6 +361,10 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
+ 	hdr = (struct ipv6_sr_hdr *)skb_transport_header(skb);
+ 
+ 	idev = __in6_dev_get(skb->dev);
++	if (!idev) {
++		kfree_skb(skb);
++		return -1;
++	}
+ 
+ 	accept_seg6 = net->ipv6.devconf_all->seg6_enabled;
+ 	if (accept_seg6 > idev->cnf.seg6_enabled)
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index f82fcd8908e14..b52985c867c29 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -245,6 +245,8 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
+ 	struct inet6_dev *idev;
+ 
+ 	idev = __in6_dev_get(skb->dev);
++	if (!idev)
++		return false;
+ 
+ 	srh = (struct ipv6_sr_hdr *)skb_transport_header(skb);
+ 
 -- 
 2.53.0
 
