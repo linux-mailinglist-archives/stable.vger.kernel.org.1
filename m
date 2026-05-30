@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-259014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257636-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCm+Gv0uG2paAAkAu9opvQ
-	(envelope-from <stable+bounces-259014-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:57 +0200
+	id KDUTJsgcG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257636-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1632E61232F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3598860F823
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A9FBB304448F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E5EA8300FAA6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05C13546F6;
-	Sat, 30 May 2026 18:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAD1263F44;
+	Sat, 30 May 2026 17:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/QDQN+2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6Zg4aXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BABC26738C;
-	Sat, 30 May 2026 18:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABCE14A62B;
+	Sat, 30 May 2026 17:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166301; cv=none; b=DidLoNyHVpoLB7SvXnx2X3MIs7SRCbWYRc47k5wNRJiDag7Zhfpi62EHxr5TkmXVaxnlkvQhXf09tMIkSgymdC4DuuFq0H+/kNZWr4By+Lb4L/5N1fEnMQw1992ygyHcm7+2xyZddWCnS4rFDrwbX5CKSwYVWai/+NsVorGFTO0=
+	t=1780161665; cv=none; b=kqRNwkWq/wI63JWkjg9iP0Mo8/vQFvblyKTu276LHnL6uYEnLnyVZChX1S2NB7+b0fgdyjOBQcTxgkoUK35ffrbQVMJ+j7JUQF3vfUcdQGLjDviVysWAanACwHHoxaNpnj1bn5vV1ALWEr6z+6NkHlx3oWWt8trfNDPc0RpJDx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166301; c=relaxed/simple;
-	bh=jaoeQG/QmuW3EL7STiSUS2Wsbradn5hbOhTPmRwCys0=;
+	s=arc-20240116; t=1780161665; c=relaxed/simple;
+	bh=IJqHAO3DBsykUbrdPhU/eg1i9DeP5nMa2ZYy88c4MUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6QsrvaGWAHHzr7zbNOE3tUQwezgun3yLGmuLj/uYR6tObkEfSOFTMXNWLJrbPq8d0BvUVxxt+gRGwE3jwJB2cr/1r+g0RlFwl8lfIWopNg577f2PWsHF3kmsFpa58QWHOcOxGymByyM5YqtIdPt10y5RPfRhfPBOAIMgwsdIf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/QDQN+2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4651F00893;
-	Sat, 30 May 2026 18:38:19 +0000 (UTC)
+	 MIME-Version; b=nRNBOrR8WmwSIfC6IoelNGlyPJYR+SLR4xk3zIR1a2brgY6OEz+uMgDpxLiLpiXZboAQ7a2BFMSqHj76r95pZIOe3ikrK6siB//mlGYHAyKjefg/CUWFdJB5uzwokRmAQlJgWfqxk01K125jyLpQTf1YVYsIzzK1d1ebJ/P0dlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6Zg4aXF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2A31F00893;
+	Sat, 30 May 2026 17:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166300;
-	bh=3k567y9WnhbmXMrkn82qkRfBOu4HMOw4AVn10C+hH8U=;
+	s=korg; t=1780161664;
+	bh=5lw4hW9B24PbLfPLz6vTcQk746Ye1wMRGExJHv9hlyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c/QDQN+2wPQVXYULbutqpzyN2sEHLRVtgD4sLzsEh9Oi2yMAJXcSst9gdN15jvs0E
-	 wxt56O5kNXN7FZya2FK3xRUcRmW34GFlfOy+KkyJPwMUG92vJQVyiIm/Vh0l5l9Q4u
-	 t8b3Uowj80rx/cuTA7cHXCzuxhuN6Y31TQhpoVRw=
+	b=r6Zg4aXF7WjsA0RU4+nDCT6LDg1PK4KrooT+Mi+y9IsarzYhs8tCRzPTCq717fIgH
+	 XGO6bBjVaYThM0k9+GH/yfUJojgygS9z7bRf4H4YQLOE5tzwHq8FiVrlWTLSXDgkJR
+	 D19tH3IiI/dtIIARt/Gih+exwBbJ9BhpJgLyNTIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Alexander Koskovich <akoskovich@pm.me>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 333/589] drm/msm/dsi: rename MSM8998 DSI version from V2_2_0 to V2_0_0
+Subject: [PATCH 6.1 690/969] tcp: annotate data-races around tp->bytes_sent
 Date: Sat, 30 May 2026 18:03:34 +0200
-Message-ID: <20260530160233.658503050@linuxfoundation.org>
+Message-ID: <20260530160319.563988220@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,93 +66,82 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259014-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257636-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,patchwork.freedesktop.org:url,pm.me:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 1632E61232F
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 3598860F823
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Koskovich <akoskovich@pm.me>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 913a709dea0eff9c7b2e9470f8c8594b9a0114ab ]
+[ Upstream commit ee43e957ce2ec77b2ec47fef28f3c0df6ab01a31 ]
 
-The MSM8998 DSI controller is v2.0.0 as stated in commit 7b8c9e203039
-("drm/msm/dsi: Add support for MSM8998 DSI controller"). The value was
-always correct just the name was wrong.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Rename and reorder to maintain version sorting.
-
-Fixes: 7b8c9e203039 ("drm/msm/dsi: Add support for MSM8998 DSI controller")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
-Patchwork: https://patchwork.freedesktop.org/patch/713717/
-Link: https://lore.kernel.org/r/20260324-dsi-rgb101010-support-v5-3-ff6afc904115@pm.me
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: ba113c3aa79a ("tcp: add data bytes sent stats")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-8-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_cfg.c | 4 ++--
- drivers/gpu/drm/msm/dsi/dsi_cfg.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ net/ipv4/tcp.c        | 2 +-
+ net/ipv4/tcp_output.c | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.c b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-index 73f066ef6f406..310b568c38664 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-@@ -258,10 +258,10 @@ static const struct msm_dsi_cfg_handler dsi_cfg_handlers[] = {
- 		&msm8996_dsi_cfg, &msm_dsi_6g_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_4_2,
- 		&msm8976_dsi_cfg, &msm_dsi_6g_host_ops},
-+	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_0_0,
-+		&msm8998_dsi_cfg, &msm_dsi_6g_v2_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_1_0,
- 		&sdm660_dsi_cfg, &msm_dsi_6g_v2_host_ops},
--	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_2_0,
--		&msm8998_dsi_cfg, &msm_dsi_6g_v2_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_2_1,
- 		&sdm845_dsi_cfg, &msm_dsi_6g_v2_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_3_0,
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.h b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-index ade9b609c7d98..89386b10dc48b 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-+++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-@@ -18,8 +18,8 @@
- #define MSM_DSI_6G_VER_MINOR_V1_3_1	0x10030001
- #define MSM_DSI_6G_VER_MINOR_V1_4_1	0x10040001
- #define MSM_DSI_6G_VER_MINOR_V1_4_2	0x10040002
-+#define MSM_DSI_6G_VER_MINOR_V2_0_0	0x20000000
- #define MSM_DSI_6G_VER_MINOR_V2_1_0	0x20010000
--#define MSM_DSI_6G_VER_MINOR_V2_2_0	0x20000000
- #define MSM_DSI_6G_VER_MINOR_V2_2_1	0x20020001
- #define MSM_DSI_6G_VER_MINOR_V2_3_0	0x20030000
- #define MSM_DSI_6G_VER_MINOR_V2_4_0	0x20040000
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 17e6f5e90b1af..eb59c3d022bb7 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4108,7 +4108,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE, tp->write_seq - tp->snd_una);
+ 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
+ 
+-	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, tp->bytes_sent,
++	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, READ_ONCE(tp->bytes_sent),
+ 			  TCP_NLA_PAD);
+ 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS, tp->bytes_retrans,
+ 			  TCP_NLA_PAD);
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index bff8b08a11ba5..bb023a07cb1fc 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -1382,7 +1382,8 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
+ 		tcp_event_data_sent(tp, sk);
+ 		WRITE_ONCE(tp->data_segs_out,
+ 			   tp->data_segs_out + tcp_skb_pcount(skb));
+-		tp->bytes_sent += skb->len - tcp_header_size;
++		WRITE_ONCE(tp->bytes_sent,
++			   tp->bytes_sent + skb->len - tcp_header_size);
+ 	}
+ 
+ 	if (after(tcb->end_seq, tp->snd_nxt) || tcb->seq == tcb->end_seq)
 -- 
 2.53.0
 
