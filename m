@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-257378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258125-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBkdHB4ZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257378-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:06:38 +0200
+	id eDTiAsokG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258125-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1536360EE52
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:06:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6270F610AD8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A1E26300B9D4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBBD5302D945
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79CA395AEA;
-	Sat, 30 May 2026 17:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2333AFCF3;
+	Sat, 30 May 2026 17:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1oQCL9A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DG4QwcFl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6C7481DD;
-	Sat, 30 May 2026 17:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2904E349CCF;
+	Sat, 30 May 2026 17:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160790; cv=none; b=MummM8NEbrAkOrcLSAZumFix8c2oWrn+FK4FT3Tp8i5hOyH0wE6t5CPw4aLGDx0hYcI+rCVmnnXmcYRsTlwLuQN5AiMk+THb/m4C9jIavA1jTV7zSkA12BjdAuh+RfOJjfg0NpQL9h69eIMdvk4Q5Ta5RWscuB4/LZdu9ufky+Q=
+	t=1780163301; cv=none; b=p7henzc3zv2/ZIJ9R7F6zkjr7iaM7HPN41Yf3JMNxBgCT3yasK0HOPx7bjCofSfwPBi3svYa+YgKbC38a+hn8HiJ67PD+5qBW9oUKoC8vBBxqLnS9KC7JcIGREGa4yT9ikHU2tY3hEENJorjlK7FiZb1rUaZ0+QJTkMKyqkc5+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160790; c=relaxed/simple;
-	bh=TjY1o+F5AgKylNUrca2kiwSK91VlJqdgFP3tuLiOEAA=;
+	s=arc-20240116; t=1780163301; c=relaxed/simple;
+	bh=G32AxUK+8kUeRcu/txDeB07oDOQy4HvnVbfFD9Uj5m0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bBho5ixON75Mt+nNZVBQR5tZBkagf87ptpF7u/TkqLT9f6TeBwdh7PAw4LSX43KsFId07QMDdT8BiIsjF9rHFkSmZRLLHLNQNlL8WrdVTB5I9mFPI68/I4MX5Gp8BC6gKqYjWUR26URvE5xK9+BAzyunL58NC42SbEGZLHMWtqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1oQCL9A; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BB31F00893;
-	Sat, 30 May 2026 17:06:28 +0000 (UTC)
+	 MIME-Version; b=fA2JqamaQOm6YaAG/lte+JjUvk7jPeDBJuPH8Z4LMBnwomXcc90NYPfVSX5SZsB0OveENTSa9bYB7G6nQNax4FV/XTgcvR40tTlLMrXkElY7Jp6jeKszivKLsvyUAy9nXkmet5W5k1xGzRpSNKq579gEEyRng2g/e3LnC1G4pdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DG4QwcFl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2884A1F00893;
+	Sat, 30 May 2026 17:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160789;
-	bh=xQYJXAX+XtOYfQBQYwkDBGNIb193AqzPdrltyYHOqW0=;
+	s=korg; t=1780163299;
+	bh=5UJhx2KS7NyXat7bibUeuM3KnfJUTHqMS7CsPQV3jKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D1oQCL9AEGGFpv9kr12YRCemp2OIBoC1+0SHB1HF1JgCFDQtM1FQs7qgP0xOcVR6S
-	 7WXHyAW3C36SCZHIEpHejwJwCeu9VqiT3lqLejQnthdKHO/OS00LZ7RRJ+AWrhw7RP
-	 2nK9J1btCFzu8uMlPxxO93pw6MXVjc7MXsxGV8DA=
+	b=DG4QwcFlAuezn0WVShKdNZVfEy4J0QVZ00vPXCKkMqBFKztYN3uD1+4PFovTcFsJM
+	 3bmdbzQn3+QojVP80O6n41103Mir0mqyRmMrR1XYNJjE3v4N1cp0LBQZkV3DJ+U/vC
+	 /wzF7Ox0GL0BXbFCU/dSFMay3/dEfVjXbqevPLq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Cheng <benjamin.cheng@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 406/969] drm/amdgpu/vcn3: Prevent OOB reads when parsing dec msg
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 216/776] ALSA: caiaq: Handle probe errors properly
 Date: Sat, 30 May 2026 17:58:50 +0200
-Message-ID: <20260530160311.494083907@linuxfoundation.org>
+Message-ID: <20260530160246.101625975@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +61,162 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-257378-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258125-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 1536360EE52
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6270F610AD8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Cheng <benjamin.cheng@amd.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit b193019860d61e92da395eae2011f2f6716b182f upstream.
+commit 28abd224db4a49560b452115bca3672a20e45b2f upstream.
 
-Check bounds against the end of the BO whenever we access the msg.
+The probe procedure of setup_card() in caiaq driver doesn't treat the
+error cases gracefully, e.g. the error from snd_card_register() calls
+snd_card_free() but continues.  This would lead to a UAF for the
+further calls like snd_usb_caiaq_control_init(), as Berk suggested in
+another patch in the link below.
 
-Signed-off-by: Benjamin Cheng <benjamin.cheng@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+However, the problem is not only that; in general, this function drops
+the all error handlings (as it's a void function) although its caller
+can propagate an error to snd_probe(), which eventually calls
+snd_card_free() as a proper error path.  That said, we should treat
+each error case in setup_card(), and just return the error code
+promptly, which is then handled later as a fatal error in snd_probe().
+
+This patch achieves it by changing the setup_card() to return an error
+code.  Also, the superfluous snd_card_free() call is removed, too.
+
+Note that card->private_free can be set still safely at returning an
+error.  All called functions in card_free() have checks of the
+unassigned resources or NULL checks.
+
+Fixes: 8e3cd08ed8e5 ("[ALSA] caiaq - add control API and more input features")
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20260413034941.1131465-2-berkcgoksel@gmail.com
+Link: https://patch.msgid.link/20260414105916.364073-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c |   23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ sound/usb/caiaq/device.c |   33 ++++++++++++++++++++++++---------
+ 1 file changed, 24 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
-@@ -1781,7 +1781,7 @@ static int vcn_v3_0_dec_msg(struct amdgp
+--- a/sound/usb/caiaq/device.c
++++ b/sound/usb/caiaq/device.c
+@@ -290,7 +290,7 @@ int snd_usb_caiaq_set_auto_msg(struct sn
+ 					  tmp, sizeof(tmp));
+ }
+ 
+-static void setup_card(struct snd_usb_caiaqdev *cdev)
++static int setup_card(struct snd_usb_caiaqdev *cdev)
  {
- 	struct ttm_operation_ctx ctx = { false, false };
- 	struct amdgpu_bo_va_mapping *map;
--	uint32_t *msg, num_buffers;
-+	uint32_t *msg, num_buffers, len_dw;
- 	struct amdgpu_bo *bo;
- 	uint64_t start, end;
- 	unsigned int i;
-@@ -1802,6 +1802,11 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 		return -EINVAL;
+ 	int ret;
+ 	char val[4];
+@@ -325,8 +325,10 @@ static void setup_card(struct snd_usb_ca
+ 		snd_usb_caiaq_send_command(cdev, EP1_CMD_READ_IO, NULL, 0);
+ 
+ 		if (!wait_event_timeout(cdev->ep1_wait_queue,
+-					cdev->control_state[0] != 0xff, HZ))
+-			return;
++					cdev->control_state[0] != 0xff, HZ)) {
++			dev_err(dev, "Read timeout for control state\n");
++			return -EINVAL;
++		}
+ 
+ 		/* fix up some defaults */
+ 		if ((cdev->control_state[1] != 2) ||
+@@ -347,33 +349,43 @@ static void setup_card(struct snd_usb_ca
+ 	    cdev->spec.num_digital_audio_out +
+ 	    cdev->spec.num_digital_audio_in > 0) {
+ 		ret = snd_usb_caiaq_audio_init(cdev);
+-		if (ret < 0)
++		if (ret < 0) {
+ 			dev_err(dev, "Unable to set up audio system (ret=%d)\n", ret);
++			return ret;
++		}
  	}
  
-+	if (end - addr < 16) {
-+		DRM_ERROR("VCN messages must be at least 4 DWORDs!\n");
-+		return -EINVAL;
-+	}
-+
- 	bo->flags |= AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
- 	amdgpu_bo_placement_from_domain(bo, bo->allowed_domains);
- 	r = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
-@@ -1818,8 +1823,8 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 
- 	msg = ptr + addr - start;
- 
--	/* Check length */
- 	if (msg[1] > end - addr) {
-+		DRM_ERROR("VCN message header does not fit in BO!\n");
- 		r = -EINVAL;
- 		goto out;
+ 	if (cdev->spec.num_midi_in +
+ 	    cdev->spec.num_midi_out > 0) {
+ 		ret = snd_usb_caiaq_midi_init(cdev);
+-		if (ret < 0)
++		if (ret < 0) {
+ 			dev_err(dev, "Unable to set up MIDI system (ret=%d)\n", ret);
++			return ret;
++		}
  	}
-@@ -1827,7 +1832,16 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 	if (msg[3] != RDECODE_MSG_CREATE)
- 		goto out;
  
-+	len_dw = msg[1] / 4;
- 	num_buffers = msg[2];
-+
-+	/* Verify that all indices fit within the claimed length. Each index is 4 DWORDs */
-+	if (num_buffers > len_dw || 6 + num_buffers * 4 > len_dw) {
-+		DRM_ERROR("VCN message has too many buffers!\n");
-+		r = -EINVAL;
-+		goto out;
+ #ifdef CONFIG_SND_USB_CAIAQ_INPUT
+ 	ret = snd_usb_caiaq_input_init(cdev);
+-	if (ret < 0)
++	if (ret < 0) {
+ 		dev_err(dev, "Unable to set up input system (ret=%d)\n", ret);
++		return ret;
++	}
+ #endif
+ 
+ 	/* finally, register the card and all its sub-instances */
+ 	ret = snd_card_register(cdev->chip.card);
+ 	if (ret < 0) {
+ 		dev_err(dev, "snd_card_register() returned %d\n", ret);
+-		snd_card_free(cdev->chip.card);
++		return ret;
+ 	}
+ 
+ 	ret = snd_usb_caiaq_control_init(cdev);
+-	if (ret < 0)
++	if (ret < 0) {
+ 		dev_err(dev, "Unable to set up control system (ret=%d)\n", ret);
++		return ret;
 +	}
 +
- 	for (i = 0, msg = &msg[6]; i < num_buffers; ++i, msg += 4) {
- 		uint32_t offset, size, *create;
++	return 0;
+ }
  
-@@ -1837,14 +1851,15 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 		offset = msg[1];
- 		size = msg[2];
+ static void card_free(struct snd_card *card)
+@@ -499,8 +511,11 @@ static int init_card(struct snd_usb_caia
+ 	snprintf(card->longname, sizeof(card->longname), "%s %s (%s)",
+ 		       cdev->vendor_name, cdev->product_name, usbpath);
  
--		if (offset + size > end) {
-+		if (size < 4 || offset + size > end - addr) {
-+			DRM_ERROR("VCN message buffer exceeds BO bounds!\n");
- 			r = -EINVAL;
- 			goto out;
- 		}
+-	setup_card(cdev);
+ 	card->private_free = card_free;
++	err = setup_card(cdev);
++	if (err < 0)
++		return err;
++
+ 	return 0;
  
- 		create = ptr + addr + offset - start;
- 
--		/* H246, HEVC and VP9 can run on any instance */
-+		/* H264, HEVC and VP9 can run on any instance */
- 		if (create[0] == 0x7 || create[0] == 0x10 || create[0] == 0x11)
- 			continue;
- 
+  err_kill_urb:
 
 
 
