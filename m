@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6InEKB0nG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258411-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:21 +0200
+	id WJBUDm0vG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE74610FF8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E4861243D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 643633012CC2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:04:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BF2F630BB5D4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EF9341AC7;
-	Sat, 30 May 2026 18:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6871D351C2F;
+	Sat, 30 May 2026 18:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rjoy0f30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUTyvEiT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2EB23392B;
-	Sat, 30 May 2026 18:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E96226738C;
+	Sat, 30 May 2026 18:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164260; cv=none; b=Feoq5AmORbch2aSmZQTs+eOGQC4V7fLJYvrUcsRN7TvmQSeC4aqF5cd8z1ILhsgGW5fRpKCgEUFfzrVrfmAMDegaEUBfTQR8ao20H2gRCp6VhQ1kUMJES9MoWorAMlhXTAZw8nVFZAeQAEb91ZsQMNS9Nohhg+PiXB9IJvK2LDg=
+	t=1780166308; cv=none; b=O2TZxl5N8/rGFNPCuX33+L38kj62RsZoVQnYHDE58a9dRUVHnrxQVUI7HMwHS0x12Dgq74NEaEJRR03dme2ijV2mt2mT/PHpabAObrQ86dDUaSOSfiUwIgOEIU4Ba3tHnxkxfyCpYwyJX2L5bIeXtLvGQpS/dVjoNAuLsferaTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164260; c=relaxed/simple;
-	bh=p8QtX6byK+8vzZKgn54mkS4KNs+hmkG2ULUWrUHNwwc=;
+	s=arc-20240116; t=1780166308; c=relaxed/simple;
+	bh=BtOjaUMbRVOOlSsfMfLnuElHMXZtPz1v7TwA5m7T1lI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q4+vRCMhFZsmrX66PTfvt3kdjC/P6oRr+sR/+On4x5jIR2aXzCMFeyfIrtUrDPZ8/qB0Ia5hhCo4rRo6Tuc6E5FvK/M3K8VVSd2kVVAwB6KY3WNE8lLEY2Ocv3SnbT4QCm2/UIm+T8orP7m1zt1Ewo8fTpnKLhKom64VQbxS1bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rjoy0f30; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900891F00893;
-	Sat, 30 May 2026 18:04:18 +0000 (UTC)
+	 MIME-Version; b=bG5BsCVqvgb8RKSnMwbNCF5C/qbdrmJaj5MuWt/eA9dT1WiPziBG1fwPYK1HhHiu+nl1Ey6eryJXv4C2rIy1oBldGz//xz2g5WpHIjU2KFZhhDxLr61dgUkduut0uTpAW6gRR9v10cZfDz80orNRYylnrU1kdHEqq67eCdviBII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUTyvEiT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728C31F00893;
+	Sat, 30 May 2026 18:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164259;
-	bh=MuOOvIPqVZLop6qecp0RlyyXY8E/cfOmMll8mL6GXow=;
+	s=korg; t=1780166307;
+	bh=Ba/2fltFEUvEV4ACbv6/8abZwQ5MGxxkqX41coqsBpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Rjoy0f30KERiabG+h0kZC5hgiUBDfmjdZdm8Xel5+7mResbmK/tSyI3SYde/21zST
-	 lPtKZmBxph7wPwz89U5tL7QEyOmoGxEor1cF0IOGOOIb9t8uJ0741W/e4r7wn+NaKS
-	 ekIJQETTjDXwbEiNOodGHjWqj/V5KPsznhRWUjC8=
+	b=sUTyvEiTfNNWdRRuzYDMnaOLFbeuOs1APttMyYZ8fRCFjKwJ/Ar0JgsGax+x6/4K+
+	 JXyFFOMdyNjYTUW48PopPRM0dpS+0dqR8zlkp304Odae5wXfTEyK+jY15YBZn2QATC
+	 BFF33SAED2B4IRdDxmelP3Rs3KiGMmRSzA1yBaew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Zanussi <zanussi@kernel.org>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 502/776] tracing: Rebuild full_name on each hist_field_name() call
+Subject: [PATCH 5.10 335/589] ALSA: compress: Drop unused functions
 Date: Sat, 30 May 2026 18:03:36 +0200
-Message-ID: <20260530160253.263757282@linuxfoundation.org>
+Message-ID: <20260530160233.708664179@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258411-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259016-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,63 +91,133 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,goodmis.org:email]
-X-Rspamd-Queue-Id: 2CE74610FF8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C7E4861243D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 5ec1d1e97de134beed3a5b08235a60fc1c51af96 ]
+[ Upstream commit fc93c96fe34e10b873fef73e80cee52503f3a679 ]
 
-hist_field_name() uses a static MAX_FILTER_STR_VAL buffer for fully
-qualified variable-reference names, but it currently appends into that
-buffer with strcat() without rebuilding it first. As a result, repeated
-calls append a new "system.event.field" name onto the previous one,
-which can eventually run past the end of full_name.
+snd_compress_register() and snd_compress_deregister() API functions
+have been never used by in-tree drivers.
+Let's clean up the dead code.
 
-Build the name with snprintf() on each call and return NULL if the fully
-qualified name does not fit in MAX_FILTER_STR_VAL.
-
-Link: https://patch.msgid.link/20260401112224.85582-1-pengpeng@iscas.ac.cn
-Fixes: 067fe038e70f ("tracing: Add variable reference handling to hist triggers")
-Reviewed-by: Tom Zanussi <zanussi@kernel.org>
-Tested-by: Tom Zanussi <zanussi@kernel.org>
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Vinod Koul <vkoul@kernel.org>
+Reviewed-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://lore.kernel.org/r/20210714162424.4412-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 796e119e9b14 ("ALSA: core: Validate compress device numbers without dynamic minors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ include/sound/compress_driver.h |  2 -
+ sound/core/compress_offload.c   | 68 ---------------------------------
+ 2 files changed, 70 deletions(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 8795913425416..03473d1e5f8bf 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -1141,12 +1141,14 @@ static const char *hist_field_name(struct hist_field *field,
- 		 field->flags & HIST_FIELD_FL_VAR_REF) {
- 		if (field->system) {
- 			static char full_name[MAX_FILTER_STR_VAL];
-+			int len;
-+
-+			len = snprintf(full_name, sizeof(full_name), "%s.%s.%s",
-+				       field->system, field->event_name,
-+				       field->name);
-+			if (len >= sizeof(full_name))
-+				return NULL;
+diff --git a/include/sound/compress_driver.h b/include/sound/compress_driver.h
+index 70cbc5095e725..c74bf9931fb33 100644
+--- a/include/sound/compress_driver.h
++++ b/include/sound/compress_driver.h
+@@ -161,8 +161,6 @@ struct snd_compr {
+ };
  
--			strcat(full_name, field->system);
--			strcat(full_name, ".");
--			strcat(full_name, field->event_name);
--			strcat(full_name, ".");
--			strcat(full_name, field->name);
- 			field_name = full_name;
- 		} else
- 			field_name = field->name;
+ /* compress device register APIs */
+-int snd_compress_register(struct snd_compr *device);
+-int snd_compress_deregister(struct snd_compr *device);
+ int snd_compress_new(struct snd_card *card, int device,
+ 			int type, const char *id, struct snd_compr *compr);
+ 
+diff --git a/sound/core/compress_offload.c b/sound/core/compress_offload.c
+index c1fec932c49d1..8d1f71a621787 100644
+--- a/sound/core/compress_offload.c
++++ b/sound/core/compress_offload.c
+@@ -47,8 +47,6 @@
+  *	driver should be able to register multiple nodes
+  */
+ 
+-static DEFINE_MUTEX(device_mutex);
+-
+ struct snd_compr_file {
+ 	unsigned long caps;
+ 	struct snd_compr_stream stream;
+@@ -1170,72 +1168,6 @@ int snd_compress_new(struct snd_card *card, int device,
+ }
+ EXPORT_SYMBOL_GPL(snd_compress_new);
+ 
+-static int snd_compress_add_device(struct snd_compr *device)
+-{
+-	int ret;
+-
+-	if (!device->card)
+-		return -EINVAL;
+-
+-	/* register the card */
+-	ret = snd_card_register(device->card);
+-	if (ret)
+-		goto out;
+-	return 0;
+-
+-out:
+-	pr_err("failed with %d\n", ret);
+-	return ret;
+-
+-}
+-
+-static int snd_compress_remove_device(struct snd_compr *device)
+-{
+-	return snd_card_free(device->card);
+-}
+-
+-/**
+- * snd_compress_register - register compressed device
+- *
+- * @device: compressed device to register
+- */
+-int snd_compress_register(struct snd_compr *device)
+-{
+-	int retval;
+-
+-	if (device->name == NULL || device->ops == NULL)
+-		return -EINVAL;
+-
+-	pr_debug("Registering compressed device %s\n", device->name);
+-	if (snd_BUG_ON(!device->ops->open))
+-		return -EINVAL;
+-	if (snd_BUG_ON(!device->ops->free))
+-		return -EINVAL;
+-	if (snd_BUG_ON(!device->ops->set_params))
+-		return -EINVAL;
+-	if (snd_BUG_ON(!device->ops->trigger))
+-		return -EINVAL;
+-
+-	mutex_init(&device->lock);
+-
+-	/* register a compressed card */
+-	mutex_lock(&device_mutex);
+-	retval = snd_compress_add_device(device);
+-	mutex_unlock(&device_mutex);
+-	return retval;
+-}
+-EXPORT_SYMBOL_GPL(snd_compress_register);
+-
+-int snd_compress_deregister(struct snd_compr *device)
+-{
+-	pr_debug("Removing compressed device %s\n", device->name);
+-	mutex_lock(&device_mutex);
+-	snd_compress_remove_device(device);
+-	mutex_unlock(&device_mutex);
+-	return 0;
+-}
+-EXPORT_SYMBOL_GPL(snd_compress_deregister);
+-
+ MODULE_DESCRIPTION("ALSA Compressed offload framework");
+ MODULE_AUTHOR("Vinod Koul <vinod.koul@linux.intel.com>");
+ MODULE_LICENSE("GPL v2");
 -- 
 2.53.0
 
