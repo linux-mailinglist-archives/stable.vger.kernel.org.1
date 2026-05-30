@@ -1,66 +1,68 @@
-Return-Path: <stable+bounces-258760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMplIdorG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:34 +0200
+	id GDuMG1AjG2pa/ggAu9opvQ
+	(envelope-from <stable+bounces-258156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E14611BD8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDB46107C3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BEEFC30A2648
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 93B3A3003816
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A81279DC9;
-	Sat, 30 May 2026 18:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33A6349CCF;
+	Sat, 30 May 2026 17:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVK5ir63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRPf7/S7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D246219303;
-	Sat, 30 May 2026 18:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9D4261B9E;
+	Sat, 30 May 2026 17:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165447; cv=none; b=fvrm6CS9omPPdaad14J+bOo6dhSBHaYzIvjR7P1vhIU7praKb/IDZy+8wK1Jhvl4QkmO+RtE0eqxAMJQhS0xsnPHMBlfGeDILQH7BOX4wEgNV19ftUJs/WYDqRRZ+qxbCm2mQ28NSw0VrfdtGZFxVIEuHDCzRytdORVEAusjD3o=
+	t=1780163403; cv=none; b=u3B+lnD7vou20q8pE/0vt4zXiz6/HuKy/8RY62xMbvsx8WomAWkBbFTcxFMTqVYylfnjF1pSGjJjC3kaRSXlA7iaiWmSjlyhbTfNErOInHEbCHumMmzIUzK+kX8jlwl4swP8of3BeWws2uZEdZ0Vyv3OTDmfoaNAK/3UxGYpAwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165447; c=relaxed/simple;
-	bh=VIfMYOtH61bNFQsVCqs4YpPD+jRYLzZu9hb7lx0uLg4=;
+	s=arc-20240116; t=1780163403; c=relaxed/simple;
+	bh=uh8blkUR7pPKRg+a64gz1655VrrXqSTIEEHR7+pcJyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CBuDmQBR2x5IzXRgz+3tk/y1cBdFLaX+TC4MB+t+ppyVMfP9TRGJOA3ljZz5XORyqGEoB0444aMl/dTHaOC3qcRft7HjpI8po16YEz6u4VNaaILR4fREjdqiJ5OPOHK6lvPc0UyL75+jPSJNency0Iiv0B/SsZVW39um0GFM5xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVK5ir63; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631C01F00893;
-	Sat, 30 May 2026 18:24:05 +0000 (UTC)
+	 MIME-Version; b=WeuF6Nq6lxM2SxXLGQR6KSKRf4T3IvweLURCiE8toJobD+HBWS+PlE5WNMp59IneS+yPuXojVYbZZU3hM3xeKtUJVMr8x+xQWNhUM90u6cu6HFv+5R+kVI2PqcgE99vCbgT2PD7OLGj4OahWMUAFG28/Oi3QKlemXRx18U0Js9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRPf7/S7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA99F1F00893;
+	Sat, 30 May 2026 17:50:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165446;
-	bh=iypEiWAOs5Qg3ura7e2kzMzEkhHN8a2AAVnaLc1jP50=;
+	s=korg; t=1780163402;
+	bh=QXN0l+4nuta6iZuue7cMfO3DE1QNMmXjzOym0OOfx7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TVK5ir63LQF4AlPURIZpqwnhUl6Jay22ZGKuu5s5cOGoQJHPgCUOiCuG3irQgWDmW
-	 o/KnDpKrRnbVZczCMZ+9oU+azbZOyKkX+zDczQact758fdpXC0QA/Hu//IhZLg9md3
-	 rSbouCXYvG0WSS8jzixfp86jasFx2kZV8QjYrCu0=
+	b=jRPf7/S7FqoRG6/s+q3j7JWClqTiyitodzL0br58dGe2YduS8a+pwrcOErLd2Fm/X
+	 IuJUjWVscm+oVyr+o0HjeMvEJUJvz0GXWPvDnRtE9hGGleo+Ak181ri/JWiq2vGR4b
+	 OeyUM3K3UYvkSuW/mv5rwlKwDHGiFhsAOjWCr8Iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejas Bharambe <tejas.bharambe@outlook.com>,
-	syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
+	"Denis M. Karpov" <komlomal@gmail.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Harry Yoo (Oracle)" <harry@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jann Horn <jannh@google.com>,
+	Peter Xu <peterx@redhat.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 063/589] ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
+Subject: [PATCH 5.15 230/776] userfaultfd: allow registration of ranges below mmap_min_addr
 Date: Sat, 30 May 2026 17:59:04 +0200
-Message-ID: <20260530160226.255180869@linuxfoundation.org>
+Message-ID: <20260530160246.471857564@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,139 +73,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-258760-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,syzkaller.appspotmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258156-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,suse.de,oracle.com,zeniv.linux.org.uk,suse.cz,google.com,redhat.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,a49010a0e8fcdeea075f];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 05E14611BD8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,oracle.com:email,linux.org.uk:email]
+X-Rspamd-Queue-Id: 0FDB46107C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejas Bharambe <tejas.bharambe@outlook.com>
+From: Denis M. Karpov <komlomal@gmail.com>
 
-commit 7de554cabf160e331e4442e2a9ad874ca9875921 upstream.
+commit 161ce69c2c89781784b945d8e281ff2da9dede9c upstream.
 
-filemap_fault() may drop the mmap_lock before returning VM_FAULT_RETRY,
-as documented in mm/filemap.c:
+The current implementation of validate_range() in fs/userfaultfd.c
+performs a hard check against mmap_min_addr.  This is redundant because
+UFFDIO_REGISTER operates on memory ranges that must already be backed by a
+VMA.
 
-  "If our return value has VM_FAULT_RETRY set, it's because the mmap_lock
-  may be dropped before doing I/O or by lock_folio_maybe_drop_mmap()."
+Enforcing mmap_min_addr or capability checks again in userfaultfd is
+unnecessary and prevents applications like binary compilers from using
+UFFD for valid memory regions mapped by application.
 
-When this happens, a concurrent munmap() can call remove_vma() and free
-the vm_area_struct via RCU. The saved 'vma' pointer in ocfs2_fault() then
-becomes a dangling pointer, and the subsequent trace_ocfs2_fault() call
-dereferences it -- a use-after-free.
+Remove the redundant check for mmap_min_addr.
 
-Fix this by saving ip_blkno as a plain integer before calling
-filemap_fault(), and removing vma from the trace event. Since
-ip_blkno is copied by value before the lock can be dropped, it
-remains valid regardless of what happens to the vma or inode
-afterward.
+We started using UFFD instead of the classic mprotect approach in the
+binary translator to track application writes.  During development, we
+encountered this bug.  The translator cannot control where the translated
+application chooses to map its memory and if the app requires a
+low-address area, UFFD fails, whereas mprotect would work just fine.  I
+believe this is a genuine logic bug rather than an improvement, and I
+would appreciate including the fix in stable.
 
-Link: https://lkml.kernel.org/r/20260410083816.34951-1-tejas.bharambe@outlook.com
-Fixes: 614a9e849ca6 ("ocfs2: Remove FILE_IO from masklog.")
-Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
-Reported-by: syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a49010a0e8fcdeea075f
-Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
+Link: https://lore.kernel.org/20260409103345.15044-1-komlomal@gmail.com
+Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
+Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Peter Xu <peterx@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/mmap.c        |    7 +++----
- fs/ocfs2/ocfs2_trace.h |   10 ++++------
- 2 files changed, 7 insertions(+), 10 deletions(-)
+ fs/userfaultfd.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/fs/ocfs2/mmap.c
-+++ b/fs/ocfs2/mmap.c
-@@ -32,7 +32,8 @@
- 
- static vm_fault_t ocfs2_fault(struct vm_fault *vmf)
- {
--	struct vm_area_struct *vma = vmf->vma;
-+	unsigned long long ip_blkno =
-+		OCFS2_I(file_inode(vmf->vma->vm_file))->ip_blkno;
- 	sigset_t oldset;
- 	vm_fault_t ret;
- 
-@@ -40,11 +41,9 @@ static vm_fault_t ocfs2_fault(struct vm_
- 	ret = filemap_fault(vmf);
- 	ocfs2_unblock_signals(&oldset);
- 
--	trace_ocfs2_fault(OCFS2_I(vma->vm_file->f_mapping->host)->ip_blkno,
--			  vma, vmf->page, vmf->pgoff);
-+	trace_ocfs2_fault(ip_blkno, vmf->page, vmf->pgoff);
- 	return ret;
- }
--
- static vm_fault_t __ocfs2_page_mkwrite(struct file *file,
- 			struct buffer_head *di_bh, struct page *page)
- {
---- a/fs/ocfs2/ocfs2_trace.h
-+++ b/fs/ocfs2/ocfs2_trace.h
-@@ -1248,22 +1248,20 @@ TRACE_EVENT(ocfs2_write_end_inline,
- 
- TRACE_EVENT(ocfs2_fault,
- 	TP_PROTO(unsigned long long ino,
--		 void *area, void *page, unsigned long pgoff),
--	TP_ARGS(ino, area, page, pgoff),
-+		 void *page, unsigned long pgoff),
-+	TP_ARGS(ino, page, pgoff),
- 	TP_STRUCT__entry(
- 		__field(unsigned long long, ino)
--		__field(void *, area)
- 		__field(void *, page)
- 		__field(unsigned long, pgoff)
- 	),
- 	TP_fast_assign(
- 		__entry->ino = ino;
--		__entry->area = area;
- 		__entry->page = page;
- 		__entry->pgoff = pgoff;
- 	),
--	TP_printk("%llu %p %p %lu",
--		  __entry->ino, __entry->area, __entry->page, __entry->pgoff)
-+	TP_printk("%llu %p %lu",
-+		  __entry->ino, __entry->page, __entry->pgoff)
- );
- 
- /* End of trace events for fs/ocfs2/mmap.c. */
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -1242,8 +1242,6 @@ static __always_inline int validate_rang
+ 		return -EINVAL;
+ 	if (!len)
+ 		return -EINVAL;
+-	if (start < mmap_min_addr)
+-		return -EINVAL;
+ 	if (start >= task_size)
+ 		return -EINVAL;
+ 	if (len > task_size - start)
 
 
 
