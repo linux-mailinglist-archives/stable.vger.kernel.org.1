@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-257875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258624-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FIwKqUfG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257875-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:29 +0200
+	id aE5tLBwqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258624-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F25D60FF56
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4EA5611766
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9CA953013B8B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 82F4630086B1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF6433A9DA;
-	Sat, 30 May 2026 17:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80FF284690;
+	Sat, 30 May 2026 18:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLR8INBr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grYhM9Eo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BF734389F;
-	Sat, 30 May 2026 17:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CD932F770;
+	Sat, 30 May 2026 18:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162465; cv=none; b=kdWl+Aa+qgAa8P8G/wAPaso4CgQDrmpJLqJrHibiwy6+oxGpMyzgp0+uGm6X2HTe3RJIUKwjmJd1Zg++WzxxLisUTrvQl1VqUj4bF8vsgRyMO/vwiYDcqIKavysAdzOfzH8eBhzdNbXXXxYCuY9t78KLzF2yTZq0Q+py3r7DZjs=
+	t=1780164978; cv=none; b=KBpDPMa8icuBaj7xwXfbK4HqoEv8kwWTQlejRSIqqlzyYK75ItVyHJXa7p80oiWph0bJr1Ne0N1wZjpYdcVGb4I3CprawbNpQHpfEO/NfkqD++ncGFGSuvhk3w/vCIzKrtR8qGNTEkt7eItSUNzGRgW2CiU/nOyx008dwPpr9gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162465; c=relaxed/simple;
-	bh=NbobEh/1C+40blAxGaJhGzMFgM0qLhOTRMsRJYvxbhY=;
+	s=arc-20240116; t=1780164978; c=relaxed/simple;
+	bh=g1UOB/Vvry09N2QClNZfeefK523QVChB/JAaR5SXtNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qORnMQw4j3Ei8hxPWB8bha0t+yZuXddtZvxVQQNbzSLenY+X+IIbAOu/jcBgvJmYagJr7ADnevBR1LDcdf41txUV7I9WDMOTsDymrcXc8yqqsbBc6YhB0x/7neAFI+Ezo8qiasfehXxMQvdnhInOgoyrq6BzlJPuJmYJLFqslbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLR8INBr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6661F00893;
-	Sat, 30 May 2026 17:34:23 +0000 (UTC)
+	 MIME-Version; b=SL//EAB740calY6IzS2fLBGW6uTgYMBhE8rrUM1lNLFzj9nq6qU2o7BkYeiOOAs/OwwxTyGJXRDOMbJbND6b5JxEj3uRuDwfqyx0jBci9ResJXuO5hXFQ2ffVlsrY5W0j4LGYLN/+01Nbd38H0npmVE5qT4Pd+HroPQBodwecfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grYhM9Eo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC301F00893;
+	Sat, 30 May 2026 18:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162464;
-	bh=vdSpR3dQ4TjgGlASpYxs56toyu7rTVW0Zby0tx1UiKg=;
+	s=korg; t=1780164977;
+	bh=S4uY73jyX4KTBEgjHfIFWizU6uJ4y6Q5Yq2JRE1WF5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OLR8INBrQcRYBHyFWLGTdCf6pZHvWBjepN550eYTBoBbp0LH8b0RIZRMyNlPZVNxv
-	 r6BffMvn+63Q/FlS2fmLWb/lkjP6Eoo4RR6dJn2LSrvgQrcNBNg/HtoRybha59BbZE
-	 WxcK9RzjoZ7gFIQNWoDkarrVq+fLBjk2f4pVD7yc=
+	b=grYhM9EoOsK73dJ41YV6p7/ataK/Rfx8GyYud+L/TStds4ztK7GUsQplPvUyE4En+
+	 ViCNxIU5ANriCwNOlUf9Wd9ylY7mikKAlvWqztOyPv8t1cMUJBuURxuuVX3bjPqwWr
+	 u6sWzkIsatY0JNXyXuxeWpQRU/nn/Y4zqF22xPF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <david@davidgow.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 902/969] kunit: config: Enable KUNIT_DEBUGFS by default
-Date: Sat, 30 May 2026 18:07:06 +0200
-Message-ID: <20260530160325.620317633@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.15 713/776] batman-adv: tp_meter: avoid use of uninit sender vars
+Date: Sat, 30 May 2026 18:07:07 +0200
+Message-ID: <20260530160258.255345259@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,74 +71,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-258624-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257875-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4F25D60FF56
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,narfation.org:email]
+X-Rspamd-Queue-Id: B4EA5611766
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <david@davidgow.net>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 17e4c68ff35090d8cb743e3c82c09f92fda1ebda ]
+commit 6c65cf23d4c6170fcf5714c32aa64689718cb142 upstream.
 
-The KUNIT_DEBUGFS option is currently enabled based on the value of
-KUNIT_ALL_TESTS, but it really doesn't have anything to do with the set of
-enabled tests, so just enable it by default anyway. In particular, this
-shouldn't be only visible if KUNIT_ALL_TESTS is set, which is quite
-confusing.
+batadv_tp_recv_ack() and batadv_tp_stop() are only valid for tp_vars in the
+BATADV_TP_SENDER role. When called with a BATADV_TP_RECEIVER role, it
+proceeds to read sender-only members that were never initialized, leading
+to undefined behavior.
 
-Link: https://lore.kernel.org/r/20260425034155.53913-1-david@davidgow.net
-Fixes: beaed42c427d ("kunit: default KUNIT_* fragments to KUNIT_ALL_TESTS")
-Signed-off-by: David Gow <david@davidgow.net>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This can be triggered when a node that is currently acting as a receiver in
+an ongoing tp_meter session receives a malicious ACK packet.
+
+Guard against this by checking tp_vars->role immediately after the
+lookup and bailing out if it is not BATADV_TP_SENDER, before any of
+those members are accessed.
+
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/kunit/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/batman-adv/tp_meter.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
-index 626719b95badd..785c2cfc530c2 100644
---- a/lib/kunit/Kconfig
-+++ b/lib/kunit/Kconfig
-@@ -16,8 +16,8 @@ menuconfig KUNIT
- if KUNIT
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -647,6 +647,9 @@ static void batadv_tp_recv_ack(struct ba
+ 	if (unlikely(!tp_vars))
+ 		return;
  
- config KUNIT_DEBUGFS
--	bool "KUnit - Enable /sys/kernel/debug/kunit debugfs representation" if !KUNIT_ALL_TESTS
--	default KUNIT_ALL_TESTS
-+	bool "KUnit - Enable /sys/kernel/debug/kunit debugfs representation"
-+	default y
- 	help
- 	  Enable debugfs representation for kunit.  Currently this consists
- 	  of /sys/kernel/debug/kunit/<test_suite>/results files for each
--- 
-2.53.0
-
++	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
++		goto out;
++
+ 	if (unlikely(atomic_read(&tp_vars->sending) == 0))
+ 		goto out;
+ 
+@@ -1080,12 +1083,16 @@ void batadv_tp_stop(struct batadv_priv *
+ 	if (!tp_vars) {
+ 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 			   "Meter: trying to interrupt an already over connection\n");
+-		goto out;
++		goto out_put_orig_node;
+ 	}
+ 
++	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
++		goto out_put_tp_vars;
++
+ 	batadv_tp_sender_shutdown(tp_vars, return_value);
++out_put_tp_vars:
+ 	batadv_tp_vars_put(tp_vars);
+-out:
++out_put_orig_node:
+ 	batadv_orig_node_put(orig_node);
+ }
+ 
 
 
 
