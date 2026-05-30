@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-259207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKm4HBMyG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:07 +0200
+	id cLKVELIgG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD61612BA9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7B08610191
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AC42F30D6937
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55B82305E1A4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB67621E098;
-	Sat, 30 May 2026 18:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52D930676E;
+	Sat, 30 May 2026 17:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSIyeUbD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tMu7BdHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9A6137750;
-	Sat, 30 May 2026 18:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C081341AB8;
+	Sat, 30 May 2026 17:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166966; cv=none; b=YndZZcfC67HatwRoWa2eJ4pVf/BcSRtjpD7zBswCeDCcaF+H0V8LKzKEA/SNqr63618GocgtF6tjodVdVxjxvYWVxgghTyJbzvwHhdQ3NeBWvEZqhHhXoWgyn3yuzczZOY8wmAhM9KqlTh2+nXFnaqHuaxoynIU9lVS0vrxvzJg=
+	t=1780162378; cv=none; b=o78sA+17ewwt9YP9zxiElddQT3vv2DWR+VGfaA1b9+IGaVxwE1aU+eKtKtKlSu3+hCrO86uye+MguZqsvO5D+sMb2nrP9+z731o+6F230ldxiA3cIiUpiZQdHITOphzxGlPSkcvm8YJ80GEprMx9K2p0Gqcj5HzqRz+2b1V5eEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166966; c=relaxed/simple;
-	bh=H0er6DmNgb6tVtT3wX1xMUiHKBFfKjpA/J/x1jv70Ow=;
+	s=arc-20240116; t=1780162378; c=relaxed/simple;
+	bh=p18zNCR7TS4wqYh2j5Pz847LResno5VJqKJqOZs/S84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HE5iRpQe9cBnSCRzrHoBHwHGqtrRSF9JfqZGCcEEt44jjpjzFYgnnsMZCuVtjJY5i0VGZDnO/DokPfaAoSld/gQwgArXYUOcSHkN7rE6wNhHTmty7uAeC1wJ9DQtZMwHrLIBq03TXj87Tg7+Ue3v6YahUXToMKqaL/uuxEL9D0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSIyeUbD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21171F00893;
-	Sat, 30 May 2026 18:49:24 +0000 (UTC)
+	 MIME-Version; b=hNyXBsfXsZ/DesYLvjC4zR2Df46Ljsk/fJl/0u4nitslgrFauJxM4JeQ9KsiDKOkRaqSWfrTH3p4oMOW1BbX3IaHSRpfaKyf5bk/cgoA+kAZYiR85Fu8N4oCeH+HOlbKQkkzaqrx4P8rUkOI5wU9SZBpCa6TIwMB1znOC7+oEtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMu7BdHW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7187A1F00893;
+	Sat, 30 May 2026 17:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166965;
-	bh=AKpgyDmbBasipP6n/SButF2WU8NCeoSvO2ggEIklT/Q=;
+	s=korg; t=1780162377;
+	bh=0/VYM5ZEtI1lvGUe13Ay198vkcVEDCSI+u6KjgRdtDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hSIyeUbDfrLd8X2/cy6aObXo0qTPM1Ksax4cK+2IprdetWxIOX9MmUhOXli9jBlnY
-	 j0ePTBlpbkyIcIiyulQJODcIMeDKG+QaApdkpvkesN3TEX3BkWSmQ0IOsWCCMWxBvD
-	 15iQ5VvyiLst638gdUdFjNmM1R5jSDVp+EB8y1Rc=
+	b=tMu7BdHWjgzKL30py/aTejQiIoFjcmeKGriSxlCj8kvGzbJ/KbajBKjBtfFveDcxl
+	 HBFHMj9pNEN9dkoed6MR+GMN4IvjbOp51MV1/H3RBApO8TodMSr5Qs+qtZsAZFD0yR
+	 +5V0uKpoBELFfdQorWhnM/hFgbruBZvqhW7c2GaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Robaina <rrobaina@redhat.com>,
-	Sergio Correia <scorreia@redhat.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.10 507/589] audit: enforce AUDIT_LOCKED for AUDIT_TRIM and AUDIT_MAKE_EQUIV
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 864/969] cifs: Fix busy dentry used after unmounting
 Date: Sat, 30 May 2026 18:06:28 +0200
-Message-ID: <20260530160237.925195752@linuxfoundation.org>
+Message-ID: <20260530160324.533276294@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259207-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257849-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,58 +89,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[paul-moore.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1AD61612BA9
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B7B08610191
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergio Correia <scorreia@redhat.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit f9e1c1324b4d98d591a6f7568fdebf5cf456dfc2 upstream.
+commit c68337442f03953237a94577beb468ab2662a851 upstream.
 
-AUDIT_ADD_RULE and AUDIT_DEL_RULE correctly check for AUDIT_LOCKED
-and return -EPERM, but AUDIT_TRIM and AUDIT_MAKE_EQUIV do not. This
-allows a process with CAP_AUDIT_CONTROL to modify directory tree
-watches and equivalence mappings even when the audit configuration
-has been locked, undermining the purpose of the lock.
+Since commit 340cea84f691c ("cifs: open files should not hold ref on
+superblock"), cifs file only holds the dentry ref_cnt, the cifs file
+close work(cfile->deferred) could be executed after unmounting, which
+will trigger a warning in generic_shutdown_super:
+ BUG: Dentry 00000000a14a6845{i=c,n=file}  still in use (1) [unmount of
+ cifs cifs]
 
-Add AUDIT_LOCKED checks to both commands.
+The detailed processs is:
+   process A           process B           kworker
+ fd = open(PATH)
+  vfs_open
+   file->__f_path = *path // dentry->d_lockref.count = 1
+   cifs_open
+    cifs_new_fileinfo
+     cfile->dentry = dget(dentry) // dentry->d_lockref.count = 2
+ close(fd)
+  __fput
+  cifs_close
+   queue_delayed_work(deferredclose_wq, cfile->deferred)
+  dput(dentry) // dentry->d_lockref.count = 1
+			                 smb2_deferred_work_close
+					  _cifsFileInfo_put
+					   list_del(&cifs_file->flist)
+                    umount
+		     cleanup_mnt
+		      deactivate_super
+		       cifs_kill_sb
+		        cifs_close_all_deferred_files_sb
+			 cifs_close_all_deferred_files
+			  // cannot find cfile, skip _cifsFileInfo_put
+			kill_anon_super
+			 generic_shutdown_super
+			  shrink_dcache_for_umount
+			   umount_check
+			    WARN ! // dentry->d_lockref.count = 1
+					   cifsFileInfo_put_final
+					    dput(cifs_file->dentry)
+		                            // dentry->d_lockref.count = 0
 
+Fix it by flushing 'deferredclose_wq' before calling kill_anon_super.
+
+Fetch a reproducer in https://bugzilla.kernel.org/show_bug.cgi?id=221548.
+
+Fixes: 340cea84f691c ("cifs: open files should not hold ref on superblock")
 Cc: stable@vger.kernel.org
-Reviewed-by: Ricardo Robaina <rrobaina@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Sergio Correia <scorreia@redhat.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/audit.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/client/cifsfs.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/audit.c
-+++ b/kernel/audit.c
-@@ -1430,6 +1430,8 @@ static int audit_receive_msg(struct sk_b
- 		err = audit_list_rules_send(skb, seq);
- 		break;
- 	case AUDIT_TRIM:
-+		if (audit_enabled == AUDIT_LOCKED)
-+			return -EPERM;
- 		audit_trim_trees();
- 		audit_log_common_recv_msg(audit_context(), &ab,
- 					  AUDIT_CONFIG_CHANGE);
-@@ -1442,6 +1444,8 @@ static int audit_receive_msg(struct sk_b
- 		size_t msglen = data_len;
- 		char *old, *new;
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -296,6 +296,8 @@ static void cifs_kill_sb(struct super_bl
  
-+		if (audit_enabled == AUDIT_LOCKED)
-+			return -EPERM;
- 		err = -EINVAL;
- 		if (msglen < 2 * sizeof(u32))
- 			break;
+ 		/* Wait for all pending oplock breaks to complete */
+ 		flush_workqueue(cifsoplockd_wq);
++		/* Wait for all opened files to release */
++		flush_workqueue(deferredclose_wq);
+ 
+ 		/* finally release root dentry */
+ 		dput(cifs_sb->root);
 
 
 
