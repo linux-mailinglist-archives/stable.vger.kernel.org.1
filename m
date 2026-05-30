@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258873-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHMNEFQlG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258286-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:44 +0200
+	id qFmyKDUwG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258873-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B0C7610BFD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 146F761267F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7303A300680E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC6703193279
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAD2352027;
-	Sat, 30 May 2026 17:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C663C9429;
+	Sat, 30 May 2026 18:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEEdwbr/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lv5LESfT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B12434041A;
-	Sat, 30 May 2026 17:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEDE3C3BF3;
+	Sat, 30 May 2026 18:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163839; cv=none; b=TnwnNPj65KLv8cs1jkWc+4Qjep9Ro6mWWSTVZ5NczQBYPDfaQp+nvryCh4jDdiiMZ4JU1hIiN0GHfJPSGP67Z3xeIsVP3CnIAeLDKG2ZbbhddjlSCpgyZ7RDm2wKkodASF1u7/heGUY4+HSRyyTFnLeDNF76q/wAXp6F0y/qDho=
+	t=1780165827; cv=none; b=c4os+xM6BK/Ton35DblWmb0pcxqmKLIMrmjUfEwJlrQIlh+roLU20Cafeu2RihifCViCxTKmg9uIPZhUOCyYBbU9Pz5mcW+CV6zW5QxI2n6Eg6zX3QCh/efihlU9n0iC9wedSc1MHSwJCdRq7sHc4INQACP1wmUJ6V9JROajk0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163839; c=relaxed/simple;
-	bh=TBU4uIUCYCDGqQXXaL/FXNj5JS4VUXdm36EOJUhSm8E=;
+	s=arc-20240116; t=1780165827; c=relaxed/simple;
+	bh=bvz0PbgYyUiYRUKalitc4hoXioEgudK/aCLYwGfu6eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FMUOv6RkNIBIm2JlnDXHrtZyqEeK53BY9O8cs0GXjk3RIydm1naoD90zj/txXRMDo4LKfwvdIIi5n0od+v+rOvdXO71TbssKroGB4EP0jkICk1fi7phtL+PW/5WIt4OMYeET2jgALDBeRvfrk0dOOguLpsf5HWanJ18kSo3uj6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEEdwbr/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D741F00893;
-	Sat, 30 May 2026 17:57:17 +0000 (UTC)
+	 MIME-Version; b=ZWINIGGH15Yndgvo4h3YZVOfGbn87Df8gjuPFD8Eu05XUZGoceoTR2PBOdwOXWJlL7OmKB6OLGVr6UA4o/FX30mtv2FinBCL8eT52Z36XOcwtX3jIoZUAJe9dPEUmxPX1NT/dpNSOhcMOZPAl3ttzrzyQd8ImF7eRT2uJkHX86k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lv5LESfT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188991F00893;
+	Sat, 30 May 2026 18:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163838;
-	bh=ie9JoNePOKiuJPneVI9qtWyPvCqEQzEaK+PTXRk/Ms4=;
+	s=korg; t=1780165825;
+	bh=kfhjwcKZA4ekQslUbQajEHUGJaCrTm1a950WbOTmysQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TEEdwbr/syCuzU4CcHXOM0oC+oc6Hu9gjDKvXxVvS1kcmqbOCu6YrZ2xy6F1q/LB5
-	 XXulQU/VKkycH39Rz5thHEzNEujJxwdOSlU4NuPZUPMlcw0h/z2IfCrp8Z/FW4veX5
-	 vFtOBfSyxuwGT6b6tQPyn3q2Pmu1shx1xda+bBCs=
+	b=Lv5LESfTObOTBpA02L6tBIHRIv07PKBmqIDk/l7H35nEf1LqWja3Xy5kJ4rzk/HOA
+	 Kej9oIf0zPIjxenJQmb69++ZtQi9Wz6RMJltcspn1sdHX18YoMgNDwjlOBiPaqxJ/7
+	 AjeDzRGc9mj3xNQ3iaipR4Dcrf1z3zfHoxHnFTKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.15 360/776] media: i2c: imx412: Assert reset GPIO during probe
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 193/589] crypto: atmel-tdes - fix DMA sync direction
 Date: Sat, 30 May 2026 18:01:14 +0200
-Message-ID: <20260530160249.878632648@linuxfoundation.org>
+Message-ID: <20260530160229.978958425@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +63,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258286-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258873-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,huawei];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0B0C7610BFD
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 146F761267F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 8467c5ff5acae28513bc1e0af535e06b41b04344 upstream.
+commit c8a9a647532f5c2a04180352693215e24e9dba03 upstream.
 
-Assert the reset GPIO before first power up. This avoids a mismatch where
-the first power up (when the reset GPIO defaults deasserted) differs from
-subsequent cycles.
+Before DMA output is consumed by the CPU, ->dma_addr_out must be synced
+with dma_sync_single_for_cpu() instead of dma_sync_single_for_device().
+Using the wrong direction can return stale cache data on non-coherent
+platforms.
 
-Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
-Fixes: 9214e86c0cc1 ("media: i2c: Add imx412 camera sensor driver")
+Fixes: 13802005d8f2 ("crypto: atmel - add Atmel DES/TDES driver")
+Fixes: 1f858040c2f7 ("crypto: atmel-tdes - add support for latest release of the IP (0x700)")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx412.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/atmel-tdes.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/media/i2c/imx412.c
-+++ b/drivers/media/i2c/imx412.c
-@@ -925,7 +925,7 @@ static int imx412_parse_hw_config(struct
+--- a/drivers/crypto/atmel-tdes.c
++++ b/drivers/crypto/atmel-tdes.c
+@@ -312,8 +312,8 @@ static int atmel_tdes_crypt_pdc_stop(str
+ 		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
+ 		dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
+ 	} else {
+-		dma_sync_single_for_device(dd->dev, dd->dma_addr_out,
+-					   dd->dma_size, DMA_FROM_DEVICE);
++		dma_sync_single_for_cpu(dd->dev, dd->dma_addr_out,
++					dd->dma_size, DMA_FROM_DEVICE);
  
- 	/* Request optional reset pin */
- 	imx412->reset_gpio = devm_gpiod_get_optional(imx412->dev, "reset",
--						     GPIOD_OUT_LOW);
-+						     GPIOD_OUT_HIGH);
- 	if (IS_ERR(imx412->reset_gpio)) {
- 		dev_err(imx412->dev, "failed to get reset gpio %ld\n",
- 			PTR_ERR(imx412->reset_gpio));
+ 		/* copy data */
+ 		count = atmel_tdes_sg_copy(&dd->out_sg, &dd->out_offset,
+@@ -671,8 +671,8 @@ static int atmel_tdes_crypt_dma_stop(str
+ 			dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
+ 			dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
+ 		} else {
+-			dma_sync_single_for_device(dd->dev, dd->dma_addr_out,
+-				dd->dma_size, DMA_FROM_DEVICE);
++			dma_sync_single_for_cpu(dd->dev, dd->dma_addr_out,
++						dd->dma_size, DMA_FROM_DEVICE);
+ 
+ 			/* copy data */
+ 			count = atmel_tdes_sg_copy(&dd->out_sg, &dd->out_offset,
 
 
 
