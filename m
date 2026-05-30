@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-257066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YAqKCzkUG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257066-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:45 +0200
+	id wCKhDU0UG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C328260E63C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DAEC60E64B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1100C300B477
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:45:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A25A03002F5C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560DC33F5B4;
-	Sat, 30 May 2026 16:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D48F30E853;
+	Sat, 30 May 2026 16:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/9dbsU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qa3CiYB6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FF126C385;
-	Sat, 30 May 2026 16:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6593F332EA7;
+	Sat, 30 May 2026 16:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159542; cv=none; b=WhT6a9sXTUVfKuXsVF47tx+XA7Ll2jOuRB4eW25Gu7JvXUqd5UlCjte6ItrVF9RfSn/WczIozeb2rmRTPdSTOdFNkVg/yBrI1aszvpxyZ3mQGXmJSd3CXZzzicKD3mS1PL7lgDAHB3hn8a5Vy2LBEzYfVBWkDBCo9GfiuuNVV7k=
+	t=1780159555; cv=none; b=bNpIBpVnhzV3myqA7MZt46gOtDr5IttIz7iW43+F2/ebkacBaLH0SmCEHbBVGBNX229SWeiPN7pbYwPH5VyY1mcj52X5+bIXkZlEewvNfFdlsR1k2G6+TPz6PeQfna2c1ICyx1cybDVlbxVf8z5F1QJOgmAJa3gvwBgLFA6953k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159542; c=relaxed/simple;
-	bh=9RoA2EhVVO3y9Yf+wa9sm190LfzEkO0l6zQMv7A3FeM=;
+	s=arc-20240116; t=1780159555; c=relaxed/simple;
+	bh=5DkpModIz5xDiHjruwZw6fJM4ZKyMNr6gHejkUow2QM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L1IdhhySfui6d79YJI4gNuhY/AUXXxoNaKNM5RnKS/ffL1FeWG6N1rjma4on7nkRDbZb0bGM26zCsTQD6OP0DLfUfyAzAgUaU4/VDnzn2ywtfy0zOCJZTSXf0njK4xVfwbqhJAMArNoEibe/5P8ihmY+vP5G+5v050sCNsrU/wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/9dbsU6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1A81F00893;
-	Sat, 30 May 2026 16:45:36 +0000 (UTC)
+	 MIME-Version; b=SozjT+JPig2UiZO6CI0hP3moHxSOPG2go0RIls/1vUFFg3HvGhRqtj+nczzG1xr7oDbSfPwtDOBicaHmrcxieaiDuxIJ18m14YZbDWkeA7kS2F3nC19UiWA7XFcwLxGYLbcmeeI4qiNaDeudJn3stLC8zDSwLxmggAaXOHSFoic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qa3CiYB6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84BE1F00893;
+	Sat, 30 May 2026 16:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159541;
-	bh=/KFVT/MpCTfxo4cIPQpX4KHkDmXAas62s4gz10EeZcI=;
+	s=korg; t=1780159554;
+	bh=KpjY1uHvuaSFvbyubaCaOK7PXFmf9T4ugi8axJ0IOLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p/9dbsU6OLB6+tszYsisAE61biWkKN2QW1rJzg8E3gmCsB8kxiL+xpMzZ5EXU2Bbt
-	 0/3yWA9iOXL/Di3k5JhQbdMK++ECfgWFLmoEaXC50PMA38T5tdb5KWA5kisQ2CEhpt
-	 iI8yPvcg72Wa6neqFpkItHCGx+hc5Kq6Df1+eP1E=
+	b=Qa3CiYB61XawwzdgP97cXR7MDeN11uEbGZKLvTNyr93c7ETehCHcbFldN4mXOujKZ
+	 jg8kKqvXEc/vNHawDlNydhCCn6sBFz5LhCr4k5GAHW1XFMgw3X20vF4zEZVzODdzZ3
+	 wnWznDJ1ZyD6n/kx69LCBAE2FSlXOXoPWo/4R3gA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c025d34b8eaa54c571b8@syzkaller.appspotmail.com,
-	Abhishek Kumar <abhishek_sts8@yahoo.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 102/969] media: em28xx: fix use-after-free in em28xx_v4l2_open()
-Date: Sat, 30 May 2026 17:53:46 +0200
-Message-ID: <20260530160303.142185904@linuxfoundation.org>
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Berk Cem Goksel <berkcgoksel@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 103/969] ALSA: 6fire: fix use-after-free on disconnect
+Date: Sat, 30 May 2026 17:53:47 +0200
+Message-ID: <20260530160303.168014469@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -64,36 +64,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257066-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,yahoo.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257067-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,c025d34b8eaa54c571b8,cisco];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,appspotmail.com:email]
-X-Rspamd-Queue-Id: C328260E63C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,suse.de:email]
+X-Rspamd-Queue-Id: 2DAEC60E64B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,69 +100,83 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Abhishek Kumar <abhishek_sts8@yahoo.com>
+From: Berk Cem Goksel <berkcgoksel@gmail.com>
 
-commit a66485a934c7187ae8e36517d40615fa2e961cff upstream.
+commit b9c826916fdce6419b94eb0cd8810fdac18c2386 upstream.
 
-em28xx_v4l2_open() reads dev->v4l2 without holding dev->lock,
-creating a race with em28xx_v4l2_init()'s error path and
-em28xx_v4l2_fini(), both of which free the em28xx_v4l2 struct
-and set dev->v4l2 to NULL under dev->lock.
+In usb6fire_chip_abort(), the chip struct is allocated as the card's
+private data (via snd_card_new with sizeof(struct sfire_chip)).  When
+snd_card_free_when_closed() is called and no file handles are open, the
+card and embedded chip are freed synchronously.  The subsequent
+chip->card = NULL write then hits freed slab memory.
 
-This race leads to two issues:
- - use-after-free in v4l2_fh_init() when accessing vdev->ctrl_handler,
-   since the video_device is embedded in the freed em28xx_v4l2 struct.
- - NULL pointer dereference in em28xx_resolution_set() when accessing
-   v4l2->norm, since dev->v4l2 has been set to NULL.
+Call trace:
+  usb6fire_chip_abort sound/usb/6fire/chip.c:59 [inline]
+  usb6fire_chip_disconnect+0x348/0x358 sound/usb/6fire/chip.c:182
+  usb_unbind_interface+0x1a8/0x88c drivers/usb/core/driver.c:458
+  ...
+  hub_event+0x1a04/0x4518 drivers/usb/core/hub.c:5953
 
-Fix this by moving the mutex_lock() before the dev->v4l2 read and
-adding a NULL check for dev->v4l2 under the lock.
+Fix by moving the card lifecycle out of usb6fire_chip_abort() and into
+usb6fire_chip_disconnect().  The card pointer is saved in a local
+before any teardown, snd_card_disconnect() is called first to prevent
+new opens, URBs are aborted while chip is still valid, and
+snd_card_free_when_closed() is called last so chip is never accessed
+after the card may be freed.
 
-Reported-by: syzbot+c025d34b8eaa54c571b8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c025d34b8eaa54c571b8
-Fixes: 8139a4d583ab ("[media] em28xx: move v4l2 user counting fields from struct em28xx to struct v4l2")
+Fixes: a0810c3d6dd2 ("ALSA: 6fire: Release resources at card release")
 Cc: stable@vger.kernel.org
-Signed-off-by: Abhishek Kumar <abhishek_sts8@yahoo.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
+Link: https://patch.msgid.link/20260410051341.1069716-1-berkcgoksel@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/em28xx/em28xx-video.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ sound/usb/6fire/chip.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/drivers/media/usb/em28xx/em28xx-video.c
-+++ b/drivers/media/usb/em28xx/em28xx-video.c
-@@ -2126,7 +2126,7 @@ static int em28xx_v4l2_open(struct file
- {
- 	struct video_device *vdev = video_devdata(filp);
- 	struct em28xx *dev = video_drvdata(filp);
--	struct em28xx_v4l2 *v4l2 = dev->v4l2;
-+	struct em28xx_v4l2 *v4l2;
- 	enum v4l2_buf_type fh_type = 0;
- 	int ret;
- 
-@@ -2143,13 +2143,19 @@ static int em28xx_v4l2_open(struct file
- 		return -EINVAL;
+--- a/sound/usb/6fire/chip.c
++++ b/sound/usb/6fire/chip.c
+@@ -53,11 +53,6 @@ static void usb6fire_chip_abort(struct s
+ 			usb6fire_comm_abort(chip);
+ 		if (chip->control)
+ 			usb6fire_control_abort(chip);
+-		if (chip->card) {
+-			snd_card_disconnect(chip->card);
+-			snd_card_free_when_closed(chip->card);
+-			chip->card = NULL;
+-		}
  	}
+ }
  
-+	if (mutex_lock_interruptible(&dev->lock))
-+		return -ERESTARTSYS;
-+
-+	v4l2 = dev->v4l2;
-+	if (!v4l2) {
-+		mutex_unlock(&dev->lock);
-+		return -ENODEV;
-+	}
-+
- 	em28xx_videodbg("open dev=%s type=%s users=%d\n",
- 			video_device_node_name(vdev), v4l2_type_names[fh_type],
- 			v4l2->users);
+@@ -170,6 +165,7 @@ destroy_chip:
+ static void usb6fire_chip_disconnect(struct usb_interface *intf)
+ {
+ 	struct sfire_chip *chip;
++	struct snd_card *card;
  
--	if (mutex_lock_interruptible(&dev->lock))
--		return -ERESTARTSYS;
--
- 	ret = v4l2_fh_open(filp);
- 	if (ret) {
- 		dev_err(&dev->intf->dev,
+ 	chip = usb_get_intfdata(intf);
+ 	if (chip) { /* if !chip, fw upload has been performed */
+@@ -180,8 +176,19 @@ static void usb6fire_chip_disconnect(str
+ 			chips[chip->regidx] = NULL;
+ 			mutex_unlock(&register_mutex);
+ 
++			/*
++			 * Save card pointer before teardown.
++			 * snd_card_free_when_closed() may free card (and
++			 * the embedded chip) immediately, so it must be
++			 * called last and chip must not be accessed after.
++			 */
++			card = chip->card;
+ 			chip->shutdown = true;
++			if (card)
++				snd_card_disconnect(card);
+ 			usb6fire_chip_abort(chip);
++			if (card)
++				snd_card_free_when_closed(card);
+ 		}
+ 	}
+ }
 
 
 
