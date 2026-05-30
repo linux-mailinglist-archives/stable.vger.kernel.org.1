@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258829-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YH8OEicnG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:31 +0200
+	id gG8QN3svG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258829-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEFD1611017
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A69E612464
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABC4630F245B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:53:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB2C0310A7DF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64866341AC7;
-	Sat, 30 May 2026 17:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7724E3242BA;
+	Sat, 30 May 2026 18:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MpMOkjFL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4age79k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4014D261B9E;
-	Sat, 30 May 2026 17:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5463F25B0B3;
+	Sat, 30 May 2026 18:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163637; cv=none; b=QhzVFuMwRLFrJv9sQG6J4FRcg5YdKMxIfSYas1MYCsN3zKrvSPqRG7ENl1ceVQtuNqXkSQgyjO0LhRN6U0OwURr7gE/cz+feY81UjJ4odbTz6Mr1iEs846f3gfELSgLFSPComy6G7wG6kjwv9+wCF8CBQskZ7LzfiIpNGzJ/eOM=
+	t=1780165678; cv=none; b=QLeTie6i9mucoYx4j9RBQri0GVuN1JW8vGhXj8ucF9AYEnVFO9Lm08xYgjlD/3UGgeReX0xbb2jWrPCuSPqoju5CvO4mygNqIY3DkSdLl6w41pQ/YEEiVM0r/fUOW1IEDrNfuzySasIWKm/aqksElWOnAL3FNukjat55xdwzQAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163637; c=relaxed/simple;
-	bh=72s0oXtUkz+nt6kf20vhDsj0hHyluEz2sMdGXkWY/1k=;
+	s=arc-20240116; t=1780165678; c=relaxed/simple;
+	bh=kRjvHqzyjvVqfdQc/ReDX7KvRoA+KCjilkfpZaSU7N4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RtCvTZfj0vFFMwXY+DNRUayhh/LrdnFX5tmD8GSFy2hbEZcPMOeLOhiQsBDs4lMmbvtM/HzNKSn7sbNHr4siuRqFhica6EE5OUkR6GdCc2heNxBHXCdPTK171EWt6zFk3EjTki9TNXD5cqF0stTlZZ+Lh48Uzj+VI1W+6C0iMXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MpMOkjFL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849491F00893;
-	Sat, 30 May 2026 17:53:55 +0000 (UTC)
+	 MIME-Version; b=LO8/XF+CUPoadxf6wU5C+hGi+eqXc7wYSHg2kqH0owjDzDABnups9ExLADU/UWhFuu8hQCnUsGiyJ6Y7vQ2xBr0Dwqy081YoULHP6yjCkm/ceos5EcVVsi6ao2OtKG5synpzhgYP+EayTDqnInQ1jJ9JqKckygylWJ7r48cTL9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4age79k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FA61F00893;
+	Sat, 30 May 2026 18:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163636;
-	bh=KZi8yiv3/XZP/ypVH9hOdJe2mgb2hK9rA7srICnXWRY=;
+	s=korg; t=1780165677;
+	bh=jknEXlq4IFOvOUofzg428f1N0+ESSniuYsAMxcw3H88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MpMOkjFL2hxLsCmWEugpqs+WvHsxJKO/+eNQrjCD36/gF6R3AO3/JVRXk8AiB7m7z
-	 zW3fK2N5gHc677b9opzAzkj8Bi4H3TJm4IzNRac6zB1o4NcJETKR/qYaAGu6l3jeFv
-	 Q0cGly8gk/ZStxabdwbkc7lNH4qkv54g5I7ldv3Q=
+	b=X4age79kqOfDAw7LY+qmv1wzjlnCOM9YeF31hfJITOfj7c2SHKk3zH1GLly7uZkO+
+	 ORqKox1nLncjdH1Uj+nd09aTVb8BVsJL17lNdBu7gunnhgDMCXHPE1UkDuxNlq0M2D
+	 EY+Jc8FVpDGXn5YTZthHciKBwyGgO7KYrRuhL1z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>
-Subject: [PATCH 5.15 317/776] extcon: ptn5150: handle pending IRQ events during system resume
+	Johannes Berg <johannes@sipsolutions.net>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 150/589] um: drivers: call kernel_strrchr() explicitly in cow_user.c
 Date: Sat, 30 May 2026 18:00:31 +0200
-Message-ID: <20260530160248.761363791@linuxfoundation.org>
+Message-ID: <20260530160228.729037081@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +64,95 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258226-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258829-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sipsolutions.net,gmail.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,samsung.com:email]
-X-Rspamd-Queue-Id: BEFD1611017
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: 3A69E612464
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 4652fefcda3c604c83d1ae28ede94544e2142f06 upstream.
+commit 91e901c65b4da02a6fd543e3f0049829ae9645b7 upstream.
 
-When the system is suspended and ptn5150 wakeup interrupt is disabled,
-any changes on ptn5150 will only be record in interrupt status
-registers and won't fire an IRQ since its trigger type is falling
-edge. So the HW interrupt line will keep at low state and any further
-changes won't trigger IRQ anymore. To fix it, this will schedule a
-work to check whether any IRQ are pending and handle it accordingly.
+Building ARCH=um on glibc >= 2.43 fails:
 
-Fixes: 4ed754de2d66 ("extcon: Add support for ptn5150 extcon driver")
+  arch/um/drivers/cow_user.c: error: implicit declaration of
+  function 'strrchr' [-Wimplicit-function-declaration]
+
+glibc 2.43's C23 const-preserving strrchr() macro does not survive
+UML's global -Dstrrchr=kernel_strrchr remap from arch/um/Makefile.
+Call kernel_strrchr() directly in cow_user.c so the source no longer
+depends on the -D rewrite.
+
+Fixes: 2c51a4bc0233 ("um: fix strrchr() problems")
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
 Cc: stable@vger.kernel.org
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: MyungJoo Ham <myungjoo.ham@samsung.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
-Link: https://lore.kernel.org/lkml/20251115025905.1395347-1-xu.yang_2@nxp.com/
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260408070102.2325572-1-michael.bommarito@gmail.com
+[remove unnecessary 'extern']
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/extcon/extcon-ptn5150.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/um/drivers/cow_user.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/extcon/extcon-ptn5150.c
-+++ b/drivers/extcon/extcon-ptn5150.c
-@@ -306,6 +306,19 @@ static int ptn5150_i2c_probe(struct i2c_
- 	return 0;
- }
+--- a/arch/um/drivers/cow_user.c
++++ b/arch/um/drivers/cow_user.c
+@@ -15,6 +15,12 @@
+ #include "cow.h"
+ #include "cow_sys.h"
  
-+static int ptn5150_resume(struct device *dev)
-+{
-+	struct i2c_client *i2c = to_i2c_client(dev);
-+	struct ptn5150_info *info = i2c_get_clientdata(i2c);
++/*
++ * arch/um/Makefile remaps strrchr to kernel_strrchr; call the kernel
++ * name directly to avoid glibc >= 2.43's C23 strrchr macro.
++ */
++char *kernel_strrchr(const char *, int);
 +
-+	/* Need to check possible pending interrupt events */
-+	schedule_work(&info->irq_work);
-+
-+	return 0;
-+}
-+
-+static DEFINE_SIMPLE_DEV_PM_OPS(ptn5150_pm_ops, NULL, ptn5150_resume);
-+
- static const struct of_device_id ptn5150_dt_match[] = {
- 	{ .compatible = "nxp,ptn5150" },
- 	{ },
-@@ -321,6 +334,7 @@ MODULE_DEVICE_TABLE(i2c, ptn5150_i2c_id)
- static struct i2c_driver ptn5150_i2c_driver = {
- 	.driver		= {
- 		.name	= "ptn5150",
-+		.pm = pm_sleep_ptr(&ptn5150_pm_ops),
- 		.of_match_table = ptn5150_dt_match,
- 	},
- 	.probe_new	= ptn5150_i2c_probe,
+ #define PATH_LEN_V1 256
+ 
+ /* unsigned time_t works until year 2106 */
+@@ -153,7 +159,7 @@ static int absolutize(char *to, int size
+ 			   errno);
+ 		return -1;
+ 	}
+-	slash = strrchr(from, '/');
++	slash = kernel_strrchr(from, '/');
+ 	if (slash != NULL) {
+ 		*slash = '\0';
+ 		if (chdir(from)) {
 
 
 
