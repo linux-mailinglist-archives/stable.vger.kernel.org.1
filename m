@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257962-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIiiJmIWG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257182-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:54:58 +0200
+	id KBtMOZsiG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257962-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53D1560E985
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:54:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67AF36105EF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E2B9F300D378
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:54:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 24D5E3051581
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F7E32BF24;
-	Sat, 30 May 2026 16:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7226349CCF;
+	Sat, 30 May 2026 17:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FW+G1EWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5MGVSye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D726C332919;
-	Sat, 30 May 2026 16:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4DA2E7379;
+	Sat, 30 May 2026 17:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160095; cv=none; b=ndoY3BfHpNI5PzkaDpz5p93UOa+FiyaDTONdTtr9wOC5eFOWUVDqqhw+sRNaxosvVBF/nvkLmbYRayEivEjKk0sQgsx7HbtzUPzNbbZ4LY7/fnRhRCMX2N6t/vIwM8lbQG0y0ykXs85xIA7f1rTAZ+NNY1SJXXej5AWxeM1XbTY=
+	t=1780162762; cv=none; b=RMGV7h+DMKHeH8iOBW3OSHe7hR7NRHs0u8cDMll2k5TfL8uPYe+NEDFdlKYt+4Dw9t86EosrrPEkkOSYp3qczm176XxoSXMb2PSLHVkJlTBe5pUh5qUuOThDYyV5IkKbwivxnoMyTwcUjW3KoGTjt84ppy1m5MzASNFOVT47VSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160095; c=relaxed/simple;
-	bh=ZCP/AwBH6bsGbQJGe/1CxLeVGK/qCovVWbtmlQ2rGHU=;
+	s=arc-20240116; t=1780162762; c=relaxed/simple;
+	bh=EfHCTO+EpYzjYKxsegrN6R6nkoHxOC/6yDHkCXjn3fs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gR4kIHyYYBc0/fHFVYZUDexukxPWPGM/9zOM9bI0TXeoN6cvOs3bN6Kfok5/CiocsCgGJdyVFQcDcOmIxt2oksNlBqFe7eu3B8FhyZNOtppLMOe6xwhYj2tiiaBMUWabfrl7/RdBWQjwi2p+BGicccAP/qB2djAWV0u2xyNkfF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FW+G1EWw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45561F00893;
-	Sat, 30 May 2026 16:54:53 +0000 (UTC)
+	 MIME-Version; b=o2OM8MnOTmceFMheN7x/GVI4nE/R5TxXrJ4aiGAkoi80KLHv2GDTNn6UHJbN4/BPzdI4DOHpMC5kBX0TB8U/zlRxls8B20sSFbE+LIpfRXNxmcoAvud8PQXbkgJDwkIz3TcVCeXnWVgaR3UrtKF5d4eqSezGzHHad2weHpDLnKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5MGVSye; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 912F91F00893;
+	Sat, 30 May 2026 17:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160094;
-	bh=rDzAxWehk/AdJ19OxiGPwe5UgtjX2IL12e7+vzSPn2s=;
+	s=korg; t=1780162761;
+	bh=yBvyzRW4ygWjwQbM5yVbRzX1z6S39dcXLoIDRWpr7yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FW+G1EWwQ8aCpTpKcq6Q7rbZJ3iFCwbq9adzAFhjfdX2X7L7d2Lwzg7IcF00/3+ei
-	 zTUZ5lX/SvOD+mPSZFKpZcoz6Jcjim9C4dUy+ATveh3pdfMOR6j+SLRM+SaIecBVqJ
-	 qWN2glQir5QlSQL7sf1afA/99/mQTbJ1K+xBgvkI=
+	b=C5MGVSyekI8jNUMJy8EU8M+DzwctP6UhV+Sbxlz+Pd6sFyMMpWImBR4y1kfkz/w/b
+	 T/zh9UpySZppbUNIw1Nn99Zp3KVdC5E2lC9BkdGa+E0mgVsG9BnhLHEkgRIBy2FU3i
+	 Ciw3ZpK/MxuAdH9D14f+klMTkoq4kPiyn4VCPPzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 244/969] mtd: docg3: Convert to platform remove callback returning void
-Date: Sat, 30 May 2026 17:56:08 +0200
-Message-ID: <20260530160307.199271149@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Lin YuChen <starpt.official@gmail.com>
+Subject: [PATCH 5.15 055/776] staging: rtl8723bs: initialize le_tmp64 in rtw_BIP_verify()
+Date: Sat, 30 May 2026 17:56:09 +0200
+Message-ID: <20260530160241.735585791@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +63,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-257182-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257962-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,linaro.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 53D1560E985
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 67AF36105EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Lin YuChen <starpt.official@gmail.com>
 
-[ Upstream commit eb0cec77d534413a800ec20944a2b1e37cfecdcf ]
+commit 8c964b82a4e97ec7f25e17b803ee196009b38a57 upstream.
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+Initialize le_tmp64 to zero in rtw_BIP_verify() to prevent using
+uninitialized data.
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+Smatch warns that only 6 bytes are copied to this 8-byte (u64)
+variable, leaving the last two bytes uninitialized:
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+drivers/staging/rtl8723bs/core/rtw_security.c:1308 rtw_BIP_verify()
+warn: not copying enough bytes for '&le_tmp64' (8 vs 6 bytes)
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/linux-mtd/20231008200143.196369-5-u.kleine-koenig@pengutronix.de
-Stable-dep-of: ca19808bc6fa ("mtd: docg3: fix use-after-free in docg3_release()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Initializing the variable at the start of the function fixes this
+warning and ensures predictable behavior.
+
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Cc: stable <stable@kernel.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-staging/abvwIQh0CHTp4wNJ@stanley.mountain/
+Signed-off-by: Lin YuChen <starpt.official@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20260320172502.167332-1-starpt.official@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/devices/docg3.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_security.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
-index a7714e3de887f..8cb25cfd9c10a 100644
---- a/drivers/mtd/devices/docg3.c
-+++ b/drivers/mtd/devices/docg3.c
-@@ -2046,7 +2046,7 @@ static int __init docg3_probe(struct platform_device *pdev)
-  *
-  * Returns 0
-  */
--static int docg3_release(struct platform_device *pdev)
-+static void docg3_release(struct platform_device *pdev)
- {
- 	struct docg3_cascade *cascade = platform_get_drvdata(pdev);
- 	struct docg3 *docg3 = cascade->floors[0]->priv;
-@@ -2058,7 +2058,6 @@ static int docg3_release(struct platform_device *pdev)
- 			doc_release_device(cascade->floors[floor]);
+--- a/drivers/staging/rtl8723bs/core/rtw_security.c
++++ b/drivers/staging/rtl8723bs/core/rtw_security.c
+@@ -1364,7 +1364,7 @@ u32 rtw_BIP_verify(struct adapter *padap
+ 	u8 mic[16];
+ 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
+ 	__le16 le_tmp;
+-	__le64 le_tmp64;
++	__le64 le_tmp64 = 0;
  
- 	bch_free(docg3->cascade->bch);
--	return 0;
- }
- 
- #ifdef CONFIG_OF
-@@ -2076,7 +2075,7 @@ static struct platform_driver g3_driver = {
- 	},
- 	.suspend	= docg3_suspend,
- 	.resume		= docg3_resume,
--	.remove		= docg3_release,
-+	.remove_new	= docg3_release,
- };
- 
- module_platform_driver_probe(g3_driver, docg3_probe);
--- 
-2.53.0
-
+ 	ori_len = pattrib->pkt_len-WLAN_HDR_A3_LEN+BIP_AAD_SIZE;
+ 	BIP_AAD = rtw_zmalloc(ori_len);
 
 
 
