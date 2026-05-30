@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FIpDSsxG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-258997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:49:15 +0200
+	id EKAqB2sdG2qW/QgAu9opvQ
+	(envelope-from <stable+bounces-257648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9168B6128E3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:49:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B046F60F93D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D195630F5E99
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:37:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3A500301437A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FAD39478D;
-	Sat, 30 May 2026 18:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE813161A3;
+	Sat, 30 May 2026 17:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHdr0kei"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owAX/YcS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388EF41A8F;
-	Sat, 30 May 2026 18:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D495830E847;
+	Sat, 30 May 2026 17:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166249; cv=none; b=g35Q28XNwQ9E09ylsBHSi8tsZTs98soDSnArLue7/RHVrMW7mQvckpeWxs/SKwYsXoZ9w4jSyxN/IkKEKimIfs0m1laTwJrJRgLtG1wfUvLt9fdy+T06cK86DIzrpAdpAJIVSJ//mnY9dIQbP9TKg6Gk4cBchndIGbiuhwFJvew=
+	t=1780161705; cv=none; b=FoAqxl7VLNVg50rUKZzI8W9EhCS1JJHIJylVDI1yeTNZC/ovFzipkRC08rTdgVPRS3qZ3O2iz6nlnPVtDfAlR3B7J10kr5qDUIR9h2f/aZ+/akJN5Nv42V9Mb3FQ26jR2O4gUMmelbEOWpyFxEy+YiR6IVfLTOjPHhBTR4z/6HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166249; c=relaxed/simple;
-	bh=zGHmjQ6/jYbpWU4XJ0N7b0OR3V539bRMUKJ7NgusHnQ=;
+	s=arc-20240116; t=1780161705; c=relaxed/simple;
+	bh=tH/lHhkRbYTIbS0xd2P5ghglVlJdjLT8bSui6ZIWbVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZg4H9if6Yh3HRXjoZgP2Rr+lOreD5SW6imM2rqtlypzc8hS78SOR31BVp1RfTCScf7fQVvSJrDBOF6Au15cgJUIb72n/KVBFvs2NdIwFqyUmHrXk6V/VI/5m5C1Od2bC99m0J0PiVnTXIRVLrWeKEzR4aQTUI5/lm4e2FUmRR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHdr0kei; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3F51F00898;
-	Sat, 30 May 2026 18:37:27 +0000 (UTC)
+	 MIME-Version; b=fTQ2E9MLgdvypml5v3dLsRoJgM2QwNtjvm/qQMVDYablyH1wGlANLC3SDTGfPIvSkjHQXVGuKkGC5b4ilLFsGBktvdiNtcO3zqMxoeoy8MVOCWgy5xDc33fd/jbf15XpTMJJtl4JrdGz6oBUBy792UpfaOe9uOba0cF3FupVj68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owAX/YcS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D381F00893;
+	Sat, 30 May 2026 17:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166248;
-	bh=YUrrkJrSQ/CYOdIAS8FlkjedtnbYPJxR9gTb2sOGJ4M=;
+	s=korg; t=1780161704;
+	bh=q8vEPTD6u8f0xqW7W4Bf7AgrlVGhVUqMwcslY88TgpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CHdr0keiJPx8v4BpnCdh42X4pfvkNzz/pT1dkQCUkTClQPrCxmacPfC2gemooY3Hr
-	 ApERRxRkB01gYtIh+wAM7Wja9hdX0+TkUdQI2GJQbUr4V5rb8ZgJbSkFn3Gl+1K1WH
-	 1L0Ii9b9XsuyD4/i3U6/hd6RuIzm4oyx6+N5cfqY=
+	b=owAX/YcSlckpMueVRDyVbbMGO6Vonr0+YwIAIuYQBa/IOWMdOrR0TDB5a3FvJ9pAF
+	 c4bvqMSINq+RffqXAEnukXJcf858sqkshCIs6vRfmtYeeV8WXOKev2G0qS8Fl0DC4G
+	 D5dQgoI2+PgKKiWRPOad1M/1SRMsoZoeuvBf7Ljo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Rissanen <jonathan.rissanen@axis.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	T Pratham <t-pratham@ti.com>,
+	Manorit Chawdhry <m-chawdhry@ti.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 316/589] Bluetooth: hci_ldisc: Clear HCI_UART_PROTO_INIT on error
+Subject: [PATCH 6.1 673/969] crypto: sa2ul - Fix AEAD fallback algorithm names
 Date: Sat, 30 May 2026 18:03:17 +0200
-Message-ID: <20260530160233.243542239@linuxfoundation.org>
+Message-ID: <20260530160319.076458332@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,78 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257648-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258997-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9168B6128E3
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B046F60F93D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Rissanen <jonathan.rissanen@axis.com>
+From: T Pratham <t-pratham@ti.com>
 
-[ Upstream commit 68d39ea5e0adc9ecaea1ce8abd842ec972eb8718 ]
+[ Upstream commit 8451ab6ad686ffdcdf9ddadaa446a79ab48e5590 ]
 
-When hci_register_dev() fails in hci_uart_register_dev()
-HCI_UART_PROTO_INIT is not cleared before calling hu->proto->close(hu)
-and setting hu->hdev to NULL. This means incoming UART data will reach
-the protocol-specific recv handler in hci_uart_tty_receive() after
-resources are freed.
+For authenc AEAD algorithms, sa2ul is trying to register very specific
+-ce version as a fallback. This causes registration failure on SoCs
+which do not have ARMv8-CE enabled/available. Change the fallback
+algorithm from the specific driver name to generic algorithm name so
+that the kernel can allocate any available fallback.
 
-Clear HCI_UART_PROTO_INIT with a write lock before calling
-hu->proto->close() and setting hu->hdev to NULL. The write lock ensures
-all active readers have completed and no new reader can enter the
-protocol recv path before resources are freed.
-
-This allows the protocol-specific recv functions to remove the
-"HCI_UART_REGISTERED" guard without risking a null pointer dereference
-if hci_register_dev() fails.
-
-Fixes: 5df5dafc171b ("Bluetooth: hci_uart: Fix another race during initialization")
-Signed-off-by: Jonathan Rissanen <jonathan.rissanen@axis.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: d2c8ac187fc92 ("crypto: sa2ul - Add AEAD algorithm support")
+Signed-off-by: T Pratham <t-pratham@ti.com>
+Reviewed-by: Manorit Chawdhry <m-chawdhry@ti.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_ldisc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/crypto/sa2ul.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
-index 436d82a7f5871..b1e036bb682f8 100644
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -691,6 +691,9 @@ static int hci_uart_register_dev(struct hci_uart *hu)
+diff --git a/drivers/crypto/sa2ul.c b/drivers/crypto/sa2ul.c
+index e7efebf8127f0..2677062d33b8b 100644
+--- a/drivers/crypto/sa2ul.c
++++ b/drivers/crypto/sa2ul.c
+@@ -1774,13 +1774,13 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
+ static int sa_cra_init_aead_sha1(struct crypto_aead *tfm)
+ {
+ 	return sa_cra_init_aead(tfm, "sha1",
+-				"authenc(hmac(sha1-ce),cbc(aes-ce))");
++				"authenc(hmac(sha1),cbc(aes))");
+ }
  
- 	if (hci_register_dev(hdev) < 0) {
- 		BT_ERR("Can't register HCI device");
-+		percpu_down_write(&hu->proto_lock);
-+		clear_bit(HCI_UART_PROTO_INIT, &hu->flags);
-+		percpu_up_write(&hu->proto_lock);
- 		hu->proto->close(hu);
- 		hu->hdev = NULL;
- 		hci_free_dev(hdev);
+ static int sa_cra_init_aead_sha256(struct crypto_aead *tfm)
+ {
+ 	return sa_cra_init_aead(tfm, "sha256",
+-				"authenc(hmac(sha256-ce),cbc(aes-ce))");
++				"authenc(hmac(sha256),cbc(aes))");
+ }
+ 
+ static void sa_exit_tfm_aead(struct crypto_aead *tfm)
 -- 
 2.53.0
 
