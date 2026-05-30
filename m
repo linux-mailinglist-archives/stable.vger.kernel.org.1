@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257368-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8N0vJYolG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:38 +0200
+	id mDUmIGgbG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257368-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC547610C66
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66FA60F485
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7BF8D30AAA68
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5DF930E379F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA69346E55;
-	Sat, 30 May 2026 17:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2CC34BA42;
+	Sat, 30 May 2026 17:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SH42ClCO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKl6Gc12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677D4320CAD;
-	Sat, 30 May 2026 17:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB6732B11D;
+	Sat, 30 May 2026 17:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163456; cv=none; b=CZ9nK25CpWuclfsr/M5CGDmcaU+bIARavJYgxA6wtVhWULz1RBbgyB2kT3/OqLkkG6i5zAfzX1oHYfJinxX6+iJNWVoh+/M3jPosH7D5XsuG/9ha9Yutj48y7Sx00Ji+N8svcfqO9e3278WrbVr9COpQboX4ywHdLR4Xyiupjko=
+	t=1780160756; cv=none; b=MuYdH9z11v1VcgsKonXAJhGRtr1l7QHelBV4jqycO4ZZcH4JU2O5zF4qmFO32YkTUi+49b6rX0cFyoM/OHMOS1iaNTIppwAeyw6s7ujY52NfQ7nXjpd2bkCc3e7uaWyD9WAzqW9UsrizV2B4cHE47k08tX24zjBgxAaS1gEPzhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163456; c=relaxed/simple;
-	bh=FtDPm50zNsLsiVO4iEGZF+hhrXBNDbgNjL2wJ1osRes=;
+	s=arc-20240116; t=1780160756; c=relaxed/simple;
+	bh=MKu8wNJ7XXXO71BIh2gOquhXTqL43VCtOOeqJFwlw8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQQi/1QvJ/HXsTX7Eqom5Lyx/tULRHfcRmmHVSx9bg88cID3gwLyIis2sG+15ILlFTlzkTos5fSVAwNvIvMtwY8mJ8gz5auICebzhvlXF5rDeG3evGCIXE1CD212ZJgRLDyRL6X9EhXgwfcpNa+waGjG/FQS2Z/iw1zzb8HwcV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SH42ClCO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8121F00893;
-	Sat, 30 May 2026 17:50:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M2AKwNCEdbRcIKfGQJjP7OmTCYLBS63wJVCJwMOaYtpk4g23CmkKRKIUj8CBs8o3RdT+Ex30CRgoOCJyrSB2MiMl/2+ykCw4wSGHFvhP04dXM8brbPWaVpAloQ7FzjtH/3sdNL4f0+soEvluNgAaQgaBXHog82MJolAtfGVLY2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKl6Gc12; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F16A1F00893;
+	Sat, 30 May 2026 17:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163455;
-	bh=VTtqZJRrfWp+hC8+JoPp9Hb+f6hd+z/fknt1B9c5m2w=;
+	s=korg; t=1780160755;
+	bh=0cmKcLadMDOg1Lc619/OuywPUERyIkjD+heqf/yKR3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SH42ClCOzFSjRLTpz6n+TxR5b7sWvWTttLjn34ZTtBz4aUpgZV/2GyBOAwojt2d4n
-	 NldZ5KXRAmEE2Fa7ZZxRHoqVAYdP7LOvTCdaJKT74ghX95QHPrhSvOwH1ayna0PtvK
-	 nI28wNndPyMfXR2+RzCMmQM7gtiTE+3XQCeVghC0=
+	b=DKl6Gc12EWJJ/8IkPM6hpZsgB23OfAvNvxoSvVXv4LXWHH1f2JaKDXb1fZpbPpU/z
+	 B1NHvRdU8U3xNww+OVGJesEYhQPdmaD/8fuJJxJyLAhAY9++FJLpSpTOU2TVHP2+7i
+	 cz4hOaBF9jplpVrZk9DPGrA8PuFE7uyVuCj5s/Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Cheng <chengkev@google.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.15 234/776] KVM: SVM: Inject #UD for INVLPGA if EFER.SVME=0
-Date: Sat, 30 May 2026 17:59:08 +0200
-Message-ID: <20260530160246.579116039@linuxfoundation.org>
+	"Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.1 425/969] pwm: imx-tpm: Count the number of enabled channels in probe
+Date: Sat, 30 May 2026 17:59:09 +0200
+Message-ID: <20260530160311.999147869@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-257368-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258172-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EC547610C66
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: D66FA60F485
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Cheng <chengkev@google.com>
+From: Viorel Suman (OSS) <viorel.suman@oss.nxp.com>
 
-commit d99df02ff427f461102230f9c5b90a6c64ee8e23 upstream.
+commit 3962c24f2d14e8a7f8a23f56b7ce320523947342 upstream.
 
-INVLPGA should cause a #UD when EFER.SVME is not set. Add a check to
-properly inject #UD when EFER.SVME=0.
+On a soft reset TPM PWM IP may preserve its internal state from previous
+runtime, therefore on a subsequent OS boot and driver probe
+"enable_count" value and TPM PWM IP internal channels "enabled" states
+may get unaligned. In consequence on a suspend/resume cycle the call "if
+(--tpm->enable_count == 0)" may lead to "enable_count" overflow the
+system being blocked from entering suspend due to:
 
-Fixes: ff092385e828 ("KVM: SVM: Implement INVLPGA")
+   if (tpm->enable_count > 0)
+       return -EBUSY;
+
+Fix the problem by counting the enabled channels in probe function.
+
+Signed-off-by: Viorel Suman (OSS) <viorel.suman@oss.nxp.com>
+Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
+Link: https://patch.msgid.link/20260311123309.348904-1-viorel.suman@oss.nxp.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Kevin Cheng <chengkev@google.com>
-Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20260228033328.2285047-3-chengkev@google.com
-[sean: tag for stable@]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+[ukleinek: backport to linux-6.6.y]
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pwm/pwm-imx-tpm.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2363,6 +2363,9 @@ static int invlpga_interception(struct k
- 	gva_t gva = kvm_rax_read(vcpu);
- 	u32 asid = kvm_rcx_read(vcpu);
+--- a/drivers/pwm/pwm-imx-tpm.c
++++ b/drivers/pwm/pwm-imx-tpm.c
+@@ -350,6 +350,7 @@ static int pwm_imx_tpm_probe(struct plat
+ {
+ 	struct imx_tpm_pwm_chip *tpm;
+ 	int ret;
++	unsigned int i;
+ 	u32 val;
  
-+	if (nested_svm_check_permissions(vcpu))
-+		return 1;
+ 	tpm = devm_kzalloc(&pdev->dev, sizeof(*tpm), GFP_KERNEL);
+@@ -383,6 +384,13 @@ static int pwm_imx_tpm_probe(struct plat
+ 
+ 	mutex_init(&tpm->lock);
+ 
++	/* count the enabled channels */
++	for (i = 0; i < tpm->chip.npwm; ++i) {
++		val = readl(tpm->base + PWM_IMX_TPM_CnSC(i));
++		if (FIELD_GET(PWM_IMX_TPM_CnSC_ELS, val))
++			++tpm->enable_count;
++	}
 +
- 	/* FIXME: Handle an address size prefix. */
- 	if (!is_long_mode(vcpu))
- 		gva = (u32)gva;
+ 	ret = pwmchip_add(&tpm->chip);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to add PWM chip: %d\n", ret);
 
 
 
