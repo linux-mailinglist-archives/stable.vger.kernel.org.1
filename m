@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258298-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOE3LXobG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257520-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:42 +0200
+	id 0Ob1DLMnG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258298-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BAFF60F4A2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C04A61111B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6823F305AD51
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:14:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37455308301F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8D7481DD;
-	Sat, 30 May 2026 17:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938E3329C6D;
+	Sat, 30 May 2026 17:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8RXYcP5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0Xk2ZjU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB03F3148DA;
-	Sat, 30 May 2026 17:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BEC3AEB5C;
+	Sat, 30 May 2026 17:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161280; cv=none; b=Zlm2TGKRQBqOilNW057mwvlx/519EPFeG7ijA+yTCxsNpr0mXuO3P6/b5q6HNxZ4YSEs306uWxQi4ba4jabjYriiNJoatNIVGmcjL9+MiSII8AUdoOOB8ncQ0Pci85Mg1qlLarELXFa74YHjzX6jLB7fmjERQZ/orHL1wJB1xR0=
+	t=1780163880; cv=none; b=DTyOEm0BdBhIpuOaTjwCza8HqXK+oWvL0dQqTkpDddfFS0Bxjaxz/D3pg4ZlX36SNRidep4st1/qH41/efG6tHf2Fxe/i+FgTPb5STwK2AyJpTHlelwntrB7xcfDbRPSUeHRiwkt7e5j02rYy44gwyrnIVKyZ/NyqIlcwsU1/Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161280; c=relaxed/simple;
-	bh=aOIpUR6YcC2J20IwlONyASiLPxh666KRcMl8w8aLTdY=;
+	s=arc-20240116; t=1780163880; c=relaxed/simple;
+	bh=fYyvEiefXNOG40NqhrKBUWXbyBaCSxhyIXSPIzze2Ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQbailTwzgZrmDdJ5vRPKLOeWDxmpvZg2fy+ljEVJmJeQOwQU3PwZyTwbZ2SQk34TsiGxYRIUZRyCt2yH4d2syb1dh8srCar59WBK3e+GrwuIN5LTneAPChVr9RR/AzEF/txUbbOGDIX/wVJ1bXJGhBCkCFB6w+fejtAZU8zCko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8RXYcP5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192981F00893;
-	Sat, 30 May 2026 17:14:38 +0000 (UTC)
+	 MIME-Version; b=Usjgcs8O8txbaoKydafCW89mITEjWdWwKQDTVV3IMoBD3XqUEfmrq97F4f4xgg+OrS0GxyABo1gYDZY5Uxpey4IqKy8hces/+CLedH+hC+9fItRBASc6M1wgs852XHywy4ko6R74tit8umzSsD9G2R+YIBQZgPLgxx5+VDPQVgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0Xk2ZjU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC39C1F00893;
+	Sat, 30 May 2026 17:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161279;
-	bh=/GDWW5KHutxV8+Z0PFgZN071i/RzdHRStc/IQ9skBpk=;
+	s=korg; t=1780163878;
+	bh=DNxELC3LYOV/K1eJhoBD9OSlIPex6Mg1ZAaNVluwSa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=B8RXYcP5UDfn/Z0uTSM/DiNr2yjbOGMzNykriyp+xjlD0g0jRtrsazwd/0qPiKMYG
-	 2mTcjwU5WHG+/WlPeCPXbz6t21mZyChvjupMYJa6B5L8L8+elfPFlB03poO7L/3N56
-	 L5y66HBvEy6G+1/SAPv37x0QLapBucs3gBsoMObM=
+	b=C0Xk2ZjUlQn0lMmcAnILP0fb+JV4hWjhpMhE6S6rvw9uyCiXEHrWyVFNu/STUYDOo
+	 iCQ7LAuEMeL33UanSVn0k4PMnyzCnvsOT0edRH3jsNNLSfkHNR5hsBdBqhhmqsY8WY
+	 /DHUzD76a1tDEOHFvY/a4Kjrx7WgaY5LeBH6ah8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Cole Leavitt <cole@unwrap.rs>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 578/969] soc: qcom: ocmem: use scoped device node handling to simplify error paths
+Subject: [PATCH 5.15 388/776] pstore/ram: fix resource leak when ioremap() fails
 Date: Sat, 30 May 2026 18:01:42 +0200
-Message-ID: <20260530160316.369211819@linuxfoundation.org>
+Message-ID: <20260530160250.527453931@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +69,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257520-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258298-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5BAFF60F4A2
+X-Rspamd-Queue-Id: 8C04A61111B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Cole Leavitt <cole@unwrap.rs>
 
-[ Upstream commit f4c1c19f5c0e5cf2870df91dedc6b40400fd9c8a ]
+[ Upstream commit 2ddb69f686ef7a621645e97fc7329c50edf5d0e5 ]
 
-Obtain the device node reference with scoped/cleanup.h to reduce error
-handling and make the code a bit simpler.
+In persistent_ram_iomap(), ioremap() or ioremap_wc() may return NULL on
+failure. Currently, if this happens, the function returns NULL without
+releasing the memory region acquired by request_mem_region().
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240813-b4-cleanup-h-of-node-put-other-v1-4-cfb67323a95c@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 9dfd69cd89cd ("soc: qcom: ocmem: register reasons for probe deferrals")
+This leads to a resource leak where the memory region remains reserved
+but unusable.
+
+Additionally, the caller persistent_ram_buffer_map() handles NULL
+correctly by returning -ENOMEM, but without this check, a NULL return
+combined with request_mem_region() succeeding leaves resources in an
+inconsistent state.
+
+This is the ioremap() counterpart to commit 05363abc7625 ("pstore:
+ram_core: fix incorrect success return when vmap() fails") which fixed
+a similar issue in the vmap() path.
+
+Fixes: 404a6043385d ("staging: android: persistent_ram: handle reserving and mapping memory")
+Signed-off-by: Cole Leavitt <cole@unwrap.rs>
+Link: https://patch.msgid.link/20260225235406.11790-1-cole@unwrap.rs
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/ocmem.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ fs/pstore/ram_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-index a21a196fdcc24..a8a0d89ab01b9 100644
---- a/drivers/soc/qcom/ocmem.c
-+++ b/drivers/soc/qcom/ocmem.c
-@@ -192,23 +192,20 @@ static void update_range(struct ocmem *ocmem, struct ocmem_buf *buf,
- struct ocmem *of_get_ocmem(struct device *dev)
- {
- 	struct platform_device *pdev;
--	struct device_node *devnode;
- 	struct ocmem *ocmem;
+diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
+index c0b3b9c6892d1..8a86b9928503d 100644
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -489,6 +489,10 @@ static void *persistent_ram_iomap(phys_addr_t start, size_t size,
+ 	else
+ 		va = ioremap_wc(start, size);
  
--	devnode = of_parse_phandle(dev->of_node, "sram", 0);
-+	struct device_node *devnode __free(device_node) = of_parse_phandle(dev->of_node,
-+									   "sram", 0);
- 	if (!devnode || !devnode->parent) {
- 		dev_err(dev, "Cannot look up sram phandle\n");
--		of_node_put(devnode);
- 		return ERR_PTR(-ENODEV);
- 	}
- 
- 	pdev = of_find_device_by_node(devnode->parent);
- 	if (!pdev) {
- 		dev_err(dev, "Cannot find device node %s\n", devnode->name);
--		of_node_put(devnode);
- 		return ERR_PTR(-EPROBE_DEFER);
- 	}
--	of_node_put(devnode);
- 
- 	ocmem = platform_get_drvdata(pdev);
- 	put_device(&pdev->dev);
++	/* We must release the mem region if ioremap fails. */
++	if (!va)
++		release_mem_region(start, size);
++
+ 	/*
+ 	 * Since request_mem_region() and ioremap() are byte-granularity
+ 	 * there is no need handle anything special like we do when the
 -- 
 2.53.0
 
