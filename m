@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257875-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKWZI18qG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258623-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:15 +0200
+	id 0FIwKqUfG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257875-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E16C61182C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F25D60FF56
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03C87305E44E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9CA953013B8B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0631339863;
-	Sat, 30 May 2026 18:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF6433A9DA;
+	Sat, 30 May 2026 17:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpd4Uf7Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLR8INBr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA8F241C8C;
-	Sat, 30 May 2026 18:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BF734389F;
+	Sat, 30 May 2026 17:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164974; cv=none; b=nNc/VD4skmAqhnp2LIYB9bk0xpn3i1yv4tkHqryb3HKb11SSpNNxGMVYX79OzQCBpOy6fwSCBDMGXCnllX0gDhEOvDwsrt64QbL+ZxmkkNosz1aDDn2CqZDGKl/w3+MqsW3JaUySsdfa7Mo4eLcs7n9vb64FWJI73BaDMoz8p7k=
+	t=1780162465; cv=none; b=kdWl+Aa+qgAa8P8G/wAPaso4CgQDrmpJLqJrHibiwy6+oxGpMyzgp0+uGm6X2HTe3RJIUKwjmJd1Zg++WzxxLisUTrvQl1VqUj4bF8vsgRyMO/vwiYDcqIKavysAdzOfzH8eBhzdNbXXXxYCuY9t78KLzF2yTZq0Q+py3r7DZjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164974; c=relaxed/simple;
-	bh=wxD5ProUEt9kqXlGypFI41rgnJtmn16vaMFmaEz3IL4=;
+	s=arc-20240116; t=1780162465; c=relaxed/simple;
+	bh=NbobEh/1C+40blAxGaJhGzMFgM0qLhOTRMsRJYvxbhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HOUsJ7Yc0NmNX3f+Y/zVkMc5qpYTVJyPno1GoLr9Pvv7M2Ao9UsfTYaLgkhDLYGceBrNBRnPl4dWF17TZFjF0oFW0pvESXXXy++jEdWXl2RT8+Sbo7Zt/PMG9Fl2qpBUIZbyOTsE2PZqxyoQ6evWiwx/+ZU0oqJR8nnrF1D0mAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpd4Uf7Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9280C1F00893;
-	Sat, 30 May 2026 18:16:12 +0000 (UTC)
+	 MIME-Version; b=qORnMQw4j3Ei8hxPWB8bha0t+yZuXddtZvxVQQNbzSLenY+X+IIbAOu/jcBgvJmYagJr7ADnevBR1LDcdf41txUV7I9WDMOTsDymrcXc8yqqsbBc6YhB0x/7neAFI+Ezo8qiasfehXxMQvdnhInOgoyrq6BzlJPuJmYJLFqslbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLR8INBr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6661F00893;
+	Sat, 30 May 2026 17:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164973;
-	bh=ar6yINtm5jl/HnvmPcw4JBiFzzXbXzGctsLy2ytmjoo=;
+	s=korg; t=1780162464;
+	bh=vdSpR3dQ4TjgGlASpYxs56toyu7rTVW0Zby0tx1UiKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xpd4Uf7QPRynGatls1WzysYiV1WzMuTBkpDfKTR5BNzPxkVOLhNo6EAJmEdIpeDvW
-	 Mt7PUuWDLdX7iebvJWWmRkW8SyLyU8tYpDKIIT3hHbDMoXRLObODdGAe9uP4hR0yJ2
-	 sd/nHtxwKLqJFTyYiCB8NhDiYKeVhH1thGGeVD3k=
+	b=OLR8INBrQcRYBHyFWLGTdCf6pZHvWBjepN550eYTBoBbp0LH8b0RIZRMyNlPZVNxv
+	 r6BffMvn+63Q/FlS2fmLWb/lkjP6Eoo4RR6dJn2LSrvgQrcNBNg/HtoRybha59BbZE
+	 WxcK9RzjoZ7gFIQNWoDkarrVq+fLBjk2f4pVD7yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Simon Wunderlich <sw@simonwunderlich.de>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.15 712/776] batman-adv: bla: fix report_work leak on backbone_gw purge
+	David Gow <david@davidgow.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 902/969] kunit: config: Enable KUNIT_DEBUGFS by default
 Date: Sat, 30 May 2026 18:07:06 +0200
-Message-ID: <20260530160258.231501863@linuxfoundation.org>
+Message-ID: <20260530160325.620317633@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258623-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257875-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,126 +89,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email]
-X-Rspamd-Queue-Id: 0E16C61182C
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4F25D60FF56
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: David Gow <david@davidgow.net>
 
-commit 0459430add32ea41f3e2ef9351610e6d33627a6b upstream.
+[ Upstream commit 17e4c68ff35090d8cb743e3c82c09f92fda1ebda ]
 
-batadv_bla_purge_backbone_gw() removes stale backbone gateway entries,
-but fails to properly handle their associated report_work:
+The KUNIT_DEBUGFS option is currently enabled based on the value of
+KUNIT_ALL_TESTS, but it really doesn't have anything to do with the set of
+enabled tests, so just enable it by default anyway. In particular, this
+shouldn't be only visible if KUNIT_ALL_TESTS is set, which is quite
+confusing.
 
-- If report_work is running, the purge must wait for it to finish before
-  freeing the backbone_gw, otherwise the worker may access freed memory
-  (e.g. bat_priv).
-- If report_work is pending, the purge must cancel it and release the
-  reference held for that pending work item.
-
-The previous implementation called hlist_for_each_entry_safe() inside a
-spin_lock_bh() section, but cancel_work_sync() may sleep and therefore
-cannot be called from within a spinlock-protected region.
-
-Restructure the loop to handle one entry per spinlock critical section:
-acquire the lock, find the next entry to purge, remove it from the hash
-list, then release the lock before calling cancel_work_sync() and
-dropping the hash_entry reference. Repeat until no more entries require
-purging.
-
-Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Reviewed-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20260425034155.53913-1-david@davidgow.net
+Fixes: beaed42c427d ("kunit: default KUNIT_* fragments to KUNIT_ALL_TESTS")
+Signed-off-by: David Gow <david@davidgow.net>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c |   60 ++++++++++++++++++++-------------
- 1 file changed, 38 insertions(+), 22 deletions(-)
+ lib/kunit/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -1223,6 +1223,7 @@ static void batadv_bla_purge_backbone_gw
- 	struct hlist_head *head;
- 	struct batadv_hashtable *hash;
- 	spinlock_t *list_lock;	/* protects write access to the hash lists */
-+	bool purged;
- 	int i;
+diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
+index 626719b95badd..785c2cfc530c2 100644
+--- a/lib/kunit/Kconfig
++++ b/lib/kunit/Kconfig
+@@ -16,8 +16,8 @@ menuconfig KUNIT
+ if KUNIT
  
- 	hash = bat_priv->bla.backbone_hash;
-@@ -1233,30 +1234,45 @@ static void batadv_bla_purge_backbone_gw
- 		head = &hash->table[i];
- 		list_lock = &hash->list_locks[i];
- 
--		spin_lock_bh(list_lock);
--		hlist_for_each_entry_safe(backbone_gw, node_tmp,
--					  head, hash_entry) {
--			if (now)
--				goto purge_now;
--			if (!batadv_has_timed_out(backbone_gw->lasttime,
--						  BATADV_BLA_BACKBONE_TIMEOUT))
--				continue;
--
--			batadv_dbg(BATADV_DBG_BLA, backbone_gw->bat_priv,
--				   "%s(): backbone gw %pM timed out\n",
--				   __func__, backbone_gw->orig);
-+		do {
-+			purged = false;
-+
-+			spin_lock_bh(list_lock);
-+			hlist_for_each_entry_safe(backbone_gw, node_tmp,
-+						  head, hash_entry) {
-+				if (now)
-+					goto purge_now;
-+				if (!batadv_has_timed_out(backbone_gw->lasttime,
-+							  BATADV_BLA_BACKBONE_TIMEOUT))
-+					continue;
-+
-+				batadv_dbg(BATADV_DBG_BLA, backbone_gw->bat_priv,
-+					   "%s(): backbone gw %pM timed out\n",
-+					   __func__, backbone_gw->orig);
- 
- purge_now:
--			/* don't wait for the pending request anymore */
--			if (atomic_read(&backbone_gw->request_sent))
--				atomic_dec(&bat_priv->bla.num_requests);
--
--			batadv_bla_del_backbone_claims(backbone_gw);
--
--			hlist_del_rcu(&backbone_gw->hash_entry);
--			batadv_backbone_gw_put(backbone_gw);
--		}
--		spin_unlock_bh(list_lock);
-+				purged = true;
-+
-+				/* don't wait for the pending request anymore */
-+				if (atomic_read(&backbone_gw->request_sent))
-+					atomic_dec(&bat_priv->bla.num_requests);
-+
-+				batadv_bla_del_backbone_claims(backbone_gw);
-+
-+				hlist_del_rcu(&backbone_gw->hash_entry);
-+				break;
-+			}
-+			spin_unlock_bh(list_lock);
-+
-+			if (purged) {
-+				/* reference for pending report_work */
-+				if (cancel_work_sync(&backbone_gw->report_work))
-+					batadv_backbone_gw_put(backbone_gw);
-+
-+				/* reference for hash_entry */
-+				batadv_backbone_gw_put(backbone_gw);
-+			}
-+		} while (purged);
- 	}
- }
- 
+ config KUNIT_DEBUGFS
+-	bool "KUnit - Enable /sys/kernel/debug/kunit debugfs representation" if !KUNIT_ALL_TESTS
+-	default KUNIT_ALL_TESTS
++	bool "KUnit - Enable /sys/kernel/debug/kunit debugfs representation"
++	default y
+ 	help
+ 	  Enable debugfs representation for kunit.  Currently this consists
+ 	  of /sys/kernel/debug/kunit/<test_suite>/results files for each
+-- 
+2.53.0
+
 
 
 
