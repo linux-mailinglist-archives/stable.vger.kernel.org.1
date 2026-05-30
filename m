@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258370-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBvlHQoxG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-258945-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:42 +0200
+	id mMwiGeEoG2rg/ggAu9opvQ
+	(envelope-from <stable+bounces-258370-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E5F6128A8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0201C611477
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B39530D524E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:34:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0672430E89A0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD98733AD99;
-	Sat, 30 May 2026 18:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2DED355F53;
+	Sat, 30 May 2026 18:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciSCVTSd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2NvBqRb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77022EF652;
-	Sat, 30 May 2026 18:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B16D33F5A0;
+	Sat, 30 May 2026 18:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166072; cv=none; b=T9Th1+Ogdp9y+CVwsdRGs6FQ3lJ+WEKwRBrueHb6C3IO1VlEe4s+f9jB21iqosUj8LVjaYzuEnm5hmeYZl4vA3ysKSERXEeOniNO2a1eF2zn6g93FXQG5YxRDWeZaUDzfAmjZjXrMekrELF35s+CM+5PWhfuwNkyfFJZxHmEEoU=
+	t=1780164124; cv=none; b=Ff9AADSMiVgD9IA4uIBDJ7QrHrhpiMis1KdDOR4BtRHQoHYgjPq+Zpix8AIML/y2MRiPA+k2wo7aaQapd37m/jYb4XkYqX8l2/u1nKS4UrusYwUTx1NKutkj6ZUiL5nAt9py7Dapdri8gk4r86a8fUlujc+9Qfdg0UqfKc6Fe48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166072; c=relaxed/simple;
-	bh=7ojm7HnMdf+sJCzqqelNBnuMELXLOuRWKFPbbPCdxrg=;
+	s=arc-20240116; t=1780164124; c=relaxed/simple;
+	bh=B+O4tttQE+C8pZLRWE7oHd2eXLjb2MQnGJ5hoa6Ounk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NamZH7/rVmRH1deBXHNjUO2OD2SUYifpZZyljEVJpdphhwJw2VG7bvUbrDa1pefj6us4fkUipYqWX0+RfG+Ry8h9cGVAb9wZ3PkiwBUuBYHk9V+Zv+0f93swI1/pjEELOmgqk4x1+s2m2dEMzF3Msq/vmyd+hqBIfHrFxvRV5CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciSCVTSd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196301F00893;
-	Sat, 30 May 2026 18:34:30 +0000 (UTC)
+	 MIME-Version; b=ex5l71L9qTEiLSnMry+3SZ/Deig6G2jkWNyT8oRDxjqk+GgEM3xWUnQCV/tlQf2MAEkwGvbcAAK3hQxaLmII7fsqLBzh1XtzlXiLpw+dspJi1wNyfM4NUFIJEF0BD5l4DsINK+ConDYAqEnjHEYluogdKDn9erqGc35SKiHQj8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2NvBqRb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF79F1F00893;
+	Sat, 30 May 2026 18:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166071;
-	bh=4bgGnr3usrXphT+ZCCpW4AhThykwMB54Z4/OW6cOCvQ=;
+	s=korg; t=1780164123;
+	bh=JR+6oLYpuybS4+U6ijK9YYu6TaaT+WF0N/qTkbLxw5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ciSCVTSdWCcCwnZSsOlBeThJUPOcmPb+7iguA4/mDi4Ug0UVejXGYDw4r/aIpZZlo
-	 0jVwYi2m+szjcuY2yMuJqNlnsSklvtKI3SXjRy9U8VPji80ZgKNNcN9pebr12NI9Hq
-	 TmOV01slEur/VTDxc97/B1Gkhph6F8N8S2Y/d6dY=
+	b=C2NvBqRbNMI5sYzkqI10BQxTe39k2hC3wGOQ4hw0dAGW2RInV/ehGWdpodgkcAMdE
+	 191rkvtSAV6mprNBVDcS0jwHdEGt2dPqeShknQlMGRhvvTsDykwjoXv9bj4wimUwSx
+	 ZmsqOzyQq2KbOQolTMYP9Phpdryqwf/DYYg8TL50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 265/589] regulator: max77650: fix OF node reference imbalance
+	Sander Vanheule <sander@svanheule.net>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 432/776] ASoC: sti: use managed regmap_field allocations
 Date: Sat, 30 May 2026 18:02:26 +0200
-Message-ID: <20260530160231.959659313@linuxfoundation.org>
+Message-ID: <20260530160251.601641540@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,60 +78,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258945-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258370-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.995];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D8E5F6128A8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,svanheule.net:email,msgid.link:url]
+X-Rspamd-Queue-Id: 0201C611477
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sander Vanheule <sander@svanheule.net>
 
-commit 2edaf5f7ada0ab5c9ec1f0836bd19779a8d85262 upstream.
+[ Upstream commit 1696fad8b259a2d46e51cd6e17e4bcdbe02279fa ]
 
-The driver reuses the OF node of the parent multi-function device but
-fails to take another reference to balance the one dropped by the
-platform bus code when unbinding the MFD and deregistering the child
-devices.
+The regmap_field objects allocated at player init are never freed and
+may leak resources if the driver is removed.
 
-Fix this by using the intended helper for reusing OF nodes.
+Switch to devm_regmap_field_alloc() to automatically limit the lifetime
+of the allocations the lifetime of the device.
 
-Fixes: bcc61f1c44fd ("regulator: max77650: add regulator support")
-Cc: stable@vger.kernel.org	# 5.1
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260408073055.5183-4-johan@kernel.org
+Fixes: 76c2145ded6b ("ASoC: sti: Add CPU DAI driver for playback")
+Signed-off-by: Sander Vanheule <sander@svanheule.net>
+Link: https://patch.msgid.link/20260220152634.480766-3-sander@svanheule.net
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/max77650-regulator.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sti/uniperif_player.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/regulator/max77650-regulator.c
-+++ b/drivers/regulator/max77650-regulator.c
-@@ -339,7 +339,7 @@ static int max77650_regulator_probe(stru
- 	parent = dev->parent;
+diff --git a/sound/soc/sti/uniperif_player.c b/sound/soc/sti/uniperif_player.c
+index e5c4e5245b255..da07f825f3c5f 100644
+--- a/sound/soc/sti/uniperif_player.c
++++ b/sound/soc/sti/uniperif_player.c
+@@ -1028,11 +1028,11 @@ static int uni_player_parse_dt_audio_glue(struct platform_device *pdev,
+ 		return PTR_ERR(regmap);
+ 	}
  
- 	if (!dev->of_node)
--		dev->of_node = parent->of_node;
-+		device_set_of_node_from_dev(dev, parent);
+-	player->clk_sel = regmap_field_alloc(regmap, regfield[0]);
++	player->clk_sel = devm_regmap_field_alloc(&pdev->dev, regmap, regfield[0]);
+ 	if (IS_ERR(player->clk_sel))
+ 		return PTR_ERR(player->clk_sel);
  
- 	rdescs = devm_kcalloc(dev, MAX77650_REGULATOR_NUM_REGULATORS,
- 			      sizeof(*rdescs), GFP_KERNEL);
+-	player->valid_sel = regmap_field_alloc(regmap, regfield[1]);
++	player->valid_sel = devm_regmap_field_alloc(&pdev->dev, regmap, regfield[1]);
+ 	if (IS_ERR(player->valid_sel))
+ 		return PTR_ERR(player->valid_sel);
+ 
+-- 
+2.53.0
+
 
 
 
