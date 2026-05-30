@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-258101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKyhLA8jG2pa/ggAu9opvQ
-	(envelope-from <stable+bounces-258101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:03 +0200
+	id sEeyD5waG2pR/QgAu9opvQ
+	(envelope-from <stable+bounces-257319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637C6610702
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F69C60F279
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D0D063032AB6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C544E308A964
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2FE3B1EC0;
-	Sat, 30 May 2026 17:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3CA032D42B;
+	Sat, 30 May 2026 17:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzN5EkGJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4/+oeRi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF8A3AFCF3;
-	Sat, 30 May 2026 17:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6720026F288;
+	Sat, 30 May 2026 17:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163220; cv=none; b=szfoys6cLnk0nc4ccdHKgeiPKbdHotQaWXXQm0OGBaDtXgiQlI/jUCk8QRcjPv5VdOEg/Qz931VecOLv3pl2FLcNH1BVUPTw0jyDAtbIbuzrbGgvNUanFMUet2bUm9/+rUH/uRBhldrQup0j/bpbVVHL4y8d4mK9/SqVtDmY4/Q=
+	t=1780160598; cv=none; b=L3yDKsXUGsSYTQsTQ+c+1F6zKKtNjoC7WpRr9ISgHJ/81JzAiPl2oXPu08zE1d4Ia08UsYOvAQHaOQ97O2rtAPhNa2wtJAl2t6i54Qe/lQFsBeypcrjSX6umriNX8a46dydEVB5+DWMr20jGj45DJJ6t3vFb0oLaRBxpmx9Rm3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163220; c=relaxed/simple;
-	bh=iFr0YnJNNL9xU414DZ1X+OjF39hmVoo9dtU34o53WSw=;
+	s=arc-20240116; t=1780160598; c=relaxed/simple;
+	bh=Ir7ZcUqMejNM9EtmsOPBf/aVwz731fE2Xx/gGKrdGOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U+rvRIiJSL9z/ob79PY//K95OPOt934ss0HEuMeZdITrUXSto3DZuaiCL41Y04jP9KpusCBprTwM6jk+0IDOuIIh10k8RTvd8BNEm5ZgdpA8w38Ng1LE2YePQtDu28mURqtFa+tc85CzN4x6jWqjAmFpYGWSNasOaJTiy25eYgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzN5EkGJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668981F00893;
-	Sat, 30 May 2026 17:46:58 +0000 (UTC)
+	 MIME-Version; b=Zb+moSnOIz7WDYnf0ExrGf90Dj8ouX636dGxX+ckt2ONI/Wp6n3xm/yX8/I0wgJZwnVlU2HD6Gx8H7if2ngf92CSOrd/kC2HVlpmTfoJVjPHh2b28FuszoofuLPB43vkBKF68Siv8oLBeBPt4paFSa4+0B25dAOdsB62VHlEvSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4/+oeRi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9607B1F00893;
+	Sat, 30 May 2026 17:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163219;
-	bh=Mj2Hyw21kTd8Bnd6cdcyeQ0+BBcxCxvgODWsENx9S9I=;
+	s=korg; t=1780160597;
+	bh=r4QWLAefLiHPmsIsvKy8C0XyX2yLezl1iW+4MDyEVWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GzN5EkGJ8f57IUMXSKwU6Loa0/qSoVQJuwHk9H05JUuYbKSdUcXsx88T4EXseI0Xd
-	 i0AYc/JHph6P9TATuwNcPh7tjNG7IsAKDrGWk73Dzbxy6zDIHBlsjfmKXJTuR6jph5
-	 sxyr9mCDlKPQINkBX0ZBYXDFbrnWwk8ylQYws6T4=
+	b=S4/+oeRil8wTZG5OEhqd553t3SMnFFX3kmT6eF0dv4s7M1A9EG//Zr1ROWzs6yWiF
+	 knFk71ps1rPdi96zyCJ7iY98OunM3g6diM+12IexWR+bZ3mvPurUsFs9MwvWb1l0nN
+	 /dhsyXLuv9xrszWrYkgbMkAhV8/rFw/G0LhrXM/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Bean Huo <beanhuo@micron.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Robert Garcia <rob_garcia@163.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Baocong Liu <baocong.liu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Bin Lan <lanbincn@139.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 191/776] scsi: ufs: core: Fix use-after free in init error and remove paths
+Subject: [PATCH 6.1 381/969] f2fs: compress: change the first parameter of page_array_{alloc,free} to sbi
 Date: Sat, 30 May 2026 17:58:25 +0200
-Message-ID: <20260530160245.438880015@linuxfoundation.org>
+Message-ID: <20260530160310.816459868@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,288 +66,229 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linaro.org,micron.com,kernel.org,oracle.com,163.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258101-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257319-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,unisoc.com,kernel.org,139.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,micron.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 637C6610702
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9F69C60F279
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit f8fb2403ddebb5eea0033d90d9daae4c88749ada ]
+[ Upstream commit 8e2a9b656474d67c55010f2c003ea2cf889a19ff ]
 
-devm_blk_crypto_profile_init() registers a cleanup handler to run when
-the associated (platform-) device is being released. For UFS, the
-crypto private data and pointers are stored as part of the ufs_hba's
-data structure 'struct ufs_hba::crypto_profile'. This structure is
-allocated as part of the underlying ufshcd and therefore Scsi_host
-allocation.
+No logic changes, just cleanup and prepare for fixing the UAF issue
+in f2fs_free_dic.
 
-During driver release or during error handling in ufshcd_pltfrm_init(),
-this structure is released as part of ufshcd_dealloc_host() before the
-(platform-) device associated with the crypto call above is released.
-Once this device is released, the crypto cleanup code will run, using
-the just-released 'struct ufs_hba::crypto_profile'. This causes a
-use-after-free situation:
-
-  Call trace:
-   kfree+0x60/0x2d8 (P)
-   kvfree+0x44/0x60
-   blk_crypto_profile_destroy_callback+0x28/0x70
-   devm_action_release+0x1c/0x30
-   release_nodes+0x6c/0x108
-   devres_release_all+0x98/0x100
-   device_unbind_cleanup+0x20/0x70
-   really_probe+0x218/0x2d0
-
-In other words, the initialisation code flow is:
-
-  platform-device probe
-    ufshcd_pltfrm_init()
-      ufshcd_alloc_host()
-        scsi_host_alloc()
-          allocation of struct ufs_hba
-          creation of scsi-host devices
-    devm_blk_crypto_profile_init()
-      devm registration of cleanup handler using platform-device
-
-and during error handling of ufshcd_pltfrm_init() or during driver
-removal:
-
-  ufshcd_dealloc_host()
-    scsi_host_put()
-      put_device(scsi-host)
-        release of struct ufs_hba
-  put_device(platform-device)
-    crypto cleanup handler
-
-To fix this use-after free, change ufshcd_alloc_host() to register a
-devres action to automatically cleanup the underlying SCSI device on
-ufshcd destruction, without requiring explicit calls to
-ufshcd_dealloc_host(). This way:
-
-    * the crypto profile and all other ufs_hba-owned resources are
-      destroyed before SCSI (as they've been registered after)
-    * a memleak is plugged in tc-dwc-g210-pci.c remove() as a
-      side-effect
-    * EXPORT_SYMBOL_GPL(ufshcd_dealloc_host) can be removed fully as
-      it's not needed anymore
-    * no future drivers using ufshcd_alloc_host() could ever forget
-      adding the cleanup
-
-Fixes: cb77cb5abe1f ("blk-crypto: rename blk_keyslot_manager to blk_crypto_profile")
-Fixes: d76d9d7d1009 ("scsi: ufs: use devm_blk_ksm_init()")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250124-ufshcd-fix-v4-1-c5d0144aae59@linaro.org
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Acked-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ Delete modifications about ufshcd_parse_operating_points() for it's added from
-commit 72208ebe181e3("scsi: ufs: core: Add support for parsing OPP")
-and that in ufshcd_pltfrm_remove() for it's added from commit
-897df60c16d54("scsi: ufs: pltfrm: Dellocate HBA during ufshcd_pltfrm_remove()"). ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Baocong Liu <baocong.liu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Bin Lan <lanbincn@139.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/ufs/ufshcd-pci.c    |  2 --
- drivers/scsi/ufs/ufshcd-pltfrm.c | 25 ++++++++-----------------
- drivers/scsi/ufs/ufshcd.c        | 31 +++++++++++++++++++++----------
- drivers/scsi/ufs/ufshcd.h        |  1 -
- 4 files changed, 29 insertions(+), 30 deletions(-)
+ fs/f2fs/compress.c | 40 ++++++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/scsi/ufs/ufshcd-pci.c b/drivers/scsi/ufs/ufshcd-pci.c
-index ec483ece09b6c..351e6915c33c4 100644
---- a/drivers/scsi/ufs/ufshcd-pci.c
-+++ b/drivers/scsi/ufs/ufshcd-pci.c
-@@ -554,7 +554,6 @@ static void ufshcd_pci_remove(struct pci_dev *pdev)
- 	pm_runtime_forbid(&pdev->dev);
- 	pm_runtime_get_noresume(&pdev->dev);
- 	ufshcd_remove(hba);
--	ufshcd_dealloc_host(hba);
- }
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 4dcd0870e0c74..1e90286212866 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -23,20 +23,18 @@
+ static struct kmem_cache *cic_entry_slab;
+ static struct kmem_cache *dic_entry_slab;
  
- /**
-@@ -599,7 +598,6 @@ ufshcd_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	err = ufshcd_init(hba, mmio_base, pdev->irq);
- 	if (err) {
- 		dev_err(&pdev->dev, "Initialization failed\n");
--		ufshcd_dealloc_host(hba);
- 		return err;
- 	}
- 
-diff --git a/drivers/scsi/ufs/ufshcd-pltfrm.c b/drivers/scsi/ufs/ufshcd-pltfrm.c
-index adc302b1a57ae..c254d5f697fc3 100644
---- a/drivers/scsi/ufs/ufshcd-pltfrm.c
-+++ b/drivers/scsi/ufs/ufshcd-pltfrm.c
-@@ -339,21 +339,17 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
- 	struct device *dev = &pdev->dev;
- 
- 	mmio_base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(mmio_base)) {
--		err = PTR_ERR(mmio_base);
--		goto out;
--	}
-+	if (IS_ERR(mmio_base))
-+		return PTR_ERR(mmio_base);
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		err = irq;
--		goto out;
--	}
-+	if (irq < 0)
-+		return irq;
- 
- 	err = ufshcd_alloc_host(dev, &hba);
- 	if (err) {
- 		dev_err(&pdev->dev, "Allocation failed\n");
--		goto out;
-+		return err;
- 	}
- 
- 	hba->vops = vops;
-@@ -362,13 +358,13 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
- 	if (err) {
- 		dev_err(&pdev->dev, "%s: clock parse failed %d\n",
- 				__func__, err);
--		goto dealloc_host;
-+		return err;
- 	}
- 	err = ufshcd_parse_regulator_info(hba);
- 	if (err) {
- 		dev_err(&pdev->dev, "%s: regulator init failed %d\n",
- 				__func__, err);
--		goto dealloc_host;
-+		return err;
- 	}
- 
- 	ufshcd_init_lanes_per_dir(hba);
-@@ -376,18 +372,13 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
- 	err = ufshcd_init(hba, mmio_base, irq);
- 	if (err) {
- 		dev_err(dev, "Initialization failed\n");
--		goto dealloc_host;
-+		return err;
- 	}
- 
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 
- 	return 0;
--
--dealloc_host:
--	ufshcd_dealloc_host(hba);
--out:
--	return err;
- }
- EXPORT_SYMBOL_GPL(ufshcd_pltfrm_init);
- 
-diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c
-index 55eaf04d75932..637607868f554 100644
---- a/drivers/scsi/ufs/ufshcd.c
-+++ b/drivers/scsi/ufs/ufshcd.c
-@@ -9322,16 +9322,6 @@ void ufshcd_remove(struct ufs_hba *hba)
- }
- EXPORT_SYMBOL_GPL(ufshcd_remove);
- 
--/**
-- * ufshcd_dealloc_host - deallocate Host Bus Adapter (HBA)
-- * @hba: pointer to Host Bus Adapter (HBA)
-- */
--void ufshcd_dealloc_host(struct ufs_hba *hba)
--{
--	scsi_host_put(hba->host);
--}
--EXPORT_SYMBOL_GPL(ufshcd_dealloc_host);
--
- /**
-  * ufshcd_set_dma_mask - Set dma mask based on the controller
-  *			 addressing capability
-@@ -9348,11 +9338,25 @@ static int ufshcd_set_dma_mask(struct ufs_hba *hba)
- 	return dma_set_mask_and_coherent(hba->dev, DMA_BIT_MASK(32));
- }
- 
-+/**
-+ * ufshcd_devres_release - devres cleanup handler, invoked during release of
-+ *			   hba->dev
-+ * @host: pointer to SCSI host
-+ */
-+static void ufshcd_devres_release(void *host)
-+{
-+	scsi_host_put(host);
-+}
-+
- /**
-  * ufshcd_alloc_host - allocate Host Bus Adapter (HBA)
-  * @dev: pointer to device handle
-  * @hba_handle: driver private handle
-  * Returns 0 on success, non-zero value on failure
-+ *
-+ * NOTE: There is no corresponding ufshcd_dealloc_host() because this function
-+ * keeps track of its allocations using devres and deallocates everything on
-+ * device removal automatically.
-  */
- int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
+-static void *page_array_alloc(struct inode *inode, int nr)
++static void *page_array_alloc(struct f2fs_sb_info *sbi, int nr)
  {
-@@ -9374,6 +9378,13 @@ int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
- 		err = -ENOMEM;
- 		goto out_error;
- 	}
-+
-+	err = devm_add_action_or_reset(dev, ufshcd_devres_release,
-+				       host);
-+	if (err)
-+		return dev_err_probe(dev, err,
-+				     "failed to add ufshcd dealloc action\n");
-+
- 	hba = shost_priv(host);
- 	hba->host = host;
- 	hba->dev = dev;
-diff --git a/drivers/scsi/ufs/ufshcd.h b/drivers/scsi/ufs/ufshcd.h
-index c8513cc6c2bdd..3ceac158c7f36 100644
---- a/drivers/scsi/ufs/ufshcd.h
-+++ b/drivers/scsi/ufs/ufshcd.h
-@@ -1001,7 +1001,6 @@ static inline void ufshcd_rmwl(struct ufs_hba *hba, u32 mask, u32 val, u32 reg)
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	unsigned int size = sizeof(struct page *) * nr;
+ 
+ 	if (likely(size <= sbi->page_array_slab_size))
+ 		return f2fs_kmem_cache_alloc(sbi->page_array_slab,
+-					GFP_F2FS_ZERO, false, F2FS_I_SB(inode));
++					GFP_F2FS_ZERO, false, sbi);
+ 	return f2fs_kzalloc(sbi, size, GFP_NOFS);
  }
  
- int ufshcd_alloc_host(struct device *, struct ufs_hba **);
--void ufshcd_dealloc_host(struct ufs_hba *);
- int ufshcd_hba_enable(struct ufs_hba *hba);
- int ufshcd_init(struct ufs_hba *, void __iomem *, unsigned int);
- int ufshcd_link_recovery(struct ufs_hba *hba);
+-static void page_array_free(struct inode *inode, void *pages, int nr)
++static void page_array_free(struct f2fs_sb_info *sbi, void *pages, int nr)
+ {
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	unsigned int size = sizeof(struct page *) * nr;
+ 
+ 	if (!pages)
+@@ -145,13 +143,13 @@ int f2fs_init_compress_ctx(struct compress_ctx *cc)
+ 	if (cc->rpages)
+ 		return 0;
+ 
+-	cc->rpages = page_array_alloc(cc->inode, cc->cluster_size);
++	cc->rpages = page_array_alloc(F2FS_I_SB(cc->inode), cc->cluster_size);
+ 	return cc->rpages ? 0 : -ENOMEM;
+ }
+ 
+ void f2fs_destroy_compress_ctx(struct compress_ctx *cc, bool reuse)
+ {
+-	page_array_free(cc->inode, cc->rpages, cc->cluster_size);
++	page_array_free(F2FS_I_SB(cc->inode), cc->rpages, cc->cluster_size);
+ 	cc->rpages = NULL;
+ 	cc->nr_rpages = 0;
+ 	cc->nr_cpages = 0;
+@@ -640,6 +638,7 @@ static void *f2fs_vmap(struct page **pages, unsigned int count)
+ 
+ static int f2fs_compress_pages(struct compress_ctx *cc)
+ {
++	struct f2fs_sb_info *sbi = F2FS_I_SB(cc->inode);
+ 	struct f2fs_inode_info *fi = F2FS_I(cc->inode);
+ 	const struct f2fs_compress_ops *cops =
+ 				f2fs_cops[fi->i_compress_algorithm];
+@@ -660,7 +659,7 @@ static int f2fs_compress_pages(struct compress_ctx *cc)
+ 	cc->nr_cpages = DIV_ROUND_UP(max_len, PAGE_SIZE);
+ 	cc->valid_nr_cpages = cc->nr_cpages;
+ 
+-	cc->cpages = page_array_alloc(cc->inode, cc->nr_cpages);
++	cc->cpages = page_array_alloc(sbi, cc->nr_cpages);
+ 	if (!cc->cpages) {
+ 		ret = -ENOMEM;
+ 		goto destroy_compress_ctx;
+@@ -742,7 +741,7 @@ static int f2fs_compress_pages(struct compress_ctx *cc)
+ 		if (cc->cpages[i])
+ 			f2fs_compress_free_page(cc->cpages[i]);
+ 	}
+-	page_array_free(cc->inode, cc->cpages, cc->nr_cpages);
++	page_array_free(sbi, cc->cpages, cc->nr_cpages);
+ 	cc->cpages = NULL;
+ destroy_compress_ctx:
+ 	if (cops->destroy_compress_ctx)
+@@ -1308,7 +1307,7 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
+ 	cic->magic = F2FS_COMPRESSED_PAGE_MAGIC;
+ 	cic->inode = inode;
+ 	atomic_set(&cic->pending_pages, cc->valid_nr_cpages);
+-	cic->rpages = page_array_alloc(cc->inode, cc->cluster_size);
++	cic->rpages = page_array_alloc(sbi, cc->cluster_size);
+ 	if (!cic->rpages)
+ 		goto out_put_cic;
+ 
+@@ -1401,13 +1400,13 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
+ 	spin_unlock(&fi->i_size_lock);
+ 
+ 	f2fs_put_rpages(cc);
+-	page_array_free(cc->inode, cc->cpages, cc->nr_cpages);
++	page_array_free(sbi, cc->cpages, cc->nr_cpages);
+ 	cc->cpages = NULL;
+ 	f2fs_destroy_compress_ctx(cc, false);
+ 	return 0;
+ 
+ out_destroy_crypt:
+-	page_array_free(cc->inode, cic->rpages, cc->cluster_size);
++	page_array_free(sbi, cic->rpages, cc->cluster_size);
+ 
+ 	for (--i; i >= 0; i--)
+ 		fscrypt_finalize_bounce_page(&cc->cpages[i]);
+@@ -1425,7 +1424,7 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
+ 		f2fs_compress_free_page(cc->cpages[i]);
+ 		cc->cpages[i] = NULL;
+ 	}
+-	page_array_free(cc->inode, cc->cpages, cc->nr_cpages);
++	page_array_free(sbi, cc->cpages, cc->nr_cpages);
+ 	cc->cpages = NULL;
+ 	return -EAGAIN;
+ }
+@@ -1455,7 +1454,7 @@ void f2fs_compress_write_end_io(struct bio *bio, struct page *page)
+ 		end_page_writeback(cic->rpages[i]);
+ 	}
+ 
+-	page_array_free(cic->inode, cic->rpages, cic->nr_rpages);
++	page_array_free(sbi, cic->rpages, cic->nr_rpages);
+ 	kmem_cache_free(cic_entry_slab, cic);
+ 
+ 	/*
+@@ -1601,7 +1600,7 @@ static int f2fs_prepare_decomp_mem(struct decompress_io_ctx *dic,
+ 	if (!allow_memalloc_for_decomp(F2FS_I_SB(dic->inode), pre_alloc))
+ 		return 0;
+ 
+-	dic->tpages = page_array_alloc(dic->inode, dic->cluster_size);
++	dic->tpages = page_array_alloc(F2FS_I_SB(dic->inode), dic->cluster_size);
+ 	if (!dic->tpages)
+ 		return -ENOMEM;
+ 
+@@ -1663,7 +1662,7 @@ struct decompress_io_ctx *f2fs_alloc_dic(struct compress_ctx *cc)
+ 	if (!dic)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	dic->rpages = page_array_alloc(cc->inode, cc->cluster_size);
++	dic->rpages = page_array_alloc(sbi, cc->cluster_size);
+ 	if (!dic->rpages) {
+ 		kmem_cache_free(dic_entry_slab, dic);
+ 		return ERR_PTR(-ENOMEM);
+@@ -1684,7 +1683,7 @@ struct decompress_io_ctx *f2fs_alloc_dic(struct compress_ctx *cc)
+ 		dic->rpages[i] = cc->rpages[i];
+ 	dic->nr_rpages = cc->cluster_size;
+ 
+-	dic->cpages = page_array_alloc(dic->inode, dic->nr_cpages);
++	dic->cpages = page_array_alloc(sbi, dic->nr_cpages);
+ 	if (!dic->cpages) {
+ 		ret = -ENOMEM;
+ 		goto out_free;
+@@ -1719,6 +1718,7 @@ static void f2fs_free_dic(struct decompress_io_ctx *dic,
+ 		bool bypass_destroy_callback)
+ {
+ 	int i;
++	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
+ 
+ 	f2fs_release_decomp_mem(dic, bypass_destroy_callback, true);
+ 
+@@ -1730,7 +1730,7 @@ static void f2fs_free_dic(struct decompress_io_ctx *dic,
+ 				continue;
+ 			f2fs_compress_free_page(dic->tpages[i]);
+ 		}
+-		page_array_free(dic->inode, dic->tpages, dic->cluster_size);
++		page_array_free(sbi, dic->tpages, dic->cluster_size);
+ 	}
+ 
+ 	if (dic->cpages) {
+@@ -1739,10 +1739,10 @@ static void f2fs_free_dic(struct decompress_io_ctx *dic,
+ 				continue;
+ 			f2fs_compress_free_page(dic->cpages[i]);
+ 		}
+-		page_array_free(dic->inode, dic->cpages, dic->nr_cpages);
++		page_array_free(sbi, dic->cpages, dic->nr_cpages);
+ 	}
+ 
+-	page_array_free(dic->inode, dic->rpages, dic->nr_rpages);
++	page_array_free(sbi, dic->rpages, dic->nr_rpages);
+ 	kmem_cache_free(dic_entry_slab, dic);
+ }
+ 
 -- 
 2.53.0
 
