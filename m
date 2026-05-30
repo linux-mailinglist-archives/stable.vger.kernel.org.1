@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-258773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qK2fFHUrG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:53 +0200
+	id eC5UBf8tG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1CF611AAF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5DB6120AF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1B4213013B98
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1182A304CA61
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332A5219303;
-	Sat, 30 May 2026 18:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FD42773DE;
+	Sat, 30 May 2026 18:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jdm3Tp+r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6XuIeO4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CEE21ADC7;
-	Sat, 30 May 2026 18:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC896219303;
+	Sat, 30 May 2026 18:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165491; cv=none; b=MSGy31l5FzDeEnbnRgGt1IiDnmu2nc4FpOaD30GZOP9JP5iyB5J9CQNThyFcDyCFv53sn+wIN88IRbnrcZIixVS90LDP+xQpzEAfAXkDTd69dpWv7rJ/wePhjz6eGg9V4pjbhNXkGjgGheFRLNaT+xu3zEj2c+lJOcg3Iu/D5to=
+	t=1780165651; cv=none; b=qvBDau/GpZKQLDU0RSjcsxK7iRkit9UQ0W6nnRVV5cyp24unDQF6QnQD3zqCKLfXZeSmbH4eDbdF9CQrJOC4Q3rp5SovMpPPfGKZmmfzedvjufBSRxsDJMnInD9nArxg9zzfasxsnGLJsP1ClMRXddh08EGSZmCb5zJOBqWFmgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165491; c=relaxed/simple;
-	bh=YWpXRodcGphrNerKSlzPwjh+K1kwK4YGReskvQ3ag74=;
+	s=arc-20240116; t=1780165651; c=relaxed/simple;
+	bh=j2mhRffQqFXpprP9WqbtOhHXyAcRCyqrTMk7hqUVQjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMsMHmE4pzpj/lVB7Wd2ACJYB2taqw8VJFduxUKJLZFqCRpv6+dlWnmYCC8yxQI+MVxoDixsPxekAGfVGkh4opzobbNNw+C9MSzJBWoZsL6NvTkjrrqKh/sOl/R3hVgfV0gY1U/QyuapjQalQc+L52JvRZfXRYF5XXknRPmqYRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jdm3Tp+r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257F41F00893;
-	Sat, 30 May 2026 18:24:48 +0000 (UTC)
+	 MIME-Version; b=OP08+vc+ip9QauV2wHgG0I1evKtOj8wdBOknoX1lGXPs9exLfC+kXEJ0xWQoe+ZLLCd6QmKttx/DakCu0tBoqX+1utcXEOMoY4W5j7ZdTWPn2oSrBqYAbpD/cclQapSCc1GEIE37ROVDRxv1rOSpvP/zrrhW49/iT9i7CSLS4vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6XuIeO4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3E91F00893;
+	Sat, 30 May 2026 18:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165489;
-	bh=Puchp9gaYBOzsjee/Ww/BjkXWoCRx0us+zIMsfxVOpo=;
+	s=korg; t=1780165650;
+	bh=2KhVcKESoOdqbiWVy9kvyd/NZ5bcs0oBJnCDV1KGqCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jdm3Tp+r7aMSHYVSemb8Fgmfcgq6HLJWa4SzImm0ifGxq7LLLckR3H+3sciRObGSI
-	 sSqQ0Mz47QQqY+i99W3YMg3iuvXdTdQMRXhgxfCeQvk/FcFAA+X/Yq2TyLTzT/pRhr
-	 D+hjOMKbK3rWAL5SNP4TzTRcqD62rzHq8eBL4dJg=
+	b=B6XuIeO4mxlLMZe1cjmOUl2Z2pC76x18APPawpqvAFKZyDiXURTuUfvhEGfWO0Qor
+	 9mruv/+1ry08zQ02NMjH5CIo6nzKEaq+BjdxsBemKaYWMTcNkeiNdtL/UMXounZ2zl
+	 n8KuTpwIodhcX6Q4BtK/27uUhoZgYT9ZF1qmEqa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Yongzhi Liu <lyz_cs@pku.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	"Lee, Chun-Yi" <jlee@suse.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Vasiliy Kovalev <kovalev@altlinux.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 092/589] drm/amd/display: Fix memory leak
-Date: Sat, 30 May 2026 17:59:33 +0200
-Message-ID: <20260530160227.107841697@linuxfoundation.org>
+Subject: [PATCH 5.10 093/589] thermal/int340x_thermal: handle data_vault when the value is ZERO_SIZE_PTR
+Date: Sat, 30 May 2026 17:59:34 +0200
+Message-ID: <20260530160227.137399577@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
 References: <20260530160224.570625122@linuxfoundation.org>
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258773-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258821-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,altlinux.org:email]
-X-Rspamd-Queue-Id: EB1CF611AAF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,altlinux.org:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
+X-Rspamd-Queue-Id: 6A5DB6120AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,249 +100,72 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Yongzhi Liu <lyz_cs@pku.edu.cn>
+From: Lee, Chun-Yi <joeyli.kernel@gmail.com>
 
-commit 5d5c6dba2b43e28845d7d7ed32a36802329a5f52 upstream.
+commit 7931e28098a4c1a2a6802510b0cbe57546d2049d upstream.
 
-[why]
-Resource release is needed on the error handling path
-to prevent memory leak.
+In some case, the GDDV returns a package with a buffer which has
+zero length. It causes that kmemdup() returns ZERO_SIZE_PTR (0x10).
 
-[how]
-Fix this by adding kfree on the error handling path.
+Then the data_vault_read() got NULL point dereference problem when
+accessing the 0x10 value in data_vault.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Fixes: f8ac2cf78f27 ("drm/amd/display: Linux set/read lane settings through debugfs")
-Fixes: c06e09b76639 ("drm/amd/display: Add DSC parameters logging to debugfs")
-[ kovalev: bp to fix CVE-2022-49135; added Fixes tags ]
+[   71.024560] BUG: kernel NULL pointer dereference, address:
+0000000000000010
+
+This patch uses ZERO_OR_NULL_PTR() for checking ZERO_SIZE_PTR or
+NULL value in data_vault.
+
+Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[ kovalev: bp to fix CVE-2022-48703 ]
 Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/amdgpu_dm/amdgpu_dm_debugfs.c | 72 ++++++++++++++-----
- 1 file changed, 54 insertions(+), 18 deletions(-)
+ drivers/thermal/intel/int340x_thermal/int3400_thermal.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-index 6914738f0275a..f4a1ad8959b7d 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-@@ -229,8 +229,10 @@ static ssize_t dp_link_settings_read(struct file *f, char __user *buf,
- 			break;
- 
- 		r = put_user(*(rd_buf + result), buf);
--		if (r)
-+		if (r) {
-+			kfree(rd_buf);
- 			return r; /* r = -EFAULT */
-+		}
- 
- 		buf += 1;
- 		size -= 1;
-@@ -388,8 +390,10 @@ static ssize_t dp_phy_settings_read(struct file *f, char __user *buf,
- 			break;
- 
- 		r = put_user((*(rd_buf + result)), buf);
--		if (r)
-+		if (r) {
-+			kfree(rd_buf);
- 			return r; /* r = -EFAULT */
-+		}
- 
- 		buf += 1;
- 		size -= 1;
-@@ -1195,8 +1199,10 @@ static ssize_t dp_dsc_clock_en_read(struct file *f, char __user *buf,
- 				break;
+diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+index 28913867cd4bc..a064a4eb31fba 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+@@ -466,7 +466,7 @@ static void int3400_setup_gddv(struct int3400_thermal_priv *priv)
+ 	priv->data_vault = kmemdup(obj->package.elements[0].buffer.pointer,
+ 				   obj->package.elements[0].buffer.length,
+ 				   GFP_KERNEL);
+-	if (!priv->data_vault) {
++	if (ZERO_OR_NULL_PTR(priv->data_vault)) {
+ 		kfree(buffer.pointer);
+ 		return;
  	}
+@@ -531,7 +531,7 @@ static int int3400_thermal_probe(struct platform_device *pdev)
+ 	if (result)
+ 		goto free_rel_misc;
  
--	if (!pipe_ctx)
-+	if (!pipe_ctx) {
-+		kfree(rd_buf);
- 		return -ENXIO;
-+	}
- 
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
-@@ -1212,8 +1218,10 @@ static ssize_t dp_dsc_clock_en_read(struct file *f, char __user *buf,
- 			break;
- 
- 		r = put_user(*(rd_buf + result), buf);
--		if (r)
-+		if (r) {
-+			kfree(rd_buf);
- 			return r; /* r = -EFAULT */
-+		}
- 
- 		buf += 1;
- 		size -= 1;
-@@ -1351,8 +1359,10 @@ static ssize_t dp_dsc_slice_width_read(struct file *f, char __user *buf,
- 				break;
+-	if (priv->data_vault) {
++	if (!ZERO_OR_NULL_PTR(priv->data_vault)) {
+ 		result = sysfs_create_group(&pdev->dev.kobj,
+ 					    &data_attribute_group);
+ 		if (result)
+@@ -549,7 +549,8 @@ static int int3400_thermal_probe(struct platform_device *pdev)
+ free_sysfs:
+ 	cleanup_odvp(priv);
+ 	if (priv->data_vault) {
+-		sysfs_remove_group(&pdev->dev.kobj, &data_attribute_group);
++		if (!ZERO_OR_NULL_PTR(priv->data_vault))
++			sysfs_remove_group(&pdev->dev.kobj, &data_attribute_group);
+ 		kfree(priv->data_vault);
  	}
+ free_uuid:
+@@ -579,7 +580,7 @@ static int int3400_thermal_remove(struct platform_device *pdev)
+ 	if (!priv->rel_misc_dev_res)
+ 		acpi_thermal_rel_misc_device_remove(priv->adev->handle);
  
--	if (!pipe_ctx)
-+	if (!pipe_ctx) {
-+		kfree(rd_buf);
- 		return -ENXIO;
-+	}
- 
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
-@@ -1368,8 +1378,10 @@ static ssize_t dp_dsc_slice_width_read(struct file *f, char __user *buf,
- 			break;
- 
- 		r = put_user(*(rd_buf + result), buf);
--		if (r)
-+		if (r) {
-+			kfree(rd_buf);
- 			return r; /* r = -EFAULT */
-+		}
- 
- 		buf += 1;
- 		size -= 1;
-@@ -1505,8 +1517,10 @@ static ssize_t dp_dsc_slice_height_read(struct file *f, char __user *buf,
- 				break;
- 	}
- 
--	if (!pipe_ctx)
-+	if (!pipe_ctx) {
-+		kfree(rd_buf);
- 		return -ENXIO;
-+	}
- 
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
-@@ -1522,8 +1536,10 @@ static ssize_t dp_dsc_slice_height_read(struct file *f, char __user *buf,
- 			break;
- 
- 		r = put_user(*(rd_buf + result), buf);
--		if (r)
-+		if (r) {
-+			kfree(rd_buf);
- 			return r; /* r = -EFAULT */
-+		}
- 
- 		buf += 1;
- 		size -= 1;
-@@ -1655,8 +1671,10 @@ static ssize_t dp_dsc_bits_per_pixel_read(struct file *f, char __user *buf,
- 				break;
- 	}
- 
--	if (!pipe_ctx)
-+	if (!pipe_ctx) {
-+		kfree(rd_buf);
- 		return -ENXIO;
-+	}
- 
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
-@@ -1672,8 +1690,10 @@ static ssize_t dp_dsc_bits_per_pixel_read(struct file *f, char __user *buf,
- 			break;
- 
- 		r = put_user(*(rd_buf + result), buf);
--		if (r)
-+		if (r) {
-+			kfree(rd_buf);
- 			return r; /* r = -EFAULT */
-+		}
- 
- 		buf += 1;
- 		size -= 1;
-@@ -1800,8 +1820,10 @@ static ssize_t dp_dsc_pic_width_read(struct file *f, char __user *buf,
- 				break;
- 	}
- 
--	if (!pipe_ctx)
-+	if (!pipe_ctx) {
-+		kfree(rd_buf);
- 		return -ENXIO;
-+	}
- 
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
-@@ -1817,8 +1839,10 @@ static ssize_t dp_dsc_pic_width_read(struct file *f, char __user *buf,
- 			break;
- 
- 		r = put_user(*(rd_buf + result), buf);
--		if (r)
-+		if (r) {
-+			kfree(rd_buf);
- 			return r; /* r = -EFAULT */
-+		}
- 
- 		buf += 1;
- 		size -= 1;
-@@ -1857,8 +1881,10 @@ static ssize_t dp_dsc_pic_height_read(struct file *f, char __user *buf,
- 				break;
- 	}
- 
--	if (!pipe_ctx)
-+	if (!pipe_ctx) {
-+		kfree(rd_buf);
- 		return -ENXIO;
-+	}
- 
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
-@@ -1874,8 +1900,10 @@ static ssize_t dp_dsc_pic_height_read(struct file *f, char __user *buf,
- 			break;
- 
- 		r = put_user(*(rd_buf + result), buf);
--		if (r)
-+		if (r) {
-+			kfree(rd_buf);
- 			return r; /* r = -EFAULT */
-+		}
- 
- 		buf += 1;
- 		size -= 1;
-@@ -1929,8 +1957,10 @@ static ssize_t dp_dsc_chunk_size_read(struct file *f, char __user *buf,
- 				break;
- 	}
- 
--	if (!pipe_ctx)
-+	if (!pipe_ctx) {
-+		kfree(rd_buf);
- 		return -ENXIO;
-+	}
- 
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
-@@ -1946,8 +1976,10 @@ static ssize_t dp_dsc_chunk_size_read(struct file *f, char __user *buf,
- 			break;
- 
- 		r = put_user(*(rd_buf + result), buf);
--		if (r)
-+		if (r) {
-+			kfree(rd_buf);
- 			return r; /* r = -EFAULT */
-+		}
- 
- 		buf += 1;
- 		size -= 1;
-@@ -2001,8 +2033,10 @@ static ssize_t dp_dsc_slice_bpg_offset_read(struct file *f, char __user *buf,
- 				break;
- 	}
- 
--	if (!pipe_ctx)
-+	if (!pipe_ctx) {
-+		kfree(rd_buf);
- 		return -ENXIO;
-+	}
- 
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
-@@ -2018,8 +2052,10 @@ static ssize_t dp_dsc_slice_bpg_offset_read(struct file *f, char __user *buf,
- 			break;
- 
- 		r = put_user(*(rd_buf + result), buf);
--		if (r)
-+		if (r) {
-+			kfree(rd_buf);
- 			return r; /* r = -EFAULT */
-+		}
- 
- 		buf += 1;
- 		size -= 1;
+-	if (priv->data_vault)
++	if (!ZERO_OR_NULL_PTR(priv->data_vault))
+ 		sysfs_remove_group(&pdev->dev.kobj, &data_attribute_group);
+ 	sysfs_remove_group(&pdev->dev.kobj, &uuid_attribute_group);
+ 	thermal_zone_device_unregister(priv->thermal);
 -- 
 2.53.0
 
