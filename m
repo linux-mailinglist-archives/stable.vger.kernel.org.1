@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-258559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sGdxEsgqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258559-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:00 +0200
+	id WJFPNZgeG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0DE61198D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7913C60FCE2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4E693044BA9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:12:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4498630071E0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4379E30E829;
-	Sat, 30 May 2026 18:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582B2340298;
+	Sat, 30 May 2026 17:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WT4U/wsj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1VYDRvU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1672A223DC6;
-	Sat, 30 May 2026 18:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC252FDC5E;
+	Sat, 30 May 2026 17:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164755; cv=none; b=JY/Zs1blX8yP9iw9rb51Ux5UkGWaXDPGHiVcEjego2R3OFOAuNmTtN1lThhbs1uZa3uebSrceBm+OtVuXDhlgwPzpPAcQ+zxSHVy7gnoX51znYQrviP+3Sx89QSbX//fEyw3RVKtug3A4K2llG5tFt5BZXIOiTYG6b3SSnx/4J8=
+	t=1780162157; cv=none; b=g7zh2J5oZ3eiDN/sSJWA/4mWNH47irXmm5QQxAW9paNK6csF2CYOKtYOIE+p9dwDUKBPsK0dYldZ2aatqhdU+Fx8bZdNNJEZ5T/ahTPzgexl2OrQfz1dwDVPPe8T2FlohL791fdP3FfMxDShgKLpIa1tjCkFbzC8YJ93oZZS/Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164755; c=relaxed/simple;
-	bh=P9zrWdTuBgQP94vuZ7aJ5kbwCcO5DCt6o3c4LWH6Elg=;
+	s=arc-20240116; t=1780162157; c=relaxed/simple;
+	bh=Hz1m/bffDdmCcA5zmEUboXPj3MG2sK7zKztg1EqSyyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qKXzTbQ15LhXvFkNPbcIVxvOzRYHW9Jo/ih1IFVfHB1dfsVB4nh51lwhWVO8VMFAlkrG4zB7GkokcqeE2Sl3uUALbwY1vk4Riv0yQiljqLATIfJvj29bY4wSq8dbi0v3EMapCcLmo/WvuxFDlSvb778IU0SVcUjSVyvWOhiG9co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WT4U/wsj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9A51F00893;
-	Sat, 30 May 2026 18:12:33 +0000 (UTC)
+	 MIME-Version; b=b+Hx0wBN+tsdY+pW/oaF1/68w2T6dTUrLRQV09ZcTnbpGlGyd+kFFqCazfVRs8CR7S58+rnO1VH5hrGU3yzxnHluWUzAz9k4V85CPvFjtqIIazCS4rijNkhYeBlUYM9QOLgPdePfIxOP2PwYjD770i5TYIE7RU4yx56PBydfvLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1VYDRvU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F221F00893;
+	Sat, 30 May 2026 17:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164754;
-	bh=JaVigBN6cR4cg4GgB6LA+V9i+GhXJeiOi2afmvKVjvI=;
+	s=korg; t=1780162155;
+	bh=9aWbaXVFVbWxFbCxgYUEKKJxqLXQpS9nUGE8IxGqd9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WT4U/wsjh6FxFe+FKCCzv9ZvzIU2cXJuiST7YoQQfN5E1jpi61PWoKnSjUYV5HWz8
-	 Fi7kEHrkt19J4qfn7G//KvrAUfTlS7Rv7dbA2d2lpVBOx0zpgSRAxIlb8giVaUw8/u
-	 Gk8E7xyCXltJSZ8BDb6M4KXLIScX+aizjmBsI5eQ=
+	b=y1VYDRvUjZKYFxrA5SoHWYhwsjjXQHYdQXEdNcWvhUNF4fVwP4BfemqGdWHe7UAm2
+	 MKvukd1e0I3BEyapS1xtUhlEu3L3Kao8P54h1muBwhv2fjO53bv/FccOkSGxu/5riG
+	 5aiNGhKSJmOvO8/niCk3Y5L1EpE4As47ot8WBr14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <kohei@enjuk.jp>,
-	Matt Vollrath <tactii@gmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 648/776] i40e: Cleanup PTP pins on probe failure
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jianqiang kang <jianqkang@sina.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 838/969] i3c: mipi-i3c-hci: Correct RING_CTRL_ABORT handling in DMA dequeue
 Date: Sat, 30 May 2026 18:06:02 +0200
-Message-ID: <20260530160256.676801320@linuxfoundation.org>
+Message-ID: <20260530160323.790296036@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,106 +70,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,enjuk.jp,gmail.com,molgen.mpg.de,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258559-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,nxp.com,bootlin.com,sina.cn,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257783-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,mpg.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,enjuk.jp:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: AC0DE61198D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sina.cn:email,nxp.com:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7913C60FCE2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Vollrath <tactii@gmail.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 678b713ece1e853f11e670a84cb887c35e1381b7 upstream.
+[ Upstream commit b795e68bf3073d67bebbb5a44d93f49efc5b8cc7 ]
 
-PTP pin structs are allocated early in probe, but never cleaned up.
+The logic used to abort the DMA ring contains several flaws:
 
-Fix this by calling i40e_ptp_free_pins in the error path.
+ 1. The driver unconditionally issues a ring abort even when the ring has
+    already stopped.
+ 2. The completion used to wait for abort completion is never
+    re-initialized, resulting in incorrect wait behavior.
+ 3. The abort sequence unintentionally clears RING_CTRL_ENABLE, which
+    resets hardware ring pointers and disrupts the controller state.
+ 4. If the ring is already stopped, the abort operation should be
+    considered successful without attempting further action.
 
-To support this, i40e_ptp_free_pins is added to the header and
-pin_config is correctly nullified after being freed.
+Fix the abort handling by checking whether the ring is running before
+issuing an abort, re-initializing the completion when needed, ensuring that
+RING_CTRL_ENABLE remains asserted during abort, and treating an already
+stopped ring as a successful condition.
 
-This has been an issue since i40e_ptp_alloc_pins was introduced.
-
-Fixes: 1050713026a08 ("i40e: add support for PTP external synchronization clock")
-Reported-by: Kohei Enju <kohei@enjuk.jp>
+Fixes: 9ad9a52cce282 ("i3c/master: introduce the mipi-i3c-hci driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Kohei Enju <kohei@enjuk.jp>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-2-a5ea4dc837a9@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260306072451.11131-9-adrian.hunter@intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h      |    1 +
- drivers/net/ethernet/intel/i40e/i40e_main.c |    1 +
- drivers/net/ethernet/intel/i40e/i40e_ptp.c  |    3 ++-
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -1269,6 +1269,7 @@ void i40e_ptp_restore_hw_time(struct i40
- void i40e_ptp_init(struct i40e_pf *pf);
- void i40e_ptp_stop(struct i40e_pf *pf);
- int i40e_ptp_alloc_pins(struct i40e_pf *pf);
-+void i40e_ptp_free_pins(struct i40e_pf *pf);
- int i40e_update_adq_vsi_queues(struct i40e_vsi *vsi, int vsi_offset);
- int i40e_is_vsi_uplink_mode_veb(struct i40e_vsi *vsi);
- int i40e_get_partition_bw_setting(struct i40e_pf *pf);
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -16183,6 +16183,7 @@ err_vsis:
- 	i40e_clear_interrupt_scheme(pf);
- 	kfree(pf->vsi);
- err_switch_setup:
-+	i40e_ptp_free_pins(pf);
- 	i40e_reset_interrupt_capability(pf);
- 	del_timer_sync(&pf->service_timer);
- err_mac_addr:
---- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-@@ -955,12 +955,13 @@ int i40e_ptp_get_ts_config(struct i40e_p
-  *
-  * Release memory allocated for PTP pins.
-  **/
--static void i40e_ptp_free_pins(struct i40e_pf *pf)
-+void i40e_ptp_free_pins(struct i40e_pf *pf)
- {
- 	if (i40e_is_ptp_pin_dev(&pf->hw)) {
- 		kfree(pf->ptp_pins);
- 		kfree(pf->ptp_caps.pin_config);
- 		pf->ptp_pins = NULL;
-+		pf->ptp_caps.pin_config = NULL;
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index 624d00b853a51..61007167606fd 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -448,16 +448,23 @@ static bool hci_dma_dequeue_xfer(struct i3c_hci *hci,
+ 	struct hci_rh_data *rh = &rings->headers[xfer_list[0].ring_number];
+ 	unsigned int i;
+ 	bool did_unqueue = false;
+-
+-	/* stop the ring */
+-	rh_reg_write(RING_CONTROL, RING_CTRL_ABORT);
+-	if (wait_for_completion_timeout(&rh->op_done, HZ) == 0) {
+-		/*
+-		 * We're deep in it if ever this condition is ever met.
+-		 * Hardware might still be writing to memory, etc.
+-		 */
+-		dev_crit(&hci->master.dev, "unable to abort the ring\n");
+-		WARN_ON(1);
++	u32 ring_status;
++
++	ring_status = rh_reg_read(RING_STATUS);
++	if (ring_status & RING_STATUS_RUNNING) {
++		/* stop the ring */
++		reinit_completion(&rh->op_done);
++		rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE | RING_CTRL_ABORT);
++		wait_for_completion_timeout(&rh->op_done, HZ);
++		ring_status = rh_reg_read(RING_STATUS);
++		if (ring_status & RING_STATUS_RUNNING) {
++			/*
++			 * We're deep in it if ever this condition is ever met.
++			 * Hardware might still be writing to memory, etc.
++			 */
++			dev_crit(&hci->master.dev, "unable to abort the ring\n");
++			WARN_ON(1);
++		}
  	}
- }
  
+ 	for (i = 0; i < n; i++) {
+-- 
+2.53.0
+
 
 
 
