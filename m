@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-259111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILUIIgAwG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259111-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:16 +0200
+	id 6O8YLUIoG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:11:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804086125F8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B0EB611329
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CA05030086A0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9303E3007512
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29E42773DE;
-	Sat, 30 May 2026 18:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873A63B3896;
+	Sat, 30 May 2026 18:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehg5mcXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdJUjMCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F17B21B191;
-	Sat, 30 May 2026 18:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B08439A7FE;
+	Sat, 30 May 2026 18:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166648; cv=none; b=RhiEZoFnceXHjkf7+ZTM2XM/ADWwfU3hTVyw1kMaI0TK/W4VUHstz5tHcOJekpDf3WjiXTu7RE+8JoENGBs3kTz9262+agoOGxOKDq6EY8uxv+UIHQLQ73P98jF+2CEMTzERcLhGytBnT0z+HBjMULvIOvqZbdeep0tID64wyLc=
+	t=1780164672; cv=none; b=E3YIxsKfGEkyKeVGsIMsJS7zQbKPrfiNcVimu5OTH3zlzA/hDOVs95znw+aiVoIngQ4V0nJg7bY0t7ikRq3/eZP0O8cYwmpowTj8z8UFO1EEr3l1kow8BgH7NP5q0PNiNiRfCGgyvuQMSyQA9qmS2waAUHtBj7ePsXYIiGgYYAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166648; c=relaxed/simple;
-	bh=dbH9qiT9CI9jY3eLN55wVKRZbMBYV7kKAL4XdpOnyuQ=;
+	s=arc-20240116; t=1780164672; c=relaxed/simple;
+	bh=W/DN/RPDp7ygsAwW+PjuXSjxWs4vb56fj5zVEK+JXiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0CvzWy3Nezv8J4bbIh3PRsh7pP++DHg3ktSU2sVHFDZ5X15hkPu5JKfjBw83m3tAMRv7l2Q0Wt2/6EvOFYvHQAgEMNHT7b1RuCZU6X+SBOcmGKkYcf04C4sX1EZqzXEp3YZyDBduQcHwPz25Dz/ROpJSJgLd5e01uJfC5YbVU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehg5mcXN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BF11F00893;
-	Sat, 30 May 2026 18:44:06 +0000 (UTC)
+	 MIME-Version; b=i1riVfzx9pVuh6gnS7Ocn9Y9j36BSoFRo8zxfQ0/G9JlErhdC+9CznY40jgcCGcjSNRVFBHRQsGc0zJrNmR9Z6LqrneRt1vWhzINNfKA3MWUV1Ju6G4vPnXOfOb1MDlfhci5HmVr9NSeInzrRKT+eHw22oH7K8BM66i/Prc0h6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdJUjMCc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F76C1F00893;
+	Sat, 30 May 2026 18:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166647;
-	bh=Q1iSgwUtQnFIaYXo+wsAyN94IBO2QhSLQDdMQ3PE1mM=;
+	s=korg; t=1780164671;
+	bh=9Ry0INinSW+WT7Ci4BZiFpD+12Lr/Vux4gX0YKy6Ep4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ehg5mcXNFPhuBw6EGyOk41zjrBQn0YO3UykNdbXapQFLOzUvfug4YHIgTXa2lnD2W
-	 dzdzl7NTMf2FZCLa9Zj1hmlKXpBGTfsFUr4Co7P2ime98zXPXyQb+wPoY7eny+eE/f
-	 P7FXFJqQve69QrutAxDMF3iXc0c5/AEPQGe5VPCc=
+	b=SdJUjMCcfhAR+qI+yCZIOyh1rbkVVcqbZc/8O73RuuiBiU+vCMt6+8QAMZp0d7pfs
+	 caMhsIZe91jdqgAjBQ6oz0QWYjXQl40gdqk9qMildvBirCsfAQQIuWM1+wObRc4Lgg
+	 4dqHMkbSjBWxeREElK15ADumIwHgGzqFSMQiJRZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Anthony Pighin <anthony.pighin@nokia.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 427/589] sctp: fix OOB write to userspace in sctp_getsockopt_peer_auth_chunks
-Date: Sat, 30 May 2026 18:05:08 +0200
-Message-ID: <20260530160235.947680395@linuxfoundation.org>
+Subject: [PATCH 5.15 595/776] rtc: abx80x: Disable alarm feature if no interrupt attached
+Date: Sat, 30 May 2026 18:05:09 +0200
+Message-ID: <20260530160255.423604210@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +64,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-259111-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258534-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.996];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 804086125F8
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5B0EB611329
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Anthony Pighin (Nokia) <anthony.pighin@nokia.com>
 
-[ Upstream commit 0cf004ffb61cd32d140531c3a84afe975f9fc7ea ]
+[ Upstream commit 0fedce7244e4b85c049ce579c87e298a1b0b811d ]
 
-sctp_getsockopt_peer_auth_chunks() checks that the caller's optval
-buffer is large enough for the peer AUTH chunk list with
+Commit 795cda8338ea ("rtc: interface: Fix long-standing race when setting
+alarm") exposed an issue where the rtc-abx80x driver does not clear the
+alarm feature bit, but instead relies on the set_alarm operation to return
+invalid.
 
-    if (len < num_chunks)
-            return -EINVAL;
+For example, when a RTC_UIE_ON ioctl is handled, it should abort at the
+feature validation. Instead, it proceeds to the rtc_timer_enqueue(),
+which used to return an error from the set_alarm call. However,
+following the race condition handling, which likely should not be
+discarding predecing errors, a success condition is returned to the
+ioctl() caller. This results in (for example):
+    hwclock: select() to /dev/rtc0 to wait for clock tick timed out
 
-but then writes num_chunks bytes to p->gauth_chunks, which lives
-at offset offsetof(struct sctp_authchunks, gauth_chunks) == 8
-inside optval.  The check is missing the sizeof(struct
-sctp_authchunks) = 8-byte header.  When the caller supplies
-len == num_chunks (for any num_chunks > 0) the test passes but
-copy_to_user() writes sizeof(struct sctp_authchunks) = 8 bytes
-past the declared buffer.
+Notwithstanding the validity of the race condition handling, if an interrupt
+wasn't specified, or could not be attached, the driver should clear the
+alarm feature bit.
 
-The sibling function sctp_getsockopt_local_auth_chunks() at the
-next line already has the correct check:
-
-    if (len < sizeof(struct sctp_authchunks) + num_chunks)
-            return -EINVAL;
-
-Align the peer variant with its sibling.
-
-Reproducer confirms on v7.0-13-generic: an unprivileged userspace
-caller that opens a loopback SCTP association with AUTH enabled,
-queries num_chunks with a short optval, then issues the real
-getsockopt with len == num_chunks and sentinel bytes painted past
-the buffer observes those sentinel bytes overwritten with the
-peer's AUTH chunk type.  The bytes written are under the peer's
-control but land in the caller's own userspace; this is not a
-kernel memory corruption, but it is a kernel-side contract
-violation that can silently corrupt adjacent userspace data.
-
-Fixes: 65b07e5d0d09 ("[SCTP]: API updates to suport SCTP-AUTH extensions.")
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20260416031903.1447072-1-michael.bommarito@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 718a820a303c ("rtc: abx80x: add alarm support")
+Signed-off-by: Anthony Pighin <anthony.pighin@nokia.com>
+Link: https://patch.msgid.link/BN0PR08MB69510928028C933749F4139383D1A@BN0PR08MB6951.namprd08.prod.outlook.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rtc/rtc-abx80x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index e0f608eb46902..8c7bdf01e32a1 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -6880,7 +6880,7 @@ static int sctp_getsockopt_peer_auth_chunks(struct sock *sk, int len,
+diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
+index 2ea6fdd2ae984..651270e5f1e66 100644
+--- a/drivers/rtc/rtc-abx80x.c
++++ b/drivers/rtc/rtc-abx80x.c
+@@ -836,6 +836,8 @@ static int abx80x_probe(struct i2c_client *client,
+ 			client->irq = 0;
+ 		}
+ 	}
++	if (client->irq <= 0)
++		clear_bit(RTC_FEATURE_ALARM, priv->rtc->features);
  
- 	/* See if the user provided enough room for all the data */
- 	num_chunks = ntohs(ch->param_hdr.length) - sizeof(struct sctp_paramhdr);
--	if (len < num_chunks)
-+	if (len < sizeof(struct sctp_authchunks) + num_chunks)
- 		return -EINVAL;
- 
- 	if (copy_to_user(to, ch->chunks, num_chunks))
+ 	err = rtc_add_group(priv->rtc, &rtc_calib_attr_group);
+ 	if (err) {
 -- 
 2.53.0
 
