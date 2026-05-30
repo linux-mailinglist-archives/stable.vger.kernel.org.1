@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258529-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHulICQeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257725-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:04 +0200
+	id IF7BEIcqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258529-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E8360FB87
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB30F6118A4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3316B30136E4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB82930E6805
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9ED33F5A0;
-	Sat, 30 May 2026 17:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A432C3B3896;
+	Sat, 30 May 2026 18:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTGeLIeU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YilEFMgu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A6B334695;
-	Sat, 30 May 2026 17:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A45331F98D;
+	Sat, 30 May 2026 18:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161963; cv=none; b=MzfYLI+U+kA2KSt4qpZNdluygF5wd09UWD+SBboiXerY2Bo6SthSA6pXRUD9Nvwq/mSWAYhDCMrPHzq474Nxlz6Q8cqA5t1jkP7kXhcSHV/G/3hIFt1n25bQv2VJZJMiS74Q6pUf1qNLGxogzQuPuxB5Z2vdQ+4gcmhpRPcNSDQ=
+	t=1780164655; cv=none; b=EEqi1L4U5w23i5D/TRDfM0b8k4uPzJN6r0LUI8PPz1+DLZQfWnKVSyPnj9sBpHWBfvKR+zVdwFL4c/VLBodW+s+N6CkH3ldISPbx2pCdA+fr8ascgV/6MN4kmftcMzHK7GaH3BOaaYs1rBCeE3CoWEVKHNGYDOk8jz3iKunVS5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161963; c=relaxed/simple;
-	bh=rxTb8C9ounSA+tqDe8n6sdpYpfhOd3HGXTVkr26n1y8=;
+	s=arc-20240116; t=1780164655; c=relaxed/simple;
+	bh=1m5pOZCPSVLRgJVOiVNaheUBwbD1MX3ogCYa84CF30Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmazt1nNZwUxXODn7PkgPMyrl6ZYe7qcdYHYR/mBILLpW8fucNEkjzPEKRhou9n68Er6zkFaoSBz+XLt5c2MkIWQ2KpTtKi6N0fyC2A1p8A+24oNQsBrfmXiAEDIRAqaK/gbV4QsEJe05xqyMJuvGfBYXnqotbGX68nyYsWb8/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTGeLIeU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B5E1F00893;
-	Sat, 30 May 2026 17:26:01 +0000 (UTC)
+	 MIME-Version; b=eckiKdJm5KVKF1RpCsrRlXBe2NyZbhyYhDUg1kdxKOdvdxN1YgzergLmM1hNg6v4osKGw4pHAIPhSn3DIw+NGY+mDPzgNNEqndCtQLb4gFqrzEqwe5Hd4/8orDCEx/XhFUrKWbX6OBsoGcpKzBP0CN9ncgWCcgp5HeGrjxEcSSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YilEFMgu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBE11F00893;
+	Sat, 30 May 2026 18:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161962;
-	bh=Ulz7I8RDygKHfV0A34OYY0glciRxM/EVGcSipKO0cm0=;
+	s=korg; t=1780164654;
+	bh=l+BzzqZSX79CKQcHBfzvGeKnHoptrpewAvtrNLjXxKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hTGeLIeUjjcHznvkXUvBi8TNajA6OH1Qish4imjr2/HLiCHfH+c+v+A3WQBIT7sXC
-	 mAEeSr216myU62ci3i/EzN2P95UwXSjOC69gW8m3+zszz3ZcqfskZqUIScCBtd/IIW
-	 E+MZkRmhWgurU610F6ZaWBLWIspQVUley0VWZ3MM=
+	b=YilEFMguiC58L3ZYmsYNJIGeAn0xVtZCunS24jKnQM2yB+OBEKEEo/EJVG93x9NvW
+	 gsOcwWvKnWo9FrJSNsDVNST5ysExxy6eiV6Tddfw5lCt0d1/oKgoidMn2DUeYFAPR4
+	 KyLd35GqdaMHppfSFDU1xIiSoQ8KPqTsFZQyAF2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 780/969] bonding: add support for per-port LACP actor priority
+Subject: [PATCH 5.15 590/776] net/sched: sch_sfb: annotate data-races in sfb_dump_stats()
 Date: Sat, 30 May 2026 18:05:04 +0200
-Message-ID: <20260530160322.135637737@linuxfoundation.org>
+Message-ID: <20260530160255.309249232@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,261 +66,200 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257725-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258529-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: A1E8360FB87
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: CB30F6118A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 6b6dc81ee7e8ca87c71a533e1d69cf96a4f1e986 ]
+[ Upstream commit 1ada03fdef82d3d7d2edb9dcd3acc91917675e48 ]
 
-Introduce a new netlink attribute 'actor_port_prio' to allow setting
-the LACP actor port priority on a per-slave basis. This extends the
-existing bonding infrastructure to support more granular control over
-LACP negotiations.
+sfb_dump_stats() only runs with RTNL held,
+reading fields that can be changed in qdisc fast path.
 
-The priority value is embedded in LACPDU packets and will be used by
-subsequent patches to influence aggregator selection policies.
+Add READ_ONCE()/WRITE_ONCE() annotations.
 
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20250902064501.360822-2-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: c4f050ce06c5 ("bonding: 3ad: implement proper RCU rules for port->aggregator")
+Alternative would be to acquire the qdisc spinlock, but our long-term
+goal is to make qdisc dump operations lockless as much as we can.
+
+tc_sfb_xstats fields don't need to be latched atomically,
+otherwise this bug would have been caught earlier.
+
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260421141655.3953721-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/networking/bonding.rst |  9 +++++++
- drivers/net/bonding/bond_3ad.c       |  4 ++++
- drivers/net/bonding/bond_netlink.c   | 16 +++++++++++++
- drivers/net/bonding/bond_options.c   | 36 ++++++++++++++++++++++++++++
- include/net/bond_3ad.h               |  1 +
- include/net/bond_options.h           |  1 +
- include/uapi/linux/if_link.h         |  1 +
- 7 files changed, 68 insertions(+)
+ net/sched/sch_sfb.c | 54 +++++++++++++++++++++++++++------------------
+ 1 file changed, 32 insertions(+), 22 deletions(-)
 
-diff --git a/Documentation/networking/bonding.rst b/Documentation/networking/bonding.rst
-index d0e6a0fc6fd85..e90063cec821e 100644
---- a/Documentation/networking/bonding.rst
-+++ b/Documentation/networking/bonding.rst
-@@ -193,6 +193,15 @@ ad_actor_sys_prio
- 	This parameter has effect only in 802.3ad mode and is available through
- 	SysFs interface.
+diff --git a/net/sched/sch_sfb.c b/net/sched/sch_sfb.c
+index 0490eb5b98dee..497bc022fc0c1 100644
+--- a/net/sched/sch_sfb.c
++++ b/net/sched/sch_sfb.c
+@@ -130,7 +130,7 @@ static void increment_one_qlen(u32 sfbhash, u32 slot, struct sfb_sched_data *q)
  
-+actor_port_prio
-+
-+	In an AD system, this specifies the port priority. The allowed range
-+	is 1 - 65535. If the value is not specified, it takes 255 as the
-+	default value.
-+
-+	This parameter has effect only in 802.3ad mode and is available through
-+	netlink interface.
-+
- ad_actor_system
- 
- 	In an AD system, this specifies the mac-address for the actor in
-diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-index 29e08415b16a6..cf611dce8fad1 100644
---- a/drivers/net/bonding/bond_3ad.c
-+++ b/drivers/net/bonding/bond_3ad.c
-@@ -430,6 +430,7 @@ static void __ad_actor_update_port(struct port *port)
- 
- 	port->actor_system = BOND_AD_INFO(bond).system.sys_mac_addr;
- 	port->actor_system_priority = BOND_AD_INFO(bond).system.sys_priority;
-+	port->actor_port_priority = SLAVE_AD_INFO(port->slave)->port_priority;
- }
- 
- /* Conversions */
-@@ -2186,6 +2187,9 @@ void bond_3ad_bind_slave(struct slave *slave)
- 
- 		ad_initialize_port(port, &bond->params);
- 
-+		/* Port priority is initialized. Update it to slave's ad info */
-+		SLAVE_AD_INFO(slave)->port_priority = port->actor_port_priority;
-+
- 		port->slave = slave;
- 		port->actor_port_number = SLAVE_AD_INFO(slave)->id;
- 		/* key is determined according to the link speed, duplex and
-diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
-index aebc814ad495d..7e47d405d74aa 100644
---- a/drivers/net/bonding/bond_netlink.c
-+++ b/drivers/net/bonding/bond_netlink.c
-@@ -28,6 +28,7 @@ static size_t bond_get_slave_size(const struct net_device *bond_dev,
- 		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_SLAVE_AD_ACTOR_OPER_PORT_STATE */
- 		nla_total_size(sizeof(u16)) +	/* IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE */
- 		nla_total_size(sizeof(s32)) +	/* IFLA_BOND_SLAVE_PRIO */
-+		nla_total_size(sizeof(u16)) +	/* IFLA_BOND_SLAVE_ACTOR_PORT_PRIO */
- 		0;
- }
- 
-@@ -76,6 +77,10 @@ static int bond_fill_slave_info(struct sk_buff *skb,
- 					ad_port->partner_oper.port_state))
- 				goto nla_put_failure;
- 		}
-+
-+		if (nla_put_u16(skb, IFLA_BOND_SLAVE_ACTOR_PORT_PRIO,
-+				SLAVE_AD_INFO(slave)->port_priority))
-+			goto nla_put_failure;
+ 		sfbhash >>= SFB_BUCKET_SHIFT;
+ 		if (b[hash].qlen < 0xFFFF)
+-			b[hash].qlen++;
++			WRITE_ONCE(b[hash].qlen, b[hash].qlen + 1);
+ 		b += SFB_NUMBUCKETS; /* next level */
  	}
+ }
+@@ -159,7 +159,7 @@ static void decrement_one_qlen(u32 sfbhash, u32 slot,
  
- 	return 0;
-@@ -128,6 +133,7 @@ static const struct nla_policy bond_policy[IFLA_BOND_MAX + 1] = {
- static const struct nla_policy bond_slave_policy[IFLA_BOND_SLAVE_MAX + 1] = {
- 	[IFLA_BOND_SLAVE_QUEUE_ID]	= { .type = NLA_U16 },
- 	[IFLA_BOND_SLAVE_PRIO]		= { .type = NLA_S32 },
-+	[IFLA_BOND_SLAVE_ACTOR_PORT_PRIO]	= { .type = NLA_U16 },
- };
- 
- static int bond_validate(struct nlattr *tb[], struct nlattr *data[],
-@@ -178,6 +184,16 @@ static int bond_slave_changelink(struct net_device *bond_dev,
- 			return err;
+ 		sfbhash >>= SFB_BUCKET_SHIFT;
+ 		if (b[hash].qlen > 0)
+-			b[hash].qlen--;
++			WRITE_ONCE(b[hash].qlen, b[hash].qlen - 1);
+ 		b += SFB_NUMBUCKETS; /* next level */
  	}
- 
-+	if (data[IFLA_BOND_SLAVE_ACTOR_PORT_PRIO]) {
-+		u16 ad_prio = nla_get_u16(data[IFLA_BOND_SLAVE_ACTOR_PORT_PRIO]);
-+
-+		bond_opt_slave_initval(&newval, &slave_dev, ad_prio);
-+		err = __bond_opt_set(bond, BOND_OPT_ACTOR_PORT_PRIO, &newval,
-+				     data[IFLA_BOND_SLAVE_ACTOR_PORT_PRIO], extack);
-+		if (err)
-+			return err;
-+	}
-+
- 	return 0;
  }
+@@ -179,12 +179,12 @@ static void decrement_qlen(const struct sk_buff *skb, struct sfb_sched_data *q)
  
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 1faf10667c03e..2991290f450ee 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -79,6 +79,8 @@ static int bond_option_tlb_dynamic_lb_set(struct bonding *bond,
- 				  const struct bond_opt_value *newval);
- static int bond_option_ad_actor_sys_prio_set(struct bonding *bond,
- 					     const struct bond_opt_value *newval);
-+static int bond_option_actor_port_prio_set(struct bonding *bond,
-+					   const struct bond_opt_value *newval);
- static int bond_option_ad_actor_system_set(struct bonding *bond,
- 					   const struct bond_opt_value *newval);
- static int bond_option_ad_user_port_key_set(struct bonding *bond,
-@@ -223,6 +225,13 @@ static const struct bond_opt_value bond_ad_actor_sys_prio_tbl[] = {
- 	{ NULL,      -1,    0},
- };
- 
-+static const struct bond_opt_value bond_actor_port_prio_tbl[] = {
-+	{ "minval",  0,     BOND_VALFLAG_MIN},
-+	{ "maxval",  65535, BOND_VALFLAG_MAX},
-+	{ "default", 255,   BOND_VALFLAG_DEFAULT},
-+	{ NULL,      -1,    0},
-+};
-+
- static const struct bond_opt_value bond_ad_user_port_key_tbl[] = {
- 	{ "minval",  0,     BOND_VALFLAG_MIN | BOND_VALFLAG_DEFAULT},
- 	{ "maxval",  1023,  BOND_VALFLAG_MAX},
-@@ -484,6 +493,13 @@ static const struct bond_option bond_opts[BOND_OPT_LAST] = {
- 		.values = bond_ad_actor_sys_prio_tbl,
- 		.set = bond_option_ad_actor_sys_prio_set,
- 	},
-+	[BOND_OPT_ACTOR_PORT_PRIO] = {
-+		.id = BOND_OPT_ACTOR_PORT_PRIO,
-+		.name = "actor_port_prio",
-+		.unsuppmodes = BOND_MODE_ALL_EX(BIT(BOND_MODE_8023AD)),
-+		.values = bond_actor_port_prio_tbl,
-+		.set = bond_option_actor_port_prio_set,
-+	},
- 	[BOND_OPT_AD_ACTOR_SYSTEM] = {
- 		.id = BOND_OPT_AD_ACTOR_SYSTEM,
- 		.name = "ad_actor_system",
-@@ -1833,6 +1849,26 @@ static int bond_option_ad_actor_sys_prio_set(struct bonding *bond,
- 	return 0;
- }
- 
-+static int bond_option_actor_port_prio_set(struct bonding *bond,
-+					   const struct bond_opt_value *newval)
-+{
-+	struct slave *slave;
-+
-+	slave = bond_slave_get_rtnl(newval->slave_dev);
-+	if (!slave) {
-+		netdev_dbg(bond->dev, "%s called on NULL slave\n", __func__);
-+		return -ENODEV;
-+	}
-+
-+	netdev_dbg(newval->slave_dev, "Setting actor_port_prio to %llu\n",
-+		   newval->value);
-+
-+	SLAVE_AD_INFO(slave)->port_priority = newval->value;
-+	bond_3ad_update_ad_actor_settings(bond);
-+
-+	return 0;
-+}
-+
- static int bond_option_ad_actor_system_set(struct bonding *bond,
- 					   const struct bond_opt_value *newval)
+ static void decrement_prob(struct sfb_bucket *b, struct sfb_sched_data *q)
  {
-diff --git a/include/net/bond_3ad.h b/include/net/bond_3ad.h
-index 5047711944df9..579f3000a855e 100644
---- a/include/net/bond_3ad.h
-+++ b/include/net/bond_3ad.h
-@@ -271,6 +271,7 @@ struct ad_slave_info {
- 	struct port port;		/* 802.3ad port structure */
- 	struct bond_3ad_stats stats;
- 	u16 id;
-+	u16 port_priority;
- };
+-	b->p_mark = prob_minus(b->p_mark, q->decrement);
++	WRITE_ONCE(b->p_mark, prob_minus(b->p_mark, q->decrement));
+ }
  
- static inline const char *bond_3ad_churn_desc(churn_state_t state)
-diff --git a/include/net/bond_options.h b/include/net/bond_options.h
-index 022b122a9fb61..e6eedf23aea1a 100644
---- a/include/net/bond_options.h
-+++ b/include/net/bond_options.h
-@@ -78,6 +78,7 @@ enum {
- 	BOND_OPT_PRIO,
- 	BOND_OPT_COUPLED_CONTROL,
- 	BOND_OPT_BROADCAST_NEIGH,
-+	BOND_OPT_ACTOR_PORT_PRIO,
- 	BOND_OPT_LAST
- };
+ static void increment_prob(struct sfb_bucket *b, struct sfb_sched_data *q)
+ {
+-	b->p_mark = prob_plus(b->p_mark, q->increment);
++	WRITE_ONCE(b->p_mark, prob_plus(b->p_mark, q->increment));
+ }
  
-diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
-index feebb4509abd7..d255239285841 100644
---- a/include/uapi/linux/if_link.h
-+++ b/include/uapi/linux/if_link.h
-@@ -967,6 +967,7 @@ enum {
- 	IFLA_BOND_SLAVE_AD_ACTOR_OPER_PORT_STATE,
- 	IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE,
- 	IFLA_BOND_SLAVE_PRIO,
-+	IFLA_BOND_SLAVE_ACTOR_PORT_PRIO,
- 	__IFLA_BOND_SLAVE_MAX,
- };
+ static void sfb_zero_all_buckets(struct sfb_sched_data *q)
+@@ -202,11 +202,14 @@ static u32 sfb_compute_qlen(u32 *prob_r, u32 *avgpm_r, const struct sfb_sched_da
+ 	const struct sfb_bucket *b = &q->bins[q->slot].bins[0][0];
  
+ 	for (i = 0; i < SFB_LEVELS * SFB_NUMBUCKETS; i++) {
+-		if (qlen < b->qlen)
+-			qlen = b->qlen;
+-		totalpm += b->p_mark;
+-		if (prob < b->p_mark)
+-			prob = b->p_mark;
++		u32 b_qlen = READ_ONCE(b->qlen);
++		u32 b_mark = READ_ONCE(b->p_mark);
++
++		if (qlen < b_qlen)
++			qlen = b_qlen;
++		totalpm += b_mark;
++		if (prob < b_mark)
++			prob = b_mark;
+ 		b++;
+ 	}
+ 	*prob_r = prob;
+@@ -294,7 +297,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 
+ 	if (unlikely(sch->q.qlen >= q->limit)) {
+ 		qdisc_qstats_overlimit(sch);
+-		q->stats.queuedrop++;
++		WRITE_ONCE(q->stats.queuedrop,
++			   q->stats.queuedrop + 1);
+ 		goto drop;
+ 	}
+ 
+@@ -347,7 +351,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 
+ 	if (unlikely(minqlen >= q->max)) {
+ 		qdisc_qstats_overlimit(sch);
+-		q->stats.bucketdrop++;
++		WRITE_ONCE(q->stats.bucketdrop,
++			   q->stats.bucketdrop + 1);
+ 		goto drop;
+ 	}
+ 
+@@ -373,7 +378,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		}
+ 		if (sfb_rate_limit(skb, q)) {
+ 			qdisc_qstats_overlimit(sch);
+-			q->stats.penaltydrop++;
++			WRITE_ONCE(q->stats.penaltydrop,
++				   q->stats.penaltydrop + 1);
+ 			goto drop;
+ 		}
+ 		goto enqueue;
+@@ -388,14 +394,17 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			 * In either case, we want to start dropping packets.
+ 			 */
+ 			if (r < (p_min - SFB_MAX_PROB / 2) * 2) {
+-				q->stats.earlydrop++;
++				WRITE_ONCE(q->stats.earlydrop,
++					   q->stats.earlydrop + 1);
+ 				goto drop;
+ 			}
+ 		}
+ 		if (INET_ECN_set_ce(skb)) {
+-			q->stats.marked++;
++			WRITE_ONCE(q->stats.marked,
++				   q->stats.marked + 1);
+ 		} else {
+-			q->stats.earlydrop++;
++			WRITE_ONCE(q->stats.earlydrop,
++				   q->stats.earlydrop + 1);
+ 			goto drop;
+ 		}
+ 	}
+@@ -408,7 +417,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		sch->q.qlen++;
+ 		increment_qlen(&cb, q);
+ 	} else if (net_xmit_drop_count(ret)) {
+-		q->stats.childdrop++;
++		WRITE_ONCE(q->stats.childdrop,
++			   q->stats.childdrop + 1);
+ 		qdisc_qstats_drop(sch);
+ 	}
+ 	return ret;
+@@ -597,12 +607,12 @@ static int sfb_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ {
+ 	struct sfb_sched_data *q = qdisc_priv(sch);
+ 	struct tc_sfb_xstats st = {
+-		.earlydrop = q->stats.earlydrop,
+-		.penaltydrop = q->stats.penaltydrop,
+-		.bucketdrop = q->stats.bucketdrop,
+-		.queuedrop = q->stats.queuedrop,
+-		.childdrop = q->stats.childdrop,
+-		.marked = q->stats.marked,
++		.earlydrop = READ_ONCE(q->stats.earlydrop),
++		.penaltydrop = READ_ONCE(q->stats.penaltydrop),
++		.bucketdrop = READ_ONCE(q->stats.bucketdrop),
++		.queuedrop = READ_ONCE(q->stats.queuedrop),
++		.childdrop = READ_ONCE(q->stats.childdrop),
++		.marked = READ_ONCE(q->stats.marked),
+ 	};
+ 
+ 	st.maxqlen = sfb_compute_qlen(&st.maxprob, &st.avgprob, q);
 -- 
 2.53.0
 
