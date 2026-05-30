@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-258927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258284-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILLWH9EtG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258927-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:34:57 +0200
+	id KJtpAJEnG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258284-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30BF061203E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:34:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 632926110B8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E1447303F9AA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:33:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE52630DB5B7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12A93242BA;
-	Sat, 30 May 2026 18:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F77341AC7;
+	Sat, 30 May 2026 17:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmuEYMqm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oow8SvSJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE394313E34;
-	Sat, 30 May 2026 18:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF9B30E0DC;
+	Sat, 30 May 2026 17:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166011; cv=none; b=f3yshDYrjXo2qKx7aWye8vqj/c6e3vnGDrYg/jaOylYGbTS7VpXXNSWEGXluH1dMfnZ/vY463qrQ54DGM3IuzjV8fFL/D6Ka/RKf3snuOsVpKVYYycDxZyoPStqTLr3lHfH5822eB6ePfS8rzlMCKeJv0nWCJo61vUudShFg2Tw=
+	t=1780163833; cv=none; b=Gb2aKxEA3dM85Dc+MQl1UcLmPu21aQ81QTYc+x1T2BmZlvqM2C3QQE52z2nZwyuzNouWXKpNMX+MklOosomLs+6dHWszEShbfYTrSLykmHW4jYoHa7L7TvXQIB66JidI9HOByCFTqS7WK5RPNlCOoroNcum3e6fSInkXMQjVAoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166011; c=relaxed/simple;
-	bh=g1UNX3TRNPXaJd7jjjI3NBOJtfzJ/wgQsoZeg/4ajNk=;
+	s=arc-20240116; t=1780163833; c=relaxed/simple;
+	bh=gVyXqYOSR3Q2Un4ggeFDuzkqx5HiIdNJ31tLvON/oPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OK0tcLsva04g2JeQ+Dmck+mYGckeAlQe0bjirne+vL1L/Nc9dopMi7fh0chbC3swKaVtLlfpLMXQaAHfrqfz7WktiozsO/vtpEPGiqzdKYeOq/sBzarzNnXq3wpstPMuVWY2DaSVdrzqJYCEhF9ltrbaqDQ5eVNUeGghK0H3PjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmuEYMqm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8CF1F00893;
-	Sat, 30 May 2026 18:33:29 +0000 (UTC)
+	 MIME-Version; b=NxczQ4fDGH8mFbR6zSZ2UaXoxqZv8m/u9A/RNRz1c9u9vUhu50sYvuc1OklckTVuVaTAH1WFl22iUb9Cy9czV1H2fANSuCxAB1fsNGHHMgWbvytFp/WIHc5FQRCapuDmWSMWud5A1QRlQAdeR9fbkl6yR7pD7Owg/kn8a7kyn70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oow8SvSJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8311F00893;
+	Sat, 30 May 2026 17:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166010;
-	bh=NfokzXqhml0YHlCxz9WD4Wzb829sP76NNa43NgqTWPI=;
+	s=korg; t=1780163831;
+	bh=WqMbRXRqtZXeJfB6YN7IVSPLfE1wA1fiWW/Kc3UYea8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CmuEYMqm54qJNYPAXr6Dfd2B2Ix0GQrp6IpFRgvg5fDFdRz6c6NbA6GLaIY3qMaU/
-	 DL7njwDZYAKAgF3NwEFqHeD0uKIFJXk01+rWOUHNiqU3Nn521HkU0fJ4DaoFxnacaC
-	 oa4dSaoaiuJ0s9AcJIQ/d3RvpSMNqXlCEiidKGrQ=
+	b=oow8SvSJowbQtHBg8wDs+htbR2zgVJGQ6stRZLMtSMdpq22a6ph2+5gWgmTMz1Lru
+	 wMnUYNCZWtJpfLbPjNi9s24WIkiUR9owB4mtQCYEVkHuq2lAkkhA7+YWdAVY8rLTbq
+	 Rks0WkqbJONdB2jHQ8YGIBz7tsxRrpmm4VZrRSX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivam Kalra <shivamkalra98@zohomail.in>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.10 209/589] ACPI: video: force native backlight on HP OMEN 16 (8A44)
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Jiexun Wang <wangjiexun2025@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.15 376/776] batman-adv: stop caching unowned originator pointers in BAT IV
 Date: Sat, 30 May 2026 18:01:30 +0200
-Message-ID: <20260530160230.448273916@linuxfoundation.org>
+Message-ID: <20260530160250.246221302@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,81 +73,207 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-258284-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258927-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,zohomail.in:email]
-X-Rspamd-Queue-Id: 30BF061203E
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 632926110B8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivam Kalra <shivamkalra98@zohomail.in>
+From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-commit 4b506ea5351a1f5937ac632a4a5c35f6f796cc41 upstream.
+commit f03e8583532941b07761c5429de7d50766fa3110 upstream.
 
-The HP OMEN 16 Gaming Laptop (board name 8A44) has a mux-less hybrid
-GPU configuration with AMD Rembrandt (Radeon 680M) and NVIDIA GA104
-(RTX 3070 Ti). The internal eDP panel is wired to the AMD iGPU.
+BAT IV keeps the last-hop neighbor address in each neigh_node, but some
+paths also cache an originator pointer derived from a temporary lookup.
+That pointer is not owned by the neigh_node and may no longer refer to a
+live originator entry after purge handling runs.
 
-When Nouveau loads without GSP firmware, the ACPI video backlight
-device (acpi_video0) gets registered alongside the native AMD
-backlight (amdgpu_bl2). In this state, writes to amdgpu_bl2 update
-the software brightness value but fail to change the physical panel
-brightness.
+Stop storing the auxiliary originator pointer in the BAT IV neighbor
+state. When BAT IV needs the neighbor originator data, resolve it from
+the stored neighbor address and drop the reference again after use.
 
-Force native backlight to prevent acpi_video0 from registering.
-Confirmed that booting with acpi_backlight=native resolves the
-issue.
-
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
-Link: https://patch.msgid.link/20260426-omen-16-backlight-fix-v1-1-62364f268ea6@zohomail.in
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+[sven: avoid bonding logic for outgoing OGM]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/video_detect.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/batman-adv/bat_iv_ogm.c |   83 +++++++++++++++++++++++++++++++-------------
+ 1 file changed, 59 insertions(+), 24 deletions(-)
 
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -154,6 +154,14 @@ static const struct dmi_system_id video_
- 		DMI_MATCH(DMI_PRODUCT_NAME, "VPCEH3U1E"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* HP OMEN Gaming Laptop 16-n0xxx */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16-n0xxx"),
-+		},
-+	},
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -173,19 +173,12 @@ free_orig_node_hash:
+ static struct batadv_neigh_node *
+ batadv_iv_ogm_neigh_new(struct batadv_hard_iface *hard_iface,
+ 			const u8 *neigh_addr,
+-			struct batadv_orig_node *orig_node,
+-			struct batadv_orig_node *orig_neigh)
++			struct batadv_orig_node *orig_node)
+ {
+ 	struct batadv_neigh_node *neigh_node;
  
- 	/*
- 	 * These models have a working acpi_video backlight control, and using
+ 	neigh_node = batadv_neigh_node_get_or_create(orig_node,
+ 						     hard_iface, neigh_addr);
+-	if (!neigh_node)
+-		goto out;
+-
+-	neigh_node->orig_node = orig_neigh;
+-
+-out:
+ 	return neigh_node;
+ }
+ 
+@@ -902,6 +895,31 @@ static u8 batadv_iv_orig_ifinfo_sum(stru
+ }
+ 
+ /**
++ * batadv_iv_ogm_neigh_ifinfo_sum() - Get bcast_own sum for a last-hop neighbor
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @neigh_node: last-hop neighbor of an originator
++ *
++ * Return: Number of replied (rebroadcasted) OGMs for the originator currently
++ * announced by the neighbor. Returns 0 if the neighbor's originator entry is
++ * not available anymore.
++ */
++static u8 batadv_iv_ogm_neigh_ifinfo_sum(struct batadv_priv *bat_priv,
++					 const struct batadv_neigh_node *neigh_node)
++{
++	struct batadv_orig_node *orig_neigh;
++	u8 sum;
++
++	orig_neigh = batadv_orig_hash_find(bat_priv, neigh_node->addr);
++	if (!orig_neigh)
++		return 0;
++
++	sum = batadv_iv_orig_ifinfo_sum(orig_neigh, neigh_node->if_incoming);
++	batadv_orig_node_put(orig_neigh);
++
++	return sum;
++}
++
++/**
+  * batadv_iv_ogm_orig_update() - use OGM to update corresponding data in an
+  *  originator
+  * @bat_priv: the bat priv with all the soft interface information
+@@ -970,17 +988,9 @@ batadv_iv_ogm_orig_update(struct batadv_
+ 	}
+ 
+ 	if (!neigh_node) {
+-		struct batadv_orig_node *orig_tmp;
+-
+-		orig_tmp = batadv_iv_ogm_orig_get(bat_priv, ethhdr->h_source);
+-		if (!orig_tmp)
+-			goto unlock;
+-
+ 		neigh_node = batadv_iv_ogm_neigh_new(if_incoming,
+ 						     ethhdr->h_source,
+-						     orig_node, orig_tmp);
+-
+-		batadv_orig_node_put(orig_tmp);
++						     orig_node);
+ 		if (!neigh_node)
+ 			goto unlock;
+ 	} else {
+@@ -1032,10 +1042,9 @@ batadv_iv_ogm_orig_update(struct batadv_
+ 	 */
+ 	if (router_ifinfo &&
+ 	    neigh_ifinfo->bat_iv.tq_avg == router_ifinfo->bat_iv.tq_avg) {
+-		sum_orig = batadv_iv_orig_ifinfo_sum(router->orig_node,
+-						     router->if_incoming);
+-		sum_neigh = batadv_iv_orig_ifinfo_sum(neigh_node->orig_node,
+-						      neigh_node->if_incoming);
++		sum_orig = batadv_iv_ogm_neigh_ifinfo_sum(bat_priv, router);
++		sum_neigh = batadv_iv_ogm_neigh_ifinfo_sum(bat_priv,
++							   neigh_node);
+ 		if (sum_orig >= sum_neigh)
+ 			goto out;
+ 	}
+@@ -1101,7 +1110,6 @@ static bool batadv_iv_ogm_calc_tq(struct
+ 	if (!neigh_node)
+ 		neigh_node = batadv_iv_ogm_neigh_new(if_incoming,
+ 						     orig_neigh_node->orig,
+-						     orig_neigh_node,
+ 						     orig_neigh_node);
+ 
+ 	if (!neigh_node)
+@@ -1298,6 +1306,32 @@ out:
+ }
+ 
+ /**
++ * batadv_orig_to_direct_router() - get direct next hop neighbor to an orig address
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @orig_addr: the originator MAC address to search the best next hop router for
++ * @if_outgoing: the interface where the OGM should be sent to
++ *
++ * Return: A neighbor node which is the best router towards the given originator
++ * address. Bonding candidates are ignored.
++ */
++static struct batadv_neigh_node *
++batadv_orig_to_direct_router(struct batadv_priv *bat_priv, u8 *orig_addr,
++			     struct batadv_hard_iface *if_outgoing)
++{
++	struct batadv_neigh_node *neigh_node;
++	struct batadv_orig_node *orig_node;
++
++	orig_node = batadv_orig_hash_find(bat_priv, orig_addr);
++	if (!orig_node)
++		return NULL;
++
++	neigh_node = batadv_orig_router_get(orig_node, if_outgoing);
++	batadv_orig_node_put(orig_node);
++
++	return neigh_node;
++}
++
++/**
+  * batadv_iv_ogm_process_per_outif() - process a batman iv OGM for an outgoing
+  *  interface
+  * @skb: the skb containing the OGM
+@@ -1367,8 +1401,9 @@ batadv_iv_ogm_process_per_outif(const st
+ 
+ 	router = batadv_orig_router_get(orig_node, if_outgoing);
+ 	if (router) {
+-		router_router = batadv_orig_router_get(router->orig_node,
+-						       if_outgoing);
++		router_router = batadv_orig_to_direct_router(bat_priv,
++							     router->addr,
++							     if_outgoing);
+ 		router_ifinfo = batadv_neigh_ifinfo_get(router, if_outgoing);
+ 	}
+ 
 
 
 
