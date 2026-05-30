@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFPOHX0jG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:53 +0200
+	id oOUdEc8ZG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 083EC610823
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0ACD60F015
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B1DF930B2572
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B40B3054534
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231DC3469FC;
-	Sat, 30 May 2026 17:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428F4352027;
+	Sat, 30 May 2026 17:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzZ4KL76"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itZVSOIh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0F5344DB9;
-	Sat, 30 May 2026 17:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F7C3438AE;
+	Sat, 30 May 2026 17:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163043; cv=none; b=ZCzLiPxJIHbe/0DAiXZS/5Ud3qCIDU0kdA4qjRtM4/R3FDCNmzIIpejIl1QZF80tOPtrlzI3JVidxQm1yVEDLnnB8WLJZSBD2LL7/SZkiFdOCL291eNLMLryYxI1exTJCuNOzuofUFNaKeaCoSM04/COLlSUMLx3CKujRQVNSuo=
+	t=1780160404; cv=none; b=YOWHptkL6P+EzX7YYwOMJJoRkF0i+1e9T+FoGDrESurB+IZlDKhnDyBQk5SF1sdBTWaFzryhgxW/sgHOrCt6v9+N0cHGalP35yrZW8sHVTqk/HmUOn5CW2aMaf8QgRpSowgZmKM2ndZMBcXe8RUdfrcebr9PSWw5xAy9dAzEvPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163043; c=relaxed/simple;
-	bh=UOnqJVOhznpJFmtkTcXQ/jGnvr7t4U8RT7kuzSeluOw=;
+	s=arc-20240116; t=1780160404; c=relaxed/simple;
+	bh=ToCEmxvHduGNHNZ5qo7LGQFUh/8jYaEIXMrXfGdZCeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6A7ZFBQHaDnjTem7Rl7wc6TIx3VUuqNldKCYjJ1s5GDRjyvfk2JoKkIkQerFAddsevX0Qok+hJdNiSalbzYSrxZo4tKRP0YRzFoh9HHaZS208mp4eqrFDcqQgxzX8fDfnbmIf44rcZCA6KBol+mPORAMuaXgZgqCM/OffYE8/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzZ4KL76; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0071F00893;
-	Sat, 30 May 2026 17:44:01 +0000 (UTC)
+	 MIME-Version; b=j388hXqgIYzBUxkuzTV38ijtGrRk4MuFSXEQneKbZS9W/+bnptRXEzrQiRyOf4u+9caOLwpWLW4Vv2QqBtZTnIrZOwpCbcA9a+Qp2Np4rVUhd++iAhaOsDkR5sQc/FSIkXrxWJS26GMUInKqHKPG7bQhLZQC9VxhL2S297Lswq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itZVSOIh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AF71F00893;
+	Sat, 30 May 2026 17:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163042;
-	bh=cWUuSyR5bQacNoQSNtB1MYqGVAspYcYfQ/2AxukaTVk=;
+	s=korg; t=1780160402;
+	bh=xuDXPGkxxp5O8VEAAXyWJ/MdfnTeTwa2cTF/mSsJwAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MzZ4KL76fCJ6tTpTjWtERWUsAky+nrTUX7eEjIDaK94vxqizxWR1G4D132cHNYgCf
-	 WS49hzBttDVSTIjrUaex6PgODi4m1Cf2SrTf3dseONIKwKZ/3KpmDSShBN/7F5Lb3Y
-	 jrvB8Rdx6ilEL0x2cTYyLWk9Ah+ejSOnKBqRtykk=
+	b=itZVSOIh3N8nby1ghSaP13omrbcb4e2kX7ZvgYjV3OA3jM2YC2GDyY8mmAiGMTaDD
+	 9cIgOamE2C2wBXlhp7LWQBOMokQ47RQI3uWnfJA+AYpUD+Mpy2+VgAafj96rQ2T1Hi
+	 jrVrTDLJFwsz7GICsy4b6w/LCnH+njOqg8vmOIYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunjie Zhu <chunjie.zhu@cloud.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Johnny Hao <johnny_haocn@sina.com>
-Subject: [PATCH 5.15 138/776] gfs2: No more self recovery
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.1 328/969] hwmon: (ltc2992) Clamp threshold writes to hardware range
 Date: Sat, 30 May 2026 17:57:32 +0200
-Message-ID: <20260530160243.976017270@linuxfoundation.org>
+Message-ID: <20260530160309.445519220@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,107 +72,141 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258047-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,cloud.com,redhat.com,sina.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257267-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sina.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 083EC610823
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A0ACD60F015
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit deb016c1669002e48c431d6fd32ea1c20ef41756 ]
+commit d6cc7c99bf1f73eda7d565d224d791d16239bb41 upstream.
 
-When a node withdraws and it turns out that it is the only node that has
-the filesystem mounted, gfs2 currently tries to replay the local journal
-to bring the filesystem back into a consistent state.  Not only is that
-a very bad idea, it has also never worked because gfs2_recover_func()
-will refuse to do anything during a withdraw.
+ltc2992_set_voltage(), ltc2992_set_current(), and ltc2992_set_power()
+do not validate the user-supplied value before converting it to a
+register value. This can result in:
 
-However, before even getting to this point, gfs2_recover_func()
-dereferences sdp->sd_jdesc->jd_inode.  This was a use-after-free before
-commit 04133b607a78 ("gfs2: Prevent double iput for journal on error")
-and is a NULL pointer dereference since then.
+1. Negative input values wrapping to large positive register values.
+   For power, the negative long is implicitly cast to u64 in
+   mul_u64_u32_div(), producing an incorrect value. For voltage and
+   current, the negative converted value wraps when passed to
+   ltc2992_write_reg() as a u32.
 
-Simply get rid of self recovery to fix that.
+2. Intermediate arithmetic exceeding the range representable in u64 on
+   64-bit platforms. In ltc2992_set_voltage(), (u64)val * 1000 can
+   exceed U64_MAX when val is a large positive long. In
+   ltc2992_set_current(), (u64)val * r_sense_uohm can overflow
+   similarly. In ltc2992_set_power(), the computed value may not fit
+   in u64.
 
-Fixes: 601ef0d52e96 ("gfs2: Force withdraw to replay journals and wait for it to finish")
-Reported-by: Chunjie Zhu <chunjie.zhu@cloud.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-[ The context change is due to the commit f80d882edcf2
-("gfs2: Get rid of gfs2_glock_queue_put in signal_our_withdraw")
-in v6.10 which is irrelevant to the logic of this patch. ]
-Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+3. Register values exceeding the hardware field width. Voltage and
+   current threshold registers are 12-bit (stored left-justified in
+   16 bits), and power threshold registers are 24-bit. Without
+   clamping, bits above the field width are truncated in
+   ltc2992_write_reg().
+
+Fix by clamping negative values to zero, clamping positive values to
+the rounded hardware-representable maximum (the value returned by the
+read path for a full-scale register) to prevent intermediate overflow,
+and clamping the converted register value to the hardware field width
+before writing. The existing conversion formula and rounding behavior
+are preserved.
+
+In the power write path, cancel the factor of 1000 from both the
+numerator (r_sense_uohm * 1000) and the denominator
+(VADC_UV_LSB * IADC_NANOV_LSB) to also eliminate a u32 overflow of
+r_sense_uohm * 1000 when r_sense_uohm exceeds about 4.29 ohms.
+
+Fixes: b0bd407e94b03 ("hwmon: (ltc2992) Add support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260416215904.101969-2-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/util.c |   30 +++++++++++-------------------
- 1 file changed, 11 insertions(+), 19 deletions(-)
+ drivers/hwmon/ltc2992.c |   35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
 
---- a/fs/gfs2/util.c
-+++ b/fs/gfs2/util.c
-@@ -234,31 +234,23 @@ static void signal_our_withdraw(struct g
- 	 */
- 	ret = gfs2_glock_nq(&sdp->sd_live_gh);
+--- a/drivers/hwmon/ltc2992.c
++++ b/drivers/hwmon/ltc2992.c
+@@ -421,10 +421,16 @@ static int ltc2992_get_voltage(struct lt
  
-+	gfs2_glock_put(live_gl); /* drop extra reference we acquired */
-+	clear_bit(SDF_WITHDRAW_RECOVERY, &sdp->sd_flags);
+ static int ltc2992_set_voltage(struct ltc2992_state *st, u32 reg, u32 scale, long val)
+ {
+-	val = DIV_ROUND_CLOSEST(val * 1000, scale);
+-	val = val << 4;
++	u32 reg_val;
++	long vmax;
 +
- 	/*
- 	 * If we actually got the "live" lock in EX mode, there are no other
--	 * nodes available to replay our journal. So we try to replay it
--	 * ourselves. We hold the "live" glock to prevent other mounters
--	 * during recovery, then just dequeue it and reacquire it in our
--	 * normal SH mode. Just in case the problem that caused us to
--	 * withdraw prevents us from recovering our journal (e.g. io errors
--	 * and such) we still check if the journal is clean before proceeding
--	 * but we may wait forever until another mounter does the recovery.
-+	 * nodes available to replay our journal.
- 	 */
- 	if (ret == 0) {
--		fs_warn(sdp, "No other mounters found. Trying to recover our "
--			"own journal jid %d.\n", sdp->sd_lockstruct.ls_jid);
--		if (gfs2_recover_journal(sdp->sd_jdesc, 1))
--			fs_warn(sdp, "Unable to recover our journal jid %d.\n",
--				sdp->sd_lockstruct.ls_jid);
--		gfs2_glock_dq_wait(&sdp->sd_live_gh);
--		gfs2_holder_reinit(LM_ST_SHARED, LM_FLAG_NOEXP | GL_EXACT,
--				   &sdp->sd_live_gh);
--		gfs2_glock_nq(&sdp->sd_live_gh);
-+		fs_warn(sdp, "No other mounters found.\n");
-+		/*
-+		 * We are about to release the lockspace.  By keeping live_gl
-+		 * locked here, we ensure that the next mounter coming along
-+		 * will be a "first" mounter which will perform recovery.
-+		 */
-+		goto skip_recovery;
- 	}
++	vmax = DIV_ROUND_CLOSEST_ULL(0xFFFULL * scale, 1000);
++	val = max(val, 0L);
++	val = min(val, vmax);
++	reg_val = min(DIV_ROUND_CLOSEST_ULL((u64)val * 1000, scale),
++		      0xFFFULL) << 4;
  
--	gfs2_glock_queue_put(live_gl); /* drop extra reference we acquired */
--	clear_bit(SDF_WITHDRAW_RECOVERY, &sdp->sd_flags);
--
- 	/*
- 	 * At this point our journal is evicted, so we need to get a new inode
- 	 * for it. Once done, we need to call gfs2_find_jhead which
+-	return ltc2992_write_reg(st, reg, 2, val);
++	return ltc2992_write_reg(st, reg, 2, reg_val);
+ }
+ 
+ static int ltc2992_read_gpio_alarm(struct ltc2992_state *st, int nr_gpio, u32 attr, long *val)
+@@ -549,9 +555,15 @@ static int ltc2992_get_current(struct lt
+ static int ltc2992_set_current(struct ltc2992_state *st, u32 reg, u32 channel, long val)
+ {
+ 	u32 reg_val;
++	long cmax;
+ 
+-	reg_val = DIV_ROUND_CLOSEST(val * st->r_sense_uohm[channel], LTC2992_IADC_NANOV_LSB);
+-	reg_val = reg_val << 4;
++	cmax = DIV_ROUND_CLOSEST_ULL(0xFFFULL * LTC2992_IADC_NANOV_LSB,
++				     st->r_sense_uohm[channel]);
++	val = max(val, 0L);
++	val = min(val, cmax);
++	reg_val = min(DIV_ROUND_CLOSEST_ULL((u64)val * st->r_sense_uohm[channel],
++					    LTC2992_IADC_NANOV_LSB),
++		      0xFFFULL) << 4;
+ 
+ 	return ltc2992_write_reg(st, reg, 2, reg_val);
+ }
+@@ -624,9 +636,18 @@ static int ltc2992_get_power(struct ltc2
+ static int ltc2992_set_power(struct ltc2992_state *st, u32 reg, u32 channel, long val)
+ {
+ 	u32 reg_val;
++	u64 pmax, uval;
+ 
+-	reg_val = mul_u64_u32_div(val, st->r_sense_uohm[channel] * 1000,
+-				  LTC2992_VADC_UV_LSB * LTC2992_IADC_NANOV_LSB);
++	uval = max(val, 0L);
++	pmax = mul_u64_u32_div(0xFFFFFFULL,
++			       LTC2992_VADC_UV_LSB / 1000 *
++			       LTC2992_IADC_NANOV_LSB,
++			       st->r_sense_uohm[channel]);
++	uval = min(uval, pmax);
++	reg_val = min(mul_u64_u32_div(uval, st->r_sense_uohm[channel],
++				      LTC2992_VADC_UV_LSB / 1000 *
++				      LTC2992_IADC_NANOV_LSB),
++		      0xFFFFFFULL);
+ 
+ 	return ltc2992_write_reg(st, reg, 3, reg_val);
+ }
 
 
 
