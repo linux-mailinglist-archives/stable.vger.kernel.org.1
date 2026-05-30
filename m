@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-258937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258938-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJy1HPEwG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-258937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:17 +0200
+	id WOMyAPUwG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-258938-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F08612877
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BEA561287E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A18E830EB028
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:34:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7AB7C305BF96
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B28032F770;
-	Sat, 30 May 2026 18:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF09329E79;
+	Sat, 30 May 2026 18:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veOctgly"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CafUU/QQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4642EF652;
-	Sat, 30 May 2026 18:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0508541A8F;
+	Sat, 30 May 2026 18:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166045; cv=none; b=aYNGRuhTwtNTy16orgehJ6wdCTGVc+7MoDvc5p9UdThoYM8js0VRY9t3izS7GKAVIQEYIhM3BjerhfGgOmzeDAJAcRKWmOym8Cq66Xxvy7y/oPxwHXtWz46K0lGfyk4Jjs0ppO3Qgd4ATedoFEqa4H9WQuEGJZWjb8DonI0weyg=
+	t=1780166048; cv=none; b=bj2kJKf2iXjc3bTzRlFA1kWIteMptCOJVc5ciWMtQRHFrtu/fpMt41SS9dU3ow19PH3sWA52PwkzgLrecPEwIo+AEobPDUKQQ6ULaVMBdSmLISE+TBpqKk/MidFKyFdbKuuDtFGHrqzm2ValLgVBWn7ZVhoXta3MqrXGrAzt+oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166045; c=relaxed/simple;
-	bh=7etIV46BABr6bgMQv0jjuQuOc0HcZonBtjt0vU3yCWU=;
+	s=arc-20240116; t=1780166048; c=relaxed/simple;
+	bh=YU5dXB8lm3jHpweldr4+LjITVwHm5wtSjwmOdu31QmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eVZJ62IUjEn0DpRMVyiRvX9kID8g54IRrzaL+GrtBMDcbbrhSrI/LV4OnMYhq/CKgkKUvyl4DQSvRxrzT3HkBtDFNUZGEi9dk/pcvBu/UbfDDMvCYhcS5VrtdfBLhB9Se120CJwBZfgxfZAsUdHvaukm8dTxJlV4SszLWYLhxHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veOctgly; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8991F00893;
-	Sat, 30 May 2026 18:34:03 +0000 (UTC)
+	 MIME-Version; b=bC1xzy/sQc/kIkTFTVW22C6nbAwfCrrVNE8Una/NbOegPVC1YTH/IX6YVZ2wJe5bbHbp98Z7Fwt/ygJ3lbaWcnVIuktN2SLso8LmIuzi7dfvCgZOfsY1EGNgtLBM9i6C7W29VjQSIh5doI+ZtmBBwC3SHuTqMYynRCgimahFTnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CafUU/QQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4F21F00893;
+	Sat, 30 May 2026 18:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166044;
-	bh=YOESeJ/kHtMrsThpUZa9vrdT16ZsltSCQivtC8vVbyw=;
+	s=korg; t=1780166047;
+	bh=FI/yl1zr7OjlmRKOjg2l0/tXtDMmpYo5Iyov6d6PtHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=veOctgly3xVu5UMN+hkUQzKkuoaOGJltZzPvh5zAlu8HuzCZxK5pmPtVlTosuCcDI
-	 M0pzUKQ4lstFh6ckGIc3Oqf9KxdL0o22A1hRIxy4dAvJjDqboKpG4DDMg/pST7anXF
-	 U/nNmBanMZeHZE/3FX01R/jhSlmhDGxM+jfiSjGY=
+	b=CafUU/QQjGwLn1s7kELEo/hLZzDxDfKEOIT84J0ow83svXDnfYvn3B99Aor799Zgk
+	 h0Xvw/SZevtEKaI7DlYwtv+QIaKpsAm8lK0bL4qgu7VvcrAxCHWydyGADFfAXrEZtz
+	 3XXVCv2NDd4qlbicg4V67SU+MtnhP9JCyTn/H4NA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 5.10 258/589] power: supply: max17042: avoid overflow when determining health
-Date: Sat, 30 May 2026 18:02:19 +0200
-Message-ID: <20260530160231.754355825@linuxfoundation.org>
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 5.10 259/589] RDMA/mlx4: Fix resource leak on error in mlx4_ib_create_srq()
+Date: Sat, 30 May 2026 18:02:20 +0200
+Message-ID: <20260530160231.776935931@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
 References: <20260530160224.570625122@linuxfoundation.org>
@@ -62,35 +61,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258937-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-258938-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,collabora.com:email]
-X-Rspamd-Queue-Id: 02F08612877
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,msgid.link:url,nvidia.com:email]
+X-Rspamd-Queue-Id: 5BEA561287E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,39 +97,42 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit 9a44949da669708f19d29141e65b3ac774d08f5a upstream.
+commit c54c7e4cb679c0aaa1cb489b9c3f2cd98e63a44c upstream.
 
-If vmax has the default value of INT_MAX (e.g. because not specified in
-DT), battery health is reported as over-voltage. This is because adding
-any value to vmax (the vmax tolerance in this case) causes it to wrap
-around, making it negative and smaller than the measured battery
-voltage.
+Sashiko points out that mlx4_srq_alloc() was not undone during error
+unwind, add the missing call to mlx4_srq_free().
 
-Avoid that by using size_add().
-
-Fixes: edd4ab055931 ("power: max17042_battery: add HEALTH and TEMP_* properties support")
 Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://patch.msgid.link/20260302-max77759-fg-v3-6-3c5f01dbda23@linaro.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 225c7b1feef1 ("IB/mlx4: Add a driver Mellanox ConnectX InfiniBand adapters")
+Link: https://sashiko.dev/#/patchset/0-v1-e911b76a94d1%2B65d95-rdma_udata_rep_jgg%40nvidia.com?part=8
+Link: https://patch.msgid.link/r/11-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/max17042_battery.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx4/srq.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/power/supply/max17042_battery.c
-+++ b/drivers/power/supply/max17042_battery.c
-@@ -199,7 +199,7 @@ static int max17042_get_battery_health(s
- 		goto out;
- 	}
+--- a/drivers/infiniband/hw/mlx4/srq.c
++++ b/drivers/infiniband/hw/mlx4/srq.c
+@@ -189,13 +189,15 @@ int mlx4_ib_create_srq(struct ib_srq *ib
+ 	if (udata)
+ 		if (ib_copy_to_udata(udata, &srq->msrq.srqn, sizeof (__u32))) {
+ 			err = -EFAULT;
+-			goto err_wrid;
++			goto err_srq;
+ 		}
  
--	if (vbatt > chip->pdata->vmax + MAX17042_VMAX_TOLERANCE) {
-+	if (vbatt > size_add(chip->pdata->vmax, MAX17042_VMAX_TOLERANCE)) {
- 		*health = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
- 		goto out;
- 	}
+ 	init_attr->attr.max_wr = srq->msrq.max - 1;
+ 
+ 	return 0;
+ 
++err_srq:
++	mlx4_srq_free(dev->dev, &srq->msrq);
+ err_wrid:
+ 	if (udata)
+ 		mlx4_ib_db_unmap_user(ucontext, &srq->db);
 
 
 
