@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257457-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8NxFEDklG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:17 +0200
+	id sNUMBI4aG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257457-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB55E610B82
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B701A60F224
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0A44530243B3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:56:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 94BE13029CBA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F233BD646;
-	Sat, 30 May 2026 17:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134643191D0;
+	Sat, 30 May 2026 17:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iqfhlrcz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Klo+eUlE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB733AE18D;
-	Sat, 30 May 2026 17:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97163016E1;
+	Sat, 30 May 2026 17:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163799; cv=none; b=bn2RrSiH42ME68zKFWo+VjWecOM+mMh6jjzLFnjoEJCMZieAIcwO8AC0iECkcvQjARtzd6wWkt/Ik3aHFR5wFyNbr7KT3EOkMlXzUkx21a094b4BXPGA1lGsD863xoa/MnLLfX53toA3gSUbTP2CE/pJTjx8RNnDvHdljwLZqUs=
+	t=1780161064; cv=none; b=neDD8jpXFUW2Xk5T/6G5A2BrDmxLzW04iCNA+etfcTclh8LkJtL4Uj2uZ4bItKQsxCW9UNilI1LTfqzPKouq2kA7xfQ1aAfo29v+0rqV+kB/21Qsci4GFNgIHz/mfAU6ESWEVMD2Ur9Rkm7nrtjCBGI1fOxE369Fg++HRFvwIjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163799; c=relaxed/simple;
-	bh=TmVaN5ffozNe+wa9jtSPHUAjrUXm1PEtzt4sMCDz+Kg=;
+	s=arc-20240116; t=1780161064; c=relaxed/simple;
+	bh=UwIa17dU3niB6Qowns1XZurxbtBJH7yRhJ7PJyuOf4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Es+f/4llzng4okz5USzm2UfyPp3X6lFr+jxSxjjyA7jUmbhp/0iXOkCaU/g6CfKbwwhJaB9eJrlrsOq+dLhnEI9M/70/Eoh/EtMqmRwI+qK9EMsP7QFLuFKErsOfkFb5G4yU7mIYSM8niVXEjWgJUS+FMJWagSB8vG51oww8U2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iqfhlrcz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A637D1F00893;
-	Sat, 30 May 2026 17:56:37 +0000 (UTC)
+	 MIME-Version; b=FJHCtqEiialRLsUg5jmpg3hiXpHTLpghuJVZ2xEcnU1V7VEPSr1zoFcioOfbGMdn5uVs67gsbA6IWZlFGl0iiYIj8mTp7AnidfzuwrzCiCm5xxbwUD/gzGm2CSEaUIkZMWelTBv3MscdCHxdVn6xky2JAg63LQqnDuwG4QanEDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Klo+eUlE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6FB1F00893;
+	Sat, 30 May 2026 17:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163798;
-	bh=pJbDoTYde8XV3kynzujdtWiKJCgcA+Wg4s2EB2PrzBU=;
+	s=korg; t=1780161063;
+	bh=Vp0e+XUHdrzGjPo8yI2/KVqYOcstNYmOEppJo5OUVso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IqfhlrczBVF1P1EaxptULZk2L69OiRFJWu6FLhC5TDn2B6mKkh/A4dZ02sXCj7GFb
-	 LTa1L06DJ7NnbOuR5mb65n2gdlgEHS+6CgeE4F3a1Nb7hz/dOeCMtF1p41YRwhWKWa
-	 +7qqaSd1cVFtk41OLWl/PEPfjYIM3taU1LlFSIKc=
+	b=Klo+eUlEAQpLPLxCv4vA6JbHeQOf+v6FN43l97MwfnlLzevnFgAfv+AGWERns+gy+
+	 hEATm2+MgtdWMZOFKLNfn7sR1ozhNfyd+ZpmqFKqQe5C2mi8nmugFiFL5c/lIW2J5u
+	 pDZ1R6NJeR15zdoPd2ANTVdCA8j9ltBSWY/mildk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 5.15 324/776] cpuidle: powerpc: avoid double clear when breaking snooze
-Date: Sat, 30 May 2026 18:00:38 +0200
-Message-ID: <20260530160248.944135851@linuxfoundation.org>
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 515/969] drm/panel: simple: Correct G190EAN01 prepare timing
+Date: Sat, 30 May 2026 18:00:39 +0200
+Message-ID: <20260530160314.562670305@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +67,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258274-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257457-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EB55E610B82
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B701A60F224
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-commit 64ed1e3e728afb57ba9acb59e69de930ead847d9 upstream.
+[ Upstream commit f1080f82570b797598c1ba7e9c800ae9e94aafc6 ]
 
-snooze_loop is done often in any system which has fair bit of
-idle time. So it qualifies for even micro-optimizations.
+The prepare timing specified by the G190EAN01 datasheet should be
+between 30 and 50 ms. Considering it might take some time for the
+LVDS encoder to enable the signal, we should only wait the min.
+required time in the panel driver and not the max. allowed time.
 
-When breaking the snooze due to timeout, TIF_POLLING_NRFLAG is cleared
-twice. Clearing the bit invokes atomics. Avoid double clear and thereby
-avoid one atomic write.
-
-dev->poll_time_limit indicates whether the loop was broken due to
-timeout. Use that instead of defining a new variable.
-
-Fixes: 7ded429152e8 ("cpuidle: powerpc: no memory barrier after break from idle")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260311061709.1230440-1-sshegde@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2f7b832fc992 ("drm/panel: simple: Add support for AUO G190EAN01 panel")
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20260217142528.68613-1-ian.ray@gehealthcare.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/cpuidle-powernv.c |    5 ++++-
- drivers/cpuidle/cpuidle-pseries.c |    5 ++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpuidle/cpuidle-powernv.c
-+++ b/drivers/cpuidle/cpuidle-powernv.c
-@@ -93,7 +93,10 @@ static int snooze_loop(struct cpuidle_de
- 
- 	HMT_medium();
- 	ppc64_runlatch_on();
--	clear_thread_flag(TIF_POLLING_NRFLAG);
-+
-+	/* Avoid double clear when breaking */
-+	if (!dev->poll_time_limit)
-+		clear_thread_flag(TIF_POLLING_NRFLAG);
- 
- 	local_irq_disable();
- 
---- a/drivers/cpuidle/cpuidle-pseries.c
-+++ b/drivers/cpuidle/cpuidle-pseries.c
-@@ -61,7 +61,10 @@ static int snooze_loop(struct cpuidle_de
- 	}
- 
- 	HMT_medium();
--	clear_thread_flag(TIF_POLLING_NRFLAG);
-+
-+       /* Avoid double clear when breaking */
-+	if (!dev->poll_time_limit)
-+		clear_thread_flag(TIF_POLLING_NRFLAG);
- 
- 	local_irq_disable();
- 
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 3f41fd5edc333..316961a86b042 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1099,7 +1099,7 @@ static const struct panel_desc auo_g190ean01 = {
+ 		.height = 301,
+ 	},
+ 	.delay = {
+-		.prepare = 50,
++		.prepare = 30,
+ 		.enable = 200,
+ 		.disable = 110,
+ 		.unprepare = 1000,
+-- 
+2.53.0
+
 
 
 
