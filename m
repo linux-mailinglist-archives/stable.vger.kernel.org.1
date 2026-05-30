@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259030-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6B4cBZAmG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:00 +0200
+	id QMySEJYvG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259030-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8B8610E81
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AE86124B2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 78DE6300FAAF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:03:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 37B8C308AAF7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFBBF3AB291;
-	Sat, 30 May 2026 18:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C310C39989B;
+	Sat, 30 May 2026 18:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmy2FDPL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="in3N79sF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCC8348C5E;
-	Sat, 30 May 2026 18:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A995133AD99;
+	Sat, 30 May 2026 18:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164212; cv=none; b=RdJz2vabB762jhIWwm/90bBMvPnRCn/qUf1QMNg7U5URqXFcySfCKfOUYvUbMQijQcrdkz7sGXRLa+Wblpy1GoBceQhBBfHgTNH6rhWmJMZn575bL62nGXz8TgdpzptFm8dWiM4EX52DLzXcwjNNVA70HHV7Q++jWCw5g+zmZBo=
+	t=1780166355; cv=none; b=qtaW9/WXgI62zfaarOsl+WrXjnT3hhun9iXjNYPQ54TNfIAAoBniFlIgiyWrp1B3h1Ss7DLGLYhMQzy4zAweNDx9Z6w6YAQfseor/r4AGDaTi+Rname0vW51gnKWPAM/E5m4ypu0QWz0JSy6ZxckX8TIpsQ8bFy7KwD/8PEe07o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164212; c=relaxed/simple;
-	bh=3kimuW+mIsHB3bEn6CYX0kQcZXeiIsOEGcOL+B5KioM=;
+	s=arc-20240116; t=1780166355; c=relaxed/simple;
+	bh=JLXpJUKM9zOYrccB4LqZwpiYQuQPPuhrZOoc/l/p0sU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m4LPAgWYEVH5hBcEYkqSxn3bwbghPwJo9GP3mwKz5Fb2Gbc8h1cdf0VS5Il+NcZVs65bqK/dPFzLiaKjib0eprtfc6oeLsuAz1QazmsMVb6V0lVqQW3eckOlK/JX0oYDXUECSx0GcKTpNHmicxtET6ejC7K+EPcUHgRyc8SYD+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmy2FDPL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFAAC1F00893;
-	Sat, 30 May 2026 18:03:30 +0000 (UTC)
+	 MIME-Version; b=aqhyvM+WZ+yVsCNWysy6PPCOfsqeL1Go40lx4gYby0WJALxcJ1b8Gt9oRRiED7nPX676sMNU1VRBJeLfrXAgFWdn1JPjCb7xw6DC2zsko/uouJcnuoOgNk3Iab7fGF7MvxAZHOjEytqfSM8BrVuFdn5aWPd3qek1G5ZeHobF5ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=in3N79sF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8571E1F00893;
+	Sat, 30 May 2026 18:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164211;
-	bh=Q18pZG6tr4Exm7e2ILIC25xPnIstKzX6ymff2npqqFk=;
+	s=korg; t=1780166354;
+	bh=G3cg3rC4s9+zA5XnTqd82L9cQb0MEAWoZOAG7JAkhTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tmy2FDPLkINpLnVVBCYxBbSvEaj6ubYeXd1yg4opJluTrkUEDA74srlbELNFcIKIC
-	 xln170FhWGG9Yp7/wVIAK8orZ99o9AXqePMAddeSbB00xXGQPFEHJ+KgaK5FnzWXvb
-	 shXmYmkaofbsuesk+gjuxhGqADpp002eNAyDVAZ0=
+	b=in3N79sFHBONAAr49msiFVUDRJjfIq+YX02LUJbPGtcIjfHmhT2G7PAvEOHzl7quQ
+	 qLlE8S1MnK5H96n1yM72Rm/0ylm/br20oofvuAjiCvQUrgsOKfyKZEghbUoTeg8Hph
+	 Bi7L/Dsza3sIxmrvwbq2r2PYSQ/dLm+jZ9O2oJ3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	Sander Vanheule <sander@svanheule.net>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 487/776] memory: tegra124-emc: Fix dll_change check
-Date: Sat, 30 May 2026 18:03:21 +0200
-Message-ID: <20260530160252.912555768@linuxfoundation.org>
+Subject: [PATCH 5.10 321/589] ASoC: sti: use managed regmap_field allocations
+Date: Sat, 30 May 2026 18:03:22 +0200
+Message-ID: <20260530160233.367957226@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,57 +78,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258396-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259030-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.995];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DB8B8610E81
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,svanheule.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D7AE86124B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Perttunen <mperttunen@nvidia.com>
+From: Sander Vanheule <sander@svanheule.net>
 
-[ Upstream commit 9597ab9a8296ab337e6820f8a717ff621078b632 ]
+[ Upstream commit 1696fad8b259a2d46e51cd6e17e4bcdbe02279fa ]
 
-The code checking whether the specified memory timing enables DLL
-in the EMRS register was reversed. DLL is enabled if bit A0 is low.
-Fix the check.
+The regmap_field objects allocated at player init are never freed and
+may leak resources if the driver is removed.
 
-Fixes: 73a7f0a90641 ("memory: tegra: Add EMC (external memory controller) driver")
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Link: https://patch.msgid.link/20260126-fix-emc-dllchange-v1-1-47ad3bb63262@nvidia.com
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Switch to devm_regmap_field_alloc() to automatically limit the lifetime
+of the allocations the lifetime of the device.
+
+Fixes: 76c2145ded6b ("ASoC: sti: Add CPU DAI driver for playback")
+Signed-off-by: Sander Vanheule <sander@svanheule.net>
+Link: https://patch.msgid.link/20260220152634.480766-3-sander@svanheule.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/tegra/tegra124-emc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sti/uniperif_player.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/memory/tegra/tegra124-emc.c b/drivers/memory/tegra/tegra124-emc.c
-index 908f8d5392b21..6d5eb7d5b75c2 100644
---- a/drivers/memory/tegra/tegra124-emc.c
-+++ b/drivers/memory/tegra/tegra124-emc.c
-@@ -608,7 +608,7 @@ static int tegra_emc_prepare_timing_change(struct tegra_emc *emc,
+diff --git a/sound/soc/sti/uniperif_player.c b/sound/soc/sti/uniperif_player.c
+index e5c4e5245b255..da07f825f3c5f 100644
+--- a/sound/soc/sti/uniperif_player.c
++++ b/sound/soc/sti/uniperif_player.c
+@@ -1028,11 +1028,11 @@ static int uni_player_parse_dt_audio_glue(struct platform_device *pdev,
+ 		return PTR_ERR(regmap);
+ 	}
  
- 	if ((last->emc_mode_1 & 0x1) == (timing->emc_mode_1 & 0x1))
- 		dll_change = DLL_CHANGE_NONE;
--	else if (timing->emc_mode_1 & 0x1)
-+	else if (!(timing->emc_mode_1 & 0x1))
- 		dll_change = DLL_CHANGE_ON;
- 	else
- 		dll_change = DLL_CHANGE_OFF;
+-	player->clk_sel = regmap_field_alloc(regmap, regfield[0]);
++	player->clk_sel = devm_regmap_field_alloc(&pdev->dev, regmap, regfield[0]);
+ 	if (IS_ERR(player->clk_sel))
+ 		return PTR_ERR(player->clk_sel);
+ 
+-	player->valid_sel = regmap_field_alloc(regmap, regfield[1]);
++	player->valid_sel = devm_regmap_field_alloc(&pdev->dev, regmap, regfield[1]);
+ 	if (IS_ERR(player->valid_sel))
+ 		return PTR_ERR(player->valid_sel);
+ 
 -- 
 2.53.0
 
