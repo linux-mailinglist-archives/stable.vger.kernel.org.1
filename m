@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-258721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNdVC8gqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258721-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:00 +0200
+	id ULIpC6cZG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C321561198E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A100260EFA0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E5999301223A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:21:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EE767304F247
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517A5217704;
-	Sat, 30 May 2026 18:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C7A35200B;
+	Sat, 30 May 2026 17:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NA4EGnFd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/rOKun0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1753E219303;
-	Sat, 30 May 2026 18:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83842690D5;
+	Sat, 30 May 2026 17:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165315; cv=none; b=tk+v4klgfLqo6uoiMrsF8QsVRyGfU3o/DbgMhfLoebj2TdUsP5Z8NvE3FxO40swoHMbkOnhiWbVxaVURlS9TQ+ZhnzuG9zDPhyI1c/7OqogP8Lo8hcwfxC1fDKMJAITB54NSCHE0v5D5fMtdr8xce/mskkJilNIk36Hzq2exS3g=
+	t=1780160667; cv=none; b=tFzRnM5bOtIziIj62KLrCRKCMkQ+EAUtyYvfNpkvkxKaQx/CIXRais15y3Db0kC1dYygmj2sBubCSPzEU4Erv5tr7/ELsKIUL4r1OyWX/C7vaL6/yBmeAaNhal+gyscYCa3XPK59vynp69YpNUHcMkA4De5T7+DnL7vnyXNd+2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165315; c=relaxed/simple;
-	bh=3G/FcYlbF2QcZWfsNjPUn956LQRQ7yR0dxfSPDOB3hE=;
+	s=arc-20240116; t=1780160667; c=relaxed/simple;
+	bh=YrLVaznKkx3JTiO5XvgcCesj1bG6IIs414K7pwN1ZZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkigaoKBeQRpq00VrBMcdL+xoas/YkSk17c5oII5V6SYhojkZJMwtjAsQv0VdLd11JpiPzcyPsqO6U3r1wpf0eHOSA8R6U+hfvVgevkVc5vBz2CDWVuUeQm25gr3UgPEPtAr//iBjEAPEFDAL3Aj1aYl+PCpnbxyPTnHjvqTg/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NA4EGnFd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7B11F00893;
-	Sat, 30 May 2026 18:21:53 +0000 (UTC)
+	 MIME-Version; b=u5/MJaYToG6nT1uPt45ckrL0d2TwQ+jWjFvGeQUePfZvNtL3fLa0kfWJHVUxAdsixVdGxPo+dSFZzldCxLnukmUW0R0fHwOXfbmYe8RzHGcduAARjVXsaYqL8rw6B7sHI0R7Q742wLlKihMLHg60imvsc90rcakZv5yqbGVCFwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/rOKun0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A42C1F00893;
+	Sat, 30 May 2026 17:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165314;
-	bh=6r9SyL5fPL66LyPtGjJwQ0d/somPz7qXzu2yaGNwRw8=;
+	s=korg; t=1780160666;
+	bh=7VInI5O2h6KyzDrsg+MTmrZpNG3WnUEeHVqdf5a5m6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NA4EGnFdsm1zWb+qiDe+CHWU0dIItj0tJn8yP1DcnQmUEsQFiffs0D5Kd6VTB/ZwT
-	 Jw8h2ukKnwL26sx5ndJFbPzux1RvPG7TxcvVeVNaenATiuTp0TFIDMacqZZDLDHYUr
-	 m7m7FGJT+5kn5Vlfu/dCGRw+TIkYH9s8dyMfKKRE=
+	b=X/rOKun0Fo2WkkQbLhBJhRQIwr40ZuZuwj7dYKCHR6BKf9HAyld2Kr8E15hRjdCnY
+	 klgNgf7DHtEdVTAeFcapceWritVEV5n0E0PyXVpB6szppshT/21rf8H4vkz9GqDKr+
+	 0OINuGYHjotO0y80xBF9Ve1FyGKDkco+uiQDb3i4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Haoze Xie <royenheart@gmail.com>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 042/589] batman-adv: hold claim backbone gateways by reference
+	Chuanhong Guo <gch981213@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 399/969] spi: mtk-nor: fix controller deregistration
 Date: Sat, 30 May 2026 17:58:43 +0200
-Message-ID: <20260530160225.694115440@linuxfoundation.org>
+Message-ID: <20260530160311.309263751@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,154 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258721-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,narfation.org,simonwunderlich.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257344-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,simonwunderlich.de:email,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: C321561198E
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A100260EFA0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoze Xie <royenheart@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 82d8701b2c930d0e96b0dbc9115a218d791cb0d2 upstream.
+commit 76336f24934621db286cabb20b483773ee01dcaa upstream.
 
-batadv_bla_add_claim() can replace claim->backbone_gw and drop the old
-gateway's last reference while readers still follow the pointer.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-The netlink claim dump path dereferences claim->backbone_gw->orig and
-takes claim->backbone_gw->crc_lock without pinning the underlying
-backbone gateway. batadv_bla_check_claim() still has the same naked
-pointer access pattern.
-
-Reuse batadv_bla_claim_get_backbone_gw() in both readers so they operate
-on a stable gateway reference until the read-side work is complete.
-This keeps the dump and claim-check paths aligned with the lifetime
-rules introduced for the other BLA claim readers.
-
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Fixes: 04f3f5bf1883 ("batman-adv: add B.A.T.M.A.N. Dump BLA claims via netlink")
-Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Haoze Xie <royenheart@gmail.com>
-Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 881d1ee9fe81 ("spi: add support for mediatek spi-nor controller")
+Cc: stable@vger.kernel.org	# 5.7
+Cc: Chuanhong Guo <gch981213@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-3-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c | 27 +++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ drivers/spi/spi-mtk-nor.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
-index 986f707e7d973..ffbd8fa7acce1 100644
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -2206,6 +2206,7 @@ batadv_bla_claim_dump_entry(struct sk_buff *msg, u32 portid,
- 			    struct batadv_bla_claim *claim)
- {
- 	u8 *primary_addr = primary_if->net_dev->dev_addr;
-+	struct batadv_bla_backbone_gw *backbone_gw;
- 	u16 backbone_crc;
- 	bool is_own;
- 	void *hdr;
-@@ -2221,32 +2222,35 @@ batadv_bla_claim_dump_entry(struct sk_buff *msg, u32 portid,
+--- a/drivers/spi/spi-mtk-nor.c
++++ b/drivers/spi/spi-mtk-nor.c
+@@ -900,7 +900,7 @@ static int mtk_nor_probe(struct platform
+ 	pm_runtime_enable(&pdev->dev);
+ 	pm_runtime_get_noresume(&pdev->dev);
  
- 	genl_dump_check_consistent(cb, hdr);
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	if (ret < 0)
+ 		goto err_probe;
  
--	is_own = batadv_compare_eth(claim->backbone_gw->orig,
--				    primary_addr);
-+	backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
+@@ -926,6 +926,8 @@ static int mtk_nor_remove(struct platfor
+ 	struct spi_controller *ctlr = dev_get_drvdata(&pdev->dev);
+ 	struct mtk_nor *sp = spi_controller_get_devdata(ctlr);
+ 
++	spi_unregister_controller(ctlr);
 +
-+	is_own = batadv_compare_eth(backbone_gw->orig, primary_addr);
- 
--	spin_lock_bh(&claim->backbone_gw->crc_lock);
--	backbone_crc = claim->backbone_gw->crc;
--	spin_unlock_bh(&claim->backbone_gw->crc_lock);
-+	spin_lock_bh(&backbone_gw->crc_lock);
-+	backbone_crc = backbone_gw->crc;
-+	spin_unlock_bh(&backbone_gw->crc_lock);
- 
- 	if (is_own)
- 		if (nla_put_flag(msg, BATADV_ATTR_BLA_OWN)) {
- 			genlmsg_cancel(msg, hdr);
--			goto out;
-+			goto put_backbone_gw;
- 		}
- 
- 	if (nla_put(msg, BATADV_ATTR_BLA_ADDRESS, ETH_ALEN, claim->addr) ||
- 	    nla_put_u16(msg, BATADV_ATTR_BLA_VID, claim->vid) ||
- 	    nla_put(msg, BATADV_ATTR_BLA_BACKBONE, ETH_ALEN,
--		    claim->backbone_gw->orig) ||
-+		    backbone_gw->orig) ||
- 	    nla_put_u16(msg, BATADV_ATTR_BLA_CRC,
- 			backbone_crc)) {
- 		genlmsg_cancel(msg, hdr);
--		goto out;
-+		goto put_backbone_gw;
- 	}
- 
- 	genlmsg_end(msg, hdr);
- 	ret = 0;
- 
-+put_backbone_gw:
-+	batadv_backbone_gw_put(backbone_gw);
- out:
- 	return ret;
- }
-@@ -2612,6 +2616,7 @@ int batadv_bla_backbone_dump(struct sk_buff *msg, struct netlink_callback *cb)
- bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
- 			    u8 *addr, unsigned short vid)
- {
-+	struct batadv_bla_backbone_gw *backbone_gw;
- 	struct batadv_bla_claim search_claim;
- 	struct batadv_bla_claim *claim = NULL;
- 	struct batadv_hard_iface *primary_if = NULL;
-@@ -2634,9 +2639,13 @@ bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
- 	 * return false.
- 	 */
- 	if (claim) {
--		if (!batadv_compare_eth(claim->backbone_gw->orig,
-+		backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
-+
-+		if (!batadv_compare_eth(backbone_gw->orig,
- 					primary_if->net_dev->dev_addr))
- 			ret = false;
-+
-+		batadv_backbone_gw_put(backbone_gw);
- 		batadv_claim_put(claim);
- 	}
- 
--- 
-2.53.0
-
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
 
 
 
