@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-259019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOIyGAUvG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259019-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:05 +0200
+	id eE9oIPocG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1553B612343
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B996560F88F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2AE6E304B476
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BC1A93019055
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6817839478D;
-	Sat, 30 May 2026 18:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C222E33FE15;
+	Sat, 30 May 2026 17:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gThe1FWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="st5SrQkC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE7C241C8C;
-	Sat, 30 May 2026 18:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6284F340293;
+	Sat, 30 May 2026 17:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166318; cv=none; b=aHdRend9Leg04W4GEsGLfm3vU/WGEYZ8N8UIhTxRBbB76azezvBfvDYgCCccwhG3nCA8vPhG9AkHDu3lOKQQPzkR60tkosYqq9gt//x9nbkiikw/zTcgmmkXEb93hpmnv1FQqk5jw+f2qgnz72MsAWSzV6tluVqSCdYEI1jXFqQ=
+	t=1780161619; cv=none; b=IrCc1OSkHRzNqEFS0GGBvc6XQmQtPwFRT4wqvciFZVxVVZ3paRsbTZF/n21UhpFfpxH+4RhAwUHpfWDXF6bsRuir+rV7/sFUkyo5YVWOhY6gsX4QfbVMl90WpcfBAb2oYkNm9LplnVrIo4mfmP0THctFHKP0/GeHYkU19azVSrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166318; c=relaxed/simple;
-	bh=9iKQjByz+4Hrv7W9ozeceCMRTDMZSYZdRKY38O+g6q0=;
+	s=arc-20240116; t=1780161619; c=relaxed/simple;
+	bh=voC+jjThchTVI8kc4kNRswxQFxwlgIY0w0NLlbG1PFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urLo7zX2c7FOvxqbpklCR7Ce0+cH7Nu/Re2d6lBBr3heRL1PbguGWGFWD09kyoNOtCpIHwUsk+1HGwv1r3YfsxX/09V6L1UnY7F8P99XNDEV6SwugebFAmm9ri4gyu3XaM1i89b5iG04wsE305aC25SPVkUQ49AoDVt4t2sGix8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gThe1FWc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9337D1F00893;
-	Sat, 30 May 2026 18:38:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PMxUMdCEimytxNzfTwNx52QPAaRt/bKz3dM1Uqn/2KL+I1iDlBGkf4vZhHrKoCJrQn27daUgk2whLqW3x+TuFNW7vXZCbCkfa7ytTCJZtaGXR769nQPVTsqNEaLtyNHhlgltWvZ9q3HNu7xICJJb00/ufMH31VDRBslhKou+yCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=st5SrQkC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77331F00893;
+	Sat, 30 May 2026 17:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166317;
-	bh=L4Obwb9iUakeLGDX4kY+FXr08aFld7zx1gEcmMxd3gU=;
+	s=korg; t=1780161618;
+	bh=qhWEmqlGU4a+wjm6wONflIzoM7Mfxom3EgFscZMSJGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gThe1FWcOGsJIqTnnpuRqVamikCh5OWTI4cHmJgdq5W2sxF0Pk2ZOzqtAb8CCp4+G
-	 g2fTq1aE9Y8/MzZDWMVvsPu2DHZYC8MyH2dN8C8rzT1BNfQIDAFUEC8VpIrbGyF16U
-	 wzq9r5pSlNOMlZNDL5FVvhiuYJecFTz5gRPprcVs=
+	b=st5SrQkC4wbvB4DgjP1vGWWm5Dx+G/6LXflxgITvuEYPtIE+cDTsz8DtV2DN5S1lC
+	 qVLP0AE0DsG6269agzh2/L2GZK3KA+kHJuPtlFSyiOicz+ryiy3yQ/FbhRLBv4lI7a
+	 lFYKhKoTNCQqWqLC0JWhpqd6cCcYyy7iESfRn5D0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sander Vanheule <sander@svanheule.net>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 320/589] ASoC: sti: Return errors from regmap_field_alloc()
+Subject: [PATCH 6.1 677/969] PCMCIA: Fix garbled log messages for KERN_CONT
 Date: Sat, 30 May 2026 18:03:21 +0200
-Message-ID: <20260530160233.342830356@linuxfoundation.org>
+Message-ID: <20260530160319.191452079@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257622-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259019-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,svanheule.net:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 1553B612343
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: B996560F88F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sander Vanheule <sander@svanheule.net>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit 272aabef50bc3fe58edd26de000f4cdd41bdbe60 ]
+[ Upstream commit bfeaa6814bd3f9a1f6d525b3b35a03b9a0368961 ]
 
-When regmap_field_alloc() fails, it can return an error. Specifically,
-it will return PTR_ERR(-ENOMEM) when the allocation returns a NULL
-pointer. The code then uses these allocations with a simple NULL check:
+For years the PCMCIA info messages are messed up by superfluous
+newlines. While f2e6cf76751d ("pcmcia: Convert dev_printk to
+dev_<level>") converted the code to pr_cont(), dev_info enforces a \n
+via vprintk_store setting LOG_NEWLINE, breaking subsequent pr_cont.
 
-    if (player->clk_sel) {
-        // May dereference invalid pointer (-ENOMEM)
-        err = regmap_field_write(player->clk_sel, ...);
-    }
+Fix by logging the device name manually to allow pr_cont to work for
+more readable and not \n distorted logs.
 
-Ensure initialization fails by forwarding the errors from
-regmap_field_alloc(), thus avoiding the use of the invalid pointers.
-
-Fixes: 76c2145ded6b ("ASoC: sti: Add CPU DAI driver for playback")
-Signed-off-by: Sander Vanheule <sander@svanheule.net>
-Link: https://patch.msgid.link/20260220152634.480766-2-sander@svanheule.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f2e6cf76751d ("pcmcia: Convert dev_printk to dev_<level>")
+Signed-off-by: René Rebe <rene@exactco.de>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sti/uniperif_player.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pcmcia/rsrc_nonstatic.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/sti/uniperif_player.c b/sound/soc/sti/uniperif_player.c
-index dd9013c476649..e5c4e5245b255 100644
---- a/sound/soc/sti/uniperif_player.c
-+++ b/sound/soc/sti/uniperif_player.c
-@@ -1029,7 +1029,12 @@ static int uni_player_parse_dt_audio_glue(struct platform_device *pdev,
- 	}
+diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
+index 0a4e439d46094..f9baf28bc32b8 100644
+--- a/drivers/pcmcia/rsrc_nonstatic.c
++++ b/drivers/pcmcia/rsrc_nonstatic.c
+@@ -188,7 +188,7 @@ static void do_io_probe(struct pcmcia_socket *s, unsigned int base,
+ 	int any;
+ 	u_char *b, hole, most;
  
- 	player->clk_sel = regmap_field_alloc(regmap, regfield[0]);
-+	if (IS_ERR(player->clk_sel))
-+		return PTR_ERR(player->clk_sel);
-+
- 	player->valid_sel = regmap_field_alloc(regmap, regfield[1]);
-+	if (IS_ERR(player->valid_sel))
-+		return PTR_ERR(player->valid_sel);
+-	dev_info(&s->dev, "cs: IO port probe %#x-%#x:", base, base+num-1);
++	pr_info("%s: cs: IO port probe %#x-%#x:", dev_name(&s->dev), base, base+num-1);
  
- 	return 0;
- }
+ 	/* First, what does a floating port look like? */
+ 	b = kzalloc(256, GFP_KERNEL);
+@@ -410,8 +410,8 @@ static int do_mem_probe(struct pcmcia_socket *s, u_long base, u_long num,
+ 	struct socket_data *s_data = s->resource_data;
+ 	u_long i, j, bad, fail, step;
+ 
+-	dev_info(&s->dev, "cs: memory probe 0x%06lx-0x%06lx:",
+-		 base, base+num-1);
++	pr_info("%s: cs: memory probe 0x%06lx-0x%06lx:",
++	       dev_name(&s->dev), base, base+num-1);
+ 	bad = fail = 0;
+ 	step = (num < 0x20000) ? 0x2000 : ((num>>4) & ~0x1fff);
+ 	/* don't allow too large steps */
 -- 
 2.53.0
 
