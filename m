@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-257789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259170-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDFJNAMgG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257789-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:03 +0200
+	id kHfqF74xG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259170-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40EA860FFF9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC35F612A35
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 794FF3053E9C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:29:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 670643083E8D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8D93148DA;
-	Sat, 30 May 2026 17:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143EE21E098;
+	Sat, 30 May 2026 18:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1X1jf2v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJBT9I95"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F57B30148B;
-	Sat, 30 May 2026 17:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BF8137750;
+	Sat, 30 May 2026 18:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162177; cv=none; b=aks9Ii5DGkWd1EmqM/0sp2YmAFoUWC9e70q0dbVioIVYCfhvSh4BchOUuQoxXlnhGfXXm4sJvEkN7KnmI10At5an3UOHoGRQKXkJ76dAoXzOgC0wS/cFpF++v6CMPmwMtPvfeK1d4R+u5fYrrjOu6gdwz9jSRm+KGkxzvG8EPgU=
+	t=1780166841; cv=none; b=e+Ky5PCNiksCCXD2/mwxnJbH4FWupbtBbwcgsNuJVWjwQPIP8segCtxvfuEj68b0B2hJs6FjVSSz2DhFeb5IZOuHhpasYoEF98jR3ex+BVU1qOxyO8//7nWGBLFXGJCsVim6innRiE6NbU5kBrs2RWEb5FBxyF06lEGBxwZ4nTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162177; c=relaxed/simple;
-	bh=Pd7V2UyRrr9T6mx0jvY8GME9RM7JqUOX4p8Su6s5MGw=;
+	s=arc-20240116; t=1780166841; c=relaxed/simple;
+	bh=gSE1J0FjSMWV49WHFwWxWoeGrQR/am32EzTFY6R2vDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gk2NMMBcuctuyYfw0fh3iHWGt+VYkGrq3fRDgb8KWTwVH2USVdHA6pG27VDJ2G5aw6AyOGahefTjm1WAOU/J4pZ5uqXufpb8hFNk/g/PZoeNYHUerj0ieC1JbgnanyZEH+CHVygWe4FrQ2HvOotoKVEGasT3dvfOQ87kNo4NETo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1X1jf2v; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294AE1F00893;
-	Sat, 30 May 2026 17:29:34 +0000 (UTC)
+	 MIME-Version; b=RRgi0L3HYK2sBwFlP/HlLVMeb/QRy66lmlZk5+jTQTwqLJA0UIImrkwNW5GbBrDraawtNUD2mO+cyLleA0LlWvXrxzuH2sjO5XUS2BC/Q7tERFb55rh8HqwpGwySA78CJxzS0u8uMruOe06mb7erW1rkMVCu3D0yUyOJ0AukUvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJBT9I95; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14741F00893;
+	Sat, 30 May 2026 18:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162175;
-	bh=BfJgJsqXTKD3QFfLMzERKLKKTfi79wCSt0y/+he4drc=;
+	s=korg; t=1780166840;
+	bh=D+cDeXSOZIeI5eARP87x4WI1uaZZsirDI5uFsshNVnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=x1X1jf2vI/W2lYaN2yTckG15Urq44zImIf/GoE7iHdRcFrpeqruGerzXNTpbXMbpB
-	 OVCdsKPco1CuDJwzx5jVsRPAPhU72qb797sQe1hquak0OhE1SDzXxPr0Nq0eyrFXQ+
-	 Q2giO5Vy1H685U4G3nDg836otLQ0wKaSA//NbCcc=
+	b=mJBT9I95n1h58ChIrJNuCOXSp2KZ3WVNYygju3U6NShMHgWYmd4KWT12EO6YVMJhG
+	 GRuGGJEm0XiWfVUJ8sM44LXXgBx06K8QVFt2rKfkC8YbimfE+Nmlss7pCKreBPt90L
+	 b9+IAv5jIMiWiuw0EJSUDHg9525Qr8qKih3PTkk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siwei Zhang <oss@fourdim.xyz>,
-	=?UTF-8?q?Safa=20Karaku=C5=9F?= <safa.karakus@secunnix.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 844/969] Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs l2cap_conn_del()
-Date: Sat, 30 May 2026 18:06:08 +0200
-Message-ID: <20260530160323.960793770@linuxfoundation.org>
+	Guillaume Nault <gnault@redhat.com>,
+	Beniamino Galvani <b.galvani@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 488/589] ipv4: rename and move ip_route_output_tunnel()
+Date: Sat, 30 May 2026 18:06:09 +0200
+Message-ID: <20260530160237.464672231@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,270 +65,250 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257789-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259170-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org,davemloft.net];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fourdim.xyz:email]
-X-Rspamd-Queue-Id: 40EA860FFF9
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,davemloft.net:email]
+X-Rspamd-Queue-Id: EC35F612A35
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Safa Karakuş <safa.karakus@secunnix.com>
+From: Beniamino Galvani <b.galvani@gmail.com>
 
-commit ab1513597c6cf17cd1ad2a21e3b045421b48e022 upstream.
+[ Upstream commit bf3fcbf7e7a08015d3b169bad6281b29d45c272d ]
 
-bt_accept_dequeue() unlinks a not-yet-accepted child from the parent
-accept queue and release_sock()s it before returning, so the returned
-sk has no caller reference and is unlocked.
+At the moment ip_route_output_tunnel() is used only by bareudp.
+Ideally, other UDP tunnel implementations should use it, but to do so
+the function needs to accept new parameters that are specific for UDP
+tunnels, such as the ports.
 
-l2cap_sock_cleanup_listen() walks these children on listening-socket
-close.  A concurrent HCI disconnect drives hci_rx_work ->
-l2cap_conn_del() which runs l2cap_chan_del() + l2cap_sock_kill() and
-frees the child sk and its l2cap_chan; cleanup_listen() then uses both:
+Prepare for these changes by renaming the function to
+udp_tunnel_dst_lookup() and move it to file
+net/ipv4/udp_tunnel_core.c.
 
-  BUG: KASAN: slab-use-after-free in l2cap_sock_kill
-    l2cap_sock_kill / l2cap_sock_cleanup_listen / __x64_sys_close
-  Freed by: l2cap_conn_del -> l2cap_sock_close_cb -> l2cap_sock_kill
-
-This is distinct from the two fixes already in this area: commit
-e83f5e24da741 ("Bluetooth: serialize accept_q access") serialises the
-accept_q list/poll and takes temporary refs inside bt_accept_dequeue(),
-and CVE-2025-39860 serialises the userspace close()/accept() race by
-calling cleanup_listen() under lock_sock() in l2cap_sock_release().
-Neither covers l2cap_conn_del() running from hci_rx_work, so this UAF
-still reproduces on current bluetooth/master.
-
-Take the reference at the source: bt_accept_dequeue() does sock_hold()
-while sk is still locked, before release_sock(); callers sock_put().
-cleanup_listen() pins the chan with l2cap_chan_hold_unless_zero() under
-a brief child sk lock (serialising vs l2cap_sock_teardown_cb()), drops
-it before l2cap_chan_lock(), and skips a duplicate l2cap_sock_kill() on
-SOCK_DEAD.  conn->lock is not taken here: cleanup_listen() runs under
-the parent sk lock and that would invert
-conn->lock -> chan->lock -> sk_lock (lockdep).
-
-KASAN/SMP: an unprivileged listen/close vs HCI-disconnect race produced
-12 use-after-free reports per run before this change; 0, and no lockdep
-report, over 1600+ raced iterations after it on bluetooth/master.
-
-Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
-Cc: stable@vger.kernel.org
-Reported-by: Siwei Zhang <oss@fourdim.xyz>
-Reviewed-by: Siwei Zhang <oss@fourdim.xyz>
-Signed-off-by: Safa Karakuş <safa.karakus@secunnix.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: aa6c6d9ee064 ("bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/af_bluetooth.c |   10 ++++++++
- net/bluetooth/iso.c          |    9 ++++++-
- net/bluetooth/l2cap_sock.c   |   51 +++++++++++++++++++++++++++++++++++++------
- net/bluetooth/rfcomm/sock.c  |    9 ++++++-
- net/bluetooth/sco.c          |    9 ++++++-
- 5 files changed, 78 insertions(+), 10 deletions(-)
+ drivers/net/bareudp.c      |  8 +++----
+ include/net/route.h        |  6 -----
+ include/net/udp_tunnel.h   |  6 +++++
+ net/ipv4/route.c           | 48 --------------------------------------
+ net/ipv4/udp_tunnel_core.c | 48 ++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 58 insertions(+), 58 deletions(-)
 
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -282,6 +282,16 @@ restart:
- 			if (newsock)
- 				sock_graft(sk, newsock);
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index 826f912ea820d..dc1a551e6346a 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -317,8 +317,8 @@ static int bareudp_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	if (!sock)
+ 		return -ESHUTDOWN;
  
-+			/* Hand the caller a reference taken while sk is
-+			 * still locked.  bt_accept_unlink() just dropped
-+			 * the accept-queue reference; without this hold a
-+			 * concurrent teardown (e.g. l2cap_conn_del() ->
-+			 * l2cap_sock_kill()) could free sk between
-+			 * release_sock() and the caller using it.  Every
-+			 * caller drops this with sock_put() when done.
-+			 */
-+			sock_hold(sk);
-+
- 			release_sock(sk);
- 			return sk;
- 		}
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -564,6 +564,8 @@ static void iso_sock_cleanup_listen(stru
- 	while ((sk = bt_accept_dequeue(parent, NULL))) {
- 		iso_sock_close(sk);
- 		iso_sock_kill(sk);
-+		/* Drop the reference handed back by bt_accept_dequeue(). */
-+		sock_put(sk);
- 	}
+-	rt = ip_route_output_tunnel(skb, dev, bareudp->net, &saddr, info,
+-				    IPPROTO_UDP, use_cache);
++	rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, &saddr, info,
++				   IPPROTO_UDP, use_cache);
  
- 	parent->sk_state  = BT_CLOSED;
-@@ -990,8 +992,13 @@ static int iso_sock_accept(struct socket
- 		}
+ 	if (IS_ERR(rt))
+ 		return PTR_ERR(rt);
+@@ -497,8 +497,8 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
+ 		struct rtable *rt;
+ 		__be32 saddr;
  
- 		ch = bt_accept_dequeue(sk, newsock);
--		if (ch)
-+		if (ch) {
-+			/* Drop the bridging ref from bt_accept_dequeue();
-+			 * the grafted socket keeps ch alive from here.
-+			 */
-+			sock_put(ch);
- 			break;
-+		}
+-		rt = ip_route_output_tunnel(skb, dev, bareudp->net, &saddr,
+-					    info, IPPROTO_UDP, use_cache);
++		rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, &saddr,
++					   info, IPPROTO_UDP, use_cache);
+ 		if (IS_ERR(rt))
+ 			return PTR_ERR(rt);
  
- 		if (!timeo) {
- 			err = -EAGAIN;
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -367,8 +367,13 @@ static int l2cap_sock_accept(struct sock
- 		}
+diff --git a/include/net/route.h b/include/net/route.h
+index 2551f3f03b37e..c6557fdcde2c4 100644
+--- a/include/net/route.h
++++ b/include/net/route.h
+@@ -128,12 +128,6 @@ static inline struct rtable *__ip_route_output_key(struct net *net,
  
- 		nsk = bt_accept_dequeue(sk, newsock);
--		if (nsk)
-+		if (nsk) {
-+			/* Drop the bridging ref from bt_accept_dequeue();
-+			 * the grafted socket keeps nsk alive from here.
-+			 */
-+			sock_put(nsk);
- 			break;
-+		}
- 
- 		if (!timeo) {
- 			err = -EAGAIN;
-@@ -1477,22 +1482,54 @@ static void l2cap_sock_cleanup_listen(st
- 	BT_DBG("parent %p state %s", parent,
- 	       state_to_string(parent->sk_state));
- 
--	/* Close not yet accepted channels */
-+	/* Close not yet accepted channels.
-+	 *
-+	 * bt_accept_dequeue() now returns sk with an extra reference held
-+	 * (taken while sk was still locked) so a concurrent l2cap_conn_del()
-+	 * -> l2cap_sock_kill() cannot free sk under us.
-+	 *
-+	 * cleanup_listen() runs under the parent sk lock, so unlike
-+	 * l2cap_sock_shutdown() we must NOT take conn->lock here: that would
-+	 * establish sk_lock -> conn->lock and invert the established
-+	 * conn->lock -> chan->lock -> sk_lock order (lockdep deadlock).
-+	 *
-+	 * Instead, briefly take the child sk lock to fetch and pin its chan.
-+	 * l2cap_conn_del() reaches the chan free only via
-+	 * l2cap_chan_del() -> l2cap_sock_teardown_cb(), which itself takes
-+	 * the child sk lock; holding it across l2cap_chan_hold_unless_zero()
-+	 * therefore guarantees the chan cannot be freed while we read and
-+	 * pin it (hold_unless_zero() additionally skips a chan already past
-+	 * its last reference).  We then drop the sk lock before taking
-+	 * chan->lock, so sk and chan locks are never held together.
-+	 */
- 	while ((sk = bt_accept_dequeue(parent, NULL))) {
--		struct l2cap_chan *chan = l2cap_pi(sk)->chan;
-+		struct l2cap_chan *chan;
-+
-+		lock_sock_nested(sk, L2CAP_NESTING_NORMAL);
-+		chan = l2cap_chan_hold_unless_zero(l2cap_pi(sk)->chan);
-+		release_sock(sk);
-+		if (!chan) {
-+			/* l2cap_conn_del() already tearing this child down */
-+			sock_put(sk);
-+			continue;
-+		}
- 
- 		BT_DBG("child chan %p state %s", chan,
- 		       state_to_string(chan->state));
- 
--		l2cap_chan_hold(chan);
- 		l2cap_chan_lock(chan);
+ struct rtable *ip_route_output_flow(struct net *, struct flowi4 *flp,
+ 				    const struct sock *sk);
+-struct rtable *ip_route_output_tunnel(struct sk_buff *skb,
+-				      struct net_device *dev,
+-				      struct net *net, __be32 *saddr,
+-				      const struct ip_tunnel_info *info,
+-				      u8 protocol, bool use_cache);
 -
- 		__clear_chan_timer(chan);
- 		l2cap_chan_close(chan, ECONNRESET);
--		l2cap_sock_kill(sk);
--
-+		/* l2cap_conn_del() may already have killed this socket
-+		 * (it sets SOCK_DEAD); skip the duplicate to avoid a
-+		 * double sock_put()/l2cap_chan_put().
-+		 */
-+		if (!sock_flag(sk, SOCK_DEAD))
-+			l2cap_sock_kill(sk);
- 		l2cap_chan_unlock(chan);
+ struct dst_entry *ipv4_blackhole_route(struct net *net,
+ 				       struct dst_entry *dst_orig);
+ 
+diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
+index 97a739c21f1f8..efcaa114360b7 100644
+--- a/include/net/udp_tunnel.h
++++ b/include/net/udp_tunnel.h
+@@ -153,6 +153,12 @@ int udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
+ 
+ void udp_tunnel_sock_release(struct socket *sock);
+ 
++struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
++				     struct net_device *dev,
++				     struct net *net, __be32 *saddr,
++				     const struct ip_tunnel_info *info,
++				     u8 protocol, bool use_cache);
 +
- 		l2cap_chan_put(chan);
-+		sock_put(sk);
- 	}
+ struct metadata_dst *udp_tun_rx_dst(struct sk_buff *skb, unsigned short family,
+ 				    __be16 flags, __be64 tunnel_id,
+ 				    int md_size);
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index f260253fed8d3..cee8580cbbe08 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2827,54 +2827,6 @@ struct rtable *ip_route_output_flow(struct net *net, struct flowi4 *flp4,
  }
+ EXPORT_SYMBOL_GPL(ip_route_output_flow);
  
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -180,6 +180,8 @@ static void rfcomm_sock_cleanup_listen(s
- 	while ((sk = bt_accept_dequeue(parent, NULL))) {
- 		rfcomm_sock_close(sk);
- 		rfcomm_sock_kill(sk);
-+		/* Drop the reference handed back by bt_accept_dequeue(). */
-+		sock_put(sk);
- 	}
+-struct rtable *ip_route_output_tunnel(struct sk_buff *skb,
+-				      struct net_device *dev,
+-				      struct net *net, __be32 *saddr,
+-				      const struct ip_tunnel_info *info,
+-				      u8 protocol, bool use_cache)
+-{
+-#ifdef CONFIG_DST_CACHE
+-	struct dst_cache *dst_cache;
+-#endif
+-	struct rtable *rt = NULL;
+-	struct flowi4 fl4;
+-	__u8 tos;
+-
+-#ifdef CONFIG_DST_CACHE
+-	dst_cache = (struct dst_cache *)&info->dst_cache;
+-	if (use_cache) {
+-		rt = dst_cache_get_ip4(dst_cache, saddr);
+-		if (rt)
+-			return rt;
+-	}
+-#endif
+-	memset(&fl4, 0, sizeof(fl4));
+-	fl4.flowi4_mark = skb->mark;
+-	fl4.flowi4_proto = protocol;
+-	fl4.daddr = info->key.u.ipv4.dst;
+-	fl4.saddr = info->key.u.ipv4.src;
+-	tos = info->key.tos;
+-	fl4.flowi4_tos = RT_TOS(tos);
+-
+-	rt = ip_route_output_key(net, &fl4);
+-	if (IS_ERR(rt)) {
+-		netdev_dbg(dev, "no route to %pI4\n", &fl4.daddr);
+-		return ERR_PTR(-ENETUNREACH);
+-	}
+-	if (rt->dst.dev == dev) { /* is this necessary? */
+-		netdev_dbg(dev, "circular route to %pI4\n", &fl4.daddr);
+-		ip_rt_put(rt);
+-		return ERR_PTR(-ELOOP);
+-	}
+-#ifdef CONFIG_DST_CACHE
+-	if (use_cache)
+-		dst_cache_set_ip4(dst_cache, &rt->dst, fl4.saddr);
+-#endif
+-	*saddr = fl4.saddr;
+-	return rt;
+-}
+-EXPORT_SYMBOL_GPL(ip_route_output_tunnel);
+-
+ /* called with rcu_read_lock held */
+ static int rt_fill_info(struct net *net, __be32 dst, __be32 src,
+ 			struct rtable *rt, u32 table_id, struct flowi4 *fl4,
+diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
+index d70f683d3c495..356ef25481a83 100644
+--- a/net/ipv4/udp_tunnel_core.c
++++ b/net/ipv4/udp_tunnel_core.c
+@@ -222,4 +222,52 @@ struct metadata_dst *udp_tun_rx_dst(struct sk_buff *skb,  unsigned short family,
+ }
+ EXPORT_SYMBOL_GPL(udp_tun_rx_dst);
  
- 	parent->sk_state  = BT_CLOSED;
-@@ -496,8 +498,13 @@ static int rfcomm_sock_accept(struct soc
- 		}
- 
- 		nsk = bt_accept_dequeue(sk, newsock);
--		if (nsk)
-+		if (nsk) {
-+			/* Drop the bridging ref from bt_accept_dequeue();
-+			 * the grafted socket keeps nsk alive from here.
-+			 */
-+			sock_put(nsk);
- 			break;
-+		}
- 
- 		if (!timeo) {
- 			err = -EAGAIN;
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -433,6 +433,8 @@ static void sco_sock_cleanup_listen(stru
- 	while ((sk = bt_accept_dequeue(parent, NULL))) {
- 		sco_sock_close(sk);
- 		sco_sock_kill(sk);
-+		/* Drop the reference handed back by bt_accept_dequeue(). */
-+		sock_put(sk);
- 	}
- 
- 	parent->sk_state  = BT_CLOSED;
-@@ -716,8 +718,13 @@ static int sco_sock_accept(struct socket
- 		}
- 
- 		ch = bt_accept_dequeue(sk, newsock);
--		if (ch)
-+		if (ch) {
-+			/* Drop the bridging ref from bt_accept_dequeue();
-+			 * the grafted socket keeps ch alive from here.
-+			 */
-+			sock_put(ch);
- 			break;
-+		}
- 
- 		if (!timeo) {
- 			err = -EAGAIN;
++struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
++				     struct net_device *dev,
++				     struct net *net, __be32 *saddr,
++				     const struct ip_tunnel_info *info,
++				     u8 protocol, bool use_cache)
++{
++#ifdef CONFIG_DST_CACHE
++	struct dst_cache *dst_cache;
++#endif
++	struct rtable *rt = NULL;
++	struct flowi4 fl4;
++	__u8 tos;
++
++#ifdef CONFIG_DST_CACHE
++	dst_cache = (struct dst_cache *)&info->dst_cache;
++	if (use_cache) {
++		rt = dst_cache_get_ip4(dst_cache, saddr);
++		if (rt)
++			return rt;
++	}
++#endif
++	memset(&fl4, 0, sizeof(fl4));
++	fl4.flowi4_mark = skb->mark;
++	fl4.flowi4_proto = protocol;
++	fl4.daddr = info->key.u.ipv4.dst;
++	fl4.saddr = info->key.u.ipv4.src;
++	tos = info->key.tos;
++	fl4.flowi4_tos = RT_TOS(tos);
++
++	rt = ip_route_output_key(net, &fl4);
++	if (IS_ERR(rt)) {
++		netdev_dbg(dev, "no route to %pI4\n", &fl4.daddr);
++		return ERR_PTR(-ENETUNREACH);
++	}
++	if (rt->dst.dev == dev) { /* is this necessary? */
++		netdev_dbg(dev, "circular route to %pI4\n", &fl4.daddr);
++		ip_rt_put(rt);
++		return ERR_PTR(-ELOOP);
++	}
++#ifdef CONFIG_DST_CACHE
++	if (use_cache)
++		dst_cache_set_ip4(dst_cache, &rt->dst, fl4.saddr);
++#endif
++	*saddr = fl4.saddr;
++	return rt;
++}
++EXPORT_SYMBOL_GPL(udp_tunnel_dst_lookup);
++
+ MODULE_LICENSE("GPL");
+-- 
+2.53.0
+
 
 
 
