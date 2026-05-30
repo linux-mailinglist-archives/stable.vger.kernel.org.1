@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257145-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iFiMBjgiG2oN/ggAu9opvQ
-	(envelope-from <stable+bounces-257946-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:28 +0200
+	id OPXUDJUXG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257145-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E8E4610514
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED7260EB0E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A0AA303CC12
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85F3C3075C39
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06D83469FC;
-	Sat, 30 May 2026 17:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97A93A542F;
+	Sat, 30 May 2026 16:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctZ2C+hc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjeVOjXt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EBB33F590;
-	Sat, 30 May 2026 17:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8435F3403F3;
+	Sat, 30 May 2026 16:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162708; cv=none; b=Jx34DKhuB3NRIuKne2fvHthitCYyAuwGEKkl+aguKJl2CgsZQMkFtSi7AQI/2uACaXekjE+Fdyn/uCMVG3Qe5FpDCKLt+SlA0/yljUIEb3QFjgVTCuCYmpk/Qrbe799M4csaYjVpGw7lLvKksLhLWchSirOvuzCWC3Ru3Kx/Mhg=
+	t=1780159958; cv=none; b=NIHO16GovEEiAmTANh7peiyeCow2vJ2oVYJHtdjq/QdPtfJh6Q/5y1KEjLVGNCygbwB05TIam4QXy+X5C2qvb/8crYKc1E5W0MCf+fz2UBYPSpphdqmthpjaANsb0wjf5TcacS27Wr+JDXK49Xg4b2MoxFrPXBjf3BlHjT+oMqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162708; c=relaxed/simple;
-	bh=yzM4Py9p1pf1miyrIcrVReMNOVrhFIwQXHSBmEIljVM=;
+	s=arc-20240116; t=1780159958; c=relaxed/simple;
+	bh=8juU/cB5yk8Qida881arQgW8mtJB8ONT9G7I/aX27Mk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OWVg+cv6nQLvb7F2Xx3oc+9Cdi40Wxzd/gdHd9eSS6SXoEv4V+XwzHb9aWC2AREnnvf8XtyJD6wNnYjefi3vApOGSvH2ocOIAFARSMVAW+1T595BAf+gVcxmr5AstmOv6mRvbqf1yHM68Gberv3c3Qtnx9wqWitSVoJW3z7+Ybs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctZ2C+hc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212FD1F00893;
-	Sat, 30 May 2026 17:38:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hqTBkiZ4m5EL61+phcckO5pkFc99FPtqtxTKi1Vs3XiNHuHQjJobmX9oOJwscanL0CfDzWzpF9B39jNDK1T5E4bqAEY4tWeuyWXytE069amFCU1ISerNvTawpsMAxzR5gHAHkTbyMeYX1plkCmTj9lT4zIQdfkapISiRq1LlGjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjeVOjXt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913D21F00898;
+	Sat, 30 May 2026 16:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162707;
-	bh=wi2fIFhOAk+wpndMexrnPzz+usmY80NF27duJeJx4cI=;
+	s=korg; t=1780159957;
+	bh=ZAVCv/vSW98Ar6q6srW0UMhzISyobUiYNb+Q6YZRgOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ctZ2C+hc0z6nSP7x6W8NSHQla299ZJ2aD5vWTyr6ZFJPGFiDQJjTVlbLn1SwgdCIf
-	 ZcFPwlGv5g8gZJYTej+XH/3AXoe9xZ1CKdHvCdelPaBzf5Zx8NU+Ccf3F9wuFGijk7
-	 9La76qXtPKvV98ajZBfshMfBBfp0rooeyJyEnj4w=
+	b=MjeVOjXtb8joDlcrlACo97zS7atNBzM5zMQ8/SS4oUWtvVbJTzKYM1ZE+o0cLOgoe
+	 DbpKlgDxS0X7WG2UpCNFtUFRm7BLv6PVkLOf66DWkUAmv2By9e5TtSy/MtI5+xE6zk
+	 iZq3wGiEY0S6rN+VwLusdF8cg+r1SRu82vyCRMRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Potin Lai <potin.lai.pt@gmail.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 017/776] soc: aspeed: socinfo: Mask table entries for accurate SoC ID matching
+	=?UTF-8?q?Azizcan=20Da=C5=9Ftan?= <azizcan.d@mileniumsec.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 207/969] io_uring/poll: ensure EPOLL_ONESHOT is propagated for EPOLL_URING_WAKE
 Date: Sat, 30 May 2026 17:55:31 +0200
-Message-ID: <20260530160240.709911336@linuxfoundation.org>
+Message-ID: <20260530160306.187251852@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257946-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257145-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,codeconstruct.com.au,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[codeconstruct.com.au:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6E8E4610514
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 8ED7260EB0E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Potin Lai <potin.lai.pt@gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 7ec1bd3d9be671d04325b9e06149b8813f6a4836 ]
+commit 1967f0b1cafdde37aa9e08e6021c14bcc484b7a5 upstream.
 
-The siliconid_to_name() function currently masks the input silicon ID
-with 0xff00ffff, but compares it against unmasked table entries. This
-causes matching to fail if the table entries contain non-zero values in
-the bits covered by the mask (bits 16-23).
+Commit:
 
-Update the logic to apply the 0xff00ffff mask to the table entries
-during comparison. This ensures that only the relevant model and
-revision bits are considered, providing a consistent match across
-different manufacturing batches.
+aacf2f9f382c ("io_uring: fix req->apoll_events")
 
-[arj: Add Fixes: tag, fix 'soninfo' typo, clarify function reference]
+fixed an issue where poll->events and req->apoll_events weren't
+synchronized, but then when the commit referenced in Fixes got added,
+it didn't ensure the same thing.
 
-Fixes: e0218dca5787 ("soc: aspeed: Add soc info driver")
-Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
-Link: https://patch.msgid.link/20260122-soc_aspeed_name_fix-v1-1-33a847f2581c@gmail.com
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If we mask in EPOLLONESHOT in the regular EPOLL_URING_WAKE path, then
+ensure it's done for both. Including a link to the original report
+below, even though it's mostly nonsense. But it includes a reproducer
+that does show that IORING_CQE_F_MORE is set in the previous CQE,
+while no more CQEs will be generated for this request. Just ignore
+anything that pretends this is security related in any way, it's just
+the typical AI nonsense.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/io-uring/CAM0zi7yQzF3eKncgHo4iVM5yFLAjsiob_ucqyWKs=hyd_GqiMg@mail.gmail.com/
+Reported-by: Azizcan Daştan <azizcan.d@mileniumsec.com>
+Fixes: 4464853277d0 ("io_uring: pass in EPOLL_URING_WAKE for eventfd signaling and wakeups")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/aspeed/aspeed-socinfo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/poll.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/aspeed/aspeed-socinfo.c b/drivers/soc/aspeed/aspeed-socinfo.c
-index 67e9ac3d08ecc..a90b100f4d101 100644
---- a/drivers/soc/aspeed/aspeed-socinfo.c
-+++ b/drivers/soc/aspeed/aspeed-socinfo.c
-@@ -39,7 +39,7 @@ static const char *siliconid_to_name(u32 siliconid)
- 	unsigned int i;
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -451,8 +451,10 @@ static int io_poll_wake(struct wait_queu
+ 		 * disable multishot as there is a circular dependency between
+ 		 * CQ posting and triggering the event.
+ 		 */
+-		if (mask & EPOLL_URING_WAKE)
++		if (mask & EPOLL_URING_WAKE) {
+ 			poll->events |= EPOLLONESHOT;
++			req->apoll_events |= EPOLLONESHOT;
++		}
  
- 	for (i = 0 ; i < ARRAY_SIZE(rev_table) ; ++i) {
--		if (rev_table[i].id == id)
-+		if ((rev_table[i].id & 0xff00ffff) == id)
- 			return rev_table[i].name;
- 	}
- 
--- 
-2.53.0
-
+ 		/* optional, saves extra locking for removal in tw handler */
+ 		if (mask && poll->events & EPOLLONESHOT) {
 
 
 
