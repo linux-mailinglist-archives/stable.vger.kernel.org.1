@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMqTOQQsG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:16 +0200
+	id aK+KIUQgG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79908611C47
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5773161006D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78D5230528BF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:19:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A35B230187B1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6DA93C2B80;
-	Sat, 30 May 2026 18:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13843AD520;
+	Sat, 30 May 2026 17:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgmuWiQU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKQl0Lr2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727823242BE;
-	Sat, 30 May 2026 18:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779C52E7379;
+	Sat, 30 May 2026 17:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165167; cv=none; b=QdhR54btCHIr0i9ytsYVw6d+3lctjXy41MH58DGO4RkK/aX2UoAVmB5mcrTE8+pQ434aD56VdbLyTf0G59AYQ1n0ojMJLdlahTd8IjxtHR5w7/CpW0Yea1SpjSadILTcesvID7suTE5lPT1vBc7dwR3O/+fEagNzOvFQ4TuCl48=
+	t=1780162561; cv=none; b=ANyt1A5L6fEapp75rA64d2N4Le+g4CQHNJ3/HK3RA8HWyHZzOogCuMvRBp2L78qH3O5xwqGue3d5kGtMqQ+TI6XDoc3wwkZRO0JxBEvrWnP00IFzkn9tSk0LKe5rNeFs6WDuUU5q95VJ7MnI/CN1jyjR0VaomrV4BpMIvDRP/Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165167; c=relaxed/simple;
-	bh=FgHdVxFT69f7FZlqAO3n2HuX494kW07Pj6Vupi557+o=;
+	s=arc-20240116; t=1780162561; c=relaxed/simple;
+	bh=m6v+MJDrM2RIqGx9wFmLPTUdixdn8VT/Lh7XTcme8iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4q/PzHUPdEy4nmUS5/FAFoaGggvFdJjvNdlTIMU6zgnnY9dZMlhnAzzVLCHTFPSgPimdT5lL4mTKKAYgDdI8sqwAgFa+5Xeprn7J94Dk47JnRnVfn/iSFs8YVYbua9qpehRKA9RfkIO91m2bpV+K/LnepjCDmHpwWsthW77EdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgmuWiQU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79CC1F00893;
-	Sat, 30 May 2026 18:19:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dENwnD7obR2kLUczLRlVJgJzYEOsVxp1egQr3Igu7zK+rfEa3feZ7UT76l4oH1qFkZB0/oy8ruXQ6b0l/6i3Wa+bRfGxnpW5nFliIgxSbwwt6EDlAUmjyngT3K9BiVdbYhD8dwu2DIvF8bL4o4kPMK7NKeEnjsKuwC5uURmbhgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKQl0Lr2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F9C1F00893;
+	Sat, 30 May 2026 17:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165166;
-	bh=E2Wc5LhiFGNm1VldT+c/ukYSw6tollpKjrRfaw8RHTs=;
+	s=korg; t=1780162560;
+	bh=wSRQAvjbTqZtnv27B1OykwDfHUZmM2UP93ZgUJ9rpOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tgmuWiQUD2dYgjvsFV0Bma5M3lk6C1pk80gxhpA2hHED8oTo7PypwSbOnjMlKB2FV
-	 AbIJmMsDvkFl6a+dOy0BBus4anzd9EDqnlmCO9qtJ8sf2+fgOyIZdy1P3NZn6xR3TN
-	 cnibwIpA1T54ZTRndPDMRDy9UtHAfuU9mnM5dQ50=
+	b=tKQl0Lr2siwbb65AbQp6Sg8KvAE+P9x5BiJp1pNh0wjZn0maAalHSO3E7/+uxP/kT
+	 05bsWSoTDpSC8MBQZviWAGdLMUTraMmxKRyEdWQUHiPqS7bCFR3bzHQhK2+N74hdMt
+	 fGdhVOw46MN0ojJeWuSjNu0QlSZFY0Xxn1paCyis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 768/776] RDMA/rtrs: Fix use-after-free in path file creation cleanup
-Date: Sat, 30 May 2026 18:08:02 +0200
-Message-ID: <20260530160259.570798542@linuxfoundation.org>
+Subject: [PATCH 6.1 959/969] platform/x86: intel-vbtn: Check ACPI_HANDLE() against NULL
+Date: Sat, 30 May 2026 18:08:03 +0200
+Message-ID: <20260530160327.251531469@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258678-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257904-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 79908611C47
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5773161006D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 5b74373390113fba798a76b483837029ab010fef ]
+[ Upstream commit a9f305c5a355efeb240d406d378491d9eec02d07 ]
 
-In the error path of rtrs_srv_create_path_files(), the sysfs root folders
-may already have been created and srv_path->kobj may already have been
-initialized. If a later step fails, the cleanup currently calls
-kobject_put(&srv_path->kobj) before
-rtrs_srv_destroy_once_sysfs_root_folders(srv_path).
+Every platform driver can be forced to match a device that doesn't match
+its list of device IDs because of device_match_driver_override(), so
+platform drivers that rely on the existence of a device's ACPI companion
+object need to verify its presence.
 
-kobject_put() may drop the last reference to srv_path->kobj and invoke the
-release callback, rtrs_srv_release(), which frees srv_path. The following
-call to rtrs_srv_destroy_once_sysfs_root_folders(srv_path) then
-dereferences srv_path internally to access srv_path->srv, resulting in a
-use-after-free.
+Accordingly, add a requisite ACPI_HANDLE() check against NULL to the
+platform/x86 intel-vbtn driver.
 
-This failure path is reached before rtrs_srv_create_path_files() returns
-success, so the successful-path lifetime handling is not involved.
-
-Fix this by destroying the sysfs root folders before calling
-kobject_put(&srv_path->kobj), so srv_path is still valid while the helper
-accesses it.
-
-This issue was found by a static analysis tool I am developing.
-
-Fixes: ae4c81644e91 ("RDMA/rtrs-srv: Rename rtrs_srv_sess to rtrs_srv_path")
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Link: https://patch.msgid.link/20260514113834.865530-1-lgs201920130244@gmail.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 26173179fae1 ("platform/x86: intel-vbtn: Eval VBDL after registering our notifier")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/3426431.aeNJFYEL58@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/vbtn.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c b/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c
-index 309080184aac7..d42659a2e9058 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c
-@@ -294,8 +294,8 @@ int rtrs_srv_create_path_files(struct rtrs_srv_path *srv_path)
- put_kobj:
- 	kobject_del(&srv_path->kobj);
- destroy_root:
--	kobject_put(&srv_path->kobj);
- 	rtrs_srv_destroy_once_sysfs_root_folders(srv_path);
-+	kobject_put(&srv_path->kobj);
+diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
+index 224139006a433..1b590bbbd8f8f 100644
+--- a/drivers/platform/x86/intel/vbtn.c
++++ b/drivers/platform/x86/intel/vbtn.c
+@@ -272,12 +272,16 @@ static bool intel_vbtn_has_switches(acpi_handle handle, bool dual_accel)
  
- 	return err;
- }
+ static int intel_vbtn_probe(struct platform_device *device)
+ {
+-	acpi_handle handle = ACPI_HANDLE(&device->dev);
+ 	bool dual_accel, has_buttons, has_switches;
+ 	struct intel_vbtn_priv *priv;
++	acpi_handle handle;
+ 	acpi_status status;
+ 	int err;
+ 
++	handle = ACPI_HANDLE(&device->dev);
++	if (!handle)
++		return -ENODEV;
++
+ 	dual_accel = dual_accel_detect();
+ 	has_buttons = acpi_has_method(handle, "VBDL");
+ 	has_switches = intel_vbtn_has_switches(handle, dual_accel);
 -- 
 2.53.0
 
