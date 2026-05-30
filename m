@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-257274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIY8NfoXG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:46 +0200
+	id qG96DnEjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B0860EC1D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC8F610813
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3D2F3302B26D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:00:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 971DF3089744
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857443A542F;
-	Sat, 30 May 2026 17:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70EE34A3C4;
+	Sat, 30 May 2026 17:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ir36E0Fc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwQg8/EF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65602481DD;
-	Sat, 30 May 2026 17:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798DD27A477;
+	Sat, 30 May 2026 17:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160429; cv=none; b=blRlC94kCNciNCK4bJt8Vfg2Elt+cs6B4+/AyW1AeELFUhKkhfei3KGcofgcElT5XpJ3e/qaVk7bwFt1ByMUQd0qFiXxOjiroZd0B0339na/tQyCOCWnfvBSt/oRXd4suYCq/+KJf2y+Cz/CjWEpA/5ABg+654WGo3EedGvVGeI=
+	t=1780163063; cv=none; b=FLloXxoMOgZEir0hksMVUx4VN9gTnWpE69pFu5SDViQRfpHgWRqYDFRz3duqlORQZjVGiOu8tAmoVYktkR7RhZrzFTrN4q7dthS6yfgUZj1RMAOwxQIq6JaSz8/RvFZO3ykv8f9zwaJLfzqTznzTy7dfxrB+m2a6Uf7iicfpV5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160429; c=relaxed/simple;
-	bh=Ggv6x6y10S/eEzxO64W6WlGf7UU6e4iPN7XhjMIWJGg=;
+	s=arc-20240116; t=1780163063; c=relaxed/simple;
+	bh=RAUgQy0akPH+YgQtXI1FHiLsCDHvu0EgGOAQVYFbQNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FA4+HTqiDObWMDm0AfOxF5oz9Rau3Tdh8bBTPVGr7GQPFOU19QPjfaJ4griXA1WzxP5lhbVp/z5gUBCZR/wLDkXjp++usKbtzbkDK9NNJO0fek7YDkAIgglRP2qBuPEqwMMrH9C1RZmmk6wO32ew7AJyGxp8ambYZNBfklvdsso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ir36E0Fc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7427A1F00893;
-	Sat, 30 May 2026 17:00:27 +0000 (UTC)
+	 MIME-Version; b=DtTeqN7HqMh+rQ+ZcnUO0vX7YuRc6a0kffcTHKYlRwe5n/lPlN9+s5sHnVqNP+djtBhG8e1ySWXFMHdD5vSN40agZ+WZhfiOgPDxt8DPXdSgI5+isgLksYd7A0YYdypspLuDeZUN9sBWxiE4TptPWt7/YsW7JfYM0iiMYdbOyTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwQg8/EF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB351F00893;
+	Sat, 30 May 2026 17:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160428;
-	bh=DuhmO6OgQmmgszYvisQTNNI3qr4b2YxW1wZcRwp+stY=;
+	s=korg; t=1780163062;
+	bh=pnJ8AQExv4rnuA5SunVrfERB2WIBbwpQm5JOUdq+4oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ir36E0Fc9Hb0QHuprxEw41p0NyETo/Mt5BzzDSE3/Uye+diTY2L62qs9zVQyraYG+
-	 RlgcB1YElylStIelxEGIxMYnqYthCrPpdUGZICYcJXQfKxYjWp9e5ywr6ceABVDCX+
-	 ZSyf1E9Xg1Xu7934v0QDs5zzVa2i1xKrTwnLb1eM=
+	b=uwQg8/EFxScfU3DPqZoXDkhqy1N8gbn5YqzA55uFCAfpEp+U+XTfF3hV6tTMPd0zg
+	 x3skYr0U/JoHPmlnfCR/lcPyusehG565Zza8ef/TcGl/0y4xDsbxriOWoHlUDWOzkn
+	 k5ccvn5zpkkKeg9bKTOrhgWhZ/0BOLlKDCKVyJbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	"stable@vger.kernel.org, Kees Cook" <keescook@chromium.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dexuan Cui <decui@microsoft.com>,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 334/969] hv_sock: fix ARM64 support
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Tony Luck <tony.luck@intel.com>,
+	linux-hardening@vger.kernel.org,
+	Robert Garcia <rob_garcia@163.com>
+Subject: [PATCH 5.15 144/776] pstore: inode: Only d_invalidate() is needed
 Date: Sat, 30 May 2026 17:57:38 +0200
-Message-ID: <20260530160309.596136772@linuxfoundation.org>
+Message-ID: <20260530160244.141751549@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,73 +71,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257274-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,zeniv.linux.org.uk,igalia.com,intel.com,vger.kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-258053-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A6B0860EC1D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.org.uk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,chromium.org:email,igalia.com:email]
+X-Rspamd-Queue-Id: 9CC8F610813
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+From: Kees Cook <keescook@chromium.org>
 
-commit b31681206e3f527970a7c7ed807fbf6a028fc25b upstream.
+[ Upstream commit a43e0fc5e9134a46515de2f2f8d4100b74e50de3 ]
 
-VMBUS ring buffers must be page aligned. Therefore, the current value of
-24K presents a challenge on ARM64 kernels (with 64K pages). So, use
-VMBUS_RING_SIZE() to ensure they are always aligned and large enough to
-hold all of the relevant data.
+Unloading a modular pstore backend with records in pstorefs would
+trigger the dput() double-drop warning:
 
-Cc: stable@vger.kernel.org
-Fixes: 77ffe33363c0 ("hv_sock: use HV_HYP_PAGE_SIZE for Hyper-V communication")
-Tested-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20260428125339.13963-1-hamzamahfooz@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  WARNING: CPU: 0 PID: 2569 at fs/dcache.c:762 dput.part.0+0x3f3/0x410
+
+Using the combo of d_drop()/dput() (as mentioned in
+Documentation/filesystems/vfs.rst) isn't the right approach here, and
+leads to the reference counting problem seen above. Use d_invalidate()
+and update the code to not bother checking for error codes that can
+never happen.
+
+Suggested-by: Alexander Viro <viro@zeniv.linux.org.uk>
+Fixes: 609e28bb139e ("pstore: Remove filesystem records when backend is unregistered")
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/hyperv_transport.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: linux-hardening@vger.kernel.org
+[ Minor context change fixed. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/pstore/inode.c |   10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
---- a/net/vmw_vsock/hyperv_transport.c
-+++ b/net/vmw_vsock/hyperv_transport.c
-@@ -375,10 +375,10 @@ static void hvs_open_connection(struct v
- 	} else {
- 		sndbuf = max_t(int, sk->sk_sndbuf, RINGBUFFER_HVS_SND_SIZE);
- 		sndbuf = min_t(int, sndbuf, RINGBUFFER_HVS_MAX_SIZE);
--		sndbuf = ALIGN(sndbuf, HV_HYP_PAGE_SIZE);
-+		sndbuf = VMBUS_RING_SIZE(sndbuf);
- 		rcvbuf = max_t(int, sk->sk_rcvbuf, RINGBUFFER_HVS_RCV_SIZE);
- 		rcvbuf = min_t(int, rcvbuf, RINGBUFFER_HVS_MAX_SIZE);
--		rcvbuf = ALIGN(rcvbuf, HV_HYP_PAGE_SIZE);
-+		rcvbuf = VMBUS_RING_SIZE(rcvbuf);
- 	}
+--- a/fs/pstore/inode.c
++++ b/fs/pstore/inode.c
+@@ -312,7 +312,6 @@ int pstore_put_backend_records(struct ps
+ {
+ 	struct pstore_private *pos, *tmp;
+ 	struct dentry *root;
+-	int rc = 0;
  
- 	chan->max_pkt_size = HVS_MAX_PKT_SIZE;
+ 	root = psinfo_lock_root();
+ 	if (!root)
+@@ -322,11 +321,8 @@ int pstore_put_backend_records(struct ps
+ 	list_for_each_entry_safe(pos, tmp, &records_list, list) {
+ 		if (pos->record->psi == psi) {
+ 			list_del_init(&pos->list);
+-			rc = simple_unlink(d_inode(root), pos->dentry);
+-			if (WARN_ON(rc))
+-				break;
+-			d_drop(pos->dentry);
+-			dput(pos->dentry);
++			d_invalidate(pos->dentry);
++			simple_unlink(d_inode(root), pos->dentry);
+ 			pos->dentry = NULL;
+ 		}
+ 	}
+@@ -334,7 +330,7 @@ int pstore_put_backend_records(struct ps
+ 
+ 	inode_unlock(d_inode(root));
+ 
+-	return rc;
++	return 0;
+ }
+ 
+ /*
 
 
 
