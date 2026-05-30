@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258052-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCxeAd4ZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:50 +0200
+	id WFlTKIAjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258052-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A44C60F02F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DC9610831
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32303304E0CF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:00:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB27630B5F59
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A6E34BA42;
-	Sat, 30 May 2026 17:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BC2344DB9;
+	Sat, 30 May 2026 17:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1L1y3qH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFUho3iM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A165F39E162;
-	Sat, 30 May 2026 17:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9AB21B191;
+	Sat, 30 May 2026 17:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160418; cv=none; b=Oa+buN5RiMcNNgD380fifJioVFSf+1Ia/PB36vVQV2mbCtjvHb9y1GSkMDZBYRXMMOX2g4q+fj6/ucMhC2zvBszU9s+sq1jDiZrAKZDotpJhNKnmnmk+ePt+B8wEZAPX7t/HXk8E23CuK5SFvzKiM5W3aGM8fxdAux9c7e6S0tE=
+	t=1780163060; cv=none; b=n7uLJ9/GLuY+ERXJeNv9Eibd2KNpjkX5QkPLCd0pSn8wTOuTigMG4NmJy4Fqi7kLPQlTTSWKFps6BJ744qeUG8w1C6YQjfLVSp+2PYt7TXNLxq40UrUN3jA6ZEMMKOCYId/pKUlpWbPQgPdACSOU3wSx3sKkU2noikSFLKlWcRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160418; c=relaxed/simple;
-	bh=Fzpo25RDkGTVEphPYSfaIfGc0OtxSFJ8ImrZ9nrGhVo=;
+	s=arc-20240116; t=1780163060; c=relaxed/simple;
+	bh=Weluhycljw0VGEGhZnf7Kz5KzVr+pqexgJog9ARCHXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/SOVJTtyfBfnXkXVQ7dUNpMMIFJM2v9WIYRiB8k7eIaWx8Bo3WEYZV6/+NVCb4Swf1dBXDuk/w5nsS60Gg4KJb4ciHv+kuyKo+xRvWU7bfFVSe2+NmjVtUHohlI8AgeW9KiY2PiWHfZq0sFrJPILtztteVzQHM40KyDPIl5a7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1L1y3qH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB17A1F00893;
-	Sat, 30 May 2026 17:00:16 +0000 (UTC)
+	 MIME-Version; b=A93gGVkunV/wm8XjIl0ZbXKq6UkVE9RzslDB2mEFy2q+XYEH+2dnbObkeUvjZSjFdWFnMNRrQ0yW5RNpm/V39v5fLRf9wWQlrfkbbBqxWgRoct6GxWGELY/p5Fu8hyopNOUE1cvMGXuiAAuwpMgBlJtmXTOEKCFxgZlg0I4voeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFUho3iM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7475E1F00898;
+	Sat, 30 May 2026 17:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160417;
-	bh=e0DR1lPHcmOPCza7rjlZ7tOasSZPD/evRjc7bcRBEhM=;
+	s=korg; t=1780163059;
+	bh=qenQfVn0kGyPeSV+OwEfrxoC4cfwBt6C4HDuvBMMK8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r1L1y3qHiU+Nyzwfx4liTPAXXiF8RkUcxon3t2GmooHUkBKbaKdnwlAITvB3Gkm3U
-	 CfwGpNxsqg9TXlOvVKKIKY+pD20jweKJhUwatZU5YrE4PORuK02EXySzWjLkcbuaj2
-	 X/stIe7Enrl7HsSQf3K17hy2ica09RW9WHZE2mi8=
+	b=wFUho3iMk0oPf6PKYC154Mmq1GAjEa1gM366oWBQMY6VfTDUwEgwdx7h9Kpitb6Ht
+	 JkXw/+/jlhLb3ow/VFKF3sRBmXesVqlVBjI6nbFCANtKlCLEexTGSntCTYeVuT7M0Z
+	 sgu6T487L9SG/t6uH/eeUDUhFL0eaJ9OIQE03LZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	"stable@vger.kernel.org, Chao Yu" <chao@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharath SM <bharathsm@microsoft.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 332/969] cifs: change_conf needs to be called for session setup
-Date: Sat, 30 May 2026 17:57:36 +0200
-Message-ID: <20260530160309.546679713@linuxfoundation.org>
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Robert Garcia <rob_garcia@163.com>
+Subject: [PATCH 5.15 143/776] f2fs: fix to wait on block writeback for post_read case
+Date: Sat, 30 May 2026 17:57:37 +0200
+Message-ID: <20260530160244.116025093@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,80 +73,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257271-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258052-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,163.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6A44C60F02F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 46DC9610831
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Chao Yu <chao@kernel.org>
 
-commit c208a2b95811d6e1ebae65d0d2fc13f73707f8e7 upstream.
+[ Upstream commit 55fdc1c24a1d6229fe0ecf31335fb9a2eceaaa00 ]
 
-Today we skip calling change_conf for negotiates and session setup
-requests. This can be a problem for mchan as the immediate next call
-after session setup could be due to an I/O that is made on the
-mount point. For single channel, this is not a problem as
-there will be several calls after setting up session.
+If inode is compressed, but not encrypted, it missed to call
+f2fs_wait_on_block_writeback() to wait for GCed page writeback
+in IPU write path.
 
-This change enforces calling change_conf when the total credits contain
-enough for reservations for echoes and oplocks. We expect this to happen
-during the last session setup response. This way, echoes and oplocks are
-not disabled before the first request to the server. So if that first
-request is an open, it does not need to disable requesting leases.
+Thread A				GC-Thread
+					- f2fs_gc
+					 - do_garbage_collect
+					  - gc_data_segment
+					   - move_data_block
+					    - f2fs_submit_page_write
+					     migrate normal cluster's block via
+					     meta_inode's page cache
+- f2fs_write_single_data_page
+ - f2fs_do_write_data_page
+  - f2fs_inplace_write_data
+   - f2fs_submit_page_bio
 
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+IRQ
+- f2fs_read_end_io
+					IRQ
+					old data overrides new data due to
+					out-of-order GC and common IO.
+					- f2fs_read_end_io
+
+Fixes: 4c8ff7095bef ("f2fs: support data compression")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ Minor context change fixed. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/f2fs/data.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -94,10 +94,21 @@ smb2_add_credits(struct TCP_Server_Info
- 					    add, server->in_flight);
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -2537,9 +2537,6 @@ int f2fs_encrypt_one_page(struct f2fs_io
+ 
+ 	page = fio->compressed_page ? fio->compressed_page : fio->page;
+ 
+-	/* wait for GCed page writeback via META_MAPPING */
+-	f2fs_wait_on_block_writeback(inode, fio->old_blkaddr);
+-
+ 	if (fscrypt_inode_uses_inline_crypto(inode))
+ 		return 0;
+ 
+@@ -2718,6 +2715,11 @@ got_it:
+ 		err = -EFSCORRUPTED;
+ 		goto out_writepage;
  	}
- 	server->in_flight--;
 +
-+	/*
-+	 * Rebalance credits when an op drains in_flight. For session setup,
-+	 * do this only when the total accumulated credits are high enough (>2)
-+	 * so that a newly established secondary channel can reserve credits for
-+	 * echoes and oplocks. We expect this to happen at the end of the final
-+	 * session setup response.
-+	 */
- 	if (server->in_flight == 0 &&
- 	   ((optype & CIFS_OP_MASK) != CIFS_NEG_OP) &&
- 	   ((optype & CIFS_OP_MASK) != CIFS_SESS_OP))
- 		rc = change_conf(server);
-+	else if (server->in_flight == 0 &&
-+		 ((optype & CIFS_OP_MASK) == CIFS_SESS_OP) && *val > 2)
-+		rc = change_conf(server);
++	/* wait for GCed page writeback via META_MAPPING */
++	if (fio->post_read)
++		f2fs_wait_on_block_writeback(inode, fio->old_blkaddr);
++
  	/*
- 	 * Sometimes server returns 0 credits on oplock break ack - we need to
- 	 * rebalance credits in this case.
+ 	 * If current allocation needs SSR,
+ 	 * it had better in-place writes for updated data.
 
 
 
