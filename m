@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-258561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257757-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGvFM50oG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258561-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:45 +0200
+	id qNB+HF0eG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257757-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 794776113BC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 355B460FC56
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D8B6830067B4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:12:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 744403029B2C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90D02F90E0;
-	Sat, 30 May 2026 18:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDED344DA4;
+	Sat, 30 May 2026 17:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BP1PeKMp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5rWCseC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B641F30E829;
-	Sat, 30 May 2026 18:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705953148DA;
+	Sat, 30 May 2026 17:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164761; cv=none; b=NUvk2TfveXNcwttSoZ6D8Dur7kD038ThFKN7Nk/vCRGlH40RYpr41CklYB2fEHaWD4Tfqhws9FsPcQZs34hz9gHFZLlNSzdRjOR2IEdSykPoqnqdGAzdrv/WswJu1Rm91FhOo5XnpdpJd/rW3aUUQZI0/n7acA5D0uqbCOnzta0=
+	t=1780162070; cv=none; b=Zb/ZDEBg03AOlRzIbfjpW65AKG+Kff7CFN+8BTC8dRC7HTvWcABXjlZexCQbaEFNlpaxfUPh8/FJNMgSx1WGBEjxqKYOF5/gtirhw07N1W5xZNJG+jPvfLCnP5MPnz+n9FZXyi+BxXCorzSrv50bLQvrjB1QxaQsfEgubQsDUnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164761; c=relaxed/simple;
-	bh=amQeQgb4cqgg03GInkPgcbYBAKna22xLBrvJZBHzIuM=;
+	s=arc-20240116; t=1780162070; c=relaxed/simple;
+	bh=DZxp7EcnKvNOIlGbng4fjq1rBedRuJC2M9iFPpXcfX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGzk7sVDsYI4wEjZwwF9auPA8ufjzRrlBDVl55JNXbR4oxf1P1ZlvAt6eQZARq8ZgfeIOHhfBzcKna9VuzvEln0KNXEwe7plvMPgXfIlTdzj5qu3RC0xr+Xvtd7phSglPIFz0AYj4liIYHCiPiPlpGCb7OS5guoqCckr2r2rxSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BP1PeKMp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5EB1F00893;
-	Sat, 30 May 2026 18:12:39 +0000 (UTC)
+	 MIME-Version; b=oRDh4TvWb4MjpISeO0C70NhySzwo40qfM9VqHjKidukHVR+lFP6xvjK/vNxjJ/54gJs3btJ425AnF7Xenl45ziipMpiHsDYrO+8X+gMwm2Mj25DDjCRdnA2tWU+QDDaIEuHe+M+cJ+2JUHBoxtVVZaANnVMDXN7dw9+O+Wz+oPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5rWCseC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1931F00893;
+	Sat, 30 May 2026 17:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164760;
-	bh=nR3SA1+eTgHyzAgxzKQts2yhEZy9kYbgkZkjfBeAJYM=;
+	s=korg; t=1780162069;
+	bh=PGHRmF2qx4toFRF7t7s+/hWsKHcbuZ1Skh8mFSCidfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BP1PeKMpMUpNSvbIP9ITO3Yd3y1i61H1isBQt7x3BZKC3S1918RJr8ckL6c4tSFHx
-	 w/go7wDa6kR6L+9c6t7YYiirVBCHmA2cGmj0ECkKZo5KxiXOzJANjkGy130pICLH58
-	 BEPoBsS034qfiVLYSf8+EzhjG3SjDqFQjYlHs9J0=
+	b=m5rWCseCMbSp1lNZQCLFEH9dwXvGg3NKcr9uhE8eLGWkqMzwozhQR/j0D706rtEa+
+	 eQe9YtQoRVNGFNSWaWEylygyTnuYSH0m9X5qe3VbeHUxOzCUat0OZzb+bXhdOaQkvM
+	 OpGCKuKR+WNfSlk65uo/FNOQkSa6GLU14VYPQzKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Zhan Jun <zhanjun@uniontech.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 622/776] net: usb: rtl8150: fix use-after-free in rtl8150_start_xmit()
+	Aaron Sacks <contact@xchglabs.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.1 812/969] KVM: Reject wrapped offset in kvm_reset_dirty_gfn()
 Date: Sat, 30 May 2026 18:05:36 +0200
-Message-ID: <20260530160256.059708304@linuxfoundation.org>
+Message-ID: <20260530160323.057071838@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,126 +63,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258561-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-257757-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,3f46c095ac0ca048cb71];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,uniontech.com:email,lunn.ch:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 794776113BC
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,xchglabs.com:email]
+X-Rspamd-Queue-Id: 355B460FC56
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhan Jun <zhanjun@uniontech.com>
+From: Aaron Sacks <contact@xchglabs.com>
 
-[ Upstream commit 23f0e34c64acba15cad4d23e50f41f533da195fa ]
+commit 577a8d3bae0531f0e5ccfac919cd8192f920a804 upstream.
 
-syzbot reported a KASAN slab-use-after-free read in rtl8150_start_xmit()
-when accessing skb->len for tx statistics after usb_submit_urb() has
-been called:
+kvm_reset_dirty_gfn() guards the gfn range with
 
-  BUG: KASAN: slab-use-after-free in rtl8150_start_xmit+0x71f/0x760
-    drivers/net/usb/rtl8150.c:712
-  Read of size 4 at addr ffff88810eb7a930 by task kworker/0:4/5226
+	if (!memslot || (offset + __fls(mask)) >= memslot->npages)
+		return;
 
-The URB completion handler write_bulk_callback() frees the skb via
-dev_kfree_skb_irq(dev->tx_skb). The URB may complete on another CPU
-in softirq context before usb_submit_urb() returns in the submitter,
-so by the time the submitter reads skb->len the skb has already been
-queued to the per-CPU completion_queue and freed by net_tx_action():
+but offset is u64 and the addition is unchecked.  The check can be
+silently bypassed by a u64 wrap.
 
-  CPU A (xmit)                      CPU B (USB completion softirq)
-  ------------                      ------------------------------
-  dev->tx_skb = skb;
-  usb_submit_urb()      --+
-                          |-------> write_bulk_callback()
-                          |           dev_kfree_skb_irq(dev->tx_skb)
-                          |         net_tx_action()
-                          |           napi_skb_cache_put()   <-- free
-  netdev->stats.tx_bytes  |
-    += skb->len;          <-- UAF read
+The dirty ring backing those entries is MAP_SHARED at
+KVM_DIRTY_LOG_PAGE_OFFSET of the vcpu fd, so the VMM can rewrite the
+slot and offset fields of any entry between when the kernel pushes
+them and when KVM_RESET_DIRTY_RINGS consumes them.  On reset,
+kvm_dirty_ring_reset() re-reads the values via READ_ONCE() and feeds
+them straight back into this check; only the flags handshake is
+treated as the handover, the slot/offset payload is taken on trust.
 
-Fix it by caching skb->len before submitting the URB and using the
-cached value when updating the tx_bytes counter.
+Crafting two entries
 
-The pre-existing tx_bytes semantics are preserved: the counter tracks
-the original frame length (skb->len), not the ETH_ZLEN/USB-alignment
-padded "count" value that is handed to the device.  Changing that
-would be a user-visible accounting change and is out of scope for
-this UAF fix.
+	entry[i].offset   = 0xffffffffffffffc1
+	entry[i+1].offset = 0
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69e69ee7.050a0220.24bfd3.002b.GAE@google.com/
-Closes: https://syzkaller.appspot.com/bug?extid=3f46c095ac0ca048cb71
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Zhan Jun <zhanjun@uniontech.com>
-Link: https://patch.msgid.link/809895186B866C10+20260423004913.136655-1-zhangdandan@uniontech.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+makes the coalescing loop in kvm_dirty_ring_reset() compute
+
+	delta = (s64)(0 - 0xffffffffffffffc1) = 63
+
+which falls in [0, BITS_PER_LONG), so it folds entry[i+1] into the
+existing mask by setting bit 63.  The trailing kvm_reset_dirty_gfn()
+call then sees offset = 0xffffffffffffffc1 and __fls(mask) = 63;
+the sum is 0 in u64 and the bounds check passes.
+
+That offset propagates into kvm_arch_mmu_enable_log_dirty_pt_masked()
+unchanged.  On the legacy MMU path -- kvm_memslots_have_rmaps() ==
+true, i.e. shadow paging, any VM that has allocated shadow roots, or
+a write-tracked slot -- it reaches gfn_to_rmap(), which indexes
+slot->arch.rmap[0][] with a near-U64_MAX gfn.  That is an
+out-of-bounds load of a kvm_rmap_head, followed by a conditional
+clear of PT_WRITABLE_MASK in whatever the loaded pointer points at.
+The path is reachable from any process holding /dev/kvm.
+
+Range-check offset on its own first, so the addition cannot wrap.
+memslot->npages is bounded well below U64_MAX, so once offset <
+npages holds, offset + __fls(mask) (with __fls(mask) < BITS_PER_LONG)
+stays in range.
+
+Fixes: fb04a1eddb1a ("KVM: X86: Implement ring-based dirty memory tracking")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aaron Sacks <contact@xchglabs.com>
+Link: https://patch.msgid.link/20260512060742.1628959-1-contact@xchglabs.com/
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/rtl8150.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ virt/kvm/dirty_ring.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index fa69d59a309a3..3aa38524f4f38 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -685,6 +685,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 					    struct net_device *netdev)
- {
- 	rtl8150_t *dev = netdev_priv(netdev);
-+	unsigned int skb_len;
- 	int count, res;
+--- a/virt/kvm/dirty_ring.c
++++ b/virt/kvm/dirty_ring.c
+@@ -49,7 +49,8 @@ static void kvm_reset_dirty_gfn(struct k
  
- 	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
-@@ -696,6 +697,8 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 		return NETDEV_TX_OK;
- 	}
+ 	memslot = id_to_memslot(__kvm_memslots(kvm, as_id), id);
  
-+	skb_len = skb->len;
-+
- 	netif_stop_queue(netdev);
- 	dev->tx_skb = skb;
- 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
-@@ -711,7 +714,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 		}
- 	} else {
- 		netdev->stats.tx_packets++;
--		netdev->stats.tx_bytes += skb->len;
-+		netdev->stats.tx_bytes += skb_len;
- 		netif_trans_update(netdev);
- 	}
+-	if (!memslot || (offset + __fls(mask)) >= memslot->npages)
++	if (!memslot || offset >= memslot->npages ||
++	    offset + __fls(mask) >= memslot->npages)
+ 		return;
  
--- 
-2.53.0
-
+ 	KVM_MMU_LOCK(kvm);
 
 
 
