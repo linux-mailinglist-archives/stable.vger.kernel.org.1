@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-258136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFuqFRglG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:44 +0200
+	id cH18J6MrG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:25:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA25B610B46
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3EF611B24
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 03A9B30942F9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:48:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 082F5307C92F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA2D5342CA7;
-	Sat, 30 May 2026 17:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB3A21ADC7;
+	Sat, 30 May 2026 18:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fswBcqxp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yt2mQb12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97ED53B0ADF;
-	Sat, 30 May 2026 17:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA46274FDC;
+	Sat, 30 May 2026 18:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163337; cv=none; b=NESwdHB7LDKuEjpUA6c0BUxvFLq7d72u7t03VLQJZQf2//ia28quitMggwjPZ/EAqPS7s/Yl4rTWX4RYgfyc9McN6B7RQuspwy63cjYtIj83aBuHYy9wBrt0EDJlZVefLt3zQvIkXVJfnvCBbZ7UN3C/oR9LS0i/OBXtrSWUw2I=
+	t=1780165379; cv=none; b=RNRYWDEfogq+CMteK4RvMGrKcTCvrKPF0v96nsVpGRPqnxWGELrAxOdQ/S07LmUe7NVRxuLRl76rSoAY1IswlkH/stVANfT02ENAu0G19kSvMRnoFLGHhe8HqDm6gss73WKrAM5AMy4xpSSIyh37MWtgtlydOoQSSz96lsdg3rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163337; c=relaxed/simple;
-	bh=WfAmfs7AA5+/OuR+4JkNlBDL148PV/hJ6vzWjYlxMW0=;
+	s=arc-20240116; t=1780165379; c=relaxed/simple;
+	bh=AosorFOD55V6XPVVldSvVeqC4b6gzvDDNrVBRXGCUCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=phpe5RNU5n4mDigu9PogHEodVdo6Xl8RrxvfbesY5HODWDwcB7GzKoY628vzTfE7PQHiilpiv+hYIuiVMZ4patLjQXJMZjLUyoGjzcRWCs0WUCJ7yrnGYlzGjh5UQh+6Jzh9gClfVBOSsGKkjCrQzEM345k+VdNsHSss8ooAIf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fswBcqxp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8AA1F00893;
-	Sat, 30 May 2026 17:48:55 +0000 (UTC)
+	 MIME-Version; b=Kgmlb3VXshYxzI2QMZ91V3ziAUIQhaatcyeITmo8kL6691M1lQC6AXpMOaqHWkFisvPyes0RerrR/h6g8yqVjlPJqi7mE+VoIVptsx/rSulDHRU5zZqe4xO6YLYbV62MB1vMyEv9OUeqiCv6QSyfN06VUYhIXNKXcJ11Jw+pEUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yt2mQb12; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB93A1F00893;
+	Sat, 30 May 2026 18:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163336;
-	bh=To2AYCGAdVf74Bfod5QEM/ExquWuBBjizJyWcBPpxSk=;
+	s=korg; t=1780165378;
+	bh=iN4aCzoxIHU8Qh7ErLCOuerzb9lI3d3yQxSeYIRdK/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fswBcqxpO+n+r7YNeq6zmuHO+seHcPAHP7ESFpy/9FOgsqumZwAj1op46NdHSigUN
-	 k1uzfqTDcCghiVi0VKMc2ZBHs8YRwY4EjEqH3eccJfKjMxf23cRph6eJM4DXZtH5go
-	 KYDS5WI517NM6bMRcKVerjULnAv/3WM1Hc0F5czw=
+	b=Yt2mQb125//DYxv9zt2ld7tP+HWnaRsZAYJmeEaW9ZaOUZVeEs4yPhLPD9LlNl8ml
+	 5UKoNTd3PL8sIXpHM+NszCNidU/W9lo0tCxA34gY2ppdH/hozGP1QO7l1WP+OJXzuo
+	 c9gu6XEdEByVzJAhgUs7MR+WIqhmL9DyKmXXRSec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 5.15 226/776] power: supply: axp288_charger: Do not cancel work before initializing it
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>
+Subject: [PATCH 5.10 059/589] staging: sm750fb: fix division by zero in ps_to_hz()
 Date: Sat, 30 May 2026 17:59:00 +0200
-Message-ID: <20260530160246.364037495@linuxfoundation.org>
+Message-ID: <20260530160226.147701556@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,117 +65,73 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258740-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258136-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BA25B610B46
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 3C3EF611B24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit 658342fd75b582cbb06544d513171c3d645faead upstream.
+commit 75a1621e4f91310673c9acbcbb25c2a7ff821cd3 upstream.
 
-Driver registered devm handler to cancel_work_sync() before even the
-work was initialized, thus leading to possible warning from
-kernel/workqueue.c on (!work->func) check, if the error path was hit
-before the initialization happened.
+ps_to_hz() is called from hw_sm750_crtc_set_mode() without validating
+that pixclock is non-zero. A zero pixclock passed via FBIOPUT_VSCREENINFO
+causes a division by zero.
 
-Use devm_work_autocancel() on each work item independently, which
-handles the initialization and handler to cancel work.
+Fix by rejecting zero pixclock in lynxfb_ops_check_var(), consistent
+with other framebuffer drivers.
 
-Fixes: 165c2357744e ("power: supply: axp288_charger: Properly stop work on probe-error / remove")
+Fixes: 81dee67e215b ("staging: sm750fb: add sm750 to staging")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
-Link: https://patch.msgid.link/20260220174938.672883-5-krzysztof.kozlowski@oss.qualcomm.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB7881AFBFCE28CCF528B35D0CAF4BA@SYBPR01MB7881.ausprd01.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/axp288_charger.c |   19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/staging/sm750fb/sm750.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/power/supply/axp288_charger.c
-+++ b/drivers/power/supply/axp288_charger.c
-@@ -10,6 +10,7 @@
- #include <linux/acpi.h>
- #include <linux/bitops.h>
- #include <linux/module.h>
-+#include <linux/devm-helpers.h>
- #include <linux/device.h>
- #include <linux/regmap.h>
- #include <linux/workqueue.h>
-@@ -796,14 +797,6 @@ static int charger_init_hw_regs(struct a
- 	return 0;
- }
+--- a/drivers/staging/sm750fb/sm750.c
++++ b/drivers/staging/sm750fb/sm750.c
+@@ -482,6 +482,9 @@ static int lynxfb_ops_check_var(struct f
+ 	struct lynxfb_crtc *crtc;
+ 	resource_size_t request;
  
--static void axp288_charger_cancel_work(void *data)
--{
--	struct axp288_chrg_info *info = data;
--
--	cancel_work_sync(&info->otg.work);
--	cancel_work_sync(&info->cable.work);
--}
--
- static int axp288_charger_probe(struct platform_device *pdev)
- {
- 	int ret, i, pirq;
-@@ -867,12 +860,12 @@ static int axp288_charger_probe(struct p
- 	}
- 
- 	/* Cancel our work on cleanup, register this before the notifiers */
--	ret = devm_add_action(dev, axp288_charger_cancel_work, info);
-+	ret = devm_work_autocancel(dev, &info->cable.work,
-+				   axp288_charger_extcon_evt_worker);
- 	if (ret)
- 		return ret;
- 
- 	/* Register for extcon notification */
--	INIT_WORK(&info->cable.work, axp288_charger_extcon_evt_worker);
- 	info->cable.nb.notifier_call = axp288_charger_handle_cable_evt;
- 	ret = devm_extcon_register_notifier_all(dev, info->cable.edev,
- 						&info->cable.nb);
-@@ -882,8 +875,12 @@ static int axp288_charger_probe(struct p
- 	}
- 	schedule_work(&info->cable.work);
- 
-+	ret = devm_work_autocancel(dev, &info->otg.work,
-+				   axp288_charger_otg_evt_worker);
-+	if (ret)
-+		return ret;
++	if (!var->pixclock)
++		return -EINVAL;
 +
- 	/* Register for OTG notification */
--	INIT_WORK(&info->otg.work, axp288_charger_otg_evt_worker);
- 	info->otg.id_nb.notifier_call = axp288_charger_handle_otg_evt;
- 	if (info->otg.cable) {
- 		ret = devm_extcon_register_notifier(dev, info->otg.cable,
+ 	ret = 0;
+ 	par = info->par;
+ 	crtc = &par->crtc;
 
 
 
