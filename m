@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258981-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8B8yDp0cG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:33 +0200
+	id ECs/Jj0vG2paAAkAu9opvQ
+	(envelope-from <stable+bounces-258981-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 042CC60F7AF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 174AF6123DA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B877630279DC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:19:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8F74B3056965
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144843161A3;
-	Sat, 30 May 2026 17:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F67439A7FE;
+	Sat, 30 May 2026 18:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAoHXBRv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9QWOXha"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1771C5799;
-	Sat, 30 May 2026 17:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CF733AD99;
+	Sat, 30 May 2026 18:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161552; cv=none; b=nlR+Ipg4OBPYkOchUPN8jr+Zhq6akZHXRmatZ230ZxZldFNb5qvENACjAekkNAmy5ARNp+74Ah6i2Nn7W3Oe+L/iDd3xd7X3GcmNbnoGJa+6Aod8nGUT63kF5yWS6wcpsukkECseoZE5QTpsXr0MLmii2jHTk+pOtUQy5GqwYqg=
+	t=1780166195; cv=none; b=PBJUSlTyizXynqw46GLxRMtkJUrvnr9xnk5jU24mfIHRmGaECtjFtO/rkl0Q5I1xzhDJDCOlJNkRyWAUtfPd6G6sX7nWBqlnUlcxeiNmpCChtwDD1/oNDDvqgwP6QkIW9Y/atshZNNRktz0faePj9NLkib+DHigkYyjdiw+RmeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161552; c=relaxed/simple;
-	bh=vX2c9eed4xLLY7tgZypCclzlx33G3lLgxJD0w617Gos=;
+	s=arc-20240116; t=1780166195; c=relaxed/simple;
+	bh=cFmrksVrramXpnAvR0smAjbWrjdkVzCiDj14XCGqJSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hEnQCtMYnjO2XXqF8LMRJn+L/cpaPKxD85CMODGgeZmm16Rz8k+5Rv1/a7ibQbYo/8ejP0vhmVk/2lwVgaf/6vLTFUmEG1JfCCpPhoUtSlBG/FRIl7ihUmFGQeHWVdalJNdzKfElMBAZndJJ9IXpr7s4OMURSKskVmuBjMIFM1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAoHXBRv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417CE1F00893;
-	Sat, 30 May 2026 17:19:11 +0000 (UTC)
+	 MIME-Version; b=FdrVLlTVpJqpLkjP8YQX46KrIF3fYKmaNANlwx/EmeZkkBHAFqOaPrYz+Svcj0pxbnyDzEWRNuMibA9TRIuprDx+aocg9TSv97Zg8LZu3if3VuPJx/BDXadhzwmipdL0865Nwq07JLgfhTpwkN5y6X5dst6muoLLLcvILcF2lyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9QWOXha; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270E41F00893;
+	Sat, 30 May 2026 18:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161551;
-	bh=cqeGGlXEj/n+zzIEMI+jr+1vDApcioGKRQbiY6fVByU=;
+	s=korg; t=1780166193;
+	bh=3Du4e8XZTQJehibFGotM3VfQLsG8trYeFFx1SQv9yxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fAoHXBRvSZa6wblQ2qNIDKn4/3PJ6WZRowdNbcSIpPZNLahIO4RvN9G1yLabFTtNW
-	 r3BwgmlCzB3ZDFECAO0jPiDLYINd7vSK9cPtn457Iaaf6AyI5j7/ZXMqmEUn48OCoV
-	 r3QWzL48UZubFHEjKPaLUgXUeQfAFYy6ucZTJR/g=
+	b=B9QWOXhaCsqbgUfUWPBNtz3N21MOrQ5cPPkNcx7e+UHipOAV63kc32B1EM5mOCYKN
+	 ZmQoTyHihV17Z2aU3UAmVqTVPkyME4YewdfYZWqnXnV9nDESS5Hr/nceLKgok3tHie
+	 Tz7iLQMELgL3DFspBYICTuE0hgVqKUcV+tv/yvQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 657/969] clk: qcom: dispcc-sm8250: Enable parents for pixel clocks
-Date: Sat, 30 May 2026 18:03:01 +0200
-Message-ID: <20260530160318.616527275@linuxfoundation.org>
+Subject: [PATCH 5.10 301/589] wifi: rtlwifi: pci: fix possible use-after-free caused by unfinished irq_prepare_bcn_tasklet
+Date: Sat, 30 May 2026 18:03:02 +0200
+Message-ID: <20260530160232.873748764@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +68,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257603-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258981-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 042CC60F7AF
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,zju.edu.cn:email]
+X-Rspamd-Queue-Id: 174AF6123DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit acf7a91d0b0e9e3ef374944021de62062125b7e4 ]
+[ Upstream commit 039cd522dc70151da13329a5e3ae19b1736f468a ]
 
-Add CLK_OPS_PARENT_ENABLE to MDSS pixel clock sources to ensure parent
-clocks are enabled during clock operations, preventing potential
-stability issues during display configuration.
+The irq_prepare_bcn_tasklet is initialized in rtl_pci_init() and
+scheduled when RTL_IMR_BCNINT interrupt is triggered by hardware.
+But it is never killed in rtl_pci_deinit(). When the rtlwifi card
+probe fails or is being detached, the ieee80211_hw is deallocated.
+However, irq_prepare_bcn_tasklet may still be running or pending,
+leading to use-after-free when the freed ieee80211_hw is accessed
+in _rtl_pci_prepare_bcn_tasklet().
 
-Fixes: 80a18f4a8567 ("clk: qcom: Add display clock controller driver for SM8150 and SM8250")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260312112321.370983-9-val@packett.cool
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Similar to irq_tasklet, add tasklet_kill() in rtl_pci_deinit() to
+ensure that irq_prepare_bcn_tasklet is properly terminated before
+the ieee80211_hw is released.
+
+The issue was identified through static analysis.
+
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260223045522.48377-1-duoming@zju.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8250.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/dispcc-sm8250.c b/drivers/clk/qcom/dispcc-sm8250.c
-index b7d3d3bd1f2af..eb46f1fb8a3a1 100644
---- a/drivers/clk/qcom/dispcc-sm8250.c
-+++ b/drivers/clk/qcom/dispcc-sm8250.c
-@@ -564,7 +564,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk0_clk_src = {
- 		.name = "disp_cc_mdss_pclk0_clk_src",
- 		.parent_data = disp_cc_parent_data_6,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
- };
-@@ -578,7 +578,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk1_clk_src = {
- 		.name = "disp_cc_mdss_pclk1_clk_src",
- 		.parent_data = disp_cc_parent_data_6,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
- };
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 02821588673e5..3058c8356c292 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -1675,6 +1675,7 @@ static void rtl_pci_deinit(struct ieee80211_hw *hw)
+ 
+ 	synchronize_irq(rtlpci->pdev->irq);
+ 	tasklet_kill(&rtlpriv->works.irq_tasklet);
++	tasklet_kill(&rtlpriv->works.irq_prepare_bcn_tasklet);
+ 	cancel_work_sync(&rtlpriv->works.lps_change_work);
+ }
+ 
 -- 
 2.53.0
 
