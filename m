@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-258629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODqEIncqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258629-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:39 +0200
+	id kFs9BOEyG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26967611869
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92031612CB6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A8CA7306D5B7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8848300CE6D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF5B3242BE;
-	Sat, 30 May 2026 18:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEB61D63E4;
+	Sat, 30 May 2026 18:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jv8ly2WJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vj/WqsCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5A7241C8C;
-	Sat, 30 May 2026 18:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CCE21E098;
+	Sat, 30 May 2026 18:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164996; cv=none; b=uMByl0BzQ+DPdw4ariPLRuB8iDrRYi0tuJsGDIDzhIolMH0x9oXtn4LU9PN0BT5Gn3Gf7ZFiRF1QXQ+xHlWIShsPZkW9Bfjk/8l0CTyqAC9exS/KhmKcbzR5z0k8Qlvs9lasybrvM3MWj2fkoZzDLRg4mE6iH1E/z9UvyVNwZGo=
+	t=1780166956; cv=none; b=g4BtTUiAJS5njcngVAX5qqgZvmP0iiMEEA4usvVGcReuGupohVSC3IsJkcnI6jz614AaEfC7bhYiumrbdlBiOG1h88x7PqSSwJJEkhSaMUUEdeI4XBpBAInJkaV2F3NWKTs3mOLG24+4NDSeF1+nY9rhbLEiLI+/566fF3Mi/w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164996; c=relaxed/simple;
-	bh=Qr7gFVPIJNgzx1P75U5CADfIMMibo/oF3LLpPtnzxWQ=;
+	s=arc-20240116; t=1780166956; c=relaxed/simple;
+	bh=k+9YcnxZ0oxDdji3Unt1iulHTN7O288J8mLxsLA3I/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgmY7I+Di6F0V6vSSGF4n+v+houj3IzH/+iaCLedLgu4UuJQev9Cn1WtYIpE/nPOigifdlbiULdwre/Mvnn7zFfPHNKHPTwwF45/jcTJ4F9OQYx+a79yIOl1HL2m0jI5+SzRs3UGAzxAt7Vuh4KOjv+3eUjId1Cgs9IS6Fz/vYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jv8ly2WJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A701F00893;
-	Sat, 30 May 2026 18:16:33 +0000 (UTC)
+	 MIME-Version; b=eK7Eu0yWwuN5lOsrWgv4yvGFvm6DLt8NpqhgoeJXgcmqWObPh8ytULOE5PZr73//oM03l5HM0DL23KiFbwXhDuuRRUrag80AFYGXHxZCQgtg1X6MDcni5GbBfMhs91WWkQoJKb97tCBA2Cu60qCw8GXYtIG6t81x82y5qZ4C3CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vj/WqsCe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5958D1F00893;
+	Sat, 30 May 2026 18:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164994;
-	bh=R9Mm6yXtAni1E3wvzjBcVBTsWSGmQwpIVUrbNrmOTaY=;
+	s=korg; t=1780166955;
+	bh=tvDxUKrxC+TYgUl4+FAZWJqYBDDfNgB6f1OLehyor0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jv8ly2WJpbgNixo1LQv/vnbVVw6NWk/DJ6AQCG19cfeP6Sc7ebMwZh639AZ6GKjnL
-	 r9cgmb744s0FIftght8HScyq09TsxEvk8oKKB5Jgft3+hOYvid6INAuhzBGE1m8s9l
-	 GwAlGkV3zqxyK4EDH6+DGmeNxsRHaki5uW+trYoo=
+	b=Vj/WqsCe6KGfsa7/P+6VwUHmJ4Svp89Ej1PAA2FBdVUXjEcs8EzXm1odMZ0eTbQOf
+	 q2YjgpjkOfctm9CoMjG1Q9GhMvUIa7BBMIjFgwUPiI1CWLAa7Wp2QRlYsUeN5WTE3j
+	 xSid1LOyYZYPaTSPK6UsaCMTTDI9bW0WWoyqRRoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Nan Li <tonanli66@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 689/776] netfilter: ipset: stop hash:* range iteration at end
+	Kees Cook <keescook@chromium.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 522/589] selftests: lib.mk: Also install "config" and "settings"
 Date: Sat, 30 May 2026 18:06:43 +0200
-Message-ID: <20260530160257.660793169@linuxfoundation.org>
+Message-ID: <20260530160238.334837451@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,163 +68,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
-	TAGGED_FROM(0.00)[bounces-258629-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-259204-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
-X-Rspamd-Queue-Id: 26967611869
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 92031612CB6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nan Li <tonanli66@gmail.com>
+From: Kees Cook <keescook@chromium.org>
 
-commit 0d3a282ab5f165fc207ff49ea5b6ad8f54616bd6 upstream.
+[ Upstream commit de53fa9baa701963722e9fa3d0fe34b897104497 ]
 
-The following hash set variants:
+Installed seccomp tests would time out because the "settings" file was
+missing. Install both "settings" (needed for proper test execution) and
+"config" (needed for informational purposes) with the other test
+targets.
 
-hash:ip,mark
-hash:ip,port
-hash:ip,port,ip
-hash:ip,port,net
-
-iterate IPv4 ranges with a 32-bit iterator.
-
-The iterator must stop once the last address in the requested range has
-been processed. Advancing it once more can move the traversal state past
-the end of the request, so a later retry may continue from an unintended
-position.
-
-Handle the iterator increment explicitly at the end of the loop and stop
-once the upper bound has been processed. This keeps the existing retry
-behaviour intact for valid ranges while preventing traversal from
-continuing past the original boundary.
-
-Fixes: 48596a8ddc46 ("netfilter: ipset: Fix adding an IPv4 range containing more than 2^31 addresses")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Nan Li <tonanli66@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_hash_ipmark.c    |    6 +++++-
- net/netfilter/ipset/ip_set_hash_ipport.c    |    5 ++++-
- net/netfilter/ipset/ip_set_hash_ipportip.c  |    5 ++++-
- net/netfilter/ipset/ip_set_hash_ipportnet.c |    5 ++++-
- 4 files changed, 17 insertions(+), 4 deletions(-)
+ tools/testing/selftests/lib.mk | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/netfilter/ipset/ip_set_hash_ipmark.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipmark.c
-@@ -150,7 +150,7 @@ hash_ipmark4_uadt(struct ip_set *set, st
+diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
+index 56e360e019ecc..a3df78b7702c1 100644
+--- a/tools/testing/selftests/lib.mk
++++ b/tools/testing/selftests/lib.mk
+@@ -101,6 +101,7 @@ define INSTALL_RULE
+ 	$(eval INSTALL_LIST = $(TEST_CUSTOM_PROGS)) $(INSTALL_SINGLE_RULE)
+ 	$(eval INSTALL_LIST = $(TEST_GEN_PROGS_EXTENDED)) $(INSTALL_SINGLE_RULE)
+ 	$(eval INSTALL_LIST = $(TEST_GEN_FILES)) $(INSTALL_SINGLE_RULE)
++	$(eval INSTALL_LIST = $(wildcard config settings)) $(INSTALL_SINGLE_RULE)
+ endef
  
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++, i++) {
-+	for (; ip <= ip_to; i++) {
- 		e.ip = htonl(ip);
- 		if (i > IPSET_MAX_RANGE) {
- 			hash_ipmark4_data_next(&h->next, &e);
-@@ -162,6 +162,10 @@ hash_ipmark4_uadt(struct ip_set *set, st
- 			return ret;
- 
- 		ret = 0;
-+
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
---- a/net/netfilter/ipset/ip_set_hash_ipport.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipport.c
-@@ -175,7 +175,7 @@ hash_ipport4_uadt(struct ip_set *set, st
- 
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		p = retried && ip == ntohl(h->next.ip) ? ntohs(h->next.port)
- 						       : port;
- 		for (; p <= port_to; p++, i++) {
-@@ -192,6 +192,9 @@ hash_ipport4_uadt(struct ip_set *set, st
- 
- 			ret = 0;
- 		}
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
---- a/net/netfilter/ipset/ip_set_hash_ipportip.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipportip.c
-@@ -182,7 +182,7 @@ hash_ipportip4_uadt(struct ip_set *set,
- 
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		p = retried && ip == ntohl(h->next.ip) ? ntohs(h->next.port)
- 						       : port;
- 		for (; p <= port_to; p++, i++) {
-@@ -199,6 +199,9 @@ hash_ipportip4_uadt(struct ip_set *set,
- 
- 			ret = 0;
- 		}
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
---- a/net/netfilter/ipset/ip_set_hash_ipportnet.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipportnet.c
-@@ -274,7 +274,7 @@ hash_ipportnet4_uadt(struct ip_set *set,
- 		p = port;
- 		ip2 = ip2_from;
- 	}
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		e.ip = htonl(ip);
- 		for (; p <= port_to; p++) {
- 			e.port = htons(p);
-@@ -298,6 +298,9 @@ hash_ipportnet4_uadt(struct ip_set *set,
- 			ip2 = ip2_from;
- 		}
- 		p = port;
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
+ install: all
+-- 
+2.53.0
+
 
 
 
