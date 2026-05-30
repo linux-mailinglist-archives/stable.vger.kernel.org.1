@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-258273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BbrCjYlG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:14 +0200
+	id 6A48DhMuG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C400A610B72
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF40E6120FA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3E6543021EE0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:56:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60653312B890
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7D936EAB1;
-	Sat, 30 May 2026 17:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A833C819D;
+	Sat, 30 May 2026 18:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fg2djrFQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwrtwCUZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A32E23D7E6;
-	Sat, 30 May 2026 17:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F693D171A;
+	Sat, 30 May 2026 18:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163796; cv=none; b=JaMKVT6zoPPTOhBiK9QA1MXuScgTDDW/4v2eoxwZ6Bh8i8yilSBKjla2aQV19JSIVt2V8Xh794OJmKaB+cLxSY2BTziGFva/5elQ+WDjvI7KC/nzUi0xNih/eTIkUA0b9sK2e6FEob8T1PmMB2nSSrnMCVTfCQAhEOJfGbJCye4=
+	t=1780165739; cv=none; b=NTAXga+zGiB4CuHjVQn99EUphtj97SUNN1uw/Jprf7SB81HIY19X1qz537p4ABDQ3SwLz3mcLpiGQZGWeHv6PU2CO6bYHXytC535CREdu7DVEvalzP56JSnIaRk2Ci582az9S5M0xzozb9EnrSMQiTZ5vIIeBRZHNnmE2WS94s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163796; c=relaxed/simple;
-	bh=Cv83n99KBzccUWmR+3JcxOqBp7yRZ/7ZWaS8cROIvPY=;
+	s=arc-20240116; t=1780165739; c=relaxed/simple;
+	bh=XhmBOsi2QmBj6qsEXtX0N6N101MGm4UItATLe0hEvBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVKgmILfT8IX2pqizs+OtTRvfJYkS8rxFnChZdIKcAX02ONiSpkxrlEXMAYAlaxlMCl8zWu81RxDgtYfKIvuEiJjKhd/EV1JwV+KBlPIu6tN2pMGUrn0tPu3T0Oq//lqwEjyuKXpgYVp4UYIQ6E9kC5OEZJD6OlrHSjMNGl6sBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fg2djrFQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF171F00893;
-	Sat, 30 May 2026 17:56:34 +0000 (UTC)
+	 MIME-Version; b=mEU1Wop/lMX/YyKKIknOsl7Z1zqjJYdSiiMNX9WjVpnb996rhsvzPm+hN99KHw0BAYeurOji29DzQBwiA5uQwnL9FW/y0s3VE/H4NcSSXij448smkJ0QafDkVQC9GNPupZQJ79fbM/NlyLOiRjxj26067h9d7etYCbxAFpMHMs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwrtwCUZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF87A1F00893;
+	Sat, 30 May 2026 18:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163795;
-	bh=wgJm/fONoFhrtdxk/MWxwFdsjEbJFTEtefBlrTTwADM=;
+	s=korg; t=1780165738;
+	bh=rV1sQxgCbLCZRxTYMdi+pN7sdK8OZOgIdwPGQzdz2BE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Fg2djrFQuOcnu84znbXKIIBWiozdgM4INzmBB5QNhqyFg55Q0avlXk6Vhr5TcOo0F
-	 igvyWeigu53+0RwoPXWvhuTpHprBRxDT0K41D8Zre4nPoXhtwdFVNdxOZuCwCaIsfQ
-	 7DkiLpzlirdrWx/Negy1GlmxM73LMUWZ9G/2LDlM=
+	b=CwrtwCUZj1ViKt6tctGM49XLuWLlT/CuP9UboDheksZf/3RxMzePLmmQaT4CeTmQV
+	 ddrounx/RdwbhJEoJfU9VvJlZ1qpDdpcbuH+20IdgNny4BxLD37RGsVnyHkVBzZY9i
+	 H5WvgeBRIQ3H4BYtMPqnUjmicjwGt/4KDLGVj1bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.15 333/776] isofs: validate block number from NFS file handle in isofs_export_iget
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 166/589] ALSA: caiaq: Handle probe errors properly
 Date: Sat, 30 May 2026 18:00:47 +0200
-Message-ID: <20260530160249.178606597@linuxfoundation.org>
+Message-ID: <20260530160229.153561609@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +62,161 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258273-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258847-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C400A610B72
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
+X-Rspamd-Queue-Id: AF40E6120FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 24376458138387fb251e782e624c7776e9826796 upstream.
+commit 28abd224db4a49560b452115bca3672a20e45b2f upstream.
 
-isofs_fh_to_dentry() and isofs_fh_to_parent() pass an attacker-
-controlled block number (ifid->block or ifid->parent_block) from
-the NFS file handle to isofs_export_iget(), which only rejects
-block == 0 before calling isofs_iget() and ultimately sb_bread().
-A crafted file handle with fh_len sufficient to pass the check
-added by commit 0405d4b63d08 ("isofs: Prevent the use of too small
-fid") can still drive the server to read any in-range block on the
-backing device as if it were an iso_directory_record.  That earlier
-fix was assigned CVE-2025-37780.
+The probe procedure of setup_card() in caiaq driver doesn't treat the
+error cases gracefully, e.g. the error from snd_card_register() calls
+snd_card_free() but continues.  This would lead to a UAF for the
+further calls like snd_usb_caiaq_control_init(), as Berk suggested in
+another patch in the link below.
 
-sb_bread() on an out-of-range block returns NULL cleanly via the
-EIO path, so there is no memory-safety violation.  For in-range
-reads of adjacent-partition data on the same block device, the
-unrelated bytes end up in iso_inode_info fields that reach the NFS
-client as dentry metadata.  The deployment surface (isofs exported
-over NFS from loop-mounted images) is narrow and requires an
-authenticated NFS peer, but the malformed-file-handle class is
-reportable as hardening next to the existing CVE-2025-37780 fix.
+However, the problem is not only that; in general, this function drops
+the all error handlings (as it's a void function) although its caller
+can propagate an error to snd_probe(), which eventually calls
+snd_card_free() as a proper error path.  That said, we should treat
+each error case in setup_card(), and just return the error code
+promptly, which is then handled later as a fatal error in snd_probe().
 
-Reject block >= ISOFS_SB(sb)->s_nzones in isofs_export_iget() so
-the check covers both isofs_fh_to_dentry() and isofs_fh_to_parent()
-call sites with a single line.
+This patch achieves it by changing the setup_card() to return an error
+code.  Also, the superfluous snd_card_free() call is removed, too.
 
-Fixes: 0405d4b63d08 ("isofs: Prevent the use of too small fid")
+Note that card->private_free can be set still safely at returning an
+error.  All called functions in card_free() have checks of the
+unassigned resources or NULL checks.
+
+Fixes: 8e3cd08ed8e5 ("[ALSA] caiaq - add control API and more input features")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260419212155.2169382-3-michael.bommarito@gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/20260413034941.1131465-2-berkcgoksel@gmail.com
+Link: https://patch.msgid.link/20260414105916.364073-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/isofs/export.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/caiaq/device.c |   33 ++++++++++++++++++++++++---------
+ 1 file changed, 24 insertions(+), 9 deletions(-)
 
---- a/fs/isofs/export.c
-+++ b/fs/isofs/export.c
-@@ -24,7 +24,7 @@ isofs_export_iget(struct super_block *sb
- {
- 	struct inode *inode;
+--- a/sound/usb/caiaq/device.c
++++ b/sound/usb/caiaq/device.c
+@@ -304,7 +304,7 @@ int snd_usb_caiaq_set_auto_msg(struct sn
+ 					  tmp, sizeof(tmp));
+ }
  
--	if (block == 0)
-+	if (block == 0 || block >= ISOFS_SB(sb)->s_nzones)
- 		return ERR_PTR(-ESTALE);
- 	inode = isofs_iget(sb, block, offset);
- 	if (IS_ERR(inode))
+-static void setup_card(struct snd_usb_caiaqdev *cdev)
++static int setup_card(struct snd_usb_caiaqdev *cdev)
+ {
+ 	int ret;
+ 	char val[4];
+@@ -339,8 +339,10 @@ static void setup_card(struct snd_usb_ca
+ 		snd_usb_caiaq_send_command(cdev, EP1_CMD_READ_IO, NULL, 0);
+ 
+ 		if (!wait_event_timeout(cdev->ep1_wait_queue,
+-					cdev->control_state[0] != 0xff, HZ))
+-			return;
++					cdev->control_state[0] != 0xff, HZ)) {
++			dev_err(dev, "Read timeout for control state\n");
++			return -EINVAL;
++		}
+ 
+ 		/* fix up some defaults */
+ 		if ((cdev->control_state[1] != 2) ||
+@@ -361,33 +363,43 @@ static void setup_card(struct snd_usb_ca
+ 	    cdev->spec.num_digital_audio_out +
+ 	    cdev->spec.num_digital_audio_in > 0) {
+ 		ret = snd_usb_caiaq_audio_init(cdev);
+-		if (ret < 0)
++		if (ret < 0) {
+ 			dev_err(dev, "Unable to set up audio system (ret=%d)\n", ret);
++			return ret;
++		}
+ 	}
+ 
+ 	if (cdev->spec.num_midi_in +
+ 	    cdev->spec.num_midi_out > 0) {
+ 		ret = snd_usb_caiaq_midi_init(cdev);
+-		if (ret < 0)
++		if (ret < 0) {
+ 			dev_err(dev, "Unable to set up MIDI system (ret=%d)\n", ret);
++			return ret;
++		}
+ 	}
+ 
+ #ifdef CONFIG_SND_USB_CAIAQ_INPUT
+ 	ret = snd_usb_caiaq_input_init(cdev);
+-	if (ret < 0)
++	if (ret < 0) {
+ 		dev_err(dev, "Unable to set up input system (ret=%d)\n", ret);
++		return ret;
++	}
+ #endif
+ 
+ 	/* finally, register the card and all its sub-instances */
+ 	ret = snd_card_register(cdev->chip.card);
+ 	if (ret < 0) {
+ 		dev_err(dev, "snd_card_register() returned %d\n", ret);
+-		snd_card_free(cdev->chip.card);
++		return ret;
+ 	}
+ 
+ 	ret = snd_usb_caiaq_control_init(cdev);
+-	if (ret < 0)
++	if (ret < 0) {
+ 		dev_err(dev, "Unable to set up control system (ret=%d)\n", ret);
++		return ret;
++	}
++
++	return 0;
+ }
+ 
+ static void card_free(struct snd_card *card)
+@@ -513,8 +525,11 @@ static int init_card(struct snd_usb_caia
+ 	snprintf(card->longname, sizeof(card->longname), "%s %s (%s)",
+ 		       cdev->vendor_name, cdev->product_name, usbpath);
+ 
+-	setup_card(cdev);
+ 	card->private_free = card_free;
++	err = setup_card(cdev);
++	if (err < 0)
++		return err;
++
+ 	return 0;
+ 
+  err_kill_urb:
 
 
 
