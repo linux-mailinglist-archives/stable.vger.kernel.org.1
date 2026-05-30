@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-258266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qB+9DKomG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258266-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:26 +0200
+	id CFRwEE0cG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F6B610EDA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B3760F6BE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 034633116B04
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:56:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A5769308318F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FE7349CCF;
-	Sat, 30 May 2026 17:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7AF34BA42;
+	Sat, 30 May 2026 17:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z2u/8OEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hw7pgJXi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899152628D;
-	Sat, 30 May 2026 17:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E813148DA;
+	Sat, 30 May 2026 17:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163772; cv=none; b=nRh1Z8yW6qduNbbTlNlId733XBsMKlvo2TUH9Tz40hxMDovu8Fcsnwxbxq4Fhjl8wUi/6P3ji17kYMireuVx69TY2m2Cfy4Ah9Kit+1zcVMoCCC1q3FjNCvZl+VwKJ1ivaGEdb23w6PymSdo786+r4qnpR6FrJXHYdqXEfSBPxk=
+	t=1780161169; cv=none; b=Bpszl59twjgHNmSyFUZ1NyYGdIYMOziKYv0Me+L61gU4TNQiiDHmfpay7mGlUhZklZAgBr6q5Ut8wOXxY1zil4M2HTJa+hGrwjgZ5xbgk/lUY5NmaxbcC96wPQxW/XSuT4n7DRwb15JMna+1T0Y/iWJzQjdVcw0Of3Ck5YKdr6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163772; c=relaxed/simple;
-	bh=VUP6dstj+1ZOcy1O4FWJCZ1j4AVIMmnhP4uAgojSzjw=;
+	s=arc-20240116; t=1780161169; c=relaxed/simple;
+	bh=DTJ7XHAKCSWn2Ot2HQQxPxi6l3tF5Kj3nCQ7/lYr8gM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S8Qan+YU117udIgEKOgozdr86baJ0Sq+9aCORVH+5xV0DhPdjSUKDlZd6sseXIOMV0OVt6bfmB4wVqGiVqv32QjeiDY6l7heIJ8mF4CQCI6GXSCMI8eMGWIz+WXOtqya41QzoBDL7YzxT4k660C7BKWIml2yfTk1rVscDqE1hyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z2u/8OEM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEC61F00893;
-	Sat, 30 May 2026 17:56:10 +0000 (UTC)
+	 MIME-Version; b=OdsJUtgQiSkNWkkSRgkaXRbqCDD+5tIcbAIGrouW4GWhFsFLs6xP7m8CMWhqg2PvH9/RVKUEXOh/4DrovmXWw6HoErSRn4mJjvRtlcANXPygBtdsCze5urT6uXeEGdfpHO3vCo77AX9n9c/8fNGktWx3XgFXW4m0XNyii3Z9sW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hw7pgJXi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA981F00893;
+	Sat, 30 May 2026 17:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163771;
-	bh=WdV0JEUf1hxYqeLUqOJkQBwziFinlG3NWlR/EQaXvA8=;
+	s=korg; t=1780161167;
+	bh=puBloI25WUCyu8CqRj7aCmcX8xSkvLZnM4Fdz3jtXOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=z2u/8OEMYYO105bVPKkEEEEX/QGbD8NVjf4qt6qJQYchvK61Ip9Euvhi6eM1f4Zqw
-	 sxem164P+/XT2DaJfH6mxAP9R1Y7xZKc7KFwisYkj1QNdox34NLfsCNnayDmPc9CaH
-	 WJoz4rGatktObMPO/RSfRJVtQC6jRMnwcfF9ylwQ=
+	b=hw7pgJXirdrjB+3Kt/892J2ubdsdUa1o14SbuF+s6f5SqUA0L07hqQRqySHKGZypg
+	 TtCaiVt7HhCyF4PcfwsMEaNxChJaWAyliyBnmhq1EeMpy7ZY1tt9m7kALYxrYSlhEN
+	 s3tT6FCy+tKqPZYpuLaCPXCS9KiX68WhyHBjKvks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.15 356/776] media: rc: streamzap: Error handling in probe
+	Paul Olaru <paul.olaru@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 546/969] ASoC: SOF: Prepare set_stream_data_offset for compress API
 Date: Sat, 30 May 2026 18:01:10 +0200
-Message-ID: <20260530160249.783219883@linuxfoundation.org>
+Message-ID: <20260530160315.452431942@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +68,201 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258266-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257488-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,cisco];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mess.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 97F6B610EDA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 91B3760F6BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Daniel Baluta <daniel.baluta@nxp.com>
 
-commit 42844992664f03ef9f930e64f7370fa481e9c267 upstream.
+[ Upstream commit 249f186d6b0211fc59d83db128030f2b298063a1 ]
 
-If submitting the URB fails, the device will be unusable.
-Probe() must fail.
+Make second parameter of set_stream_data_offset generic
+in order to be used for both PCM and compress streams.
 
-Fixes: 7a569f524dd36 ("V4L/DVB: IR/streamzap: functional in-kernel decoding")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Current patch doesn't introduce any functional change,
+just prepare the code for compress support.
+
+Reviewed-by: Paul Olaru <paul.olaru@nxp.com>
+Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://lore.kernel.org/r/20230117122533.201708-3-daniel.baluta@oss.nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 2c4fdd055f92 ("ASoC: SOF: compress: return the configured codec from get_params")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/streamzap.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ sound/soc/sof/amd/acp-ipc.c   | 3 ++-
+ sound/soc/sof/amd/acp.h       | 2 +-
+ sound/soc/sof/intel/hda-ipc.c | 3 ++-
+ sound/soc/sof/intel/hda.h     | 2 +-
+ sound/soc/sof/ipc3-pcm.c      | 3 ++-
+ sound/soc/sof/ops.h           | 4 ++--
+ sound/soc/sof/sof-priv.h      | 4 ++--
+ sound/soc/sof/stream-ipc.c    | 3 ++-
+ 8 files changed, 14 insertions(+), 10 deletions(-)
 
---- a/drivers/media/rc/streamzap.c
-+++ b/drivers/media/rc/streamzap.c
-@@ -255,9 +255,8 @@ static void streamzap_callback(struct ur
- 	case -ESHUTDOWN:
- 		/*
- 		 * this urb is terminated, clean up.
--		 * sz might already be invalid at this point
- 		 */
--		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
-+		dev_dbg(sz->dev, "urb terminated, status: %d\n", urb->status);
- 		return;
- 	default:
- 		break;
-@@ -396,11 +395,16 @@ static int streamzap_probe(struct usb_in
+diff --git a/sound/soc/sof/amd/acp-ipc.c b/sound/soc/sof/amd/acp-ipc.c
+index 5d8a1b603c052..4b8a6bac2b830 100644
+--- a/sound/soc/sof/amd/acp-ipc.c
++++ b/sound/soc/sof/amd/acp-ipc.c
+@@ -209,9 +209,10 @@ int acp_sof_ipc_msg_data(struct snd_sof_dev *sdev, struct snd_sof_pcm_stream *sp
+ EXPORT_SYMBOL_NS(acp_sof_ipc_msg_data, SND_SOC_SOF_AMD_COMMON);
  
- 	usb_set_intfdata(intf, sz);
+ int acp_set_stream_data_offset(struct snd_sof_dev *sdev,
+-			       struct snd_pcm_substream *substream,
++			       struct snd_sof_pcm_stream *sps,
+ 			       size_t posn_offset)
+ {
++	struct snd_pcm_substream *substream = sps->substream;
+ 	struct acp_dsp_stream *stream = substream->runtime->private_data;
  
--	if (usb_submit_urb(sz->urb_in, GFP_ATOMIC))
-+	retval = usb_submit_urb(sz->urb_in, GFP_ATOMIC);
-+	if (retval < 0) {
- 		dev_err(sz->dev, "urb submit failed\n");
-+		goto rc_submit_fail;
-+	}
+ 	/* check for unaligned offset or overflow */
+diff --git a/sound/soc/sof/amd/acp.h b/sound/soc/sof/amd/acp.h
+index ce5f32341ad2b..37fe2a17396d7 100644
+--- a/sound/soc/sof/amd/acp.h
++++ b/sound/soc/sof/amd/acp.h
+@@ -208,7 +208,7 @@ irqreturn_t acp_sof_ipc_irq_thread(int irq, void *context);
+ int acp_sof_ipc_msg_data(struct snd_sof_dev *sdev, struct snd_sof_pcm_stream *sps,
+ 			 void *p, size_t sz);
+ int acp_set_stream_data_offset(struct snd_sof_dev *sdev,
+-			       struct snd_pcm_substream *substream,
++			       struct snd_sof_pcm_stream *sps,
+ 			       size_t posn_offset);
+ int acp_sof_ipc_send_msg(struct snd_sof_dev *sdev,
+ 			 struct snd_sof_ipc_msg *msg);
+diff --git a/sound/soc/sof/intel/hda-ipc.c b/sound/soc/sof/intel/hda-ipc.c
+index 96f909441b44e..ed87c00f345c9 100644
+--- a/sound/soc/sof/intel/hda-ipc.c
++++ b/sound/soc/sof/intel/hda-ipc.c
+@@ -367,9 +367,10 @@ int hda_ipc_msg_data(struct snd_sof_dev *sdev,
+ }
+ 
+ int hda_set_stream_data_offset(struct snd_sof_dev *sdev,
+-			       struct snd_pcm_substream *substream,
++			       struct snd_sof_pcm_stream *sps,
+ 			       size_t posn_offset)
+ {
++	struct snd_pcm_substream *substream = sps->substream;
+ 	struct hdac_stream *hstream = substream->runtime->private_data;
+ 	struct sof_intel_hda_stream *hda_stream;
+ 
+diff --git a/sound/soc/sof/intel/hda.h b/sound/soc/sof/intel/hda.h
+index cea36d3bef81f..773df987d6473 100644
+--- a/sound/soc/sof/intel/hda.h
++++ b/sound/soc/sof/intel/hda.h
+@@ -648,7 +648,7 @@ int hda_ipc_msg_data(struct snd_sof_dev *sdev,
+ 		     struct snd_sof_pcm_stream *sps,
+ 		     void *p, size_t sz);
+ int hda_set_stream_data_offset(struct snd_sof_dev *sdev,
+-			       struct snd_pcm_substream *substream,
++			       struct snd_sof_pcm_stream *sps,
+ 			       size_t posn_offset);
+ 
+ /*
+diff --git a/sound/soc/sof/ipc3-pcm.c b/sound/soc/sof/ipc3-pcm.c
+index dad57bef38f6d..627edc7361844 100644
+--- a/sound/soc/sof/ipc3-pcm.c
++++ b/sound/soc/sof/ipc3-pcm.c
+@@ -129,7 +129,8 @@ static int sof_ipc3_pcm_hw_params(struct snd_soc_component *component,
+ 		return ret;
+ 	}
+ 
+-	ret = snd_sof_set_stream_data_offset(sdev, substream, ipc_params_reply.posn_offset);
++	ret = snd_sof_set_stream_data_offset(sdev, &spcm->stream[substream->stream],
++					     ipc_params_reply.posn_offset);
+ 	if (ret < 0) {
+ 		dev_err(component->dev, "%s: invalid stream data offset for PCM %d\n",
+ 			__func__, spcm->pcm.pcm_id);
+diff --git a/sound/soc/sof/ops.h b/sound/soc/sof/ops.h
+index 3c86f2df2179a..2c56ad69ede1e 100644
+--- a/sound/soc/sof/ops.h
++++ b/sound/soc/sof/ops.h
+@@ -457,11 +457,11 @@ static inline int snd_sof_ipc_msg_data(struct snd_sof_dev *sdev,
+ /* host side configuration of the stream's data offset in stream mailbox area */
+ static inline int
+ snd_sof_set_stream_data_offset(struct snd_sof_dev *sdev,
+-			       struct snd_pcm_substream *substream,
++			       struct snd_sof_pcm_stream *sps,
+ 			       size_t posn_offset)
+ {
+ 	if (sof_ops(sdev) && sof_ops(sdev)->set_stream_data_offset)
+-		return sof_ops(sdev)->set_stream_data_offset(sdev, substream,
++		return sof_ops(sdev)->set_stream_data_offset(sdev, sps,
+ 							     posn_offset);
  
  	return 0;
--
-+rc_submit_fail:
-+	rc_free_device(sz->rdev);
-+	usb_set_intfdata(intf, NULL);
- rc_dev_fail:
- 	usb_free_urb(sz->urb_in);
- free_buf_in:
+diff --git a/sound/soc/sof/sof-priv.h b/sound/soc/sof/sof-priv.h
+index 85b84e09e1e8a..d7f4f828f38f9 100644
+--- a/sound/soc/sof/sof-priv.h
++++ b/sound/soc/sof/sof-priv.h
+@@ -247,7 +247,7 @@ struct snd_sof_dsp_ops {
+ 
+ 	/* host side configuration of the stream's data offset in stream mailbox area */
+ 	int (*set_stream_data_offset)(struct snd_sof_dev *sdev,
+-				      struct snd_pcm_substream *substream,
++				      struct snd_sof_pcm_stream *sps,
+ 				      size_t posn_offset); /* optional */
+ 
+ 	/* pre/post firmware run */
+@@ -748,7 +748,7 @@ int sof_ipc_msg_data(struct snd_sof_dev *sdev,
+ 		     struct snd_sof_pcm_stream *sps,
+ 		     void *p, size_t sz);
+ int sof_set_stream_data_offset(struct snd_sof_dev *sdev,
+-			       struct snd_pcm_substream *substream,
++			       struct snd_sof_pcm_stream *sps,
+ 			       size_t posn_offset);
+ 
+ int sof_stream_pcm_open(struct snd_sof_dev *sdev,
+diff --git a/sound/soc/sof/stream-ipc.c b/sound/soc/sof/stream-ipc.c
+index 13e44501d4420..872a49550672c 100644
+--- a/sound/soc/sof/stream-ipc.c
++++ b/sound/soc/sof/stream-ipc.c
+@@ -48,9 +48,10 @@ int sof_ipc_msg_data(struct snd_sof_dev *sdev,
+ EXPORT_SYMBOL(sof_ipc_msg_data);
+ 
+ int sof_set_stream_data_offset(struct snd_sof_dev *sdev,
+-			       struct snd_pcm_substream *substream,
++			       struct snd_sof_pcm_stream *sps,
+ 			       size_t posn_offset)
+ {
++	struct snd_pcm_substream *substream = sps->substream;
+ 	struct sof_stream *stream = substream->runtime->private_data;
+ 
+ 	/* check if offset is overflow or it is not aligned */
+-- 
+2.53.0
+
 
 
 
