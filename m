@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-259211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257831-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2F0EGwAzG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259211-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:04 +0200
+	id wE0UC2cgG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257831-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF77612D07
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 811F66100AF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C871C302F0CC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54EF430945C9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215D6233943;
-	Sat, 30 May 2026 18:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BF032B106;
+	Sat, 30 May 2026 17:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRq8PfjW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EuGDk8/f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0185A15E5BB;
-	Sat, 30 May 2026 18:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A79A1624DF;
+	Sat, 30 May 2026 17:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166979; cv=none; b=qqV3IEQ/mFp0KiUOmuIFP8U1Apx9K7UiYwiHAG9RjzKEuWwGMdmYkwsT2ShJBkgGFVvCoAGVAPpR7vDUylCSuQE6v4qiuPEJ2TNZvWtDO1mAH284fz0sEKXKt9yPoD2K8YM5juENaXjZoN403K6G/Wbr07SPjj0IccZ9AfxVaOc=
+	t=1780162316; cv=none; b=TP6mVlS/71tFKy590/SSc9utfRaNUTCFs0ql41u/DVPo5n5EUxLLGKgLWwTOYw+4DI0RX6tGGybzWmHRGI39zzxenGF0t7uSiVht4wgVVd1jxxseJO8AbYK1UN1nNcLgAYAiWRC5Z5ar7hO9UZc7AATVImwUk4A6yVtqSDuoDNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166979; c=relaxed/simple;
-	bh=LEbjtSkvjPbzfRoXm6LCthBKEA1PytU6AoOJHsKet8g=;
+	s=arc-20240116; t=1780162316; c=relaxed/simple;
+	bh=wupli2qUtSGxXeHfFnL++StVck92pmKafEb/H24Iy2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3Mtt7ShLQ/dl7fXA0LwNan3QEEDtOwcF1PSoIf8pmLDfKZ1n1t73nliz+Gb6iUWDEsg4wNOEfzhwPeTjJklVQVm8oa2DlvJll91XmmctKCkI+t2VvxZKoUfV2f6Eleok18KTF4aX1/bzA4SqmCvtmjKiFxWSngvG8I6GwiRvJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRq8PfjW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 449601F00893;
-	Sat, 30 May 2026 18:49:38 +0000 (UTC)
+	 MIME-Version; b=KtXIudbPSAyCm82Ul9dH9pqB2cePnaQWmUAh329+atV+EvJNFkUOrfoSbgbHiOHc5YDTM8tSKUPhqOlWVIyTp+Cw03kylgMnT3/oH0J8rOYo55+NOWw/NkvSZWIV+BzkbST9P9UyMol4IDU9L5j1puypzNP22R+eOwD1MNqvPUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EuGDk8/f; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690A61F00893;
+	Sat, 30 May 2026 17:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166978;
-	bh=t5JSzqysmAA3F41Tam12C+rGrZku/6YJvsIlH4puejk=;
+	s=korg; t=1780162315;
+	bh=FqdT/IeTjxtL5Z6KfMb5ENxrNiTFp06Mg8mm3q2civ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wRq8PfjW8uvjIlOY24JFGXhcW+MSQmcV1Yi8lGZAlvAs1VZ9Yp1yFqr0yec/HUONM
-	 WKba2HCBZfuvSAIXP4fYKKSTgXDAJRVWwYx9utRQIF2b6hpuBEnFmc52clS4ptdhMu
-	 r6ncsCZo+KMuIcQgFUzhgTbmZ/56Xv2SrTFfvY3k=
+	b=EuGDk8/fgKLRsMHDJxNnrgNL4XuGeUMglyDPMZd7Zul5T+maUIuqnIwDdmW+tCaLI
+	 XZBXkmO9Gggx/dsK6YHg4e5L4QVvWNK4j3Botc41izyGN/LR/L5zhlbkNhGU5H9O4t
+	 6h5w1n49spmhtO4GxcnbNf6gxn3w0B80ABS1So0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.10 528/589] hwmon: (pmbus/adm1266) widen blackbox-info buffer to I2C_SMBUS_BLOCK_MAX
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.1 885/969] batman-adv: frag: disallow unicast fragment in fragment
 Date: Sat, 30 May 2026 18:06:49 +0200
-Message-ID: <20260530160238.547170953@linuxfoundation.org>
+Message-ID: <20260530160325.135862856@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,78 +76,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-257831-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259211-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: CDF77612D07
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,narfation.org:email]
+X-Rspamd-Queue-Id: 811F66100AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit eee213daa1e1b402eb631bcd1b8c5aa340a6b081 upstream.
+commit bc62216dc8e221e3781afa14430f45208bfa9af9 upstream.
 
-adm1266_nvmem_read_blackbox() declares a 5-byte stack buffer and
-passes it to i2c_smbus_read_block_data() to retrieve the 4-byte
-BLACKBOX_INFO response.  i2c_smbus_read_block_data() does not honour
-caller buffer sizes -- it memcpy()s data.block[0] bytes from the
-SMBus transaction (where data.block[0] is the length byte returned by
-the slave device, up to I2C_SMBUS_BLOCK_MAX = 32):
+batadv_frag_skb_buffer() is called by batadv_batman_skb_recv() when a
+BATADV_UNICAST_FRAG packet is received. Once all fragments are collected
+and the packet is reassembled, batadv_recv_frag_packet() calls
+batadv_batman_skb_recv() again to process the defragmented payload.
 
-	memcpy(values, &data.block[1], data.block[0]);
+A malicious sender can craft a BATADV_UNICAST_FRAG packet whose reassembled
+payload is itself a BATADV_UNICAST_FRAG packet (matryoshka-style nesting).
+Each nesting level recurses through batadv_batman_skb_recv() without bound,
+growing the kernel stack until it is exhausted.
 
-If the device returns any block length above 5, the call overflows
-the caller's 5-byte stack buffer before the post-call
+Since refragmentation or fragments in fragments are not actually allowed,
+discard all packets which are still BATADV_UNICAST_FRAG packets after the
+defragmentation process.
 
-	if (ret != 4)
-		return -EIO;
-
-check has a chance to reject the response.
-
-Widen the local buffer to I2C_SMBUS_BLOCK_MAX so the helper has room
-for any well-formed SMBus block response, matching the convention used
-by the other i2c_smbus_read_block_data() callers in this driver.
-
-Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-2-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: stable@kernel.org
+Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/fragmentation.c |   35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -351,7 +351,7 @@ static int adm1266_nvmem_read_blackbox(s
- {
- 	int record_count;
- 	char index;
--	u8 buf[5];
-+	u8 buf[I2C_SMBUS_BLOCK_MAX];
- 	int ret;
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -306,6 +306,31 @@ free:
+ }
  
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_BLACKBOX_INFO, buf);
+ /**
++ * batadv_skb_is_frag() - check if newly merged skb is gain a unicast packet
++ * @skb: newly merged skb
++ *
++ * Return: if newly skb is of type BATADV_UNICAST_FRAG
++ */
++static bool batadv_skb_is_frag(struct sk_buff *skb)
++{
++	struct batadv_ogm_packet *batadv_ogm_packet;
++
++	/* packet should hold at least type and version */
++	if (unlikely(!pskb_may_pull(skb, 2)))
++		return false;
++
++	batadv_ogm_packet = (struct batadv_ogm_packet *)skb->data;
++
++	if (batadv_ogm_packet->version != BATADV_COMPAT_VERSION)
++		return false;
++
++	if (batadv_ogm_packet->packet_type != BATADV_UNICAST_FRAG)
++		return false;
++
++	return true;
++}
++
++/**
+  * batadv_frag_skb_buffer() - buffer fragment for later merge
+  * @skb: skb to buffer
+  * @orig_node_src: originator that the skb is received from
+@@ -338,6 +363,16 @@ bool batadv_frag_skb_buffer(struct sk_bu
+ 	if (!skb_out)
+ 		goto out_err;
+ 
++	/* fragment in fragment is not allowed. otherwise it is possible
++	 * to exhaust the stack when receiving a matryoshka-style
++	 * "fragments in a fragment packet"
++	 */
++	if (batadv_skb_is_frag(skb_out)) {
++		kfree_skb(skb_out);
++		skb_out = NULL;
++		goto out_err;
++	}
++
+ out:
+ 	ret = true;
+ out_err:
 
 
 
