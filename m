@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONm0INEoG2rg/ggAu9opvQ
-	(envelope-from <stable+bounces-258543-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:37 +0200
+	id ENm4Db8fG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F1A611449
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FF8E60FF81
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C1C26302A7D5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 674BC3008761
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1D93BFE4D;
-	Sat, 30 May 2026 18:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D70B342CA7;
+	Sat, 30 May 2026 17:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6ebqUjI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWnVUMtm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480FE223DC6;
-	Sat, 30 May 2026 18:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4300E33B6C4;
+	Sat, 30 May 2026 17:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164702; cv=none; b=d8YIh4VCwwYn7qviiboeds6HDYrjFK+L5T3Ayydi0v87Ea5IoFi9tl35/BlQ3VCTYQJRhiF0i5tT8+Y7R0fOxxwYmamQwKLaBcYknhg/1kItchZtviLKoP/Z1QJ91pZ3Ga3QB4ZhdGYitqn2FfslLFn8nGgdR8wDnSIa40wY8vs=
+	t=1780162117; cv=none; b=AvJtY1pNYeOE3QKvBPX3s5J82esgals+fbOej4Ww/KsJxu1t1DETXcAPqqIYN7Nsb32IkNISIQkydTlWeZZKW7/8xoRGqKqQa+lwGaNdVPc5kc81gWmBl1VnMDZIetNhai8DzIC6PbSqjbLkZmruRTFlEdcu8oNjHh16hA7+rK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164702; c=relaxed/simple;
-	bh=ZjUtj/TyiUuVmEcGwoYw17qMqGnyZQ1klWvO3aQ0pIs=;
+	s=arc-20240116; t=1780162117; c=relaxed/simple;
+	bh=GOO/4QX4VOsqbMuwJtZ1iES3vGy51j0U9XRWnKWeoPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qv0MFYNTxbcwrEsDAGQi39wGU6eOlJDqDhilsfYXWKq+uj1sIpLOOk3sK74vxTv7QjdHnVCARPtAdRWgd2fkF7u9W9MNlMtRGjBuDXpEODuINIvCd+iSrxiyobFhKv/YaVy7KkaA+3w9Swk0Bd6tvS6qefcbexupJAboF8SvIdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6ebqUjI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFB51F00893;
-	Sat, 30 May 2026 18:11:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yu/QJbrn/yPfnVFy/5+jy+2ctPbByUmcf84SRK12h7mOxjUvNsTPnduuinQH3aNVd/Vjfhqagmy7jfuR/0YkkDUaofDC2c5qbD1aeELuSCQO5aS+cCP9tVHb5fA//tFAcbGKb55iWpVxr4RJAa6UZ6naxfTqXffwA8u07tX9IKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWnVUMtm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871701F00893;
+	Sat, 30 May 2026 17:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164701;
-	bh=TGweGD7cGsD1i2sV3LyJjrNXPy7cU9nIU1AYnY7EIHI=;
+	s=korg; t=1780162116;
+	bh=F+ICj/+JXGCaKt0znec6zWnGyM0j/4bb1TlEKybE1q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E6ebqUjIu3NYgzszep68/Ws1F+xKxSwFYpRjVnIu4kpduM9d2ZT+doBHnYknjtaSu
-	 St9bsb0Ga80ErNq9J32aKPhk+KjOBXYQyWjziwpAd7N4sp2dtMugNwIbGweAak5ycB
-	 n7sykmLXMlxK0jf3nu92/3GXFn02ITnxR2OECRak=
+	b=QWnVUMtm/iE1InyJMLHckRDcS1jHZbjQ/nm6eVot+uSvZghbVX4yq+uM0vRG5bKg9
+	 YPq0RspMsS1ggTr5tJ+cBtg3BjN9SRUWFhlGwZ4b2JDN8cHrB7LGeCMqCGAaPeOJzB
+	 QovKFlIdtluecuYvEz2LY/CwCRdOD2NkPbVVziGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 634/776] net/sched: sch_cake: annotate data-races in cake_dump_stats() (V)
+	=?UTF-8?q?Naval=20Alcal=C3=A1?= <ari@naval.cat>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.1 824/969] iommu/vt-d: Disable DMAR for Intel Q35 IGFX
 Date: Sat, 30 May 2026 18:05:48 +0200
-Message-ID: <20260530160256.349697284@linuxfoundation.org>
+Message-ID: <20260530160323.394520836@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +68,76 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258543-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257771-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,toke.dk:email,msgid.link:url]
-X-Rspamd-Queue-Id: F0F1A611449
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,naval.cat:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8FF8E60FF81
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Naval Alcalá <ari@naval.cat>
 
-[ Upstream commit a6c95b833dc17e84d16a8ac0f40fd0931616a52d ]
+commit 2cda2e10dc8343ae01eae9e999a876b7e7d37861 upstream.
 
-cake_dump_stats() runs without qdisc spinlock being held.
+Intel Q35 integrated graphics (8086:29b2) exhibits broken DMAR
+behaviour similar to other G4x/GM45 devices for which DMAR is
+already disabled via quirks.
 
-In this final patch, I add READ_ONCE()/WRITE_ONCE() annotations
-for cparams.target and cparams.interval.
+When DMAR is enabled, the system may hard lock up during boot or
+early device initialization, requiring a reset.
 
-Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: "Toke Høiland-Jørgensen" <toke@toke.dk>
-Link: https://patch.msgid.link/20260427083606.459355-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missing PCI ID to the existing quirk list to disable
+DMAR for this device.
+
+Fixes: 1f76249cc3be ("iommu/vt-d: Declare Broadwell igfx dmar support snafu")
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=201185
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=216064
+Signed-off-by: Naval Alcalá <ari@naval.cat>
+Link: https://lore.kernel.org/r/20260410161622.13549-1-ari@naval.cat
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_cake.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/iommu/intel/iommu.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 87578d05a0925..46b93e30b60be 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -2313,10 +2313,11 @@ static void cake_set_rate(struct cake_tin_data *b, u64 rate, u32 mtu,
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -4832,6 +4832,9 @@ static void quirk_iommu_igfx(struct pci_
+ 	dmar_map_gfx = 0;
+ }
  
- 	byte_target_ns = (byte_target * rate_ns) >> rate_shft;
- 
--	b->cparams.target = max((byte_target_ns * 3) / 2, target_ns);
--	b->cparams.interval = max(rtt_est_ns +
--				     b->cparams.target - target_ns,
--				     b->cparams.target * 2);
-+	WRITE_ONCE(b->cparams.target,
-+		   max((byte_target_ns * 3) / 2, target_ns));
-+	WRITE_ONCE(b->cparams.interval,
-+		   max(rtt_est_ns + b->cparams.target - target_ns,
-+		       b->cparams.target * 2));
- 	b->cparams.mtu_time = byte_target_ns;
- 	b->cparams.p_inc = 1 << 24; /* 1/256 */
- 	b->cparams.p_dec = 1 << 20; /* 1/4096 */
-@@ -2933,9 +2934,9 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 		PUT_TSTAT_U32(BACKLOG_BYTES, b->tin_backlog);
- 
- 		PUT_TSTAT_U32(TARGET_US,
--			      ktime_to_us(ns_to_ktime(b->cparams.target)));
-+			      ktime_to_us(ns_to_ktime(READ_ONCE(b->cparams.target))));
- 		PUT_TSTAT_U32(INTERVAL_US,
--			      ktime_to_us(ns_to_ktime(b->cparams.interval)));
-+			      ktime_to_us(ns_to_ktime(READ_ONCE(b->cparams.interval))));
- 
- 		PUT_TSTAT_U32(SENT_PACKETS, b->packets);
- 		PUT_TSTAT_U32(DROPPED_PACKETS, b->tin_dropped);
--- 
-2.53.0
-
++/* Q35 integrated gfx dmar support is totally busted. */
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x29b2, quirk_iommu_igfx);
++
+ /* G4x/GM45 integrated gfx dmar support is totally busted. */
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2a40, quirk_iommu_igfx);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2e00, quirk_iommu_igfx);
 
 
 
