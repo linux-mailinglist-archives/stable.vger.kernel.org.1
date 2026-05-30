@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-259193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGgeD/YxG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259193-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:38 +0200
+	id yCtVNMkqG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC71C612B02
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47D536119A2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3055230C0EB5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:48:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA8A9303B4CE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13A921E098;
-	Sat, 30 May 2026 18:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC0139A7FE;
+	Sat, 30 May 2026 18:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hM9lR0qI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9vk0DTv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990931A9F90;
-	Sat, 30 May 2026 18:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C2331F98D;
+	Sat, 30 May 2026 18:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166918; cv=none; b=EKXIsTb/dcxIdkFQE+UDaJY7+bftYF4cSbIKZkKRrOl33nlNljpS42B6fDJsOt9T7vZLlS4RdLYfvf7n8JfEFiMbGC1OZ5FmlvIB+4g0oSDKNFLSF16MWDogwGMbbLrSD7ZhERxMluyetVXhrMtbjqvbdzDWOXTVXaCbiet5xXY=
+	t=1780164758; cv=none; b=Ldh0/B4SFqc42CKpi2kdq1wfSwxaxql94/DbmwfFjxp+XZO9IhB2MGwUx1BlcJnI/6p/hWDc9VZ7aabTufBDBaPLA96jfrx/2a4Vomhp2U5JKaDqgtnmurgkRsbqMjCcckbDeG6FsrS3Wh2BwCYAW6O4wIbiW6r/nfEi+hp/mVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166918; c=relaxed/simple;
-	bh=/hG1DO6SUGvUR6Vew1krobjDKZegeO5PvT9Lb7kGIO8=;
+	s=arc-20240116; t=1780164758; c=relaxed/simple;
+	bh=4qyLuubKRBUmlJ+g0I7Wh2hctzabZE5bFP/G6I/lIO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NsdDG4q86OgEDR7y1cS3+DfzUywuaDMsw4BqRZIjA49n8cQ7yfXYfvL9Vk7bz1rIDufcAEsxv710V6/t+cie21z8h2yb0qtDqPeuHabRgfCnZSortIWsEoKUc5FFoZxZ8CvMIF02MqSh5tx6YHwdc48ZdWR7jDuCBv+uDcfLTwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hM9lR0qI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5481F00893;
-	Sat, 30 May 2026 18:48:36 +0000 (UTC)
+	 MIME-Version; b=mpjrNnDEPoDGo2YI/uMy2risNnJ77B/oap9L/MqvFCfCnGLa5H0Vhc+X4BdYqPptkT6QcbdgEvs1+u7sRvTYFynR5d7dRwtfmhhA3RiyKb8jWf/oqqHKeMo60wc1ELvJZDNkNpidn9ygkT68yP2rPOWyeo1esYlQ3VQX7v01/9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9vk0DTv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25881F00893;
+	Sat, 30 May 2026 18:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166917;
-	bh=F/msW0FPm87aAl3Br2N6fR4XK1yDqRz4/Yc5cQ46twg=;
+	s=korg; t=1780164757;
+	bh=XryLQ2EeeXYfzr9jU0nxRxYUy0vgdz/jTo/X+U7tues=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hM9lR0qIdoDqguRE2uhc3a0LBn4W8VzrC6uoRTx8ATUP0JzTsAd6hCxK62BITBrTZ
-	 qnNtsaGuI9uHsig7bz1k7T347++9cAGA2LXktc8Q3NL1CAm2+ZufnjKvtv86ivSfj0
-	 IiwSZrFJlhX5tcYYPjMNcu2J7d8rRlORtPX/2oKo=
+	b=Z9vk0DTvOGq8spsDx+Peb1ZCk7Leac+lSfLPM8IWvdBTpncCipEP5iEHNcViVfo+/
+	 NmU+IsWzXEUr+huy9gFcd0TQyxAH3ZP454B60ZYoJcSxahqHLnc340daoMsJ9df8IU
+	 KAhiN4VytAz2XtQqQ9nNPk0zowNzy6pCdrm+rDxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Zhan Jun <zhanjun@uniontech.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 481/589] net: usb: rtl8150: fix use-after-free in rtl8150_start_xmit()
-Date: Sat, 30 May 2026 18:06:02 +0200
-Message-ID: <20260530160237.294113945@linuxfoundation.org>
+	Ricardo Robaina <rrobaina@redhat.com>,
+	Sergio Correia <scorreia@redhat.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 5.15 649/776] audit: fix incorrect inheritable capability in CAPSET records
+Date: Sat, 30 May 2026 18:06:03 +0200
+Message-ID: <20260530160256.699762551@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,126 +64,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-259193-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-258560-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,3f46c095ac0ca048cb71];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,appspotmail.com:email,syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,lunn.ch:email]
-X-Rspamd-Queue-Id: AC71C612B02
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,paul-moore.com:email]
+X-Rspamd-Queue-Id: 47D536119A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhan Jun <zhanjun@uniontech.com>
+From: Sergio Correia <scorreia@redhat.com>
 
-[ Upstream commit 23f0e34c64acba15cad4d23e50f41f533da195fa ]
+commit e4a640475e43f406fdfd56d370b1f34b0cbbc18d upstream.
 
-syzbot reported a KASAN slab-use-after-free read in rtl8150_start_xmit()
-when accessing skb->len for tx statistics after usb_submit_urb() has
-been called:
+__audit_log_capset() records the effective capability set into the
+inheritable field due to a copy-paste error. Every CAPSET audit
+record therefore reports cap_pi (process inheritable) with the value
+of cap_effective instead of cap_inheritable.
 
-  BUG: KASAN: slab-use-after-free in rtl8150_start_xmit+0x71f/0x760
-    drivers/net/usb/rtl8150.c:712
-  Read of size 4 at addr ffff88810eb7a930 by task kworker/0:4/5226
+This silently corrupts audit data used for compliance and forensic
+analysis: an attacker who modifies inheritable capabilities to
+prepare for a privilege-escalating exec would have the change masked
+in the audit trail.
 
-The URB completion handler write_bulk_callback() frees the skb via
-dev_kfree_skb_irq(dev->tx_skb). The URB may complete on another CPU
-in softirq context before usb_submit_urb() returns in the submitter,
-so by the time the submitter reads skb->len the skb has already been
-queued to the per-CPU completion_queue and freed by net_tx_action():
+The bug has been present since the original introduction of CAPSET
+audit records in 2008.
 
-  CPU A (xmit)                      CPU B (USB completion softirq)
-  ------------                      ------------------------------
-  dev->tx_skb = skb;
-  usb_submit_urb()      --+
-                          |-------> write_bulk_callback()
-                          |           dev_kfree_skb_irq(dev->tx_skb)
-                          |         net_tx_action()
-                          |           napi_skb_cache_put()   <-- free
-  netdev->stats.tx_bytes  |
-    += skb->len;          <-- UAF read
-
-Fix it by caching skb->len before submitting the URB and using the
-cached value when updating the tx_bytes counter.
-
-The pre-existing tx_bytes semantics are preserved: the counter tracks
-the original frame length (skb->len), not the ETH_ZLEN/USB-alignment
-padded "count" value that is handed to the device.  Changing that
-would be a user-visible accounting change and is out of scope for
-this UAF fix.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69e69ee7.050a0220.24bfd3.002b.GAE@google.com/
-Closes: https://syzkaller.appspot.com/bug?extid=3f46c095ac0ca048cb71
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Zhan Jun <zhanjun@uniontech.com>
-Link: https://patch.msgid.link/809895186B866C10+20260423004913.136655-1-zhangdandan@uniontech.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e68b75a027bb ("When the capset syscall is used it is not possible for audit to record the actual capbilities being added/removed.  This patch adds a new record type which emits the target pid and the eff, inh, and perm cap sets.")
+Reviewed-by: Ricardo Robaina <rrobaina@redhat.com>
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Sergio Correia <scorreia@redhat.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/rtl8150.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/auditsc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index 185b8c8b19ba3..51bd522fada53 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -685,6 +685,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 					    struct net_device *netdev)
- {
- 	rtl8150_t *dev = netdev_priv(netdev);
-+	unsigned int skb_len;
- 	int count, res;
+--- a/kernel/auditsc.c
++++ b/kernel/auditsc.c
+@@ -2585,7 +2585,7 @@ void __audit_log_capset(const struct cre
  
- 	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
-@@ -696,6 +697,8 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 		return NETDEV_TX_OK;
- 	}
- 
-+	skb_len = skb->len;
-+
- 	netif_stop_queue(netdev);
- 	dev->tx_skb = skb;
- 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
-@@ -711,7 +714,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 		}
- 	} else {
- 		netdev->stats.tx_packets++;
--		netdev->stats.tx_bytes += skb->len;
-+		netdev->stats.tx_bytes += skb_len;
- 		netif_trans_update(netdev);
- 	}
- 
--- 
-2.53.0
-
+ 	context->capset.pid = task_tgid_nr(current);
+ 	context->capset.cap.effective   = new->cap_effective;
+-	context->capset.cap.inheritable = new->cap_effective;
++	context->capset.cap.inheritable = new->cap_inheritable;
+ 	context->capset.cap.permitted   = new->cap_permitted;
+ 	context->capset.cap.ambient     = new->cap_ambient;
+ 	context->type = AUDIT_CAPSET;
 
 
 
