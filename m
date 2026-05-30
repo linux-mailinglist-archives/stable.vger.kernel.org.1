@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-257824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOXTGEogG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257824-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:14 +0200
+	id UHt3A5gpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3BB610074
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A51E761168D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 712D4308F931
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C45403011A56
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CFE230E853;
-	Sat, 30 May 2026 17:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB85B32F770;
+	Sat, 30 May 2026 18:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAWizVU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoXSOUaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162442E7379;
-	Sat, 30 May 2026 17:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0B4274FDC;
+	Sat, 30 May 2026 18:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162293; cv=none; b=WAmKVZeMA+IifTf8xWTSM3MThyeLOVMCoHsOTHRShv3K+MArYoXvIkYwUz8ru/NQM3VQuEQ6mATg1i2rS+eiR2R69gryKewvEvkFKdoIIxJ87OEpCoR196M2b3oL9I3IjXzw88xiCD2Gtg/Y4WFGKA+n0QDDdpw9OwEhz4AvkcU=
+	t=1780164992; cv=none; b=ZctOtoyCV2X12bYFmPrDVIQsflIzty/EWxFYmfzXWEYApW2EpZvSh/OC1Gp5kaVflVUi/ygy6DPNQS4YqFG5RcOUUIujJ4FCs6iQFLE3GvQTqP8T8xFvDoIu91i9cY0HohePFc9DvrL/sbrhZzypumMiP+ZIZzM7ve6mHQq3ba0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162293; c=relaxed/simple;
-	bh=cnwsB7EaUyhJdAliMVuzoKB5xIr+vBUTbVWwT7Ul0f8=;
+	s=arc-20240116; t=1780164992; c=relaxed/simple;
+	bh=uC9eEmGEAIPCcoIRt2+r2Skg2ttW4qqNf/fMpyh0XWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XEtzajrG1X5H9ciJSwvQnNDjJDc0UfhQM6m+s3iCHWWdPZYIlp1R7jY3y6Vdi+vM8ElUteUrAesILMlF7c9pP3lQPWmdvXg1XAACskEtMYpopiD3jyWA+TGj+MTWLqgn654WmyZa4bQaAGDx7b3k5mUXsbVZI5q1W8NSQ+KKRrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAWizVU3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515A31F00893;
-	Sat, 30 May 2026 17:31:31 +0000 (UTC)
+	 MIME-Version; b=W/E5ia+WtvDJ9touDoid6bAf+e2L/pjcO6UuyGfWVeiKcGF8Gli7gLKFr74JqED/2fKeOcGhKAzU5UvKwfA2pS4gU5XwXyETUSnnkVNW7LUebQOZjGkcPfzso5ATrdX4aX24D0C2oJaGBNNPIM/ZBc8PH0/5hk2OyN9Uz3vfVwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoXSOUaR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2A31F00893;
+	Sat, 30 May 2026 18:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162291;
-	bh=oVTS3zN0cUURECSOL0yGdor5M2tb9hzKAnbfuZJLiBI=;
+	s=korg; t=1780164991;
+	bh=5cbZDdTXrooktq1ONXj4AKV7zSd3Ky+55KNG3x+N58w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NAWizVU36ukAWQq54h65RweVjuy6KYKI/MJVcIKfeQ//reb3BBF5nl3FbNl9VNH2c
-	 T3J1tO7ANpQHY8bMoTTZdtvrdDYAQyxidIvyDqv81/nK9c0+BLhZMVHTaSQ0qfKSVb
-	 HZqwqnuPM9CWDf9bt6YEphAGMUVV0PGlARDtxeD4=
+	b=HoXSOUaRqHuXxQznryZL3rhMxHFtrMLW0Yr18A+qquS5a1tCrUs84dH6mnfJFxLXO
+	 pMPAQCVXK5QDrU77XT81a369ts8g9cFwDVTBeEBulHu/0NUP/Zt3ADbpCylgh1X8fK
+	 QOSZmZ8hHassgIzDk7EnSb8tU2XEKXhEBkwqXrUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 878/969] drm/amd/display: Validate GPIO pin LUT table size before iterating
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Haoze Xie <royenheart@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 688/776] netfilter: nf_queue: hold bridge skb->dev while queued
 Date: Sat, 30 May 2026 18:06:42 +0200
-Message-ID: <20260530160324.932355756@linuxfoundation.org>
+Message-ID: <20260530160257.635952439@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,92 +73,123 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
+	TAGGED_FROM(0.00)[bounces-258628-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257824-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DB3BB610074
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,netfilter.org:email,state.in:url]
+X-Rspamd-Queue-Id: A51E761168D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Haoze Xie <royenheart@gmail.com>
 
-commit 86d2b20644b11d21fe52c596e6e922b4590a3e3f upstream.
+commit e196115ec330a18de415bdb9f5071aa9f08e53ce upstream.
 
-[Why&How]
-The GPIO pin table parsers in get_gpio_i2c_info() and
-bios_parser_get_gpio_pin_info() derive an element count from the VBIOS
-table_header.structuresize field, then iterate over gpio_pin[] entries.
-However, GET_IMAGE() only validates that the table header itself fits
-within the BIOS image. If the VBIOS reports a structuresize larger than
-the actual mapped data, the loop reads past the end of the BIOS image,
-causing an out-of-bounds read.
+br_pass_frame_up() rewrites skb->dev from the ingress port to the bridge
+master before queueing bridge LOCAL_IN packets. NFQUEUE only holds
+references on state.in/out and bridge physdevs, so a queued bridge
+packet can retain a freed bridge master in skb->dev until reinjection.
 
-Fix this by calling bios_get_image() to validate that the full claimed
-structuresize is accessible within the BIOS image before entering the
-loop in both functions.
+When the verdict is reinjected later, br_netif_receive_skb() re-enters
+the receive path with skb->dev still pointing at the freed bridge master,
+triggering a use-after-free.
 
-Assisted-by: GitHub Copilot:claude-opus-4-6
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ba5e95b43b773ae1bf1f66ee6b31eb774e65afe3)
-Cc: stable@vger.kernel.org
+Store skb->dev in the queue entry, hold a reference on it for the queue
+lifetime, and use the saved device when dropping queued packets during
+NETDEV_DOWN handling.
+
+Fixes: ac2863445686 ("netfilter: bridge: add nf_afinfo to enable queuing to userspace")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Haoze Xie <royenheart@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/net/netfilter/nf_queue.h |    1 +
+ net/netfilter/nf_queue.c         |    4 +++-
+ net/netfilter/nfnetlink_queue.c  |    2 ++
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -490,6 +490,10 @@ static enum bp_result get_gpio_i2c_info(
- 			- sizeof(struct atom_common_table_header))
- 				/ sizeof(struct atom_gpio_pin_assignment);
+--- a/include/net/netfilter/nf_queue.h
++++ b/include/net/netfilter/nf_queue.h
+@@ -12,6 +12,7 @@
+ struct nf_queue_entry {
+ 	struct list_head	list;
+ 	struct sk_buff		*skb;
++	struct net_device	*skb_dev;
+ 	unsigned int		id;
+ 	unsigned int		hook_index;	/* index in hook_entries->hook[] */
+ #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
+--- a/net/netfilter/nf_queue.c
++++ b/net/netfilter/nf_queue.c
+@@ -60,6 +60,7 @@ static void nf_queue_entry_release_refs(
+ 	struct nf_hook_state *state = &entry->state;
  
-+	if (!bios_get_image(&bp->base, DATA_TABLES(gpio_pin_lut),
-+			    le16_to_cpu(header->table_header.structuresize)))
-+		return BP_RESULT_BADBIOSTABLE;
-+
- 	pin = (struct atom_gpio_pin_assignment *) header->gpio_pin;
+ 	/* Release those devices we held, or Alexey will kill me. */
++	dev_put(entry->skb_dev);
+ 	dev_put(state->in);
+ 	dev_put(state->out);
+ 	if (state->sk)
+@@ -103,6 +104,7 @@ bool nf_queue_entry_get_refs(struct nf_q
+ 	if (state->sk && !refcount_inc_not_zero(&state->sk->sk_refcnt))
+ 		return false;
  
- 	for (table_index = 0; table_index < count; table_index++) {
-@@ -680,6 +684,11 @@ static enum bp_result bios_parser_get_gp
- 	count = (le16_to_cpu(header->table_header.structuresize)
- 			- sizeof(struct atom_common_table_header))
- 				/ sizeof(struct atom_gpio_pin_assignment);
-+
-+	if (!bios_get_image(&bp->base, DATA_TABLES(gpio_pin_lut),
-+			    le16_to_cpu(header->table_header.structuresize)))
-+		return BP_RESULT_BADBIOSTABLE;
-+
- 	for (i = 0; i < count; ++i) {
- 		if (header->gpio_pin[i].gpio_id != gpio_id)
- 			continue;
++	dev_hold(entry->skb_dev);
+ 	dev_hold(state->in);
+ 	dev_hold(state->out);
+ 
+@@ -203,11 +205,11 @@ static int __nf_queue(struct sk_buff *sk
+ 
+ 	*entry = (struct nf_queue_entry) {
+ 		.skb	= skb,
++		.skb_dev = skb->dev,
+ 		.state	= *state,
+ 		.hook_index = index,
+ 		.size	= sizeof(*entry) + route_key_size,
+ 	};
+-
+ 	__nf_queue_entry_init_physdevs(entry);
+ 
+ 	if (!nf_queue_entry_get_refs(entry)) {
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -944,6 +944,8 @@ dev_cmp(struct nf_queue_entry *entry, un
+ 	if (physinif == ifindex || physoutif == ifindex)
+ 		return 1;
+ #endif
++	if (entry->skb_dev && entry->skb_dev->ifindex == ifindex)
++		return 1;
+ 	if (entry->state.in)
+ 		if (entry->state.in->ifindex == ifindex)
+ 			return 1;
 
 
 
