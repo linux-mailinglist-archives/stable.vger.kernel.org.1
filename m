@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-259108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCEoJfIvG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:02 +0200
+	id eLJOLPYvG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CEB6125D4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56EC86125E3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C8C0430095CA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:43:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B693C3016D31
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA192F3C3E;
-	Sat, 30 May 2026 18:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF372773DE;
+	Sat, 30 May 2026 18:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9E7MC+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2C1eCQE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4752F6184;
-	Sat, 30 May 2026 18:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82DB3469FC;
+	Sat, 30 May 2026 18:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166638; cv=none; b=eKUeO9pghEsj0W3A4EDL8NiUVa6hw9w1VFnl/xWoNkmKhlNJDvYkM89CLeenrlzpgn8UlokGOQScDWfoPvcrPfLSE+t6qlH3fWlXRB9EAdeumE7yNiF3Jz2eaBDhEcQEIUtT8TgvhL7YTfteNPMDZvH0rc2seez5rWkmXNnMdPM=
+	t=1780166644; cv=none; b=fIiZAcxSnD0co9I3bIo8CWmWQYwaR1Yq0IUHRE1H8NECr3wP/RmrCnGPqMiEeEQ/u5fa9R8MMzjPDvF9N8m5ArQXaGFc54y2gt5er4MFTM+QnF7kIg4hr5DYru1tzfDCYtDckVRS05f3aP4RhJvGdnTKooVAt1QAMxL5ZKqzNhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166638; c=relaxed/simple;
-	bh=o/y9YV2fWscdt5cXFT+C9uoFTmXQdVvyMVCzbTYQq6g=;
+	s=arc-20240116; t=1780166644; c=relaxed/simple;
+	bh=fAZAgAOTUHXYbzy+Dq52RT53jP9j2M2DbbkLHXCze5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSu8mz8Ji/xOjDtmAALhQod3q1ARXpxB6vBTotbQrxVZ0+L6jKHDWSq2bfLbtJfpgarQP17A+bEbYojrTm6JPq/+kCb4Z7BLzGOM7CO9ylmgS+gRU/ujkJyZ8mYJayVLwc7G/YDeR8mvOqVZ/8OHci3LPG7VRl3RfAG1vWVMomM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9E7MC+J; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7661F00893;
-	Sat, 30 May 2026 18:43:56 +0000 (UTC)
+	 MIME-Version; b=LERqJAAI0UVwpGJ1gj1OE23xQ93h+GgdmYD6ea8YpjX244VMqHIoNyeS/0Cx7gS+glNVeLfZAUawzsQsrb253sOnX3a99zIGC1fzxtJmuFQ1XOqpu7ecCSRuYmTXBbgEp0zWYXpi/VNaPhs+bJOSZrYnoSkwWYf6Wxy4aaMo044=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2C1eCQE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218C11F00893;
+	Sat, 30 May 2026 18:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166636;
-	bh=x7xDhp13WdsUAr18ECb1RAvkjofdp73Fbu/5YDRu8U8=;
+	s=korg; t=1780166643;
+	bh=AMi4GasxxehWMRjvqDTnuaPMLU3Cq3+Ik5eGkK9vlEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W9E7MC+Jszt6ug5DlJz4JOHvz8/gsvjVPj6OyIV2QgZ4vhgIGLrryowjIxnd5weV6
-	 il3KEn8UXHPd43g1EApsFBQ5FwYhJdJkDw2hE58WyyD/K7EmTdh3SvgFRv2vN0WTxa
-	 SK+Leuj3X+Tr1rLAtG5igICT/7RnVTrKfExX+nCY=
+	b=x2C1eCQEmoGQWz8QA/HqEPQgnw/amtrkWZxomPMAV8DlDFb4g9jzzmEmZiCtbqf1B
+	 j3xbdcRwzEM8qFnW3WszfnbP86Toeuibixd5RpMq6xI019w5KWrX5c7bALSKkw37PS
+	 S7BAVsfSquUCaG+W4IguH9LC22cSTKNS6Di6zZY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Vollrath <tactii@gmail.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Joe Damato <joe@dama.to>,
+	Ido Schimmel <idosch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 425/589] e1000e: Unroll PTP in probe error handling
-Date: Sat, 30 May 2026 18:05:06 +0200
-Message-ID: <20260530160235.897494333@linuxfoundation.org>
+Subject: [PATCH 5.10 426/589] ipv6: fix possible UAF in icmpv6_rcv()
+Date: Sat, 30 May 2026 18:05:07 +0200
+Message-ID: <20260530160235.922548777@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
 References: <20260530160224.570625122@linuxfoundation.org>
@@ -70,31 +71,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-259108-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259110-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B8CEB6125D4
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,nvidia.com:email]
+X-Rspamd-Queue-Id: 56EC86125E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,39 +102,69 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Matt Vollrath <tactii@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit aa3f7fe409350857c25d050482a2eef2cfd69b58 ]
+[ Upstream commit f996edd7615e686ada141b7f3395025729ff8ccb ]
 
-If probe fails after registering the PTP clock and its delayed work,
-these resources must be released.
+Caching saddr and daddr before pskb_pull() is problematic
+since skb->head can change.
 
-This was not an issue until a 2016 fix moved the e1000e_ptp_init() call
-before the jump to err_register.
+Remove these temporary variables:
 
-Fixes: aa524b66c5ef ("e1000e: don't modify SYSTIM registers during SIOCSHWTSTAMP ioctl")
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-12-686c33c9828d@intel.com
+- We only access &ipv6_hdr(skb)->saddr and &ipv6_hdr(skb)->daddr
+  when net_dbg_ratelimited() is called in the slow path.
+
+- Avoid potential future misuse after pskb_pull() call.
+
+Fixes: 4b3418fba0fe ("ipv6: icmp: include addresses in debug messages")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Joe Damato <joe@dama.to>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260416103505.2380753-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/icmp.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 902ada6a3b06c..8f1c6f08be00e 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -7642,6 +7642,7 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- err_register:
- 	if (!(adapter->flags & FLAG_HAS_AMT))
- 		e1000e_release_hw_control(adapter);
-+	e1000e_ptp_remove(adapter);
- err_eeprom:
- 	if (hw->phy.ops.check_reset_block && !hw->phy.ops.check_reset_block(hw))
- 		e1000_phy_hw_reset(&adapter->hw);
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index 65846f4451894..35e99974aa882 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -867,7 +867,6 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 	struct net *net = dev_net(skb->dev);
+ 	struct net_device *dev = icmp6_dev(skb);
+ 	struct inet6_dev *idev = __in6_dev_get(dev);
+-	const struct in6_addr *saddr, *daddr;
+ 	struct icmp6hdr *hdr;
+ 	u8 type;
+ 	bool success = false;
+@@ -894,12 +893,10 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 
+ 	__ICMP6_INC_STATS(dev_net(dev), idev, ICMP6_MIB_INMSGS);
+ 
+-	saddr = &ipv6_hdr(skb)->saddr;
+-	daddr = &ipv6_hdr(skb)->daddr;
+-
+ 	if (skb_checksum_validate(skb, IPPROTO_ICMPV6, ip6_compute_pseudo)) {
+ 		net_dbg_ratelimited("ICMPv6 checksum failed [%pI6c > %pI6c]\n",
+-				    saddr, daddr);
++				    &ipv6_hdr(skb)->saddr,
++				    &ipv6_hdr(skb)->daddr);
+ 		goto csum_error;
+ 	}
+ 
+@@ -972,7 +969,8 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 			break;
+ 
+ 		net_dbg_ratelimited("icmpv6: msg of unknown type [%pI6c > %pI6c]\n",
+-				    saddr, daddr);
++				    &ipv6_hdr(skb)->saddr,
++				    &ipv6_hdr(skb)->daddr);
+ 
+ 		/*
+ 		 * error of unknown type.
 -- 
 2.53.0
 
