@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-257772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259161-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKEdCqMeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:11 +0200
+	id eGqbNnIyG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259161-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AA7D60FCFF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47919612C81
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 91AC13016B3F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:28:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5FAE1301E582
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC57D34389F;
-	Sat, 30 May 2026 17:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E368E18FDBD;
+	Sat, 30 May 2026 18:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecNY6khj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AcEaKef4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0A9267B05;
-	Sat, 30 May 2026 17:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5D986334;
+	Sat, 30 May 2026 18:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162120; cv=none; b=HOqheBH735A1ISaIVkH9DaIhDFCtsy3edQaq9GuF6iDTr9A1Z95vg6FNqcJzAkty24m6ml+dcJHnpUVQIMRpDYL5/hrd6U3gijxba62HBN+/4SwGuQZio/x0WjSl6nYEfDqqDcuBZU24fCl29GtglR3FP43y08ZngU6EqO1BOVk=
+	t=1780166811; cv=none; b=JWENmSPFPdhGGD1iOimJ/M3VKqpystUkWs0Dd+5Kl0i7gMo7HSmMeRT9LBN1hi6Vn8yZfdt+FWggAHaIc+22p7Dgu5ymNXksadSaoqKw0ag2sCfeDvzAwRtF99KMbdu3dDyJNSybDp504BkdIiLGFlvST/YAw4XXcO5bMmDLH58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162120; c=relaxed/simple;
-	bh=L7UTBSqG5D7B94lSlx/kYTs6lMctdCKJRbZ0lMLHPHA=;
+	s=arc-20240116; t=1780166811; c=relaxed/simple;
+	bh=0uxed+1ZJdhrfFLwj5Ie5CLioyqZ+M6R6x6i2NFE9lM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C0pULuFEwoZbR+h3syCn7r/9jXQIiWEhikbp2ogcsXZwTNW7LycFpJ4mP0VsjFmJCOr92MECWH+xfMMCFg/Yqbiqwcpu7nKOpKvQHw2oIw66omoUCJ8KyBh8CtUIQ9nLQIp1zH93dSd79r5KBp/UmCehH9gzxZU2V99Xui+8ghE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecNY6khj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4B01F00893;
-	Sat, 30 May 2026 17:28:38 +0000 (UTC)
+	 MIME-Version; b=faH/H/JwQ2/d0XaP+mD4l9c2NK3I1CT8B4FyLuDHF7yesDJ3HFfjhNPe4jY6dBs6OOUyMsk/vzvngKVVJp4I3+0VPcfCJBRayZF4vZ87E+bYUM04+aYVcUBKk4Zq+HioekhV418cz+4aAJlOjpkAsbeeKlQ9130IOSQeut+DhFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AcEaKef4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBD51F00893;
+	Sat, 30 May 2026 18:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162119;
-	bh=wM5USvf6/cDNAR61Uwvh6FANurQ7Cy+J3pEEfaX7Q2w=;
+	s=korg; t=1780166810;
+	bh=3zAx+acIuYokzkqcUhi2+Znv5dlIX8ZqAxe03liSuuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ecNY6khjflxwzvRsG4wMFA/VsonlieYgSB7WnFlakwgQpVmXaph8oPulMT3G4mHgj
-	 BYsXj0zKod0F6CLoPyT8FNPOT/fn2EwfHoaq8bh1mK+zTtFTM0V+UpSY4f94Qi6fa/
-	 HnjHIQu5hIfnKgxSkqDHrG8CpBVx05p6PatFmIt8=
+	b=AcEaKef4XOLx9gp7IhgRog0jSA1KmPhVHqPIEr1J2s1k2KFNbWeJfGeF8+xVwSbYU
+	 pZlCtgLePEi8SY73v7qnLlByxvBXfAJ2/a26+a3N5DVo8jR5P9OB1NOl6HYm9pkaiN
+	 SE+xdojW/IEK5fEvYyiMifDNnLc/r0oeO7qAWFSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Simon Horman <horms@kernel.org>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 797/969] ALSA: misc: Use guard() for spin locks
-Date: Sat, 30 May 2026 18:05:21 +0200
-Message-ID: <20260530160322.629968491@linuxfoundation.org>
+Subject: [PATCH 5.10 441/589] slip: bound decode() reads against the compressed packet length
+Date: Sat, 30 May 2026 18:05:22 +0200
+Message-ID: <20260530160236.296935922@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,103 +69,188 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,redhat.com];
+	TAGGED_FROM(0.00)[bounces-259161-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257772-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2AA7D60FCFF
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 47919612C81
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit b8e1684163ae52db90f428965bd9aaff7205c02e ]
+[ Upstream commit 4c1367a2d7aad643a6f87c6931b13cc1a25e8ca7 ]
 
-Clean up the code using guard() for spin locks.
+slhc_uncompress() parses a VJ-compressed TCP header by advancing a
+pointer through the packet via decode() and pull16(). Neither helper
+bounds-checks against isize, and decode() masks its return with
+& 0xffff so it can never return the -1 that callers test for -- those
+error paths are dead code.
 
-Merely code refactoring, and no behavior change.
+A short compressed frame whose change byte requests optional fields
+lets decode() read past the end of the packet. The over-read bytes
+are folded into the cached cstate and reflected into subsequent
+reconstructed packets.
 
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250829151335.7342-20-tiwai@suse.de
-Stable-dep-of: 5337213381df ("ALSA: core: Serialize deferred fasync state checks")
+Make decode() and pull16() take the packet end pointer and return -1
+when exhausted. Add a bounds check before the TCP-checksum read.
+The existing == -1 tests now do what they were always meant to.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Simon Horman <horms@kernel.org>
+Closes: https://lore.kernel.org/netdev/20260414134126.758795-2-horms@kernel.org/
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260416100147.531855-5-bestswngs@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/misc.c | 25 ++++++++++---------------
- 1 file changed, 10 insertions(+), 15 deletions(-)
+ drivers/net/slip/slhc.c | 43 ++++++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 18 deletions(-)
 
-diff --git a/sound/core/misc.c b/sound/core/misc.c
-index 856edaa1dedbc..918d59a541c82 100644
---- a/sound/core/misc.c
-+++ b/sound/core/misc.c
-@@ -202,35 +202,30 @@ int snd_fasync_helper(int fd, struct file *file, int on,
- 		INIT_LIST_HEAD(&fasync->list);
- 	}
+diff --git a/drivers/net/slip/slhc.c b/drivers/net/slip/slhc.c
+index f7d92bae7774d..e56f0bbc72a4f 100644
+--- a/drivers/net/slip/slhc.c
++++ b/drivers/net/slip/slhc.c
+@@ -80,9 +80,9 @@
+ #include <asm/unaligned.h>
  
--	spin_lock_irq(&snd_fasync_lock);
--	if (*fasyncp) {
--		kfree(fasync);
--		fasync = *fasyncp;
--	} else {
--		if (!fasync) {
--			spin_unlock_irq(&snd_fasync_lock);
--			return 0;
-+	scoped_guard(spinlock_irq, &snd_fasync_lock) {
-+		if (*fasyncp) {
-+			kfree(fasync);
-+			fasync = *fasyncp;
-+		} else {
-+			if (!fasync)
-+				return 0;
-+			*fasyncp = fasync;
- 		}
--		*fasyncp = fasync;
-+		fasync->on = on;
- 	}
--	fasync->on = on;
--	spin_unlock_irq(&snd_fasync_lock);
- 	return fasync_helper(fd, file, on, &fasync->fasync);
+ static unsigned char *encode(unsigned char *cp, unsigned short n);
+-static long decode(unsigned char **cpp);
++static long decode(unsigned char **cpp, const unsigned char *end);
+ static unsigned char * put16(unsigned char *cp, unsigned short x);
+-static unsigned short pull16(unsigned char **cpp);
++static long pull16(unsigned char **cpp, const unsigned char *end);
+ 
+ /* Allocate compression data structure
+  *	slots must be in range 0 to 255 (zero meaning no compression)
+@@ -190,30 +190,34 @@ encode(unsigned char *cp, unsigned short n)
+ 	return cp;
  }
- EXPORT_SYMBOL_GPL(snd_fasync_helper);
  
- void snd_kill_fasync(struct snd_fasync *fasync, int signal, int poll)
+-/* Pull a 16-bit integer in host order from buffer in network byte order */
+-static unsigned short
+-pull16(unsigned char **cpp)
++/* Pull a 16-bit integer in host order from buffer in network byte order.
++ * Returns -1 if the buffer is exhausted, otherwise the 16-bit value.
++ */
++static long
++pull16(unsigned char **cpp, const unsigned char *end)
  {
--	unsigned long flags;
--
- 	if (!fasync || !fasync->on)
- 		return;
--	spin_lock_irqsave(&snd_fasync_lock, flags);
-+	guard(spinlock_irqsave)(&snd_fasync_lock);
- 	fasync->signal = signal;
- 	fasync->poll = poll;
- 	list_move(&fasync->list, &snd_fasync_list);
- 	schedule_work(&snd_fasync_work);
--	spin_unlock_irqrestore(&snd_fasync_lock, flags);
- }
- EXPORT_SYMBOL_GPL(snd_kill_fasync);
+-	short rval;
++	long rval;
  
++	if (*cpp + 2 > end)
++		return -1;
+ 	rval = *(*cpp)++;
+ 	rval <<= 8;
+ 	rval |= *(*cpp)++;
+ 	return rval;
+ }
+ 
+-/* Decode a number */
++/* Decode a number. Returns -1 if the buffer is exhausted. */
+ static long
+-decode(unsigned char **cpp)
++decode(unsigned char **cpp, const unsigned char *end)
+ {
+ 	int x;
+ 
++	if (*cpp >= end)
++		return -1;
+ 	x = *(*cpp)++;
+-	if(x == 0){
+-		return pull16(cpp) & 0xffff;	/* pull16 returns -1 on error */
+-	} else {
+-		return x & 0xff;		/* -1 if PULLCHAR returned error */
+-	}
++	if (x == 0)
++		return pull16(cpp, end);
++	return x & 0xff;
+ }
+ 
+ /*
+@@ -499,6 +503,7 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 	struct cstate *cs;
+ 	int len, hdrlen;
+ 	unsigned char *cp = icp;
++	const unsigned char *end = icp + isize;
+ 
+ 	/* We've got a compressed packet; read the change byte */
+ 	comp->sls_i_compressed++;
+@@ -536,6 +541,8 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 	thp = &cs->cs_tcp;
+ 	ip = &cs->cs_ip;
+ 
++	if (cp + 2 > end)
++		goto bad;
+ 	thp->check = *(__sum16 *)cp;
+ 	cp += 2;
+ 
+@@ -566,26 +573,26 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 	default:
+ 		if(changes & NEW_U){
+ 			thp->urg = 1;
+-			if((x = decode(&cp)) == -1) {
++			if((x = decode(&cp, end)) == -1) {
+ 				goto bad;
+ 			}
+ 			thp->urg_ptr = htons(x);
+ 		} else
+ 			thp->urg = 0;
+ 		if(changes & NEW_W){
+-			if((x = decode(&cp)) == -1) {
++			if((x = decode(&cp, end)) == -1) {
+ 				goto bad;
+ 			}
+ 			thp->window = htons( ntohs(thp->window) + x);
+ 		}
+ 		if(changes & NEW_A){
+-			if((x = decode(&cp)) == -1) {
++			if((x = decode(&cp, end)) == -1) {
+ 				goto bad;
+ 			}
+ 			thp->ack_seq = htonl( ntohl(thp->ack_seq) + x);
+ 		}
+ 		if(changes & NEW_S){
+-			if((x = decode(&cp)) == -1) {
++			if((x = decode(&cp, end)) == -1) {
+ 				goto bad;
+ 			}
+ 			thp->seq = htonl( ntohl(thp->seq) + x);
+@@ -593,7 +600,7 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 		break;
+ 	}
+ 	if(changes & NEW_I){
+-		if((x = decode(&cp)) == -1) {
++		if((x = decode(&cp, end)) == -1) {
+ 			goto bad;
+ 		}
+ 		ip->id = htons (ntohs (ip->id) + x);
 -- 
 2.53.0
 
