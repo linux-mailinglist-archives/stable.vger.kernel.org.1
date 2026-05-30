@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-258111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kG5fJGYkG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258111-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:46 +0200
+	id WEc+LE0ZG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16734610A2D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2924560EEBB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 206E03028B2D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9E7253057D4B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42D43BD646;
-	Sat, 30 May 2026 17:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F379C2690D5;
+	Sat, 30 May 2026 17:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWCUQSnI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWDRvZ+g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8FD3B9DB6;
-	Sat, 30 May 2026 17:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83D732B11D;
+	Sat, 30 May 2026 17:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163254; cv=none; b=tCv3o+Axk0042cbRUE9Hnuyc565RlFjkweeQyNd6IaGvpGRAVassRLY+qWPeCCi1m4dK3JlQRSbo1ij5YscxWsZEZ4BjaVR9swyR7nQVLV9vJOwFnM7mHREItItWyD7Iy9p4GVncS8bpjj5Hx9LQf9YTfilVMjMoutLYEMCLM2o=
+	t=1780160475; cv=none; b=nY8HXRsGr/CeeDXSvMMnWLe2I+zsp3uQqd8hoPAo+yuelpyAJkrNXxU8B+KYoyC37CUWnHJzFIyT+Y3h4jr3TtRyVGAl6mhF6qxt6NvFIOkTYTVViul9qbOLqN9ner2VrYT8ushg3ena867kNp+Zbh35/a9kNifVhSkkfy7b3wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163254; c=relaxed/simple;
-	bh=Ff64B8fWcF3F96qEgyB139FQ4e66gZ6veRtJ+rFEvYs=;
+	s=arc-20240116; t=1780160475; c=relaxed/simple;
+	bh=TcnWZDFMUZ0nL1v1rEbHYjODfCQ/+l+ujqwn2FieoVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=inAefaw+ewtTAUfB+qPyTeahqGVaMQlPwdEiLSZq3BzLFDYSfafzd/FV56oJEiXoyKk/i1jN8Vke24wLswab3ZV3n6AMWsEO3o+bYywKMbwQfkN1UqUL+i1prM8a2sBQnWVKcnZAdZZAzeUxcXhLDMinLWyYxLEWD3St3lDKYy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWCUQSnI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF531F00893;
-	Sat, 30 May 2026 17:47:31 +0000 (UTC)
+	 MIME-Version; b=YTA+iFgGpIp+/uKDFrjBhizT9zPuyDhmvK8K+lV56ef767SYVqTh3goZjzaTgymotnM3qF5j/GwoCOpcm0LlYTtZhuQ0zOSFoj5d8fomZGOtW2avoh6gfpngUsLnoAxXBtvyFdKQXChh3oq6a17aihkyW0aTnN9pWYqEw9dKFjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWDRvZ+g; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D191F00893;
+	Sat, 30 May 2026 17:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163252;
-	bh=1nR4AiNfossZXVgtTJh5RFkHNG6JSqfzSyspmQSSmts=;
+	s=korg; t=1780160474;
+	bh=dj+WRKY4/vwyXVr4+SFRBICOZeQzn1+S3MHmLqLvPvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PWCUQSnIsm5PLIBMRrX/5ZcIxFlUuZhhtuqLYn9u2g/RHNFXbwW6+mi14HRp+z8R5
-	 YDnt7K7LPoEaQpPmqNL6ROkSdgkCAdnjeX/FmSkwPG/W6PaZCwXncUDZ5OU/gIZVkT
-	 aXUE8CONbC17tBuJF/mXXqr5ulVhrSM+9cpOVeAk=
+	b=iWDRvZ+gYPlmRfVl2qt/ZWt6RY1QHERyixZae0hrE4SZfo2UfhD/itSSw8pnMCpc1
+	 e4UayxiARepau3NniMOa0Ik4PBcg2SiUfv+n+yv5kUnRIXXUsV74mtcvWkrBkXZZmv
+	 6H5u0XkqA0FVumq8Vop0/45KePA2wDSBxuAE9pts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
-	Johnny Hao <johnny_haocn@sina.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.15 159/776] md/md-bitmap: Synchronize bitmap_get_stats() with bitmap lifetime
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.1 349/969] dm-thin: fix metadata refcount underflow
 Date: Sat, 30 May 2026 17:57:53 +0200
-Message-ID: <20260530160244.581821421@linuxfoundation.org>
+Message-ID: <20260530160309.993837776@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,119 +64,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,kernel.org,sina.com,oracle.com];
-	TAGGED_FROM(0.00)[bounces-258111-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257287-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sina.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,huawei.com:email]
-X-Rspamd-Queue-Id: 16734610A2D
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2924560EEBB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 8d28d0ddb986f56920ac97ae704cc3340a699a30 ]
+commit 09a65adc7d8bbfce06392cb6d375468e2728ead5 upstream.
 
-After commit ec6bb299c7c3 ("md/md-bitmap: add 'sync_size' into struct
-md_bitmap_stats"), following panic is reported:
+There's a bug in dm-thin in the function rebalance_children. If the
+internal btree node has one entry, the code tries to copy all btree
+entries from the node's child to the node itself and then decrement the
+child's reference count.
 
-Oops: general protection fault, probably for non-canonical address
-RIP: 0010:bitmap_get_stats+0x2b/0xa0
-Call Trace:
- <TASK>
- md_seq_show+0x2d2/0x5b0
- seq_read_iter+0x2b9/0x470
- seq_read+0x12f/0x180
- proc_reg_read+0x57/0xb0
- vfs_read+0xf6/0x380
- ksys_read+0x6c/0xf0
- do_syscall_64+0x82/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+If the child node is shared (it has reference count > 1), we won't free
+it, so there would be two pointers to each of the grandchildren nodes.
+But the reference counts of the grandchildren is not increased, thus the
+reference count doesn't match the number of pointers that point to the
+grandchildren. This results in "device mapper: space map common: unable
+to decrement block" errors.
 
-Root cause is that bitmap_get_stats() can be called at anytime if mddev
-is still there, even if bitmap is destroyed, or not fully initialized.
-Deferenceing bitmap in this case can crash the kernel. Meanwhile, the
-above commit start to deferencing bitmap->storage, make the problem
-easier to trigger.
+Fix this bug by incrementing reference counts on the grandchildren if the
+btree node is shared.
 
-Fix the problem by protecting bitmap_get_stats() with bitmap_info.mutex.
-
-Cc: stable@vger.kernel.org # v6.12+
-Fixes: 32a7627cf3a3 ("[PATCH] md: optimised resync using Bitmap based intent logging")
-Reported-and-tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Closes: https://lore.kernel.org/linux-raid/ca3a91a2-50ae-4f68-b317-abd9889f3907@oracle.com/T/#m6e5086c95201135e4941fe38f9efa76daf9666c5
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20250124092055.4050195-1-yukuai1@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
-[ The context change is due to the commit 38f287d7e495
-("md/md-bitmap: replace md_bitmap_status() with a new helper md_bitmap_get_stats()")
-in v6.12 and the commit f9cfe7e7f96a ("md: Fix md_seq_ops() regressions") in v6.8
-which are irrelevant to the logic of this patch. ]
-Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 3241b1d3e0aa ("dm: add persistent data library")
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md-bitmap.c |    4 ++++
- drivers/md/md.c        |    4 ++++
- 2 files changed, 8 insertions(+)
+ drivers/md/persistent-data/dm-btree-remove.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2033,6 +2033,10 @@ void md_bitmap_status(struct seq_file *s
+--- a/drivers/md/persistent-data/dm-btree-remove.c
++++ b/drivers/md/persistent-data/dm-btree-remove.c
+@@ -486,12 +486,20 @@ static int rebalance_children(struct sha
  
- 	if (!bitmap)
- 		return;
-+	if (bitmap->mddev->bitmap_info.external)
-+		return;
-+	if (!bitmap->storage.sb_page) /* no superblock */
-+		return;
+ 	if (le32_to_cpu(n->header.nr_entries) == 1) {
+ 		struct dm_block *child;
++		int is_shared;
+ 		dm_block_t b = value64(n, 0);
  
- 	counts = &bitmap->counts;
- 
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -8300,6 +8300,9 @@ static int md_seq_show(struct seq_file *
- 		return 0;
- 	}
- 
-+	/* prevent bitmap to be freed after checking */
-+	mutex_lock(&mddev->bitmap_info.mutex);
++		r = dm_tm_block_is_shared(info->tm, b, &is_shared);
++		if (r)
++			return r;
 +
- 	spin_lock(&mddev->lock);
- 	if (mddev->pers || mddev->raid_disks || !list_empty(&mddev->disks)) {
- 		seq_printf(seq, "%s : %sactive", mdname(mddev),
-@@ -8371,6 +8374,7 @@ static int md_seq_show(struct seq_file *
- 		seq_printf(seq, "\n");
- 	}
- 	spin_unlock(&mddev->lock);
-+	mutex_unlock(&mddev->bitmap_info.mutex);
+ 		r = dm_tm_read_lock(info->tm, b, &btree_node_validator, &child);
+ 		if (r)
+ 			return r;
  
- 	return 0;
- }
++		if (is_shared)
++			inc_children(info->tm, dm_block_data(child), vt);
++
+ 		memcpy(n, dm_block_data(child),
+ 		       dm_bm_block_size(dm_tm_get_bm(info->tm)));
+ 
 
 
 
