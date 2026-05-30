@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-257767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259148-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8NijODwfG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257767-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:44 +0200
+	id QBCSMYgxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259148-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6774960FE06
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47E31612975
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9884A3064468
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:28:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7DF5D304A661
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43EBD344DA4;
-	Sat, 30 May 2026 17:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D59A15E5BB;
+	Sat, 30 May 2026 18:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMEESzYA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKvTg9Qt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C32342CA7;
-	Sat, 30 May 2026 17:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7494F238D52;
+	Sat, 30 May 2026 18:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162104; cv=none; b=quSMxIFXBj+yKZeekUHOZ6YxaiIK95BqjIjY2QrEdAh8iOHeoNbxIPRNrOIsHs/V9NnMD+W1QK7sF+IngB2V6tv8q1OPD2C0dJLAFbGbT2Ioe+1r3GgY+4qAz5sFOWHFKT02pYe6yfWGl6CWtKqEgvBEQK+GfNMltH9DLthy5aE=
+	t=1780166768; cv=none; b=FEJgBc7tC18o2muSt/QjtGazWNigW7LvYEmAGfxKT9Q520pl/R/NL6pLKf2TEtmPySKF5aDY15th0APUBsW2Y7hOYvyuJnqsfgI2FeHiw3vmEqqg8GUFJkE+LNhdkTDLeUFIbsMor/HCsiE4zVrWjpqlmwfyEJPadwUztpUILbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162104; c=relaxed/simple;
-	bh=L2E2WD5PgWxBfCze76ffiHIj35ChVL7OUIjexTLXo4c=;
+	s=arc-20240116; t=1780166768; c=relaxed/simple;
+	bh=mqBhXEIqDTeW8d69FTh4kDzUVZ2LVSK1DHct5CRKhOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=imeoH6tM8/888FjW1kvtzaALTvDc87l2ToBmn2VN0GfKhbEbkmJO2N8fjrMFEB62LpnZAmkSgvX9u6YWLADK8+GAOoJSeaKdMf+XpZLCpYDf6VsQf5qQvuvz87kSz0agRpzu34CaMEJj4Ru0xxuqrh09Pus6rdo6FZKcFBfh5UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMEESzYA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C9F1F00893;
-	Sat, 30 May 2026 17:28:22 +0000 (UTC)
+	 MIME-Version; b=iDGU/Kq3m1YiJIO7xXUAuHVEVciCltXWmh2siw8Q00ODuj1L9o3aHQ8AEaN+2ZLb2qT6KCW29DU7zvGcsebAPeeh3SXx2re19GVlu9RdOeDg6YSq8TkTHPfJoMFNgyErvZP/ZJJHNm2cejJZcgaBfpJbAt0LLSc2D5Upv2NBuEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKvTg9Qt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95ACF1F00898;
+	Sat, 30 May 2026 18:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162103;
-	bh=RaoQP05yVMSKeMj18Y6m4ZpJl1r3UGDiQ6rB/1MyLZY=;
+	s=korg; t=1780166767;
+	bh=SkTvnonTr69K138JbaawG6b1tIt+0kAcV8gtNtqs3jc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iMEESzYA1tHXtpLsdUGNzzqAc8o7QJfbfuu6s6bQuVnkZpZTA801hDnG2Ttkh7QKE
-	 +qsc6msLiSz+IAb13/NRtOjaCAjnosl+aCrI4yper2/g1O/3PIBdBEGzDBKTjJvk2b
-	 /iV0Jr2zUnv5cucHEhovYXxpvzrwEhxmEpAHQPfQ=
+	b=CKvTg9Qtna2NygM3seh1/Um+Q3WNd0VLT6TslanrULZfNrSyUHKOL13QW85nD6iXT
+	 aWyqDs/TchLtqAVNBcWhheOVa7e6VH+kQuImSa0+JiFHzMtxBMDgU2oYQh1vjtaLii
+	 kOAhszwa/q9I9GZt4XNadF/hWVfl1V9iAuVTx2J4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.1 821/969] libceph: Fix potential null-ptr-deref in decode_choose_args()
+	Qu Wenruo <wqu@suse.com>,
+	Mark Harmstone <mark@harmstone.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 464/589] btrfs: fix double-decrement of bytes_may_use in submit_one_async_extent()
 Date: Sat, 30 May 2026 18:05:45 +0200
-Message-ID: <20260530160323.312213509@linuxfoundation.org>
+Message-ID: <20260530160236.862566526@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +67,81 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257767-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259148-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tu-ilmenau.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6774960FE06
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,harmstone.com:email]
+X-Rspamd-Queue-Id: 47E31612975
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Mark Harmstone <mark@harmstone.com>
 
-commit 28b0a2ab8c82d0bbdeb8013029c67c978ce6e4bf upstream.
+[ Upstream commit 82323b1a7088b7a5c3e528a5d634bff447fa286f ]
 
-A message of type CEPH_MSG_OSD_MAP contains an OSD map that itself
-contains a CRUSH map. When decoding this CRUSH map in crush_decode(), an
-array of max_buckets CRUSH buckets is decoded, where some indices may
-not refer to actual buckets and are therefore set to NULL. The received
-CRUSH map may optionally contain choose_args that get decoded in
-decode_choose_args(). When decoding a crush_choose_arg_map, a series of
-choose_args for different buckets is decoded, with the bucket_index
-being read from the incoming message. It is only checked that the bucket
-index does not exceed max_buckets, but not that it doesn't point to an
-index with a NULL bucket. If a (potentially corrupted) message contains
-a crush_choose_arg_map including such a bucket_index, a null pointer
-dereference may occur in the subsequent processing when attempting to
-access the bucket with the given index.
+submit_one_async_extent() calls btrfs_reserve_extent(), which decrements
+bytes_may_use. If the call btrfs_create_io_em() fails, we jump to
+out_free_reserve, which calls extent_clear_unlock_delalloc().
 
-This patch fixes the issue by extending the affected check. Now, it is
-only attempted to access the bucket if it is not NULL.
+Because we're specifying EXTENT_DO_ACCOUNTING, i.e.
+EXTENT_CLEAR_META_RESV | EXTENT_CLEAR_DATA_RESV, this decreases
+bytes_may_use again. This can lead to problems later on, as an initial
+write can fail only for the writeback to silently ENOSPC.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by replacing EXTENT_DO_ACCOUNTING with EXTENT_CLEAR_META_RESV.
+This parallels a4fe134fc1d8eb ("btrfs: fix a double release on reserved
+extents in cow_one_range()"), which is the same fix in cow_one_range().
+
+Fixes: 151a41bc46df ("Btrfs: fix what bits we clear when erroring out from delalloc")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Mark Harmstone <mark@harmstone.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osdmap.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -390,7 +390,8 @@ static int decode_choose_args(void **p,
- 				goto fail;
- 
- 			if (arg->ids_size &&
--			    arg->ids_size != c->buckets[bucket_index]->size)
-+			    (!c->buckets[bucket_index] ||
-+			     arg->ids_size != c->buckets[bucket_index]->size))
- 				goto e_inval;
- 		}
- 
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 6d2d799a0ed25..3631d05746073 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -918,7 +918,7 @@ static noinline void submit_compressed_extents(struct async_chunk *async_chunk)
+ 				     async_extent->ram_size - 1,
+ 				     NULL, EXTENT_LOCKED | EXTENT_DELALLOC |
+ 				     EXTENT_DELALLOC_NEW |
+-				     EXTENT_DEFRAG | EXTENT_DO_ACCOUNTING,
++				     EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV,
+ 				     PAGE_UNLOCK | PAGE_START_WRITEBACK |
+ 				     PAGE_END_WRITEBACK | PAGE_SET_ERROR);
+ 	free_async_extent_pages(async_extent);
+-- 
+2.53.0
+
 
 
 
