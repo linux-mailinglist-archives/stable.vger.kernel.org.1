@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257967-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLrtL6siG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:23 +0200
+	id yJklMk8iG2oN/ggAu9opvQ
+	(envelope-from <stable+bounces-257967-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55310610630
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35AF0610547
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E9893061DFD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:39:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 15348300DF56
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F8034C9AF;
-	Sat, 30 May 2026 17:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B7D3469FC;
+	Sat, 30 May 2026 17:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4xT/e9f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vwmmgnj9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66DE39478D;
-	Sat, 30 May 2026 17:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080542E7379;
+	Sat, 30 May 2026 17:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162775; cv=none; b=KJgx5AT9SFO/Wp5W5q6GtyPH5k35QDTgYq4gctgh/TFkxrOsrjlfirKkeRq38bw5Y4zafEDP3a6LqsoE+DBtdXP9puDPQ/cwW8D9p4oquVLeCqDYf5nNiLQulS9WKHYLpI6n4+j14o2dIfo/KGM97LcwycfHp3BS7hwdkOL0lpg=
+	t=1780162779; cv=none; b=cWZLTmigA60JkCGyQK4146wuAPWGniRATN+RX38FLNq/8KUyC9Ny2jGgJRnAQmjSE+ED6UeL0dtcEx2WbKYZ0wpe4nokI4Yas5qi56N3ekFTR+zf+2u/z3FBBFeXjfS6fFUDYENgRn1cBwReVzKlBQ5v1Tqz/rgCJk34gMHbsHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162775; c=relaxed/simple;
-	bh=XY3tIEQ4uKsI9m74MnNTOO8ekmdUKcusuGG3JUUpmL0=;
+	s=arc-20240116; t=1780162779; c=relaxed/simple;
+	bh=iKEtOjHWqCANjT/iUK+q5cv6tCQQMb549W0V/C8wAiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bEm9bBOFN6PRxVbA8x2MAjOfAE7la/5gTjVVtd2rcQTxohU3J985U/r1c3zKnYksZaToKHvVxuIK+JORswCEyATBYD773dgRSUgNZd+smZsCvHXjG/pGhvCXgTkC8PHjmV83xv87xaRLH6F7BzvKurZ7aCKodFre3kg0QllZfA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4xT/e9f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C771F00893;
-	Sat, 30 May 2026 17:39:33 +0000 (UTC)
+	 MIME-Version; b=EyVyv6/j5QSmQVBXwy1pYXTW0yDmIaeV7JOZc8HU7MWXDmBljHGgXbXgOHQkvvYVQ6Jbr2hFrspi6Gx9Xq/eMJ1u2QTxT50kMRa72z/Ab98SMgxi8+bQGcwA+7H/ttfD0QVFgyAVHUmBFEf3VHEOKbVdY5rl1KnBVgsnl0CqKCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vwmmgnj9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5371F00893;
+	Sat, 30 May 2026 17:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162774;
-	bh=kv7uZNX6+/Rk1wkXgCfS2SVEvNNScNSs3Nz+T8kceDQ=;
+	s=korg; t=1780162777;
+	bh=0sLKUf792tJQ8It8phy+da6KwEpOPmcU6Va3DEQ2ZsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q4xT/e9fxsJfiwoENo+SokxWJjcxFweDPpH2gpwt0SJzwNjHKeDjv0bHJQa+/t8U8
-	 ZKkMixQLzWlDtQ9n4StsyhitN0E77EsAjxqM/bx2xTSEP02gvQ9dsxAIx9Jlr94AfY
-	 TEQvJ4Rqe8RE1Si92CqV90CoU8DFS9OPRLsGLwjM=
+	b=Vwmmgnj96huhwYCzkCCbOnls71WvCNY1dzODJW8hgVWuYD/zdG1HGAx5zq3/j1bM9
+	 1cnkpvkPSRCV5m5r/oRic40w3OKITMW3BSR1obrZ8yPR9JiKFY0S3LMRmmFVLEuvfL
+	 sNJo8qBded7OkzBeVXgN+VAitFLQGU7i1zguaBL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Thierry Escande <thierry.escande@linux.intel.com>,
-	Samuel Ortiz <sameo@linux.intel.com>,
+	Clemens Ladisch <clemens@ladisch.de>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
 	stable <stable@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 059/776] NFC: digital: Bounds check NFC-A cascade depth in SDD response handler
-Date: Sat, 30 May 2026 17:56:13 +0200
-Message-ID: <20260530160241.841130989@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 060/776] ALSA: fireworks: bound device-supplied status before string array lookup
+Date: Sat, 30 May 2026 17:56:14 +0200
+Message-ID: <20260530160241.867143586@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
 References: <20260530160240.228940103@linuxfoundation.org>
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257966-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257967-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,13 +88,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 55310610630
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,perex.cz:email,msgid.link:url,suse.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 35AF0610547
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,57 +104,51 @@ X-Rspamd-Server: lfdr
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 46ce8be2ced389bccd84bcc04a12cf2f4d0c22d1 upstream.
+commit 07704bbf36f57e4379e4cadf96410dab14621e3b upstream.
 
-The NFC-A anti-collision cascade in digital_in_recv_sdd_res() appends 3
-or 4 bytes to target->nfcid1 on each round, but the number of cascade
-rounds is controlled entirely by the peer device.  The peer sets the
-cascade tag in the SDD_RES (deciding 3 vs 4 bytes) and the
-cascade-incomplete bit in the SEL_RES (deciding whether another round
-follows).
+The status field in an EFW response is a 32-bit value supplied by the
+firewire device.  efr_status_names[] has 17 entries so a status value
+outside that range goes off into the weeds when looking at the %s value.
 
-ISO 14443-3 limits NFC-A to three cascade levels and target->nfcid1 is
-sized accordingly (NFC_NFCID1_MAXSIZE = 10), but nothing in the driver
-actually enforces this.  This means a malicious peer can keep the
-cascade running, writing past the heap-allocated nfc_target with each
-round.
+Even worse, the status could return EFR_STATUS_INCOMPLETE which is
+0x80000000, and is obviously not in that array of potential strings.
 
-Fix this by rejecting the response when the accumulated UID would exceed
-the buffer.
+Fix this up by properly bounding the index against the array size and
+printing "unknown" if it's not recognized.
 
-Commit e329e71013c9 ("NFC: nci: Bounds check struct nfc_target arrays")
-fixed similar missing checks against the same field on the NCI path.
-
-Cc: Simon Horman <horms@kernel.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Thierry Escande <thierry.escande@linux.intel.com>
-Cc: Samuel Ortiz <sameo@linux.intel.com>
-Fixes: 2c66daecc409 ("NFC Digital: Add NFC-A technology support")
+Cc: Clemens Ladisch <clemens@ladisch.de>
+Cc: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Fixes: bde8a8f23bbe ("ALSA: fireworks: Add transaction and some commands")
 Cc: stable <stable@kernel.org>
 Assisted-by: gregkh_clanker_t1000
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026040913-figure-seducing-bd3f@gregkh
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://patch.msgid.link/2026040953-astute-camera-1aa1@gregkh
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/digital_technology.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/firewire/fireworks/fireworks_command.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/nfc/digital_technology.c
-+++ b/net/nfc/digital_technology.c
-@@ -424,6 +424,12 @@ static void digital_in_recv_sdd_res(stru
- 		size = 4;
- 	}
- 
-+	if (target->nfcid1_len + size > NFC_NFCID1_MAXSIZE) {
-+		PROTOCOL_ERR("4.7.2.1");
-+		rc = -EPROTO;
-+		goto exit;
-+	}
+--- a/sound/firewire/fireworks/fireworks_command.c
++++ b/sound/firewire/fireworks/fireworks_command.c
+@@ -151,10 +151,13 @@ efw_transaction(struct snd_efw *efw, uns
+ 	    (be32_to_cpu(header->category) != category) ||
+ 	    (be32_to_cpu(header->command) != command) ||
+ 	    (be32_to_cpu(header->status) != EFR_STATUS_OK)) {
++		u32 st = be32_to_cpu(header->status);
 +
- 	memcpy(target->nfcid1 + target->nfcid1_len, sdd_res->nfcid1 + offset,
- 	       size);
- 	target->nfcid1_len += size;
+ 		dev_err(&efw->unit->device, "EFW command failed [%u/%u]: %s\n",
+ 			be32_to_cpu(header->category),
+ 			be32_to_cpu(header->command),
+-			efr_status_names[be32_to_cpu(header->status)]);
++			st < ARRAY_SIZE(efr_status_names) ?
++				efr_status_names[st] : "unknown");
+ 		err = -EIO;
+ 		goto end;
+ 	}
 
 
 
