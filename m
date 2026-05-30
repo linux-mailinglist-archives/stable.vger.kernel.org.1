@@ -1,68 +1,65 @@
-Return-Path: <stable+bounces-258156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GDuMG1AjG2pa/ggAu9opvQ
-	(envelope-from <stable+bounces-258156-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:08 +0200
+	id cK1WLPwrG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FDB46107C3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 596A2611C37
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 93B3A3003816
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2ADDD304E665
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33A6349CCF;
-	Sat, 30 May 2026 17:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7800C21ADC7;
+	Sat, 30 May 2026 18:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRPf7/S7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6e+HjOP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9D4261B9E;
-	Sat, 30 May 2026 17:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430C9217704;
+	Sat, 30 May 2026 18:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163403; cv=none; b=u3B+lnD7vou20q8pE/0vt4zXiz6/HuKy/8RY62xMbvsx8WomAWkBbFTcxFMTqVYylfnjF1pSGjJjC3kaRSXlA7iaiWmSjlyhbTfNErOInHEbCHumMmzIUzK+kX8jlwl4swP8of3BeWws2uZEdZ0Vyv3OTDmfoaNAK/3UxGYpAwQ=
+	t=1780165484; cv=none; b=fIGUOapcxVtNVUgEYpA0qZmIzRDtznM1LdCHUERYNhftSvo/5o3NxXDwp2CD35hJlrdRorU3pxiH4wgArgZy611vN+SyTaXkF25PeJnUI9mzaWZWvXq1Oeu0UaORS/tVXYigqOPs2jAxadSoG2gpzYYWXgOx2B0fcb+0gB9MfCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163403; c=relaxed/simple;
-	bh=uh8blkUR7pPKRg+a64gz1655VrrXqSTIEEHR7+pcJyU=;
+	s=arc-20240116; t=1780165484; c=relaxed/simple;
+	bh=qcrAOaSPFFwey8POak9iun+HB52kZ37ZENuw9KKt/d4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WeuF6Nq6lxM2SxXLGQR6KSKRf4T3IvweLURCiE8toJobD+HBWS+PlE5WNMp59IneS+yPuXojVYbZZU3hM3xeKtUJVMr8x+xQWNhUM90u6cu6HFv+5R+kVI2PqcgE99vCbgT2PD7OLGj4OahWMUAFG28/Oi3QKlemXRx18U0Js9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRPf7/S7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA99F1F00893;
-	Sat, 30 May 2026 17:50:01 +0000 (UTC)
+	 MIME-Version; b=m/BursoeXBBq//2QB7wTM1d0VhwjU07cvglt3XwW9iPeKlvpNVr/0eYTc4ogaNWxVo2E9F8czuRDND7bBYnAPNPis7noQdM06M9XS5o/BsVEO8K/Pml7EMfnXlDI3v6qh6oA/3GqnKDjvr5jxgp15IK4c6Ho1kL+5D/3DvPaRpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6e+HjOP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890011F00893;
+	Sat, 30 May 2026 18:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163402;
-	bh=QXN0l+4nuta6iZuue7cMfO3DE1QNMmXjzOym0OOfx7s=;
+	s=korg; t=1780165483;
+	bh=SISY/crXphpqRWx/tTpwv4AHnR6uQeKQ3ysY6N941E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jRPf7/S7FqoRG6/s+q3j7JWClqTiyitodzL0br58dGe2YduS8a+pwrcOErLd2Fm/X
-	 IuJUjWVscm+oVyr+o0HjeMvEJUJvz0GXWPvDnRtE9hGGleo+Ak181ri/JWiq2vGR4b
-	 OeyUM3K3UYvkSuW/mv5rwlKwDHGiFhsAOjWCr8Iw=
+	b=y6e+HjOPplxLIEpFQOhCBxhXRzw0siz5cavpNCbQxoon9wxbMvxMNUU4EnRIxdGRK
+	 N5oNRFC7RcPCn/f3pNn7vvcKHxNqB1jRH3m0j8A8pUUxOpGpYeUZXc4FIeOB74ZiUA
+	 bAcxl7ZC4ctEbCuOkMJBNqYNqSn/8+3A+pV4Sk44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Denis M. Karpov" <komlomal@gmail.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Harry Yoo (Oracle)" <harry@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jann Horn <jannh@google.com>,
-	Peter Xu <peterx@redhat.com>,
+	ZhengYuan Huang <gality369@gmail.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 230/776] userfaultfd: allow registration of ranges below mmap_min_addr
-Date: Sat, 30 May 2026 17:59:04 +0200
-Message-ID: <20260530160246.471857564@linuxfoundation.org>
+Subject: [PATCH 5.10 064/589] ocfs2: handle invalid dinode in ocfs2_group_extend
+Date: Sat, 30 May 2026 17:59:05 +0200
+Message-ID: <20260530160226.283490895@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,92 +75,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258156-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,suse.de,oracle.com,zeniv.linux.org.uk,suse.cz,google.com,redhat.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-258771-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,oracle.com:email,linux.org.uk:email]
-X-Rspamd-Queue-Id: 0FDB46107C3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,live.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 596A2611C37
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis M. Karpov <komlomal@gmail.com>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-commit 161ce69c2c89781784b945d8e281ff2da9dede9c upstream.
+commit 4a1c0ddc6e7bcf2e9db0eeaab9340dcfe97f448f upstream.
 
-The current implementation of validate_range() in fs/userfaultfd.c
-performs a hard check against mmap_min_addr.  This is redundant because
-UFFDIO_REGISTER operates on memory ranges that must already be backed by a
-VMA.
+[BUG]
+kernel BUG at fs/ocfs2/resize.c:308!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+RIP: 0010:ocfs2_group_extend+0x10aa/0x1ae0 fs/ocfs2/resize.c:308
+Code: 8b8520ff ffff83f8 860f8580 030000e8 5cc3c1fe
+Call Trace:
+ ...
+ ocfs2_ioctl+0x175/0x6e0 fs/ocfs2/ioctl.c:869
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
+ x64_sys_call+0x1144/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:17
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ ...
 
-Enforcing mmap_min_addr or capability checks again in userfaultfd is
-unnecessary and prevents applications like binary compilers from using
-UFFD for valid memory regions mapped by application.
+[CAUSE]
+ocfs2_group_extend() assumes that the global bitmap inode block
+returned from ocfs2_inode_lock() has already been validated and
+BUG_ONs when the signature is not a dinode. That assumption is too
+strong for crafted filesystems because the JBD2-managed buffer path
+can bypass structural validation and return an invalid dinode to the
+resize ioctl.
 
-Remove the redundant check for mmap_min_addr.
+[FIX]
+Validate the dinode explicitly in ocfs2_group_extend(). If the global
+bitmap buffer does not contain a valid dinode, report filesystem
+corruption with ocfs2_error() and fail the resize operation instead of
+crashing the kernel.
 
-We started using UFFD instead of the classic mprotect approach in the
-binary translator to track application writes.  During development, we
-encountered this bug.  The translator cannot control where the translated
-application chooses to map its memory and if the app requires a
-low-address area, UFFD fails, whereas mprotect would work just fine.  I
-believe this is a genuine logic bug rather than an improvement, and I
-would appreciate including the fix in stable.
-
-Link: https://lore.kernel.org/20260409103345.15044-1-komlomal@gmail.com
-Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
-Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jann Horn <jannh@google.com>
-Cc: Peter Xu <peterx@redhat.com>
+Link: https://lkml.kernel.org/r/20260401092303.3709187-1-gality369@gmail.com
+Fixes: 10995aa2451a ("ocfs2: Morph the haphazard OCFS2_IS_VALID_DINODE() checks.")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/userfaultfd.c |    2 --
- 1 file changed, 2 deletions(-)
+ fs/ocfs2/resize.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -1242,8 +1242,6 @@ static __always_inline int validate_rang
- 		return -EINVAL;
- 	if (!len)
- 		return -EINVAL;
--	if (start < mmap_min_addr)
--		return -EINVAL;
- 	if (start >= task_size)
- 		return -EINVAL;
- 	if (len > task_size - start)
+--- a/fs/ocfs2/resize.c
++++ b/fs/ocfs2/resize.c
+@@ -297,9 +297,13 @@ int ocfs2_group_extend(struct inode * in
+ 
+ 	fe = (struct ocfs2_dinode *)main_bm_bh->b_data;
+ 
+-	/* main_bm_bh is validated by inode read inside ocfs2_inode_lock(),
+-	 * so any corruption is a code bug. */
+-	BUG_ON(!OCFS2_IS_VALID_DINODE(fe));
++	/* JBD-managed buffers can bypass validation, so treat this as corruption. */
++	if (!OCFS2_IS_VALID_DINODE(fe)) {
++		ret = ocfs2_error(main_bm_inode->i_sb,
++				  "Invalid dinode #%llu\n",
++				  (unsigned long long)OCFS2_I(main_bm_inode)->ip_blkno);
++		goto out_unlock;
++	}
+ 
+ 	if (le16_to_cpu(fe->id2.i_chain.cl_cpg) !=
+ 		ocfs2_group_bitmap_size(osb->sb, 0,
 
 
 
