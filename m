@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-258160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258765-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OO9dIJUjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258160-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:17 +0200
+	id uMJBOekrG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258765-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DBB610855
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68AF0611BFC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 804303001846
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6C9C630A8F9D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9145341AC7;
-	Sat, 30 May 2026 17:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D641D25B0B3;
+	Sat, 30 May 2026 18:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRiuUBHl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6Cw3vpQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9317134104B;
-	Sat, 30 May 2026 17:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D733219303;
+	Sat, 30 May 2026 18:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163416; cv=none; b=r4DMOOsiraCvduB2LS5JahNUBpdQip8Q8+sOI51sknnqP20PHve6AhATMa2QabrDW4HxZNp2s6X21p3nYFpMMWQCQGaH0kFV6ymH0pxbe9ioAuHIwzivBhqYUyW93i3D0Xiav9P485BPkQhKkjLCFsNRxvOb2jw8NrvxQW5VrQg=
+	t=1780165463; cv=none; b=rzfv6651Fkr/Xgm8m3SBOmoqlOECaMJGMzS+czPzbq2aSMm+fesLTCc78xD8pQ38rxdPXrWncA7S/Qoram6k0KaqarIQ/tbUHo6fZcJrF0BnUaMs/QTo6gvnFjlwRbwzniw1ohrKVNO6HDS1exBWeU+pbMKcsL61/7wQ7LxTZYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163416; c=relaxed/simple;
-	bh=+Yo2JfMOnsmZ6JjUMEOsuI7Yhj6BzwRCVYwkgQ/lAfw=;
+	s=arc-20240116; t=1780165463; c=relaxed/simple;
+	bh=C8CYzjzHloGKjDZ9RvX2UVKIQPpXjOwJWxcc9ewj0/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tl8VRAG9ARARoMzO8lrtQtnCLbJ5u9HsQQiCWh0uJSrhdHzPiytnOsI78YvZogem3eCoU1Odw8Un+Smx+SefUS27199RNrIlCQKg6TRPun97epA3E8MCAsQmy7sAziM3u3eJC7x2PoXss3SqoJg+mDJUh45BjAwIZ0AMwGTV1IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRiuUBHl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B951F00893;
-	Sat, 30 May 2026 17:50:14 +0000 (UTC)
+	 MIME-Version; b=d/FaQHbq4KX7tOwV+an4KQX4kLdWufpBMN9zXUwKI16NtH0yNBJuS6jmFU8AAdpFbLohIElNqmhmZqIcm5JpzJukt+bMEV7768CfHIA+5rttDdFbhGabQcyE5kwZCHfWyEIFaCH1WF2VKEb9iP5Qfcp4A3GZFTNFB+tTVSNSfNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6Cw3vpQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E581F00893;
+	Sat, 30 May 2026 18:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163415;
-	bh=77l2UOKurVcI1k9ezP6vzJ2aCSoW9jPyw5fZ4z0Xe8k=;
+	s=korg; t=1780165462;
+	bh=exU3kZgJEnaGRbimMrqxXEPuJP5Ew6Cyv782l9gRAj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mRiuUBHluc5CF98Fo5wXSGYD/1YI/71YogdS7AYszXRkyiXk7HHYRNHYKRwIJ9La2
-	 QSI7/xA4GHqF+s8vpM1pp4A658U2AaRMngqPlEihKVwRTzmGT5XSW/CF0vVcLCJu4x
-	 D2qRKtx2nQzeiokxYl1iconqdEuNemy1Vt3aDQ/Y=
+	b=p6Cw3vpQrEQ4tROI8zQ/q4hXxOTxx1ALj5frPENX2fVwe50XWtLt9J1nzfJRYokNl
+	 rOm4MScIlJJkPay9jCZH7xTRS39vebZEbhR96cYMSm2MH448Xolk6HJinyzHSZ9jt3
+	 G7QQ0A5uyzeUsO/Jmi0LEKHwNR9/iymmjCBE2uQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.15 251/776] crypto: atmel-aes - Fix 3-page memory leak in atmel_aes_buff_cleanup
-Date: Sat, 30 May 2026 17:59:25 +0200
-Message-ID: <20260530160247.019586031@linuxfoundation.org>
+	Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 085/589] scsi: qla2xxx: Fix warning message due to adisc being flushed
+Date: Sat, 30 May 2026 17:59:26 +0200
+Message-ID: <20260530160226.903035689@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,66 +72,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258765-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258160-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 82DBB610855
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[marvell.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email,altlinux.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 68AF0611BFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 3fcfff4ed35f963380a68741bcd52742baff7f76 upstream.
+commit 64f24af75b79cba3b86b0760e27e0fa904db570f upstream.
 
-atmel_aes_buff_init() allocates 4 pages using __get_free_pages() with
-ATMEL_AES_BUFFER_ORDER, but atmel_aes_buff_cleanup() frees only the
-first page using free_page(), leaking the remaining 3 pages. Use
-free_pages() with ATMEL_AES_BUFFER_ORDER to fix the memory leak.
+Fix warning message due to adisc being flushed.  Linux kernel triggered a
+warning message where a different error code type is not matching up with
+the expected type. Add additional translation of one error code type to
+another.
 
-Fixes: bbe628ed897d ("crypto: atmel-aes - improve performances of data transfer")
+WARNING: CPU: 2 PID: 1131623 at drivers/scsi/qla2xxx/qla_init.c:498
+qla2x00_async_adisc_sp_done+0x294/0x2b0 [qla2xxx]
+CPU: 2 PID: 1131623 Comm: drmgr Not tainted 5.13.0-rc1-autotest #1
+..
+GPR28: c000000aaa9c8890 c0080000079ab678 c00000140a104800 c00000002bd19000
+NIP [c00800000790857c] qla2x00_async_adisc_sp_done+0x294/0x2b0 [qla2xxx]
+LR [c008000007908578] qla2x00_async_adisc_sp_done+0x290/0x2b0 [qla2xxx]
+Call Trace:
+[c00000001cdc3620] [c008000007908578] qla2x00_async_adisc_sp_done+0x290/0x2b0 [qla2xxx] (unreliable)
+[c00000001cdc3710] [c0080000078f3080] __qla2x00_abort_all_cmds+0x1b8/0x580 [qla2xxx]
+[c00000001cdc3840] [c0080000078f589c] qla2x00_abort_all_cmds+0x34/0xd0 [qla2xxx]
+[c00000001cdc3880] [c0080000079153d8] qla2x00_abort_isp_cleanup+0x3f0/0x570 [qla2xxx]
+[c00000001cdc3920] [c0080000078fb7e8] qla2x00_remove_one+0x3d0/0x480 [qla2xxx]
+[c00000001cdc39b0] [c00000000071c274] pci_device_remove+0x64/0x120
+[c00000001cdc39f0] [c0000000007fb818] device_release_driver_internal+0x168/0x2a0
+[c00000001cdc3a30] [c00000000070e304] pci_stop_bus_device+0xb4/0x100
+[c00000001cdc3a70] [c00000000070e4f0] pci_stop_and_remove_bus_device+0x20/0x40
+[c00000001cdc3aa0] [c000000000073940] pci_hp_remove_devices+0x90/0x130
+[c00000001cdc3b30] [c0080000070704d0] disable_slot+0x38/0x90 [rpaphp] [
+c00000001cdc3b60] [c00000000073eb4c] power_write_file+0xcc/0x180
+[c00000001cdc3be0] [c0000000007354bc] pci_slot_attr_store+0x3c/0x60
+[c00000001cdc3c00] [c00000000055f820] sysfs_kf_write+0x60/0x80 [c00000001cdc3c20]
+[c00000000055df10] kernfs_fop_write_iter+0x1a0/0x290
+[c00000001cdc3c70] [c000000000447c4c] new_sync_write+0x14c/0x1d0
+[c00000001cdc3d10] [c00000000044b134] vfs_write+0x224/0x330
+[c00000001cdc3d60] [c00000000044b3f4] ksys_write+0x74/0x130
+[c00000001cdc3db0] [c00000000002df70] system_call_exception+0x150/0x2d0
+[c00000001cdc3e10] [c00000000000d45c] system_call_common+0xec/0x278
+
+Link: https://lore.kernel.org/r/20220110050218.3958-5-njavali@marvell.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ kovalev: bp to fix CVE-2022-49158; in qla2x00_async_prli_sp_done used
+  'if (res)' instead of 'else if (res)' due to the older kernel not having
+  the preceding QLA_OS_TIMER_EXPIRED check (see upstream commit 4de067e5df12) ]
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/atmel-aes.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_init.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/crypto/atmel-aes.c
-+++ b/drivers/crypto/atmel-aes.c
-@@ -2329,7 +2329,7 @@ static int atmel_aes_buff_init(struct at
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index 7b6227fde7beb..79b9571f63508 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -283,6 +283,8 @@ static void qla2x00_async_login_sp_done(srb_t *sp, int res)
+ 		ea.iop[0] = lio->u.logio.iop[0];
+ 		ea.iop[1] = lio->u.logio.iop[1];
+ 		ea.sp = sp;
++		if (res)
++			ea.data[0] = MBS_COMMAND_ERROR;
+ 		qla24xx_handle_plogi_done_event(vha, &ea);
+ 	}
  
- static void atmel_aes_buff_cleanup(struct atmel_aes_dev *dd)
- {
--	free_page((unsigned long)dd->buf);
-+	free_pages((unsigned long)dd->buf, ATMEL_AES_BUFFER_ORDER);
- }
+@@ -563,6 +565,8 @@ static void qla2x00_async_adisc_sp_done(srb_t *sp, int res)
+ 	ea.iop[1] = lio->u.logio.iop[1];
+ 	ea.fcport = sp->fcport;
+ 	ea.sp = sp;
++	if (res)
++		ea.data[0] = MBS_COMMAND_ERROR;
  
- static int atmel_aes_dma_init(struct atmel_aes_dev *dd)
+ 	qla24xx_handle_adisc_event(vha, &ea);
+ 
+@@ -1238,6 +1242,8 @@ static void qla2x00_async_prli_sp_done(srb_t *sp, int res)
+ 		ea.iop[0] = lio->u.logio.iop[0];
+ 		ea.iop[1] = lio->u.logio.iop[1];
+ 		ea.sp = sp;
++		if (res)
++			ea.data[0] = MBS_COMMAND_ERROR;
+ 
+ 		qla24xx_handle_prli_done_event(vha, &ea);
+ 	}
+-- 
+2.53.0
+
 
 
 
