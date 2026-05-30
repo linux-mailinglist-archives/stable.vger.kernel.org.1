@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258369-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DPpGx8cG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:27 +0200
+	id qNW2FuAoG2rg/ggAu9opvQ
+	(envelope-from <stable+bounces-258369-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 117DF60F644
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B76F3611469
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 32224301F83B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:17:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D45C53057047
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322D33998B1;
-	Sat, 30 May 2026 17:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67074349CC5;
+	Sat, 30 May 2026 18:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYMq0tEz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IcZqlwrb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5257F395AEA;
-	Sat, 30 May 2026 17:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DED23392B;
+	Sat, 30 May 2026 18:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161431; cv=none; b=CZ780vd3vxrUl/B7NrMrpABDK203ShXzPuD/fQFsCBnKplzBTvlFNHVYouboWwLQ2vowaUJTWPfIsp+sNeqfhs0GFHjuaeoQHwgs5roqnzhu4gPn7+OTWHrdzxE8wP9/Iog0rBt3oX3IOxw1+koSYaCUwhevYlyUb/uld1PuUPA=
+	t=1780164121; cv=none; b=k46AYGMrUC5XaHwn+X8qjJnvDsJ0gIDgK8hI96cgmp2QB/n5KfNVBCEdUMbD1gjRlEPukMWpOqEjhSZY1XcugJgfqh1ziwveHwFjAae8bUyGPZhi5DyyD6QDlo1s1ma87SZnDJFe7QcMddk4htwpfOlNMZIuylMg8Fro4Aw/LT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161431; c=relaxed/simple;
-	bh=KzyNA6MsYBtn8tOvMwVhCUZz5RO0OZK8wnSwd5hg9mk=;
+	s=arc-20240116; t=1780164121; c=relaxed/simple;
+	bh=ysZmQVUEBH7ERh/XrmS+uwpOoYtaaqRk8/Dn5xVMiUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=psJ7sfkZa1MbZRh83p6wpd60rE7nTvaEicaQEjgnyg8oE3oz1sKmjMkGQPjOXN2UwUYrL1Ny5l29kS+9FTAdKSAMHyFre8DoRSk48AKUmN14lTOZ+qRH6FeQhtBWZswd3UYJD/bL+RhxLHIh6fnq2yG/uvDVMtqNviwrVNZ8Tkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYMq0tEz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6651F00893;
-	Sat, 30 May 2026 17:17:09 +0000 (UTC)
+	 MIME-Version; b=GbEROxybPRU0GvGL2XaBWYaep2+QfPJjQTFNW4C10Ma81961a/9VEv7pspiCK2m46WVSHIxHL1WoKwEzRLcNhnr9FRvcnJdzDv3QF+CzsdDR5mta5TRyJrLLQelDSByDGpj8HZ4hQ7BS1c6F3FIIznm6aMgWdLUZ68SvkZ+xxP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IcZqlwrb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856651F00893;
+	Sat, 30 May 2026 18:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161430;
-	bh=B05JV6g+UVCkPfGHvgCRQch2MhnwOBltQ+xuPk5r+nw=;
+	s=korg; t=1780164120;
+	bh=VbNf0q8EHb1RO3XqN/5HxttXoTymyf7r19FJEZs8YDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tYMq0tEzJRx7wgEP4vm2gbLEXIDeW6Rq5ppVTy84UWuBQtcbGnz4DxAeZPHEdKV7M
-	 i2y5zhI56EPomhvLxTXy2aH7XnuWtRjyCyVHb5SVP92BGtlRkk0uk9hwzeZwf/F3pI
-	 5ZBSbN8ghWg66RWQ352Jvn709eFzDuphgJKNjn8Q=
+	b=IcZqlwrbVHs/BaP0Z1/qB0ULyE0fKsN9Xm9TwO9DBXqPqzJ++E2u4zVrO/jj7pvlY
+	 DGJnyfDnc8PNBEG8DBwi4R7EBQCmOTuQqtoM/5CJyBZQnFeh1IetBtz6t2dEwEEcNo
+	 3O1hAFKeVVTbbnohqitlkzZzqTi51CbOZKudMeBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Sander Vanheule <sander@svanheule.net>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 621/969] bpf, sockmap: Take state lock for af_unix iter
+Subject: [PATCH 5.15 431/776] ASoC: sti: Return errors from regmap_field_alloc()
 Date: Sat, 30 May 2026 18:02:25 +0200
-Message-ID: <20260530160317.589774750@linuxfoundation.org>
+Message-ID: <20260530160251.576874423@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,141 +68,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257567-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258369-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 117DF60F644
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,svanheule.net:email]
+X-Rspamd-Queue-Id: B76F3611469
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Sander Vanheule <sander@svanheule.net>
 
-[ Upstream commit 64c2f93fc3254d3bf5de4445fb732ee5c451edb6 ]
+[ Upstream commit 272aabef50bc3fe58edd26de000f4cdd41bdbe60 ]
 
-When a BPF iterator program updates a sockmap, there is a race condition in
-unix_stream_bpf_update_proto() where the `peer` pointer can become stale[1]
-during a state transition TCP_ESTABLISHED -> TCP_CLOSE.
+When regmap_field_alloc() fails, it can return an error. Specifically,
+it will return PTR_ERR(-ENOMEM) when the allocation returns a NULL
+pointer. The code then uses these allocations with a simple NULL check:
 
-        CPU0 bpf                          CPU1 close
-        --------                          ----------
-// unix_stream_bpf_update_proto()
-sk_pair = unix_peer(sk)
-if (unlikely(!sk_pair))
-   return -EINVAL;
-                                     // unix_release_sock()
-                                     skpair = unix_peer(sk);
-                                     unix_peer(sk) = NULL;
-                                     sock_put(skpair)
-sock_hold(sk_pair) // UaF
+    if (player->clk_sel) {
+        // May dereference invalid pointer (-ENOMEM)
+        err = regmap_field_write(player->clk_sel, ...);
+    }
 
-More practically, this fix guarantees that the iterator program is
-consistently provided with a unix socket that remains stable during
-iterator execution.
+Ensure initialization fails by forwarding the errors from
+regmap_field_alloc(), thus avoiding the use of the invalid pointers.
 
-[1]:
-BUG: KASAN: slab-use-after-free in unix_stream_bpf_update_proto+0x155/0x490
-Write of size 4 at addr ffff8881178c9a00 by task test_progs/2231
-Call Trace:
- dump_stack_lvl+0x5d/0x80
- print_report+0x170/0x4f3
- kasan_report+0xe4/0x1c0
- kasan_check_range+0x125/0x200
- unix_stream_bpf_update_proto+0x155/0x490
- sock_map_link+0x71c/0xec0
- sock_map_update_common+0xbc/0x600
- sock_map_update_elem+0x19a/0x1f0
- bpf_prog_bbbf56096cdd4f01_selective_dump_unix+0x20c/0x217
- bpf_iter_run_prog+0x21e/0xae0
- bpf_iter_unix_seq_show+0x1e0/0x2a0
- bpf_seq_read+0x42c/0x10d0
- vfs_read+0x171/0xb20
- ksys_read+0xff/0x200
- do_syscall_64+0xf7/0x5e0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Allocated by task 2236:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- __kasan_slab_alloc+0x63/0x80
- kmem_cache_alloc_noprof+0x1d5/0x680
- sk_prot_alloc+0x59/0x210
- sk_alloc+0x34/0x470
- unix_create1+0x86/0x8a0
- unix_stream_connect+0x318/0x15b0
- __sys_connect+0xfd/0x130
- __x64_sys_connect+0x72/0xd0
- do_syscall_64+0xf7/0x5e0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Freed by task 2236:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3b/0x70
- __kasan_slab_free+0x47/0x70
- kmem_cache_free+0x11c/0x590
- __sk_destruct+0x432/0x6e0
- unix_release_sock+0x9b3/0xf60
- unix_release+0x8a/0xf0
- __sock_release+0xb0/0x270
- sock_close+0x18/0x20
- __fput+0x36e/0xac0
- fput_close_sync+0xe5/0x1a0
- __x64_sys_close+0x7d/0xd0
- do_syscall_64+0xf7/0x5e0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: 2c860a43dd77 ("bpf: af_unix: Implement BPF iterator for UNIX domain socket.")
-Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260414-unix-proto-update-null-ptr-deref-v4-5-2af6fe97918e@rbox.co
+Fixes: 76c2145ded6b ("ASoC: sti: Add CPU DAI driver for playback")
+Signed-off-by: Sander Vanheule <sander@svanheule.net>
+Link: https://patch.msgid.link/20260220152634.480766-2-sander@svanheule.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/sti/uniperif_player.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -3604,6 +3604,7 @@ static int bpf_iter_unix_seq_show(struct
- 		return 0;
+diff --git a/sound/soc/sti/uniperif_player.c b/sound/soc/sti/uniperif_player.c
+index dd9013c476649..e5c4e5245b255 100644
+--- a/sound/soc/sti/uniperif_player.c
++++ b/sound/soc/sti/uniperif_player.c
+@@ -1029,7 +1029,12 @@ static int uni_player_parse_dt_audio_glue(struct platform_device *pdev,
+ 	}
  
- 	lock_sock(sk);
-+	unix_state_lock(sk);
+ 	player->clk_sel = regmap_field_alloc(regmap, regfield[0]);
++	if (IS_ERR(player->clk_sel))
++		return PTR_ERR(player->clk_sel);
++
+ 	player->valid_sel = regmap_field_alloc(regmap, regfield[1]);
++	if (IS_ERR(player->valid_sel))
++		return PTR_ERR(player->valid_sel);
  
- 	if (unlikely(sock_flag(sk, SOCK_DEAD))) {
- 		ret = SEQ_SKIP;
-@@ -3615,6 +3616,7 @@ static int bpf_iter_unix_seq_show(struct
- 	prog = bpf_iter_get_info(&meta, false);
- 	ret = unix_prog_seq_show(prog, &meta, v, uid);
- unlock:
-+	unix_state_unlock(sk);
- 	release_sock(sk);
- 	return ret;
+ 	return 0;
  }
+-- 
+2.53.0
+
 
 
 
