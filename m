@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-257200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uB4pCjAYG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:40 +0200
+	id MInpJfciG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92EDF60EC65
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C1586106BC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 718A830B0DA3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47368308433D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D6E3A7848;
-	Sat, 30 May 2026 16:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A324B348C5E;
+	Sat, 30 May 2026 17:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeKRixlh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0mV8EIe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF1B3A3E74;
-	Sat, 30 May 2026 16:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797562E7379;
+	Sat, 30 May 2026 17:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160159; cv=none; b=L8v4Qn99AEQ1Md3cLRx0DD2/saC9LDKiVkbZGJaQh4zUcYK/lh6Z94mB3/3JojELOs1FgyQUW17R+t9It55x5EApgy9TCyxLfDI2eda85JFTfV74Qdqmx3b12D2oEPoY0eXpwI6Za6NFEWNALQDNmZS9JzHpFSNxgPZVgXuTFU0=
+	t=1780162942; cv=none; b=WFn7u7r/zyKDKJFmv9z/A2MOsiTtlDEYqtQp0pe1C0bKKgcW5WI1+5S9m6VAQBApUHDJs7gbEWH5nsYjtUP/Zwob0yBi95D9VCWSsXMAwg31yEggVMboS6YAeeQXpZ89kIb1BK4kQGGNB/iozj6ke2PuzzVx0OhqIqOpD9lnN1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160159; c=relaxed/simple;
-	bh=vJvBM/tylpqCZ39W6pxoupXeRhQ0h/x41PlhNKsaglg=;
+	s=arc-20240116; t=1780162942; c=relaxed/simple;
+	bh=ygKshb4OScdRuroNlV8rsG7YMdl3U2nGhg9LMidcrV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R4UVp4dE6XudS+BG18QfL5lByFsva27cCPvihhnsRIsCWCCYG7WXwzGEclvZdIuTzLxTDEwLhIZrBDvNvhL2pOftZbAMAlnun+kWYMVEwCim0NRzambA8qqZmCVKne7JYHTUPSg/1IZDDuxWw1sl2VuZFmQaGWCpqsa9lf2dYFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeKRixlh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25251F00893;
-	Sat, 30 May 2026 16:55:57 +0000 (UTC)
+	 MIME-Version; b=FZXQuF5jfBL1F9Wpj7NKPFAwRF4EDH9TaYmI5LS+1GhlwTpY7FpCGImj+vtgDA//9fMN+JW61kWTWr3e2YaqnXhbTaK04Jw+WO0D/dYs5zh1VBB33mmlkNfFkV+vD5afZeAmmtkPK4E6oOSU6ITvoCmZJ1fwczQI/Q5XEIDO2xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0mV8EIe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0661F00893;
+	Sat, 30 May 2026 17:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160158;
-	bh=Uz6FjJsna7pDxky92hwxi48V/T2EoeJoi0qPH1faY1U=;
+	s=korg; t=1780162941;
+	bh=b04uAX0RcFrRtW2JEQjO9I0Ie5eUpoJbv8FFXs3l9tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zeKRixlh4/T4FwvLVtBA2SADQw76IrXvqbO73h0DQi3NHUoYjUBnAQPbQ/xOxTJ7R
-	 8fqmOjYgiBk9yiAL4oh8Gp50MYfTD8bvStD1a5IWc749OdmLfJJmV09mo9ylGyDvse
-	 00MfycKfXU+YzbdADD+yMk35kNS2tngfza+4gfK0=
+	b=t0mV8EIeHPRWEhSwE0thjkbAsQUZWn526wgRwn9IDbvBYVz6KjOqGwNBiDzctkJFK
+	 V3NDsHpj3bSVmGA/fM2xTRMlFhxFCv9D5p+/xURnCHHaC0IBA2f0UtpcRWeJAmWNmt
+	 UBV87WDMqs9MRTd2fgHjwFiCJGGY2SjaBIltjGsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 260/969] crypto: atmel-tdes - fix DMA sync direction
+	Harin Lee <me@harin.net>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 070/776] ALSA: ctxfi: Limit PTP to a single page
 Date: Sat, 30 May 2026 17:56:24 +0200
-Message-ID: <20260530160307.660078434@linuxfoundation.org>
+Message-ID: <20260530160242.129676210@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +65,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257200-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258016-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 92EDF60EC65
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,harin.net:email]
+X-Rspamd-Queue-Id: 1C1586106BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Harin Lee <me@harin.net>
 
-commit c8a9a647532f5c2a04180352693215e24e9dba03 upstream.
+commit e9418da50d9e5c496c22fe392e4ad74c038a94eb upstream.
 
-Before DMA output is consumed by the CPU, ->dma_addr_out must be synced
-with dma_sync_single_for_cpu() instead of dma_sync_single_for_device().
-Using the wrong direction can return stale cache data on non-coherent
-platforms.
+Commit 391e69143d0a increased CT_PTP_NUM from 1 to 4 to support 256
+playback streams, but the additional pages are not used by the card
+correctly. The CT20K2 hardware already has multiple VMEM_PTPAL
+registers, but using them separately would require refactoring the
+entire virtual memory allocation logic.
 
-Fixes: 13802005d8f2 ("crypto: atmel - add Atmel DES/TDES driver")
-Fixes: 1f858040c2f7 ("crypto: atmel-tdes - add support for latest release of the IP (0x700)")
+ct_vm_map() always uses PTEs in vm->ptp[0].area regardless of
+CT_PTP_NUM. On AMD64 systems, a single PTP covers 512 PTEs (2M). When
+aggregate memory allocations exceed this limit, ct_vm_map() tries to
+access beyond the allocated space and causes a page fault:
+
+  BUG: unable to handle page fault for address: ffffd4ae8a10a000
+  Oops: Oops: 0002 [#1] SMP PTI
+  RIP: 0010:ct_vm_map+0x17c/0x280 [snd_ctxfi]
+  Call Trace:
+  atc_pcm_playback_prepare+0x225/0x3b0
+  ct_pcm_playback_prepare+0x38/0x60
+  snd_pcm_do_prepare+0x2f/0x50
+  snd_pcm_action_single+0x36/0x90
+  snd_pcm_action_nonatomic+0xbf/0xd0
+  snd_pcm_ioctl+0x28/0x40
+  __x64_sys_ioctl+0x97/0xe0
+  do_syscall_64+0x81/0x610
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Revert CT_PTP_NUM to 1. The 256 SRC_RESOURCE_NUM and playback_count
+remain unchanged.
+
+Fixes: 391e69143d0a ("ALSA: ctxfi: Bump playback substreams to 256")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Harin Lee <me@harin.net>
+Link: https://patch.msgid.link/20260406074857.216034-1-me@harin.net
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/atmel-tdes.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/pci/ctxfi/ctvmem.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/atmel-tdes.c
-+++ b/drivers/crypto/atmel-tdes.c
-@@ -304,8 +304,8 @@ static int atmel_tdes_crypt_pdc_stop(str
- 		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
- 		dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
- 	} else {
--		dma_sync_single_for_device(dd->dev, dd->dma_addr_out,
--					   dd->dma_size, DMA_FROM_DEVICE);
-+		dma_sync_single_for_cpu(dd->dev, dd->dma_addr_out,
-+					dd->dma_size, DMA_FROM_DEVICE);
+--- a/sound/pci/ctxfi/ctvmem.h
++++ b/sound/pci/ctxfi/ctvmem.h
+@@ -15,7 +15,7 @@
+ #ifndef CTVMEM_H
+ #define CTVMEM_H
  
- 		/* copy data */
- 		count = atmel_tdes_sg_copy(&dd->out_sg, &dd->out_offset,
-@@ -660,8 +660,8 @@ static int atmel_tdes_crypt_dma_stop(str
- 			dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
- 			dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
- 		} else {
--			dma_sync_single_for_device(dd->dev, dd->dma_addr_out,
--				dd->dma_size, DMA_FROM_DEVICE);
-+			dma_sync_single_for_cpu(dd->dev, dd->dma_addr_out,
-+						dd->dma_size, DMA_FROM_DEVICE);
+-#define CT_PTP_NUM	4	/* num of device page table pages */
++#define CT_PTP_NUM	1	/* num of device page table pages */
  
- 			/* copy data */
- 			count = atmel_tdes_sg_copy(&dd->out_sg, &dd->out_offset,
+ #include <linux/mutex.h>
+ #include <linux/list.h>
 
 
 
