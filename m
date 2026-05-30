@@ -1,62 +1,66 @@
-Return-Path: <stable+bounces-257495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +M/yHGccG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257495-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:39 +0200
+	id iBTfAVItG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287A260F71C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B966C611F20
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7CD66308E6B3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:13:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C1D66305294A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE49933F8A2;
-	Sat, 30 May 2026 17:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D833C3782;
+	Sat, 30 May 2026 18:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfP3+ZBM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unKdG0nq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04B93016E1;
-	Sat, 30 May 2026 17:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DAA3C277F;
+	Sat, 30 May 2026 18:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161193; cv=none; b=FcFxkh2faAHb3SRr7sLHWYksGYS1sYlIV44ZfxDyLfQyZ68tTXOEkOQpXjqUoewR8XI3weZ/ZF9I6H/NCmRRQA5IEpi0N48Ls9iQttOatykpJIANwq/NEM9ZdwJo9jmexWxAehAYJ98P+ET0QC38kxgv/QB7PChT2BxSjguUYtk=
+	t=1780165836; cv=none; b=pLzPx8WUg6UPx9TTIIFZ6x3h6p5Kpcju0u1b3Ljtkj8ddKg3FckNQLB2qrFL19eDREyiVQnMpyo2vd1CjDoCdOj4iX5976QFtanXmwXp2GuZf+VZrjDIispS3U73kW8/LL/I1IK5wR2Z3OhP9TLSoDITeLjh7f+9us5/9VoUudM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161193; c=relaxed/simple;
-	bh=i8/a8ZyLwDcuRjQ1OHoAOjmRMDhqs1z+EJnUiIHP4lo=;
+	s=arc-20240116; t=1780165836; c=relaxed/simple;
+	bh=BO5GS9185n20hO+/L81CSaqh1dStgvYFKEkKhPOSf5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VVmIufCHew7nEtwNwmOncY17w2odaciXOzT7xYit+eCj87+nC3Ybkhs9IsLHbEoLxfhDjSpE0y6koLq3JS2KErmrRvvRLRN1gMTUNOTx+0eK5uEMaI2pTGMv2zpemysi1eUEwQaO6aQlh/rPtOx87G8l99+zMPSdk0CRPbPACno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfP3+ZBM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BFD1F00893;
-	Sat, 30 May 2026 17:13:11 +0000 (UTC)
+	 MIME-Version; b=rhpT+rK3RGVBTzKvDOuyBr73qE1mrpNvHYesv+JvfbPW2zU4X0RXRaIXzfyq4P0CO4fjPfaN6DYvZOLZCWR0+M9BdjLMggJWxvCMTJZZXWpmNfHf37aVB1LhdSHN8bhvUFgUmPXXuxRUnVfjHACZdvJyPGzfDJ8lpOi0ryoHWew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=unKdG0nq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A5E1F00893;
+	Sat, 30 May 2026 18:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161192;
-	bh=ghm2LHGZJcsKUuIe5wNHrgo34RuBqYanLhtbSfyxQ68=;
+	s=korg; t=1780165835;
+	bh=UGYD8tiHPKMGN8xMYcZVhhHx8zJ96yknijdnU1mc3wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dfP3+ZBMPIePYeY0tOaktGapt8VqdoTNznCkq0jdI8/B+LpV5PLK3OtVaces/KwKJ
-	 7w1NauHYv786eHEF/IAxB18gaXaxJ1EpU3ddTw81PFsTQ6xyRiqdszVx5J2qrfcnnA
-	 YeJ9vafPRF5giNxuw2wgsE2j8S9khalq7+861QAQ=
+	b=unKdG0nqr2oNdjhECeUkBn/eanU6FLjDY4phHJHaa8zXgia6EzQVrJjY3acfL7cZX
+	 8/3Ra0cElUGkvHY5YYNTbNzGxvEfQ9jy4K+4ncw1FpZ2wCD3duhiC3whKE0EkGwaXr
+	 fwQFrFGm5h4CrT9je/ALw5raw1fzYsc5mS2BX3/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 552/969] PCI: tegra194: Disable LTSSM after transition to Detect on surprise link down
-Date: Sat, 30 May 2026 18:01:16 +0200
-Message-ID: <20260530160315.623756038@linuxfoundation.org>
+	stable@kernel.org,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuhang Zheng <z1652074432@gmail.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Yucheng Lu <kanolyc@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 196/589] crypto: authencesn - reject short ahash digests during instance creation
+Date: Sat, 30 May 2026 18:01:17 +0200
+Message-ID: <20260530160230.059316202@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,124 +73,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257495-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258876-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,gondor.apana.org.au];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 287A260F71C
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: B966C611F20
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+From: Yucheng Lu <kanolyc@gmail.com>
 
-[ Upstream commit 9fa0c242f8d7acf1b124d4462d18f4023573ac1c ]
+commit 5db6ef9847717329f12c5ea8aba7e9f588a980c0 upstream.
 
-After the link reaches a Detect-related LTSSM state, disable LTSSM so it
-does not keep toggling between Polling and Detect. Do this by polling for
-the Detect state first, then clearing APPL_CTRL_LTSSM_EN in both
-tegra_pcie_dw_pme_turnoff() and pex_ep_event_pex_rst_assert().
+authencesn requires either a zero authsize or an authsize of at least
+4 bytes because the ESN encrypt/decrypt paths always move 4 bytes of
+high-order sequence number data at the end of the authenticated data.
 
-Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-4-mmaddireddy@nvidia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While crypto_authenc_esn_setauthsize() already rejects explicit
+non-zero authsizes in the range 1..3, crypto_authenc_esn_create()
+still copied auth->digestsize into inst->alg.maxauthsize without
+validating it.  The AEAD core then initialized the tfm's default
+authsize from that value.
+
+As a result, selecting an ahash with digest size 1..3, such as
+cbcmac(cipher_null), exposed authencesn instances whose default
+authsize was invalid even though setauthsize() would have rejected the
+same value.  AF_ALG could then trigger the ESN tail handling with a
+too-short tag and hit an out-of-bounds access.
+
+Reject authencesn instances whose ahash digest size is in the invalid
+non-zero range 1..3 so that no tfm can inherit an unsupported default
+authsize.
+
+Fixes: f15f05b0a5de ("crypto: ccm - switch to separate cbcmac driver")
+Cc: stable@kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yuhang Zheng <z1652074432@gmail.com>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Yucheng Lu <kanolyc@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 29 ++++++++++++----------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ crypto/authencesn.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index f502b925d486b..b6899d1f80fb5 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1610,14 +1610,6 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
- 		data &= ~APPL_PINMUX_PEX_RST;
- 		appl_writel(pcie, data, APPL_PINMUX);
+--- a/crypto/authencesn.c
++++ b/crypto/authencesn.c
+@@ -400,6 +400,11 @@ static int crypto_authenc_esn_create(str
+ 	auth = crypto_spawn_ahash_alg(&ctx->auth);
+ 	auth_base = &auth->base;
  
--		/*
--		 * Some cards do not go to detect state even after de-asserting
--		 * PERST#. So, de-assert LTSSM to bring link to detect state.
--		 */
--		data = readl(pcie->appl_base + APPL_CTRL);
--		data &= ~APPL_CTRL_LTSSM_EN;
--		writel(data, pcie->appl_base + APPL_CTRL);
--
- 		err = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, data,
- 			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
- 			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
-@@ -1626,6 +1618,14 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
- 			LTSSM_DELAY_US, LTSSM_TIMEOUT_US);
- 		if (err)
- 			dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", data, err);
++	if (auth->digestsize > 0 && auth->digestsize < 4) {
++		err = -EINVAL;
++		goto err_free_inst;
++	}
 +
-+		/*
-+		 * Deassert LTSSM state to stop the state toggling between
-+		 * Polling and Detect.
-+		 */
-+		data = readl(pcie->appl_base + APPL_CTRL);
-+		data &= ~APPL_CTRL_LTSSM_EN;
-+		writel(data, pcie->appl_base + APPL_CTRL);
- 	}
- 	/*
- 	 * DBI registers may not be accessible after this as PLL-E would be
-@@ -1707,11 +1707,6 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
- 	if (pcie->ep_state == EP_STATE_DISABLED)
- 		return;
- 
--	/* Disable LTSSM */
--	val = appl_readl(pcie, APPL_CTRL);
--	val &= ~APPL_CTRL_LTSSM_EN;
--	appl_writel(pcie, val, APPL_CTRL);
--
- 	ret = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, val,
- 		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
- 		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
-@@ -1722,6 +1717,14 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
- 	if (ret)
- 		dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", val, ret);
- 
-+	/*
-+	 * Deassert LTSSM state to stop the state toggling between
-+	 * Polling and Detect.
-+	 */
-+	val = appl_readl(pcie, APPL_CTRL);
-+	val &= ~APPL_CTRL_LTSSM_EN;
-+	appl_writel(pcie, val, APPL_CTRL);
-+
- 	reset_control_assert(pcie->core_rst);
- 
- 	tegra_pcie_disable_phy(pcie);
--- 
-2.53.0
-
+ 	err = crypto_grab_skcipher(&ctx->enc, aead_crypto_instance(inst),
+ 				   crypto_attr_alg_name(tb[2]), 0, mask);
+ 	if (err)
 
 
 
