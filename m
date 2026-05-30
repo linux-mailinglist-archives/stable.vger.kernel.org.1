@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-258045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257240-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cL0GKyIiG2oN/ggAu9opvQ
-	(envelope-from <stable+bounces-258045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:06 +0200
+	id cMcWL7IXG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257240-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A616104CD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63ADD60EB57
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1182B3016B1A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5FBB6304E2B2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E3634A3C4;
-	Sat, 30 May 2026 17:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C66332EA7;
+	Sat, 30 May 2026 16:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8SRtAZq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxQCWYh2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB3F3B0ADF;
-	Sat, 30 May 2026 17:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15632E92B3;
+	Sat, 30 May 2026 16:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163037; cv=none; b=n1L1sWXJRT6rC4jLH0O1ousQiLk/Y1bTmkgTeYFS1EvlhhpFlv9MTk9spFarqUBRMJiReA31cldhB2Mw4n6MWn9kA5WQP9K1ut1MP6N+A94kxyZMj+WtuTnzvmJ24UaLeTyCoAqqIu3/GioSlzSJXRIE4qEJg2K1x7bndVZrqYc=
+	t=1780160305; cv=none; b=aISr0V9GBvU+HpvyqRET1ILWJuWFGBKO2QMerLA7J8itQTnePuwH6LhBNk62V3KMmZABeKc/h8FnnTut7QBnTxaMfLGVh600x20DIHk+dJi+SBekIib90Fd4nfPbPf37Kt3xKOG9DubI/z/PPPoGapkdqHH11Bfx7RB7/TaIA7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163037; c=relaxed/simple;
-	bh=6o/5/+ouo19x4U2NiT9yT+cIGtqe4P639NXI/YSeBfk=;
+	s=arc-20240116; t=1780160305; c=relaxed/simple;
+	bh=NIf7+V54M/i4hvFiIAPxnk7OrkInf9V6C7pcxPi5n/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pZrfCpO5IDXR+G7DLxNLSPMFxBMy52fI1zirMcHZ4KRLgRcTGSkoRrQ1JWQ1acy4GoD+UZAxItIcoU5w2MGlDqVPkbJpfc+2LT6/cEzH1VX6cQ37pDNJFT94+NqXNvlIAYy6eNTBBJt0+ZUAzkCKgFcxPsrPpmByAPAyL2WcaIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8SRtAZq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6218F1F00893;
-	Sat, 30 May 2026 17:43:55 +0000 (UTC)
+	 MIME-Version; b=uHu37B0EPtEnhUVMile3R5Y4wV6L+SAEym1et4xvCO7kJAGe7n/wkLxDmffDZVl2k1E4tKb6BMo/2t4SRt47pYU6d0nYXsZW/iwbOaEbk4+UBEgi/6ewHFJtMOIlXn7Ov6Dj6p7Dnm7o3BN1b7MWIS0CgJZDfFpMBG1bL2NFqTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxQCWYh2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256811F00893;
+	Sat, 30 May 2026 16:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163036;
-	bh=eCGycngWz3OtcVjT5BIPBvaTslnMu5rkvlFa3jfT8A0=;
+	s=korg; t=1780160303;
+	bh=jCTLugJUK47HrA3Nh+KMVmqtglDIwH3jw1j2vuvQAxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P8SRtAZqBX3btQmxU3wSepJzmm5GZO31wf2mrxExzQVG4anu4FwNh0Y4en8bFOh3P
-	 iDb+AS6r2Z5RQt1l1iH+R7W57KAClUgrC67Z/nQKh49rebE1p+owacfhxaBtAr1oQk
-	 AG/LogsCDr35HzKaEAX914TuNVfJkudHbHFTp800=
+	b=hxQCWYh2/WfInugu7MyG70Enr9fwPAQIc/jbJZAUrMuyWVO8CmZvlVT6YOw3GbX4f
+	 oobs7aswrXfibkm5351IrA3knj02jk8g7JJkKk3sESPahJlIT+wv2OrYhgMZ0MVHf4
+	 nomkmXN4/p4iSssL7h+F0DLYe4TQIiT2ZQ5BSptg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 110/776] rxrpc: Fix call removal to use RCU safe deletion
+	Leon Yen <leon.yen@mediatek.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.1 300/969] wifi: mt76: mt7921: fix a potential clc buffer length underflow
 Date: Sat, 30 May 2026 17:57:04 +0200
-Message-ID: <20260530160243.199380567@linuxfoundation.org>
+Message-ID: <20260530160308.720888713@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,124 +66,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257240-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258045-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,auristor.com:email,sashiko.dev:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email]
-X-Rspamd-Queue-Id: 99A616104CD
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 63ADD60EB57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Leon Yen <leon.yen@mediatek.com>
 
-[ Upstream commit 146d4ab94cf129ee06cd467cb5c71368a6b5bad6 ]
+commit 5373f8b19e568b5c217832b9bbef165bd2b2df14 upstream.
 
-Fix rxrpc call removal from the rxnet->calls list to use list_del_rcu()
-rather than list_del_init() to prevent stuffing up reading
-/proc/net/rxrpc/calls from potentially getting into an infinite loop.
+The buf_len is used to limit the iterations for retrieving the country
+power setting and may underflow under certain conditions due to changes
+in the power table in CLC.
 
-This, however, means that list_empty() no longer works on an entry that's
-been deleted from the list, making it harder to detect prior deletion.  Fix
-this by:
+This underflow leads to an almost infinite loop or an invalid power
+setting resulting in driver initialization failure.
 
-Firstly, make rxrpc_destroy_all_calls() only dump the first ten calls that
-are unexpectedly still on the list.  Limiting the number of steps means
-there's no need to call cond_resched() or to remove calls from the list
-here, thereby eliminating the need for rxrpc_put_call() to check for that.
-
-rxrpc_put_call() can then be fixed to unconditionally delete the call from
-the list as it is the only place that the deletion occurs.
-
-Fixes: 2baec2c3f854 ("rxrpc: Support network namespacing")
-Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Linus Torvalds <torvalds@linux-foundation.org>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-5-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted to older API ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: fa6ad88e023d ("wifi: mt76: mt7921: fix country count limitation for CLC")
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20251009020158.1923429-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/call_object.c |   22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/rxrpc/call_object.c
-+++ b/net/rxrpc/call_object.c
-@@ -634,11 +634,9 @@ void rxrpc_put_call(struct rxrpc_call *c
- 		_debug("call %d dead", call->debug_id);
- 		ASSERTCMP(call->state, ==, RXRPC_CALL_COMPLETE);
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -1054,6 +1054,9 @@ int __mt7921_mcu_set_clc(struct mt7921_d
+ 		u16 len = le16_to_cpu(rule->len);
+ 		u16 offset = len + sizeof(*rule);
  
--		if (!list_empty(&call->link)) {
--			spin_lock_bh(&rxnet->call_lock);
--			list_del_init(&call->link);
--			spin_unlock_bh(&rxnet->call_lock);
--		}
-+		spin_lock_bh(&rxnet->call_lock);
-+		list_del_rcu(&call->link);
-+		spin_unlock_bh(&rxnet->call_lock);
- 
- 		rxrpc_cleanup_call(call);
- 	}
-@@ -709,24 +707,20 @@ void rxrpc_destroy_all_calls(struct rxrp
- 	_enter("");
- 
- 	if (!list_empty(&rxnet->calls)) {
--		spin_lock_bh(&rxnet->call_lock);
-+		int shown = 0;
- 
--		while (!list_empty(&rxnet->calls)) {
--			call = list_entry(rxnet->calls.next,
--					  struct rxrpc_call, link);
--			_debug("Zapping call %p", call);
-+		spin_lock_bh(&rxnet->call_lock);
- 
-+		list_for_each_entry(call, &rxnet->calls, link) {
- 			rxrpc_see_call(call);
--			list_del_init(&call->link);
- 
- 			pr_err("Call %p still in use (%d,%s,%lx,%lx)!\n",
- 			       call, refcount_read(&call->ref),
- 			       rxrpc_call_states[call->state],
- 			       call->flags, call->events);
- 
--			spin_unlock_bh(&rxnet->call_lock);
--			cond_resched();
--			spin_lock_bh(&rxnet->call_lock);
-+			if (++shown >= 10)
-+				break;
- 		}
- 
- 		spin_unlock_bh(&rxnet->call_lock);
++		if (buf_len < offset)
++			break;
++
+ 		pos += offset;
+ 		buf_len -= offset;
+ 		if (rule->alpha2[0] != alpha2[0] ||
 
 
 
