@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258737-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wK17DMgYG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257356-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:12 +0200
+	id mLQNMpwrG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258737-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:25:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E6E60EDD4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F1A611B15
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:25:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2438A3007487
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:05:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9DEEC306DAFB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2DE34104B;
-	Sat, 30 May 2026 17:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D872773DE;
+	Sat, 30 May 2026 18:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBANKJy4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnzb4ZUO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D88C2690D5;
-	Sat, 30 May 2026 17:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBD521B191;
+	Sat, 30 May 2026 18:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160709; cv=none; b=Si8VAobeE7NaSXcG+1svCIXC4y2eTwOcGEYEgO8GrvhwnagbGeu8MOtaYe9ojygAChvM20U2aJLujnklZHHrl3NxA6rMOG8SuimOx6yvppMy/EfIoqZc0zst/34f8qXlt6EbBeKNz3/7MNkKVkQIvY+LhUTG3KQ4W9nv1CvobNI=
+	t=1780165368; cv=none; b=b/R9M6L1vaP3CFtTp1WqHWskUftgthIVgoncGYHIAY4tqRzClTaD3gaVSPf/foBVsyQioYiJi6DYTi5H22C/Gb17EPN/V78mcNa2CPWEdy0lxD1vVvVtYxPO8Lt/xsDXPUTg317BkovwZWsKcEiEM3p0OPyKIa8szkuthD8UhxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160709; c=relaxed/simple;
-	bh=4ssjO6dTqZGLRxwSPZTTnHQcfpQUHjcce9FbXimD9cg=;
+	s=arc-20240116; t=1780165368; c=relaxed/simple;
+	bh=jpsYki9kN6BE0S0GYDMAJhnoJrSKaFcrhyJeJsu9fqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HXAk90GxpKVWGuxuo1bIi2a3cS2lhH00rFan95uQ5swRRytSIJDS8ewmhRVIi/kd3KM+5rZaymAXfOZzVCzheZy7XtgN+grPvTHsqepJlYE6gqiLM6oLSmWF7sOfpd7Q4mqc1Gtx/xXoGi/adXOC2v+w/x2KFLny2IoKGyxnifQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBANKJy4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BAFE1F00893;
-	Sat, 30 May 2026 17:05:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O/RObF4AgvbHVCW7cdZqNc7yoTtO/ZInZtYluEwRjJCul0xWTp1wyrhncwFOMzePQMsKUjcbuVe7EztMvw9QAnYmrsEwsQmyQ5YjfCVMoC40ywdeLrWU7G/QqaCV1zHBTs2BnC5ksjpVRmV1DAJGFDCQCQeqTHMDSM3AWIoCphk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnzb4ZUO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605591F00893;
+	Sat, 30 May 2026 18:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160707;
-	bh=ySb5VL8RQgpm9p/yDb0SfEE4nAyhg0crI7Q65LLszHc=;
+	s=korg; t=1780165367;
+	bh=B8bR1yCo8NWCN4S5FExiCAwzTxG2hlty2lV+LU8B8eQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MBANKJy4t94GJijetzX8lBRlR5AUGtlOYGzVpCQSFRCrZNZRyazMJI4TdBQW5KyEs
-	 K4zB5bKjCHeLmBzfg7yWKbXYGL1+VeESC7hfGiO9oU/BabdmxPZg+tBvkWvmfS5MCB
-	 vBniWr4XMs609QnvfSxTCv9PY184EgrDNWAHem44=
+	b=hnzb4ZUOePxHaxln1FlvLM3rpvBJUkDclSrsEdEWI+PRotDfhmTdA4yq4oQP/mDNl
+	 bskLPhXArmUvt6gf6kJU6U4wj1y0upKF1HgjT6LwgGYX5IenWM+luIg2Tm9uuQ7nKO
+	 wcV1HFcAFnRP2vRuTWbGTnce63yZ/0PHD+xyEELw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Kent Russell <kent.russell@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 413/969] drm/amdgpu/pm: add missing revision check for CI
-Date: Sat, 30 May 2026 17:58:57 +0200
-Message-ID: <20260530160311.682388794@linuxfoundation.org>
+	=?UTF-8?q?Daniel=20Br=C3=A1t?= <danek.brat@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 057/589] usb: storage: Expand range of matched versions for VL817 quirks entry
+Date: Sat, 30 May 2026 17:58:58 +0200
+Message-ID: <20260530160226.093421677@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +68,72 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258737-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257356-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: C9E6E60EDD4
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,vacharakis.de:email]
+X-Rspamd-Queue-Id: 62F1A611B15
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Daniel Brát <danek.brat@gmail.com>
 
-commit 2a561b361b7681509710f3cfc3d95d54c87ac69f upstream.
+commit 609865ab3d5d803556f628e221ecd3d06aed9f30 upstream.
 
-The ci_populate_all_memory_levels() workaround only
-applies to revision 0 SKUs.
+Expands range of matched bcdDevice values for the VL817 quirk entry.
+This is based on experience with Axagon EE35-GTR rev1 3.5" HDD
+enclosure, which reports its bcdDevice as 0x0843, but presumably other
+vendors using this IC in their products may set it to any other value.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/1816
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Kent Russell <kent.russell@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1db15ba8f72f400bbad8ae0ce24fafc43429d4bd)
-Cc: stable@vger.kernel.org
+Signed-off-by: Daniel Brát <danek.brat@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260402172433.5227-1-danek.brat@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/storage/unusual_devs.h |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -1327,8 +1327,9 @@ static int ci_populate_all_memory_levels
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -2339,10 +2339,11 @@ UNUSUAL_DEV(  0x2027, 0xa001, 0x0000, 0x
+ 		US_FL_SCM_MULT_TARG ),
  
- 	dev_id = adev->pdev->device;
- 
--	if ((dpm_table->mclk_table.count >= 2)
--		&& ((dev_id == 0x67B0) ||  (dev_id == 0x67B1))) {
-+	if ((dpm_table->mclk_table.count >= 2) &&
-+	    ((dev_id == 0x67B0) ||  (dev_id == 0x67B1)) &&
-+	    (adev->pdev->revision == 0)) {
- 		smu_data->smc_state_table.MemoryLevel[1].MinVddci =
- 				smu_data->smc_state_table.MemoryLevel[0].MinVddci;
- 		smu_data->smc_state_table.MemoryLevel[1].MinMvdd =
+ /*
+- * Reported by DocMAX <mail@vacharakis.de>
+- * and Thomas Weißschuh <linux@weissschuh.net>
++ * Reported by DocMAX <mail@vacharakis.de>,
++ * Thomas Weißschuh <linux@weissschuh.net>
++ * and Daniel Brát <danek.brat@gmail.com>
+  */
+-UNUSUAL_DEV( 0x2109, 0x0715, 0x9999, 0x9999,
++UNUSUAL_DEV( 0x2109, 0x0715, 0x0000, 0x9999,
+ 		"VIA Labs, Inc.",
+ 		"VL817 SATA Bridge",
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
 
 
 
