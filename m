@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259112-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6O8YLUIoG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258534-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:11:14 +0200
+	id MBr5G4UwG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259112-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0EB611329
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:11:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8B5612768
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9303E3007512
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1CF24309ACDA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873A63B3896;
-	Sat, 30 May 2026 18:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9F42F6184;
+	Sat, 30 May 2026 18:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdJUjMCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVKrDwhu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B08439A7FE;
-	Sat, 30 May 2026 18:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EDB25B08A;
+	Sat, 30 May 2026 18:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164672; cv=none; b=E3YIxsKfGEkyKeVGsIMsJS7zQbKPrfiNcVimu5OTH3zlzA/hDOVs95znw+aiVoIngQ4V0nJg7bY0t7ikRq3/eZP0O8cYwmpowTj8z8UFO1EEr3l1kow8BgH7NP5q0PNiNiRfCGgyvuQMSyQA9qmS2waAUHtBj7ePsXYIiGgYYAU=
+	t=1780166651; cv=none; b=HrRvZ9wU9nterQOX4sUmDqRueD8+aDgkE08CcSE26jxKjHnYHuGCnun7iZ76uL5fnZHwQuLKH/wsc0WO/K4GkzXK51VanuwP25alHy0vtt3XUvue8noVyq3NRXyKfMtj/bYmiuXHSxp5CfKanb4e1y5bCJN3xn07WukMVUSxoVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164672; c=relaxed/simple;
-	bh=W/DN/RPDp7ygsAwW+PjuXSjxWs4vb56fj5zVEK+JXiU=;
+	s=arc-20240116; t=1780166651; c=relaxed/simple;
+	bh=axdpaXGXOPYLDFKfRWRufCjvm6USMtfW5Ya7LEFfUF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i1riVfzx9pVuh6gnS7Ocn9Y9j36BSoFRo8zxfQ0/G9JlErhdC+9CznY40jgcCGcjSNRVFBHRQsGc0zJrNmR9Z6LqrneRt1vWhzINNfKA3MWUV1Ju6G4vPnXOfOb1MDlfhci5HmVr9NSeInzrRKT+eHw22oH7K8BM66i/Prc0h6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdJUjMCc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F76C1F00893;
-	Sat, 30 May 2026 18:11:10 +0000 (UTC)
+	 MIME-Version; b=S2aPiKqXpmsqTJAF2x1JyNL5H+fioAvV2GNTnLouhfUPsx76qBRr9oeqDlbioPHhkh1VoS0OEKprmXePrht6XoZ+rfuma1SYLCh8LNARUEbhx6mLirW5TKr75Vz0wFxnj36dNS/dxxyITgfa/q/agAnniyRAbv4KcBJFUoZVo2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVKrDwhu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D811F00893;
+	Sat, 30 May 2026 18:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164671;
-	bh=9Ry0INinSW+WT7Ci4BZiFpD+12Lr/Vux4gX0YKy6Ep4=;
+	s=korg; t=1780166650;
+	bh=WMJA8nA6s+gmDbN3WYEbeXOV27Y4J+pEhHMI/KnNV7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SdJUjMCcfhAR+qI+yCZIOyh1rbkVVcqbZc/8O73RuuiBiU+vCMt6+8QAMZp0d7pfs
-	 caMhsIZe91jdqgAjBQ6oz0QWYjXQl40gdqk9qMildvBirCsfAQQIuWM1+wObRc4Lgg
-	 4dqHMkbSjBWxeREElK15ADumIwHgGzqFSMQiJRZ0=
+	b=oVKrDwhui8kQKfoOCU4ymz3uKTKkIqVeu+OjAMUveoBvszad+ym+xvRXQo73mq6fO
+	 CsLpqGU+Sp5QY6SZrAfTex0p5L42vqkTKM1qbppRt3GBE6FlQMPvh3DvEdsIa2bg8S
+	 g8yNSU2LLb64b2I4uX/+Y7y1P4QO9N1HMpiIvI/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Pighin <anthony.pighin@nokia.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Boris Sukholitko <boris.sukholitko@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 595/776] rtc: abx80x: Disable alarm feature if no interrupt attached
+Subject: [PATCH 5.10 428/589] dissector: do not set invalid PPP protocol
 Date: Sat, 30 May 2026 18:05:09 +0200
-Message-ID: <20260530160255.423604210@linuxfoundation.org>
+Message-ID: <20260530160235.972274166@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258534-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259112-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5B0EB611329
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,davemloft.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: DD8B5612768
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthony Pighin (Nokia) <anthony.pighin@nokia.com>
+From: Boris Sukholitko <boris.sukholitko@broadcom.com>
 
-[ Upstream commit 0fedce7244e4b85c049ce579c87e298a1b0b811d ]
+[ Upstream commit 2e861e5e97175dfa7b7bc055c45acdc06d2301d3 ]
 
-Commit 795cda8338ea ("rtc: interface: Fix long-standing race when setting
-alarm") exposed an issue where the rtc-abx80x driver does not clear the
-alarm feature bit, but instead relies on the set_alarm operation to return
-invalid.
+The following flower filter fails to match non-PPP_IP{V6} packets
+wrapped in PPP_SES protocol:
 
-For example, when a RTC_UIE_ON ioctl is handled, it should abort at the
-feature validation. Instead, it proceeds to the rtc_timer_enqueue(),
-which used to return an error from the set_alarm call. However,
-following the race condition handling, which likely should not be
-discarding predecing errors, a success condition is returned to the
-ioctl() caller. This results in (for example):
-    hwclock: select() to /dev/rtc0 to wait for clock tick timed out
+tc filter add dev eth0 ingress protocol ppp_ses flower \
+        action simple sdata hi64
 
-Notwithstanding the validity of the race condition handling, if an interrupt
-wasn't specified, or could not be attached, the driver should clear the
-alarm feature bit.
+The reason is that proto local variable is being set even when
+FLOW_DISSECT_RET_OUT_BAD status is returned.
 
-Fixes: 718a820a303c ("rtc: abx80x: add alarm support")
-Signed-off-by: Anthony Pighin <anthony.pighin@nokia.com>
-Link: https://patch.msgid.link/BN0PR08MB69510928028C933749F4139383D1A@BN0PR08MB6951.namprd08.prod.outlook.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+The fix is to avoid setting proto variable if the PPP protocol is unknown.
+
+Signed-off-by: Boris Sukholitko <boris.sukholitko@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: cc1ff87bce1c ("pppoe: drop PFC frames")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-abx80x.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/core/flow_dissector.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
-index 2ea6fdd2ae984..651270e5f1e66 100644
---- a/drivers/rtc/rtc-abx80x.c
-+++ b/drivers/rtc/rtc-abx80x.c
-@@ -836,6 +836,8 @@ static int abx80x_probe(struct i2c_client *client,
- 			client->irq = 0;
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index cc9c63987dc36..8fe8b3afacd04 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -1197,9 +1197,8 @@ bool __skb_flow_dissect(const struct net *net,
+ 			break;
  		}
- 	}
-+	if (client->irq <= 0)
-+		clear_bit(RTC_FEATURE_ALARM, priv->rtc->features);
  
- 	err = rtc_add_group(priv->rtc, &rtc_calib_attr_group);
- 	if (err) {
+-		proto = hdr->proto;
+ 		nhoff += PPPOE_SES_HLEN;
+-		switch (proto) {
++		switch (hdr->proto) {
+ 		case htons(PPP_IP):
+ 			proto = htons(ETH_P_IP);
+ 			fdret = FLOW_DISSECT_RET_PROTO_AGAIN;
 -- 
 2.53.0
 
