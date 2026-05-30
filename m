@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258366-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HFWO7wuG2oLAAkAu9opvQ
-	(envelope-from <stable+bounces-258943-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:52 +0200
+	id eNcjBTYoG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258366-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:11:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B1A86122B7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1052F6112F5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:11:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 55C3C3009540
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:34:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 31DBB300A596
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C7B32F770;
-	Sat, 30 May 2026 18:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D44E355F53;
+	Sat, 30 May 2026 18:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0A7C+3v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQ/+RAm/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F140E41A8F;
-	Sat, 30 May 2026 18:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B8329B78B;
+	Sat, 30 May 2026 18:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166066; cv=none; b=ITjwOHBME5Bc9DRPReAhzJVl/bE9apDgtoSBmjHQ47koUWCsL/3UYhRocuA3oLIw2ENuYWH7hsBtk2mw8Tse950YcOAtBc1vMDVO1RUjXnjhxwhDvnHUZgKNxg2+4acDyRyfbmGgpmgyICzo29OSDcVfm4jF76sPm2flADJ6m/k=
+	t=1780164111; cv=none; b=GFizJvWCcGulHFBgz7IIZgYCo60uCpQ0JKdA4XSubKuM77/kNjoG3bAaCSI2B6rtQuHGmjiyHozevqHNeRe4F6tFc/9cebBZQKHkAsRlFr76nonWtxUjJCQ4+2PLEh99/bNRWlzdL1MAlS46WPKBBEGb4QWoH59s2U/PdKP3Rtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166066; c=relaxed/simple;
-	bh=kQVo4Ak8r3p2c9SpcIAC5xHAiwOK9VNlNZ5Xknau64U=;
+	s=arc-20240116; t=1780164111; c=relaxed/simple;
+	bh=4X4eeILMXv0tXUiWnbdnQt6dNsN49hYJfj9QfQ2qzUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VEDibPzM0uOs7O+7buPmXYj3nz0PWq4B7/VLeOcG3dK0mZAMjjqL2CCFxI+khHp/Q/49Wp3sR7RhNnY8jyc0ofG5s9MtcoRBjLWpW0dY37gwSPIxG2AhRAclRR6ju41tBjGy1yllMNmMVBk/sLqtZ3sjQhULztS0M2rydaW8dHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0A7C+3v; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CCB31F00893;
-	Sat, 30 May 2026 18:34:24 +0000 (UTC)
+	 MIME-Version; b=ca6d8K5FFww1e8W3QdqXMLPEWvxWK1P9GnVEzuER21SNVRliM/MU0zBdZKiztEYUBX8vQWdonR/DS5Tf5K8iy5RFMkcRcacB2IgzB0+eLzUg2B3yc7/4nFxhCL0xjtNJktRhAwXh47VBL/9UvFFR48IPkixL96Kwagx9jauoEiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQ/+RAm/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C7B1F00893;
+	Sat, 30 May 2026 18:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166064;
-	bh=AnQG9t+ET2Y/kwNb4gXS3qjuzFhTGPibQ7tl91hfzZI=;
+	s=korg; t=1780164110;
+	bh=t19G1jHRvklXq7hJhOcQ2cbLlda3zkzc8g80qh8PZfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l0A7C+3vjMNfVDZaQFOokvx5NfgWtP+kz9G9NS8Dzyvk6bZav5yCvid9hvX/VU357
-	 NX80s+lHf9TzhHuPlVXBygBj585P5iPlT66zEqufudc9lrHvYdGPpvshWYV236Euj0
-	 HmXH70Rw1NhrLVB6KUZKZt5hGFe2b/4cHBQAPry4=
+	b=TQ/+RAm/pWOtD9qIDu+/estU2aHuoT7oeztu6WvRZLKbkNCoCleuFZSIalshJOdWP
+	 wCwzHEWRMF9SfJ1y8LBChhIWezG+xlIDX/26yq9unIS5SpbUiRXc6v9XggDVK8K2hk
+	 7pMgej8Ee3jZeFwE0mnycp4+nJ77AJkYD0wxMYFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.10 263/589] media: uvcvideo: Enable VB2_DMABUF for metadata stream
+	Alexander Konyukhov <Alexander.Konyukhov@kaspersky.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 430/776] drm/komeda: fix integer overflow in AFBC framebuffer size check
 Date: Sat, 30 May 2026 18:02:24 +0200
-Message-ID: <20260530160231.873363839@linuxfoundation.org>
+Message-ID: <20260530160251.555150361@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +64,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [7.84 / 15.00];
+	URIBL_BLACK(7.50)[linuxtesting.org:url];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258943-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-258366-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	RCVD_COUNT_THREE(0.00)[4];
+	GREYLIST(0.00)[pass,body];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,chromium.org:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 7B1A86122B7
-X-Rspamd-Action: no action
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4:c];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_SPAM(0.00)[0.907];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 1052F6112F5
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Alexander Konyukhov <Alexander.Konyukhov@kaspersky.com>
 
-commit fbac03467e53d8d72e5099c03df26d9adae11416 upstream.
+[ Upstream commit 779ec12c85c9e4547519e3903a371a3b26a289de ]
 
-The UVC driver has two video streams, one for the frames and another one
-for the metadata. Both streams share most of the codebase, but only the
-data stream declares support for DMABUF transfer mode.
+The AFBC framebuffer size validation calculates the minimum required
+buffer size by adding the AFBC payload size to the framebuffer offset.
+This addition is performed without checking for integer overflow.
 
-I have tried the DMABUF transfer mode with CONFIG_DMABUF_HEAPS_SYSTEM
-and the frames looked correct.
+If the addition oveflows, the size check may incorrectly succed and
+allow userspace to provide an undersized drm_gem_object, potentially
+leading to out-of-bounds memory access.
 
-This patch announces the support for DMABUF for the metadata stream.
-This is useful for apps/HALs that only want to support DMABUF.
+Add usage of check_add_overflow() to safely compute the minimum
+required size and reject the framebuffer if an overflow is detected.
+This makes the AFBC size validation more robust against malformed.
 
-Cc: stable@vger.kernel.org
-Fixes: 088ead2552458 ("media: uvcvideo: Add a metadata device node")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260309-uvc-metadata-dmabuf-v1-1-fc8b87bd29c5@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 65ad2392dd6d ("drm/komeda: Added AFBC support for komeda driver")
+Signed-off-by: Alexander Konyukhov <Alexander.Konyukhov@kaspersky.com>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://lore.kernel.org/r/20260203134907.1587067-1-Alexander.Konyukhov@kaspersky.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_queue.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_queue.c
-+++ b/drivers/media/usb/uvc/uvc_queue.c
-@@ -222,7 +222,7 @@ int uvc_queue_init(struct uvc_video_queu
- 	int ret;
- 
- 	queue->queue.type = type;
--	queue->queue.io_modes = VB2_MMAP | VB2_USERPTR;
-+	queue->queue.io_modes = VB2_MMAP | VB2_USERPTR | VB2_DMABUF;
- 	queue->queue.drv_priv = queue;
- 	queue->queue.buf_struct_size = sizeof(struct uvc_buffer);
- 	queue->queue.mem_ops = &vb2_vmalloc_memops;
-@@ -235,7 +235,6 @@ int uvc_queue_init(struct uvc_video_queu
- 		queue->queue.ops = &uvc_meta_queue_qops;
- 		break;
- 	default:
--		queue->queue.io_modes |= VB2_DMABUF;
- 		queue->queue.ops = &uvc_queue_qops;
- 		break;
- 	}
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c b/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c
+index 3c372d2deb0a6..4bc2b9101354a 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c
+@@ -4,6 +4,8 @@
+  * Author: James.Qian.Wang <james.qian.wang@arm.com>
+  *
+  */
++#include <linux/overflow.h>
++
+ #include <drm/drm_device.h>
+ #include <drm/drm_fb_cma_helper.h>
+ #include <drm/drm_gem.h>
+@@ -92,7 +94,9 @@ komeda_fb_afbc_size_check(struct komeda_fb *kfb, struct drm_file *file,
+ 	kfb->afbc_size = kfb->offset_payload + n_blocks *
+ 			 ALIGN(bpp * AFBC_SUPERBLK_PIXELS / 8,
+ 			       AFBC_SUPERBLK_ALIGNMENT);
+-	min_size = kfb->afbc_size + fb->offsets[0];
++	if (check_add_overflow(kfb->afbc_size, fb->offsets[0], &min_size)) {
++		goto check_failed;
++	}
+ 	if (min_size > obj->size) {
+ 		DRM_DEBUG_KMS("afbc size check failed, obj_size: 0x%zx. min_size 0x%llx.\n",
+ 			      obj->size, min_size);
+-- 
+2.53.0
+
 
 
 
