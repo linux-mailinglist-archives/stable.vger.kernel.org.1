@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCoxMlgdG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:40 +0200
+	id mHL6NhAyG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0FF60F90F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4181E612B94
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 839D73014248
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:22:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6351D3104048
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28924332EA7;
-	Sat, 30 May 2026 17:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC64E29E11A;
+	Sat, 30 May 2026 18:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPZ5c9Af"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QPDRlo9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E669E33E36A;
-	Sat, 30 May 2026 17:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2461B87C0;
+	Sat, 30 May 2026 18:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161753; cv=none; b=FNEka9q2OkKhMpukAbX/H2SqIfkgCB99Y7P1MBjl1iyjtfTFPgPQr5vSeI3+U+3ydjbx206WL7SMrNytsUOXSAqJZgU/V9ncbRFQWBdVTppud6vZhGerw+On1pJBxrveIC2QLpSQCU7oIrUPyqJ8JR3ewRZ7R/QkxsRRosE/YUE=
+	t=1780166550; cv=none; b=A9JnBqmixGWDt1gKVGT8Bgz7hmYFrfwj10Nh+XSnLfBdvsHXo1feBrImnVXvdCQQ8b8Nw0PzydQHW8Ldttylixjb/CydPKAc/P8Xmzozwg4rSTL0ddtMyQrRv/96+n0QOjtblALtTQhRIheXwY9Ln/CMA4P6bPHeF/swDrdfdl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161753; c=relaxed/simple;
-	bh=M6w4v6LFQPOzxzy/oLN1dZlUklmTpyeYEgbsSJDqCUU=;
+	s=arc-20240116; t=1780166550; c=relaxed/simple;
+	bh=e+b7Q+Vh/xI0oCKKAP7HwHWxPzq5sv+i3+LW4c/UH40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UG3njU/HloKXSR6hnElds1FXdA46CvXWLJKPx4wru2Im6zqBoIFbYFB+9PEyRs9Kwq2mPP1qNfPR2ukQmxPw+huen1sRk8eyePpWIJWRsVPKfGwqqCSeD+57uha6G4gcSzFQKAmJbZDIxrx+XENfkIw8TW9GCeyiM4/M1gPpEwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPZ5c9Af; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D4C1F00893;
-	Sat, 30 May 2026 17:22:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EaTfQiTfvOPekOvFL2M5oiWCbAuMLE+lY/cPwo3wXNYfC+dGf+P9/dN0sgpxIqs87Dtj31PLgVrvjhmWbQk7VtJSKVF60NDH4pU5SU8aJijRCnstS3oSjfvlEhf/NlaLoO1HWUY7M525VFAqzBRaTUsh4Pvv63II0YJ00moS7c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QPDRlo9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53FE1F00893;
+	Sat, 30 May 2026 18:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161751;
-	bh=UQWcxoXB3apQpqgFiXfT4Y78DhK1f7lrE7tM5NQddf0=;
+	s=korg; t=1780166549;
+	bh=3ifX0w4erz93bkXjhPirIooM56erkzOeJACV7T4Rgnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gPZ5c9AfFxSBAuMtCVArUzi1FlQCxWDOHBSjzEgLp9pSAJsNwbVPM10REQv8XnSyw
-	 pQvY1dKK8Eh31G9ZlF33ZflVu4f1imwWQQYmNW/Qohz3ULIy7CDxrXo917YERBFaim
-	 pHPZHbv4Qby6Hp2m4q2W0zcr4e3u6WJwuuc7jeIg=
+	b=2QPDRlo9VMYsoLSnVDBgd0LsSlqIhg9qYK5yEPaNszGRB1hzg+nuxdX5etbihCAA9
+	 PiY4KGBTAi3UjQB5Pa4OMmPDIiv6XWhuRXz6j3IlNe+ZwT3w7YD9kQJ83nlG4rMgwE
+	 Err108pH6ByJQVb9jHvYmIBo3TW6rTDu1sUHwjbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 716/969] net/sched: sch_red: annotate data-races in red_dump_stats()
-Date: Sat, 30 May 2026 18:04:00 +0200
-Message-ID: <20260530160320.308038237@linuxfoundation.org>
+Subject: [PATCH 5.10 360/589] ARM: dts: mediatek: mt7623: fix efuse fallback compatible
+Date: Sat, 30 May 2026 18:04:01 +0200
+Message-ID: <20260530160234.311075021@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,145 +63,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257662-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259081-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AF0FF60F90F
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,devicetree.org:url,collabora.com:email,0.155.164.36:email,0.155.187.48:email]
+X-Rspamd-Queue-Id: 4181E612B94
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit a8f5192809caf636d05ba47c144f282cfd0e3839 ]
+[ Upstream commit 5978ff33cc6f0988388a2830dc5cd2ea4e81f36a ]
 
-red_dump_stats() only runs with RTNL held,
-reading fields that can be changed in qdisc fast path.
+Fix following validation error:
+arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: compatible: 'oneOf' conditional failed, one must be fixed:
+        ['mediatek,mt7623-efuse', 'mediatek,mt8173-efuse'] is too long
+        'mediatek,mt8173-efuse' was expected
+        'mediatek,efuse' was expected
+        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
+arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: Unevaluated properties are not allowed ('compatible' was unexpected)
+        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
 
-Add READ_ONCE()/WRITE_ONCE() annotations.
-
-Alternative would be to acquire the qdisc spinlock, but our long-term
-goal is to make qdisc dump operations lockless as much as we can.
-
-tc_red_xstats fields don't need to be latched atomically,
-otherwise this bug would have been caught earlier.
-
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260421142309.3964322-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 43c7a91b4b3a ("arm: dts: mt7623: add efuse nodes to the mt7623.dtsi file")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_red.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ arch/arm/boot/dts/mt7623.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
-index ea3580d1d19e8..5348b61053068 100644
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -89,17 +89,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	case RED_PROB_MARK:
- 		qdisc_qstats_overlimit(sch);
- 		if (!red_use_ecn(q)) {
--			q->stats.prob_drop++;
-+			WRITE_ONCE(q->stats.prob_drop,
-+				   q->stats.prob_drop + 1);
- 			goto congestion_drop;
- 		}
+diff --git a/arch/arm/boot/dts/mt7623.dtsi b/arch/arm/boot/dts/mt7623.dtsi
+index c267fc1f83579..290527c9711ec 100644
+--- a/arch/arm/boot/dts/mt7623.dtsi
++++ b/arch/arm/boot/dts/mt7623.dtsi
+@@ -329,7 +329,7 @@ sysirq: interrupt-controller@10200100 {
  
- 		if (INET_ECN_set_ce(skb)) {
--			q->stats.prob_mark++;
-+			WRITE_ONCE(q->stats.prob_mark,
-+				   q->stats.prob_mark + 1);
- 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
- 			if (!skb)
- 				return NET_XMIT_CN | ret;
- 		} else if (!red_use_nodrop(q)) {
--			q->stats.prob_drop++;
-+			WRITE_ONCE(q->stats.prob_drop,
-+				   q->stats.prob_drop + 1);
- 			goto congestion_drop;
- 		}
- 
-@@ -109,17 +112,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	case RED_HARD_MARK:
- 		qdisc_qstats_overlimit(sch);
- 		if (red_use_harddrop(q) || !red_use_ecn(q)) {
--			q->stats.forced_drop++;
-+			WRITE_ONCE(q->stats.forced_drop,
-+				   q->stats.forced_drop + 1);
- 			goto congestion_drop;
- 		}
- 
- 		if (INET_ECN_set_ce(skb)) {
--			q->stats.forced_mark++;
-+			WRITE_ONCE(q->stats.forced_mark,
-+				   q->stats.forced_mark + 1);
- 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
- 			if (!skb)
- 				return NET_XMIT_CN | ret;
- 		} else if (!red_use_nodrop(q)) {
--			q->stats.forced_drop++;
-+			WRITE_ONCE(q->stats.forced_drop,
-+				   q->stats.forced_drop + 1);
- 			goto congestion_drop;
- 		}
- 
-@@ -133,7 +139,8 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		sch->qstats.backlog += len;
- 		sch->q.qlen++;
- 	} else if (net_xmit_drop_count(ret)) {
--		q->stats.pdrop++;
-+		WRITE_ONCE(q->stats.pdrop,
-+			   q->stats.pdrop + 1);
- 		qdisc_qstats_drop(sch);
- 	}
- 	return ret;
-@@ -461,9 +468,13 @@ static int red_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 		dev->netdev_ops->ndo_setup_tc(dev, TC_SETUP_QDISC_RED,
- 					      &hw_stats_request);
- 	}
--	st.early = q->stats.prob_drop + q->stats.forced_drop;
--	st.pdrop = q->stats.pdrop;
--	st.marked = q->stats.prob_mark + q->stats.forced_mark;
-+	st.early = READ_ONCE(q->stats.prob_drop) +
-+		   READ_ONCE(q->stats.forced_drop);
-+
-+	st.pdrop = READ_ONCE(q->stats.pdrop);
-+
-+	st.marked = READ_ONCE(q->stats.prob_mark) +
-+		    READ_ONCE(q->stats.forced_mark);
- 
- 	return gnet_stats_copy_app(d, &st, sizeof(st));
- }
+ 	efuse: efuse@10206000 {
+ 		compatible = "mediatek,mt7623-efuse",
+-			     "mediatek,mt8173-efuse";
++			     "mediatek,efuse";
+ 		reg = <0 0x10206000 0 0x1000>;
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
 -- 
 2.53.0
 
