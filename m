@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IC3LKAkcG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:05 +0200
+	id qNhOCCAtG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EDD660F604
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFD2B611E95
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EBECE30696D4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B087C304449A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687A534BA42;
-	Sat, 30 May 2026 17:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7916B3C2799;
+	Sat, 30 May 2026 18:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxCTeu6I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcNZXHTJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB93EEA8;
-	Sat, 30 May 2026 17:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505933C199A;
+	Sat, 30 May 2026 18:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161101; cv=none; b=KX7yUgWRuaIiH7x+SoUCyqc/As8BYS+O5EHmuthJdmx7Tma21DheA+Hw97yP6NbximrHab0RN80mLfWciQHblyRN2lvA9jtoMJmYTkty1v1P3JSdqEeSh96lzsD3MzZpslfMqWeujgristrP4jntEjH0evQWzCbEYLErOpZAvIE=
+	t=1780165746; cv=none; b=bJ3ww2pMDcITZnhAcdv/Y8TBD4YmXx4bSSB4zmpj4mKWp7LIzNz9FFJWmuvCBI/a5nT/nwFsRujEcLPAEm3XARtsYgbL/c/6ZF+tM3xIgrza2Pqi2d5WQQSjDCrjAzMbfHjyWLFU+b6nh2tDDjhsfECBZWYILG1xEBewaFuwn2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161101; c=relaxed/simple;
-	bh=5tQuf2rS3jKXSjbEuti2qPVEcD3PtlarbPnt57Mea2Q=;
+	s=arc-20240116; t=1780165746; c=relaxed/simple;
+	bh=DoL4vBzjmntB4W2d6xOmahgPoT5zUNuxXxrmMGa5Ui4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMUFYQoE6nIZf3cX2pDSo1MBqzs2YM/E8W+WVBgwqRf4NuqFWXoTm5ZYmm7rsISrtcyZmU9mmIA2w+eVhAYyyav975HaroVXc2UFS25MAeO2aqUoOEPJ98CugHbx9k7CqFlILInY9FcvXdkcPBDZEZRrRyjp+QMLupHv1HQhBBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxCTeu6I; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7921F00893;
-	Sat, 30 May 2026 17:11:39 +0000 (UTC)
+	 MIME-Version; b=HBQOjE3rdLMs2BxrRjQ1PIJhfxcqB5uisGWl8y3yObFU0iKha4s0qmwNHK0jRKHFBlNLUytJprWNuFNisdqwViO51zTus16boAYnD5O7vdJ/E9TOBFeOobk+MGmg8XQK9iL49q2nFLUFQiSWuu2KEmfLRGUAHJjSs+Uhw2a9iJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcNZXHTJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA181F00893;
+	Sat, 30 May 2026 18:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161100;
-	bh=krvPUFtgG5tzNH/hu4EL/QF5eXgxNElja8GFetFb7rQ=;
+	s=korg; t=1780165745;
+	bh=GUYrA0AOhxRkDdUM452xpNvrM9Ar6BIxRpa3Ft9QVkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kxCTeu6I49vgOAMzRpHfw+0PPQzIq+Kadq6BChma2zP4lQ5pqnIfg0F4lLgzTKY8N
-	 3xxRYgmhV84NnUrTU7mNXQZTnzWFLwSvQfg/tTlIo0nHEZCK7U6hbRCVfGDzcqTBHy
-	 ZhdMfCxhNaWlBGZiwMPWPQupBMqqsxGJDFMajR8U=
+	b=rcNZXHTJz6TrYgnTDEpvzT8GILi+FQZgyea0lIf2RzutaSG/phte8Un/RHF49nTGk
+	 R2VDnH6OlHTQNFz1CMtQR4k+vcRgkYoiqRTidiHo4k3dKrj/pTmkWnvWlEzc1hIiS7
+	 IJcXquURseg786XxI6svXVFLELX50l9Q0LZWIw+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lei Huang <huanglei@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 525/969] ALSA: hda/realtek: fix code style (ERROR: else should follow close brace })
+	Jonathan Santos <Jonathan.Santos@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 168/589] iio: adc: ad7768-1: fix one-shot mode data acquisition
 Date: Sat, 30 May 2026 18:00:49 +0200
-Message-ID: <20260530160314.853753977@linuxfoundation.org>
+Message-ID: <20260530160229.208659539@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +67,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257468-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258849-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2EDD660F604
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,baylibre.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,analog.com:email]
+X-Rspamd-Queue-Id: DFD2B611E95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lei Huang <huanglei@kylinos.cn>
+From: Jonathan Santos <Jonathan.Santos@analog.com>
 
-[ Upstream commit d1888bf848ade6a9e71c7ba516fd215aa1bd8d65 ]
+commit 8be19e233744961db6069da9c9ab63eb085a0447 upstream.
 
-Fix checkpatch code style errors:
+According to the datasheet, one-shot mode requires a SYNC_IN pulse to
+trigger a new sample conversion. In the current implementation, No sync
+pulse was sent after switching to one-shot mode and reinit_completion()
+was called before mode switching, creating a race condition where spurious
+interrupts during mode change could trigger completion prematurely.
 
-  ERROR: else should follow close brace '}'
-  #2300: FILE: sound/hda/codecs/realtek/alc269.c:2300:
-  +       }
-  +       else
+Fix by sending a sync pulse after configuring one-shot mode and
+reinit_completion() to ensure it only waits for the actual conversion
+completion.
 
-Fixes: 31278997add6 ("ALSA: hda/realtek - Add headset quirk for Dell DT")
-Signed-off-by: Lei Huang <huanglei@kylinos.cn>
-Link: https://patch.msgid.link/20260331075405.78148-1-huanglei814@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
+Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7768-1.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 9bda2f43394cb..7b4fd95c66f9b 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6040,9 +6040,9 @@ static void alc_fixup_headset_mode_alc255_no_hp_mic(struct hda_codec *codec,
- 		struct alc_spec *spec = codec->spec;
- 		spec->parse_flags |= HDA_PINCFG_HEADSET_MIC;
- 		alc255_set_default_jack_type(codec);
--	}
--	else
-+	} else {
- 		alc_fixup_headset_mode(codec, fix, action);
-+	}
- }
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -240,12 +240,17 @@ static int ad7768_scan_direct(struct iio
+ 	struct ad7768_state *st = iio_priv(indio_dev);
+ 	int readval, ret;
  
- static void alc288_update_headset_jack_cb(struct hda_codec *codec,
--- 
-2.53.0
-
+-	reinit_completion(&st->completion);
+-
+ 	ret = ad7768_set_mode(st, AD7768_ONE_SHOT);
+ 	if (ret < 0)
+ 		return ret;
+ 
++	reinit_completion(&st->completion);
++
++	/* One-shot mode requires a SYNC pulse to generate a new sample */
++	ret = ad7768_send_sync_pulse(st);
++	if (ret)
++		return ret;
++
+ 	ret = wait_for_completion_timeout(&st->completion,
+ 					  msecs_to_jiffies(1000));
+ 	if (!ret)
 
 
 
