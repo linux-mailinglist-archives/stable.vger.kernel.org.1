@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-256876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256878-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHMwFijNGmoh9AgAu9opvQ
-	(envelope-from <stable+bounces-256876-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 13:42:32 +0200
+	id GCU3DlbNGmoh9AgAu9opvQ
+	(envelope-from <stable+bounces-256878-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 13:43:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B065F60C951
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 13:42:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B314860C969
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 13:43:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8785D302D08B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 11:40:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A58A30193AD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 11:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7E639D3D9;
-	Sat, 30 May 2026 11:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5940C3AC0EB;
+	Sat, 30 May 2026 11:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="espUjeOL"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="lOKFzkNf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328903AB283
-	for <stable@vger.kernel.org>; Sat, 30 May 2026 11:40:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0ED63AC0EC;
+	Sat, 30 May 2026 11:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780141253; cv=none; b=FOPw15AHmesUXy3Rgrxb06CxwCzzPP5DMPWvKFSfzekjGywgIEJZ06w9vMVOzJ5Kh5Q1qxqfVM4y1ixXmKViE2aFWtAIBe78Jqfvkmaa1CeOiGVrBlVYI+XxdRUTTh6AkGPmixZTHVTGMPB6BNORP5oTfaShxxaxXXZD3IOTNxw=
+	t=1780141392; cv=none; b=CK5xW4eC9NMK9cVpJZIidpCWSLa5wUvbKGDzx2BjY5EHUXLA51Ahf5SKsKoDz7WTtr1imF0iYvOH//YzYWqtOsTuCE93WDtcqBymqsuEpGlJsc23GVyenxhT7BNCVjwjujaCTI4KmX2Yc/GAkMfhZrIuwfFhVUA4nf2GdOctF+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780141253; c=relaxed/simple;
-	bh=/fCMtxJHBDmriaBO0rfkagHSE8XB9BQe5/qCuM9Ccpg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewFdCvXT0JeX5+dolfCIztGfje0qmHk2l98Ij+Y9RrCUrM4AOQrYPt38XTt8zGlOp9T/N+pG5JxL6f7ikZBRJ8Lvh+j7DGOp0hw+VTSEjT/Pu0iZbk7/Q3H2tkcrstZrEzDttgjmI7qFrH6kMDLQtGAsei4xetiJ/0EOZKoRnrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=espUjeOL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613EF1F0089A;
-	Sat, 30 May 2026 11:40:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780141251;
-	bh=J7bJdJWTpfnpw/1GLCEPDCFx82m8DbdxLIB7FWGWEb4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=espUjeOLIIWMggkuRejUAAbOYVstG1v0V2S1JnL9n+tu/BNpYquehO4R2M5faL3Ea
-	 5402pqmYtZLnyIl3mD125yXF5+d6JUJvuTBlh+UAdlRELuXbtaOUlDDU3LOfcSJEgr
-	 wY7IxS29ZN9Ozrnpw26zlRpT37zLBpyn5FspGzKGT+GBec7SCqhvrzE7EpXh/i8C3F
-	 x1ko3dj4EsgjMCyqeQpmnpc/7L7QbMv87CP446Wc9pBUALNTdd9/Q0Dl8Qr+pXQosH
-	 YuvuLiXGRqfBvZZZUo1JAEhBlg5ZLMBW+fHjiZg/Zrdu6z/P3wcBEELKm+zVDiIOQ+
-	 sUAW/GCO2gQsQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 4/4] vsock/virtio: reset connection on receiving queue overflow
-Date: Sat, 30 May 2026 07:40:46 -0400
-Message-ID: <20260530114046.1945359-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530114046.1945359-1-sashal@kernel.org>
-References: <2026052841-mobility-surgery-8063@gregkh>
- <20260530114046.1945359-1-sashal@kernel.org>
+	s=arc-20240116; t=1780141392; c=relaxed/simple;
+	bh=25vHq+E7jDryH0kj4pNJWNsXwx8lf6KF9+ca7yV3CJ0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oy1Z0C4OL7Nw8tJ9NJyUTE6/Pq/ckcQFOFr5ha16UJYHKyvV/7Ts2g7dmUoUCzfP2IR8F22PVe/8puxtsGowzlxaeglVmHZG5DK2FHcpj0QeRGxd3EI8aWamDpJnrDYno2I7l6tBa634qXiC3gzGhFYw201Yy7BrZY3dSMTjGpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=lOKFzkNf; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from ubuntu-jammy.. (unknown [82.22.40.93])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 96D8F45F79A1;
+	Sat, 30 May 2026 11:42:59 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 96D8F45F79A1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1780141380;
+	bh=dF/ov+B2LMDoBsqviZzmq1HcSMdYOweJxIZb1W1we7g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lOKFzkNf+8uNjflP5RmWxBGKR4y+3GuP/z8wn8rBnEXDfIa4oObZuyPSzZw62hsji
+	 X3NmxL2roFI5LxSiAg/VipmEnpe3S63An+dKbFl6i8t04lB1K1a7w939NEcWhBeRZk
+	 pJ5T7qwFNM8PtnzwjM7D6GvRa5jd4ggbl6Q//OkY=
+From: Dmitry Morgun <d.morgun@ispras.ru>
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: Dmitry Morgun <d.morgun@ispras.ru>,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: ath11k: fix potential buffer underflow in ath11k_hal_rx_msdu_list_get()
+Date: Sat, 30 May 2026 11:42:52 +0000
+Message-Id: <20260530114252.42615-1-d.morgun@ispras.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,119 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ispras.ru,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[ispras.ru:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256878-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256876-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[d.morgun@ispras.ru,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[ispras.ru:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B065F60C951
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B314860C969
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+When the first entry in msdu_details has a zero buffer address,
+the code accesses msdu_details[i - 1] with i == 0, causing a
+buffer underflow.
 
-[ Upstream commit a4f0b001782b21663d10df983b4b208195bec66c ]
+Fix similarly to ath12k_wifi7_hal_rx_msdu_list_get() by adding
+a separate check for i == 0 before the main condition to prevent
+the out-of-bounds access.
 
-When there is no more space to queue an incoming packet, the packet is
-silently dropped. This causes data loss without any notification to
-either peer, since there is no retransmission.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Under normal circumstances, this should never happen. However, it could
-happen if the other peer doesn't respect the credit, or if the skb
-overhead, which we recently began to take into account with commit
-059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue"),
-is too high.
-
-Fix this by resetting the connection and setting the local socket error
-to ENOBUFS when virtio_transport_recv_enqueue() can no longer queue a
-packet, so both peers are explicitly notified of the failure rather than
-silently losing data.
-
-Fixes: ae6fcfbf5f03 ("vsock/virtio: discard packets if credit is not respected")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20260518090656.134588-2-sgarzare@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Dmitry Morgun <d.morgun@ispras.ru>
 ---
- net/vmw_vsock/virtio_transport_common.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 441ca63743ce3..4a0c0840ebdbc 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1049,7 +1049,7 @@ virtio_transport_recv_connecting(struct sock *sk,
- 	return err;
- }
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 2a413e3a0..c9f520c2a 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -4565,6 +4565,9 @@ static void ath11k_hal_rx_msdu_list_get(struct ath11k *ar,
+ 	msdu_details = &msdu_link->msdu_link[0];
  
--static void
-+static bool
- virtio_transport_recv_enqueue(struct vsock_sock *vsk,
- 			      struct sk_buff *skb)
- {
-@@ -1064,10 +1064,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
- 	spin_lock_bh(&vvs->rx_lock);
- 
- 	can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
--	if (!can_enqueue) {
--		free_pkt = true;
-+	if (!can_enqueue)
- 		goto out;
--	}
- 
- 	if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
- 		vvs->msg_count++;
-@@ -1105,6 +1103,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
- 	spin_unlock_bh(&vvs->rx_lock);
- 	if (free_pkt)
- 		kfree_skb(skb);
-+
-+	return can_enqueue;
- }
- 
- static int
-@@ -1117,7 +1117,17 @@ virtio_transport_recv_connected(struct sock *sk,
- 
- 	switch (le16_to_cpu(hdr->op)) {
- 	case VIRTIO_VSOCK_OP_RW:
--		virtio_transport_recv_enqueue(vsk, skb);
-+		if (!virtio_transport_recv_enqueue(vsk, skb)) {
-+			/* There is no more space to queue the packet, so let's
-+			 * close the connection; otherwise, we'll lose data.
-+			 */
-+			(void)virtio_transport_reset(vsk, skb);
-+			virtio_transport_do_close(vsk, true);
-+			sk->sk_err = ENOBUFS;
-+			sk_error_report(sk);
-+			vsock_remove_sock(vsk);
+ 	for (i = 0; i < HAL_RX_NUM_MSDU_DESC; i++) {
++		if (!i && FIELD_GET(BUFFER_ADDR_INFO0_ADDR,
++				    msdu_details[i].buf_addr_info.info0) == 0)
 +			break;
-+		}
- 		sk->sk_data_ready(sk);
- 		return err;
- 	case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
+ 		if (FIELD_GET(BUFFER_ADDR_INFO0_ADDR,
+ 			      msdu_details[i].buf_addr_info.info0) == 0) {
+ 			msdu_desc_info = &msdu_details[i - 1].rx_msdu_info;
 -- 
-2.53.0
+2.34.1
 
 
