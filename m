@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258758-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIdvIFAlG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258153-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:40 +0200
+	id IDPtN9QrG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258758-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121C9610BE0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B679611BCA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4618130A060E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 44A56309F094
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E695134104B;
-	Sat, 30 May 2026 17:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E065D274FDC;
+	Sat, 30 May 2026 18:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6bmIgM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9vbTKCS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF103304BCB;
-	Sat, 30 May 2026 17:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B070117555;
+	Sat, 30 May 2026 18:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163393; cv=none; b=BfXBUgDauh4UZyho8EBosoflCGTgOree3vGm+oqGuyDF5bbMT4w8WGbk8rHWw2Pq2W1mPqJYAivgl4Rq23vo+cfO0B/Gft/D/02qlub9dhk+uXabFYt2tOd3egv1VdKeQ4txgoioF8XnoiyV8snj3ADQ2J1oY6wxRbGlgErhWZ8=
+	t=1780165440; cv=none; b=je1FzGXufxk+h3UCI5NhYFnJMmd/SdmA5AO4VboBr7AKbVxGmWcg4rh0nQeeZeNQ1eLl0gMYMjwD00loBIXafjvYivA6W4HO3bAgqsis0CPSaT/DInfimlsvFFchiMXSF/Y+c+AxaotXOD4YHuSBBL6OVZy1enVaCpOdqYF88wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163393; c=relaxed/simple;
-	bh=mphZkJ58edDFFDAz5NXPAqUFnvDbjXle0HGAMTr6qaI=;
+	s=arc-20240116; t=1780165440; c=relaxed/simple;
+	bh=B+YCe+OmBErqSY/IjpWu+06s4GMa50EHlO+t3ilXdIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JuIVGfRFmm8cahSoc8RQ5xCw/Y6bI5wKB4kzhnrCxIdzISTSzqCfq+cHVEaE9RnqrVeG5nmPFX58vFJv8Fm9LuczCt4e7QgqOKt2e6HFQjK8Bbb1I3Ar+O3PM5XIUt1/Xh4gvH17b7dStO5TwF6/xbh6+vo83D2pquS1j3yPkSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6bmIgM/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0110F1F00893;
-	Sat, 30 May 2026 17:49:51 +0000 (UTC)
+	 MIME-Version; b=RSxLOmY7KB/upiga6c8GPx9tRoivDeYFSTFRH5Y3VF0ULNEOZitBsfImYpbZ02xOk/iuw8vNV//dD+wvtNT1+8WT9sxjzgal5n9dmGOYlAmDUZB30V1zBrg3z/NWLwo+s+VHdK50Zxc27nILLu/ksGGQKQ0wY6UCMqRzaSYA4Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9vbTKCS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38A61F00893;
+	Sat, 30 May 2026 18:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163392;
-	bh=cqCfrPo4krykqJzF/cuAExk6H2FFi/ZdG1agyk4nY4A=;
+	s=korg; t=1780165439;
+	bh=40OqTM1IDnkTucoSCjhsPYggcXK9s76ndKCHGranOss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R6bmIgM/AqigXYiIkjaBBRdYOGlkyLMNXsLxnJbyV0ZbjsWOYLUc1usloTwVpPL2Q
-	 T/flNSAT7+K0XeEAZf2j4SvClZG5jUSr0iDPGfMa+pla9ZuRMnJvoq/IgSuEQZy4FA
-	 /XdGX+lKGTA5aP6rx0Om2CP+Yd59GJxYEjO/vRjw=
+	b=w9vbTKCST9EomF5LfHYq2TX+VCxizUyM6MLkpH914Ar7Q1QhH0eaM4H+byHPDuQuQ
+	 pr54KZFY2ijDLL3H65uIkPDaZPHBnN4faXAdcoqotkrvz+xUL9Vdez2DyUOvIKIWhx
+	 W4BVyQymOzEAvZG2vkTKIqNX/T5I1e6d1GkK589k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FengWei Shih <dannyshih@synology.com>,
-	Chia-Ming Chang <chiamingc@synology.com>,
-	Yu Kuai <yukuai@fnnas.com>
-Subject: [PATCH 5.15 245/776] md/raid5: fix soft lockup in retry_aligned_read()
-Date: Sat, 30 May 2026 17:59:19 +0200
-Message-ID: <20260530160246.865354332@linuxfoundation.org>
+	Mingzhe Zou <mingzhe.zou@easystack.cn>,
+	Coly Li <colyli@fnnas.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 079/589] bcache: fix cached_dev.sb_bio use-after-free and crash
+Date: Sat, 30 May 2026 17:59:20 +0200
+Message-ID: <20260530160226.685223976@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,86 +66,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258153-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258758-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 121C9610BE0
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,kernel.dk:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fnnas.com:email,easystack.cn:email]
+X-Rspamd-Queue-Id: 5B679611BCA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Ming Chang <chiamingc@synology.com>
+From: Mingzhe Zou <mingzhe.zou@easystack.cn>
 
-commit 7f9f7c697474268d9ef9479df3ddfe7cdcfbbffc upstream.
+commit fec114a98b8735ee89c75216c45a78e28be0f128 upstream.
 
-When retry_aligned_read() encounters an overlapped stripe, it releases
-the stripe via raid5_release_stripe() which puts it on the lockless
-released_stripes llist. In the next raid5d loop iteration,
-release_stripe_list() drains the stripe onto handle_list (since
-STRIPE_HANDLE is set by the original IO), but retry_aligned_read()
-runs before handle_active_stripes() and removes the stripe from
-handle_list via find_get_stripe() -> list_del_init(). This prevents
-handle_stripe() from ever processing the stripe to resolve the
-overlap, causing an infinite loop and soft lockup.
+In our production environment, we have received multiple crash reports
+regarding libceph, which have caught our attention:
 
-Fix this by using __release_stripe() with temp_inactive_list instead
-of raid5_release_stripe() in the failure path, so the stripe does not
-go through the released_stripes llist. This allows raid5d to break out
-of its loop, and the overlap will be resolved when the stripe is
-eventually processed by handle_stripe().
+```
+[6888366.280350] Call Trace:
+[6888366.280452]  blk_update_request+0x14e/0x370
+[6888366.280561]  blk_mq_end_request+0x1a/0x130
+[6888366.280671]  rbd_img_handle_request+0x1a0/0x1b0 [rbd]
+[6888366.280792]  rbd_obj_handle_request+0x32/0x40 [rbd]
+[6888366.280903]  __complete_request+0x22/0x70 [libceph]
+[6888366.281032]  osd_dispatch+0x15e/0xb40 [libceph]
+[6888366.281164]  ? inet_recvmsg+0x5b/0xd0
+[6888366.281272]  ? ceph_tcp_recvmsg+0x6f/0xa0 [libceph]
+[6888366.281405]  ceph_con_process_message+0x79/0x140 [libceph]
+[6888366.281534]  ceph_con_v1_try_read+0x5d7/0xf30 [libceph]
+[6888366.281661]  ceph_con_workfn+0x329/0x680 [libceph]
+```
 
-Fixes: 773ca82fa1ee ("raid5: make release_stripe lockless")
-Cc: stable@vger.kernel.org
-Signed-off-by: FengWei Shih <dannyshih@synology.com>
-Signed-off-by: Chia-Ming Chang <chiamingc@synology.com>
-Link: https://lore.kernel.org/linux-raid/20260402061406.455755-1-chiamingc@synology.com/
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+After analyzing the coredump file, we found that the address of
+dc->sb_bio has been freed. We know that cached_dev is only freed when it
+is stopped.
+
+Since sb_bio is a part of struct cached_dev, rather than an alloc every
+time.  If the device is stopped while writing to the superblock, the
+released address will be accessed at endio.
+
+This patch hopes to wait for sb_write to complete in cached_dev_free.
+
+It should be noted that we analyzed the cause of the problem, then tell
+all details to the QWEN and adopted the modifications it made.
+
+Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
+Fixes: cafe563591446 ("bcache: A block layer cache")
+Cc: stable@vger.kernel.org # 3.10+
+Signed-off-by: Coly Li <colyli@fnnas.com>
+Link: https://patch.msgid.link/20260322134102.480107-1-colyli@fnnas.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid5.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/md/bcache/super.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -6351,7 +6351,13 @@ static int  retry_aligned_read(struct r5
- 		}
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -1396,6 +1396,13 @@ static void cached_dev_free(struct closu
  
- 		if (!add_stripe_bio(sh, raid_bio, dd_idx, 0, 0)) {
--			raid5_release_stripe(sh);
-+			int hash;
+ 	mutex_unlock(&bch_register_lock);
+ 
++	/*
++	 * Wait for any pending sb_write to complete before free.
++	 * The sb_bio is embedded in struct cached_dev, so we must
++	 * ensure no I/O is in progress.
++	 */
++	closure_sync(&dc->sb_write);
 +
-+			spin_lock_irq(&conf->device_lock);
-+			hash = sh->hash_lock_index;
-+			__release_stripe(conf, sh,
-+					 &conf->temp_inactive_list[hash]);
-+			spin_unlock_irq(&conf->device_lock);
- 			conf->retry_read_aligned = raid_bio;
- 			conf->retry_read_offset = scnt;
- 			return handled;
+ 	if (dc->sb_disk)
+ 		put_page(virt_to_page(dc->sb_disk));
+ 
 
 
 
