@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-258108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257294-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SDmFHEokG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:18 +0200
+	id 8H16MDIYG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257294-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D6616109EA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F4A60EC6D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D78B83042C44
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 56BCD301AA61
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCC73BD646;
-	Sat, 30 May 2026 17:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9E7394E8A;
+	Sat, 30 May 2026 17:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wysRI/u0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvJW0DPW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662483B3C01;
-	Sat, 30 May 2026 17:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D9932D42B;
+	Sat, 30 May 2026 17:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163243; cv=none; b=eu44JMhmzkjoGvb20v/Y3v+vwhSqdI72H6O4GGpDZ5Xm7c0skfPbfzYTKekE51pk5Iz0YDGAK5MfKwlAv/JKljZ5fAdmnaB9CZCKy5uMq4ZUJerWGm23zpkrm3exydWlxVdK3Ah9emx7wX5kWe1MekzeKoiAfFB9MqwnEej4EtA=
+	t=1780160502; cv=none; b=Exez7AzOusgKT0edTMup9BA06RnOPzCcTmHn5xyMeCIA0oURd3Q9zG0SvgF2fiLF/Sq9Ms0EGpq8Rmw+9Zzr305xIbPNje1UX8ZqD6u/X/rKgSQKjtTsSdT+mqCZelfyzsSTQBUmm8q/qXNE2+Y+nG3f8SR3paiEG/WwOPP8aqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163243; c=relaxed/simple;
-	bh=hzKSYUQ2BmnN5eDbkb91yirb5PINX+lwXYdwIcQM3Zw=;
+	s=arc-20240116; t=1780160502; c=relaxed/simple;
+	bh=aCtwWwwQkB2iAlj57wJqHHI18n/f0nGRWitT47Sb+4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JfvLMZ5foNQK0DMab6ZeY4l/RsOcaCbnKzTt6h+csInXyaE0/bbjhh+KrvIJ+tUZB5+A909BQ8IciK0LHnVszJy36EWU4xmFARqzANWyIJ6FZ8q20jRIJUYtdRVSl1yUyUcTNEOpbmp3DZRblP5T5qElNp6PiBiRQLmCRKjLejk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wysRI/u0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F21A1F00893;
-	Sat, 30 May 2026 17:47:21 +0000 (UTC)
+	 MIME-Version; b=uGcRit6wH180Xp02SCE/5Tu5EySTMXfFhzdIJtbbQgIftVe9cl6Ewm4lg2mRnR9PpAARxzcUeyD4Cq+sJln52cZfn5ND5y7HH6H/DcpSYo5v6R17gEp177w0skQVOjJpTcHAm5jjIXlju9pBHTzujUX2eWFvpKeflR/ThDzowQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvJW0DPW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F611F00893;
+	Sat, 30 May 2026 17:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163242;
-	bh=wV8cfKZ9UrccuaLMQ91xQJaUD5cTgx5+xQ8Idz17ALk=;
+	s=korg; t=1780160501;
+	bh=xMHb3F2eX9ZxL1AAfolfxLrf4mrvdf7P15xRfImwfEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wysRI/u0kbT6IlJVJyjQST9wk22cw0J7B9Cd+QVqpdawQ0mdTt6RxKHxlxFVOUtVC
-	 TG3Wbv7a3rOlTqq4FzW9eTdl7s0W0vNQhuT73zxwQ4P/iWzjvI7S8nlGhgVlr/Gg9c
-	 jWc9dxu0ltJ0XGM9zIX3RKOieTbf2kfQhQ7nQHIg=
+	b=TvJW0DPWGqmKebQg0h/JBBoC8djPzX+1QsuCnBwV4gzE5jKwDQAj81K7CXOzmQHb2
+	 srL/pAfR09RZXK6dZUilPsgt6l1AQH39iMOba3jmq1klIho5hSXpT93rllpcYO2RNJ
+	 Wue1lwnoKCx4Q8RSosrQBsK5v4eXSZ11qEuP8IsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 5.15 166/776] ksmbd: unset conn->binding on failed binding request
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.1 356/969] libceph: Fix slab-out-of-bounds access in auth message processing
 Date: Sat, 30 May 2026 17:58:00 +0200
-Message-ID: <20260530160244.780383408@linuxfoundation.org>
+Message-ID: <20260530160310.173461112@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,70 +65,93 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258108-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com,foxmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257294-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0D6616109EA
+X-Rspamd-Queue-Id: 65F4A60EC6D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-commit 282343cf8a4a5a3603b1cb0e17a7083e4a593b03 upstream.
+commit 1c439de70b1c3eb3c6bffa8245c16b9fc318f114 upstream.
 
-When a multichannel SMB2_SESSION_SETUP request with
-SMB2_SESSION_REQ_FLAG_BINDING fails ksmbd sets conn->binding = true
-but never clears it on the error path. This leaves the connection in
-a binding state where all subsequent ksmbd_session_lookup_all() calls
-fall back to the global sessions table. This fix it by clearing
-conn->binding = false in the error path.
+If a (potentially corrupted) message of type CEPH_MSG_AUTH_REPLY
+contains a positive value in its result field, it is treated as an
+error code by ceph_handle_auth_reply() and returned to
+handle_auth_reply(). Thereafter, an attempt is made to send the
+preallocated message of type CEPH_MSG_AUTH, where the returned value is
+interpreted as the size of the front segment to send. If the result
+value in the message is greater than the size of the memory buffer
+allocated for the front segment, an out-of-bounds access occurs, and
+the content of the memory region beyond this buffer is sent out.
+
+This patch fixes the issue by treating only negative values in the
+result field as errors. Positive values are therefore treated as success
+in the same way as a zero value. Additionally, a BUG_ON is added to
+__send_prepared_auth_request() comparing the len parameter to
+front_alloc_len to prevent sending the message if it exceeds the bounds
+of the allocation and to make it easier to catch any logic flaws leading
+to this.
 
 Cc: stable@vger.kernel.org
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2pdu.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ceph/auth.c       |    2 +-
+ net/ceph/mon_client.c |    2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -1949,6 +1949,7 @@ out_err:
- 			}
- 		}
- 		smb2_set_err_rsp(work);
-+		conn->binding = false;
- 	} else {
- 		unsigned int iov_len;
+--- a/net/ceph/auth.c
++++ b/net/ceph/auth.c
+@@ -257,7 +257,7 @@ int ceph_handle_auth_reply(struct ceph_a
+ 		ac->negotiating = false;
+ 	}
  
+-	if (result) {
++	if (result < 0) {
+ 		pr_err("auth protocol '%s' mauth authentication failed: %d\n",
+ 		       ceph_auth_proto_name(ac->protocol), result);
+ 		ret = result;
+--- a/net/ceph/mon_client.c
++++ b/net/ceph/mon_client.c
+@@ -174,6 +174,8 @@ int ceph_monmap_contains(struct ceph_mon
+  */
+ static void __send_prepared_auth_request(struct ceph_mon_client *monc, int len)
+ {
++	BUG_ON(len > monc->m_auth->front_alloc_len);
++
+ 	monc->pending_auth = 1;
+ 	monc->m_auth->front.iov_len = len;
+ 	monc->m_auth->hdr.front_len = cpu_to_le32(len);
 
 
 
