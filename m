@@ -1,70 +1,58 @@
-Return-Path: <stable+bounces-258056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257241-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AF1EO5IjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258056-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:14 +0200
+	id UDg3E3gZG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257241-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 628E161084E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C7C60EF0F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 092F330038D3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 992CF30C8569
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA52344DB9;
-	Sat, 30 May 2026 17:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC63348C72;
+	Sat, 30 May 2026 16:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWCxMuaK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jq87hT2W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F4A27A477;
-	Sat, 30 May 2026 17:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9589B332EA7;
+	Sat, 30 May 2026 16:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163073; cv=none; b=NZdhJUz0e77r/DQAvvyzI07y7mIpbafXgrtYdJEj7FDs0VcIf3zlEMRaS2g+NUdnnZRrRFwyEiTkyY8c4EVj0w/YVQwlL0ICnRjJLwbX5nbRXOMW5y2cMbyC1dpZAyM9AuzLvY9IKh4q5Fk55X0PnXnMQ4EBWAWgytC5EuTaAB8=
+	t=1780160308; cv=none; b=tPBMkbwGUC8L1D8Ckl41A872cTf5kPfbW1K6KVJF28tjMh34jCNg04DgPSzTouS1j2neQDXYkwK2BkmGvEpu5mNUrpTAE9ngm3nkx9CRmS8ooRsfjWyVzS2xTVxVlqnCZlahyoaybakC4cp1vt1iNUk40slVkxzPOVUOwlLhSnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163073; c=relaxed/simple;
-	bh=UjR0WD9nIJt7PV5pS/aJPi6LrPJiJVPDc32tpYLGBnA=;
+	s=arc-20240116; t=1780160308; c=relaxed/simple;
+	bh=4G7CSZgeSMg1JDyz5sV4G9h2z1up7S9AOTT2NDDTv3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gRYqLfFrNv68WY2X7X5Z+59YBzl8OZn/DVRJfTAGmvpNyv2ez7452UcUCcHMAEfA09Zs9Z7MRh9kt/3VlJvv9geYSKniYRqAF8mvfW/0OgmkGVCrAtvahz2sP1AQl5YZp0qV7ty2o4um24DwYOrBWcTZfiD28w1+O5784yt6Zj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWCxMuaK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E2D1F00893;
-	Sat, 30 May 2026 17:44:31 +0000 (UTC)
+	 MIME-Version; b=egyK6mkUhDoyWTmuN1XDrN3ZGdI+6v33aoP1NbVr8U7Nn8nW0a4nk60XCF4kOtyfZnKNdKyylOaA/T70e0YuOq0kn8e7v0MZy4eq72naR5evKch2nrZORq6WJjueNeOM506vzccG45yRbT5AgxK3+FAbL8GPOpGtaB+PRW2kXs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jq87hT2W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB80A1F00893;
+	Sat, 30 May 2026 16:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163072;
-	bh=GWk7Hp1Ko9Th6m35xUcSpJUOjA848Cjclt08z+znC8o=;
+	s=korg; t=1780160307;
+	bh=90bHmQYEzCNk5AS72t2hoH8C+HK3BlmgeuAjfjv/m9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WWCxMuaKQIL2kUe7KPhH1aYoSTtCnd4qnS7tyYHUclexip32LGM9g91sFjCDcq5iW
-	 omYtEK1DoEHR7mid/fiWhonq/8Jri2Ava70rB8a6g3Ayf2Y2nLxTdcg10lnWBQyQE8
-	 +1GekuIeGs7Y1MlJP+EIUQqwkY0Zy+Uk0ZO2J3jY=
+	b=jq87hT2WvzYJ/gUzkzyDvB2L2r24qpMytTj4n7qc0TzSBpIAbJtomqjE29/tkzatq
+	 iT2iYysSTCqQ4Zb6OPkqegWqfZKg+8ny0IoVAjduP7lq3zxxYvQITu75KQ3iyrs+f7
+	 KE0clyr97b8R12cRInUj04oZB4FvS+mKvKQBoVrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Yuqi Xu <xuyuqiabc@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 111/776] rxrpc: reject undecryptable rxkad response tickets
+	Tristan Madani <tristan@talencesecurity.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 301/969] wifi: b43legacy: enforce bounds check on firmware key index in RX path
 Date: Sat, 30 May 2026 17:57:05 +0200
-Message-ID: <20260530160243.229264955@linuxfoundation.org>
+Message-ID: <20260530160308.745529976@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -84,88 +72,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258056-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-257241-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,infradead.org:email,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 628E161084E
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B1C7C60EF0F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuqi Xu <xuyuqiabc@gmail.com>
+From: Tristan Madani <tristan@talencesecurity.com>
 
-[ Upstream commit fe4447cd95623b1cfacc15f280aab73a6d7340b2 ]
+commit a035766f970bde2d4298346a31a80685be5c0205 upstream.
 
-rxkad_decrypt_ticket() decrypts the RXKAD response ticket and then
-parses the buffer as plaintext without checking whether
-crypto_skcipher_decrypt() succeeded.
+Same fix as b43: the firmware-controlled key index in b43legacy_rx()
+can exceed dev->max_nr_keys. The existing B43legacy_WARN_ON is
+non-enforcing in production builds, allowing an out-of-bounds read of
+dev->key[].
 
-A malformed RESPONSE can therefore use a non-block-aligned ticket
-length, make the decrypt operation fail, and still drive the ticket
-parser with attacker-controlled bytes.
+Make the check enforcing by dropping the frame for invalid indices.
 
-Check the decrypt result and abort the connection with RXKADBADTICKET
-when ticket decryption fails.
-
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-12-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted `rxrpc_abort_conn()` call to existing `goto other_error` error-handling pattern ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 75388acd0cd8 ("[B43LEGACY]: add mac80211-based driver for legacy BCM43xx devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Link: https://patch.msgid.link/20260417111145.2694196-2-tristmd@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/rxkad.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/b43legacy/xmit.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/rxrpc/rxkad.c
-+++ b/net/rxrpc/rxkad.c
-@@ -1013,8 +1013,13 @@ static int rxkad_decrypt_ticket(struct r
- 	sg_init_one(&sg[0], ticket, ticket_len);
- 	skcipher_request_set_callback(req, 0, NULL, NULL);
- 	skcipher_request_set_crypt(req, sg, sg, ticket_len, iv.x);
--	crypto_skcipher_decrypt(req);
-+	ret = crypto_skcipher_decrypt(req);
- 	skcipher_request_free(req);
-+	if (ret < 0) {
-+		abort_code = RXKADBADTICKET;
-+		ret = -EPROTO;
-+		goto other_error;
-+	}
+--- a/drivers/net/wireless/broadcom/b43legacy/xmit.c
++++ b/drivers/net/wireless/broadcom/b43legacy/xmit.c
+@@ -476,7 +476,8 @@ void b43legacy_rx(struct b43legacy_wldev
+ 		 * key index, but the ucode passed it slightly different.
+ 		 */
+ 		keyidx = b43legacy_kidx_to_raw(dev, keyidx);
+-		B43legacy_WARN_ON(keyidx >= dev->max_nr_keys);
++		if (B43legacy_WARN_ON(keyidx >= dev->max_nr_keys))
++			goto drop;
  
- 	p = ticket;
- 	end = p + ticket_len;
+ 		if (dev->key[keyidx].algorithm != B43legacy_SEC_ALGO_NONE) {
+ 			/* Remove PROTECTED flag to mark it as decrypted. */
 
 
 
