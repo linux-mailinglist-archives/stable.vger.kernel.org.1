@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UD7/MHAlG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:12 +0200
+	id uGCZNHErG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB02610C3E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7B3611AA7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9378730A3600
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C20C43013B99
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87614341AC7;
-	Sat, 30 May 2026 17:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0791C274FDC;
+	Sat, 30 May 2026 18:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPPQJG9C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjFVC3tV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626CF320CAD;
-	Sat, 30 May 2026 17:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36F2217704;
+	Sat, 30 May 2026 18:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163436; cv=none; b=d4v0T0L4ECrYKrtlQ806Yf5Q2UfaLpHq8CL6g6m6CClwlssrD/NM+y94+wC/hoIv9fagW8XRK/OKWKgKbuAt5OYHSMPX3b0KeysBddSs03Mpy2dNHOwXjW02cfKIgFE74E3OYBjLsdJXiMPZ9rh6eWH0N0AEBr1OYrx/9NIgvkI=
+	t=1780165487; cv=none; b=op0+HIBugNU0zqHJ66M9CHE9rs9Dp41i5c1TvrxgnAyUUfElWga2pn0STXIBd6Vq8CepsMUqR9wtkoN6GCpT26yHPPGcOkSvFAbg6PR8dWfa9xCa2S9wW9nME2y1b72hJpljtmIQq8a8mw8pOCr0N335ZJW/N5oV/0qgu56vspk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163436; c=relaxed/simple;
-	bh=nenhhK5ltBW1LOuF3rHwmn37JhHD29YpsFN8I4zCZFc=;
+	s=arc-20240116; t=1780165487; c=relaxed/simple;
+	bh=lPDsqjHIQDaYpFjRLcV//XgriDXR9TjVGJFfNkIeAzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GYriiLCYDBel4FQu8OGioYoh6263hGEbJ1bB7H/lLc5r/iJwVGoHBgpFW8WqxVR031EBRmCmxrRfhcefqufc1GCoImw92QwJbOnxgrYZcN/bNrs0U6+wuJbSvGt/nL9ABiNfoEHxugycDg7SeAoTXjhJ9y8B0P/A55fhGOSgysQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPPQJG9C; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DF51F00893;
-	Sat, 30 May 2026 17:50:34 +0000 (UTC)
+	 MIME-Version; b=CvzOHwmS9sR84BdPFa+981aq7W6KpzwVC0Q78dJ6p6NWNzLDr9/Aqherd4PlBc/j0yeVzLsc4QkdUd3B1YwLnml8CLuIHFIWAVuJMRd/6VmjMWNBjruJ6QnWbNnXCx5dn/iERTRkHNWbuT1WrLfgOFVAPIuaVTXUxpLGU6KqY2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjFVC3tV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12CB1F00893;
+	Sat, 30 May 2026 18:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163435;
-	bh=Ng28tnw+W0FzvK7Jkt0PxIDaRA879QSbIL5JCbY82bA=;
+	s=korg; t=1780165486;
+	bh=PVlyd0cnB/eaz8W57/flYwFck+K+UV0eOptDrMVY2xU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QPPQJG9C+hXsoCDYFfUgw95po21PA7l2rs66n6lyPjGeURldTToKCvIJd5OqvqWd2
-	 wNWx3btT8yzwr4ofaYN4pdWo5egA51CKdhKmJQYR8g+dfjKyBVUn+zU8XRqNTcXxRX
-	 Pw8Ty96H8FodXsADuAL3dIgl7wQ9XiUDxjS0H8JM=
+	b=JjFVC3tVP+iQd9buF49TPsSaKfYiRddocmu35omi91NhK1hz6AZFu2ZpLF1b/BHTi
+	 lBxnW6sJGFJ0P2tvDMAPcysU45DDrSYGz0SEaaqE5QZfanB5IFBheROCy2NSFNpH/S
+	 vr/+yOD3O9+umAiWK2qdE9Tm9TBgHcv016nNAbOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Zhao <chezhao@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 5.15 257/776] IB/core: Fix zero dmac race in neighbor resolution
-Date: Sat, 30 May 2026 17:59:31 +0200
-Message-ID: <20260530160247.177649152@linuxfoundation.org>
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Li hongliang <1468888505@139.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 091/589] wifi: mac80211: always free skb on ieee80211_tx_prepare_skb() failure
+Date: Sat, 30 May 2026 17:59:32 +0200
+Message-ID: <20260530160227.081293628@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,20 +69,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258166-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nbd.name,intel.com,139.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258772-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.996];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,84 +92,117 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5DB02610C3E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7B7B3611AA7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Zhao <chezhao@nvidia.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 5e6de34d82b49cab9d8a42063e9cd0f22a4f31e5 upstream.
+[ Upstream commit d5ad6ab61cbd89afdb60881f6274f74328af3ee9 ]
 
-dst_fetch_ha() checks nud_state without holding the neighbor lock, then
-copies ha under the seqlock. A race in __neigh_update() where nud_state
-is set to NUD_REACHABLE before ha is written allows dst_fetch_ha() to
-read a zero MAC address while the seqlock reports no concurrent writer.
+ieee80211_tx_prepare_skb() has three error paths, but only two of them
+free the skb. The first error path (ieee80211_tx_prepare() returning
+TX_DROP) does not free it, while invoke_tx_handlers() failure and the
+fragmentation check both do.
 
-netevent_callback amplifies this by waking ALL pending addr_req workers
-when ANY neighbor becomes NUD_VALID. At scale (N peers resolving ARP
-concurrently), the hit probability scales as N^2, making it near-certain
-for large RDMA workloads.
+Add kfree_skb() to the first error path so all three are consistent,
+and remove the now-redundant frees in callers (ath9k, mt76,
+mac80211_hwsim) to avoid double-free.
 
-N(A): neigh_update(A)                   W(A): addr_resolve(A)
- |                                       [sleep]
- | write_lock_bh(&A->lock)               |
- | A->nud_state = NUD_REACHABLE          |
- | // A->ha is still 0                   |
- |                                       [woken by netevent_cb() of
- |                                         another neighbour]
- |                                       | dst_fetch_ha(A)
- |                                       |   A->nud_state & NUD_VALID
- |                                       |   read_seqbegin(&A->ha_lock)
- |                                       |   snapshot = A->ha  /* 0 */
- |                                       |   read_seqretry(&A->ha_lock)
- |                                       |   return snapshot
- | seqlock(&A->ha_lock)
- | A->ha = mac_A     /* too late */
- | sequnlock(&A->ha_lock)
- | write_unlock_bh(&A->lock)
+Document the skb ownership guarantee in the function's kdoc.
 
-The incorrect/zero mac is read and programmed in the device QP while it
-was not yet updated. This causes silent packet loss and eventual
-RETRY_EXC_ERR.
-
-Fix by holding the neighbor read lock across the nud_state check and
-ha copy in dst_fetch_ha(), ensuring it synchronizes with
-__neigh_update() which is updating while holding the write lock.
-
-Cc: stable@vger.kernel.org
-Fixes: 92ebb6a0a13a ("IB/cm: Remove now useless rcu_lock in dst_fetch_ha")
-Link: https://patch.msgid.link/r/20260405-fix-dmac-race-v1-1-cfa1ec2ce54a@nvidia.com
-Signed-off-by: Chen Zhao <chezhao@nvidia.com>
-Reviewed-by: Parav Pandit <parav@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20260314065455.2462900-1-nbd@nbd.name
+Fixes: 06be6b149f7e ("mac80211: add ieee80211_tx_prepare_skb() helper function")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Exclude changes to drivers/net/wireless/mediatek/mt76/scan.c as this file is first
+ introduced by commit 31083e38548f("wifi: mt76: add code for emulating hardware scanning")
+ after linux-6.14.]
+Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/addr.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath9k/channel.c | 6 ++----
+ drivers/net/wireless/mac80211_hwsim.c    | 1 -
+ include/net/mac80211.h                   | 4 ++++
+ net/mac80211/tx.c                        | 4 +++-
+ 4 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/infiniband/core/addr.c
-+++ b/drivers/infiniband/core/addr.c
-@@ -322,11 +322,14 @@ static int dst_fetch_ha(const struct dst
- 	if (!n)
- 		return -ENODATA;
+diff --git a/drivers/net/wireless/ath/ath9k/channel.c b/drivers/net/wireless/ath/ath9k/channel.c
+index 6cf0875221572..31b7921bf34f3 100644
+--- a/drivers/net/wireless/ath/ath9k/channel.c
++++ b/drivers/net/wireless/ath/ath9k/channel.c
+@@ -1011,7 +1011,7 @@ static void ath_scan_send_probe(struct ath_softc *sc,
+ 	skb_set_queue_mapping(skb, IEEE80211_AC_VO);
  
-+	read_lock_bh(&n->lock);
- 	if (!(n->nud_state & NUD_VALID)) {
-+		read_unlock_bh(&n->lock);
- 		neigh_event_send(n, NULL);
- 		ret = -ENODATA;
- 	} else {
- 		neigh_ha_snapshot(dev_addr->dst_dev_addr, n, dst->dev);
-+		read_unlock_bh(&n->lock);
- 	}
+ 	if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, NULL))
+-		goto error;
++		return;
  
- 	neigh_release(n);
+ 	txctl.txq = sc->tx.txq_map[IEEE80211_AC_VO];
+ 	if (ath_tx_start(sc->hw, skb, &txctl))
+@@ -1124,10 +1124,8 @@ ath_chanctx_send_vif_ps_frame(struct ath_softc *sc, struct ath_vif *avp,
+ 
+ 		skb->priority = 7;
+ 		skb_set_queue_mapping(skb, IEEE80211_AC_VO);
+-		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta)) {
+-			dev_kfree_skb_any(skb);
++		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta))
+ 			return false;
+-		}
+ 		break;
+ 	default:
+ 		return false;
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 037358606a51a..865bbe0293436 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -2275,7 +2275,6 @@ static void hw_scan_work(struct work_struct *work)
+ 						      hwsim->tmp_chan->band,
+ 						      NULL)) {
+ 				rcu_read_unlock();
+-				kfree_skb(probe);
+ 				continue;
+ 			}
+ 
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 8f91609f928c1..70ee982f08d9d 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -6337,6 +6337,10 @@ void ieee80211_report_wowlan_wakeup(struct ieee80211_vif *vif,
+  * @band: the band to transmit on
+  * @sta: optional pointer to get the station to send the frame to
+  *
++ * Return: %true if the skb was prepared, %false otherwise.
++ * On failure, the skb is freed by this function; callers must not
++ * free it again.
++ *
+  * Note: must be called under RCU lock
+  */
+ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 30ad46cfcad86..b923cd755a68c 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1869,8 +1869,10 @@ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
+ 	struct ieee80211_tx_data tx;
+ 	struct sk_buff *skb2;
+ 
+-	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP)
++	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP) {
++		kfree_skb(skb);
+ 		return false;
++	}
+ 
+ 	info->band = band;
+ 	info->control.vif = vif;
+-- 
+2.53.0
+
 
 
 
