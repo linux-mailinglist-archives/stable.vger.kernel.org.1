@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-258102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELjwD6AiG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258102-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:12 +0200
+	id EEInGHYZG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420296105FE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFBD60EF01
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7AFF9300184F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7DEC1301F782
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59329351C2F;
-	Sat, 30 May 2026 17:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0647934104B;
+	Sat, 30 May 2026 17:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txOLPgc9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3oEZMY6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B4C3546EA;
-	Sat, 30 May 2026 17:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FBC2690D5;
+	Sat, 30 May 2026 17:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163223; cv=none; b=cKnQ9aptFAkHHIEOanJUC8R5Duc02IxlzFBeUsyMgs/86718CW+TwRAIm9aURKBk5X7t9TWnBu4UWGe9koZ+09GGMdMegRc8l6TZQdBs1baIrp4N7qj2dllkfHEsY02FmfccY6L9CBcEmFU8b1wkO6UcVZrqIbG58aGKXuDS1p0=
+	t=1780160601; cv=none; b=XfE61gypY/MYI/T1loqvlPgpfzPQkM4PnriamXcSNyYPchFN9Hmb4AIekYSTo/bpHPnun9eeJ9+44GmlSxgcPsNDEwgj8P969Jykuw33kOQn11cShRbZJde+yEKfCmDOt/xClhdp5bE9m1r7MyxUnLjnpmNxlMMsfBd9yQoNjmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163223; c=relaxed/simple;
-	bh=ooFwcccv075WnkbSZ52tbQK1aLHibF9eBdFFO6gAANo=;
+	s=arc-20240116; t=1780160601; c=relaxed/simple;
+	bh=nbD6OjtICscFktxUTZ0fln5BRikS+5g5B90IpMYDOF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E1lcKxORlO5rwDF9N7s7CPGLc98nu0jJQvf7aMMiAGPTCiLWfuveRixigA1YaNEQOQ8fEnZ0vlRdbf4+lvx99YkK2eoyo4/74pY3kt6GFP5VMjEUYUZRRLcibtot468cd7kTloXrM9ZWIyNm0+HJO0LKnHCVRN04xQRqgXNfTpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txOLPgc9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21C61F00893;
-	Sat, 30 May 2026 17:47:01 +0000 (UTC)
+	 MIME-Version; b=rBVePmfWGOzB9ShpDeZq7LHEg+Sv1xu0a/VLQkFUza5EURUAoCStqfAEcvhWX9NFofG/ZNcxTOD7A4mSgpRagOjLm978YQbx8+li78hHuLiEAuUPAYddkLlg/bbX8eDZtNc6YDVSEbg3IZBau9LMqtK003x38cFhnyEbF325w2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3oEZMY6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99CC1F00893;
+	Sat, 30 May 2026 17:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163222;
-	bh=QWx6aHlMxyZ9pRAx3GvSvF6rUyEGylzHzVYWWgdQQ/A=;
+	s=korg; t=1780160600;
+	bh=sE7L5HW38XUw1BW1HmaBVL0qUZzNnLaZGp9zepfGxJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=txOLPgc9TYpBHAIPHS4nXsw8hiAA6ehxaffDey4MklBhOzEhzOVVkW2gUhvzkEd6T
-	 wvdUl8Ysp3g+22XVfkodzYZb6ckaqgNSAAaE8acN+IFD+XWR7StrtUbiMg9J+91ONE
-	 53Ec3xECTa+u+EHigITFOGlkAppYgVI/TKYIpQzc=
+	b=s3oEZMY6KXNU1cpXmpZpAhg1JPQuUSZbZLxgJxWJBOUXNtrnIfz71jLkz+6HZCFR/
+	 zTW7YSeTlRXFcYgZrrKN5LJ6n+q/ffaNw0BFlAPc3czFvFH0IcQtGB+u3aBaCC2DCX
+	 qVeQ9av6swQLNl7i2QcR1eAP0CSlMwLpTBqlL0nU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 5.15 192/776] device property: Make modifications of fwnode "flags" thread safe
+	Daeho Jeong <daehojeong@google.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Baocong Liu <baocong.liu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Bin Lan <lanbincn@139.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 382/969] f2fs: compress: fix UAF of f2fs_inode_info in f2fs_free_dic
 Date: Sat, 30 May 2026 17:58:26 +0200
-Message-ID: <20260530160245.468147006@linuxfoundation.org>
+Message-ID: <20260530160310.845731608@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,237 +68,269 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258102-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257320-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,unisoc.com,kernel.org,139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,chromium.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sang-engineering.com:email]
-X-Rspamd-Queue-Id: 420296105FE
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: DCFBD60EF01
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-commit f72e77c33e4b5657af35125e75bab249256030f3 upstream.
+[ Upstream commit 39868685c2a94a70762bc6d77dc81d781d05bff5 ]
 
-In various places in the kernel, we modify the fwnode "flags" member
-by doing either:
-  fwnode->flags |= SOME_FLAG;
-  fwnode->flags &= ~SOME_FLAG;
+The decompress_io_ctx may be released asynchronously after
+I/O completion. If this file is deleted immediately after read,
+and the kworker of processing post_read_wq has not been executed yet
+due to high workloads, It is possible that the inode(f2fs_inode_info)
+is evicted and freed before it is used f2fs_free_dic.
 
-This type of modification is not thread-safe. If two threads are both
-mucking with the flags at the same time then one can clobber the
-other.
+    The UAF case as below:
+    Thread A                                      Thread B
+    - f2fs_decompress_end_io
+     - f2fs_put_dic
+      - queue_work
+        add free_dic work to post_read_wq
+                                                   - do_unlink
+                                                    - iput
+                                                     - evict
+                                                      - call_rcu
+    This file is deleted after read.
 
-While flags are often modified while under the "fwnode_link_lock",
-this is not universally true.
+    Thread C                                 kworker to process post_read_wq
+    - rcu_do_batch
+     - f2fs_free_inode
+      - kmem_cache_free
+     inode is freed by rcu
+                                             - process_scheduled_works
+                                              - f2fs_late_free_dic
+                                               - f2fs_free_dic
+                                                - f2fs_release_decomp_mem
+                                      read (dic->inode)->i_compress_algorithm
 
-Create some accessor functions for setting, clearing, and testing the
-FWNODE flags and move all users to these accessor functions. New
-accessor functions use set_bit() and clear_bit(), which are
-thread-safe.
+This patch store compress_algorithm and sbi in dic to avoid inode UAF.
 
-Cc: stable@vger.kernel.org
-Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Reviewed-by: Saravana Kannan <saravanak@kernel.org>
-Link: https://patch.msgid.link/20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid
-[ Fix fwnode_clear_flag() argument alignment, restore dropped blank
-  line in fwnode_dev_initialized(), and remove unnecessary parentheses
-  around fwnode_test_flag() calls. - Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In addition, the previous solution is deprecated in [1] may cause system hang.
+[1] https://lore.kernel.org/all/c36ab955-c8db-4a8b-a9d0-f07b5f426c3f@kernel.org
+
+Cc: Daeho Jeong <daehojeong@google.com>
+Fixes: bff139b49d9f ("f2fs: handle decompress only post processing in softirq")
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Baocong Liu <baocong.liu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ No changes are made to the code logic; F2FS_I_SB(dic->inode) is
+replaced with dic->sbi in v6.1. ]
+Signed-off-by: Bin Lan <lanbincn@139.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/core.c        |   12 ++++++------
- drivers/net/phy/mdio_bus.c |    4 ++--
- drivers/of/property.c      |    2 +-
- include/linux/fwnode.h     |   40 +++++++++++++++++++++++++++++++---------
- 4 files changed, 40 insertions(+), 18 deletions(-)
+ fs/f2fs/compress.c | 40 ++++++++++++++++++++--------------------
+ fs/f2fs/f2fs.h     |  2 ++
+ 2 files changed, 22 insertions(+), 20 deletions(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -171,7 +171,7 @@ void fw_devlink_purge_absent_suppliers(s
- 	if (fwnode->dev)
- 		return;
- 
--	fwnode->flags |= FWNODE_FLAG_NOT_DEVICE;
-+	fwnode_set_flag(fwnode, FWNODE_FLAG_NOT_DEVICE);
- 	fwnode_links_purge_consumers(fwnode);
- 
- 	fwnode_for_each_available_child_node(fwnode, child)
-@@ -1620,11 +1620,11 @@ bool fw_devlink_is_strict(void)
- 
- static void fw_devlink_parse_fwnode(struct fwnode_handle *fwnode)
- {
--	if (fwnode->flags & FWNODE_FLAG_LINKS_ADDED)
-+	if (fwnode_test_flag(fwnode, FWNODE_FLAG_LINKS_ADDED))
- 		return;
- 
- 	fwnode_call_int_op(fwnode, add_links);
--	fwnode->flags |= FWNODE_FLAG_LINKS_ADDED;
-+	fwnode_set_flag(fwnode, FWNODE_FLAG_LINKS_ADDED);
- }
- 
- static void fw_devlink_parse_fwtree(struct fwnode_handle *fwnode)
-@@ -1765,7 +1765,7 @@ static int fw_devlink_create_devlink(str
- 	 * When such a flag is set, we can't create device links where P is the
- 	 * supplier of C as that would delay the probe of C.
- 	 */
--	if (sup_handle->flags & FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD &&
-+	if (fwnode_test_flag(sup_handle, FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD) &&
- 	    fwnode_is_ancestor_of(sup_handle, con->fwnode))
- 		return -EINVAL;
- 
-@@ -1777,7 +1777,7 @@ static int fw_devlink_create_devlink(str
- 		 * supplier device indefinitely.
- 		 */
- 		if (sup_dev->links.status == DL_DEV_NO_DRIVER &&
--		    sup_handle->flags & FWNODE_FLAG_INITIALIZED) {
-+		    fwnode_test_flag(sup_handle, FWNODE_FLAG_INITIALIZED)) {
- 			ret = -EINVAL;
- 			goto out;
- 		}
-@@ -1802,7 +1802,7 @@ static int fw_devlink_create_devlink(str
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 1e90286212866..5d0c41abb4050 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -211,14 +211,14 @@ static int lzo_decompress_pages(struct decompress_io_ctx *dic)
+ 						dic->rbuf, &dic->rlen);
+ 	if (ret != LZO_E_OK) {
+ 		printk_ratelimited("%sF2FS-fs (%s): lzo decompress failed, ret:%d\n",
+-				KERN_ERR, F2FS_I_SB(dic->inode)->sb->s_id, ret);
++				KERN_ERR, dic->sbi->sb->s_id, ret);
+ 		return -EIO;
  	}
  
- 	/* Supplier that's already initialized without a struct device. */
--	if (sup_handle->flags & FWNODE_FLAG_INITIALIZED)
-+	if (fwnode_test_flag(sup_handle, FWNODE_FLAG_INITIALIZED))
- 		return -EINVAL;
+ 	if (dic->rlen != PAGE_SIZE << dic->log_cluster_size) {
+ 		printk_ratelimited("%sF2FS-fs (%s): lzo invalid rlen:%zu, "
+ 					"expected:%lu\n", KERN_ERR,
+-					F2FS_I_SB(dic->inode)->sb->s_id,
++					dic->sbi->sb->s_id,
+ 					dic->rlen,
+ 					PAGE_SIZE << dic->log_cluster_size);
+ 		return -EIO;
+@@ -307,14 +307,14 @@ static int lz4_decompress_pages(struct decompress_io_ctx *dic)
+ 						dic->clen, dic->rlen);
+ 	if (ret < 0) {
+ 		printk_ratelimited("%sF2FS-fs (%s): lz4 decompress failed, ret:%d\n",
+-				KERN_ERR, F2FS_I_SB(dic->inode)->sb->s_id, ret);
++				KERN_ERR, dic->sbi->sb->s_id, ret);
+ 		return -EIO;
+ 	}
  
- 	/*
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -534,8 +534,8 @@ int __mdiobus_register(struct mii_bus *b
- 		return -EINVAL;
+ 	if (ret != PAGE_SIZE << dic->log_cluster_size) {
+ 		printk_ratelimited("%sF2FS-fs (%s): lz4 invalid ret:%d, "
+ 					"expected:%lu\n", KERN_ERR,
+-					F2FS_I_SB(dic->inode)->sb->s_id, ret,
++					dic->sbi->sb->s_id, ret,
+ 					PAGE_SIZE << dic->log_cluster_size);
+ 		return -EIO;
+ 	}
+@@ -437,7 +437,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
  
- 	if (bus->parent && bus->parent->of_node)
--		bus->parent->of_node->fwnode.flags |=
--					FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD;
-+		fwnode_set_flag(&bus->parent->of_node->fwnode,
-+				FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD);
+ 	workspace_size = zstd_dstream_workspace_bound(max_window_size);
  
- 	BUG_ON(bus->state != MDIOBUS_ALLOCATED &&
- 	       bus->state != MDIOBUS_UNREGISTERED);
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1130,7 +1130,7 @@ static int of_link_to_phandle(struct dev
- 	sup_dev = get_dev_from_fwnode(&sup_np->fwnode);
- 	if (!sup_dev &&
- 	    (of_node_check_flag(sup_np, OF_POPULATED) ||
--	     sup_np->fwnode.flags & FWNODE_FLAG_NOT_DEVICE)) {
-+	     fwnode_test_flag(&sup_np->fwnode, FWNODE_FLAG_NOT_DEVICE))) {
- 		pr_debug("Not linking %pOFP to %pOFP - No struct device\n",
- 			 con_np, sup_np);
- 		of_node_put(sup_np);
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -11,6 +11,7 @@
+-	workspace = f2fs_kvmalloc(F2FS_I_SB(dic->inode),
++	workspace = f2fs_kvmalloc(dic->sbi,
+ 					workspace_size, GFP_NOFS);
+ 	if (!workspace)
+ 		return -ENOMEM;
+@@ -445,7 +445,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
+ 	stream = zstd_init_dstream(max_window_size, workspace, workspace_size);
+ 	if (!stream) {
+ 		printk_ratelimited("%sF2FS-fs (%s): %s zstd_init_dstream failed\n",
+-				KERN_ERR, F2FS_I_SB(dic->inode)->sb->s_id,
++				KERN_ERR, dic->sbi->sb->s_id,
+ 				__func__);
+ 		kvfree(workspace);
+ 		return -EIO;
+@@ -482,7 +482,7 @@ static int zstd_decompress_pages(struct decompress_io_ctx *dic)
+ 	ret = zstd_decompress_stream(stream, &outbuf, &inbuf);
+ 	if (zstd_is_error(ret)) {
+ 		printk_ratelimited("%sF2FS-fs (%s): %s zstd_decompress_stream failed, ret: %d\n",
+-				KERN_ERR, F2FS_I_SB(dic->inode)->sb->s_id,
++				KERN_ERR, dic->sbi->sb->s_id,
+ 				__func__, zstd_get_error_code(ret));
+ 		return -EIO;
+ 	}
+@@ -490,7 +490,7 @@ static int zstd_decompress_pages(struct decompress_io_ctx *dic)
+ 	if (dic->rlen != outbuf.pos) {
+ 		printk_ratelimited("%sF2FS-fs (%s): %s ZSTD invalid rlen:%zu, "
+ 				"expected:%lu\n", KERN_ERR,
+-				F2FS_I_SB(dic->inode)->sb->s_id,
++				dic->sbi->sb->s_id,
+ 				__func__, dic->rlen,
+ 				PAGE_SIZE << dic->log_cluster_size);
+ 		return -EIO;
+@@ -759,7 +759,7 @@ static void f2fs_release_decomp_mem(struct decompress_io_ctx *dic,
  
- #include <linux/types.h>
- #include <linux/list.h>
-+#include <linux/bitops.h>
- #include <linux/err.h>
- 
- struct fwnode_operations;
-@@ -27,10 +28,10 @@ struct device;
-  *			     their respective drivers as soon as they are
-  *			     added.
-  */
--#define FWNODE_FLAG_LINKS_ADDED			BIT(0)
--#define FWNODE_FLAG_NOT_DEVICE			BIT(1)
--#define FWNODE_FLAG_INITIALIZED			BIT(2)
--#define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD	BIT(3)
-+#define FWNODE_FLAG_LINKS_ADDED			0
-+#define FWNODE_FLAG_NOT_DEVICE			1
-+#define FWNODE_FLAG_INITIALIZED			2
-+#define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD	3
- 
- struct fwnode_handle {
- 	struct fwnode_handle *secondary;
-@@ -38,7 +39,7 @@ struct fwnode_handle {
- 	struct device *dev;
- 	struct list_head suppliers;
- 	struct list_head consumers;
--	u8 flags;
-+	unsigned long flags;
- };
- 
- struct fwnode_link {
-@@ -176,16 +177,37 @@ static inline void fwnode_init(struct fw
- 	INIT_LIST_HEAD(&fwnode->suppliers);
- }
- 
-+static inline void fwnode_set_flag(struct fwnode_handle *fwnode,
-+				   unsigned int bit)
-+{
-+	set_bit(bit, &fwnode->flags);
-+}
-+
-+static inline void fwnode_clear_flag(struct fwnode_handle *fwnode,
-+				     unsigned int bit)
-+{
-+	clear_bit(bit, &fwnode->flags);
-+}
-+
-+static inline void fwnode_assign_flag(struct fwnode_handle *fwnode,
-+				      unsigned int bit, bool value)
-+{
-+	assign_bit(bit, &fwnode->flags, value);
-+}
-+
-+static inline bool fwnode_test_flag(struct fwnode_handle *fwnode,
-+				    unsigned int bit)
-+{
-+	return test_bit(bit, &fwnode->flags);
-+}
-+
- static inline void fwnode_dev_initialized(struct fwnode_handle *fwnode,
- 					  bool initialized)
+ void f2fs_decompress_cluster(struct decompress_io_ctx *dic, bool in_task)
  {
- 	if (IS_ERR_OR_NULL(fwnode))
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
++	struct f2fs_sb_info *sbi = dic->sbi;
+ 	struct f2fs_inode_info *fi = F2FS_I(dic->inode);
+ 	const struct f2fs_compress_ops *cops =
+ 			f2fs_cops[fi->i_compress_algorithm];
+@@ -832,7 +832,7 @@ void f2fs_end_read_compressed_page(struct page *page, bool failed,
+ {
+ 	struct decompress_io_ctx *dic =
+ 			(struct decompress_io_ctx *)page_private(page);
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
++	struct f2fs_sb_info *sbi = dic->sbi;
+ 
+ 	dec_page_count(sbi, F2FS_RD_DATA);
+ 
+@@ -1593,14 +1593,13 @@ static inline bool allow_memalloc_for_decomp(struct f2fs_sb_info *sbi,
+ static int f2fs_prepare_decomp_mem(struct decompress_io_ctx *dic,
+ 		bool pre_alloc)
+ {
+-	const struct f2fs_compress_ops *cops =
+-		f2fs_cops[F2FS_I(dic->inode)->i_compress_algorithm];
++	const struct f2fs_compress_ops *cops = f2fs_cops[dic->compress_algorithm];
+ 	int i;
+ 
+-	if (!allow_memalloc_for_decomp(F2FS_I_SB(dic->inode), pre_alloc))
++	if (!allow_memalloc_for_decomp(dic->sbi, pre_alloc))
+ 		return 0;
+ 
+-	dic->tpages = page_array_alloc(F2FS_I_SB(dic->inode), dic->cluster_size);
++	dic->tpages = page_array_alloc(dic->sbi, dic->cluster_size);
+ 	if (!dic->tpages)
+ 		return -ENOMEM;
+ 
+@@ -1632,10 +1631,9 @@ static int f2fs_prepare_decomp_mem(struct decompress_io_ctx *dic,
+ static void f2fs_release_decomp_mem(struct decompress_io_ctx *dic,
+ 		bool bypass_destroy_callback, bool pre_alloc)
+ {
+-	const struct f2fs_compress_ops *cops =
+-		f2fs_cops[F2FS_I(dic->inode)->i_compress_algorithm];
++	const struct f2fs_compress_ops *cops = f2fs_cops[dic->compress_algorithm];
+ 
+-	if (!allow_memalloc_for_decomp(F2FS_I_SB(dic->inode), pre_alloc))
++	if (!allow_memalloc_for_decomp(dic->sbi, pre_alloc))
  		return;
  
--	if (initialized)
--		fwnode->flags |= FWNODE_FLAG_INITIALIZED;
--	else
--		fwnode->flags &= ~FWNODE_FLAG_INITIALIZED;
-+	fwnode_assign_flag(fwnode, FWNODE_FLAG_INITIALIZED, initialized);
- }
+ 	if (!bypass_destroy_callback && cops->destroy_decompress_ctx)
+@@ -1670,6 +1668,8 @@ struct decompress_io_ctx *f2fs_alloc_dic(struct compress_ctx *cc)
  
- extern u32 fw_devlink_get_flags(void);
+ 	dic->magic = F2FS_COMPRESSED_PAGE_MAGIC;
+ 	dic->inode = cc->inode;
++	dic->sbi = sbi;
++	dic->compress_algorithm = F2FS_I(cc->inode)->i_compress_algorithm;
+ 	atomic_set(&dic->remaining_pages, cc->nr_cpages);
+ 	dic->cluster_idx = cc->cluster_idx;
+ 	dic->cluster_size = cc->cluster_size;
+@@ -1718,7 +1718,8 @@ static void f2fs_free_dic(struct decompress_io_ctx *dic,
+ 		bool bypass_destroy_callback)
+ {
+ 	int i;
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
++	/* use sbi in dic to avoid UFA of dic->inode*/
++	struct f2fs_sb_info *sbi = dic->sbi;
+ 
+ 	f2fs_release_decomp_mem(dic, bypass_destroy_callback, true);
+ 
+@@ -1761,8 +1762,7 @@ static void f2fs_put_dic(struct decompress_io_ctx *dic, bool in_task)
+ 			f2fs_free_dic(dic, false);
+ 		} else {
+ 			INIT_WORK(&dic->free_work, f2fs_late_free_dic);
+-			queue_work(F2FS_I_SB(dic->inode)->post_read_wq,
+-					&dic->free_work);
++			queue_work(dic->sbi->post_read_wq, &dic->free_work);
+ 		}
+ 	}
+ }
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index bbb86e2156989..faa6efe1ceaf5 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1546,6 +1546,7 @@ struct compress_io_ctx {
+ struct decompress_io_ctx {
+ 	u32 magic;			/* magic number to indicate page is compressed */
+ 	struct inode *inode;		/* inode the context belong to */
++	struct f2fs_sb_info *sbi;	/* f2fs_sb_info pointer */
+ 	pgoff_t cluster_idx;		/* cluster index number */
+ 	unsigned int cluster_size;	/* page count in cluster */
+ 	unsigned int log_cluster_size;	/* log of cluster size */
+@@ -1586,6 +1587,7 @@ struct decompress_io_ctx {
+ 
+ 	bool failed;			/* IO error occurred before decompression? */
+ 	bool need_verity;		/* need fs-verity verification after decompression? */
++	unsigned char compress_algorithm;	/* backup algorithm type */
+ 	void *private;			/* payload buffer for specified decompression algorithm */
+ 	void *private2;			/* extra payload buffer */
+ 	struct work_struct verity_work;	/* work to verify the decompressed pages */
+-- 
+2.53.0
+
 
 
 
