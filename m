@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-258938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258336-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOMyAPUwG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-258938-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:21 +0200
+	id 0PBqFVsmG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258336-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BEA561287E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3071610DFC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7AB7C305BF96
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:34:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 45E31301C97B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF09329E79;
-	Sat, 30 May 2026 18:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72A43B7B72;
+	Sat, 30 May 2026 18:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CafUU/QQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlZbKc98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0508541A8F;
-	Sat, 30 May 2026 18:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D5D355F53;
+	Sat, 30 May 2026 18:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166048; cv=none; b=bj2kJKf2iXjc3bTzRlFA1kWIteMptCOJVc5ciWMtQRHFrtu/fpMt41SS9dU3ow19PH3sWA52PwkzgLrecPEwIo+AEobPDUKQQ6ULaVMBdSmLISE+TBpqKk/MidFKyFdbKuuDtFGHrqzm2ValLgVBWn7ZVhoXta3MqrXGrAzt+oc=
+	t=1780164009; cv=none; b=pIw7UeJpnNk6AK5uo8axrJQcQSgcnbnJbDimXjKVdb5L7IYOLiCdZlawOeQc1pzhMearlklN0QuZI9mAxso4jDba2p1qIR2fidVvSDK3FGTI8xPZxokXtTrx7HE+SVKKs+4faHh7GncbjPeqkms93CpRzAyqCbXIKZ49zYJFN/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166048; c=relaxed/simple;
-	bh=YU5dXB8lm3jHpweldr4+LjITVwHm5wtSjwmOdu31QmY=;
+	s=arc-20240116; t=1780164009; c=relaxed/simple;
+	bh=gevESrQk1UOVlqFrMV9e6KqCDGRyQbDZi2uAY9WKyMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bC1xzy/sQc/kIkTFTVW22C6nbAwfCrrVNE8Una/NbOegPVC1YTH/IX6YVZ2wJe5bbHbp98Z7Fwt/ygJ3lbaWcnVIuktN2SLso8LmIuzi7dfvCgZOfsY1EGNgtLBM9i6C7W29VjQSIh5doI+ZtmBBwC3SHuTqMYynRCgimahFTnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CafUU/QQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4F21F00893;
-	Sat, 30 May 2026 18:34:07 +0000 (UTC)
+	 MIME-Version; b=HhJgDlinmGVAf2iKN5eEWBYPsZcxgsz49Rr0HH4kVCNFu22Arxefrsq2vn0FZr2P56M+a9MKQE3RnxzZjO8MiEUYSZ2MdyACga/XQYqfYdhZoAymwySiKnhOaAD+9txGa03JGkynezBIrU+PEmhW/m9MZHINZvoa6Kb9LGdv64Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlZbKc98; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022061F00893;
+	Sat, 30 May 2026 18:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166047;
-	bh=FI/yl1zr7OjlmRKOjg2l0/tXtDMmpYo5Iyov6d6PtHQ=;
+	s=korg; t=1780164008;
+	bh=WdN2NEBMi3Ypu7GMhsMrQ0g+yB4ZO+HQECWpANKfpPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CafUU/QQjGwLn1s7kELEo/hLZzDxDfKEOIT84J0ow83svXDnfYvn3B99Aor799Zgk
-	 h0Xvw/SZevtEKaI7DlYwtv+QIaKpsAm8lK0bL4qgu7VvcrAxCHWydyGADFfAXrEZtz
-	 3XXVCv2NDd4qlbicg4V67SU+MtnhP9JCyTn/H4NA=
+	b=TlZbKc98FCCIddTrfTpSogzJiW7yOPXG+4blBG9SHg+7wTMaMy61kC1qCPQtdSTWg
+	 3tmexiR+XSqSpikO6nSBwyZ2HDM2WpbibETWoSE2/aAPJg4bqX1jt8ghs1LOZmI4uZ
+	 kHW628u4HALYMx2HG+fogT/rdjtp8/juMWnAewjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 5.10 259/589] RDMA/mlx4: Fix resource leak on error in mlx4_ib_create_srq()
+	Dudu Lu <phx0fer@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 426/776] Bluetooth: l2cap: Add missing chan lock in l2cap_ecred_reconf_rsp
 Date: Sat, 30 May 2026 18:02:20 +0200
-Message-ID: <20260530160231.776935931@linuxfoundation.org>
+Message-ID: <20260530160251.460550899@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +66,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258938-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258336-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,msgid.link:url,nvidia.com:email]
-X-Rspamd-Queue-Id: 5BEA561287E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C3071610DFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Dudu Lu <phx0fer@gmail.com>
 
-commit c54c7e4cb679c0aaa1cb489b9c3f2cd98e63a44c upstream.
+[ Upstream commit 42776497cdbc9a665b384a6dcb85f0d4bd927eab ]
 
-Sashiko points out that mlx4_srq_alloc() was not undone during error
-unwind, add the missing call to mlx4_srq_free().
+l2cap_ecred_reconf_rsp() calls l2cap_chan_del() without holding
+l2cap_chan_lock(). Every other l2cap_chan_del() caller in the file
+acquires the lock first. A remote BLE device can send a crafted
+L2CAP ECRED reconfiguration response to corrupt the channel list
+while another thread is iterating it.
 
-Cc: stable@vger.kernel.org
-Fixes: 225c7b1feef1 ("IB/mlx4: Add a driver Mellanox ConnectX InfiniBand adapters")
-Link: https://sashiko.dev/#/patchset/0-v1-e911b76a94d1%2B65d95-rdma_udata_rep_jgg%40nvidia.com?part=8
-Link: https://patch.msgid.link/r/11-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add l2cap_chan_hold() and l2cap_chan_lock() before l2cap_chan_del(),
+and l2cap_chan_unlock() and l2cap_chan_put() after, matching the
+pattern used in l2cap_ecred_conn_rsp() and l2cap_conn_del().
+
+Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx4/srq.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/bluetooth/l2cap_core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/infiniband/hw/mlx4/srq.c
-+++ b/drivers/infiniband/hw/mlx4/srq.c
-@@ -189,13 +189,15 @@ int mlx4_ib_create_srq(struct ib_srq *ib
- 	if (udata)
- 		if (ib_copy_to_udata(udata, &srq->msrq.srqn, sizeof (__u32))) {
- 			err = -EFAULT;
--			goto err_wrid;
-+			goto err_srq;
- 		}
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 9bb9301414f8e..a5db427c13de2 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6429,7 +6429,13 @@ static inline int l2cap_ecred_reconf_rsp(struct l2cap_conn *conn,
+ 		if (chan->ident != cmd->ident)
+ 			continue;
  
- 	init_attr->attr.max_wr = srq->msrq.max - 1;
++		l2cap_chan_hold(chan);
++		l2cap_chan_lock(chan);
++
+ 		l2cap_chan_del(chan, ECONNRESET);
++
++		l2cap_chan_unlock(chan);
++		l2cap_chan_put(chan);
+ 	}
  
  	return 0;
- 
-+err_srq:
-+	mlx4_srq_free(dev->dev, &srq->msrq);
- err_wrid:
- 	if (udata)
- 		mlx4_ib_db_unmap_user(ucontext, &srq->db);
+-- 
+2.53.0
+
 
 
 
