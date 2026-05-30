@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258347-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qBm+DK4dG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:06 +0200
+	id 4G4eFZ0oG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258347-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44C960FA23
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C60256113B7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D97B3073718
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:17:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE6C23019053
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F353546F6;
-	Sat, 30 May 2026 17:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5007A29B78B;
+	Sat, 30 May 2026 18:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALizdpsw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9qqotST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874F5395AEA;
-	Sat, 30 May 2026 17:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD180342CB3;
+	Sat, 30 May 2026 18:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161462; cv=none; b=qTgVB5iHdjNV+f1Qr3ToM90FMgkjnTMvq+2GONPxOe+3yds9SuhOH2hOSY0hcXEtJP+mgKXzDjzMo8WoyYWXTuh5gPXN3PmsuQTCvQuS2PqmsqhWnEbQke4OqN+++RSoaVE87ums8vTFqk9ZzCeucr9XyWU9I5Pz/czvjqG5NM4=
+	t=1780164047; cv=none; b=sPWofaazPulCFABDLM6wYa+cIuV2MF7fazhRgqwFLhvORohPFK9O5ffLl+D/XF/YlyF4MFS8jNPWF3WhAgk+l5Db5SQKy1oDt7dc3EHipdkApe4L1D1dZLD9hILvi0l+CWrbrd01JNQH7ckabostoqzUdKVCeDlnRu6Ctvy32Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161462; c=relaxed/simple;
-	bh=DIoRYWgjYTwRvFsBaGtO78BpHO0TrbmfSw4RLv63LRI=;
+	s=arc-20240116; t=1780164047; c=relaxed/simple;
+	bh=imyQE3W8O15Huq9M/kDoWBUALIXFIRbK9riB9yNi3ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZMjDX0pKyw+SsDdog6jUdAR2gaj+5t9ZEbwt87OhR5ZyijHGwqcWOJzYBiWk4z+6wx12ziX0mM6qey/NG29I5FwKM/BXeXIoN2rIkULbnxJ6xjS9MvokPU9UXtVe5BmGfC0baSGKi/ejSlN7J9eGeP8yzw0vHknA/0byNvqiM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALizdpsw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78A31F00893;
-	Sat, 30 May 2026 17:17:40 +0000 (UTC)
+	 MIME-Version; b=loWMaQy4nHGUvSW6Uf8LwdTxp++iJ5YqtouYOENqaWU2EkY1+e+z0CpTwIhIUoT++RFB80HQll9zI27HI2dxqCUWyGTLB4M5HN2LJ8VO9tWnNKoWN74MwC1IDTWUPO6fP3r+nih51djNiE09yTdKnQdEYZGJhVXKnflJTlR7an0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9qqotST; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDB81F00893;
+	Sat, 30 May 2026 18:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161461;
-	bh=7/nUO3n4wN6lJTwNfpJX1z9REDeW9ShZhMOSyVW0Lvo=;
+	s=korg; t=1780164045;
+	bh=pP8EL82Z94t5wh2K8wI6258MiSY91geQH8kBX+mqCxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ALizdpswpC6+3cmcJmgG+Bx5mu7A4HE7LdiVw1zuOo4t1V7FI8p6Rtq6zREiZruwn
-	 z+0C2lXzRJVLKxMmWLw3R35wUtaP6cIDWyfram47EilvbvL7u7f8JHN+qLCqc7bjye
-	 P2FW+Es5C40pgngGYx/BLKsUoL3PmAnEIbzgxBCo=
+	b=w9qqotSTScEf63uq/9vGp0TpSphUe9O3h0QNZs2RTH2yD1Hgpfrn+XrQ2jTxaEnU7
+	 RCTZ8Wsjw5o76CpJ5vua2Xc3yMC9tkmsDopxAevIsLQ1E/EOgi5nGc+9LykZPpsC8Z
+	 YmMhWvOTTl7IvdRB+hpvdrhWrNgCU2Ffpi/CrdNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 629/969] perf branch: Avoid incrementing NULL
+Subject: [PATCH 5.15 439/776] dm cache metadata: fix memory leak on metadata abort retry
 Date: Sat, 30 May 2026 18:02:33 +0200
-Message-ID: <20260530160317.818256745@linuxfoundation.org>
+Message-ID: <20260530160251.767101552@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +66,152 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257576-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258347-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B44C960FA23
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C60256113B7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit c969a9d7bbf46f983c4a48566b3b2f7340b02296 ]
+[ Upstream commit 044ca491d4086dc5bf233e9fcb71db52df32f633 ]
 
-If the entry is NULL the value is meaningless so early return NULL to
-avoid an increment of NULL. This was happening in calls from
-has_stitched_lbr when running the "perf record LBR tests". The return
-value isn't used in that case, so returning NULL as no effect.
+When failing to acquire the root_lock in dm_cache_metadata_abort because
+the block_manager is read-only, the temporary block_manager created
+outside the root_lock is not properly released, causing a memory leak.
 
-Fixes: 42bbabed09ce ("perf tools: Add hw_idx in struct branch_stack")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Reproduce steps:
+
+This can be reproduced by reloading a new table while the metadata
+is read-only. While the second call to dm_cache_metadata_abort is
+caused by lack of support for table preload in dm-cache, mentioned
+in commit 9b1cc9f251af ("dm cache: share cache-metadata object across
+inactive and active DM tables"), it exposes the memory leak in
+dm_cache_metadata_abort when the function is called multiple times.
+Specifically, dm-cache fails to sync the new cache object's mode during
+preresume, creating the reproducer condition.
+
+This issue could also occur through concurrent metadata_operation_failed
+calls due to races in cache mode updates, but the table preload scenario
+below provides a reliable reproducer.
+
+1. Create a cache device with some faulty trailing metadata blocks
+
+dmsetup create cmeta <<EOF
+0 200 linear /dev/sdc 0
+200 7992 error
+EOF
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 131072 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 1 writethrough smq 0"
+
+2. Suspend and resume the cache to start a new metadata transaction and
+   trigger metadata io errors on the next metadata commit.
+
+dmsetup suspend cache
+dmsetup resume cache
+
+3. Write to the cache device to update metadata
+
+fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
+--randrepeat=0 --direct=1 --size 64k
+
+4. Preload the same table
+
+dmsetup reload cache --table "$(dmsetup table cache)"
+
+5. Resume the new table. This triggers the memory leak.
+
+dmsetup suspend cache
+dmsetup resume cache
+
+kmemleak logs:
+
+<snip>
+unreferenced object 0xffff8880080c2010 (size 16):
+  comm "dmsetup", pid 132, jiffies 4294982580
+  hex dump (first 16 bytes):
+    00 38 b9 07 80 88 ff ff 6a 6b 6b 6b 6b 6b 6b a5 ...
+  backtrace (crc 3118f31c):
+    kmemleak_alloc+0x28/0x40
+    __kmalloc_cache_noprof+0x3d9/0x510
+    dm_block_manager_create+0x51/0x140
+    dm_cache_metadata_abort+0x85/0x320
+    metadata_operation_failed+0x103/0x1e0
+    cache_preresume+0xacd/0xe70
+    dm_table_resume_targets+0xd3/0x320
+    __dm_resume+0x1b/0xf0
+    dm_resume+0x127/0x170
+<snip>
+
+Fixes: 352b837a5541 ("dm cache: Fix ABBA deadlock between shrink_slab and dm_cache_metadata_abort")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/branch.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/md/dm-cache-metadata.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/util/branch.h b/tools/perf/util/branch.h
-index dca75cad96f68..c99b389fac1e1 100644
---- a/tools/perf/util/branch.h
-+++ b/tools/perf/util/branch.h
-@@ -66,6 +66,9 @@ static inline struct branch_entry *perf_sample__branch_entries(struct perf_sampl
- {
- 	u64 *entry = (u64 *)sample->branch_stack;
+diff --git a/drivers/md/dm-cache-metadata.c b/drivers/md/dm-cache-metadata.c
+index 61808d888dc45..c183c2fc1691c 100644
+--- a/drivers/md/dm-cache-metadata.c
++++ b/drivers/md/dm-cache-metadata.c
+@@ -1017,6 +1017,12 @@ static bool cmd_write_lock(struct dm_cache_metadata *cmd)
+ 			return;			\
+ 	} while(0)
  
-+	if (entry == NULL)
-+		return NULL;
++#define WRITE_LOCK_OR_GOTO(cmd, label)		\
++	do {					\
++		if (!cmd_write_lock((cmd)))	\
++			goto label;		\
++	} while (0)
 +
- 	entry++;
- 	if (sample->no_hw_idx)
- 		return (struct branch_entry *)entry;
+ #define WRITE_UNLOCK(cmd) \
+ 	up_write(&(cmd)->root_lock)
+ 
+@@ -1815,11 +1821,8 @@ int dm_cache_metadata_abort(struct dm_cache_metadata *cmd)
+ 	new_bm = dm_block_manager_create(cmd->bdev, DM_CACHE_METADATA_BLOCK_SIZE << SECTOR_SHIFT,
+ 					 CACHE_MAX_CONCURRENT_LOCKS);
+ 
+-	WRITE_LOCK(cmd);
+-	if (cmd->fail_io) {
+-		WRITE_UNLOCK(cmd);
+-		goto out;
+-	}
++	/* cmd_write_lock() already checks fail_io with cmd->root_lock held */
++	WRITE_LOCK_OR_GOTO(cmd, out);
+ 
+ 	__destroy_persistent_data_objects(cmd, false);
+ 	old_bm = cmd->bm;
 -- 
 2.53.0
 
