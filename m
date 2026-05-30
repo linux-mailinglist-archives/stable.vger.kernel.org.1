@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258151-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NYQAs4rG2ow/wgAu9opvQ
-	(envelope-from <stable+bounces-258755-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:22 +0200
+	id OBUnNsAkG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258151-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F4A611BAD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A94610ACA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E6FF13099668
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:23:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A20D3063C44
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9E6282F23;
-	Sat, 30 May 2026 18:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752F1261B9E;
+	Sat, 30 May 2026 17:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzDog+eS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BI1QBG9t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE9517555;
-	Sat, 30 May 2026 18:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B382304BCB;
+	Sat, 30 May 2026 17:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165430; cv=none; b=oI9E2BQ4k0hTxi8o5U6W4zv8+AQTr7HEofjnj5RDbnZKpPvOXjVV/L10jkf2CnW3A7BvcZuG4aXNE+0zm+Q82rpWrOcbN1ct+1eU5VbZzjWo/PH/GLXr65auFjR+dv3wQ0zbpcL/X+StNe9OBryhndZJdGH8Bo5Pz036A5v8yUs=
+	t=1780163387; cv=none; b=SrXgPnPt1Gwk/opOLezcwCx3OmokNy7EFTbzSof2rfMLpFMXv5aoTh3VqrFy73UYHkXPOiLoKwOwoUydiN1EAjmdQb3DvonapVpdEch4WEudPV+eVWb+ebc/DDIqO/2nHORkb5f5SMJykeqw5Vyg2hwjt4q9aYnuVsq2siNVk04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165430; c=relaxed/simple;
-	bh=kv9GNB0gjFkNNVxp2zQe7N7T5HGZ5Ks6RiyqFn8JyQA=;
+	s=arc-20240116; t=1780163387; c=relaxed/simple;
+	bh=Gu6onoC0YavmA7GIH9V9quoBGKzI3QVwPc0C6xvkj+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kj8qxRq7dA1GEu6zJ7Gl2cPl6UnIMAmLsUeWrArucow+bUx5/+8Won9KOD7Uzz6E8s6UUv+QVDpRr6MWMEER0zR2V69UlHPp7G8ayfe/1UCgQj+/G73QV4v7rKAYjl9ckapWVgigTHChppF0ksQA9P4468OQmJsg+ZJsCox/HmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzDog+eS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9011F00893;
-	Sat, 30 May 2026 18:23:48 +0000 (UTC)
+	 MIME-Version; b=BuDyRFXBZsC0ltPR7LFU69A/G9s6fFel6Z2IlFZtdUO7TVLAtO9OI8mb+f/9zGFEuGCaCLWAyNYgFfe+x5mxLdR8diYIqDU/KLedKQROx1HgsCKXAHLF0aWQWYETTjn83g93RR6AdXtcbWMDMNX1XuFdvM22zlNqKHsHyTc2lxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BI1QBG9t; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622F31F00893;
+	Sat, 30 May 2026 17:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165429;
-	bh=8UupNBh3VLnbOM8XorJ7dDg+GVytuT5n8ZCltcUiixI=;
+	s=korg; t=1780163386;
+	bh=DWgOk7n88mjSe8TKkcn1r3JOMW4LXYj0aM4KmIOnd8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IzDog+eSHjNQ0RuXp/gEqIjiVFJjVWEYr54d6RuXT88Z2lARBlR1+DHIV4SWDpGWR
-	 gy2s0PGYZcOBAgec/ytDZnbl3IEq4/87GlPXDtT3ZB7IJPCWWCJnKRXVrIBoIgfRuA
-	 bATWbbic/97de2Ph59kCwccxrTMYMU5w5+gYu5tw=
+	b=BI1QBG9tOXUFqVtOfyIWlXGGyOGkZAhssGnkpyKtzlb1dbqnL6gFipRBr17QegX2i
+	 cQkgwkYQ/Naw7CtEg1u3voY9KiQ/KW7f6K3Y/witadRdGUETehQKxfMbYdRnjpXnBV
+	 p+ytnLze5x7XrQQjLrh98ECa7f8lYRqlPQalVW/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+639ebc6ec75e96674741@syzkaller.appspotmail.com,
-	Ruslan Valiyev <linuxoid@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.10 076/589] media: vidtv: fix nfeeds state corruption on start_streaming failure
+	James Kim <james010kim@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 243/776] mtd: docg3: fix use-after-free in docg3_release()
 Date: Sat, 30 May 2026 17:59:17 +0200
-Message-ID: <20260530160226.601905068@linuxfoundation.org>
+Message-ID: <20260530160246.811467450@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +64,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258755-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258151-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable,639ebc6ec75e96674741,cisco];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,appspotmail.com:email]
-X-Rspamd-Queue-Id: 84F4A611BAD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 75A94610ACA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruslan Valiyev <linuxoid@gmail.com>
+From: James Kim <james010kim@gmail.com>
 
-commit a0e5a598fe9a4612b852406b51153b881592aede upstream.
+[ Upstream commit ca19808bc6fac7e29420d8508df569b346b3e339 ]
 
-syzbot reported a memory leak in vidtv_psi_service_desc_init [1].
+In docg3_release(), the docg3 pointer is obtained from
+cascade->floors[0]->priv before the loop that calls
+doc_release_device() on each floor. doc_release_device() frees the
+docg3 struct via kfree(docg3) at line 1881. After the loop,
+docg3->cascade->bch dereferences the already-freed pointer.
 
-When vidtv_start_streaming() fails inside vidtv_start_feed(), the
-nfeeds counter is left incremented even though no feed was actually
-started. This corrupts the driver state: subsequent start_feed calls
-see nfeeds > 1 and skip starting the mux, while stop_feed calls
-eventually try to stop a non-existent stream.
+Fix this by accessing cascade->bch directly, which is equivalent
+since docg3->cascade points back to the same cascade struct, and
+is already available as a local variable. This also removes the
+now-unused docg3 local variable.
 
-This state corruption can also lead to memory leaks, since the mux
-and channel resources may be partially allocated during a failed
-start_streaming but never cleaned up, as the stop path finds
-dvb->streaming == false and returns early.
-
-Fix by decrementing nfeeds back when start_streaming fails, keeping
-the counter in sync with the actual number of active feeds.
-
-[1]
-BUG: memory leak
-unreferenced object 0xffff888145b50820 (size 32):
- comm "syz.0.17", pid 6068, jiffies 4294944486
- backtrace (crc 90a0c7d4):
-  vidtv_psi_service_desc_init+0x74/0x1b0 drivers/media/test-drivers/vidtv/vidtv_psi.c:288
-  vidtv_channel_s302m_init+0xb1/0x2a0 drivers/media/test-drivers/vidtv/vidtv_channel.c:83
-  vidtv_channels_init+0x1b/0x40 drivers/media/test-drivers/vidtv/vidtv_channel.c:524
-  vidtv_mux_init+0x516/0xbe0 drivers/media/test-drivers/vidtv/vidtv_mux.c:518
-  vidtv_start_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:194 [inline]
-  vidtv_start_feed+0x33e/0x4d0 drivers/media/test-drivers/vidtv/vidtv_bridge.c:239
-
-Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
+Fixes: c8ae3f744ddc ("lib/bch: Rework a little bit the exported function names")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+639ebc6ec75e96674741@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=639ebc6ec75e96674741
-Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: James Kim <james010kim@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_bridge.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mtd/devices/docg3.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-@@ -235,8 +235,10 @@ static int vidtv_start_feed(struct dvb_d
+diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
+index 25a7df6448028..7de576404b14f 100644
+--- a/drivers/mtd/devices/docg3.c
++++ b/drivers/mtd/devices/docg3.c
+@@ -2041,7 +2041,6 @@ static int __init docg3_probe(struct platform_device *pdev)
+ static void docg3_release(struct platform_device *pdev)
+ {
+ 	struct docg3_cascade *cascade = platform_get_drvdata(pdev);
+-	struct docg3 *docg3 = cascade->floors[0]->priv;
+ 	int floor;
  
- 	if (dvb->nfeeds == 1) {
- 		ret = vidtv_start_streaming(dvb);
--		if (ret < 0)
-+		if (ret < 0) {
-+			dvb->nfeeds--;
- 			rc = ret;
-+		}
- 	}
+ 	doc_unregister_sysfs(pdev, cascade);
+@@ -2049,7 +2048,7 @@ static void docg3_release(struct platform_device *pdev)
+ 		if (cascade->floors[floor])
+ 			doc_release_device(cascade->floors[floor]);
  
- 	mutex_unlock(&dvb->feed_lock);
+-	bch_free(docg3->cascade->bch);
++	bch_free(cascade->bch);
+ }
+ 
+ #ifdef CONFIG_OF
+-- 
+2.53.0
+
 
 
 
