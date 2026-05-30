@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-258513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259157-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sPZPLCIoG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:42 +0200
+	id QGnsI2QyG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259157-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46086112C7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8484612C5B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CC951300E14A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:10:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B759D3020AB5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A1E362157;
-	Sat, 30 May 2026 18:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EB725B0A8;
+	Sat, 30 May 2026 18:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvEIZgWh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o01cjiFh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C40352027;
-	Sat, 30 May 2026 18:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CBC2343BE;
+	Sat, 30 May 2026 18:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164602; cv=none; b=YvszaCY58SeJ17dIYi7yzYOz2/TlhVaoXWmVzuWDpkuny4qAcJgvLbNqGf4fX7taJG4wPKMRhRI92p4+TB159GU5mGRKGBiFpXRjoASIAp+BKDQrkkd3WUvtaOvVh2th9SJhH1F6eKggSNgmtUnjFjIHqr4VMVYHf1GZk85tzzQ=
+	t=1780166798; cv=none; b=AR050wu1jKA+d3jCayvemV/gnxcGuQJiuUDQ8507mrXQoexy33wNMIl5yM+GikQ1MwpzbwGlJHtKnTeScpwqzpWQe9BKMWM37HaRqxNkmm0Z1VJFFNl26lbXREuq3iJj0duvxoy+vgtV90KouZhVlyRa26uro5spjrb9zxOIM28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164602; c=relaxed/simple;
-	bh=r56/sTfiUmj661dTDlzjKYrJKLvozZC8dHU2hDtJFBs=;
+	s=arc-20240116; t=1780166798; c=relaxed/simple;
+	bh=gGDsoF6161YHXa0ztFA3HFvufhturqxO2AHIIFtK7mQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LBB7NqUi7mPjI72rP498rkGhkelDGtUHH0+2m05mR+eP9fx3dhOk4vIQECy13o6EIPqy5MZkzRiXEiI7qX+/DEOMTBU7NpJgKcHKyWsE0EgKKh4yi4YqAm/hfIf1mlHVHqZ8t2H96lcNVXvIpy45sUxM7m2oEVgl8No5+h1S55w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvEIZgWh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93A01F00893;
-	Sat, 30 May 2026 18:10:00 +0000 (UTC)
+	 MIME-Version; b=ZD7CW15pCBs/8VrccropMgpWPZd8WJRWr3c0VuzqgoeN5gljDOPO5Zw/FL1lfzY4nA0c4zwAQrCCP6mdxuC2wcRZXpFG9JmsfTeytaPxrcGzZjFXg5c05O6CRkSkhz1xuvaeaqXojj+M9oFzzf7uMMzxVzu4cIcJ7vvYJ4jKYTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o01cjiFh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DFE1F00893;
+	Sat, 30 May 2026 18:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164601;
-	bh=8MNilqjAgMZ7atf0tJzg0CxHO08U4Pb1rz0DJVuYd2s=;
+	s=korg; t=1780166796;
+	bh=wa54KHxyaX5s6mVfpvm59/bp9mXKAPNAEGRJJ6gWm0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GvEIZgWhnByk73rtEjy0cqxj+1/y7blE5tKUnI38pkJ9HjIXpooaCkjX9v3yAJgru
-	 /eBX4t+SXu+mBvxbKwIX0aiLnqmKRc4WEOptheVwB4o9lryjJ6KFiP+E54JG5ibAxY
-	 X61LfxX//r2uGx3Y2OOCKx7EyRHFpVQXbyqcF9QA=
+	b=o01cjiFh+L6KHTQBM7SBVSfhe2/ZButpMF601+AjqrihSTO5B15Bld6XQmb66tRU1
+	 6iu9ND5mIyyWCf3NmBQMm7DJxwdXyOtmbPJr0hzFMhk1ctk4peB/tQPHQmb7BizKBk
+	 e7yaUDwC2dpbOQmYGvM36z95TWWyt66/Vaw2YYBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Ingo Molnar <mingo@elte.hu>,
-	Frederic Weisbecker <fweisbec@gmail.com>,
-	Breno Leitao <leitao@debian.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Yingnan Zhang <342144303@qq.com>,
+	Julian Anastasov <ja@ssi.bg>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 604/776] tracing: branch: Fix inverted check on stat tracer registration
+Subject: [PATCH 5.10 437/589] ipvs: fix MTU check for GSO packets in tunnel mode
 Date: Sat, 30 May 2026 18:05:18 +0200
-Message-ID: <20260530160255.632000620@linuxfoundation.org>
+Message-ID: <20260530160236.198938401@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,98 +69,127 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258513-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,efficios.com,elte.hu,gmail.com,debian.org,kernel.org,goodmis.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,ssi.bg,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-259157-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A46086112C7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qq.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E8484612C5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Yingnan Zhang <342144303@qq.com>
 
-[ Upstream commit 3b75dd76e64a04771861bb5647951c264919e563 ]
+[ Upstream commit 67bf42cae41d847fd6e5749eb68278ca5d748b25 ]
 
-init_annotated_branch_stats() and all_annotated_branch_stats() check the
-return value of register_stat_tracer() with "if (!ret)", but
-register_stat_tracer() returns 0 on success and a negative errno on
-failure. The inverted check causes the warning to be printed on every
-successful registration, e.g.:
+Currently, IPVS skips MTU checks for GSO packets by excluding them with
+the !skb_is_gso(skb) condition. This creates problems when IPVS tunnel
+mode encapsulates GSO packets with IPIP headers.
 
-  Warning: could not register annotated branches stats
+The issue manifests in two ways:
 
-while leaving real failures silent. The initcall also returned a
-hard-coded 1 instead of the actual error.
+1. MTU violation after encapsulation:
+   When a GSO packet passes through IPVS tunnel mode, the original MTU
+   check is bypassed. After adding the IPIP tunnel header, the packet
+   size may exceed the outgoing interface MTU, leading to unexpected
+   fragmentation at the IP layer.
 
-Invert the check and propagate ret so that the warning fires on real
-errors and the initcall reports the correct status.
+2. Fragmentation with problematic IP IDs:
+   When net.ipv4.vs.pmtu_disc=1 and a GSO packet with multiple segments
+   is fragmented after encapsulation, each segment gets a sequentially
+   incremented IP ID (0, 1, 2, ...). This happens because:
 
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Ingo Molnar <mingo@elte.hu>
-Cc: Frederic Weisbecker <fweisbec@gmail.com>
-Link: https://patch.msgid.link/20260420-tracing-v1-1-d8f4cd0d6af1@debian.org
-Fixes: 002bb86d8d42 ("tracing/ftrace: separate events tracing and stats tracing engine")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+   a) The GSO packet bypasses MTU check and gets encapsulated
+   b) At __ip_finish_output, the oversized GSO packet is split into
+      separate SKBs (one per segment), with IP IDs incrementing
+   c) Each SKB is then fragmented again based on the actual MTU
+
+   This sequential IP ID allocation differs from the expected behavior
+   and can cause issues with fragment reassembly and packet tracking.
+
+Fix this by properly validating GSO packets using
+skb_gso_validate_network_len(). This function correctly validates
+whether the GSO segments will fit within the MTU after segmentation. If
+validation fails, send an ICMP Fragmentation Needed message to enable
+proper PMTU discovery.
+
+Fixes: 4cdd34084d53 ("netfilter: nf_conntrack_ipv6: improve fragmentation handling")
+Signed-off-by: Yingnan Zhang <342144303@qq.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_branch.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/ipvs/ip_vs_xmit.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/trace/trace_branch.c b/kernel/trace/trace_branch.c
-index e47fdb4c92fbc..30f72e0ecb5d4 100644
---- a/kernel/trace/trace_branch.c
-+++ b/kernel/trace/trace_branch.c
-@@ -379,10 +379,10 @@ __init static int init_annotated_branch_stats(void)
- 	int ret;
- 
- 	ret = register_stat_tracer(&annotated_branch_stats);
--	if (!ret) {
-+	if (ret) {
- 		printk(KERN_WARNING "Warning: could not register "
- 				    "annotated branches stats\n");
--		return 1;
-+		return ret;
- 	}
- 	return 0;
+diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+index f82834349ca2c..9e199f00eea73 100644
+--- a/net/netfilter/ipvs/ip_vs_xmit.c
++++ b/net/netfilter/ipvs/ip_vs_xmit.c
+@@ -103,6 +103,18 @@ __ip_vs_dst_check(struct ip_vs_dest *dest)
+ 	return dest_dst;
  }
-@@ -444,10 +444,10 @@ __init static int all_annotated_branch_stats(void)
- 	int ret;
  
- 	ret = register_stat_tracer(&all_branch_stats);
--	if (!ret) {
-+	if (ret) {
- 		printk(KERN_WARNING "Warning: could not register "
- 				    "all branches stats\n");
--		return 1;
-+		return ret;
- 	}
- 	return 0;
++/* Based on ip_exceeds_mtu(). */
++static bool ip_vs_exceeds_mtu(const struct sk_buff *skb, unsigned int mtu)
++{
++	if (skb->len <= mtu)
++		return false;
++
++	if (skb_is_gso(skb) && skb_gso_validate_network_len(skb, mtu))
++		return false;
++
++	return true;
++}
++
+ static inline bool
+ __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
+ {
+@@ -112,10 +124,9 @@ __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
+ 		 */
+ 		if (IP6CB(skb)->frag_max_size > mtu)
+ 			return true; /* largest fragment violate MTU */
+-	}
+-	else if (skb->len > mtu && !skb_is_gso(skb)) {
++	} else if (ip_vs_exceeds_mtu(skb, mtu))
+ 		return true; /* Packet size violate MTU size */
+-	}
++
+ 	return false;
  }
+ 
+@@ -240,7 +251,7 @@ static inline bool ensure_mtu_is_adequate(struct netns_ipvs *ipvs, int skb_af,
+ 			return true;
+ 
+ 		if (unlikely(ip_hdr(skb)->frag_off & htons(IP_DF) &&
+-			     skb->len > mtu && !skb_is_gso(skb) &&
++			     ip_vs_exceeds_mtu(skb, mtu) &&
+ 			     !ip_vs_iph_icmp(ipvsh))) {
+ 			icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED,
+ 				  htonl(mtu));
 -- 
 2.53.0
 
