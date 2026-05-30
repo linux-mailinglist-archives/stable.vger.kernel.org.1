@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-258468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259084-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NahH9AnG2rM/ggAu9opvQ
-	(envelope-from <stable+bounces-258468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:20 +0200
+	id sOGLLfcxG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259084-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DA261118C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 249D2612B09
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1F4A4301C9CF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 117AA310A011
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A033AFCE3;
-	Sat, 30 May 2026 18:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C37F2773DE;
+	Sat, 30 May 2026 18:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqjKyw4Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1m+nI5P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD363B7B72;
-	Sat, 30 May 2026 18:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B701B87C0;
+	Sat, 30 May 2026 18:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164451; cv=none; b=rxwWuO/kJSyLcRFtP2vVTBSoPHhYkaN1Z2cVs7IQUbWU9BAo8BvjOaapX+q8pd6wk0LHW0ix7m8BS9oz57xecuipIUd54zjJ1ApWc+GUaWoovGcU1+jXxzWN0Ye67o/+YmNy1K+4a5bFZcduOXycoScEPr90hqEHO1nfYRmr0To=
+	t=1780166560; cv=none; b=l7Gba5MVd41jhv8e/1Az3SB6PukJ8ht7vAcsA17tYHNu8lJ5JncEdS9bYBdAOvte5bZiIODPPnliypEBCwXNoxKEI7GJyL6sUO9jouJchd9yv4furaTf4QdvD2vhUki61HMq3CTNPQEOD9zAAAHFJDNm45Wlxk08Yga/lTPwCio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164451; c=relaxed/simple;
-	bh=OeIelfQd5K1H0D7rOm3lCnY8mvBGgy1973LDL+A/dKQ=;
+	s=arc-20240116; t=1780166560; c=relaxed/simple;
+	bh=gklWDrHcnUIm2T0yUoraVhZ6N4uo3BCRUN9RRzCnoac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E0PmN/sD/WGco3EsNL76LqIO1zaShLGPbK8I/ZekyI5PUlAQWtDseXeUkt3fZQWqYnB7iMjkKkFPV8Wt8Qb7Zyxyjr3wnAd+JmKadMzJ4mz1ip08htIYd5SiVUiexTvM7TEmUZayIzHokhmtJs098cH/ZzwhzEfsuOZ4hh1hjSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqjKyw4Z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507861F00893;
-	Sat, 30 May 2026 18:07:29 +0000 (UTC)
+	 MIME-Version; b=kijYnMxd8lDfFit/OcOCUXovaSB85+NC1sF0CbvZg7uW4jVv4+u5vu7Me8sPK3pafaUK72xH0bv2sQEHxWCqNbcpRzST7aDZ2DlYOFk9lPHXxfpeDi7/dKwqxL1LZYRuWMcYoAIR54AmsO4bAvIOL0/iVN31IJP5pf4uYtLFAiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1m+nI5P; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903171F00893;
+	Sat, 30 May 2026 18:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164449;
-	bh=N2ahyQoNWP/hjb1gcTjk4pIeMR5rt6efI2yiX4L9H4Y=;
+	s=korg; t=1780166559;
+	bh=6d7DqKc+iep44ljDBZ/zN0XvlS9mjnPSWdsvjGp4Qec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kqjKyw4ZMW4qNGtM6yv1cS5E8AlNcBxOyyscPnL51q9YC+UIdv3DugtPAmXK7LLmb
-	 +PtiG7J70U9UhHMpkVIHPLdG8PjPVCYRn4+eAPz6J/UausQ/NJJih2fiaZN5P+vZkS
-	 nROVtYNklpggmd/SeGtsmr02dxbm3MejyRydGzj8=
+	b=b1m+nI5Py2Xcp6cznpKt75jmlI2KzGP2H1RZwSmm5ET+g3Vt+GpCkMxa6ltnveHif
+	 QJzs53RY4loLsIH97eIuthDppTi01m7QvQcVh0efnvjNUpCSRRbMkXY66sa05Npxa1
+	 XYeSw11neBaL8TBPTuwD7IrcgSuYknqY7w1Qp3Rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anna Schumaker <anna.schumkaer@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 530/776] nfs/blocklayout: Fix compilation error (`make W=1`) in bl_write_pagelist()
+Subject: [PATCH 5.10 363/589] soc: qcom: ocmem: return -EPROBE_DEFER is ocmem is not available
 Date: Sat, 30 May 2026 18:04:04 +0200
-Message-ID: <20260530160253.907612082@linuxfoundation.org>
+Message-ID: <20260530160234.380167678@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,85 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258468-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259084-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 96DA261118C
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 249D2612B09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit f83c8dda456ce4863f346aa26d88efa276eda35d ]
+[ Upstream commit 91b59009c7d48b58dbc50fecb27f2ad20749a05a ]
 
-Clang compiler is not happy about set but unused variable
-(when dprintk() is no-op):
+If OCMEM is declared in DT, it is expected that it is present and
+handled by the driver. The GPU driver will ignore -ENODEV error, which
+typically means that OCMEM isn't defined in DT. Let ocmem return
+-EPROBE_DEFER if it supposed to be used, but it is not probed (yet).
 
-.../blocklayout/blocklayout.c:384:9: error: variable 'count' set but not used [-Werror,-Wunused-but-set-variable]
-
-Remove a leftover from the previous cleanup.
-
-Fixes: 3a6fd1f004fc ("pnfs/blocklayout: remove read-modify-write handling in bl_write_pagelist")
-Acked-by: Anna Schumaker <anna.schumkaer@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260323-ocmem-v1-3-ad9bcae44763@oss.qualcomm.com
+[bjorn: s/ERR_PTR(dev_err_probe)/dev_err_ptr_probe/
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/blocklayout/blocklayout.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/soc/qcom/ocmem.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
-index 76423557f5b3d..54a18a9540aae 100644
---- a/fs/nfs/blocklayout/blocklayout.c
-+++ b/fs/nfs/blocklayout/blocklayout.c
-@@ -399,14 +399,13 @@ bl_write_pagelist(struct nfs_pgio_header *header, int sync)
- 	sector_t isect, extent_length = 0;
- 	struct parallel_io *par = NULL;
- 	loff_t offset = header->args.offset;
--	size_t count = header->args.count;
- 	struct page **pages = header->args.pages;
- 	int pg_index = header->args.pgbase >> PAGE_SHIFT;
- 	unsigned int pg_len;
- 	struct blk_plug plug;
- 	int i;
+diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+index bfebdcaf88146..620f171bf0658 100644
+--- a/drivers/soc/qcom/ocmem.c
++++ b/drivers/soc/qcom/ocmem.c
+@@ -212,10 +212,9 @@ struct ocmem *of_get_ocmem(struct device *dev)
  
--	dprintk("%s enter, %zu@%lld\n", __func__, count, offset);
-+	dprintk("%s enter, %u@%lld\n", __func__, header->args.count, offset);
- 
- 	/* At this point, header->page_aray is a (sequential) list of nfs_pages.
- 	 * We want to write each, and if there is an error set pnfs_error
-@@ -448,7 +447,6 @@ bl_write_pagelist(struct nfs_pgio_header *header, int sync)
- 		}
- 
- 		offset += pg_len;
--		count -= pg_len;
- 		isect += (pg_len >> SECTOR_SHIFT);
- 		extent_length -= (pg_len >> SECTOR_SHIFT);
- 	}
+ 	ocmem = platform_get_drvdata(pdev);
+ 	put_device(&pdev->dev);
+-	if (!ocmem) {
+-		dev_err(dev, "Cannot get ocmem\n");
+-		return ERR_PTR(-ENODEV);
+-	}
++	if (!ocmem)
++		return dev_err_ptr_probe(dev, -EPROBE_DEFER, "Cannot get ocmem\n");
++
+ 	return ocmem;
+ }
+ EXPORT_SYMBOL(of_get_ocmem);
 -- 
 2.53.0
 
