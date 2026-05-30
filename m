@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-257164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257948-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOHuG/EXG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257164-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:37 +0200
+	id 0M9NOiwiG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257948-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C0660EC00
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B13B6104FF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6648D3059000
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:53:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FEDA303DAB4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90A5332EA7;
-	Sat, 30 May 2026 16:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFC034A3C4;
+	Sat, 30 May 2026 17:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zicDWMOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/IyAvrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EC632D42B;
-	Sat, 30 May 2026 16:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5422E7379;
+	Sat, 30 May 2026 17:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160028; cv=none; b=Y4eqkmUSUS0bcUXO134r9rZxsztnDkGcri0AftBcjXeaNOLB+qmDD2bSKMhB9SxwpzxPD89vX1NWBKD30xeiIUCP+zmU16P9ma6CX4lst16UkPnYLERJQuYleej7aNd1SdnKe0597KA7Ikyl18wv7RCgLJd2L2JZ2M84GqHa4tU=
+	t=1780162715; cv=none; b=OKoADOFa58iFug3xWRIqA+JhN+/sgLf3DiMZsitgbtapIVpULMsmL6i5vlDTN6H2zHjH4JBoQBf5/XLAPfv0sDM+oV3t1u5wIkzlnoILETJYLm3r/4BSkSfN2Bg+xaaerskqftFvWvpCDdJ/CfGS3VQZFeIg8fL2h9oX8bPittQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160028; c=relaxed/simple;
-	bh=hG24RyJ2/QGAqk8NMBcLQ8EbRCEhH90paTB5OHB1rII=;
+	s=arc-20240116; t=1780162715; c=relaxed/simple;
+	bh=vtie2bKHPHhY2/yR4Bo2g5R8NEJizzRFt+xLyzieNCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlTq92H+r+aVBh1mnzgHfHTdha7Wu5Q1lKA64/bJP79OLwB+6a13UcBAmY0Fp/CAQ2Dkd149qkHhEZToobO+EJ4G3vaHC4rYrTo1CYvN+wlW7op+tH4nCQwTBK0SQVD8LHl6sAON1RnTGYbu5JC6ZbbG2KkD9uYv5q3Qxht2yLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zicDWMOb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1191F00893;
-	Sat, 30 May 2026 16:53:46 +0000 (UTC)
+	 MIME-Version; b=LSQ4rBSSEqdhRSZaTpIp/ggJPdXQjBikK9txKZwgoeLmZZJZi3fTJ9wQ5Gt3q1BXoyg2B2tZyOFGWBj/RWbpPUm35yjFa4sVsk7GrByh0s5HZC31jTZyKk9ty9VvsjGJqszzJZKvWNn2fCmig5sX+J4dlPpRBWB6tE61hVMS+VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/IyAvrz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FFC1F00893;
+	Sat, 30 May 2026 17:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160027;
-	bh=vjlk7iO/3QgCq9Fg0u8g+7Y4VBiEW+W22ASX2gx4Hn4=;
+	s=korg; t=1780162714;
+	bh=o629ZnRffokwAYxPg6+WYVTRY+pu9gtCvrPqQf6G/Q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zicDWMObybPuXY/T06brTipI/JZ2LaSXeNrVfD38e5+dsxnPRF/LJvGt8VoBJyDWN
-	 ie+k0Q6hT26XkdKdr57sJop2U2CzSaLg0LUd5tXwC+TqLpO0uyAfBpS4aU/l5duKmk
-	 5Lw392EsjSdKrMWqcoAMzeobw9ecriBOcZcrJzTE=
+	b=L/IyAvrzwVx7sw8QA0J+KNkTppmRT1yNdCQdCJj/QehrJ4S16uf2+5sdo5z3XtPyH
+	 gfiJzxF2BjKOVfX0W1825rh2vUuDzLyKDXYJEGseNrqzXS6FmkjebPXfjoV2NJCuyv
+	 C7T/9RxfzCNonsLNbr7V0DzeVwJBSqCGJjZW7YZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 224/969] LoongArch: Show CPU vulnerabilites correctly
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 034/776] netfilter: nfnetlink_log: initialize nfgenmsg in NLMSG_DONE terminator
 Date: Sat, 30 May 2026 17:55:48 +0200
-Message-ID: <20260530160306.639389460@linuxfoundation.org>
+Message-ID: <20260530160241.161551464@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +67,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257948-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257164-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C0C0660EC00
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4B13B6104FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Xiang Mei <xmei5@asu.edu>
 
-commit 37e57e8ad96cdec4a57b55fd10bef50f7370a954 upstream.
+[ Upstream commit 1f3083aec8836213da441270cdb1ab612dd82cf4 ]
 
-Most LoongArch processors are vulnerable to Spectre-V1 Proof-of-Concept
-(PoC). And the generic mechanism, __user pointer sanitization, can be
-used as a mitigation. This means to use array_index_nospec() to prevent
-out of boundry access in syscall and other critical paths.
+When batching multiple NFLOG messages (inst->qlen > 1), __nfulnl_send()
+appends an NLMSG_DONE terminator with sizeof(struct nfgenmsg) payload via
+nlmsg_put(), but never initializes the nfgenmsg bytes. The nlmsg_put()
+helper only zeroes alignment padding after the payload, not the payload
+itself, so four bytes of stale kernel heap data are leaked to userspace
+in the NLMSG_DONE message body.
 
-Implement the arch-specific cpu_show_spectre_v1() to show CPU Spectre-V1
-vulnerabilites correctly.
+Use nfnl_msg_put() to build the NLMSG_DONE terminator, which initializes
+the nfgenmsg payload via nfnl_fill_hdr(), consistent with how
+__build_packet_message() already constructs NFULNL_MSG_PACKET headers.
 
-Cc: stable@vger.kernel.org
-Link: https://cc-sw.com/chinese-loongarch-architecture-evaluation-part-3-of-3/
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 29c5d4afba51 ("[NETFILTER]: nfnetlink_log: fix sending of multipart messages")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/cpu-probe.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ net/netfilter/nfnetlink_log.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/loongarch/kernel/cpu-probe.c
-+++ b/arch/loongarch/kernel/cpu-probe.c
-@@ -7,6 +7,7 @@
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/ptrace.h>
-+#include <linux/cpu.h>
- #include <linux/smp.h>
- #include <linux/stddef.h>
- #include <linux/export.h>
-@@ -297,3 +298,9 @@ void cpu_probe(void)
- 
- 	cpu_report();
- }
-+
-+ssize_t cpu_show_spectre_v1(struct device *dev,
-+			    struct device_attribute *attr, char *buf)
-+{
-+	return sysfs_emit(buf, "Mitigation: __user pointer sanitization\n");
-+}
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index 37d10c3d19b60..db309c4167427 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -350,10 +350,10 @@ static void
+ __nfulnl_send(struct nfulnl_instance *inst)
+ {
+ 	if (inst->qlen > 1) {
+-		struct nlmsghdr *nlh = nlmsg_put(inst->skb, 0, 0,
+-						 NLMSG_DONE,
+-						 sizeof(struct nfgenmsg),
+-						 0);
++		struct nlmsghdr *nlh = nfnl_msg_put(inst->skb, 0, 0,
++						    NLMSG_DONE, 0,
++						    AF_UNSPEC, NFNETLINK_V0,
++						    htons(inst->group_num));
+ 		if (WARN_ONCE(!nlh, "bad nlskb size: %u, tailroom %d\n",
+ 			      inst->skb->len, skb_tailroom(inst->skb))) {
+ 			kfree_skb(inst->skb);
+-- 
+2.53.0
+
 
 
 
