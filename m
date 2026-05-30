@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-259281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0M73NjQyG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:40 +0200
+	id APOpJjUqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8414C612C14
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCBDA6117A1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CA0EC3004601
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CAD4F300AD4B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B600225D527;
-	Sat, 30 May 2026 18:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B44932F770;
+	Sat, 30 May 2026 18:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCFEO3ve"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vuv0oUyf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531B1261B91;
-	Sat, 30 May 2026 18:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE02917555;
+	Sat, 30 May 2026 18:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167218; cv=none; b=cZTV8bnSbeFsQhljVyinqdv/j9ETwF0X+0eTcaPR7RXw64u1S4p+mNodU8dVRT41aMGLU0+c07JbTX99Ihtfd3ioFyMzjZ7zE9tToHxbYDULexzxxKgW9z6PSo+Ir3rBx+7bHddm7dAglwKfKxDhAXkvOn/7Mup0Uz5OLw2RZzg=
+	t=1780165074; cv=none; b=LTj6hqHLH1LGD0+cjONEh4D02ylFOpJorULjAGUN67Gz8qcxand7ZkESuLBO8DJHNO5E5EomnqbZpMW+ODmSErgy32ZZIEnF8klBTyZEpbnKv/8Jy7bpADEQOdDLNR7BkahvafPbS6nrCc/VGDWuWmCGPExreM8yCp33nBmX25c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167218; c=relaxed/simple;
-	bh=Jmww14LSx8pq+yNfqRjGPOYYalxfdw3rGctV5Hpm/MQ=;
+	s=arc-20240116; t=1780165074; c=relaxed/simple;
+	bh=OeBmWiXvBBFZ4/XAQQtTP5SjtuqyVsakbV3U5nZ5YFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qPScEewYSpa3XPRo08yrr8U5jzpAjf5Y8HW9cWWCzqKVefNHt1Z3oVV9QHLtjAIfJmOrlivEJN2zafmy2953AISRsTma10cvDe8aZNwyI7Pxij2g/bnIo1OnS/mE2DEwqTlZbrxJaVMcC3YcfXeGEovxIEGdiKM3StII/zD8cyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCFEO3ve; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366941F00893;
-	Sat, 30 May 2026 18:53:35 +0000 (UTC)
+	 MIME-Version; b=V+4JuAq70GRnXhNFolNT/NtIDMaMGM3SIWnbRh8O5ZxJjLHvaTMU73Yu9eSqCwQmdrObU55VYIWIY2SablZpzUzZZeS2v4DQwqGgPUULOzxX0e7i0HObrHrO9zyucJs8ki1dGF06BYu7DX0Nb9s7Q83wDfcZadXZ3tCubILJyPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vuv0oUyf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6EC1F00893;
+	Sat, 30 May 2026 18:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167215;
-	bh=cUWb1i0BCUnRLBeb2vNatz2dKKRwccA/EblLhvkYdbo=;
+	s=korg; t=1780165072;
+	bh=WwB5B2N2WqivN367DyRy3eiAT8m6UNsgmJMV6vPFpjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xCFEO3veuH+pl46fgQAxVxzk9TZjA1TOSbfEizz/R7h+6WNl6bSFXxluGSdJwYR42
-	 n4yypXy0GocAosgt/VytPtzccj5C1JdRI35w3Eow+r5WXIDcsUmD59e2o6nDKo9dN4
-	 NzZlNuEGBKf1kyVaJ0DbDO0rN3+9c8lMvkAz9/O8=
+	b=Vuv0oUyfOqxy7KR/etnFhINFUBiQmXt9a0c/rMFo8/DFpvxwFIjFyMBnTbADENE1r
+	 gjmTCJ0DdKlAw0qUpZd5jWezGMth87wGkkswm3KfIgI/sSJShdxkd88bWaMbCmlub6
+	 cZPjQyfphxRARiBFU1qm3numgFk20dx079jZAyG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linusw@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Tristan Madani <tristan@talencesecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 575/589] net: ethernet: cortina: Make RX SKB per-port
+Subject: [PATCH 5.15 742/776] netfilter: ebtables: close dangling table module init race
 Date: Sat, 30 May 2026 18:07:36 +0200
-Message-ID: <20260530160239.722991601@linuxfoundation.org>
+Message-ID: <20260530160258.961618892@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,116 +69,145 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258652-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259281-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8414C612C14
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,strlen.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,talencesecurity.com:email]
+X-Rspamd-Queue-Id: BCBDA6117A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linusw@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 06937db21ee311ed07eba47954447245041a982d ]
+[ Upstream commit 92c603fa07bc0d6a17345de3ad7954730b8de44b ]
 
-The SKB used to assemble packets from fragments in gmac_rx()
-is static local, but the Gemini has two ethernet ports, meaning
-there can be races between the ports on a bad day if a device
-is using both.
+sashiko reported for a related patch:
+ In modules like iptable_raw.c, [..], if register_pernet_subsys() fails,
+ the rollback might call kfree(rawtable_ops) before [..]
+ During this window, could a concurrent userspace process find the globally
+ visible template, trigger table_init(), [..]
 
-Make the RX SKB a per-port variable and carry it over between
-invocations in the port struct instead.
+The table init functions must always register the template last.
 
-Zero the pointer once we call napi_gro_frags(), on error (after
-calling napi_free_frags()) or if the port is stopped.
+Otherwise, set/getsockopt can instantiate a table in a namespace
+while the required pernet ops (contain the destructor) isn't available.
+This change is also required in x_tables, handled in followup change.
 
-Zero it in some place where not strictly necessary just to
-emphasize what is going on.
-
-This was found by Sashiko during normal patch review.
-
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Link: https://sashiko.dev/#/patchset/20260505-gemini-ethernet-fix-v2-1-997c31d06079%40kernel.org
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20260509-gemini-ethernet-fixes-v1-2-6c5d20ddc35b@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 87663c39f898 ("netfilter: ebtables: do not hook tables by default")
+Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/bridge/netfilter/ebtable_broute.c | 12 +++++-------
+ net/bridge/netfilter/ebtable_filter.c | 12 +++++-------
+ net/bridge/netfilter/ebtable_nat.c    | 10 ++++------
+ 3 files changed, 14 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 04a034cd5183f..ee51367df6488 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -121,6 +121,8 @@ struct gemini_ethernet_port {
- 	struct napi_struct	napi;
- 	struct hrtimer		rx_coalesce_timer;
- 	unsigned int		rx_coalesce_nsecs;
-+	struct sk_buff		*rx_skb;
-+
- 	unsigned int		freeq_refill;
- 	struct gmac_txq		txq[TX_QUEUE_NUM];
- 	unsigned int		txq_order;
-@@ -1412,10 +1414,10 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	unsigned short m = (1 << port->rxq_order) - 1;
- 	struct gemini_ethernet *geth = port->geth;
- 	void __iomem *ptr_reg = port->rxq_rwptr;
-+	struct sk_buff *skb = port->rx_skb;
- 	unsigned int frame_len, frag_len;
- 	struct gmac_rxdesc *rx = NULL;
- 	struct gmac_queue_page *gpage;
--	static struct sk_buff *skb;
- 	union gmac_rxdesc_0 word0;
- 	union gmac_rxdesc_1 word1;
- 	union gmac_rxdesc_3 word3;
-@@ -1469,6 +1471,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 			if (skb) {
- 				napi_free_frags(&port->napi);
- 				port->stats.rx_dropped++;
-+				skb = NULL;
- 			}
+diff --git a/net/bridge/netfilter/ebtable_broute.c b/net/bridge/netfilter/ebtable_broute.c
+index c5d6fb937394c..d54afb88761e6 100644
+--- a/net/bridge/netfilter/ebtable_broute.c
++++ b/net/bridge/netfilter/ebtable_broute.c
+@@ -112,18 +112,16 @@ static struct pernet_operations broute_net_ops = {
  
- 			skb = gmac_skb_if_good_frame(port, word0, frame_len);
-@@ -1519,6 +1522,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 		port->stats.rx_dropped++;
- 	}
+ static int __init ebtable_broute_init(void)
+ {
+-	int ret = ebt_register_template(&broute_table, broute_table_init);
++	int ret = register_pernet_subsys(&broute_net_ops);
  
-+	port->rx_skb = skb;
- 	writew(r, ptr_reg);
- 	return budget;
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&broute_net_ops);
+-	if (ret) {
+-		ebt_unregister_template(&broute_table);
+-		return ret;
+-	}
++	ret = ebt_register_template(&broute_table, broute_table_init);
++	if (ret)
++		unregister_pernet_subsys(&broute_net_ops);
+ 
+-	return 0;
++	return ret;
  }
-@@ -1847,6 +1851,7 @@ static int gmac_stop(struct net_device *netdev)
- 	gmac_disable_tx_rx(netdev);
- 	gmac_stop_dma(port);
- 	napi_disable(&port->napi);
-+	port->rx_skb = NULL;
  
- 	gmac_enable_irq(netdev, 0);
- 	gmac_cleanup_rxq(netdev);
+ static void __exit ebtable_broute_fini(void)
+diff --git a/net/bridge/netfilter/ebtable_filter.c b/net/bridge/netfilter/ebtable_filter.c
+index ee3d6d5a03a35..28f6a1f33898a 100644
+--- a/net/bridge/netfilter/ebtable_filter.c
++++ b/net/bridge/netfilter/ebtable_filter.c
+@@ -100,18 +100,16 @@ static struct pernet_operations frame_filter_net_ops = {
+ 
+ static int __init ebtable_filter_init(void)
+ {
+-	int ret = ebt_register_template(&frame_filter, frame_filter_table_init);
++	int ret = register_pernet_subsys(&frame_filter_net_ops);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&frame_filter_net_ops);
+-	if (ret) {
+-		ebt_unregister_template(&frame_filter);
+-		return ret;
+-	}
++	ret = ebt_register_template(&frame_filter, frame_filter_table_init);
++	if (ret)
++		unregister_pernet_subsys(&frame_filter_net_ops);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static void __exit ebtable_filter_fini(void)
+diff --git a/net/bridge/netfilter/ebtable_nat.c b/net/bridge/netfilter/ebtable_nat.c
+index c98840b68fc52..a9450d6e49565 100644
+--- a/net/bridge/netfilter/ebtable_nat.c
++++ b/net/bridge/netfilter/ebtable_nat.c
+@@ -99,16 +99,14 @@ static struct pernet_operations frame_nat_net_ops = {
+ 
+ static int __init ebtable_nat_init(void)
+ {
+-	int ret = ebt_register_template(&frame_nat, frame_nat_table_init);
++	int ret = register_pernet_subsys(&frame_nat_net_ops);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&frame_nat_net_ops);
+-	if (ret) {
+-		ebt_unregister_template(&frame_nat);
+-		return ret;
+-	}
++	ret = ebt_register_template(&frame_nat, frame_nat_table_init);
++	if (ret)
++		unregister_pernet_subsys(&frame_nat_net_ops);
+ 
+ 	return ret;
+ }
 -- 
 2.53.0
 
