@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-257183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257184-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6JT2DkgYG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257183-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:04 +0200
+	id UElTO0wYG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257184-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9714E60ECAF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E41560ECCB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D187308636E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:55:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D2C53087959
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B927133FE15;
-	Sat, 30 May 2026 16:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4073348C72;
+	Sat, 30 May 2026 16:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dgr3JAix"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6O3Bdb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9501632D42B;
-	Sat, 30 May 2026 16:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DA8332EA7;
+	Sat, 30 May 2026 16:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160099; cv=none; b=IACILd/lGvRgzPdTxMuDCFNOWkt9n2dDWIUn6TC7hoh6r1GnITqt4go9rVWkC8NNBXsuzN2pGiPiNkvmtfGe9S95eHLXlGfFxLPF5ebKBBEoFMOtEe7Y2ycb45lD6v0xCkFmPF3NX0PDIw191RyIhTj3OP/lNJNb7iT7Ec293pc=
+	t=1780160103; cv=none; b=GDexSqMzp2CQw9SVQXuHU2HmmyL8ikAWLaAAArVaGLv2oERr2YEadeSvuLENWcvGroCDofODjprUFm5KQeqejSnJhPntjwWEfSD7VnMCDhyK3u+SIl19u4W7+cboFc3XibwEz5SiHEJ6lKYOXlFsVhIL2kNPIObsyQWYce6Y+ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160099; c=relaxed/simple;
-	bh=yLslDqGJZscVY50+pwe4CnUsWtn1Y8T6AZJ3V5CA81k=;
+	s=arc-20240116; t=1780160103; c=relaxed/simple;
+	bh=X9plwmiq0vWH9z38CUWg4KSsvzCqFe8IzY7n5ASMiG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J5jxosk0k9x9tykMyBsS3sB7pdAqkcYRZ8EWdrsXalRXAL+oBguoLF7YrsuZep30d3GWiGquvbppiyGntqdtNBPlH05sVugg3hIgcyr/jl9UsVaqcSitpfOLzXKq79RT9EkZKxdnuJQ6uJOXUnb4FfAiFFZtzEki7ZDkkOKFpjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dgr3JAix; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0C21F00893;
-	Sat, 30 May 2026 16:54:57 +0000 (UTC)
+	 MIME-Version; b=PxpqU0YnHsqqwGFvdQo7vhSxnmo3BzznGQt/Fv7bYgJYuO4/rlkAdrStNbu2XrOrOQyMvDiiL0rWjAGYyRwoxtGEJ3JTU9pYExjJWF7Pbn5Ua3B6fVzd/WRi0/DUvg/VZc89RurwAMnDP6o6pPIq0TWXXB0aBYRjNPijTzP8Yuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6O3Bdb1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7865E1F00893;
+	Sat, 30 May 2026 16:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160098;
-	bh=f0zvAF+Uehc2PkYMSQ+anEv4Ywu9inSi9PmAChjVFiw=;
+	s=korg; t=1780160102;
+	bh=U6je7QEcIC+tvL/Rcl/QIf1f1Y+9blPWEg/xB66E9Cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Dgr3JAixjO5yt6GTzqkuMl/b2zXwWYfrGIGvTrGefPVAR0ybUOljgFxK65XbTRc/t
-	 UNPygwu57PL4liNh9MsF6puh7bUn2UAFy0a0Gezdf58iG6gyoGwbHS+bftvdK+7l9D
-	 OBDdLR/6jxiiZ8s0IhZIlbMn9ScLiJc2kzFWdwkI=
+	b=n6O3Bdb1KYMf3pxDwmA02X1pYKIoA28b+VJLpDG9RuK5BVJXQujiguH8zzz6yG5mX
+	 Xf3uWn2OG0TZEvbCSLHHl144iArB3DPQ/nOYVRBNbAP1i8tv88n6uHiXCPpFEoJmur
+	 pzPQpnHw9jjx2vwZnIx6C9ymgBDI5BGGjHA170+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Kim <james010kim@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Francis Brosseau <francis@malagauche.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 245/969] mtd: docg3: fix use-after-free in docg3_release()
-Date: Sat, 30 May 2026 17:56:09 +0200
-Message-ID: <20260530160307.226809428@linuxfoundation.org>
+Subject: [PATCH 6.1 246/969] io_uring/poll: fix multishot recv missing EOF on wakeup race
+Date: Sat, 30 May 2026 17:56:10 +0200
+Message-ID: <20260530160307.258134013@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -73,25 +73,24 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257183-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257184-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9714E60ECAF
+X-Rspamd-Queue-Id: 7E41560ECCB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,51 +98,63 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: James Kim <james010kim@gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit ca19808bc6fac7e29420d8508df569b346b3e339 ]
+[ Upstream commit a68ed2df72131447d131531a08fe4dfcf4fa4653 ]
 
-In docg3_release(), the docg3 pointer is obtained from
-cascade->floors[0]->priv before the loop that calls
-doc_release_device() on each floor. doc_release_device() frees the
-docg3 struct via kfree(docg3) at line 1881. After the loop,
-docg3->cascade->bch dereferences the already-freed pointer.
+When a socket send and shutdown() happen back-to-back, both fire
+wake-ups before the receiver's task_work has a chance to run. The first
+wake gets poll ownership (poll_refs=1), and the second bumps it to 2.
+When io_poll_check_events() runs, it calls io_poll_issue() which does a
+recv that reads the data and returns IOU_RETRY. The loop then drains all
+accumulated refs (atomic_sub_return(2) -> 0) and exits, even though only
+the first event was consumed. Since the shutdown is a persistent state
+change, no further wakeups will happen, and the multishot recv can hang
+forever.
 
-Fix this by accessing cascade->bch directly, which is equivalent
-since docg3->cascade points back to the same cascade struct, and
-is already available as a local variable. This also removes the
-now-unused docg3 local variable.
+Check specifically for HUP in the poll loop, and ensure that another
+loop is done to check for status if more than a single poll activation
+is pending. This ensures we don't lose the shutdown event.
 
-Fixes: c8ae3f744ddc ("lib/bch: Rework a little bit the exported function names")
-Cc: stable@vger.kernel.org
-Signed-off-by: James Kim <james010kim@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Backport notes for linux-6.1.y:
+  - In 6.1.y the do-while masks v in the while-condition itself, so
+    v can carry IO_POLL_RETRY_FLAG/IO_POLL_CANCEL_FLAG bits when we
+    reach the multishot branch.  The HUP check therefore compares
+    `(v & IO_POLL_REF_MASK) != 1` rather than the upstream `v != 1`.
+  - io_poll_issue takes `bool *locked` here (renamed to `ts` in 6.6+).
+  - 6.1.y has no IOU_REQUEUE return path; only IOU_STOP_MULTISHOT.
+
+CVE: CVE-2026-23473
+Cc: stable@vger.kernel.org # 6.1.y
+Fixes: dbc2564cfe0f ("io_uring: let fast poll support multishot")
+Reported-by: Francis Brosseau <francis@malagauche.com>
+Link: https://github.com/axboe/liburing/issues/1549
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[backport for linux-6.1.y, verified 2026-05-01]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/devices/docg3.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ io_uring/poll.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
-index 8cb25cfd9c10a..2f82bc7c07931 100644
---- a/drivers/mtd/devices/docg3.c
-+++ b/drivers/mtd/devices/docg3.c
-@@ -2049,7 +2049,6 @@ static int __init docg3_probe(struct platform_device *pdev)
- static void docg3_release(struct platform_device *pdev)
- {
- 	struct docg3_cascade *cascade = platform_get_drvdata(pdev);
--	struct docg3 *docg3 = cascade->floors[0]->priv;
- 	int floor;
+diff --git a/io_uring/poll.c b/io_uring/poll.c
+index 367605a5878fe..cdf1f2f57b9a2 100644
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -303,7 +303,13 @@ static int io_poll_check_events(struct io_kiocb *req, bool *locked)
+ 				return IOU_POLL_REMOVE_POLL_USE_RES;
+ 			}
+ 		} else {
+-			int ret = io_poll_issue(req, locked);
++			int ret;
++
++			/* multiple refs and HUP, ensure we loop once more */
++			if ((req->cqe.res & (POLLHUP | POLLRDHUP)) &&
++			    (v & IO_POLL_REF_MASK) != 1)
++				v--;
++			ret = io_poll_issue(req, locked);
+ 			io_kbuf_recycle(req, 0);
  
- 	doc_unregister_sysfs(pdev, cascade);
-@@ -2057,7 +2056,7 @@ static void docg3_release(struct platform_device *pdev)
- 		if (cascade->floors[floor])
- 			doc_release_device(cascade->floors[floor]);
- 
--	bch_free(docg3->cascade->bch);
-+	bch_free(cascade->bch);
- }
- 
- #ifdef CONFIG_OF
+ 			if (ret == IOU_STOP_MULTISHOT)
 -- 
 2.53.0
 
