@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258669-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IG4kB+4hG2oN/ggAu9opvQ
-	(envelope-from <stable+bounces-257916-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:14 +0200
+	id 0Jb3AN8rG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258669-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E0B4610459
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA09611BE0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A0C8C308AAFB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:36:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3D70303DD71
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858F332B11F;
-	Sat, 30 May 2026 17:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD884274FDC;
+	Sat, 30 May 2026 18:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EC8//nOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nT8dybmN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4369933E36A;
-	Sat, 30 May 2026 17:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925C9233D9E;
+	Sat, 30 May 2026 18:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162601; cv=none; b=surZnumooESSSAb7pQ/ncIhMQxtUeV4Dsovw+UEyBINM7O5SpUIOXObTTCFM7V3VQX/3WRnxClCkF9P1aGK2JytXyqjSFO3IwZ3aLiGdGyCe/t/wCr9mfZUs1ABlweBAUJG2pnTwWByBg5EuG1rvr5Rk3Gh7CFV9C3zrAQaYO0U=
+	t=1780165133; cv=none; b=P6vU5DNDVqebOBUDWb0tV8QBG+P74zXjd/Wrjq7dt+bkukoXBxba77qw4qbdriNjCxvrWpnbIF/CUdjTsXAAeCaevtXRFwDa+qfndYiTOycTH0tlYrPypTeRYNhn8Nt+3FC5VH9oiaoBHRWGUr3L6COHrkYpesw/sGar31CMR6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162601; c=relaxed/simple;
-	bh=qDEHJIAbN/GXEvaPSYp8t9xEdb6fZoRP+K+elRnyyZw=;
+	s=arc-20240116; t=1780165133; c=relaxed/simple;
+	bh=7pg1xd9kdPhgNLzVah67TJE953Ol+gUADWlZm70MXPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HgjTFwDjINACumfzoBnNo/YrU1sLbCVj33NY4ziDXcCHw872y312giXK70cTD+p+NcTyaIKIWgh4iF3Ryh6qlHT5wIfLFfu4PXHuseGQOPa+d+6nIbdO2F7WkLnp8Tc/yJld207CvA9nR+9ZLc/Z3OxP/BxbT6ELDEtmnRhuHak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EC8//nOw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868EB1F00893;
-	Sat, 30 May 2026 17:36:39 +0000 (UTC)
+	 MIME-Version; b=sBaJ3SdHC4WqmnNFbkT2kayXoOfNjm2gKUJMb+IMI60dKZAHobgMC9cfgbDaORm1Mvhv/JRhqyuqRDE3GqvX2r9XdmrGphCN24cZQDNskXYRA8W2V+4YmZXH8oTlVI8SJ0WnkrTzyvcd3J+OO4c+9wsMoT6y7VNi0ECDI3IlEwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nT8dybmN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53B01F00893;
+	Sat, 30 May 2026 18:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162600;
-	bh=Z9PknbvIpbRs4tg/EXBwgTABjdYrqgiDHvybmfQvvlE=;
+	s=korg; t=1780165132;
+	bh=O7RcPCj+Qci+4TPmEfjuDcdd72tjUxO9JkxJCDxjDuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EC8//nOwcdAoLIuTlyP5lTWp5qTOkKGAA3/KIFNyRDPIl7L1P2Fv0P5xi3RILz212
-	 qbZSQciJXr+3tL3oOl29lty2pQGO+Zq8hn3PPafGp1o4jVqOFQKid+UeP7gJEFHi6E
-	 Kt/LA+2jdK7M681WiNYYWiEgYeFzOcR2mIVIN/Pc=
+	b=nT8dybmNGSMP/+BXh4CWyi0ixoua1ZEuPXamFMrK+MdNbK31704wN8XhBD0e0N7Hj
+	 mbQhkrO8wf8OzjE0Py2o+9/Y7LZ76ZOzx3M04Q1tjIv1wZT1b2oaiFmV9cbCurZiYs
+	 1Dj7j4x7na4OGjhtblBgqf0nUGaMP7U2ZMvpYoKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 949/969] wifi: ath11k: fix rssi station dump not updated in QCN9074
-Date: Sat, 30 May 2026 18:07:53 +0200
-Message-ID: <20260530160326.962950629@linuxfoundation.org>
+Subject: [PATCH 5.15 760/776] net: dsa: mt7530: fix FDB entries not aging out with short timeout
+Date: Sat, 30 May 2026 18:07:54 +0200
+Message-ID: <20260530160259.381465451@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257916-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258669-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,183 +89,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[quicinc.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9E0B4610459
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[makrotopia.org:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,bridge_vlan_unaware.sh:url,bridge_vlan_aware.sh:url]
+X-Rspamd-Queue-Id: 5FA09611BE0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit 031ffa6c2cd305a57ccc6d610f2decd956b2e7f6 ]
+[ Upstream commit e824e40d0e841fab66ab7897d6c7b14dc81c66a7 ]
 
-In QCN9074, station dump signal values display default value which
-is -95 dbm, since there is firmware header change for HAL_RX_MPDU_START
-between QCN9074 and IPQ8074 which cause wrong peer_id fetch from msdu.
-Fix this by updating hal_rx_mpdu_info with corresponding QCN9074 tlv
-format.
+The DSA forwarding selftests bridge_vlan_aware.sh and
+bridge_vlan_unaware.sh configure the bridge with ageing_time set to
+LOW_AGEING_TIME (1000 centiseconds, i.e. 10 seconds) and then run
+learning_test() in lib.sh, which expects a learned FDB entry to be
+removed after ageing_time + 10 seconds. On MT7530/MT7531 the entry
+persisted past the deadline and the "Found FDB record when should
+not" assertion failed.
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01695-QCAHKSWPL_SILICONZ-1
+With msecs=10000, the algorithm in mt7530_set_ageing_time() finds
+AGE_CNT=0 and AGE_UNIT=9 as the first exact match (starting the
+search from tmp_age_count=0). The per-entry aging counter is
+initialized to AGE_CNT when a MAC address is learned, so with
+AGE_CNT=0 new entries start with a counter value of 0, which the
+hardware treats as "already aged" and never removes, effectively
+disabling aging.
 
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230320110312.20639-1-quic_ppranees@quicinc.com
-Stable-dep-of: 2a2451a34afd ("wifi: ath11k: fix peer resolution on rx path when peer_id=0")
+Fix this by starting the search from tmp_age_count=1 to ensure
+entries always have a non-zero initial aging counter. For a
+10-second ageing time this yields AGE_CNT=1 and AGE_UNIT=4 instead:
+the timer ticks every 5 seconds and entries are removed after 2
+ticks.
+
+Starting the search at AGE_CNT=1 raises the minimum representable
+ageing time from 1 to 2 seconds. Without bounds, a stale ageing_time
+of 1 second would now make the loop fall through without setting
+age_count and age_unit, leaving them uninitialized when written to
+the MT7530_AAC hardware register. Set ds->ageing_time_min and
+ds->ageing_time_max so the DSA core validates the range before the
+callback is invoked, and drop the now-redundant range check from
+mt7530_set_ageing_time().
+
+Fixes: ea6d5c924e39 ("net: dsa: mt7530: support setting ageing time")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/7788ded12dc07b1bce329ec35fa70f4b45f3f9b7.1778766629.git.daniel@makrotopia.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/hal_rx.c | 10 ++++++++-
- drivers/net/wireless/ath/ath11k/hal_rx.h | 18 +++++++++++++++-
- drivers/net/wireless/ath/ath11k/hw.c     | 27 ++++++++++++++++--------
- drivers/net/wireless/ath/ath11k/hw.h     |  2 +-
- 4 files changed, 45 insertions(+), 12 deletions(-)
+ drivers/net/dsa/mt7530.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/hal_rx.c b/drivers/net/wireless/ath/ath11k/hal_rx.c
-index d1785e71ffc98..47bd937591470 100644
---- a/drivers/net/wireless/ath/ath11k/hal_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/hal_rx.c
-@@ -866,6 +866,12 @@ ath11k_hal_rx_populate_mu_user_info(void *rx_tlv, struct hal_rx_mon_ppdu_info *p
- 	ath11k_hal_rx_populate_byte_count(rx_tlv, ppdu_info, rx_user_status);
- }
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index abd61514d3361..f0b2510bff15b 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -907,12 +907,16 @@ mt7530_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
+ 	unsigned int age_count;
+ 	unsigned int age_unit;
  
-+static u16 ath11k_hal_rx_mpduinfo_get_peerid(struct ath11k_base *ab,
-+					     struct hal_rx_mpdu_info *mpdu_info)
-+{
-+	return ab->hw_params.hw_ops->mpdu_info_get_peerid(mpdu_info);
-+}
-+
- static enum hal_rx_mon_status
- ath11k_hal_rx_parse_mon_status_tlv(struct ath11k_base *ab,
- 				   struct hal_rx_mon_ppdu_info *ppdu_info,
-@@ -1460,9 +1466,11 @@ ath11k_hal_rx_parse_mon_status_tlv(struct ath11k_base *ab,
- 		break;
- 	}
- 	case HAL_RX_MPDU_START: {
-+		struct hal_rx_mpdu_info *mpdu_info =
-+				(struct hal_rx_mpdu_info *)tlv_data;
- 		u16 peer_id;
+-	/* Applied timer is (AGE_CNT + 1) * (AGE_UNIT + 1) seconds */
+-	if (secs < 1 || secs > (AGE_CNT_MAX + 1) * (AGE_UNIT_MAX + 1))
+-		return -ERANGE;
+-
+-	/* iterate through all possible age_count to find the closest pair */
+-	for (tmp_age_count = 0; tmp_age_count <= AGE_CNT_MAX; ++tmp_age_count) {
++	/* Applied timer is (AGE_CNT + 1) * (AGE_UNIT + 1) seconds.
++	 * The DSA core has already validated the range using
++	 * ds->ageing_time_min and ds->ageing_time_max.
++	 *
++	 * Iterate through all possible age_count values to find the closest
++	 * pair. Start from 1 because the per-entry aging counter is
++	 * initialized to AGE_CNT and a value of 0 means the entry will
++	 * never be aged out.
++	 */
++	for (tmp_age_count = 1; tmp_age_count <= AGE_CNT_MAX; ++tmp_age_count) {
+ 		unsigned int tmp_age_unit = secs / (tmp_age_count + 1) - 1;
  
--		peer_id = ab->hw_params.hw_ops->mpdu_info_get_peerid(tlv_data);
-+		peer_id = ath11k_hal_rx_mpduinfo_get_peerid(ab, mpdu_info);
- 		if (peer_id)
- 			ppdu_info->peer_id = peer_id;
- 		break;
-diff --git a/drivers/net/wireless/ath/ath11k/hal_rx.h b/drivers/net/wireless/ath/ath11k/hal_rx.h
-index f6bae07abfd3e..47e8208b22e13 100644
---- a/drivers/net/wireless/ath/ath11k/hal_rx.h
-+++ b/drivers/net/wireless/ath/ath11k/hal_rx.h
-@@ -405,7 +405,7 @@ struct hal_rx_phyrx_rssi_legacy_info {
- #define HAL_RX_MPDU_INFO_INFO0_PEERID_WCN6855	GENMASK(15, 0)
- #define HAL_RX_MPDU_INFO_INFO1_MPDU_LEN		GENMASK(13, 0)
+ 		if (tmp_age_unit <= AGE_UNIT_MAX) {
+@@ -2357,6 +2361,8 @@ mt7530_setup(struct dsa_switch *ds)
  
--struct hal_rx_mpdu_info {
-+struct hal_rx_mpdu_info_ipq8074 {
- 	__le32 rsvd0;
- 	__le32 info0;
- 	__le32 rsvd1[11];
-@@ -413,12 +413,28 @@ struct hal_rx_mpdu_info {
- 	__le32 rsvd2[9];
- } __packed;
+ 	ds->assisted_learning_on_cpu_port = true;
+ 	ds->mtu_enforcement_ingress = true;
++	ds->ageing_time_min = 2 * 1000;
++	ds->ageing_time_max = (AGE_CNT_MAX + 1) * (AGE_UNIT_MAX + 1) * 1000;
  
-+struct hal_rx_mpdu_info_qcn9074 {
-+	__le32 rsvd0[10];
-+	__le32 info0;
-+	__le32 rsvd1[2];
-+	__le32 info1;
-+	__le32 rsvd2[9];
-+} __packed;
-+
- struct hal_rx_mpdu_info_wcn6855 {
- 	__le32 rsvd0[8];
- 	__le32 info0;
- 	__le32 rsvd1[14];
- } __packed;
+ 	if (priv->id == ID_MT7530) {
+ 		regulator_set_voltage(priv->core_pwr, 1000000, 1000000);
+@@ -2536,6 +2542,8 @@ mt7531_setup_common(struct dsa_switch *ds)
  
-+struct hal_rx_mpdu_info {
-+	union {
-+		struct hal_rx_mpdu_info_ipq8074 ipq8074;
-+		struct hal_rx_mpdu_info_qcn9074 qcn9074;
-+		struct hal_rx_mpdu_info_wcn6855 wcn6855;
-+	} u;
-+} __packed;
-+
- #define HAL_RX_PPDU_END_DURATION	GENMASK(23, 0)
- struct hal_rx_ppdu_end_duration {
- 	__le32 rsvd0[9];
-diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
-index 60ac215e06786..6b4355a68e266 100644
---- a/drivers/net/wireless/ath/ath11k/hw.c
-+++ b/drivers/net/wireless/ath/ath11k/hw.c
-@@ -835,26 +835,35 @@ static void ath11k_hw_ipq5018_reo_setup(struct ath11k_base *ab)
- 			   ring_hash_map);
- }
+ 	ds->assisted_learning_on_cpu_port = true;
+ 	ds->mtu_enforcement_ingress = true;
++	ds->ageing_time_min = 2 * 1000;
++	ds->ageing_time_max = (AGE_CNT_MAX + 1) * (AGE_UNIT_MAX + 1) * 1000;
  
--static u16 ath11k_hw_ipq8074_mpdu_info_get_peerid(u8 *tlv_data)
-+static u16
-+ath11k_hw_ipq8074_mpdu_info_get_peerid(struct hal_rx_mpdu_info *mpdu_info)
- {
- 	u16 peer_id = 0;
--	struct hal_rx_mpdu_info *mpdu_info =
--		(struct hal_rx_mpdu_info *)tlv_data;
+ 	mt753x_trap_frames(priv);
  
- 	peer_id = FIELD_GET(HAL_RX_MPDU_INFO_INFO0_PEERID,
--			    __le32_to_cpu(mpdu_info->info0));
-+			    __le32_to_cpu(mpdu_info->u.ipq8074.info0));
- 
- 	return peer_id;
- }
- 
--static u16 ath11k_hw_wcn6855_mpdu_info_get_peerid(u8 *tlv_data)
-+static u16
-+ath11k_hw_qcn9074_mpdu_info_get_peerid(struct hal_rx_mpdu_info *mpdu_info)
-+{
-+	u16 peer_id = 0;
-+
-+	peer_id = FIELD_GET(HAL_RX_MPDU_INFO_INFO0_PEERID,
-+			    __le32_to_cpu(mpdu_info->u.qcn9074.info0));
-+
-+	return peer_id;
-+}
-+
-+static u16
-+ath11k_hw_wcn6855_mpdu_info_get_peerid(struct hal_rx_mpdu_info *mpdu_info)
- {
- 	u16 peer_id = 0;
--	struct hal_rx_mpdu_info_wcn6855 *mpdu_info =
--		(struct hal_rx_mpdu_info_wcn6855 *)tlv_data;
- 
- 	peer_id = FIELD_GET(HAL_RX_MPDU_INFO_INFO0_PEERID_WCN6855,
--			    __le32_to_cpu(mpdu_info->info0));
-+			    __le32_to_cpu(mpdu_info->u.wcn6855.info0));
- 	return peer_id;
- }
- 
-@@ -1042,7 +1051,7 @@ const struct ath11k_hw_ops qcn9074_ops = {
- 	.rx_desc_get_attention = ath11k_hw_qcn9074_rx_desc_get_attention,
- 	.rx_desc_get_msdu_payload = ath11k_hw_qcn9074_rx_desc_get_msdu_payload,
- 	.reo_setup = ath11k_hw_ipq8074_reo_setup,
--	.mpdu_info_get_peerid = ath11k_hw_ipq8074_mpdu_info_get_peerid,
-+	.mpdu_info_get_peerid = ath11k_hw_qcn9074_mpdu_info_get_peerid,
- 	.rx_desc_mac_addr2_valid = ath11k_hw_ipq9074_rx_desc_mac_addr2_valid,
- 	.rx_desc_mpdu_start_addr2 = ath11k_hw_ipq9074_rx_desc_mpdu_start_addr2,
- 	.get_ring_selector = ath11k_hw_ipq8074_get_tcl_ring_selector,
-diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index 9f45d061d8265..6a5dd2dbdb3ab 100644
---- a/drivers/net/wireless/ath/ath11k/hw.h
-+++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -263,7 +263,7 @@ struct ath11k_hw_ops {
- 	struct rx_attention *(*rx_desc_get_attention)(struct hal_rx_desc *desc);
- 	u8 *(*rx_desc_get_msdu_payload)(struct hal_rx_desc *desc);
- 	void (*reo_setup)(struct ath11k_base *ab);
--	u16 (*mpdu_info_get_peerid)(u8 *tlv_data);
-+	u16 (*mpdu_info_get_peerid)(struct hal_rx_mpdu_info *mpdu_info);
- 	bool (*rx_desc_mac_addr2_valid)(struct hal_rx_desc *desc);
- 	u8* (*rx_desc_mpdu_start_addr2)(struct hal_rx_desc *desc);
- 	u32 (*get_ring_selector)(struct sk_buff *skb);
 -- 
 2.53.0
 
