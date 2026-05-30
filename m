@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-258910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNJTMaMwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-258910-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:59 +0200
+	id yAAAMpkwG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-258911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6980F6127D7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3A56127BE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2AA6230214E8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:32:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37E173026A8E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B84603242BA;
-	Sat, 30 May 2026 18:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E567941A8F;
+	Sat, 30 May 2026 18:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wA1aMpKX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPgcAYNf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988C926738C;
-	Sat, 30 May 2026 18:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC8721E098;
+	Sat, 30 May 2026 18:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165953; cv=none; b=XGJ5/FgtZppoDwfPjzFq38t7kt3BPp1C1/gHQccPci87dWUb4/glxnZmjnqwiWTFyRewSQ8w5EaDh3E1qBeS6FNGM7MMy+czdgzaXxrJxZoP6Es24UCqgrCNDMXKt9FI1mXuuCHw43tjXCq5HDJ7kSnSjr0OCLLKpedXlj7Sgvw=
+	t=1780165956; cv=none; b=ngS2FjvXJ77BXAtoJeNmm1pYSYF8nYR9shNb38f9dw7VbXUTeLhCtNi+3wXqosYZfkGNk+kAQfFUl1Xfxy6plrMb+byDgJ7/NMrSyJqp5g4dyrIysNkdXxMxJUhmJICev1/kRJleiVHVV11IiQXmVQX+xJoZZW1uHEezodonnL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165953; c=relaxed/simple;
-	bh=2lBd1yRuOAdOjK5xUoj07oz4BnKrPYxs2UlBTSMQpKw=;
+	s=arc-20240116; t=1780165956; c=relaxed/simple;
+	bh=PbIPap2PnW+2o8qK7LBWThznt/8kPNmHB9FhG11Q8fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kkfwf7ML05NqIB2xy7IWv5uEctZ2V318b+HKt+GYpwJg3rWWUUZPMIgApWEpnuylFQEHtEwp3gHgpfJkZN+NodBCGMCXj+FjePe7pikiUhuXs3zCmK0GKEIvlkJS66QZty3YhT15zJeWcXCMHWlTV5WlaPj7MSrqDqrxZeeKM30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wA1aMpKX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9317C1F00893;
-	Sat, 30 May 2026 18:32:31 +0000 (UTC)
+	 MIME-Version; b=G9coX7B0PzOLXdyHP5/GWPbCrk6wbn509+IXbNDBhumcUQN8vVPFKVbiAtxcioiOw5cBfT1i9XW4MS6IroAg4hU+9CpsVun/5lff4SaWlxkgPcarm2ggHVCPxVRttj7ZlMrviQIPqWa7nXMAEeFuFRCoHX8RXmu9RzVMjJGB+p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPgcAYNf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA811F00893;
+	Sat, 30 May 2026 18:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165952;
-	bh=QanbMkmDUx7gGxW6UeD8N8tAOLVAgZcVK4ns54r+Caw=;
+	s=korg; t=1780165955;
+	bh=nOk366RtIHiWieqfa9cxOEONfM5+k6GxGVss9hWCIGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wA1aMpKXZzasPoHW9bjJgOHihi0ePGSvjDJK4hcdjo5K1qE/Qss49rwswt9NNY3Pj
-	 IJsHlaS0EB7lWB4u6Ejcde8ek0qRVvfkA6lssR0m4WGqouEejWPpDeZL1Nbp+3nKqo
-	 N0fbzwVR3DZefe6jAaQ5lpuq8rJSb31UJ0qxIBes=
+	b=KPgcAYNf+zDOC0izGPxgb3qw6N61q6L+YoIzVyhlm8MlK5kZG7mW/NUozwUUBxITr
+	 Q1c29IgXDF9Ly8KV11fR6j6nTAxtB2SSW59lWFNJVwWLYMMSOwc9GlBHnBbrbuoC9c
+	 XKC6KGSkatk5JIWrAFwdEVvhIuxhtXc3eyEVQFFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@kernel.org,
 	Siwei Zhang <oss@fourdim.xyz>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.10 230/589] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_new_connection_cb()
-Date: Sat, 30 May 2026 18:01:51 +0200
-Message-ID: <20260530160231.026796244@linuxfoundation.org>
+Subject: [PATCH 5.10 231/589] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_state_change_cb()
+Date: Sat, 30 May 2026 18:01:52 +0200
+Message-ID: <20260530160231.054801133@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
 References: <20260530160224.570625122@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258910-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258911-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fourdim.xyz:email,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6980F6127D7
+X-Rspamd-Queue-Id: 5E3A56127BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,12 +101,12 @@ X-Rspamd-Server: lfdr
 
 From: Siwei Zhang <oss@fourdim.xyz>
 
-commit 0a120d96166301d7a95be75b52f843837dbd1219 upstream.
+commit 2ff1a41a912de8517b4482e946dd951b7d80edbf upstream.
 
 Add the same NULL guard already present in
 l2cap_sock_resume_cb() and l2cap_sock_ready_cb().
 
-Fixes: 80808e431e1e ("Bluetooth: Add l2cap_chan_ops abstraction")
+Fixes: 89bc500e41fc ("Bluetooth: Add state tracking to struct l2cap_chan")
 Cc: stable@kernel.org
 Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
@@ -117,16 +117,16 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/net/bluetooth/l2cap_sock.c
 +++ b/net/bluetooth/l2cap_sock.c
-@@ -1455,6 +1455,9 @@ static struct l2cap_chan *l2cap_sock_new
+@@ -1599,6 +1599,9 @@ static void l2cap_sock_state_change_cb(s
  {
- 	struct sock *sk, *parent = chan->data;
+ 	struct sock *sk = chan->data;
  
-+	if (!parent)
-+		return NULL;
++	if (!sk)
++		return;
 +
- 	lock_sock(parent);
+ 	sk->sk_state = state;
  
- 	/* Check for backlog size */
+ 	if (err)
 
 
 
