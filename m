@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPpPEF8iG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257942-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:07 +0200
+	id aFM5OHgWG2rJ/AgAu9opvQ
+	(envelope-from <stable+bounces-257140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:55:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7444610572
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E082860E9B0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:55:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A84E4301915F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2F5EC3012C60
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7053469FC;
-	Sat, 30 May 2026 17:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8837939EB73;
+	Sat, 30 May 2026 16:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLotwaV4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDKV3mLb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A213C33E36A;
-	Sat, 30 May 2026 17:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E6333A9DA;
+	Sat, 30 May 2026 16:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162695; cv=none; b=I0Te5Eox41Zo77CHFy5Rm0JV2cWSFPZ7sh3EW3skUz9vq6RCHOZcHWDxBRlllznBLBRr4LnmPwkxI996Z+Hk6CfDOmJzXvRDui7ppkeYX3N3fnXnq7E5L7vElum2iOsonb0N1Osc+HlqhqovidUqeB1P4a+VBdsNaV2bDoP8Ig0=
+	t=1780159946; cv=none; b=AoGv6GzS20hafrOpZqy1a/AhmjkBVIWvZSQwZdUpCTZ3sakiRnJDGIe2qACrl5pWPC0FbN2OIhIYa0LctwrCDwkGJ5UjtGtEbOKvVxLphwVvG+OR4QoeoMN/yMybHCA8jk64DVXlWVmPw1zqA6Oqi1H199qwzwLbC6hzdxthPF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162695; c=relaxed/simple;
-	bh=QHZDWQrOFo0qEQFDfStoQZBG9Ict5NsrCHKty4Xg2jM=;
+	s=arc-20240116; t=1780159946; c=relaxed/simple;
+	bh=oIySzXllgiT36LQMbCRdvATflUYtRLUn0ydODkttt3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GmbxpC8n3BIzF8AUL/dXt9b5hSei+USnLM8R3zw4HA4zSlBnR7zZo1EG4EoDBahHhuQu8Ctju8PR2Km9r/CrQ0THct8Laex9aNAiN0wz8YjPYExyClZcW778oTGcPMs+/xIKSCNnYDu+jHz9omGB/pbpGUEOgWg6y0uEdHtcND8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLotwaV4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FF31F00893;
-	Sat, 30 May 2026 17:38:13 +0000 (UTC)
+	 MIME-Version; b=bbZ4/E2P+PuVT0SbbB2CRhEpU0qkyIXoa15K+ZhBDD4sSm9t7uVO7iHL6dLkgyU4bGEd9mX0d+nbh726g8TcZny8/KKz8iQKx7Z60dfn7lT9OSFgW0cKrvOOuD1Pzk5e+m+Tay5Ye5lJ5ByxzUdNhIoFKRXh9Fg3j117fxxlD9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDKV3mLb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55AF81F00893;
+	Sat, 30 May 2026 16:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162694;
-	bh=9hBMIk8+5CuMTr4jcsNN+oRP9TsWnbNWsBsCem/+XDA=;
+	s=korg; t=1780159943;
+	bh=te943qwlm1rUytNLaCk6wwqXC9pBwJlLlJVF1kMuimI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kLotwaV47J/uo8J238K/Um1QdiWgKsbLk3WtfkxDfbgjbx7epFQ3hAS7biecpg++r
-	 N9ARbE1+euENeSseroWYC2XGzkZpSQ/myvE6uUjHoFv1sBfoZ0jq1UDDgG8sl9j6UH
-	 Sm3trrLTcRON9sGFFzrt8dJ1mLCkaVNED3RjCDzg=
+	b=nDKV3mLbCz0a+qhj6y2k05v6y6sZSBOxehOpQy104rw+gqMDlcNRI9XCyr5xozHd9
+	 nB/BNMwJxZsCIgVJbr4ianWe9uU6QT6VIcbXTJZD733dH0aMY2BHalFrPNk6VhLFKg
+	 4ZHYh9PvU4Ceb1Fw6BPpHXzfmbjXsUXxCTWVr/hY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	Silvan Jegen <s.jegen@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 013/776] HID: roccat: fix use-after-free in roccat_report_event
+	Zilin Guan <zilin@seu.edu.cn>,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.1 203/969] rbd: fix null-ptr-deref when device_add_disk() fails
 Date: Sat, 30 May 2026 17:55:27 +0200
-Message-ID: <20260530160240.601783756@linuxfoundation.org>
+Message-ID: <20260530160306.083355816@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +63,153 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,suse.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-257942-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-257140-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,seu.edu.cn,gmail.com];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email]
-X-Rspamd-Queue-Id: C7444610572
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E082860E9B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Sevens <bsevens@google.com>
+From: Dawei Feng <dawei.feng@seu.edu.cn>
 
-[ Upstream commit d802d848308b35220f21a8025352f0c0aba15c12 ]
+commit d1fef92e414433ca7b89abf85cb0df42b8d475eb upstream.
 
-roccat_report_event() iterates over the device->readers list without
-holding the readers_lock. This allows a concurrent roccat_release() to
-remove and free a reader while it's still being accessed, leading to a
-use-after-free.
+do_rbd_add() publishes the device with device_add() before calling
+device_add_disk(). If device_add_disk() fails after device_add()
+succeeds, the error path calls rbd_free_disk() directly and then later
+falls through to rbd_dev_device_release(), which calls rbd_free_disk()
+again. This double teardown can leave blk-mq cleanup operating on
+invalid state and trigger a null-ptr-deref in
+__blk_mq_free_map_and_rqs(), reached from blk_mq_free_tag_set().
 
-Protect the readers list traversal with the readers_lock mutex.
+Fix this by following the normal remove ordering: call device_del()
+before rbd_dev_device_release() when device_add_disk() fails after
+device_add(). That keeps the teardown sequence consistent and avoids
+re-entering disk cleanup through the wrong path.
 
-Signed-off-by: Benoît Sevens <bsevens@google.com>
-Reviewed-by: Silvan Jegen <s.jegen@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available.
+
+We reproduced the bug on v7.0 with a real Ceph backend and a QEMU x86_64
+guest booted with KASAN and CONFIG_FAILSLAB enabled. The reproducer
+confines failslab injections to the __add_disk() range and injects
+fail-nth while mapping an RBD image through
+/sys/bus/rbd/add_single_major.
+
+On the unpatched kernel, fail-nth=4 reliably triggered the fault:
+
+	Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+	KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+	CPU: 0 UID: 0 PID: 273 Comm: bash Not tainted 7.0.0-01247-gd60bc1401583 #6 PREEMPT(lazy)
+	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+	RIP: 0010:__blk_mq_free_map_and_rqs+0x8c/0x240
+	Code: 00 00 48 8b 6b 60 41 89 f4 49 c1 e4 03 4c 01 e5 45 85 ed 0f 85 0a 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 e9 48 c1 e9 03 <80> 3c 01 00 0f 85 31 01 00 00 4c 8b 6d 00 4d 85 ed 0f 84 e2 00 00
+	RSP: 0018:ff1100000ab0fac8 EFLAGS: 00000246
+	RAX: dffffc0000000000 RBX: ff1100000c4806a0 RCX: 0000000000000000
+	RDX: 0000000000000002 RSI: 0000000000000000 RDI: ff1100000c4806f4
+	RBP: 0000000000000000 R08: 0000000000000001 R09: ffe21c000189001b
+	R10: ff1100000c4800df R11: ff1100006cf37be0 R12: 0000000000000000
+	R13: 0000000000000000 R14: ff1100000c480700 R15: ff1100000c480004
+	FS:  00007f0fbe8fe740(0000) GS:ff110000e5851000(0000) knlGS:0000000000000000
+	CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+	CR2: 00007fe53473b2e0 CR3: 0000000012eef000 CR4: 00000000007516f0
+	PKRU: 55555554
+	Call Trace:
+	 <TASK>
+	 blk_mq_free_tag_set+0x77/0x460
+	 do_rbd_add+0x1446/0x2b80
+	 ? __pfx_do_rbd_add+0x10/0x10
+	 ? lock_acquire+0x18c/0x300
+	 ? find_held_lock+0x2b/0x80
+	 ? sysfs_file_kobj+0xb6/0x1b0
+	 ? __pfx_sysfs_kf_write+0x10/0x10
+	 kernfs_fop_write_iter+0x2f4/0x4a0
+	 vfs_write+0x98e/0x1000
+	 ? expand_files+0x51f/0x850
+	 ? __pfx_vfs_write+0x10/0x10
+	 ksys_write+0xf2/0x1d0
+	 ? __pfx_ksys_write+0x10/0x10
+	 do_syscall_64+0x115/0x690
+	 entry_SYSCALL_64_after_hwframe+0x77/0x7f
+	RIP: 0033:0x7f0fbea15907
+	Code: 10 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
+	RSP: 002b:00007ffe22346ea8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+	RAX: ffffffffffffffda RBX: 0000000000000058 RCX: 00007f0fbea15907
+	RDX: 0000000000000058 RSI: 0000563ace6c0ef0 RDI: 0000000000000001
+	RBP: 0000563ace6c0ef0 R08: 0000563ace6c0ef0 R09: 6b6435726d694141
+	R10: 5250337279762f78 R11: 0000000000000246 R12: 0000000000000058
+	R13: 00007f0fbeb1c780 R14: ff1100000c480700 R15: ff1100000c480004
+	 </TASK>
+
+With this fix applied, rerunning the reproducer over fail-nth=1..256
+yields no KASAN reports.
+
+[ idryomov: rename err_out_device_del -> err_out_device ]
+
+Cc: stable@vger.kernel.org
+Fixes: 27c97abc30e2 ("rbd: add add_disk() error handling")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-roccat.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/block/rbd.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-roccat.c b/drivers/hid/hid-roccat.c
-index 6da80e442fdd1..420e4335c3e83 100644
---- a/drivers/hid/hid-roccat.c
-+++ b/drivers/hid/hid-roccat.c
-@@ -257,6 +257,7 @@ int roccat_report_event(int minor, u8 const *data)
- 	if (!new_value)
- 		return -ENOMEM;
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -7175,7 +7175,7 @@ static ssize_t do_rbd_add(struct bus_typ
  
-+	mutex_lock(&device->readers_lock);
- 	mutex_lock(&device->cbuf_lock);
+ 	rc = device_add_disk(&rbd_dev->dev, rbd_dev->disk, NULL);
+ 	if (rc)
+-		goto err_out_cleanup_disk;
++		goto err_out_device;
  
- 	report = &device->cbuf[device->cbuf_end];
-@@ -279,6 +280,7 @@ int roccat_report_event(int minor, u8 const *data)
- 	}
+ 	spin_lock(&rbd_dev_list_lock);
+ 	list_add_tail(&rbd_dev->node, &rbd_dev_list);
+@@ -7189,8 +7189,8 @@ out:
+ 	module_put(THIS_MODULE);
+ 	return rc;
  
- 	mutex_unlock(&device->cbuf_lock);
-+	mutex_unlock(&device->readers_lock);
- 
- 	wake_up_interruptible(&device->wait);
- 	return 0;
--- 
-2.53.0
-
+-err_out_cleanup_disk:
+-	rbd_free_disk(rbd_dev);
++err_out_device:
++	device_del(&rbd_dev->dev);
+ err_out_image_lock:
+ 	rbd_dev_image_unlock(rbd_dev);
+ 	rbd_dev_device_release(rbd_dev);
 
 
 
