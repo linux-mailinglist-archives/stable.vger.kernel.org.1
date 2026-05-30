@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-257658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259045-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WKftIXMeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:23 +0200
+	id +Ek4HAwvG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259045-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233DF60FC91
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F67D612358
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53DD430B0DEC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:22:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2B22530080A1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB186334695;
-	Sat, 30 May 2026 17:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D4F33E36A;
+	Sat, 30 May 2026 18:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1yY2Sju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDXlYSL6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8015514A62B;
-	Sat, 30 May 2026 17:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6D726738C;
+	Sat, 30 May 2026 18:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161739; cv=none; b=mzhV14vdULAezwszLnAWSDb07WaAF/41lXsZYSNCYh+BIiI+LaMPms8Qv/w3KGtcZ0uRfgE3KVI43o5qNz7lWBv2SnExFjx/rxAbppHjupyH/PHKnUncMBL8Dz3PcOOaPOTA1efFOX8kt63h/cymZNvjJqxoaHmhHyGssWYzqzM=
+	t=1780166406; cv=none; b=XFtR1whSvhkKRcyEiS6bYnX1G1f0MXYVzXxzQ4RERDR22qVQnp/qk0tQEEfbk+CDe//XmINPR7Q+4IPIb2IK2MVyZ5lErHIWKOa49FBVt83ec5uKC1RjxcgCD8HE6rpnC+whG+YOF6P/rUFqKwzLUQkCqy4SF+FO6cmNLTzXNP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161739; c=relaxed/simple;
-	bh=P8jxsm9TEYkD50Yn6THqOjKqMweK+QErEujhzQRve90=;
+	s=arc-20240116; t=1780166406; c=relaxed/simple;
+	bh=mVIgQVWC8zb0r9vxKGZCK1K4/tmTgcojfnVhnkRus+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d9D8jAUvo87//bqw8iBT0xXYlPDMhDmVgBM2HDoo8Gx6kXARIQQqi1xjmjKLw8nbbjdvKGKHcDRCNBUniA0iPpCXHCAwYM8xGlipVxwBPWdoEeiJhmOfldN/URN46D3PRjzVFI+1dHqYeP2sr+EMed2BwD3kLI/9woCR4zTXZbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1yY2Sju; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DCF1F00893;
-	Sat, 30 May 2026 17:22:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U55N7vrOy7iKzr76+CcCzrw3Hou643RWBzj7ImUuqj6NSnx7WgtPXx0NJWr6wnJvk7fJC/tJTNAu9mMc/VjIhXb2dQ390el7M3tmIHCtreAdpKxIdkMHsZakeFuO4CbpP0nSSu2rTJ4yL8RslCiKspg0jrQyZdt0ayPKTYIQRv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDXlYSL6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241941F00893;
+	Sat, 30 May 2026 18:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161738;
-	bh=tgmIiVHkrKm3Vl7G1z/YdgWw8uL0kH1t7ch4i26I7kU=;
+	s=korg; t=1780166404;
+	bh=W1L6rF5Plhuuh1ARj+Omc6uee35ew3geLBXvAeF/BoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y1yY2SjurqnvrW3VjDxGId8ZjYt7l10e3O88o5uszqdMpD3rzaMbpI81Uuf42DXHz
-	 iQKwnNv2bAfiEeyxExq7NHQhC534jfBUMnWpowDyLzWHJIF4LW3SZJZXZwiNdqYNGO
-	 qkjHfMRffS1DVuJ/stecWNGc1jCANrKWVX21/u/o=
+	b=qDXlYSL6UKIjNfwy7AD5OeHJskMYheyKjmH6UfpOvjFn4NmRn1TyeYwzJDZiedsCe
+	 WoHpsapmA4nSWgoh7wCwOPEZaY/ik5MrOLDcZVCfX/D0wyvlbVn0vDkys90aT0+GhI
+	 ZsbnSiYQHU00TmrLcdXYjZKzma9iig+2lo1e0I6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	John Hawley <warthog9@eaglescrag.net>,
+	Andrea Righi <arighi@nvidia.com>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 713/969] net_sched: sch_hhf: annotate data-races in hhf_dump_stats()
+Subject: [PATCH 5.10 356/589] ktest: Honor empty per-test option overrides
 Date: Sat, 30 May 2026 18:03:57 +0200
-Message-ID: <20260530160320.219638864@linuxfoundation.org>
+Message-ID: <20260530160234.212317627@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +69,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257658-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259045-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 233DF60FC91
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,goodmis.org:email,eaglescrag.net:email,suse.de:email,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8F67D612358
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit a6edf2cd4156b71e07258876b7626692e158f7e8 ]
+[ Upstream commit a2de57a3c8192dcd67cccaff6c341b93748d799b ]
 
-hhf_dump_stats() only runs with RTNL held,
-reading fields that can be changed in qdisc fast path.
+A per-test override can clear an inherited default option by assigning an
+empty value, but __set_test_option() still used option_defined() to decide
+whether a per-test key existed. That turned an empty per-test assignment
+back into "fall back to the default", so tests still could not clear
+inherited settings.
 
-Add READ_ONCE()/WRITE_ONCE() annotations.
+For example:
 
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260421143349.4052215-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  DEFAULTS
+  (...)
+  LOG_FILE = /tmp/ktest-empty-override.log
+  CLEAR_LOG = 1
+  ADD_CONFIG = /tmp/.config
+
+  TEST_START
+  TEST_TYPE = build
+  BUILD_TYPE = nobuild
+  ADD_CONFIG =
+
+This would run the test with ADD_CONFIG[1] = /tmp/.config
+
+Fix by checking whether the per-test key exists before falling back. If it
+does exist but is empty, treat it as unset for that test and stop the
+fallback chain there.
+
+Cc: John Hawley <warthog9@eaglescrag.net>
+Cc: Andrea Righi <arighi@nvidia.com>
+Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Link: https://patch.msgid.link/20260307-ktest-fixes-v1-4-565d412f4925@suse.com
+Fixes: 22c37a9ac49d ("ktest: Allow tests to undefine default options")
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hhf.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ tools/testing/ktest/ktest.pl | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
-index 83fc44f20e31c..67b555c02f2c0 100644
---- a/net/sched/sch_hhf.c
-+++ b/net/sched/sch_hhf.c
-@@ -198,7 +198,8 @@ static struct hh_flow_state *seek_list(const u32 hash,
- 				return NULL;
- 			list_del(&flow->flowchain);
- 			kfree(flow);
--			q->hh_flows_current_cnt--;
-+			WRITE_ONCE(q->hh_flows_current_cnt,
-+				   q->hh_flows_current_cnt - 1);
- 		} else if (flow->hash_id == hash) {
- 			return flow;
- 		}
-@@ -226,7 +227,7 @@ static struct hh_flow_state *alloc_new_hh(struct list_head *head,
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index a5c1871d3c8e7..a54ad3115dc17 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -4195,7 +4195,8 @@ sub __set_test_option {
+ 
+     my $option = "$name\[$i\]";
+ 
+-    if (option_defined($option)) {
++    if (exists($opt{$option})) {
++	return undef if (!option_defined($option));
+ 	return $opt{$option};
+     }
+ 
+@@ -4203,7 +4204,8 @@ sub __set_test_option {
+ 	if ($i >= $test &&
+ 	    $i < $test + $repeat_tests{$test}) {
+ 	    $option = "$name\[$test\]";
+-	    if (option_defined($option)) {
++	    if (exists($opt{$option})) {
++		return undef if (!option_defined($option));
+ 		return $opt{$option};
+ 	    }
  	}
- 
- 	if (q->hh_flows_current_cnt >= q->hh_flows_limit) {
--		q->hh_flows_overlimit++;
-+		WRITE_ONCE(q->hh_flows_overlimit, q->hh_flows_overlimit + 1);
- 		return NULL;
- 	}
- 	/* Create new entry. */
-@@ -234,7 +235,7 @@ static struct hh_flow_state *alloc_new_hh(struct list_head *head,
- 	if (!flow)
- 		return NULL;
- 
--	q->hh_flows_current_cnt++;
-+	WRITE_ONCE(q->hh_flows_current_cnt, q->hh_flows_current_cnt + 1);
- 	INIT_LIST_HEAD(&flow->flowchain);
- 	list_add_tail(&flow->flowchain, head);
- 
-@@ -309,7 +310,7 @@ static enum wdrr_bucket_idx hhf_classify(struct sk_buff *skb, struct Qdisc *sch)
- 			return WDRR_BUCKET_FOR_NON_HH;
- 		flow->hash_id = hash;
- 		flow->hit_timestamp = now;
--		q->hh_flows_total_cnt++;
-+		WRITE_ONCE(q->hh_flows_total_cnt, q->hh_flows_total_cnt + 1);
- 
- 		/* By returning without updating counters in q->hhf_arrays,
- 		 * we implicitly implement "shielding" (see Optimization O1).
-@@ -403,7 +404,7 @@ static int hhf_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return NET_XMIT_SUCCESS;
- 
- 	prev_backlog = sch->qstats.backlog;
--	q->drop_overlimit++;
-+	WRITE_ONCE(q->drop_overlimit, q->drop_overlimit + 1);
- 	/* Return Congestion Notification only if we dropped a packet from this
- 	 * bucket.
- 	 */
-@@ -678,10 +679,10 @@ static int hhf_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- {
- 	struct hhf_sched_data *q = qdisc_priv(sch);
- 	struct tc_hhf_xstats st = {
--		.drop_overlimit = q->drop_overlimit,
--		.hh_overlimit	= q->hh_flows_overlimit,
--		.hh_tot_count	= q->hh_flows_total_cnt,
--		.hh_cur_count	= q->hh_flows_current_cnt,
-+		.drop_overlimit = READ_ONCE(q->drop_overlimit),
-+		.hh_overlimit	= READ_ONCE(q->hh_flows_overlimit),
-+		.hh_tot_count	= READ_ONCE(q->hh_flows_total_cnt),
-+		.hh_cur_count	= READ_ONCE(q->hh_flows_current_cnt),
- 	};
- 
- 	return gnet_stats_copy_app(d, &st, sizeof(st));
 -- 
 2.53.0
 
