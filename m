@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-259230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258665-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EEv5FI0xG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-259230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:53 +0200
+	id GF1FGMgrG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258665-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D017612984
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC75A611BA0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 174AF3006007
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF46B3027949
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CBE242D67;
-	Sat, 30 May 2026 18:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E34284690;
+	Sat, 30 May 2026 18:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aa6AZuV1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o66gsq7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75F9137750;
-	Sat, 30 May 2026 18:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD02233D9E;
+	Sat, 30 May 2026 18:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167046; cv=none; b=UsvX1X8STCmgMbmllXHghkCWxUiaVhp2sTWvkStV+ERq3JF9yHdb6v53hPi0DXhIRa2fGyDSAkmFxKOtaM6HoHY8MjYZPODnS6jHJcu/IPqDNbU8jkS6h80BFI7/j4VLArWUyL3cL5SqN0v0lI6iL0Bi4DASFAqqCyCOG8gBOt8=
+	t=1780165118; cv=none; b=cw5m7yMj8q72SqY+ojPGZBTc33q0Eia9I+5Xa6AvKaMeNCjwzcclzKAMw7432co/OJsl4mwGoMR1emNtf5j4FiNlMNW2N6/ZvkIClaRMSr2ibbmnBzQTwCRWvgt+6MxQA32ifrfr1LZJ54Pn9kdZMDakB6nlJHOZU29MBx+RwuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167046; c=relaxed/simple;
-	bh=NYsMaFVPCVA9GypOU/j9yGajSTYxW0oMXwHiumt6Zv8=;
+	s=arc-20240116; t=1780165118; c=relaxed/simple;
+	bh=o5U7ZoeDz7rHQtVj2KqJvKB1VBXRhH8SVpLQ0GpIrNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1HmfxcHgxo6zy8ghjr23x6SIqXMC8PRpzT6aZYiJeP8KCoPaNH/d/ORf1C7wYElFJn91pT00LbMRNE6R1plQRG9Gu36vHMwtLVUTg4pgJ1kJbpKu+NdpyCV4cEIRsoegYhGPwLY316Q+LwUpjK3KPV7H44mEiTkpepb2d/8DJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aa6AZuV1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDE21F00893;
-	Sat, 30 May 2026 18:50:43 +0000 (UTC)
+	 MIME-Version; b=nDL2ORKl+9zSHaNs+QEJPvoV0t+xhBPN0gRg8a8p3NtZs+VYNMuwzgsj720PcvITzKNwVYnfi/b3UWuoQPax3RYGX+Dxx3WPlTM0wQZi6U6+7m06hj5NgZzFPXdTGmFZjGCRFnQLAikXvCOXeNqEW9ifiESw6roQo++NZkwJ19k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o66gsq7s; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BAA1F00893;
+	Sat, 30 May 2026 18:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167044;
-	bh=GuAm+Pvnmxm/o5G0im2vC9gj/QpwrS7NdrI+zcY2jm0=;
+	s=korg; t=1780165117;
+	bh=EwPdRyKffS2cFlfZ/z8GTROAT6rWazqZPpJILmnVVEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aa6AZuV170UGBb8wXU4TVJoQRxYTgHLmeOvggnrCq+XcZTlVM/r0IzVI/L9XjPJgk
-	 1YyYU+/vuQCbRLxtdKa/RgR+TqN1QOd3qmJWiWdiumoceGmrYex4LM0x+jn6bEVm3g
-	 GyL6x7XF1F3W01mXHd7lZDEX14zKm93VzgqAiz1E=
+	b=o66gsq7sEgddfB3TR4JAgJGxkcu49UX3NGQKbzN0mfOorca+W7ZXKS3/U9v97R5EU
+	 TjEfaE65yx0/ZpS+VKyW7BpLMpmvKsc60/QT6ID50VgN3vq6eBpsROPyL3WnFDaRXO
+	 Cw+G6o2Ew1Ze0U2mKU4HyOXETzWy7HwSDA4wWBIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Abdelkader <osama.abdelkader@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Ian Ray <ian.ray@gehealthcare.com>
-Subject: [PATCH 5.10 548/589] drm/bridge: megachips: remove bridge when irq request fails
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.15 715/776] batman-adv: tt: fix negative tt_buff_len
 Date: Sat, 30 May 2026 18:07:09 +0200
-Message-ID: <20260530160239.074207123@linuxfoundation.org>
+Message-ID: <20260530160258.301970603@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +63,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259230-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,gehealthcare.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258665-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 5D017612984
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email]
+X-Rspamd-Queue-Id: BC75A611BA0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit d45d5c819f2cd0b6b5d76a194a537a5f4aeefecb upstream.
+commit b64963a2ceeb7529310b6cf253a1e540784422f4 upstream.
 
-If devm_request_threaded_irq() fails after drm_bridge_add(), remove the
-bridge before returning.
+batadv_orig_node::tt_buff_len was declared as s16, but the field is never
+intended to hold a negative value. When a value greater than 32767 is
+assigned, it wraps to a negative signed integer.
 
-Keep drm_bridge_add() rather than devm_drm_bridge_add(): registration is
-tied to the STDP4028 device while ge_b850v3_register() may complete from
-either I2C probe; devm would not unwind the bridge if the other client's
-probe fails.
+In batadv_send_other_tt_response(), tt_buff_len is temporarily widened to
+s32. The incorrectly negative s16 value propagates into the s32, causing
+batadv_tt_prepare_tvlv_global_data() to allocate a full sized buffer but
+populates only a small portion of it with the collected changeset. All
+remaining bits are kept uninitialized.
 
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-Fixes: fcfa0ddc18ed ("drm/bridge: Drivers for megachips-stdpxxxx-ge-b850v3-fw (LVDS-DP++)")
-Cc: stable@vger.kernel.org
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Tested-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260430195700.80317-1-osama.abdelkader@gmail.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Using an u16 avoids this type confusion and ensures that no (negative) sign
+extension is performed in batadv_send_other_tt_response().
+
+Cc: stable@kernel.org
+Fixes: a73105b8d4c7 ("batman-adv: improved client announcement mechanism")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c |   16 +++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ net/batman-adv/types.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
-+++ b/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
-@@ -302,7 +302,6 @@ static void ge_b850v3_lvds_remove(void)
- 		goto out;
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -445,7 +445,7 @@ struct batadv_orig_node {
+ 	 * @tt_buff_len: length of the last tt changeset this node received
+ 	 *  from the orig node
+ 	 */
+-	s16 tt_buff_len;
++	u16 tt_buff_len;
  
- 	drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
--
- 	ge_b850v3_lvds_ptr = NULL;
- out:
- 	mutex_unlock(&ge_b850v3_lvds_dev_mutex);
-@@ -312,6 +311,7 @@ static int ge_b850v3_register(void)
- {
- 	struct i2c_client *stdp4028_i2c = ge_b850v3_lvds_ptr->stdp4028_i2c;
- 	struct device *dev = &stdp4028_i2c->dev;
-+	int ret;
- 
- 	/* drm bridge initialization */
- 	ge_b850v3_lvds_ptr->bridge.funcs = &ge_b850v3_lvds_funcs;
-@@ -329,11 +329,15 @@ static int ge_b850v3_register(void)
- 	if (!stdp4028_i2c->irq)
- 		return 0;
- 
--	return devm_request_threaded_irq(&stdp4028_i2c->dev,
--			stdp4028_i2c->irq, NULL,
--			ge_b850v3_lvds_irq_handler,
--			IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
--			"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
-+	ret = devm_request_threaded_irq(&stdp4028_i2c->dev,
-+					stdp4028_i2c->irq, NULL,
-+					ge_b850v3_lvds_irq_handler,
-+					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+					"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
-+	if (ret)
-+		drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
-+
-+	return ret;
- }
- 
- static int stdp4028_ge_b850v3_fw_probe(struct i2c_client *stdp4028_i2c,
+ 	/** @tt_buff_lock: lock that protects tt_buff and tt_buff_len */
+ 	spinlock_t tt_buff_lock;
 
 
 
