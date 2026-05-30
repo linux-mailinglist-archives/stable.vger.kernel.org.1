@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-257135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257105-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIRJF8QWG2rX/AgAu9opvQ
-	(envelope-from <stable+bounces-257135-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:56:36 +0200
+	id uBhZF3wVG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257105-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2D860EA54
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:56:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7421E60E7F6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E684230BC906
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:52:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 76DB0300F634
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73019380FEC;
-	Sat, 30 May 2026 16:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E9F533FE15;
+	Sat, 30 May 2026 16:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jW4E20xv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDOw3xPc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294343242BE;
-	Sat, 30 May 2026 16:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338DA33F5A3;
+	Sat, 30 May 2026 16:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159926; cv=none; b=THyD88RGLxXIvTUBfhUJWTM+9GZbofAInfVH/iG86L5SRWyx2uMDGHwjCAR+krYDhqNLEyE2OxNfgj4yxU2FtW3GY0JYji2FZZf7k+o1Hw4Vz3ORuhjyBJKpcbxon9JNG9TiDbIbe5c0KfpSyHJdoaT7FlwvJFIWTAhqFziZ458=
+	t=1780159815; cv=none; b=E9Y0z8T/M6ldGTOKebHV0qWLwqb1JllZqGQ6hU1kyMHZ7XdEvh/RELzSSuw63W0mZhBrNEhz7jwjrcL6iYUX0piqc1Txo7tidqoA+8oSvPH3DfBIOySrCz7B5HEpiHetyTre6X2T8g0WrhdbLagjzEUEwsabz8NivHgpPNfuR+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159926; c=relaxed/simple;
-	bh=ah3dajg82AHgAwFekjJSYxPudB2M6Oq+HXOrtb+WoF0=;
+	s=arc-20240116; t=1780159815; c=relaxed/simple;
+	bh=kBRQwpCliYrhXhPLlbzoaEnjNcI+e9KQb4q/HcjrM1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p1pyXPqH2Me9HwEOKCspgpbqJbMbORyd9710AOi/rEqmm1TfiLCTOCwfsMxEucyfM3+Wz0Q85zUachvBROyQK8pivw31a3v1ZmJHTJnXsoN0kp8LLpwxoG0/ZiWzO7b7oRrkuXpKuBx+92EAf0xTvp/sFFCiaNbdfzTMGHKi+uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jW4E20xv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4811F00898;
-	Sat, 30 May 2026 16:52:03 +0000 (UTC)
+	 MIME-Version; b=MGFQn7qQ+69K/d+kweFq74KNdyHMNiGi3aeAVJ9USQq/jmJu9saT+6RUNLVYvhvDg2VNElOxaW8f2RBfqmEZgGCzk11iYrAdkYkM2l/JPeElvt0L41ahS0/EFBin/h75zMhRvWm+lRIbn+7lbbOAmWk3lyiqFL5ZUow6333Xzsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDOw3xPc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322F21F00893;
+	Sat, 30 May 2026 16:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159924;
-	bh=161Z4dm5vUjmJ9/30wlz6xE0OgeJ+1w6w2FyH6FB7vA=;
+	s=korg; t=1780159813;
+	bh=DsqcVcbi6CTf274kfTNqYQqC8n2je6xWmAVRGz2noAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jW4E20xvhbxS1J6HlsEYb4qqoDmCQMzsMbO0R53prb400Suh0fOYPdLZ2HlWNSmPg
-	 pmjD2CyTMRmmEfozTCC95xNSCEi29mdzNuYh+mUDi2ir10BMGtj2vPZgIMT7u+BfbF
-	 kQSSDgxhRpbPTsvzkbz13AJpB0YDcBIIiA4gdRoo=
+	b=DDOw3xPccr6YCN7COE5bwqE8u/5fGwv/7jxYVvbip86BQnAqCCGWZggll25/f5v2L
+	 W4xXHLXM+APU7FsxUJxt4RVSnIvd4s1519XLBHDmCiWpg/yw1jDcHBYpEO9II7SlMh
+	 O7dFf675LO03zwg/gJiugGlpX9VhWKuBsWXN8f8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Julius Werner <jwerner@chromium.org>,
-	Samuel Holland <samuel@sholland.org>,
-	Brian Norris <briannorris@chromium.org>,
-	chrome-platform@lists.linux.dev
-Subject: [PATCH 6.1 168/969] firmware: google: framebuffer: Do not mark framebuffer as busy
-Date: Sat, 30 May 2026 17:54:52 +0200
-Message-ID: <20260530160305.149095293@linuxfoundation.org>
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Bin Lan <lanbincn@139.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 169/969] padata: Fix pd UAF once and for all
+Date: Sat, 30 May 2026 17:54:53 +0200
+Message-ID: <20260530160305.174974912@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -69,31 +66,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257135-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-257105-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gondor.apana.org.au,139.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CA2D860EA54
+X-Rspamd-Queue-Id: 7421E60E7F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,48 +99,281 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit f3850d399de3b6142b02315227ef9e772ed0c302 upstream.
+[ Upstream commit 71203f68c7749609d7fc8ae6ad054bdedeb24f91 ]
 
-Remove the flag IORESOURCE_BUSY flag from coreboot's framebuffer
-resource. It prevents simpledrm from successfully requesting the
-range for its own use; resulting in errors such as
+There is a race condition/UAF in padata_reorder that goes back
+to the initial commit.  A reference count is taken at the start
+of the process in padata_do_parallel, and released at the end in
+padata_serial_worker.
 
-[    2.775430] simple-framebuffer simple-framebuffer.0: [drm] could not acquire memory region [mem 0x80000000-0x80407fff flags 0x80000200]
+This reference count is (and only is) required for padata_replace
+to function correctly.  If padata_replace is never called then
+there is no issue.
 
-As with other uses of simple-framebuffer, the simple-framebuffer
-device should only declare it's I/O resources, but not actively use
-them.
+In the function padata_reorder which serves as the core of padata,
+as soon as padata is added to queue->serial.list, and the associated
+spin lock released, that padata may be processed and the reference
+count on pd would go away.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 851b4c14532d ("firmware: coreboot: Add coreboot framebuffer driver")
-Acked-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Acked-by: Julius Werner <jwerner@chromium.org>
-Cc: Samuel Holland <samuel@sholland.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: Brian Norris <briannorris@chromium.org>
-Cc: Julius Werner <jwerner@chromium.org>
-Cc: chrome-platform@lists.linux.dev
-Cc: <stable@vger.kernel.org> # v4.18+
-Link: https://patch.msgid.link/20260217155836.96267-3-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by getting the next padata before the squeue->serial lock
+is released.
+
+In order to make this possible, simplify padata_reorder by only
+calling it once the next padata arrives.
+
+Fixes: 16295bec6398 ("padata: Generic parallelization/serialization interface")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[ Adjust context of padata_find_next(). Replace
+cpumask_next_wrap(cpu, pd->cpumask.pcpu) with
+cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false) in padata_reorder() in
+v6.1 according to dc5bb9b769c9 ("cpumask: deprecate cpumask_next_wrap()") and
+f954a2d37637 ("padata: switch padata_find_next() to using cpumask_next_wrap()")
+. ]
+Signed-off-by: Bin Lan <lanbincn@139.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/google/framebuffer-coreboot.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/padata.h |   3 -
+ kernel/padata.c        | 136 +++++++++++------------------------------
+ 2 files changed, 37 insertions(+), 102 deletions(-)
 
---- a/drivers/firmware/google/framebuffer-coreboot.c
-+++ b/drivers/firmware/google/framebuffer-coreboot.c
-@@ -50,7 +50,7 @@ static int framebuffer_probe(struct core
- 		return -ENODEV;
+diff --git a/include/linux/padata.h b/include/linux/padata.h
+index 495b16b6b4d72..9ca779d7e310e 100644
+--- a/include/linux/padata.h
++++ b/include/linux/padata.h
+@@ -91,7 +91,6 @@ struct padata_cpumask {
+  * @cpu: Next CPU to be processed.
+  * @cpumask: The cpumasks in use for parallel and serial workers.
+  * @reorder_work: work struct for reordering.
+- * @lock: Reorder lock.
+  */
+ struct parallel_data {
+ 	struct padata_shell		*ps;
+@@ -102,8 +101,6 @@ struct parallel_data {
+ 	unsigned int			processed;
+ 	int				cpu;
+ 	struct padata_cpumask		cpumask;
+-	struct work_struct		reorder_work;
+-	spinlock_t                      ____cacheline_aligned lock;
+ };
  
- 	memset(&res, 0, sizeof(res));
--	res.flags = IORESOURCE_MEM | IORESOURCE_BUSY;
-+	res.flags = IORESOURCE_MEM;
- 	res.name = "Coreboot Framebuffer";
- 	res.start = fb->physical_address;
- 	length = PAGE_ALIGN(fb->y_resolution * fb->bytes_per_line);
+ /**
+diff --git a/kernel/padata.c b/kernel/padata.c
+index d49f97abe086f..93e288dc373ee 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -253,20 +253,17 @@ EXPORT_SYMBOL(padata_do_parallel);
+  *   be parallel processed by another cpu and is not yet present in
+  *   the cpu's reorder queue.
+  */
+-static struct padata_priv *padata_find_next(struct parallel_data *pd,
+-					    bool remove_object)
++static struct padata_priv *padata_find_next(struct parallel_data *pd, int cpu,
++					    unsigned int processed)
+ {
+ 	struct padata_priv *padata;
+ 	struct padata_list *reorder;
+-	int cpu = pd->cpu;
+ 
+ 	reorder = per_cpu_ptr(pd->reorder_list, cpu);
+ 
+ 	spin_lock(&reorder->lock);
+-	if (list_empty(&reorder->list)) {
+-		spin_unlock(&reorder->lock);
+-		return NULL;
+-	}
++	if (list_empty(&reorder->list))
++		goto notfound;
+ 
+ 	padata = list_entry(reorder->list.next, struct padata_priv, list);
+ 
+@@ -274,101 +271,52 @@ static struct padata_priv *padata_find_next(struct parallel_data *pd,
+ 	 * Checks the rare case where two or more parallel jobs have hashed to
+ 	 * the same CPU and one of the later ones finishes first.
+ 	 */
+-	if (padata->seq_nr != pd->processed) {
+-		spin_unlock(&reorder->lock);
+-		return NULL;
+-	}
+-
+-	if (remove_object) {
+-		list_del_init(&padata->list);
+-		++pd->processed;
+-		/* When sequence wraps around, reset to the first CPU. */
+-		if (unlikely(pd->processed == 0))
+-			pd->cpu = cpumask_first(pd->cpumask.pcpu);
+-		else
+-			pd->cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
+-	}
++	if (padata->seq_nr != processed)
++		goto notfound;
+ 
++	list_del_init(&padata->list);
+ 	spin_unlock(&reorder->lock);
+ 	return padata;
++
++notfound:
++	pd->processed = processed;
++	pd->cpu = cpu;
++	spin_unlock(&reorder->lock);
++	return NULL;
+ }
+ 
+-static void padata_reorder(struct parallel_data *pd)
++static void padata_reorder(struct padata_priv *padata)
+ {
++	struct parallel_data *pd = padata->pd;
+ 	struct padata_instance *pinst = pd->ps->pinst;
+-	int cb_cpu;
+-	struct padata_priv *padata;
+-	struct padata_serial_queue *squeue;
+-	struct padata_list *reorder;
++	unsigned int processed;
++	int cpu;
+ 
+-	/*
+-	 * We need to ensure that only one cpu can work on dequeueing of
+-	 * the reorder queue the time. Calculating in which percpu reorder
+-	 * queue the next object will arrive takes some time. A spinlock
+-	 * would be highly contended. Also it is not clear in which order
+-	 * the objects arrive to the reorder queues. So a cpu could wait to
+-	 * get the lock just to notice that there is nothing to do at the
+-	 * moment. Therefore we use a trylock and let the holder of the lock
+-	 * care for all the objects enqueued during the holdtime of the lock.
+-	 */
+-	if (!spin_trylock_bh(&pd->lock))
+-		return;
++	processed = pd->processed;
++	cpu = pd->cpu;
+ 
+-	while (1) {
+-		padata = padata_find_next(pd, true);
++	do {
++		struct padata_serial_queue *squeue;
++		int cb_cpu;
+ 
+-		/*
+-		 * If the next object that needs serialization is parallel
+-		 * processed by another cpu and is still on it's way to the
+-		 * cpu's reorder queue, nothing to do for now.
+-		 */
+-		if (!padata)
+-			break;
++		cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
++		processed++;
+ 
+ 		cb_cpu = padata->cb_cpu;
+ 		squeue = per_cpu_ptr(pd->squeue, cb_cpu);
+ 
+ 		spin_lock(&squeue->serial.lock);
+ 		list_add_tail(&padata->list, &squeue->serial.list);
+-		spin_unlock(&squeue->serial.lock);
+-
+ 		queue_work_on(cb_cpu, pinst->serial_wq, &squeue->work);
+-	}
+ 
+-	spin_unlock_bh(&pd->lock);
+-
+-	/*
+-	 * The next object that needs serialization might have arrived to
+-	 * the reorder queues in the meantime.
+-	 *
+-	 * Ensure reorder queue is read after pd->lock is dropped so we see
+-	 * new objects from another task in padata_do_serial.  Pairs with
+-	 * smp_mb in padata_do_serial.
+-	 */
+-	smp_mb();
+-
+-	reorder = per_cpu_ptr(pd->reorder_list, pd->cpu);
+-	if (!list_empty(&reorder->list) && padata_find_next(pd, false)) {
+ 		/*
+-		 * Other context(eg. the padata_serial_worker) can finish the request.
+-		 * To avoid UAF issue, add pd ref here, and put pd ref after reorder_work finish.
++		 * If the next object that needs serialization is parallel
++		 * processed by another cpu and is still on it's way to the
++		 * cpu's reorder queue, end the loop.
+ 		 */
+-		padata_get_pd(pd);
+-		if (!queue_work(pinst->serial_wq, &pd->reorder_work))
+-			padata_put_pd(pd);
+-	}
+-}
+-
+-static void invoke_padata_reorder(struct work_struct *work)
+-{
+-	struct parallel_data *pd;
+-
+-	local_bh_disable();
+-	pd = container_of(work, struct parallel_data, reorder_work);
+-	padata_reorder(pd);
+-	local_bh_enable();
+-	/* Pairs with putting the reorder_work in the serial_wq */
+-	padata_put_pd(pd);
++		padata = padata_find_next(pd, cpu, processed);
++		spin_unlock(&squeue->serial.lock);
++	} while (padata);
+ }
+ 
+ static void padata_serial_worker(struct work_struct *serial_work)
+@@ -419,6 +367,7 @@ void padata_do_serial(struct padata_priv *padata)
+ 	struct padata_list *reorder = per_cpu_ptr(pd->reorder_list, hashed_cpu);
+ 	struct padata_priv *cur;
+ 	struct list_head *pos;
++	bool gotit = true;
+ 
+ 	spin_lock(&reorder->lock);
+ 	/* Sort in ascending order of sequence number. */
+@@ -428,17 +377,14 @@ void padata_do_serial(struct padata_priv *padata)
+ 		if ((signed int)(cur->seq_nr - padata->seq_nr) < 0)
+ 			break;
+ 	}
+-	list_add(&padata->list, pos);
++	if (padata->seq_nr != pd->processed) {
++		gotit = false;
++		list_add(&padata->list, pos);
++	}
+ 	spin_unlock(&reorder->lock);
+ 
+-	/*
+-	 * Ensure the addition to the reorder list is ordered correctly
+-	 * with the trylock of pd->lock in padata_reorder.  Pairs with smp_mb
+-	 * in padata_reorder.
+-	 */
+-	smp_mb();
+-
+-	padata_reorder(pd);
++	if (gotit)
++		padata_reorder(padata);
+ }
+ EXPORT_SYMBOL(padata_do_serial);
+ 
+@@ -625,9 +571,7 @@ static struct parallel_data *padata_alloc_pd(struct padata_shell *ps)
+ 	padata_init_squeues(pd);
+ 	pd->seq_nr = -1;
+ 	refcount_set(&pd->refcnt, 1);
+-	spin_lock_init(&pd->lock);
+ 	pd->cpu = cpumask_first(pd->cpumask.pcpu);
+-	INIT_WORK(&pd->reorder_work, invoke_padata_reorder);
+ 
+ 	return pd;
+ 
+@@ -1137,12 +1081,6 @@ void padata_free_shell(struct padata_shell *ps)
+ 	if (!ps)
+ 		return;
+ 
+-	/*
+-	 * Wait for all _do_serial calls to finish to avoid touching
+-	 * freed pd's and ps's.
+-	 */
+-	synchronize_rcu();
+-
+ 	mutex_lock(&ps->pinst->lock);
+ 	list_del(&ps->list);
+ 	pd = rcu_dereference_protected(ps->pd, 1);
+-- 
+2.53.0
+
 
 
 
