@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-259123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCzeKLkwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259123-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:21 +0200
+	id iFlAJBcqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1E16127F4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2BD611757
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 70099301FB3C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2A4230D8D87
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CE1351C2F;
-	Sat, 30 May 2026 18:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373833B9D80;
+	Sat, 30 May 2026 18:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Se0KujH4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6eloUxE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E3E3469FC;
-	Sat, 30 May 2026 18:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18ABF340A6F;
+	Sat, 30 May 2026 18:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166687; cv=none; b=BjAjs6Eq1f/Qv//dhOJDsDnpS5tdYCbBTwZkhPphsbWXN6l1x7KnnY0HpFBvOkLPR2iDfhFFU6y15EYH/ZwYVbd0tscZCJ1aJmko3fha7sGSlv1GTc5Ko/Iwm63eOeTXzk4wEYQXjYyFWLz1uQSxAS8qNT6d3Fw6M6WTo1UdcvA=
+	t=1780164468; cv=none; b=c4XR/aL4v012O68bjA3j+1BTiGh/Gh3YBZb7llX+zE/8mrnQu9x3pylOnQ86HoSTXrMkzkP6EzwYpSLXKXVpXQQ3m4uTH1CkBacMuowX0VXUG6kuXJYy+qo1ayg+K7CwjsrjqJ1RicRFKRUopEURPpRH9SVLWM1SyTbR4C8nPuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166687; c=relaxed/simple;
-	bh=fWafcRpAIjiDnZ/QQ0nVLKog2nPQzLTuK0X22sBGrq0=;
+	s=arc-20240116; t=1780164468; c=relaxed/simple;
+	bh=eRRxJCi34kJq9ZcF6QH6h6yqLlidDquyXWSmbRv4Blk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p4QTJMb8abaG4oLS4WNViPxk51ErCXAzoe/aWD6hkNS0huNzNouV7UkEYJhzgVzlyqKoXZWI+Josv3RXwcbU+muQtV2uRYUizgGcnSjEEb+Qtca2N+AavET1+3RQ8chjuB4Ksybcw2FhwMf9yZbMVPgScJMJVjBeeVXzZed6PNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Se0KujH4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068A11F00893;
-	Sat, 30 May 2026 18:44:45 +0000 (UTC)
+	 MIME-Version; b=UxY8tosQ412PjxUa0hFJD5aj775VmWeazp0UpOIfLGk3obXMKaoykNAPzGomBF1AaXuEu9Mbot2FWrJXh3w+eUidKA+WysGDKWpK1KR3nT8XDl6wM1f5Pre/ASr+q5Q1nr1w4pUdz3ilHK2IYW7PeMgBuWXelmQWNUeL13J+TDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6eloUxE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416F71F00893;
+	Sat, 30 May 2026 18:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166686;
-	bh=LADOyQutXuTuCS1wMVb/xuaegvqb5DavlH/PJBTJNPw=;
+	s=korg; t=1780164466;
+	bh=F3wQ/i6KGYIW3zWf3zqGw/KGnAn3T7nyA5/+8gNgtFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Se0KujH4hZ5p0RyBl6w2Nv2WB+cL0FiMrluKVURplZCl4KTclQ09H2jxttXWFgv4c
-	 fOzeJF6l6fdcXTDfazSZ2GKMvFz61XIU8kJNLnqWZscHHotDVAFT0yqZOY8dKmCN8q
-	 4SOVur5aWb0E8vd4DbM/mkDRX/8nKI33lgpK7Ads=
+	b=D6eloUxE7lcv7TN455grqiDGouzB5kkzryO2W0v6QzdWyPDHGdchXJaFiesaDiuvp
+	 6KFUDEeiXbCImLhWlVSvx4LwycBB9YeGDZgQaYRbMKn/er7LOYg04arDnNU3dvZNP0
+	 CO52PsDKMxtPBmwv+yf9DBsEbOBVrhCBJs2QpAmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Matt Vollrath <tactii@gmail.com>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 396/589] RDMA/core: Prefer NLA_NUL_STRING
-Date: Sat, 30 May 2026 18:04:37 +0200
-Message-ID: <20260530160235.191643379@linuxfoundation.org>
+Subject: [PATCH 5.15 564/776] e1000e: Unroll PTP in probe error handling
+Date: Sat, 30 May 2026 18:04:38 +0200
+Message-ID: <20260530160254.702369386@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,85 +70,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258473-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259123-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,strlen.de:email]
-X-Rspamd-Queue-Id: 2E1E16127F4
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: EE2BD611757
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Matt Vollrath <tactii@gmail.com>
 
-[ Upstream commit 6ed3d14fc45d3da6025e7fe4a6a09066856698e2 ]
+[ Upstream commit aa3f7fe409350857c25d050482a2eef2cfd69b58 ]
 
-These attributes are evaluated as c-string (passed to strcmp), but
-NLA_STRING doesn't check for the presence of a \0 terminator.
+If probe fails after registering the PTP clock and its delayed work,
+these resources must be released.
 
-Either this needs to switch to nla_strcmp() and needs to adjust printf fmt
-specifier to not use plain %s, or this needs to use NLA_NUL_STRING.
+This was not an issue until a 2016 fix moved the e1000e_ptp_init() call
+before the jump to err_register.
 
-As the code has been this way for long time, it seems to me that userspace
-does include the terminating nul, even tough its not enforced so far, and
-thus NLA_NUL_STRING use is the simpler solution.
-
-Fixes: 30dc5e63d6a5 ("RDMA/core: Add support for iWARP Port Mapper user space service")
-Link: https://patch.msgid.link/r/20260330122742.13315-1-fw@strlen.de
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: aa524b66c5ef ("e1000e: don't modify SYSTIM registers during SIOCSHWTSTAMP ioctl")
+Signed-off-by: Matt Vollrath <tactii@gmail.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-12-686c33c9828d@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/iwpm_msg.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/e1000e/netdev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/core/iwpm_msg.c b/drivers/infiniband/core/iwpm_msg.c
-index 46686990a8271..698ec2e730510 100644
---- a/drivers/infiniband/core/iwpm_msg.c
-+++ b/drivers/infiniband/core/iwpm_msg.c
-@@ -381,9 +381,9 @@ int iwpm_remove_mapping(struct sockaddr_storage *local_addr, u8 nl_client)
- /* netlink attribute policy for the received response to register pid request */
- static const struct nla_policy resp_reg_policy[IWPM_NLA_RREG_PID_MAX] = {
- 	[IWPM_NLA_RREG_PID_SEQ]     = { .type = NLA_U32 },
--	[IWPM_NLA_RREG_IBDEV_NAME]  = { .type = NLA_STRING,
-+	[IWPM_NLA_RREG_IBDEV_NAME]  = { .type = NLA_NUL_STRING,
- 					.len = IWPM_DEVNAME_SIZE - 1 },
--	[IWPM_NLA_RREG_ULIB_NAME]   = { .type = NLA_STRING,
-+	[IWPM_NLA_RREG_ULIB_NAME]   = { .type = NLA_NUL_STRING,
- 					.len = IWPM_ULIBNAME_SIZE - 1 },
- 	[IWPM_NLA_RREG_ULIB_VER]    = { .type = NLA_U16 },
- 	[IWPM_NLA_RREG_PID_ERR]     = { .type = NLA_U16 }
-@@ -698,7 +698,7 @@ int iwpm_remote_info_cb(struct sk_buff *skb, struct netlink_callback *cb)
- 
- /* netlink attribute policy for the received request for mapping info */
- static const struct nla_policy resp_mapinfo_policy[IWPM_NLA_MAPINFO_REQ_MAX] = {
--	[IWPM_NLA_MAPINFO_ULIB_NAME] = { .type = NLA_STRING,
-+	[IWPM_NLA_MAPINFO_ULIB_NAME] = { .type = NLA_NUL_STRING,
- 					.len = IWPM_ULIBNAME_SIZE - 1 },
- 	[IWPM_NLA_MAPINFO_ULIB_VER]  = { .type = NLA_U16 }
- };
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 3216089642648..2154d476f9da6 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -7708,6 +7708,7 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ err_register:
+ 	if (!(adapter->flags & FLAG_HAS_AMT))
+ 		e1000e_release_hw_control(adapter);
++	e1000e_ptp_remove(adapter);
+ err_eeprom:
+ 	if (hw->phy.ops.check_reset_block && !hw->phy.ops.check_reset_block(hw))
+ 		e1000_phy_hw_reset(&adapter->hw);
 -- 
 2.53.0
 
