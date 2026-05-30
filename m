@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODiQJ24tG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:33:18 +0200
+	id oHKMGpAaG2pR/QgAu9opvQ
+	(envelope-from <stable+bounces-257458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18635611F55
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:33:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35B8E60F230
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7B5A430F59EB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:28:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 106B3302AD1B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD0B3C5DA6;
-	Sat, 30 May 2026 18:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3962A34EF07;
+	Sat, 30 May 2026 17:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ef3pO+e3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGoXW69K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DDA3C4542;
-	Sat, 30 May 2026 18:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC6E3148DA;
+	Sat, 30 May 2026 17:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165712; cv=none; b=SxqFfrYfs0VSGswbfklU28KfbLSxNnJrS8bYjG2X00PTyCHPkISDu8gVS8H73Of8yrsBsihfF55zsrMZC4986X8iROCqx94qUOIlEUPQCiJDTZpZq0mjFVI6ALbrJmebQHKsD2M0rq6iUEQ6GKsqgnSo8fblTZOzSv84KNZ61mU=
+	t=1780161068; cv=none; b=goTJ+7pD1RfXg07HqCZCp0/zODbZNr+/mzNWBCwyKIsSF0IH+3WSTgNLTef1xjXQHwWBmNDVycOwmFFszrS5yriFCPx9Gg7DltmDjgUT+ewSjiBjmOvNJaaRdZM1u9vNwIar00TyttQrjl75DWU3r3l5CykxKFFwffwqm2D7a34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165712; c=relaxed/simple;
-	bh=FyIQw+nVC/SRQbcxBXS2U7a01zOPH7LCfNnW+edCjWc=;
+	s=arc-20240116; t=1780161068; c=relaxed/simple;
+	bh=r0uLe61Svk6lg+3C5gD5oQWInXo4HZVM0c1tFSEmw3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRm1FWa3RzcempwcGdAw0V+wPbyLa9S2Xvth/pzWl9i8OFjjSxPpvASOCayq1j1rphu2/0wdWhcbW8JHzxotAu2af4cTksBdT8qHoxKiuuFMhGmTo+H+RCpdYYSTEpmeuZdlIoquKj2pmKFj7IQ8WLrqXItv0/gdEQRrctj5PZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ef3pO+e3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE2D1F00899;
-	Sat, 30 May 2026 18:28:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sJYGehwOrK/QR+RDeeeEM3uQqDinbfq6VP6RxQhjesXvAisXaWscs9nwrydLWma6adGRIP/RYxzTU+Y7ZuI0BdL2vUwvC4LIdp3zrApjqr6hcIJFwTLGkxyyNNXRWEg39aWPSycU/sO/ua+Xk5iEGVQDavNSI7Oa9URAybYHmkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGoXW69K; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFF61F00893;
+	Sat, 30 May 2026 17:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165711;
-	bh=AEK0R/CPkT48G4FVKxZPcDKz2VpWNnzmADb5GyYy4js=;
+	s=korg; t=1780161066;
+	bh=u/yf47YIxIcniCsfFrp+v+ytZN5+KKIgy5EaodlJvT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ef3pO+e3RG8B11KSkheuEHvlHPDwsXUgk2xdCRmMeG0+y1DSCnVmtRc9GVGM2l4Pm
-	 e/kz47qF7Z254aUMOP5Rf0NloNMVq7oWVu+d3C1MOeAU1SIOo7zndzYGUEnRc+2ts1
-	 sFqtQwzabrbtAbmbNhjbniYBv1UVrKBZUs7+BKO4=
+	b=XGoXW69KR0SmPEUoguJ+FpavQRiESU3vzCzghbMx+xqb4M57J+pfrDZigoLj9gqBE
+	 VEwTCsAgDlIeGxJl3F1X0FqGX06T97AXw3ZMnP/5oul08mS4CMSi0fufXQHMDeCuxq
+	 qgkVGLZH3ESRKqrf2Q/krUcRZPT93xa213/ZkUwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.10 159/589] ext2: reject inodes with zero i_nlink and valid mode in ext2_iget()
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 516/969] ALSA: core: Validate compress device numbers without dynamic minors
 Date: Sat, 30 May 2026 18:00:40 +0200
-Message-ID: <20260530160228.963765471@linuxfoundation.org>
+Message-ID: <20260530160314.590904343@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +63,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [7.84 / 15.00];
-	URIBL_BLACK(7.50)[linuxtesting.org:url];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258839-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	RCVD_COUNT_THREE(0.00)[4];
-	GREYLIST(0.00)[pass,meta];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_SPAM(0.00)[0.954];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-257458-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,altlinux.org:email,msgid.link:url,linuxtesting.org:url]
-X-Rspamd-Queue-Id: 18635611F55
-X-Rspamd-Action: add header
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 35B8E60F230
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 25947cc5b2374cd5bf627fe3141496444260d04f upstream.
+[ Upstream commit 796e119e9b14763be905ad0d023c71a14bc2e931 ]
 
-ext2_iget() already rejects inodes with i_nlink == 0 when i_mode is
-zero or i_dtime is set, treating them as deleted. However, the case of
-i_nlink == 0 with a non-zero mode and zero dtime slips through. Since
-ext2 has no orphan list, such a combination can only result from
-filesystem corruption - a legitimate inode deletion always sets either
-i_dtime or clears i_mode before freeing the inode.
+Without CONFIG_SND_DYNAMIC_MINORS, ALSA reserves only two fixed minors
+for compress devices on each card: comprD0 and comprD1.
 
-A crafted image can exploit this gap to present such an inode to the
-VFS, which then triggers WARN_ON inside drop_nlink() (fs/inode.c) via
-ext2_unlink(), ext2_rename() and ext2_rmdir():
+snd_find_free_minor() currently computes the compress minor as
+type + dev without validating dev first, so device numbers greater than
+1 spill into the HWDEP minor range instead of failing registration.
 
-WARNING: CPU: 3 PID: 609 at fs/inode.c:336 drop_nlink+0xad/0xd0 fs/inode.c:336
-CPU: 3 UID: 0 PID: 609 Comm: syz-executor Not tainted 6.12.77+ #1
-Call Trace:
- <TASK>
- inode_dec_link_count include/linux/fs.h:2518 [inline]
- ext2_unlink+0x26c/0x300 fs/ext2/namei.c:295
- vfs_unlink+0x2fc/0x9b0 fs/namei.c:4477
- do_unlinkat+0x53e/0x730 fs/namei.c:4541
- __x64_sys_unlink+0xc6/0x110 fs/namei.c:4587
- do_syscall_64+0xf5/0x220 arch/x86/entry/common.c:78
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+ASoC passes rtd->id to snd_compress_new(), so this can happen on real
+non-dynamic-minor builds.
 
-WARNING: CPU: 0 PID: 646 at fs/inode.c:336 drop_nlink+0xad/0xd0 fs/inode.c:336
-CPU: 0 UID: 0 PID: 646 Comm: syz.0.17 Not tainted 6.12.77+ #1
-Call Trace:
- <TASK>
- inode_dec_link_count include/linux/fs.h:2518 [inline]
- ext2_rename+0x35e/0x850 fs/ext2/namei.c:374
- vfs_rename+0xf2f/0x2060 fs/namei.c:5021
- do_renameat2+0xbe2/0xd50 fs/namei.c:5178
- __x64_sys_rename+0x7e/0xa0 fs/namei.c:5223
- do_syscall_64+0xf5/0x220 arch/x86/entry/common.c:78
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+Add a dedicated fixed-minor check for SNDRV_DEVICE_TYPE_COMPRESS in
+snd_find_free_minor() and reject out-of-range device numbers with
+-EINVAL before constructing the minor.
 
-WARNING: CPU: 0 PID: 634 at fs/inode.c:336 drop_nlink+0xad/0xd0 fs/inode.c:336
-CPU: 0 UID: 0 PID: 634 Comm: syz-executor Not tainted 6.12.77+ #1
-Call Trace:
- <TASK>
- inode_dec_link_count include/linux/fs.h:2518 [inline]
- ext2_rmdir+0xca/0x110 fs/ext2/namei.c:311
- vfs_rmdir+0x204/0x690 fs/namei.c:4348
- do_rmdir+0x372/0x3e0 fs/namei.c:4407
- __x64_sys_unlinkat+0xf0/0x130 fs/namei.c:4577
- do_syscall_64+0xf5/0x220 arch/x86/entry/common.c:78
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+Also remove the stale TODO in compress_offload.c that still claims
+multiple compress nodes are missing.
 
-Extend the existing i_nlink == 0 check to also catch this case,
-reporting the corruption via ext2_error() and returning -EFSCORRUPTED.
-This rejects the inode at load time and prevents it from reaching any
-of the namei.c paths.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://patch.msgid.link/20260404152011.2590197-1-kovalev@altlinux.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3eafc959b32f ("ALSA: core: add support for compressed devices")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260325-alsa-compress-static-minors-v1-1-0628573bee1c@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext2/inode.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ sound/core/compress_offload.c | 7 -------
+ sound/core/sound.c            | 7 +++++++
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
---- a/fs/ext2/inode.c
-+++ b/fs/ext2/inode.c
-@@ -1443,9 +1443,17 @@ struct inode *ext2_iget (struct super_bl
- 	 * the test is that same one that e2fsck uses
- 	 * NeilBrown 1999oct15
- 	 */
--	if (inode->i_nlink == 0 && (inode->i_mode == 0 || ei->i_dtime)) {
--		/* this inode is deleted */
--		ret = -ESTALE;
-+	if (inode->i_nlink == 0) {
-+		if (inode->i_mode == 0 || ei->i_dtime) {
-+			/* this inode is deleted */
-+			ret = -ESTALE;
-+		} else {
-+			ext2_error(sb, __func__,
-+				   "inode %lu has zero i_nlink with mode 0%o and no dtime, "
-+				   "filesystem may be corrupt",
-+				   ino, inode->i_mode);
-+			ret = -EFSCORRUPTED;
-+		}
- 		goto bad_inode;
- 	}
- 	inode->i_blocks = le32_to_cpu(raw_inode->i_blocks);
+diff --git a/sound/core/compress_offload.c b/sound/core/compress_offload.c
+index 243acad89fd3b..f1140a6bc996d 100644
+--- a/sound/core/compress_offload.c
++++ b/sound/core/compress_offload.c
+@@ -40,13 +40,6 @@
+ #define COMPR_CODEC_CAPS_OVERFLOW
+ #endif
+ 
+-/* TODO:
+- * - add substream support for multiple devices in case of
+- *	SND_DYNAMIC_MINORS is not used
+- * - Multiple node representation
+- *	driver should be able to register multiple nodes
+- */
+-
+ struct snd_compr_file {
+ 	unsigned long caps;
+ 	struct snd_compr_stream stream;
+diff --git a/sound/core/sound.c b/sound/core/sound.c
+index df5571d986295..f3bb0adf37cce 100644
+--- a/sound/core/sound.c
++++ b/sound/core/sound.c
+@@ -219,9 +219,16 @@ static int snd_find_free_minor(int type, struct snd_card *card, int dev)
+ 	case SNDRV_DEVICE_TYPE_RAWMIDI:
+ 	case SNDRV_DEVICE_TYPE_PCM_PLAYBACK:
+ 	case SNDRV_DEVICE_TYPE_PCM_CAPTURE:
++		if (snd_BUG_ON(!card))
++			return -EINVAL;
++		minor = SNDRV_MINOR(card->number, type + dev);
++		break;
+ 	case SNDRV_DEVICE_TYPE_COMPRESS:
+ 		if (snd_BUG_ON(!card))
+ 			return -EINVAL;
++		if (dev < 0 ||
++		    dev >= SNDRV_MINOR_HWDEP - SNDRV_MINOR_COMPRESS)
++			return -EINVAL;
+ 		minor = SNDRV_MINOR(card->number, type + dev);
+ 		break;
+ 	default:
+-- 
+2.53.0
+
 
 
 
