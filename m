@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257779-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGLjJuAoG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258545-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:52 +0200
+	id SPFnDq8eG2rC/QgAu9opvQ
+	(envelope-from <stable+bounces-257779-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17BAA61146A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB5B60FD29
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6587830316F1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 84EDE3008621
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114673AB26B;
-	Sat, 30 May 2026 18:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015CF30148B;
+	Sat, 30 May 2026 17:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGe08dGR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmAv455p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3C131F98D;
-	Sat, 30 May 2026 18:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2FC3148DA;
+	Sat, 30 May 2026 17:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164708; cv=none; b=KTuDHZrOtXJqDKEtkFLBLwzd3llC//euEFfh+Ay3K4hljcpG87xNrMek6OR6nZrX8Mq7StrEJdwXzBIqx+saMnxrBO4sytwjrt9I9qUkBTgsrviJ0D1L8yYADoUTmr2MhT/RFVi6fSTztXuRI8o2YNQYB3FYP0YMAN5toEYwGDw=
+	t=1780162143; cv=none; b=hJ94bDr+/jMT0I5e3OhnJYo/ExTJyoq1F7B5yHd3h44o7NhtZRfow7cgggpd68oMwac9wO8XKDkthzTBismeUHevr8ork8k47J+f3d3yRTJcXbl7s7Qj2rdV5RKcREEDhWf4e4pH3ItnpDe0MJ/xrrOEiui7vqpt+YGL2CwyzV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164708; c=relaxed/simple;
-	bh=W+a6uX8yfsW1EZJr5ADf7xe3Rp5BVzxAwC9voXKM3/I=;
+	s=arc-20240116; t=1780162143; c=relaxed/simple;
+	bh=b27T23S4cDYQ+UPEOvU0YRx83tZBCcwZrPlHzjXPrdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ql5mvfzQWRWxh5usw+lbwsKv6nY9kfINE90jEY99yOPfj916mEPpHnJGtJfOohfxm+F587eYpFzMF9jLHYIT8BArpIK/cFZ3E7bWtsoh/emqbmvXNtSSp4iWcx5g/OW6Fl8gRuAKHiyYSl3Er9bFLwTMMhV0EG7md4lFfBfCc+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGe08dGR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E8E1F00893;
-	Sat, 30 May 2026 18:11:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ovtzYajV0Hau1bonEGln97/xG+g1gYJ83vamY/W0Nul/i/rr8wy4B62KpgiswfQ+MpepoSjn0aZZSbrXce1Ze9RA1cOSJuJ1lO4b0gsEETDqM3REtQzmlLfDXjT7LyBGD/chdKtrx/fA2VqKCEwrK1aa5wfslwv77avNen9aDg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmAv455p; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E754E1F00893;
+	Sat, 30 May 2026 17:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164707;
-	bh=E/ad5hDs0Dy+SVJ7SVVNgvqQo7cnfBAkPp/YF9o9XLg=;
+	s=korg; t=1780162142;
+	bh=Uf01Jm+vwyOPZ/UfbLe1JaVtMlqhkGuGu8Tgxbv4YAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BGe08dGRtVeNJGdRDGgtuADyquQOCcq8bANemjgrwm8BQUJ86+h1L0UgCkcX8NA+m
-	 uReMPop6j5fp9Uw9Jcsz63IyRWbF9Q3CNX54t/ljtgm5jWs4CYI2rdnWbUHlplDjLT
-	 FImc7lXSdd1+tEeWJq1WsD+JkfCBKOOHm0t9bFVM=
+	b=XmAv455pMxNPYTo0KR/AiHa/UlH3V7FW5qZgJtZ1FEKOxSO3GSLLBf/Uw5VHBtJ9l
+	 trw8GLIdVn9T2U4uyCcjdr2rWxxbdoArZY3OXphgjVg+WDLA44aOcncnyDVwGwzAwW
+	 c6x5C7drqU3uoYL34jhIoln2k5YhGPsEQWLlJxoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oldherl Oh <me@oldherl.one>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 636/776] ALSA: hda/conexant: fix some typos
+	Gyeyoung Baek <gye976@gmail.com>,
+	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>
+Subject: [PATCH 6.1 826/969] drm/panfrost: Fix wait_bo ioctl leaking positive return from dma_resv_wait_timeout()
 Date: Sat, 30 May 2026 18:05:50 +0200
-Message-ID: <20260530160256.396853352@linuxfoundation.org>
+Message-ID: <20260530160323.452290195@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +64,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,collabora.com,arm.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258545-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_FROM(0.00)[bounces-257779-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email]
-X-Rspamd-Queue-Id: 17BAA61146A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email]
+X-Rspamd-Queue-Id: 3DB5B60FD29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oldherl Oh <me@oldherl.one>
+From: Gyeyoung Baek <gye976@gmail.com>
 
-[ Upstream commit 73253f2fd1d0a44708735c842e37163712e3f03b ]
+commit 459d75523b71c0ec254d153d8850d0b7008af396 upstream.
 
-Fix some typos in patch_conexant.c
+dma_resv_wait_timeout() returns a positive 'remaining jiffies' value
+on success, 0 on timeout, and -errno on failure.
 
-Signed-off-by: Oldherl Oh <me@oldherl.one>
-Link: https://patch.msgid.link/20240930084132.3373750-1-me@oldherl.one
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: b0e2333a2311 ("ALSA: hda/conexant: Fix missing error check for jack detection")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+panfrost_ioctl_wait_bo() returns this 'long' result from an int-typed
+ioctl handler, so positive values reach userspace as bogus errors.
+Explicitly set ret to 0 on the success path.
+
+Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+Reviewed-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Link: https://patch.msgid.link/fe33f82fded7be1c18e2e0eb2db451d5a738cf39.1776581974.git.gye976@gmail.com
+Signed-off-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_conexant.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/panfrost/panfrost_drv.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index e5837e47aa227..394932123b51d 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -166,18 +166,18 @@ static void cxt_init_gpio_led(struct hda_codec *codec)
+--- a/drivers/gpu/drm/panfrost/panfrost_drv.c
++++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
+@@ -330,6 +330,8 @@ panfrost_ioctl_wait_bo(struct drm_device
+ 				    true, timeout);
+ 	if (!ret)
+ 		ret = timeout ? -ETIMEDOUT : -EBUSY;
++	else if (ret > 0)
++		ret = 0;
  
- static void cx_fixup_headset_recog(struct hda_codec *codec)
- {
--	unsigned int mic_persent;
-+	unsigned int mic_present;
+ 	drm_gem_object_put(gem_obj);
  
- 	/* fix some headset type recognize fail issue, such as EDIFIER headset */
--	/* set micbiasd output current comparator threshold from 66% to 55%. */
-+	/* set micbias output current comparator threshold from 66% to 55%. */
- 	snd_hda_codec_write(codec, 0x1c, 0, 0x320, 0x010);
--	/* set OFF voltage for DFET from -1.2V to -0.8V, set headset micbias registor
-+	/* set OFF voltage for DFET from -1.2V to -0.8V, set headset micbias register
- 	 * value adjustment trim from 2.2K ohms to 2.0K ohms.
- 	 */
- 	snd_hda_codec_write(codec, 0x1c, 0, 0x3b0, 0xe10);
- 	/* fix reboot headset type recognize fail issue */
--	mic_persent = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
--	if (mic_persent & AC_PINSENSE_PRESENCE)
-+	mic_present = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
-+	if (mic_present & AC_PINSENSE_PRESENCE)
- 		/* enable headset mic VREF */
- 		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24);
- 	else
-@@ -247,9 +247,9 @@ static void cx_update_headset_mic_vref(struct hda_codec *codec, struct hda_jack_
- {
- 	unsigned int mic_present;
- 
--	/* In cx8070 and sn6140, the node 16 can only be config to headphone or disabled,
--	 * the node 19 can only be config to microphone or disabled.
--	 * Check hp&mic tag to process headset pulgin&plugout.
-+	/* In cx8070 and sn6140, the node 16 can only be configured to headphone or disabled,
-+	 * the node 19 can only be configured to microphone or disabled.
-+	 * Check hp&mic tag to process headset plugin & plugout.
- 	 */
- 	mic_present = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
- 	if (!(mic_present & AC_PINSENSE_PRESENCE)) /* mic plugout */
--- 
-2.53.0
-
 
 
 
