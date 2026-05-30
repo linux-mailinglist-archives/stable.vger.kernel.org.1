@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6ISIBSsiG2oN/ggAu9opvQ
-	(envelope-from <stable+bounces-258068-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:15 +0200
+	id ADhxOOIZG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74496104F7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 719AF60F03F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 17D773004DEC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:45:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3080A3102756
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240FB3B1EC0;
-	Sat, 30 May 2026 17:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD1E9366567;
+	Sat, 30 May 2026 17:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBLBc440"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="teEDH9OM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F7E3AB482;
-	Sat, 30 May 2026 17:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FB926F288;
+	Sat, 30 May 2026 17:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163112; cv=none; b=oOkglKKe54xjtW6RW7gxpvDI+KWzGdGDB9hkBDc8HI10X0M9sfmqq7R2VpiYfuyIcz/nIpBIYaoklH3MtYMo6XJeaha6IWma0vvEi/d579iHJvV19RJxDQdxOI0EER2+ng6KNAOGY5LLDnenW7ia6IOp4t/NedGjkeSen+JHDf4=
+	t=1780160472; cv=none; b=fzKdLJ5lk+Yt5eDPLgor2fF+mpAqzSez236qs7JHK6PJ4xkAfHQwZdgy7EK8R59X1o+rW2UROnpnCl0fqUJM8ehc+9lXdFEJIqVa4IpGyqPNUb/IELHvUD7FTSt/yinkg1xczaJ8OPFPsJwzeZPRTWphDgyFxX8C6ltvxNNWotw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163112; c=relaxed/simple;
-	bh=z89j2dPO+Khgu65faqG++GTHmMa4yCW4AnhajwEmcUM=;
+	s=arc-20240116; t=1780160472; c=relaxed/simple;
+	bh=eKdOn43tAY1OSF3B9lntUVAgbLbknoxleMN+zYHX6qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgRPj2025oMVPhVPZ0YI8RolJ3NkZ8gzgnDIZCEo2XOTMfIU3dMsozhJ8mzoNkvLaQiXPXtJ8MEiT395XLz5YvLiiWWh5WhDrh77isRTt6+7MuOjNiFiKo8we4QN+PrbqNipeSzEm90pJNpnI7fvjJ8vMxRrFrMbEzc302je+mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBLBc440; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4595C1F00893;
-	Sat, 30 May 2026 17:45:11 +0000 (UTC)
+	 MIME-Version; b=K2mTskwwU8vUGK8z7dtIpkqIAXBUrQ5nEwvENzQe5jFRUiL6xUkz2DZHiE6wZbHLWcKKERGuqD4OZzbrkqo1JXeRAPqr3KgfKgEx2VyAdU4a3wSmN4ITDa4WcTe6VKjAdkim3xHvS6T5kWjKpLV2M/zwX/Kv5Twj+y7xaMMbY+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=teEDH9OM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6641F00893;
+	Sat, 30 May 2026 17:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163111;
-	bh=7zUL2vboSU8MrOqCcOE31/p4DIPpknH3jB46fk99vIA=;
+	s=korg; t=1780160471;
+	bh=r9Tg3Lw1F2wbgxteTqA4ZYqO32dV9c6+/6NUZBcNcEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nBLBc440ISsHZJcmrah4HBck8CifSgxXUg74SsI9uHagq9I6MUsWYBrGBJmWMa4lW
-	 sAXwd24F0H4R0p4CD5VCg4gKNLjWWA9o0PkGTrgmaCHo4c/G2xSoii3u0EglR+5M+6
-	 6a0Dh/YXBI2VqkvW9dbZu23mxteJQZ5vKWEDGKzI=
+	b=teEDH9OMMcakzTd1gQNAKWW7ve6b54RkEAsR1MEzzs/Las588SmU8yk+HcNZBr4sk
+	 axVbIBJZwqNflopb2GXb8KfsnT17gKUZERuYAy3N4rh6fnLX46p98DIjEiXnLzXJap
+	 VCVxuvF8rtB7HVvPAVdvo97jfT5yx18hUpPkx4sI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Chang <liaochang1@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 157/776] cpufreq: governor: Free dbs_data directly when gov->init() fails
-Date: Sat, 30 May 2026 17:57:51 +0200
-Message-ID: <20260530160244.528651669@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 348/969] btrfs: fix double free in create_space_info() error path
+Date: Sat, 30 May 2026 17:57:52 +0200
+Message-ID: <20260530160309.966774418@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,77 +66,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258068-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257286-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,gmail.com];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,intel.com:email,linaro.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C74496104F7
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 719AF60F03F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chang <liaochang1@huawei.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit 916f13884042f615cfbfc0b42cc68dadee826f2a ]
+commit 3f487be81292702a59ea9dbc4088b3360a50e837 upstream.
 
-Due to the kobject embedded in the dbs_data doest not has a release()
-method yet, it needs to use kfree() to free dbs_data directly when
-governor fails to allocate the tunner field of dbs_data.
+When kobject_init_and_add() fails, the call chain is:
 
-Signed-off-by: Liao Chang <liaochang1@huawei.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 6dcf9d0064ce ("cpufreq: governor: fix double free in cpufreq_dbs_governor_init() error path")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+create_space_info()
+-> btrfs_sysfs_add_space_info_type()
+-> kobject_init_and_add()
+-> failure
+-> kobject_put(&space_info->kobj)
+-> space_info_release()
+-> kfree(space_info)
+
+Then control returns to create_space_info():
+
+btrfs_sysfs_add_space_info_type() returns error
+-> goto out_free
+-> kfree(space_info)
+
+This causes a double free.
+
+Keep the direct kfree(space_info) for the earlier failure path, but
+after btrfs_sysfs_add_space_info_type() has called kobject_put(), let
+the kobject release callback handle the cleanup.
+
+Fixes: a11224a016d6d ("btrfs: fix memory leaks in create_space_info() error paths")
+CC: stable@vger.kernel.org # 6.19+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq_governor.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/space-info.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpufreq/cpufreq_governor.c
-+++ b/drivers/cpufreq/cpufreq_governor.c
-@@ -440,7 +440,7 @@ int cpufreq_dbs_governor_init(struct cpu
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -290,7 +290,7 @@ static int create_space_info(struct btrf
  
- 	ret = gov->init(dbs_data);
+ 	ret = btrfs_sysfs_add_space_info_type(info, space_info);
  	if (ret)
--		goto free_policy_dbs_info;
-+		goto free_dbs_data;
+-		goto out_free;
++		return ret;
  
- 	/*
- 	 * The sampling interval should not be less than the transition latency
-@@ -475,6 +475,8 @@ int cpufreq_dbs_governor_init(struct cpu
- 	if (!have_governor_per_policy())
- 		gov->gdbs_data = NULL;
- 	gov->exit(dbs_data);
-+
-+free_dbs_data:
- 	kfree(dbs_data);
- 
- free_policy_dbs_info:
+ 	list_add(&space_info->list, &info->space_info);
+ 	if (flags & BTRFS_BLOCK_GROUP_DATA)
 
 
 
