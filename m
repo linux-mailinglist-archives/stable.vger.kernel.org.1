@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258977-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GF65FvYoG2rg/ggAu9opvQ
-	(envelope-from <stable+bounces-258403-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:14 +0200
+	id WLcIJDYvG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258977-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35C66114AA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 246376123C5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90EB530FECB8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:03:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F04963059302
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9132129B78B;
-	Sat, 30 May 2026 18:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D2133E36A;
+	Sat, 30 May 2026 18:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLhq4NcC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="da9J51C4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72ED23AB26B;
-	Sat, 30 May 2026 18:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FBE3546F6;
+	Sat, 30 May 2026 18:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164233; cv=none; b=kWyFHezmOzC21O3y9zmRAIwHs6v1e9oZqA4RQW8wY3M4YD/CdQTmudYv8aaBq9UhxvD50AusmVYLEIjoelWsjOUzUi1pG28ZaWiZKPDnWH4V6ymqXAoLVLcDJDEDM0meX8hyONqpXO7lKwo1ytvmZuzhVznT9jwUuvPCkonYygI=
+	t=1780166180; cv=none; b=SXN0HCvv73NmyEUYPBgxR9UdnDOS6EhqkpsdBj8TyyUH/GU1vH3mdGex4C2Xtsl8dMC56bJfYWCSdfH7zuYTsp+LtPmEb08lAAi25nXYDRKCPna68KQepjsBRwQobPp9wTMdx6QJF1DFfJT6p7qvW+/o2aHdPY14UO+CdUvRnp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164233; c=relaxed/simple;
-	bh=jsDbqPh+lKro2Wg7NRaa1/eVQIqSJ7q8lZ1QHSqynxg=;
+	s=arc-20240116; t=1780166180; c=relaxed/simple;
+	bh=vvOpxwn72xueN0A0V4KqAvEP9Buk7iNT3HN++L5pwoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rIpCRSnFqk/rYjl4EWzThYmhs6J96O7ZhMrrxYDbLeZgc0FSjkpTdzmUxLUBVrGnG09NOevm1uYKu/TQ3PGC/RVnF69gd2ZSOK4Vksne9dupuHK8AOYl5O8SvnGtqTKWLbe8bsUrNCrn/6D2JiKlnd+h5fy6PZ35wlPeGhefqmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLhq4NcC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73381F00893;
-	Sat, 30 May 2026 18:03:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m+arbGbBLDoL8BVQ4W4DQBORzHvwRaCf6jIWB9rCv1tSwgEBpLxJKVF47T6izjnWNuwhbar7bUaHs1t2A6xQFrLPiQLB1FFXmk2TsihigRoUwRV5QpVJ/A4UeygDnLK7vfWw4S0mfgnRfSs4XCHX1BGx6jMKFdCm4UsM3iXMXYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=da9J51C4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6781F00893;
+	Sat, 30 May 2026 18:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164232;
-	bh=yX82XhA6UbnjlNPjyd3wd6TAbjGnl8+9C/7fKP133xs=;
+	s=korg; t=1780166179;
+	bh=gydkaJ05FDCM0EmAst5+RK755V2j7fEXQQQd4eHeQF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JLhq4NcCJQoo8yXuuxedaMRTBk5HEBWB67C66IR1C795YqdO4e/4FVAUnyFrQCmZ5
-	 I7oZGChsp7VnS7RAl2vkx0RqNUjIlkR9mjDEyIA5iudX/kmxLBAmW+HfY8YobpfzxQ
-	 a32/dUUX3qdsUFYTTISNovUTJ9XLdsTAAhZnEKCc=
+	b=da9J51C4Drm+tm3uq5+8frMM2hvaspFG0P4xxnq6aft5KJDy5bIZxfHH2fPsqclpc
+	 LcZzEyTq2xAZSgXx2C+Fes3/psj05PZac//ilkynqh8htIEsFIjVbRGRiduYrIJ2KE
+	 LJeo9DKyAO9WtOtsZxEnpuCDZtR0YWp0dnW0fSiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 464/776] ASoC: fsl_easrc: Check the variable range in fsl_easrc_iec958_put_bits()
+Subject: [PATCH 5.10 297/589] irqchip/irq-pic32-evic: Address warning related to wrong printf() formatter
 Date: Sat, 30 May 2026 18:02:58 +0200
-Message-ID: <20260530160252.349346072@linuxfoundation.org>
+Message-ID: <20260530160232.773326773@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258403-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258977-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: A35C66114AA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 246376123C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 00541b86fb578d4949cfdd6aff1f82d43fcf07af ]
+[ Upstream commit 86be659415b0ddefebc3120e309091aa215a9064 ]
 
-Add check of input value's range in fsl_easrc_iec958_put_bits(),
-otherwise the wrong value may be written from user space.
+This driver is currently only build on 32 bit MIPS systems. When building
+it on x86_64, the following warning occurs:
 
-Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20260401094226.2900532-10-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+    drivers/irqchip/irq-pic32-evic.c: In function ‘pic32_ext_irq_of_init’:
+    ./include/linux/kern_levels.h:5:25: error: format ‘%d’ expects argument of type
+     ‘int’, but argument 2 has type ‘long unsigned int’ [-Werror=format=]
+
+Update the printf() formatter in preparation for allowing this driver to
+be compiled on all architectures.
+
+Fixes: aaa8666ada780 ("IRQCHIP: irq-pic32-evic: Add support for PIC32 interrupt controller")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260222-irqchip-pic32-v1-1-37f50d1f14af@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_easrc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/irqchip/irq-pic32-evic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index 792884006f6bc..c144f99927705 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -54,6 +54,9 @@ static int fsl_easrc_iec958_put_bits(struct snd_kcontrol *kcontrol,
- 	unsigned int regval = ucontrol->value.integer.value[0];
- 	int ret;
+diff --git a/drivers/irqchip/irq-pic32-evic.c b/drivers/irqchip/irq-pic32-evic.c
+index 34c4b4ffacd15..5c40ec5e55f1d 100644
+--- a/drivers/irqchip/irq-pic32-evic.c
++++ b/drivers/irqchip/irq-pic32-evic.c
+@@ -199,7 +199,7 @@ static void __init pic32_ext_irq_of_init(struct irq_domain *domain)
  
-+	if (regval < EASRC_WIDTH_16_BIT || regval > EASRC_WIDTH_24_BIT)
-+		return -EINVAL;
-+
- 	ret = (easrc_priv->bps_iec958[mc->regbase] != regval);
- 
- 	easrc_priv->bps_iec958[mc->regbase] = regval;
+ 	of_property_for_each_u32(node, pname, prop, p, hwirq) {
+ 		if (i >= ARRAY_SIZE(priv->ext_irqs)) {
+-			pr_warn("More than %d external irq, skip rest\n",
++			pr_warn("More than %zu external irq, skip rest\n",
+ 				ARRAY_SIZE(priv->ext_irqs));
+ 			break;
+ 		}
 -- 
 2.53.0
 
