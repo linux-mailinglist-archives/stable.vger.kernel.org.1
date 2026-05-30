@@ -1,61 +1,68 @@
-Return-Path: <stable+bounces-257976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJeGInEiG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:25 +0200
+	id qMrAJu8YG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9BEA61059C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0451960EE11
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 495DA3058E1B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:40:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9844130E8545
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965D5344DB9;
-	Sat, 30 May 2026 17:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3E533FE15;
+	Sat, 30 May 2026 16:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMq8NEtZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/Ynww4v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D571234389F;
-	Sat, 30 May 2026 17:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C57B39478D;
+	Sat, 30 May 2026 16:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162811; cv=none; b=Xy6V6DXNF1WbM5KisALXtyFnKXXs3yiAwqSHqYqp6Gcs7l61emD0QJCUpHHESCN8i7TThws6K+0lbyofZuM94LE8iSYtlCpmXvrYy1VjCK+VzX4amsOLHNcd5kRHHKqqadNj3PIqoGW8Qhc1BHSlIqsxNCG3LDTakbs0K+JERNw=
+	t=1780160184; cv=none; b=PDEP++yrLOig4j9039EXg/XjrnM1sNUEFkfG1C14k/vaUt5QvRI8vmppBN5usQtrMb2C4B+zM8/taj+oq2B/HRKSnPOxBpBsPl6uk9kUtFwQUVZBV65D0dWWLNornkDa3ALay36ZOZ1vO6nm3kQVQylJyG2rEIhypvcAx0DuoVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162811; c=relaxed/simple;
-	bh=uWSOaAhzCRbjYkupHuS2xMs07+ogJixBQy+7E+PByAw=;
+	s=arc-20240116; t=1780160184; c=relaxed/simple;
+	bh=24NPGCwjg3bf+YyY0ocwzXj0QyRyon5/EmhN9cgCutg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hfxFYmO0wM6v7cNMgQvdFAZmbF9ErXtg2S3m2uSBXmGa4zw8q9rmjTMDrMqp55Q5T0M8I8spMJ5Z+c/lLNvBkd79Mq7HXyilVA1miF7I42T/77hvIi5s5qg6gyxySAiOH0s7nfxat7IptftW6M5wIsaSa4trFCCydNKYaxW2xUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMq8NEtZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB20E1F00893;
-	Sat, 30 May 2026 17:40:07 +0000 (UTC)
+	 MIME-Version; b=khdxc8HCKzEkFF+kaiM9/T3Mq9YncYQpUf+tdGgU2PE8ld1W79f6Ax/RA1iGiBy47xg8cXQOKQ5LUCVNrbQ364W+yCpoAsrfZdIyvIwfO5gQrajgoLtomiMmWjwPM4l1t12QO+LYHz/N/wKcvfAp5XiVVbJcu+INBoAd5GJ4pKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/Ynww4v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DF71F00893;
+	Sat, 30 May 2026 16:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162808;
-	bh=xSYm5TNgvDjGbtr+fgR+hVJxxCvrOHw6cQCMCxV/dpM=;
+	s=korg; t=1780160183;
+	bh=EUc7Ra8E0HFrqHaZ/vtDt2LgZxSWN2mjspBwkws0yGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vMq8NEtZ6qz2LRQGQacQ2qH/w3i3sSGY5BVr1vMP1ygHYLgbwABYeu1Az4eSp1YDU
-	 SbZSGGVM3jvUazE8+bSetjoLPZFOIeO6jBtnbJdvMaIkl4RNdWBP/hFOz5jBdReRkn
-	 tjQKh+XaBo+WQHXUrHkoZQyVskrOSYcX6kdzAnXw=
+	b=Y/Ynww4vOq8aPu3i/FTmWut7mpsvG/iwaVCGgOZsPY/oIN0r8dKadtDbJlRRcuJna
+	 I5t+iMjlqHvloQ9ADqxd8TnFa7aLCmDNf4Mpkhl9qW4nkcXsxCewGL+x+vZrEVP6M1
+	 HSo8KyoBIOQyJLiWbsFEhvBSYY7wpBVw3Uvnna48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Zide Chen <zide.chen@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 040/776] perf/x86/intel/uncore: Skip discovery table for offline dies
-Date: Sat, 30 May 2026 17:55:54 +0200
-Message-ID: <20260530160241.332439820@linuxfoundation.org>
+	"Denis M. Karpov" <komlomal@gmail.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Harry Yoo (Oracle)" <harry@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jann Horn <jannh@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 231/969] userfaultfd: allow registration of ranges below mmap_min_addr
+Date: Sat, 30 May 2026 17:55:55 +0200
+Message-ID: <20260530160306.837339987@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +75,94 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-257207-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,suse.de,oracle.com,zeniv.linux.org.uk,suse.cz,google.com,redhat.com,linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257976-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hpe.com:email,msgid.link:url,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: E9BEA61059C
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0451960EE11
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zide Chen <zide.chen@intel.com>
+From: Denis M. Karpov <komlomal@gmail.com>
 
-[ Upstream commit 7b568e9eba2fad89a696f22f0413d44cf4a1f892 ]
+commit 161ce69c2c89781784b945d8e281ff2da9dede9c upstream.
 
-This warning can be triggered if NUMA is disabled and the system
-boots with fewer CPUs than the number of CPUs in die 0.
+The current implementation of validate_range() in fs/userfaultfd.c
+performs a hard check against mmap_min_addr.  This is redundant because
+UFFDIO_REGISTER operates on memory ranges that must already be backed by a
+VMA.
 
-WARNING: CPU: 9 PID: 7257 at uncore.c:1157 uncore_pci_pmu_register+0x136/0x160 [intel_uncore]
+Enforcing mmap_min_addr or capability checks again in userfaultfd is
+unnecessary and prevents applications like binary compilers from using
+UFFD for valid memory regions mapped by application.
 
-Currently, the discovery table continues to be parsed even if all CPUs
-in the associated die are offline.  This can lead to an array overflow
-at "pmu->boxes[die] = box" in uncore_pci_pmu_register(), which may
-trigger the warning above or cause other issues.
+Remove the redundant check for mmap_min_addr.
 
-Fixes: edae1f06c2cd ("perf/x86/intel/uncore: Parse uncore discovery tables")
-Reported-by: Steve Wahl <steve.wahl@hpe.com>
-Signed-off-by: Zide Chen <zide.chen@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Tested-by: Steve Wahl <steve.wahl@hpe.com>
-Link: https://patch.msgid.link/20260313174050.171704-3-zide.chen@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We started using UFFD instead of the classic mprotect approach in the
+binary translator to track application writes.  During development, we
+encountered this bug.  The translator cannot control where the translated
+application chooses to map its memory and if the app requires a
+low-address area, UFFD fails, whereas mprotect would work just fine.  I
+believe this is a genuine logic bug rather than an improvement, and I
+would appreciate including the fix in stable.
+
+Link: https://lore.kernel.org/20260409103345.15044-1-komlomal@gmail.com
+Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
+Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_discovery.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/userfaultfd.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/x86/events/intel/uncore_discovery.c b/arch/x86/events/intel/uncore_discovery.c
-index c8e1f9f0b466d..be7a63808462e 100644
---- a/arch/x86/events/intel/uncore_discovery.c
-+++ b/arch/x86/events/intel/uncore_discovery.c
-@@ -303,7 +303,7 @@ bool intel_uncore_has_discovery_tables(void)
- 				     (val & UNCORE_DISCOVERY_DVSEC2_BIR_MASK) * UNCORE_DISCOVERY_BIR_STEP;
- 
- 			die = get_device_die_id(dev);
--			if (die < 0)
-+			if ((die < 0) || (die >= uncore_max_dies()))
- 				continue;
- 
- 			parse_discovery_table(dev, die, bar_offset, &parsed);
--- 
-2.53.0
-
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -1271,8 +1271,6 @@ static __always_inline int validate_rang
+ 		return -EINVAL;
+ 	if (!len)
+ 		return -EINVAL;
+-	if (start < mmap_min_addr)
+-		return -EINVAL;
+ 	if (start >= task_size)
+ 		return -EINVAL;
+ 	if (len > task_size - start)
 
 
 
