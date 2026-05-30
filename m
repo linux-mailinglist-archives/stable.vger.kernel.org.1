@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-257732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DNeFDMeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257732-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:19 +0200
+	id yNZbD4swG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D8B460FBC6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E821C612783
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7557C3010515
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2CF7E30A1A74
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3222E33E36A;
-	Sat, 30 May 2026 17:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D13029E11A;
+	Sat, 30 May 2026 18:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="syD/cg29"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7RglXqY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CDA334695;
-	Sat, 30 May 2026 17:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF9C331A56;
+	Sat, 30 May 2026 18:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161987; cv=none; b=cdlKDWmU8YL+lNvTCUx76XkznPMLcYDHiCB3aACMKL8vsqyVmBmTVe8XcDnt+wR/vCIZK2Bfwfcv3M9J6UUrr1JAkhmXqp7iU8sFiy9+LbVKDnqeqnUTjgkeJDmxJKcelKXNJT89OdfR9MSSQ3WPx7IpBId3uTST4nwmUI8Tytk=
+	t=1780166655; cv=none; b=EZYPzmxwtTUZ5y9RzfV28Y8irfLIYg9Bg/hl5Dj36r5qL8NNzGKl6eZs50hB30FZwuCq7DYti3mh0gTYjJUgjmDkcevYB25pTcdihhOKrgiMztARBJCWjXzKA+alSXZ4pAomFwm3eC8+lJosovep7zyWeC/9w/7qyARjl6oI6NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161987; c=relaxed/simple;
-	bh=rZIu2saMx7r5GpLqSO2vxcJCoaGzu0BM0aGXXET1qr4=;
+	s=arc-20240116; t=1780166655; c=relaxed/simple;
+	bh=1uwBHMUZX1atc0k07/vKzHQgjLBhCpImE0Yvrq6NeKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGggiXxHSTLCdnXwa4tYpZxXN+tBxvywc9/0j0URdMDM74F5ALOzRay8Iaut7Znh6Ef8I7m0TsEvE+boOz3iLdfCRjF4TaQ6S+5mccc9G9HV2v3NAjbtfbBxkQF7cNMFuPMzCKaxFc3HQ613vqtdg6D60FGC9Qn6ikp35++f/Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=syD/cg29; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542EE1F00893;
-	Sat, 30 May 2026 17:26:21 +0000 (UTC)
+	 MIME-Version; b=fx3VLlJCTo5rEMzVWIE+zFlDkA+/tSMlMiPCxcRy+Yqcal6dgmp2hE2a8QSXWiZ9MJlRBcg/ooTXwGYV7vBV2QKCVYQ+QNHw5arsw+J3zV7pLhNupCUOThIF3t2m2lwWPMip5p9563Xw2+48ziF4Vq8dC4iT9vJhzY3Gwb3rcNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7RglXqY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9759F1F00893;
+	Sat, 30 May 2026 18:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161982;
-	bh=M68LY28Cz4lEQJGXdRGbnVqF2SO47RoOJSR4JRf7tiI=;
+	s=korg; t=1780166654;
+	bh=cWZcOdDAr1ycCL6RTnBzFRKbrHG8pXL14dMU0jnlcZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=syD/cg29tTxlxmYh7uxnVQ2yS8ETDt2lqEidmz1KdyQpkzOK0AB9d7B1sfzoGmsie
-	 nwOq4goL2j2oMKDL/SeCil02hvJ/LJjFSnwZFRx7TIure9YNCIRR7D0Vh1jHFmSo2n
-	 fmMsiV1nNpK5bXqv1XZG1UyiiMwRFeuYCcMnPdEE=
+	b=U7RglXqYJk+DsJJujbjYPYgQ/o+6/oAkiJ9qDyg6yqqL07nOFEQTJzjmcYDP2v8CD
+	 thyCiO33m9SF+ADIZuw7sw4xlX5TJc33DlWs11xafb08spp7IkrlNtR7ry/q//rA5w
+	 9s3zdj7SE1Y+nAsJsCMHyZOhN+1HAaB88pyb8NAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Boris Sukholitko <boris.sukholitko@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 785/969] iavf: wait for PF confirmation before removing VLAN filters
-Date: Sat, 30 May 2026 18:05:09 +0200
-Message-ID: <20260530160322.279691884@linuxfoundation.org>
+Subject: [PATCH 5.10 429/589] flow_dissector: Add number of vlan tags dissector
+Date: Sat, 30 May 2026 18:05:10 +0200
+Message-ID: <20260530160235.997771473@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,218 +68,148 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257732-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259113-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8D8B460FBC6
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,davemloft.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E821C612783
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Boris Sukholitko <boris.sukholitko@broadcom.com>
 
-[ Upstream commit bbcbe4ed70dea948849549af7edf44bd42bbd695 ]
+[ Upstream commit 34951fcf26c59e78ae430fba1fce7c08b1871249 ]
 
-The VLAN filter DELETE path was asymmetric with the ADD path: ADD
-waits for PF confirmation (ADD -> ADDING -> ACTIVE), but DELETE
-immediately frees the filter struct after sending the DEL message
-without waiting for the PF response.
+Our customers in the fiber telecom world have network configurations
+where they would like to control their traffic according to the number
+of tags appearing in the packet.
 
-This is problematic because:
- - If the PF rejects the DEL, the filter remains in HW but the driver
-   has already freed the tracking structure, losing sync.
- - Race conditions between DEL pending and other operations
-   (add, reset) cannot be properly resolved if the filter struct
-   is already gone.
+For example, TR247 GPON conformance test suite specification mostly
+talks about untagged, single, double tagged packets and gives lax
+guidelines on the vlan protocol vs. number of vlan tags.
 
-Add IAVF_VLAN_REMOVING state to make the DELETE path symmetric:
+This is different from the common IT networks where 802.1Q and 802.1ad
+protocols are usually describe single and double tagged packet. GPON
+configurations that we work with have arbitrary mix the above protocols
+and number of vlan tags in the packet.
 
-  REMOVE -> REMOVING (send DEL) -> PF confirms -> kfree
-                                -> PF rejects  -> ACTIVE
+The goal is to make the following TC commands possible:
 
-In iavf_del_vlans(), transition filters from REMOVE to REMOVING
-instead of immediately freeing them. The new DEL completion handler
-in iavf_virtchnl_completion() frees filters on success or reverts
-them to ACTIVE on error.
+tc filter add dev eth1 ingress flower \
+  num_of_vlans 1 vlan_prio 5 action drop
 
-Update iavf_add_vlan() to handle the REMOVING state: if a DEL is
-pending and the user re-adds the same VLAN, queue it for ADD so
-it gets re-programmed after the PF processes the DEL.
+>From our logs, we have redirect rules such that:
 
-The !VLAN_FILTERING_ALLOWED early-exit path still frees filters
-directly since no PF message is sent in that case.
+tc filter add dev $GPON ingress flower num_of_vlans $N \
+     action mirred egress redirect dev $DEV
 
-Also update iavf_del_vlan() to skip filters already in REMOVING
-state: DEL has been sent to PF and the completion handler will
-free the filter when PF confirms. Without this guard, the sequence
-DEL(pending) -> user-del -> second DEL could cause the PF to return
-an error for the second DEL (filter already gone), causing the
-completion handler to incorrectly revert a deleted filter back to
-ACTIVE.
+where N can range from 0 to 3 and $DEV is the function of $N.
 
-Fixes: 968996c070ef ("iavf: Fix VLAN_V2 addition/rejection")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-3-cdcb48303fd8@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Also there are rules setting skb mark based on the number of vlans:
+
+tc filter add dev $GPON ingress flower num_of_vlans $N vlan_prio \
+    $P action skbedit mark $M
+
+This new dissector allows extracting the number of vlan tags existing in
+the packet.
+
+Signed-off-by: Boris Sukholitko <boris.sukholitko@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: cc1ff87bce1c ("pppoe: drop PFC frames")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf.h        |  1 +
- drivers/net/ethernet/intel/iavf/iavf_main.c   | 13 ++++---
- .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 37 +++++++++++++------
- 3 files changed, 34 insertions(+), 17 deletions(-)
+ include/net/flow_dissector.h |  9 +++++++++
+ net/core/flow_dissector.c    | 20 ++++++++++++++++++++
+ 2 files changed, 29 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index dbbe622dec12f..468449df9756e 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -161,6 +161,7 @@ enum iavf_vlan_state_t {
- 	IAVF_VLAN_ADDING,	/* ADD sent to PF, waiting for response */
- 	IAVF_VLAN_ACTIVE,	/* PF confirmed, filter is in HW */
- 	IAVF_VLAN_REMOVE,	/* filter queued for DEL from PF */
-+	IAVF_VLAN_REMOVING,	/* DEL sent to PF, waiting for response */
+diff --git a/include/net/flow_dissector.h b/include/net/flow_dissector.h
+index 4036063d047c2..6826309631cb3 100644
+--- a/include/net/flow_dissector.h
++++ b/include/net/flow_dissector.h
+@@ -269,6 +269,14 @@ struct flow_dissector_key_hash {
+ 	u32 hash;
  };
  
- struct iavf_vlan_filter {
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 6346479366aa4..0cf6260a83fb2 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -831,10 +831,10 @@ iavf_vlan_filter *iavf_add_vlan(struct iavf_adapter *adapter,
- 		adapter->num_vlan_filters++;
- 		iavf_schedule_aq_request(adapter, IAVF_FLAG_AQ_ADD_VLAN_FILTER);
- 	} else if (f->state == IAVF_VLAN_REMOVE) {
--		/* Re-add the filter since we cannot tell whether the
--		 * pending delete has already been processed by the PF.
--		 * A duplicate add is harmless.
--		 */
-+		/* DEL not yet sent to PF, cancel it */
-+		f->state = IAVF_VLAN_ACTIVE;
-+	} else if (f->state == IAVF_VLAN_REMOVING) {
-+		/* DEL already sent to PF, re-add after completion */
- 		f->state = IAVF_VLAN_ADD;
- 		iavf_schedule_aq_request(adapter,
- 					 IAVF_FLAG_AQ_ADD_VLAN_FILTER);
-@@ -865,11 +865,14 @@ static void iavf_del_vlan(struct iavf_adapter *adapter, struct iavf_vlan vlan)
- 			list_del(&f->list);
- 			kfree(f);
- 			adapter->num_vlan_filters--;
--		} else {
-+		} else if (f->state != IAVF_VLAN_REMOVING) {
- 			f->state = IAVF_VLAN_REMOVE;
- 			iavf_schedule_aq_request(adapter,
- 						 IAVF_FLAG_AQ_DEL_VLAN_FILTER);
- 		}
-+		/* If REMOVING, DEL is already sent to PF; completion
-+		 * handler will free the filter when PF confirms.
-+		 */
++/**
++ * struct flow_dissector_key_num_of_vlans:
++ * @num_of_vlans: num_of_vlans value
++ */
++struct flow_dissector_key_num_of_vlans {
++	u8 num_of_vlans;
++};
++
+ enum flow_dissector_key_id {
+ 	FLOW_DISSECTOR_KEY_CONTROL, /* struct flow_dissector_key_control */
+ 	FLOW_DISSECTOR_KEY_BASIC, /* struct flow_dissector_key_basic */
+@@ -298,6 +306,7 @@ enum flow_dissector_key_id {
+ 	FLOW_DISSECTOR_KEY_META, /* struct flow_dissector_key_meta */
+ 	FLOW_DISSECTOR_KEY_CT, /* struct flow_dissector_key_ct */
+ 	FLOW_DISSECTOR_KEY_HASH, /* struct flow_dissector_key_hash */
++	FLOW_DISSECTOR_KEY_NUM_OF_VLANS, /* struct flow_dissector_key_num_of_vlans */
+ 
+ 	FLOW_DISSECTOR_KEY_MAX,
+ };
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index 8fe8b3afacd04..146f24c53c660 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -1032,6 +1032,16 @@ bool __skb_flow_dissect(const struct net *net,
+ 		memcpy(key_eth_addrs, &eth->h_dest, sizeof(*key_eth_addrs));
  	}
  
- 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index ca7448e096a86..6fb657ec654e8 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -844,12 +844,10 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
- 
- 		vvfl->vsi_id = adapter->vsi_res->vsi_id;
- 		vvfl->num_elements = count;
--		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
-+		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
- 			if (f->state == IAVF_VLAN_REMOVE) {
- 				vvfl->vlan_id[i] = f->vlan.vid;
--				list_del(&f->list);
--				kfree(f);
--				adapter->num_vlan_filters--;
-+				f->state = IAVF_VLAN_REMOVING;
- 				i++;
- 				if (i == count)
- 					break;
-@@ -889,7 +887,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
- 
- 		vvfl_v2->vport_id = adapter->vsi_res->vsi_id;
- 		vvfl_v2->num_elements = count;
--		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
-+		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
- 			if (f->state == IAVF_VLAN_REMOVE) {
- 				struct virtchnl_vlan_supported_caps *filtering_support =
- 					&adapter->vlan_v2_caps.filtering.filtering_support;
-@@ -904,9 +902,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
- 				vlan->tci = f->vlan.vid;
- 				vlan->tpid = f->vlan.tpid;
- 
--				list_del(&f->list);
--				kfree(f);
--				adapter->num_vlan_filters--;
-+				f->state = IAVF_VLAN_REMOVING;
- 				i++;
- 				if (i == count)
- 					break;
-@@ -2033,10 +2029,6 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 			ether_addr_copy(adapter->hw.mac.addr, netdev->dev_addr);
- 			wake_up(&adapter->vc_waitqueue);
- 			break;
--		case VIRTCHNL_OP_DEL_VLAN:
--			dev_err(&adapter->pdev->dev, "Failed to delete VLAN filter, error %s\n",
--				iavf_stat_str(&adapter->hw, v_retval));
--			break;
- 		case VIRTCHNL_OP_DEL_ETH_ADDR:
- 			dev_err(&adapter->pdev->dev, "Failed to delete MAC filter, error %s\n",
- 				iavf_stat_str(&adapter->hw, v_retval));
-@@ -2520,6 +2512,27 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
- 		}
- 		break;
-+	case VIRTCHNL_OP_DEL_VLAN:
-+	case VIRTCHNL_OP_DEL_VLAN_V2: {
-+		struct iavf_vlan_filter *f, *ftmp;
++	if (dissector_uses_key(flow_dissector,
++			       FLOW_DISSECTOR_KEY_NUM_OF_VLANS)) {
++		struct flow_dissector_key_num_of_vlans *key_num_of_vlans;
 +
-+		spin_lock_bh(&adapter->mac_vlan_list_lock);
-+		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list,
-+					 list) {
-+			if (f->state == IAVF_VLAN_REMOVING) {
-+				if (v_retval) {
-+					/* PF rejected DEL, keep filter */
-+					f->state = IAVF_VLAN_ACTIVE;
-+				} else {
-+					list_del(&f->list);
-+					kfree(f);
-+					adapter->num_vlan_filters--;
-+				}
-+			}
++		key_num_of_vlans = skb_flow_dissector_target(flow_dissector,
++							     FLOW_DISSECTOR_KEY_NUM_OF_VLANS,
++							     target_container);
++		key_num_of_vlans->num_of_vlans = 0;
++	}
++
+ proto_again:
+ 	fdret = FLOW_DISSECT_RET_CONTINUE;
+ 
+@@ -1155,6 +1165,16 @@ bool __skb_flow_dissect(const struct net *net,
+ 			nhoff += sizeof(*vlan);
+ 		}
+ 
++		if (dissector_uses_key(flow_dissector,
++				       FLOW_DISSECTOR_KEY_NUM_OF_VLANS)) {
++			struct flow_dissector_key_num_of_vlans *key_nvs;
++
++			key_nvs = skb_flow_dissector_target(flow_dissector,
++							    FLOW_DISSECTOR_KEY_NUM_OF_VLANS,
++							    target_container);
++			key_nvs->num_of_vlans++;
 +		}
-+		spin_unlock_bh(&adapter->mac_vlan_list_lock);
-+		}
-+		break;
- 	case VIRTCHNL_OP_ENABLE_VLAN_STRIPPING:
- 		/* PF enabled vlan strip on this VF.
- 		 * Update netdev->features if needed to be in sync with ethtool.
++
+ 		if (dissector_vlan == FLOW_DISSECTOR_KEY_MAX) {
+ 			dissector_vlan = FLOW_DISSECTOR_KEY_VLAN;
+ 		} else if (dissector_vlan == FLOW_DISSECTOR_KEY_VLAN) {
 -- 
 2.53.0
 
