@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257339-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CRLIrQrG2ow/wgAu9opvQ
-	(envelope-from <stable+bounces-258747-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:25:56 +0200
+	id WOBGHJoaG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257339-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0173E611B56
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:25:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B0D60F265
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B33D4308DCCF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:23:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 21484301901A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF9625B0B3;
-	Sat, 30 May 2026 18:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E901635200B;
+	Sat, 30 May 2026 17:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQYyOkKf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJNIgo5H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A3D17555;
-	Sat, 30 May 2026 18:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B75632B11D;
+	Sat, 30 May 2026 17:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165403; cv=none; b=Nd8tj4ZVJ1YWJbispvWdinGMdzQFFMNeFrbLhDf2pN42AuMIRa6tRP8zjQgyS6WJnxeP1OAoSP2+oU7YZlMpoCyekc6b0G6bMP3HxfBoNs7xmlxXjqVmOoPM9f/zItdkucBGf2ET8t5EbEdJ+cnM2qaGmZoo9rKF2GLffjwRCf4=
+	t=1780160650; cv=none; b=sNXC0rzCibvnKuXdkwWab5j6Zqqqsq55Trk6NlgO1RWJVTkbLECof1j+0xkNTnX71sEdXuceYxXt9Yz9v+KpoMrwsjNGipSa+kUhWNjtIQoTdjGnLHG1AtOVhjBB4cRMfd/HAWIZ/caNE6qbZXjJ7zPmWrXR0GWs/yj62dJbl1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165403; c=relaxed/simple;
-	bh=9xf7e2oX+joOx5yLf722pk/bN/fXtWlvbTqtAMEZGak=;
+	s=arc-20240116; t=1780160650; c=relaxed/simple;
+	bh=WF9Yxlnt7sWkCQkx69o/r0OfTgmTJFy2uqOoQN0zcJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVbPsOeFeHWsswDuEnTZhhq/S6aDgSFEB23IlL9lSV4Mo+hXWGktJP+ouUwOBiTPqKPXEZ5ewXGTTmiKi4pXkvFdW4CFWVyEDcVmIT1ot7WXo+77+aLiJPiNkJvg7HY+N89fkf3K1Xryd0T2Tbiuwkf7VQJM8jEZxUxo1K4VE4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQYyOkKf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9A81F00893;
-	Sat, 30 May 2026 18:23:21 +0000 (UTC)
+	 MIME-Version; b=BJQL7vFos1wOPp0kKfJfEcnccRdstnT40q+sYYfU6QGSagEO+exHB1HDwItpJJWMMigSJr9XCyZy6W/OK3GMWv/SeqQB9NivPd5VxiTnpdmNR8ac/GvQfzcMjjtJ1DfmB96T4l8E/5QWjwkNg1elewasOVMYFyzUOpM7SsHBBhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJNIgo5H; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7203F1F00893;
+	Sat, 30 May 2026 17:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165402;
-	bh=k38sJNcTGC2oVdy9OFrHLSJeIBw7Gatkl3QBGl4iqr0=;
+	s=korg; t=1780160649;
+	bh=OgtVu3TbyhvI7UpNFX5vzzASo49U4PHDRIDmgyXjsSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NQYyOkKfhvhyuIT1EandJeIcX0OsCUDAN7e7vzjI8YU/ZTIpy3PmbPINXGChP4FsZ
-	 8DO9TP1FFLFzg9IK46QTjFe+LylquuLZb0vMomuxIqGWPgAp8JkDMjjgwHKjgk9Cfz
-	 6hFbBbNayN9gSktz7WkbJvFxXFP+majbZ8ZJjYRc=
+	b=pJNIgo5HkE4mh9gXdaaC4X2LvZbtQKyWW3CG9buvIMwfbxkYh1h3koXiaH8VPR7aY
+	 WjZ22ADrxkrFm4eou/mz5IJ2x348TNLGioQyPvNMbqF30w7q+Frg/hRkEBhR69afc4
+	 f1sRoezWwBkrScGwn4HXwBcxps4CDnhWjxrcQjDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 038/589] MIPS: Always record SEGBITS in cpu_data.vmbits
+	Sergey Shtylyov <s.shtylyov@auroraos.dev>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 395/969] media: dib8000: avoid division by 0 in dib8000_set_dds()
 Date: Sat, 30 May 2026 17:58:39 +0200
-Message-ID: <20260530160225.589990255@linuxfoundation.org>
+Message-ID: <20260530160311.205404521@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,146 +63,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [9.34 / 15.00];
+	URIBL_BLACK(7.50)[linuxtesting.org:url];
+	SUSPICIOUS_RECIPS(1.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257339-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	GREYLIST(0.00)[pass,body];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258747-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.920];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,franken.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0173E611B56
-X-Rspamd-Action: no action
+	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 20B0D60F265
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
 
-commit 8374c2cb83b95b3c92f129fd56527225c20a058c upstream.
+commit dde3c37af95cd6fa301c4906f33d627bc9dd874c upstream.
 
-With a 32-bit kernel running on 64-bit MIPS hardware the hardcoded value
-of `cpu_vmbits' only records the size of compatibility useg and does not
-reflect the size of native xuseg or the complete range of values allowed
-in the VPN2 field of TLB entries.
+In dib8000_set_dds(), 1 << 26 (67108864) divided by e.g. 1 apparently can't
+fit into 16-bit variable unit_khz_dds_val, being truncated to 0; this will
+cause division by 0 while calling dprintk() with debugging enabled (via the
+module parameter).  Use s32 instead of s16 to declare the variable, getting
+rid of the cast to u16 in the *else* branch as well...
 
-An upcoming change will need the actual VPN2 value range permitted even
-in 32-bit kernel configurations, so always include the `vmbits' member
-in `struct cpuinfo_mips' and probe for SEGBITS when running on 64-bit
-hardware and resorting to the currently hardcoded value of 31 on 32-bit
-processors.  No functional change for users of `cpu_vmbits'.
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
 
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 173a64cb3fcf ("[media] dib8000: enhancement")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/cpu-features.h |  1 -
- arch/mips/include/asm/cpu-info.h     |  2 --
- arch/mips/include/asm/mipsregs.h     |  2 ++
- arch/mips/kernel/cpu-probe.c         | 13 ++++++++-----
- arch/mips/kernel/cpu-r3k-probe.c     |  2 ++
- 5 files changed, 12 insertions(+), 8 deletions(-)
+ drivers/media/dvb-frontends/dib8000.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index dd03bc905841f..0d61a89fe99df 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -486,7 +486,6 @@
- # endif
- # ifndef cpu_vmbits
- # define cpu_vmbits cpu_data[0].vmbits
--# define __NEED_VMBITS_PROBE
- # endif
- #endif
+--- a/drivers/media/dvb-frontends/dib8000.c
++++ b/drivers/media/dvb-frontends/dib8000.c
+@@ -2694,7 +2694,7 @@ static void dib8000_viterbi_state(struct
  
-diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
-index a600670d00e97..1aee44124f118 100644
---- a/arch/mips/include/asm/cpu-info.h
-+++ b/arch/mips/include/asm/cpu-info.h
-@@ -80,9 +80,7 @@ struct cpuinfo_mips {
- 	int			srsets; /* Shadow register sets */
- 	int			package;/* physical package number */
- 	unsigned int		globalnumber;
--#ifdef CONFIG_64BIT
- 	int			vmbits; /* Virtual memory size in bits */
--#endif
- 	void			*data;	/* Additional data */
- 	unsigned int		watch_reg_count;   /* Number that exist */
- 	unsigned int		watch_reg_use_cnt; /* Usable by ptrace */
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 7a7467d3f7f05..c0e8237c779f3 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1715,6 +1715,8 @@ do {									\
- 
- #define read_c0_entryhi()	__read_ulong_c0_register($10, 0)
- #define write_c0_entryhi(val)	__write_ulong_c0_register($10, 0, val)
-+#define read_c0_entryhi_64()	__read_64bit_c0_register($10, 0)
-+#define write_c0_entryhi_64(val) __write_64bit_c0_register($10, 0, val)
- 
- #define read_c0_guestctl1()	__read_32bit_c0_register($10, 4)
- #define write_c0_guestctl1(val)	__write_32bit_c0_register($10, 4, val)
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 24d2ab277d78e..9cf3644dfd276 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -207,11 +207,14 @@ static inline void set_elf_base_platform(const char *plat)
- 
- static inline void cpu_probe_vmbits(struct cpuinfo_mips *c)
+ static void dib8000_set_dds(struct dib8000_state *state, s32 offset_khz)
  {
--#ifdef __NEED_VMBITS_PROBE
--	write_c0_entryhi(0x3fffffffffffe000ULL);
--	back_to_back_c0_hazard();
--	c->vmbits = fls64(read_c0_entryhi() & 0x3fffffffffffe000ULL);
--#endif
-+	int vmbits = 31;
-+
-+	if (cpu_has_64bits) {
-+		write_c0_entryhi_64(0x3fffffffffffe000ULL);
-+		back_to_back_c0_hazard();
-+		vmbits = fls64(read_c0_entryhi_64() & 0x3fffffffffffe000ULL);
-+	}
-+	c->vmbits = vmbits;
- }
+-	s16 unit_khz_dds_val;
++	s32 unit_khz_dds_val;
+ 	u32 abs_offset_khz = abs(offset_khz);
+ 	u32 dds = state->cfg.pll->ifreq & 0x1ffffff;
+ 	u8 invert = !!(state->cfg.pll->ifreq & (1 << 25));
+@@ -2715,7 +2715,7 @@ static void dib8000_set_dds(struct dib80
+ 			dds = (1<<26) - dds;
+ 	} else {
+ 		ratio = 2;
+-		unit_khz_dds_val = (u16) (67108864 / state->cfg.pll->internal);
++		unit_khz_dds_val = 67108864 / state->cfg.pll->internal;
  
- static void set_isa(struct cpuinfo_mips *c, unsigned int isa)
-diff --git a/arch/mips/kernel/cpu-r3k-probe.c b/arch/mips/kernel/cpu-r3k-probe.c
-index abdbbe8c5a43a..216271c7b60f1 100644
---- a/arch/mips/kernel/cpu-r3k-probe.c
-+++ b/arch/mips/kernel/cpu-r3k-probe.c
-@@ -158,6 +158,8 @@ void cpu_probe(void)
- 		cpu_set_fpu_opts(c);
- 	else
- 		cpu_set_nofpu_opts(c);
-+
-+	c->vmbits = 31;
- }
- 
- void cpu_report(void)
--- 
-2.53.0
-
+ 		if (offset_khz < 0)
+ 			unit_khz_dds_val *= -1;
 
 
 
