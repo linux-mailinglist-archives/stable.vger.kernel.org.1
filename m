@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-257640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258386-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uI5WMO4dG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257640-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:10 +0200
+	id 2HS2FQUpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258386-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D23A60FB21
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA56B6114F3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 114263084850
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:21:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 190CE30CB94A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F4034A796;
-	Sat, 30 May 2026 17:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B22355F53;
+	Sat, 30 May 2026 18:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Le6a5I5C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMACfXqx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7165A33FE15;
-	Sat, 30 May 2026 17:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3C629B78B;
+	Sat, 30 May 2026 18:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161679; cv=none; b=bte/SXBWWNEnltpb4TVx4Pv1E1uuUJjeYoP6F+lumn0AQNW96WEFzkoXQq47bYzniY9VuulFMv7B5SHQT8ldkGn7u1aALnFiwD37uTdPg7Ka3fWZsfQ5iqudOMUO7Ny19yk7MD8v4zVGPDB+676afZQfrAdTBFjQ5cUfC+PiSUY=
+	t=1780164179; cv=none; b=JoQ84vRssVvv9DR2wZmFNOMIruO10oXhQnYrH0v5OFW1wdwarYn2O37Fc8vEeHtZYbobgwqiGjM1RPp2iLlnUgK6Bbh6WFQ+rDJxFcx850/6go6zCyzgo4qEY4+k9cqXte7MlzuirCQ/ZfzPG6GeLLwhxsljxlzpi421wcnvmfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161679; c=relaxed/simple;
-	bh=vQ6EPHYnlWlGzM1vopqI0sc+lDzdYd6tthjzwa8pmtQ=;
+	s=arc-20240116; t=1780164179; c=relaxed/simple;
+	bh=wsVAeuoZgGb0WklMAJxbhwun34U5nIZfsU720N/eRqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VMLR1BxHbNyaC5qAHMc1ST/2XVvSCMazD5+r0wzXQKCClqtJQDR9sQ31Betl1kzBoL+uskmLMrV75rT0PxBEwBl5b23IiKECkGrnMK3Ie1UXtWxT6Q9TZk3cpKX5Q17knkHbqww8SA8b5SCdwBvVyKpZhX6MEhilKLbNc/qdmA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Le6a5I5C; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60A61F00893;
-	Sat, 30 May 2026 17:21:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q51yWmkzalj1Ge8EliMJuqavfrM8KjtoiiFc1RCxc0IQiiZHUi5qobN+R/mLi/xA2DKehUqDxoUu/2aR+uIZQyeElQ13BZ6/S12RB12xJQ2DclsV8a7eNcEWaahBi+fCee3ZT6TIuYMq0pOoe9yUZ5eUclCjXbKm3fRwBCihj/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMACfXqx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6961F00893;
+	Sat, 30 May 2026 18:02:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161678;
-	bh=OzNGU/v0NBRGc2Jpi7q17D6z3SMI2N/t9Yd890lQyLQ=;
+	s=korg; t=1780164178;
+	bh=rpvhktbKREc8xnV+/GCd1mYZPtP9y2Uj49fQSiBakAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Le6a5I5CGsr0Cm2RdqIWma0HKWnOg5h0VzwY9CdGAY79AbSILZy14BtOHSV6T7WNg
-	 zotPy5F1d/FTbBDqFS/+qd0Jgs7um/puchciIDaM83FkhxdaYTWGPED8NRzgXVPl5U
-	 I7SFsA19x2WX3fBHuRNVCE/mPa4MXobkBVWlGRcQ=
+	b=sMACfXqxiMY7xBjsEhTPT6Z0vFk/azynzg5w2RHH2UylNX0+tWbkQSw6HsfFXKaKI
+	 g/MJrBGpsRjWAemPjGasWdsAwfbIgW3BSB4codCzViWi0pUOJ6caJZiYIvcaBaf5/I
+	 MR/eFIioWgMRbzuTvndzSDNt1NOnhhyALjOd6Loc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	John Hawley <warthog9@eaglescrag.net>,
+	Andrea Righi <arighi@nvidia.com>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 667/969] f2fs: Use sysfs_emit_at() to simplify code
-Date: Sat, 30 May 2026 18:03:11 +0200
-Message-ID: <20260530160318.906306103@linuxfoundation.org>
+Subject: [PATCH 5.15 478/776] ktest: Avoid undef warning when WARNINGS_FILE is unset
+Date: Sat, 30 May 2026 18:03:12 +0200
+Message-ID: <20260530160252.693721788@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,153 +69,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257640-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,wanadoo.fr];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-258386-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5D23A60FB21
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,eaglescrag.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,suse.com:email]
+X-Rspamd-Queue-Id: EA56B6114F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit f7a678bbe5a8f22cfcef5369757cc9b95f73e027 ]
+[ Upstream commit 057854f8a595160656fe77ed7bf0d2403724b915 ]
 
-This file already uses sysfs_emit(). So be consistent and also use
-sysfs_emit_at().
+check_buildlog() probes $warnings_file with -f even when WARNINGS_FILE is
+not configured. Perl warns about the uninitialized value and adds noise to
+the test log, which can hide the output we actually care about.
 
-This slightly simplifies the code and makes it more readable.
+Check that WARNINGS_FILE is defined before testing whether the file exists.
 
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 5909bedbed38 ("f2fs: protect extension_list reading with sb_lock in f2fs_sbi_show()")
+Cc: John Hawley <warthog9@eaglescrag.net>
+Cc: Andrea Righi <arighi@nvidia.com>
+Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Link: https://patch.msgid.link/20260307-ktest-fixes-v1-1-565d412f4925@suse.com
+Fixes: 4283b169abfb ("ktest: Add make_warnings_file and process full warnings")
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/sysfs.c | 45 +++++++++++++++++++++------------------------
- 1 file changed, 21 insertions(+), 24 deletions(-)
+ tools/testing/ktest/ktest.pl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index 4e643abbd891a..aeb95c74710eb 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -150,50 +150,50 @@ static ssize_t features_show(struct f2fs_attr *a,
- 	int len = 0;
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index b1bd8be3cf666..d752c4bd0d8b3 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -2465,7 +2465,7 @@ sub check_buildlog {
+     my $save_no_reboot = $no_reboot;
+     $no_reboot = 1;
  
- 	if (f2fs_sb_has_encrypt(sbi))
--		len += scnprintf(buf, PAGE_SIZE - len, "%s",
-+		len += sysfs_emit_at(buf, len, "%s",
- 						"encryption");
- 	if (f2fs_sb_has_blkzoned(sbi))
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+		len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "blkzoned");
- 	if (f2fs_sb_has_extra_attr(sbi))
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+		len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "extra_attr");
- 	if (f2fs_sb_has_project_quota(sbi))
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+		len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "projquota");
- 	if (f2fs_sb_has_inode_chksum(sbi))
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+		len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "inode_checksum");
- 	if (f2fs_sb_has_flexible_inline_xattr(sbi))
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+		len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "flexible_inline_xattr");
- 	if (f2fs_sb_has_quota_ino(sbi))
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+		len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "quota_ino");
- 	if (f2fs_sb_has_inode_crtime(sbi))
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+		len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "inode_crtime");
- 	if (f2fs_sb_has_lost_found(sbi))
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+		len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "lost_found");
- 	if (f2fs_sb_has_verity(sbi))
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+		len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "verity");
- 	if (f2fs_sb_has_sb_chksum(sbi))
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+		len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "sb_checksum");
- 	if (f2fs_sb_has_casefold(sbi))
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+		len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "casefold");
- 	if (f2fs_sb_has_readonly(sbi))
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+		len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "readonly");
- 	if (f2fs_sb_has_compression(sbi))
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+		len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "compression");
--	len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
-+	len += sysfs_emit_at(buf, len, "%s%s",
- 				len ? ", " : "", "pin_file");
--	len += scnprintf(buf + len, PAGE_SIZE - len, "\n");
-+	len += sysfs_emit_at(buf, len, "\n");
- 	return len;
- }
- 
-@@ -310,17 +310,14 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
- 		int hot_count = sbi->raw_super->hot_ext_count;
- 		int len = 0, i;
- 
--		len += scnprintf(buf + len, PAGE_SIZE - len,
--						"cold file extension:\n");
-+		len += sysfs_emit_at(buf, len, "cold file extension:\n");
- 		for (i = 0; i < cold_count; i++)
--			len += scnprintf(buf + len, PAGE_SIZE - len, "%s\n",
--								extlist[i]);
-+			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
- 
--		len += scnprintf(buf + len, PAGE_SIZE - len,
--						"hot file extension:\n");
-+		len += sysfs_emit_at(buf, len, "hot file extension:\n");
- 		for (i = cold_count; i < cold_count + hot_count; i++)
--			len += scnprintf(buf + len, PAGE_SIZE - len, "%s\n",
--								extlist[i]);
-+			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
-+
- 		return len;
- 	}
+-    if (-f $warnings_file) {
++    if (defined($warnings_file) && -f $warnings_file) {
+ 	open(IN, $warnings_file) or
+ 	    dodie "Error opening $warnings_file";
  
 -- 
 2.53.0
