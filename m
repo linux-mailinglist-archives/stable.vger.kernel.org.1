@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-258013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFuoGuwiG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258013-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:28 +0200
+	id mIocB/gXG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 158866106AE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87FBD60EC07
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7EA33080F94
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:42:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 03656308CC06
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B2D34389F;
-	Sat, 30 May 2026 17:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40DBC3C1977;
+	Sat, 30 May 2026 16:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Udyok2eg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkXjjfLh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93FD3998B1;
-	Sat, 30 May 2026 17:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E271F3AF643;
+	Sat, 30 May 2026 16:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162933; cv=none; b=YhzffIFiZZ+QJbsw4CpbD90xIS1UOvKyxombCpxLKNtJxTDQBwDGDPFH2xsljl4QjbJHc4idRhfYRzWq3Ot6mqq+u2iu109o5cP11WnNAlOM6SWlzBLl2tdclW1sKIKWk/P6f37mdlgTzqIAto1uIbRALWsWxajbLngKDKkbsnk=
+	t=1780160156; cv=none; b=HMRgIGde3WB/Tr9ceEmCOnfTp9EAq3dw1Cce5PU4ABb0esrlM5ze0cFuQpxZHAd2o6Zxn3IIXsz4EDBcSH9dfkj0r1NUTnd7F48WY7gVSBJVM0jo+maWVUSCmtV5g6qbicG/0aB+KvznfPNH3gr5EgdGF0CVaynkzH+0yxJF8yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162933; c=relaxed/simple;
-	bh=XndSoVCt8sxEWMJBda5+trUL7qXOA4nuLiwWqt08rI4=;
+	s=arc-20240116; t=1780160156; c=relaxed/simple;
+	bh=9QSh8PIAZmF15RJCSuQFGAzrARTcW/DnGwwq9V17S9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQolQrXZOV9rm76/WIl22CReU3JxckleC2DjIz1QQ1S8O9mrrBUs9ebigIuSmx3m8XPYn0jI00XyaEdazbNTaptdZzRKzr78UYf5LgrSQp2hVzbfGdZdHJk653IDbSmAi4oqA5y/IDHEdX6r+5sQMqqOX8BpJ1WgIFtwGHMdI1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Udyok2eg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64A51F00893;
-	Sat, 30 May 2026 17:42:10 +0000 (UTC)
+	 MIME-Version; b=K1Nn0DekbD/kI2uYZ4UxzpGg7vJm4kcqpUwVTsqjrboy1wfxnZ+MsgwE8vG5hYQvS9Aq/yU5AzpxC2IEHR0n+rPYTxYBH0CEv0zrPlOH7G8Dd2calCLgzcnv9vqkHpkrJZXgp3lR+eOGvw8KD1/mnQ2oscRysqmiM7StoB/2a8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkXjjfLh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341EF1F00893;
+	Sat, 30 May 2026 16:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162931;
-	bh=1a/f8JA1/k8DVylw5czMrpvQDL0FnWtfUII+PxS+eGI=;
+	s=korg; t=1780160154;
+	bh=XWzsxON6HFLvVApPp7A+HDBO8LNXJ9HaMnV42a62vWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Udyok2eg4i/FuuqHw1DpBmVkHwT09ThzB8OaO/6dkSPyOBlFj8LOGuhT3MPZaHYJh
-	 mvYz3O4lCkQQRb3m5kLvBZCrRi3YnSU01BI7LSx/0ZLCyvOxu4qWA6SMYRxqiGb5gR
-	 EvzHEJPOYIbzNhVf+f/5CUUwTgzSy53Z/4s6CWIY=
+	b=LkXjjfLhPPM69iaZe4AQrDezbyMb2xp0otEvwevO24OAsDEkabIb449BFqsEFKnws
+	 FNiehAfC1VKGtzhxAoMPK2Ny5sxHdENjs9tMRmCHJTJAtApZsuak/LKWkS/4uynpD5
+	 TR0QodN8zYtSrdZumcwlMtHK/IyOs0/AxFR76R/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 069/776] USB: serial: option: add Telit Cinterion FN990A MBIM composition
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.1 259/969] crypto: ccree - fix a memory leak in cc_mac_digest()
 Date: Sat, 30 May 2026 17:56:23 +0200
-Message-ID: <20260530160242.102915614@linuxfoundation.org>
+Message-ID: <20260530160307.632206523@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +63,66 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258013-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257199-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 158866106AE
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 87FBD60EC07
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-commit f8cc59ecc22841be5deb07b549c0c6a2657cd5f9 upstream.
+commit 02c64052fad03699b9c6d1df2f9b444d17e4ac50 upstream.
 
-Add the following Telit Cinterion FN990A MBIM composition:
+Add cc_unmap_result() if cc_map_hash_request_final()
+fails to prevent potential memory leak.
 
-0x1074: MBIM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (diag) +
-        DPL (Data Packet Logging) + adb
-
-T:  Bus=01 Lev=01 Prnt=04 Port=06 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1074 Rev=05.04
-S:  Manufacturer=Telit Wireless Solutions
-S:  Product=FN990
-S:  SerialNumber=70628d0c
-C:  #Ifs= 8 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
+Fixes: 63893811b0fc ("crypto: ccree - add ahash support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/ccree/cc_hash.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1383,6 +1383,8 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990A (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1074, 0xff),	/* Telit FN990A (MBIM) */
-+	  .driver_info = NCTRL(5) | RSVD(6) | RSVD(7) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
- 	  .driver_info = RSVD(0) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1077, 0xff),	/* Telit FN990A (rmnet + audio) */
+--- a/drivers/crypto/ccree/cc_hash.c
++++ b/drivers/crypto/ccree/cc_hash.c
+@@ -1448,6 +1448,7 @@ static int cc_mac_digest(struct ahash_re
+ 	if (cc_map_hash_request_final(ctx->drvdata, state, req->src,
+ 				      req->nbytes, 1, flags)) {
+ 		dev_err(dev, "map_ahash_request_final() failed\n");
++		cc_unmap_result(dev, state, digestsize, req->result);
+ 		cc_unmap_req(dev, state, ctx);
+ 		return -ENOMEM;
+ 	}
 
 
 
