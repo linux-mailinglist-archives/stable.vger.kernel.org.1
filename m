@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-258132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258736-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAXjBAEjG2pa/ggAu9opvQ
-	(envelope-from <stable+bounces-258132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:49 +0200
+	id mODYCPkqG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258736-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5BC6106CA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB862611A07
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F4139300104B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:48:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 10990300CE93
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812E7342CA7;
-	Sat, 30 May 2026 17:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0394E2641C6;
+	Sat, 30 May 2026 18:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGjOj8l6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRDuO9sI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6236F349CCF;
-	Sat, 30 May 2026 17:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FA421B191;
+	Sat, 30 May 2026 18:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163324; cv=none; b=dEeJy96xpvAR8vtGYIIPYZrMqh3tot0Kxar/Cmn/1P+GHsd2P4pB+UuHg/WfhXHyZuB0UEanyeQl0zlk2yXymV/2vrh2XRcPHIG3M3jj9sKtCDiSRlm3a6U7UFu5Rp6Rl0PbXJLS2BUbDmJF73nmoY5c8yyUFryc29rRo69wW3c=
+	t=1780165364; cv=none; b=Ftkz8NX3oxI2wWxL8bpFnrG5Li4+/4nnrfblBTb9+oTf0Dl/yPBIg4w3fQYu+NR9FKiY6UOsVW7ikL9Scx9QSwF6Xx7PoyI8mEP8hLmdhRwU49RVZN1BAH2QToJS19BM5nUKnGD4Rda+5UKacR1N0UHovV81A+AodJ52cznHbvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163324; c=relaxed/simple;
-	bh=ltiVSEG5CJ47iMI0VdGSCYERmib190fBtxWi2pjtr+M=;
+	s=arc-20240116; t=1780165364; c=relaxed/simple;
+	bh=aeu6z3HbuZPwhKxUV0OBiOn51GVzQ7V5PipjlYZrLZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R080rffYDb/dQHoj73IBQr68eV7M8tKUO82yG/c/akYR4hz980yb+vmbr1o043wJKFIs8qhmxxiXTOSlPof8G9hPJcm/CW66e4fgL37n1SxEy/2CDvOPFBw3qPJalhO+Gqe70F6FvjtmGg9sOzAdh2/BYj+sTmV1ecBsyTlo4JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGjOj8l6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B931F00893;
-	Sat, 30 May 2026 17:48:42 +0000 (UTC)
+	 MIME-Version; b=kVO3wmkPBhuNJRzMBgR7pCtmplZdYzQhr1Kn9T8EcmxVP93zc806bD2MSRFSAbiCbbvQICtQOjAiop6OWJm5Uf8yFcvrH1T1Txa10uGqYazhZp/abSkj0p1QFmf6Br2DnLy/jHZpC8T96unxaVBqvv0yUyaTnL2wEexGFpHDKi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRDuO9sI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E521F00893;
+	Sat, 30 May 2026 18:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163323;
-	bh=LQLKOssmSNm5t8vdVePpxanc0xe5WD6m/RewBXYx1RE=;
+	s=korg; t=1780165363;
+	bh=RkDZr68ii+ubCDHYhmV6ffyMgSPV0zs04q/DbRmTtIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RGjOj8l6rQlZHdL1yAEjpIf4rnMi7foBP/K/6Nzh0Ncc1vy3Ks5y7Ejyb2izCMokq
-	 vEi8o/2v+g4Iyke9uu54mvJr3/IEIj01gt6CtoSRdrit863b+6a0HJ/h8X5AOdDynA
-	 fmIEXrpzWpU3XaKTWiMjt3drjjPaOt0mZUyc2AP4=
+	b=fRDuO9sIb9bYfU5MVSSaDkM6+qydhB3Del5K32ukJG95KTCTKBmYrMbQaH6pRiVrb
+	 cwBfoFVcsz2RsAxZcmY5GYow44GhzHTuf+UiWB342rXp1TQaRB61nbuGqhRqeLYdCl
+	 RqlQn82rCa2nuiE4iQEoQ9ZPkjSoMN/kD1cvj6qY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ruide Cao <caoruide123@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 223/776] ipv4: icmp: validate reply type before using icmp_pointers
+	stable <stable@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Nathan Rebello <nathan.c.rebello@gmail.com>
+Subject: [PATCH 5.10 056/589] usbip: validate number_of_packets in usbip_pack_ret_submit()
 Date: Sat, 30 May 2026 17:58:57 +0200
-Message-ID: <20260530160246.285993769@linuxfoundation.org>
+Message-ID: <20260530160226.067983735@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,91 +64,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258132-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258736-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 0E5BC6106CA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BB862611A07
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruide Cao <caoruide123@gmail.com>
+From: Nathan Rebello <nathan.c.rebello@gmail.com>
 
-commit 67bf002a2d7387a6312138210d0bd06e3cf4879b upstream.
+commit 2ab833a16a825373aad2ba7d54b572b277e95b71 upstream.
 
-Extended echo replies use ICMP_EXT_ECHOREPLY as the outbound reply type.
-That value is outside the range covered by icmp_pointers[], which only
-describes the traditional ICMP types up to NR_ICMP_TYPES.
+When a USB/IP client receives a RET_SUBMIT response,
+usbip_pack_ret_submit() unconditionally overwrites
+urb->number_of_packets from the network PDU. This value is
+subsequently used as the loop bound in usbip_recv_iso() and
+usbip_pad_iso() to iterate over urb->iso_frame_desc[], a flexible
+array whose size was fixed at URB allocation time based on the
+*original* number_of_packets from the CMD_SUBMIT.
 
-Avoid consulting icmp_pointers[] for reply types outside that range, and
-use array_index_nospec() for the remaining in-range lookup. Normal ICMP
-replies keep their existing behavior unchanged.
+A malicious USB/IP server can set number_of_packets in the response
+to a value larger than what was originally submitted, causing a heap
+out-of-bounds write when usbip_recv_iso() writes to
+urb->iso_frame_desc[i] beyond the allocated region.
 
-Fixes: d329ea5bd884 ("icmp: add response to RFC 8335 PROBE messages")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/0dace90c01a5978e829ca741ef684dbd7304ce62.1776628519.git.caoruide123@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+KASAN confirmed this with kernel 7.0.0-rc5:
+
+  BUG: KASAN: slab-out-of-bounds in usbip_recv_iso+0x46a/0x640
+  Write of size 4 at addr ffff888106351d40 by task vhci_rx/69
+
+  The buggy address is located 0 bytes to the right of
+   allocated 320-byte region [ffff888106351c00, ffff888106351d40)
+
+The server side (stub_rx.c) and gadget side (vudc_rx.c) already
+validate number_of_packets in the CMD_SUBMIT path since commits
+c6688ef9f297 ("usbip: fix stub_rx: harden CMD_SUBMIT path to handle
+malicious input") and b78d830f0049 ("usbip: fix vudc_rx: harden
+CMD_SUBMIT path to handle malicious input"). The server side validates
+against USBIP_MAX_ISO_PACKETS because no URB exists yet at that point.
+On the client side we have the original URB, so we can use the tighter
+bound: the response must not exceed the original number_of_packets.
+
+This mirrors the existing validation of actual_length against
+transfer_buffer_length in usbip_recv_xbuff(), which checks the
+response value against the original allocation size.
+
+Kelvin Mbogo's series ("usb: usbip: fix integer overflow in
+usbip_recv_iso()", v2) hardens the receive-side functions themselves;
+this patch complements that work by catching the bad value at its
+source -- in usbip_pack_ret_submit() before the overwrite -- and
+using the tighter per-URB allocation bound rather than the global
+USBIP_MAX_ISO_PACKETS limit.
+
+Fix this by checking rpdu->number_of_packets against
+urb->number_of_packets in usbip_pack_ret_submit() before the
+overwrite. On violation, clamp to zero so that usbip_recv_iso() and
+usbip_pad_iso() safely return early.
+
+Fixes: 1325f85fa49f ("staging: usbip: bugfix add number of packets for isochronous frames")
+Cc: stable <stable@kernel.org>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
+Link: https://patch.msgid.link/20260402085259.234-1-nathan.c.rebello@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/icmp.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/usbip/usbip_common.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -64,6 +64,7 @@
- #include <linux/jiffies.h>
- #include <linux/kernel.h>
- #include <linux/fcntl.h>
-+#include <linux/nospec.h>
- #include <linux/socket.h>
- #include <linux/in.h>
- #include <linux/inet.h>
-@@ -361,7 +362,9 @@ static int icmp_glue_bits(void *from, ch
- 				      to, len);
- 
- 	skb->csum = csum_block_add(skb->csum, csum, odd);
--	if (icmp_pointers[icmp_param->data.icmph.type].error)
-+	if (icmp_param->data.icmph.type <= NR_ICMP_TYPES &&
-+	    icmp_pointers[array_index_nospec(icmp_param->data.icmph.type,
-+					     NR_ICMP_TYPES + 1)].error)
- 		nf_ct_attach(skb, icmp_param->skb);
- 	return 0;
- }
+--- a/drivers/usb/usbip/usbip_common.c
++++ b/drivers/usb/usbip/usbip_common.c
+@@ -389,6 +389,18 @@ static void usbip_pack_ret_submit(struct
+ 		urb->status		= rpdu->status;
+ 		urb->actual_length	= rpdu->actual_length;
+ 		urb->start_frame	= rpdu->start_frame;
++		/*
++		 * The number_of_packets field determines the length of
++		 * iso_frame_desc[], which is a flexible array allocated
++		 * at URB creation time. A response must never claim more
++		 * packets than originally submitted; doing so would cause
++		 * an out-of-bounds write in usbip_recv_iso() and
++		 * usbip_pad_iso(). Clamp to zero on violation so both
++		 * functions safely return early.
++		 */
++		if (rpdu->number_of_packets < 0 ||
++		    rpdu->number_of_packets > urb->number_of_packets)
++			rpdu->number_of_packets = 0;
+ 		urb->number_of_packets = rpdu->number_of_packets;
+ 		urb->error_count	= rpdu->error_count;
+ 	}
 
 
 
