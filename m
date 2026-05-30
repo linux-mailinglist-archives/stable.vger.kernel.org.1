@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAmbFd0nG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258477-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:33 +0200
+	id GNkkIc8dG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E912C6111CE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D4E60FAC1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C235E3013859
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 292AE300D770
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700753AFD11;
-	Sat, 30 May 2026 18:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1CD34A796;
+	Sat, 30 May 2026 17:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLvLzBzV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uw3LZSeU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA533BFE3B;
-	Sat, 30 May 2026 18:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D90332EA7;
+	Sat, 30 May 2026 17:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164481; cv=none; b=tcsB9zUTqLOWWipMxXbBw7utoD/aFCuNXGzpwKuNIW9V9SjGwLBwfKaR5aQBtRou+cuYqfeUnt8r0N/HxzTglJlXz7DIn7TN5O35wlZA8gBszkNKBLoz/5E8+CRdJtu30jXGAh9FniCteWd8IJsIPTDpShVzgUYC8Wf3oF1O7+U=
+	t=1780161893; cv=none; b=nkXmFOj8p8fsQbsuQPMXn4T5Z+jTs2JDUhSnXlU39dsTjW8QJIiVp5G6u2fynndQjDR+ZTRI1GygPbniOfQaTz6DiqCuQ4XSh1FmZpDa4EzWL/A3OqTWP3QcUxFby0Gbmz0TPf6J2OolJL1UY8oKfoJHead2MEzqLvwMfxHgJQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164481; c=relaxed/simple;
-	bh=PQkSIbyr77vLPwdOrUiedXwp/MLuGDQV3fun7HNz1U0=;
+	s=arc-20240116; t=1780161893; c=relaxed/simple;
+	bh=MpE8mydCoEo6D/QcfF8YmpVKgy9A7Bgd7KjJ5VQHIeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ru0Z+WcsaSNWLRutReddfQjcxA/Aa5s+wy2IB6McugH5n0lqfVEVUhm3SSdvkgn1yTBuvpRITtGG+4qYGF1gXY4b46hf3wZq+4VD+qhTJEb0KI0dNMi/+Jgbu18aML1ojIOxAflyGOb/zjAtsr9dkmDWshCsiUfsse5v6TEEfwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLvLzBzV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7824E1F00893;
-	Sat, 30 May 2026 18:07:59 +0000 (UTC)
+	 MIME-Version; b=s5iCXRiQjl8AhRqVd++LZUQotSmjponbugaHA1qurlzDNWkQF/3mM7+fHsnaVWhEhfh8IrfW8oLYdrZX6FTcLRXcIIza6wk06Aam5Lnkv3zs/yh/bqzb0/HjZXJBtXbhNcVtYcKgKIasTzWAucBJFpBW2g1vgwhb50w7yUVd7P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uw3LZSeU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60621F00893;
+	Sat, 30 May 2026 17:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164480;
-	bh=5iZPiV5JU2EWWQiskW60zpW29oA84Y2ZMK4ME9E41kg=;
+	s=korg; t=1780161892;
+	bh=W/GG97/NRTQiaHTGgtlLjapvUqvDOS0M2kWOpcSXYEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wLvLzBzV4We6zpuqtKwc6QoHMXulzlOQj+NEt5TwPky31IG9yRcg6uaShXGesKirj
-	 0CPzZnETgQtU/ifr0VxTaPm6ZVHj4hYkKCimHAhmYGP1zxSe2merroDF4FTTCDFqAc
-	 tgq8PckrMH+YUymmgxQ7rZ9xjlFPtmlI1Xo88XgM=
+	b=uw3LZSeU3vCocgBAhbpSBNS+hdMEpqNROZrCQ2otoFaNwCTSRaaWB+k9I68EM9b+w
+	 TnAXluFaUAgEoyIolTP5469V+ElLbSjqvzd7RcNl8xfard5jFIblTQ0WlFGhT6Rk9R
+	 7pQ5CO65QSJCf1mFQHEl5cce2OV5V7mUHNh/9Eho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Sukholitko <boris.sukholitko@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 568/776] flow_dissector: Add number of vlan tags dissector
+Subject: [PATCH 6.1 758/969] ALSA: usb-audio: Fix potential leak of pd at parsing UAC3 streams
 Date: Sat, 30 May 2026 18:04:42 +0200
-Message-ID: <20260530160254.796878614@linuxfoundation.org>
+Message-ID: <20260530160321.497700450@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,19 +68,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258477-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257704-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,125 +89,211 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E912C6111CE
+X-Rspamd-Queue-Id: 30D4E60FAC1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Sukholitko <boris.sukholitko@broadcom.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 34951fcf26c59e78ae430fba1fce7c08b1871249 ]
+[ Upstream commit c39f0bc03f84ba64c9144c95714df1dc36150f6d ]
 
-Our customers in the fiber telecom world have network configurations
-where they would like to control their traffic according to the number
-of tags appearing in the packet.
+At parsing UAC3 streams, we allocate a PD object at each time, and
+either assign or free it.  But there is a case where the PD object may
+be leaked; namely, in __snd_usb_parse_audio_interface() loop, when an
+audioformat shares the same endpoint with others, it's put to a link
+and returns from snd_usb_add_audio_stream(), but the PD is forgotten
+afterwards.  Overall, the treatment of PD object in the parser code is
+a bit flaky, and we should be more careful about the object ownership.
 
-For example, TR247 GPON conformance test suite specification mostly
-talks about untagged, single, double tagged packets and gives lax
-guidelines on the vlan protocol vs. number of vlan tags.
+This patch tries to fix the above case and improve the code a bit.
+The pd object is now managed with the auto-cleanup in the loop, and
+the ownership is updated when the pd object gets assigned to the
+stream, which guarantees the release of the leftover object.
 
-This is different from the common IT networks where 802.1Q and 802.1ad
-protocols are usually describe single and double tagged packet. GPON
-configurations that we work with have arbitrary mix the above protocols
-and number of vlan tags in the packet.
-
-The goal is to make the following TC commands possible:
-
-tc filter add dev eth1 ingress flower \
-  num_of_vlans 1 vlan_prio 5 action drop
-
->From our logs, we have redirect rules such that:
-
-tc filter add dev $GPON ingress flower num_of_vlans $N \
-     action mirred egress redirect dev $DEV
-
-where N can range from 0 to 3 and $DEV is the function of $N.
-
-Also there are rules setting skb mark based on the number of vlans:
-
-tc filter add dev $GPON ingress flower num_of_vlans $N vlan_prio \
-    $P action skbedit mark $M
-
-This new dissector allows extracting the number of vlan tags existing in
-the packet.
-
-Signed-off-by: Boris Sukholitko <boris.sukholitko@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: cc1ff87bce1c ("pppoe: drop PFC frames")
+Fixes: 7edf3b5e6a45 ("ALSA: usb-audio: AudioStreaming Power Domain parsing")
+Link: https://patch.msgid.link/20260427151508.12544-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/flow_dissector.h |  9 +++++++++
- net/core/flow_dissector.c    | 20 ++++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ sound/usb/quirks.c |  2 +-
+ sound/usb/stream.c | 58 ++++++++++++++++++----------------------------
+ sound/usb/stream.h |  3 ++-
+ 3 files changed, 25 insertions(+), 38 deletions(-)
 
-diff --git a/include/net/flow_dissector.h b/include/net/flow_dissector.h
-index 8d0d0cf93a785..7d154c3f90d14 100644
---- a/include/net/flow_dissector.h
-+++ b/include/net/flow_dissector.h
-@@ -269,6 +269,14 @@ struct flow_dissector_key_hash {
- 	u32 hash;
- };
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 23361e78189d0..8faf3731e3499 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -121,7 +121,7 @@ static int add_audio_stream_from_fixed_fmt(struct snd_usb_audio *chip,
  
-+/**
-+ * struct flow_dissector_key_num_of_vlans:
-+ * @num_of_vlans: num_of_vlans value
-+ */
-+struct flow_dissector_key_num_of_vlans {
-+	u8 num_of_vlans;
-+};
-+
- enum flow_dissector_key_id {
- 	FLOW_DISSECTOR_KEY_CONTROL, /* struct flow_dissector_key_control */
- 	FLOW_DISSECTOR_KEY_BASIC, /* struct flow_dissector_key_basic */
-@@ -298,6 +306,7 @@ enum flow_dissector_key_id {
- 	FLOW_DISSECTOR_KEY_META, /* struct flow_dissector_key_meta */
- 	FLOW_DISSECTOR_KEY_CT, /* struct flow_dissector_key_ct */
- 	FLOW_DISSECTOR_KEY_HASH, /* struct flow_dissector_key_hash */
-+	FLOW_DISSECTOR_KEY_NUM_OF_VLANS, /* struct flow_dissector_key_num_of_vlans */
+ 	snd_usb_audioformat_set_sync_ep(chip, fp);
  
- 	FLOW_DISSECTOR_KEY_MAX,
- };
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index 537dbd7fc5438..c599bc81dfa76 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -1042,6 +1042,16 @@ bool __skb_flow_dissect(const struct net *net,
- 		memcpy(key_eth_addrs, &eth->h_dest, sizeof(*key_eth_addrs));
+-	err = snd_usb_add_audio_stream(chip, stream, fp);
++	err = snd_usb_add_audio_stream(chip, stream, fp, NULL);
+ 	if (err < 0)
+ 		return err;
+ 
+diff --git a/sound/usb/stream.c b/sound/usb/stream.c
+index 920a718f91e68..f964082da3a63 100644
+--- a/sound/usb/stream.c
++++ b/sound/usb/stream.c
+@@ -79,7 +79,7 @@ static void snd_usb_audio_pcm_free(struct snd_pcm *pcm)
+ static void snd_usb_init_substream(struct snd_usb_stream *as,
+ 				   int stream,
+ 				   struct audioformat *fp,
+-				   struct snd_usb_power_domain *pd)
++				   struct snd_usb_power_domain **pdptr)
+ {
+ 	struct snd_usb_substream *subs = &as->substream[stream];
+ 
+@@ -105,10 +105,11 @@ static void snd_usb_init_substream(struct snd_usb_stream *as,
+ 	if (fp->channels > subs->channels_max)
+ 		subs->channels_max = fp->channels;
+ 
+-	if (pd) {
+-		subs->str_pd = pd;
++	if (pdptr && *pdptr) {
++		subs->str_pd = *pdptr;
++		*pdptr = NULL; /* assigned */
+ 		/* Initialize Power Domain to idle status D1 */
+-		snd_usb_power_domain_set(subs->stream->chip, pd,
++		snd_usb_power_domain_set(subs->stream->chip, subs->str_pd,
+ 					 UAC3_PD_STATE_D1);
  	}
  
-+	if (dissector_uses_key(flow_dissector,
-+			       FLOW_DISSECTOR_KEY_NUM_OF_VLANS)) {
-+		struct flow_dissector_key_num_of_vlans *key_num_of_vlans;
-+
-+		key_num_of_vlans = skb_flow_dissector_target(flow_dissector,
-+							     FLOW_DISSECTOR_KEY_NUM_OF_VLANS,
-+							     target_container);
-+		key_num_of_vlans->num_of_vlans = 0;
-+	}
-+
- proto_again:
- 	fdret = FLOW_DISSECT_RET_CONTINUE;
+@@ -486,11 +487,14 @@ snd_pcm_chmap_elem *convert_chmap_v3(struct uac3_cluster_header_descriptor
+  * if not, create a new pcm stream. note, fp is added to the substream
+  * fmt_list and will be freed on the chip instance release. do not free
+  * fp or do remove it from the substream fmt_list to avoid double-free.
++ *
++ * pdptr is optional and can be NULL.  When it's non-NULL and the PD gets
++ * assigned to the stream, *pdptr is cleared to NULL upon return.
+  */
+-static int __snd_usb_add_audio_stream(struct snd_usb_audio *chip,
+-				      int stream,
+-				      struct audioformat *fp,
+-				      struct snd_usb_power_domain *pd)
++int snd_usb_add_audio_stream(struct snd_usb_audio *chip,
++			     int stream,
++			     struct audioformat *fp,
++			     struct snd_usb_power_domain **pdptr)
  
-@@ -1165,6 +1175,16 @@ bool __skb_flow_dissect(const struct net *net,
- 			nhoff += sizeof(*vlan);
+ {
+ 	struct snd_usb_stream *as;
+@@ -523,7 +527,7 @@ static int __snd_usb_add_audio_stream(struct snd_usb_audio *chip,
+ 		err = snd_pcm_new_stream(as->pcm, stream, 1);
+ 		if (err < 0)
+ 			return err;
+-		snd_usb_init_substream(as, stream, fp, pd);
++		snd_usb_init_substream(as, stream, fp, pdptr);
+ 		return add_chmap(as->pcm, stream, subs);
+ 	}
+ 
+@@ -551,7 +555,7 @@ static int __snd_usb_add_audio_stream(struct snd_usb_audio *chip,
+ 	else
+ 		strcpy(pcm->name, "USB Audio");
+ 
+-	snd_usb_init_substream(as, stream, fp, pd);
++	snd_usb_init_substream(as, stream, fp, pdptr);
+ 
+ 	/*
+ 	 * Keep using head insertion for M-Audio Audiophile USB (tm) which has a
+@@ -569,21 +573,6 @@ static int __snd_usb_add_audio_stream(struct snd_usb_audio *chip,
+ 	return add_chmap(pcm, stream, &as->substream[stream]);
+ }
+ 
+-int snd_usb_add_audio_stream(struct snd_usb_audio *chip,
+-			     int stream,
+-			     struct audioformat *fp)
+-{
+-	return __snd_usb_add_audio_stream(chip, stream, fp, NULL);
+-}
+-
+-static int snd_usb_add_audio_stream_v3(struct snd_usb_audio *chip,
+-				       int stream,
+-				       struct audioformat *fp,
+-				       struct snd_usb_power_domain *pd)
+-{
+-	return __snd_usb_add_audio_stream(chip, stream, fp, pd);
+-}
+-
+ static int parse_uac_endpoint_attributes(struct snd_usb_audio *chip,
+ 					 struct usb_host_interface *alts,
+ 					 int protocol, int iface_no)
+@@ -1102,8 +1091,7 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
+ 		}
+ 	}
+ 
+-	if (pd)
+-		*pd_out = pd;
++	*pd_out = pd;
+ 
+ 	return fp;
+ }
+@@ -1118,7 +1106,6 @@ static int __snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
+ 	struct usb_interface_descriptor *altsd;
+ 	int i, altno, err, stream;
+ 	struct audioformat *fp = NULL;
+-	struct snd_usb_power_domain *pd = NULL;
+ 	bool set_iface_first;
+ 	int num, protocol;
+ 
+@@ -1160,6 +1147,12 @@ static int __snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
+ 		if (snd_usb_apply_interface_quirk(chip, iface_no, altno))
+ 			continue;
+ 
++		/* pd may be allocated at snd_usb_get_audioformat_uac3() and
++		 * assigned at snd_usb_add_audio_stream(); otherwise it'll be
++		 * freed automatically by cleanup at each loop.
++		 */
++		struct snd_usb_power_domain *pd __free(kfree) = NULL;
++
+ 		/*
+ 		 * Roland audio streaming interfaces are marked with protocols
+ 		 * 0/1/2, but are UAC 1 compatible.
+@@ -1215,23 +1208,16 @@ static int __snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
+ 			*has_non_pcm = true;
+ 		if ((fp->fmt_type == UAC_FORMAT_TYPE_I) == non_pcm) {
+ 			audioformat_free(fp);
+-			kfree(pd);
+ 			fp = NULL;
+-			pd = NULL;
+ 			continue;
  		}
  
-+		if (dissector_uses_key(flow_dissector,
-+				       FLOW_DISSECTOR_KEY_NUM_OF_VLANS)) {
-+			struct flow_dissector_key_num_of_vlans *key_nvs;
-+
-+			key_nvs = skb_flow_dissector_target(flow_dissector,
-+							    FLOW_DISSECTOR_KEY_NUM_OF_VLANS,
-+							    target_container);
-+			key_nvs->num_of_vlans++;
-+		}
-+
- 		if (dissector_vlan == FLOW_DISSECTOR_KEY_MAX) {
- 			dissector_vlan = FLOW_DISSECTOR_KEY_VLAN;
- 		} else if (dissector_vlan == FLOW_DISSECTOR_KEY_VLAN) {
+ 		snd_usb_audioformat_set_sync_ep(chip, fp);
+ 
+ 		dev_dbg(&dev->dev, "%u:%d: add audio endpoint %#x\n", iface_no, altno, fp->endpoint);
+-		if (protocol == UAC_VERSION_3)
+-			err = snd_usb_add_audio_stream_v3(chip, stream, fp, pd);
+-		else
+-			err = snd_usb_add_audio_stream(chip, stream, fp);
+-
++		err = snd_usb_add_audio_stream(chip, stream, fp, &pd);
+ 		if (err < 0) {
+ 			audioformat_free(fp);
+-			kfree(pd);
+ 			return err;
+ 		}
+ 
+diff --git a/sound/usb/stream.h b/sound/usb/stream.h
+index d92e18d5818fe..61b9a133da018 100644
+--- a/sound/usb/stream.h
++++ b/sound/usb/stream.h
+@@ -7,7 +7,8 @@ int snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
+ 
+ int snd_usb_add_audio_stream(struct snd_usb_audio *chip,
+ 			     int stream,
+-			     struct audioformat *fp);
++			     struct audioformat *fp,
++			     struct snd_usb_power_domain **pdptr);
+ 
+ #endif /* __USBAUDIO_STREAM_H */
+ 
 -- 
 2.53.0
 
