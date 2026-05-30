@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-258238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257433-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIxeKDYlG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258238-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:14 +0200
+	id 2HYhEqobG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257433-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C19610B73
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C767260F518
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 16E813019CA4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA63630FAFF0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3B7342CA7;
-	Sat, 30 May 2026 17:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB97134165B;
+	Sat, 30 May 2026 17:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sogSMy5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9Zmqi/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C65C261B9E;
-	Sat, 30 May 2026 17:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA1F3148DA;
+	Sat, 30 May 2026 17:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163679; cv=none; b=APRs3+LwuATqhOnHgkRkqbF7Zz6kDEHdCLSP6wUVY+t0jCIjpyzMxYIJbozfhqlfIpIFHJ0lDC0hI7+J2TTahPOaeVvp9wPI8Ol+v2zRozTgVZlCEFdTQ/xd6a9DkJ5PvuimGwwCihf3J5RqdNSTKrV/D7cnLnIa+KgqBOnQJiw=
+	t=1780160979; cv=none; b=gFPtU9RJWPvD/hm+j9zXmGzJEeXP1LVBS0mWxG6d+GH0GQz9A5hJ85m26haav6Vf3YL1YDgeD5OdOV32a3c6T9C2H+xDUxYI/eBUQ7oHSA043aByXRGfkTn8OAXoQvOinv6Ojt5TZ072bSdD146l8WG4Q6T/XIRID37uvAXkBME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163679; c=relaxed/simple;
-	bh=ssZ4awLMfkFm6c4j+OntExXCL6mE9BYHnVWwMxyenT4=;
+	s=arc-20240116; t=1780160979; c=relaxed/simple;
+	bh=Q/GzLjuwxbIZX6soeFaXBCSEU6wzhnaooICD89nNOgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FTQwC7tpD9BzSKA09NTpljDrsAilGiR8MiFPLVkoeUryra7O5TmWo2zHUk7U1LHdeGoOo/VYVzLm52emcEwD1fR6EIEOM52RzYARt0okeK2lN5y5GGqs0WN7vKQ47M3PsNPZLGDSNhrvD1CrDTd9dLpimap4yteqw4WpmDRaW+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sogSMy5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE081F00893;
-	Sat, 30 May 2026 17:54:37 +0000 (UTC)
+	 MIME-Version; b=sovvZpzdZLZC9PeciC1penWbk1AcjXp1dB5SiiKazFK8LdCpJ8+1Vbc1bELJAXtX1YgSRCK5Cbo4eJ61dsZSc/fYSfjc3Tr9t3Sal03Af/x0UIK31AkOFdY5wM7m3C/Rw7LTiAdMA9xjv6IKs/r6Dqc1fwLvkHAXJEkX9TxoqGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9Zmqi/Y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9911F00893;
+	Sat, 30 May 2026 17:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163678;
-	bh=Bz5C08J8ejY64ZpwdxmrOKistZjhwW32sJ4ypCgVE5A=;
+	s=korg; t=1780160978;
+	bh=AClRTyh/4crBDhfeEYy0UkXRJqucJ7nIgntyxdxXQN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1sogSMy55g6N18pnCuvjY+ISjdTQYoXGdee6Qm+GEjux8l4V3JgnzpfnjU9oqSVx3
-	 xiTEIIUuqLn89aagHoMbI/LSLZ8rOymGposOo5ejWT2UkT9a9FPcTDsEspleLvh7ij
-	 7E6FggcN/1hNBT3DjvmFDnTXFuSlqhMpSruBpn34=
+	b=k9Zmqi/YnVQ3cCb/Wm7G77Op9fOmm1eFJWygZVWLHJH9loq43ZEIwBkpjHXlDvyOz
+	 VudJlwG3wmokIaNaO+MNCM9CbwJpOI2XhFuV/Jr3VDKUcl88+Kt7+LLMS9OZryBjyg
+	 9UGern1nr9S2AyBRXPe5eFysL5SASbPsTtl9/9A4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 300/776] ALSA: firewire-tascam: Do not drop unread control events
+	syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 490/969] net, bpf: fix null-ptr-deref in xdp_master_redirect() for down master
 Date: Sat, 30 May 2026 18:00:14 +0200
-Message-ID: <20260530160248.316830852@linuxfoundation.org>
+Message-ID: <20260530160313.844973640@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +65,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258238-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sakamocchi.jp,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257433-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email]
-X-Rspamd-Queue-Id: C4C19610B73
+	TAGGED_RCPT(0.00)[stable,80e046b8da2820b6ba73];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C767260F518
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-commit 0749daa8eb5ab90334aaad3b0671efd7150d43b1 upstream.
+[ Upstream commit 1921f91298d1388a0bb9db8f83800c998b649cb3 ]
 
-tscm_hwdep_read_queue() copies as many queued control events as fit in
-the userspace buffer. When the buffer is smaller than the current
-contiguous queue segment, length is rounded down to the number of bytes
-that can be copied.
+syzkaller reported a kernel panic in bond_rr_gen_slave_id() reached via
+xdp_master_redirect(). Full decoded trace:
 
-However, after copying that shortened length, the code advances pull_pos
-to the original tail_pos, marking the whole contiguous segment as
-consumed. Any events between the copied portion and tail_pos are lost.
+  https://syzkaller.appspot.com/bug?extid=80e046b8da2820b6ba73
 
-Limit tail_pos to the position after the entries actually copied before
-updating pull_pos. When the whole segment fits, this is equivalent to the
-old tail_pos update; when the buffer is smaller, the remaining events
-stay queued for the next read.
+bond_rr_gen_slave_id() dereferences bond->rr_tx_counter, a per-CPU
+counter that bonding only allocates in bond_open() when the mode is
+round-robin. If the bond device was never brought up, rr_tx_counter
+stays NULL.
 
-Fixes: a8c0d13267a4 ("ALSA: firewire-tascam: notify events of change of state for userspace applications")
-Cc: stable@vger.kernel.org
-Suggested-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Co-developed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260503-alsa-firewire-tascam-read-queue-v2-1-126c6efd7642@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The XDP redirect path can still reach that code on a bond that was
+never opened: bpf_master_redirect_enabled_key is a global static key,
+so as soon as any bond device has native XDP attached, the
+XDP_TX -> xdp_master_redirect() interception is enabled for every
+slave system-wide. The path xdp_master_redirect() ->
+bond_xdp_get_xmit_slave() -> bond_xdp_xmit_roundrobin_slave_get() ->
+bond_rr_gen_slave_id() then runs against a bond that has no
+rr_tx_counter and crashes.
+
+Fix this in the generic xdp_master_redirect() by refusing to call into
+the master's ->ndo_xdp_get_xmit_slave() when the master device is not
+up. IFF_UP is only set after ->ndo_open() has successfully returned,
+so this reliably excludes masters whose XDP state has not been fully
+initialized. Drop the frame with XDP_ABORTED so the exception is
+visible via trace_xdp_exception() rather than silently falling through.
+This is not specific to bonding: any current or future master that
+defers XDP state allocation to ->ndo_open() is protected.
+
+Fixes: 879af96ffd72 ("net, core: Add support for XDP redirection to slave device")
+Reported-by: syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/698f84c6.a70a0220.2c38d7.00cc.GAE@google.com/T/
+Suggested-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260411005524.201200-2-jiayuan.chen@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/tascam/tascam-hwdep.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/core/filter.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/firewire/tascam/tascam-hwdep.c
-+++ b/sound/firewire/tascam/tascam-hwdep.c
-@@ -73,6 +73,7 @@ static long tscm_hwdep_read_queue(struct
- 			length = rounddown(remained, sizeof(*entries));
- 		if (length == 0)
- 			break;
-+		tail_pos = head_pos + length / sizeof(*entries);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 271cb6881dbb1..aee85a0062ce6 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -4268,6 +4268,8 @@ u32 xdp_master_redirect(struct xdp_buff *xdp)
+ 	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
  
- 		spin_unlock_irq(&tscm->lock);
- 		if (copy_to_user(pos, &entries[head_pos], length))
+ 	master = netdev_master_upper_dev_get_rcu(xdp->rxq->dev);
++	if (unlikely(!(master->flags & IFF_UP)))
++		return XDP_ABORTED;
+ 	slave = master->netdev_ops->ndo_xdp_get_xmit_slave(master, xdp);
+ 	if (slave && slave != xdp->rxq->dev) {
+ 		/* The target device is different from the receiving device, so
+-- 
+2.53.0
+
 
 
 
