@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDKWHxggG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:24 +0200
+	id QP0uB1cpG2rg/ggAu9opvQ
+	(envelope-from <stable+bounces-258589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E361861001C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A79E66115FC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A609308844F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B21E308AD50
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD96325701;
-	Sat, 30 May 2026 17:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EDE3C2761;
+	Sat, 30 May 2026 18:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBcWDe6a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLGL2nq9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4CC349CCF;
-	Sat, 30 May 2026 17:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460913C1961;
+	Sat, 30 May 2026 18:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162261; cv=none; b=m8pCgTUFFkXIb2lv8nP5Cimgjuk7vzoLQr/aE4FArXYfDb4rYd+B/NpxkK9Ig8S6fBqD/Zrewh2f4Imt+mleojwcJjcz3x6rncVSTJvvVfdICmSmEmzVv3Npg+KHooljWRGAzOFZMRVQXJlguDO9eYRia4f48S5KNhQr2pjHnLA=
+	t=1780164856; cv=none; b=q45fisFJlzz2V3oF7+Rw+vrAT3gI/oaCzGCR0gDB5En8QFhCey+SDhn4VtZx7NM5BflFU8Dh2V5QUzfgTij4hGODKBhok6d5HnfUOc225NxBDq0pjG9ljDhatIEVqfNeYBGbnUn3C9A3ZMH2ceiuY8vLfOZj5yWFxoeYYD+p6uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162261; c=relaxed/simple;
-	bh=izRQkCCyo+Zu3GH+UfLUnWwvkdEoOeY5f8Zr3BJ4qd4=;
+	s=arc-20240116; t=1780164856; c=relaxed/simple;
+	bh=ytb0OnppV+hVR4NOlPn1pUuoEb10+xrWJ3UT03KGJN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+PWUDrKhJHUPNanIQw0WjQcr6ts1rmzMh8PpZBrZ/xNgNkv2gmLxCk26uOEpC0eCPS3X+0B8O+2+hj2X4VbJe/duxkEMRRhB1Rw/7BgNBFVpkZAEC0PMhZRLP5siKTReS3SOvYIVqmz0lmyPLGZAvTA98ltRhRFYU7iLO7SNMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBcWDe6a; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515F81F00893;
-	Sat, 30 May 2026 17:30:58 +0000 (UTC)
+	 MIME-Version; b=F4xaiR7piJZ7G0bT/ZvNg/OsXbxjbkTDnX6jukrtqy5+T92S3vD6n3ObvjHfS0EUd5d8fDvloiguBIrrDY8zNvTjg8FL0S5feiMU/k7s4srrn900RtlcSZ8zriBaau0szCwvqjoaco8CyGu4N3CzJ9eG8LB7SoOyNpJYZuO27vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLGL2nq9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914651F00893;
+	Sat, 30 May 2026 18:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162259;
-	bh=ycQudfmQOELWu7UK04XMVsuTdPWlZdfr3OkPKAl85wI=;
+	s=korg; t=1780164855;
+	bh=ze6nqYumVDnvARo+1QHebO5CVUNh60loEMBpBc3RzU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KBcWDe6aQszsTyl5/Av/nIYQ7339/BB3+wU1n4T0+UKd4Gt2rWzkvtkebL/22s3FE
-	 MJpVgMV52aYALHWVYGVrD5LeT4USs9VnUqw8TDmqR6yzeACBsKRKgZso/6QA74Xaua
-	 tZZGH/aU3wWPgzg8iPVOm2QHHevJAXnyPK9N/k/U=
+	b=zLGL2nq9P/1aXb17sK6mIMCLgT151GGiXZAPBBOxrfgMI1TUQx050YDYO3F05Q7uA
+	 K2fZSlw5d2MA/Ea3WSjVyMCO9rxYiVe7rhHvbHewZajsJLFFc3Le4RFxQqJ9Oi9ptm
+	 I7d2CQTTc9Adz+kyu4/xQs75C4mnQ1q0qn3yGCtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lanqing Liu <lanqing.liu@unisoc.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 869/969] spi: sprd: fix error pointer deref after DMA setup failure
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.15 679/776] hwmon: (pmbus/adm1266) widen blackbox-info buffer to I2C_SMBUS_BLOCK_MAX
 Date: Sat, 30 May 2026 18:06:33 +0200
-Message-ID: <20260530160324.677168968@linuxfoundation.org>
+Message-ID: <20260530160257.414745043@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,64 +77,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257814-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258589-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,unisoc.com:email,sashiko.dev:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E361861001C
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,roeck-us.net:email]
+X-Rspamd-Queue-Id: A79E66115FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-commit 3d67fffb74267772d461c02c67f1eff893ad547d upstream.
+commit eee213daa1e1b402eb631bcd1b8c5aa340a6b081 upstream.
 
-The driver falls back to PIO mode if DMA setup fails during probe.
+adm1266_nvmem_read_blackbox() declares a 5-byte stack buffer and
+passes it to i2c_smbus_read_block_data() to retrieve the 4-byte
+BLACKBOX_INFO response.  i2c_smbus_read_block_data() does not honour
+caller buffer sizes -- it memcpy()s data.block[0] bytes from the
+SMBus transaction (where data.block[0] is the length byte returned by
+the slave device, up to I2C_SMBUS_BLOCK_MAX = 32):
 
-Make sure to check the dma.enabled flag before trying to release the DMA
-channels also on late probe errors to avoid dereferencing an error
-pointer (or attempting to release a channel a second time).
+	memcpy(values, &data.block[1], data.block[0]);
 
-This issue was flagged by Sashiko when reviewing a devres allocation
-conversion patch.
+If the device returns any block length above 5, the call overflows
+the caller's 5-byte stack buffer before the post-call
 
-Fixes: 386119bc7be9 ("spi: sprd: spi: sprd: Add DMA mode support")
-Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=10
-Cc: stable@vger.kernel.org	# 5.1
-Cc: Lanqing Liu <lanqing.liu@unisoc.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260512074733.915029-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+	if (ret != 4)
+		return -EIO;
+
+check has a chance to reject the response.
+
+Widen the local buffer to I2C_SMBUS_BLOCK_MAX so the helper has room
+for any well-formed SMBus block response, matching the convention used
+by the other i2c_smbus_read_block_data() callers in this driver.
+
+Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-2-1c1ea1349cfe@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sprd.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hwmon/pmbus/adm1266.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-sprd.c
-+++ b/drivers/spi/spi-sprd.c
-@@ -995,7 +995,8 @@ err_rpm_put:
- disable_clk:
- 	clk_disable_unprepare(ss->clk);
- release_dma:
--	sprd_spi_dma_release(ss);
-+	if (ss->dma.enable)
-+		sprd_spi_dma_release(ss);
- free_controller:
- 	spi_controller_put(sctlr);
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -351,7 +351,7 @@ static int adm1266_nvmem_read_blackbox(s
+ {
+ 	int record_count;
+ 	char index;
+-	u8 buf[5];
++	u8 buf[I2C_SMBUS_BLOCK_MAX];
+ 	int ret;
  
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_BLACKBOX_INFO, buf);
 
 
 
