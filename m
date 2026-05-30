@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-257136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBdzFMYVG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:22 +0200
+	id 6OLvDVkVG2qP/AgAu9opvQ
+	(envelope-from <stable+bounces-257104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18C260E840
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0AC60E7C2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6DEFF3014756
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:52:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DEEFD3024611
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A8433F5A3;
-	Sat, 30 May 2026 16:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA4A39B4A6;
+	Sat, 30 May 2026 16:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hs0RpH8g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKsDmNiN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6391CAA6C;
-	Sat, 30 May 2026 16:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BA734E745;
+	Sat, 30 May 2026 16:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159930; cv=none; b=grwR0aYgHmMF28RJtsMl4Us/YVRqq2WnlAytih5/mPBX3wJZOMvB6ftdtwuZghIadEjZRnbQPi3sWqVE71tmEMjOc9fYrKafqVgGByV83GjZo+r7XVXkug+4Ajd1KDgTtH9NZmd0rIUt5WpUNSqLRUpxp5Fdpsus1T/Kjd4Y4Io=
+	t=1780159811; cv=none; b=SaYis+xKBbaK/WZcoLMXqJfr+slZW+hFgS+puTb4vC3q4f/Hw15vmWWYZsGnI0yXE0+USzd+siyLjh2+YAkJaAa9vhy3YB72j/sOqUhGk61WqkhCShifSPoqh4KCi86AIrSM/c1IwTHuoAeG+GfiY3EcwrmJ0LUxBNdsgTY7b5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159930; c=relaxed/simple;
-	bh=2LRlCed4DZegtsZ3J0k8byvbCsBmGIA8M6meGBXoYpA=;
+	s=arc-20240116; t=1780159811; c=relaxed/simple;
+	bh=g6MUd+gzeg2QmzNtyXNyRmObR8fx+PCHG3873Ykn6v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QyfT6kMOOcFANQ733Jw+NopOsnrA4qT7cdWB1ERZmqln+qstu6yX311zsHJk+HyPCTZyUFrAQQyacyfrt7cFjTJTHJUD9b1AASceaYuJUJ1Txos8MVnjh0czMbEqPPVJhAHYhrxh6gnaUAtJYKrgcyAiafdyQz6Y8P+81XyrO/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hs0RpH8g; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AA81F00893;
-	Sat, 30 May 2026 16:52:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O48EX/Dw+J3S1/xCbRVMMKACuA0OXTi+LrdGKIUN7glsyUzTiSOnJjpfC+xV4s9gMTPzHn9K5MzobV+mhy8mxJEvqQV/OWNMsmajtdDebfHIda9wfu0yYtu93Lcum09HLaQMjwDQAqNXERoltRwoirTy19BAfZnbeBFFIeTZw3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKsDmNiN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84331F00893;
+	Sat, 30 May 2026 16:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159928;
-	bh=W0i6uj+qWDd8c1pPJiwehCeTda+C+gkR4632DlIEq/Y=;
+	s=korg; t=1780159810;
+	bh=zy0ThBdZ8Ad217ix94mgPISi2dCBX17BZ04os/4ItKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hs0RpH8gOnZourPFEuIQZy2dufPJECAZTLTJHNRXfIuxpZisxBFQPhBDpxAoHtvTS
-	 URLH5MT5aJhrEov1h3CjwNxknGB889Meq/zuFUKnIR779AqumpklhbIIoJ3kQ4nkD5
-	 5iRAVqSS+RJzq8+/Wd7tju08hbFo+yh6E7odmxR8=
+	b=zKsDmNiN+CHQR1E9E0Li2RQnZ1IM/MogCllaX7QOMrzFgUQ3ZVY/UGqQyiAk81qZQ
+	 hAxi3shLoO5g4fq8v5n3dV/KSF0yXo7CtRHGyOARg4SjRrdkEKuD8w79OSKlFnDgcn
+	 DeMqRqO4pZEcmk5k+nIZGU2/zR93HD86qix15Sro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d56178c27a4710960820@syzkaller.appspotmail.com,
 	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 159/969] ALSA: usb-audio: stop parsing UAC2 rates at MAX_NR_RATES
-Date: Sat, 30 May 2026 17:54:43 +0200
-Message-ID: <20260530160304.922953470@linuxfoundation.org>
+Subject: [PATCH 6.1 160/969] ALSA: usb-audio: Avoid false E-MU sample-rate notifications
+Date: Sat, 30 May 2026 17:54:44 +0200
+Message-ID: <20260530160304.948701298@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -65,34 +64,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-257104-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,suse.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257136-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d56178c27a4710960820];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: E18C260E840
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: ED0AC60E7C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,41 +100,51 @@ X-Rspamd-Server: lfdr
 
 From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 3c318f97dcc50b2e0556a1813bd6958678e881fd upstream.
+commit fca9c850042a7ab4828ce3a9caa8bc40ea09856a upstream.
 
-parse_uac2_sample_rate_range() caps the number of enumerated
-rates at MAX_NR_RATES, but it only breaks out of the current
-rate loop. A malformed UAC2 RANGE response with additional
-triplets continues parsing the remaining triplets and repeatedly
-prints "invalid uac2 rates" while probe still holds
-register_mutex.
+snd_emuusb_set_samplerate() unconditionally notifies the E-MU
+SampleRate Extension Unit control after issuing SET_CUR.
 
-Stop the whole parse once the cap is reached and return the
-number of rates collected so far.
+If snd_usb_mixer_set_ctl_value() fails, the control value has not
+changed, yet snd_usb_mixer_notify_id() still invalidates the cache and
+emits a value-change event to userspace.
 
-Fixes: 4fa0e81b8350 ("ALSA: usb-audio: fix possible hang and overflow in parse_uac2_sample_rate_range()")
+Notify the control only after a successful write.
+
+Fixes: 7d2b451e65d2 ("ALSA: usb-audio - Added functionality for E-mu 0404USB/0202USB/TrackerPre")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+d56178c27a4710960820@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d56178c27a4710960820
 Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260415-usb-audio-uac2-rate-cap-v1-1-5ecbafc120d8@gmail.com
+Link: https://patch.msgid.link/20260421-alsa-emuusb-samplerate-notify-v1-1-8b63bbc1d7f1@gmail.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/format.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer_quirks.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/sound/usb/format.c
-+++ b/sound/usb/format.c
-@@ -461,7 +461,7 @@ static int parse_uac2_sample_rate_range(
- 			nr_rates++;
- 			if (nr_rates >= MAX_NR_RATES) {
- 				usb_audio_err(chip, "invalid uac2 rates\n");
--				break;
-+				return nr_rates;
- 			}
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -1561,15 +1561,17 @@ void snd_emuusb_set_samplerate(struct sn
+ {
+ 	struct usb_mixer_interface *mixer;
+ 	struct usb_mixer_elem_info *cval;
++	int err;
+ 	int unitid = 12; /* SampleRate ExtensionUnit ID */
  
- skip_rate:
+ 	list_for_each_entry(mixer, &chip->mixer_list, list) {
+ 		if (mixer->id_elems[unitid]) {
+ 			cval = mixer_elem_list_to_info(mixer->id_elems[unitid]);
+-			snd_usb_mixer_set_ctl_value(cval, UAC_SET_CUR,
+-						    cval->control << 8,
+-						    samplerate_id);
+-			snd_usb_mixer_notify_id(mixer, unitid);
++			err = snd_usb_mixer_set_ctl_value(cval, UAC_SET_CUR,
++							  cval->control << 8,
++							  samplerate_id);
++			if (!err)
++				snd_usb_mixer_notify_id(mixer, unitid);
+ 			break;
+ 		}
+ 	}
 
 
 
