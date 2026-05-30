@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-258110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257297-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDzUCVAkG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:24 +0200
+	id SNUHAzkaG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257297-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CDA26109F1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700B760F111
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7F2A3000E24
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C926305E375
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86FA83BE620;
-	Sat, 30 May 2026 17:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2FA35200B;
+	Sat, 30 May 2026 17:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecpzAVuf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wbp0T7Uo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC9D3B9DB6;
-	Sat, 30 May 2026 17:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D652690D5;
+	Sat, 30 May 2026 17:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163250; cv=none; b=fleCYGtmOQVPiNDF/EkoyTYCRhtvWewfvkKVaFLiwqWJMv6j6W34FUVjhsLXCSGHABpBHLj4lkwSc947u2bg+BpsHTOUCht7yl3wGbig5xKnBIxHSXqGTNHVwi2fETcRsALTJ1FGDSml5brNy78rP0GtgBeguwR/IkyEdxbu/C4=
+	t=1780160513; cv=none; b=HMWJ9AvWqKvFUwW0+2Eg0EqcyLWyHJF3peBDMZx4ls2SmnP07NRlNbCdTaCwEMGaXrjmpxIWyefNJnmeNpJU9Y472C+59sJQIfN0PjrrZCmcEiFRSuldaA4XvEp6L5JvIjhRyDf/jPdzk2AM+eES3NOJuJB05bQeMe0H6HyBs4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163250; c=relaxed/simple;
-	bh=A10gCUirh5tIvwSZ+9hxoYRR/ZCZPpEdzY1Bt3aI93c=;
+	s=arc-20240116; t=1780160513; c=relaxed/simple;
+	bh=NTGyYvhlWMLDqhxJ6BxtUr9l38/sgXt1sLbuFD8Vee8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jg4uDdWvEcuczkMd4ZoFJZg0Y48EjytXlhHpyeOsqJ+vkoCVsCxkPutkyV2/MQtR5lQwbAlJdo+VEeXeQlJSl7k9BDjjeqHu3hMLwn4ivHsZ0zezsESzDQ/dIsp+VXBPE1w7zc1PpJD/O3WhL7TM10z3VgWM5KJg2T/9xEoo/RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecpzAVuf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFE71F00898;
-	Sat, 30 May 2026 17:47:27 +0000 (UTC)
+	 MIME-Version; b=ABDaqO4ag8pK9UJH5dG9lLdK3mri5etmPbj9gIcNEz6XkgkPrSRN9u2HuSjZXn5ppPwdyS8ETHOD7DeYQhE4Pv4TCXVtzOqSafQv7R3OGcR68NmzNkKaMIw0jxeFXtKwOjg9kAjEMQ4yfpzcGRZHT2oVt0XuzLa7sLqxUt206JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wbp0T7Uo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47891F00893;
+	Sat, 30 May 2026 17:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163248;
-	bh=Bdq5aE+3B4fPsaazIRxrp4aKTJM6GAADGe9jyCMVXQM=;
+	s=korg; t=1780160512;
+	bh=4DqYgzYkhkClDoZQy9JjyG4RnoHfZ19oGaLxekOdqlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ecpzAVufct8TasTLO+gN7R4VSDmmDlvoERG1drcEhSE1BAGw0jYveR05OsRSUq66I
-	 FSH766+Bwj/3/48H+4Nub0F7MMF0UxOWViZT1Q0B6V9yhV4xZz68NmmBeh/v6fKExS
-	 LoMMPIxPXMjd/n7DABbAU8f+4bu/QLD5Wkxyq9YA=
+	b=Wbp0T7Uo4vh7tYJ6Zi7bM0DoDGsbPQhsk/uFuO41V6nNuIBLTct69Cjmsw3puZFEv
+	 pwaQ1qR72C7gpKJQPzuRnXY3vMvFm2VORQk9KK4UiIYn/MTkOFKzfN+2StOcpl/vfS
+	 cQVk6eoa7EoaPh+0W36TrMVrnsrde87wga9f1cxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 168/776] rxrpc: Fix anonymous key handling
+	Christoph Hellwig <hch@lst.de>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.1 358/969] nvme-apple: drop invalid put of admin queue reference count
 Date: Sat, 30 May 2026 17:58:02 +0200
-Message-ID: <20260530160244.832825344@linuxfoundation.org>
+Message-ID: <20260530160310.222658152@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,86 +64,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [7.84 / 15.00];
+	URIBL_BLACK(7.50)[linuxtesting.org:url];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258110-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257297-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	GREYLIST(0.00)[pass,meta];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.956];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9CDA26109F1
-X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 700B760F111
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 6a59d84b4fc2f27f7b40e348506cc686712e260b ]
+commit ba9d308ccd6732dd97ed8080d834a4a89e758e14 upstream.
 
-In rxrpc_new_client_call_for_sendmsg(), a key with no payload is meant to
-be substituted for a NULL key pointer, but the variable this is done with
-is subsequently not used.
+Commit 03b3bcd319b3 ("nvme: fix admin request_queue lifetime") moved the
+admin queue reference ->put call into nvme_free_ctrl() - a controller
+device release callback performed for every nvme driver doing
+nvme_init_ctrl().
 
-Fix this by using "key" rather than "rx->key" when filling in the
-connection parameters.
+nvme-apple sets refcount of the admin queue to 1 at allocation during the
+probe function and then puts it twice now:
 
-Note that this only affects direct use of AF_RXRPC; the kAFS filesystem
-doesn't use sendmsg() directly and so bypasses the issue.  Further,
-AF_RXRPC passes a NULL key in if no key is set, so using an anonymous key
-in that manner works.  Since this hasn't been noticed to this point, it
-might be better just to remove the "key" variable and the code that sets it
-- and, arguably, rxrpc_init_client_call_security() would be a better place
-to handle it.
+nvme_free_ctrl()
+  blk_put_queue(ctrl->admin_q) // #1
+  ->free_ctrl()
+    apple_nvme_free_ctrl()
+      blk_put_queue(anv->ctrl.admin_q) // #2
 
-Fixes: 19ffa01c9c45 ("rxrpc: Use structs to hold connection params and protocol info")
-Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-4-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that there is a commit 941f7298c70c ("nvme-apple: remove an extra
+queue reference") which intended to drop taking an extra admin queue
+reference.  Looks like at that moment it accidentally fixed a refcount
+leak, which existed since the driver's introduction.  There were two ->get
+calls at driver's probe function and a single ->put inside
+apple_nvme_free_ctrl().
+
+However now after commit 03b3bcd319b3 ("nvme: fix admin request_queue
+lifetime") the refcount is imbalanced again.  Fix it by removing extra
+->put call from apple_nvme_free_ctrl().  anv->dev and ctrl->dev point to
+the same device, so use ctrl->dev directly for simplification.  Compile
+tested only.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 03b3bcd319b3 ("nvme: fix admin request_queue lifetime")
+Cc: stable@vger.kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/sendmsg.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/apple.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/net/rxrpc/sendmsg.c
-+++ b/net/rxrpc/sendmsg.c
-@@ -624,7 +624,7 @@ rxrpc_new_client_call_for_sendmsg(struct
+--- a/drivers/nvme/host/apple.c
++++ b/drivers/nvme/host/apple.c
+@@ -1194,11 +1194,7 @@ static int apple_nvme_get_address(struct
  
- 	memset(&cp, 0, sizeof(cp));
- 	cp.local		= rx->local;
--	cp.key			= rx->key;
-+	cp.key			= key;
- 	cp.security_level	= rx->min_sec_level;
- 	cp.exclusive		= rx->exclusive | p->exclusive;
- 	cp.upgrade		= p->upgrade;
+ static void apple_nvme_free_ctrl(struct nvme_ctrl *ctrl)
+ {
+-	struct apple_nvme *anv = ctrl_to_apple_nvme(ctrl);
+-
+-	if (anv->ctrl.admin_q)
+-		blk_put_queue(anv->ctrl.admin_q);
+-	put_device(anv->dev);
++	put_device(ctrl->dev);
+ }
+ 
+ static const struct nvme_ctrl_ops nvme_ctrl_ops = {
 
 
 
