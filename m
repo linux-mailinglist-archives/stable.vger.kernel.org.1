@@ -1,59 +1,66 @@
-Return-Path: <stable+bounces-258312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257542-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AClxLvMlG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258312-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:23 +0200
+	id 5JhTKNAbG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257542-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36842610D3F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 263AE60F552
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6D50F301B4C5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:58:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 49B9F306D00A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD20621E098;
-	Sat, 30 May 2026 17:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496823A7848;
+	Sat, 30 May 2026 17:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnLGqJbZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5TNv1pP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A537134041A;
-	Sat, 30 May 2026 17:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F196E3AEB26;
+	Sat, 30 May 2026 17:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163927; cv=none; b=RxYLm1vU6CJKaXtuN92Kzssjyz3o0lm+3MD6iOA/ESU+cTSGW22tqZFA+3y/H/YY/xgDe3NXqoZeOkfIi7UAb/ON5LW0g3NXSL/kY92TCuV9o1n4qqTDDn51UktK9/dVgc3GPX8mr3VSikENNQ05VB9TSCnjEmALsjFuJ6TJ1vQ=
+	t=1780161344; cv=none; b=U+rHCAA3DTSUF0BjZfOWGGEIxhcq0svRkdKKDeDRLOAVIZF5fPve8mpyrzBEOTnsD625R+9nxHfrSDqtS6Hg5wWyvjM4DZJQndJojkGqlRDmETwfW0IHoEjwydYX6wCTo9CurZo0Zr2O8gRx8RkEU9gzhhoLVIS0Psca67n/J5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163927; c=relaxed/simple;
-	bh=HTMmToUKvKLBOpLErAicquz0SD9QN4XoEzafBcU5em4=;
+	s=arc-20240116; t=1780161344; c=relaxed/simple;
+	bh=F6YEzWZsXUJv4xzkEgFmBeRHYbPVvZiyM6bA4iLnVhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gQ8HWpy5E+ZEw2Ekr3t/n/Ys9kh6JDlyqbueFMbC6nnu9hw1jt0GpUARqGsN7Aet8f58gPwoXIrKV1QnUgTvC20+J13v3RxpK3IO/uVkcw0L57hKXwYwcc0LfCOorD/naBfr88OGyTztU4PoaNiIqs/C2B2/oWgBrrY3Is10B5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnLGqJbZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E847E1F00898;
-	Sat, 30 May 2026 17:58:45 +0000 (UTC)
+	 MIME-Version; b=LKaL0QeeMKyB3EQ//SmTIlj0VQamK2YFIaxNgSo54/gp8AI1GGKZfRFvXuJPxg3npqr0T4g2V9v5B4exCj1qCdvuvQqMBEe5WIFF/C30eBsTOFMv11DfQStVFckvDa+yeRY/zm1McZU52e2TY+iofu87nwphVIJzbE/HO/S7Ds8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5TNv1pP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9581F00893;
+	Sat, 30 May 2026 17:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163926;
-	bh=7jb3kFub0Lz8BYiEhpfXJfr0wDqoAFAP4Ys1hjPestI=;
+	s=korg; t=1780161342;
+	bh=F70VYQfjGnP3KKWghmdP1ot8eDxLVVSQRwRj2fL9Ur8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GnLGqJbZEU0vkGiQbBI5D/WECuPgIpw2Sv7dbpuyCPQXVAnP4XKfT1VIytvkuJYKX
-	 zrhtYRx1rwLMOG47Iwx1cflv3Vh3spShwRoxTopvL85Mvo4oQmfQQMnymzgLIXuk/j
-	 lJw0l0tvjPRgxfJB9dkU+59vNqb1y+MZWFodUTpo=
+	b=q5TNv1pPxMzu4I5wPq0vhLRSCewvF3ZyIu3fAZNJsxi+l8FW8GlyKvr3rj/R5qCMw
+	 IMcMK6qM4tCXrRcxgjKl8+GCn4omdXNG5ctMrhIteglaM8ug4ZmIHN6uyAOeg4qwJC
+	 vrNUx4JBwh5kSmAP12y35Dgp7RStk0BrNDrfmvbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	ZhengYuan Huang <gality369@gmail.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 404/776] bpf: Use RCU-safe iteration in dev_map_redirect_multi() SKB path
-Date: Sat, 30 May 2026 18:01:58 +0200
-Message-ID: <20260530160250.943989105@linuxfoundation.org>
+Subject: [PATCH 6.1 595/969] ocfs2: validate group add input before caching
+Date: Sat, 30 May 2026 18:01:59 +0200
+Message-ID: <20260530160316.851771662@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,99 +76,138 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258312-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257542-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 36842610D3F
+X-Rspamd-Queue-Id: 263AE60F552
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-[ Upstream commit 8ed82f807bb09d2c8455aaa665f2c6cb17bc6a19 ]
+[ Upstream commit 70b672833f4025341c11b22c7f83778a5cd611bc ]
 
-The DEVMAP_HASH branch in dev_map_redirect_multi() uses
-hlist_for_each_entry_safe() to iterate hash buckets, but this function
-runs under RCU protection (called from xdp_do_generic_redirect_map()
-in softirq context). Concurrent writers (__dev_map_hash_update_elem,
-dev_map_hash_delete_elem) modify the list using RCU primitives
-(hlist_add_head_rcu, hlist_del_rcu).
+[BUG]
+OCFS2_IOC_GROUP_ADD can trigger a BUG_ON in
+ocfs2_set_new_buffer_uptodate():
 
-hlist_for_each_entry_safe() performs plain pointer dereferences without
-rcu_dereference(), missing the acquire barrier needed to pair with
-writers' rcu_assign_pointer(). On weakly-ordered architectures (ARM64,
-POWER), a reader can observe a partially-constructed node. It also
-defeats CONFIG_PROVE_RCU lockdep validation and KCSAN data-race
-detection.
+kernel BUG at fs/ocfs2/uptodate.c:509!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+RIP: 0010:ocfs2_set_new_buffer_uptodate+0x194/0x1e0 fs/ocfs2/uptodate.c:509
+Code: ffffe88f 42b9fe4c 89e64889 dfe8b4df
+Call Trace:
+ ocfs2_group_add+0x3f1/0x1510 fs/ocfs2/resize.c:507
+ ocfs2_ioctl+0x309/0x6e0 fs/ocfs2/ioctl.c:887
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
+ x64_sys_call+0x1144/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:17
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7bbfb55a966d
 
-Replace with hlist_for_each_entry_rcu() using rcu_read_lock_bh_held()
-as the lockdep condition, consistent with the rcu_dereference_check()
-used in the DEVMAP (non-hash) branch of the same functions. Also fix
-the same incorrect lockdep_is_held(&dtab->index_lock) condition in
-dev_map_enqueue_multi(), where the lock is not held either.
+[CAUSE]
+ocfs2_group_add() calls ocfs2_set_new_buffer_uptodate() on a
+user-controlled group block before ocfs2_verify_group_and_input()
+validates that block number. That helper is only valid for newly
+allocated metadata and asserts that the block is not already present in
+the chosen metadata cache. The code also uses INODE_CACHE(inode) even
+though the group descriptor belongs to main_bm_inode and later journal
+accesses use that cache context instead.
 
-Fixes: e624d4ed4aa8 ("xdp: Extend xdp_redirect_map with broadcast support")
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20260320072645.16731-1-devnexen@gmail.com
+[FIX]
+Validate the on-disk group descriptor before caching it, then add it to
+the metadata cache tracked by INODE_CACHE(main_bm_inode). Keep the
+validation failure path separate from the later cleanup path so we only
+remove the buffer from that cache after it has actually been inserted.
+This keeps the group buffer lifetime consistent across validation,
+journaling, and cleanup.
+
+Link: https://lkml.kernel.org/r/20260410020209.3786348-1-gality369@gmail.com
+Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/devmap.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/ocfs2/resize.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
-index 6274cf7011901..6ad4b068abc77 100644
---- a/kernel/bpf/devmap.c
-+++ b/kernel/bpf/devmap.c
-@@ -635,7 +635,7 @@ int dev_map_enqueue_multi(struct xdp_frame *xdpf, struct net_device *dev_rx,
- 		for (i = 0; i < dtab->n_buckets; i++) {
- 			head = dev_map_index_hash(dtab, i);
- 			hlist_for_each_entry_rcu(dst, head, index_hlist,
--						 lockdep_is_held(&dtab->index_lock)) {
-+						rcu_read_lock_bh_held()) {
- 				if (!is_valid_dst(dst, xdpf))
- 					continue;
+diff --git a/fs/ocfs2/resize.c b/fs/ocfs2/resize.c
+index 42c0d314f95e8..acf2769f4c8c7 100644
+--- a/fs/ocfs2/resize.c
++++ b/fs/ocfs2/resize.c
+@@ -500,14 +500,14 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
+ 		goto out_unlock;
+ 	}
  
-@@ -717,7 +717,6 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
- 	struct bpf_dtab_netdev *dst, *last_dst = NULL;
- 	int excluded_devices[1+MAX_NEST_DEV];
- 	struct hlist_head *head;
--	struct hlist_node *next;
- 	int num_excluded = 0;
- 	unsigned int i;
- 	int err;
-@@ -757,7 +756,7 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
- 	} else { /* BPF_MAP_TYPE_DEVMAP_HASH */
- 		for (i = 0; i < dtab->n_buckets; i++) {
- 			head = dev_map_index_hash(dtab, i);
--			hlist_for_each_entry_safe(dst, next, head, index_hlist) {
-+			hlist_for_each_entry_rcu(dst, head, index_hlist, rcu_read_lock_bh_held()) {
- 				if (is_ifindex_excluded(excluded_devices, num_excluded,
- 							dst->dev->ifindex))
- 					continue;
+-	ocfs2_set_new_buffer_uptodate(INODE_CACHE(inode), group_bh);
+-
+ 	ret = ocfs2_verify_group_and_input(main_bm_inode, fe, input, group_bh);
+ 	if (ret) {
+ 		mlog_errno(ret);
+ 		goto out_free_group_bh;
+ 	}
+ 
++	ocfs2_set_new_buffer_uptodate(INODE_CACHE(main_bm_inode), group_bh);
++
+ 	trace_ocfs2_group_add((unsigned long long)input->group,
+ 			       input->chain, input->clusters, input->frees);
+ 
+@@ -515,7 +515,7 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
+ 	if (IS_ERR(handle)) {
+ 		mlog_errno(PTR_ERR(handle));
+ 		ret = -EINVAL;
+-		goto out_free_group_bh;
++		goto out_remove_cache;
+ 	}
+ 
+ 	cl_bpc = le16_to_cpu(fe->id2.i_chain.cl_bpc);
+@@ -569,9 +569,11 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
+ out_commit:
+ 	ocfs2_commit_trans(osb, handle);
+ 
+-out_free_group_bh:
++out_remove_cache:
+ 	if (ret < 0)
+-		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
++		ocfs2_remove_from_cache(INODE_CACHE(main_bm_inode), group_bh);
++
++out_free_group_bh:
+ 	brelse(group_bh);
+ 
+ out_unlock:
 -- 
 2.53.0
 
