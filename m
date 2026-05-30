@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-259068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258452-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDcAFmwvG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259068-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:48 +0200
+	id YC+xAKQnG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258452-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699E3612436
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0EE611106
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5AE773007AE6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D98B13012564
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CED39478D;
-	Sat, 30 May 2026 18:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC9C3AFD11;
+	Sat, 30 May 2026 18:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJpABtt5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0PtRaW4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6F2351C2F;
-	Sat, 30 May 2026 18:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046EE340A6F;
+	Sat, 30 May 2026 18:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166480; cv=none; b=WT/GngNYXO1W8+mgJFwQ1iENKM78jBsf3bjYMh1YJZcWzy6e25x9zxByOpvtVdyLFKyj6QLTie0MhKzFhGIluMzVgY3VxdhuBWscuG9zcwDF7+DB85KljK1O/ggETV5XkT8M4iBuOjp6aiiSOQ7rmVJOfOYsziUr+DgtHSOQIS0=
+	t=1780164397; cv=none; b=kgn0aVguthzx1qOGkg504bU+DtGyLpyHgDyy9cFAF1LS3TL+e6Uzo2rSTve7uau+7cGAABF1H/+VHSA2imwQRTgd/xPXUDXGb0kTG0RTOnSPat0xZe+lL/a13JMk+Z68ouTDhESUGGEpWaVCwq6GSki1dl0KsVhmlZYPJNBOX2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166480; c=relaxed/simple;
-	bh=7tKtsMtvgiFZ+JnBvh5B9eRoZW9ql2zJHNkxLMuXW9g=;
+	s=arc-20240116; t=1780164397; c=relaxed/simple;
+	bh=tx9NIDoJyVQTEEUZh/lZwchHAJqjSTMMSNNWC73RGiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qT+fgHs2daKsBxz3bnnmBfC2BoqXQFVMhOLniDjlPTRnPD0Yl1TM06BAyTrsp387VSmljRE+bN+E9O/SToS5LIfMb7aEk8DJLgmPC433ZjdxRHC5+NnUHADMnSDR/UvjTN7BPF7VUBWTD+ctozJiG/0E8rjccfoToM6w1Zf1MDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJpABtt5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643F01F00893;
-	Sat, 30 May 2026 18:41:17 +0000 (UTC)
+	 MIME-Version; b=Yiy4oR5pPq9xWWsEBowtDxtavLBQ5oc0dZRpL5pPfSL2ct2enRSjjHxUUjT2hikVJi5aCk+0i0ZYKXtK97ukDi+DZvFpriSpYfgX1Dd7LtyShqv3h6muxj8u2O2ocOLqcCbeZ3g6XbWDflelGkX628Oqzcuj3d3eFOEeETynJJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0PtRaW4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156FB1F00893;
+	Sat, 30 May 2026 18:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166478;
-	bh=oYlB/B2OdaOR7romx5RwekrrI7ErA+Mmo4XFvC9QVcg=;
+	s=korg; t=1780164396;
+	bh=ccg/QF3/5m1rKYwL65f72sgtuZBoobF8hIhY9Zb2kb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lJpABtt5oiEWyGrUxObTHK+PVGH/YcdcTEtQ7vePWDVT1LNrR/76COwuhkWj0eu1D
-	 j1EIRe6QF+50AYpqO/xYu+6sR1eBfLIfk3NLF71hwT24zVFWqNQKfi8r7KwuLZgp04
-	 G8KkmlQpitBMFVuqIN3A38gP1Rh/9lQy+D4XIz58=
+	b=h0PtRaW48Swurn47RTPjQPn0N2MBwVwqdvrAEBbM4pElfev81ASL3JSks+C7zHaaK
+	 e3T/mwIqvu7NVV10AC9Ta0cCffFleiULZKuEK4z0MAw4NZdSeID1Heul5D8GCgtbMt
+	 dxoRwV7jFomI4nwYx9CZ7JuBDqqrsMNKe4rP+JPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Sun <samsun1006219@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 358/589] quota: Fix race of dquot_scan_active() with quota deactivation
+Subject: [PATCH 5.15 525/776] leds: lgm-sso: Remove duplicate assignments for priv->mmap
 Date: Sat, 30 May 2026 18:03:59 +0200
-Message-ID: <20260530160234.260051911@linuxfoundation.org>
+Message-ID: <20260530160253.790418265@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,177 +69,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259068-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258452-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 699E3612436
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9E0EE611106
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit e93ab401da4b2e2c1b8ef2424de2f238d51c8b2d ]
+[ Upstream commit 7186d0330c3f3e86de577687a82f4ebd96dcb5ac ]
 
-dquot_scan_active() can race with quota deactivation in
-quota_release_workfn() like:
+Remove duplicate assignment of priv->mmap in intel_sso_led_probe().
 
-  CPU0 (quota_release_workfn)         CPU1 (dquot_scan_active)
-  ==============================      ==============================
-  spin_lock(&dq_list_lock);
-  list_replace_init(
-    &releasing_dquots, &rls_head);
-    /* dquot X on rls_head,
-       dq_count == 0,
-       DQ_ACTIVE_B still set */
-  spin_unlock(&dq_list_lock);
-  synchronize_srcu(&dquot_srcu);
-                                      spin_lock(&dq_list_lock);
-                                      list_for_each_entry(dquot,
-                                          &inuse_list, dq_inuse) {
-                                        /* finds dquot X */
-                                        dquot_active(X) -> true
-                                        atomic_inc(&X->dq_count);
-                                      }
-                                      spin_unlock(&dq_list_lock);
-  spin_lock(&dq_list_lock);
-  dquot = list_first_entry(&rls_head);
-  WARN_ON_ONCE(atomic_read(&dquot->dq_count));
-
-The problem is not only a cosmetic one as under memory pressure the
-caller of dquot_scan_active() can end up working on freed dquot.
-
-Fix the problem by making sure the dquot is removed from releasing list
-when we acquire a reference to it.
-
-Fixes: 869b6ea1609f ("quota: Fix slow quotaoff")
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Link: https://lore.kernel.org/all/CAEkJfYPTt3uP1vAYnQ5V2ZWn5O9PLhhGi5HbOcAzyP9vbXyjeg@mail.gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Fixes: fba8a6f2263b ("leds: lgm-sso: Fix clock handling")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://patch.msgid.link/20260226033048.3715915-1-nichen@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c         | 38 ++++++++++++++++++++++++++++++--------
- include/linux/quotaops.h |  9 +--------
- 2 files changed, 31 insertions(+), 16 deletions(-)
+ drivers/leds/blink/leds-lgm-sso.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 525ae0f11818c..b4326fc1d90fd 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -364,6 +364,31 @@ static inline int dquot_active(struct dquot *dquot)
- 	return test_bit(DQ_ACTIVE_B, &dquot->dq_flags);
- }
+diff --git a/drivers/leds/blink/leds-lgm-sso.c b/drivers/leds/blink/leds-lgm-sso.c
+index fd8b7573285ad..45045c2a26574 100644
+--- a/drivers/leds/blink/leds-lgm-sso.c
++++ b/drivers/leds/blink/leds-lgm-sso.c
+@@ -808,8 +808,6 @@ static int intel_sso_led_probe(struct platform_device *pdev)
  
-+static struct dquot *__dqgrab(struct dquot *dquot)
-+{
-+	lockdep_assert_held(&dq_list_lock);
-+	if (!atomic_read(&dquot->dq_count))
-+		remove_free_dquot(dquot);
-+	atomic_inc(&dquot->dq_count);
-+	return dquot;
-+}
-+
-+/*
-+ * Get reference to dquot when we got pointer to it by some other means. The
-+ * dquot has to be active and the caller has to make sure it cannot get
-+ * deactivated under our hands.
-+ */
-+struct dquot *dqgrab(struct dquot *dquot)
-+{
-+	spin_lock(&dq_list_lock);
-+	WARN_ON_ONCE(!dquot_active(dquot));
-+	dquot = __dqgrab(dquot);
-+	spin_unlock(&dq_list_lock);
-+
-+	return dquot;
-+}
-+EXPORT_SYMBOL_GPL(dqgrab);
-+
- static inline int dquot_dirty(struct dquot *dquot)
- {
- 	return test_bit(DQ_MOD_B, &dquot->dq_flags);
-@@ -642,15 +667,14 @@ int dquot_scan_active(struct super_block *sb,
- 			continue;
- 		if (dquot->dq_sb != sb)
- 			continue;
--		/* Now we have active dquot so we can just increase use count */
--		atomic_inc(&dquot->dq_count);
-+		__dqgrab(dquot);
- 		spin_unlock(&dq_list_lock);
- 		dqput(old_dquot);
- 		old_dquot = dquot;
- 		/*
- 		 * ->release_dquot() can be racing with us. Our reference
--		 * protects us from new calls to it so just wait for any
--		 * outstanding call and recheck the DQ_ACTIVE_B after that.
-+		 * protects us from dquot_release() proceeding so just wait for
-+		 * any outstanding call and recheck the DQ_ACTIVE_B after that.
- 		 */
- 		wait_on_dquot(dquot);
- 		if (dquot_active(dquot)) {
-@@ -718,7 +742,7 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
- 			/* Now we have active dquot from which someone is
-  			 * holding reference so we can safely just increase
- 			 * use count */
--			dqgrab(dquot);
-+			__dqgrab(dquot);
- 			spin_unlock(&dq_list_lock);
- 			err = dquot_write_dquot(dquot);
- 			if (err && !ret)
-@@ -973,9 +997,7 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
- 		spin_unlock(&dq_list_lock);
- 		dqstats_inc(DQST_LOOKUPS);
- 	} else {
--		if (!atomic_read(&dquot->dq_count))
--			remove_free_dquot(dquot);
--		atomic_inc(&dquot->dq_count);
-+		__dqgrab(dquot);
- 		spin_unlock(&dq_list_lock);
- 		dqstats_inc(DQST_CACHE_HITS);
- 		dqstats_inc(DQST_LOOKUPS);
-diff --git a/include/linux/quotaops.h b/include/linux/quotaops.h
-index 4bc8ff2a66143..8a1ad23da3a11 100644
---- a/include/linux/quotaops.h
-+++ b/include/linux/quotaops.h
-@@ -43,14 +43,7 @@ int dquot_initialize(struct inode *inode);
- bool dquot_initialize_needed(struct inode *inode);
- void dquot_drop(struct inode *inode);
- struct dquot *dqget(struct super_block *sb, struct kqid qid);
--static inline struct dquot *dqgrab(struct dquot *dquot)
--{
--	/* Make sure someone else has active reference to dquot */
--	WARN_ON_ONCE(!atomic_read(&dquot->dq_count));
--	WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags));
--	atomic_inc(&dquot->dq_count);
--	return dquot;
--}
-+struct dquot *dqgrab(struct dquot *dquot);
+ 	priv->fpid_clkrate = clk_get_rate(priv->clocks[1].clk);
  
- static inline bool dquot_is_busy(struct dquot *dquot)
- {
+-	priv->mmap = syscon_node_to_regmap(dev->of_node);
+-
+ 	priv->mmap = syscon_node_to_regmap(dev->of_node);
+ 	if (IS_ERR(priv->mmap)) {
+ 		dev_err(dev, "Failed to map iomem!\n");
 -- 
 2.53.0
 
