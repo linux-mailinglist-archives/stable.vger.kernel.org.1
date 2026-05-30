@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-259081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258465-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHL6NhAyG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259081-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:04 +0200
+	id cLZkH/UpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258465-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4181E612B94
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0424B611730
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6351D3104048
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:42:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A5093070DCE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC64E29E11A;
-	Sat, 30 May 2026 18:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1223AFD11;
+	Sat, 30 May 2026 18:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QPDRlo9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtxwJkcP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2461B87C0;
-	Sat, 30 May 2026 18:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583333112C1;
+	Sat, 30 May 2026 18:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166550; cv=none; b=A9JnBqmixGWDt1gKVGT8Bgz7hmYFrfwj10Nh+XSnLfBdvsHXo1feBrImnVXvdCQQ8b8Nw0PzydQHW8Ldttylixjb/CydPKAc/P8Xmzozwg4rSTL0ddtMyQrRv/96+n0QOjtblALtTQhRIheXwY9Ln/CMA4P6bPHeF/swDrdfdl0=
+	t=1780164441; cv=none; b=SAo8xuT6Ui1YEawRTfo+LitDjfuI6sdJIAnl1Aj4CDnAS1ahWVX1qZwVkgFjIZvTgSmTvLSuwqd4XPuoPtxuI2ri5LgsNvv5IvEMiJRZlcg3/G5uwuBh2fcHQKSZEQtrtbQkVBFgP5+VjhO6XbPRIf9scw9YlHijSLonB1WJNqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166550; c=relaxed/simple;
-	bh=e+b7Q+Vh/xI0oCKKAP7HwHWxPzq5sv+i3+LW4c/UH40=;
+	s=arc-20240116; t=1780164441; c=relaxed/simple;
+	bh=ebdq+IzmpPI6BfugIf6skAciFHbSloiBiyt8CxFKVuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EaTfQiTfvOPekOvFL2M5oiWCbAuMLE+lY/cPwo3wXNYfC+dGf+P9/dN0sgpxIqs87Dtj31PLgVrvjhmWbQk7VtJSKVF60NDH4pU5SU8aJijRCnstS3oSjfvlEhf/NlaLoO1HWUY7M525VFAqzBRaTUsh4Pvv63II0YJ00moS7c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QPDRlo9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53FE1F00893;
-	Sat, 30 May 2026 18:42:28 +0000 (UTC)
+	 MIME-Version; b=hme2Wf90kF/XFz6qROI0h6kWxmyt2WUtdP4xDl97PcjKY1FzZ5KhWYJCdckmfodLnVYYZ3VkTeCa0iSpefwrdF4lCJnm5AmIHBBtHyBJNCeyWfmbVbgJqcEaXJfeeJrlyY2DPtrGyV+f0otmijHSadQUVuEsJGMlc7qHD28UQXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtxwJkcP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A07F1F00893;
+	Sat, 30 May 2026 18:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166549;
-	bh=3ifX0w4erz93bkXjhPirIooM56erkzOeJACV7T4Rgnk=;
+	s=korg; t=1780164440;
+	bh=pXVMHKsLqoPB1tFYWCa1to8cP/tBFDcCkMVcYY7NR4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2QPDRlo9VMYsoLSnVDBgd0LsSlqIhg9qYK5yEPaNszGRB1hzg+nuxdX5etbihCAA9
-	 PiY4KGBTAi3UjQB5Pa4OMmPDIiv6XWhuRXz6j3IlNe+ZwT3w7YD9kQJ83nlG4rMgwE
-	 Err108pH6ByJQVb9jHvYmIBo3TW6rTDu1sUHwjbo=
+	b=RtxwJkcPPaW8KhIc9Ikz85cjFg4+mbHvG9kljLW/z7f8JraLCXGtIHO794taG95m0
+	 3CfK3rro/l1WFUVnQJHJ4VCdYOCJiotTblOhrsULDe4WuJOafZ6pP64YtQOHlZ+Xfh
+	 fcVBKfPIrXWZBwGBybZiks+BRjGW9FTSL2wLnkKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 360/589] ARM: dts: mediatek: mt7623: fix efuse fallback compatible
+Subject: [PATCH 5.15 527/776] tty: hvc_iucv: fix off-by-one in number of supported devices
 Date: Sat, 30 May 2026 18:04:01 +0200
-Message-ID: <20260530160234.311075021@linuxfoundation.org>
+Message-ID: <20260530160253.837059044@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259081-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258465-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,devicetree.org:url,collabora.com:email,0.155.164.36:email,0.155.187.48:email]
-X-Rspamd-Queue-Id: 4181E612B94
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email]
+X-Rspamd-Queue-Id: 0424B611730
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 5978ff33cc6f0988388a2830dc5cd2ea4e81f36a ]
+[ Upstream commit f2a880e802ad12d1e38039d1334fb1475d0f5241 ]
 
-Fix following validation error:
-arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: compatible: 'oneOf' conditional failed, one must be fixed:
-        ['mediatek,mt7623-efuse', 'mediatek,mt8173-efuse'] is too long
-        'mediatek,mt8173-efuse' was expected
-        'mediatek,efuse' was expected
-        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
-arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: Unevaluated properties are not allowed ('compatible' was unexpected)
-        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
+MAX_HVC_IUCV_LINES == HVC_ALLOC_TTY_ADAPTERS == 8.
+This is the number of entries in:
+  static struct hvc_iucv_private *hvc_iucv_table[MAX_HVC_IUCV_LINES];
 
-Fixes: 43c7a91b4b3a ("arm: dts: mt7623: add efuse nodes to the mt7623.dtsi file")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Sometimes hvc_iucv_table[] is limited by:
+(a)	if (num > hvc_iucv_devices) // for error detection
+or
+(b)	for (i = 0; i < hvc_iucv_devices; i++) // in 2 places
+(so these 2 don't agree; second one appears to be correct to me.)
+
+hvc_iucv_devices can be 0..8. This is a counter.
+(c)	if (hvc_iucv_devices > MAX_HVC_IUCV_LINES)
+
+If hvc_iucv_devices == 8, (a) allows the code to access hvc_iucv_table[8].
+Oops.
+
+Fixes: 44a01d5ba8a4 ("[S390] s390/hvc_console: z/VM IUCV hypervisor console support")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260130072939.1535869-1-rdunlap@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/mt7623.dtsi | 2 +-
+ drivers/tty/hvc/hvc_iucv.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/mt7623.dtsi b/arch/arm/boot/dts/mt7623.dtsi
-index c267fc1f83579..290527c9711ec 100644
---- a/arch/arm/boot/dts/mt7623.dtsi
-+++ b/arch/arm/boot/dts/mt7623.dtsi
-@@ -329,7 +329,7 @@ sysirq: interrupt-controller@10200100 {
- 
- 	efuse: efuse@10206000 {
- 		compatible = "mediatek,mt7623-efuse",
--			     "mediatek,mt8173-efuse";
-+			     "mediatek,efuse";
- 		reg = <0 0x10206000 0 0x1000>;
- 		#address-cells = <1>;
- 		#size-cells = <1>;
+diff --git a/drivers/tty/hvc/hvc_iucv.c b/drivers/tty/hvc/hvc_iucv.c
+index 7d49a872de48a..9551269e106a4 100644
+--- a/drivers/tty/hvc/hvc_iucv.c
++++ b/drivers/tty/hvc/hvc_iucv.c
+@@ -130,7 +130,7 @@ static struct iucv_handler hvc_iucv_handler = {
+  */
+ static struct hvc_iucv_private *hvc_iucv_get_private(uint32_t num)
+ {
+-	if (num > hvc_iucv_devices)
++	if (num >= hvc_iucv_devices)
+ 		return NULL;
+ 	return hvc_iucv_table[num];
+ }
 -- 
 2.53.0
 
