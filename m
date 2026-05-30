@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YC+xAKQnG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258452-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:36 +0200
+	id cOOyMH8eG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E0EE611106
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4F860FCAD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D98B13012564
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:06:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7CA6530B32A8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC9C3AFD11;
-	Sat, 30 May 2026 18:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF99334695;
+	Sat, 30 May 2026 17:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0PtRaW4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhZJvp9m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046EE340A6F;
-	Sat, 30 May 2026 18:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207963161A3;
+	Sat, 30 May 2026 17:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164397; cv=none; b=kgn0aVguthzx1qOGkg504bU+DtGyLpyHgDyy9cFAF1LS3TL+e6Uzo2rSTve7uau+7cGAABF1H/+VHSA2imwQRTgd/xPXUDXGb0kTG0RTOnSPat0xZe+lL/a13JMk+Z68ouTDhESUGGEpWaVCwq6GSki1dl0KsVhmlZYPJNBOX2k=
+	t=1780161746; cv=none; b=DWDbe+sOW6vvHTcrESWR6YxXtfiJ7n/2PPXrp0jeefTr4AFlzJ3+HTgQ/JUM7OtETCrgdrxNAbVgpHjAbFcprC/E0y9/mv0yJRBXVWZXVCsETbYniOZt+Q4S09PA+Mb47RpMlKZh17edr0Qjkuwswj4zIV9vnJK8K0gBd0EaXwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164397; c=relaxed/simple;
-	bh=tx9NIDoJyVQTEEUZh/lZwchHAJqjSTMMSNNWC73RGiM=;
+	s=arc-20240116; t=1780161746; c=relaxed/simple;
+	bh=XigeqrE9LU99mk4Duke5JeSu8PtWUqEkYjQP6jg2igs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yiy4oR5pPq9xWWsEBowtDxtavLBQ5oc0dZRpL5pPfSL2ct2enRSjjHxUUjT2hikVJi5aCk+0i0ZYKXtK97ukDi+DZvFpriSpYfgX1Dd7LtyShqv3h6muxj8u2O2ocOLqcCbeZ3g6XbWDflelGkX628Oqzcuj3d3eFOEeETynJJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0PtRaW4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156FB1F00893;
-	Sat, 30 May 2026 18:06:35 +0000 (UTC)
+	 MIME-Version; b=mmB7Wm5SO2v5KxYR4tkpQ/yHjdOXch+JSaBvO0J+lBg+InMECgKl+0NOdeGi2QrEZVV5mYqJORH55hfxlSbLYlgepFP7+jXuJ+nXeWPovMokAB61ly91WbcziUWZSU52ZRw6vT1SIf+5TDPjMTdEolJYH6bpwf4v5R8zqfhV4wU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhZJvp9m; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638301F00893;
+	Sat, 30 May 2026 17:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164396;
-	bh=ccg/QF3/5m1rKYwL65f72sgtuZBoobF8hIhY9Zb2kb4=;
+	s=korg; t=1780161745;
+	bh=b1sOUuGCOrI0s/IOaUqrBvKeo8+jj6QfA6Gi5fHIpco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h0PtRaW48Swurn47RTPjQPn0N2MBwVwqdvrAEBbM4pElfev81ASL3JSks+C7zHaaK
-	 e3T/mwIqvu7NVV10AC9Ta0cCffFleiULZKuEK4z0MAw4NZdSeID1Heul5D8GCgtbMt
-	 dxoRwV7jFomI4nwYx9CZ7JuBDqqrsMNKe4rP+JPE=
+	b=rhZJvp9mQ+4pxwaYg5BNY1yjrPk2oc9R5kID6FzDEbMG0IyeVRA5d+6xNW9uBDqEq
+	 NXzRSVtWyuEmgi0TFMrOBTLz8Ps0ps0sM3DcXJZXBgJtIUmfZfrDUYd3RjPa4Q2ywQ
+	 Oz2Vdl2peb9U5j30JoX3mPGAZzhsDLmCXio6gZ6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 525/776] leds: lgm-sso: Remove duplicate assignments for priv->mmap
+Subject: [PATCH 6.1 715/969] net/sched: sch_fq_codel: remove data-races from fq_codel_dump_stats()
 Date: Sat, 30 May 2026 18:03:59 +0200
-Message-ID: <20260530160253.790418265@linuxfoundation.org>
+Message-ID: <20260530160320.278469671@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,66 +67,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258452-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257660-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9E0EE611106
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email]
+X-Rspamd-Queue-Id: 5A4F860FCAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 7186d0330c3f3e86de577687a82f4ebd96dcb5ac ]
+[ Upstream commit bbfaa73ea6871db03dc05d7f05f00557a8981f25 ]
 
-Remove duplicate assignment of priv->mmap in intel_sso_led_probe().
+fq_codel_dump_stats() acquires the qdisc spinlock a bit too late.
 
-Fixes: fba8a6f2263b ("leds: lgm-sso: Fix clock handling")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://patch.msgid.link/20260226033048.3715915-1-nichen@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+Move this acquisition before we fill st.qdisc_stats with live data.
+
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260421142509.3967231-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/blink/leds-lgm-sso.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/sched/sch_fq_codel.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/leds/blink/leds-lgm-sso.c b/drivers/leds/blink/leds-lgm-sso.c
-index fd8b7573285ad..45045c2a26574 100644
---- a/drivers/leds/blink/leds-lgm-sso.c
-+++ b/drivers/leds/blink/leds-lgm-sso.c
-@@ -808,8 +808,6 @@ static int intel_sso_led_probe(struct platform_device *pdev)
+diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+index 47b5a056165cb..056895df17854 100644
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -568,6 +568,8 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	};
+ 	struct list_head *pos;
  
- 	priv->fpid_clkrate = clk_get_rate(priv->clocks[1].clk);
++	sch_tree_lock(sch);
++
+ 	st.qdisc_stats.maxpacket = q->cstats.maxpacket;
+ 	st.qdisc_stats.drop_overlimit = q->drop_overlimit;
+ 	st.qdisc_stats.ecn_mark = q->cstats.ecn_mark;
+@@ -576,7 +578,6 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	st.qdisc_stats.memory_usage  = q->memory_usage;
+ 	st.qdisc_stats.drop_overmemory = q->drop_overmemory;
  
--	priv->mmap = syscon_node_to_regmap(dev->of_node);
--
- 	priv->mmap = syscon_node_to_regmap(dev->of_node);
- 	if (IS_ERR(priv->mmap)) {
- 		dev_err(dev, "Failed to map iomem!\n");
+-	sch_tree_lock(sch);
+ 	list_for_each(pos, &q->new_flows)
+ 		st.qdisc_stats.new_flows_len++;
+ 
 -- 
 2.53.0
 
