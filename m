@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-258704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kGnsHksrG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:11 +0200
+	id ELjwD6AiG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF9B611A6C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 420296105FE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AE7733036CFD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7AFF9300184F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594EF24EA90;
-	Sat, 30 May 2026 18:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59329351C2F;
+	Sat, 30 May 2026 17:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICDV9YhL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txOLPgc9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2092817555;
-	Sat, 30 May 2026 18:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B4C3546EA;
+	Sat, 30 May 2026 17:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165256; cv=none; b=lxqic0gQIhU4VIXOio/W0aVGSQE1rjzqaV3ZvIBGwZegDLFe8IHQQ9I1rfrIEBm55CbpYqIVJoe0rbfGWLW1GZqS5NskeNBhk0CsBt4OvSG8VUsRUBoxtMbyuDwp07PqfsZscOZX5fG9qXHpr8OqlrKYTV0eIe2/5C0COXshr90=
+	t=1780163223; cv=none; b=cKnQ9aptFAkHHIEOanJUC8R5Duc02IxlzFBeUsyMgs/86718CW+TwRAIm9aURKBk5X7t9TWnBu4UWGe9koZ+09GGMdMegRc8l6TZQdBs1baIrp4N7qj2dllkfHEsY02FmfccY6L9CBcEmFU8b1wkO6UcVZrqIbG58aGKXuDS1p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165256; c=relaxed/simple;
-	bh=6uv6z0S5kIHpP+smzH6nHWBXycpa933uZon18Ig0c9Q=;
+	s=arc-20240116; t=1780163223; c=relaxed/simple;
+	bh=ooFwcccv075WnkbSZ52tbQK1aLHibF9eBdFFO6gAANo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GeUBxsqh6oVLAj1aroDTYG4fayUTXF/iGYkrid317o6p9dIgOO8fEJTb6A9ZBhcr1jOCvuROX1O9JuxY8c8ox2epZS4Q0Tj7udMWZ5tOVk+3ifUivuYOQX0AEhxZyZuaYF/bKImweosDsWPqFmwQNxP25MA9qgb0PKb08zTaq0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICDV9YhL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BC31F00893;
-	Sat, 30 May 2026 18:20:54 +0000 (UTC)
+	 MIME-Version; b=E1lcKxORlO5rwDF9N7s7CPGLc98nu0jJQvf7aMMiAGPTCiLWfuveRixigA1YaNEQOQ8fEnZ0vlRdbf4+lvx99YkK2eoyo4/74pY3kt6GFP5VMjEUYUZRRLcibtot468cd7kTloXrM9ZWIyNm0+HJO0LKnHCVRN04xQRqgXNfTpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txOLPgc9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21C61F00893;
+	Sat, 30 May 2026 17:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165255;
-	bh=ANykXJ7syG1pVntCZgkkRvakQnlqrNJCcBfNqHwhYpY=;
+	s=korg; t=1780163222;
+	bh=QWx6aHlMxyZ9pRAx3GvSvF6rUyEGylzHzVYWWgdQQ/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ICDV9YhLH2j401cJmWuAZbAjWiVEEYzFSY0UA5DQfSgBFvlues4ysCPciuV/1pYkb
-	 HwZqDfFjULEeDPPTD7CV3ot7R/hIBLuj8VzB1bgZrZ8voaVaOptU8tKX5hWiyoyE0z
-	 hEoSct/P533epXbdbimtqNH8H0x2zMt1PpkgIBKs=
+	b=txOLPgc9TYpBHAIPHS4nXsw8hiAA6ehxaffDey4MklBhOzEhzOVVkW2gUhvzkEd6T
+	 wvdUl8Ysp3g+22XVfkodzYZb6ckaqgNSAAaE8acN+IFD+XWR7StrtUbiMg9J+91ONE
+	 53Ec3xECTa+u+EHigITFOGlkAppYgVI/TKYIpQzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iskhakov Daniil <dish@amicon.ru>,
-	Agalakov Daniil <ade@amicon.ru>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 025/589] e1000: check return value of e1000_read_eeprom
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 5.15 192/776] device property: Make modifications of fwnode "flags" thread safe
 Date: Sat, 30 May 2026 17:58:26 +0200
-Message-ID: <20260530160225.243459586@linuxfoundation.org>
+Message-ID: <20260530160245.468147006@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,110 +68,237 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [7.84 / 15.00];
-	URIBL_BLACK(7.50)[linuxtesting.org:url];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-258704-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-258102-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	GREYLIST(0.00)[pass,meta];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_SPAM(0.00)[0.985];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
-	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxtesting.org:url,amicon.ru:email]
-X-Rspamd-Queue-Id: ECF9B611A6C
-X-Rspamd-Action: add header
+	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,chromium.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sang-engineering.com:email]
+X-Rspamd-Queue-Id: 420296105FE
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Agalakov Daniil <ade@amicon.ru>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit d3baa34a470771399c1495bc04b1e26ac15d598e ]
+commit f72e77c33e4b5657af35125e75bab249256030f3 upstream.
 
-[Why]
-e1000_set_eeprom() performs a read-modify-write operation when the write
-range is not word-aligned. This requires reading the first and last words
-of the range from the EEPROM to preserve the unmodified bytes.
+In various places in the kernel, we modify the fwnode "flags" member
+by doing either:
+  fwnode->flags |= SOME_FLAG;
+  fwnode->flags &= ~SOME_FLAG;
 
-However, the code does not check the return value of e1000_read_eeprom().
-If the read fails, the operation continues using uninitialized data from
-eeprom_buff. This results in corrupted data being written back to the
-EEPROM for the boundary words.
+This type of modification is not thread-safe. If two threads are both
+mucking with the flags at the same time then one can clobber the
+other.
 
-Add the missing error checks and abort the operation if reading fails.
+While flags are often modified while under the "fwnode_link_lock",
+this is not universally true.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Create some accessor functions for setting, clearing, and testing the
+FWNODE flags and move all users to these accessor functions. New
+accessor functions use set_bit() and clear_bit(), which are
+thread-safe.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Iskhakov Daniil <dish@amicon.ru>
-Signed-off-by: Iskhakov Daniil <dish@amicon.ru>
-Signed-off-by: Agalakov Daniil <ade@amicon.ru>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Reviewed-by: Saravana Kannan <saravanak@kernel.org>
+Link: https://patch.msgid.link/20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid
+[ Fix fwnode_clear_flag() argument alignment, restore dropped blank
+  line in fwnode_dev_initialized(), and remove unnecessary parentheses
+  around fwnode_test_flag() calls. - Danilo ]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/e1000/e1000_ethtool.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/base/core.c        |   12 ++++++------
+ drivers/net/phy/mdio_bus.c |    4 ++--
+ drivers/of/property.c      |    2 +-
+ include/linux/fwnode.h     |   40 +++++++++++++++++++++++++++++++---------
+ 4 files changed, 40 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-index f976e9daa3d88..3a06834e57221 100644
---- a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-+++ b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-@@ -496,14 +496,19 @@ static int e1000_set_eeprom(struct net_device *netdev,
- 		 */
- 		ret_val = e1000_read_eeprom(hw, first_word, 1,
- 					    &eeprom_buff[0]);
-+		if (ret_val)
-+			goto out;
-+
- 		ptr++;
- 	}
--	if (((eeprom->offset + eeprom->len) & 1) && (ret_val == 0)) {
-+	if ((eeprom->offset + eeprom->len) & 1) {
- 		/* need read/modify/write of last changed EEPROM word
- 		 * only the first byte of the word is being modified
- 		 */
- 		ret_val = e1000_read_eeprom(hw, last_word, 1,
- 					    &eeprom_buff[last_word - first_word]);
-+		if (ret_val)
-+			goto out;
- 	}
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -171,7 +171,7 @@ void fw_devlink_purge_absent_suppliers(s
+ 	if (fwnode->dev)
+ 		return;
  
- 	/* Device's eeprom is always little-endian, word addressable */
-@@ -522,6 +527,7 @@ static int e1000_set_eeprom(struct net_device *netdev,
- 	if ((ret_val == 0) && (first_word <= EEPROM_CHECKSUM_REG))
- 		e1000_update_eeprom_checksum(hw);
+-	fwnode->flags |= FWNODE_FLAG_NOT_DEVICE;
++	fwnode_set_flag(fwnode, FWNODE_FLAG_NOT_DEVICE);
+ 	fwnode_links_purge_consumers(fwnode);
  
-+out:
- 	kfree(eeprom_buff);
- 	return ret_val;
+ 	fwnode_for_each_available_child_node(fwnode, child)
+@@ -1620,11 +1620,11 @@ bool fw_devlink_is_strict(void)
+ 
+ static void fw_devlink_parse_fwnode(struct fwnode_handle *fwnode)
+ {
+-	if (fwnode->flags & FWNODE_FLAG_LINKS_ADDED)
++	if (fwnode_test_flag(fwnode, FWNODE_FLAG_LINKS_ADDED))
+ 		return;
+ 
+ 	fwnode_call_int_op(fwnode, add_links);
+-	fwnode->flags |= FWNODE_FLAG_LINKS_ADDED;
++	fwnode_set_flag(fwnode, FWNODE_FLAG_LINKS_ADDED);
  }
--- 
-2.53.0
-
+ 
+ static void fw_devlink_parse_fwtree(struct fwnode_handle *fwnode)
+@@ -1765,7 +1765,7 @@ static int fw_devlink_create_devlink(str
+ 	 * When such a flag is set, we can't create device links where P is the
+ 	 * supplier of C as that would delay the probe of C.
+ 	 */
+-	if (sup_handle->flags & FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD &&
++	if (fwnode_test_flag(sup_handle, FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD) &&
+ 	    fwnode_is_ancestor_of(sup_handle, con->fwnode))
+ 		return -EINVAL;
+ 
+@@ -1777,7 +1777,7 @@ static int fw_devlink_create_devlink(str
+ 		 * supplier device indefinitely.
+ 		 */
+ 		if (sup_dev->links.status == DL_DEV_NO_DRIVER &&
+-		    sup_handle->flags & FWNODE_FLAG_INITIALIZED) {
++		    fwnode_test_flag(sup_handle, FWNODE_FLAG_INITIALIZED)) {
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+@@ -1802,7 +1802,7 @@ static int fw_devlink_create_devlink(str
+ 	}
+ 
+ 	/* Supplier that's already initialized without a struct device. */
+-	if (sup_handle->flags & FWNODE_FLAG_INITIALIZED)
++	if (fwnode_test_flag(sup_handle, FWNODE_FLAG_INITIALIZED))
+ 		return -EINVAL;
+ 
+ 	/*
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -534,8 +534,8 @@ int __mdiobus_register(struct mii_bus *b
+ 		return -EINVAL;
+ 
+ 	if (bus->parent && bus->parent->of_node)
+-		bus->parent->of_node->fwnode.flags |=
+-					FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD;
++		fwnode_set_flag(&bus->parent->of_node->fwnode,
++				FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD);
+ 
+ 	BUG_ON(bus->state != MDIOBUS_ALLOCATED &&
+ 	       bus->state != MDIOBUS_UNREGISTERED);
+--- a/drivers/of/property.c
++++ b/drivers/of/property.c
+@@ -1130,7 +1130,7 @@ static int of_link_to_phandle(struct dev
+ 	sup_dev = get_dev_from_fwnode(&sup_np->fwnode);
+ 	if (!sup_dev &&
+ 	    (of_node_check_flag(sup_np, OF_POPULATED) ||
+-	     sup_np->fwnode.flags & FWNODE_FLAG_NOT_DEVICE)) {
++	     fwnode_test_flag(&sup_np->fwnode, FWNODE_FLAG_NOT_DEVICE))) {
+ 		pr_debug("Not linking %pOFP to %pOFP - No struct device\n",
+ 			 con_np, sup_np);
+ 		of_node_put(sup_np);
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -11,6 +11,7 @@
+ 
+ #include <linux/types.h>
+ #include <linux/list.h>
++#include <linux/bitops.h>
+ #include <linux/err.h>
+ 
+ struct fwnode_operations;
+@@ -27,10 +28,10 @@ struct device;
+  *			     their respective drivers as soon as they are
+  *			     added.
+  */
+-#define FWNODE_FLAG_LINKS_ADDED			BIT(0)
+-#define FWNODE_FLAG_NOT_DEVICE			BIT(1)
+-#define FWNODE_FLAG_INITIALIZED			BIT(2)
+-#define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD	BIT(3)
++#define FWNODE_FLAG_LINKS_ADDED			0
++#define FWNODE_FLAG_NOT_DEVICE			1
++#define FWNODE_FLAG_INITIALIZED			2
++#define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD	3
+ 
+ struct fwnode_handle {
+ 	struct fwnode_handle *secondary;
+@@ -38,7 +39,7 @@ struct fwnode_handle {
+ 	struct device *dev;
+ 	struct list_head suppliers;
+ 	struct list_head consumers;
+-	u8 flags;
++	unsigned long flags;
+ };
+ 
+ struct fwnode_link {
+@@ -176,16 +177,37 @@ static inline void fwnode_init(struct fw
+ 	INIT_LIST_HEAD(&fwnode->suppliers);
+ }
+ 
++static inline void fwnode_set_flag(struct fwnode_handle *fwnode,
++				   unsigned int bit)
++{
++	set_bit(bit, &fwnode->flags);
++}
++
++static inline void fwnode_clear_flag(struct fwnode_handle *fwnode,
++				     unsigned int bit)
++{
++	clear_bit(bit, &fwnode->flags);
++}
++
++static inline void fwnode_assign_flag(struct fwnode_handle *fwnode,
++				      unsigned int bit, bool value)
++{
++	assign_bit(bit, &fwnode->flags, value);
++}
++
++static inline bool fwnode_test_flag(struct fwnode_handle *fwnode,
++				    unsigned int bit)
++{
++	return test_bit(bit, &fwnode->flags);
++}
++
+ static inline void fwnode_dev_initialized(struct fwnode_handle *fwnode,
+ 					  bool initialized)
+ {
+ 	if (IS_ERR_OR_NULL(fwnode))
+ 		return;
+ 
+-	if (initialized)
+-		fwnode->flags |= FWNODE_FLAG_INITIALIZED;
+-	else
+-		fwnode->flags &= ~FWNODE_FLAG_INITIALIZED;
++	fwnode_assign_flag(fwnode, FWNODE_FLAG_INITIALIZED, initialized);
+ }
+ 
+ extern u32 fw_devlink_get_flags(void);
 
 
 
