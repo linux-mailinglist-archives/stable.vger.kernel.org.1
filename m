@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNYTEv0oG2rg/ggAu9opvQ
-	(envelope-from <stable+bounces-258410-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:21 +0200
+	id AOMpINcdG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C506114C6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C5260FADF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA566310EC5D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:04:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9576E3077C94
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22366341AC7;
-	Sat, 30 May 2026 18:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D5E33E36A;
+	Sat, 30 May 2026 17:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9po43wv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvJM0QkR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0225823392B;
-	Sat, 30 May 2026 18:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2265A33FE15;
+	Sat, 30 May 2026 17:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164256; cv=none; b=aJrFMM4fDlnqiFMl23Ec9GUDs4y9fm9M7RR3E4f2w5+EMOyHz88FHRCvjacxyKS8U2NgL32Aqod7yO3H76wbCspBthEhL+nx1lEl4zULQf3b2EXXFTbggpZJDwzAx2JelhuJC5Aqro0Chb2oLjYFkh5FWoNuL9vM+HksK8BahWg=
+	t=1780161669; cv=none; b=OSfayMMyTcy1Xfw1CA6j3SRasFKii8FTDnMo4D/oCG8rRNf+FIWlVM60RfRu/9EnZ8leZX7DiYKxKm1l6m9ySgTDGqfASpawVd5jVXz9mLOcGae7anYBFIrpU9GHM4o59ZyBN1BGs4kWCujXmaD3jdKv92u62zIp4jtD5h42Cwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164256; c=relaxed/simple;
-	bh=KApk8uxzXOjGAD+bVZI2Us1W08OLuh3Xy6gOKEOGAxc=;
+	s=arc-20240116; t=1780161669; c=relaxed/simple;
+	bh=w0w/cG3mVaOTTPYDZNaFnf2nme3X3l0Sm3mPHM/Ab+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kb1/Z2qJmzjV4Jaq2FH5FvFuO6k3OaOm8Guz+Rd3Yf/paiEhucpS+qW2URuADUbfiKsWjNbZttKKUvZuE4mvt1Wpc2yNUrwzatGA3l6ZzFZcoM+ul2Fn2JbVbn3gwbG9+ds49Tu7y1OY0exuzinkmKFftI20G2kZaovwqBnRSUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9po43wv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BBA1F00893;
-	Sat, 30 May 2026 18:04:15 +0000 (UTC)
+	 MIME-Version; b=G6bQY6SARzHffrgu/v3vQpdPICKENve8blhVXZ2mvgkOJf5MaRggCbUUdQXRsh4VCiEoqQT08epBaJ41KB5BUx84fgiOTS3Ain5180ImDXR4eFfMMahCcq6FHVWCJ6PwC4wtSJw20OSfyePwaTdAiKtrTsZjjyu3Xlu2mL7fHRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvJM0QkR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631591F00898;
+	Sat, 30 May 2026 17:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164255;
-	bh=EILfFk3gAelawK+R3Qn0eb5ycg65AFS2Ir82MPEd6KE=;
+	s=korg; t=1780161668;
+	bh=8W7kHgzP2gfgsBVFiJysMVsiEo4aaUJBlC3lAPA77w8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g9po43wvGghAQdYtzxhVIj5wAWR1zD7c+vbH6/2Qzc/qt3K2gMdwhEzPJQEeYYCrD
-	 1ZXNBU2qJkCK0G+onqf2/wucm41ssSIoGJq1g3yKf4SZyhYmmU7nCGJf9BcnGCGj1A
-	 QO1K7yrCDXHn/W5dUDkqK5nIpTf3fL+zdRvh5nXk=
+	b=JvJM0QkRkzg2bRStqpn9MHUEjGTDl8ylEJAn8iDhZtxh3jTUgPUm9Z2ssx99JDeDp
+	 dHEBTYV/p2QsKnNnDgvgqQTH2/Qbhud693TL2469eKTM2HNwWX6dJxynt6Zjp0P3+/
+	 7Q7fmdfULT2TJGcmNknVz9j05AXNdxBy4sFYF7n8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 501/776] dmaengine: mxs-dma: Fix missing return value from of_dma_controller_register()
+Subject: [PATCH 6.1 691/969] tcp: annotate data-races around tp->bytes_retrans
 Date: Sat, 30 May 2026 18:03:35 +0200
-Message-ID: <20260530160253.237938216@linuxfoundation.org>
+Message-ID: <20260530160319.591843509@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,67 +66,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257637-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258410-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: C2C506114C6
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E8C5260FADF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ab2bf6d4c0a0152907b18d25c1b118ea5ea779df ]
+[ Upstream commit 5efc7b9f7cbd43401f1af81d3d7f2be00f93390d ]
 
-Propagate the return value of of_dma_controller_register() in probe()
-instead of ignoring it.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Fixes: a580b8c5429a6 ("dmaengine: mxs-dma: add dma support for i.MX23/28")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260225-mxsdma-module-v3-2-8f798b13baa6@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: fb31c9b9f6c8 ("tcp: add data bytes retransmitted stats")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-9-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/mxs-dma.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp.c        | 4 ++--
+ net/ipv4/tcp_output.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/mxs-dma.c b/drivers/dma/mxs-dma.c
-index dc147cc2436e9..5d34440b9e127 100644
---- a/drivers/dma/mxs-dma.c
-+++ b/drivers/dma/mxs-dma.c
-@@ -827,6 +827,7 @@ static int mxs_dma_probe(struct platform_device *pdev)
- 	if (ret) {
- 		dev_err(mxs_dma->dma_device.dev,
- 			"failed to register controller\n");
-+		return ret;
- 	}
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index eb59c3d022bb7..c60f8c69c19f5 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4110,8 +4110,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
  
- 	dev_info(mxs_dma->dma_device.dev, "initialized\n");
+ 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, READ_ONCE(tp->bytes_sent),
+ 			  TCP_NLA_PAD);
+-	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS, tp->bytes_retrans,
+-			  TCP_NLA_PAD);
++	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
++			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
+ 	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, tp->dsack_dups);
+ 	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
+ 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index bb023a07cb1fc..aa2832c90e272 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -3289,7 +3289,7 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
+ 	if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)
+ 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPSYNRETRANS);
+ 	WRITE_ONCE(tp->total_retrans, tp->total_retrans + segs);
+-	tp->bytes_retrans += skb->len;
++	WRITE_ONCE(tp->bytes_retrans, tp->bytes_retrans + skb->len);
+ 
+ 	/* make sure skb->data is aligned on arches that require it
+ 	 * and check if ack-trimming & collapsing extended the headroom
 -- 
 2.53.0
 
