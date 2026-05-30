@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-258935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BXcHuowG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-258935-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:10 +0200
+	id 8EjZM4YdG2qW/QgAu9opvQ
+	(envelope-from <stable+bounces-257558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD0E61285B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA6860F9A4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3858030E8D7A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:34:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38775305E2A2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12CDE33F590;
-	Sat, 30 May 2026 18:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09653A542F;
+	Sat, 30 May 2026 17:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W49uLqMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZSZE3Cm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7D421E098;
-	Sat, 30 May 2026 18:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5C8350A05;
+	Sat, 30 May 2026 17:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166038; cv=none; b=My4k+bEXdEveuYHZoN6p3aYS3tHOEGI74SXnsR4d6kE4VewAm92UVWInDHJtOvCfMGhTfXkiObOXJFp9RO39lj+CwCVykdAOZAm2JSXHPpDPf4YuXb3vTEVDCZFDl1iMwd1G0nm8EhT/8QGeZoFR+z6BHGoR9jyq+AT9YPbWSQQ=
+	t=1780161399; cv=none; b=osceEYIo84wMS/NamwjvCb4EPx9tOlxKnV5zJgGXy6lTTHVnprjLktLjdxaMav+Jp8EwxacsJfw4iALBYeR3iH8f8xfIV710BcccPNoZEQQt2HyntVCBCbIf4z/hGfeB6vfDgk69xYHoiO0/0RDu0AJ2Y3NCC1PBmIVoSZU6HXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166038; c=relaxed/simple;
-	bh=9k3G6pGSGDXvBn+ORygZdgHyTisKRbZsOKVRu0nyong=;
+	s=arc-20240116; t=1780161399; c=relaxed/simple;
+	bh=53RdUUjwBma+Z1PHyL79YokSMsDg7T1F6Ya+Ac5Jc94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BarkjtIc1fq87+pAdS0Tq/LTQQsnZ/puI92GQVtHNo2T+SBTTb/7/vedVig77iDi2M+CigRoYiZqdYoYqge4MoXPprOGRWFGbsCEOQrxAv1mq+BkblLDmZZB2d5XqP3Y20oqL7dWGwPCMNYvJMO3ZiFM9+hrqey+YRZeDx9+W54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W49uLqMN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6701F00893;
-	Sat, 30 May 2026 18:33:56 +0000 (UTC)
+	 MIME-Version; b=HWWWQi2VoK5RSElIKcB3/ndq4FnzLjR1lixLmNKSmiz1zcaf1enL+GGDgu6m8avIevKHucFwFva9MhXoTco5ztnxzlOI+QXY498XZuOAluhbu/ZXFp5zg1X1o6VfWu2eDpu4FtbHiX3LxgvtepV4HcK6G5XAd5tVx8LgOMCxq5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZSZE3Cm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9C81F00893;
+	Sat, 30 May 2026 17:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166037;
-	bh=vJzjCjMarN0ISobf/Gud+Cf7tA6egl9CExeqN7xcDNE=;
+	s=korg; t=1780161398;
+	bh=75XavC23mfP5wtNVtstd1vR0idrF2JBwsQwhlVNakUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W49uLqMNttQ66erpI9je4qWf5zmLMoIsovZxF7F2qw6TGaXQZNp45mM9qeQDIOWsH
-	 FSoStXJAetBbieXEmZhu9AB36oNTkMsH6DodSd7h3oG01uHXk+bkBnou2ZJW5xs7HO
-	 LEN3IBiMN5moJKsyMyosP1AwJixKHyW7+NUhi0TA=
+	b=YZSZE3CmnJ2s79uy6ztjqXFWqnaF0xw/lm7yyZD827Gm/lpG0DqZlkMonJNHJDjGn
+	 iJmw+zImJBJV9CPkAE5dAG2FPDqtL0m7nY5t+vmchv1zW+DdjRIU3yV+dUVr3PuU/6
+	 ZtEQfEKspUw0MYBKpWVVMtBgjn1yRUF5RQArFwBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH 5.10 256/589] PCI/AER: Clear only error bits in PCIe Device Status
+	Shiji Yang <yangshiji66@outlook.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	"Pratyush Yadav (Google)" <pratyush@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 613/969] mtd: spi-nor: swp: check SR_TB flag when getting tb_mask
 Date: Sat, 30 May 2026 18:02:17 +0200
-Message-ID: <20260530160231.707039471@linuxfoundation.org>
+Message-ID: <20260530160317.358586895@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,96 +70,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257558-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,kernel.org,bootlin.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258935-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.995];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,alibaba.com:email,wunner.de:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: DAD0E61285B
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 3DA6860F9A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-commit a8aeea1bf3c80cc87983689e0118770e019bd4f3 upstream.
+[ Upstream commit 94645aa41bf9ecb87c2ce78b1c3405bfb6074a37 ]
 
-Currently, pcie_clear_device_status() clears the entire PCIe Device Status
-register (PCI_EXP_DEVSTA) by writing back the value read from the register,
-which affects not only the error status bits but also other writable bits.
+When the chip does not support top/bottom block protect, the tb_mask
+must be set to 0, otherwise SR1 bit5 will be unexpectedly modified.
 
-According to PCIe r7.0, sec 7.5.3.5, this register contains:
-
-  - RW1C error status bits (CED, NFED, FED, URD at bits 0-3): These are the
-    four error status bits that need to be cleared.
-
-  - Read-only bits (AUXPD at bit 4, TRPND at bit 5): Writing to these has
-    no effect.
-
-  - Emergency Power Reduction Detected (bit 6): A RW1C non-error bit
-    introduced in PCIe r5.0 (2019). This is currently the only writable
-    non-error bit in the Device Status register. Unconditionally clearing
-    this bit can interfere with other software components that rely on this
-    power management indication.
-
-  - Reserved bits (RsvdZ): These bits are required to be written as zero.
-    Writing 1s to them (as the current implementation may do) violates the
-    specification.
-
-To prevent unintended side effects, modify pcie_clear_device_status() to
-only write 1s to the four error status bits (CED, NFED, FED, URD), leaving
-the Emergency Power Reduction Detected bit and reserved bits unaffected.
-
-Fixes: ec752f5d54d7 ("PCI/AER: Clear device status bits during ERR_FATAL and ERR_NONFATAL")
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260211124624.49656-1-xueshuai@linux.alibaba.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Fixes: 3dd8012a8eeb ("mtd: spi-nor: add TB (Top/Bottom) protect support")
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/mtd/spi-nor/swp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -2182,10 +2182,9 @@ EXPORT_SYMBOL_GPL(pci_set_pcie_reset_sta
- 
- void pcie_clear_device_status(struct pci_dev *dev)
+diff --git a/drivers/mtd/spi-nor/swp.c b/drivers/mtd/spi-nor/swp.c
+index e63cdae6dd745..a587561dd476e 100644
+--- a/drivers/mtd/spi-nor/swp.c
++++ b/drivers/mtd/spi-nor/swp.c
+@@ -27,8 +27,10 @@ static u8 spi_nor_get_sr_tb_mask(struct spi_nor *nor)
  {
--	u16 sta;
--
--	pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &sta);
--	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta);
-+	pcie_capability_write_word(dev, PCI_EXP_DEVSTA,
-+				   PCI_EXP_DEVSTA_CED | PCI_EXP_DEVSTA_NFED |
-+				   PCI_EXP_DEVSTA_FED | PCI_EXP_DEVSTA_URD);
+ 	if (nor->flags & SNOR_F_HAS_SR_TB_BIT6)
+ 		return SR_TB_BIT6;
+-	else
++	else if (nor->flags & SNOR_F_HAS_SR_TB)
+ 		return SR_TB_BIT5;
++	else
++		return 0;
  }
  
- /**
+ static u64 spi_nor_get_min_prot_length_sr(struct spi_nor *nor)
+-- 
+2.53.0
+
 
 
 
