@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-257446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258797-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NpQOGgcG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:40 +0200
+	id iGkCIGYsG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258797-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A68360F729
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05184611D06
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA976301FD7D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:10:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DAEAC302E0D6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7624834389B;
-	Sat, 30 May 2026 17:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30502773DE;
+	Sat, 30 May 2026 18:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sier3Hpg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdM+tSEt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420BF3016E1;
-	Sat, 30 May 2026 17:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A9A25B0B3;
+	Sat, 30 May 2026 18:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161026; cv=none; b=bt2D0+4/9ymcQIinZezYc4MttdG4vDL7+0FdnG/6eR1ePOaADjxv7ozoqWoVh+HCwbtJ2hSxc5avdqu0ylVgIQV5pbReZhWy98P1t70Y7I5ustoGVBXUzyZBHhDgBEmAE9ZZdT8ak3qYTz8mlkWbau07UJp/WWfQ4djEN9Df1g8=
+	t=1780165570; cv=none; b=QVCXz0gPatZNvY0HprkykuJNwlvozc5Fl1hCGOuCEOBq3PZWI53dhqSYjDFnxkJ1b9mIMWWnP3EjY8AHbSlpXCaheRts2AF6VwkX0eW8zwZjtncj1uhWE+jUDf1wWXWbcCYs3DUZUPPYLbtIVWPG1lmUxEf1HgFDjy2Wg4CuFG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161026; c=relaxed/simple;
-	bh=AFQpIzWtLnx38dXK+GO1gSmz28TjHtCv1vQdyvEr3S0=;
+	s=arc-20240116; t=1780165570; c=relaxed/simple;
+	bh=jHmyA9umktKBz1+TkUHgJtjbR1X58UcFJf/3j/4jz/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHhKKr8E4Wtl7jC5z+APCHPTl/8n1EFbrRdw5jC9E+ne3VwTsVa2SIx/Yh5wnvo+kUa9sknLEho2wfoP6eaWh5vIgMG3YMf4atnYeNX8no/nwGLzKrdyEF7bZgZMMn0gcMIERcKmqD066D+2zCxE9exSU7YqvrWzTMp9APtEymk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sier3Hpg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685D21F00893;
-	Sat, 30 May 2026 17:10:23 +0000 (UTC)
+	 MIME-Version; b=mYahFUpAla4pnRLbOE5dwfzeaY5ZD70jwRL72ULRK7f0PpRooRkkE7r6y4qkbCDPyNlPU1ElZ+n6qFL9rbjH10xedeXV3qcJKJSBvzxoeBdZycfA50p+hexuj1mskEo2YtITocc43N1m6kKWRenFKLZWZDZHs+raMgoEAfj4qmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdM+tSEt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C14311F00893;
+	Sat, 30 May 2026 18:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161025;
-	bh=emIH8PwUxoVC6er0trpVvdFwxcawJGXZ3sThiZ1mLWo=;
+	s=korg; t=1780165569;
+	bh=AnS81dn99H8vgAbIgJYfdChpK3+T4uCxU6v6AthcQFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Sier3HpgKUXWgLUv57YbSoRsrU3EKyoGpnzz3dhdMNQVfEB7hi4g7G0JCmJ9GRW/E
-	 WrjKI6B9jb9jtc4sz3tqOoOFiz8xzjR8Zy16SuKelzkKZk7nrVkZaUG3z9y75z3jv5
-	 8hsPlnwomHSe3MdKQIZQZPa5uIj6DM/dk63JzSuI=
+	b=AdM+tSEtHRKBhkJcuH/K05eOcZesoyvRjSZJ8e8B+82Kbn+CnjW6a0jQwvYobRiQ8
+	 eydboaEEbLF+68rk5PoZLD1f5MWcg8eVfMaDmv8j6oEetgGqEfr+aqVv0gTEgSGENS
+	 eBHfeyADvF1053sTqOx3d8Z6XWum4bBcFrfPonB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+	Martin Kepplinger <martin.kepplinger@puri.sm>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 473/969] net: bcmgenet: support reclaiming unsent Tx packets
-Date: Sat, 30 May 2026 17:59:57 +0200
-Message-ID: <20260530160313.355450272@linuxfoundation.org>
+Subject: [PATCH 5.10 117/589] arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage to 0.81V
+Date: Sat, 30 May 2026 17:59:58 +0200
+Message-ID: <20260530160227.835984244@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,124 +69,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257446-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258797-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4A68360F729
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,puri.sm:email]
+X-Rspamd-Queue-Id: 05184611D06
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-[ Upstream commit f1bacae8b655163dcbc3c54b9e714ef1a8986d7b ]
+[ Upstream commit 94b91e3ca6688fafd6a5dd70bd89fe9d3aee88da ]
 
-When disabling the transmitter any outstanding packets can now
-be reclaimed by bcmgenet_tx_reclaim_all() rather than by the
-bcmgenet_fini_dma() function.
+0.8V is outside of the operating voltage specified for imx8mq, see
+chapter 3.1.4 "Operating ranges" of the IMX8MDQLQCEC document.
 
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250306192643.2383632-12-opendmb@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 5393b2b5bee2 ("net: bcmgenet: fix racing timeout handler")
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: 511f76bf1dce ("arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 37 +++++++++++++++----
- 1 file changed, 30 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 9f670bbecc726..032ba3a157e4b 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1880,12 +1880,39 @@ static unsigned int __bcmgenet_tx_reclaim(struct net_device *dev,
- }
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+@@ -653,7 +653,7 @@
+ 				regulator-ramp-delay = <1250>;
+ 				rohm,dvs-run-voltage = <880000>;
+ 				rohm,dvs-idle-voltage = <820000>;
+-				rohm,dvs-suspend-voltage = <800000>;
++				rohm,dvs-suspend-voltage = <810000>;
+ 				regulator-always-on;
+ 			};
  
- static unsigned int bcmgenet_tx_reclaim(struct net_device *dev,
--				struct bcmgenet_tx_ring *ring)
-+				struct bcmgenet_tx_ring *ring,
-+				bool all)
- {
--	unsigned int released;
-+	struct bcmgenet_priv *priv = netdev_priv(dev);
-+	struct device *kdev = &priv->pdev->dev;
-+	unsigned int released, drop, wr_ptr;
-+	struct enet_cb *cb_ptr;
-+	struct sk_buff *skb;
- 
- 	spin_lock_bh(&ring->lock);
- 	released = __bcmgenet_tx_reclaim(dev, ring);
-+	if (all) {
-+		skb = NULL;
-+		drop = (ring->prod_index - ring->c_index) & DMA_C_INDEX_MASK;
-+		released += drop;
-+		ring->prod_index = ring->c_index & DMA_C_INDEX_MASK;
-+		while (drop--) {
-+			cb_ptr = bcmgenet_put_txcb(priv, ring);
-+			skb = cb_ptr->skb;
-+			bcmgenet_free_tx_cb(kdev, cb_ptr);
-+			if (skb && cb_ptr == GENET_CB(skb)->first_cb) {
-+				dev_consume_skb_any(skb);
-+				skb = NULL;
-+			}
-+		}
-+		if (skb)
-+			dev_consume_skb_any(skb);
-+		bcmgenet_tdma_ring_writel(priv, ring->index,
-+					  ring->prod_index, TDMA_PROD_INDEX);
-+		wr_ptr = ring->write_ptr * WORDS_PER_BD(priv);
-+		bcmgenet_tdma_ring_writel(priv, ring->index, wr_ptr,
-+					  TDMA_WRITE_PTR);
-+	}
- 	spin_unlock_bh(&ring->lock);
- 
- 	return released;
-@@ -1922,7 +1949,7 @@ static void bcmgenet_tx_reclaim_all(struct net_device *dev)
- 	int i = 0;
- 
- 	do {
--		bcmgenet_tx_reclaim(dev, &priv->tx_rings[i++]);
-+		bcmgenet_tx_reclaim(dev, &priv->tx_rings[i++], true);
- 	} while (i <= priv->hw_params->tx_queues && netif_is_multiqueue(dev));
- }
- 
-@@ -2919,10 +2946,6 @@ static void bcmgenet_fini_dma(struct bcmgenet_priv *priv)
- 	bcmgenet_fini_rx_napi(priv);
- 	bcmgenet_fini_tx_napi(priv);
- 
--	for (i = 0; i < priv->num_tx_bds; i++)
--		dev_kfree_skb(bcmgenet_free_tx_cb(&priv->pdev->dev,
--						  priv->tx_cbs + i));
--
- 	for (i = 0; i <= priv->hw_params->tx_queues; i++) {
- 		txq = netdev_get_tx_queue(priv->dev, i);
- 		netdev_tx_reset_queue(txq);
--- 
-2.53.0
-
 
 
 
