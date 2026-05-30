@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-257049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257051-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKFFNkcUG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257049-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:59 +0200
+	id eKRKNGUUG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257051-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC6560E644
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A3A60E65A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8277F300F518
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:41:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4482B304226C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F231348452;
-	Sat, 30 May 2026 16:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EB02F8EB5;
+	Sat, 30 May 2026 16:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1g2YdMpw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFdegErZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FE63093C6;
-	Sat, 30 May 2026 16:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907213093C6;
+	Sat, 30 May 2026 16:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159286; cv=none; b=GCDqKddDdbl1470cxAWF/PAL2A0OTNPKjEixpQbU/yXqzl1lHDeOkhAKYrTHdV5IbGUGXWHXgARhhhx/IaD+sAaNRWudocOaH6V7BlF/OSIx8rJTZB3zu8J45ycCE/Wa0XgRE2FKn1nkB+79poiJOc/Oyc6kQe33LPP8IaiNgZM=
+	t=1780159312; cv=none; b=J9yCuNgyECKjhclRvjiRMnKz/png1pWlnGtkaGms/5GMLWrxyLLb0WUCmaK91NzWf+XmOQ5gVnVTklwYIN1mkEpuJKdYww6JuxiK4rFKU/+948OaOD5/HnyYsic/cywG26/38vHK9ESjtPQbMCMkXrsRVHhD+A3NYyauw2T+z1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159286; c=relaxed/simple;
-	bh=vgLYhdx938gvzkGfsoAfg22277m6bGLmkX1mqbs/wQk=;
+	s=arc-20240116; t=1780159312; c=relaxed/simple;
+	bh=DuaESJZO05Gi4ibF48OppIt+Bk7Wj0Ou8QcDHsYqE54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJRrhQAvEGGGQYD1F67KQjVugqj0fGFtR25QS/wRMzxQEmR8syYzPYKa8m/Oq1mweCLQJFG+4QCKWEhsfjR+souUq2W3aUBizzkxCWgPbRNSNVX1z9XqQ1yp+2fHf20Q0AYelCZgAqpQwLvsZw8hgtJWlsk0NeUua/pwu0Nxhrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1g2YdMpw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72FA1F00893;
-	Sat, 30 May 2026 16:41:19 +0000 (UTC)
+	 MIME-Version; b=XnTdBOIqsty9k+Z+/j0zh9Z/E5J4wC8ukUPBzb7cqbLmHp3c51pmzQK4+uhGZ2bzfSM/hrjz4Sl01IcNaCQq1xGAYedP6fDXO9eK7/TOnUWJhi0V54MtDaoCQJjlzn5IJS2pvqRHV51PENSsCj2cQd0YsmTo4/O8R6/DNb22iMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFdegErZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4E71F00893;
+	Sat, 30 May 2026 16:41:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159283;
-	bh=iF43zd326TIpFUlrp6mDK9tjKbrk/IZj91/97010vIQ=;
+	s=korg; t=1780159311;
+	bh=tlJu8q5UU3ipyqrZilVglNMTZO3kOPK71MXkH0mcomE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1g2YdMpwZPVTR2oFxdbrsV+XreDhj/8fV5G9ftgF99aALxtZOE66zSgL+NfFwQjSm
-	 mITYISn1hYv3MeFjDUteiFVXtzxg7UzMGIiMJzQNsxa7UsfY6n9XXFSLwiBbXHDOKW
-	 qa7yr9FyBtbpsx5V3GvBWID5/RZdQAy/PF1TwZxk=
+	b=rFdegErZ31hAPdcDoUXy3b6tTawT+v/sfvThUgD+IrXjJlxVGp1e0JOikUVXcOihn
+	 0F/FnG6duE0iNEhPhQOKK2k2sjKrQ/67CGCF+OTfbPVdo6vBG2aO8riSuqEe7/nKMm
+	 uq6TUE+3mGMdgp1f1Oro078YdAbTD3HR0f/+Bkeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com,
-	Andrew Price <anprice@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Ruohan Lan <ruohanlan@aliyun.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Li hongliang <1468888505@139.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 114/969] gfs2: Validate i_depth for exhash directories
-Date: Sat, 30 May 2026 17:53:58 +0200
-Message-ID: <20260530160303.457659131@linuxfoundation.org>
+Subject: [PATCH 6.1 115/969] wifi: mac80211: always free skb on ieee80211_tx_prepare_skb() failure
+Date: Sat, 30 May 2026 17:53:59 +0200
+Message-ID: <20260530160303.484816287@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -66,36 +65,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257049-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,redhat.com,aliyun.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nbd.name,intel.com,139.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257051-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,4708579bb230a0582a57];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email]
-X-Rspamd-Queue-Id: 3AC6560E644
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,nbd.name:email,139.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 28A3A60E65A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,93 +101,105 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Andrew Price <anprice@redhat.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 557c024ca7250bb65ae60f16c02074106c2f197b ]
+[ Upstream commit d5ad6ab61cbd89afdb60881f6274f74328af3ee9 ]
 
-A fuzzer test introduced corruption that ends up with a depth of 0 in
-dir_e_read(), causing an undefined shift by 32 at:
+ieee80211_tx_prepare_skb() has three error paths, but only two of them
+free the skb. The first error path (ieee80211_tx_prepare() returning
+TX_DROP) does not free it, while invoke_tx_handlers() failure and the
+fragmentation check both do.
 
-  index = hash >> (32 - dip->i_depth);
+Add kfree_skb() to the first error path so all three are consistent,
+and remove the now-redundant frees in callers (ath9k, mt76,
+mac80211_hwsim) to avoid double-free.
 
-As calculated in an open-coded way in dir_make_exhash(), the minimum
-depth for an exhash directory is ilog2(sdp->sd_hash_ptrs) and 0 is
-invalid as sdp->sd_hash_ptrs is fixed as sdp->bsize / 16 at mount time.
+Document the skb ownership guarantee in the function's kdoc.
 
-So we can avoid the undefined behaviour by checking for depth values
-lower than the minimum in gfs2_dinode_in(). Values greater than the
-maximum are already being checked for there.
-
-Also switch the calculation in dir_make_exhash() to use ilog2() to
-clarify how the depth is calculated.
-
-Tested with the syzkaller repro.c and xfstests '-g quick'.
-
-Reported-by: syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com
-Signed-off-by: Andrew Price <anprice@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20260314065455.2462900-1-nbd@nbd.name
+Fixes: 06be6b149f7e ("mac80211: add ieee80211_tx_prepare_skb() helper function")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Exclude changes to drivers/net/wireless/mediatek/mt76/scan.c as this file is first
+ introduced by commit 31083e38548f("wifi: mt76: add code for emulating hardware scanning")
+ after linux-6.14.]
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/dir.c   | 6 ++----
- fs/gfs2/glops.c | 6 ++++++
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath9k/channel.c | 6 ++----
+ drivers/net/wireless/mac80211_hwsim.c    | 1 -
+ include/net/mac80211.h                   | 4 ++++
+ net/mac80211/tx.c                        | 4 +++-
+ 4 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/fs/gfs2/dir.c b/fs/gfs2/dir.c
-index 96924af95c8ef..3716d89d8af6f 100644
---- a/fs/gfs2/dir.c
-+++ b/fs/gfs2/dir.c
-@@ -60,6 +60,7 @@
- #include <linux/crc32.h>
- #include <linux/vmalloc.h>
- #include <linux/bio.h>
-+#include <linux/log2.h>
+diff --git a/drivers/net/wireless/ath/ath9k/channel.c b/drivers/net/wireless/ath/ath9k/channel.c
+index 571062f2e82a7..ba8ec5112afe8 100644
+--- a/drivers/net/wireless/ath/ath9k/channel.c
++++ b/drivers/net/wireless/ath/ath9k/channel.c
+@@ -1011,7 +1011,7 @@ static void ath_scan_send_probe(struct ath_softc *sc,
+ 	skb_set_queue_mapping(skb, IEEE80211_AC_VO);
  
- #include "gfs2.h"
- #include "incore.h"
-@@ -912,7 +913,6 @@ static int dir_make_exhash(struct inode *inode)
- 	struct qstr args;
- 	struct buffer_head *bh, *dibh;
- 	struct gfs2_leaf *leaf;
--	int y;
- 	u32 x;
- 	__be64 *lp;
- 	u64 bn;
-@@ -979,9 +979,7 @@ static int dir_make_exhash(struct inode *inode)
- 	i_size_write(inode, sdp->sd_sb.sb_bsize / 2);
- 	gfs2_add_inode_blocks(&dip->i_inode, 1);
- 	dip->i_diskflags |= GFS2_DIF_EXHASH;
--
--	for (x = sdp->sd_hash_ptrs, y = -1; x; x >>= 1, y++) ;
--	dip->i_depth = y;
-+	dip->i_depth = ilog2(sdp->sd_hash_ptrs);
+ 	if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, NULL))
+-		goto error;
++		return;
  
- 	gfs2_dinode_out(dip, dibh->b_data);
+ 	txctl.txq = sc->tx.txq_map[IEEE80211_AC_VO];
+ 	if (ath_tx_start(sc->hw, skb, &txctl))
+@@ -1124,10 +1124,8 @@ ath_chanctx_send_vif_ps_frame(struct ath_softc *sc, struct ath_vif *avp,
  
-diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
-index f4bd487a9b3b0..e7904c1c985f6 100644
---- a/fs/gfs2/glops.c
-+++ b/fs/gfs2/glops.c
-@@ -11,6 +11,7 @@
- #include <linux/bio.h>
- #include <linux/posix_acl.h>
- #include <linux/security.h>
-+#include <linux/log2.h>
+ 		skb->priority = 7;
+ 		skb_set_queue_mapping(skb, IEEE80211_AC_VO);
+-		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta)) {
+-			dev_kfree_skb_any(skb);
++		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta))
+ 			return false;
+-		}
+ 		break;
+ 	default:
+ 		return false;
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 80a2a668cfb9e..316b5f56b6e53 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -2743,7 +2743,6 @@ static void hw_scan_work(struct work_struct *work)
+ 						      hwsim->tmp_chan->band,
+ 						      NULL)) {
+ 				rcu_read_unlock();
+-				kfree_skb(probe);
+ 				continue;
+ 			}
  
- #include "gfs2.h"
- #include "incore.h"
-@@ -458,6 +459,11 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
- 		gfs2_consist_inode(ip);
- 		return -EIO;
- 	}
-+	if ((ip->i_diskflags & GFS2_DIF_EXHASH) &&
-+	    depth < ilog2(sdp->sd_hash_ptrs)) {
-+		gfs2_consist_inode(ip);
-+		return -EIO;
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 62e0847d3793b..1769d03e6b1d4 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -6874,6 +6874,10 @@ void ieee80211_report_wowlan_wakeup(struct ieee80211_vif *vif,
+  * @band: the band to transmit on
+  * @sta: optional pointer to get the station to send the frame to
+  *
++ * Return: %true if the skb was prepared, %false otherwise.
++ * On failure, the skb is freed by this function; callers must not
++ * free it again.
++ *
+  * Note: must be called under RCU lock
+  */
+ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 7333e43dfc354..2e99a1063e939 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1934,8 +1934,10 @@ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
+ 	struct ieee80211_tx_data tx;
+ 	struct sk_buff *skb2;
+ 
+-	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP)
++	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP) {
++		kfree_skb(skb);
+ 		return false;
 +	}
- 	ip->i_depth = (u8)depth;
- 	ip->i_entries = be32_to_cpu(str->di_entries);
  
+ 	info->band = band;
+ 	info->control.vif = vif;
 -- 
 2.53.0
 
