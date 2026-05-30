@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258973-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mB+0ArUcG2qQ/QgAu9opvQ
-	(envelope-from <stable+bounces-257595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:57 +0200
+	id aMGSNC0vG2paAAkAu9opvQ
+	(envelope-from <stable+bounces-258973-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0060960F7DE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1B86123B5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 188A9303005A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:18:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8EEE430347F7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5124A30E847;
-	Sat, 30 May 2026 17:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120D533E36A;
+	Sat, 30 May 2026 18:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHgv6m19"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="awNZaDtB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6527B1C5799;
-	Sat, 30 May 2026 17:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C61313E34;
+	Sat, 30 May 2026 18:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161527; cv=none; b=WdvDFmSCJ0SaObaiiP3fT97D7QfdTQJZS0c5U4avGWBF5DQ1kG2zHFkwH/+pR2CSAuiaggpYBbZ5z8GpyLuCrvIrbML1CXK8WPRNwaVoJKLqUXhJQgJbDzBM+noXWOCEkYHQkVMtKWcocaOTGK/fCyI3yXmIcdd2+q8xM9qTJEw=
+	t=1780166166; cv=none; b=rFtqd8EZ3rpa0zukqjP8tqFHEN5XZB3BhsoaXO+5cxur7waYuww+QZxbqeitj11YTaRH4CCygqD6mRVoPNBrwjarOUT8ClhgL6GSyblJQrn4SC5H/tw6JpbAPV+UwDnx/XxScgkFrt5Xhji6brWSedxhwH68Z80f0UkcxVKWLT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161527; c=relaxed/simple;
-	bh=wELScWMdxFfg8SI0+gO3EYQ7OP174EFZ9jIwck/r5RA=;
+	s=arc-20240116; t=1780166166; c=relaxed/simple;
+	bh=lYsFD/E8qWczhtYyABNNxxL+rfaGjXJ4IhqjkvDXgfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CulpHLpiGQ6gUTPsBuXiu4eFlBdqSttlsN+4OfdqFGEitXhp3rDyOlIGmf26YnCteCCeA7Jd8ND/kt7h8jWgabo6SB8uIVmjPqaNbCa99vK8N2+tC6mWynVGJr0BZbyMVuWRCkQ9+SYawAtIwEnLEbYgO9758+FvsRQqr/ELuh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHgv6m19; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D584A1F00893;
-	Sat, 30 May 2026 17:18:44 +0000 (UTC)
+	 MIME-Version; b=Skn7vCwFtwz9fP1Vya9QEa+DEDwkclYsMJU/hbtUMgppxyvjpx+r2fOT0YME/6fKWq/VoCpl7OEbJaCtwC4Q7nSyUv5Ol21O0fwlbnLnmwmoVTQHErWDL5nApQAFO4sB1gGxkv61x94UDcpRxyk67CAetqyQAahHGssrLB9VitM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awNZaDtB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A4A1F00893;
+	Sat, 30 May 2026 18:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161525;
-	bh=GeAoOcS+3oQRzW/YrXV6+94XIbob8JDov588Le28m/4=;
+	s=korg; t=1780166165;
+	bh=X5tYppN5/feGfn600zf0TLI3W+8mPhRjlGJ1sFB31/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jHgv6m19Eb6rnoi+jx3v8sY5cMQYS20PTylN25eefagXVE6XbvD56ZsEA9iIiL8GI
-	 K6/y1lx7N9kIxxv0A2/5jh0MQO6fA7KJDVMSJFGVmzmT7GcQsl4OpokvMB9uadO27v
-	 sB7dWDO1lHuXoQSzEGBMsJbcwWhW4FD0SoDsAkb0=
+	b=awNZaDtBkGl8CtupSoFsDuPBbIwxP7YRJIGfK7bX8ZUIa/koGMoJcaiQSF+mJvPe5
+	 DDp+h+ORhLeeoLF67VDbgxUi03snzPZPo3PA6rY9k/lfiwCfRt+C+/WSTwfyWqIJbY
+	 0pY7nYVGTVCUzicyaK3dZ9mwfrfZpRFDJ983XhGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huawei.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Cole Leavitt <cole@unwrap.rs>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 650/969] scsi: sg: Resolve soft lockup issue when opening /dev/sgX
-Date: Sat, 30 May 2026 18:02:54 +0200
-Message-ID: <20260530160318.414456810@linuxfoundation.org>
+Subject: [PATCH 5.10 294/589] pstore/ram: fix resource leak when ioremap() fails
+Date: Sat, 30 May 2026 18:02:55 +0200
+Message-ID: <20260530160232.668478521@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,128 +68,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257595-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258973-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0060960F7DE
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,unwrap.rs:email]
+X-Rspamd-Queue-Id: 5B1B86123B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: Cole Leavitt <cole@unwrap.rs>
 
-[ Upstream commit d06a310b45e153872033dd0cf19d5a2279121099 ]
+[ Upstream commit 2ddb69f686ef7a621645e97fc7329c50edf5d0e5 ]
 
-The parameter def_reserved_size defines the default buffer size reserved
-for each Sg_fd and should be restricted to a range between 0 and 1,048,576
-(see https://tldp.org/HOWTO/SCSI-Generic-HOWTO/proc.html).  Although the
-function sg_proc_write_dressz enforces this limit, it is possible to bypass
-it by directly modifying the module parameter as shown below, which then
-causes a soft lockup:
+In persistent_ram_iomap(), ioremap() or ioremap_wc() may return NULL on
+failure. Currently, if this happens, the function returns NULL without
+releasing the memory region acquired by request_mem_region().
 
-echo -1 > /sys/module/sg/parameters/def_reserved_size
-exec 4<> /dev/sg0
+This leads to a resource leak where the memory region remains reserved
+but unusable.
 
-watchdog: BUG: soft lockup - CPU#5 stuck for 26 seconds! [bash:537]
-Modules loaded:
-CPU: 5 UID: 0 PID: 537 Command: bash, kernel version 6.19.0-rc3+ #134,
-PREEMPT disabled
-Hardware: QEMU Standard PC (i440FX + PIIX, 1996), BIOS version
-1.16.1-2.fc37 dated 04/01/2014
-...
-Call Trace:
+Additionally, the caller persistent_ram_buffer_map() handles NULL
+correctly by returning -ENOMEM, but without this check, a NULL return
+combined with request_mem_region() succeeding leaves resources in an
+inconsistent state.
 
-  sg_build_reserve+0x5c/0xa0
-  sg_add_sfp+0x168/0x270
-  sg_open+0x16e/0x340
-  chrdev_open+0xbe/0x230
-  do_dentry_open+0x175/0x480
-  vfs_open+0x34/0xf0
-  do_open+0x265/0x3d0
-  path_openat+0x110/0x290
-  do_filp_open+0xc3/0x170
-  do_sys_openat2+0x71/0xe0
-  __x64_sys_openat+0x6d/0xa0
-  do_syscall_64+0x62/0x310
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+This is the ioremap() counterpart to commit 05363abc7625 ("pstore:
+ram_core: fix incorrect success return when vmap() fails") which fixed
+a similar issue in the vmap() path.
 
-The fix is to use module_param_cb to validate and reject invalid values
-assigned to def_reserved_size.
-
-Fixes: 6460e75a104d ("[SCSI] sg: fixes for large page_size")
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260127062044.3034148-3-yangerkun@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 404a6043385d ("staging: android: persistent_ram: handle reserving and mapping memory")
+Signed-off-by: Cole Leavitt <cole@unwrap.rs>
+Link: https://patch.msgid.link/20260225235406.11790-1-cole@unwrap.rs
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sg.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ fs/pstore/ram_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index b63f7c09c97a1..a7131500eafe7 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -1614,10 +1614,35 @@ sg_remove_device(struct device *cl_dev, struct class_interface *cl_intf)
- }
+diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
+index ccaa138a57b7c..80bf449a695a7 100644
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -475,6 +475,10 @@ static void *persistent_ram_iomap(phys_addr_t start, size_t size,
+ 	else
+ 		va = ioremap_wc(start, size);
  
- module_param_named(scatter_elem_sz, scatter_elem_sz, int, S_IRUGO | S_IWUSR);
--module_param_named(def_reserved_size, def_reserved_size, int,
--		   S_IRUGO | S_IWUSR);
- module_param_named(allow_dio, sg_allow_dio, int, S_IRUGO | S_IWUSR);
- 
-+static int def_reserved_size_set(const char *val, const struct kernel_param *kp)
-+{
-+	int size, ret;
++	/* We must release the mem region if ioremap fails. */
++	if (!va)
++		release_mem_region(start, size);
 +
-+	if (!val)
-+		return -EINVAL;
-+
-+	ret = kstrtoint(val, 0, &size);
-+	if (ret)
-+		return ret;
-+
-+	/* limit to 1 MB */
-+	if (size < 0 || size > 1048576)
-+		return -ERANGE;
-+
-+	def_reserved_size = size;
-+	return 0;
-+}
-+
-+static const struct kernel_param_ops def_reserved_size_ops = {
-+	.set	= def_reserved_size_set,
-+	.get	= param_get_int,
-+};
-+
-+module_param_cb(def_reserved_size, &def_reserved_size_ops, &def_reserved_size,
-+		   S_IRUGO | S_IWUSR);
-+
- MODULE_AUTHOR("Douglas Gilbert");
- MODULE_DESCRIPTION("SCSI generic (sg) driver");
- MODULE_LICENSE("GPL");
+ 	/*
+ 	 * Since request_mem_region() and ioremap() are byte-granularity
+ 	 * there is no need handle anything special like we do when the
 -- 
 2.53.0
 
