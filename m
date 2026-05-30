@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-259137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFRDFeEwG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-259137-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:01 +0200
+	id IKe9IMYqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2AB6612853
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0665361197F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AD60F30398B8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F9CA308B784
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F5418FDBD;
-	Sat, 30 May 2026 18:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071C230E829;
+	Sat, 30 May 2026 18:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fx8Rh25i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxkTJ02b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC2D1FC0EA;
-	Sat, 30 May 2026 18:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FF429B799;
+	Sat, 30 May 2026 18:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166733; cv=none; b=Q54gMiOVgRxbtye5jGBzLEHtYvFTR9BLqslQNa3nFos7uhD8Qe+5LeCw/RL3dALcWc9rPxui+4YJue7KCQ93eUeSeZGoDASaCBIpQWUWl8UIBV0o/PQ/VYR0CEolBfvwFvtGRiqgAr3K3ds4wA1vTCwWZ1+kGhqf7cH5FCYz3Co=
+	t=1780164751; cv=none; b=X5mI2bINQ5NINwQalW7IpEbCRWrc5C9ZbB0A6Av73Hm0IUL3ai9b51+EBgJWX5SchPTkQLn/A0IFP5WlFIImluXBN4jdVQg0tMFhMMcOS/RiMAekdwV25Z92PBCO70VVadl/h0P2cHPophgV22kd1TJH6OXpvu+tefk0Ic9kpkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166733; c=relaxed/simple;
-	bh=mFjG4dY3jlKPWJRtxeLyvTxfk1Na2j7Jhxoj8N75XRo=;
+	s=arc-20240116; t=1780164751; c=relaxed/simple;
+	bh=rxqzhE53RIoHUbFp3hpl2zCtFvuUxoFzu2y4k1moqww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mokyr9xw6TtNj5/ZjuXVp3sjM5kThi/a8EXBwCQGvyx5QrgKmHGSW6BRUzzgEuaRaLofDc3YcR576YlRDx9SgTOYq9tUUWiXWIaTdvcGZJQuaVd1CZFZ0Sn4Ly1/3gJw+WSvfqsfVKYpN9aH07tIw8HRBkYwkE/V7/86A9mt7T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fx8Rh25i; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 576E01F00893;
-	Sat, 30 May 2026 18:45:31 +0000 (UTC)
+	 MIME-Version; b=PHjvnDRCCLnsjmsS93kDIQRCHxRaH+7DBYEI8j7XMIulT/jIOc3d6TIbyr/PM9kk0f//5zM7XlkzuryRYqMAk3ilcWSfBJpmKEpo2gEyP7UmYfevlpcz+BWSQD8d9PijU0si0wRos+QwH9BMvrDu8BcLtpRQ1siD8gDavmuZkJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxkTJ02b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13ABC1F00893;
+	Sat, 30 May 2026 18:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166731;
-	bh=xE8epL5VyK6Zo8nMeJRWJYq/o8kdW7V8EaAuJ10BLoY=;
+	s=korg; t=1780164750;
+	bh=xmmwEV5fR7GiOUo0ymH/i/YQ1Lvxc12UR4m6F8F83qQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fx8Rh25iTchlDBgL4WjSgagcU0o/qL3E4q9oqsZ6SJ6S31eKmeAC4p3ZdKF0ePGPn
-	 V+haiz5mVO+nr9vVNoaqoesuwlrVedgYWkrOGhHr7gxHG8BTQwcLeuOTbSw/H/nug5
-	 uT2m1BzH6mLOPnjNxEqG7jIoQfqDWZKtJs7Jb3e4=
+	b=CxkTJ02bPFi0GZlc7RjMhcEmopUs8iW/SL8ucc1pH+6ZKHaqRZGvaDv3XoWC+3KsR
+	 57JskwtqBkqMehbcCrEvbK42SPG7tQrlQi9vAZtl0lhxt9AC0dU9JCSt6vZ0eCHZWv
+	 4kmpOLwL4GOIJLLWurvZPjKyru6G242/zdci378Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Haoze Xie <royenheart@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 454/589] rtc: introduce features bitfield
+Subject: [PATCH 5.15 621/776] vrf: Fix a potential NPD when removing a port from a VRF
 Date: Sat, 30 May 2026 18:05:35 +0200
-Message-ID: <20260530160236.618105823@linuxfoundation.org>
+Message-ID: <20260530160256.035262946@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,171 +73,145 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258558-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259137-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E2AB6612853
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0665361197F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 7ae41220ef5831674f446baef19bfe1b31358260 ]
+[ Upstream commit 2674d603a9e6970463b2b9ebcf8e31e90beae169 ]
 
-Introduce a bitfield to allow the drivers to announce the available
-features for an RTC.
+RCU readers that identified a net device as a VRF port using
+netif_is_l3_slave() assume that a subsequent call to
+netdev_master_upper_dev_get_rcu() will return a VRF device. They then
+continue to dereference its l3mdev operations.
 
-The main use case would be to better handle alarms, that could be present
-or not or have a minute resolution or may need a correct week day to be set.
+This assumption is not always correct and can result in a NPD [1]. There
+is no RCU synchronization when removing a port from a VRF, so it is
+possible for an RCU reader to see a new master device (e.g., a bridge)
+that does not have l3mdev operations.
 
-Use the newly introduced RTC_FEATURE_ALARM bit to then test whether alarms
-are available instead of relying on the presence of ops->set_alarm.
+Fix by adding RCU synchronization after clearing the IFF_L3MDEV_SLAVE
+flag. Skip this synchronization when a net device is removed from a VRF
+as part of its deletion and when the VRF device itself is deleted. In
+the latter case an RCU grace period will pass by the time RTNL is
+released.
 
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/r/20210110231752.1418816-2-alexandre.belloni@bootlin.com
-Stable-dep-of: 0fedce7244e4 ("rtc: abx80x: Disable alarm feature if no interrupt attached")
+[1]
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+[...]
+RIP: 0010:l3mdev_fib_table_rcu (net/l3mdev/l3mdev.c:181)
+[...]
+Call Trace:
+<TASK>
+l3mdev_fib_table_by_index (net/l3mdev/l3mdev.c:201 net/l3mdev/l3mdev.c:189)
+__inet_bind (net/ipv4/af_inet.c:499 (discriminator 3))
+inet_bind_sk (net/ipv4/af_inet.c:469)
+__sys_bind (./include/linux/file.h:62 (discriminator 1) ./include/linux/file.h:83 (discriminator 1) net/socket.c:1951 (discriminator 1))
+__x64_sys_bind (net/socket.c:1969 (discriminator 1) net/socket.c:1967 (discriminator 1) net/socket.c:1967 (discriminator 1))
+do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+Fixes: fdeea7be88b1 ("net: vrf: Set slave's private flag before linking")
+Reported-by: Haoze Xie <royenheart@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Closes: https://lore.kernel.org/netdev/20260419145332.3988923-1-n05ec@lzu.edu.cn/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260423063607.1208202-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/class.c      |  5 +++++
- drivers/rtc/interface.c  | 12 ++++++------
- include/linux/rtc.h      |  2 ++
- include/uapi/linux/rtc.h |  5 +++++
- 4 files changed, 18 insertions(+), 6 deletions(-)
+ drivers/net/vrf.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/rtc/class.c b/drivers/rtc/class.c
-index b1ce3bd724b2c..81aeb7a191b5f 100644
---- a/drivers/rtc/class.c
-+++ b/drivers/rtc/class.c
-@@ -234,6 +234,8 @@ static struct rtc_device *rtc_allocate_device(void)
- 	rtc->pie_timer.function = rtc_pie_update_irq;
- 	rtc->pie_enabled = 0;
+diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+index 6c719d6da5b82..c0752e8748529 100644
+--- a/drivers/net/vrf.c
++++ b/drivers/net/vrf.c
+@@ -1135,6 +1135,7 @@ static int do_vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
  
-+	set_bit(RTC_FEATURE_ALARM, rtc->features);
-+
- 	return rtc;
+ err:
+ 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
++	synchronize_net();
+ 	return ret;
  }
  
-@@ -404,6 +406,9 @@ int __rtc_register_device(struct module *owner, struct rtc_device *rtc)
- 		return -EINVAL;
- 	}
+@@ -1154,10 +1155,16 @@ static int vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
+ }
  
-+	if (!rtc->ops->set_alarm)
-+		clear_bit(RTC_FEATURE_ALARM, rtc->features);
-+
- 	rtc->owner = owner;
- 	rtc_device_get_offset(rtc);
- 
-diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-index 7c9487050b25b..7df7457d7dc13 100644
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -186,7 +186,7 @@ static int rtc_read_alarm_internal(struct rtc_device *rtc,
- 
- 	if (!rtc->ops) {
- 		err = -ENODEV;
--	} else if (!rtc->ops->read_alarm) {
-+	} else if (!test_bit(RTC_FEATURE_ALARM, rtc->features) || !rtc->ops->read_alarm) {
- 		err = -EINVAL;
- 	} else {
- 		alarm->enabled = 0;
-@@ -393,7 +393,7 @@ int rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
- 		return err;
- 	if (!rtc->ops) {
- 		err = -ENODEV;
--	} else if (!rtc->ops->read_alarm) {
-+	} else if (!test_bit(RTC_FEATURE_ALARM, rtc->features) || !rtc->ops->read_alarm) {
- 		err = -EINVAL;
- 	} else {
- 		memset(alarm, 0, sizeof(struct rtc_wkalrm));
-@@ -437,7 +437,7 @@ static int __rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
- 
- 	if (!rtc->ops)
- 		err = -ENODEV;
--	else if (!rtc->ops->set_alarm)
-+	else if (!test_bit(RTC_FEATURE_ALARM, rtc->features))
- 		err = -EINVAL;
- 	else
- 		err = rtc->ops->set_alarm(rtc->dev.parent, alarm);
-@@ -475,7 +475,7 @@ int rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
- 
- 	if (!rtc->ops)
- 		return -ENODEV;
--	else if (!rtc->ops->set_alarm)
-+	else if (!test_bit(RTC_FEATURE_ALARM, rtc->features))
- 		return -EINVAL;
- 
- 	err = rtc_valid_tm(&alarm->time);
-@@ -555,7 +555,7 @@ int rtc_alarm_irq_enable(struct rtc_device *rtc, unsigned int enabled)
- 		/* nothing */;
- 	else if (!rtc->ops)
- 		err = -ENODEV;
--	else if (!rtc->ops->alarm_irq_enable)
-+	else if (!test_bit(RTC_FEATURE_ALARM, rtc->features) || !rtc->ops->alarm_irq_enable)
- 		err = -EINVAL;
- 	else
- 		err = rtc->ops->alarm_irq_enable(rtc->dev.parent, enabled);
-@@ -874,7 +874,7 @@ static int rtc_timer_enqueue(struct rtc_device *rtc, struct rtc_timer *timer)
- 
- static void rtc_alarm_disable(struct rtc_device *rtc)
+ /* inverse of do_vrf_add_slave */
+-static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
++static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev,
++			    bool needs_sync)
  {
--	if (!rtc->ops || !rtc->ops->alarm_irq_enable)
-+	if (!rtc->ops || !test_bit(RTC_FEATURE_ALARM, rtc->features) || !rtc->ops->alarm_irq_enable)
- 		return;
+ 	netdev_upper_dev_unlink(port_dev, dev);
+ 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
++	/* Make sure that concurrent RCU readers that identified the device
++	 * as a VRF port see a VRF master or no master at all.
++	 */
++	if (needs_sync)
++		synchronize_net();
  
- 	rtc->ops->alarm_irq_enable(rtc->dev.parent, false);
-diff --git a/include/linux/rtc.h b/include/linux/rtc.h
-index 22d1575e4991b..5037bda2f5b08 100644
---- a/include/linux/rtc.h
-+++ b/include/linux/rtc.h
-@@ -124,6 +124,8 @@ struct rtc_device {
- 	bool nvram_old_abi;
- 	struct bin_attribute *nvram;
+ 	cycle_netdev(port_dev, NULL);
  
-+	unsigned long features[BITS_TO_LONGS(RTC_FEATURE_CNT)];
-+
- 	time64_t range_min;
- 	timeu64_t range_max;
- 	time64_t start_secs;
-diff --git a/include/uapi/linux/rtc.h b/include/uapi/linux/rtc.h
-index fa9aff91cbf27..f950bff75e97e 100644
---- a/include/uapi/linux/rtc.h
-+++ b/include/uapi/linux/rtc.h
-@@ -110,6 +110,11 @@ struct rtc_pll_info {
- #define RTC_AF 0x20	/* Alarm interrupt */
- #define RTC_UF 0x10	/* Update interrupt for 1Hz RTC */
+@@ -1166,7 +1173,7 @@ static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
  
-+/* feature list */
-+#define RTC_FEATURE_ALARM		0
-+#define RTC_FEATURE_ALARM_RES_MINUTE	1
-+#define RTC_FEATURE_NEED_WEEK_DAY	2
-+#define RTC_FEATURE_CNT			3
+ static int vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
+ {
+-	return do_vrf_del_slave(dev, port_dev);
++	return do_vrf_del_slave(dev, port_dev, true);
+ }
  
- #define RTC_MAX_FREQ	8192
+ static void vrf_dev_uninit(struct net_device *dev)
+@@ -1731,7 +1738,7 @@ static void vrf_dellink(struct net_device *dev, struct list_head *head)
+ 	struct list_head *iter;
  
+ 	netdev_for_each_lower_dev(dev, port_dev, iter)
+-		vrf_del_slave(dev, port_dev);
++		do_vrf_del_slave(dev, port_dev, false);
+ 
+ 	vrf_map_unregister_dev(dev);
+ 
+@@ -1862,7 +1869,7 @@ static int vrf_device_event(struct notifier_block *unused,
+ 			goto out;
+ 
+ 		vrf_dev = netdev_master_upper_dev_get(dev);
+-		vrf_del_slave(vrf_dev, dev);
++		do_vrf_del_slave(vrf_dev, dev, false);
+ 	}
+ out:
+ 	return NOTIFY_DONE;
 -- 
 2.53.0
 
