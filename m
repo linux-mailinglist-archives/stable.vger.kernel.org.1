@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-257791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCTXGaIeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257791-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:10 +0200
+	id kIHbNVApG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E9CC60FCFE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC4716115E7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6237F30170A9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:29:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9BA063002D36
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEED30148B;
-	Sat, 30 May 2026 17:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91562223DC6;
+	Sat, 30 May 2026 18:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaQd+vkC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQc8yMwF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791FD3148DA;
-	Sat, 30 May 2026 17:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7176C29B799;
+	Sat, 30 May 2026 18:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162183; cv=none; b=SC/6Ss83CTlTdZESlFDcdnJ7Q03QfUVuJtGSEZTxr05SwF0ZslAuc217IHk/wC62vBibffNyKmaF8EgTuhFd6XJo4jSeOkgOna2gXANHPkbtCuTQAH6qID8xug29IGsXpmboGqg/Oos6T/lQAYxYBbO7/yHKPg5XXoqhlDTLT80=
+	t=1780164878; cv=none; b=AakdbNPuDoJF0oETiWu+yCS1QC/LCA/UpnplASJgkhqeVqALP3crxpnKBeVKZE9JSpuCGvLvIY7i6EoSRfMAcs8iQOFasA+uByTQV3HBVkm4dYbXZLSAzsItPNbtWgHT07GhrqkxE+Op5ullZWtnJoWglmrNLCnNr/P40PWUXXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162183; c=relaxed/simple;
-	bh=2vswnnwhcCd00by9DCPRktfFGx2nYZwmWGQZtrZSogk=;
+	s=arc-20240116; t=1780164878; c=relaxed/simple;
+	bh=3E9yV216PKf85Y9Cs8yaOJac/V9Tmf45IgQrsuScl7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EnMskEoQqWnw+yCAufudM2dAt0/2EZ43g1oerHPwK3fDGX58/MA+iMs0ooLj2v2WyEYz+3rUm/CJlQGEFVbu6SHHO5dT4ff4VUtVqiKmrvBaYJAGlw/o6gU7kcDb4paGmKp4lmTZBrgZWIOMF2n3QDKi8cjv0MQPPH/vICAb/gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaQd+vkC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBCAA1F00893;
-	Sat, 30 May 2026 17:29:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nGEXX1lp+SCXeFQnR8SQzW4yY+NaCvZ9UiI1dN1gLlBDsSqK7pRvobqkYfvlZ1PbE/fBP7McJkJZkuAI5jWJHEnIJRFDZGHyB0BIDi7NXX1Fi9tG7OvVWjibPpa+vRN8Gj5jit1/d5tpitLk6AwsQT10QM5qN/dCyd7Kxk8XXyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQc8yMwF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B18B31F00893;
+	Sat, 30 May 2026 18:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162182;
-	bh=nNfVAJWFRKAbKtINZY6hz9pXL+VzYd1u0Jphsp4KIQU=;
+	s=korg; t=1780164877;
+	bh=AyzFN4K/NAsSzoRrKbD5NewFIeM6e4pTO7silTl59Zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iaQd+vkCeWraC4C6oQVr3UBOLDjBC9pdSnTshQeD7X3/oXxq66hZag6GW0yU9lfWV
-	 yaO3ry5eT0aQ+8BpfDb6exNG4CStDAs5PTqrA4qZf8eGBwb210z9qLRwWmpRmdUsPX
-	 HvLM/LPvIc1i2Cbb5e4GYmCItJyZ5GfK4NRtcfkA=
+	b=zQc8yMwFxNETz6XvqtAkh9ilbA2wu0Wv3wnYjyQsUE7dQhjnLJTDNTq9HWARJNiHo
+	 4Th3EkAmNgKMti8BWT1dE0R1W/XuBJ9Rw6pJdgjTSPfePila904VkfU9VjxrjGaPRq
+	 Fm+r1WycKicCCNvQw3QVXnUcWE6Q6stMC7Za9TsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 845/969] Bluetooth: ISO: drop ISO_END frames received without prior ISO_START
-Date: Sat, 30 May 2026 18:06:09 +0200
-Message-ID: <20260530160323.993467130@linuxfoundation.org>
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 656/776] ALSA: usb-audio: Bound MIDI endpoint descriptor scans
+Date: Sat, 30 May 2026 18:06:10 +0200
+Message-ID: <20260530160256.864229978@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257791-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258595-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 1E9CC60FCFE
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,suse.de:email]
+X-Rspamd-Queue-Id: EC4716115E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 84c24fb151fc1179355296d7ff29129ac7c42129 upstream.
+commit d6854daa67be623860f4e1873fd3d3c275aba4ed upstream.
 
-ISO data PDUs carry a packet-boundary flag indicating START, CONT, END
-or SINGLE. The ISO_CONT branch of iso_recv() guards against a missing
-ISO_START by checking conn->rx_len before touching conn->rx_skb, but
-ISO_END does not.
+snd_usbmidi_get_ms_info() validates the internal MIDIStreaming endpoint
+descriptor size before using baAssocJackID[], but the descriptor walker can
+still return a class-specific endpoint descriptor whose bLength exceeds the
+remaining bytes in the endpoint-extra scan.
 
-If a peer sends an ISO_END as the first packet on a fresh ISO
-connection, conn->rx_skb is still NULL and conn->rx_len is zero, so
-skb_put(conn->rx_skb, ...) dereferences NULL and oopses. For BIS,
-where receivers sync to a broadcaster without pairing, any broadcaster
-on the air can trigger this.
+That leaves later flexible-array reads bounded by bLength, but not by the
+remaining bytes in the endpoint-extra scan.
 
-Mirror the ISO_CONT check at the top of ISO_END so a stray end fragment
-is logged and dropped instead of crashing the host.
+Stop walking when bLength is zero or
+extends past the remaining endpoint-extra scan.
 
-Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
+Fixes: 5c6cd7021a05 ("ALSA: usb-audio: Fix case when USB MIDI interface has more than one extra endpoint descriptor")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260507-usb-midi-endpoint-scan-bounds-v1-1-329d7348160e@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/iso.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ sound/usb/midi.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1771,6 +1771,11 @@ void iso_recv(struct hci_conn *hcon, str
- 		break;
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -1974,15 +1974,17 @@ static struct usb_ms_endpoint_descriptor
+ 	while (extralen > 3) {
+ 		struct usb_ms_endpoint_descriptor *ms_ep =
+ 				(struct usb_ms_endpoint_descriptor *)extra;
++		int length = ms_ep->bLength;
  
- 	case ISO_END:
-+		if (!conn->rx_len) {
-+			BT_ERR("Unexpected end frame (len %d)", skb->len);
-+			goto drop;
-+		}
+-		if (ms_ep->bLength > 3 &&
++		if (!length || length > extralen)
++			break;
 +
- 		skb_copy_from_linear_data(skb, skb_put(conn->rx_skb, skb->len),
- 					  skb->len);
- 		conn->rx_len -= skb->len;
++		if (length > 3 &&
+ 		    ms_ep->bDescriptorType == USB_DT_CS_ENDPOINT &&
+ 		    ms_ep->bDescriptorSubtype == UAC_MS_GENERAL)
+ 			return ms_ep;
+-		if (!extra[0])
+-			break;
+-		extralen -= extra[0];
+-		extra += extra[0];
++		extralen -= length;
++		extra += length;
+ 	}
+ 	return NULL;
+ }
 
 
 
