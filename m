@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-257272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FZ8ObcXG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:39 +0200
+	id WIY8NfoXG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC44360EB5F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B0860EC1D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8546B3008093
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:00:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3D2F3302B26D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9675B34B40F;
-	Sat, 30 May 2026 17:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857443A542F;
+	Sat, 30 May 2026 17:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gBdAktM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ir36E0Fc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3909330E853;
-	Sat, 30 May 2026 17:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65602481DD;
+	Sat, 30 May 2026 17:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160422; cv=none; b=avYHIkp4kFZDkMbHv+O1cLvXNr4OSXA0v2YKsJBNjC8thQ3ecw3CKIA+17sYV5SK8zAn9wfez4LLnRlwyXJWlqpq7w25FFQ6/+mYFFoYzlludsPvMlRG+dAJCDbj4vMfWeFxDuvRBt48tcLbtY6HALqNaqEOAS1OQak3NQmKY1Y=
+	t=1780160429; cv=none; b=blRlC94kCNciNCK4bJt8Vfg2Elt+cs6B4+/AyW1AeELFUhKkhfei3KGcofgcElT5XpJ3e/qaVk7bwFt1ByMUQd0qFiXxOjiroZd0B0339na/tQyCOCWnfvBSt/oRXd4suYCq/+KJf2y+Cz/CjWEpA/5ABg+654WGo3EedGvVGeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160422; c=relaxed/simple;
-	bh=N43d8DGrPX0fwdjgocG35L7dBAzJKk/Xsi0wc+S8x9s=;
+	s=arc-20240116; t=1780160429; c=relaxed/simple;
+	bh=Ggv6x6y10S/eEzxO64W6WlGf7UU6e4iPN7XhjMIWJGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UxZxgH0JJUQpyi7gupdcYE1YqcnahgEm3VPJoEEp46J8jWDO/WMabJolKvei8z7JtRFYghn0V6v2PJa4eZDYj8CbX9HBZZkO8uyJgaR+tEMkAyGVbW9BoAm9lwjo6LAI1oMU6fwOK1NN+NBZ5BGIPe+sOFUNH2CPl14cmNmLpP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gBdAktM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DBB1F00893;
-	Sat, 30 May 2026 17:00:20 +0000 (UTC)
+	 MIME-Version; b=FA4+HTqiDObWMDm0AfOxF5oz9Rau3Tdh8bBTPVGr7GQPFOU19QPjfaJ4griXA1WzxP5lhbVp/z5gUBCZR/wLDkXjp++usKbtzbkDK9NNJO0fek7YDkAIgglRP2qBuPEqwMMrH9C1RZmmk6wO32ew7AJyGxp8ambYZNBfklvdsso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ir36E0Fc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7427A1F00893;
+	Sat, 30 May 2026 17:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160421;
-	bh=hfev8xv0+1rFF1XHOLCwQ2gYgr1Btv2VMd0EjuoG1B0=;
+	s=korg; t=1780160428;
+	bh=DuhmO6OgQmmgszYvisQTNNI3qr4b2YxW1wZcRwp+stY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1gBdAktMWikzZ6VDDPNGdbSEhlho0Sz5z2Vp46cFodWvcx2Vf71Ee3s1lJluawq7B
-	 bGO94G8WFD85Cj0PDr/+32eSQ4HFvXDyIWvu3lgqU50ODuSaIQIKGWdVVDcWZEJMHK
-	 7ERokPpVGmGkBo3WNw5OFZvpe0BqSRMEY9Ehy5bQ=
+	b=ir36E0Fc9Hb0QHuprxEw41p0NyETo/Mt5BzzDSE3/Uye+diTY2L62qs9zVQyraYG+
+	 RlgcB1YElylStIelxEGIxMYnqYthCrPpdUGZICYcJXQfKxYjWp9e5ywr6ceABVDCX+
+	 ZSyf1E9Xg1Xu7934v0QDs5zzVa2i1xKrTwnLb1eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>
-Subject: [PATCH 6.1 333/969] extcon: ptn5150: handle pending IRQ events during system resume
-Date: Sat, 30 May 2026 17:57:37 +0200
-Message-ID: <20260530160309.571170188@linuxfoundation.org>
+	Dexuan Cui <decui@microsoft.com>,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 334/969] hv_sock: fix ARM64 support
+Date: Sat, 30 May 2026 17:57:38 +0200
+Message-ID: <20260530160309.596136772@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257272-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257274-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EC44360EB5F
+X-Rspamd-Queue-Id: A6B0860EC1D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,59 +99,43 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
 
-commit 4652fefcda3c604c83d1ae28ede94544e2142f06 upstream.
+commit b31681206e3f527970a7c7ed807fbf6a028fc25b upstream.
 
-When the system is suspended and ptn5150 wakeup interrupt is disabled,
-any changes on ptn5150 will only be record in interrupt status
-registers and won't fire an IRQ since its trigger type is falling
-edge. So the HW interrupt line will keep at low state and any further
-changes won't trigger IRQ anymore. To fix it, this will schedule a
-work to check whether any IRQ are pending and handle it accordingly.
+VMBUS ring buffers must be page aligned. Therefore, the current value of
+24K presents a challenge on ARM64 kernels (with 64K pages). So, use
+VMBUS_RING_SIZE() to ensure they are always aligned and large enough to
+hold all of the relevant data.
 
-Fixes: 4ed754de2d66 ("extcon: Add support for ptn5150 extcon driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: MyungJoo Ham <myungjoo.ham@samsung.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
-Link: https://lore.kernel.org/lkml/20251115025905.1395347-1-xu.yang_2@nxp.com/
+Fixes: 77ffe33363c0 ("hv_sock: use HV_HYP_PAGE_SIZE for Hyper-V communication")
+Tested-by: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20260428125339.13963-1-hamzamahfooz@linux.microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/extcon/extcon-ptn5150.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ net/vmw_vsock/hyperv_transport.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/extcon/extcon-ptn5150.c
-+++ b/drivers/extcon/extcon-ptn5150.c
-@@ -331,6 +331,19 @@ static int ptn5150_i2c_probe(struct i2c_
- 	return 0;
- }
+--- a/net/vmw_vsock/hyperv_transport.c
++++ b/net/vmw_vsock/hyperv_transport.c
+@@ -375,10 +375,10 @@ static void hvs_open_connection(struct v
+ 	} else {
+ 		sndbuf = max_t(int, sk->sk_sndbuf, RINGBUFFER_HVS_SND_SIZE);
+ 		sndbuf = min_t(int, sndbuf, RINGBUFFER_HVS_MAX_SIZE);
+-		sndbuf = ALIGN(sndbuf, HV_HYP_PAGE_SIZE);
++		sndbuf = VMBUS_RING_SIZE(sndbuf);
+ 		rcvbuf = max_t(int, sk->sk_rcvbuf, RINGBUFFER_HVS_RCV_SIZE);
+ 		rcvbuf = min_t(int, rcvbuf, RINGBUFFER_HVS_MAX_SIZE);
+-		rcvbuf = ALIGN(rcvbuf, HV_HYP_PAGE_SIZE);
++		rcvbuf = VMBUS_RING_SIZE(rcvbuf);
+ 	}
  
-+static int ptn5150_resume(struct device *dev)
-+{
-+	struct i2c_client *i2c = to_i2c_client(dev);
-+	struct ptn5150_info *info = i2c_get_clientdata(i2c);
-+
-+	/* Need to check possible pending interrupt events */
-+	schedule_work(&info->irq_work);
-+
-+	return 0;
-+}
-+
-+static DEFINE_SIMPLE_DEV_PM_OPS(ptn5150_pm_ops, NULL, ptn5150_resume);
-+
- static const struct of_device_id ptn5150_dt_match[] = {
- 	{ .compatible = "nxp,ptn5150" },
- 	{ },
-@@ -346,6 +359,7 @@ MODULE_DEVICE_TABLE(i2c, ptn5150_i2c_id)
- static struct i2c_driver ptn5150_i2c_driver = {
- 	.driver		= {
- 		.name	= "ptn5150",
-+		.pm = pm_sleep_ptr(&ptn5150_pm_ops),
- 		.of_match_table = ptn5150_dt_match,
- 	},
- 	.probe_new	= ptn5150_i2c_probe,
+ 	chan->max_pkt_size = HVS_MAX_PKT_SIZE;
 
 
 
