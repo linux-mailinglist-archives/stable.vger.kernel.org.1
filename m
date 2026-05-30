@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257745-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFiTA0YqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258490-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:50 +0200
+	id 8HyWGkweG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257745-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A158F6117CB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F4E60FC18
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 38F42304A848
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 11D1A301A4FC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F043C0608;
-	Sat, 30 May 2026 18:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A1B3438AE;
+	Sat, 30 May 2026 17:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObYHkCGe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aShk8tBV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661453112C1;
-	Sat, 30 May 2026 18:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48762FDC5E;
+	Sat, 30 May 2026 17:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164525; cv=none; b=MpX5KWeZdK/wVC9ZS4HxnvFirS2JbMvBgwU3tzhb328Fb2CuQcZ58I1en+rp7ZHqVSpnYOPiWC/VPUYHj1+w+qH0xDHc+H4/CTQKFAEdZzoErN4BJav4yMoTTBhgGDuP8U8Xhkh0PL3ADLanE72azF8UhxvlKbN84fTz3Koo+3w=
+	t=1780162029; cv=none; b=ka/sAAcgXabVASJW2yAV9oy6K5AVu35nx7Lv+gXU6PNjExh4il/LipipsKJ7rfmo9YbCySqrtiMpG0l9qz3VDJbf8ac4uAirrvVUCu3hSDV+u+i+kXkpeNUS5C/ocNE83rfs8F8iq0s6sV9BhSZNTnH8rKsUIiTdCacRJIxR6Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164525; c=relaxed/simple;
-	bh=jHF1NwVb0BxLv16iZrZ+e2HRHS2yCRfdovZiWTcxQi4=;
+	s=arc-20240116; t=1780162029; c=relaxed/simple;
+	bh=TGV8OV72sAIKlAp/p3jOo0nIuvoR+yidRFlyH74hT1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tG3/kNJCFUcFKi6Tw4sbzIEQNJOm/dtyxR9hl10HGldoRBljNFBQesx2sV97nYmsZ+7ID6BUi4XKOCdpEujrQcPeE+Ns0+ffRJMS2dzpNh5umawvDMzvremMWvZo3y4dxlP5I1USO6OOaytDPsnVKX6tQZmvxdUqZXdkPy+DUJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObYHkCGe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DEC1F00893;
-	Sat, 30 May 2026 18:08:43 +0000 (UTC)
+	 MIME-Version; b=msv8TcHbDRd18/92LjVxQMEm+WEuBEB2OMo42XDQLi/4sySHoh+OmoNDI1jINvGERyRdEO4ZCzqIbAwnU+pfWxlgs20cmRQLo7H5U4cIip7h1OuuZY3cknYbFF4EcCJ/gn9C8M2UrDHwLkJWAfgzX1iLpL+1IWEAcJl0SQ/3BTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aShk8tBV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384821F00893;
+	Sat, 30 May 2026 17:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164524;
-	bh=+H6JrJefD7UUMXDFV4ypa1eBHKw9CAdQ1GBqcCnAALw=;
+	s=korg; t=1780162028;
+	bh=nTwsonZuMHYf5lTrL7ddn6VXdPOYOWRVPsBoTK62b4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ObYHkCGeKdYI4YT/Jz0GjNE65Z43zfabuhy6+gVWhWBry9C+qXE845u7u18rZ2ydt
-	 Oi37gYVI4W4ioIuLJr5S7tJ8mw69wWBoL4AE7Oiem5x3tk8kcCj90FJVD9SKEisrp6
-	 OwmmZ1vbq+AS/wGwo0j9cHkNNJT13AAtm0MGfR/U=
+	b=aShk8tBVyiMKhdgk0XtLcpLTua8tl/qLMpqRn37Mkt6DyjcMvLzrkU5bJ5WDCOT4v
+	 lmQrLKX2DtAy+ExarEQ1ek3o6x+fXlym5rdSxyyNbVkG8ngrrr2ewgugie2v3GtRhx
+	 e4co9QiRujErInRmDbEOEuOIpLa6X9AoWMY+BdmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Matthew Wood <thepacketgeek@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 580/776] slip: bound decode() reads against the compressed packet length
+Subject: [PATCH 6.1 770/969] net: netconsole: move newline trimming to function
 Date: Sat, 30 May 2026 18:04:54 +0200
-Message-ID: <20260530160255.079773466@linuxfoundation.org>
+Message-ID: <20260530160321.845541900@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,190 +66,97 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,redhat.com];
-	TAGGED_FROM(0.00)[bounces-258490-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257745-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,davemloft.net,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A158F6117CB
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,davemloft.net:email]
+X-Rspamd-Queue-Id: A7F4E60FC18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Matthew Wood <thepacketgeek@gmail.com>
 
-[ Upstream commit 4c1367a2d7aad643a6f87c6931b13cc1a25e8ca7 ]
+[ Upstream commit ae001dc67907618423fd15bbab2014308c00ad0b ]
 
-slhc_uncompress() parses a VJ-compressed TCP header by advancing a
-pointer through the packet via decode() and pull16(). Neither helper
-bounds-checks against isize, and decode() masks its return with
-& 0xffff so it can never return the -1 that callers test for -- those
-error paths are dead code.
+Move newline trimming logic from `dev_name_store()` to a new function
+(trim_newline()) for shared use in netconsole.c
 
-A short compressed frame whose change byte requests optional fields
-lets decode() read past the end of the packet. The over-read bytes
-are folded into the cached cstate and reflected into subsequent
-reconstructed packets.
-
-Make decode() and pull16() take the packet end pointer and return -1
-when exhausted. Add a bounds check before the TCP-checksum read.
-The existing == -1 tests now do what they were always meant to.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Simon Horman <horms@kernel.org>
-Closes: https://lore.kernel.org/netdev/20260414134126.758795-2-horms@kernel.org/
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260416100147.531855-5-bestswngs@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthew Wood <thepacketgeek@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 92ceb7bff62c ("netconsole: propagate device name truncation in dev_name_store()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/slip/slhc.c | 43 ++++++++++++++++++++++++-----------------
- 1 file changed, 25 insertions(+), 18 deletions(-)
+ drivers/net/netconsole.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/slip/slhc.c b/drivers/net/slip/slhc.c
-index 3474792a37a67..ef586ab250747 100644
---- a/drivers/net/slip/slhc.c
-+++ b/drivers/net/slip/slhc.c
-@@ -80,9 +80,9 @@
- #include <asm/unaligned.h>
- 
- static unsigned char *encode(unsigned char *cp, unsigned short n);
--static long decode(unsigned char **cpp);
-+static long decode(unsigned char **cpp, const unsigned char *end);
- static unsigned char * put16(unsigned char *cp, unsigned short x);
--static unsigned short pull16(unsigned char **cpp);
-+static long pull16(unsigned char **cpp, const unsigned char *end);
- 
- /* Allocate compression data structure
-  *	slots must be in range 0 to 255 (zero meaning no compression)
-@@ -190,30 +190,34 @@ encode(unsigned char *cp, unsigned short n)
- 	return cp;
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index 1e797f1ddc31c..f9bf2c9a3ae2a 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -240,6 +240,16 @@ static struct netconsole_target *to_target(struct config_item *item)
+ 		NULL;
  }
  
--/* Pull a 16-bit integer in host order from buffer in network byte order */
--static unsigned short
--pull16(unsigned char **cpp)
-+/* Pull a 16-bit integer in host order from buffer in network byte order.
-+ * Returns -1 if the buffer is exhausted, otherwise the 16-bit value.
-+ */
-+static long
-+pull16(unsigned char **cpp, const unsigned char *end)
- {
--	short rval;
-+	long rval;
- 
-+	if (*cpp + 2 > end)
-+		return -1;
- 	rval = *(*cpp)++;
- 	rval <<= 8;
- 	rval |= *(*cpp)++;
- 	return rval;
- }
- 
--/* Decode a number */
-+/* Decode a number. Returns -1 if the buffer is exhausted. */
- static long
--decode(unsigned char **cpp)
-+decode(unsigned char **cpp, const unsigned char *end)
- {
- 	int x;
- 
-+	if (*cpp >= end)
-+		return -1;
- 	x = *(*cpp)++;
--	if(x == 0){
--		return pull16(cpp) & 0xffff;	/* pull16 returns -1 on error */
--	} else {
--		return x & 0xff;		/* -1 if PULLCHAR returned error */
--	}
-+	if (x == 0)
-+		return pull16(cpp, end);
-+	return x & 0xff;
- }
- 
++/* Get rid of possible trailing newline, returning the new length */
++static void trim_newline(char *s, size_t maxlen)
++{
++	size_t len;
++
++	len = strnlen(s, maxlen);
++	if (s[len - 1] == '\n')
++		s[len - 1] = '\0';
++}
++
  /*
-@@ -499,6 +503,7 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 	struct cstate *cs;
- 	int len, hdrlen;
- 	unsigned char *cp = icp;
-+	const unsigned char *end = icp + isize;
+  * Attribute operations for netconsole_target.
+  */
+@@ -404,7 +414,6 @@ static ssize_t dev_name_store(struct config_item *item, const char *buf,
+ 		size_t count)
+ {
+ 	struct netconsole_target *nt = to_target(item);
+-	size_t len;
  
- 	/* We've got a compressed packet; read the change byte */
- 	comp->sls_i_compressed++;
-@@ -536,6 +541,8 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 	thp = &cs->cs_tcp;
- 	ip = &cs->cs_ip;
- 
-+	if (cp + 2 > end)
-+		goto bad;
- 	thp->check = *(__sum16 *)cp;
- 	cp += 2;
- 
-@@ -566,26 +573,26 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 	default:
- 		if(changes & NEW_U){
- 			thp->urg = 1;
--			if((x = decode(&cp)) == -1) {
-+			if((x = decode(&cp, end)) == -1) {
- 				goto bad;
- 			}
- 			thp->urg_ptr = htons(x);
- 		} else
- 			thp->urg = 0;
- 		if(changes & NEW_W){
--			if((x = decode(&cp)) == -1) {
-+			if((x = decode(&cp, end)) == -1) {
- 				goto bad;
- 			}
- 			thp->window = htons( ntohs(thp->window) + x);
- 		}
- 		if(changes & NEW_A){
--			if((x = decode(&cp)) == -1) {
-+			if((x = decode(&cp, end)) == -1) {
- 				goto bad;
- 			}
- 			thp->ack_seq = htonl( ntohl(thp->ack_seq) + x);
- 		}
- 		if(changes & NEW_S){
--			if((x = decode(&cp)) == -1) {
-+			if((x = decode(&cp, end)) == -1) {
- 				goto bad;
- 			}
- 			thp->seq = htonl( ntohl(thp->seq) + x);
-@@ -593,7 +600,7 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 		break;
+ 	mutex_lock(&dynamic_netconsole_mutex);
+ 	if (nt->enabled) {
+@@ -415,11 +424,7 @@ static ssize_t dev_name_store(struct config_item *item, const char *buf,
  	}
- 	if(changes & NEW_I){
--		if((x = decode(&cp)) == -1) {
-+		if((x = decode(&cp, end)) == -1) {
- 			goto bad;
- 		}
- 		ip->id = htons (ntohs (ip->id) + x);
+ 
+ 	strscpy(nt->np.dev_name, buf, IFNAMSIZ);
+-
+-	/* Get rid of possible trailing newline from echo(1) */
+-	len = strnlen(nt->np.dev_name, IFNAMSIZ);
+-	if (nt->np.dev_name[len - 1] == '\n')
+-		nt->np.dev_name[len - 1] = '\0';
++	trim_newline(nt->np.dev_name, IFNAMSIZ);
+ 
+ 	mutex_unlock(&dynamic_netconsole_mutex);
+ 	return strnlen(buf, count);
 -- 
 2.53.0
 
