@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258877-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id PswNKrwnG2rM/ggAu9opvQ
-	(envelope-from <stable+bounces-258302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:00 +0200
+	id mAB/JFMuG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258877-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:37:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2012861113B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B4B6121A1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:37:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A81C3099881
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:58:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2F52E30B13D9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790EE33032B;
-	Sat, 30 May 2026 17:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0DF3C37A6;
+	Sat, 30 May 2026 18:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXwobqlp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Htgkf1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B2521E098;
-	Sat, 30 May 2026 17:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABF13C277F;
+	Sat, 30 May 2026 18:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163893; cv=none; b=uj+BB38CKbERNgF6OK8k0O5OdQVKpMsbVd+L9ENvXPBq7ytBeUhVl+CTJj8pzJ08z4Acryi5V/PNSkmQm/dbuWPD8W7jdMWjG0xdAKnrJYvWd4jhfQM7/RRt9FOKy53Arzk4nhwItpqkrJcZYA5X4qJpwjE8Ky7OqvfQz278R7Q=
+	t=1780165840; cv=none; b=cIOUKE3fJtEPpS5jpMG/IOJsnOb1uNRPb4kwCcQVSCg6gUao8XGqI8F54I6ORyfrAhUNdns34PsxZqjTQMu6lBzWqcKwW533hsb/ut/RZhnTYOhQ2WXvQMYgAklN1W2//9xypGw4OH7gGOmg8eB9AUCPUHxEoJH+/1f5DgbeG0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163893; c=relaxed/simple;
-	bh=z52UjLNRVw/BsM+L3pCd5HNEu4jKVk6fuup0GDXfkX4=;
+	s=arc-20240116; t=1780165840; c=relaxed/simple;
+	bh=6C2ET5+hU8/kuNYRKdMZOIJjo1LZBehjsbmsWRahkOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1AeQlhi/Nzy00sak282jltrgzi9hAdyO7bqcqnAreR2XUOUyo2BThMa9ZKlwQH6YDr7HTrWDYs/cRa2Ep+Vw/UA0aaOazlMBrdU9/i8TPmphUYuTth3EVpuVh2P/DBYOcUV0jvMs0qPA64lSu6orJ3bNhF9YQ7ZHaenQLG6b9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXwobqlp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6572C1F00893;
-	Sat, 30 May 2026 17:58:11 +0000 (UTC)
+	 MIME-Version; b=sGZZ/MIs7LmHou2tyuuWq2si5oadPFNsoRCqgveHhol3KdoJlT+waNkSBala8HKd5xfgcowMg9tJ07i42JGC9WhT9QcfEqizveGuixFHDQLTU/eoys+G8owtEmCGggbtSYQgv9fo+pnyqzC+EPNCYBQfuDTQp+QU5oM12a5ZkT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Htgkf1q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB6E1F00893;
+	Sat, 30 May 2026 18:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163892;
-	bh=XrLC/EgkLJ9YFeTfnRHeyWrfTdLtex1iHlf7nGNhs5c=;
+	s=korg; t=1780165839;
+	bh=SW9astYTSrEqMUYR1Tn2nS1IVfHCG9/1iyNGUFDwT68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UXwobqlpiNzcI0A8Deg3uVc2ljJqfk3TsMcQkQpBM4HcHjP7TEpjPfLdsu5/fL6kE
-	 pGNXYlBHP+AqDPWVNs9aHv8CPGtd6N224ayIYurCDxXQKUbRiJ5jnE3hLMVTEnxGMj
-	 UV/FwG+vg814K+gFz2IkxVrLH8S0EnYsWAgUoQNg=
+	b=2Htgkf1qFwXB5TPMeGKk6PMi+S3tlohshNo4ArLtC5+WzJmgkJ8KbAQ5AysG2SM6X
+	 +ZLhALEIpV/imjB4PENkk+YgOH5NqL04nhGc60qUr0ARarXzeZQwzvFv2qFNtmaHwu
+	 sWZmLtnVkbI8uMXZ0noiaytT9uadQfwUzgcwHN7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 364/776] spi: mpc52xx: fix use-after-free on unbind
+	Randy Dunlap <rdunlap@infradead.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 5.10 197/589] driver core: Add kernel-doc for DEV_FLAG_COUNT enum value
 Date: Sat, 30 May 2026 18:01:18 +0200
-Message-ID: <20260530160249.970881253@linuxfoundation.org>
+Message-ID: <20260530160230.087528869@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +66,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258302-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258877-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2012861113B
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 14B4B6121A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 706b3dc2ac7a998c55e14b3fd2e8f934c367e6e0 upstream.
+commit 5b484311507b5d403c1f7a45f6aa3778549e268b upstream.
 
-The state machine work is scheduled by the interrupt handler and
-therefore needs to be cancelled after disabling interrupts to avoid a
-potential use-after-free.
+Even though nobody should use this value (except when declaring the
+"flags" bitmap), kernel-doc still gets upset that it's not documented.
+It reports:
 
-Fixes: 984836621aad ("spi: mpc52xx: Add cancel_work_sync before module remove")
-Cc: stable@vger.kernel.org
-Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260414134319.978196-5-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  WARNING: ../include/linux/device.h:519
+  Enum value 'DEV_FLAG_COUNT' not described in enum 'struct_device_flags'
+
+Add the description of DEV_FLAG_COUNT.
+
+Fixes: a2225b6e834a ("driver core: Don't let a device probe until it's ready")
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Closes: https://lore.kernel.org/f318cd43-81fd-48b9-abf7-92af85f12f91@infradead.org
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260413195910.1.I23aca74fe2d3636a47df196a80920fecb2643220@changeid
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-mpc52xx.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/device.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -521,10 +521,11 @@ static int mpc52xx_spi_remove(struct pla
- 	struct mpc52xx_spi *ms = spi_master_get_devdata(master);
- 	int i;
- 
--	cancel_work_sync(&ms->work);
- 	free_irq(ms->irq0, ms);
- 	free_irq(ms->irq1, ms);
- 
-+	cancel_work_sync(&ms->work);
-+
- 	for (i = 0; i < ms->gpio_cs_count; i++)
- 		gpio_free(ms->gpio_cs[i]);
- 
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -393,6 +393,7 @@ struct dev_links_info {
+  *
+  * @DEV_FLAG_READY_TO_PROBE: If set then device_add() has finished enough
+  *		initialization that probe could be called.
++ * @DEV_FLAG_COUNT: Number of defined struct_device_flags.
+  */
+ enum struct_device_flags {
+ 	DEV_FLAG_READY_TO_PROBE = 0,
 
 
 
