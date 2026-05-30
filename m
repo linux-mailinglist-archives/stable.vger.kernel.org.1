@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-257351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258097-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Jt5NLsYG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257351-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:04:59 +0200
+	id SLV2Ij4kG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258097-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6DB60EDB6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:04:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B6E6109C4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 95F9C300F5C4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:04:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F340D301CD9E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96154366567;
-	Sat, 30 May 2026 17:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAD93AEB5C;
+	Sat, 30 May 2026 17:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/tnHqpV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mp69TBpz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D29932B11D;
-	Sat, 30 May 2026 17:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7B83B1EC0;
+	Sat, 30 May 2026 17:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160692; cv=none; b=TmjTLReWjn9iq/DGGwg8DW0Qu/vALXUbhmgdSfQ7lr0LpB5wFqBPQCghsfft9h5yW33njW1xfbtlkJRRs2rkoUBV/+0PruExebEAV7GJvB0x6NFdzBX+eWO3Apcb+AWCuWpRz5uSvxhMMl+K0vpRNNTd4JYu8otZR4kPceMmJ0A=
+	t=1780163206; cv=none; b=VNIcrsqI2cqJiKcvOZOWlvZIVg1D3YqXnvlPLx8rml4xc1pEhCxXIVXwwvzgreb1lqizDarwrLkCF+Q12N+w0MJt8oGib2D7krmkFQz3ZyRfIv3giFasKb7QFhIMDEWssDVQ4GZLX7mTwQpgmwDSqolMmuJQEXLniAXs6UuJts8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160692; c=relaxed/simple;
-	bh=Hvg3B9nu1qNIjgYDpn/g78U7IMkW9fhIrw6Gf5rdCqs=;
+	s=arc-20240116; t=1780163206; c=relaxed/simple;
+	bh=l9gIQo2h2eFCxjsZQdQE8iOeO3klFaAcSC8rUi8FenQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UgmfBsByee0qdWbwI+cYjg08ipo1BQH8PfV+4yELpCskJiiUu0c1o5PbLEGZQUOk1aKlsm+rVYx+mwW9ncfho+45vIwV4Rfmz8IdFWujeUniNzixs9Zm3c/jSE069Igf+z5iSgFChNJS4Fcqv80v27VehrAzXBFm/qwM9QNwPiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/tnHqpV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DB51F00893;
-	Sat, 30 May 2026 17:04:50 +0000 (UTC)
+	 MIME-Version; b=CcXh5QJF+CZCgBAGBMU9C9pQqtxItmgzobIYAnvapy4yotKA8q7Rm093Dn6pBHKzbkSLSPi/pQ19PN6z1kCsmkB8oCxDF0umSZbnDM0j3uURLqYIRui/qhSEqfeSpXfkP+Ej6peAkGLrA9aU3BMpIIFEav0691E7DUgJ4qQD0O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mp69TBpz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D80D1F00893;
+	Sat, 30 May 2026 17:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160691;
-	bh=Qp8WZ4XUeri2DzNXQgV+LWHPmnige5Vh+cSCPk8tr30=;
+	s=korg; t=1780163205;
+	bh=gsHyBu+U1LFB9EyGEdacvZBaNNBIHXdGMoijWoZgIkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=y/tnHqpV0orIARECpPEa+lO8VWtcG9liXztZqZTnpi6cjPhf5orlo0GxWqfZ4+y/E
-	 KBXS1A+qOeBwRFgNX73I5/ZqVZQgcWITdgOO1OK/6enRRNu7YaYF7ubqc78Tn0hGSS
-	 BtZ8cdWEaRAK/utOc/4rPUL1/wIHQ8k/MolWEUK8=
+	b=mp69TBpzJYbegC+g0x5CK4EoH1MDLp1AnvriHGSBUKRFVy98AReL5gLoweHJJMhjA
+	 ftWNG2Hnyxu84SG9O8HjcVXeteEUBoBuOfJpEXoGnNK6hiwi4n986a9DbiehH83hnk
+	 LlL/x4+t/MQxYeSjAZwoPvsQM0FhQyxNevtgg6NA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 377/969] f2fs: fix incorrect multidevice info in trace_f2fs_map_blocks()
-Date: Sat, 30 May 2026 17:58:21 +0200
-Message-ID: <20260530160310.714367343@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Tyllis Xu <LivelyCarpet87@gmail.com>
+Subject: [PATCH 5.15 188/776] ibmasm: fix OOB reads in command_file_write due to missing size checks
+Date: Sat, 30 May 2026 17:58:22 +0200
+Message-ID: <20260530160245.359107578@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,71 +65,93 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257351-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-258097-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5D6DB60EDB6
+X-Rspamd-Queue-Id: 41B6E6109C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Tyllis Xu <livelycarpet87@gmail.com>
 
-commit eb2ca3ca983551a80e16a4a25df5a4ce59df8484 upstream.
+commit 0eb09f737428e482a32a2e31e5e223f2b35a71d3 upstream.
 
-When f2fs_map_blocks()->f2fs_map_blocks_cached() hits the read extent
-cache, map->m_multidev_dio is not updated, which leads to incorrect
-multidevice information being reported by trace_f2fs_map_blocks().
+The command_file_write() handler allocates a kernel buffer of exactly
+count bytes and copies user data into it, but does not validate the
+buffer against the dot command protocol before passing it to
+get_dot_command_size() and get_dot_command_timeout().
 
-This patch updates map->m_multidev_dio in f2fs_map_blocks_cached() when
-the read extent cache is hit.
+Since both the allocation size (count) and the header fields (command_size,
+data_size) are independently user-controlled, an attacker can cause
+get_dot_command_size() to return a value exceeding the allocation,
+triggering OOB reads in get_dot_command_timeout() and an out-of-bounds
+memcpy_toio() that leaks kernel heap memory to the service processor.
 
-Cc: stable@kernel.org
-Fixes: 0094e98bd147 ("f2fs: factor a f2fs_map_blocks_cached helper")
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fix with two guards: reject writes smaller than sizeof(struct
+dot_command_header) before allocation, then after copying user data
+reject commands where the buffer is smaller than the total size declared
+by the header (sizeof(header) + command_size + data_size). This ensures
+all subsequent header and payload field accesses stay within the buffer.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+Link: https://patch.msgid.link/20260314165355.548119-1-LivelyCarpet87@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/misc/ibmasm/ibmasmfs.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -1487,7 +1487,8 @@ static bool f2fs_map_blocks_cached(struc
- 		f2fs_wait_on_block_writeback_range(inode,
- 					map->m_pblk, map->m_len);
+--- a/drivers/misc/ibmasm/ibmasmfs.c
++++ b/drivers/misc/ibmasm/ibmasmfs.c
+@@ -303,6 +303,8 @@ static ssize_t command_file_write(struct
+ 		return -EINVAL;
+ 	if (count == 0 || count > IBMASM_CMD_MAX_BUFFER_SIZE)
+ 		return 0;
++	if (count < sizeof(struct dot_command_header))
++		return -EINVAL;
+ 	if (*offset != 0)
+ 		return 0;
  
--	if (f2fs_allow_multi_device_dio(sbi, flag)) {
-+	map->m_multidev_dio = f2fs_allow_multi_device_dio(sbi, flag);
-+	if (map->m_multidev_dio) {
- 		int bidx = f2fs_target_device_index(sbi, map->m_pblk);
- 		struct f2fs_dev_info *dev = &sbi->devs[bidx];
+@@ -319,6 +321,11 @@ static ssize_t command_file_write(struct
+ 		return -EFAULT;
+ 	}
  
++	if (count < get_dot_command_size(cmd->buffer)) {
++		command_put(cmd);
++		return -EINVAL;
++	}
++
+ 	spin_lock_irqsave(&command_data->sp->lock, flags);
+ 	if (command_data->command) {
+ 		spin_unlock_irqrestore(&command_data->sp->lock, flags);
 
 
 
