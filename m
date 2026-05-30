@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJiXKkMiG2oN/ggAu9opvQ
-	(envelope-from <stable+bounces-257958-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:39 +0200
+	id 8NQKITIYG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F3861052A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E926F60EC6C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32F243049287
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:39:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17D19308308B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474393A542F;
-	Sat, 30 May 2026 17:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D190833F5A3;
+	Sat, 30 May 2026 16:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BV9oh/jl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUcMzz1l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203B334389F;
-	Sat, 30 May 2026 17:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3020332EA7;
+	Sat, 30 May 2026 16:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162750; cv=none; b=uzuhuJIcnJ4S13jACWucI6pxiS1pNQWaS5Bhn7CL+/7kmzTrMcNgcg3I2nmZ89e2m+UsyAuMRLdixSGxJpdybpL33sc7ha9xTAF7f4ZfHHXNQ1q8s+7xhBHvTCUqE1sOIrO9pxdRpCXArUEjjwFqqRLoQUcTzAg8BsjCtGcd/CY=
+	t=1780160087; cv=none; b=YxoLgw6nWOOinzp3Yh0dFtFeXknBi/4tjJfpHAtbF2nhEh2Utp/fLn1NhXOpEwSM5Grqvi7wdXWRymnvXpSxYPD5hxK6nyGzauaB72HgDADbXbOIfS8btofFwi7HRkhnwdviVCwTWQ3OfMRh1enZ79dKaF2Dh8SFgkWIDHJr3L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162750; c=relaxed/simple;
-	bh=fTyl2cW08tw17qfi/vgdzb3pR/4XWRdN4EXQV3XiSxs=;
+	s=arc-20240116; t=1780160087; c=relaxed/simple;
+	bh=SRQGW1ks4ya5/UULyaNVNMDip9NBlac0b++z1XqzY5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aRc9qfNEdUAsVccCgn5+i8uQVR87QvBeeMr5CnE3JUljghIgyA8d5RNoOkdvHh42h81BCtwEw7d1PZYrdbXXc2E6bnz+n3LJ2LL1LWlmtDsEEHWE6smQlIQO2432tT/Qh8xFb3riFVOrhgnRUqH7YhUXvdO6ngihpiV+M8/q1AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BV9oh/jl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECE31F00898;
-	Sat, 30 May 2026 17:39:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JW/kXNLblwiz1Rx8TOVhP7ZJGgk49sPhLNJsMvhq/D7n8I3kyUUTmUQ2h+gUEyY0vECln6LH7fg3q3o+dVHDqfh5/SMBxEVyKdEM7nm4SitFLnK5OeT21Gxvz7+nHcgXBc74EYWnYnuyGf8cXEc/ER3feNRU1kPg+92vTm/s6Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUcMzz1l; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA4A1F00893;
+	Sat, 30 May 2026 16:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162747;
-	bh=b+CYAnMpxMnTOFE7Uiav6y6y+bmtmowWVt/pjuBg5+8=;
+	s=korg; t=1780160086;
+	bh=CzZ14+zKPFmYqIqKkM9ChBT1ew4mJrEw0T8Ujf7/CXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BV9oh/jlUwhpaFfFXu5ZUa0VurF5Ndk4zoO6L3UYaOV2PVHojFyPKs0znWY2rUgaK
-	 4jI+bS5oQp19F7WnZ6S2PfgBEy45HaM51c2QT7g0OOXbanOFK2QCzAhZv95vIzxxyf
-	 kgTmGmxd7rT7vz6RlAkr0RnH5Tw1QayqdNv4RuBs=
+	b=cUcMzz1lT2aHFvXUi20OgnFo9h4ATmgBm7HXfjAqTQF7ewcxyb6qgzQTnBCWzJ2UX
+	 Ra9HcBcF3mXR3TwjADMLURHAlQ3xAMoL7bBqmf4OJSWWwJRwHUUK6vVlM+2RoM5Pnu
+	 L8PfNdKVSzm75EVSz/bhaNfqNKcOkT7TOjEbG/WI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxi Qian <qjx1298677004@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 052/776] nfc: llcp: add missing return after LLCP_CLOSED checks
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 242/969] KVM: nSVM: Add missing consistency check for EFER, CR0, CR4, and CS
 Date: Sat, 30 May 2026 17:56:06 +0200
-Message-ID: <20260530160241.655014299@linuxfoundation.org>
+Message-ID: <20260530160307.143764787@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257958-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257180-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 21F3861052A
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: E926F60EC6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxi Qian <qjx1298677004@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit 2b5dd4632966c39da6ba74dbc8689b309065e82c upstream.
+commit 96bd3e76a171a8e21a6387e54e4c420a81968492 upstream.
 
-In nfc_llcp_recv_hdlc() and nfc_llcp_recv_disc(), when the socket
-state is LLCP_CLOSED, the code correctly calls release_sock() and
-nfc_llcp_sock_put() but fails to return. Execution falls through to
-the remainder of the function, which calls release_sock() and
-nfc_llcp_sock_put() again. This results in a double release_sock()
-and a refcount underflow via double nfc_llcp_sock_put(), leading to
-a use-after-free.
+According to the APM Volume #2, 15.5, Canonicalization and Consistency
+Checks (24593—Rev. 3.42—March 2024), the following condition (among
+others) results in a #VMEXIT with VMEXIT_INVALID (aka SVM_EXIT_ERR):
 
-Add the missing return statements after the LLCP_CLOSED branches
-in both functions to prevent the fall-through.
+  EFER.LME, CR0.PG, CR4.PAE, CS.L, and CS.D are all non-zero.
 
-Fixes: d646960f7986 ("NFC: Initial LLCP support")
-Signed-off-by: Junxi Qian <qjx1298677004@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260408081006.3723-1-qjx1298677004@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+In the list of consistency checks done when EFER.LME and CR0.PG are set,
+add a check that CS.L and CS.D are not both set, after the existing
+check that CR4.PAE is set.
+
+This is functionally a nop because the nested VMRUN results in
+SVM_EXIT_ERR in HW, which is forwarded to L1, but KVM makes all
+consistency checks before a VMRUN is actually attempted.
+
+Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260303003421.2185681-17-yosry@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/llcp_core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kvm/svm/nested.c |    6 ++++++
+ arch/x86/kvm/svm/svm.h    |    1 +
+ 2 files changed, 7 insertions(+)
 
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -1098,6 +1098,7 @@ static void nfc_llcp_recv_hdlc(struct nf
- 	if (sk->sk_state == LLCP_CLOSED) {
- 		release_sock(sk);
- 		nfc_llcp_sock_put(llcp_sock);
-+		return;
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -292,6 +292,10 @@ static bool __nested_vmcb_check_save(str
+ 		    CC(!(save->cr0 & X86_CR0_PE)) ||
+ 		    CC(kvm_vcpu_is_illegal_gpa(vcpu, save->cr3)))
+ 			return false;
++
++		if (CC((save->cs.attrib & SVM_SELECTOR_L_MASK) &&
++		       (save->cs.attrib & SVM_SELECTOR_DB_MASK)))
++			return false;
  	}
  
- 	/* Pass the payload upstream */
-@@ -1189,6 +1190,7 @@ static void nfc_llcp_recv_disc(struct nf
- 	if (sk->sk_state == LLCP_CLOSED) {
- 		release_sock(sk);
- 		nfc_llcp_sock_put(llcp_sock);
-+		return;
- 	}
+ 	/* Note, SVM doesn't have any additional restrictions on CR4. */
+@@ -378,6 +382,8 @@ static void __nested_copy_vmcb_save_to_c
+ 	 * Copy only fields that are validated, as we need them
+ 	 * to avoid TOC/TOU races.
+ 	 */
++	to->cs = from->cs;
++
+ 	to->efer = from->efer;
+ 	to->cr0 = from->cr0;
+ 	to->cr3 = from->cr3;
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -118,6 +118,7 @@ struct kvm_vmcb_info {
+ };
  
- 	if (sk->sk_state == LLCP_CONNECTED) {
+ struct vmcb_save_area_cached {
++	struct vmcb_seg cs;
+ 	u64 efer;
+ 	u64 cr4;
+ 	u64 cr3;
 
 
 
