@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-257382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258129-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHc8MD8aG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:27 +0200
+	id yJDvGysjG2pa/ggAu9opvQ
+	(envelope-from <stable+bounces-258129-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E16260F126
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25511610761
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C83C530680B8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C47BC301643D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A51535200B;
-	Sat, 30 May 2026 17:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A83349CCF;
+	Sat, 30 May 2026 17:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EswgRxr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wxrq14Yr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BDD481DD;
-	Sat, 30 May 2026 17:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49300342CA7;
+	Sat, 30 May 2026 17:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160805; cv=none; b=cGH5RRUo4y4/9mBLCvjSKYHUZ/2D5fhc8hn/L+EA+v0QOftifMgZ9z74h6k1W30SuTY3cmrSJ7W/MYGg6AqFylD/B6oB6PDImutk0YbFrxHRoioCaDAXX6Ls/ASKukTq0snrbgiJ2DNf2AjSjpV7HBWxzk6mgZF8hJRrUBdiugI=
+	t=1780163314; cv=none; b=HmdEnCbnFLvSF2u2Am3U3z2zxukG8+dlq0sxig2CEqOPjA9XaUr8dW0u90n3X9O4Eh/T6H+/w/0upFtGPup19ZyTn89Q5xt8x6rWnuV7cMNJkCuVZIgD0X8RtJODHXhjtXlshKyuSfC6oK9TxXpn7bkKWgDQkFvKhoOyBr+lIks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160805; c=relaxed/simple;
-	bh=0+mK1fSbvDglIYNrK55rLXE/dd/R2fN0Eh/Z2+Ocku4=;
+	s=arc-20240116; t=1780163314; c=relaxed/simple;
+	bh=Ni99gC9Nd2nkR7PFZIr5006BWWZMbRQo59WntSuqu14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C+pTi3EA+6Gfc2Rw8kJWRqE6YYmWDsncC8BAIkpEKsvrK8ySqcHyV9+TMU8ArJ4uW4OlgSSY3SlqVt/NevspIWYwIiadIDNff+u4q+oTpAtAdv1n14H664OC+RylSSPmfP+WQ/HaG++PEBLfZquO6ZoGxojm2TvHImTrdITt08M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EswgRxr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393BF1F00893;
-	Sat, 30 May 2026 17:06:43 +0000 (UTC)
+	 MIME-Version; b=u4KxfnC0W2m8fttFyo3v46Lu9JmXGq2AX0lGPAXliGWV3z5oASw1GZ6lzy/yuL9LPcWRp5FXvq0kDTIW0VflEbHAfpPiMEgtsxio5QbAgTCyh4T7pQrbypzCsAwKagPT5qv6v1MK7mm2om3kmwmYNgc8Ll8wlkLudRpLsWFaDnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wxrq14Yr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3B71F00893;
+	Sat, 30 May 2026 17:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160803;
-	bh=r7Km+oDBdGzxGX1TpQH+rPoMpWV/XtWx1bI8Cus9pfQ=;
+	s=korg; t=1780163313;
+	bh=Ink75ea+don9y8UkVVB3GeuxuvAS3A4KVDQeUKGjebk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1EswgRxrJiM8cYoNEgmuFSOzut6rrAIG3zYcXSfpHVYQnb3TEFCmx3pOal0MkH/gl
-	 aGCFBi0h4Y7YKr4YIEB1rzFpkxgBiEcdM+g1uAwDfx28qAfKE3qtenfo8vJWtwXFNl
-	 lgLjmrdHXL7qzKdpFmiXcv8azcSC+XBDZC2U47/I=
+	b=Wxrq14YrFmaGTjS+Pplqhugy7dncg4mn0E4jWWkAJTNECKiSqz+rIT8NbriE6ezZ7
+	 QQtFU17Xt3HBPSH68VTo/CZbId0XlLKC7Lz8j75F18TGL4t+J9aJ+CMK1rz9JoiA+U
+	 J2EYreLtOE5hCzRjDmH5/kZXwyKCvFUGEL6xo7Po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 410/969] drm/amdgpu: zero-initialize GART table on allocation
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruijie Li <ruijieli51@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 220/776] net/smc: avoid early lgr access in smc_clc_wait_msg
 Date: Sat, 30 May 2026 17:58:54 +0200
-Message-ID: <20260530160311.604199030@linuxfoundation.org>
+Message-ID: <20260530160246.207381326@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +69,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-257382-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258129-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,linux.alibaba.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 3E16260F126
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,alibaba.com:email]
+X-Rspamd-Queue-Id: 25511610761
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Ruijie Li <ruijieli51@gmail.com>
 
-commit e6c2e6c2e1fa066968a16aca1cb66cd1bdde7741 upstream.
+commit 5a8db80f721deee8e916c2cfdee78decda02ce4f upstream.
 
-GART TLB is flushed after unmapping but not after mapping. Since
-amdgpu_bo_create_kernel() does not zero-initialize the buffer, when a
-single PTE is written the TLB may speculatively load other uninitialized
-entries from the same cacheline. Those garbage entries can appear valid,
-and a subsequent write to another PTE in the same cacheline may cause the
-GPU to use a stale garbage PTE from the TLB.
+A CLC decline can be received while the handshake is still in an early
+stage, before the connection has been associated with a link group.
 
-Fix this by calling memset_io() to zero-initialize the GART table with
-gart_pte_flags immediately after allocation.
+The decline handling in smc_clc_wait_msg() updates link-group level sync
+state for first-contact declines, but that state only exists after link
+group setup has completed. Guard the link-group update accordingly and
+keep the per-socket peer diagnosis handling unchanged.
 
-Using AMDGPU_GEM_CREATE_VRAM_CLEARED, SDMA-based clear will not work
-since SDMA needs GART to be initialized to work.
+This preserves the existing sync_err handling for established link-group
+contexts and avoids touching link-group state before it is available.
 
-Suggested-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d9af8263b82b6eaa60c5718e0c6631c5037e4b24)
-Cc: stable@vger.kernel.org
+Fixes: 0cfdd8f92cac ("smc: connection and link group creation")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Link: https://patch.msgid.link/08c68a5c817acf198cce63d22517e232e8d60718.1776850759.git.ruijieli51@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ net/smc/smc_clc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-@@ -114,12 +114,19 @@ void amdgpu_gart_dummy_page_fini(struct
-  */
- int amdgpu_gart_table_vram_alloc(struct amdgpu_device *adev)
- {
-+	int r;
-+
- 	if (adev->gart.bo != NULL)
- 		return 0;
- 
--	return amdgpu_bo_create_kernel(adev,  adev->gart.table_size, PAGE_SIZE,
--				       AMDGPU_GEM_DOMAIN_VRAM, &adev->gart.bo,
--				       NULL, (void *)&adev->gart.ptr);
-+	r = amdgpu_bo_create_kernel(adev,  adev->gart.table_size, PAGE_SIZE,
-+				    AMDGPU_GEM_DOMAIN_VRAM, &adev->gart.bo,
-+				    NULL, (void *)&adev->gart.ptr);
-+	if (r)
-+		return r;
-+
-+	memset_io(adev->gart.ptr, adev->gart.gart_pte_flags, adev->gart.table_size);
-+	return 0;
- }
- 
- /**
+--- a/net/smc/smc_clc.c
++++ b/net/smc/smc_clc.c
+@@ -440,8 +440,8 @@ int smc_clc_wait_msg(struct smc_sock *sm
+ 		dclc = (struct smc_clc_msg_decline *)clcm;
+ 		reason_code = SMC_CLC_DECL_PEERDECL;
+ 		smc->peer_diagnosis = ntohl(dclc->peer_diagnosis);
+-		if (((struct smc_clc_msg_decline *)buf)->hdr.typev2 &
+-						SMC_FIRST_CONTACT_MASK) {
++		if ((dclc->hdr.typev2 & SMC_FIRST_CONTACT_MASK) &&
++		    smc->conn.lgr) {
+ 			smc->conn.lgr->sync_err = 1;
+ 			smc_lgr_terminate_sched(smc->conn.lgr);
+ 		}
 
 
 
