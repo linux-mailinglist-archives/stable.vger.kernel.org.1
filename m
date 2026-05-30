@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBKZMAYsG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:18 +0200
+	id yGkiH/syG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DFB611C53
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 250C6612CFE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9F693050925
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:19:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C67630053AB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61132274FDC;
-	Sat, 30 May 2026 18:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53852367DF;
+	Sat, 30 May 2026 18:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEei/1kf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6T4moYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3323A17555;
-	Sat, 30 May 2026 18:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DDDF2E7389;
+	Sat, 30 May 2026 18:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165164; cv=none; b=qrpnGl67irmtNSekVT3uoByk3pAqHXuDv0jB5IEsABDVtRSijUA7Sjl86kSOIAO8Y7QYVNqBnFadLCPTV/rNOTb/MbnQhtM8K1FHwtwWf5V7Hw3f07jEYykb60x1005XQ2DQFwjqlAS6c4+jS26/ltw4+f9c8kZ26RP1B+AcsGk=
+	t=1780167213; cv=none; b=NAtVDi1wAEGNjO0ypV4z6W9OwUA9daMJqyU4gJbM3iuKAj6JItI/dEPbGTJezqGKRP5MOMk9Wj2L7XhEqWENREgER5xp815/uasV0aPNyG1Glq2cehEHqNuE6RzcNzbGduzdIcKA3QJaUOzK3eucOFfevpCLnRM0F1U7/Vj/b0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165164; c=relaxed/simple;
-	bh=oNbVAzfeTp71Olbp72Vx8VkIMYpvDIXUmJFRYCRC34Y=;
+	s=arc-20240116; t=1780167213; c=relaxed/simple;
+	bh=y87eI5IvivvqkTX3EGCHgGanuiI8pdObzkiVc11H7h4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hiVkkDYnXABHlomk00kzJyXQhFXDdxJ+r5b/YoOMJZMBd2hw/CXiw+1SEOdQOM0CDf7u47lC01I+3p1xfof1OwAyh7ftARd5qKoErDU3C2aHXpKMxzh+wK2nrX/g/Gxs7Kv8JXtSGcISxnBXaUtc6eW/X7SSK4LcBg2a4TPovcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEei/1kf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763BF1F00893;
-	Sat, 30 May 2026 18:19:22 +0000 (UTC)
+	 MIME-Version; b=gsMJPwm4FOLpa77f1B0lc2xNfd+30F2s0M+gDLT9ocg8MwxZw4m7MhDIIo8yjUk0R9ffL4/4vzfnry0on2WqhvRud8mbf0cm38z7ylAtD5Ug705oxPEml/zfrGvQGRrxAAXoPUy4pACjAyirNND/zoWBjapd/eFekj7A7qZeGDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6T4moYi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F821F00898;
+	Sat, 30 May 2026 18:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165163;
-	bh=aJQj4UktZ/C0g7WFra54ILAsVGTax52UGw6uR4Kbhn0=;
+	s=korg; t=1780167212;
+	bh=Bsd+xnVDahaK334acQfjAWBtxPmHA40KCucpcvP8HrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iEei/1kfiFngZrrxOG+vb7wP0FkzvQESwBhh14/PPSRfF84aX/fITDfvrdI+ABcCn
-	 8PFRfbuO8kwbQ0Y5g1AkVALquXCP/NcVxI6xOmSMSoGVLSXRTcvPK0VSqEe6T/3vc+
-	 nYqfdTylXlZk6AVGM3cwMjSn03OsjOrGGxJCy5e0=
+	b=e6T4moYi/R0JjGszVo0PagIOv04KzxNRnlmRP4c6dNlE8aupL68COPjT5oX37dPRD
+	 PuIIiHy3A9xFrZ+7K9IdywDcmEprWpBr1zWOBJVQ2wwUGsjgepV0hksCbAR+XfPKCs
+	 BBIpBNqezQnWra6xu0QZstAcgzsOOSf9t9riSc+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linusw@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	David Carlier <devnexen@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 750/776] net: ethernet: cortina: Carry over frag counter
-Date: Sat, 30 May 2026 18:07:44 +0200
-Message-ID: <20260530160259.149501100@linuxfoundation.org>
+Subject: [PATCH 5.10 584/589] tracing: Avoid NULL return from hist_field_name() on truncation
+Date: Sat, 30 May 2026 18:07:45 +0200
+Message-ID: <20260530160239.941734158@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,149 +66,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-259280-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,goodmis.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258677-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,sashiko.dev:url]
-X-Rspamd-Queue-Id: 22DFB611C53
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 250C6612CFE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linusw@kernel.org>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit ebd8ec2b309e3a447851b456ccaf8fb39f3661e7 ]
+[ Upstream commit 576ec047d20b368b43c4d5db98c4f2e0f3c101ec ]
 
-The gmac_rx() NAPI poll function assembles packets in an
-SKB from a ring buffer.
+hist_field_name() returns "" everywhere except the fully-qualified
+VAR_REF/EXPR case, where snprintf() truncation returns NULL early
+and bypasses the bottom NULL->"" guard. Callers don't expect NULL:
+strcat(expr, hist_field_name(field, 0)) at trace_events_hist.c:1758
+and the strcmp() in the sort-key match loop at :4804 both deref it.
 
-If the ring buffer gets completely emptied during a poll cycle,
-we exit gmac_rx(), but the packet is not yet completely
-assembled in the SKB, yet the fragment counter frag_nr is
-reset to zero on the next invocation.
+system and event_name are bounded by MAX_EVENT_NAME_LEN, but the
+field name on a VAR_REF is kstrdup'd from a histogram variable
+name parsed out of the trigger string and has no length cap, so
+a long enough var name in a fully qualified reference can reach
+the truncation path.
 
-Solve this by making the RX fragment counter a part of the
-port struct, and carry it over between invocations.
+Keep the length check but leave field_name as "" on overflow.
 
-Reset the fragment counter only right after calling
-napi_gro_frags(), on error (after calling napi_free_frags())
-or if stopping the port.
-
-Reset it in some place where not strictly necessary just to
-emphasize what is going on.
-
-This was found by Sashiko during normal patch review.
-
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Link: https://sashiko.dev/#/patchset/20260505-gemini-ethernet-fix-v2-1-997c31d06079%40kernel.org
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20260509-gemini-ethernet-fixes-v1-3-6c5d20ddc35b@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20260508195747.25492-1-devnexen@gmail.com
+Fixes: 5ec1d1e97de1 ("tracing: Rebuild full_name on each hist_field_name() call")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ kernel/trace/trace_events_hist.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index be2b106b4aa27..8cc3cca1f4bd4 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -121,6 +121,7 @@ struct gemini_ethernet_port {
- 	struct hrtimer		rx_coalesce_timer;
- 	unsigned int		rx_coalesce_nsecs;
- 	struct sk_buff		*rx_skb;
-+	unsigned int		rx_frag_nr;
- 
- 	unsigned int		freeq_refill;
- 	struct gmac_txq		txq[TX_QUEUE_NUM];
-@@ -1413,6 +1414,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	unsigned short m = (1 << port->rxq_order) - 1;
- 	struct gemini_ethernet *geth = port->geth;
- 	void __iomem *ptr_reg = port->rxq_rwptr;
-+	unsigned int frag_nr = port->rx_frag_nr;
- 	struct sk_buff *skb = port->rx_skb;
- 	unsigned int frame_len, frag_len;
- 	struct gmac_rxdesc *rx = NULL;
-@@ -1426,7 +1428,6 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	unsigned short r, w;
- 	union dma_rwptr rw;
- 	dma_addr_t mapping;
--	int frag_nr = 0;
- 
- 	spin_lock_irqsave(&geth->irq_lock, flags);
- 	rw.bits32 = readl(ptr_reg);
-@@ -1466,6 +1467,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 				napi_free_frags(&port->napi);
- 				port->stats.rx_dropped++;
- 				skb = NULL;
-+				frag_nr = 0;
- 			}
- 			continue;
- 		}
-@@ -1476,6 +1478,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 				napi_free_frags(&port->napi);
- 				port->stats.rx_dropped++;
- 				skb = NULL;
-+				frag_nr = 0;
- 			}
- 
- 			skb = gmac_skb_if_good_frame(port, word0, frame_len);
-@@ -1510,6 +1513,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 		if (word3.bits32 & EOF_BIT) {
- 			napi_gro_frags(&port->napi);
- 			skb = NULL;
-+			frag_nr = 0;
- 			--budget;
- 		}
- 		continue;
-@@ -1518,6 +1522,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 		if (skb) {
- 			napi_free_frags(&port->napi);
- 			skb = NULL;
-+			frag_nr = 0;
- 		}
- 
- 		if (mapping)
-@@ -1527,6 +1532,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	}
- 
- 	port->rx_skb = skb;
-+	port->rx_frag_nr = frag_nr;
- 	writew(r, ptr_reg);
- 	return budget;
- }
-@@ -1856,6 +1862,7 @@ static int gmac_stop(struct net_device *netdev)
- 	gmac_stop_dma(port);
- 	napi_disable(&port->napi);
- 	port->rx_skb = NULL;
-+	port->rx_frag_nr = 0;
- 
- 	gmac_enable_irq(netdev, 0);
- 	gmac_cleanup_rxq(netdev);
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 381d7e3989ada..32f9ab82a8810 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -1105,10 +1105,8 @@ static const char *hist_field_name(struct hist_field *field,
+ 			len = snprintf(full_name, sizeof(full_name), "%s.%s.%s",
+ 				       field->system, field->event_name,
+ 				       field->name);
+-			if (len >= sizeof(full_name))
+-				return NULL;
+-
+-			field_name = full_name;
++			if (len < sizeof(full_name))
++				field_name = full_name;
+ 		} else
+ 			field_name = field->name;
+ 	} else if (field->flags & HIST_FIELD_FL_TIMESTAMP)
 -- 
 2.53.0
 
