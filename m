@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-257586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNgAOssdG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257586-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:35 +0200
+	id OElbHlQvG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C2060FAA6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2200661241A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D9CD307FAB2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:18:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A8425306BEAE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516753161A3;
-	Sat, 30 May 2026 17:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504C033E36A;
+	Sat, 30 May 2026 18:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUjOUQ8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JqV/9i/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3219230E829;
-	Sat, 30 May 2026 17:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE66351C2F;
+	Sat, 30 May 2026 18:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161496; cv=none; b=qvJBAQBxgxJyYHSHVTkrB1tDbZdfEvhZEeJdpg2WdGm3Z0CXbVKYnyit68gTFumCBiI3YzjIiUU1en5/aZLC46wu3mfgcYcUewLTztzgS4wUWVIrr+BuXlGQUHEwmvHoOZhTYZDlZZg7Cf6dOvFxKnU2DkEXL2P7fojwSQSVXZY=
+	t=1780166266; cv=none; b=nc9dVOIIG7nweF3jMYZJFHh+nbafSme2MIRaw8/RoFFK6vtn4J/7ViP81ZN+ZBSljeIVrnmr+NwrnjnyEmF8+/J/5Z97x2WFsujJTYnzPLbJ/txCHKMW0nZ2OjQBdsylRzye94bNlJmWkskt7pVIMFPu6leUypC2VXYTarZ7owY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161496; c=relaxed/simple;
-	bh=hhEivLXrgi8QxiMLeXIUvmZvqbUbtzWRtmbte63PWOk=;
+	s=arc-20240116; t=1780166266; c=relaxed/simple;
+	bh=VskPk6ANNaTqDUn8T4hUAC7g9AWMtfjXlLs92elAzVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YoKCy/s5X9qgZa4QLQa9TapTrV6zqgmTUkglZHWgtcHR2OVnfhvxvA0z0l/Pn4h3qw1mQKrXTwkhhpWvuc6P8511YWiYP1GR7V6Qdv38rY+iKAvUc4Iq/LsFYct4hTv+C2Gbdq6Bp02jYSWJL99d54Pf/vZhHj8t41w5gjK9P84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUjOUQ8/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA6C1F00893;
-	Sat, 30 May 2026 17:18:14 +0000 (UTC)
+	 MIME-Version; b=NjxWYxUKBlJKAKzFosLqPRMNXwyxOvi+YBCMAgk/GajI4UOA/ddpSsTQr+oN+PtLhqK2XzF8qhsKiQsCwjK7CSIzHXu4Ocff9dTOdAaVBONBaPF0MXLUZ5c+QZHzaI9kz3iyIT4z+Rqk5MPdKcHAOKzvZLOCHXz26eGMdtidQlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JqV/9i/+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2B91F00893;
+	Sat, 30 May 2026 18:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161495;
-	bh=nziOOc+nqFU3j2pD7OO+SD7D7fV8FP9l2CKh0lhsUjQ=;
+	s=korg; t=1780166265;
+	bh=V2TQnAnX3UK4ZvoKFwRRMnxhBJeTZLo5nPivHxgf+EE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uUjOUQ8/21uq4jQD/3YC7o6YOjeNIujWlUBDdPYpvJLG9d1TcbasvsFFHZRfZjV1p
-	 KDYJ+V1cvWjO5G6gfWu3laSF6o4f1EdOKtbBhu9Gnkmy1mk/JgNYRzDww4LMk3WoXb
-	 3Ow3r3xtVCth86hU0spyS6daXkKM+ssTJfYb5oNE=
+	b=JqV/9i/+dznQ9RQhwgLZ+hdkWRFz+sKa9bMWnuII9Py6L+S0T/0++aq5Z3bz9RZjY
+	 9D3xcytLr1zAY0+738OA3dUBJ0Z+ATfpRXVS6CGagiBBH9ca1SqE0IRUjDMdUbIHub
+	 kDNRC/xqOl8SreeV/G0VZIEnQ+PXAzOlbewj+TEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 641/969] tty: hvc_iucv: fix off-by-one in number of supported devices
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.10 284/589] batman-adv: bla: prevent use-after-free when deleting claims
 Date: Sat, 30 May 2026 18:02:45 +0200
-Message-ID: <20260530160318.156082117@linuxfoundation.org>
+Message-ID: <20260530160232.416368032@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +65,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257586-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259002-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 42C2060FAA6
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2200661241A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit f2a880e802ad12d1e38039d1334fb1475d0f5241 ]
+commit 4ae1709a314060a196981b344610d023ea841e57 upstream.
 
-MAX_HVC_IUCV_LINES == HVC_ALLOC_TTY_ADAPTERS == 8.
-This is the number of entries in:
-  static struct hvc_iucv_private *hvc_iucv_table[MAX_HVC_IUCV_LINES];
+When batadv_bla_del_backbone_claims() removes all claims for a backbone, it
+does this by dropping the link entry in the hash list. This list entry
+itself was one of the references which need to be dropped at the same time
+via batadv_claim_put().
 
-Sometimes hvc_iucv_table[] is limited by:
-(a)	if (num > hvc_iucv_devices) // for error detection
-or
-(b)	for (i = 0; i < hvc_iucv_devices; i++) // in 2 places
-(so these 2 don't agree; second one appears to be correct to me.)
+But the batadv_claim_put() must not be done before the last access to the
+claim object in this function. Otherwise the claim might be freed already
+by the batadv_claim_release() function before the list entry was dropped.
 
-hvc_iucv_devices can be 0..8. This is a counter.
-(c)	if (hvc_iucv_devices > MAX_HVC_IUCV_LINES)
-
-If hvc_iucv_devices == 8, (a) allows the code to access hvc_iucv_table[8].
-Oops.
-
-Fixes: 44a01d5ba8a4 ("[S390] s390/hvc_console: z/VM IUCV hypervisor console support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://patch.msgid.link/20260130072939.1535869-1-rdunlap@infradead.org
+Cc: stable@kernel.org
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/hvc/hvc_iucv.c | 2 +-
+ net/batman-adv/bridge_loop_avoidance.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/hvc/hvc_iucv.c b/drivers/tty/hvc/hvc_iucv.c
-index 7d49a872de48a..9551269e106a4 100644
---- a/drivers/tty/hvc/hvc_iucv.c
-+++ b/drivers/tty/hvc/hvc_iucv.c
-@@ -130,7 +130,7 @@ static struct iucv_handler hvc_iucv_handler = {
-  */
- static struct hvc_iucv_private *hvc_iucv_get_private(uint32_t num)
- {
--	if (num > hvc_iucv_devices)
-+	if (num >= hvc_iucv_devices)
- 		return NULL;
- 	return hvc_iucv_table[num];
- }
--- 
-2.53.0
-
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -319,8 +319,8 @@ batadv_bla_del_backbone_claims(struct ba
+ 			if (claim->backbone_gw != backbone_gw)
+ 				continue;
+ 
+-			batadv_claim_put(claim);
+ 			hlist_del_rcu(&claim->hash_entry);
++			batadv_claim_put(claim);
+ 		}
+ 		spin_unlock_bh(list_lock);
+ 	}
 
 
 
