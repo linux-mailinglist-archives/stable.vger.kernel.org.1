@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NyvNjEpG2rg/ggAu9opvQ
-	(envelope-from <stable+bounces-258579-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:13 +0200
+	id +O66IbcxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62BD4611584
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE30612A26
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EC32C308131C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:13:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E5A73012BC6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48978223DC6;
-	Sat, 30 May 2026 18:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF14233943;
+	Sat, 30 May 2026 18:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPJ6nf/G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKRciGOt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3080829B799;
-	Sat, 30 May 2026 18:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1BE1A9F90;
+	Sat, 30 May 2026 18:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164822; cv=none; b=pMRrYRa6jGr3ntmZ2bn6GsECufqgY2yc2wVkNKOVh6NfXm4hTJaLGv4KeSYCQ+3FOk3uCHzmc6HRTuV1x3U651jqseLdIEUQCktdcP/Bfbr2F6ZgOIzHk7Y3UGpBy12oUHZBiMOJwBFLhuS6s9vPbvkoU9EWwAZfsG2oS0SKlzc=
+	t=1780166831; cv=none; b=LArGL99Ub7ZsdnB57phCccPquGu8qSBASeklCLW4GQ5qlmoWplX1d/XSwNCeFV1p4I+t7wKiHaajstrwIF/YWDiR6SR8uG0hCXX1uX8augm6JOjhXhOFRx11HezUSVqwWciUsWWCM6r4o/QXhCQqba+w6ZetwCVcg+MnJgCwvsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164822; c=relaxed/simple;
-	bh=KZvanTeFuommuvsENPU0JA3VW3+dUN2pTq664KNhfio=;
+	s=arc-20240116; t=1780166831; c=relaxed/simple;
+	bh=+cPJgCM7mq32WuDXjbaJKUHvuPF273Fa5Hi6C0HX4ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cVT964j0VDlcFI98NJKGGPGj+sa0yTcHOyY1D2LB6XDoRrpn8ecB0XjR+e0LPFV42fEkR6jVRthNZiE0rp5Me7Dv6dIXW6TBPPzql35RGLyk8/2D+Taf1+q5dCvaggREES9musdCZAWf5H2M/a8EP6U5bORCG+aRTTZnF6LRnFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPJ6nf/G; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C501F00898;
-	Sat, 30 May 2026 18:13:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XvQOkblPMCh7T2JwY5+jlZvyXGcsajNwbYiz9TXzUcDR5sy0okptoAo7TY81GkjCsV05JUUgZm80VlNbqGl/3jcblzFjyoUIswjv8wMmajBEXMRmfaqkrNXa8qF05veFCvhuFSdk4MNBdY9f0j+Fna/OpRASS1bVzYjiKg2OXrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKRciGOt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4B01F00893;
+	Sat, 30 May 2026 18:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164821;
-	bh=jiVAuPLPWdtUPrmPnfpTpNw2zd8zR/JK+rlyYW9hhJc=;
+	s=korg; t=1780166830;
+	bh=0FLupfdpHYlsl+aMt0m1+AUmoA/UohrsWF9Wv+gIrBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fPJ6nf/G0nZhZ5b86LUoJDcto6tYL9woj03Q+/gVbXoj2r3LZysOUg3V9u+NpEfQE
-	 pDFsCH5miKWFSGT5eDT2MzKORNyFbd4BIdh6aIpRTu4RFSopnUOEZDoSJ/uNBPzPxa
-	 XEVGyiqF/w+GV0z99hb37quxPK/FSmhLsJUGdDnY=
+	b=jKRciGOtOsgJJQcW0j9BlW40guSzeC0lNcRjn4mY8erc8Z4fc3zEYWEp0rPaSWphh
+	 u/gOJMuVgBWysLUpOUZ3vLqZ90gxwzxjHFgSgOqFLNxRk8dyWs0qKvZ/arp57dMNH7
+	 SEKViBb+xCimXiljZsluR8MLNjTaXh3rJLMDQxrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Robaina <rrobaina@redhat.com>,
-	Sergio Correia <scorreia@redhat.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.15 652/776] audit: enforce AUDIT_LOCKED for AUDIT_TRIM and AUDIT_MAKE_EQUIV
+	"Christian A. Ehrhardt" <christian.ehrhardt@codasip.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20 ?= <u.kleine-koenig@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 485/589] ASoC: codecs: ab8500: Fix casting of private data
 Date: Sat, 30 May 2026 18:06:06 +0200
-Message-ID: <20260530160256.768542947@linuxfoundation.org>
+Message-ID: <20260530160237.391320723@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-259167-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258579-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,paul-moore.com:email]
-X-Rspamd-Queue-Id: 62BD4611584
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 2CE30612A26
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergio Correia <scorreia@redhat.com>
+From: Christian A. Ehrhardt <christian.ehrhardt@codasip.com>
 
-commit f9e1c1324b4d98d591a6f7568fdebf5cf456dfc2 upstream.
+[ Upstream commit a201aef1a88b675e9eb8487e27d14e2eef3cef80 ]
 
-AUDIT_ADD_RULE and AUDIT_DEL_RULE correctly check for AUDIT_LOCKED
-and return -EPERM, but AUDIT_TRIM and AUDIT_MAKE_EQUIV do not. This
-allows a process with CAP_AUDIT_CONTROL to modify directory tree
-watches and equivalence mappings even when the audit configuration
-has been locked, undermining the purpose of the lock.
+ab8500_filter_controls[i].private_value is initialized using
 
-Add AUDIT_LOCKED checks to both commands.
+	.private_value = (unsigned long)&(struct filter_control)
+		{.count = xcount, .min = xmin, .max = xmax}
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Ricardo Robaina <rrobaina@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Sergio Correia <scorreia@redhat.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+thus it's a pointer to a struct filter_control casted to unsigned long.
+
+So to get back that pointer .private_data must be cast back, not its
+address.
+
+Fixes: 679d7abdc754 ("ASoC: codecs: Add AB8500 codec-driver")
+Signed-off-by: Christian A. Ehrhardt <christian.ehrhardt@codasip.com>
+Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/20260428192255.2294705-2-u.kleine-koenig@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/audit.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/codecs/ab8500-codec.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/audit.c
-+++ b/kernel/audit.c
-@@ -1430,6 +1430,8 @@ static int audit_receive_msg(struct sk_b
- 		err = audit_list_rules_send(skb, seq);
- 		break;
- 	case AUDIT_TRIM:
-+		if (audit_enabled == AUDIT_LOCKED)
-+			return -EPERM;
- 		audit_trim_trees();
- 		audit_log_common_recv_msg(audit_context(), &ab,
- 					  AUDIT_CONFIG_CHANGE);
-@@ -1442,6 +1444,8 @@ static int audit_receive_msg(struct sk_b
- 		size_t msglen = data_len;
- 		char *old, *new;
+diff --git a/sound/soc/codecs/ab8500-codec.c b/sound/soc/codecs/ab8500-codec.c
+index 31a8c4162d209..b4bf411124fa0 100644
+--- a/sound/soc/codecs/ab8500-codec.c
++++ b/sound/soc/codecs/ab8500-codec.c
+@@ -2505,13 +2505,13 @@ static int ab8500_codec_probe(struct snd_soc_component *component)
+ 		return status;
+ 	}
+ 	fc = (struct filter_control *)
+-		&ab8500_filter_controls[AB8500_FILTER_ANC_FIR].private_value;
++		ab8500_filter_controls[AB8500_FILTER_ANC_FIR].private_value;
+ 	drvdata->anc_fir_values = (long *)fc->value;
+ 	fc = (struct filter_control *)
+-		&ab8500_filter_controls[AB8500_FILTER_ANC_IIR].private_value;
++		ab8500_filter_controls[AB8500_FILTER_ANC_IIR].private_value;
+ 	drvdata->anc_iir_values = (long *)fc->value;
+ 	fc = (struct filter_control *)
+-		&ab8500_filter_controls[AB8500_FILTER_SID_FIR].private_value;
++		ab8500_filter_controls[AB8500_FILTER_SID_FIR].private_value;
+ 	drvdata->sid_fir_values = (long *)fc->value;
  
-+		if (audit_enabled == AUDIT_LOCKED)
-+			return -EPERM;
- 		err = -EINVAL;
- 		if (msglen < 2 * sizeof(u32))
- 			break;
+ 	snd_soc_dapm_disable_pin(dapm, "ANC Configure Input");
+-- 
+2.53.0
+
 
 
 
