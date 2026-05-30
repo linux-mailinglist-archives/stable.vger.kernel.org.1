@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-259158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257758-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKe6OmcyG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259158-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:31 +0200
+	id oFx+FgUfG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257758-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA4E612C63
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8AA60FDA7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10109302DA30
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DF1D9302F40D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A962857FA;
-	Sat, 30 May 2026 18:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89DEF3148DA;
+	Sat, 30 May 2026 17:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPJev6c/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LoNBoQrx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABAC242D67;
-	Sat, 30 May 2026 18:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A203334695;
+	Sat, 30 May 2026 17:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166802; cv=none; b=jDNQXEUHFzBT8m4V2GsQB7RmA0e0DKEaQjQ/pjk/gsAYQf/3GfQ8tUwYNJs+GrKv6zxmSZ8YSUw1bS0myvtj8sWAcCon26bK9m/IzvRLN23Qvvkm1eBL/RLt/cBiAlmnHJXfsKmFZf7KqZs+uARp/321YG0KFDrY39ZzavFAzZA=
+	t=1780162074; cv=none; b=EDdWhN6FI2jxcVDBISuGWvwyE1+oJk9hAXWtdUBestISYCW7sWROi/BfqsFcJY7Av/l38B49uh6B3UiAWc9w/BxrMRj3WA69y5oMBsaC2DftfgpYQDay3G4RrqkLff8xj5cKrofdKkXDVkidWVPeb3JUx0zK/uRfBiHzuWlBFjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166802; c=relaxed/simple;
-	bh=juBnfK89VDS0G4bz/md4W6GQ1zEMtC/c9+L+hvfpGB8=;
+	s=arc-20240116; t=1780162074; c=relaxed/simple;
+	bh=HDjzcVJNtfYybBvYCXMelB80Z9K9ORJXYdSpXiFsZ2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+/ESY0dAJIHzXPPl2WR0HoClFuHF5JJhEg9BRbbEXNFfXqgnqJLoouBuccdSwHGOtZbC7mLjssLvr3VxRxHex9u9iVjOK/caJh997b558OYL0VNHKLPuvoFlItDNJ2crYyMPbY0kdWB+ZLcbIqeFt5NgGOPmKg9wtB1v8bzrmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPJev6c/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DA51F00893;
-	Sat, 30 May 2026 18:46:38 +0000 (UTC)
+	 MIME-Version; b=lADn49RJjkiUhPv2F+wI3lWqawCKTC7DjjBMylU6igSuu3gIv+HepPBi5lBsQC0n9dGcbLG9j+szDy2Qp839UiuhEJSNf4GCtAH8jg8s6z2dufunfPqMJ9FZrOLdQNbHSITaCLfvsOdznTH+P3Tb/8HS1JB+RunGaf71OKWdrQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LoNBoQrx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDA11F00893;
+	Sat, 30 May 2026 17:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166799;
-	bh=V3AeV95BxS0bIJmOwrkty3uh9B+aCv1izdn1jcO77Ok=;
+	s=korg; t=1780162073;
+	bh=w+MKJKvHuZrCtczeLzfjbVK7fi7HwhjJhgy30CEy4JA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VPJev6c/u/Pctc67H4sUjwwb0uftMvtEXu+l0vlFjd3IKMGROfm/1yorLPxDjEx8z
-	 A4M54vlLx3Nq/GbK1x54qhndJb7k2P6HLXL13KzTluh55SsH/lQ9SflFMvlqz4vEYU
-	 DpgfVmNugUvuuuD/kcZ9/7mQFnB1CWjUx80W78fE=
+	b=LoNBoQrx6MCdoYDQTAseDnJE+gY/ouM0DMoAyuY/nuJojjOBZXy7aSY/HQ9PKM8qT
+	 /rRW9jbrE7afbrlPIFR/IGvkOwAwOF7wcN1ORyDexcB2gDvpoXL9w5H06KlCBFYcwz
+	 XFJ43wwCzPPq3smmjCQ6jI51cHWi9VJcTcSCx9QU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 438/589] netfilter: nfnetlink_osf: fix out-of-bounds read on option matching
+Subject: [PATCH 6.1 795/969] net: bcmgenet: fix leaking free_bds
 Date: Sat, 30 May 2026 18:05:19 +0200
-Message-ID: <20260530160236.224742033@linuxfoundation.org>
+Message-ID: <20260530160322.575029659@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259158-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257758-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,112 +87,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,netfilter.org:email,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6EA4E612C63
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,broadcom.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CA8AA60FDA7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Justin Chen <justin.chen@broadcom.com>
 
-[ Upstream commit f5ca450087c3baf3651055e7a6de92600f827af3 ]
+[ Upstream commit 3f3168300efb839028328d720ab3962f91d6a0d0 ]
 
-In nf_osf_match(), the nf_osf_hdr_ctx structure is initialized once
-and passed by reference to nf_osf_match_one() for each fingerprint
-checked. During TCP option parsing, nf_osf_match_one() advances the
-shared ctx->optp pointer.
+While reclaiming the tx queue we fast forward the write pointer to
+drop any data in flight. These dropped frames are not added back
+to the pool of free bds. We also need to tell the netdev that we
+are dropping said data.
 
-If a fingerprint perfectly matches, the function returns early without
-restoring ctx->optp to its initial state. If the user has configured
-NF_OSF_LOGLEVEL_ALL, the loop continues to the next fingerprint.
-However, because ctx->optp was not restored, the next call to
-nf_osf_match_one() starts parsing from the end of the options buffer.
-This causes subsequent matches to read garbage data and fail
-immediately, making it impossible to log more than one match or logging
-incorrect matches.
-
-Instead of using a shared ctx->optp pointer, pass the context as a
-constant pointer and use a local pointer (optp) for TCP option
-traversal. This makes nf_osf_match_one() strictly stateless from the
-caller's perspective, ensuring every fingerprint check starts at the
-correct option offset.
-
-Fixes: 1a6a0951fc00 ("netfilter: nfnetlink_osf: add missing fmatch check")
-Suggested-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: f1bacae8b655 ("net: bcmgenet: support reclaiming unsent Tx packets")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de>
+Link: https://patch.msgid.link/20260406175756.134567-3-justin.chen@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_osf.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index be9bf079aeddf..22d5d72d8250b 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -64,9 +64,9 @@ struct nf_osf_hdr_ctx {
- static bool nf_osf_match_one(const struct sk_buff *skb,
- 			     const struct nf_osf_user_finger *f,
- 			     int ttl_check,
--			     struct nf_osf_hdr_ctx *ctx)
-+			     const struct nf_osf_hdr_ctx *ctx)
- {
--	const __u8 *optpinit = ctx->optp;
-+	const __u8 *optp = ctx->optp;
- 	unsigned int check_WSS = 0;
- 	int fmatch = FMATCH_WRONG;
- 	int foptsize, optnum;
-@@ -95,17 +95,17 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
- 	check_WSS = f->wss.wc;
- 
- 	for (optnum = 0; optnum < f->opt_num; ++optnum) {
--		if (f->opt[optnum].kind == *ctx->optp) {
-+		if (f->opt[optnum].kind == *optp) {
- 			__u32 len = f->opt[optnum].length;
--			const __u8 *optend = ctx->optp + len;
-+			const __u8 *optend = optp + len;
- 
- 			fmatch = FMATCH_OK;
- 
--			switch (*ctx->optp) {
-+			switch (*optp) {
- 			case OSFOPT_MSS:
--				mss = ctx->optp[3];
-+				mss = optp[3];
- 				mss <<= 8;
--				mss |= ctx->optp[2];
-+				mss |= optp[2];
- 
- 				mss = ntohs((__force __be16)mss);
- 				break;
-@@ -113,7 +113,7 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
- 				break;
- 			}
- 
--			ctx->optp = optend;
-+			optp = optend;
- 		} else
- 			fmatch = FMATCH_OPT_WRONG;
- 
-@@ -156,9 +156,6 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 64bc7b3afb514..cc7bcd0cc7ba8 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -1937,6 +1937,7 @@ static unsigned int bcmgenet_tx_reclaim(struct net_device *dev,
+ 		drop = (ring->prod_index - ring->c_index) & DMA_C_INDEX_MASK;
+ 		released += drop;
+ 		ring->prod_index = ring->c_index & DMA_C_INDEX_MASK;
++		ring->free_bds += drop;
+ 		while (drop--) {
+ 			cb_ptr = bcmgenet_put_txcb(priv, ring);
+ 			skb = cb_ptr->skb;
+@@ -1948,6 +1949,7 @@ static unsigned int bcmgenet_tx_reclaim(struct net_device *dev,
  		}
- 	}
- 
--	if (fmatch != FMATCH_OK)
--		ctx->optp = optpinit;
--
- 	return fmatch == FMATCH_OK;
- }
- 
+ 		if (skb)
+ 			dev_consume_skb_any(skb);
++		netdev_tx_reset_queue(netdev_get_tx_queue(dev, ring->index));
+ 		bcmgenet_tdma_ring_writel(priv, ring->index,
+ 					  ring->prod_index, TDMA_PROD_INDEX);
+ 		wr_ptr = ring->write_ptr * WORDS_PER_BD(priv);
 -- 
 2.53.0
 
