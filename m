@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wPtUOuYgG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257891-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:50 +0200
+	id AD9FEt4qG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB11610245
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB826119F1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50F8C3018752
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:35:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 70BA2301DC23
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1764233F8B4;
-	Sat, 30 May 2026 17:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC03C284690;
+	Sat, 30 May 2026 18:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s372N3qO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rn3a9pam"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB97C30E853;
-	Sat, 30 May 2026 17:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AC3233D9E;
+	Sat, 30 May 2026 18:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162517; cv=none; b=F9tc5xuCDSRHqxf+o3xZG2TgHc2vsGyCn+gcR101810CeexDa/np487AN2Y3Jg+iBy7U/a9DQ5jjBYj9VSHlmml2pKpmUwWU6r3VJ5RjeudzHtsO5ZkHaOBy1ngle9Ephyaz2/kA+ZSwEAE+uv0biWnfmgQTDVJSr37GjqG0zzM=
+	t=1780165204; cv=none; b=HH2P8KZQe59oQz4B9p74nuL34I33eqaeSwTcFDR4Kh2GsQlOSeTf3uCADoW6S1Io2E6k4JwO8wq3hvkMEx7+uYozBmGYN3Wwqlz44Pag0G25rYNT92hkQbfD6wSTTW5MS7MkXuuvgwd7Ti2boOjG5TEWaMl2m2Z1cJrWubY5TnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162517; c=relaxed/simple;
-	bh=23Y4ndvAbPYN+ZAfCL4pW99W6Oxm3feu4KbFQgFr82A=;
+	s=arc-20240116; t=1780165204; c=relaxed/simple;
+	bh=xvavtGN4xyQLMkYrx6o5NWy6ptPVGXJac3TCbKJKPrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9nC4eYey0A2Pv1LTAZUlgh2hXHkwrPtsLxHT2jgwMDyiDYt71yZZ30dznGYk0jKE1cctqDPcxyxC0mWOlSGI6ArDiQ86wq+f9mLk9kEuTwsVq09AVfHbcFWak3zEeN3zY6k5S27qfl0PxBiduXy8f+DUiZ+bcnsBI2xcLg7m8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s372N3qO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B90A1F00893;
-	Sat, 30 May 2026 17:35:15 +0000 (UTC)
+	 MIME-Version; b=YuFxGa6xWhOxYdAzMFmSkTrBNdV7lYzLNhjQ9ExebBYEjXtNj8rx3G0N+hBhh0YjFL6bFbdKjh0eQhHr9yqu/TFZzqYYcVXUQ3DM47MtKKjbH8d1RR4oYu4LK8j1FafdDeCcyFPRPJioLFlkb8+5DKyxqjngipLGk8jivou7v7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rn3a9pam; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255011F00893;
+	Sat, 30 May 2026 18:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162516;
-	bh=59i1rM/C2QTdzYY8CwrLvy1lLr/9Ca+BZX1Yk/1Rg7g=;
+	s=korg; t=1780165203;
+	bh=BvG1ohil4A5hki7LUQPfCdSGSDtMco6YePEUuP+iYTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s372N3qOIWHVCj8GnCbOUAGnskoFMdvNdGtQBthixcSp8tQoNzBX+gt7zrDWXX0RD
-	 dNgS9XAhu+jHZbpZ3BUyybklgjZOfBVueG6oj1en+qgAGbh/7DryTSEPpocHZ301ql
-	 ieRg6C2BX4RCFtl6S9ZKeA76YLZEoj2xK0ZN3jOg=
+	b=rn3a9pamBJ9NKeYGxvPIkmJvXkHKss8pJFbp6s9Qn/NXp6dvQjtxiCqMRrHGcYYwM
+	 V2PT8YhZUhLds2IDRix9neiwwX8Cqid8LVTD7PZG/JSNVW/gNQwH+Ttz8Q0Rou0Q5y
+	 rgyDnzGSisizB6pv9CdH9Mhl2D9kZtlwMkHz8boY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sriram R <quic_srirrama@quicinc.com>,
-	Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 943/969] wifi: ath11k: update hw params for IPQ5018
+Subject: [PATCH 5.15 753/776] HID: quirks: really enable the intended work around for appledisplay
 Date: Sat, 30 May 2026 18:07:47 +0200
-Message-ID: <20260530160326.797311334@linuxfoundation.org>
+Message-ID: <20260530160259.219109046@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,167 +68,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257891-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258689-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,quicinc.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6EB11610245
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email]
+X-Rspamd-Queue-Id: BFB826119F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sriram R <quic_srirrama@quicinc.com>
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-[ Upstream commit 8dfe875aa24aec68baf6702018633c84c2c1feca ]
+[ Upstream commit 5f90dcfa8dc32a488581b78e575cdd7808ba5c78 ]
 
-Add new compatible string for IPQ5018 and add
-required hw params for IPQ5018. The hw descriptors size and
-datapath ops are similar to QCN9074, hence reuse the same.
+Commit c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for
+appledisplay") intends to add a quirk for kernels built with Apple Cinema
+Display support, but it refers to the non-existing config option
+CONFIG_APPLEDISPLAY, whereas the config option for Apple Cinema Display
+support is named CONFIG_USB_APPLEDISPLAY.
 
-Tested-on: IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
+Refer to the intended config option CONFIG_USB_APPLEDISPLAY in the ifdef
+directive.
 
-Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-Co-developed-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20221122132152.17771-3-quic_kathirve@quicinc.com
-Stable-dep-of: 2a2451a34afd ("wifi: ath11k: fix peer resolution on rx path when peer_id=0")
+Fixes: c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for appledisplay")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 71 ++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/core.h |  8 +++
- 2 files changed, 79 insertions(+)
+ drivers/hid/hid-quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 7a61c84939cb3..c8fb72d9613fa 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -604,6 +604,77 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.smp2p_wow_exit = true,
- 		.support_fw_mac_sequence = true,
- 	},
-+	{
-+		.hw_rev = ATH11K_HW_IPQ5018_HW10,
-+		.name = "ipq5018 hw1.0",
-+		.fw = {
-+			.dir = "IPQ5018/hw1.0",
-+			.board_size = 256 * 1024,
-+			.cal_offset = 128 * 1024,
-+		},
-+		.max_radios = MAX_RADIOS_5018,
-+		.bdf_addr = 0x4BA00000,
-+		/* hal_desc_sz and hw ops are similar to qcn9074 */
-+		.hal_desc_sz = sizeof(struct hal_rx_desc_qcn9074),
-+		.qmi_service_ins_id = ATH11K_QMI_WLFW_SERVICE_INS_ID_V01_IPQ8074,
-+		.ring_mask = &ath11k_hw_ring_mask_ipq8074,
-+		.credit_flow = false,
-+		.max_tx_ring = 1,
-+		.spectral = {
-+			.fft_sz = 2,
-+			.fft_pad_sz = 0,
-+			.summary_pad_sz = 16,
-+			.fft_hdr_len = 24,
-+			.max_fft_bins = 1024,
-+		},
-+		.internal_sleep_clock = false,
-+		.host_ce_config = ath11k_host_ce_config_qcn9074,
-+		.ce_count = CE_CNT_5018,
-+		.rxdma1_enable = true,
-+		.num_rxmda_per_pdev = RXDMA_PER_PDEV_5018,
-+		.rx_mac_buf_ring = false,
-+		.vdev_start_delay = false,
-+		.htt_peer_map_v2 = true,
-+		.interface_modes = BIT(NL80211_IFTYPE_STATION) |
-+			BIT(NL80211_IFTYPE_AP) |
-+			BIT(NL80211_IFTYPE_MESH_POINT),
-+		.supports_monitor = false,
-+		.supports_sta_ps = false,
-+		.supports_shadow_regs = false,
-+		.fw_mem_mode = 0,
-+		.num_vdevs = 16 + 1,
-+		.num_peers = 512,
-+		.supports_regdb = false,
-+		.idle_ps = false,
-+		.supports_suspend = false,
-+		.hal_params = &ath11k_hw_hal_params_ipq8074,
-+		.single_pdev_only = false,
-+		.cold_boot_calib = true,
-+		.fix_l1ss = true,
-+		.supports_dynamic_smps_6ghz = false,
-+		.alloc_cacheable_memory = true,
-+		.supports_rssi_stats = false,
-+		.fw_wmi_diag_event = false,
-+		.current_cc_support = false,
-+		.dbr_debug_support = true,
-+		.global_reset = false,
-+		.bios_sar_capa = NULL,
-+		.m3_fw_support = false,
-+		.fixed_bdf_addr = true,
-+		.fixed_mem_region = true,
-+		.static_window_map = false,
-+		.hybrid_bus_type = false,
-+		.fixed_fw_mem = false,
-+		.support_off_channel_tx = false,
-+		.supports_multi_bssid = false,
-+
-+		.sram_dump = {},
-+
-+		.tcl_ring_retry = true,
-+		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
-+		.smp2p_wow_exit = false,
-+		.support_fw_mac_sequence = false,
-+	},
- };
- 
- static inline struct ath11k_pdev *ath11k_core_get_single_pdev(struct ath11k_base *ab)
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index a46fe85e592d8..09e40ff461730 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -142,6 +142,7 @@ enum ath11k_hw_rev {
- 	ATH11K_HW_WCN6855_HW20,
- 	ATH11K_HW_WCN6855_HW21,
- 	ATH11K_HW_WCN6750_HW10,
-+	ATH11K_HW_IPQ5018_HW10,
- };
- 
- enum ath11k_firmware_mode {
-@@ -230,6 +231,13 @@ struct ath11k_he {
- 
- #define MAX_RADIOS 3
- 
-+/* ipq5018 hw param macros */
-+#define MAX_RADIOS_5018	1
-+#define CE_CNT_5018	6
-+#define TARGET_CE_CNT_5018	9
-+#define SVC_CE_MAP_LEN_5018	17
-+#define RXDMA_PER_PDEV_5018	1
-+
- enum {
- 	WMI_HOST_TP_SCALE_MAX   = 0,
- 	WMI_HOST_TP_SCALE_50    = 1,
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 9eb4d02cc6d77..6e9501fe1a281 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -222,7 +222,7 @@ static const struct hid_device_id hid_quirks[] = {
+  * used as a driver. See hid_scan_report().
+  */
+ static const struct hid_device_id hid_have_special_driver[] = {
+-#if IS_ENABLED(CONFIG_APPLEDISPLAY)
++#if IS_ENABLED(CONFIG_USB_APPLEDISPLAY)
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
 -- 
 2.53.0
 
