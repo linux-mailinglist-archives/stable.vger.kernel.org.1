@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-258159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258764-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NeMH1cjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:15 +0200
+	id 0BfGJFsrG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258764-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AE36107E0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD754611A7A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 752DB3004F1F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B18CE3002932
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD963AB482;
-	Sat, 30 May 2026 17:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33B4274FDC;
+	Sat, 30 May 2026 18:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGt/z83X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiFlLKyK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F43304BCB;
-	Sat, 30 May 2026 17:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B6121ADC7;
+	Sat, 30 May 2026 18:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163413; cv=none; b=OlOXBy7FceyNE2555GYTIL87eMkmDuTjTzCJo6z6GYRTSHOPDstr5TzDa5e5J/j0waV9IxrQwo1f7/DhD6xrzWf9DRBdrsbmKed8T5AitNe8npqLoO3B//80dAOsAQH3+tD2mm04YQjL3yurtA0riVv5cFHoZ4bSH+7b5ij+e7w=
+	t=1780165460; cv=none; b=eWE3WU9YZX8bKjN9BVgMA+oUMAjOY99E1+EWeCX2mKlyIkPMbhdmjxuFxWNNvMQRB4rMMep6YQT10emE0yW5Pp/z0UaVu6zcNkmAzRMzhkILcGYGRCcxALWFrS1YCTBWN78T7YtwKW1JOTSLtuKc8IqX/JeCmtVbowwPe8P106g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163413; c=relaxed/simple;
-	bh=bndwLFz3sY9vjAqe8eB5wuM8YoIjrHdPnCdxFdY/JS4=;
+	s=arc-20240116; t=1780165460; c=relaxed/simple;
+	bh=e4YUgNhu8pVFDiNy8AR/mHd53Pt750qw+Gbu+2g+mqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSPajjpJeBm7B7+tegYUgx3ktBK7t85/NzUKyFPs8UJdfQna5vOgbDuV81OQu3tBFqx9EhWNa35dp1GIGwMmUq7b4ZtUvBRFjf9KUMJgjCf9VXmHsqS7ri76vgKXF/rmuNh0XPVPScewlaBVmArVbA7UUATOMt8VVJn9zXrd8UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGt/z83X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB5C1F00893;
-	Sat, 30 May 2026 17:50:11 +0000 (UTC)
+	 MIME-Version; b=ewCwRyVdx80J8xQuuKpt42J6RfzsXqIrLKrM7VEA/Zc0wlmO2dc//yuwpOE/xpMLk03+V/YOew7S0fflMugfh/zh5+2yaVV1psojdD9lm8wRvJtctgRfFu1xVCodsS+AYJHASRCnJhMv/MYTg4DJB9FEOs9AeSk5sEK9moSpRLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiFlLKyK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA931F00893;
+	Sat, 30 May 2026 18:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163412;
-	bh=YFD6RnKIslig/V7bkA06iF2wzr7ttusETOsyGqe6Zao=;
+	s=korg; t=1780165459;
+	bh=AmmjzoYGUkINjTU9ciJjQ77710EQUWa14rJ8Fbnmrzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FGt/z83XN1fYPVnnsQbFS/U0ZkTtea+gnCBXOsqquDEt9Nbc9+qNoCZ9zOonBsIrz
-	 hhYREQk6HMQkGLMZc9FJY+ud3U6QTrD/F3var5kBNlj4mLjpmaj+s55fHmBOkyA8b2
-	 RN8JyUgjI1LsEDawMsSQ22OLNZSUR2SnspknH7S4=
+	b=jiFlLKyK7mh1ZuzhlsDgbDN3nt2Oz5F2KYwLD2raPhumknYsL9aHhEw0HPIsYHJIP
+	 kyiQfMKeum9SpjWYkVAaYX20vw6UAOBySmGnWxppmAq5xRlDBqM/wheCS7/BfQ2mas
+	 jIDDL9hcFJJlhXWjNbkdlBUMIF0gJdqK8Lhm2+sA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 5.15 250/776] crypto: arm64/aes - Fix 32-bit aes_mac_update() arg treated as 64-bit
-Date: Sat, 30 May 2026 17:59:24 +0200
-Message-ID: <20260530160246.994393860@linuxfoundation.org>
+	Cezar Bulinaru <cbulinaru@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 084/589] net: tap: NULL pointer derefence in dev_parse_header_protocol when skb->dev is null
+Date: Sat, 30 May 2026 17:59:25 +0200
+Message-ID: <20260530160226.874986870@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,76 +70,148 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,davemloft.net,altlinux.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258764-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258159-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 32AE36107E0
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,altlinux.org:email,davemloft.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BD754611A7A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Cezar Bulinaru <cbulinaru@gmail.com>
 
-commit f8f08d7cc43237e91e3aedf7b67d015d24c38fcc upstream.
+commit 4f61f133f354853bc394ec7d6028adb9b02dd701 upstream.
 
-Since the 'enc_after' argument to neon_aes_mac_update() and
-ce_aes_mac_update() has type 'int', it needs to be accessed using the
-corresponding 32-bit register, not the 64-bit register.  The upper half
-of the corresponding 64-bit register may contain garbage.
+Fixes a NULL pointer derefence bug triggered from tap driver.
+When tap_get_user calls virtio_net_hdr_to_skb the skb->dev is null
+(in tap.c skb->dev is set after the call to virtio_net_hdr_to_skb)
+virtio_net_hdr_to_skb calls dev_parse_header_protocol which
+needs skb->dev field to be valid.
 
-Fixes: 4860620da7e5 ("crypto: arm64/aes - add NEON/Crypto Extensions CBCMAC/CMAC/XCBC driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20260218213501.136844-4-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The line that trigers the bug is in dev_parse_header_protocol
+(dev is at offset 0x10 from skb and is stored in RAX register)
+  if (!dev->header_ops || !dev->header_ops->parse_protocol)
+  22e1:   mov    0x10(%rbx),%rax
+  22e5:	  mov    0x230(%rax),%rax
+
+Setting skb->dev before the call in tap.c fixes the issue.
+
+BUG: kernel NULL pointer dereference, address: 0000000000000230
+RIP: 0010:virtio_net_hdr_to_skb.constprop.0+0x335/0x410 [tap]
+Code: c0 0f 85 b7 fd ff ff eb d4 41 39 c6 77 cf 29 c6 48 89 df 44 01 f6 e8 7a 79 83 c1 48 85 c0 0f 85 d9 fd ff ff eb b7 48 8b 43 10 <48> 8b 80 30 02 00 00 48 85 c0 74 55 48 8b 40 28 48 85 c0 74 4c 48
+RSP: 0018:ffffc90005c27c38 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff888298f25300 RCX: 0000000000000010
+RDX: 0000000000000005 RSI: ffffc90005c27cb6 RDI: ffff888298f25300
+RBP: ffffc90005c27c80 R08: 00000000ffffffea R09: 00000000000007e8
+R10: ffff88858ec77458 R11: 0000000000000000 R12: 0000000000000001
+R13: 0000000000000014 R14: ffffc90005c27e08 R15: ffffc90005c27cb6
+FS:  0000000000000000(0000) GS:ffff88858ec40000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000230 CR3: 0000000281408006 CR4: 00000000003706e0
+Call Trace:
+ tap_get_user+0x3f1/0x540 [tap]
+ tap_sendmsg+0x56/0x362 [tap]
+ ? get_tx_bufs+0xc2/0x1e0 [vhost_net]
+ handle_tx_copy+0x114/0x670 [vhost_net]
+ handle_tx+0xb0/0xe0 [vhost_net]
+ handle_tx_kick+0x15/0x20 [vhost_net]
+ vhost_worker+0x7b/0xc0 [vhost]
+ ? vhost_vring_call_reset+0x40/0x40 [vhost]
+ kthread+0xfa/0x120
+ ? kthread_complete_and_exit+0x20/0x20
+ ret_from_fork+0x1f/0x30
+
+Fixes: 924a9bc362a5 ("net: check if protocol extracted by virtio_net_hdr_set_proto is correct")
+Signed-off-by: Cezar Bulinaru <cbulinaru@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[ kovalev: bp to fix CVE-2022-50073 ]
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/crypto/aes-modes.S |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/tap.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
---- a/arch/arm64/crypto/aes-modes.S
-+++ b/arch/arm64/crypto/aes-modes.S
-@@ -697,7 +697,7 @@ AES_FUNC_START(aes_mac_update)
- 	encrypt_block	v0, w2, x1, x7, w8
- 	eor		v0.16b, v0.16b, v4.16b
- 	cmp		w3, wzr
--	csinv		x5, x6, xzr, eq
-+	csinv		w5, w6, wzr, eq
- 	cbz		w5, .Lmacout
- 	encrypt_block	v0, w2, x1, x7, w8
- 	st1		{v0.16b}, [x4]			/* return dg */
-@@ -711,7 +711,7 @@ AES_FUNC_START(aes_mac_update)
- 	eor		v0.16b, v0.16b, v1.16b		/* ..and xor with dg */
+diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+index 16fa0e3e752ab..18f19fc66c64f 100644
+--- a/drivers/net/tap.c
++++ b/drivers/net/tap.c
+@@ -703,11 +703,22 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
+ 	skb_reset_mac_header(skb);
+ 	skb->protocol = eth_hdr(skb)->h_proto;
  
- 	subs		w3, w3, #1
--	csinv		x5, x6, xzr, eq
-+	csinv		w5, w6, wzr, eq
- 	cbz		w5, .Lmacout
++	rcu_read_lock();
++	tap = rcu_dereference(q->tap);
++	if (!tap) {
++		kfree_skb(skb);
++		rcu_read_unlock();
++		return total_len;
++	}
++	skb->dev = tap->dev;
++
+ 	if (vnet_hdr_len) {
+ 		err = virtio_net_hdr_to_skb(skb, &vnet_hdr,
+ 					    tap_is_little_endian(q));
+-		if (err)
++		if (err) {
++			rcu_read_unlock();
+ 			goto err_kfree;
++		}
+ 	}
  
- .Lmacenc:
+ 	skb_probe_transport_header(skb);
+@@ -717,8 +728,6 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
+ 	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
+ 		skb_set_network_header(skb, depth);
+ 
+-	rcu_read_lock();
+-	tap = rcu_dereference(q->tap);
+ 	/* copy skb_ubuf_info for callback when skb has no error */
+ 	if (zerocopy) {
+ 		skb_shinfo(skb)->destructor_arg = msg_control;
+@@ -729,14 +738,8 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
+ 		uarg->callback(uarg, false);
+ 	}
+ 
+-	if (tap) {
+-		skb->dev = tap->dev;
+-		dev_queue_xmit(skb);
+-	} else {
+-		kfree_skb(skb);
+-	}
++	dev_queue_xmit(skb);
+ 	rcu_read_unlock();
+-
+ 	return total_len;
+ 
+ err_kfree:
+-- 
+2.53.0
+
 
 
 
