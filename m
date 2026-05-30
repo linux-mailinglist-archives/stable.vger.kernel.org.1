@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GB5kH/0iG2pa/ggAu9opvQ
-	(envelope-from <stable+bounces-258017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:45 +0200
+	id CHHZFjgYG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA72F6106C3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB44C60EC7B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE6F230378B2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:42:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4BC7430B734C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361FC348C5E;
-	Sat, 30 May 2026 17:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1C634D38B;
+	Sat, 30 May 2026 16:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lWtULFo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQTmOU0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C9021B191;
-	Sat, 30 May 2026 17:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDC43AA195;
+	Sat, 30 May 2026 16:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162946; cv=none; b=Ls7MOUeHz6MJCracGdf+nQu+Ol9hxaGeG1rZfHsx/2FfRZOpBVZEkZFND/71ihhKBGfcSpRzBdi1eZv3tuQQAnNGB7cf7jyQWsA35sViKKqopVAG/+AI0dls9Wp3GXohPRpefCL3u5qMtxrck+8ZBYid9TuwffUlTrV5h3S3u3M=
+	t=1780160162; cv=none; b=cWgl8N2zQS9faPZh8WCJ0onOegQzitJJjeVzsmbT9ysUc/wdkl3HHQeGCQUWINrK+km9HdMbV//cpxXdQBlcMUOYU9q6sM8vshOiJCA06fc6eNge2dnUaN9khoohmLWnVSFiOISIQMt4KdvxorP8ndhRDl6KHvsKa+ezc0K0mh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162946; c=relaxed/simple;
-	bh=GyBqdSC/iGQbEq5gMvncKxkHHGa+x0fYax8YKHvCUJ0=;
+	s=arc-20240116; t=1780160162; c=relaxed/simple;
+	bh=/LsldEiB5uiw0LMhaBQ1V+gFvFswn3SMsowjQVEvD5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFcKym9Poz8rAN9QiMrq13W2H2Cf/zoDZMFQSuUn+zFBM2hnho5SiEYtXJtpEZrZwXnI0XKoLFcQfhTNslXAvxgTm7WJpxUaiCd+022T5P0Myj3v67g+mhOtLuD5w6f2EItWimPi7Me21S8lCvTMH5BIOAfCRjfW7BCmhAZv4BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lWtULFo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147761F00893;
-	Sat, 30 May 2026 17:42:23 +0000 (UTC)
+	 MIME-Version; b=jjaiulrdOGQzUEZQ2hCjUua/ItFQYCuqk9g3ya09649ojjYS34q20aM0eRG83eVldcPip/VH833B/cZsLbDP0lw8YfsD02PeI2/N3sVNwDsNb6ueKseJSGdiZPBeRCVieF1lM5oefNMWbZjrK0ASanOHw/d8EeRdtlgDHeyf9sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQTmOU0h; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCDC1F00893;
+	Sat, 30 May 2026 16:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162944;
-	bh=FdvnT/8g07GmZmC/oE8DeH4k9ERLtnAUu+acCcFPt1A=;
+	s=korg; t=1780160161;
+	bh=k12+4HLVEBhFcMmvshn0As8Hr9kF4APQUaxpHaNMOPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2lWtULFokxM66uQUr+TRTpZBleU/AVHxEKsRDjPwQgkSZPyfJ19jb8XTMJ6swSXbV
-	 IsRl8JkVBaOvWaRdXXGSVti5XUkBIn3jiJ7CO1joHOqONAuj4OXnZLSfMUEsq+hUfP
-	 T8cG3K/5ghqnI0hFhAYeggxoQbnvbvksDApM7LgY=
+	b=MQTmOU0hODeD+Ry92HD4ZD8HpN1c/7CqOQtI/EKxl6Fo3P+K8XqfYDVAu5/CHo8up
+	 8f4JNDGLjjc/n0xAa1AbBColr/rUoXkklvfpVzdkqsu4ldyy8VP+CYOTFu7DkWInab
+	 W/0QuBFDWmR6cH1Z+l3eUsXsjTkto7L4zugeD8k0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1f5bcc7c919ec578777a@syzkaller.appspotmail.com,
-	Ruslan Valiyev <linuxoid@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.15 071/776] media: vidtv: fix NULL pointer dereference in vidtv_channel_pmt_match_sections
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.1 261/969] crypto: atmel-sha204a - Fix potential UAF and memory leak in remove path
 Date: Sat, 30 May 2026 17:56:25 +0200
-Message-ID: <20260530160242.155428788@linuxfoundation.org>
+Message-ID: <20260530160307.689263501@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +63,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258017-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257201-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,1f5bcc7c919ec578777a,cisco];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DA72F6106C3
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CB44C60EC7B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruslan Valiyev <linuxoid@gmail.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit f8e1fc918a9fe67103bcda01d20d745f264d00a7 upstream.
+commit bab1adf3b87e4bfac92c4f5963c63db434d561c1 upstream.
 
-syzbot reported a general protection fault in vidtv_psi_desc_assign [1].
+Unregister the hwrng to prevent new ->read() calls and flush the Atmel
+I2C workqueue before teardown to prevent a potential UAF if a queued
+callback runs while the device is being removed.
 
-vidtv_psi_pmt_stream_init() can return NULL on memory allocation
-failure, but vidtv_channel_pmt_match_sections() does not check for
-this. When tail is NULL, the subsequent call to
-vidtv_psi_desc_assign(&tail->descriptor, desc) dereferences a NULL
-pointer offset, causing a general protection fault.
+Drop the early return to ensure sysfs entries are removed and
+->hwrng.priv is freed, preventing a memory leak.
 
-Add a NULL check after vidtv_psi_pmt_stream_init(). On failure, clean
-up the already-allocated stream chain and return.
-
-[1]
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-RIP: 0010:vidtv_psi_desc_assign+0x24/0x90 drivers/media/test-drivers/vidtv/vidtv_psi.c:629
-Call Trace:
- <TASK>
- vidtv_channel_pmt_match_sections drivers/media/test-drivers/vidtv/vidtv_channel.c:349 [inline]
- vidtv_channel_si_init+0x1445/0x1a50 drivers/media/test-drivers/vidtv/vidtv_channel.c:479
- vidtv_mux_init+0x526/0xbe0 drivers/media/test-drivers/vidtv/vidtv_mux.c:519
- vidtv_start_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:194 [inline]
- vidtv_start_feed+0x33e/0x4d0 drivers/media/test-drivers/vidtv/vidtv_bridge.c:239
-
-Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
+Fixes: da001fb651b0 ("crypto: atmel-i2c - add support for SHA204A random number generator")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+1f5bcc7c919ec578777a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1f5bcc7c919ec578777a
-Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_channel.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/crypto/atmel-sha204a.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/media/test-drivers/vidtv/vidtv_channel.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_channel.c
-@@ -341,6 +341,10 @@ vidtv_channel_pmt_match_sections(struct
- 					tail = vidtv_psi_pmt_stream_init(tail,
- 									 s->type,
- 									 e_pid);
-+					if (!tail) {
-+						vidtv_psi_pmt_stream_destroy(head);
-+						return;
-+					}
+--- a/drivers/crypto/atmel-sha204a.c
++++ b/drivers/crypto/atmel-sha204a.c
+@@ -126,10 +126,8 @@ static void atmel_sha204a_remove(struct
+ {
+ 	struct atmel_i2c_client_priv *i2c_priv = i2c_get_clientdata(client);
  
- 					if (!head)
- 						head = tail;
+-	if (atomic_read(&i2c_priv->tfm_count)) {
+-		dev_emerg(&client->dev, "Device is busy, will remove it anyhow\n");
+-		return;
+-	}
++	devm_hwrng_unregister(&client->dev, &i2c_priv->hwrng);
++	atmel_i2c_flush_queue();
+ 
+ 	kfree((void *)i2c_priv->hwrng.priv);
+ }
 
 
 
