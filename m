@@ -1,106 +1,148 @@
-Return-Path: <stable+bounces-256857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256858-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id esQHKL2NGmpx5ggAu9opvQ
-	(envelope-from <stable+bounces-256857-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 09:11:57 +0200
+	id LK05ML6XGmrV5wgAu9opvQ
+	(envelope-from <stable+bounces-256858-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 09:54:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 163DE60B8B9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 09:11:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C36760B9F8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 09:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E5779302F6B3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 07:11:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98BBF3045DF3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 07:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32CD385D9F;
-	Sat, 30 May 2026 07:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B8C39449C;
+	Sat, 30 May 2026 07:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b="IStRB+M6"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="DwWGmBLM";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HbWyA3rY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB6C1E511;
-	Sat, 30 May 2026 07:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.227.220.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EEF3932D8;
+	Sat, 30 May 2026 07:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780125087; cv=none; b=RYyObkS1Rn0y/6gNgHHtyOTmLXnt9Kk1m5jRdtYRo0FSH/2fgWWuCIonk77f3voW0AJeIju+NDNibUwXoE4NFYGaUORKfzXTiY0JO4YKI+VlVYC23qE4tOXC/60WLaYfUTTJICFS6dlj9o0iReqyIyHlWjAnwLCo8Wh/gvg7NyA=
+	t=1780127674; cv=none; b=fmCMJY0gZ0wdlDSi57j1Lq+By4v23sIj1nm5aPkhpvEfCwksyS67bjCyH6sLFK6aGCDVVrWM3Dzp1zzgLW6ukOMC0hQbbOHiT/X+LUKK+HscsOh3URRwwv5GoqBtAy9fgWGS84vAtwDQiuX83oTAXDWzA3Pxy8smjCW9aefmb40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780125087; c=relaxed/simple;
-	bh=aQE7YLdOdh4HVVgpHqMwXQxekJPVDFADSjrCaLryOYw=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MUkxqQ0HSFhPCiNZsXWqhma/hkFjsKwqcu2D+4inqPzp+1WAJjpOMyI56lbSaHhv200bsHx12s0ot2aQm29OujcNQGRVRCJ/PhbNPqnpZZCPSZZv7EE7u6xQ+JEcqwFxNa69re7JcVQVxDI+YkvgowuK+vVVoTBOeVnJ2OP4fCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com; spf=pass smtp.mailfrom=mareichelt.com; dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b=IStRB+M6; arc=none smtp.client-ip=91.227.220.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mareichelt.com
-Date: Sat, 30 May 2026 09:11:24 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mareichelt.com;
-	s=202107; t=1780125084;
-	bh=6+8id0CIj0Jup+mjx3ciOKIrKUQpIDG7ZN/h2hlbm7E=;
-	h=Date:From:To:Subject:Message-ID:Mail-Followup-To:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:date:
-	 author:from:to:subject:message-id:in-reply-to:references:
-	 mail-followup-to:openpgp:mime-version:content-type:
-	 content-transfer-encoding:author:from:subject:date:to:cc:
-	 resent-author:resent-date:resent-from:resent-sender:resent-to:
-	 resent-cc:resent-reply-to:resent-message-id:in-reply-to:references:
-	 mime-version:content-type:content-transfer-encoding:
-	 content-disposition:content-id:content-description:message-id:
-	 mail-followup-to:openpgp;
-	b=IStRB+M6qq3pf32/IUzRUkPII1waneNclXaV17yo44qs3YHmAwRZLVjMQFgQM9xzO
-	 dimm9IqbXKRLc0S7+wBuvDxu89eJHy4C59GGwsOpqMNPS/Xgg4hhaOuoWp6V2R15Nh
-	 cDeW6coZ+6Dv8vHBi3/9xobZT7VVK4Ho7TT9m05/fcdrE8PDhIbmfpdQij3t7gAGmv
-	 nBWeRTVBZr9cuKF4AXxIo4szni2qtprrr5MP/s0mnrw70JQQ1Qiwy0FZZUH4MdwNTC
-	 fRTW708PJ2g/QwJHHQTAyjwuKPOA0N2JL1nhyoNmCPrvf0GdyO1FLjY9Xy/A2XAUna
-	 ajCQz5NZpbvrw==
-From: Markus Reichelt <lkt+2023@mareichelt.com>
-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 7.0 000/461] 7.0.11-rc1 review
-Message-ID: <20260530071124.GC23638@pc21.mareichelt.com>
-Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260528194646.819809818@linuxfoundation.org>
+	s=arc-20240116; t=1780127674; c=relaxed/simple;
+	bh=4vERjZMkWDUC5YJQWQGZZoE/9V1FNV+1J0rPEPLgvuU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jsNZh/bLXn8Vmp/DDCVkPOKPyAsxnlnuOlmEah7F0Y2V3YLFln7F4FjI5LV12lU1ensglBGmWPzump1glkw0y2tq3xvBWqP6gOjYHc747RQjatAtz8Svko+1xdAEYpJuw/cFR763FDWHHwoqsT48sMtZoBy3XSNwpgl9459/Zl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=DwWGmBLM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HbWyA3rY; arc=none smtp.client-ip=202.12.124.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 741291D0001B;
+	Sat, 30 May 2026 03:54:31 -0400 (EDT)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-04.internal (MEProxy); Sat, 30 May 2026 03:54:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1780127671;
+	 x=1780214071; bh=xQO+qX+jr3P3/m56/jURNF6mUaopIGbpNUyX4PKLgqY=; b=
+	DwWGmBLMTH2lUmuLhX136z6mwd6bIGiBkoDyt7xdM0TbkKrLKile2HCpBNrIp1f1
+	X9iuumZT8X2YxxyFj2kn+w385g/1C+tBTB8K0zo9EMpXnsYHNGhOtT2IpBsAGNBn
+	khm9cCHwT+JisKRRCFF4mok9kTBihx3MBVQS8d/akA6O1Dn9fE6OrIK94BeLjYa8
+	g8SW5lG0DYmy5zTSwSiASTred2U6+jBBB7B4g8lFNd2dI5yfF8slFLSdiCJyHw7z
+	A/dogpnE0i62lVhAisKFs+kH22fODbqS4K52HTXKdmcb1q52SIw11BVdPTRxjc1w
+	sd3OTNdPZmpbb+C9yUEPEQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1780127671; x=
+	1780214071; bh=xQO+qX+jr3P3/m56/jURNF6mUaopIGbpNUyX4PKLgqY=; b=H
+	bWyA3rYf0PYnyxCvgqqIjudOJGuIA469IfkHE31rRBuTX79GSfYmnnWsGig957xf
+	ZWRGRVF2DKWAaKPEJ0qPQ5NIyI8m8/CJO1zEP3J48es0fqXFWJnbTyfYT/Mxm9K5
+	ddx3c6mM/EOFJApTvO+wh8iIbu0BvQdHFEHy6qlajf2UXCVX5wXujIJbI3+/U9QJ
+	elZPqELSQdHbm+kERL+yTGaq/aha8LtMci0kEJB3kkeif+9i9NelbrTMQhv04T1L
+	uZd0+NXo65Q9fS3MxwEf/euc1VqcEZ2QbgSt+LU9arlSJiG/LbbkUL6NNvsSzIR7
+	60LchLBRBTLhNUaBo8R9Q==
+X-ME-Sender: <xms:tZcaauz07sbXGkFxHkvTGrTx9oTbHHGuyGXOW9IWM6XbP2p-a4c6Ug>
+    <xme:tZcaamKfXbHUvIKHLTJAJymFgieYq8k_SmIYzwKCQKjWCSNWAsdhEcGKT1yzhiq-p
+    aUGCBxSTiml7phWPxmu_toKzO635L1P1TEb5Qv5VkLvsniIpdofXIk>
+X-ME-Received: <xmr:tZcaar3PepXVEW1Y8gxi2eFf-6q1CfDH7fIRKTbAFVPS_fQFp5iBKIewjuqYHgjxkddst13sKBwk6OwaDGhMiIGdVH1w86mv>
+X-ME-Proxy-Cause: dmFkZTE9BFzi7CnGEHr06r6JksQ13ERJ+sJx//LTxp/OwTUBO8QEufefCBl8sBP11mrF/R
+    dUR1HrJSeR8n7ORpruNXFpfL8bLVBa4SDzabFZCpGsB5qFGdrNqvryfy6SjcZOFMpJJk3t
+    YS1yhV7mCS0C6vngBePq5fDRpPwqFxGCSnRz9VVNd1W0QH2aqb4kufTUf5Z+GIgkx/mZN5
+    kqw9dKLAFS2uO6VzqO/j9NRcr2wJSTYKS0s20T4xQcp1ParQa7Vv+IW2xZC2s9HmYz5Ivc
+    +hnyZYREcxZWTy6GiDIgnnjNnpXk9duILBbM3yLtQ/LxeJ6n4G+IXsHw/qqm1ZPybETOFg
+    0wml9MxHKDC0Okox48aMoDzlZjMnlQoojsZMv/XuP4LXOPszbsuSSivyl4ct7QE2APKmor
+    dBRy8XoBbDKYfyP/wt/Y1XWl6mqUWaBUmzIQit7jwVLDBQLIvXJciE+DXMkPaetKBRviP+
+    5bzROHkrHZl3UGwGMLj9CYHXQpfh3OJpHRMcTz9RNxGmas4cb2aA+rQmT6+HYLOm/IVCVt
+    mUtLKFcn1C0vNg4VyTCzDwLo4r3cKNSYHROywHwUAa45Sv92pKz7Ttm4kOMManKuqlIfNd
+    Bl1tZM8LRnILCD1e0Y0udI70ZgaEKou0vjuurdv67srMA6JHkscqD04msZhw
+X-ME-Proxy: <xmx:tZcaaocrnbdDJte8xbLoqlUgGEuNUw3wtKt5bXq7oF7HrP6JdgxMQA>
+    <xmx:tZcaan6L5hCp6E_USFgHDm59o6PWZqot7QozrmOzBdUflWJ7rWhF1Q>
+    <xmx:tZcaaj8vAPAuO-Sp_4E__HeF1tWQr1lUyNtrdo8DYjGgS2rxaZLNDA>
+    <xmx:tZcaamLZZJQLZs1cF5hHQypS4XcaAFrXoKhtyQwvAOaZDYbLOtT6hg>
+    <xmx:t5caaiEOcN5eMSPVWJmA_qGbEA-tQ6L7qIY-5XfiEZwJFxQQineO96Cs>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 30 May 2026 03:54:27 -0400 (EDT)
+Message-ID: <a998de20-e78a-4a6b-bab3-c69b09d7a5e1@pobox.com>
+Date: Sat, 30 May 2026 00:54:26 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.0 000/461] 7.0.11-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260528194646.819809818@linuxfoundation.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mareichelt.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
-	R_DKIM_ALLOW(-0.20)[mareichelt.com:s=202107];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm2,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256857-lists,stable=lfdr.de,2023];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-256858-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[mareichelt.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkt@mareichelt.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,pc21.mareichelt.com:mid]
-X-Rspamd-Queue-Id: 163DE60B8B9
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pobox.com:email,pobox.com:mid,pobox.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,messagingengine.com:dkim]
+X-Rspamd-Queue-Id: 1C36760B9F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-
+On 5/28/26 12:42 PM, Greg Kroah-Hartman wrote:
 > This is the start of the stable review cycle for the 7.0.11 release.
 > There are 461 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
@@ -108,11 +150,21 @@ X-Rspamd-Server: lfdr
 > 
 > Responses should be made by Sat, 30 May 2026 19:45:49 +0000.
 > Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.11-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.0.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Hi Greg
+Tested on 2 amd64 systems. Working well, no regressions observed.
 
-7.0.11-rc1 compiles on x86_64 (Xeon E5-1620 v2, Slackware64-15.0),
-with custom .config
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
-Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
