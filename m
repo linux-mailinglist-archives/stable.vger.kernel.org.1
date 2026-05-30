@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EcIBngwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-258896-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:16 +0200
+	id EPvVIwscG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9E5612734
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293B360F612
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3127230C6152
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DA036306E1B2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F906329E79;
-	Sat, 30 May 2026 18:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D7933F8A2;
+	Sat, 30 May 2026 17:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+mtOo9E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0Vnmv+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9C441A8F;
-	Sat, 30 May 2026 18:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6236C32B11F;
+	Sat, 30 May 2026 17:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165906; cv=none; b=YPKsewQBkkN+Fq+eUQ77Hd9oUsjpMLBLgO9cheTRA/Htskb46NNBhr1igXZl03g+N8dd5KvWFPkopv3ia1t/yax8ctuoyPL4W4kWvac7RSQOVwBwA1JE+IoY3t3r9ifwmSEj0dMj9zZN5W4iFUBcMhIWQhXg5ehvyK4vFG8RfDA=
+	t=1780161124; cv=none; b=rgSnmKiow+hhEnb8u6yFWiQtr63gIfzKjEWk2UcPyo1Q5zNXkhkpgBye1GR1UwrKxqxJn4ogk0jN3FSNAm58+RXrb1TIbj8cWD8CdSlcOyZvcgUMzHM9dZzwEjVKdhk9QcLsgz36IyoAovphqrCCfzpMIc/sfF0p3xVUib+4RcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165906; c=relaxed/simple;
-	bh=iUM2kZx0Nor50FvZZ12jj+bKfFTUt+iJnub61m+hed0=;
+	s=arc-20240116; t=1780161124; c=relaxed/simple;
+	bh=RDE0JMYQJ5IuQUDIJ+W9l/nqQtyS37gl6a0T29Rtgmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AM6IwsA3hFA0cHEwjYIDD7c4bRbsfHYauhja1E8s6GHiAqfmzU24DudkIm0L2baUwdmPu+6wv80rfwq40/TNTLNDnrgf/GA4d85uzGorXoJfbkH4cS8Em7fmfGBwbrgFwSt7CnWJQs1vpj2xfaEnqqwSqVjMl3ltRhlrajoasrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+mtOo9E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E1D1F00893;
-	Sat, 30 May 2026 18:31:43 +0000 (UTC)
+	 MIME-Version; b=sDFUmtnZgxCE/AYIq/ztaFAZUvJcdc6gG8km058gkEBC8EHu3Zdm9Gae4eikLNfxPMqfRK6nHRmC2iqRXQmpv8RnDDbyWDYmJTDvMFHRHix7vpBNpYwdLcKnUYt6SllThDc+O3oKBLpSYopftcUJCXf/01NPppdsaImNs1mD4fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0Vnmv+j; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A57FB1F00893;
+	Sat, 30 May 2026 17:12:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165904;
-	bh=WNAyAACgCmQKzT0RtCgXnb8WNRkqbnQYZ7+qWp6c2Cs=;
+	s=korg; t=1780161123;
+	bh=zPz53lYDNrjeJ3nS25/zb3wKrEdIcIlIRwu+l1Lcg+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T+mtOo9E/CbblN3awknADTS9sj46Lezsb1HExfDWq3xzR05z+e0Sg8V0hl8n+z7a7
-	 +en5IjwsSoRE5eOXvWJ8mLegDhb4oVomWDKbJLV0NtpHt+z7TBpf0vZGH4jLs6aekU
-	 ZaqOgzzP7Q+gkmNf7cmgCOn2w5uShncsZLYV+urI=
+	b=h0Vnmv+jrsXAqwKywT9sqiAb4aZY26+zLi0Utmw+sX4QTwuQwEOL+NmqX37ZGoMjE
+	 wOGyUp1TyhJJlkkTNxwyk++Iy/Nq/Vcpx92/kuY50BXylOn6KUIFHDNNWTJMzLIhU2
+	 8xlfYi88m8HFo1Mr1VMt8pWubY1RwppKntGqklsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Bin Liu <b-liu@ti.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 173/589] mmc: block: use single block write in retry
-Date: Sat, 30 May 2026 18:00:54 +0200
-Message-ID: <20260530160229.362609847@linuxfoundation.org>
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 531/969] ASoC: fsl_micfil: Fix event generation in micfil_quality_set()
+Date: Sat, 30 May 2026 18:00:55 +0200
+Message-ID: <20260530160315.026607318@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,126 +66,104 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257475-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258896-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email,ti.com:url,ti.com:email]
-X-Rspamd-Queue-Id: 8F9E5612734
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 293B360F612
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bin Liu <b-liu@ti.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-commit c7c6d4f5103864f73ee3a78bfd6da241f84197dd upstream.
+[ Upstream commit e5785093b1b45af7ee57d18619b2854a8aed073a ]
 
-Due to errata i2493[0], multi-block write would still fail in retries.
+ALSA controls should return 1 if the value in the control changed but the
+control put operation micfil_quality_set() only returns 0 or a negative
+error code, causing ALSA to not generate any change events.
 
-With i2493, the MMC interface has the potential of write failures when
-issuing multi-block writes operating in HS200 mode with excessive IO
-supply noise.
+Add a suitable check in the function before updating the quality variable.
 
-While the errata provides guidance in hardware design and layout to
-minimize the IO supply noise, in theory the write failure cannot be
-resolved in hardware. The software solution to ensure the data integrity
-is to add minimum 5us delay between block writes. Single-block write is
-the practical way to introduce the delay.
+Also enable pm runtime before calling the function micfil_set_quality()
+to make the regmap cache data align with the value in hardware.
 
-This patch reuses recovery_mode flag, and switches to single-block
-write in retry when multi-block write fails. It covers both CQE and
-non-CQE cases.
-
-[0] https://www.ti.com/lit/pdf/sprz582
-Cc: stable@vger.kernel.org
-Suggested-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Bin Liu <b-liu@ti.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bea1d61d5892 ("ASoC: fsl_micfil: rework quality setting")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20260401094226.2900532-7-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c |   12 ++++++++++--
- drivers/mmc/core/queue.h |    3 +++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_micfil.c | 28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -1316,6 +1316,9 @@ static void mmc_blk_data_prep(struct mmc
- 		    rq_data_dir(req) == WRITE &&
- 		    (md->flags & MMC_BLK_REL_WR);
- 
-+	if (mqrq->flags & MQRQ_XFER_SINGLE_BLOCK)
-+		recovery_mode = 1;
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index 1b6f5e33ff93a..953192f7b6433 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -148,10 +148,34 @@ static int micfil_quality_set(struct snd_kcontrol *kcontrol,
+ {
+ 	struct snd_soc_component *cmpnt = snd_soc_kcontrol_component(kcontrol);
+ 	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(cmpnt);
++	int val = ucontrol->value.integer.value[0];
++	bool change = false;
++	int old_val;
++	int ret;
 +
- 	memset(brq, 0, sizeof(struct mmc_blk_request));
++	if (val < QUALITY_HIGH || val > QUALITY_VLOW2)
++		return -EINVAL;
++
++	if (micfil->quality != val) {
++		ret = pm_runtime_resume_and_get(cmpnt->dev);
++		if (ret)
++			return ret;
++
++		old_val = micfil->quality;
++		micfil->quality = val;
++		ret = micfil_set_quality(micfil);
  
- 	brq->mrq.data = &brq->data;
-@@ -1453,10 +1456,13 @@ static void mmc_blk_cqe_complete_rq(stru
- 		err = 0;
- 
- 	if (err) {
--		if (mqrq->retries++ < MMC_CQE_RETRIES)
-+		if (mqrq->retries++ < MMC_CQE_RETRIES) {
-+			if (rq_data_dir(req) == WRITE)
-+				mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
- 			blk_mq_requeue_request(req, true);
--		else
-+		} else {
- 			blk_mq_end_request(req, BLK_STS_IOERR);
+-	micfil->quality = ucontrol->value.integer.value[0];
++		pm_runtime_put_autosuspend(cmpnt->dev);
++
++		if (ret) {
++			micfil->quality = old_val;
++			return ret;
 +		}
- 	} else if (mrq->data) {
- 		if (blk_update_request(req, BLK_STS_OK, mrq->data->bytes_xfered))
- 			blk_mq_requeue_request(req, true);
-@@ -1941,6 +1947,8 @@ static void mmc_blk_mq_complete_rq(struc
- 	} else if (!blk_rq_bytes(req)) {
- 		__blk_mq_end_request(req, BLK_STS_IOERR);
- 	} else if (mqrq->retries++ < MMC_MAX_RETRIES) {
-+		if (rq_data_dir(req) == WRITE)
-+			mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
- 		blk_mq_requeue_request(req, true);
- 	} else {
- 		if (mmc_card_removed(mq->card))
---- a/drivers/mmc/core/queue.h
-+++ b/drivers/mmc/core/queue.h
-@@ -61,6 +61,8 @@ enum mmc_drv_op {
- 	MMC_DRV_OP_GET_EXT_CSD,
- };
- 
-+#define	MQRQ_XFER_SINGLE_BLOCK		BIT(0)
 +
- struct mmc_queue_req {
- 	struct mmc_blk_request	brq;
- 	struct scatterlist	*sg;
-@@ -69,6 +71,7 @@ struct mmc_queue_req {
- 	void			*drv_op_data;
- 	unsigned int		ioc_count;
- 	int			retries;
-+	u32			flags;
- };
++		change = true;
++	}
  
- struct mmc_queue {
+-	return micfil_set_quality(micfil);
++	return change;
+ }
+ 
+ static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
+-- 
+2.53.0
+
 
 
 
