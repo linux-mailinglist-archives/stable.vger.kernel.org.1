@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-258515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257723-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LTyJQYoG2rM/ggAu9opvQ
-	(envelope-from <stable+bounces-258515-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:14 +0200
+	id cABwKekdG2qW/QgAu9opvQ
+	(envelope-from <stable+bounces-257723-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48DD5611260
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C01360FB1A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A7132300B473
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:10:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 963DE3028448
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE7431F98D;
-	Sat, 30 May 2026 18:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA16733F5A0;
+	Sat, 30 May 2026 17:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXY2c1+1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROtGY4oW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0207E352027;
-	Sat, 30 May 2026 18:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994B32FDC5E;
+	Sat, 30 May 2026 17:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164609; cv=none; b=WJt072XCOD1+cIykz1rpVrwlI95TswpNXvlGfActBUT6fRVWOIf8KkPDlIcDBSIR+9C/5NhFE0PdBJIsm7AXeEe8+ErndJaykxsqPoLTHuzx+/VIH6Jyxa5jg+IHmDRuUQ12Xb1UPbbz/pRboonk91Q+IoLJJb11slwl0zzcKxQ=
+	t=1780161956; cv=none; b=lWZpDHcMxBxRUhCfhCEkOZokG/J248myNy0hkel300vWh7uglJ5UUY18IFlL6hZCpEIMf8+Sx2wi8TWqviPy2+F8ueZOun76QVcMb0iZMUlLikH0s9mneIfZxrwDBJ7Q09mUFYEWYKgmM8lZRUydmAY7VDmX7+O8ztPVlgHGvJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164609; c=relaxed/simple;
-	bh=ZptHESExAyjP4tQu3dYsSYhusam0hKTob2wVQ4xjc0U=;
+	s=arc-20240116; t=1780161956; c=relaxed/simple;
+	bh=UqgtPq7GKjmE4sG5zDlqNL1gLWpT4PvI8Gaqq1MDXn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qVwkMmzFSwwaM+oW13Ng7Wba9lszteh8Uf+273UuiyftRFWnTlz9unDoeIRz8SqMIPu2mXuUCjI0vX4WEwZAe4Vz/OJNPl9LMKYEYWDvjlwLCdtBkFqE25vaffHQeTndWDtrQ7dpqmkyFpFsALN3aFgV9PRaz9JMW+iJEKAOYRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXY2c1+1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472251F00898;
-	Sat, 30 May 2026 18:10:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sf5yk6LK5R/CDL9E7SPCwRR3UP2T+Memiwc27GyrHHQ7N/2nEy/B/vGd27lqgZYqU1Yv4Y0UwgAi7JnM86x0QuR6aA/nXF4ApPgR0PWbsZFK98rOEtT/x1GyQRDELfXVYGDUZtmsAcEKbg0IeVjo5iCZyoPBCmRI55hZwLe62gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROtGY4oW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36C11F00893;
+	Sat, 30 May 2026 17:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164607;
-	bh=K9f4bBtrWbHJworlQ5ZL2bVC3gzYHS7INjOPshntRtA=;
+	s=korg; t=1780161955;
+	bh=Ap4upSWFr2GoKF8w4BCly1C6pLLeYsZLemZ0+GriWe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NXY2c1+1IWM4sGuhqPQbbieYhVSJW5H08z/Zs8xUfr9feYnFI72qIBj1ZQjiZPyz3
-	 DDFEuQ59DdTBfgaYah0FwzTco11+zUIDL1A8ibNSqglHa0pSqfUUwQdZKjNcIOj3co
-	 hVOVPtvDUbfYJrj/Gjw+PCj17coG7GlH8t75cAGI=
+	b=ROtGY4oWMcBDxMTEv4wy3+GbTfvS21H+PMzY4uv4jujdEB2yG6QWTWx8WXQV02WQH
+	 MBUxhifYXF41az7zbnm7LlkpKjUIz7qA2tx9aoacF4cig00Y3K4z/asD92wldTx81D
+	 xqfZFOzxASH0dOo9tt9Z4wAzWSKaeevAvnOIcubg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Jones Syue <jonessyue@qnap.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jay Vosburgh <jay.vosburgh@canonical.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 588/776] net: sched: gred/red: remove unused variables in struct red_stats
+Subject: [PATCH 6.1 778/969] bonding: 802.3ad replace MAC_ADDRESS_EQUAL with __agg_has_partner
 Date: Sat, 30 May 2026 18:05:02 +0200
-Message-ID: <20260530160255.263224663@linuxfoundation.org>
+Message-ID: <20260530160322.075506835@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +66,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258515-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qnap.com,gmail.com,nvidia.com,canonical.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257723-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 48DD5611260
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 4C01360FB1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Jones Syue 薛懷宗 <jonessyue@qnap.com>
 
-[ Upstream commit 4516c873e3b55856012ddd6db9d4366ce3c60c5d ]
+[ Upstream commit 4440873f3655325f849366d75382aa05d09b5575 ]
 
-The variable "other" in the struct red_stats is not used. Remove it.
+Replace macro MAC_ADDRESS_EQUAL() for null_mac_addr checking with inline
+function__agg_has_partner(). When MAC_ADDRESS_EQUAL() is verifiying
+aggregator's partner mac addr with null_mac_addr, means that seeing if
+aggregator has a valid partner or not. Using __agg_has_partner() makes it
+more clear to understand.
 
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+In ad_port_selection_logic(), since aggregator->partner_system and
+port->partner_oper.system has been compared first as a prerequisite, it is
+safe to replace the upcoming MAC_ADDRESS_EQUAL() for null_mac_addr checking
+with __agg_has_partner().
+
+Delete null_mac_addr, which is not required anymore in bond_3ad.c, since
+all references to it are gone.
+
+Signed-off-by: Jones Syue <jonessyue@qnap.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Link: https://lore.kernel.org/r/SI2PR04MB5097BCA8FF2A2F03D9A5A3EEDC5A2@SI2PR04MB5097.apcprd04.prod.outlook.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: a8f5192809ca ("net/sched: sch_red: annotate data-races in red_dump_stats()")
+Stable-dep-of: c4f050ce06c5 ("bonding: 3ad: implement proper RCU rules for port->aggregator")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/red.h    | 1 -
- net/sched/sch_gred.c | 3 ---
- net/sched/sch_red.c  | 1 -
- 3 files changed, 5 deletions(-)
+ drivers/net/bonding/bond_3ad.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/include/net/red.h b/include/net/red.h
-index be11dbd264920..454ac2b65d8ca 100644
---- a/include/net/red.h
-+++ b/include/net/red.h
-@@ -122,7 +122,6 @@ struct red_stats {
- 	u32		forced_drop;	/* Forced drops, qavg > max_thresh */
- 	u32		forced_mark;	/* Forced marks, qavg > max_thresh */
- 	u32		pdrop;          /* Drops due to queue limits */
--	u32		other;          /* Drops due to drop() calls */
- };
+diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
+index 37364bbfdbdc4..29e08415b16a6 100644
+--- a/drivers/net/bonding/bond_3ad.c
++++ b/drivers/net/bonding/bond_3ad.c
+@@ -81,10 +81,6 @@ enum ad_link_speed_type {
+ #define MAC_ADDRESS_EQUAL(A, B)	\
+ 	ether_addr_equal_64bits((const u8 *)A, (const u8 *)B)
  
- struct red_parms {
-diff --git a/net/sched/sch_gred.c b/net/sched/sch_gred.c
-index 621dc6afde8f3..8caf9623f855f 100644
---- a/net/sched/sch_gred.c
-+++ b/net/sched/sch_gred.c
-@@ -817,7 +817,6 @@ static int gred_dump(struct Qdisc *sch, struct sk_buff *skb)
- 		opt.Wlog	= q->parms.Wlog;
- 		opt.Plog	= q->parms.Plog;
- 		opt.Scell_log	= q->parms.Scell_log;
--		opt.other	= q->stats.other;
- 		opt.early	= q->stats.prob_drop;
- 		opt.forced	= q->stats.forced_drop;
- 		opt.pdrop	= q->stats.pdrop;
-@@ -883,8 +882,6 @@ static int gred_dump(struct Qdisc *sch, struct sk_buff *skb)
- 			goto nla_put_failure;
- 		if (nla_put_u32(skb, TCA_GRED_VQ_STAT_PDROP, q->stats.pdrop))
- 			goto nla_put_failure;
--		if (nla_put_u32(skb, TCA_GRED_VQ_STAT_OTHER, q->stats.other))
--			goto nla_put_failure;
+-static const u8 null_mac_addr[ETH_ALEN + 2] __long_aligned = {
+-	0, 0, 0, 0, 0, 0
+-};
+-
+ static const u16 ad_ticks_per_sec = 1000 / AD_TIMER_INTERVAL;
+ static const int ad_delta_in_ticks = (AD_TIMER_INTERVAL * HZ) / 1000;
  
- 		nla_nest_end(skb, vq);
- 	}
-diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
-index 063431a5ae1dd..a2c1db8ac3945 100644
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -463,7 +463,6 @@ static int red_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 	}
- 	st.early = q->stats.prob_drop + q->stats.forced_drop;
- 	st.pdrop = q->stats.pdrop;
--	st.other = q->stats.other;
- 	st.marked = q->stats.prob_mark + q->stats.forced_mark;
- 
- 	return gnet_stats_copy_app(d, &st, sizeof(st));
+@@ -1583,7 +1579,7 @@ static void ad_port_selection_logic(struct port *port, bool *update_slave_arr)
+ 		     (aggregator->partner_system_priority == port->partner_oper.system_priority) &&
+ 		     (aggregator->partner_oper_aggregator_key == port->partner_oper.key)
+ 		    ) &&
+-		    ((!MAC_ADDRESS_EQUAL(&(port->partner_oper.system), &(null_mac_addr)) && /* partner answers */
++		    ((__agg_has_partner(aggregator) && /* partner answers */
+ 		      !aggregator->is_individual)  /* but is not individual OR */
+ 		    )
+ 		   ) {
+@@ -2033,9 +2029,7 @@ static void ad_enable_collecting(struct port *port)
+  */
+ static void ad_disable_distributing(struct port *port, bool *update_slave_arr)
+ {
+-	if (port->aggregator &&
+-	    !MAC_ADDRESS_EQUAL(&port->aggregator->partner_system,
+-			       &(null_mac_addr))) {
++	if (port->aggregator && __agg_has_partner(port->aggregator)) {
+ 		slave_dbg(port->slave->bond->dev, port->slave->dev,
+ 			  "Disabling distributing on port %d (LAG %d)\n",
+ 			  port->actor_port_number,
+@@ -2075,9 +2069,7 @@ static void ad_enable_collecting_distributing(struct port *port,
+ static void ad_disable_collecting_distributing(struct port *port,
+ 					       bool *update_slave_arr)
+ {
+-	if (port->aggregator &&
+-	    !MAC_ADDRESS_EQUAL(&(port->aggregator->partner_system),
+-			       &(null_mac_addr))) {
++	if (port->aggregator && __agg_has_partner(port->aggregator)) {
+ 		slave_dbg(port->slave->bond->dev, port->slave->dev,
+ 			  "Disabling port %d (LAG %d)\n",
+ 			  port->actor_port_number,
 -- 
 2.53.0
 
