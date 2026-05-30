@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-258879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KInVLVYtG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258879-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:54 +0200
+	id EMZ7MDUbG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63681611F2A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB1BD60F3D2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3E20E306F7CE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 136453008630
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C483A6EF0;
-	Sat, 30 May 2026 18:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E320F340414;
+	Sat, 30 May 2026 17:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RibSi9ZO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPHf7HHp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193CA2EF652;
-	Sat, 30 May 2026 18:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C888D3016E1;
+	Sat, 30 May 2026 17:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165847; cv=none; b=d9/JhEDvl+w7jJICP7C3HCP9Elhbj0gNvywmxwghbDutnC9QyYguZFPc2OQv9QZnIE9Sl1MP2qKu+aDcDBCKmJrer8NChhQL5GPJ9qq2quRC9zCaO6whVQOjRfIV/NowFbdLaFrlU4YXLgAuRCX0vtAkDmJJLyCu7TFSkDEpdlc=
+	t=1780161207; cv=none; b=tSz7Hcsx7NABZcbohiYfaT806kWg06h84EsTdqTQ+YLU5SCrX0b7tvotJrytfFrg2+nYiHx5nKpU0Pmuof+gBSN8DDCqFgQQNbE6sgCoEBPdO0jiXC07f5jY2KhlOD7uC3KyudiwvNfH8+jdFVqHD0rWW4q/v+AwyYkq6tc5i8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165847; c=relaxed/simple;
-	bh=jJHijRtJf6xUO++I1z639w1Pr0gpapoGQmumB/3A2mc=;
+	s=arc-20240116; t=1780161207; c=relaxed/simple;
+	bh=Sf0QkdhXrYQ1213/880+DZdAg+6CVwgFFylLzlJKFjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=griFRvW0TYS4DH6Go+LEYSgm4BBq0nllmY5AmjoDKVRLyRvHpLUUra6nL5hJ8iN/Pkkuv4fOfGUG2rTbpW2KsMQdVx4Sn+xezSHKbKjCgZU/7O0PMYe//J9R2Bbv7GhGRkRsHttyn7AzBNzPvpM3i8Ow51UdsbmUaWfsRwQecOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RibSi9ZO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF2C1F00893;
-	Sat, 30 May 2026 18:30:44 +0000 (UTC)
+	 MIME-Version; b=UMfXh3pDX21a0tk45q3DicZ3Cde/yAbTp9ul8AkfWLasjXfNJc8pnuUgqEZexxtrO2aFDux/gwt1nG0ed1dsVpsfVTkxpKdtEFqWelaJhMMGdJlhdkp3EYNC6zb1JHGH/ZnPmPKsEyDfmMSK29hgvIDA33EOY4iSbwJjlGDKkVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPHf7HHp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61401F00893;
+	Sat, 30 May 2026 17:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165845;
-	bh=8kzJIfiQQ9p0Lmdf6DIb9vnfwBfegFVFjadew+DRNAo=;
+	s=korg; t=1780161206;
+	bh=gpJqKQmM9lHJHw3RZuahLchNxT7mIDTNhmhfUHxvv8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RibSi9ZOX8OTUdjZ3vrGaPUMB2EeYNzS97054TxC7naF6MNNBpgJ/CaelLXhVtqtP
-	 /yE7G1GXL/Y/WGeTF/yGo7pelAFldbYpemQ5yqz4W0zPEU86dJBrpiW7Jf1kdsMTOm
-	 mfMfSze8SQBUqTP7TftKhJ0kJUch5lsuem8qsg6A=
+	b=vPHf7HHpcwEcOYn0dBAEjH9mTKlo3aFSAKUlbP2aaFKaI28JsbHHj4nUkEzxNba0F
+	 B4U5QQTw9cP2CQoIRuvrGWeglYS+B0eaYVBwd6A1s6tBPfIY58ep1+KesUwQ7D6jRI
+	 5d3cg7xYfFrSL0Fp6/m4H9026gXxrEdy+KYwM+KM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 199/589] ALSA: caiaq: Dont abort when no input device is available
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 556/969] PCI: tegra194: Use devm_gpiod_get_optional() to parse "nvidia,refclk-select"
 Date: Sat, 30 May 2026 18:01:20 +0200
-Message-ID: <20260530160230.149431226@linuxfoundation.org>
+Message-ID: <20260530160315.736533092@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +71,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258879-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257499-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.de:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 63681611F2A
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BB1BD60F3D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-commit b32ae47a2b0a1fb4bd4942242847966d9b178222 upstream.
+[ Upstream commit f62bc7917de1374dce86a852ffba8baf9cb7a56a ]
 
-The previous fix to handle the error from setup_card() caused a
-regression for the models that have no dedicated input device;
-snd_usb_caiaq_input_init() just returns -EINVAL, and we treat it as a
-fatal error although it should be ignored.
+The GPIO DT property "nvidia,refclk-select", to select the PCIe reference
+clock is optional. Use devm_gpiod_get_optional() to get it.
 
-As a regression fix, change the error code to -ENODEV, and ignore this
-error in the callee, to continue probing.
-
-Fixes: 28abd224db4a ("ALSA: caiaq: Handle probe errors properly")
-Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221423
-Link: https://patch.msgid.link/20260427145642.6637-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-7-mmaddireddy@nvidia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/caiaq/device.c |    2 +-
- sound/usb/caiaq/input.c  |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -380,7 +380,7 @@ static int setup_card(struct snd_usb_cai
- 
- #ifdef CONFIG_SND_USB_CAIAQ_INPUT
- 	ret = snd_usb_caiaq_input_init(cdev);
--	if (ret < 0) {
-+	if (ret < 0 && ret != -ENODEV) {
- 		dev_err(dev, "Unable to set up input system (ret=%d)\n", ret);
- 		return ret;
- 	}
---- a/sound/usb/caiaq/input.c
-+++ b/sound/usb/caiaq/input.c
-@@ -804,7 +804,7 @@ int snd_usb_caiaq_input_init(struct snd_
- 
- 	default:
- 		/* no input methods supported on this device */
--		ret = -EINVAL;
-+		ret = -ENODEV;
- 		goto exit_free_idev;
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 5085bacd2f542..87851a56ebd2d 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1183,9 +1183,9 @@ static int tegra_pcie_dw_parse_dt(struct tegra_pcie_dw *pcie)
+ 		return err;
  	}
  
+-	pcie->pex_refclk_sel_gpiod = devm_gpiod_get(pcie->dev,
+-						    "nvidia,refclk-select",
+-						    GPIOD_OUT_HIGH);
++	pcie->pex_refclk_sel_gpiod = devm_gpiod_get_optional(pcie->dev,
++							     "nvidia,refclk-select",
++							     GPIOD_OUT_HIGH);
+ 	if (IS_ERR(pcie->pex_refclk_sel_gpiod)) {
+ 		int err = PTR_ERR(pcie->pex_refclk_sel_gpiod);
+ 		const char *level = KERN_ERR;
+-- 
+2.53.0
+
 
 
 
