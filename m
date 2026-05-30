@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-258598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259174-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPkwLBkpG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258598-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:49 +0200
+	id 6PRnOMoxG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259174-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EAB161153E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69625612A78
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D03E4300CE98
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E852308CC07
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 597603B9D80;
-	Sat, 30 May 2026 18:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA19137750;
+	Sat, 30 May 2026 18:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ff2M0Bxd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rv7f/yMB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B3D31F98D;
-	Sat, 30 May 2026 18:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79721A9F90;
+	Sat, 30 May 2026 18:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164888; cv=none; b=XiQBj/9HZOpouvmICgl90rHzr6XBwk+B/Acb9HKuYc4zPqcT9x4TlxBcc2wubM9nwsSF79G8u8mSO0JWXiFH7vBOxDfSvWuZwV2Q6wrPuW3IGz4KFXppqVDp51vTDoyGPr0G5YE94TY+BL2khrd6nkVgl973Cj7BNseqIBMoM4Q=
+	t=1780166854; cv=none; b=Uv9wrSCPp/sOZHMh4MSFTgby2uTSY4a9kr66X6k1A/flB5ufV6k54cB9cfhcmQYOzgf7OFnp+SU+H9bFsgaeGebbHsuKbg5FRXpLWioWfNma8YF9GYlFBSX13sILByRv5OOlZ0+9KIshQX4if8VyCJ9shbf0paY1q6OG/Yftt3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164888; c=relaxed/simple;
-	bh=syGcVg9utqcM5uPljr7iUZsaSwasvkdsxnHDbWbuO/I=;
+	s=arc-20240116; t=1780166854; c=relaxed/simple;
+	bh=tKe6/NU6qoprU8TxfRuMyyrzBqTDmIKQ3f1vP8XyYUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AWIR2rbrWRerWyNY9s6i9Bcm9baQO3P6th7Z0SOpWUeAUE+AI7GdnrBIRzkPjJtnaMjJuW4q+uKvdqvP4RlsZLnpJdgsbJ4vLUzwkx8K3F+n5quWMIH+puaXUzO/7kU5VPSf21QggZ89zgf32IyMnjhkA0474POpb8k3OlSlbKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ff2M0Bxd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728571F00893;
-	Sat, 30 May 2026 18:14:46 +0000 (UTC)
+	 MIME-Version; b=pWk6V5iqwo+Nm33GBT1iKCOInkcWjyewo9N045CWuWk3mskuGKnFsmB/bPXGxbFm6lEq/QsRVnd5+q1r0hz0fKNojZugn5s5hwN0Ur/K6v/bwReHmJEJiUAIqWa/ySNTcXbfZK1rgNerjJXbj1toFuuNpa/RJSz2Y40TAMX1r4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rv7f/yMB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195581F00893;
+	Sat, 30 May 2026 18:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164887;
-	bh=JAa9SvfbCK90SyJk7XIJtFb6o15doLdJHeN9uKIw5d8=;
+	s=korg; t=1780166853;
+	bh=Ukb4jhPOMCuFEftKy4/9/J5weepER+n+5hBtFnMq5rI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ff2M0BxdbQTqfBa96dwS72rWIIgXeVflX+vWsJMuiAllfV0FJgZNhpHbZ5zX6ubSZ
-	 Lts1YjCBapxvwgeadu8afHw6SZIOAVy1noU97/XxVI6dxHUHzHhdLCV8IOWxoUZM1T
-	 N+IN1cSsZJAPQ1YqdSqXd8yl0Holc8WjeLtftyH8=
+	b=Rv7f/yMBuBpjnirr+k+jq37qtGlbhfpqDA9p/nrPmzZWCvayxqXZklJ95s9HNaitF
+	 vlTf4qyXATPvVYQnl7trxEOTj5PRdQSuvhjY71fso7rnltcUMUpOJUrKopZk+WN1Xm
+	 H6SKKqmWI64BcDpKJu21u+IjFVCYnCiM9/yTchB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 5.15 659/776] libceph: Fix potential out-of-bounds access in osdmap_decode()
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 492/589] bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()
 Date: Sat, 30 May 2026 18:06:13 +0200
-Message-ID: <20260530160256.934067074@linuxfoundation.org>
+Message-ID: <20260530160237.560482742@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +69,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258598-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-259174-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tu-ilmenau.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9EAB161153E
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,asu.edu:email]
+X-Rspamd-Queue-Id: 69625612A78
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit 35d0ed82d03e5ee77ea4f31f20e29562a7721649 upstream.
+[ Upstream commit aa6c6d9ee064aabfede4402fd1283424e649ca19 ]
 
-When decoding osd_state and osd_weight from an incoming osdmap in
-osdmap_decode(), both are decoded for each osd, i.e., map->max_osd
-times. The ceph_decode_need() check only accounts for
-sizeof(*map->osd_weight) once. This can potentially result in an
-out-of-bounds memory access if the incoming message is corrupted such
-that the max_osd value exceeds the actual content of the osdmap message.
+bareudp_fill_metadata_dst() passes bareudp->sock to
+udp_tunnel6_dst_lookup() in the IPv6 path without a NULL check.
+The socket is only created in bareudp_open() and NULLed in
+bareudp_stop(), so calling this function while the device is down
+triggers a NULL dereference via sock->sk.
 
-This patch fixes the issue by changing the corresponding part in the
-ceph_decode_need() check to account for
-map->max_osd*sizeof(*map->osd_weight).
+ BUG: kernel NULL pointer dereference, address: 0000000000000018
+ RIP: 0010:udp_tunnel6_dst_lookup (net/ipv6/ip6_udp_tunnel.c:160)
+ Call Trace:
+  <TASK>
+  bareudp_fill_metadata_dst (drivers/net/bareudp.c:532)
+  do_execute_actions (net/openvswitch/actions.c:901)
+  ovs_execute_actions (net/openvswitch/actions.c:1589)
+  ovs_packet_cmd_execute (net/openvswitch/datapath.c:700)
+  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1114)
+  genl_rcv_msg (net/netlink/genetlink.c:1209)
+  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+  </TASK>
 
-Cc: stable@vger.kernel.org
-Fixes: dcbc919a5dc8 ("libceph: switch osdmap decoding to use ceph_decode_entity_addr")
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a NULL check returning -ESHUTDOWN, consistent with the xmit paths
+in the same driver.
+
+Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260426165350.1663137-2-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osdmap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/bareudp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -1689,7 +1689,7 @@ static int osdmap_decode(void **p, void
- 	ceph_decode_need(p, end, 3*sizeof(u32) +
- 			 map->max_osd*(struct_v >= 5 ? sizeof(u32) :
- 						       sizeof(u8)) +
--				       sizeof(*map->osd_weight), e_inval);
-+			 map->max_osd*sizeof(*map->osd_weight), e_inval);
- 	if (ceph_decode_32(p) != map->max_osd)
- 		goto e_inval;
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index d5210b5b8cbf8..b3ed3447c84cb 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -512,6 +512,9 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
+ 		struct in6_addr saddr;
+ 		struct socket *sock = rcu_dereference(bareudp->sock);
  
++		if (!sock)
++			return -ESHUTDOWN;
++
+ 		dst = udp_tunnel6_dst_lookup(skb, dev, bareudp->net, sock,
+ 					     &saddr, info, IPPROTO_UDP,
+ 					     use_cache);
+-- 
+2.53.0
+
 
 
 
