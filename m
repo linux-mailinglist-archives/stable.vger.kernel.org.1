@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-258802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONoDOqksG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258802-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:01 +0200
+	id eFB+BI4bG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFE4611D84
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:29:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9042960F4D5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EBF6A30B5F5D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:26:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3BD97301474C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A2627E05E;
-	Sat, 30 May 2026 18:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0EF13ACA4D;
+	Sat, 30 May 2026 17:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQUd/7Bm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/Eb+fh6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C85D279DC9;
-	Sat, 30 May 2026 18:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487373AC0FC;
+	Sat, 30 May 2026 17:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165588; cv=none; b=uir98uxEW9xlzKAkHFaVl1vHW8XJ3smCopKAn6bEUW0+VnEgOwAzWD83Yyedh70gmBTIi3xeZIwLEeUt9XA3NTsbe2msNNHoq6RRAwS+n6+zmm7qJ/6Rz31Sd8XdYsKoeObzpPuVSC77qXQUptsHJcJVG860pqGJzjR8kQG2iZE=
+	t=1780160942; cv=none; b=suDy372oYus63HBT2n+l3dLL3veWfEdOoU+VTU4IVRo2TqAWr6m2QiUCSq0VPsbYyjUpcNHN7khAqUGyvOWUV+wCCyZdD4MADoEekejvKWyYqsQ3ZZ555SSsDCOgfIMEmydrmfySvOgFu0t40ho9LZdok84+gmyE+dA4oIzZQWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165588; c=relaxed/simple;
-	bh=LOLGSp2v0jqdPbIswTDpmbZi9gGXkyeaE27tDGy4vR8=;
+	s=arc-20240116; t=1780160942; c=relaxed/simple;
+	bh=0KnxkwNHRfp6vly9sdi3aoiYeVc1wEIhuvM3LrXYhe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WxQvoBMYjToJT3N8Y4T7KirFCTZU5FhDqc1YNn+yvkKzQW32SxnDjAwEqxQ4Ijtf7oi5MELhzq9FULvJTMtAD3UUtLzQWkyjY7KOCjgYh6IoPxrlDdFlik8WeEo68EWmm2/43FylmPqh85W2ojTw3roThP3HnXKxibThLLNR/vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQUd/7Bm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6059E1F00893;
-	Sat, 30 May 2026 18:26:26 +0000 (UTC)
+	 MIME-Version; b=JD1f26MP7NzgSZN2WvbY3Uo63p/U/bq92K8pi3WDajQsiLBeIppNWuPH6St4FBTuws0sjSbDfT5lJOPj3Uc/+SuZzHLYm9rxB5zlNWKliiinYK6fXCjpq8DLLugKlY6dNqOmStEV5Bxy8GIejtTeoblI3V7hzKzn9DEs0Uap6+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/Eb+fh6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535FA1F00893;
+	Sat, 30 May 2026 17:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165587;
-	bh=nFsz5f2Jv/YkUV3v1O//B9oIp4WJOf2pnaJTUeIzFIo=;
+	s=korg; t=1780160940;
+	bh=chUxuKzpIkyjWlsVaDD4LIvtvH6Nw+NWBsgq7IZDwts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rQUd/7BmwyHouTGuGNlMfOowPD2slEG9HiTTTqeXe5AWpzg4GbA82lTwWPzokEovZ
-	 6vBIgcoLyNbut7tIlgnEZEQpLvIC8gxPl6sg5spCBpCB8ZMLNPac8t2ceBI2RQi4pl
-	 xHVZkna+hKQ3lVS/HCZCHDm1GUSW4jy/6l8oHsDI=
+	b=Q/Eb+fh6PhlnAcIFwz2+Qno65Bmc6UJgo0mdp+KIy+mNbhYql+aVENpxpKAFyOUZ2
+	 3poEYCxvXBh6ouiFKtCvig0cqVYg9qqLFdhoopM0odJL4VMGzgfeLdNSG5q/0tdw/6
+	 czPrhjE9RiAsmrIUdH+CbrAZY79aPB1L7lZMPsh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"stable@vger.kernel.org, devicetree@vger.kernel.org,  Nathan Chancellor" <nathan@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.10 122/589] scripts/dtc: Remove unused dts_version in dtc-lexer.l
-Date: Sat, 30 May 2026 18:00:03 +0200
-Message-ID: <20260530160227.971184681@linuxfoundation.org>
+	zdi-disclosures@trendmicro.com,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 480/969] net/sched: act_ct: Only release RCU read lock after ct_ft
+Date: Sat, 30 May 2026 18:00:04 +0200
+Message-ID: <20260530160313.556753740@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,84 +70,161 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257422-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258802-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BCFE4611D84
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9042960F4D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-This patch is for stable only. Commit 5a09df20872c ("scripts/dtc: Update
-to upstream version v1.7.2-69-g53373d135579") upstream applied it as
-part of a regular scripts/dtc sync, which may be unsuitable for older
-versions of stable where the warning it fixes is present.
+[ Upstream commit f462dca0c8415bf0058d0ffa476354c4476d0f09 ]
 
-A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
-in clang under a new subwarning, -Wunused-but-set-global, points out an
-unused static global variable in dtc-lexer.lex.c (compiled from
-dtc-lexer.l):
+When looking up a flow table in act_ct in tcf_ct_flow_table_get(),
+rhashtable_lookup_fast() internally opens and closes an RCU read critical
+section before returning ct_ft.
+The tcf_ct_flow_table_cleanup_work() can complete before refcount_inc_not_zero()
+is invoked on the returned ct_ft resulting in a UAF on the already freed ct_ft
+object. This vulnerability can lead to privilege escalation.
 
-  scripts/dtc/dtc-lexer.lex.c:641:12: warning: variable 'dts_version' set but not used [-Wunused-but-set-global]
-    641 | static int dts_version = 1;
-        |            ^
+Analysis from zdi-disclosures@trendmicro.com:
+When initializing act_ct, tcf_ct_init() is called, which internally triggers
+tcf_ct_flow_table_get().
 
-Remove it to clear up the warning, as it is truly unused.
+static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
 
-Fixes: 658f29a51e98 ("of/flattree: Update dtc to current mainline.")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+{
+                struct zones_ht_key key = { .net = net, .zone = params->zone };
+                struct tcf_ct_flow_table *ct_ft;
+                int err = -ENOMEM;
+
+                mutex_lock(&zones_mutex);
+                ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params); // [1]
+                if (ct_ft && refcount_inc_not_zero(&ct_ft->ref)) // [2]
+                                goto out_unlock;
+                ...
+}
+
+static __always_inline void *rhashtable_lookup_fast(
+                struct rhashtable *ht, const void *key,
+                const struct rhashtable_params params)
+{
+                void *obj;
+
+                rcu_read_lock();
+                obj = rhashtable_lookup(ht, key, params);
+                rcu_read_unlock();
+
+                return obj;
+}
+
+At [1], rhashtable_lookup_fast() looks up and returns the corresponding ct_ft
+from zones_ht . The lookup is performed within an RCU read critical section
+through rcu_read_lock() / rcu_read_unlock(), which prevents the object from
+being freed. However, at the point of function return, rcu_read_unlock() has
+already been called, and there is nothing preventing ct_ft from being freed
+before reaching refcount_inc_not_zero(&ct_ft->ref) at [2]. This interval becomes
+the race window, during which ct_ft can be freed.
+
+Free Process:
+
+tcf_ct_flow_table_put() is executed through the path tcf_ct_cleanup() call_rcu()
+tcf_ct_params_free_rcu() tcf_ct_params_free() tcf_ct_flow_table_put().
+
+static void tcf_ct_flow_table_put(struct tcf_ct_flow_table *ct_ft)
+{
+                if (refcount_dec_and_test(&ct_ft->ref)) {
+                                rhashtable_remove_fast(&zones_ht, &ct_ft->node, zones_params);
+                                INIT_RCU_WORK(&ct_ft->rwork, tcf_ct_flow_table_cleanup_work); // [3]
+                                queue_rcu_work(act_ct_wq, &ct_ft->rwork);
+                }
+}
+
+At [3], tcf_ct_flow_table_cleanup_work() is scheduled as RCU work
+
+static void tcf_ct_flow_table_cleanup_work(struct work_struct *work)
+
+{
+                struct tcf_ct_flow_table *ct_ft;
+                struct flow_block *block;
+
+                ct_ft = container_of(to_rcu_work(work), struct tcf_ct_flow_table,
+                                                                rwork);
+                nf_flow_table_free(&ct_ft->nf_ft);
+                block = &ct_ft->nf_ft.flow_block;
+                down_write(&ct_ft->nf_ft.flow_block_lock);
+                WARN_ON(!list_empty(&block->cb_list));
+                up_write(&ct_ft->nf_ft.flow_block_lock);
+                kfree(ct_ft); // [4]
+
+                module_put(THIS_MODULE);
+}
+
+tcf_ct_flow_table_cleanup_work() frees ct_ft at [4]. When this function executes
+between [1] and [2], UAF occurs.
+
+This race condition has a very short race window, making it generally
+difficult to trigger. Therefore, to trigger the vulnerability an msleep(100) was
+inserted after[1]
+
+Fixes: 138470a9b2cc2 ("net/sched: act_ct: fix lockdep splat in tcf_ct_flow_table_get")
+Reported-by: zdi-disclosures@trendmicro.com
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260410111627.46611-1-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-This should apply cleanly to all supported stable branches.
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- scripts/dtc/dtc-lexer.l |    3 ---
- 1 file changed, 3 deletions(-)
+ net/sched/act_ct.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/scripts/dtc/dtc-lexer.l
-+++ b/scripts/dtc/dtc-lexer.l
-@@ -39,8 +39,6 @@ extern bool treesource_error;
- #define DPRINT(fmt, ...)	do { } while (0)
- #endif
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 75a8fba9fa57a..651701a186fec 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -324,9 +324,13 @@ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
+ 	int err = -ENOMEM;
  
--static int dts_version = 1;
--
- #define BEGIN_DEFAULT()		DPRINT("<V1>\n"); \
- 				BEGIN(V1); \
+ 	mutex_lock(&zones_mutex);
+-	ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params);
+-	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref))
++	rcu_read_lock();
++	ct_ft = rhashtable_lookup(&zones_ht, &key, zones_params);
++	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref)) {
++		rcu_read_unlock();
+ 		goto out_unlock;
++	}
++	rcu_read_unlock();
  
-@@ -101,7 +99,6 @@ static void PRINTF(1, 2) lexical_error(c
- 
- <*>"/dts-v1/"	{
- 			DPRINT("Keyword: /dts-v1/\n");
--			dts_version = 1;
- 			BEGIN_DEFAULT();
- 			return DT_V1;
- 		}
+ 	ct_ft = kzalloc(sizeof(*ct_ft), GFP_KERNEL);
+ 	if (!ct_ft)
+-- 
+2.53.0
+
 
 
 
