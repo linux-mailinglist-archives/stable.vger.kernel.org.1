@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-257555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMs/ITgdG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257555-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:08 +0200
+	id WDbIEoowG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-258932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D1860F8D3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B4E61277C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E5AF3054CC1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:16:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 800C730E52D6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCC13A7848;
-	Sat, 30 May 2026 17:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0356C329E79;
+	Sat, 30 May 2026 18:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXRXp8QE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FMOpjACW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC3C3AB26B;
-	Sat, 30 May 2026 17:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE87026738C;
+	Sat, 30 May 2026 18:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161389; cv=none; b=EG2aTv9ExKfcvJ7wb0/fua1xFLU8Cf9ckU87O1SHl4+Up8KNliuhkDu4vPtA/tCxIDfgz3jBWBVaMhy+Fmfq9s3Srot8BkZ981HRg2anrICSgnGqXUhyR/mpxqZTNSHBUTY1r8s890LT2ld/mmIDGn2wwoCgQz7bPsGRIv8Ae1s=
+	t=1780166028; cv=none; b=d4RMy61xbyYKQ+3OSHvliDPivZvv8PhvTwP4VKAdpBtbaaE0Ucyh4Cul10tmVGpFRK2K+VH1w75zurRfVIO3gKf+5ecfLAMVUqzn/itloEfWFP1rm5aQkCuTZ9GKncDrnNfRP8pFJy7i3nG6i8tgbVb2+yGlfDg+zfqdepfodOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161389; c=relaxed/simple;
-	bh=ib2JD1o2gz1GMwbLBCRUmlj/H1C8ruN0QN+OmE1yj58=;
+	s=arc-20240116; t=1780166028; c=relaxed/simple;
+	bh=PwUPtg57SmwV4+ZmvietOPDkX8meZ1Es/0nGNj5CEes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=krRyn9me3/to2921tcnhDnhDdDMILUHuvHGnUNf6Eb5E8+PsvKB8h8WBAf+DegdpbhatVVMwkZrbtycdGKyROT4aUwU1wAWQI79e2zysWZbBKwWSh/1G7cAjn14ACP3Y9D1+aQqTdGHCAikDolQYneFbEDRgmelDxCkDQmHLC3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXRXp8QE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A3A1F00893;
-	Sat, 30 May 2026 17:16:27 +0000 (UTC)
+	 MIME-Version; b=k3oN33DX6MgsjBM23VIJdq1BUs8eFRoy0EhBCdAhvWcNjfW0z93XCmneBASf6tiGpZSehPloSPCea4DUru5EnB2YPDDWFvIlkTtrJqTc2qrS3sV5W8d5/I/DUHQLh7HFTgkW0F2cLjj6Q/w/qTDfnBI78QQh30rcr+W4ZYgbp3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FMOpjACW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2281F00893;
+	Sat, 30 May 2026 18:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161388;
-	bh=plUBV/Z2e92EZ2o3bmLHFR21bbwsERBnlBeVeAxUOAQ=;
+	s=korg; t=1780166027;
+	bh=gu9qb1BWU7KHQbUTL7IhWqOf7BxIlKv9tXkP8YqUaxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QXRXp8QEy/wTiDl1KxQeu3cZ8xu5mdm4Mb5xz0TGaNTXMdmvUhUxSAySFdL/rk8MX
-	 epCks7t0dFogGPIbsi/hb43xqXDyw+RRzZ7DdQYCFqCv2gngH2enV5+jG5u8VDUnCw
-	 AdWzP3C8cmQSg3X4vt+xAqbj3lXu9h5AJ75HH0Nw=
+	b=FMOpjACWMlt438cning+bwR9GpiE3xx+ABnFr7GEQI1SApIzVLnNefyQMgGuofOmz
+	 AMhVYH0tykEm8JKNxtNdy6/kOdToXhGyL3KOjd+7p9c+WHl619ZwT5iQBd7bD4N83N
+	 ntMJq/CibwW1WebeiWQQMCyLEo8AORDVp/9bZEJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>
-Subject: [PATCH 6.1 610/969] mtd: spi-nor: sfdp: introduce smpt_read_dummy fixup hook
+	Junrui Luo <moonafterrain@outlook.com>,
+	Yu Kuai <yukuai@fnnas.com>
+Subject: [PATCH 5.10 253/589] md/raid10: fix divide-by-zero in setup_geo() with zero far_copies
 Date: Sat, 30 May 2026 18:02:14 +0200
-Message-ID: <20260530160317.276001739@linuxfoundation.org>
+Message-ID: <20260530160231.633626223@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,128 +63,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-258932-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,fnnas.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257555-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 06D1860F8D3
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fnnas.com:email,outlook.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C1B4E61277C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 653f6def567c81f37302f9591ffd54df3e2a11eb ]
+commit 9aa6d860b0930e2f72795665c42c44252a558a0c upstream.
 
-SMPT contains config detection info that describes opcode, address, and
-dummy cycles to read sector map config. The dummy cycles parameter can
-be SMPT_CMD_READ_DUMMY_IS_VARIABLE and in that case nor->read_dummy
-(initialized as 0) is used. In Infineon flash chips, Read Any Register
-command with variable dummy cycle is defined in SMPT. S25Hx/S28Hx flash
-has 0 dummy cycle by default to read volatile regiters and
-nor->read_dummy can work. S25FS-S flash has 8 dummy cycles so we need a
-hook that can fix dummy cycles with actually used value.
+setup_geo() extracts near_copies (nc) and far_copies (fc) from the
+user-provided layout parameter without checking for zero. When fc=0
+with the "improved" far set layout selected, 'geo->far_set_size =
+disks / fc' triggers a divide-by-zero.
 
-Inroduce smpt_read_dummy() in struct spi_nor_fixups. It is called when
-the dummy cycle field in SMPT config detection is 'varialble'.
+Validate nc and fc immediately after extraction, returning -1 if
+either is zero.
 
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Tested-by: Marek Vasut <marek.vasut+renesas@mailbox.org> # S25FS512S
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 475901aff158 ("MD RAID10: Improve redundancy for 'far' and 'offset' algorithms (part 1)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://lore.kernel.org/linux-raid/SYBPR01MB7881A5E2556806CC1D318582AF232@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/core.h |  3 +++
- drivers/mtd/spi-nor/sfdp.c | 18 ++++++++++++++++--
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ drivers/md/raid10.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
-index cc70a2092494c..4aac34f06c7bb 100644
---- a/drivers/mtd/spi-nor/core.h
-+++ b/drivers/mtd/spi-nor/core.h
-@@ -407,6 +407,8 @@ struct spi_nor_flash_parameter {
-  *                flash parameters when information provided by the flash_info
-  *                table is incomplete or wrong.
-  * @post_bfpt: called after the BFPT table has been parsed
-+ * @smpt_read_dummy: called during SMPT table is being parsed. Used to fix the
-+ *                   number of dummy cycles in read register ops.
-  * @post_sfdp: called after SFDP has been parsed (is also called for SPI NORs
-  *             that do not support RDSFDP). Typically used to tweak various
-  *             parameters that could not be extracted by other means (i.e.
-@@ -424,6 +426,7 @@ struct spi_nor_fixups {
- 	int (*post_bfpt)(struct spi_nor *nor,
- 			 const struct sfdp_parameter_header *bfpt_header,
- 			 const struct sfdp_bfpt *bfpt);
-+	void (*smpt_read_dummy)(const struct spi_nor *nor, u8 *read_dummy);
- 	int (*post_sfdp)(struct spi_nor *nor);
- 	void (*late_init)(struct spi_nor *nor);
- };
-diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
-index 6f47982105bd9..66c233db20e8e 100644
---- a/drivers/mtd/spi-nor/sfdp.c
-+++ b/drivers/mtd/spi-nor/sfdp.c
-@@ -659,6 +659,17 @@ static u8 spi_nor_smpt_addr_nbytes(const struct spi_nor *nor, const u32 settings
- 	}
- }
- 
-+static void spi_nor_smpt_read_dummy_fixups(const struct spi_nor *nor,
-+					   u8 *read_dummy)
-+{
-+	if (nor->manufacturer && nor->manufacturer->fixups &&
-+	    nor->manufacturer->fixups->smpt_read_dummy)
-+		nor->manufacturer->fixups->smpt_read_dummy(nor, read_dummy);
-+
-+	if (nor->info->fixups && nor->info->fixups->smpt_read_dummy)
-+		nor->info->fixups->smpt_read_dummy(nor, read_dummy);
-+}
-+
- /**
-  * spi_nor_smpt_read_dummy() - return the configuration detection command read
-  *			       latency, in clock cycles.
-@@ -671,8 +682,11 @@ static u8 spi_nor_smpt_read_dummy(const struct spi_nor *nor, const u32 settings)
- {
- 	u8 read_dummy = SMPT_CMD_READ_DUMMY(settings);
- 
--	if (read_dummy == SMPT_CMD_READ_DUMMY_IS_VARIABLE)
--		return nor->read_dummy;
-+	if (read_dummy == SMPT_CMD_READ_DUMMY_IS_VARIABLE) {
-+		read_dummy = nor->read_dummy;
-+		spi_nor_smpt_read_dummy_fixups(nor, &read_dummy);
-+	}
-+
- 	return read_dummy;
- }
- 
--- 
-2.53.0
-
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -3606,6 +3606,8 @@ static int setup_geo(struct geom *geo, s
+ 	nc = layout & 255;
+ 	fc = (layout >> 8) & 255;
+ 	fo = layout & (1<<16);
++	if (!nc || !fc)
++		return -1;
+ 	geo->raid_disks = disks;
+ 	geo->near_copies = nc;
+ 	geo->far_copies = fc;
 
 
 
