@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-259223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJoWHyUzG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259223-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:41 +0200
+	id aDKWHxggG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9B22612DC5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E361861001C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D79B33040D99
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A609308844F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C7F231A21;
-	Sat, 30 May 2026 18:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD96325701;
+	Sat, 30 May 2026 17:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJqgXdUX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBcWDe6a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30DE2E7398;
-	Sat, 30 May 2026 18:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4CC349CCF;
+	Sat, 30 May 2026 17:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167021; cv=none; b=EfW4vePBzBJv3O/WYGr1LTZe9ZODoi5AbDcDO2EH3f398Z4BFQrSYokq+KpYs4xL7F5UKsqqUtD3Pxl9R5AE3SHmFaQsb7iICCi7UZLIENPV5aLs26ugj+fDBvu1sfyhWyOl7QnLP4ZZNYJK4IJOYrTG4rcg1OsgO+HiAOiGGNE=
+	t=1780162261; cv=none; b=m8pCgTUFFkXIb2lv8nP5Cimgjuk7vzoLQr/aE4FArXYfDb4rYd+B/NpxkK9Ig8S6fBqD/Zrewh2f4Imt+mleojwcJjcz3x6rncVSTJvvVfdICmSmEmzVv3Npg+KHooljWRGAzOFZMRVQXJlguDO9eYRia4f48S5KNhQr2pjHnLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167021; c=relaxed/simple;
-	bh=TI8a9Whhbbckwx+dz/E7q1yzS1EGXz9++X/gugs3ksA=;
+	s=arc-20240116; t=1780162261; c=relaxed/simple;
+	bh=izRQkCCyo+Zu3GH+UfLUnWwvkdEoOeY5f8Zr3BJ4qd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XRMCMdxtefOi9Jm3N8Kb1/ZpcUxeByIKM0LT4NOJomuFBM7CmGHz/ePAgUllZeGWBbddiu/ne0gidGpkmKFJFIGW73vElUW5t0htVpeB7RClgTxu72/bw/+N6y/wrWZ6PUURqHCUIfXUcZoo+JZFtpsIlvm9pTBr8DA6IrTvN9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJqgXdUX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124B11F00893;
-	Sat, 30 May 2026 18:50:19 +0000 (UTC)
+	 MIME-Version; b=V+PWUDrKhJHUPNanIQw0WjQcr6ts1rmzMh8PpZBrZ/xNgNkv2gmLxCk26uOEpC0eCPS3X+0B8O+2+hj2X4VbJe/duxkEMRRhB1Rw/7BgNBFVpkZAEC0PMhZRLP5siKTReS3SOvYIVqmz0lmyPLGZAvTA98ltRhRFYU7iLO7SNMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBcWDe6a; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515F81F00893;
+	Sat, 30 May 2026 17:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167020;
-	bh=EyLfYNrVj5LRtZ2eSIEvZd90UkISaF0IRlRGiWcpVhQ=;
+	s=korg; t=1780162259;
+	bh=ycQudfmQOELWu7UK04XMVsuTdPWlZdfr3OkPKAl85wI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EJqgXdUXoO6Y869JPw9aDfs8SQJx9QsISYzFOdtoPKRVThfuJjrdzJmDXDI+QkEIK
-	 XpQVaPB7/kXjbXC8n15fJqRQSLbr3U+I1E9ZJQCMQj100WwAi8CXfc+v8OEcpFTTWu
-	 QmoUBPhzcnWZ3MA4hkopankHq8gdsQn8cJbj6hGA=
+	b=KBcWDe6aQszsTyl5/Av/nIYQ7339/BB3+wU1n4T0+UKd4Gt2rWzkvtkebL/22s3FE
+	 MJpVgMV52aYALHWVYGVrD5LeT4USs9VnUqw8TDmqR6yzeACBsKRKgZso/6QA74Xaua
+	 tZZGH/aU3wWPgzg8iPVOm2QHHevJAXnyPK9N/k/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 5.10 511/589] powerpc/warp: Fix error handling in pika_dtm_thread
-Date: Sat, 30 May 2026 18:06:32 +0200
-Message-ID: <20260530160238.041709245@linuxfoundation.org>
+	Lanqing Liu <lanqing.liu@unisoc.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 869/969] spi: sprd: fix error pointer deref after DMA setup failure
+Date: Sat, 30 May 2026 18:06:33 +0200
+Message-ID: <20260530160324.677168968@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,60 +78,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259223-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257814-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,iscas.ac.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,csgroup.eu:email]
-X-Rspamd-Queue-Id: D9B22612DC5
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,unisoc.com:email,sashiko.dev:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E361861001C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Johan Hovold <johan@kernel.org>
 
-commit 108d7f951271cbd36ca36efc5e5d106966f5180c upstream.
+commit 3d67fffb74267772d461c02c67f1eff893ad547d upstream.
 
-pika_dtm_thread() acquires client through of_find_i2c_device_by_node()
-but fails to release it in error handling path. This could result in a
-reference count leak, preventing proper cleanup and potentially
-leading to resource exhaustion. Add put_device() to release the
-reference in the error handling path.
+The driver falls back to PIO mode if DMA setup fails during probe.
 
-Found by code review.
+Make sure to check the dma.enabled flag before trying to release the DMA
+channels also on late probe errors to avoid dereferencing an error
+pointer (or attempting to release a channel a second time).
 
-Cc: stable@vger.kernel.org
-Fixes: 3984114f0562 ("powerpc/warp: Platform fix for i2c change")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20251116024411.21968-1-make24@iscas.ac.cn
+This issue was flagged by Sashiko when reviewing a devres allocation
+conversion patch.
+
+Fixes: 386119bc7be9 ("spi: sprd: spi: sprd: Add DMA mode support")
+Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=10
+Cc: stable@vger.kernel.org	# 5.1
+Cc: Lanqing Liu <lanqing.liu@unisoc.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260512074733.915029-1-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/44x/warp.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-sprd.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/powerpc/platforms/44x/warp.c
-+++ b/arch/powerpc/platforms/44x/warp.c
-@@ -261,6 +261,8 @@ static int pika_dtm_thread(void __iomem
- 		schedule_timeout(HZ);
- 	}
- 
-+	put_device(&client->dev);
-+
- 	return 0;
- }
+--- a/drivers/spi/spi-sprd.c
++++ b/drivers/spi/spi-sprd.c
+@@ -995,7 +995,8 @@ err_rpm_put:
+ disable_clk:
+ 	clk_disable_unprepare(ss->clk);
+ release_dma:
+-	sprd_spi_dma_release(ss);
++	if (ss->dma.enable)
++		sprd_spi_dma_release(ss);
+ free_controller:
+ 	spi_controller_put(sctlr);
  
 
 
