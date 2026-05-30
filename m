@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-258196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258801-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WD0WLNgjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258196-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:24 +0200
+	id OL6kGZwsG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258801-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:29:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39FDD6108CF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D63EC611D75
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3568C30058D4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:52:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 59298309C9CD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFD43546EA;
-	Sat, 30 May 2026 17:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E112E6CA8;
+	Sat, 30 May 2026 18:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFvfbM2M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRded4xZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1083A261B9E;
-	Sat, 30 May 2026 17:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6417274FDC;
+	Sat, 30 May 2026 18:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163536; cv=none; b=qNbAVZYQccZ2rXRSy9uAWCQpieGqeK2t6x93wHgC62oLxpYxq4FGYmQySrA4CUWh4M6CyDbQSn856jmn3xTd4cMLmFCO5ZCzMXikBtNaqUSimnXPADZQBHhgcog0yFTRXRNfGz0Vo76lwmumaOWi60hV6QUPkxabNAh7gje6bfI=
+	t=1780165584; cv=none; b=h4GoN4nM+oy+LwFF1WZHDD70NYwJLzsOdPhIpa+sJgDBoWVnaxkPNWKXTfbVm0Vw8mRAhcVvn2Xv7z4kNHQYB2dREOISC959D6ZBsI3rteXJ33TYCH4XQ4hsfhUHxqJjceTDRG3G6rERgT5CfqM5+oQc0sJMHM5RG6S2A/W3Zwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163536; c=relaxed/simple;
-	bh=vYb5OM1hllZsEVasZfn+2uvLenyoT7mZlOrFDwQsAhY=;
+	s=arc-20240116; t=1780165584; c=relaxed/simple;
+	bh=qmnLCE0sX+b2wpOZORLQST2ZMGP82pngkbi8+w5740U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DzBfWb0MPlaL5PhBAoikppBiE7l/2r0DFOLH93x4z58zuVxiuBYBmn7f3ywaOKsxKQ/zxiFP66aREXyJbcTsP0vryHJX9YJ8bFzNhco8sAEt/XpUNt0mm6rVjgMRG97y2RhUweq5/BkMtORvkxNecrBvDf38hkQermSUse0FeWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFvfbM2M; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AF71F00893;
-	Sat, 30 May 2026 17:52:14 +0000 (UTC)
+	 MIME-Version; b=czh7nIM71tWgTNMS+I7gnP7yo2YC+1sv0f0cJ5/XuZb7/qNI+c1V4tVTtJxaNVOWwRZIsiUT8wOaa4+xGTehBnaDmlQt+DI9Lhgf0jGLPkQ1gSu4QgggCCzpMYkiaWCRLD7L88v4vPkWd6Kqeupc80d3DmhiMCRRC/cTaTkGvPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRded4xZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184311F00893;
+	Sat, 30 May 2026 18:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163535;
-	bh=eKBZSZ6gnD3xEjrNkWH2l0QE+h2/7lEZwpbu3AbuHz8=;
+	s=korg; t=1780165583;
+	bh=QlH9x+8CcJPmYYAddptbowV8K4uGRWk+NYXTesb/0bQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SFvfbM2M2bFrpkannyBZm9wcqFdWJAOF7qSbn0Xw4KcHAjEO/aUGHiefxMsjtZovf
-	 gxmII5yPSrUzixSRaz7UYhRENExzijQyNTbAazdHAqW8ptQRCWoPMit6OZBOEBm5LJ
-	 KnG1oxEhuQI6wQyNQaXt/nN3y7zWCY2YjXkYIv6s=
+	b=iRded4xZ6U3ofUmVmpnZsaIZUYqUQrED4cOSgN2RYPlQ9+d5kOztOf9WMx0F7kQQg
+	 RJpKFF8LnqURSM1+0ydIMy7EMVLMkzHUKk/nVYYGXOpxc00+jJDOLjCPcOR9qKFKBz
+	 Yun79T5fr/17wfTlsbJjihJTWFALbgAdN8XkwuB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corey Minyard <corey@minyard.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 287/776] ipmi:ssif: Remove unnecessary indention
-Date: Sat, 30 May 2026 18:00:01 +0200
-Message-ID: <20260530160247.974990025@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.10 121/589] drm/amd/display: Do not add -mhard-float to calcs, dsc, and dcn30 FP files for clang
+Date: Sat, 30 May 2026 18:00:02 +0200
+Message-ID: <20260530160227.943828059@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +64,115 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258196-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-258801-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 39FDD6108CF
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D63EC611D75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 91eb7ec7261254b6875909df767185838598e21e upstream.
+This patch is for linux-5.10.y only. It is functionally equivalent to
+upstream commit 7db038d9790e ("drm/amd/display: Do not add
+'-mhard-float' to dml_ccflags for clang"), which was created after all
+files that require '-mhard-float' were moved under the dml folder. In
+linux-5.10.y, which does not contain upstream commits
 
-A section was in {} that didn't need to be, move the variable
-definition to the top and set th eindentino properly.
+  b4bab46400a0 ("drm/amd/display: move calcs folder into DML")
+  27e01f10d183 ("drm/amd/display: move FPU associated DSC code to DML folder")
+  40b31e5355ba ("drm/amd/display: Remove FPU flags from DCN30 Makefile")
 
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+clang-21 or newer errors with
+
+  clang: error: unsupported option '-mhard-float' for target 'x86_64-pc-linux-gnu'
+  make[6]: *** [scripts/Makefile.build:286: drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calc_math.o] Error 1
+  clang: error: unsupported option '-mhard-float' for target 'x86_64-pc-linux-gnu'
+  make[6]: *** [scripts/Makefile.build:286: drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.o] Error 1
+  clang: error: unsupported option '-mhard-float' for target 'x86_64-pc-linux-gnu'
+  make[6]: *** [scripts/Makefile.build:286: drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calc_auto.o] Error 1
+  clang: error: unsupported option '-mhard-float' for target 'x86_64-pc-linux-gnu'
+  make[6]: *** [scripts/Makefile.build:286: drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/rc_calc.o] Error 1
+  clang: error: unsupported option '-mhard-float' for target 'x86_64-pc-linux-gnu'
+  make[6]: *** [scripts/Makefile.build:286: drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_optc.o] Error 1
+  clang: error: unsupported option '-mhard-float' for target 'x86_64-pc-linux-gnu'
+  make[6]: *** [scripts/Makefile.build:286: drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_resource.o] Error 1
+
+Apply a functionally equivalent change to prevent adding '-mhard-float'
+with clang for these files.
+
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2156
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_ssif.c | 28 ++++++++++++----------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/amd/display/dc/calcs/Makefile |    3 ++-
+ drivers/gpu/drm/amd/display/dc/dcn30/Makefile |    4 ++--
+ drivers/gpu/drm/amd/display/dc/dsc/Makefile   |    3 ++-
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
-index 55ebe1d31766b..e93846f8f2352 100644
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -1694,6 +1694,7 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	int               len;
- 	int               i;
- 	u8		  slave_addr = 0;
-+	unsigned int      thread_num;
- 	struct ssif_addr_info *addr_info = NULL;
+--- a/drivers/gpu/drm/amd/display/dc/calcs/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/calcs/Makefile
+@@ -26,7 +26,8 @@
+ #
  
- 	mutex_lock(&ssif_infos_mutex);
-@@ -1902,22 +1903,17 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	ssif_info->handlers.request_events = request_events;
- 	ssif_info->handlers.set_need_watch = ssif_set_need_watch;
+ ifdef CONFIG_X86
+-calcs_ccflags := -mhard-float -msse
++calcs_ccflags-$(CONFIG_CC_IS_GCC) := -mhard-float
++calcs_ccflags := $(calcs_ccflags-y) -msse
+ endif
  
--	{
--		unsigned int thread_num;
--
--		thread_num = ((i2c_adapter_id(ssif_info->client->adapter)
--			       << 8) |
--			      ssif_info->client->addr);
--		init_completion(&ssif_info->wake_thread);
--		ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
--					       "kssif%4.4x", thread_num);
--		if (IS_ERR(ssif_info->thread)) {
--			rv = PTR_ERR(ssif_info->thread);
--			dev_notice(&ssif_info->client->dev,
--				   "Could not start kernel thread: error %d\n",
--				   rv);
--			goto out;
--		}
-+	thread_num = ((i2c_adapter_id(ssif_info->client->adapter) << 8) |
-+		      ssif_info->client->addr);
-+	init_completion(&ssif_info->wake_thread);
-+	ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
-+					"kssif%4.4x", thread_num);
-+	if (IS_ERR(ssif_info->thread)) {
-+		rv = PTR_ERR(ssif_info->thread);
-+		dev_notice(&ssif_info->client->dev,
-+			   "Could not start kernel thread: error %d\n",
-+			   rv);
-+		goto out;
- 	}
+ ifdef CONFIG_PPC64
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/Makefile
+@@ -32,8 +32,8 @@ DCN30 = dcn30_init.o dcn30_hubbub.o dcn3
  
- 	dev_set_drvdata(&ssif_info->client->dev, ssif_info);
--- 
-2.53.0
-
+ 
+ ifdef CONFIG_X86
+-CFLAGS_$(AMDDALPATH)/dc/dcn30/dcn30_resource.o := -mhard-float -msse
+-CFLAGS_$(AMDDALPATH)/dc/dcn30/dcn30_optc.o := -mhard-float -msse
++CFLAGS_$(AMDDALPATH)/dc/dcn30/dcn30_resource.o := $(if $(CONFIG_CC_IS_GCC),-mhard-float) -msse
++CFLAGS_$(AMDDALPATH)/dc/dcn30/dcn30_optc.o := $(if $(CONFIG_CC_IS_GCC),-mhard-float) -msse
+ endif
+ 
+ ifdef CONFIG_PPC64
+--- a/drivers/gpu/drm/amd/display/dc/dsc/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dsc/Makefile
+@@ -3,7 +3,8 @@
+ # Makefile for the 'dsc' sub-component of DAL.
+ 
+ ifdef CONFIG_X86
+-dsc_ccflags := -mhard-float -msse
++dsc_ccflags-$(CONFIG_CC_IS_GCC) := -mhard-float
++dsc_ccflags := $(dsc_ccflags-y) -msse
+ endif
+ 
+ ifdef CONFIG_PPC64
 
 
 
