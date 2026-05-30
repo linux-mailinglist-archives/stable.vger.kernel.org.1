@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258114-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAbTJtgqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:16 +0200
+	id 2MuXN1gkG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258114-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C986119DC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BE0610A09
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8865230080B6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:21:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18F3330D2FF8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B04C21ADC7;
-	Sat, 30 May 2026 18:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37673AFD11;
+	Sat, 30 May 2026 17:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMJVV5KK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFkB+uI1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAE02E7390;
-	Sat, 30 May 2026 18:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7566B345741;
+	Sat, 30 May 2026 17:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165304; cv=none; b=s00xTcEDQqX/WajkaUg/sSUkCLgjsBR2IocqWH3yIfj3CtG9jB5evxg3LcZEdnzaW/PBZ7RSDunt1nU7d7Dnw4TVI45ECaqd5iBm7C9l4peV26g022xI4fSu9UdWTMhnYQOBi378WwXeW7aLZnqGSlwhHHxaxSJ1cJzt6YOvn0k=
+	t=1780163263; cv=none; b=IGYbkJ/mN7oBD3tbAbgamJpEwQrnTUQLlp4qS/Qe9IIZBbVEnpGwrqxOnn1OZSCKF/ksub4HZeWjNLOdn/TVHArubRL4UYa0RF05qzO0M+2nARMUEUm/y5uCpwHPyO21EkB7FIc1Wxjq3gjsHf4RgSvi5FdyIN2JUqPo+iIhFMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165304; c=relaxed/simple;
-	bh=yTPn4b/vTwy1g0rjnteXJE+vk9BDR7IMO43njJqRaZo=;
+	s=arc-20240116; t=1780163263; c=relaxed/simple;
+	bh=aGpUzM44TJ7MeMHUEcZWZt58wV6F9e28ORdyCKh4kvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ys1o+dVF4z8eEpYyFLC0alvsNn74lucKiEZ4OlutXJa3qzZhddOHAc2RiXBYsjYcAJseZFRW8KLnuzE/66nu7t8QdQGLr/c0rkzklYxBuTu5i7DizfjbxIsxmd+uVHFyjSSP6ooXQQbz388f2VHXz6GTjM0ozkmYUYc6BMf038I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMJVV5KK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC751F00893;
-	Sat, 30 May 2026 18:21:43 +0000 (UTC)
+	 MIME-Version; b=QBOJ52e3+HTasTDqIPNVkqWEje4m+6/3jbHG/JRniB3v9A9WsZymOpfGf1583ElYv8KBeb13OpnOz2RySsC+6KHFUQo7Z2+qnMtwYJZ7S+aG+qrMzWGRsWSg2Q3UoGLXFd/OLxoBMLYazMts8mXuKcY+dJLaTrGNhErgc+uIsOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFkB+uI1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0A01F00893;
+	Sat, 30 May 2026 17:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165303;
-	bh=7CFcBBoQIQLjLtdwi1x4pNvOeZL3Ut7nnXennv9cw6I=;
+	s=korg; t=1780163262;
+	bh=aMxayEiGrNQru/d+0HgXaYo913Ub9T/MTO3aB+mjQZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hMJVV5KKh8utV5tjD64a4VoBCdqAwkQCc0lHE5oB8PHppuWNlz5rzHiRSgsrNln1J
-	 c9vK0ghzplyh6rSV44Ub6jZvZJCKKd4H1F/bKg9KZep8N+GaZxNKHmC6PnK3OrPqns
-	 YTxkwOWkwLPX5d+R5wxBFCi1XqZOlqCpOKWQ0Z60=
+	b=XFkB+uI1issn3LmQMq8KXoAU39Os4G2CVHx2PJRpuc6Yr2X7FcT4nslKr/6lXpVxM
+	 FLvHRkssrmydXJgoN3O7MTQETgIk0XLi5KygyEaXHemVxZMp3p06s3VHlGaoqIYdSP
+	 KCzDWbqaowaciG+esPIM6wdVRjEQ4FeNAswpFfe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/589] MIPS: mm: Suppress TLB uniquification on EHINV hardware
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 206/776] net: qrtr: ns: Fix use-after-free in driver remove()
 Date: Sat, 30 May 2026 17:58:40 +0200
-Message-ID: <20260530160225.615351022@linuxfoundation.org>
+Message-ID: <20260530160245.834580416@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +65,107 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258114-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258718-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,franken.de:email]
-X-Rspamd-Queue-Id: A9C986119DC
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 51BE0610A09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-commit 74283cfe216392c7b776ebf6045b5b15ed9dffcd upstream.
+commit 7809fea20c9404bfcfa6112ec08d1fe1d3520beb upstream.
 
-Hardware that supports the EHINV feature, mandatory for R6 ISA and FTLB
-implementation, lets software mark TLB entries invalid, which eliminates
-the need to ensure no duplicate matching entries are ever created.  This
-feature is already used by local_flush_tlb_all(), via the UNIQUE_ENTRYHI
-macro, making the preceding call to r4k_tlb_uniquify() superfluous.
+In the remove callback, if a packet arrives after destroy_workqueue() is
+called, but before sock_release(), the qrtr_ns_data_ready() callback will
+try to queue the work, causing use-after-free issue.
 
-The next change will also modify uniquification code such that it'll
-become incompatible with the FTLB and MMID features, as well as MIPSr6
-CPUs that do not implement 4KiB pages.
+Fix this issue by saving the default 'sk_data_ready' callback during
+qrtr_ns_init() and use it to replace the qrtr_ns_data_ready() callback at
+the start of remove(). This ensures that even if a packet arrives after
+destroy_workqueue(), the work struct will not be dereferenced.
 
-Therefore prevent r4k_tlb_uniquify() from being used on EHINV hardware,
-as denoted by `cpu_has_tlbinv'.
+Note that it is also required to ensure that the RX threads are completed
+before destroying the workqueue, because the threads could be using the
+qrtr_ns_data_ready() callback.
 
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-5-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/tlb-r4k.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/qrtr/ns.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 3aef6acd57bdd..af0f1d4693099 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -630,7 +630,8 @@ static void r4k_tlb_configure(void)
- 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -23,6 +23,7 @@ static struct {
+ 	struct list_head lookups;
+ 	struct workqueue_struct *workqueue;
+ 	struct work_struct work;
++	void (*saved_data_ready)(struct sock *sk);
+ 	int local_node;
+ } qrtr_ns;
  
- 	/* From this point on the ARC firmware is dead.	 */
--	r4k_tlb_uniquify();
-+	if (!cpu_has_tlbinv)
-+		r4k_tlb_uniquify();
- 	local_flush_tlb_all();
+@@ -788,6 +789,7 @@ int qrtr_ns_init(void)
+ 		goto err_sock;
+ 	}
  
- 	/* Did I tell you that ARC SUCKS?  */
--- 
-2.53.0
-
++	qrtr_ns.saved_data_ready = qrtr_ns.sock->sk->sk_data_ready;
+ 	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns_data_ready;
+ 
+ 	sq.sq_port = QRTR_PORT_CTRL;
+@@ -828,6 +830,10 @@ int qrtr_ns_init(void)
+ 	return 0;
+ 
+ err_wq:
++	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
++	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++
+ 	destroy_workqueue(qrtr_ns.workqueue);
+ err_sock:
+ 	sock_release(qrtr_ns.sock);
+@@ -837,7 +843,12 @@ EXPORT_SYMBOL_GPL(qrtr_ns_init);
+ 
+ void qrtr_ns_remove(void)
+ {
++	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
++	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++
+ 	cancel_work_sync(&qrtr_ns.work);
++	synchronize_net();
+ 	destroy_workqueue(qrtr_ns.workqueue);
+ 
+ 	/* sock_release() expects the two references that were put during
 
 
 
