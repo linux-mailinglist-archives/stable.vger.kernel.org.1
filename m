@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259126-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOlgMtQfG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:35:16 +0200
+	id KB6eDCoyG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259126-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E95660FFA8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3901612BF8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A01873017014
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:28:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75CAA30804FE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF4D334695;
-	Sat, 30 May 2026 17:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FD62F3C3E;
+	Sat, 30 May 2026 18:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nwdi+huX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufs4ipdC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D024F2FDC5E;
-	Sat, 30 May 2026 17:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E40E3A7848;
+	Sat, 30 May 2026 18:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162133; cv=none; b=Pak2FeXvY16JymDB+RAGG3GEoD+/6IK6add8JyzNrcsnRF2wYjEmOzbI6TKqg0C5P74eLp2rJQsau4ezTgLYBFc3gBQ7kyFmdsLP7FVd3AYD/gN7DO0+DKRqDg2XBA6Y3mUcdhQC8LmoS/eABVT4XEYekVwL9QWDLup1gxghQ1U=
+	t=1780166697; cv=none; b=Us4l2JaluQKDnDamkDb8Zr7FKWJ9HMEATkIqoah7pzUhY0kCx1NjD0mdBMr4JJcHLMXenuNTXXdV8WIQXp/UVDeEjzKu2M73Cg++RbEL7V9QeBpV2hYhko2YCaEuQS5GdQrRKzCuG8YowcDZKVPkot642QPAJ1wDJrvXR4cIcyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162133; c=relaxed/simple;
-	bh=Rec9C2vGef9/qcQX70+Lztm5O9Bpku/grmt6wCPT4L8=;
+	s=arc-20240116; t=1780166697; c=relaxed/simple;
+	bh=nR2N1tZ4RTmEHP+xa+2RLLzfVbfcDsGo6e3OX1kXMZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MZxIKEOd4aWv1MBNBFJ2B5bvu1LBiiz6hp4XdbJfKdXamFdjtKVTna1SzxCvFX6GOtrt00gA7pYTKv3nbPSY8UwEuXrJSc357hiRe2H64C20w3XE/M7mTlm6j2V9eGuFKftZbHe4ZUIEb5oSD6Is0RUFQal9NrAkA+oNWbkadfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nwdi+huX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D95E1F00893;
-	Sat, 30 May 2026 17:28:51 +0000 (UTC)
+	 MIME-Version; b=O4K6foDlFpEUfXMeJctgB5JpHmOez712/700oNyRVf414v2m/pqVWhB73/tQyEiJxPmy4bs0j8nHfVyh//sqqgKBgXqMISXdOlVcDrV8G61XPUx/iuDvxOD8SsmxpmJ2Nd/qEn6yk8KS/NiynRfYh1kIPxXFdGp7c7K0QGjMyQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufs4ipdC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09891F00893;
+	Sat, 30 May 2026 18:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162132;
-	bh=hSWK3gw8uGJpZfEYmbPsz6s/7xZP1qCPhIpCuMkMZZk=;
+	s=korg; t=1780166696;
+	bh=9fOsppD6M4ZEnDEHdhXK27fQGn129wH30Z7Qq4K55xM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Nwdi+huXA2Z4fhvcGFGgppucKGOYnUcCUvDppqb+YZ/m8YNz+D7d+OTIeR1xZmaor
-	 uHe3s+PrLFFu1oFtB8242rmtgfxI7jR1mXfvT7forIa46bKWhY1rt3sxU0+G0aNy7H
-	 I/z8htPLD4HUHZBcLOQoyBir9/VAFJNWAz2QuBHQ=
+	b=ufs4ipdCw/gWRyhTkE/ePTu1uFnabOGBib4wBGRt73dh18VUN+DD5+mwLQU0F9wAf
+	 dY8Uar0ylBnvA5typj8qS2LQZeANgW9rZjeqVEua/xxC6yN8s/VDxdXlQ4TcoPaCjV
+	 89vkS03n5tLpvJ61Y0it56TGiDz3PmhHkOE3ERVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 801/969] mtd: spi-nor: spansion: Enable JFFS2 write buffer for S25FS256T
+Subject: [PATCH 5.10 444/589] net_sched: sch_hhf: annotate data-races in hhf_dump_stats()
 Date: Sat, 30 May 2026 18:05:25 +0200
-Message-ID: <20260530160322.747607546@linuxfoundation.org>
+Message-ID: <20260530160236.369147621@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,72 +74,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259126-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257776-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,infineon.com:email,linaro.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4E95660FFA8
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email]
+X-Rspamd-Queue-Id: C3901612BF8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a9180c298d3527f43563d02a62cb9e7e145642c6 ]
+[ Upstream commit a6edf2cd4156b71e07258876b7626692e158f7e8 ]
 
-Infineon(Cypress) SEMPER NOR flash family has on-die ECC and its program
-granularity is 16-byte ECC data unit size. JFFS2 supports write buffer
-mode for ECC'd NOR flash. Provide a way to clear the MTD_BIT_WRITEABLE
-flag in order to enable JFFS2 write buffer mode support. Drop the
-comment as the same info is now specified in cypress_nor_ecc_init().
+hhf_dump_stats() only runs with RTNL held,
+reading fields that can be changed in qdisc fast path.
 
-Fixes: 6afcc84080c4 ("mtd: spi-nor: spansion: Add support for Infineon S25FS256T")
-Suggested-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/641bfb26c6e059915ae920117b7ec278df1a6f0a.1680760742.git.Takahiro.Kuwano@infineon.com
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Add READ_ONCE()/WRITE_ONCE() annotations.
+
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260421143349.4052215-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/spansion.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ net/sched/sch_hhf.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
-index af97e3741f987..cd2d6a95d66e1 100644
---- a/drivers/mtd/spi-nor/spansion.c
-+++ b/drivers/mtd/spi-nor/spansion.c
-@@ -273,13 +273,7 @@ static int s25fs256t_post_sfdp_fixup(struct spi_nor *nor)
+diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
+index 433bddcbc0c72..73cabb4451ce7 100644
+--- a/net/sched/sch_hhf.c
++++ b/net/sched/sch_hhf.c
+@@ -198,7 +198,8 @@ static struct hh_flow_state *seek_list(const u32 hash,
+ 				return NULL;
+ 			list_del(&flow->flowchain);
+ 			kfree(flow);
+-			q->hh_flows_current_cnt--;
++			WRITE_ONCE(q->hh_flows_current_cnt,
++				   q->hh_flows_current_cnt - 1);
+ 		} else if (flow->hash_id == hash) {
+ 			return flow;
+ 		}
+@@ -226,7 +227,7 @@ static struct hh_flow_state *alloc_new_hh(struct list_head *head,
+ 	}
  
- static void s25fs256t_late_init(struct spi_nor *nor)
+ 	if (q->hh_flows_current_cnt >= q->hh_flows_limit) {
+-		q->hh_flows_overlimit++;
++		WRITE_ONCE(q->hh_flows_overlimit, q->hh_flows_overlimit + 1);
+ 		return NULL;
+ 	}
+ 	/* Create new entry. */
+@@ -234,7 +235,7 @@ static struct hh_flow_state *alloc_new_hh(struct list_head *head,
+ 	if (!flow)
+ 		return NULL;
+ 
+-	q->hh_flows_current_cnt++;
++	WRITE_ONCE(q->hh_flows_current_cnt, q->hh_flows_current_cnt + 1);
+ 	INIT_LIST_HEAD(&flow->flowchain);
+ 	list_add_tail(&flow->flowchain, head);
+ 
+@@ -309,7 +310,7 @@ static enum wdrr_bucket_idx hhf_classify(struct sk_buff *skb, struct Qdisc *sch)
+ 			return WDRR_BUCKET_FOR_NON_HH;
+ 		flow->hash_id = hash;
+ 		flow->hit_timestamp = now;
+-		q->hh_flows_total_cnt++;
++		WRITE_ONCE(q->hh_flows_total_cnt, q->hh_flows_total_cnt + 1);
+ 
+ 		/* By returning without updating counters in q->hhf_arrays,
+ 		 * we implicitly implement "shielding" (see Optimization O1).
+@@ -403,7 +404,7 @@ static int hhf_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return NET_XMIT_SUCCESS;
+ 
+ 	prev_backlog = sch->qstats.backlog;
+-	q->drop_overlimit++;
++	WRITE_ONCE(q->drop_overlimit, q->drop_overlimit + 1);
+ 	/* Return Congestion Notification only if we dropped a packet from this
+ 	 * bucket.
+ 	 */
+@@ -681,10 +682,10 @@ static int hhf_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
  {
--	/*
--	 * Programming is supported only in 16-byte ECC data unit granularity.
--	 * Byte-programming, bit-walking, or multiple program operations to the
--	 * same ECC data unit without an erase are not allowed. See chapter
--	 * 5.3.1 and 5.6 in the datasheet.
--	 */
--	nor->params->writesize = 16;
-+	cypress_nor_ecc_init(nor);
- }
+ 	struct hhf_sched_data *q = qdisc_priv(sch);
+ 	struct tc_hhf_xstats st = {
+-		.drop_overlimit = q->drop_overlimit,
+-		.hh_overlimit	= q->hh_flows_overlimit,
+-		.hh_tot_count	= q->hh_flows_total_cnt,
+-		.hh_cur_count	= q->hh_flows_current_cnt,
++		.drop_overlimit = READ_ONCE(q->drop_overlimit),
++		.hh_overlimit	= READ_ONCE(q->hh_flows_overlimit),
++		.hh_tot_count	= READ_ONCE(q->hh_flows_total_cnt),
++		.hh_cur_count	= READ_ONCE(q->hh_flows_current_cnt),
+ 	};
  
- static struct spi_nor_fixups s25fs256t_fixups = {
+ 	return gnet_stats_copy_app(d, &st, sizeof(st));
 -- 
 2.53.0
 
