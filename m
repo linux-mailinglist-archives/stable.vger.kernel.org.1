@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-258827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258224-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AeaJy8sG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258827-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:59 +0200
+	id 2LRpJ1QmG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258224-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46541611C8F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21CC0610DEE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3649D300915B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:27:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D319C30EFE3E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40763112BD;
-	Sat, 30 May 2026 18:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC7A341AC7;
+	Sat, 30 May 2026 17:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7HTOqNj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ignmIJ95"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADAED279DC9;
-	Sat, 30 May 2026 18:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5E53546EA;
+	Sat, 30 May 2026 17:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165671; cv=none; b=PrQXb0Lu1Kj5GEwtTm9sy64+x9C+syprriUA9EtbBf61Wtt15zcWo4IClcQ2bm4ObpmjuD6V9j+36NNRy3FIIXyxJxXF/I3/X7zxHQYnjVINyX2EPbPCNWX08DR0avcLZa+QIVFQ7pfdR2W873rdArK0K8fG2/nAK74SAiHFmsk=
+	t=1780163630; cv=none; b=FtUZLuHbCSkbIafzYXAMk4VbKnBfd8Q4tWPT7SWFcqbgVEL7Kdj8u/5akHpSeoVwlp4Ha63nfBUvwt0TFkEEb+haNv+gP0bFVJLCpztKQ/3p2VKzfIxE/Dja0dfo9CfJtnRF2jCNncOViB/vCinxYy85oeERbR/S8QBu5xEwOBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165671; c=relaxed/simple;
-	bh=RxHSd9MX7TKjbZGUHElORCbTH5V3WI+vWsFxOxrCvIg=;
+	s=arc-20240116; t=1780163630; c=relaxed/simple;
+	bh=zdactaKkGPsVtwQmLkiJ9irclVf45qPOrO06Sx1102I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjVghhmD8aQUItCVuB3eUmzyoa+t3AtPI2JSPjzUqjeDXYSR6KOc2GXRKuJcwb8/7qa/MjD/TxUmr/RskFafKjsufMmDQ7b2/p5A8dXLbrRw7dTr5dxRJWqjn9dz/2MX4ZoezFzF/AcFGoR+CW1B0+BxXNHwUJaipgIGqhFaEPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7HTOqNj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006701F00893;
-	Sat, 30 May 2026 18:27:49 +0000 (UTC)
+	 MIME-Version; b=Z536ru7+f12BZ0NosZAA9xH/7riPrbEcC5xsqY7RWUWnKV2INM6qCDJi8PxrGMHr4jqHcz96d1GG7RAtTXQaEbBRaC3hVMk9JqSRh1KTKIMrDEPwkhRUMfVdxifGZV/J8sx3xyzwts31jXPzA4PgB/OpeZHgBEnEWHOysO7qiF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ignmIJ95; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFBCD1F00893;
+	Sat, 30 May 2026 17:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165670;
-	bh=Pk0zSkUZw95eBrAtd/rbWcZVFL/GfnBRmN4OtVquo3g=;
+	s=korg; t=1780163629;
+	bh=zyHckycZYotkqZYn7qde3nEzIEIIp+/6sshEDTY5vsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T7HTOqNjuPJ2cCPLQa4pTAFZ+65SEiO017i1NMQ08zfHDYL0DM/lHaSpC9bCoOKx5
-	 CN5MNVjh8+eu+TRvXD6rbDvseXaON7PFrBR1NHcPBZWVRlSPvqhbxMrly8jeDAaIai
-	 LaOt+E3E8DT8WZVy8I3q6B5AZxPkiyxj7LN9Zxko=
+	b=ignmIJ950pyQDR+ZepbDgmxMq6A4iRSkp9cyRH+H3hVzLaZ+KbfnqYCRwh4uvIcHA
+	 lsBSJr1ciU5CMozHWgFheEDpGpCfnTbf8JH5ubsRZGu2vY+Jl/ZgeS6G44nqf1TnLt
+	 9RI25lj9a/L84Efe1MVYPXfWrgC0Othhk9Ssq880=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Bin Lan <lanbincn@139.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 148/589] padata: Remove comment for reorder_work
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.15 315/776] hwmon: (ltc2992) Fix u32 overflow in power read path
 Date: Sat, 30 May 2026 18:00:29 +0200
-Message-ID: <20260530160228.674114872@linuxfoundation.org>
+Message-ID: <20260530160248.711087494@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,68 +67,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,canb.auug.org.au,gondor.apana.org.au,139.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258827-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-258224-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,auug.org.au:email]
-X-Rspamd-Queue-Id: 46541611C8F
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 21CC0610DEE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit 82a0302e7167d0b7c6cde56613db3748f8dd806d ]
+commit 2da0c1fd01dbd6b22844e8676585153dfc660cbe upstream.
 
-Remove comment for reorder_work which no longer exists.
+ltc2992_get_power() computes the divisor for mul_u64_u32_div() as
+r_sense_uohm * 1000. This multiplication overflows u32 when
+r_sense_uohm exceeds about 4.29 ohms (4294967 micro-ohms), producing
+a truncated divisor and an incorrect power reading.
 
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Fixes: 71203f68c774 ("padata: Fix pd UAF once and for all")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Bin Lan <lanbincn@139.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cancel the factor of 1000 from both the numerator
+(VADC_UV_LSB * IADC_NANOV_LSB = 312500000) and the divisor
+(r_sense_uohm * 1000), giving (VADC_UV_LSB / 1000) * IADC_NANOV_LSB
+= 312500 as the numerator and plain r_sense_uohm as the divisor.
+The cancellation is exact because LTC2992_VADC_UV_LSB (25000) is
+divisible by 1000.
+
+This is the read-path counterpart of the write-path fix applied in
+the preceding patch.
+
+Fixes: b0bd407e94b03 ("hwmon: (ltc2992) Add support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260416215904.101969-3-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/padata.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/hwmon/ltc2992.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/padata.h b/include/linux/padata.h
-index 9ca779d7e310e..6f07e12a43819 100644
---- a/include/linux/padata.h
-+++ b/include/linux/padata.h
-@@ -90,7 +90,6 @@ struct padata_cpumask {
-  * @processed: Number of already processed objects.
-  * @cpu: Next CPU to be processed.
-  * @cpumask: The cpumasks in use for parallel and serial workers.
-- * @reorder_work: work struct for reordering.
-  */
- struct parallel_data {
- 	struct padata_shell		*ps;
--- 
-2.53.0
-
+--- a/drivers/hwmon/ltc2992.c
++++ b/drivers/hwmon/ltc2992.c
+@@ -628,8 +628,10 @@ static int ltc2992_get_power(struct ltc2
+ 	if (reg_val < 0)
+ 		return reg_val;
+ 
+-	*val = mul_u64_u32_div(reg_val, LTC2992_VADC_UV_LSB * LTC2992_IADC_NANOV_LSB,
+-			       st->r_sense_uohm[channel] * 1000);
++	*val = mul_u64_u32_div(reg_val,
++			       LTC2992_VADC_UV_LSB / 1000 *
++			       LTC2992_IADC_NANOV_LSB,
++			       st->r_sense_uohm[channel]);
+ 
+ 	return 0;
+ }
 
 
 
