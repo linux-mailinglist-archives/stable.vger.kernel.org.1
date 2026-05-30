@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257525-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOFVLdQnG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:24 +0200
+	id yHMzDtccG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257525-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4766111A7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0FDB60F854
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 05112313E04A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:59:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 87AC130BDD29
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F316341AC7;
-	Sat, 30 May 2026 17:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D235481DD;
+	Sat, 30 May 2026 17:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1PtKKWd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t95YBfsT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68331320CAD;
-	Sat, 30 May 2026 17:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FDB3016E1;
+	Sat, 30 May 2026 17:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163984; cv=none; b=qWk5Qc/AmM1VC7axvbVa/W6gwdUpaECViE9XqFjxxtcFVbdgcU1ipNIcRHs6npS9xpuktzD55VgKncZWTnrkxR0tN/8+oDmd9bWRQhaH67+eOPdygi8spd26ZZvDRB2kOJCtFcubojAZThf4vemjJGvh/Ik7y7A3K0drfOgtngc=
+	t=1780161297; cv=none; b=k56fqrahGL2Pbs/JvCnbGhx9h01jk+Kg9eoKPwfpwWi156b9nu6ve3LPIlRejRN2P5lIjso8YkSyMvoVlTEGhWsbrMKREEwo3yOVmBkF80NEIc4swU/wAmSfEMwALOK2YPee+A9YX1XwNZV8cWKzleiOmUFwcY3Cyr7iX8s4g44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163984; c=relaxed/simple;
-	bh=78uM4y8CmzupPSR1p5u1aGi740pwwocNFjHlOhjB5S0=;
+	s=arc-20240116; t=1780161297; c=relaxed/simple;
+	bh=jsinAz6pms+yaND0v9mvb8MwHOnX1IBl2gOg6CJ5MQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNqCtgpsHtVgZP5QQr/TF1KE3GFmspQmc2zeIavLi8doTmCWHDL+lR++tUEDiEY0WBdZ2TStq88V6GbArgAE8sQAM21jg7rEr38GotBXaNeUhQauA38RemSDB+ppmOyjtnUsNDk2ZhCVIxIxDg58Ose0wI94WYRVRspPv8iwncE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1PtKKWd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFAB1F00893;
-	Sat, 30 May 2026 17:59:42 +0000 (UTC)
+	 MIME-Version; b=BQ7FDodgq0hH0Ex0v8queIWc654/J1wIkcOgV2pnNbO0cmReMHOcFG7RPZPlE0SiH3s5ZOzUozubiTrYa9Yf2SpHRDWt1EhD8fjiN+Qxf+dJ5P4SZh/zTcPViDdmG+beGSjs083F7vpId9qRSBoCjqaMEbmFCRE3E2q9QaMz9As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t95YBfsT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933511F00893;
+	Sat, 30 May 2026 17:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163983;
-	bh=DXTqSRluvgtSPtNJoUeBUepQ53XdgzOPmypfymjDpA0=;
+	s=korg; t=1780161296;
+	bh=At6hv6k9e/wS2o/S2bj9pL6j2pk19tTFkk416dbPwSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y1PtKKWdJURUKaukXkIArCPLAt6IXCVuvJq2USmHXaI4ilR3imF0cyP/tuJWktJnu
-	 ZJCj9wHDrO/iNRyUI9DlFASWylnpaTvXiwedoAcBKgj4EtVtWdZO0PEaLSyxxvYQh8
-	 s7dYkY9kFSx8diYGFbOp6SsangzRLJ6gMJ3mPk8U=
+	b=t95YBfsTmA+vsddox6nP/fF6W/sUQiL3743WXywwzVdL+++VWVALhuSHvpQ3yXBlP
+	 nyi0w3ezQuZAhvS0vvlC7mQ5UuPibRRsUg439V6ZWJoxm1GwMzGL6fAvwtPfHFC0ih
+	 IucLUU4kUvXS5OKfvWCyBc/+nP415b82w1c+8QSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	David Heidelberg <david@ixit.cz>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 393/776] locking: Fix rwlock support in <linux/spinlock_up.h>
+Subject: [PATCH 6.1 583/969] arm64: dts: qcom: sdm845-xiaomi-beryllium: Mark l1a regulator as powered during boot
 Date: Sat, 30 May 2026 18:01:47 +0200
-Message-ID: <20260530160250.647672994@linuxfoundation.org>
+Message-ID: <20260530160316.509008302@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,105 +67,67 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258329-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257525-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2D4766111A7
+X-Rspamd-Queue-Id: A0FDB60F854
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: David Heidelberg <david@ixit.cz>
 
-[ Upstream commit 756a0e011cfca0b45a48464aa25b05d9a9c2fb0b ]
+[ Upstream commit 3b0dd81eea6b7a239fce456ce4545af76f1a9715 ]
 
-Architecture support for rwlocks must be available whether or not
-CONFIG_DEBUG_SPINLOCK has been defined. Move the definitions of the
-arch_{read,write}_{lock,trylock,unlock}() macros such that these become
-visbile if CONFIG_DEBUG_SPINLOCK=n.
+The regulator must be on, since it provides the display subsystem and
+therefore the bootloader had turned it on before Linux booted.
 
-This patch prepares for converting do_raw_{read,write}_trylock() into
-inline functions. Without this patch that conversion triggers a build
-failure for UP architectures, e.g. arm-ep93xx. I used the following
-kernel configuration to build the kernel for that architecture:
-
-	CONFIG_ARCH_MULTIPLATFORM=y
-	CONFIG_ARCH_MULTI_V7=n
-	CONFIG_ATAGS=y
-	CONFIG_MMU=y
-	CONFIG_ARCH_MULTI_V4T=y
-	CONFIG_CPU_LITTLE_ENDIAN=y
-	CONFIG_ARCH_EP93XX=y
-
-Fixes: fb1c8f93d869 ("[PATCH] spinlock consolidation")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260313171510.230998-2-bvanassche@acm.org
+Fixes: 77809cf74a8c ("arm64: dts: qcom: Add support for Xiaomi Poco F1 (Beryllium)")
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260320-beryllium-booton-v2-1-931d1be21eae@ixit.cz
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/spinlock_up.h | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/spinlock_up.h b/include/linux/spinlock_up.h
-index 0ac9112c1bbe3..a406655c1fbd1 100644
---- a/include/linux/spinlock_up.h
-+++ b/include/linux/spinlock_up.h
-@@ -48,16 +48,6 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
- 	lock->slock = 1;
- }
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+index 6d6b3dd699475..9c0f7b410eee2 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+@@ -133,6 +133,7 @@ vreg_l1a_0p875: ldo1 {
+ 			regulator-min-microvolt = <880000>;
+ 			regulator-max-microvolt = <880000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-boot-on;
+ 		};
  
--/*
-- * Read-write spinlocks. No debug version.
-- */
--#define arch_read_lock(lock)		do { barrier(); (void)(lock); } while (0)
--#define arch_write_lock(lock)		do { barrier(); (void)(lock); } while (0)
--#define arch_read_trylock(lock)	({ barrier(); (void)(lock); 1; })
--#define arch_write_trylock(lock)	({ barrier(); (void)(lock); 1; })
--#define arch_read_unlock(lock)		do { barrier(); (void)(lock); } while (0)
--#define arch_write_unlock(lock)	do { barrier(); (void)(lock); } while (0)
--
- #else /* DEBUG_SPINLOCK */
- #define arch_spin_is_locked(lock)	((void)(lock), 0)
- /* for sched/core.c and kernel_lock.c: */
-@@ -69,4 +59,14 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
- 
- #define arch_spin_is_contended(lock)	(((void)(lock), 0))
- 
-+/*
-+ * Read-write spinlocks. No debug version.
-+ */
-+#define arch_read_lock(lock)		do { barrier(); (void)(lock); } while (0)
-+#define arch_write_lock(lock)		do { barrier(); (void)(lock); } while (0)
-+#define arch_read_trylock(lock)	({ barrier(); (void)(lock); 1; })
-+#define arch_write_trylock(lock)	({ barrier(); (void)(lock); 1; })
-+#define arch_read_unlock(lock)		do { barrier(); (void)(lock); } while (0)
-+#define arch_write_unlock(lock)	do { barrier(); (void)(lock); } while (0)
-+
- #endif /* __LINUX_SPINLOCK_UP_H */
+ 		vreg_l5a_0p8: ldo5 {
 -- 
 2.53.0
 
