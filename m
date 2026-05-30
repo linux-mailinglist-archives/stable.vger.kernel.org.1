@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-258533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sEAbF7IqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:38 +0200
+	id mDRMMjAeG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A73611926
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA4B60FBBF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4153730A55BE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E8C7A300A25D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C623B9D80;
-	Sat, 30 May 2026 18:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2782F34389F;
+	Sat, 30 May 2026 17:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIPrHFz+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ayv7Jg0Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E3329B799;
-	Sat, 30 May 2026 18:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD70F334695;
+	Sat, 30 May 2026 17:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164669; cv=none; b=BCVdyLMXRK0aug4MZXPTmQrMhckqENGKP15dIzyeZj9rtkCM0SWOglk/iLgWAjwTs5eELi9TvGmU79idfETjGIjLK8Ob78XCIN3Hi7k8GJl1+MVf7uVdMJ1K+05R0Zpd5zG9Asvgt9BgXUZx/ePHwrhzgwbXrXaW+M1I+xb4kdw=
+	t=1780161979; cv=none; b=F+8884rEtrNnIpPSpWfkdM4GGgSknffzN0ojDwbo9QR0tF4PPmvD54zfLjP/95BlHU9+lhNJg3Iib3hIVPkMBvos50RZGH6RidWih1FDbLlFTj4q0uz3pcIOnNLQ/58rRd8fTsOf0wOQX83fJGvjewTjvmZYkfSom1OKyMk/otc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164669; c=relaxed/simple;
-	bh=QV/X/NbtkaUkrvkwau9/vNw8IBfFk8AjeTHUE5YsebU=;
+	s=arc-20240116; t=1780161979; c=relaxed/simple;
+	bh=0lSbo812KyAb4W5Moy8GRRVUJDLYuw+XlS+FxSHBDxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OtdumqTMRt5OxuyFYkFWR0+m0DPu3p029qSjZXlHfznBZ0diBE+TNEicqxT0ZXDGkfRz1V5/25kyDxEgxZO0DnbGUQ6PtlosxPnjfuwCNSVOocL+5KMCF/nAwxiV3vfpa+sI4ZBNO4NCuaJvr452dRxm019Mk7juUiQlwaIfUW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIPrHFz+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555851F00893;
-	Sat, 30 May 2026 18:11:07 +0000 (UTC)
+	 MIME-Version; b=Cw15RBOj/FcJJxhoiF13oBj9AMlA8dfg3x24iKITNJa/lykwFS0o/nRE5mH/fKP7WAY1YEKJi4z3wE5YJKK/XREAew51IF8cjSR+MXDrQ9lQ715K9+Yn8NkGDvrp8/RPpr+Kjn7nUL/UUQgr+GBR+4xI9xhhJD6ELsqrk85t/gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ayv7Jg0Z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D47C1F00893;
+	Sat, 30 May 2026 17:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164668;
-	bh=W0Z4yyQylPQkST/odny1QioL8G7W0pZAiqeyEhGbH94=;
+	s=korg; t=1780161978;
+	bh=I/7LVcyrT7iI/TdGVGQKqkA7Lcxf2N5NNlEgMvnCgHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fIPrHFz+Se2YUtl0i8FaXp6zp2B6r3NT9MuMNszvBdYcWiR62H1ysiOdTsAimcU/r
-	 pryi71oV1CiGTQ0pY/4HCFV3HiQL+bN8+UX0wA9wFcf4O8heGYRM3ZSflF/Ax9MHYJ
-	 980Mqe80EAnC6FKrnBCoeSl/h3DnsJ+pu3VzPez8=
+	b=Ayv7Jg0ZcBth6XN+Z+aFTi1Wz8fvFb+eGLtiAybyy8KVWchS+N16Vsq/cXXGO+F5x
+	 sC+mEaUvgEEmUwV5eEuGWgODsHW03B/aElcyWJbnno/hNYjDJkmKMrCCgz8Fyg3tt8
+	 xFo39U0D5IMwH+wZXXvJJyK7XJN4kP6PWe9Tozpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bae Yeonju <iwasbaeyz@gmail.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Petr Oros <poros@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 594/776] fs/adfs: validate nzones in adfs_validate_bblk()
+Subject: [PATCH 6.1 784/969] iavf: stop removing VLAN filters from PF on interface down
 Date: Sat, 30 May 2026 18:05:08 +0200
-Message-ID: <20260530160255.401024104@linuxfoundation.org>
+Message-ID: <20260530160322.249333763@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +69,266 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258533-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,armlinux.org.uk,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257730-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,armlinux.org.uk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C6A73611926
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CBA4B60FBBF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bae Yeonju <iwasbaeyz@gmail.com>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit dd9d3e16c2d5fa166e13dce07413be51f42c8f5d ]
+[ Upstream commit f2ce65b9b917474a1a6ce68d357e15fac2aca0f2 ]
 
-Reject ADFS disc records with a zero zone count during boot block
-validation, before the disc record is used.
+When a VF goes down, the driver currently sends DEL_VLAN to the PF for
+every VLAN filter (ACTIVE -> DISABLE -> send DEL -> INACTIVE), then
+re-adds them all on UP (INACTIVE -> ADD -> send ADD -> ADDING ->
+ACTIVE). This round-trip is unnecessary because:
 
-When nzones is 0, adfs_read_map() passes it to kmalloc_array(0, ...)
-which returns ZERO_SIZE_PTR, and adfs_map_layout() then writes to
-dm[-1], causing an out-of-bounds write before the allocated buffer.
+ 1. The PF disables the VF's queues via VIRTCHNL_OP_DISABLE_QUEUES,
+    which already prevents all RX/TX traffic regardless of VLAN filter
+    state.
 
-adfs_validate_dr0() already rejects nzones != 1 for old-format
-images.  Add the equivalent check to adfs_validate_bblk() for
-new-format images so that a crafted image with nzones == 0 is
-rejected at probe time.
+ 2. The VLAN filters remaining in PF HW while the VF is down is
+    harmless - packets matching those filters have nowhere to go with
+    queues disabled.
 
-Found by syzkaller.
+ 3. The DEL+ADD cycle during down/up creates race windows where the
+    VLAN filter list is incomplete. With spoofcheck enabled, the PF
+    enables TX VLAN filtering on the first non-zero VLAN add, blocking
+    traffic for any VLANs not yet re-added.
 
-Fixes: f6f14a0d71b0 ("fs/adfs: map: move map-specific sb initialisation to map.c")
-Signed-off-by: Bae Yeonju <iwasbaeyz@gmail.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Remove the entire DISABLE/INACTIVE state machinery:
+ - Remove IAVF_VLAN_DISABLE and IAVF_VLAN_INACTIVE enum values
+ - Remove iavf_restore_filters() and its call from iavf_open()
+ - Remove VLAN filter handling from iavf_clear_mac_vlan_filters(),
+   rename it to iavf_clear_mac_filters()
+ - Remove DEL_VLAN_FILTER scheduling from iavf_down()
+ - Remove all DISABLE/INACTIVE handling from iavf_del_vlans()
+
+VLAN filters now stay ACTIVE across down/up cycles. Only explicit
+user removal (ndo_vlan_rx_kill_vid) or PF/VF reset triggers VLAN
+filter deletion/re-addition.
+
+Fixes: ed1f5b58ea01 ("i40evf: remove VLAN filters on close")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-2-cdcb48303fd8@intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/adfs/super.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/iavf/iavf.h        |  6 +--
+ drivers/net/ethernet/intel/iavf/iavf_main.c   | 39 ++-----------------
+ .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 33 +++-------------
+ 3 files changed, 12 insertions(+), 66 deletions(-)
 
-diff --git a/fs/adfs/super.c b/fs/adfs/super.c
-index bdbd26e571ed3..7da236fd7a119 100644
---- a/fs/adfs/super.c
-+++ b/fs/adfs/super.c
-@@ -343,6 +343,9 @@ static int adfs_validate_bblk(struct super_block *sb, struct buffer_head *bh,
- 	if (adfs_checkdiscrecord(dr))
- 		return -EILSEQ;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index 64309bf18ef74..dbbe622dec12f 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -159,10 +159,8 @@ enum iavf_vlan_state_t {
+ 	IAVF_VLAN_INVALID,
+ 	IAVF_VLAN_ADD,		/* filter needs to be added */
+ 	IAVF_VLAN_ADDING,	/* ADD sent to PF, waiting for response */
+-	IAVF_VLAN_ACTIVE,	/* filter is accepted by PF */
+-	IAVF_VLAN_DISABLE,	/* filter needs to be deleted by PF, then marked INACTIVE */
+-	IAVF_VLAN_INACTIVE,	/* filter is inactive, we are in IFF_DOWN */
+-	IAVF_VLAN_REMOVE,	/* filter needs to be removed from list */
++	IAVF_VLAN_ACTIVE,	/* PF confirmed, filter is in HW */
++	IAVF_VLAN_REMOVE,	/* filter queued for DEL from PF */
+ };
  
-+	if ((dr->nzones | dr->nzones_high << 8) == 0)
-+		return -EILSEQ;
-+
- 	*drp = dr;
- 	return 0;
+ struct iavf_vlan_filter {
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 667949e8833bf..6346479366aa4 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -875,27 +875,6 @@ static void iavf_del_vlan(struct iavf_adapter *adapter, struct iavf_vlan vlan)
+ 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
  }
+ 
+-/**
+- * iavf_restore_filters
+- * @adapter: board private structure
+- *
+- * Restore existing non MAC filters when VF netdev comes back up
+- **/
+-static void iavf_restore_filters(struct iavf_adapter *adapter)
+-{
+-	struct iavf_vlan_filter *f;
+-
+-	/* re-add all VLAN filters */
+-	spin_lock_bh(&adapter->mac_vlan_list_lock);
+-
+-	list_for_each_entry(f, &adapter->vlan_filter_list, list) {
+-		if (f->state == IAVF_VLAN_INACTIVE)
+-			f->state = IAVF_VLAN_ADD;
+-	}
+-
+-	spin_unlock_bh(&adapter->mac_vlan_list_lock);
+-	adapter->aq_required |= IAVF_FLAG_AQ_ADD_VLAN_FILTER;
+-}
+ 
+ /**
+  * iavf_get_num_vlans_added - get number of VLANs added
+@@ -1322,13 +1301,12 @@ static void iavf_up_complete(struct iavf_adapter *adapter)
+ }
+ 
+ /**
+- * iavf_clear_mac_vlan_filters - Remove mac and vlan filters not sent to PF
+- * yet and mark other to be removed.
++ * iavf_clear_mac_filters - Remove MAC filters not sent to PF yet and mark
++ * others to be removed.
+  * @adapter: board private structure
+  **/
+-static void iavf_clear_mac_vlan_filters(struct iavf_adapter *adapter)
++static void iavf_clear_mac_filters(struct iavf_adapter *adapter)
+ {
+-	struct iavf_vlan_filter *vlf, *vlftmp;
+ 	struct iavf_mac_filter *f, *ftmp;
+ 
+ 	spin_lock_bh(&adapter->mac_vlan_list_lock);
+@@ -1347,11 +1325,6 @@ static void iavf_clear_mac_vlan_filters(struct iavf_adapter *adapter)
+ 		}
+ 	}
+ 
+-	/* disable all VLAN filters */
+-	list_for_each_entry_safe(vlf, vlftmp, &adapter->vlan_filter_list,
+-				 list)
+-		vlf->state = IAVF_VLAN_DISABLE;
+-
+ 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
+ }
+ 
+@@ -1447,7 +1420,7 @@ void iavf_down(struct iavf_adapter *adapter)
+ 	iavf_napi_disable_all(adapter);
+ 	iavf_irq_disable(adapter);
+ 
+-	iavf_clear_mac_vlan_filters(adapter);
++	iavf_clear_mac_filters(adapter);
+ 	iavf_clear_cloud_filters(adapter);
+ 	iavf_clear_fdir_filters(adapter);
+ 	iavf_clear_adv_rss_conf(adapter);
+@@ -1462,8 +1435,6 @@ void iavf_down(struct iavf_adapter *adapter)
+ 		 */
+ 		if (!list_empty(&adapter->mac_filter_list))
+ 			adapter->aq_required |= IAVF_FLAG_AQ_DEL_MAC_FILTER;
+-		if (!list_empty(&adapter->vlan_filter_list))
+-			adapter->aq_required |= IAVF_FLAG_AQ_DEL_VLAN_FILTER;
+ 		if (!list_empty(&adapter->cloud_filter_list))
+ 			adapter->aq_required |= IAVF_FLAG_AQ_DEL_CLOUD_FILTER;
+ 		if (!list_empty(&adapter->fdir_list_head))
+@@ -4352,8 +4323,6 @@ static int iavf_open(struct net_device *netdev)
+ 
+ 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
+ 
+-	/* Restore filters that were removed with IFF_DOWN */
+-	iavf_restore_filters(adapter);
+ 	iavf_restore_fdir_filters(adapter);
+ 
+ 	iavf_configure(adapter);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index de01edc5df79b..ca7448e096a86 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -808,22 +808,12 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
+ 	spin_lock_bh(&adapter->mac_vlan_list_lock);
+ 
+ 	list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
+-		/* since VLAN capabilities are not allowed, we dont want to send
+-		 * a VLAN delete request because it will most likely fail and
+-		 * create unnecessary errors/noise, so just free the VLAN
+-		 * filters marked for removal to enable bailing out before
+-		 * sending a virtchnl message
+-		 */
+ 		if (f->state == IAVF_VLAN_REMOVE &&
+ 		    !VLAN_FILTERING_ALLOWED(adapter)) {
+ 			list_del(&f->list);
+ 			kfree(f);
+ 			adapter->num_vlan_filters--;
+-		} else if (f->state == IAVF_VLAN_DISABLE &&
+-		    !VLAN_FILTERING_ALLOWED(adapter)) {
+-			f->state = IAVF_VLAN_INACTIVE;
+-		} else if (f->state == IAVF_VLAN_REMOVE ||
+-			   f->state == IAVF_VLAN_DISABLE) {
++		} else if (f->state == IAVF_VLAN_REMOVE) {
+ 			count++;
+ 		}
+ 	}
+@@ -855,13 +845,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
+ 		vvfl->vsi_id = adapter->vsi_res->vsi_id;
+ 		vvfl->num_elements = count;
+ 		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
+-			if (f->state == IAVF_VLAN_DISABLE) {
+-				vvfl->vlan_id[i] = f->vlan.vid;
+-				f->state = IAVF_VLAN_INACTIVE;
+-				i++;
+-				if (i == count)
+-					break;
+-			} else if (f->state == IAVF_VLAN_REMOVE) {
++			if (f->state == IAVF_VLAN_REMOVE) {
+ 				vvfl->vlan_id[i] = f->vlan.vid;
+ 				list_del(&f->list);
+ 				kfree(f);
+@@ -906,8 +890,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
+ 		vvfl_v2->vport_id = adapter->vsi_res->vsi_id;
+ 		vvfl_v2->num_elements = count;
+ 		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
+-			if (f->state == IAVF_VLAN_DISABLE ||
+-			    f->state == IAVF_VLAN_REMOVE) {
++			if (f->state == IAVF_VLAN_REMOVE) {
+ 				struct virtchnl_vlan_supported_caps *filtering_support =
+ 					&adapter->vlan_v2_caps.filtering.filtering_support;
+ 				struct virtchnl_vlan *vlan;
+@@ -921,13 +904,9 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
+ 				vlan->tci = f->vlan.vid;
+ 				vlan->tpid = f->vlan.tpid;
+ 
+-				if (f->state == IAVF_VLAN_DISABLE) {
+-					f->state = IAVF_VLAN_INACTIVE;
+-				} else {
+-					list_del(&f->list);
+-					kfree(f);
+-					adapter->num_vlan_filters--;
+-				}
++				list_del(&f->list);
++				kfree(f);
++				adapter->num_vlan_filters--;
+ 				i++;
+ 				if (i == count)
+ 					break;
 -- 
 2.53.0
 
