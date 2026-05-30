@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-258850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257469-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BwqOPwuG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258850-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:56 +0200
+	id GObNAekaG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257469-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F332612328
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FA560F32F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34248317A43C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D03703019A1F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C0333AD99;
-	Sat, 30 May 2026 18:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEAD34389B;
+	Sat, 30 May 2026 17:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TQKWDih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6qkZXgs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68003C199A;
-	Sat, 30 May 2026 18:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93131EEA8;
+	Sat, 30 May 2026 17:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165749; cv=none; b=I7RwTTfuF7DF6jCMYV+7FhdIh7gnK8oAusbHp/3S1ybo74nMMpVlofRPaAp0u0x6XRFVs3vmP9Ez0Pfr6yIJ5XsaOsIc8dst+ds5NnapdRzNxlIuDut+BXj7kazdHzD5WKqA6F5kqx5Qzg9CtcOD5mehDEW/DPo4YMlfW6Q6PuE=
+	t=1780161104; cv=none; b=ftzS7M/ZTC33TBmwnuCQPxvmN4XHPJ0iWH2QvE5cM6j/N3DlUmTnv/76bsUZ9CO5ElqLlLKsAfzVuXKmx2kw2nvt744+0+GdsbWmEH9q/H3iNEMG3jQcCp7rEweNCx+HD4LYJ9vK5/LQS0o5L+5Mz1t2kmo+cyaSga7PBgTIofE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165749; c=relaxed/simple;
-	bh=YouFtrKGQwiZSfdRidCk6xiBuH2+9iG5gYELzcOBsPU=;
+	s=arc-20240116; t=1780161104; c=relaxed/simple;
+	bh=vNbT3GqL2IqA3eNJiSejALhgjTuUolCMZeBClgAUO6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYkYab95sexrgwSdwPeuV9OcmAryVmX/3pRWMV+dHYI8sPLG3t1tVBiumBbAiLj9lyn33JlBGQZ8XQM3EBQxAwCsYU5+/fpK2CVLb1Njsw5kr7Tb6w1sNgAb1ZJ07zNZvT/P/dooW5IppZm9cni9/IF6OMmbH8cg3Xm9L00tFQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TQKWDih; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D665E1F00893;
-	Sat, 30 May 2026 18:29:07 +0000 (UTC)
+	 MIME-Version; b=oesVF9asNICrLoBYkld/Qcp9Y0x0W4cEC+Yi43rMPAd5H28WnKIwm3gTur4sZWq80dPrzAstAOh/NisIeWYmjBOdmsXiLSRN1Du655QysUPQCobpnhDYooCO4vpGy7+NjwKPa1Wy/gHH9+uPZ/ueWLgB+87n1G3g1xapr4JtZU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6qkZXgs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BC31F00893;
+	Sat, 30 May 2026 17:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165748;
-	bh=3fbbWE4hSiIe5YJpvta9lnhjOAPeXjSj5LGkV+uO+iU=;
+	s=korg; t=1780161103;
+	bh=h9EBqjNPfmjCFlYpUa1Xn4TmjflMJ+NG1yjnaz5CttU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0TQKWDihTuquEFKkXCjG72Mb6kot32hI7Ey3jYRRPdRzmhClJLYKzWrTLg223tpyn
-	 33Q6eLfXBdYzs1wgZ6jKOKLrMEz0as0oi4iYJWQceo7ZXa1niLA1BmG2dTeGK9SK5Z
-	 zPEM2ygJkkHpa8czNI6xTmsgBb1uz5omzyQKEPuk=
+	b=h6qkZXgsk19q8Zqgwa32BgYmn2soJghypJQ4Uu0czTHCUm6KjrxyFzFjpLd/4uU87
+	 19xbt77QMSyyo/mg5QA+O2vEVqNAkvRNeG5mK+n/thT1FnWw0E8yMtzUqC6JK0Lwry
+	 MmZw8ha3obriC02yGuCo1t7MVHUMpg4R25P9qdfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ao Zhou <draw51280@163.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 169/589] net: rds: fix MR cleanup on copy error
+	Connor Abbott <cwabbott0@gmail.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 526/969] drm/msm/a6xx: Fix HLSQ register dumping
 Date: Sat, 30 May 2026 18:00:50 +0200
-Message-ID: <20260530160229.236134891@linuxfoundation.org>
+Message-ID: <20260530160314.883538632@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,79 +69,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258850-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,163.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257469-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5F332612328
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: F2FA560F32F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ao Zhou <draw51280@163.com>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-commit 8141a2dc70080eda1aedc0389ed2db2b292af5bd upstream.
+[ Upstream commit c289a6db9ba6cb974f0317da142e4f665d589566 ]
 
-__rds_rdma_map() hands sg/pages ownership to the transport after
-get_mr() succeeds. If copying the generated cookie back to user space
-fails after that point, the error path must not free those resources
-again before dropping the MR reference.
+Fix the bitfield offset of HLSQ_READ_SEL state-type bitfield.  Otherwise
+we are always reading TP state when we wanted SP or HLSQ state.
 
-Remove the duplicate unpin/free from the put_user() failure branch so
-that MR teardown is handled only through the existing final cleanup
-path.
-
-Fixes: 0d4597c8c5ab ("net/rds: Track user mapped pages through special API")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ao Zhou <draw51280@163.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/79c8ef73ec8e5844d71038983940cc2943099baf.1776764247.git.draw51280@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Connor Abbott <cwabbott0@gmail.com>
+Suggested-by: Connor Abbott <cwabbott0@gmail.com>
+Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714236/
+Message-ID: <20260325184043.1259312-1-robin.clark@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/rdma.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rds/rdma.c
-+++ b/net/rds/rdma.c
-@@ -326,10 +326,6 @@ static int __rds_rdma_map(struct rds_soc
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+index 7a30249974cff..de84bd623f16a 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+@@ -649,7 +649,7 @@ static void a6xx_get_crashdumper_hlsq_registers(struct msm_gpu *gpu,
+ 	u64 out = dumper->iova + A6XX_CD_DATA_OFFSET;
+ 	int i, regcount = 0;
  
- 	if (args->cookie_addr &&
- 	    put_user(cookie, (u64 __user *)(unsigned long)args->cookie_addr)) {
--		if (!need_odp) {
--			unpin_user_pages(pages, nr_pages);
--			kfree(sg);
--		}
- 		ret = -EFAULT;
- 		goto out;
- 	}
+-	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, regs->val1);
++	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, (regs->val1 & 0xff) << 8);
+ 
+ 	for (i = 0; i < regs->count; i += 2) {
+ 		u32 count = RANGE(regs->registers, i);
+-- 
+2.53.0
+
 
 
 
