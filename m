@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-257700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBL4Hc0dG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:37 +0200
+	id KLuSG7EvG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2932460FAB4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1176124FE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6F95B3057351
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:24:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6C2B03008C96
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CBD352027;
-	Sat, 30 May 2026 17:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925F7344DB9;
+	Sat, 30 May 2026 18:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lo1FYM42"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ECfZxh9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE013438AE;
-	Sat, 30 May 2026 17:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E902F6184;
+	Sat, 30 May 2026 18:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161880; cv=none; b=CW4K6cHk3Cx1eTRttanMEFFTRrXxApr0dPraRcl/O5LPZ05kyF/WXqz3rbH+rBdVVgvS8CGuduXGSuViUyvFwThfgrn+1XyOcztE6CHrFhFQeAzChSpr2GaB0zOmvb+uU4BB7nIBDUSXN5nucC7yU1CP373UVUeAgonOw/vVzoY=
+	t=1780166570; cv=none; b=GA1ttvo4RLTwn9vz43qQxtNIQd7h5scn4SZqyBNcMmNGerBKP2KJiD3sx78Gy5kiJJ0jotcNkPiG+5P3++h8oqeurqFXmQnfBJHqYBLzQtOND7fG5c3AFEfuI/BYTB/jJXKRN/ZzcOraMvaz9/tl5d8MHg2CmqzZcC2zeRUU110=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161880; c=relaxed/simple;
-	bh=19/WFCcMp1m5XdhIEwl8SSM9+EeMOOHlou9AeZ1ZPcA=;
+	s=arc-20240116; t=1780166570; c=relaxed/simple;
+	bh=pqPBd1MJlSa/N3TLyUhWq+TH2nBiC61TOSYqwjqcP9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ql89azMigEUDu/oJUw7/Kq6wzaOKyVbQqkLd2bm4uRqhDFB8GPTJnwrkttwF6HqfGACKz/Ydkda4ZAXkPt44uOWTur+pDE5Dkfkl5q5oDjl0mDew2/o+hesZb0JWyqhgbnHtKv2iZgF7+mczgdbXHOtCGR8Qd1062CwV1rTzYRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lo1FYM42; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9423A1F00893;
-	Sat, 30 May 2026 17:24:38 +0000 (UTC)
+	 MIME-Version; b=bYeci52uF5vLjA0sPIAUwFfPjGJmHZ3jmZvOGQZcd0Y/WD2sew3IZ3OygdQI1R2ZEgc00PU/HGLsXCgSlRgk0QplpD2kAv9NEw8sa5QrTl8t+Che3IyuhC9u5rzaJc7r0mM5RRSCoFpDFfVUz9nNWZT5hW+ZZU/k8PM8SYsJ1yA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ECfZxh9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530411F00893;
+	Sat, 30 May 2026 18:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161879;
-	bh=8gaHiVUdXHiQFDpJ8d163EU1KwRpusgidEoxoGgjTfM=;
+	s=korg; t=1780166569;
+	bh=VdPGrbLWrdSI6bPjJHQeo8HZVg10C4tWvplZDqr4ws4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lo1FYM42OdB4Hrc5HKUp5PwdaxHCPQZiFv/LdqcJIvxA7MGGr4Jx420nzDMiSHcae
-	 0pJfTX7pFNbnLf2QnRoiA8x0jLnrJ9h/Qd21cI2f9RPwPqDepsml99EbF44Np6hb/0
-	 XFkf35+fsoVRre2KlkZ+wRK4Y5T7sGxD+djZByxI=
+	b=1ECfZxh96zQkxXy23NPI0wuHshzPzxREtLnAugIdTxLlQIA2c9KHqJK1ROA2HaTsg
+	 GDLJHjwuLUHg9kr7ElcYx5zfmpb8PxQZE7Gdsd8sbYPWoI55HheMncVpNVtaz4nUO+
+	 i7TU5tJGRmfcB8tcgWtzjF7xLbSQe+ZHN3W5XGMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Morduan Zang <zhangdandan@uniontech.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 754/969] net: usb: rtl8150: free skb on usb_submit_urb() failure in xmit
+Subject: [PATCH 5.10 397/589] scsi: sg: Resolve soft lockup issue when opening /dev/sgX
 Date: Sat, 30 May 2026 18:04:38 +0200
-Message-ID: <20260530160321.384735802@linuxfoundation.org>
+Message-ID: <20260530160235.216712070@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +69,129 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257700-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259087-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2932460FAB4
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,acm.org:email]
+X-Rspamd-Queue-Id: 7A1176124FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Morduan Zang <zhangdandan@uniontech.com>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit adbe2cdf75461891e50dbe11896ac78e9af1f874 ]
+[ Upstream commit d06a310b45e153872033dd0cf19d5a2279121099 ]
 
-When rtl8150_start_xmit() fails to submit the tx URB, the URB is never
-handed to the USB core and write_bulk_callback() will not run.  The
-driver returns NETDEV_TX_OK, which tells the networking stack that the
-skb has been consumed, but nothing actually frees the skb on this
-error path:
+The parameter def_reserved_size defines the default buffer size reserved
+for each Sg_fd and should be restricted to a range between 0 and 1,048,576
+(see https://tldp.org/HOWTO/SCSI-Generic-HOWTO/proc.html).  Although the
+function sg_proc_write_dressz enforces this limit, it is possible to bypass
+it by directly modifying the module parameter as shown below, which then
+causes a soft lockup:
 
-  dev->tx_skb = skb;
-  ...
-  if ((res = usb_submit_urb(dev->tx_urb, GFP_ATOMIC))) {
-          ...
-          /* no kfree_skb here */
-  }
-  return NETDEV_TX_OK;
+echo -1 > /sys/module/sg/parameters/def_reserved_size
+exec 4<> /dev/sg0
 
-This leaks the skb on every submit failure and also leaves dev->tx_skb
-pointing at memory that the driver itself may later free, which is
-fragile.
+watchdog: BUG: soft lockup - CPU#5 stuck for 26 seconds! [bash:537]
+Modules loaded:
+CPU: 5 UID: 0 PID: 537 Command: bash, kernel version 6.19.0-rc3+ #134,
+PREEMPT disabled
+Hardware: QEMU Standard PC (i440FX + PIIX, 1996), BIOS version
+1.16.1-2.fc37 dated 04/01/2014
+...
+Call Trace:
 
-Free the skb with dev_kfree_skb_any() in the error path and clear
-dev->tx_skb so no stale pointer is left behind.
+  sg_build_reserve+0x5c/0xa0
+  sg_add_sfp+0x168/0x270
+  sg_open+0x16e/0x340
+  chrdev_open+0xbe/0x230
+  do_dentry_open+0x175/0x480
+  vfs_open+0x34/0xf0
+  do_open+0x265/0x3d0
+  path_openat+0x110/0x290
+  do_filp_open+0xc3/0x170
+  do_sys_openat2+0x71/0xe0
+  __x64_sys_openat+0x6d/0xa0
+  do_syscall_64+0x62/0x310
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Morduan Zang <zhangdandan@uniontech.com>
-Link: https://patch.msgid.link/E7D3E1C013C5A859+20260424015517.9574-1-zhangdandan@uniontech.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The fix is to use module_param_cb to validate and reject invalid values
+assigned to def_reserved_size.
+
+Fixes: 6460e75a104d ("[SCSI] sg: fixes for large page_size")
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260127062044.3034148-3-yangerkun@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/rtl8150.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/scsi/sg.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index 8700ae392b10a..647f28b367b99 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -712,6 +712,13 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 			netdev->stats.tx_errors++;
- 			netif_start_queue(netdev);
- 		}
-+		/*
-+		 * The URB was not submitted, so write_bulk_callback() will
-+		 * never run to free dev->tx_skb.  Drop the skb here and
-+		 * clear tx_skb to avoid leaving a stale pointer.
-+		 */
-+		dev->tx_skb = NULL;
-+		dev_kfree_skb_any(skb);
- 	} else {
- 		netdev->stats.tx_packets++;
- 		netdev->stats.tx_bytes += skb_len;
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index b24e80a9c8cac..3c06c035b85c0 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -1647,10 +1647,35 @@ sg_remove_device(struct device *cl_dev, struct class_interface *cl_intf)
+ }
+ 
+ module_param_named(scatter_elem_sz, scatter_elem_sz, int, S_IRUGO | S_IWUSR);
+-module_param_named(def_reserved_size, def_reserved_size, int,
+-		   S_IRUGO | S_IWUSR);
+ module_param_named(allow_dio, sg_allow_dio, int, S_IRUGO | S_IWUSR);
+ 
++static int def_reserved_size_set(const char *val, const struct kernel_param *kp)
++{
++	int size, ret;
++
++	if (!val)
++		return -EINVAL;
++
++	ret = kstrtoint(val, 0, &size);
++	if (ret)
++		return ret;
++
++	/* limit to 1 MB */
++	if (size < 0 || size > 1048576)
++		return -ERANGE;
++
++	def_reserved_size = size;
++	return 0;
++}
++
++static const struct kernel_param_ops def_reserved_size_ops = {
++	.set	= def_reserved_size_set,
++	.get	= param_get_int,
++};
++
++module_param_cb(def_reserved_size, &def_reserved_size_ops, &def_reserved_size,
++		   S_IRUGO | S_IWUSR);
++
+ MODULE_AUTHOR("Douglas Gilbert");
+ MODULE_DESCRIPTION("SCSI generic (sg) driver");
+ MODULE_LICENSE("GPL");
 -- 
 2.53.0
 
