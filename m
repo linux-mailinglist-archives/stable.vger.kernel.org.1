@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-259209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4EMEHvYyG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:54 +0200
+	id CE3eK2IgG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD667612CE9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CBC86100A8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A5CB3026C26
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC3EA303C4EE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529411D63E4;
-	Sat, 30 May 2026 18:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA9230676E;
+	Sat, 30 May 2026 17:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VTRVfwAF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+OyYIC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E84D137750;
-	Sat, 30 May 2026 18:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D967F30E853;
+	Sat, 30 May 2026 17:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166973; cv=none; b=daAQBQJaxsQrMT+B67pK50sLjgy9bin2B4+UpZdNY2rZJPA9C7wNGzSVaHwzJMMJAKhjaOiNMi9Jg5vPjM7z6/6WKYvsirRx9oQxfUdNm1BgwqTmDZ6HGG//A8q6jeAMH2EMCzpmpWRKo2h3pbxDnX/M3HcXqXTP7nnG0NKoshA=
+	t=1780162312; cv=none; b=LDIB3sIjZZeuEfeV3HTOnzhxjYlnXgelMhnXeMbPLRRlhXJIvXH/X3EgCnlz7MOyp6q9fe5LyMup4HbmZtHLifmhzIUQhVK/yVNGOSfkt/kvvAMACgejLxjWrqmYZKC2NdV2A7oFEcFdu7DpJo6wSyJM4h6Qi6iee4iKQ5lWLVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166973; c=relaxed/simple;
-	bh=/qkMHi1i12j/VnxbRWp0i49k6BwGujx+5N9eApPaMIc=;
+	s=arc-20240116; t=1780162312; c=relaxed/simple;
+	bh=rIXbcvQ5A0pub/KlMuFBhsLL1QnsGvCISiNSpLIk0BU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ceWmYxbS75w0Sl7TKTtNSRrU7Vfb8ODqCxaP6R5n6sBP9Xf7Cnyamm4zBFYMztC4quHPeFU3hNCNIrbY0O14NKuPwtmoAv7YZHHygIdvI7kHLumY4L7Yp8QvWz+TSjaWp2FzyXSnkmw7NX+R9Y7WeOBn8r94YCiHWZuDywWtj3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VTRVfwAF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704C91F00893;
-	Sat, 30 May 2026 18:49:31 +0000 (UTC)
+	 MIME-Version; b=dDro+xXCHQF9LFKYekeu/F6t0wnOoKZBnyi9FmXsH2s5QNLYB5KlaYme1L727J8habA3+BFhQEq4rsdL4bYoHr6a6NNYBr8Cng0l96WZGhPyBHMi9pufS/+Yz9ziu8SkvgFpma+8Hj03IrZ/C7YMmk7XluOAC6Wihf6zDZv85TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+OyYIC4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329431F00893;
+	Sat, 30 May 2026 17:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166972;
-	bh=f7mWcQf9NebD+REBUkxJE2jDPgubZFx0tgylEYk33jk=;
+	s=korg; t=1780162311;
+	bh=zrJJrJLhua0AWA+9+Lnf+hVfuvlUPklZNdXJWPItur8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VTRVfwAFAUL9OqU3bWFi9rdFlCYCPWhYuK3WNqaSw0anjdL4wI3nc0aYufMXoYyWo
-	 piQPF3DF2Bu7KANeoJqcB/MER2f0uqDopaNZp/RhYXK/9KN7cJtRYoK+TsoANdk6AS
-	 /AabltA4PS7VJ/f2OZNAMrZirZvF9jmIN3sVybTo=
+	b=u+OyYIC43D7Z7GwJuvMhDmQNHcA6q2afhJTTBnW/2Ozag7BilmvTTMTrtY/9XJpnf
+	 qITUit3K3yR8nkCJTPyXLAfW7bBzLgRfvU+p9ynakFMImE09Btlvunsb9zZxE1Q6Ew
+	 qSt2g235vfDR7OkojzHhhE05ArTOur0MCrqvmJNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Steve French <stfrench@microsoft.com>,
-	Salvatore Bonaccorso <carnil@debian.org>
-Subject: [PATCH 5.10 526/589] smb: client: reject userspace cifs.spnego descriptions
-Date: Sat, 30 May 2026 18:06:47 +0200
-Message-ID: <20260530160238.502197146@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.1 884/969] batman-adv: fix tp_meter counter underflow during shutdown
+Date: Sat, 30 May 2026 18:06:48 +0200
+Message-ID: <20260530160325.106611300@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,102 +73,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-257830-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259209-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,pm.me:email]
-X-Rspamd-Queue-Id: CD667612CE9
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,narfation.org:email]
+X-Rspamd-Queue-Id: 1CBC86100A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asim Viladi Oglu Manizada <manizada@pm.me>
+From: Luxiao Xu <rakukuip@gmail.com>
 
-commit 3da1fdf4efbc490041eb4f836bf596201203f8f2 upstream.
+commit 94f3b133168d1c49895e7cc6afbcf1cc0b354602 upstream.
 
-cifs.spnego key descriptions contain authority-bearing fields such as
-pid, uid, creduid, and upcall_target that cifs.upcall treats as
-kernel-originating inputs. However, userspace can also create keys of
-this type through request_key(2) or add_key(2), allowing those fields to
-be supplied without CIFS origin.
+batadv_tp_sender_shutdown() unconditionally decrements the "sending"
+atomic counter. If multiple paths (e.g. timeout, user cancel, and
+normal finish) call this function, the counter can underflow to -1.
 
-Only accept cifs.spnego descriptions while CIFS is using its private
-spnego_cred to request the key.
+Since the sender logic treats any non-zero value as "still sending",
+a negative value causes the sender kthread to loop indefinitely.
+This leads to a use-after-free when the interface is removed while
+the zombie thread is still active.
 
-Fixes: f1d662a7d5e5 ("[CIFS] Add upcall files for cifs to use spnego/kerberos")
-Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[Salvatore Bonaccorso: Apply changes to fs/cifs/cifs_spnego.c instead of
-fs/smb/client/cifs_spnego.c before 38c8a9a52082 ("smb: move client and server
-files to common directory fs/smb") in v6.4-rc1 and backported to v6.1.36]
-Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
+Fix this by using atomic_xchg() to ensure the counter only transitions
+from 1 to 0 once.
+
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+[sven: added missing change in batadv_tp_send]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/cifs_spnego.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ net/batman-adv/tp_meter.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/cifs/cifs_spnego.c
-+++ b/fs/cifs/cifs_spnego.c
-@@ -20,6 +20,7 @@
-  */
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -435,7 +435,7 @@ static void batadv_tp_sender_end(struct
+ static void batadv_tp_sender_shutdown(struct batadv_tp_vars *tp_vars,
+ 				      enum batadv_tp_meter_reason reason)
+ {
+-	if (!atomic_dec_and_test(&tp_vars->sending))
++	if (atomic_xchg(&tp_vars->sending, 0) != 1)
+ 		return;
  
- #include <linux/list.h>
-+#include <linux/cred.h>
- #include <linux/slab.h>
- #include <linux/string.h>
- #include <keys/user-type.h>
-@@ -58,12 +59,27 @@ cifs_spnego_key_destroy(struct key *key)
- 	kfree(key->payload.data[0]);
- }
- 
-+static int
-+cifs_spnego_key_vet_description(const char *description)
-+{
-+	/*
-+	 * cifs.spnego descriptions are authority-bearing inputs to cifs.upcall.
-+	 * They are only valid when produced by CIFS while using the private
-+	 * spnego_cred installed below.  Do not let userspace create this type
-+	 * of key through request_key(2)/add_key(2), since the helper treats
-+	 * pid/uid/creduid/upcall_target as kernel-originating fields.
-+	 */
-+	if (current_cred() != spnego_cred)
-+		return -EPERM;
-+	return 0;
-+}
- 
- /*
-  * keytype for CIFS spnego keys
-  */
- struct key_type cifs_spnego_key_type = {
- 	.name		= "cifs.spnego",
-+	.vet_description = cifs_spnego_key_vet_description,
- 	.instantiate	= cifs_spnego_key_instantiate,
- 	.destroy	= cifs_spnego_key_destroy,
- 	.describe	= user_describe,
+ 	tp_vars->reason = reason;
+@@ -869,7 +869,7 @@ static int batadv_tp_send(void *arg)
+ 				   "Meter: %s() cannot send packets (%d)\n",
+ 				   __func__, err);
+ 			/* ensure nobody else tries to stop the thread now */
+-			if (atomic_dec_and_test(&tp_vars->sending))
++			if (atomic_xchg(&tp_vars->sending, 0) == 1)
+ 				tp_vars->reason = err;
+ 			break;
+ 		}
 
 
 
