@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-258019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMoJBgYjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258019-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:54 +0200
+	id 2GjzID4YG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 846CC6106DC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E66F60EC91
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E891B3092841
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:42:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E4F1530BAB9E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B619344DB9;
-	Sat, 30 May 2026 17:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AAB1348C72;
+	Sat, 30 May 2026 16:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q25baQv+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeUSkz0M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630E621B191;
-	Sat, 30 May 2026 17:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B8B34EF07;
+	Sat, 30 May 2026 16:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162952; cv=none; b=YdraAUvGF5OrNGE4dNXHZKJIvRaCe9OkpWd/0Uv4si/2Zz1RiWVfl/GnmEGtA5RnQgo1UDcuZSLSodI2bnJJ9KbiyNF/diynOgwRJxI19SgE3+0XvcJS6DtrU/cCdEoWQb3ku6jKrmeWRuP54Ev58CEq0UDbz26R3/651tPhZSU=
+	t=1780160173; cv=none; b=UvQzxWp/YDMeYuWS7ibecQhrpMqpES0I2TITjoM1wj0mhTPIzMkf7JMji3BTvUCadhVwbbbAHeUGr4qxe1/FnF17DwjI5NMlc+vwBsYskOO6aURnhDmYqAoiODhemXl9gU3fNBXpFn4ldkYRNVXF4lFf1l4ldJ84nLHbrr0RYdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162952; c=relaxed/simple;
-	bh=sVfG92ejgOM0fT+T4QRECJit5iaU3mWfTbuBirYCP1s=;
+	s=arc-20240116; t=1780160173; c=relaxed/simple;
+	bh=WdOjkzad/B9DZVSAAGiiu/zT3XHLvPe9cWDPdV16ssE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eZ9tEbBiXFMMj8ZegNXS5VZv618LgP4F87c0fkQtTeLr84f1hgZYTBwM2JiwZh/60HklKPwaxSWqLW2FF1jlhZkWTzWklBzxAR00rEZQZdjjF9L0EggB3SmARg97E+uF/6zR5UuQ+MHd1PwRNQEo+PPrB2Mj4FOtlCsBI+WZ4vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q25baQv+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66B71F00893;
-	Sat, 30 May 2026 17:42:30 +0000 (UTC)
+	 MIME-Version; b=enylei9iBsWI9vKEGuFcRhJeUQblTOBqO718VGWVhW69FNRMxTUdRpzU2fLg9AUVgEzDPbnFyLawnVciCOw4Z6vuMvSG7ppenPr//5xrgDn3pLDbyYfeW12tlpQt45pXMbEFgkltPA2SH6r38bKKQIm1CEViA8W6xpctPzvoCC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeUSkz0M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6F31F00893;
+	Sat, 30 May 2026 16:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162951;
-	bh=6PCCgzk4PfEYVUdu1+2CqnwRQZadVcElo8L/uo6SkIY=;
+	s=korg; t=1780160172;
+	bh=vmmMnhLvzIiMED+4bYgWDAtjxryoli0xB4XwgoLeSho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q25baQv+3w1PPZA6euw/dH1uyAi4c40surSFfMRQjbJuQ5LKs9jRdHgqszH7c3ZgH
-	 UGupNt2VomeFHPXIy0Wip/NDIXvPOvFKUiME4Kk6G+WHpCzjYADLHxkLu9MhtPwf89
-	 c/6tXO7pcKYp2aLrcE842jeDpYpAdokGRY78roAw=
+	b=xeUSkz0MtPPwnlNKENIttSxYK8xt99KG0mL8X6+onH4wu/6syejGdNIwxY2aAbzNi
+	 Tz0CSlN6dKIVGFOHUDQ7cxeJzWp9qu4si3y+nGE7rESEweSbArhMezfIsQalUKwQuV
+	 gWte4OjofqmrrxWKqcxfukSbbcIm/tNNs1sLebo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhengYuan Huang <gality369@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 073/776] ocfs2: handle invalid dinode in ocfs2_group_extend
-Date: Sat, 30 May 2026 17:56:27 +0200
-Message-ID: <20260530160242.210644260@linuxfoundation.org>
+	John Warthog9 Hawley <warthog9@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 6.1 264/969] ktest: Fix the month in the name of the failure directory
+Date: Sat, 30 May 2026 17:56:28 +0200
+Message-ID: <20260530160307.766729011@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,109 +68,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258019-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-257204-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:email]
-X-Rspamd-Queue-Id: 846CC6106DC
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0E66F60EC91
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhengYuan Huang <gality369@gmail.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 4a1c0ddc6e7bcf2e9db0eeaab9340dcfe97f448f upstream.
+commit 768059ede35f197575a38b10797b52402d9d4d2f upstream.
 
-[BUG]
-kernel BUG at fs/ocfs2/resize.c:308!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-RIP: 0010:ocfs2_group_extend+0x10aa/0x1ae0 fs/ocfs2/resize.c:308
-Code: 8b8520ff ffff83f8 860f8580 030000e8 5cc3c1fe
-Call Trace:
- ...
- ocfs2_ioctl+0x175/0x6e0 fs/ocfs2/ioctl.c:869
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
- x64_sys_call+0x1144/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:17
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
- ...
+The Perl localtime() function returns the month starting at 0 not 1. This
+caused the date produced to create the directory for saving files of a
+failed run to have the month off by one.
 
-[CAUSE]
-ocfs2_group_extend() assumes that the global bitmap inode block
-returned from ocfs2_inode_lock() has already been validated and
-BUG_ONs when the signature is not a dinode. That assumption is too
-strong for crafted filesystems because the JBD2-managed buffer path
-can bypass structural validation and return an invalid dinode to the
-resize ioctl.
+  machine-test-useconfig-fail-20260314073628
 
-[FIX]
-Validate the dinode explicitly in ocfs2_group_extend(). If the global
-bitmap buffer does not contain a valid dinode, report filesystem
-corruption with ocfs2_error() and fail the resize operation instead of
-crashing the kernel.
+The above happened in April, not March. The correct name should have been:
 
-Link: https://lkml.kernel.org/r/20260401092303.3709187-1-gality369@gmail.com
-Fixes: 10995aa2451a ("ocfs2: Morph the haphazard OCFS2_IS_VALID_DINODE() checks.")
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+  machine-test-useconfig-fail-20260414073628
+
+This was somewhat confusing.
+
+Cc: stable@vger.kernel.org
+Cc: John 'Warthog9' Hawley <warthog9@kernel.org>
+Link: https://patch.msgid.link/20260420142426.33ad0293@fedora
+Fixes: 7faafbd69639b ("ktest: Add open and close console and start stop monitor")
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/resize.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tools/testing/ktest/ktest.pl |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ocfs2/resize.c
-+++ b/fs/ocfs2/resize.c
-@@ -295,9 +295,13 @@ int ocfs2_group_extend(struct inode * in
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -1770,7 +1770,7 @@ sub save_logs {
+     my ($result, $basedir) = @_;
+     my @t = localtime;
+     my $date = sprintf "%04d%02d%02d%02d%02d%02d",
+-	1900+$t[5],$t[4],$t[3],$t[2],$t[1],$t[0];
++	1900+$t[5],$t[4]+1,$t[3],$t[2],$t[1],$t[0];
  
- 	fe = (struct ocfs2_dinode *)main_bm_bh->b_data;
- 
--	/* main_bm_bh is validated by inode read inside ocfs2_inode_lock(),
--	 * so any corruption is a code bug. */
--	BUG_ON(!OCFS2_IS_VALID_DINODE(fe));
-+	/* JBD-managed buffers can bypass validation, so treat this as corruption. */
-+	if (!OCFS2_IS_VALID_DINODE(fe)) {
-+		ret = ocfs2_error(main_bm_inode->i_sb,
-+				  "Invalid dinode #%llu\n",
-+				  (unsigned long long)OCFS2_I(main_bm_inode)->ip_blkno);
-+		goto out_unlock;
-+	}
- 
- 	if (le16_to_cpu(fe->id2.i_chain.cl_cpg) !=
- 		ocfs2_group_bitmap_size(osb->sb, 0,
+     my $type = $build_type;
+     if ($type =~ /useconfig/) {
 
 
 
