@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-259165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LjsCrExG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-259165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:29 +0200
+	id iN6ROWApG2rg/ggAu9opvQ
+	(envelope-from <stable+bounces-258599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1DE3612A18
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F0F611619
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 005CD307E90D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3D1CF3006209
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2FE14A60F;
-	Sat, 30 May 2026 18:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8103D3B7B72;
+	Sat, 30 May 2026 18:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19QfvtHN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWxEcHgw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4A9137750;
-	Sat, 30 May 2026 18:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE7E29B799;
+	Sat, 30 May 2026 18:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166824; cv=none; b=EsTQGTKnrXJnh4uUKSJJEh80hxg+HXzmaA3L6FM9lINAd8ySjNZzVFtkYSgkBC+ThkydqyCOcQpDpmDhWKF6KZldaAa0/LcN/RSDjz9GITldKEHzFK3SVMpZYRtzrWPXXFrIPaIeZvnEQ0O/iit5P33LpiQcyhmMIkPHy+Jc2HU=
+	t=1780164891; cv=none; b=Zf9EEaWwDZj0+f+ONX4KhB2j3z5t+SCqFbwZLqsiQeFx8i+qz7Q7v4qIDTabTax9le3weXBQMMjO0rNpbjdx99gFjpcGLV/4oJQRyl+4CHeEJ0Nk8zrvKdOmPNkJMvi6aialTRUeGQP0J73gtzYhTotEwTJkFrCYWmFBIkQCOXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166824; c=relaxed/simple;
-	bh=7VD71YztWoDk9mYqU+mZCFtS5wnfLYfKzsLXkiEvLU0=;
+	s=arc-20240116; t=1780164891; c=relaxed/simple;
+	bh=+AAfeS6dr4Og/oTKn6nPZUfKJCghsb/dBv4YtJVolcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tx8O0a69ibemhAHyHAf8dWuvawSu+ORLCrbVmWwwMb3Hu4BhFq2+kFtUxuraLBkLcy6GCCFf/8EYm/OCX0C7QV0cLkb19Q9CiWWsZRUMokPiNIPGcjVYevTBdQts6fdjB+qVeS+SnOrretKixH9maFyZhSuqPA0dmNYeavjySJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19QfvtHN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC0D1F00893;
-	Sat, 30 May 2026 18:47:02 +0000 (UTC)
+	 MIME-Version; b=i5FF+FbIsMD+t5JEZ/+Zh1mGzCSFGnjE9k6yrTtXi1duZDSKuoezpSYN05rgFgvk3e+TGXIKVRXJnE1vGGZlMtIUUpt5i37aGY+yYP7YC51pGH+yK9aD+aYjBauruAEgVW3CkSqzdwwG4JlwODFQ9y0d5VZqvpCdSD/qVnNYVys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWxEcHgw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B423D1F00893;
+	Sat, 30 May 2026 18:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166823;
-	bh=Hats3IlYzWyjPSP4f/AlazXczSKbBWp/GMN5Fn2WlQ0=;
+	s=korg; t=1780164890;
+	bh=ynYYAvzS7+qKxo0hvuMC3+2K3tFRt5dYiG5PycIs/NM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=19QfvtHNlTKPOtyaTKyuhNQNZU8tkL1HtYqjb67q7lb79YQXvuVOH4x9NjfpHLwGm
-	 0j+3zDqyMNno1LgdxrSxzmvWotA5JbGQqnoaXJJiHxksnEbnzo/+S/mssdaXbvtc6k
-	 b8pmx1g1lU1k2BnmWsDWTeDoahWPLT5BT70ejW9E=
+	b=vWxEcHgwlDmujXaEXhawqSknL2BWbXxRdXG4XQw7tq310/cRirbH2cblwR47KffZI
+	 KBspLXXFtRBbrL0K6Jxi3PV20u067Qqpz5wVtxTAmbbSmjnHug3lVLnE56vkirDGoa
+	 J6l3xiUTBCqgOqcRFeFMRmB+/4CGBHJFatjNK4lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Geurts <paul.geurts@prodrive-technologies.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Mark Greer <mgreer@animalcreek.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 483/589] NFC: trf7970a: Ignore antenna noise when checking for RF field
+	Li Xiasong <lixiasong1@huawei.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 650/776] netfilter: nft_ct: fix missing expect put in obj eval
 Date: Sat, 30 May 2026 18:06:04 +0200
-Message-ID: <20260530160237.342245975@linuxfoundation.org>
+Message-ID: <20260530160256.722610988@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,85 +67,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259165-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258599-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.995];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A1DE3612A18
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: F3F0F611619
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Geurts <paul.geurts@prodrive-technologies.com>
+From: Li Xiasong <lixiasong1@huawei.com>
 
-[ Upstream commit a9bc28aa4e64320668131349436a650bf42591a5 ]
+commit 19f94b6fee75b3ef7fbc06f3745b9a771a8a19a4 upstream.
 
-The main channel Received Signal Strength Indicator (RSSI) measurement
-is used to determine whether an RF field is present or not. RSSI != 0
-is interpreted as an RF Field is present. This does not take RF noise
-and measurement inaccuracy into account, and results in false positives
-in the field.
+nft_ct_expect_obj_eval() allocates an expectation and may call
+nf_ct_expect_related(), but never drops its local reference.
 
-Define a noise level and make sure the RF field is only interpreted as
-present when the RSSI is above the noise level.
+Add nf_ct_expect_put(exp) before return to balance allocation.
 
-Fixes: 851ee3cbf850 ("NFC: trf7970a: Don't turn on RF if there is already an RF field")
-Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Mark Greer <mgreer@animalcreek.com>
-Link: https://patch.msgid.link/20260422100930.581237-1-paul.geurts@prodrive-technologies.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 857b46027d6f ("netfilter: nft_ct: add ct expectations support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/trf7970a.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netfilter/nft_ct.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-index 081ec1105572e..4d99d4dbf817e 100644
---- a/drivers/nfc/trf7970a.c
-+++ b/drivers/nfc/trf7970a.c
-@@ -311,6 +311,7 @@
- #define TRF7970A_RSSI_OSC_STATUS_RSSI_MASK	(BIT(2) | BIT(1) | BIT(0))
- #define TRF7970A_RSSI_OSC_STATUS_RSSI_X_MASK	(BIT(5) | BIT(4) | BIT(3))
- #define TRF7970A_RSSI_OSC_STATUS_RSSI_OSC_OK	BIT(6)
-+#define TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL	1
+--- a/net/netfilter/nft_ct.c
++++ b/net/netfilter/nft_ct.c
+@@ -1299,6 +1299,8 @@ static void nft_ct_expect_obj_eval(struc
  
- #define TRF7970A_SPECIAL_FCN_REG1_COL_7_6		BIT(0)
- #define TRF7970A_SPECIAL_FCN_REG1_14_ANTICOLL		BIT(1)
-@@ -1253,7 +1254,7 @@ static int trf7970a_is_rf_field(struct trf7970a *trf, bool *is_rf_field)
- 	if (ret)
- 		return ret;
+ 	if (nf_ct_expect_related(exp, 0) != 0)
+ 		regs->verdict.code = NF_DROP;
++
++	nf_ct_expect_put(exp);
+ }
  
--	if (rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK)
-+	if ((rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK) > TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL)
- 		*is_rf_field = true;
- 	else
- 		*is_rf_field = false;
--- 
-2.53.0
-
+ static const struct nla_policy nft_ct_expect_policy[NFTA_CT_EXPECT_MAX + 1] = {
 
 
 
