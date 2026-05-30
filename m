@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257764-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OH+IFbUqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258537-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:41 +0200
+	id WO80KZAeG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257764-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1CAD611934
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9AD60FCCA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9EEC30A7F6F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 430E73021589
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4733B3896;
-	Sat, 30 May 2026 18:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC0F3403F3;
+	Sat, 30 May 2026 17:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y54OxOSt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONN88ULy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4494C2F90E0;
-	Sat, 30 May 2026 18:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2958A2FDC5E;
+	Sat, 30 May 2026 17:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164682; cv=none; b=bdhWIP1gHM90LHfzeGme4r05yS1GphLtlXEBSzkqcHoreJXDI9Ko8BNUmsG1ICLBx4xra8JJZkFIJ1tvQaQBlMs8tsfZxVHwozJjXTlKlynRk++vcNas9LssvCT+VBiW2CkhS/JmpCX41vAWeyZTFzIxmSc8C+88QdpndgGUz4o=
+	t=1780162094; cv=none; b=T6JunrAhgP0mWH0l/z/5yiyOoH8YVQDzq+5Pc6lj71wi72YXre9mVp34gC3y0N7NXCzIhCnuyYlw7U6gC2W7BGt7vGeEuEqx3Nr4neMjI46M7PkR2qvrAFoluEa4e5hsLevZnjxZGF8U1UMASCPy97xXRqKtdw1iY9X+K2aX4dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164682; c=relaxed/simple;
-	bh=6rYPAtfCdeqoyEn3BfolYc2Bk980i6JMAYY4DkZckuA=;
+	s=arc-20240116; t=1780162094; c=relaxed/simple;
+	bh=lUo2ihQwLRjQ6Z+vZ7g0Z50+Fq3sDAolrZiVQkmRChc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tmj590AoBdR+3As/lv/F5Ruf3wjQ1ytF2HS4BjNup6B3cM8rGOigDLZdc4DWdu6yQbri5yO7GxpB0m6mPw3wqPH3kGFEk2nlLmNrln8Dc6xU7quF1eujste26LACtNc70seUEII9igrnRbkb67Fj+gU3bD9GsiYGCx1aXUFMPW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y54OxOSt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874921F00893;
-	Sat, 30 May 2026 18:11:20 +0000 (UTC)
+	 MIME-Version; b=cfRtkV31qOZyOeZnHmEj8Oa3daCHy3ga9SMLno93fHgKuyCzM3nzUcHhPHTmk8OFrJHa3yndHsxyTdtz9Vx13nXGBjZhXsAlpdITQvlyvkIrKs12gkR/j6AR9Gep13qdO3wYagm5cajl4iYobjpVNPalqKveeONv+qY2WhcWqEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONN88ULy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DCCB1F00893;
+	Sat, 30 May 2026 17:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164681;
-	bh=b+JTQYMjZBvJ1DQpc8AFOl/P2MApl6LLBu71iYyfIPg=;
+	s=korg; t=1780162093;
+	bh=mqFp6/7bBkmQRzkzOdJtHsyjYuUWenVV8b+eNMijMB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=y54OxOStDX2IVYOq6O4/w6cYzLqzXQmT2DFqnHxcPtWWDyIMJXAyMJiifZktQTMOe
-	 em8HPCtuVb9myBHhSZXvYcE591OwyVwgZtjp+Xqz8PdtizELhSne+dIEIKqqbP7itB
-	 3d7+0M8/tSHuKtEO0UZDzcpskPeZl+XZOyhSQ+3E=
+	b=ONN88ULy54oCHmpK2NG9mXEvEZN0gnWPV5HzuQQ9mBBRpiRQhLXWIWr2KC3XyQpR/
+	 tRbgw8dpPP/BFSOvg+Q4VkA+ITMS1h8qmiypJf8pqEMSI4ubSFbsttlg/VXgWWh53F
+	 o3YIvnkGgiDNTAjl5wT1LuHjY0Vm0lcbOuTTuPgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 628/776] sctp: discard stale INIT after handshake completion
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.1 818/969] ceph: fix a buffer leak in __ceph_setxattr()
 Date: Sat, 30 May 2026 18:05:42 +0200
-Message-ID: <20260530160256.202508660@linuxfoundation.org>
+Message-ID: <20260530160323.228349630@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258537-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257764-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ibm.com,redhat.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D1CAD611934
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: ED9AD60FCCA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 
-[ Upstream commit 8a92cb475ca90d84db769e4d4383e631ace0d6e5 ]
+commit 5d3cc36b4e77a27ce7b686b7c59c7072bcb3fa8e upstream.
 
-After an association reaches ESTABLISHED, the peer’s init_tag is already
-known from the handshake. Any subsequent INIT with the same init_tag is
-not a valid restart, but a delayed or duplicate INIT.
+The old_blob in __ceph_setxattr() can store
+ci->i_xattrs.prealloc_blob value during the retry.
+However, it is never called the ceph_buffer_put()
+for the old_blob object. This patch fixes the issue of
+the buffer leak.
 
-Drop such INIT chunks in sctp_sf_do_unexpected_init() instead of
-processing them as new association attempts.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Link: https://patch.msgid.link/5788c76c1ee122a3ed00189e88dcf9df1fba226c.1777214801.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sm_statefuns.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ceph/xattr.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index dc758ad0051e0..2f9f24b188520 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -1555,6 +1555,12 @@ static enum sctp_disposition sctp_sf_do_unexpected_init(
- 	/* Tag the variable length parameters.  */
- 	chunk->param_hdr.v = skb_pull(chunk->skb, sizeof(struct sctp_inithdr));
+--- a/fs/ceph/xattr.c
++++ b/fs/ceph/xattr.c
+@@ -1246,6 +1246,7 @@ retry:
  
-+	if (asoc->state >= SCTP_STATE_ESTABLISHED) {
-+		/* Discard INIT matching peer vtag after handshake completion (stale INIT). */
-+		if (ntohl(chunk->subh.init_hdr->init_tag) == asoc->peer.i.init_tag)
-+			return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
-+	}
-+
- 	/* Verify the INIT chunk before processing it. */
- 	err_chunk = NULL;
- 	if (!sctp_verify_init(net, ep, asoc, chunk->chunk_hdr->type,
--- 
-2.53.0
-
+ do_sync:
+ 	spin_unlock(&ci->i_ceph_lock);
++	ceph_buffer_put(old_blob);
+ do_sync_unlocked:
+ 	if (lock_snap_rwsem)
+ 		up_read(&mdsc->snap_rwsem);
 
 
 
