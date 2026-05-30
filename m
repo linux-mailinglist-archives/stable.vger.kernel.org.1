@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OL2cCQYhG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257893-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:40:22 +0200
+	id AHN8OPgyG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A893610282
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:40:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8854E612CF0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC7D7307F2BF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:35:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1585730AC625
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B42D3AD520;
-	Sat, 30 May 2026 17:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6227D233D9E;
+	Sat, 30 May 2026 18:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzw3w7rM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PU3fp5dA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C8E33A9DA;
-	Sat, 30 May 2026 17:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F9E4315F;
+	Sat, 30 May 2026 18:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162525; cv=none; b=JoRV+laVY/A1gRlRPoXa3wBxn8ZI1kvxnBQfft4+emKnSWoFbKFkgvePZ9UyO4cIYu7Kph7eTQykZbrQNlUNLOxiqhSEIb40SotJHpFlTBwM55SqQKfT8/e2qxm5OvoRaGKKnvgVRKRYPj9nKaCgOiouy/ciBuUL4QqOPbHIRhU=
+	t=1780167183; cv=none; b=fFlFKMDlbZCO6bSZZd1TKJ1H0kYNe7HCvsFahZ7ktntUWme1hK8/eV1sBMGLmO2Vk1honh0QCkPVBWUqBjKEboHweMlNSBlOlJgr4uHYeI2O1XiokdQcxuttVwLuKQi/0SMBkqNPy0avQ7C+lPSdFNxjnJyAenacYmYsCC8CaHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162525; c=relaxed/simple;
-	bh=nmFxgI4tPuaAm+8ruRETfyKkEoZPM/3jjqmZY0uAvXQ=;
+	s=arc-20240116; t=1780167183; c=relaxed/simple;
+	bh=tvjELscSXHPJQVYW1z1BWEuhBePtyLHtjaLrX3U4o04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pgxKxcpcQ5mzDUIV+VZukYKj+3uk0yhaYcF9gHG0ZDXSCd/DDt3RhKuDfnyt12Rkp6aamELa+scI16FeVz1W2No3C6TQP51qdy08CRQIQ1FZGlGHzFM+bMt7vcjX7ENeQqZEBdMO/2oeZbBQVyp5Za4zzDPKevCM3mwQsY4re64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzw3w7rM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011661F0089D;
-	Sat, 30 May 2026 17:35:22 +0000 (UTC)
+	 MIME-Version; b=ketGBmGSJyy+VVs+L5vztVE6l3ksuj39l3+u3at1rZO7hxNX4gHr73lUATXVcZO0RmJQZvTG1TDSq5+Qt0YER3CzYXeFGwl5INCjNV3nBo5JgB+Vsp1IjwEhPbPSv7TICc8Cb8xU4in8ksmMCQ09QVLc6S80Up3hOAaksF2Rwck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PU3fp5dA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533F51F00893;
+	Sat, 30 May 2026 18:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162523;
-	bh=OULSZKiuUJX5FXINFIlhxBuCmtUBHlwbXskLDYXlJYI=;
+	s=korg; t=1780167182;
+	bh=iEFrDjN8gTIErD/1WFMUBNbNzy0dO84HM/iim7nnE/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jzw3w7rMwYkRlXs9aJhnQEj8lyt4SipKrbrY/uPDNM08eYd+xNCEx/WhEoEkPzw8M
-	 2Z2iJvQz4lOJFB6FzyO67qVUwkTbS8iIiA9clbde72YAc6SIFaC/r70KHDkzJlEK4i
-	 XgmkmCgWNHcGLC4dO21PhspBwF4mk9w0xY3JGxJY=
+	b=PU3fp5dAmWmE1sJyNYi8cUHCaXMVwF4WOAioqYytlak+Ob/aapFNzScYYzuiNhYlF
+	 wKoyhDe14CrtdcmEoeM5y3UQvbReYEL2d+zvL1MkmB4WN5WSlL8AQOhZUDmXAhw+Vj
+	 apdU/OY1LGiCZabD56yEc4Ud6q8c1CrQHMS6150g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sriram R <quic_srirrama@quicinc.com>,
-	Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Kent Gibson <warthog618@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 945/969] wifi: ath11k: remap ce register space for IPQ5018
+Subject: [PATCH 5.10 588/589] gpio: cdev: check if uAPI v2 config attributes are correctly zeroed
 Date: Sat, 30 May 2026 18:07:49 +0200
-Message-ID: <20260530160326.855927240@linuxfoundation.org>
+Message-ID: <20260530160240.038032650@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,409 +66,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-259271-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257893-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[quicinc.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7A893610282
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 8854E612CF0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sriram R <quic_srirrama@quicinc.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-[ Upstream commit b42b3678c91f3ca6e0888bf5a15c1e8678fd5f2d ]
+[ Upstream commit 3e6ccd790ed69bedd3d9626d01dd35cf9821c121 ]
 
-In IPQ5018 ce register space is moved out of wcss unlike
-ipq8074 or ipq6018 and the space is not contiguous,
-hence remap the CE registers to a new space to access them.
+We check the padding of other uAPI v2 structures but not that of line
+config attributes. For used attributes: check if their padding is
+zeroed, for unused: check if the entire structure is zeroed.
 
-Register read/write is modified to check if the register to be written
-falls in the CE register space and corresponding register is written.
-Also adjust the interrupt register address to ce irq enable/disable.
-
-Tested-on: IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-Co-developed-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20221122132152.17771-5-quic_kathirve@quicinc.com
-Stable-dep-of: 2a2451a34afd ("wifi: ath11k: fix peer resolution on rx path when peer_id=0")
+Fixes: 3c0d9c635ae2 ("gpiolib: cdev: support GPIO_V2_GET_LINE_IOCTL and GPIO_V2_LINE_GET_VALUES_IOCTL")
+Reviewed-by: Kent Gibson <warthog618@gmail.com>
+Link: https://patch.msgid.link/20260521-gpio-cdev-attr-padding-check-v3-1-ec3bcbe2e358@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/ahb.c  | 44 ++++++++++++++++++++++----
- drivers/net/wireless/ath/ath11k/ce.h   | 16 ++++++++++
- drivers/net/wireless/ath/ath11k/core.c |  8 +++++
- drivers/net/wireless/ath/ath11k/core.h |  1 +
- drivers/net/wireless/ath/ath11k/hal.c  | 17 ++++++----
- drivers/net/wireless/ath/ath11k/hal.h  |  5 +++
- drivers/net/wireless/ath/ath11k/hw.c   | 17 ++++++++++
- drivers/net/wireless/ath/ath11k/hw.h   |  9 ++++++
- drivers/net/wireless/ath/ath11k/pci.c  |  2 ++
- 9 files changed, 107 insertions(+), 12 deletions(-)
+ drivers/gpio/gpiolib-cdev.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index 70d468f013383..db20b39c0bf56 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -267,30 +267,42 @@ static void ath11k_ahb_clearbit32(struct ath11k_base *ab, u8 bit, u32 offset)
- static void ath11k_ahb_ce_irq_enable(struct ath11k_base *ab, u16 ce_id)
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index e1bdcd345328b..a4446d7baa390 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -925,6 +925,7 @@ static int gpio_v2_line_flags_validate(u64 flags)
+ static int gpio_v2_line_config_validate(struct gpio_v2_line_config *lc,
+ 					unsigned int num_lines)
  {
- 	const struct ce_attr *ce_attr;
-+	const struct ce_ie_addr *ce_ie_addr = ab->hw_params.ce_ie_addr;
-+	u32 ie1_reg_addr, ie2_reg_addr, ie3_reg_addr;
++	size_t unused_attrs;
+ 	unsigned int i;
+ 	u64 flags;
+ 	int ret;
+@@ -932,9 +933,21 @@ static int gpio_v2_line_config_validate(struct gpio_v2_line_config *lc,
+ 	if (lc->num_attrs > GPIO_V2_LINE_NUM_ATTRS_MAX)
+ 		return -EINVAL;
+ 
++	unused_attrs = GPIO_V2_LINE_NUM_ATTRS_MAX - lc->num_attrs;
 +
-+	ie1_reg_addr = ce_ie_addr->ie1_reg_addr + ATH11K_CE_OFFSET(ab);
-+	ie2_reg_addr = ce_ie_addr->ie2_reg_addr + ATH11K_CE_OFFSET(ab);
-+	ie3_reg_addr = ce_ie_addr->ie3_reg_addr + ATH11K_CE_OFFSET(ab);
+ 	if (!mem_is_zero(lc->padding, sizeof(lc->padding)))
+ 		return -EINVAL;
  
- 	ce_attr = &ab->hw_params.host_ce_config[ce_id];
- 	if (ce_attr->src_nentries)
--		ath11k_ahb_setbit32(ab, ce_id, CE_HOST_IE_ADDRESS);
-+		ath11k_ahb_setbit32(ab, ce_id, ie1_reg_addr);
- 
- 	if (ce_attr->dest_nentries) {
--		ath11k_ahb_setbit32(ab, ce_id, CE_HOST_IE_2_ADDRESS);
-+		ath11k_ahb_setbit32(ab, ce_id, ie2_reg_addr);
- 		ath11k_ahb_setbit32(ab, ce_id + CE_HOST_IE_3_SHIFT,
--				    CE_HOST_IE_3_ADDRESS);
-+				    ie3_reg_addr);
- 	}
- }
- 
- static void ath11k_ahb_ce_irq_disable(struct ath11k_base *ab, u16 ce_id)
- {
- 	const struct ce_attr *ce_attr;
-+	const struct ce_ie_addr *ce_ie_addr = ab->hw_params.ce_ie_addr;
-+	u32 ie1_reg_addr, ie2_reg_addr, ie3_reg_addr;
-+
-+	ie1_reg_addr = ce_ie_addr->ie1_reg_addr + ATH11K_CE_OFFSET(ab);
-+	ie2_reg_addr = ce_ie_addr->ie2_reg_addr + ATH11K_CE_OFFSET(ab);
-+	ie3_reg_addr = ce_ie_addr->ie3_reg_addr + ATH11K_CE_OFFSET(ab);
- 
- 	ce_attr = &ab->hw_params.host_ce_config[ce_id];
- 	if (ce_attr->src_nentries)
--		ath11k_ahb_clearbit32(ab, ce_id, CE_HOST_IE_ADDRESS);
-+		ath11k_ahb_clearbit32(ab, ce_id, ie1_reg_addr);
- 
- 	if (ce_attr->dest_nentries) {
--		ath11k_ahb_clearbit32(ab, ce_id, CE_HOST_IE_2_ADDRESS);
-+		ath11k_ahb_clearbit32(ab, ce_id, ie2_reg_addr);
- 		ath11k_ahb_clearbit32(ab, ce_id + CE_HOST_IE_3_SHIFT,
--				      CE_HOST_IE_3_ADDRESS);
-+				      ie3_reg_addr);
- 	}
- }
- 
-@@ -1148,10 +1160,26 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
- 		goto err_core_free;
- 	}
- 
-+	ab->mem_ce = ab->mem;
-+
- 	ret = ath11k_core_pre_init(ab);
- 	if (ret)
- 		goto err_core_free;
- 
-+	if (ab->hw_params.ce_remap) {
-+		const struct ce_remap *ce_remap = ab->hw_params.ce_remap;
-+		/* ce register space is moved out of wcss unlike ipq8074 or ipq6018
-+		 * and the space is not contiguous, hence remapping the CE registers
-+		 * to a new space for accessing them.
-+		 */
-+		ab->mem_ce = ioremap(ce_remap->base, ce_remap->size);
-+		if (IS_ERR(ab->mem_ce)) {
-+			dev_err(&pdev->dev, "ce ioremap error\n");
-+			ret = -ENOMEM;
-+			goto err_core_free;
-+		}
++	for (i = 0; i < lc->num_attrs; i++) {
++		if (lc->attrs[i].attr.padding != 0)
++			return -EINVAL;
 +	}
 +
- 	ret = ath11k_ahb_setup_resources(ab);
- 	if (ret)
- 		goto err_core_free;
-@@ -1242,6 +1270,10 @@ static void ath11k_ahb_free_resources(struct ath11k_base *ab)
- 	ath11k_ahb_release_smp2p_handle(ab);
- 	ath11k_ahb_fw_resource_deinit(ab);
- 	ath11k_ce_free_pipes(ab);
++	if (unused_attrs) {
++		if (!mem_is_zero(&lc->attrs[lc->num_attrs], unused_attrs * sizeof(*lc->attrs)))
++			return -EINVAL;
++	}
 +
-+	if (ab->hw_params.ce_remap)
-+		iounmap(ab->mem_ce);
-+
- 	ath11k_core_free(ab);
- 	platform_set_drvdata(pdev, NULL);
- }
-diff --git a/drivers/net/wireless/ath/ath11k/ce.h b/drivers/net/wireless/ath/ath11k/ce.h
-index 9644ff909502e..1fc6360e7f01b 100644
---- a/drivers/net/wireless/ath/ath11k/ce.h
-+++ b/drivers/net/wireless/ath/ath11k/ce.h
-@@ -49,6 +49,11 @@ void ath11k_ce_byte_swap(void *mem, u32 len);
- #define CE_HOST_IE_2_ADDRESS	0x00A18040
- #define CE_HOST_IE_3_ADDRESS	CE_HOST_IE_ADDRESS
- 
-+/* CE IE registers are different for IPQ5018 */
-+#define CE_HOST_IPQ5018_IE_ADDRESS		0x0841804C
-+#define CE_HOST_IPQ5018_IE_2_ADDRESS		0x08418050
-+#define CE_HOST_IPQ5018_IE_3_ADDRESS		CE_HOST_IPQ5018_IE_ADDRESS
-+
- #define CE_HOST_IE_3_SHIFT	0xC
- 
- #define CE_RING_IDX_INCR(nentries_mask, idx) (((idx) + 1) & (nentries_mask))
-@@ -84,6 +89,17 @@ struct ce_pipe_config {
- 	__le32 reserved;
- };
- 
-+struct ce_ie_addr {
-+	u32 ie1_reg_addr;
-+	u32 ie2_reg_addr;
-+	u32 ie3_reg_addr;
-+};
-+
-+struct ce_remap {
-+	u32 base;
-+	u32 size;
-+};
-+
- struct ce_attr {
- 	/* CE_ATTR_* values */
- 	unsigned int flags;
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 4c234d576b3d9..ce87e67dc638c 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -54,6 +54,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.target_ce_count = 11,
- 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_ipq8074,
- 		.svc_to_ce_map_len = 21,
-+		.ce_ie_addr = &ath11k_ce_ie_addr_ipq8074,
- 		.single_pdev_only = false,
- 		.rxdma1_enable = true,
- 		.num_rxmda_per_pdev = 1,
-@@ -137,6 +138,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.target_ce_count = 11,
- 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_ipq6018,
- 		.svc_to_ce_map_len = 19,
-+		.ce_ie_addr = &ath11k_ce_ie_addr_ipq8074,
- 		.single_pdev_only = false,
- 		.rxdma1_enable = true,
- 		.num_rxmda_per_pdev = 1,
-@@ -218,6 +220,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.target_ce_count = 9,
- 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_qca6390,
- 		.svc_to_ce_map_len = 14,
-+		.ce_ie_addr = &ath11k_ce_ie_addr_ipq8074,
- 		.single_pdev_only = true,
- 		.rxdma1_enable = false,
- 		.num_rxmda_per_pdev = 2,
-@@ -301,6 +304,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.target_ce_count = 9,
- 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_qcn9074,
- 		.svc_to_ce_map_len = 18,
-+		.ce_ie_addr = &ath11k_ce_ie_addr_ipq8074,
- 		.rxdma1_enable = true,
- 		.num_rxmda_per_pdev = 1,
- 		.rx_mac_buf_ring = false,
-@@ -381,6 +385,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.target_ce_count = 9,
- 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_qca6390,
- 		.svc_to_ce_map_len = 14,
-+		.ce_ie_addr = &ath11k_ce_ie_addr_ipq8074,
- 		.single_pdev_only = true,
- 		.rxdma1_enable = false,
- 		.num_rxmda_per_pdev = 2,
-@@ -546,6 +551,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.target_ce_count = 9,
- 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_qca6390,
- 		.svc_to_ce_map_len = 14,
-+		.ce_ie_addr = &ath11k_ce_ie_addr_ipq8074,
- 		.single_pdev_only = true,
- 		.rxdma1_enable = false,
- 		.num_rxmda_per_pdev = 1,
-@@ -634,6 +640,8 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.target_ce_count = TARGET_CE_CNT_5018,
- 		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_ipq5018,
- 		.svc_to_ce_map_len = SVC_CE_MAP_LEN_5018,
-+		.ce_ie_addr = &ath11k_ce_ie_addr_ipq5018,
-+		.ce_remap = &ath11k_ce_remap_ipq5018,
- 		.rxdma1_enable = true,
- 		.num_rxmda_per_pdev = RXDMA_PER_PDEV_5018,
- 		.rx_mac_buf_ring = false,
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index c0ddcf7bcd90b..2e4f89bac61b1 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -853,6 +853,7 @@ struct ath11k_base {
- 	struct ath11k_dp dp;
- 
- 	void __iomem *mem;
-+	void __iomem *mem_ce;
- 	unsigned long mem_len;
- 
- 	struct {
-diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-index e4114cc35b10c..87ed147c5968d 100644
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1245,16 +1245,20 @@ static int ath11k_hal_srng_create_config(struct ath11k_base *ab)
- 	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_TCL_REG + HAL_TCL_STATUS_RING_HP;
- 
- 	s = &hal->srng_config[HAL_CE_SRC];
--	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab) + HAL_CE_DST_RING_BASE_LSB;
--	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab) + HAL_CE_DST_RING_HP;
-+	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab) + HAL_CE_DST_RING_BASE_LSB +
-+		ATH11K_CE_OFFSET(ab);
-+	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab) + HAL_CE_DST_RING_HP +
-+		ATH11K_CE_OFFSET(ab);
- 	s->reg_size[0] = HAL_SEQ_WCSS_UMAC_CE1_SRC_REG(ab) -
- 		HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab);
- 	s->reg_size[1] = HAL_SEQ_WCSS_UMAC_CE1_SRC_REG(ab) -
- 		HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab);
- 
- 	s = &hal->srng_config[HAL_CE_DST];
--	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_RING_BASE_LSB;
--	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_RING_HP;
-+	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_RING_BASE_LSB +
-+		ATH11K_CE_OFFSET(ab);
-+	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_RING_HP +
-+		ATH11K_CE_OFFSET(ab);
- 	s->reg_size[0] = HAL_SEQ_WCSS_UMAC_CE1_DST_REG(ab) -
- 		HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab);
- 	s->reg_size[1] = HAL_SEQ_WCSS_UMAC_CE1_DST_REG(ab) -
-@@ -1262,8 +1266,9 @@ static int ath11k_hal_srng_create_config(struct ath11k_base *ab)
- 
- 	s = &hal->srng_config[HAL_CE_DST_STATUS];
- 	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) +
--		HAL_CE_DST_STATUS_RING_BASE_LSB;
--	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_STATUS_RING_HP;
-+		HAL_CE_DST_STATUS_RING_BASE_LSB + ATH11K_CE_OFFSET(ab);
-+	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_STATUS_RING_HP +
-+		ATH11K_CE_OFFSET(ab);
- 	s->reg_size[0] = HAL_SEQ_WCSS_UMAC_CE1_DST_REG(ab) -
- 		HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab);
- 	s->reg_size[1] = HAL_SEQ_WCSS_UMAC_CE1_DST_REG(ab) -
-diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
-index 84b070b479582..f2341acf0730f 100644
---- a/drivers/net/wireless/ath/ath11k/hal.h
-+++ b/drivers/net/wireless/ath/ath11k/hal.h
-@@ -321,6 +321,10 @@ struct ath11k_base;
- #define HAL_WBM2SW_RELEASE_RING_BASE_MSB_RING_SIZE	0x000fffff
- #define HAL_RXDMA_RING_MAX_SIZE				0x0000ffff
- 
-+/* IPQ5018 ce registers */
-+#define HAL_IPQ5018_CE_WFSS_REG_BASE		0x08400000
-+#define HAL_IPQ5018_CE_SIZE			0x200000
-+
- /* Add any other errors here and return them in
-  * ath11k_hal_rx_desc_get_err().
-  */
-@@ -519,6 +523,7 @@ enum hal_srng_dir {
- #define HAL_SRNG_FLAGS_MSI_INTR			0x00020000
- #define HAL_SRNG_FLAGS_CACHED                   0x20000000
- #define HAL_SRNG_FLAGS_LMAC_RING		0x80000000
-+#define HAL_SRNG_FLAGS_REMAP_CE_RING        0x10000000
- 
- #define HAL_SRNG_TLV_HDR_TAG		GENMASK(9, 1)
- #define HAL_SRNG_TLV_HDR_LEN		GENMASK(25, 10)
-diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
-index 1928da8415518..5639e261d834e 100644
---- a/drivers/net/wireless/ath/ath11k/hw.c
-+++ b/drivers/net/wireless/ath/ath11k/hw.c
-@@ -2164,6 +2164,23 @@ const struct service_to_pipe ath11k_target_service_to_ce_map_wlan_ipq5018[] = {
- 	{ /* terminator entry */ }
- };
- 
-+const struct ce_ie_addr ath11k_ce_ie_addr_ipq8074 = {
-+	.ie1_reg_addr = CE_HOST_IE_ADDRESS,
-+	.ie2_reg_addr = CE_HOST_IE_2_ADDRESS,
-+	.ie3_reg_addr = CE_HOST_IE_3_ADDRESS,
-+};
-+
-+const struct ce_ie_addr ath11k_ce_ie_addr_ipq5018 = {
-+	.ie1_reg_addr = CE_HOST_IPQ5018_IE_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
-+	.ie2_reg_addr = CE_HOST_IPQ5018_IE_2_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
-+	.ie3_reg_addr = CE_HOST_IPQ5018_IE_3_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
-+};
-+
-+const struct ce_remap ath11k_ce_remap_ipq5018 = {
-+	.base = HAL_IPQ5018_CE_WFSS_REG_BASE,
-+	.size = HAL_IPQ5018_CE_SIZE,
-+};
-+
- const struct ath11k_hw_regs ipq8074_regs = {
- 	/* SW2TCL(x) R0 ring configuration address */
- 	.hal_tcl1_ring_base_lsb = 0x00000510,
-diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index 0c5ef8a526d85..e2ed5d0477430 100644
---- a/drivers/net/wireless/ath/ath11k/hw.h
-+++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -80,6 +80,8 @@
- #define ATH11K_M3_FILE			"m3.bin"
- #define ATH11K_REGDB_FILE_NAME		"regdb.bin"
- 
-+#define ATH11K_CE_OFFSET(ab)	(ab->mem_ce - ab->mem)
-+
- enum ath11k_hw_rate_cck {
- 	ATH11K_HW_RATE_CCK_LP_11M = 0,
- 	ATH11K_HW_RATE_CCK_LP_5_5M,
-@@ -158,6 +160,8 @@ struct ath11k_hw_params {
- 	u32 target_ce_count;
- 	const struct service_to_pipe *svc_to_ce_map;
- 	u32 svc_to_ce_map_len;
-+	const struct ce_ie_addr *ce_ie_addr;
-+	const struct ce_remap *ce_remap;
- 
- 	bool single_pdev_only;
- 
-@@ -277,6 +281,11 @@ extern const struct ath11k_hw_ring_mask ath11k_hw_ring_mask_qca6390;
- extern const struct ath11k_hw_ring_mask ath11k_hw_ring_mask_qcn9074;
- extern const struct ath11k_hw_ring_mask ath11k_hw_ring_mask_wcn6750;
- 
-+extern const struct ce_ie_addr ath11k_ce_ie_addr_ipq8074;
-+extern const struct ce_ie_addr ath11k_ce_ie_addr_ipq5018;
-+
-+extern const struct ce_remap ath11k_ce_remap_ipq5018;
-+
- extern const struct ath11k_hw_hal_params ath11k_hw_hal_params_ipq8074;
- extern const struct ath11k_hw_hal_params ath11k_hw_hal_params_qca6390;
- extern const struct ath11k_hw_hal_params ath11k_hw_hal_params_wcn6750;
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index 79d2876a46b53..a8431ce1ab9ac 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -543,6 +543,8 @@ static int ath11k_pci_claim(struct ath11k_pci *ab_pci, struct pci_dev *pdev)
- 		goto clear_master;
- 	}
- 
-+	ab->mem_ce = ab->mem;
-+
- 	ath11k_dbg(ab, ATH11K_DBG_BOOT, "boot pci_mem 0x%pK\n", ab->mem);
- 	return 0;
- 
+ 	for (i = 0; i < num_lines; i++) {
+ 		flags = gpio_v2_line_config_flags(lc, i);
+ 		ret = gpio_v2_line_flags_validate(flags);
 -- 
 2.53.0
 
