@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GObNAekaG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:17 +0200
+	id UNdCLEElG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2FA560F32F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3E7610BA1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D03703019A1F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6011B3013032
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEAD34389B;
-	Sat, 30 May 2026 17:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964C03546EA;
+	Sat, 30 May 2026 17:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6qkZXgs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feWWVUVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93131EEA8;
-	Sat, 30 May 2026 17:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A873AEB5C;
+	Sat, 30 May 2026 17:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161104; cv=none; b=ftzS7M/ZTC33TBmwnuCQPxvmN4XHPJ0iWH2QvE5cM6j/N3DlUmTnv/76bsUZ9CO5ElqLlLKsAfzVuXKmx2kw2nvt744+0+GdsbWmEH9q/H3iNEMG3jQcCp7rEweNCx+HD4LYJ9vK5/LQS0o5L+5Mz1t2kmo+cyaSga7PBgTIofE=
+	t=1780163701; cv=none; b=dgaWey7U+idIdO5vtXLJ6tTDViPiEFYhKB15ZKGJcW4DVRxwX/I4RaT9KCtHOvxyYPTPF9gLd/GYs+AakdvKfTLUgBuXf3Vw8MB/u5Ur54yTLHfzs8/rwNknSUf00E9IK5U8YSOS4IGmricZGb8JNO/p01ie6W5SXKbBKnKtyh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161104; c=relaxed/simple;
-	bh=vNbT3GqL2IqA3eNJiSejALhgjTuUolCMZeBClgAUO6s=;
+	s=arc-20240116; t=1780163701; c=relaxed/simple;
+	bh=AgmkPMAfceJYRED8GEHKdE8x4QAY3hsaC4rzeUKDAaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oesVF9asNICrLoBYkld/Qcp9Y0x0W4cEC+Yi43rMPAd5H28WnKIwm3gTur4sZWq80dPrzAstAOh/NisIeWYmjBOdmsXiLSRN1Du655QysUPQCobpnhDYooCO4vpGy7+NjwKPa1Wy/gHH9+uPZ/ueWLgB+87n1G3g1xapr4JtZU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6qkZXgs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BC31F00893;
-	Sat, 30 May 2026 17:11:42 +0000 (UTC)
+	 MIME-Version; b=PW/KwcFSFD9ec14WEBlv3zSmVIJOgTi8Q5PSxB31+qnBqPQSziocJ0N6BFYAb38RwVAFRwkDnK+HZqQ/3R6QLMTPTPjcy5g9sKma/IVgc3vaY+0LfplzlDLNvcDIjQzVtCMsg5Hx+6wV/lpUJKZRpw0lDr9S62JBZ31XBBJ/i48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feWWVUVf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF3B1F00893;
+	Sat, 30 May 2026 17:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161103;
-	bh=h9EBqjNPfmjCFlYpUa1Xn4TmjflMJ+NG1yjnaz5CttU=;
+	s=korg; t=1780163698;
+	bh=pvC6+wMVW5AQ0BR6/qbYQEGloWGuQgJnbAsC2wTOxGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h6qkZXgsk19q8Zqgwa32BgYmn2soJghypJQ4Uu0czTHCUm6KjrxyFzFjpLd/4uU87
-	 19xbt77QMSyyo/mg5QA+O2vEVqNAkvRNeG5mK+n/thT1FnWw0E8yMtzUqC6JK0Lwry
-	 MmZw8ha3obriC02yGuCo1t7MVHUMpg4R25P9qdfM=
+	b=feWWVUVfkYKVx+mz50lDejUiUPI4k12p1dBSGaOJzWjkBOZMRz5XLu1sSGZrYMIT0
+	 KnMO1AIaXbSiHN1KUnsyYjK1bV4LeOnIe0E+y4PqcmDp6GBvnL+qwfXVQNHYjNrHop
+	 JtWIKnmKTgGzzBz1OevUPB0J7sbrXZ8u4BkfzyEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Connor Abbott <cwabbott0@gmail.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 526/969] drm/msm/a6xx: Fix HLSQ register dumping
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 5.15 336/776] nvmet: avoid recursive nvmet-wq flush in nvmet_ctrl_free
 Date: Sat, 30 May 2026 18:00:50 +0200
-Message-ID: <20260530160314.883538632@linuxfoundation.org>
+Message-ID: <20260530160249.255922506@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,73 +66,171 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257469-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258244-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F2FA560F32F
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,lst.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qemu.org:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3F3E7610BA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Chaitanya Kulkarni <kch@nvidia.com>
 
-[ Upstream commit c289a6db9ba6cb974f0317da142e4f665d589566 ]
+commit aade8abd8b868b6ffa9697aadaea28ec7f65bee6 upstream.
 
-Fix the bitfield offset of HLSQ_READ_SEL state-type bitfield.  Otherwise
-we are always reading TP state when we wanted SP or HLSQ state.
+nvmet_tcp_release_queue_work() runs on nvmet-wq and can drop the
+final controller reference through nvmet_cq_put(). If that triggers
+nvmet_ctrl_free(), the teardown path flushes ctrl->async_event_work on
+the same nvmet-wq.
 
-Reported-by: Connor Abbott <cwabbott0@gmail.com>
-Suggested-by: Connor Abbott <cwabbott0@gmail.com>
-Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714236/
-Message-ID: <20260325184043.1259312-1-robin.clark@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Call chain:
+
+ nvmet_tcp_schedule_release_queue()
+   kref_put(&queue->kref, nvmet_tcp_release_queue)
+     nvmet_tcp_release_queue()
+       queue_work(nvmet_wq, &queue->release_work) <--- nvmet_wq
+         process_one_work()
+           nvmet_tcp_release_queue_work()
+             nvmet_cq_put(&queue->nvme_cq)
+               nvmet_cq_destroy()
+                 nvmet_ctrl_put(cq->ctrl)
+                   nvmet_ctrl_free()
+                     flush_work(&ctrl->async_event_work) <--- nvmet_wq
+
+                      Previously Scheduled by :-
+		        nvmet_add_async_event
+		          queue_work(nvmet_wq, &ctrl->async_event_work);
+
+This trips lockdep with a possible recursive locking warning.
+
+[ 5223.015876] run blktests nvme/003 at 2026-04-07 20:53:55
+[ 5223.061801] loop0: detected capacity change from 0 to 2097152
+[ 5223.072206] nvmet: adding nsid 1 to subsystem blktests-subsystem-1
+[ 5223.088368] nvmet_tcp: enabling port 0 (127.0.0.1:4420)
+[ 5223.126086] nvmet: Created discovery controller 1 for subsystem nqn.2014-08.org.nvmexpress.discovery for NQN nqn.2014-08.org.nvmexpress:uuid:0f01fb42-9f7f-4856-b0b3-51e60b8de349.
+[ 5223.128453] nvme nvme1: new ctrl: NQN "nqn.2014-08.org.nvmexpress.discovery", addr 127.0.0.1:4420, hostnqn: nqn.2014-08.org.nvmexpress:uuid:0f01fb42-9f7f-4856-b0b3-51e60b8de349
+[ 5233.199447] nvme nvme1: Removing ctrl: NQN "nqn.2014-08.org.nvmexpress.discovery"
+
+[ 5233.227718] ============================================
+[ 5233.231283] WARNING: possible recursive locking detected
+[ 5233.234696] 7.0.0-rc3nvme+ #20 Tainted: G           O     N
+[ 5233.238434] --------------------------------------------
+[ 5233.241852] kworker/u192:6/2413 is trying to acquire lock:
+[ 5233.245429] ffff888111632548 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: touch_wq_lockdep_map+0x26/0x90
+[ 5233.251438]
+               but task is already holding lock:
+[ 5233.255254] ffff888111632548 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: process_one_work+0x5cc/0x6e0
+[ 5233.261125]
+               other info that might help us debug this:
+[ 5233.265333]  Possible unsafe locking scenario:
+
+[ 5233.269217]        CPU0
+[ 5233.270795]        ----
+[ 5233.272436]   lock((wq_completion)nvmet-wq);
+[ 5233.275241]   lock((wq_completion)nvmet-wq);
+[ 5233.278020]
+                *** DEADLOCK ***
+
+[ 5233.281793]  May be due to missing lock nesting notation
+
+[ 5233.286195] 3 locks held by kworker/u192:6/2413:
+[ 5233.289192]  #0: ffff888111632548 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: process_one_work+0x5cc/0x6e0
+[ 5233.294569]  #1: ffffc9000e2a7e40 ((work_completion)(&queue->release_work)){+.+.}-{0:0}, at: process_one_work+0x1c5/0x6e0
+[ 5233.300128]  #2: ffffffff82d7dc40 (rcu_read_lock){....}-{1:3}, at: __flush_work+0x62/0x530
+[ 5233.304290]
+               stack backtrace:
+[ 5233.306520] CPU: 4 UID: 0 PID: 2413 Comm: kworker/u192:6 Tainted: G           O     N  7.0.0-rc3nvme+ #20 PREEMPT(full)
+[ 5233.306524] Tainted: [O]=OOT_MODULE, [N]=TEST
+[ 5233.306525] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+[ 5233.306527] Workqueue: nvmet-wq nvmet_tcp_release_queue_work [nvmet_tcp]
+[ 5233.306532] Call Trace:
+[ 5233.306534]  <TASK>
+[ 5233.306536]  dump_stack_lvl+0x73/0xb0
+[ 5233.306552]  print_deadlock_bug+0x225/0x2f0
+[ 5233.306556]  __lock_acquire+0x13f0/0x2290
+[ 5233.306563]  lock_acquire+0xd0/0x300
+[ 5233.306565]  ? touch_wq_lockdep_map+0x26/0x90
+[ 5233.306571]  ? __flush_work+0x20b/0x530
+[ 5233.306573]  ? touch_wq_lockdep_map+0x26/0x90
+[ 5233.306577]  touch_wq_lockdep_map+0x3b/0x90
+[ 5233.306580]  ? touch_wq_lockdep_map+0x26/0x90
+[ 5233.306583]  ? __flush_work+0x20b/0x530
+[ 5233.306585]  __flush_work+0x268/0x530
+[ 5233.306588]  ? __pfx_wq_barrier_func+0x10/0x10
+[ 5233.306594]  ? xen_error_entry+0x30/0x60
+[ 5233.306600]  nvmet_ctrl_free+0x140/0x310 [nvmet]
+[ 5233.306617]  nvmet_cq_put+0x74/0x90 [nvmet]
+[ 5233.306629]  nvmet_tcp_release_queue_work+0x19f/0x360 [nvmet_tcp]
+[ 5233.306634]  process_one_work+0x206/0x6e0
+[ 5233.306640]  worker_thread+0x184/0x320
+[ 5233.306643]  ? __pfx_worker_thread+0x10/0x10
+[ 5233.306646]  kthread+0xf1/0x130
+[ 5233.306648]  ? __pfx_kthread+0x10/0x10
+[ 5233.306651]  ret_from_fork+0x355/0x450
+[ 5233.306653]  ? __pfx_kthread+0x10/0x10
+[ 5233.306656]  ret_from_fork_asm+0x1a/0x30
+[ 5233.306664]  </TASK>
+
+There is also no need to flush async_event_work from controller
+teardown. The admin queue teardown already fails outstanding AER
+requests before the final controller put :-
+
+ nvmet_sq_destroy(admin sq)
+    nvmet_async_events_failall(ctrl)
+
+The controller has already been removed from the subsystem list before
+nvmet_ctrl_free() quiesces outstanding work.
+
+Replace flush_work() with cancel_work_sync() so a pending
+async_event_work item is canceled and a running instance is waited on
+without recursing into the same workqueue.
+
+Fixes: 06406d81a2d7 ("nvmet: cancel fatal error and flush async work before free controller")
+Cc: stable@vger.kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 2 +-
+ drivers/nvme/target/core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-index 7a30249974cff..de84bd623f16a 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-@@ -649,7 +649,7 @@ static void a6xx_get_crashdumper_hlsq_registers(struct msm_gpu *gpu,
- 	u64 out = dumper->iova + A6XX_CD_DATA_OFFSET;
- 	int i, regcount = 0;
+--- a/drivers/nvme/target/core.c
++++ b/drivers/nvme/target/core.c
+@@ -1471,7 +1471,7 @@ static void nvmet_ctrl_free(struct kref
  
--	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, regs->val1);
-+	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, (regs->val1 & 0xff) << 8);
+ 	nvmet_stop_keep_alive_timer(ctrl);
  
- 	for (i = 0; i < regs->count; i += 2) {
- 		u32 count = RANGE(regs->registers, i);
--- 
-2.53.0
-
+-	flush_work(&ctrl->async_event_work);
++	cancel_work_sync(&ctrl->async_event_work);
+ 	cancel_work_sync(&ctrl->fatal_err_work);
+ 
+ 	ida_simple_remove(&cntlid_ida, ctrl->cntlid);
 
 
 
