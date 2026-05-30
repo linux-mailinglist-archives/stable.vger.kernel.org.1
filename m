@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-257735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259116-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kD3EGHUfG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257735-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:41 +0200
+	id CH5hO5swG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259116-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40C360FED0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF906127C7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 027623073FA9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1A83A30A8FAE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695E434389F;
-	Sat, 30 May 2026 17:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A43A33E36A;
+	Sat, 30 May 2026 18:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D0Ld47aA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8A9o6Ab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4373233E36A;
-	Sat, 30 May 2026 17:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384E321B191;
+	Sat, 30 May 2026 18:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161996; cv=none; b=oUnZLO1jov2uR/erq/f8Wc/jR/7jWzdktwvMRYk1VVhgmZS4+xEn8WiaiYO40Ry51apWnmSe4yFuMZrLwx3D0grUlZt7+zdmZls1mQefKh/qu/9I84V3uKRyaywOJr8xDxR4KRXGs14otAptC2Bvp25lcgjMMHjJyApCHrU63VY=
+	t=1780166665; cv=none; b=bkrxjvE6yy1gyezpDEP1zDYhYUImFePTVuS2as6x8FU+dbW6uA8m6FueCms+Uxr0/rmbx3gUfgrp57T3oN2+BOPFqv2urrWm7px+UPFLypc1sdNV7RLbJ5TIscbddRQzdqOBYJj0u90npw7Sy1AsMTViB87Sf17V3d4jsieMLHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161996; c=relaxed/simple;
-	bh=ydyoRz/H2NgeZnYuNkn2RUKzZXXRlrmHyL/VxJ8Wi4s=;
+	s=arc-20240116; t=1780166665; c=relaxed/simple;
+	bh=CfwF6Oy+45wHuWH7KYQbvd8tPawEXNq9tq3vT10AxC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpJNp06v7QnG5uII+cOjgudBwfNquMUxCrzGmBwlXClPWwNRwN8W6mWksiie1SZbSENohV2xxtFt5gI7X8txZWK4piTh6oY4ptUDik2njgssvRex2ged7kS88cideJUZKl9XNwA3R1W+JdXjFkkIbti773Tj5fyqVBIqe6ZVMOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D0Ld47aA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868E91F00893;
-	Sat, 30 May 2026 17:26:34 +0000 (UTC)
+	 MIME-Version; b=j+wfkMO3ItWYY0Ss7d452domUnxNwNR7PdImt/uOjquoOC1iNWogacTF25bw+eyJgN6Uf0W+1gw3/ZJAeAsHRqb0RoLoTYrYfjKzU7u+Gl4MDau7KBF2gA+RgrWh3Mp88NctGmTnHGqDLRkLU0drq5TAywPugDGKM0ibG7Qpu40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8A9o6Ab; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3FD1F00893;
+	Sat, 30 May 2026 18:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161995;
-	bh=PssQowEcFas5iH3wmqRI3svOQPTmhaqb0qJusVYJtLs=;
+	s=korg; t=1780166664;
+	bh=7ncOqJ0XEdi35Xkh15t5tfdinGfKNaPR5yagIWrwlVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D0Ld47aAhH/2jPu/FCDvKu40jgrk+XvBqN8WVNWE4IfVZCF+rdBgdyDa7x73iXhpJ
-	 UvfXTO5VYvRCWmD6SXgy4fShXMNxaTtK1B6pWkZ/N/wlMR1q3dJ9TENPZ/K/GAHizM
-	 yGCLXaJGaWXGoPMMhKHWHlTFvJafneGDLrZUlT6M=
+	b=d8A9o6AbqNlpH1v75N/eNEI5wQsBIZj8t3l1vYKRoYDcDFS0ja8DBYf+IcLJFbTxl
+	 QOZjfyfvVvZo/gZ4VV+qeJs8UV71AW7/dnwu6CcUCrIJEP9z5rOUKtKx+yY+okUL+c
+	 Wr9LorAnUZAEFgpuG/Kt8BsP29r1mlWJ2JwN6aCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 789/969] net: tls: fix strparser anchor skb leak on offload RX setup failure
+Subject: [PATCH 5.10 432/589] openvswitch: cap upcall PID array size and pre-size vport replies
 Date: Sat, 30 May 2026 18:05:13 +0200
-Message-ID: <20260530160322.395177174@linuxfoundation.org>
+Message-ID: <20260530160236.070301369@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,119 +70,162 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,ovn.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-259116-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257735-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C40C360FED0
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,asu.edu:email]
+X-Rspamd-Queue-Id: 8AF906127C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 58689498ca3384851145a754dbb1d8ed1cf9fb54 ]
+[ Upstream commit 2091c6aa0df6aba47deb5c8ab232b1cb60af3519 ]
 
-When tls_set_device_offload_rx() fails at tls_dev_add(), the error path
-calls tls_sw_free_resources_rx() to clean up the SW context that was
-initialized by tls_set_sw_offload(). This function calls
-tls_sw_release_resources_rx() (which stops the strparser via
-tls_strp_stop()) and tls_sw_free_ctx_rx() (which kfrees the context),
-but never frees the anchor skb that was allocated by alloc_skb(0) in
-tls_strp_init().
+The vport netlink reply helpers allocate a fixed-size skb with
+nlmsg_new(NLMSG_DEFAULT_SIZE, ...) but serialize the full upcall PID
+array via ovs_vport_get_upcall_portids().  Since
+ovs_vport_set_upcall_portids() accepts any non-zero multiple of
+sizeof(u32) with no upper bound, a CAP_NET_ADMIN user can install a PID
+array large enough to overflow the reply buffer, causing nla_put() to
+fail with -EMSGSIZE and hitting BUG_ON(err < 0).  On systems with
+unprivileged user namespaces enabled (e.g., Ubuntu default), this is
+reachable via unshare -Urn since OVS vport mutation operations use
+GENL_UNS_ADMIN_PERM.
 
-Note that tls_sw_free_resources_rx() is exclusively used for this
-"failed to start offload" code path, there's no other caller.
+ kernel BUG at net/openvswitch/datapath.c:2414!
+ Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+ CPU: 1 UID: 0 PID: 65 Comm: poc Not tainted 7.0.0-rc7-00195-geb216e422044 #1
+ RIP: 0010:ovs_vport_cmd_set+0x34c/0x400
+ Call Trace:
+  <TASK>
+  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1116)
+  genl_rcv_msg (net/netlink/genetlink.c:1194)
+  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+  genl_rcv (net/netlink/genetlink.c:1219)
+  netlink_unicast (net/netlink/af_netlink.c:1344)
+  netlink_sendmsg (net/netlink/af_netlink.c:1894)
+  __sys_sendto (net/socket.c:2206)
+  __x64_sys_sendto (net/socket.c:2209)
+  do_syscall_64 (arch/x86/entry/syscall_64.c:63)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+  </TASK>
+ Kernel panic - not syncing: Fatal exception
 
-The leak did not exist before commit 84c61fe1a75b ("tls: rx: do not use
-the standard strparser"), because the standard strparser doesn't try
-to pre-allocate an skb.
+Reject attempts to set more PIDs than nr_cpu_ids in
+ovs_vport_set_upcall_portids(), and pre-compute the worst-case reply
+size in ovs_vport_cmd_msg_size() based on that bound, similar to the
+existing ovs_dp_cmd_msg_size().  nr_cpu_ids matches the cap already
+used by the per-CPU dispatch configuration on the datapath side
+(ovs_dp_cmd_fill_info() serialises at most nr_cpu_ids PIDs), so the
+two sides stay consistent.
 
-The normal close path in tls_sk_proto_close() handles cleanup by calling
-tls_sw_strparser_done() (which calls tls_strp_done()) after dropping
-the socket lock, because tls_strp_done() does cancel_work_sync() and
-the strparser work handler takes the socket lock.
-
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Fixes: 5cd667b0a456 ("openvswitch: Allow each vport to have an array of 'port_id's.")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Link: https://patch.msgid.link/20260416024653.153456-2-bestswngs@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20260428231559.1358502-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls.h      | 1 +
- net/tls/tls_strp.c | 6 ++++++
- net/tls/tls_sw.c   | 4 ++++
- 3 files changed, 11 insertions(+)
+ net/openvswitch/datapath.c | 35 +++++++++++++++++++++++++++++++++--
+ net/openvswitch/vport.c    |  3 +++
+ 2 files changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/net/tls/tls.h b/net/tls/tls.h
-index f25699517bdf8..8304afbe09e96 100644
---- a/net/tls/tls.h
-+++ b/net/tls/tls.h
-@@ -136,6 +136,7 @@ int tls_strp_dev_init(void);
- void tls_strp_dev_exit(void);
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index b493931433e99..1c69aa986633a 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -2032,9 +2032,40 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
+ 	return err;
+ }
  
- void tls_strp_done(struct tls_strparser *strp);
-+void __tls_strp_done(struct tls_strparser *strp);
- void tls_strp_stop(struct tls_strparser *strp);
- int tls_strp_init(struct tls_strparser *strp, struct sock *sk);
- void tls_strp_data_ready(struct tls_strparser *strp);
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 532230bed13b0..850146ed2d586 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -619,6 +619,12 @@ void tls_strp_done(struct tls_strparser *strp)
- 	WARN_ON(!strp->stopped);
- 
- 	cancel_work_sync(&strp->work);
-+	__tls_strp_done(strp);
++static size_t ovs_vport_cmd_msg_size(void)
++{
++	size_t msgsize = NLMSG_ALIGN(sizeof(struct ovs_header));
++
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_PORT_NO */
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_TYPE */
++	msgsize += nla_total_size(IFNAMSIZ);    /* OVS_VPORT_ATTR_NAME */
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_IFINDEX */
++	msgsize += nla_total_size(sizeof(s32)); /* OVS_VPORT_ATTR_NETNSID */
++
++	/* OVS_VPORT_ATTR_STATS */
++	msgsize += nla_total_size_64bit(sizeof(struct ovs_vport_stats));
++
++	/* OVS_VPORT_ATTR_UPCALL_STATS(OVS_VPORT_UPCALL_ATTR_SUCCESS +
++	 *                             OVS_VPORT_UPCALL_ATTR_FAIL)
++	 */
++	msgsize += nla_total_size(nla_total_size_64bit(sizeof(u64)) +
++				  nla_total_size_64bit(sizeof(u64)));
++
++	/* OVS_VPORT_ATTR_UPCALL_PID */
++	msgsize += nla_total_size(nr_cpu_ids * sizeof(u32));
++
++	/* OVS_VPORT_ATTR_OPTIONS(OVS_TUNNEL_ATTR_DST_PORT +
++	 *                        OVS_TUNNEL_ATTR_EXTENSION(OVS_VXLAN_EXT_GBP))
++	 */
++	msgsize += nla_total_size(nla_total_size(sizeof(u16)) +
++				  nla_total_size(nla_total_size(0)));
++
++	return msgsize;
 +}
 +
-+/* For setup error paths where the strparser was initialized but never armed. */
-+void __tls_strp_done(struct tls_strparser *strp)
-+{
- 	tls_strp_anchor_free(strp);
- }
- 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index a574d7ddd1499..ef7dda0915d33 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2584,8 +2584,12 @@ void tls_sw_free_ctx_rx(struct tls_context *tls_ctx)
- void tls_sw_free_resources_rx(struct sock *sk)
+ static struct sk_buff *ovs_vport_cmd_alloc_info(void)
  {
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
-+	struct tls_sw_context_rx *ctx;
-+
-+	ctx = tls_sw_ctx_rx(tls_ctx);
- 
- 	tls_sw_release_resources_rx(sk);
-+	__tls_strp_done(&ctx->strp);
- 	tls_sw_free_ctx_rx(tls_ctx);
+-	return nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	return genlmsg_new(ovs_vport_cmd_msg_size(), GFP_KERNEL);
  }
  
+ /* Called with ovs_mutex, only via ovs_dp_notify_wq(). */
+@@ -2044,7 +2075,7 @@ struct sk_buff *ovs_vport_cmd_build_info(struct vport *vport, struct net *net,
+ 	struct sk_buff *skb;
+ 	int retval;
+ 
+-	skb = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	skb = ovs_vport_cmd_alloc_info();
+ 	if (!skb)
+ 		return ERR_PTR(-ENOMEM);
+ 
+diff --git a/net/openvswitch/vport.c b/net/openvswitch/vport.c
+index 1c05d4bef3313..da733b92ae8a7 100644
+--- a/net/openvswitch/vport.c
++++ b/net/openvswitch/vport.c
+@@ -340,6 +340,9 @@ int ovs_vport_set_upcall_portids(struct vport *vport, const struct nlattr *ids)
+ 	if (!nla_len(ids) || nla_len(ids) % sizeof(u32))
+ 		return -EINVAL;
+ 
++	if (nla_len(ids) / sizeof(u32) > nr_cpu_ids)
++		return -EINVAL;
++
+ 	old = ovsl_dereference(vport->upcall_portids);
+ 
+ 	vport_portids = kmalloc(sizeof(*vport_portids) + nla_len(ids),
 -- 
 2.53.0
 
