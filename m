@@ -1,60 +1,73 @@
-Return-Path: <stable+bounces-257283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258071-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EkkMgQYG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257283-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:56 +0200
+	id wEkxKeUjG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258071-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6755060EC2D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E3E56108F8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BC6703018D50
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:01:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DA3E330AC5C4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE7B35200B;
-	Sat, 30 May 2026 17:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAAB1351C2F;
+	Sat, 30 May 2026 17:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDQO7aSp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgNLXs+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F3032B11D;
-	Sat, 30 May 2026 17:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5831223DC6;
+	Sat, 30 May 2026 17:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160462; cv=none; b=MikWxZx3o2RAemhuSF06eiE64rhUUYgXM9SDcu5/cDDrmhBCDCWVjqo+d9++AE4PAajiEr28XWo0LPmTelJYS3SEq43U2oNe9Xlih6k6j7oEpw7XWyfykEN+BUtzdMbQGHDeh3fImlTaR77qxPE2U+X99/vlIUsRbcSmEEqsUok=
+	t=1780163122; cv=none; b=bmdgWlNsbBBKk3tJvmNJR9vhb8kkhGV74V8GkfjyZFmsMAn4TXwiTqGFcvv5nhlChDwCqem5V6SHnlm91tPOqGICtCJpTSjZCwh9ZAsqAPhiB3xh+AbfU3oE+Vtfkc2bdq7nt6DH3SGck4/JBUw0yZ0UDQv7zbbshxdLpQEpLuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160462; c=relaxed/simple;
-	bh=l3HbycIrWgQqTufLT5oTZ0iW5J2Axu8WmAMAE6wztXk=;
+	s=arc-20240116; t=1780163122; c=relaxed/simple;
+	bh=oZGQ57FFfm/4uizaqR9KXdEXCD6epBEpuAL2Xq2vcaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lS2QmDEMQcn9R7vXEU1g3cYUo2YK2RPfVGe1eVmzzxRjMXnYCpImbOBvGNuE+TrhE6Gpb7O+B0sLDDU8jSgEGunlHszE2mxp0sAFPlDriE+37ocTA5xuyaPRU9KsTOVYg1c3lzSo3nQqOX8VN8jVPE7fYi5ZUQWXgn3PQoL/7vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDQO7aSp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A12C1F00893;
-	Sat, 30 May 2026 17:01:00 +0000 (UTC)
+	 MIME-Version; b=tWWLGz+ds+IyfX/4/TQVTEMOKL8I/hnvswB2CFyZHMGBQrEkh9KQLyhPmd2Mmi8Vu9oIW8pq6+pG2JIdl4D84htUxbVJyBTt1RL5u8vgB0gy+E6Al7udfnimKJRWel38vyGTmW5t7MoMwqZs04K8WZJZ/o2ozYTt1COABAMa+RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgNLXs+G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40591F00893;
+	Sat, 30 May 2026 17:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160460;
-	bh=gB/c84Ww+xBY8RSqIQ8WXTI9OYtCHF+I98LbDmV0oi4=;
+	s=korg; t=1780163121;
+	bh=dueVMz9mhXmpBGVx/rhCNzKdbrD8TvDjeq/1GTH6pc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LDQO7aSpls5uFVMyl8E5M34nhdJ95F952rsljac0lEWQta5KpHgfCYzuhjf3MP2aD
-	 gtzX5ZzclOhZ0eRoCdzogXiSz3vjieZbZhqEwTayYeCBpwU2yd2MbrkNR3y7hAoYWb
-	 t3bKXKU9x/bdG4Up6nyXG+X4V9LbzdJb2YAogbEM=
+	b=UgNLXs+Gn18CuWltWTssesCFK+iYgbN/tHIAcfGRp/ipHH+26LjSpwhR4oLrMN0Te
+	 72d9/MYzS2yizVrsBw/g+mzc/Sd09aGdNbJ++cOXfuARWUw9hIhqMVwS0kD/Ak+4Uc
+	 fIbxtY6I6l13gXQ36/juWChFKWLJfYeh8G0GzWMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	=?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 304/969] wifi: b43: enforce bounds check on firmware key index in b43_rx()
+	Breno Leitao <leitao@debian.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 114/776] mm: blk-cgroup: fix use-after-free in cgwb_release_workfn()
 Date: Sat, 30 May 2026 17:57:08 +0200
-Message-ID: <20260530160308.825282229@linuxfoundation.org>
+Message-ID: <20260530160243.311924910@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +77,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bues.ch,talencesecurity.com,intel.com];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-257283-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258071-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,debian.org,kernel.org,linux.dev,kernel.dk,cmpxchg.org,toxicpanda.com,gmail.com,oracle.com,suse.com,google.com,linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 6755060EC2D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 3E3E56108F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit 1f4f78bf8549e6ac4f04fba4176854f3a6e0c332 upstream.
+[ Upstream commit 8f5857be99f1ed1fa80991c72449541f634626ee ]
 
-The firmware-controlled key index in b43_rx() can exceed the dev->key[]
-array size (58 entries). The existing B43_WARN_ON is non-enforcing in
-production builds, allowing an out-of-bounds read.
+cgwb_release_workfn() calls css_put(wb->blkcg_css) and then later accesses
+wb->blkcg_css again via blkcg_unpin_online().  If css_put() drops the last
+reference, the blkcg can be freed asynchronously (css_free_rwork_fn ->
+blkcg_css_free -> kfree) before blkcg_unpin_online() dereferences the
+pointer to access blkcg->online_pin, resulting in a use-after-free:
 
-Make the B43_WARN_ON check enforcing by dropping the frame when the
-firmware returns an invalid key index.
+  BUG: KASAN: slab-use-after-free in blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+  Write of size 4 at addr ff11000117aa6160 by task kworker/71:1/531
+   Workqueue: cgwb_release cgwb_release_workfn
+   Call Trace:
+    <TASK>
+     blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+     cgwb_release_workfn (mm/backing-dev.c:629)
+     process_scheduled_works (kernel/workqueue.c:3278 kernel/workqueue.c:3385)
 
-Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-Acked-by: Michael Büsch <m@bues.ch>
-Fixes: e4d6b7951812 ("[B43]: add mac80211-based driver for modern BCM43xx devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Link: https://patch.msgid.link/20260417111145.2694196-1-tristmd@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+   Freed by task 1016:
+    kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6246 mm/slub.c:6561)
+    css_free_rwork_fn (kernel/cgroup/cgroup.c:5542)
+    process_scheduled_works (kernel/workqueue.c:3302 kernel/workqueue.c:3385)
+
+** Stack based on commit 66672af7a095 ("Add linux-next specific files
+for 20260410")
+
+I am seeing this crash sporadically in Meta fleet across multiple kernel
+versions.  A full reproducer is available at:
+https://github.com/leitao/debug/blob/main/reproducers/repro_blkcg_uaf.sh
+
+(The race window is narrow.  To make it easily reproducible, inject a
+msleep(100) between css_put() and blkcg_unpin_online() in
+cgwb_release_workfn().  With that delay and a KASAN-enabled kernel, the
+reproducer triggers the splat reliably in less than a second.)
+
+Fix this by moving blkcg_unpin_online() before css_put(), so the
+cgwb's CSS reference keeps the blkcg alive while blkcg_unpin_online()
+accesses it.
+
+Link: https://lore.kernel.org/20260413-blkcg-v1-1-35b72622d16c@debian.org
+Fixes: 59b57717fff8 ("blkcg: delay blkg destruction until after writeback has finished")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Dennis Zhou <dennis@kernel.org>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: JP Kobryn <inwardvessel@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/b43/xmit.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/backing-dev.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/broadcom/b43/xmit.c
-+++ b/drivers/net/wireless/broadcom/b43/xmit.c
-@@ -702,7 +702,8 @@ void b43_rx(struct b43_wldev *dev, struc
- 		 * key index, but the ucode passed it slightly different.
- 		 */
- 		keyidx = b43_kidx_to_raw(dev, keyidx);
--		B43_WARN_ON(keyidx >= ARRAY_SIZE(dev->key));
-+		if (B43_WARN_ON(keyidx >= ARRAY_SIZE(dev->key)))
-+			goto drop;
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -404,12 +404,13 @@ static void cgwb_release_workfn(struct w
+ 	wb_shutdown(wb);
  
- 		if (dev->key[keyidx].algorithm != B43_SEC_ALGO_NONE) {
- 			wlhdr_len = ieee80211_hdrlen(fctl);
+ 	css_put(wb->memcg_css);
+-	css_put(wb->blkcg_css);
+-	mutex_unlock(&wb->bdi->cgwb_release_mutex);
+ 
+ 	/* triggers blkg destruction if no online users left */
+ 	blkcg_unpin_online(blkcg);
+ 
++	css_put(wb->blkcg_css);
++	mutex_unlock(&wb->bdi->cgwb_release_mutex);
++
+ 	fprop_local_destroy_percpu(&wb->memcg_completions);
+ 
+ 	spin_lock_irq(&cgwb_lock);
 
 
 
