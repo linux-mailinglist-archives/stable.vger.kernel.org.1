@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258710-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJ4XAZIiG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258084-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:58 +0200
+	id GO+FLJ8qG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258710-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6776105DF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 748F46118EC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 15FCA30095E9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:46:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BFFB93012B2C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B80351C2F;
-	Sat, 30 May 2026 17:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7315219303;
+	Sat, 30 May 2026 18:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzfp3Yca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+vwS9L+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB118223DC6;
-	Sat, 30 May 2026 17:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0F42E7390;
+	Sat, 30 May 2026 18:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163166; cv=none; b=kXi4YlWkGayaYZgJi/DhHzslYzYq8vIvbxdrSoSpRtdn8LMh+mK03Wklas6rDn38MuF3GD4TnbMi7IsdvdIWigZ/BvxilqdN+OeCtl3UkIpLiXSLnUE7NPK9I7p46MYz4ORl3jSSTd+IZCx/iK7gbgKNH1713aI16ovHbayavu0=
+	t=1780165277; cv=none; b=RWf/bEjltwe3f2RtsZlv4lY5P1yqQMmL6i7HNHyjog751uELdwROwXGznrWi7WV67beZRtT1oMVzbjFU29jvrH/K6VEGE4SiPvpUp96SpfjsNcRCk9HL4sxuw+pSV4CDjF9Lk72n487PnUFVu78umtRnhKrbue9SsVdiIfzPyRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163166; c=relaxed/simple;
-	bh=M72fSxsKvx9EZQgHAxVnXbkUE3/5tooAWNOWa6CSQMc=;
+	s=arc-20240116; t=1780165277; c=relaxed/simple;
+	bh=LebFFfE30qX3AYvfwTVTiTZe53jwG2eYUsztAq449bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AFdSTXtrXJXq4sK7Z0p2q5isf3coXPIxPT+2/Q0B3dIUCe3iHYDe/uWVxvCallfqUwPFKoeNk+eOpD2bI4JijocCEpm20sOV5KeSAc8EToZJFN/SvMiVsg5XlAiAG8sA4qYOByFvJx5Ke5QQhkUNeUOlxYbJVzxykre00jDlIRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzfp3Yca; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9171F00893;
-	Sat, 30 May 2026 17:46:04 +0000 (UTC)
+	 MIME-Version; b=Z6KPrmrjx6yt//YLw6+hmY2+Y5QjNKvhrFSD+kjfWsMtooaacymcib8hVmeoS2hX4w8laXLz167ziNaXFM7udmCIew14aYGbeNALyVneDkckvNsLHLb62/IZWWLXWZ73vDjaJwcNWOVlfq3wyDWLpqRQBJOcGdxG5R1AhVaxYkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+vwS9L+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8660F1F00893;
+	Sat, 30 May 2026 18:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163165;
-	bh=YtNgGyv0/sv08A95AWr2AIxBvlgf/J6foqJ02os7rZ8=;
+	s=korg; t=1780165276;
+	bh=Hz0qjmcnztyeup4vzaNZ7ji1r2MCeN5svdW8RBWT7Bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qzfp3YcamMON+rQDkDlr0/nht5xTKGRJRvGQfr62PwUjRkrAqPbc+hyO67TNE8s+7
-	 zulOL7h5rVHj1OFRX9yAqwOR8u7rMU2lxeUqA29u7V8oYMwyFmoEpLb0Fey9TDzscv
-	 2eP2tIWSq186orhJSxjEKGe/rodDXKv/QoMlOSmM=
+	b=s+vwS9L+4wXYilVicU+IfMpiAfmGUUHrR+cD86nVq65hLftCpxHOSa+xGLMtJ70Ou
+	 OPtupJpbe1XLkGQ+dg1C+Eh9JWV3xT2SeHSWiWhOBXZ6ktyVz7ggNKTHcJr4V92rTi
+	 ftdxaYdag5w9b2kjKjTjIM6iXOLnxTmgwdzO3vK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Sebastian Alba Vives <sebasjosue84@gmail.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.15 177/776] crypto: ccp: Dont attempt to copy ID to userspace if PSP command failed
-Date: Sat, 30 May 2026 17:58:11 +0200
-Message-ID: <20260530160245.072752929@linuxfoundation.org>
+	Arthur Husband <artmoty@gmail.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 011/589] ata: ahci: force 32-bit DMA for JMicron JMB582/JMB585
+Date: Sat, 30 May 2026 17:58:12 +0200
+Message-ID: <20260530160224.874395115@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,105 +69,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
-	TAGGED_FROM(0.00)[bounces-258084-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258710-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0B6776105DF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,sata-io.org:url]
+X-Rspamd-Queue-Id: 748F46118EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Arthur Husband <artmoty@gmail.com>
 
-commit 4f685dbfa87c546e51d9dc6cab379d20f275e114 upstream.
+[ Upstream commit 105c42566a550e2d05fc14f763216a8765ee5d0e ]
 
-When retrieving the ID for the CPU, don't attempt to copy the ID blob to
-userspace if the firmware command failed.  If the failure was due to an
-invalid length, i.e. the userspace buffer+length was too small, copying
-the number of bytes _firmware_ requires will overflow the kernel-allocated
-buffer and leak data to userspace.
+The JMicron JMB585 (and JMB582) SATA controllers advertise 64-bit DMA
+support via the S64A bit in the AHCI CAP register, but their 64-bit DMA
+implementation is defective. Under sustained I/O, DMA transfers targeting
+addresses above 4GB silently corrupt data -- writes land at incorrect
+memory addresses with no errors logged.
 
-  BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-  BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-  BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-  Read of size 64 at addr ffff8881867f5960 by task syz.0.906/24388
+The failure pattern is similar to the ASMedia ASM1061
+(commit 20730e9b2778 ("ahci: add 43-bit DMA address quirk for ASMedia
+ASM1061 controllers")), which also falsely advertised full 64-bit DMA
+support. However, the JMB585 requires a stricter 32-bit DMA mask rather
+than 43-bit, as corruption occurs with any address above 4GB.
 
-  CPU: 130 UID: 0 PID: 24388 Comm: syz.0.906 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
-  Tainted: [U]=USER, [O]=OOT_MODULE
-  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
-   print_address_description ../mm/kasan/report.c:378 [inline]
-   print_report+0xbc/0x260 ../mm/kasan/report.c:482
-   kasan_report+0xa2/0xe0 ../mm/kasan/report.c:595
-   check_region_inline ../mm/kasan/generic.c:-1 [inline]
-   kasan_check_range+0x264/0x2c0 ../mm/kasan/generic.c:200
-   instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-   _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-   _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-   copy_to_user ../include/linux/uaccess.h:236 [inline]
-   sev_ioctl_do_get_id2+0x361/0x490 ../drivers/crypto/ccp/sev-dev.c:2222
-   sev_ioctl+0x25f/0x490 ../drivers/crypto/ccp/sev-dev.c:2575
-   vfs_ioctl ../fs/ioctl.c:51 [inline]
-   __do_sys_ioctl ../fs/ioctl.c:597 [inline]
-   __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
-   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xe0/0x800 ../arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   </TASK>
+On the Minisforum N5 Pro specifically, the combination of the JMB585's
+broken 64-bit DMA with the AMD Family 1Ah (Strix Point) IOMMU causes
+silent data corruption that is only detectable via checksumming
+filesystems (BTRFS/ZFS scrub). The corruption occurs when 32-bit IOVA
+space is exhausted and the kernel transparently switches to 64-bit DMA
+addresses.
 
-WARN if the driver says the command succeeded, but the firmware error code
-says otherwise, as __sev_do_cmd_locked() is expected to return -EIO on any
-firwmware error.
+Add device-specific PCI ID entries for the JMB582 (0x0582) and JMB585
+(0x0585) before the generic JMicron class match, using a new board type
+that combines AHCI_HFLAG_IGN_IRQ_IF_ERR (preserving existing behavior)
+with AHCI_HFLAG_32BIT_ONLY to force 32-bit DMA masks.
 
-Reported-by: Alexander Potapenko <glider@google.com>
-Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
-Fixes: d6112ea0cb34 ("crypto: ccp - introduce SEV_GET_ID2 command")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Arthur Husband <artmoty@gmail.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sev-dev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/ata/ahci.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -722,6 +722,9 @@ static int sev_ioctl_do_get_id2(struct s
- 		goto e_free;
- 	}
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 2bb9555663e75..b3661495906f2 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -61,6 +61,7 @@ enum board_ids {
+ 	/* board IDs for specific chipsets in alphabetical order */
+ 	board_ahci_al,
+ 	board_ahci_avn,
++	board_ahci_jmb585,
+ 	board_ahci_mcp65,
+ 	board_ahci_mcp77,
+ 	board_ahci_mcp89,
+@@ -200,6 +201,15 @@ static const struct ata_port_info ahci_port_info[] = {
+ 		.udma_mask	= ATA_UDMA6,
+ 		.port_ops	= &ahci_avn_ops,
+ 	},
++	/* JMicron JMB582/585: 64-bit DMA is broken, force 32-bit */
++	[board_ahci_jmb585] = {
++		AHCI_HFLAGS	(AHCI_HFLAG_IGN_IRQ_IF_ERR |
++				 AHCI_HFLAG_32BIT_ONLY),
++		.flags		= AHCI_FLAG_COMMON,
++		.pio_mask	= ATA_PIO4,
++		.udma_mask	= ATA_UDMA6,
++		.port_ops	= &ahci_ops,
++	},
+ 	[board_ahci_mcp65] = {
+ 		AHCI_HFLAGS	(AHCI_HFLAG_NO_FPDMA_AA | AHCI_HFLAG_NO_PMP |
+ 				 AHCI_HFLAG_YES_NCQ),
+@@ -436,6 +446,10 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	/* Elkhart Lake IDs 0x4b60 & 0x4b62 https://sata-io.org/product/8803 not tested yet */
+ 	{ PCI_VDEVICE(INTEL, 0x4b63), board_ahci_low_power }, /* Elkhart Lake AHCI */
  
-+	if (ret || WARN_ON_ONCE(argp->error))
-+		goto e_free;
++	/* JMicron JMB582/585: force 32-bit DMA (broken 64-bit implementation) */
++	{ PCI_VDEVICE(JMICRON, 0x0582), board_ahci_jmb585 },
++	{ PCI_VDEVICE(JMICRON, 0x0585), board_ahci_jmb585 },
 +
- 	if (id_blob) {
- 		if (copy_to_user(input_address, id_blob, data.len)) {
- 			ret = -EFAULT;
+ 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
+ 	{ PCI_VENDOR_ID_JMICRON, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+ 	  PCI_CLASS_STORAGE_SATA_AHCI, 0xffffff, board_ahci_ign_iferr },
+-- 
+2.53.0
+
 
 
 
