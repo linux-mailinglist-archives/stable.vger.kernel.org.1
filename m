@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-258211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258833-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFYdGTcmG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258211-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:31 +0200
+	id qOtGLwUtG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258833-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2900610DB9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37DEE611E33
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AEA0630CD69B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:53:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BCE0B30C67B8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313BC342CA7;
-	Sat, 30 May 2026 17:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE793C416A;
+	Sat, 30 May 2026 18:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSX46KDk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1KxqtDA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0450F2628D;
-	Sat, 30 May 2026 17:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B481F3C3425;
+	Sat, 30 May 2026 18:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163586; cv=none; b=mYTkHMRUNxakSrWFu5HYketXsCkiK3iu95yAJgWDj9U83MpQdUwfDoGCXotERo0Zn1CsQAzQCBtOdj2pq9uSh2X8BVm5JynsB5gkLrYvTSDl47L8Z4JBG670EvFGun7HP/n1aBG3XrTp1i5Hltdqfu3XRk2Ufls1su0FzKbuu7U=
+	t=1780165691; cv=none; b=djjWJggWgJCi4SLAbOsmOJ9I6PYYFa8IxoGRCdheYoyiVrunL3T9EKwyz7ef2FwWAFzbIaz5KgORHUexRzSJ5SyHNMQk9V4qLksLIs2dGiw6T/zdYGa7Hrs/YNPyCisoGivFfmwodpCD7PeW12VhUp1ycRjzANhX5R/ZMLTv+hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163586; c=relaxed/simple;
-	bh=7Lt0aW9pmQmeuYQMDQRJtdEOrunn5hh/jAfEVlbPyq4=;
+	s=arc-20240116; t=1780165691; c=relaxed/simple;
+	bh=darWRC4vbreeCrw7jKXqe6YD79VYHJQAiNenBleNpG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSDNurC+uFFjrnFXfcYn8LCJtKEGnenxIDsNE0RvaVghV2HOXPUBdbRfa1+D/da459SmBr/5BpDCMQrHevH6XubWbz3X7959nnc4Y1eouSvAK1cx43ettNGuUaM5BauA+EpJ9QRWDamoT/jwnEWPIO6bfzqUYqcelUISKqbahko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSX46KDk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FC01F00893;
-	Sat, 30 May 2026 17:53:04 +0000 (UTC)
+	 MIME-Version; b=C2UA8CDQpolhs/1079kgf6K7GgPQlgu3Oot6TQ63YYFCmGrETCLm606Top+b65u601alTjCRsNYgMjtx0QgGr7yuxMCxRiftOd5mlnjAIgf4/UyX5we57Ic8e48QJtlAxF/oWRHgByVYweHLNQd3echAn5voaswrefWBGV/9Dvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1KxqtDA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F421F00893;
+	Sat, 30 May 2026 18:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163584;
-	bh=ptYhgls3vwS5smVjVSYm9Av/YWRK/s3tmHzVank90a4=;
+	s=korg; t=1780165690;
+	bh=pzhxrbqOV0YKWdTu9rSV08dIgE3B3b+fNe+Wq5DxD4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YSX46KDkEHtahT4TG0WkjUvLbpBOEnyQykRzEYDoT4kczxKhAFlJJsVJl2Bdp1saA
-	 ZIWWZy6S+L1NTRIZe3bkJgU5No23qBFx1KWEKIIQmiS7njAG/Nlb0spvYYjFByBqR0
-	 +dXM80+CDPMOlQW410BHQAAfWmaJnZficfTuZG14=
+	b=S1KxqtDALr9sBcwvfDXXK/XrI6fpdpEDhG90jFLVIdCeFAb5z8wxF9/npOJGnACJW
+	 spxXO3UZk5LnYpws+LWnkw/PXNkpC+oLJjxcunG6eu8Y63S8ZN8DIKjQLvpceaP/Eo
+	 gOhus4WfDHDCWxfVsWGIks2gBiUSWWb2k5XcQ79s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Soenke Huster <soenke.huster@eknoes.de>,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.15 303/776] Bluetooth: virtio_bt: clamp rx length before skb_put
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 136/589] rxrpc: Fix missing validation of ticket length in non-XDR key preparsing
 Date: Sat, 30 May 2026 18:00:17 +0200
-Message-ID: <20260530160248.398888845@linuxfoundation.org>
+Message-ID: <20260530160228.355304139@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,129 +69,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258211-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,eknoes.de,gmail.com,intel.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258833-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.995];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C2900610DB9
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,auristor.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,infradead.org:email]
+X-Rspamd-Queue-Id: 37DEE611E33
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Anderson Nascimento <anderson@allelesecurity.com>
 
-commit 21bd244b6de5d2fe1063c23acc93fbdd2b20d112 upstream.
+commit ac33733b10b484d666f97688561670afd5861383 upstream.
 
-virtbt_rx_work() calls skb_put(skb, len) where len comes directly
-from virtqueue_get_buf() with no validation against the buffer we
-posted to the device. The RX skb is allocated in virtbt_add_inbuf()
-and exposed to virtio as exactly 1000 bytes via sg_init_one().
+In rxrpc_preparse(), there are two paths for parsing key payloads: the
+XDR path (for large payloads) and the non-XDR path (for payloads <= 28
+bytes). While the XDR path (rxrpc_preparse_xdr_rxkad()) correctly
+validates the ticket length against AFSTOKEN_RK_TIX_MAX, the non-XDR
+path fails to do so.
 
-Checking len against skb_tailroom(skb) is not sufficient because
-alloc_skb() can leave more tailroom than the 1000 bytes actually
-handed to the device. A malicious or buggy backend can therefore
-report used.len between 1001 and skb_tailroom(skb), causing skb_put()
-to include uninitialized kernel heap bytes that were never written by
-the device.
+This allows an unprivileged user to provide a very large ticket length.
+When this key is later read via rxrpc_read(), the total
+token size (toksize) calculation results in a value that exceeds
+AFSTOKEN_LENGTH_MAX, triggering a WARN_ON().
 
-The same path also accepts len == 0, in which case skb_put(skb, 0)
-leaves the skb empty but virtbt_rx_handle() still reads the pkt_type
-byte from skb->data, consuming uninitialized memory.
+[ 2001.302904] WARNING: CPU: 2 PID: 2108 at net/rxrpc/key.c:778 rxrpc_read+0x109/0x5c0 [rxrpc]
 
-Define VIRTBT_RX_BUF_SIZE once and reuse it in alloc_skb() and
-sg_init_one(), and gate virtbt_rx_work() on that same constant so
-the bound checked matches the buffer actually exposed to the device.
-Reject used.len == 0 in the same gate so an empty completion can
-no longer reach virtbt_rx_handle().
+Fix this by adding a check in the non-XDR parsing path of rxrpc_preparse()
+to ensure the ticket length does not exceed AFSTOKEN_RK_TIX_MAX,
+bringing it into parity with the XDR parsing logic.
 
-Use bt_dev_err_ratelimited() because the length value comes from an
-untrusted backend that can otherwise flood the kernel log.
-
-Same class of bug as commit c04db81cd028 ("net/9p: Fix buffer
-overflow in USB transport layer"), which hardened the USB 9p
-transport against unchecked device-reported length.
-
-Fixes: 160fbcf3bfb9 ("Bluetooth: virtio_bt: Use skb_put to set length")
-Cc: stable@vger.kernel.org
-Cc: Soenke Huster <soenke.huster@eknoes.de>
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 8a7a3eb4ddbe ("KEYS: RxRPC: Use key preparsing")
+Fixes: 84924aac08a4 ("rxrpc: Fix checker warning")
+Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
+Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260422161438.2593376-7-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/virtio_bt.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ net/rxrpc/key.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/bluetooth/virtio_bt.c
-+++ b/drivers/bluetooth/virtio_bt.c
-@@ -12,6 +12,7 @@
- #include <net/bluetooth/hci_core.h>
+--- a/net/rxrpc/key.c
++++ b/net/rxrpc/key.c
+@@ -755,6 +755,10 @@ static int rxrpc_preparse(struct key_pre
+ 	if (v1->security_index != RXRPC_SECURITY_RXKAD)
+ 		goto error;
  
- #define VERSION "0.1"
-+#define VIRTBT_RX_BUF_SIZE 1000
++	ret = -EKEYREJECTED;
++	if (v1->ticket_length > AFSTOKEN_RK_TIX_MAX)
++		goto error;
++
+ 	plen = sizeof(*token->kad) + v1->ticket_length;
+ 	prep->quotalen += plen + sizeof(*token);
  
- enum {
- 	VIRTBT_VQ_TX,
-@@ -33,11 +34,11 @@ static int virtbt_add_inbuf(struct virti
- 	struct sk_buff *skb;
- 	int err;
- 
--	skb = alloc_skb(1000, GFP_KERNEL);
-+	skb = alloc_skb(VIRTBT_RX_BUF_SIZE, GFP_KERNEL);
- 	if (!skb)
- 		return -ENOMEM;
- 
--	sg_init_one(sg, skb->data, 1000);
-+	sg_init_one(sg, skb->data, VIRTBT_RX_BUF_SIZE);
- 
- 	err = virtqueue_add_inbuf(vq, sg, 1, skb, GFP_KERNEL);
- 	if (err < 0) {
-@@ -219,8 +220,15 @@ static void virtbt_rx_work(struct work_s
- 	if (!skb)
- 		return;
- 
--	skb_put(skb, len);
--	virtbt_rx_handle(vbt, skb);
-+	if (!len || len > VIRTBT_RX_BUF_SIZE) {
-+		bt_dev_err_ratelimited(vbt->hdev,
-+				       "rx reply len %u outside [1, %u]\n",
-+				       len, VIRTBT_RX_BUF_SIZE);
-+		kfree_skb(skb);
-+	} else {
-+		skb_put(skb, len);
-+		virtbt_rx_handle(vbt, skb);
-+	}
- 
- 	if (virtbt_add_inbuf(vbt) < 0)
- 		return;
 
 
 
