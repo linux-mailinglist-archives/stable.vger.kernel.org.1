@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-257363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2BUtK1YbG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:06 +0200
+	id GMplIdorG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F6A60F44C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E14611BD8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A522330DBC3E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:05:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BEEFC30A2648
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6E335200B;
-	Sat, 30 May 2026 17:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A81279DC9;
+	Sat, 30 May 2026 18:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWIjT7+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVK5ir63"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50869481DD;
-	Sat, 30 May 2026 17:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D246219303;
+	Sat, 30 May 2026 18:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160734; cv=none; b=ZaLiWUI74fUILcoXNGWP3dfMBqmlywkVyKwNuzaxGpbSFxi8rvDzLLyuUHOw6Nk9Bhe2edOe6kLxlAOmWU61Xq3pJotNM5yrjtSOC5bBHAWzo+3BYPVBLNZScrrL+sA+5MvLdIK+nxhtZZeWku9N/fwrlOT0HTBEpCOuXYrySG0=
+	t=1780165447; cv=none; b=fvrm6CS9omPPdaad14J+bOo6dhSBHaYzIvjR7P1vhIU7praKb/IDZy+8wK1Jhvl4QkmO+RtE0eqxAMJQhS0xsnPHMBlfGeDILQH7BOX4wEgNV19ftUJs/WYDqRRZ+qxbCm2mQ28NSw0VrfdtGZFxVIEuHDCzRytdORVEAusjD3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160734; c=relaxed/simple;
-	bh=WZDQGBCj/+6J8J8Db5sul4K31Cv5NlOgioqjdWZobcU=;
+	s=arc-20240116; t=1780165447; c=relaxed/simple;
+	bh=VIfMYOtH61bNFQsVCqs4YpPD+jRYLzZu9hb7lx0uLg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XnVnj9yxurhRM0bee9ade4q3SK5rlFIqDQ2Npgyv43aHrkYITA44K1O234MZAF4gusrou0Rg6p7/SXJq+kdAxSSsuPc25QziLV6RxAXhp8cT50iqnDRlMfsxkBvVlxF+e8Fzd2vL/jPP1cTMwetDG/BsUBJkZ7fbMRlArJHsdc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWIjT7+e; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E6C81F00893;
-	Sat, 30 May 2026 17:05:32 +0000 (UTC)
+	 MIME-Version; b=CBuDmQBR2x5IzXRgz+3tk/y1cBdFLaX+TC4MB+t+ppyVMfP9TRGJOA3ljZz5XORyqGEoB0444aMl/dTHaOC3qcRft7HjpI8po16YEz6u4VNaaILR4fREjdqiJ5OPOHK6lvPc0UyL75+jPSJNency0Iiv0B/SsZVW39um0GFM5xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVK5ir63; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631C01F00893;
+	Sat, 30 May 2026 18:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160733;
-	bh=ebkgrIR5nmtMKZNtyjowfx1RAqq8/Jfpg3DFmh86zSM=;
+	s=korg; t=1780165446;
+	bh=iypEiWAOs5Qg3ura7e2kzMzEkhHN8a2AAVnaLc1jP50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cWIjT7+e4X41bGVEMQYkeXgnWhv9deZxsDN7j0Yw5OaTcWTrZqurasqDMwOiGE/oa
-	 L540fnuiI1lax+lW8H4xGLkOx9XNoYQK4cii1lZoXvvElr1xFdv26ADH51Unfz00AR
-	 XHyVLZEEFVG7nPziXWS9C0GsPGrpa+mvcDdpcZR0=
+	b=TVK5ir63LQF4AlPURIZpqwnhUl6Jay22ZGKuu5s5cOGoQJHPgCUOiCuG3irQgWDmW
+	 o/KnDpKrRnbVZczCMZ+9oU+azbZOyKkX+zDczQact758fdpXC0QA/Hu//IhZLg9md3
+	 rSbouCXYvG0WSS8jzixfp86jasFx2kZV8QjYrCu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.1 420/969] batman-adv: bla: only purge non-released claims
+	Tejas Bharambe <tejas.bharambe@outlook.com>,
+	syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 063/589] ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
 Date: Sat, 30 May 2026 17:59:04 +0200
-Message-ID: <20260530160311.865858988@linuxfoundation.org>
+Message-ID: <20260530160226.255180869@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +71,139 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257363-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-258760-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,syzkaller.appspotmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,a49010a0e8fcdeea075f];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 13F6A60F44C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 05E14611BD8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Tejas Bharambe <tejas.bharambe@outlook.com>
 
-commit cf6b604011591865ae39ac82de8978c1120d17af upstream.
+commit 7de554cabf160e331e4442e2a9ad874ca9875921 upstream.
 
-When batadv_bla_purge_claims() goes through the list of claims, it is only
-traversing the hash list with an rcu_read_lock(). Due to a potential
-parallel batadv_claim_put(), it can happen that it encounters a claim which
-was actually in the process of being released+freed by
-batadv_claim_release(). In this case, backbone_gw is set to NULL before the
-delayed RCU kfree is started. Calling batadv_bla_claim_get_backbone_gw() is
-then no longer allowed because it would cause a NULL-ptr derefence.
+filemap_fault() may drop the mmap_lock before returning VM_FAULT_RETRY,
+as documented in mm/filemap.c:
 
-To avoid this, only claims with a valid reference counter must be purged.
-All others are already taken care of.
+  "If our return value has VM_FAULT_RETRY set, it's because the mmap_lock
+  may be dropped before doing I/O or by lock_folio_maybe_drop_mmap()."
 
-Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+When this happens, a concurrent munmap() can call remove_vma() and free
+the vm_area_struct via RCU. The saved 'vma' pointer in ocfs2_fault() then
+becomes a dangling pointer, and the subsequent trace_ocfs2_fault() call
+dereferences it -- a use-after-free.
+
+Fix this by saving ip_blkno as a plain integer before calling
+filemap_fault(), and removing vma from the trace event. Since
+ip_blkno is copied by value before the lock can be dropped, it
+remains valid regardless of what happens to the vma or inode
+afterward.
+
+Link: https://lkml.kernel.org/r/20260410083816.34951-1-tejas.bharambe@outlook.com
+Fixes: 614a9e849ca6 ("ocfs2: Remove FILE_IO from masklog.")
+Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
+Reported-by: syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a49010a0e8fcdeea075f
+Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ocfs2/mmap.c        |    7 +++----
+ fs/ocfs2/ocfs2_trace.h |   10 ++++------
+ 2 files changed, 7 insertions(+), 10 deletions(-)
 
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -1288,6 +1288,13 @@ static void batadv_bla_purge_claims(stru
+--- a/fs/ocfs2/mmap.c
++++ b/fs/ocfs2/mmap.c
+@@ -32,7 +32,8 @@
  
- 		rcu_read_lock();
- 		hlist_for_each_entry_rcu(claim, head, hash_entry) {
-+			/* only purge claims not currently in the process of being released.
-+			 * Such claims could otherwise have a NULL-ptr backbone_gw set because
-+			 * they already went through batadv_claim_release()
-+			 */
-+			if (!kref_get_unless_zero(&claim->refcount))
-+				continue;
-+
- 			backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
- 			if (now)
- 				goto purge_now;
-@@ -1313,6 +1320,7 @@ purge_now:
- 					      claim->addr, claim->vid);
- skip:
- 			batadv_backbone_gw_put(backbone_gw);
-+			batadv_claim_put(claim);
- 		}
- 		rcu_read_unlock();
- 	}
+ static vm_fault_t ocfs2_fault(struct vm_fault *vmf)
+ {
+-	struct vm_area_struct *vma = vmf->vma;
++	unsigned long long ip_blkno =
++		OCFS2_I(file_inode(vmf->vma->vm_file))->ip_blkno;
+ 	sigset_t oldset;
+ 	vm_fault_t ret;
+ 
+@@ -40,11 +41,9 @@ static vm_fault_t ocfs2_fault(struct vm_
+ 	ret = filemap_fault(vmf);
+ 	ocfs2_unblock_signals(&oldset);
+ 
+-	trace_ocfs2_fault(OCFS2_I(vma->vm_file->f_mapping->host)->ip_blkno,
+-			  vma, vmf->page, vmf->pgoff);
++	trace_ocfs2_fault(ip_blkno, vmf->page, vmf->pgoff);
+ 	return ret;
+ }
+-
+ static vm_fault_t __ocfs2_page_mkwrite(struct file *file,
+ 			struct buffer_head *di_bh, struct page *page)
+ {
+--- a/fs/ocfs2/ocfs2_trace.h
++++ b/fs/ocfs2/ocfs2_trace.h
+@@ -1248,22 +1248,20 @@ TRACE_EVENT(ocfs2_write_end_inline,
+ 
+ TRACE_EVENT(ocfs2_fault,
+ 	TP_PROTO(unsigned long long ino,
+-		 void *area, void *page, unsigned long pgoff),
+-	TP_ARGS(ino, area, page, pgoff),
++		 void *page, unsigned long pgoff),
++	TP_ARGS(ino, page, pgoff),
+ 	TP_STRUCT__entry(
+ 		__field(unsigned long long, ino)
+-		__field(void *, area)
+ 		__field(void *, page)
+ 		__field(unsigned long, pgoff)
+ 	),
+ 	TP_fast_assign(
+ 		__entry->ino = ino;
+-		__entry->area = area;
+ 		__entry->page = page;
+ 		__entry->pgoff = pgoff;
+ 	),
+-	TP_printk("%llu %p %p %lu",
+-		  __entry->ino, __entry->area, __entry->page, __entry->pgoff)
++	TP_printk("%llu %p %lu",
++		  __entry->ino, __entry->page, __entry->pgoff)
+ );
+ 
+ /* End of trace events for fs/ocfs2/mmap.c. */
 
 
 
