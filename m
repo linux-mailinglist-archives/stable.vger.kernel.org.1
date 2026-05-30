@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-258139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257334-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHZ5KXokG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:06 +0200
+	id gOV7FJsZG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257334-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2009C610A5A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D806060EF65
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8391B30160C7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6606C301A17D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B362341AC7;
-	Sat, 30 May 2026 17:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EFE366567;
+	Sat, 30 May 2026 17:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p05ODKQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbBApIHD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCEF261B9E;
-	Sat, 30 May 2026 17:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C885934104B;
+	Sat, 30 May 2026 17:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163348; cv=none; b=nBAD+K6vr0yeEjBfCJPW7Rh4Bd2bCawR+yriWuET4Xjoe35gnfe2QnFMyc61xoGP3XaXst67R7Lt22BJdj5Qf9B6F5BqZOmOdOnzjOzmMJ+h+9Jt7KdzzCr/izCUqQbJAR2ACp5E25lqVxHMzt4jomyFClqNrlPiVuTxYtP3UqA=
+	t=1780160633; cv=none; b=SjsVMbNuBHjaJBWmQFHgdgglFJkJLGRvfpIXP27P+bD9cW8U4cYcmz+NRBEh66PqQrb0iwvo6lokFsckiV/8Ig+1bNIMBWEYOLw3YgAom9tSl+gAEdRlLgm8jJuPmwYGxILMKd4YlYTlTx85mFSiA11rSmFp/4gHkEoiSMUFrSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163348; c=relaxed/simple;
-	bh=VrN/W+wyCgc49qZF9UoRtGUhByBaCVpgT0KaT+xefEI=;
+	s=arc-20240116; t=1780160633; c=relaxed/simple;
+	bh=1GPp4Rl1+4kE7EZ7pi8DtLP3W1e92Dfl+zsbNy0eEJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ENItQm3dbwvEWQOX36RXGLqECzFVv6kHAEe8LbMnTncpKH/3jd7QQ+pi+xGwdwmbfnBprVV1ZtVb3AAH4Kt0ptgAb6a2LTKEZ1XpD8bBMzXVJfdX9ZhgaIBR5VQrKuDq/ox6bzFzqMAx/N6BAuaWLN8boMb1AAzptD9EmQShLK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p05ODKQm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DEE1F00893;
-	Sat, 30 May 2026 17:49:05 +0000 (UTC)
+	 MIME-Version; b=lyB9zOGqc5NYKBXinQunxQBtbbWLISUSonNeWl2d9YZxuX2IAJ4A0rQftbznqj0CJK6OncMc67No9KD5TqbHV0NOVpt6ysGUwEYqn4lWuXip2D4J2tkswgbf0/jeRjH23gK/jfjYOJ5xLKUsMj8tqouKy0Y+OFwwXhNBtNHXpZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lbBApIHD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D34C1F00893;
+	Sat, 30 May 2026 17:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163346;
-	bh=Rmup59E2eI1KZyl9f4Gl9+rvJ7sbFYMLLLoqh9pujzE=;
+	s=korg; t=1780160632;
+	bh=aBoh1qMi4KxEsaJnsIH1AC1OBkvRzO6kRbMJK6uGcI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p05ODKQmD/vFXT0bAvipr7Q/Ca//LpawsQqKfBSKp4omQMIUsiw8AAMEhkppNAWhA
-	 m41S4Ui9CfJf8skIHMzpkhFZF2xpuUa0iOw/bj1YSmsXMcMb6foZciiwpeHgUYVtkG
-	 3Yd+nqLGk6eDvbtoXIFp8OPgZjqIQcmIyHGm0jJo=
+	b=lbBApIHDCbraaZHEcCd+FeS334DeJ1UXTPfz/EWzQKqIZNbAFgds9VhtsBr1oeOXo
+	 Sq6MYy4/H4gI53t2f/pIttSzYaciiRCY5Do+IAFCcnAeWqnxPFQ3VcS2iJLMkQPQQ5
+	 Qsbe4KdWGv8b3q+mNOfUK0pWYLxUXxHqG5zLh0Ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 200/776] net: caif: clear client service pointer on teardown
+	Wenyou Yang <wenyou.yang@atmel.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 390/969] regulator: act8945a: fix OF node reference imbalance
 Date: Sat, 30 May 2026 17:58:34 +0200
-Message-ID: <20260530160245.677443390@linuxfoundation.org>
+Message-ID: <20260530160311.074822688@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,90 +73,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258139-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,redhat.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-257334-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2009C610A5A
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D806060EF65
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit f7cf8ece8cee3c1ee361991470cdb1eb65ab02e8 upstream.
+commit 0d15ce31375ccef4162f960b34547a821b7619d2 upstream.
 
-`caif_connect()` can tear down an existing client after remote shutdown by
-calling `caif_disconnect_client()` followed by `caif_free_client()`.
-`caif_free_client()` releases the service layer referenced by
-`adap_layer->dn`, but leaves that pointer stale.
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-When the socket is later destroyed, `caif_sock_destructor()` calls
-`caif_free_client()` again and dereferences the freed service pointer.
+Fix this by using the intended helper for reusing OF nodes.
 
-Clear the client/service links before releasing the service object so
-repeated teardown becomes harmless.
-
-Fixes: 43e369210108 ("caif: Move refcount from service layer to sock and dev.")
-Cc: stable@kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Link: https://patch.msgid.link/9f3d37847c0037568aae698ca23cd47c6691acb0.1775897577.git.zcliangcn@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 38c09961048b ("regulator: act8945a: add regulator driver for ACT8945A")
+Cc: stable@vger.kernel.org	# 4.6
+Cc: Wenyou Yang <wenyou.yang@atmel.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260408073055.5183-7-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/caif/cfsrvl.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/regulator/act8945a-regulator.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/caif/cfsrvl.c
-+++ b/net/caif/cfsrvl.c
-@@ -197,10 +197,20 @@ bool cfsrvl_phyid_match(struct cflayer *
+--- a/drivers/regulator/act8945a-regulator.c
++++ b/drivers/regulator/act8945a-regulator.c
+@@ -302,8 +302,9 @@ static int act8945a_pmic_probe(struct pl
+ 		num_regulators = ARRAY_SIZE(act8945a_regulators);
+ 	}
  
- void caif_free_client(struct cflayer *adap_layer)
- {
-+	struct cflayer *serv_layer;
- 	struct cfsrvl *servl;
--	if (adap_layer == NULL || adap_layer->dn == NULL)
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
 +
-+	if (!adap_layer)
-+		return;
-+
-+	serv_layer = adap_layer->dn;
-+	if (!serv_layer)
- 		return;
--	servl = container_obj(adap_layer->dn);
-+
-+	layer_set_dn(adap_layer, NULL);
-+	layer_set_up(serv_layer, NULL);
-+
-+	servl = container_obj(serv_layer);
- 	servl->release(&servl->layer);
- }
- EXPORT_SYMBOL(caif_free_client);
+ 	config.dev = &pdev->dev;
+-	config.dev->of_node = pdev->dev.parent->of_node;
+ 	config.driver_data = act8945a;
+ 	for (i = 0; i < num_regulators; i++) {
+ 		rdev = devm_regulator_register(&pdev->dev, &regulators[i],
 
 
 
