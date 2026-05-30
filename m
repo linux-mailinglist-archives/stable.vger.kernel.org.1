@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCOWHoUdG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257663-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:25 +0200
+	id cFh0GL8nG2rM/ggAu9opvQ
+	(envelope-from <stable+bounces-258466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2071560F99C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E0261115C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 750E23028ADD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:22:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3CA053024080
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE4933FE15;
-	Sat, 30 May 2026 17:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF8E3B9D80;
+	Sat, 30 May 2026 18:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7RJbJo3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxL8x2db"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3A4263F44;
-	Sat, 30 May 2026 17:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5283112C1;
+	Sat, 30 May 2026 18:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161756; cv=none; b=Qb8HWIFD6s2Lb2NLksszNjC1Ffve3yh7cu7o2FderyiTOsIU93HS/tCKK8nan23nB3JQtCRUxYW2xmf9ZjIu+Vktun5iTnzTO4kR6oiVOZTeu0Bt0fAXQKbtysEOkSiv2YOxXztbN3dMWzPYIcAM1nO+O5Zjejoh5phrfZZnnXk=
+	t=1780164444; cv=none; b=R5ctlKdiZy/Tf7M0ez8PJnMEtJg+fP7oZzpobGsVhP1ZzusLFP+bxo8tmobf5O4miH9oNXM2I/wJ8JY7mKR6E3er0yetyzveRsE2cehGI1jiUHmJs+EAmvl4bN86Y570wXm4Q7SQowByF1JPVgmAAuezAdDYNTOcv3Ho/XFKmhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161756; c=relaxed/simple;
-	bh=U6rzrY30oMCJjWrQo+B9SntMVQR5tX68rcYUpygU5CE=;
+	s=arc-20240116; t=1780164444; c=relaxed/simple;
+	bh=qDcI1FyqsCxuui6E4gIiROzYcPORIbJuuX+x0dHLPFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/ZmqEzsl7pclqVf1NeZ5r4ByVldMigJ7yKPUy5PSZftTyvwwobpr7j0ZHjucAr0oiJ/4hHeg6/PYwbSCLnQOn96kFnDqrxB15xnyAXE9INF4mZzw3I3UPXQteuuWHuB/ykXqrOVt0ZEuia7IcnRAraBIYuoEmapYNVhaYPVljs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7RJbJo3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804A21F00893;
-	Sat, 30 May 2026 17:22:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fq1WGUHmyeXIKKKkypk7/yGy+QRLhPWtG5tKp4krHtFt7Yqvua3NlD17g5p4MZeLH8M0tVvjSc/EuLHzE2lcbDeOwRBkVWgs/cCA4FUzJE1eRy/xertVkr77uD+JXpmq65oDTcBjF1QWKdTTB7zeC6S57kGr05LHXxeEWqt0cpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxL8x2db; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20DE1F00893;
+	Sat, 30 May 2026 18:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161755;
-	bh=pDMhPSv5Fm33pWi+eYPo3s5AvK9MNhwkcPeZX7upwyI=;
+	s=korg; t=1780164443;
+	bh=dT16MGTZ1KDPyw5D63GFhAo3ulaGCy1PVvQJFYYgmI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I7RJbJo3BCjqlo4XbDQVkRzA3cTibXK7AQ9Sphbf43a3AmpzOcoWQV3+E9U0+2XvN
-	 nVfeZ9FwRdc3nLxhz2KftmLiY/JDWrzcLvVHUGElDjUeU7PVnKfWpLJcLgo2Ma0xuT
-	 x/cGza5Ufjb/+gk+nTEPXmSGc60oVybB01ZJB1Ps=
+	b=hxL8x2db2JDqlDMTnbqqQ0lBQOUdt1kxOK+tRIh/6dbeQcet/th44hesIKBABID4F
+	 zrhNtTzcE1pRdYpbplKDc8XEYUTcv1ETlPpeBEJKMvfcqFNdnxzLMppcfRMpHIkXTO
+	 kCaLpNOnVmR5YWFWtSaDTPuBZB8cb2wXFqKhpZ2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 717/969] net/sched: sch_sfb: annotate data-races in sfb_dump_stats()
-Date: Sat, 30 May 2026 18:04:01 +0200
-Message-ID: <20260530160320.336602345@linuxfoundation.org>
+Subject: [PATCH 5.15 528/776] platform/x86: panasonic-laptop: Fix OPTD notifier registration and cleanup
+Date: Sat, 30 May 2026 18:04:02 +0200
+Message-ID: <20260530160253.860464326@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,202 +63,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258466-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257663-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2071560F99C
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 33E0261115C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 1ada03fdef82d3d7d2edb9dcd3acc91917675e48 ]
+[ Upstream commit 8baeff2c1d33dad8572216c6ad3a7425852507d4 ]
 
-sfb_dump_stats() only runs with RTNL held,
-reading fields that can be changed in qdisc fast path.
+An ACPI notify handler is leaked if device_create_file() returns an
+error in acpi_pcc_hotkey_add().
 
-Add READ_ONCE()/WRITE_ONCE() annotations.
+Also, it is pointless to call pcc_unregister_optd_notifier() in
+acpi_pcc_hotkey_remove() if pcc->platform is NULL and it is better
+to arrange the cleanup code in that function in the same order as
+the rollback code in acpi_pcc_hotkey_add().
 
-Alternative would be to acquire the qdisc spinlock, but our long-term
-goal is to make qdisc dump operations lockless as much as we can.
+Address the above by placing the pcc_register_optd_notifier() call in
+acpi_pcc_hotkey_add() after the device_create_file() return value
+check and placing the pcc_unregister_optd_notifier() call in
+acpi_pcc_hotkey_remove() right before the device_remove_file() call.
 
-tc_sfb_xstats fields don't need to be latched atomically,
-otherwise this bug would have been caught earlier.
-
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260421141655.3953721-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d5a81d8e864b ("platform/x86: panasonic-laptop: Add support for optical driver power in Y and W series")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/2411055.ElGaqSPkdT@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfb.c | 54 +++++++++++++++++++++++++++------------------
- 1 file changed, 32 insertions(+), 22 deletions(-)
+ drivers/platform/x86/panasonic-laptop.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_sfb.c b/net/sched/sch_sfb.c
-index 1871a1c0224d4..ce67826fdf9b6 100644
---- a/net/sched/sch_sfb.c
-+++ b/net/sched/sch_sfb.c
-@@ -130,7 +130,7 @@ static void increment_one_qlen(u32 sfbhash, u32 slot, struct sfb_sched_data *q)
- 
- 		sfbhash >>= SFB_BUCKET_SHIFT;
- 		if (b[hash].qlen < 0xFFFF)
--			b[hash].qlen++;
-+			WRITE_ONCE(b[hash].qlen, b[hash].qlen + 1);
- 		b += SFB_NUMBUCKETS; /* next level */
- 	}
- }
-@@ -159,7 +159,7 @@ static void decrement_one_qlen(u32 sfbhash, u32 slot,
- 
- 		sfbhash >>= SFB_BUCKET_SHIFT;
- 		if (b[hash].qlen > 0)
--			b[hash].qlen--;
-+			WRITE_ONCE(b[hash].qlen, b[hash].qlen - 1);
- 		b += SFB_NUMBUCKETS; /* next level */
- 	}
- }
-@@ -179,12 +179,12 @@ static void decrement_qlen(const struct sk_buff *skb, struct sfb_sched_data *q)
- 
- static void decrement_prob(struct sfb_bucket *b, struct sfb_sched_data *q)
- {
--	b->p_mark = prob_minus(b->p_mark, q->decrement);
-+	WRITE_ONCE(b->p_mark, prob_minus(b->p_mark, q->decrement));
- }
- 
- static void increment_prob(struct sfb_bucket *b, struct sfb_sched_data *q)
- {
--	b->p_mark = prob_plus(b->p_mark, q->increment);
-+	WRITE_ONCE(b->p_mark, prob_plus(b->p_mark, q->increment));
- }
- 
- static void sfb_zero_all_buckets(struct sfb_sched_data *q)
-@@ -202,11 +202,14 @@ static u32 sfb_compute_qlen(u32 *prob_r, u32 *avgpm_r, const struct sfb_sched_da
- 	const struct sfb_bucket *b = &q->bins[q->slot].bins[0][0];
- 
- 	for (i = 0; i < SFB_LEVELS * SFB_NUMBUCKETS; i++) {
--		if (qlen < b->qlen)
--			qlen = b->qlen;
--		totalpm += b->p_mark;
--		if (prob < b->p_mark)
--			prob = b->p_mark;
-+		u32 b_qlen = READ_ONCE(b->qlen);
-+		u32 b_mark = READ_ONCE(b->p_mark);
+diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
+index 418cd4d781261..6728e24db1d2a 100644
+--- a/drivers/platform/x86/panasonic-laptop.c
++++ b/drivers/platform/x86/panasonic-laptop.c
+@@ -1077,9 +1077,10 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
+ 		}
+ 		result = device_create_file(&pcc->platform->dev,
+ 			&dev_attr_cdpower);
+-		pcc_register_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
+ 		if (result)
+ 			goto out_platform;
 +
-+		if (qlen < b_qlen)
-+			qlen = b_qlen;
-+		totalpm += b_mark;
-+		if (prob < b_mark)
-+			prob = b_mark;
- 		b++;
++		pcc_register_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
+ 	} else {
+ 		pcc->platform = NULL;
  	}
- 	*prob_r = prob;
-@@ -294,7 +297,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+@@ -1113,10 +1114,10 @@ static int acpi_pcc_hotkey_remove(struct acpi_device *device)
+ 	i8042_remove_filter(panasonic_i8042_filter);
  
- 	if (unlikely(sch->q.qlen >= q->limit)) {
- 		qdisc_qstats_overlimit(sch);
--		q->stats.queuedrop++;
-+		WRITE_ONCE(q->stats.queuedrop,
-+			   q->stats.queuedrop + 1);
- 		goto drop;
+ 	if (pcc->platform) {
++		pcc_unregister_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
+ 		device_remove_file(&pcc->platform->dev, &dev_attr_cdpower);
+ 		platform_device_unregister(pcc->platform);
  	}
+-	pcc_unregister_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
  
-@@ -347,7 +351,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	sysfs_remove_group(&device->dev.kobj, &pcc_attr_group);
  
- 	if (unlikely(minqlen >= q->max)) {
- 		qdisc_qstats_overlimit(sch);
--		q->stats.bucketdrop++;
-+		WRITE_ONCE(q->stats.bucketdrop,
-+			   q->stats.bucketdrop + 1);
- 		goto drop;
- 	}
- 
-@@ -373,7 +378,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		}
- 		if (sfb_rate_limit(skb, q)) {
- 			qdisc_qstats_overlimit(sch);
--			q->stats.penaltydrop++;
-+			WRITE_ONCE(q->stats.penaltydrop,
-+				   q->stats.penaltydrop + 1);
- 			goto drop;
- 		}
- 		goto enqueue;
-@@ -388,14 +394,17 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			 * In either case, we want to start dropping packets.
- 			 */
- 			if (r < (p_min - SFB_MAX_PROB / 2) * 2) {
--				q->stats.earlydrop++;
-+				WRITE_ONCE(q->stats.earlydrop,
-+					   q->stats.earlydrop + 1);
- 				goto drop;
- 			}
- 		}
- 		if (INET_ECN_set_ce(skb)) {
--			q->stats.marked++;
-+			WRITE_ONCE(q->stats.marked,
-+				   q->stats.marked + 1);
- 		} else {
--			q->stats.earlydrop++;
-+			WRITE_ONCE(q->stats.earlydrop,
-+				   q->stats.earlydrop + 1);
- 			goto drop;
- 		}
- 	}
-@@ -408,7 +417,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		sch->q.qlen++;
- 		increment_qlen(&cb, q);
- 	} else if (net_xmit_drop_count(ret)) {
--		q->stats.childdrop++;
-+		WRITE_ONCE(q->stats.childdrop,
-+			   q->stats.childdrop + 1);
- 		qdisc_qstats_drop(sch);
- 	}
- 	return ret;
-@@ -597,12 +607,12 @@ static int sfb_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- {
- 	struct sfb_sched_data *q = qdisc_priv(sch);
- 	struct tc_sfb_xstats st = {
--		.earlydrop = q->stats.earlydrop,
--		.penaltydrop = q->stats.penaltydrop,
--		.bucketdrop = q->stats.bucketdrop,
--		.queuedrop = q->stats.queuedrop,
--		.childdrop = q->stats.childdrop,
--		.marked = q->stats.marked,
-+		.earlydrop = READ_ONCE(q->stats.earlydrop),
-+		.penaltydrop = READ_ONCE(q->stats.penaltydrop),
-+		.bucketdrop = READ_ONCE(q->stats.bucketdrop),
-+		.queuedrop = READ_ONCE(q->stats.queuedrop),
-+		.childdrop = READ_ONCE(q->stats.childdrop),
-+		.marked = READ_ONCE(q->stats.marked),
- 	};
- 
- 	st.maxqlen = sfb_compute_qlen(&st.maxprob, &st.avgprob, q);
 -- 
 2.53.0
 
