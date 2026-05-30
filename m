@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-259151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258544-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2D8+J5AxG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-259151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:56 +0200
+	id UPvoOdooG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258544-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3769E61298D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D2561145A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2CC0F3055044
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 27596302EAAE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216FD2343BE;
-	Sat, 30 May 2026 18:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C7D2F90E0;
+	Sat, 30 May 2026 18:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEf6O12N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNMyMwwt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD29786334;
-	Sat, 30 May 2026 18:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9277231F98D;
+	Sat, 30 May 2026 18:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166777; cv=none; b=qlc1SlH9de3FNougqvuYR+oCOi1E2jgbWxQhgKJrTIXQi7SoD0NfNCXeuD9Agwe+Fu8p08J2QrBypXlW+EGQSZ1jcj+BnNnvgq/W5G3PrEMqQdjt/r7Lu/x04R+Sk1cpxWHdporVWeJryCzzB7q/LfHKeqgtwuk6eSJcJZrF0tI=
+	t=1780164705; cv=none; b=lyvY8LCFtiyEGrSFPXdyoorFsWV0I7TPblZBdC7nBu3zdaBPX72cX3pDwpxMl7nDfAylL4o9/WWpvJXu1BM9l3OCiA4PjS3akFfi/GacBlJhfM+eSox892jy5vCKMcVkFLrDU0u8fpCCD/ZYe4bJeIWLSMTMYS5wbhcg5IYDirA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166777; c=relaxed/simple;
-	bh=IhUtb+0YMPoZlt6ZtF0VNzeModHREL1ZKD9kaaMq+Qo=;
+	s=arc-20240116; t=1780164705; c=relaxed/simple;
+	bh=31N47ZF3hbDh7j5iMfQ8LK0VJoOaybwKkOGWHKDVBbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UbYnLQtNXBhSPJZvuJFue1Yarjc//bxj7IoOMQoCxJnU675Vf6LZW3z4LbZHVJVGhIoXP/9HCybG/dPdVRcUx441HkMTE8uXIfH5cm6j/N4sux/YyobULHksXLzSyshJXVhTZ0uKgOneklYQATMav6NzmIAj/CRzxy40FcGPhBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEf6O12N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A591F00893;
-	Sat, 30 May 2026 18:46:15 +0000 (UTC)
+	 MIME-Version; b=IFqp1zCIzgki6BpYxPGqLApWMrDRSQGmw6mqu6fYCAE1PnPwJ+vKKW1rbvYdv2nHAQLgPv6fnWtLXFQ648Ye5HQ1HYUCa5H2lylJjtKj0FALLsUWwmuUljL2f14ylaPJFSspsvPIYx2UULh3QGF/6wsXcXh+dVVca8YPvgSPRVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNMyMwwt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FC91F00893;
+	Sat, 30 May 2026 18:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166776;
-	bh=BIGbg9VF8EDOXq18+K/76R4xgdOnL1FzSJhoiPr6+tg=;
+	s=korg; t=1780164704;
+	bh=Np1c5ft+vBsygOZ9HfIpuSC8Xy5NoWC65GWmjy68Hx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uEf6O12NDZjfzT9Kd6lexPYz6kUzy0HC80ZeWGu+ftKqBq8sp/V+dRx47BOMNA0wx
-	 V59mGwkzy+XTIqaGyVON0QlYWuI6Av6OR8cJ5elDz5sld/N6qUMV3bfW3ZNKTsjqnG
-	 G/IU24Fxq+OJLg5oid87G8fyPKqfLQ+jVeYzWwoI=
+	b=hNMyMwwtiCH1pFCkA9b5HFukbai8ly2N8UmYCsUlNdasIpwpGyuU4mKYE9VPtIrLp
+	 7c1jueLeGXnQezwEQbqBpIAQl/vPhYXd/UCFJl3RxDdakiTiO8j2K+37sgs1WRODpO
+	 XAwUGk+UDuVF+RtLgDBX+hMIjIvGMQLYiKXeCwmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	bo liu <bo.liu@senarytech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 467/589] drm/amdgpu/gfx6: Support harvested SI chips with disabled TCCs (v2)
-Date: Sat, 30 May 2026 18:05:48 +0200
-Message-ID: <20260530160236.932975901@linuxfoundation.org>
+Subject: [PATCH 5.15 635/776] ALSA: hda/conexant: add a new hda codec SN6140
+Date: Sat, 30 May 2026 18:05:49 +0200
+Message-ID: <20260530160256.373119188@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,179 +63,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-259151-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258544-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email,bugs.freedesktop.org:url]
-X-Rspamd-Queue-Id: 3769E61298D
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,senarytech.com:email,suse.de:email]
+X-Rspamd-Queue-Id: 78D2561145A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: bo liu <bo.liu@senarytech.com>
 
-[ Upstream commit fe2b84f9228e2a0903221a4d0d8c350b018e9c0c ]
+[ Upstream commit ca348e7fe1ab9192ad7d9ff029a82a1594e0e289 ]
 
-This commit fixes amdgpu to work on the Radeon HD 7870 XT
-which has never worked with the Linux open source drivers before.
+The current kernel does not support the SN6140 codec chip.
+Add the SN6140 codec configuration item to kernel.
 
-Some boards have "harvested" chips, meaning that some parts of
-the chip are disabled and fused, and it's sold for cheaper and
-under a different marketing name.
-On a harvested chip, any of the following can be disabled:
-- CUs (Compute Units)
-- RBs (Render Backend, aka. ROP)
-- Memory channels (ie. the chip has a lower bandwidth)
-- TCCs (ie. less L2 cache)
-
-Handle chips with harvested TCCs by patching the registers
-that configure how TCCs are mapped.
-
-If some TCCs are disabled, we need to make sure that
-the disabled TCCs are not used, and the remaining TCCs
-are used optimally.
-
-TCP_CHAN_STEER_LO/HI control which TCC is used by TCP channels.
-TCP_ADDR_CONFIG.NUM_TCC_BANKS controls how many channels are used.
-
-Note that the TCC configuration is highly relevant to performance.
-Suboptimal configuration (eg. CHAN_STEER=0) can significantly
-reduce gaming performance.
-
-For optimal performance:
-- Rely on the CHAN_STEER from the golden registers table,
-  only skip disabled TCCs but keep the mapping order.
-- Limit NUM_TCC_BANKS to number of active TCCs to avoid thrashing,
-  which performs better than using the same TCC twice.
-
-v2:
-- Also consider CGTS_USER_TCC_DISABLE for disabled TCCs.
-
-Link: https://bugs.freedesktop.org/show_bug.cgi?id=60879
-Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/2664
-Fixes: 2cd46ad22383 ("drm/amdgpu: add graphic pipeline implementation for si v8")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 00218d15528fab9f6b31241fe5904eea4fcaa30d)
+Signed-off-by: bo liu <bo.liu@senarytech.com>
+Link: https://lore.kernel.org/r/20220506025735.17731-1-bo.liu@senarytech.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: b0e2333a2311 ("ALSA: hda/conexant: Fix missing error check for jack detection")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c | 66 +++++++++++++++++++++++++++
- 1 file changed, 66 insertions(+)
+ sound/pci/hda/patch_conexant.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
-index d447b2416b98b..5e23c717279d6 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
-@@ -1568,6 +1568,71 @@ static void gfx_v6_0_setup_spi(struct amdgpu_device *adev)
- 	mutex_unlock(&adev->grbm_idx_mutex);
- }
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index 2d653b73e6795..e5837e47aa227 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -1303,6 +1303,7 @@ static int patch_conexant_auto(struct hda_codec *codec)
  
-+/**
-+ * gfx_v6_0_setup_tcc() - setup which TCCs are used
-+ *
-+ * @adev: amdgpu_device pointer
-+ *
-+ * Verify whether the current GPU has any TCCs disabled,
-+ * which can happen when the GPU is harvested and some
-+ * memory channels are disabled, reducing the memory bus width.
-+ * For example, on the Radeon HD 7870 XT (Tahiti LE).
-+ *
-+ * If some TCCs are disabled, we need to make sure that
-+ * the disabled TCCs are not used, and the remaining TCCs
-+ * are used optimally.
-+ *
-+ * TCP_CHAN_STEER_LO/HI control which TCC is used by TCP channels.
-+ * TCP_ADDR_CONFIG.NUM_TCC_BANKS controls how many channels are used.
-+ *
-+ * For optimal performance:
-+ * - Rely on the CHAN_STEER from the golden registers table,
-+ *   only skip disabled TCCs but keep the mapping order.
-+ * - Limit NUM_TCC_BANKS to number of active TCCs to avoid thrashing,
-+ *   which performs better than using the same TCC twice.
-+ */
-+static void gfx_v6_0_setup_tcc(struct amdgpu_device *adev)
-+{
-+	u32 i, tcc, tcp_addr_config, num_active_tcc = 0;
-+	u64 chan_steer, patched_chan_steer = 0;
-+	const u32 num_max_tcc = adev->gfx.config.max_texture_channel_caches;
-+	const u32 dis_tcc_mask =
-+		amdgpu_gfx_create_bitmask(num_max_tcc) &
-+		(REG_GET_FIELD(RREG32(mmCGTS_TCC_DISABLE),
-+			       CGTS_TCC_DISABLE, TCC_DISABLE) |
-+		 REG_GET_FIELD(RREG32(mmCGTS_USER_TCC_DISABLE),
-+			       CGTS_USER_TCC_DISABLE, TCC_DISABLE));
-+
-+	/* When no TCC is disabled, the golden registers table already has optimal TCC setup */
-+	if (!dis_tcc_mask)
-+		return;
-+
-+	/* Each 4-bit nibble contains the index of a TCC used by all TCPs */
-+	chan_steer = RREG32(mmTCP_CHAN_STEER_LO) | ((u64)RREG32(mmTCP_CHAN_STEER_HI) << 32ull);
-+
-+	/* Patch the TCP to TCC mapping to skip disabled TCCs */
-+	for (i = 0; i < num_max_tcc; ++i) {
-+		tcc = (chan_steer >> (u64)(4 * i)) & 0xf;
-+
-+		if (!((1 << tcc) & dis_tcc_mask)) {
-+			/* Copy enabled TCC indices to the patched register value. */
-+			patched_chan_steer |= (u64)tcc << (u64)(4 * num_active_tcc);
-+			++num_active_tcc;
-+		}
-+	}
-+
-+	WARN_ON(num_active_tcc != num_max_tcc - hweight32(dis_tcc_mask));
-+
-+	/* Patch number of TCCs used by TCPs */
-+	tcp_addr_config = REG_SET_FIELD(RREG32(mmTCP_ADDR_CONFIG),
-+					TCP_ADDR_CONFIG, NUM_TCC_BANKS,
-+					num_active_tcc - 1);
-+
-+	WREG32(mmTCP_ADDR_CONFIG, tcp_addr_config);
-+	WREG32(mmTCP_CHAN_STEER_HI, upper_32_bits(patched_chan_steer));
-+	WREG32(mmTCP_CHAN_STEER_LO, lower_32_bits(patched_chan_steer));
-+}
-+
- static void gfx_v6_0_config_init(struct amdgpu_device *adev)
- {
- 	adev->gfx.config.double_offchip_lds_buf = 0;
-@@ -1726,6 +1791,7 @@ static void gfx_v6_0_constants_init(struct amdgpu_device *adev)
- 	gfx_v6_0_tiling_mode_table_init(adev);
- 
- 	gfx_v6_0_setup_rb(adev);
-+	gfx_v6_0_setup_tcc(adev);
- 
- 	gfx_v6_0_setup_spi(adev);
- 
+ static const struct hda_device_id snd_hda_id_conexant[] = {
+ 	HDA_CODEC_ENTRY(0x14f11f86, "CX8070", patch_conexant_auto),
++	HDA_CODEC_ENTRY(0x14f11f87, "SN6140", patch_conexant_auto),
+ 	HDA_CODEC_ENTRY(0x14f12008, "CX8200", patch_conexant_auto),
+ 	HDA_CODEC_ENTRY(0x14f120d0, "CX11970", patch_conexant_auto),
+ 	HDA_CODEC_ENTRY(0x14f120d1, "SN6180", patch_conexant_auto),
 -- 
 2.53.0
 
