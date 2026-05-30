@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qHdhC0QqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:48 +0200
+	id qIk/JXAvG2paAAkAu9opvQ
+	(envelope-from <stable+bounces-259074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D636117BD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6699612447
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4721E30F29EF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 344833004DB6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDDC53AB26B;
-	Sat, 30 May 2026 18:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85BF3C3C1A;
+	Sat, 30 May 2026 18:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBJO7dFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9rTCNpT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40F431F98D;
-	Sat, 30 May 2026 18:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B5721B191;
+	Sat, 30 May 2026 18:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164538; cv=none; b=Dn1PKaM6VVfKwu9awUI0V2QWdZ5yBfEYHDI+Q6oDE1yUHSR4OAnv1WcoiziRgk6B7yCj1Qc4SUBts4RAreDloeUPhNe2CkrE4ExyVLoT/0xdjyc7DNzIRsV9qFv9kTOjr9NVprDntXAYwraKVysYqFEwBKODBRAybDmrBj6ystA=
+	t=1780166503; cv=none; b=YEZrlS02HEXav1fXcTT0RKOCnxklEbzGia6Adw++xZgt+hoc7Wj7rXIBLkm1b5FOrmpvkR/diUXNZhBeBhl1j5XfZ8C0Um0PUlTCDzk7MZOYJTuWWGtjQLfNwa2a9NpZuC6AhbHfa7sr06nD5xvhh7tcwBO32IF5IPPiOsIMAt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164538; c=relaxed/simple;
-	bh=KzZ2BcT/GczkJzSNT/0L2PhDIDTsFC9goJDtRoBhq/8=;
+	s=arc-20240116; t=1780166503; c=relaxed/simple;
+	bh=rmzAyI2VGjrIwrZQzMXUZ7M88m5VhiLJ7B8HQgcoeOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KM6vpZDf1q9aH2UxGoFtezfFumps5kb5sllu0mIXBcGWvlD6q7BswlUPL7nEyGNdea3dIvxQH4ZBBXrUkKN08teYaAlCFrX1mmFE6RBT2ER6Bj4lh79uSe6OYqGYmLnjVxybZ2q/cuv8CAABo6u8vO4frmp8U/L8HYIyJhfAWy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBJO7dFe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82AF1F00893;
-	Sat, 30 May 2026 18:08:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TjvlYhctmq9SLvsKzgkHtLMbLA8PYEUFwiBEW8yJ2qw/dRls2mPJLtCOVV5GjWXl7lviCpOd05pbt5gzQqflSL5Sb1a/40RRTSIefHgGNQBIuO/911KHNYjSV8kMakDi4N8br2h0WNyy+KCuoeHRqH26gGYY95xszQUe42Jp9D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9rTCNpT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1171F00893;
+	Sat, 30 May 2026 18:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164537;
-	bh=b4xFceBtOxLWNWj6S/UJf3Vm51h/ORr+jdixdxmSkcU=;
+	s=korg; t=1780166499;
+	bh=kZ1iqC3ci2Z+VAOqJztskUdvmydjdVFR/Csn9Kq51Kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bBJO7dFe1DVVLbisrNf1x/WZ+CRUREhanqtdyuyY5IxCVBa25GX2E35fjhFgFFjnJ
-	 6rsauyD0qHD0gETK9/pjDQFzD1a/oYLfTVY4mermH7iyGdPaRED4OghdOH3cThOarf
-	 2EkEv+9RhLkir6hhny2zJIiWjRiwUU2iY7/9BhPU=
+	b=X9rTCNpTr01CrIySoJtiXZZ2DZCnuLb2mZdrTx68bZ8C5DEAD2yzhukjKmroNqvAO
+	 SDVNWrN4bxexQmyRgd1s4XWLb5Yp5N83KqhSDvGHZy3IXtSinO52hkiwClFwUb+zY3
+	 b3sYii8jajjHPraakUXaDlPBLbnau8wv8MqhgK0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 557/776] net/sched: taprio: replace safety precautions with comments
+Subject: [PATCH 5.10 390/589] platform/surface: surfacepro3_button: Drop wakeup source on remove
 Date: Sat, 30 May 2026 18:04:31 +0200
-Message-ID: <20260530160254.538641648@linuxfoundation.org>
+Message-ID: <20260530160235.050735582@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258494-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259074-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A9D636117BD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: C6699612447
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 2c08a4f898d0a8e08f431709a1ae728a6fddaabd ]
+[ Upstream commit 1410a228ab2d36fe2b383415a632ae12048d4f3a ]
 
-The WARN_ON_ONCE() checks introduced in commit 13511704f8d7 ("net:
-taprio offload: enforce qdisc to netdev queue mapping") take a small
-toll on performance, but otherwise, the conditions are never expected to
-happen. Replace them with comments, such that the information is still
-conveyed to developers.
+The wakeup source added by device_init_wakeup() in surface_button_add()
+needs to be dropped during driver removal, so update the driver to do
+that.
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 105425b1969c ("net/sched: taprio: fix use-after-free in advance_sched() on schedule switch")
+Fixes: 19351f340765 ("platform/x86: surfacepro3: Support for wakeup from suspend-to-idle")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/4368848.1IzOArtZ34@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+ drivers/platform/x86/surfacepro3_button.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 9c86c8ade4853..8924b439c459d 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -432,6 +432,9 @@ static int taprio_enqueue_one(struct sk_buff *skb, struct Qdisc *sch,
- 	return qdisc_enqueue(skb, child, to_free);
- }
- 
-+/* Will not be called in the full offload case, since the TX queues are
-+ * attached to the Qdisc created using qdisc_create_dflt()
-+ */
- static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			  struct sk_buff **to_free)
+diff --git a/drivers/platform/x86/surfacepro3_button.c b/drivers/platform/x86/surfacepro3_button.c
+index d8afed5db94c5..17d3fc81aa6e7 100644
+--- a/drivers/platform/x86/surfacepro3_button.c
++++ b/drivers/platform/x86/surfacepro3_button.c
+@@ -245,6 +245,7 @@ static int surface_button_remove(struct acpi_device *device)
  {
-@@ -439,11 +442,6 @@ static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct Qdisc *child;
- 	int queue;
+ 	struct surface_button *button = acpi_driver_data(device);
  
--	if (unlikely(FULL_OFFLOAD_IS_ENABLED(q->flags))) {
--		WARN_ONCE(1, "Trying to enqueue skb into the root of a taprio qdisc configured with full offload\n");
--		return qdisc_drop(skb, sch, to_free);
--	}
--
- 	queue = skb_get_queue_mapping(skb);
- 
- 	child = q->qdiscs[queue];
-@@ -489,6 +487,9 @@ static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	return taprio_enqueue_one(skb, sch, child, to_free);
- }
- 
-+/* Will not be called in the full offload case, since the TX queues are
-+ * attached to the Qdisc created using qdisc_create_dflt()
-+ */
- static struct sk_buff *taprio_peek(struct Qdisc *sch)
- {
- 	struct taprio_sched *q = qdisc_priv(sch);
-@@ -498,11 +499,6 @@ static struct sk_buff *taprio_peek(struct Qdisc *sch)
- 	u32 gate_mask;
- 	int i;
- 
--	if (unlikely(FULL_OFFLOAD_IS_ENABLED(q->flags))) {
--		WARN_ONCE(1, "Trying to peek into the root of a taprio qdisc configured with full offload\n");
--		return NULL;
--	}
--
- 	rcu_read_lock();
- 	entry = rcu_dereference(q->current_entry);
- 	gate_mask = entry ? entry->gate_mask : TAPRIO_ALL_GATES_OPEN;
-@@ -545,6 +541,9 @@ static void taprio_set_budget(struct taprio_sched *q, struct sched_entry *entry)
- 			     atomic64_read(&q->picos_per_byte)));
- }
- 
-+/* Will not be called in the full offload case, since the TX queues are
-+ * attached to the Qdisc created using qdisc_create_dflt()
-+ */
- static struct sk_buff *taprio_dequeue(struct Qdisc *sch)
- {
- 	struct taprio_sched *q = qdisc_priv(sch);
-@@ -554,11 +553,6 @@ static struct sk_buff *taprio_dequeue(struct Qdisc *sch)
- 	u32 gate_mask;
- 	int i;
- 
--	if (unlikely(FULL_OFFLOAD_IS_ENABLED(q->flags))) {
--		WARN_ONCE(1, "Trying to dequeue from the root of a taprio qdisc configured with full offload\n");
--		return NULL;
--	}
--
- 	rcu_read_lock();
- 	entry = rcu_dereference(q->current_entry);
- 	/* if there's no entry, it means that the schedule didn't
++	device_init_wakeup(&device->dev, false);
+ 	input_unregister_device(button->input);
+ 	kfree(button);
+ 	return 0;
 -- 
 2.53.0
 
