@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-258788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257449-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GdiKawrG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:25:48 +0200
+	id +NUOLe4bG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257449-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D403C611B40
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:25:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5411160F5B2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9417F3007208
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 821D53061DED
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54A625B0B3;
-	Sat, 30 May 2026 18:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0879E3191D0;
+	Sat, 30 May 2026 17:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i8q7m7IJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AF3pDJw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD1D17555;
-	Sat, 30 May 2026 18:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1B5481DD;
+	Sat, 30 May 2026 17:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165540; cv=none; b=GR6RKZvv030K65UAX+j6yzOYJwp9rmdX0X/Tp1lEC1pjDgj0yw+Fmq2dQbWzAi9/vYE7B/ypNadtLwX7fLcF7HDJFBbAFVjg59Iv21mKFNAn/xbNRZBcsd5cFcRz+BMTGQVz46fkSAtwQuOCpKNJZhD7ziR2JkX10EN9kNZ6HUU=
+	t=1780161036; cv=none; b=QqgcmVOg9ec9z7Gwa0kQa8Kxuf0RJfOWTQfJ/rlRbKyaezng7Sr7IBthRc2Pw1msM++EMlLsEKOJ/2rDtDqSC0LlXUwmP1v2n8PzK1xY+Qev+Zk0cpxrJo4S7epLORIqpVpuv1qpdhD9JVRBOubae2hOdPxBZE7GdMj0sGrG/08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165540; c=relaxed/simple;
-	bh=vA8VSItSfwIZb3QcjDfH7uuQJKI4xMVsgUeUb9BWChs=;
+	s=arc-20240116; t=1780161036; c=relaxed/simple;
+	bh=mEf16sPhU6C57PSvZopkqk9YUQe4/v6FU+qRe5SIZ48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyyhxYbTsnn4HbmGyxD3M40xWZ6rJ/nQXU2pFP2ARD4DYEw2oC/vJkTCywwKptHf51vj0aACse+IktwcyHajS8bICPkDDrJExuqiFfNLC4QGs3QtUFcmmnWrWn7h/Fu43GgwfDf9A6nwwkDDdyrpv1KJJA/w7BiB6INrPFWSKDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8q7m7IJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C561F00893;
-	Sat, 30 May 2026 18:25:38 +0000 (UTC)
+	 MIME-Version; b=D4RgodGQMnxWyTOaHAFKPkNn4tcTp5UZgh8c1+2nEgv6QILlssk5WMPbSrpl/+Vpm0wgA+Nk0jbHgZAne8DB//uy/7XvKOCmdPvBrTqz7cE0aZe0ecWKwwdKHsxUcCudrIjmRHOACQcuulVn+ayjgDnAC/09RFZF2/7Vz91fcu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AF3pDJw6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B121F00893;
+	Sat, 30 May 2026 17:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165539;
-	bh=Z+YKnNNfk9CTfE05mO/aCnc4P9LD5DGcZJtMl3frsZM=;
+	s=korg; t=1780161035;
+	bh=GLiq2NaN3EjaSQfzy77efQlBw2egRWVq5LqmuElnXtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i8q7m7IJjo4MuYH27TMSL6//2o3QgYIqo84Qbk2DpOrgcv6UknDbkpgq+W4uQW6Lo
-	 W2yibjfZN92fepybVNH2qKpXol0N9iIQJVuJtPtqKbqAG2hi8AE1v21gwxT6L5I+Ow
-	 V/IlmXEUwegxRGLXxc36N/+ddnzbieUyL8edCLmw=
+	b=AF3pDJw6NsVNbwDqac05Vz7rGIEJN/IJVD00xhvC870wYqrp6YqHw61zFyg/8VNLJ
+	 DuIb1Oq/dk6j3FDws5K4xemvEPF3qCRryV91S9ZYmvu3B9Z9RD5hwvGW+NVLt+7OPy
+	 OOzQA3uza+/B3a7T9dgO0EToHccsTAUo2logZnU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Andrade <pandrade@redhat.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.10 109/589] x86/uprobes: Fix XOL allocation failure for 32-bit tasks
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Haoyu Lu <hechushiguitu666@gmail.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 466/969] ACPI: AGDI: fix missing newline in error message
 Date: Sat, 30 May 2026 17:59:50 +0200
-Message-ID: <20260530160227.615279076@linuxfoundation.org>
+Message-ID: <20260530160313.154479249@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,158 +70,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257449-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,os.amperecomputing.com,gmail.com,huawei.com,arm.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258788-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D403C611B40
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5411160F5B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Haoyu Lu <hechushiguitu666@gmail.com>
 
-[ Upstream commit d55c571e4333fac71826e8db3b9753fadfbead6a ]
+[ Upstream commit b178330b67abb7293b6de28b2a49d49c83962db5 ]
 
-This script
+Add the missing trailing newline to the dev_err() message
+printed when SDEI event registration fails.
 
-	#!/usr/bin/bash
+This keeps the error output as a properly terminated log line.
 
-	echo 0 > /proc/sys/kernel/randomize_va_space
-
-	echo 'void main(void) {}' > TEST.c
-
-	# -fcf-protection to ensure that the 1st endbr32 insn can't be emulated
-	gcc -m32 -fcf-protection=branch TEST.c -o test
-
-	bpftrace -e 'uprobe:./test:main {}' -c ./test
-
-"hangs", the probed ./test task enters an endless loop.
-
-The problem is that with randomize_va_space == 0
-get_unmapped_area(TASK_SIZE - PAGE_SIZE) called by xol_add_vma() can not
-just return the "addr == TASK_SIZE - PAGE_SIZE" hint, this addr is used
-by the stack vma.
-
-arch_get_unmapped_area_topdown() doesn't take TIF_ADDR32 into account and
-in_32bit_syscall() is false, this leads to info.high_limit > TASK_SIZE.
-vm_unmapped_area() happily returns the high address > TASK_SIZE and then
-get_unmapped_area() returns -ENOMEM after the "if (addr > TASK_SIZE - len)"
-check.
-
-handle_swbp() doesn't report this failure (probably it should) and silently
-restarts the probed insn. Endless loop.
-
-I think that the right fix should change the x86 get_unmapped_area() paths
-to rely on TIF_ADDR32 rather than in_32bit_syscall(). Note also that if
-CONFIG_X86_X32_ABI=y, in_x32_syscall() falsely returns true in this case
-because ->orig_ax = -1.
-
-But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
-the probed task is 32-bit to make in_ia32_syscall() true.
-
-Fixes: 1b028f784e8c ("x86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
-Reported-by: Paulo Andrade <pandrade@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/aV5uldEvV7pb4RA8@redhat.com/
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/aWO7Fdxn39piQnxu@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a2a591fb76e6 ("ACPI: AGDI: Add driver for Arm Generic Diagnostic Dump and Reset device")
+Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Signed-off-by: Haoyu Lu <hechushiguitu666@gmail.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/uprobes.c |   24 ++++++++++++++++++++++++
- include/linux/uprobes.h   |    1 +
- kernel/events/uprobes.c   |   10 +++++++---
- 3 files changed, 32 insertions(+), 3 deletions(-)
+ drivers/acpi/arm64/agdi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -1095,3 +1095,27 @@ bool arch_uretprobe_is_alive(struct retu
- 	else
- 		return regs->sp <= ret->stack;
- }
-+
-+#ifdef CONFIG_IA32_EMULATION
-+unsigned long arch_uprobe_get_xol_area(void)
-+{
-+	struct thread_info *ti = current_thread_info();
-+	unsigned long vaddr;
-+
-+	/*
-+	 * HACK: we are not in a syscall, but x86 get_unmapped_area() paths
-+	 * ignore TIF_ADDR32 and rely on in_32bit_syscall() to calculate
-+	 * vm_unmapped_area_info.high_limit.
-+	 *
-+	 * The #ifdef above doesn't cover the CONFIG_X86_X32_ABI=y case,
-+	 * but in this case in_32bit_syscall() -> in_x32_syscall() always
-+	 * (falsely) returns true because ->orig_ax == -1.
-+	 */
-+	if (test_thread_flag(TIF_ADDR32))
-+		ti->status |= TS_COMPAT;
-+	vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
-+	ti->status &= ~TS_COMPAT;
-+
-+	return vaddr;
-+}
-+#endif
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -138,6 +138,7 @@ extern bool arch_uretprobe_is_alive(stru
- extern bool arch_uprobe_ignore(struct arch_uprobe *aup, struct pt_regs *regs);
- extern void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
- 					 void *src, unsigned long len);
-+extern unsigned long arch_uprobe_get_xol_area(void);
- #else /* !CONFIG_UPROBES */
- struct uprobes_state {
- };
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1438,6 +1438,12 @@ void uprobe_munmap(struct vm_area_struct
- 		set_bit(MMF_RECALC_UPROBES, &vma->vm_mm->flags);
- }
+diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
+index cf31abd0ed1bb..53a674c83f588 100644
+--- a/drivers/acpi/arm64/agdi.c
++++ b/drivers/acpi/arm64/agdi.c
+@@ -32,7 +32,7 @@ static int agdi_sdei_probe(struct platform_device *pdev,
  
-+unsigned long __weak arch_uprobe_get_xol_area(void)
-+{
-+	/* Try to map as high as possible, this is only a hint. */
-+	return get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
-+}
-+
- /* Slot allocation for XOL */
- static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
- {
-@@ -1453,9 +1459,7 @@ static int xol_add_vma(struct mm_struct
+ 	err = sdei_event_register(adata->sdei_event, agdi_sdei_handler, pdev);
+ 	if (err) {
+-		dev_err(&pdev->dev, "Failed to register for SDEI event %d",
++		dev_err(&pdev->dev, "Failed to register for SDEI event %d\n",
+ 			adata->sdei_event);
+ 		return err;
  	}
- 
- 	if (!area->vaddr) {
--		/* Try to map as high as possible, this is only a hint. */
--		area->vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE,
--						PAGE_SIZE, 0, 0);
-+		area->vaddr = arch_uprobe_get_xol_area();
- 		if (IS_ERR_VALUE(area->vaddr)) {
- 			ret = area->vaddr;
- 			goto fail;
+-- 
+2.53.0
+
 
 
 
