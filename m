@@ -1,168 +1,133 @@
-Return-Path: <stable+bounces-256865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256867-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wUi/NLO6GmrH7wgAu9opvQ
-	(envelope-from <stable+bounces-256865-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 12:23:47 +0200
+	id oI+WG468Gmqq7wgAu9opvQ
+	(envelope-from <stable+bounces-256867-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 12:31:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84AB60C135
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 12:23:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D676960C1F5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 12:31:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2C3063016B07
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 10:23:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17545304995A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 10:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4527395AC4;
-	Sat, 30 May 2026 10:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9677B374722;
+	Sat, 30 May 2026 10:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="M4RrRL1g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkJl43J6"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992DD3C1F;
-	Sat, 30 May 2026 10:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F491A0B15;
+	Sat, 30 May 2026 10:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780136618; cv=none; b=YeEo/0Rm55aiM4o+LAecMqlZz27Sv9Wn8r0Bz3QoN8R8p+3Gr0ClLpTavuq1xxXWLfvOy8cDSs6LcmgJy5btDTp9x+22SI45UGTbXH1gdelsDq7pURIEaxTjgCtn4ZUqnBGYF48R5RoOqOpiusRXvu82WVzBTL1huku4EGifbWQ=
+	t=1780137030; cv=none; b=lKkaKuDmXpXo0ffgUwixW+oCCY1q72trg7ry5ekxfCsA/wbADBnV5aOKn06RyrdfaY6iCpodmT3CNtwkRjZiCuHFZ4SyyCXqLugnm5Vr4ZvxyuYpTAKpqMe75QN7g9y/vO87y1TDrwFqgn0WK/UIKkgS6uPaONmYh0i72LLxCog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780136618; c=relaxed/simple;
-	bh=bKt0PP1g+uZvTxoZiHPW8joK1YQcRcBunTy3AtuGxII=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=OzkBrZwhyR9iPKPAUjAl4jgtPWG6vS1JysXok2D9ifdtVJ+yL6HCDVS1uLwZO8SJomzHYnNQ+FdPLj0e8cBA1LoTbcZ3D4FYmRoA7r5gSD+OMLaS8BnPei8tXwXtVl3l4hnStYSIWa7nSmvhdDLFC9vmfa+aaqLovyw/gvedV3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=M4RrRL1g; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1780136608;
-	bh=bKt0PP1g+uZvTxoZiHPW8joK1YQcRcBunTy3AtuGxII=;
-	h=From:Date:Subject:To:Cc:From;
-	b=M4RrRL1gj4swl9GiUCtfVBotB0UShyH4cGA287JW1qgrctoztIuVUqPCRticVoON2
-	 LvthLAMQ6oLgebHcIOboPjvKaYyVaxvOMHNbClLec0q70xGiO4AY2abaPsDv1LgrWf
-	 t5yutv5d4C4w/ZDXnqRHS1Ncyu6XlhDSnLahavYo=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Sat, 30 May 2026 12:23:25 +0200
-Subject: [PATCH] x86/tools: Only use unprocessed UAPI headers for vdso2c
+	s=arc-20240116; t=1780137030; c=relaxed/simple;
+	bh=NwNvM42/n4zB9cab+HVq7KTKcoLj4KX8MUmltLuhme0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gsRGX+BcHm5hFuxPmLeabXsxxwHPHcfEzGLiADFWnsLrjP1loo1v0rvXsq4D2+p4FMYfor7O2q3oW5YAQ11FhS9wQTZn96G9TNEOT4y7iMRPNXqe1g+8tZGkB/HhJT/Qhc2y3QNTytWLVBBN03ZA5t9frSNBr5Vrveau0OG/yjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkJl43J6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602691F00893;
+	Sat, 30 May 2026 10:30:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1780137029;
+	bh=sExTVAQNfp+Wvo2s9CnxcQhquuzTS07EAHg0HbugqnQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=tkJl43J6KN7al+GZVz/U4pTfTdL5xtk3o4WUFibEJRWxc+kieSeSr02EMAEaiOCzP
+	 j6s8d1BNTmkohPyhixTwWp0GV6lWwhYkHnHWXZfruSscfYe1+67MTrX/N+p8MosUNQ
+	 DA/n5BBcVQgptN0aBu/mdckR3qmzFvxKpddqv9j8=
+Date: Sat, 30 May 2026 12:29:34 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@protonmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Hongling Zeng <zhongling0719@126.com>,
+	Hongling Zeng <zenghongling@kylinos.cn>,
+	"linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [REGRESSION] Introduced double release_region in gpib/cb7210
+Message-ID: <2026053027-follow-hurried-162b@gregkh>
+References: <PpNUbGhrvT8I_KayoDvQYI2PYjmMw1QEkuVBDZz2PwBsVVgPkBXJarc2mBM0IhiH3AQG0GtgqEsDRXNj3yUKEDBaZa25u73pAjvcE6vfRsg=@protonmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260530-x86-tools-build-fix2-v1-1-2eb92ed1b0b7@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqDMBCF4avIrB1IYxPEq4iLxEzsFDGS0SKId
- 29al9+D958glJkEuuqETB8WTkvBo65gfLllIuRQDFppq0yj8GgtbinNgn7nOWDkQ6NprIk+uuD
- sE8p1zVT2f7Yfbsvu3zRuvxZc1xcNShD5eAAAAA==
-X-Change-ID: 20260530-x86-tools-build-fix2-5365fbfada64
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-kernel@vger.kernel.org, Theron York <theron.york@cloudnuke.org>, 
- stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780136608; l=3092;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=bKt0PP1g+uZvTxoZiHPW8joK1YQcRcBunTy3AtuGxII=;
- b=gq3PWl17j8XrUJ3Q7UKfb8UasvjCXrZ2pkLJgiDR3zBBAqqrPJk4gIeM+VbE8T61a9/s7G1MF
- 3P011U/jsF0A0qui3CrasfCo/JCIEQSu1TerO/CbppGcmaZ817sAKg2
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
-X-Spamd-Result: default: False [-2.16 / 15.00];
+In-Reply-To: <PpNUbGhrvT8I_KayoDvQYI2PYjmMw1QEkuVBDZz2PwBsVVgPkBXJarc2mBM0IhiH3AQG0GtgqEsDRXNj3yUKEDBaZa25u73pAjvcE6vfRsg=@protonmail.com>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[weissschuh.net,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[weissschuh.net:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256865-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[weissschuh.net:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256867-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[protonmail.com];
+	FREEMAIL_CC(0.00)[kernel.org,126.com,kylinos.cn,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.988];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@weissschuh.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[weissschuh.net:email,weissschuh.net:mid,weissschuh.net:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,cloudnuke.org:email]
-X-Rspamd-Queue-Id: A84AB60C135
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: D676960C1F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Currently the build of insn_sanity against musl libc fails:
+On Fri, May 29, 2026 at 07:23:14PM +0000, Dominik Karol Piątkowski wrote:
+> Hi,
+> 
+> There are currently two patches [1][2] called:
+> 
+> gpib: cb7210: Fix region leak when request_irq fails
+> 
+> in linux-next that came from char-misc-next. Patch [1] introduces double 
+> release_region (if cb_isa_attach fails, cb_isa_detach is called and it already
+> takes care of cleanup) and patch [2] introduces release_region on region we
+> never obtained.
+> 
+> cb_isa_attach is set as attach and cb_isa_detach is set as detach in
+> cb_isa_(un)accel_interface and cb_isa_interface. The only place where I see
+> attach is called, is in common/iblib.c, in ibonline function. If attach fails
+> there, detach is called, where a proper cleanup is performed (and it includes
+> things like nec7210_board_reset for cb7120). AFAIK, the same approach is used
+> for the rest of gpib.
+> 
+> Please revert these patches.
+> 
+> Additionally, patch [2] was cc'd to stable@vger.kernel.org - hence adding it
+> to cc for this email as well.
+> 
+> Thanks,
+> Dominik Karol
+> 
+> 
+> [1] https://patch.msgid.link/20260503093036.283546-1-zenghongling@kylinos.cn
+> [2] https://patch.msgid.link/20260518022939.16881-1-zenghongling@kylinos.cn
+> 
 
-          HOSTCC  arch/x86/tools/insn_sanity
-        In file included from arch/x86/tools/insn_sanity.c:17:
-        In file included from ./tools/arch/x86/include/asm/insn.h:10:
-        In file included from /usr/include/asm/byteorder.h:5:
-        In file included from ./include/uapi/linux/byteorder/little_endian.h:14:
-        ./include/uapi/linux/swab.h:48:15: error: unknown type name
-        '__attribute_const__'
-        ./include/uapi/linux/swab.h:48:15: error: unknown type name
-        '__attribute_const__'
-           48 | static inline __attribute_const__ __u16 __fswab16(__u16 val)
-              |               ^
-        ./include/uapi/linux/swab.h:48:8: error: 'inline' can only appear on functions
-           48 | static inline __attribute_const__ __u16 __fswab16(__u16 val)
-              |        ^
-        ...
-
-__attribute_const__ is an internal kernel symbol and is stripped from
-the UAPI headers during installation (see scripts/headers_install.sh).
-The error does not happen on glibc as by chance that provides its own,
-compatible definition of __attribute_const__.
-The usage of the unprocess UAPI headers for insn_santity was an
-unintended side-effect of commit a76108d05ee1 ("x86/entry/vdso: Move
-vdso2c to arch/x86/tools") and is not necessary.
-
-Only use the unprocessed UAPI headers for vdso2c, like before.
-
-The usage of the unprocessed UAPI headers should be removed
-completely, but that will require a bit more changes,
-not suitable for this late in the cycle.
-
-Reported-by: Theron York <theron.york@cloudnuke.org>
-Closes: https://lore.kernel.org/lkml/399bf58e-1c91-4c3c-a3df-dae08a891b55@cloudnuke.org/
-Fixes: a76108d05ee1 ("x86/entry/vdso: Move vdso2c to arch/x86/tools")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- arch/x86/tools/Makefile | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/tools/Makefile b/arch/x86/tools/Makefile
-index 39a183fffd04..afd967bc4051 100644
---- a/arch/x86/tools/Makefile
-+++ b/arch/x86/tools/Makefile
-@@ -38,8 +38,9 @@ $(obj)/insn_decoder_test.o: $(srctree)/tools/arch/x86/lib/insn.c $(srctree)/tool
- 
- $(obj)/insn_sanity.o: $(srctree)/tools/arch/x86/lib/insn.c $(srctree)/tools/arch/x86/lib/inat.c $(srctree)/tools/arch/x86/include/asm/inat_types.h $(srctree)/tools/arch/x86/include/asm/inat.h $(srctree)/tools/arch/x86/include/asm/insn.h $(objtree)/arch/x86/lib/inat-tables.c
- 
--HOST_EXTRACFLAGS += -I$(srctree)/tools/include -I$(srctree)/include/uapi \
--		    -I$(srctree)/arch/$(SUBARCH)/include/uapi
-+HOST_EXTRACFLAGS += -I$(srctree)/tools/include
-+
-+HOSTCFLAGS_vdso2c.o := -I$(srctree)/include/uapi -I$(srctree)/arch/$(SUBARCH)/include/uapi
- 
- hostprogs	+= relocs vdso2c
- relocs-objs	:= relocs_32.o relocs_64.o relocs_common.o
-
----
-base-commit: f5e5d3509bffb95c6648eb9795f7f236852ae62d
-change-id: 20260530-x86-tools-build-fix2-5365fbfada64
-
-Best regards,
---  
-Thomas Weißschuh <linux@weissschuh.net>
-
+Now reverted
 
