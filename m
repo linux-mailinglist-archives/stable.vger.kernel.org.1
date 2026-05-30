@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257170-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NTnHzYiG2oN/ggAu9opvQ
-	(envelope-from <stable+bounces-257947-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:26 +0200
+	id pwwMN4gWG2rX/AgAu9opvQ
+	(envelope-from <stable+bounces-257170-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:55:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D6761050D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFFC460E9DA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 98FC5303D102
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 28B90300A5AB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC562E7379;
-	Sat, 30 May 2026 17:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F983403F3;
+	Sat, 30 May 2026 16:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8xPQIjC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2Jxb15z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2681433E36A;
-	Sat, 30 May 2026 17:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DEA33F5A3;
+	Sat, 30 May 2026 16:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162712; cv=none; b=MdDaX9ZlfjQ1XAIa57aeicYDDTcLJ80qPq052M9fqdgtaNP6tkfvabwNf2UBGa9dGmzww5/4W6HmLNhShlpfYy00N0z32UkStI/jSP69RZq6wskqhy9QpdqpyfqmkNBzunoEsJUen/9XvvhL/K1Wrn5VA9iTaKRuG1N0Ew4t0C8=
+	t=1780160051; cv=none; b=O/W5DINf5+S1ypMxmxotTBF06XNw3cJ3LxvlcU+0c3RRwZ7SvOYXahHadvHyBbfDB5IFmoa4RhdWRU0nF2Evct/w9K2TsDOmQxtshDutdc3TB5KtPJecrzQRGihBiPxG3KNbAIFoD6uvWL7M+QI9Pj8rWjnaOpdIaHE63Fov4wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162712; c=relaxed/simple;
-	bh=bTdRIxJztyGulYk1EyBQONL9aLXlZwNQ93WI7kXi98s=;
+	s=arc-20240116; t=1780160051; c=relaxed/simple;
+	bh=DUptl2WZQwxb1BOcMZn7d6WnkWBUntIkTdJyA7twhIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4nhEcHfEv+SklRm625VXQl6Qra7w1ScMO/0zTmqeuiALsqC6wcFGb4NaGILIolUuM5EWqWA2dHvbs7pewIW/NVr6tl1zJySlmxFU+V09+BSoEubINzQzeVugUr0UOwDapqmdOZGD121kaWmIfR9bGA1xBvKL/YxLqN1XQ5eg1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8xPQIjC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 711B51F00893;
-	Sat, 30 May 2026 17:38:30 +0000 (UTC)
+	 MIME-Version; b=jozMDoAkLSfidINxjnPJ7g6oaj9uJoXECHxCmynunfCauXGWrrUIdZ8APpDgqxs8BtYrnjP/x4KBkMVqoGbtn7nv/XLg7g+XCTKO4o45oMj62jIqL2Jo0beutAiW+XCzL142RlUR7oArzTotQRbVw/rKW9dEo/yOV+p4tbP8LGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2Jxb15z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2864D1F00893;
+	Sat, 30 May 2026 16:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162711;
-	bh=vb1MxzRIvha7Nc5Ims+Uxc0dcAEQZwihkd/Ud8WV5iQ=;
+	s=korg; t=1780160049;
+	bh=Xh0JzJwo17REFkoLis7Ql4bASArp67dQZQJEW7/if0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M8xPQIjCIMO5SPuwqd3MkMTm3RP4LNBiHnn+Vd26DEkvX9S0XklsFfJsYMga3jVJ5
-	 OJKqRObwRC+N1VtjL6P1gPzYfaq1qrMuA1AxYQ+d7xIbt1sNFaFXSkvF8mekB8wVa8
-	 nER02JhsW1DH+6tMPISpJhsXZh2wU0g322xhGAfM=
+	b=x2Jxb15zpN241qdAfCRyV6JUuxBDpiAxWFxoMXDCucWR5DuOyaBLY033tevYOAGRJ
+	 IZi4entXBjqD6tK7RLEd/Bge3cYd1KFeXqUk9+0ZHKekk52bu8v+8TU3+/NpO+aX/P
+	 iT8hWOb9rXsJpE6ZdSsmIbRUndKurwAMzTagA5NE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 008/776] ASoC: soc-core: call missing INIT_LIST_HEAD() for card_aux_list
+	Josh Hunt <johunt@akamai.com>,
+	Yu Kuai <yukuai@fnnas.com>
+Subject: [PATCH 6.1 198/969] md/raid10: fix deadlock with check operation and nowait requests
 Date: Sat, 30 May 2026 17:55:22 +0200
-Message-ID: <20260530160240.464872417@linuxfoundation.org>
+Message-ID: <20260530160305.942860013@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +65,133 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257170-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257947-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D7D6761050D
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: DFFC460E9DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Josh Hunt <johunt@akamai.com>
 
-[ Upstream commit b9eff9732cb0f86a68c9d1592a98ceab47c01e95 ]
+commit 7d96f3120a7fb7210d21b520c5b6f495da6ba436 upstream.
 
-Component has "card_aux_list" which is added/deled in bind/unbind aux dev
-function (A), and used in for_each_card_auxs() loop (B).
+When an array check is running it will raise the barrier at which point
+normal requests will become blocked and increment the nr_pending value to
+signal there is work pending inside of wait_barrier(). NOWAIT requests
+do not block and so will return immediately with an error, and additionally
+do not increment nr_pending in wait_barrier(). Upstream change commit
+43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request") added a
+call to raid_end_bio_io() to fix a memory leak when NOWAIT requests hit
+this condition. raid_end_bio_io() eventually calls allow_barrier() and
+it will unconditionally do an atomic_dec_and_test(&conf->nr_pending) even
+though the corresponding increment on nr_pending didn't happen in the
+NOWAIT case.
 
-	static void soc_unbind_aux_dev(...)
-	{
-		...
-		for_each_card_auxs_safe(...) {
-			...
-(A)			list_del(&component->card_aux_list);
-		}			     ^^^^^^^^^^^^^
-	}
+This can be easily seen by starting a check operation while an application
+is doing nowait IO on the same array. This results in a deadlocked state
+due to nr_pending value underflowing and so the md resync thread gets stuck
+waiting for nr_pending to == 0.
 
-	static int soc_bind_aux_dev(...)
-	{
-		...
-		for_each_card_pre_auxs(...) {
-			...
-(A)			list_add(&component->card_aux_list, ...);
-		}			     ^^^^^^^^^^^^^
-		...
-	}
+Output of r10conf state of the array when we hit this condition:
 
-	#define for_each_card_auxs(card, component)	\
-(B)		list_for_each_entry(component, ..., card_aux_list)
-						    ^^^^^^^^^^^^^
+crash> struct r10conf
+	barrier = 1,
+        nr_pending = {
+          counter = -41
+        },
+        nr_waiting = 15,
+        nr_queued = 0,
 
-But it has been used without calling INIT_LIST_HEAD().
+Example of md_sync thread stuck waiting on raise_barrier() and other
+requests stuck in wait_barrier():
 
-	> git grep card_aux_list sound/soc
-	sound/soc/soc-core.c:           list_del(&component->card_aux_list);
-	sound/soc/soc-core.c:           list_add(&component->card_aux_list, ...);
+md1_resync
+[<0>] raise_barrier+0xce/0x1c0
+[<0>] raid10_sync_request+0x1ca/0x1ed0
+[<0>] md_do_sync+0x779/0x1110
+[<0>] md_thread+0x90/0x160
+[<0>] kthread+0xbe/0xf0
+[<0>] ret_from_fork+0x34/0x50
+[<0>] ret_from_fork_asm+0x1a/0x30
 
-call missing INIT_LIST_HEAD() for it.
+kworker/u1040:2+flush-253:4
+[<0>] wait_barrier+0x1de/0x220
+[<0>] regular_request_wait+0x30/0x180
+[<0>] raid10_make_request+0x261/0x1000
+[<0>] md_handle_request+0x13b/0x230
+[<0>] __submit_bio+0x107/0x1f0
+[<0>] submit_bio_noacct_nocheck+0x16f/0x390
+[<0>] ext4_io_submit+0x24/0x40
+[<0>] ext4_do_writepages+0x254/0xc80
+[<0>] ext4_writepages+0x84/0x120
+[<0>] do_writepages+0x7a/0x260
+[<0>] __writeback_single_inode+0x3d/0x300
+[<0>] writeback_sb_inodes+0x1dd/0x470
+[<0>] __writeback_inodes_wb+0x4c/0xe0
+[<0>] wb_writeback+0x18b/0x2d0
+[<0>] wb_workfn+0x2a1/0x400
+[<0>] process_one_work+0x149/0x330
+[<0>] worker_thread+0x2d2/0x410
+[<0>] kthread+0xbe/0xf0
+[<0>] ret_from_fork+0x34/0x50
+[<0>] ret_from_fork_asm+0x1a/0x30
 
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/87341mxa8l.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request")
+Cc: stable@vger.kernel.org
+Signed-off-by: Josh Hunt <johunt@akamai.com>
+Link: https://lore.kernel.org/linux-raid/20260303005619.1352958-1-johunt@akamai.com
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/raid10.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index af8554e96035f..da652f2f09b61 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -2646,6 +2646,7 @@ int snd_soc_component_initialize(struct snd_soc_component *component,
- 	INIT_LIST_HEAD(&component->dobj_list);
- 	INIT_LIST_HEAD(&component->card_list);
- 	INIT_LIST_HEAD(&component->list);
-+	INIT_LIST_HEAD(&component->card_aux_list);
- 	mutex_init(&component->io_mutex);
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -1211,7 +1211,7 @@ static void raid10_read_request(struct m
+ 	}
  
- 	component->name = fmt_single_name(dev, &component->id);
--- 
-2.53.0
-
+ 	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors)) {
+-		raid_end_bio_io(r10_bio);
++		free_r10bio(r10_bio);
+ 		return;
+ 	}
+ 
+@@ -1436,7 +1436,7 @@ static void raid10_write_request(struct
+ 
+ 	sectors = r10_bio->sectors;
+ 	if (!regular_request_wait(mddev, conf, bio, sectors)) {
+-		raid_end_bio_io(r10_bio);
++		free_r10bio(r10_bio);
+ 		return;
+ 	}
+ 
 
 
 
