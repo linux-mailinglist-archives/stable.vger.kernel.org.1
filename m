@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-259046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBa6KL8vG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:11 +0200
+	id AO+xCSoqG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B4A6612540
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AFA361177D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D140930B28D2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:40:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D20FB3051A54
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448143546F6;
-	Sat, 30 May 2026 18:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0023BFE4D;
+	Sat, 30 May 2026 18:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQf7B7xT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4nmZRf3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B44533AD99;
-	Sat, 30 May 2026 18:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E1F340A6F;
+	Sat, 30 May 2026 18:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166409; cv=none; b=n3/WO7C7uvSaxJczVY1ZCn4RSLbEK9sfq1VeYJPcsO2Fomo6O8iRB9Onrpdnr+KRwiLQ+mWL1gemTgvb2MtjuITX0+vtERySVrc/OxG7EHTMmXbm0zjtBcMa9/3a3kU7YHWV3OTOvi89aWYapmccmzBd8Ex6AIYz+PmDzuU5+t0=
+	t=1780164458; cv=none; b=oIHn6h7SNx5NBcPzPkUf8JJ8O0Ce95U15e7yHyraPtBYZTW0DF+Lolp/O3WmTcEqoYtCz+i5Kmv4BP312u/+5RWlW1iBXzLt0Wa5gScPmhasQSzt4ORUJHFNY5hduP7g6wZvPcybegtBOjKnXLhB0JxQ0Oq5wbGWX/QrBK2WEb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166409; c=relaxed/simple;
-	bh=EPujd+HtLHRNNUWc6G4XGxoE99U8HJlwRdpCHDLTWF0=;
+	s=arc-20240116; t=1780164458; c=relaxed/simple;
+	bh=S+j8eM9dLCr3ni75zTxoRxVwl8mg5m6XaCiNHEptoUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nFEmXCPZbAnGb8t5EfN6fNY9tFQQAZObDvdK1c2vASKiIk1pI0QfLq4YlfRxpvSa+DlEQ4kz/xfZOoLff3+aKhTxCn/P0Wh+U6fjXIzjjVGDM8g5E0ofVihfOp3f5WeOHj8kY8TrG5KkeJwOQn6o7oCIrJa5nY4tUCtYdWEphyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQf7B7xT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD511F00893;
-	Sat, 30 May 2026 18:40:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E2t2pqzI2am+KWR4WftWF2HIl6aDF51Tl9PQrFKM1EX7zBQZxnYhJMxgb2GX1yIdL2FohjkJ/TO1A6bd8EF9tmqerxnYOQkMQapgVSQg90jLlVcOWKBNW9BIrTsfc2AK4mqktTZQsWPPMbSE0OB3Mm+vY4MwTQJYfHaHcHvN1TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4nmZRf3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB9F1F00893;
+	Sat, 30 May 2026 18:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166408;
-	bh=okfpKg/hEFYY0ZNlG0efEONrbI4lGnI95jCWddy4bOM=;
+	s=korg; t=1780164457;
+	bh=UCSfQQS6QlqxPyyAfzow1qysz0Oz+NwR8XX5kswmGNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RQf7B7xTl8xN6wq03Cgmvl798XbhMVImK8ZaHCf6/XbxdD15oN+wNxqSdKZpYCLjw
-	 gFRuSPO9lVf8HuS9RIWn2OZEI6DQqsM/dq7I+8lNl3D8vMGdBAzFu9OCvXYHI0prI4
-	 hYzNK/UkZJwskTzlQV1vx/zkbr6hB472MTiewvxQ=
+	b=A4nmZRf3757KdjNRNzMorFhKOLTwqSABQN7s0nI7QJEgjIQPqL4QxxmNS5icHafKt
+	 KRgPQGVI8Jl6Y+p65F72UZ/HsQLklA2S46JYzJiy6nezme81iWBOqd2nXr0fKy9T+9
+	 /eaP+CDA+BvuCM0tKhgxeWICY1qyWog8EQHbF9m8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Heidelberg <david@ixit.cz>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 365/589] arm64: dts: qcom: sdm845-xiaomi-beryllium: Mark l1a regulator as powered during boot
+Subject: [PATCH 5.15 532/776] platform/x86: dell_rbu: avoid uninit value usage in packet_size_write()
 Date: Sat, 30 May 2026 18:04:06 +0200
-Message-ID: <20260530160234.430600698@linuxfoundation.org>
+Message-ID: <20260530160253.953745883@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +63,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+X-Spamd-Result: default: False [7.34 / 15.00];
+	URIBL_BLACK(7.50)[linuxtesting.org:url];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259046-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_FROM(0.00)[bounces-258470-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	GREYLIST(0.00)[pass,body];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ixit.cz:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1B4A6612540
-X-Rspamd-Action: no action
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_SPAM(0.00)[0.904];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ispras.ru:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxtesting.org:url,intel.com:email]
+X-Rspamd-Queue-Id: 8AFA361177D
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Heidelberg <david@ixit.cz>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 3b0dd81eea6b7a239fce456ce4545af76f1a9715 ]
+[ Upstream commit f8fd138c2363c0e2d3235c32bfb4fb5c6474e4ae ]
 
-The regulator must be on, since it provides the display subsystem and
-therefore the bootloader had turned it on before Linux booted.
+Ensure the temp value has been properly parsed from the user-provided
+buffer and initialized to be used in later operations.  While at it,
+prefer a convenient kstrtoul() helper.
 
-Fixes: 77809cf74a8c ("arm64: dts: qcom: Add support for Xiaomi Poco F1 (Beryllium)")
-Signed-off-by: David Heidelberg <david@ixit.cz>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260320-beryllium-booton-v2-1-931d1be21eae@ixit.cz
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with Svace static
+analysis tool.
+
+Fixes: ad6ce87e5bd4 ("[PATCH] dell_rbu: changes in packet update mechanism")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20260403134240.604837-1-pchelkin@ispras.ru
+[ij: add include]
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/dell/dell_rbu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-index 7d029425336e4..b38b3bcdf429e 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-@@ -131,6 +131,7 @@ vreg_l1a_0p875: ldo1 {
- 			regulator-min-microvolt = <880000>;
- 			regulator-max-microvolt = <880000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-boot-on;
- 		};
+diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
+index 9fc5d3e9e7934..8f7c790857015 100644
+--- a/drivers/platform/x86/dell/dell_rbu.c
++++ b/drivers/platform/x86/dell/dell_rbu.c
+@@ -30,6 +30,7 @@
+ #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
  
- 		vreg_l5a_0p8: ldo5 {
+ #include <linux/init.h>
++#include <linux/kstrtox.h>
+ #include <linux/module.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
+@@ -617,9 +618,12 @@ static ssize_t packet_size_write(struct file *filp, struct kobject *kobj,
+ 				 char *buffer, loff_t pos, size_t count)
+ {
+ 	unsigned long temp;
++
++	if (kstrtoul(buffer, 10, &temp))
++		return -EINVAL;
++
+ 	spin_lock(&rbu_data.lock);
+ 	packet_empty_list();
+-	sscanf(buffer, "%lu", &temp);
+ 	if (temp < 0xffffffff)
+ 		rbu_data.packetsize = temp;
+ 
 -- 
 2.53.0
 
