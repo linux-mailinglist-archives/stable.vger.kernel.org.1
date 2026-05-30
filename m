@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258701-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CH08G40aG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257317-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:45 +0200
+	id kFeDMIEqG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258701-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD62760F21A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A8DC611887
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4655C308845E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC8713014258
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D1C34BA42;
-	Sat, 30 May 2026 17:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6520224EAB1;
+	Sat, 30 May 2026 18:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pq8wIZYB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLGeGBOg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6549532D42B;
-	Sat, 30 May 2026 17:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB81217704;
+	Sat, 30 May 2026 18:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160589; cv=none; b=dCXG2yFFbhuTcH8s6OE2PdQSj7tRgJPAdo8Ftltr2eFoWCPTyQ1iPgGdQ4D6x5q4ogtDveD165fbFgQnKDn4C9muK8g+d5Vz8d+5YVmaK2Az6v02NzS0mFAEppudWaAWQS7v+RPo1ufzFupEAhy+o0dCBBZHQ1kbopae3Y5DlHA=
+	t=1780165246; cv=none; b=dZY99mJ5sIaQSoqGkcxB1CwYEcR9nh92x7XR6IfjYSihtfbqY+i8BYD4mexKERAny6KU3h8Va2rS9S6G/X48oAI5+bJ5kzfYbhIjLcPc+tAcDu3SNpuxuatKrcvPSe+cgqHz9th2SK0mX+bmSUCabm4Bg7IyOA16O4nRwBdIjJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160589; c=relaxed/simple;
-	bh=hlJma0sLS8cz1XwvhLlcjhGY/rp7kq4WH51b1XOCZDw=;
+	s=arc-20240116; t=1780165246; c=relaxed/simple;
+	bh=2zL0Pv8Wo/zQyzApB1FM9H1h5ONOl1K08wXgv5uQgV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxnTRrvdkU4V9VJx0bKpNxSUAx12LtwYFzQW9prHTo6/zwnIRWOIkXnmt/Dhqy0OtnrxTqPpxU9azwhImG02fd1DoSNv67WltEkA7Vl/HHQvyhAw0b4pKY4X/3rbQhTZZKhpiAGQZLzMmjVCZGhOTeKHHNr5rinxEWxkeF6WKxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pq8wIZYB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C03B1F00893;
-	Sat, 30 May 2026 17:03:07 +0000 (UTC)
+	 MIME-Version; b=MmQp02fRapwX8hIljCTjuYEGYzrIBHVY4FqCtvDVLVetv5aXjoaTVYb+wBkvqJIoLBM+mrKWEL8R1pK6h3v/ebjNhMlZXDcnBNc0E/5OxKQpNFcO0Et+vH8WpJX8wZmV4zQ/KLcLBYGa82JAoEwX5BZovumb4aUYYNi2CgchgSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLGeGBOg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4787F1F00893;
+	Sat, 30 May 2026 18:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160588;
-	bh=XTaNVMoePQMUOONLrghF0TmFiF2KErCY+QUyrZbzoJE=;
+	s=korg; t=1780165244;
+	bh=TBDwqGns5C5Ddh5HAm99fGWLTREMwjGx+lRa8kc1hKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Pq8wIZYBE1XGShey9m9VXkSZD4X6wjJd4i/WOl1udNmG5nsY0Z8gWl9iY8tJl9Mnm
-	 Mr7QemBq5BvFrdkiIvcrlrJrspenbs0P2wxRLSpOCitOhaQbeZ97ntfE40BrC5WPsC
-	 iayCLFF0AiqvZwbrbcjtlcNvxsvQQSal2q12aicg=
+	b=GLGeGBOgBS5JwV3irQqEoe5gpDQUshwqTHF2DKjRuqHNMxkLiCpnoJsjJaiGBojQz
+	 pF8Hj5q64EdWaZRKWa0O1j7qTnb6AzX2IqehDDGlRqyaQ+tjlkUZQPMHc7qCEtRLpt
+	 7JJxYA7f8MvqqU1nqI9MNldKAWY+azBZthDEJ00k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 379/969] LoongArch: Fix potential ADE in loongson_gpu_fixup_dma_hang()
+	Peng Li <lipeng321@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 022/589] net: lapbether: replace comparison to NULL with "lapbeth_get_x25_dev"
 Date: Sat, 30 May 2026 17:58:23 +0200
-Message-ID: <20260530160310.765563799@linuxfoundation.org>
+Message-ID: <20260530160225.164043339@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,136 +66,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257317-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258701-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CD62760F21A
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,davemloft.net:email]
+X-Rspamd-Queue-Id: 6A8DC611887
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Guan <guanwentao@uniontech.com>
+From: Peng Li <lipeng321@huawei.com>
 
-commit 8dfa2f8780e486d05b9a0ffce70b8f5fbd62053e upstream.
+[ Upstream commit d49859601d72baef143703c6944a4e41921f7e6e ]
 
-The switch case in loongson_gpu_fixup_dma_hang() may not DC2 or DC3, and
-readl(crtc_reg) will access with random address, because the "device" is
-from "base+PCI_DEVICE_ID", "base" is from "pdev->devfn+1". This is wrong
-when my platform inserts a discrete GPU:
+According to the chackpatch.pl, comparison to NULL could
+be written "lapbeth_get_x25_dev".
 
-lspci -tv
--[0000:00]-+-00.0  Loongson Technology LLC Hyper Transport Bridge Controller
-...
-           +-06.0  Loongson Technology LLC LG100 GPU
-           +-06.2  Loongson Technology LLC Device 7a37
-...
-
-Add a default switch case to fix the panic as below:
-
- Kernel ade access[#1]:
- CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.6.136-loong64-desktop-hwe+ #4
- pc 90000000017e5534 ra 90000000017e54c0 tp 90000001002f8000 sp 90000001002fb6c0
- a0 80000efe00003100 a1 0000000000003100 a2 0000000000000000 a3 0000000000000002
- a4 90000001002fb6b4 a5 900000087cdb58fd a6 90000000027af000 a7 0000000000000001
- t0 00000000000085b9 t1 000000000000ffff t2 0000000000000000 t3 0000000000000000
- t4 fffffffffffffffd t5 00000000fffb6d9c t6 0000000000083b00 t7 00000000000070c0
- t8 900000087cdb4d94 u0 900000087cdb58fd s9 90000001002fb826 s0 90000000031c12c8
- s1 7fffffffffffff00 s2 90000000031c12d0 s3 0000000000002710 s4 0000000000000000
- s5 0000000000000000 s6 9000000100053000 s7 7fffffffffffff00 s8 90000000030d4000
-    ra: 90000000017e54c0 loongson_gpu_fixup_dma_hang+0x40/0x210
-   ERA: 90000000017e5534 loongson_gpu_fixup_dma_hang+0xb4/0x210
-  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
-  PRMD: 00000004 (PPLV0 +PIE -PWE)
-  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
- ESTAT: 00480000 [ADEM] (IS= ECode=8 EsubCode=1)
-  BADV: 7fffffffffffff00
-  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
- Modules linked in:
- Process swapper/0 (pid: 1, threadinfo=(____ptrval____), task=(____ptrval____))
- Stack : 0000000000000006 90000001002fb778 90000001002fb704 0000000000000007
-         0000000016a65700 90000000017e5690 000000000000ffff ffffffffffffffff
-         900000000209f7c0 9000000100053000 900000000209f7a8 9000000000eebc08
-         0000000000000000 0000000000000000 0000000000000006 90000001002fb778
-         90000001000530b8 90000000027af000 0000000000000000 9000000100054000
-         9000000100053000 9000000000ebb70c 9000000100004c00 9000000004000001
-         90000001002fb7e4 bae765461f31cb12 0000000000000000 0000000000000000
-         0000000000000006 90000000027af000 0000000000000030 90000000027af000
-         900000087cd6f800 9000000100053000 0000000000000000 9000000000ebc560
-         7a2500147cdaf720 bae765461f31cb12 0000000000000001 0000000000000030
-         ...
- Call Trace:
- [<90000000017e5534>] loongson_gpu_fixup_dma_hang+0xb4/0x210
- [<9000000000eebc08>] pci_fixup_device+0x108/0x280
- [<9000000000ebb70c>] pci_setup_device+0x24c/0x690
- [<9000000000ebc560>] pci_scan_single_device+0xe0/0x140
- [<9000000000ebc684>] pci_scan_slot+0xc4/0x280
- [<9000000000ebdd00>] pci_scan_child_bus_extend+0x60/0x3f0
- [<9000000000f5bc94>] acpi_pci_root_create+0x2b4/0x420
- [<90000000017e5e74>] pci_acpi_scan_root+0x2d4/0x440
- [<9000000000f5b02c>] acpi_pci_root_add+0x21c/0x3a0
- [<9000000000f4ee54>] acpi_bus_attach+0x1a4/0x3c0
- [<90000000010e200c>] device_for_each_child+0x6c/0xe0
- [<9000000000f4bbf4>] acpi_dev_for_each_child+0x44/0x70
- [<9000000000f4ef40>] acpi_bus_attach+0x290/0x3c0
- [<90000000010e200c>] device_for_each_child+0x6c/0xe0
- [<9000000000f4bbf4>] acpi_dev_for_each_child+0x44/0x70
- [<9000000000f4ef40>] acpi_bus_attach+0x290/0x3c0
- [<9000000000f5211c>] acpi_bus_scan+0x6c/0x280
- [<900000000189c028>] acpi_scan_init+0x194/0x310
- [<900000000189bc6c>] acpi_init+0xcc/0x140
- [<9000000000220cdc>] do_one_initcall+0x4c/0x310
- [<90000000018618fc>] kernel_init_freeable+0x258/0x2d4
- [<900000000184326c>] kernel_init+0x28/0x13c
- [<9000000000222008>] ret_from_kernel_thread+0xc/0xa4
-
-Cc: stable@vger.kernel.org
-Fixes: 95db0c9f526d ("LoongArch: Workaround LS2K/LS7A GPU DMA hang bug")
-Link: https://gist.github.com/opsiff/ebf2dac51b4013d22462f2124c55f807
-Link: https://gist.github.com/opsiff/a62f2a73db0492b3c49bf223a339b133
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peng Li <lipeng321@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: b120e4432f9f ("net: lapbether: handle NETDEV_PRE_TYPE_CHANGE")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/pci/pci.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wan/lapbether.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/pci/pci.c
-+++ b/arch/loongarch/pci/pci.c
-@@ -133,6 +133,9 @@ static void loongson_gpu_fixup_dma_hang(
- 		crtc_reg = regbase;
- 		crtc_offset = 0x400;
+diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
+index f77cd8b69afe1..4f89693313175 100644
+--- a/drivers/net/wan/lapbether.c
++++ b/drivers/net/wan/lapbether.c
+@@ -412,7 +412,7 @@ static int lapbeth_device_event(struct notifier_block *this,
+ 	switch (event) {
+ 	case NETDEV_UP:
+ 		/* New ethernet device -> new LAPB interface	 */
+-		if (lapbeth_get_x25_dev(dev) == NULL)
++		if (!lapbeth_get_x25_dev(dev))
+ 			lapbeth_new_device(dev);
  		break;
-+	default:
-+		iounmap(regbase);
-+		return;
- 	}
- 
- 	for (i = 0; i < CRTC_NUM_MAX; i++, crtc_reg += crtc_offset) {
+ 	case NETDEV_GOING_DOWN:
+-- 
+2.53.0
+
 
 
 
