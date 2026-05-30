@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-257455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258837-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNjKMIcaG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257455-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:39 +0200
+	id 4MdaDEkuG2oLAAkAu9opvQ
+	(envelope-from <stable+bounces-258837-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C00060F20A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7890E612181
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BC67E302844A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:10:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 182673136479
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D7134EF07;
-	Sat, 30 May 2026 17:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40293C416A;
+	Sat, 30 May 2026 18:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evBLrBZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQ0/q8OK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BD434389B;
-	Sat, 30 May 2026 17:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986F03BD646;
+	Sat, 30 May 2026 18:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161056; cv=none; b=Goq+sTrB8tb8iHUOe6jnC5OPAg+86wZPS7LKKKkDuQgC5WpUiAVKsc9SYM8Ru3PDDVWQPdNeScLikW8fWa8DDHwxobHblBwvpSpt+GQ/LL5plfeT9zeSFk+s2iITfKg5hlH/Y8cIn5qwZ7rrYlxysLv3KHCbiCCuTJZmwTKiwHM=
+	t=1780165705; cv=none; b=HVcdiEywzXqYJVUuMeghRHnmTMOTlNIpg7DnYTkmoIMxULWp6n6opMsQ5vYTxYayxlnLK4Eu9nI5/iiS2G6Esz2puvd4cxRxlekUARFHxUPlSMU0aUpFDsK2jJoezHWM0bdIDM/kY37w+E9qosAJ2geWOAOMU1y9JgwsfRpryZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161056; c=relaxed/simple;
-	bh=UygjFdnX1219cs9v+W120zEI7NSpL+1q2gKPFHE4rao=;
+	s=arc-20240116; t=1780165705; c=relaxed/simple;
+	bh=8gmpeLG7v9D/6u0OE63Ehz0DE+QgxE6aclUt7DHRbOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jstbpgLYe6hnScyRvkdf6Usl3WO+Zr61i0q2Jj9vAEmsKcCGRQX6SOkqbBtkVNGMS9q/iaO6WOwXbgl528ousDOIMd/mgA502ubEOO9KGaL0b486p2z7Klh0wqo4HD4ZtnW8stPCCISkkzvgDlvOTwVwqx54/pKoZKrwfjvD/go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evBLrBZy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0F01F00893;
-	Sat, 30 May 2026 17:10:54 +0000 (UTC)
+	 MIME-Version; b=tqPI5tyFGaMptWm8TaCSN2kiXkk7LOsk1Q6B7XP0rilAOzCzxuccgYsafWz21QCF4SEN3/2cWPCuFfcZeAj2E2fJ32Jk7zh/3YxyYk0Ia2vYUex8Hl2n/4uZ5YxxqOz5Ahfhb3/ayUUvgW3cH5fBCUeToHpwhKJhByFLflUrgpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQ0/q8OK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A120D1F00893;
+	Sat, 30 May 2026 18:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161055;
-	bh=fOtHMCR7/TDwZXZVQKEs2d5F5JnCUEDVAqHfDgaMPzY=;
+	s=korg; t=1780165704;
+	bh=2Mol8x8mTiKR5RO0QCFqZ9HzbmYmh4206a+L5RrQj+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=evBLrBZyBgHx7oD0M8GSRW2UMuf68H9SNU/l06cLz18tTS0638NGEhBAW/5ijkrI1
-	 kugdNi8LKdNneIDkf7Z0ttEz5pIQ4TdrDtkPnocK9+i5yJzNve4m5b9QwD2aPK6hJP
-	 dRmAWtRFCdvn+xu/RuIhgqb2h1kYbpW4DbFApLEk=
+	b=yQ0/q8OKB0YagyaGUyeaxOpHqA33L8/M96IW69srQ+Gbs+QuUhtQAQ/hiL/A0IJpS
+	 iyv2g/is2RF4j0v+b7t9EJhja17DnkblEKwvRp7OiKssaMqsP3PpCNdzRZ17rLgxMp
+	 /kOWi8B5oIZ7MaGVEKyqBk33GkT92/FVZp1tDuqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanjie Yang <yuanjie.yang@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 513/969] drm/msm/dpu: fix mismatch between power and frequency
-Date: Sat, 30 May 2026 18:00:37 +0200
-Message-ID: <20260530160314.505514781@linuxfoundation.org>
+	Chen Ni <nichen@iscas.ac.cn>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 5.10 157/589] media: i2c: imx219: Check return value of devm_gpiod_get_optional() in imx219_probe()
+Date: Sat, 30 May 2026 18:00:38 +0200
+Message-ID: <20260530160228.912465720@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +66,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257455-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-258837-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,huawei];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6C00060F20A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,raspberrypi.com:email,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 7890E612181
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuanjie Yang <yuanjie.yang@oss.qualcomm.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit bc1dccc518cc5ab5140fba06c27e7188e0ed342b ]
+commit 943b1f27a3eead21b22e2531a5432ea5910b60eb upstream.
 
-During DPU runtime suspend, calling dev_pm_opp_set_rate(dev, 0) drops
-the MMCX rail to MIN_SVS while the core clock frequency remains at its
-original (highest) rate. When runtime resume re-enables the clock, this
-may result in a mismatch between the rail voltage and the clock rate.
+The devm_gpiod_get_optional() function may return an error pointer
+(ERR_PTR) in case of a genuine failure during GPIO acquisition,
+not just NULL which indicates the legitimate absence of an optional
+GPIO.
 
-For example, in the DPU bind path, the sequence could be:
-  cpu0: dev_sync_state -> rpmhpd_sync_state
-  cpu1:                                     dpu_kms_hw_init
-timeline 0 ------------------------------------------------> t
+Add an IS_ERR() check after the function call to catch such errors and
+propagate them to the probe function, ensuring the driver fails to load
+safely rather than proceeding with an invalid pointer.
 
-After rpmhpd_sync_state, the voltage performance is no longer guaranteed
-to stay at the highest level. During dpu_kms_hw_init, calling
-dev_pm_opp_set_rate(dev, 0) drops the voltage, causing the MMCX rail to
-fall to MIN_SVS while the core clock is still at its maximum frequency.
-When the power is re-enabled, only the clock is enabled, leading to a
-situation where the MMCX rail is at MIN_SVS but the core clock is at its
-highest rate. In this state, the rail cannot sustain the clock rate,
-which may cause instability or system crash.
-
-Remove the call to dev_pm_opp_set_rate(dev, 0) from dpu_runtime_suspend
-to ensure the correct vote is restored when DPU resumes.
-
-Fixes: b0530eb11913 ("drm/msm/dpu: Use OPP API to set clk/perf state")
-Signed-off-by: Yuanjie Yang <yuanjie.yang@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/710077/
-Link: https://lore.kernel.org/r/20260309063720.13572-1-yuanjie.yang@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1283b3b8f82b ("media: i2c: Add driver for Sony IMX219 sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/media/i2c/imx219.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
-index b7901b666612a..46fa3a703a1a5 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
-@@ -1259,8 +1259,6 @@ static int __maybe_unused dpu_runtime_suspend(struct device *dev)
- 	struct msm_drm_private *priv = platform_get_drvdata(pdev);
- 	struct dpu_kms *dpu_kms = to_dpu_kms(priv->kms);
+--- a/drivers/media/i2c/imx219.c
++++ b/drivers/media/i2c/imx219.c
+@@ -1420,6 +1420,9 @@ static int imx219_probe(struct i2c_clien
+ 	/* Request optional enable pin */
+ 	imx219->reset_gpio = devm_gpiod_get_optional(dev, "reset",
+ 						     GPIOD_OUT_HIGH);
++	if (IS_ERR(imx219->reset_gpio))
++		return dev_err_probe(dev, PTR_ERR(imx219->reset_gpio),
++				     "failed to get reset gpio\n");
  
--	/* Drop the performance state vote */
--	dev_pm_opp_set_rate(dev, 0);
- 	clk_bulk_disable_unprepare(dpu_kms->num_clocks, dpu_kms->clocks);
- 
- 	for (i = 0; i < dpu_kms->num_paths; i++)
--- 
-2.53.0
-
+ 	/*
+ 	 * The sensor must be powered for imx219_identify_module()
 
 
 
