@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-259136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258547-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2KQSL00wG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:33 +0200
+	id KAR4GuUoG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258547-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF296126C1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0441C61147E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9B6703016CCE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 035F7303AF89
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB9D238D52;
-	Sat, 30 May 2026 18:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E40C3BFE4D;
+	Sat, 30 May 2026 18:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlMuVrID"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ox5QX5G1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48D22E7398;
-	Sat, 30 May 2026 18:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3082F90E0;
+	Sat, 30 May 2026 18:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166729; cv=none; b=AxoUbA6Y+ZVNG7ocMDYlQ/ycbHjL6BSND5BhRzXYv3cvezYpaFn48W1/K1yJijrkMzGf0NjHyhbQWI6wECbMORpAaGxqZYVKDtvqVjs90byzoha3J5ll9x7kFkw3nJ1gq7bPbCFG53eAemyXpz/i78zHPXkIl/euccTbWMqT5x4=
+	t=1780164715; cv=none; b=ok8zHKs1u3MOFXG8qihppGPue8EKOsEB8TdSYn7ebEJLm70F0UCBka+dFLkRO7ixJYC9TwgTuNvGRzLfVP+jD4YQU5LxdZu5Im36o3aWQP+3YIEh998I/oTcI1o1c7nU6lqurZG8XW1KygN4XLue2Z6lh3RD6apyB/4dlFlpxz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166729; c=relaxed/simple;
-	bh=yFuIKgs3VGFXxNexsR8w+O+qCIH59zaXLrIK/9ojtrE=;
+	s=arc-20240116; t=1780164715; c=relaxed/simple;
+	bh=DBinf9gI/AQ6dI9CXumfyO6haZn2cVJqzPKrGox8JJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=am3IiDtWcAEAWQDFnGgeZw05gQ5l2KP2neZm7CB9KH/RHvNALF2FrPLwqS7Gu7wGTBJdkH8bYUxmcl7zu18TtlXp/P6H1Xm5sDNsGxHMPYFyt/b5P74a/C2fpVCgqj/L8vD0Rq+D7ULCuUc3j0PZTcuRY1abC2gDb8OIcYCDcEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlMuVrID; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB051F00893;
-	Sat, 30 May 2026 18:45:27 +0000 (UTC)
+	 MIME-Version; b=Jbx8T2Qopfu2ojL9Z6kcehqv6O2CQzskaZDjkkwdM0Pi3hqzif0UyTtbHegEPwQbXy/fkAluieH543XYa1AG9pGV7C1GA6GXMPW9M7JeygvVrFXxq8hKiZ45UvI9y1o/pbQTQjRKrxjRnOKUJOJ44GziYcBPBGhbC47VFOkkpow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ox5QX5G1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE561F00893;
+	Sat, 30 May 2026 18:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166728;
-	bh=nANaX9zUkWksTvHZvRVkldyhgUasIM+A9m7aMH8WJbI=;
+	s=korg; t=1780164714;
+	bh=wqIh99atCrVMgr2hp4x5s9HlL5sdpEL8MRzWLP8q7H8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TlMuVrIDWaubZCvyyfRqT3fDRxhceivjFMX/m0r4KIo19Z3F/jPWU6DhzmZI+VsQ/
-	 lf8ngHRnuMm1vu3m2SRwJ7K8ZCdCXF9Ei2xPVShYAPy9WzURM0hcPIYOYQFrO5PFNT
-	 qFVkOFQOHt3iILuizUQZW8f1tmXnMNSOk81irTeg=
+	b=ox5QX5G1cIhAP1/phNrR53GQuCyc1tcox+UEFtKzZ5n6NTM/8zI05uPYij4w0pGCs
+	 iJohLwHqMhwi2spjYArDWQDVKE3VwPmpWjxb7Fk2uJX2o9xH5menVSt/sWjx/b51kO
+	 8XIFfN+mS5sO2kHGMqE43zwHBknrCURRI4HDoq/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bae Yeonju <iwasbaeyz@gmail.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 453/589] fs/adfs: validate nzones in adfs_validate_bblk()
+Subject: [PATCH 5.15 620/776] net/sched: sch_fq_pie: annotate data-races in fq_pie_dump_stats()
 Date: Sat, 30 May 2026 18:05:34 +0200
-Message-ID: <20260530160236.593943043@linuxfoundation.org>
+Message-ID: <20260530160256.011414801@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +65,95 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259136-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,armlinux.org.uk,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258547-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5AF296126C1
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 0441C61147E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bae Yeonju <iwasbaeyz@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit dd9d3e16c2d5fa166e13dce07413be51f42c8f5d ]
+[ Upstream commit 59b145771c7982cfe9020d4e9e22da92d6b5ae31 ]
 
-Reject ADFS disc records with a zero zone count during boot block
-validation, before the disc record is used.
+fq_codel_dump_stats() acquires the qdisc spinlock a bit too late.
 
-When nzones is 0, adfs_read_map() passes it to kmalloc_array(0, ...)
-which returns ZERO_SIZE_PTR, and adfs_map_layout() then writes to
-dm[-1], causing an out-of-bounds write before the allocated buffer.
+Move this acquisition before we fill tc_fq_pie_xstats with live data.
 
-adfs_validate_dr0() already rejects nzones != 1 for old-format
-images.  Add the equivalent check to adfs_validate_bblk() for
-new-format images so that a crafted image with nzones == 0 is
-rejected at probe time.
+Alternative would be to add READ_ONCE() and WRITE_ONCE() annotations,
+but the spinlock is needed anyway to scan q->new_flows and q->old_flows.
 
-Found by syzkaller.
-
-Fixes: f6f14a0d71b0 ("fs/adfs: map: move map-specific sb initialisation to map.c")
-Signed-off-by: Bae Yeonju <iwasbaeyz@gmail.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260423063527.2568262-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/adfs/super.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/sched/sch_fq_pie.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/fs/adfs/super.c b/fs/adfs/super.c
-index bdbd26e571ed3..7da236fd7a119 100644
---- a/fs/adfs/super.c
-+++ b/fs/adfs/super.c
-@@ -343,6 +343,9 @@ static int adfs_validate_bblk(struct super_block *sb, struct buffer_head *bh,
- 	if (adfs_checkdiscrecord(dr))
- 		return -EILSEQ;
+diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
+index 30259c8756451..910efc0630a14 100644
+--- a/net/sched/sch_fq_pie.c
++++ b/net/sched/sch_fq_pie.c
+@@ -499,18 +499,19 @@ static int fq_pie_dump(struct Qdisc *sch, struct sk_buff *skb)
+ static int fq_pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ {
+ 	struct fq_pie_sched_data *q = qdisc_priv(sch);
+-	struct tc_fq_pie_xstats st = {
+-		.packets_in	= q->stats.packets_in,
+-		.overlimit	= q->stats.overlimit,
+-		.overmemory	= q->overmemory,
+-		.dropped	= q->stats.dropped,
+-		.ecn_mark	= q->stats.ecn_mark,
+-		.new_flow_count = q->new_flow_count,
+-		.memory_usage   = q->memory_usage,
+-	};
++	struct tc_fq_pie_xstats st = { 0 };
+ 	struct list_head *pos;
  
-+	if ((dr->nzones | dr->nzones_high << 8) == 0)
-+		return -EILSEQ;
+ 	sch_tree_lock(sch);
 +
- 	*drp = dr;
- 	return 0;
- }
++	st.packets_in	= q->stats.packets_in;
++	st.overlimit	= q->stats.overlimit;
++	st.overmemory	= q->overmemory;
++	st.dropped	= q->stats.dropped;
++	st.ecn_mark	= q->stats.ecn_mark;
++	st.new_flow_count = q->new_flow_count;
++	st.memory_usage   = q->memory_usage;
++
+ 	list_for_each(pos, &q->new_flows)
+ 		st.new_flows_len++;
+ 
 -- 
 2.53.0
 
