@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-258873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257492-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFmyKDUwG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258873-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:09 +0200
+	id aIpxAF8cG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257492-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146F761267F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 812F560F6F0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC6703193279
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50B2C308A727
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C663C9429;
-	Sat, 30 May 2026 18:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED70D34BA42;
+	Sat, 30 May 2026 17:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lv5LESfT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLfU2fL8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEDE3C3BF3;
-	Sat, 30 May 2026 18:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94D4481DD;
+	Sat, 30 May 2026 17:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165827; cv=none; b=c4os+xM6BK/Ton35DblWmb0pcxqmKLIMrmjUfEwJlrQIlh+roLU20Cafeu2RihifCViCxTKmg9uIPZhUOCyYBbU9Pz5mcW+CV6zW5QxI2n6Eg6zX3QCh/efihlU9n0iC9wedSc1MHSwJCdRq7sHc4INQACP1wmUJ6V9JROajk0I=
+	t=1780161183; cv=none; b=EHwRqFix0+PIwHlue1XWCl40gpcr9N2Y7mfyfE3si5SHssyrkmhGJVH+dKHyVoIZeUlUr40nW/4nlCSoiyR45etHWpr7xdESsA2KDZ3SV/6TCH2+KJiNGw17BQXXio0z+wr/3DCwQhf60Du1PtMFD0jIv9HoHyYP8RcJuudhk84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165827; c=relaxed/simple;
-	bh=bvz0PbgYyUiYRUKalitc4hoXioEgudK/aCLYwGfu6eo=;
+	s=arc-20240116; t=1780161183; c=relaxed/simple;
+	bh=/5sPSaEg0XCecZx66A/Vg3UuKpkhbxAX4tcMyZfuvK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZWINIGGH15Yndgvo4h3YZVOfGbn87Df8gjuPFD8Eu05XUZGoceoTR2PBOdwOXWJlL7OmKB6OLGVr6UA4o/FX30mtv2FinBCL8eT52Z36XOcwtX3jIoZUAJe9dPEUmxPX1NT/dpNSOhcMOZPAl3ttzrzyQd8ImF7eRT2uJkHX86k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lv5LESfT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188991F00893;
-	Sat, 30 May 2026 18:30:24 +0000 (UTC)
+	 MIME-Version; b=qPie66DsbTkkmS+KzUwl3k8YJuoxzh04U/ahDJguQQRohCdIRP7ci0uNI40Ha9muK6jcuKGiL7vxEb/K0b+34o+YbfoQyL0VzcSSO/LEzYsr4EbqqUUvqZcwkWm50v2KcZfh6ddi37WcfYbuwXnd+aMiO/XVrHBsFWuJztRM07A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLfU2fL8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137941F00893;
+	Sat, 30 May 2026 17:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165825;
-	bh=kfhjwcKZA4ekQslUbQajEHUGJaCrTm1a950WbOTmysQ=;
+	s=korg; t=1780161182;
+	bh=bI7qnBZxqsKiuqeaSfZhzpTZbiQY5r8C/gIcgF77IB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Lv5LESfTObOTBpA02L6tBIHRIv07PKBmqIDk/l7H35nEf1LqWja3Xy5kJ4rzk/HOA
-	 Kej9oIf0zPIjxenJQmb69++ZtQi9Wz6RMJltcspn1sdHX18YoMgNDwjlOBiPaqxJ/7
-	 AjeDzRGc9mj3xNQ3iaipR4Dcrf1z3zfHoxHnFTKo=
+	b=pLfU2fL8yZoXB6z1l+9txmJl3RizrykvpNy9rmWb0XSy+Ovr2bdZJN8tFc1B+ijz0
+	 2GNl+xzqn7CGQIkRMaM5QzsV9aF23VKEUtuHU/MEVgL5pi1rQ/OYqv2p8xbL+WS3WE
+	 yyni7hP5odPnY0kZUcR4Hg6UgPsHJhXkY6Wm5uyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.10 193/589] crypto: atmel-tdes - fix DMA sync direction
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 550/969] PCI: tegra194: Fix polling delay for L2 state
 Date: Sat, 30 May 2026 18:01:14 +0200
-Message-ID: <20260530160229.978958425@linuxfoundation.org>
+Message-ID: <20260530160315.567600222@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,80 +71,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257492-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258873-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 146F761267F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 812F560F6F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-commit c8a9a647532f5c2a04180352693215e24e9dba03 upstream.
+[ Upstream commit adaffed907f14f954096555665ad6af2ae724d83 ]
 
-Before DMA output is consumed by the CPU, ->dma_addr_out must be synced
-with dma_sync_single_for_cpu() instead of dma_sync_single_for_device().
-Using the wrong direction can return stale cache data on non-coherent
-platforms.
+As per PCIe r7.0, sec 5.3.3.2.1, after sending PME_Turn_Off message, Root
+Port should wait for 1-10 msec for PME_TO_Ack message. Currently, driver is
+polling for 10 msec with 1 usec delay which is aggressive.  Use existing
+macro PCIE_PME_TO_L2_TIMEOUT_US to poll for 10 msec with 1 msec delay.
+Since this function is used in non-atomic context only, use non-atomic poll
+function.
 
-Fixes: 13802005d8f2 ("crypto: atmel - add Atmel DES/TDES driver")
-Fixes: 1f858040c2f7 ("crypto: atmel-tdes - add support for latest release of the IP (0x700)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-2-mmaddireddy@nvidia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/atmel-tdes.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/crypto/atmel-tdes.c
-+++ b/drivers/crypto/atmel-tdes.c
-@@ -312,8 +312,8 @@ static int atmel_tdes_crypt_pdc_stop(str
- 		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
- 		dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
- 	} else {
--		dma_sync_single_for_device(dd->dev, dd->dma_addr_out,
--					   dd->dma_size, DMA_FROM_DEVICE);
-+		dma_sync_single_for_cpu(dd->dev, dd->dma_addr_out,
-+					dd->dma_size, DMA_FROM_DEVICE);
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 0dca4baad0dac..e6124eeb824d4 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -206,8 +206,6 @@
+ #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_MASK	GENMASK(11, 8)
+ #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_SHIFT	8
  
- 		/* copy data */
- 		count = atmel_tdes_sg_copy(&dd->out_sg, &dd->out_offset,
-@@ -671,8 +671,8 @@ static int atmel_tdes_crypt_dma_stop(str
- 			dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
- 			dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
- 		} else {
--			dma_sync_single_for_device(dd->dev, dd->dma_addr_out,
--				dd->dma_size, DMA_FROM_DEVICE);
-+			dma_sync_single_for_cpu(dd->dev, dd->dma_addr_out,
-+						dd->dma_size, DMA_FROM_DEVICE);
+-#define PME_ACK_TIMEOUT 10000
+-
+ #define LTSSM_TIMEOUT 50000	/* 50ms */
  
- 			/* copy data */
- 			count = atmel_tdes_sg_copy(&dd->out_sg, &dd->out_offset,
+ #define GEN3_GEN4_EQ_PRESET_INIT	5
+@@ -1569,9 +1567,10 @@ static int tegra_pcie_try_link_l2(struct tegra_pcie_dw *pcie)
+ 	val |= APPL_PM_XMT_TURNOFF_STATE;
+ 	appl_writel(pcie, val, APPL_RADM_STATUS);
+ 
+-	return readl_poll_timeout_atomic(pcie->appl_base + APPL_DEBUG, val,
+-				 val & APPL_DEBUG_PM_LINKST_IN_L2_LAT,
+-				 1, PME_ACK_TIMEOUT);
++	return readl_poll_timeout(pcie->appl_base + APPL_DEBUG, val,
++				  val & APPL_DEBUG_PM_LINKST_IN_L2_LAT,
++				  PCIE_PME_TO_L2_TIMEOUT_US/10,
++				  PCIE_PME_TO_L2_TIMEOUT_US);
+ }
+ 
+ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
+-- 
+2.53.0
+
 
 
 
