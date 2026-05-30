@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-258240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCr3G08nG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:07:11 +0200
+	id eMtBKuYrG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D80EE61104C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:07:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA23611BF5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF19B306A175
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BED5A3005315
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F68342CA7;
-	Sat, 30 May 2026 17:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917B3282F23;
+	Sat, 30 May 2026 18:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyCGxSkv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdvja57A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5C7261B9E;
-	Sat, 30 May 2026 17:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9A021B191;
+	Sat, 30 May 2026 18:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163686; cv=none; b=sDONx/jy7WC939seaOgCU3od3f0VswRzp+DUKFbahoisKWwPuOwV4Df/GfJb1fwr3KMjdDglfmUTqq7v+GDmi2CWiTDt3jvO07+M42/2Tkk1DjE3nJ/kOC8DqsrrdcAtLs1SPDWSfJ3Rogjiyqhg8BjS75+SRnUII4PI/NAKLRE=
+	t=1780165601; cv=none; b=KmQt+idG+Jj521DmSjwi0tG+rrF3pPgeeVtDCZ4x0Q7B320yAwvZg692RfYNjq+QzB8Xfh6+ciSyOdoBzEn6YmOPl5raSZ71oE7afDGDrJngxEilCkLTfV00cEmj0IVPdAssL+7wjukwg/b99RnVqzVlNNW/2v0iALeACRHtLUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163686; c=relaxed/simple;
-	bh=OYFNNuXOjli8aWivnMShWt547Cysr8vAzlKX0/NBCmE=;
+	s=arc-20240116; t=1780165601; c=relaxed/simple;
+	bh=0GGQybIbDuHV0e1g6Xtmj0yfAOrM1qg1PPU9d7+pRgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l43cTIhGUNglq2IQCyOG3oIBd+2UTlwt6di//ssEhKi39Mvo277ZJa8PS/U7DbFcK0RHqPHGaktX4EAuhgIygbwK+388F7ykEN69+a4F1Ekq9ah6m/JieegbQc6rjhYbI6zGDWU9FiIO//3XU+modG/u8OuYielNK4avvnEv/f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyCGxSkv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4671F00893;
-	Sat, 30 May 2026 17:54:44 +0000 (UTC)
+	 MIME-Version; b=QxSLR1DXJGT+YrmBXGvYAsI0bvxRq91ZCHoI7ya7ldXKp6Tdv1841DYqmw2r0ZXjnOpYzrHzA5rjaGamJ4/V/RFGyrxSn+FVvIshBu/3eOwhMrJo1RG0n9zsFaJ2Vc7LU00OA3lcsf2ngZQoAKg3bwcZsJFmM3GlQFoXH6uxpyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdvja57A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925A51F00893;
+	Sat, 30 May 2026 18:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163685;
-	bh=jkEU9G3LivK0Wvh6S1sfpZnmJaulc0+hjYUFOfViI1o=;
+	s=korg; t=1780165600;
+	bh=6LPSTCjzGrKlG8nHtKDD2XY2Pkh2wXKmvPF4ZgqItOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QyCGxSkvz7Ew2zhKncAYe0ecLLi6afKHfMgfvHtWkhi5ZDea8KN5FA978PNhtrniq
-	 m3NWSw9h3cHPhuAUQnINlvoTm37EqvTOWi3dT1XtYJEZJWk7pIa9V09giZMqnTFUKj
-	 2i3eNePbkwTMhYncP6FP99UfgFTNT+5/DkpS4mfE=
+	b=kdvja57A8rcg11Ol5R3yZ5cp0157YEGtFr65GMto1pOHUMSShyR4tC8HIcFadT2r/
+	 1ZWkgKgff9vMeYsVSlUV0pAtwGvMqg1k/r1aKZVJZ054x31hrfclPiAH2Ob8x6/e5G
+	 JTUfGg6FbJ9kXUkWwiyDSNELmWOpiInHqvdtFrNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	=?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 292/776] wifi: b43: enforce bounds check on firmware key index in b43_rx()
+	Faith <faith@zellic.io>,
+	Pumpkin Chang <pumpkin@devco.re>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jay Wang <wanjay@amazon.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 125/589] rxrpc: Fix recvmsg() unconditional requeue
 Date: Sat, 30 May 2026 18:00:06 +0200
-Message-ID: <20260530160248.107276824@linuxfoundation.org>
+Message-ID: <20260530160228.053955055@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +67,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bues.ch,talencesecurity.com,intel.com];
-	TAGGED_FROM(0.00)[bounces-258240-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258806-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,talencesecurity.com:email]
-X-Rspamd-Queue-Id: D80EE61104C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,auristor.com:email,devco.re:email,zellic.io:email]
+X-Rspamd-Queue-Id: AFA23611BF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 1f4f78bf8549e6ac4f04fba4176854f3a6e0c332 upstream.
+[ Upstream commit 2c28769a51deb6022d7fbd499987e237a01dd63a ]
 
-The firmware-controlled key index in b43_rx() can exceed the dev->key[]
-array size (58 entries). The existing B43_WARN_ON is non-enforcing in
-production builds, allowing an out-of-bounds read.
+If rxrpc_recvmsg() fails because MSG_DONTWAIT was specified but the call
+at the front of the recvmsg queue already has its mutex locked, it
+requeues the call - whether or not the call is already queued.  The call
+may be on the queue because MSG_PEEK was also passed and so the call was
+not dequeued or because the I/O thread requeued it.
 
-Make the B43_WARN_ON check enforcing by dropping the frame when the
-firmware returns an invalid key index.
+The unconditional requeue may then corrupt the recvmsg queue, leading to
+things like UAFs or refcount underruns.
 
-Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-Acked-by: Michael Büsch <m@bues.ch>
-Fixes: e4d6b7951812 ("[B43]: add mac80211-based driver for modern BCM43xx devices")
+Fix this by only requeuing the call if it isn't already on the queue -
+and moving it to the front if it is already queued.  If we don't queue
+it, we have to put the ref we obtained by dequeuing it.
+
+Also, MSG_PEEK doesn't dequeue the call so shouldn't call
+rxrpc_notify_socket() for the call if we didn't use up all the data on
+the queue, so fix that also.
+
+Fixes: 540b1c48c37a ("rxrpc: Fix deadlock between call creation and sendmsg/recvmsg")
+Reported-by: Faith <faith@zellic.io>
+Reported-by: Pumpkin Chang <pumpkin@devco.re>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Acked-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Link: https://patch.msgid.link/20260417111145.2694196-1-tristmd@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Adapted to 5.10: use write_lock_bh/write_unlock_bh, trace_rxrpc_call
+ directly for see-call tracing, 5.10 trace enum naming convention, and
+ added entries to both plain enum and EM() macro list.]
+Signed-off-by: Jay Wang <wanjay@amazon.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/b43/xmit.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/trace/events/rxrpc.h |  8 ++++++++
+ net/rxrpc/recvmsg.c          | 22 ++++++++++++++++++----
+ 2 files changed, 26 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/broadcom/b43/xmit.c
-+++ b/drivers/net/wireless/broadcom/b43/xmit.c
-@@ -702,7 +702,8 @@ void b43_rx(struct b43_wldev *dev, struc
- 		 * key index, but the ucode passed it slightly different.
- 		 */
- 		keyidx = b43_kidx_to_raw(dev, keyidx);
--		B43_WARN_ON(keyidx >= ARRAY_SIZE(dev->key));
-+		if (B43_WARN_ON(keyidx >= ARRAY_SIZE(dev->key)))
-+			goto drop;
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index 221856f2d295c..6cde10ae4445d 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -93,9 +93,13 @@ enum rxrpc_call_trace {
+ 	rxrpc_call_put_notimer,
+ 	rxrpc_call_put_timer,
+ 	rxrpc_call_put_userid,
++	rxrpc_call_put_recvmsg_peek_nowait,
+ 	rxrpc_call_queued,
+ 	rxrpc_call_queued_ref,
+ 	rxrpc_call_release,
++	rxrpc_call_see_recvmsg_requeue,
++	rxrpc_call_see_recvmsg_requeue_first,
++	rxrpc_call_see_recvmsg_requeue_move,
+ 	rxrpc_call_seen,
+ };
  
- 		if (dev->key[keyidx].algorithm != B43_SEC_ALGO_NONE) {
- 			wlhdr_len = ieee80211_hdrlen(fctl);
+@@ -291,9 +295,13 @@ enum rxrpc_tx_point {
+ 	EM(rxrpc_call_put_notimer,		"PnT") \
+ 	EM(rxrpc_call_put_timer,		"PTM") \
+ 	EM(rxrpc_call_put_userid,		"Pus") \
++	EM(rxrpc_call_put_recvmsg_peek_nowait,	"PpN") \
+ 	EM(rxrpc_call_queued,			"QUE") \
+ 	EM(rxrpc_call_queued_ref,		"QUR") \
+ 	EM(rxrpc_call_release,			"RLS") \
++	EM(rxrpc_call_see_recvmsg_requeue,	"SrQ") \
++	EM(rxrpc_call_see_recvmsg_requeue_first,"SrF") \
++	EM(rxrpc_call_see_recvmsg_requeue_move,	"SrM") \
+ 	E_(rxrpc_call_seen,			"SEE")
+ 
+ #define rxrpc_transmit_traces \
+diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
+index 7878267739378..301b8acf78f55 100644
+--- a/net/rxrpc/recvmsg.c
++++ b/net/rxrpc/recvmsg.c
+@@ -607,7 +607,8 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 
+ 		if (after(call->rx_top, call->rx_hard_ack) &&
+ 		    call->rxtx_buffer[(call->rx_hard_ack + 1) & RXRPC_RXTX_BUFF_MASK])
+-			rxrpc_notify_socket(call);
++			if (!(flags & MSG_PEEK))
++				rxrpc_notify_socket(call);
+ 		break;
+ 	default:
+ 		ret = 0;
+@@ -642,11 +643,24 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ error_requeue_call:
+ 	if (!(flags & MSG_PEEK)) {
+ 		write_lock_bh(&rx->recvmsg_lock);
+-		list_add(&call->recvmsg_link, &rx->recvmsg_q);
+-		write_unlock_bh(&rx->recvmsg_lock);
++		if (list_empty(&call->recvmsg_link)) {
++			list_add(&call->recvmsg_link, &rx->recvmsg_q);
++			trace_rxrpc_call(call->debug_id,
++					 rxrpc_call_see_recvmsg_requeue,
++					 refcount_read(&call->ref),
++					 __builtin_return_address(0), NULL);
++			write_unlock_bh(&rx->recvmsg_lock);
++		} else if (list_is_first(&call->recvmsg_link, &rx->recvmsg_q)) {
++			write_unlock_bh(&rx->recvmsg_lock);
++			rxrpc_put_call(call, rxrpc_call_see_recvmsg_requeue_first);
++		} else {
++			list_move(&call->recvmsg_link, &rx->recvmsg_q);
++			write_unlock_bh(&rx->recvmsg_lock);
++			rxrpc_put_call(call, rxrpc_call_see_recvmsg_requeue_move);
++		}
+ 		trace_rxrpc_recvmsg(call, rxrpc_recvmsg_requeue, 0, 0, 0, 0);
+ 	} else {
+-		rxrpc_put_call(call, rxrpc_call_put);
++		rxrpc_put_call(call, rxrpc_call_put_recvmsg_peek_nowait);
+ 	}
+ error_no_call:
+ 	release_sock(&rx->sk);
+-- 
+2.53.0
+
 
 
 
