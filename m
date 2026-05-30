@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257527-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8D6UI3gwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-258897-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:16 +0200
+	id OJoiBoUbG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257527-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E76612735
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD3460F4B9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1465A31ABD6D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2DF16300CE8B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7752432F770;
-	Sat, 30 May 2026 18:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0A1350A05;
+	Sat, 30 May 2026 17:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBcsbFya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjkb7NgD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589E62EF652;
-	Sat, 30 May 2026 18:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250F5362157;
+	Sat, 30 May 2026 17:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165909; cv=none; b=jIDIRM5rR+otpQEeH7JqkBnYmUW1kEJObcXliNa/OxL9/UAkTwAGHMbH6ktyhCSlCqyg1LFEu1/15rg2Z5/BnCaUHqJ5V+9HY3E6qDK2imEb3s4y9zHLbQ5TIZT86vMuKvWgafhIutd+PiHn1MACXJXGXmwMpRkiz2nYTYZqsSo=
+	t=1780161304; cv=none; b=nQfDDHG2Ehj4j3FnR89NN0Qzhl/LcMeebff2GZJpYGWD/j/iWvNlrqKZL7HfPaOkoZ9lAaiVxNZY8MD9WLCT+n7PYqThHmbf5rKzegKhKdhTM7zb8WIPLstfMQ9sHg9CfZLhnVwBF1/Jfn+ZtFrxtBp/crQ78QK7YmApHwbvRCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165909; c=relaxed/simple;
-	bh=fAmkElquu7l9KVHw1u9Z8unmCeElkVp6j29sIqLRhAY=;
+	s=arc-20240116; t=1780161304; c=relaxed/simple;
+	bh=L2MNm3kR8Zl81Oj8uCLGgt0T8HvdMAJeHCs/k56INus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qACfkLDWVHpxWRBRx1toUaKu4YhfPnpwi9bEFtaxQOsEH33QM7uPnZlqPNYfQcfcs49yfBUzfmyUmGn5GATe+Kx4uY6bMaRzTXoes+mxyCXzjPVrO1PDlrKlqJjvJaumIn9XrnPyWAW9dhPghkTc02iAmhtCGoovZtDt347B8Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBcsbFya; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986DE1F00893;
-	Sat, 30 May 2026 18:31:47 +0000 (UTC)
+	 MIME-Version; b=JUM8Qq4809asSQQlzqiaYMwD0iXiKmoxD65bw/AjCZ0pmLwgvgciFA5BMhPLx23a0RsUNrrRsqUfnr1tkfb6j/PSXO+2T5rP3dNfypuj/ayomufB3uMmVN6A6dpK8o0TR1bTW8QDyRrmwQ66yioVft2Zh+GpE7vu6VEbq8/EC+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjkb7NgD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1731F00893;
+	Sat, 30 May 2026 17:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165908;
-	bh=D7/6Y8nKBDk2Blw16ds+ENDmdAT8KD/3Vs3hwQbpS/8=;
+	s=korg; t=1780161302;
+	bh=IQJBCfMEvvz6eXBYDoisMw3fmdEoXfI/dBZPdGg8k/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GBcsbFyavvRjL2ST6BVld/Qv4X2a1EE7xQeWvb/rQ0qMYZ2WESCkYWGYfagxwf+S6
-	 INqEnc5d7leKHgjkV4/JPb76v71XDnbWGKSWvDy4+TNpri0ffJdCwXRoc/DP1wvvLN
-	 WpM727ARRNOVsy6hM18hfacACCqE+ervqt2s3Xds=
+	b=pjkb7NgDOWI9UhY4LPEKeNmUbl/gGmuKj/SbbkBgOt1P053hzYdRoCN0H6xQbBw8Y
+	 iq8+MvQD2iSFn0juXR8K46UfmFPuU0i/MKpM+8USWmPiL7eqLAjIhoenjlgThC0PzQ
+	 DHC+dRKLL2WUG7IvK7kmVrOVH3zj4s1TT8U9OOAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	addy ke <addy.ke@rock-chips.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 210/589] spi: rockchip: fix controller deregistration
+	Sam Sun <samsun1006219@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 567/969] quota: Fix race of dquot_scan_active() with quota deactivation
 Date: Sat, 30 May 2026 18:01:31 +0200
-Message-ID: <20260530160230.478262786@linuxfoundation.org>
+Message-ID: <20260530160316.050473512@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +66,182 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258897-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257527-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,kernel.org];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,rock-chips.com:email]
-X-Rspamd-Queue-Id: F1E76612735
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CCD3460F4B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-commit 53e7a16070feb7d1d4d81a583eaac5e25048b9c3 upstream.
+[ Upstream commit e93ab401da4b2e2c1b8ef2424de2f238d51c8b2d ]
 
-Make sure to deregister the controller before freeing underlying
-resources like DMA channels during driver unbind.
+dquot_scan_active() can race with quota deactivation in
+quota_release_workfn() like:
 
-Fixes: 64e36824b32b ("spi/rockchip: add driver for Rockchip RK3xxx SoCs integrated SPI")
-Cc: stable@vger.kernel.org	# 3.17
-Cc: addy ke <addy.ke@rock-chips.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260324082326.901043-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  CPU0 (quota_release_workfn)         CPU1 (dquot_scan_active)
+  ==============================      ==============================
+  spin_lock(&dq_list_lock);
+  list_replace_init(
+    &releasing_dquots, &rls_head);
+    /* dquot X on rls_head,
+       dq_count == 0,
+       DQ_ACTIVE_B still set */
+  spin_unlock(&dq_list_lock);
+  synchronize_srcu(&dquot_srcu);
+                                      spin_lock(&dq_list_lock);
+                                      list_for_each_entry(dquot,
+                                          &inuse_list, dq_inuse) {
+                                        /* finds dquot X */
+                                        dquot_active(X) -> true
+                                        atomic_inc(&X->dq_count);
+                                      }
+                                      spin_unlock(&dq_list_lock);
+  spin_lock(&dq_list_lock);
+  dquot = list_first_entry(&rls_head);
+  WARN_ON_ONCE(atomic_read(&dquot->dq_count));
+
+The problem is not only a cosmetic one as under memory pressure the
+caller of dquot_scan_active() can end up working on freed dquot.
+
+Fix the problem by making sure the dquot is removed from releasing list
+when we acquire a reference to it.
+
+Fixes: 869b6ea1609f ("quota: Fix slow quotaoff")
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Link: https://lore.kernel.org/all/CAEkJfYPTt3uP1vAYnQ5V2ZWn5O9PLhhGi5HbOcAzyP9vbXyjeg@mail.gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-rockchip.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/quota/dquot.c         | 38 ++++++++++++++++++++++++++++++--------
+ include/linux/quotaops.h |  9 +--------
+ 2 files changed, 31 insertions(+), 16 deletions(-)
 
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -792,7 +792,7 @@ static int rockchip_spi_probe(struct pla
- 		ctlr->can_dma = rockchip_spi_can_dma;
- 	}
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index 0f82db69d2d86..0aa0ed754f2e0 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -362,6 +362,31 @@ static inline int dquot_active(struct dquot *dquot)
+ 	return test_bit(DQ_ACTIVE_B, &dquot->dq_flags);
+ }
  
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to register controller\n");
- 		goto err_free_dma_rx;
-@@ -828,6 +828,8 @@ static int rockchip_spi_remove(struct pl
- 	clk_disable_unprepare(rs->spiclk);
- 	clk_disable_unprepare(rs->apb_pclk);
- 
-+	spi_unregister_controller(ctlr);
++static struct dquot *__dqgrab(struct dquot *dquot)
++{
++	lockdep_assert_held(&dq_list_lock);
++	if (!atomic_read(&dquot->dq_count))
++		remove_free_dquot(dquot);
++	atomic_inc(&dquot->dq_count);
++	return dquot;
++}
 +
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
++/*
++ * Get reference to dquot when we got pointer to it by some other means. The
++ * dquot has to be active and the caller has to make sure it cannot get
++ * deactivated under our hands.
++ */
++struct dquot *dqgrab(struct dquot *dquot)
++{
++	spin_lock(&dq_list_lock);
++	WARN_ON_ONCE(!dquot_active(dquot));
++	dquot = __dqgrab(dquot);
++	spin_unlock(&dq_list_lock);
++
++	return dquot;
++}
++EXPORT_SYMBOL_GPL(dqgrab);
++
+ static inline int dquot_dirty(struct dquot *dquot)
+ {
+ 	return test_bit(DQ_MOD_B, &dquot->dq_flags);
+@@ -640,15 +665,14 @@ int dquot_scan_active(struct super_block *sb,
+ 			continue;
+ 		if (dquot->dq_sb != sb)
+ 			continue;
+-		/* Now we have active dquot so we can just increase use count */
+-		atomic_inc(&dquot->dq_count);
++		__dqgrab(dquot);
+ 		spin_unlock(&dq_list_lock);
+ 		dqput(old_dquot);
+ 		old_dquot = dquot;
+ 		/*
+ 		 * ->release_dquot() can be racing with us. Our reference
+-		 * protects us from new calls to it so just wait for any
+-		 * outstanding call and recheck the DQ_ACTIVE_B after that.
++		 * protects us from dquot_release() proceeding so just wait for
++		 * any outstanding call and recheck the DQ_ACTIVE_B after that.
+ 		 */
+ 		wait_on_dquot(dquot);
+ 		if (dquot_active(dquot)) {
+@@ -716,7 +740,7 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+ 			/* Now we have active dquot from which someone is
+  			 * holding reference so we can safely just increase
+ 			 * use count */
+-			dqgrab(dquot);
++			__dqgrab(dquot);
+ 			spin_unlock(&dq_list_lock);
+ 			err = dquot_write_dquot(dquot);
+ 			if (err && !ret)
+@@ -971,9 +995,7 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
+ 		spin_unlock(&dq_list_lock);
+ 		dqstats_inc(DQST_LOOKUPS);
+ 	} else {
+-		if (!atomic_read(&dquot->dq_count))
+-			remove_free_dquot(dquot);
+-		atomic_inc(&dquot->dq_count);
++		__dqgrab(dquot);
+ 		spin_unlock(&dq_list_lock);
+ 		dqstats_inc(DQST_CACHE_HITS);
+ 		dqstats_inc(DQST_LOOKUPS);
+diff --git a/include/linux/quotaops.h b/include/linux/quotaops.h
+index 3abd249ec3373..7078e6f2429af 100644
+--- a/include/linux/quotaops.h
++++ b/include/linux/quotaops.h
+@@ -44,14 +44,7 @@ int dquot_initialize(struct inode *inode);
+ bool dquot_initialize_needed(struct inode *inode);
+ void dquot_drop(struct inode *inode);
+ struct dquot *dqget(struct super_block *sb, struct kqid qid);
+-static inline struct dquot *dqgrab(struct dquot *dquot)
+-{
+-	/* Make sure someone else has active reference to dquot */
+-	WARN_ON_ONCE(!atomic_read(&dquot->dq_count));
+-	WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags));
+-	atomic_inc(&dquot->dq_count);
+-	return dquot;
+-}
++struct dquot *dqgrab(struct dquot *dquot);
+ 
+ static inline bool dquot_is_busy(struct dquot *dquot)
+ {
+-- 
+2.53.0
+
 
 
 
