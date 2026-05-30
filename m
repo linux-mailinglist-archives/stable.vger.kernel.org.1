@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4KfEF8UqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258716-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:57 +0200
+	id KKXoMFsaG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1898F611977
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EAF460F189
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 22F6E3028F1E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:21:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17D5D3079AFB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E54B274FDC;
-	Sat, 30 May 2026 18:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44C134BA42;
+	Sat, 30 May 2026 17:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2Hz5AtZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnjXZha2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D29F217704;
-	Sat, 30 May 2026 18:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA7F26F288;
+	Sat, 30 May 2026 17:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165298; cv=none; b=sYExA8cgsyOBoCS5ZAF464SeYYty/b3pO/4A8ce4o1Ze2R9JwKQmquJbZIk/fLVAyUif6MHOHj+e7rpx9aDJsbs3ng2UhMG50Vix9zVxT/iYKvGT5MP4GYU3GqM8DoxBG1Q3XTZQOYEnXRoXEQb5th8Y9g1a03RdRyEKBcZN9lY=
+	t=1780160539; cv=none; b=EWxJB/r98iSW4ha+T0Zjni0xj09PIMgGdFMPNHquu6xvLhMcU8NH5NjxavNUuoGgpakH6OgyZBwKS3l7pBP30Qp3b8HgPilpN0J+9JBbd+wwflB4bVwYT6FLlKEj/4ABRljbUsxXnVYD25QdbwekSiqAXf4/YnaPrY4AGtb1AjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165298; c=relaxed/simple;
-	bh=atPz0NoVJJZ8AFws/n6j89qQTHagxtr3vZ+bwn96MaU=;
+	s=arc-20240116; t=1780160539; c=relaxed/simple;
+	bh=1p3C7O3NCPd6NgrsW9dzfq51j6Z1wA4mk7pLNvftju4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HTubf3IHVg7eo9CmMA08+gph+3ktPTeYBy3usUPYHCukveKgu2NNDltqX8rt5MNWJHZNkvsQOpLuWBQUwABC6cGqywi3jqMAOSL6KcIPUvHmyl+1A7u3Uf/ELG2NMfSCI0NP5V5ZRuKV5O2QCehZmQ/84PGPs8mDR0lkh4e2cDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2Hz5AtZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350601F00893;
-	Sat, 30 May 2026 18:21:36 +0000 (UTC)
+	 MIME-Version; b=cXI54bcuRN17DAxdRIrPNzeSITwBCEsm1ayUKe8uWwbFAMKN4rLWwaqpetPyWLD+t8SuHISE5oCl6U7D0bYzZdztLLzqqaJYD7AWmWW2+x9c9MGbN0Yj/xAyZ5ZxXDfaU+PsAhyY+ZD+8iR5ROgLfJcgcV+rudFiR9852z+p9ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnjXZha2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA381F00893;
+	Sat, 30 May 2026 17:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165296;
-	bh=Qg1WdKo0tz0iDevGEbZDqQjQJ8u+y+mzYPrja28Cz4Y=;
+	s=korg; t=1780160538;
+	bh=I9MyBSfmSXClb5VVco+DcCXg4313zrN2mYuZnQoVy1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V2Hz5AtZ/Maw/gR0JIXGriTeNShMJTDgC2cLViJ5Y7jHPd4T+O8u4nw84UlwQdUjB
-	 Tla5MErDbQwrw39G58rgnxZRbffSgyrHFORBQ9PpE0n6gLKilrRJs2ieTVFVLoOrcp
-	 yks8HqBthqn8FtGHPB5qIfNLTdsDGwOt1fbQApls=
+	b=hnjXZha29IwvaqgOgAvGQEeBEXrdVy9iIZnR1LwdXPukXtcjFcSY2PEG0YoFHFcct
+	 vE51P3H8Oq6LVGhSYF55qAl/y0w4tb1T5ro89keQY5x88nmhq5qXgM4MJUN5huvB2D
+	 TMUm4RuTRgKEO3AUDC+YAUF+FxOCXGzn62tkKdww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 007/589] wifi: wl1251: validate packet IDs before indexing tx_frames
-Date: Sat, 30 May 2026 17:58:08 +0200
-Message-ID: <20260530160224.770915821@linuxfoundation.org>
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Stefan Roese <stefan.roese@mailbox.org>
+Subject: [PATCH 6.1 365/969] PCI/AER: Stop ruling out unbound devices as error source
+Date: Sat, 30 May 2026 17:58:09 +0200
+Message-ID: <20260530160310.406503533@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +66,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257304-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258716-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,iscas.ac.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 1898F611977
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 4EAF460F189
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 0fd56fad9c56356e7fa7a7c52e7ecbf807a44eb0 ]
+commit 1ab4a3c805084d752ec571efc78272295a9f2f74 upstream.
 
-wl1251_tx_packet_cb() uses the firmware completion ID directly to index
-the fixed 16-entry wl->tx_frames[] array. The ID is a raw u8 from the
-completion block, and the callback does not currently verify that it
-fits the array before dereferencing it.
+When searching for the error source, the AER driver rules out devices whose
+enable_cnt is zero.  This was introduced in 2009 by commit 28eb27cf0839
+("PCI AER: support invalid error source IDs") without providing a
+rationale.
 
-Reject completion IDs that fall outside wl->tx_frames[] and keep the
-existing NULL check in the same guard. This keeps the fix local to the
-trust boundary and avoids touching the rest of the completion flow.
+Drivers typically call pci_enable_device() on probe, hence the enable_cnt
+check essentially filters out unbound devices.  At the time of the commit,
+drivers had to opt in to AER by calling pci_enable_pcie_error_reporting()
+and so any AER-enabled device could be assumed to be bound to a driver.
+The check thus made sense because it allowed skipping config space accesses
+to devices which were known not to be the error source.
 
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Link: https://patch.msgid.link/20260323080845.40033-1-pengpeng@iscas.ac.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But since 2022, AER is universally enabled on all devices when they are
+enumerated, cf. commit f26e58bf6f54 ("PCI/AER: Enable error reporting when
+AER is native").
+
+Errors may very well be reported by unbound devices, e.g. due to link
+instability.  By ruling them out as error source, errors reported by them
+are neither logged nor cleared.  When they do get bound and another error
+occurs, the earlier error is reported together with the new error, which
+may confuse users.  Stop doing so.
+
+Fixes: f26e58bf6f54 ("PCI/AER: Enable error reporting when AER is native")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Stefan Roese <stefan.roese@mailbox.org>
+Cc: stable@vger.kernel.org # v6.0+
+Link: https://patch.msgid.link/734338c2e8b669db5a5a3b45d34131b55ffebfca.1774605029.git.lukas@wunner.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ti/wl1251/tx.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/pci/pcie/aer.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ti/wl1251/tx.c b/drivers/net/wireless/ti/wl1251/tx.c
-index 5771f61392efb..7f406c086ca56 100644
---- a/drivers/net/wireless/ti/wl1251/tx.c
-+++ b/drivers/net/wireless/ti/wl1251/tx.c
-@@ -402,12 +402,14 @@ static void wl1251_tx_packet_cb(struct wl1251 *wl,
- 	int hdrlen;
- 	u8 *frame;
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -857,8 +857,6 @@ static bool is_error_source(struct pci_d
+ 	 *      3) There are multiple errors and prior ID comparing fails;
+ 	 * We check AER status registers to find possible reporter.
+ 	 */
+-	if (atomic_read(&dev->enable_cnt) == 0)
+-		return false;
  
--	skb = wl->tx_frames[result->id];
--	if (skb == NULL) {
--		wl1251_error("SKB for packet %d is NULL", result->id);
-+	if (unlikely(result->id >= ARRAY_SIZE(wl->tx_frames) ||
-+		     wl->tx_frames[result->id] == NULL)) {
-+		wl1251_error("invalid packet id %u", result->id);
- 		return;
- 	}
- 
-+	skb = wl->tx_frames[result->id];
-+
- 	info = IEEE80211_SKB_CB(skb);
- 
- 	if (!(info->flags & IEEE80211_TX_CTL_NO_ACK) &&
--- 
-2.53.0
-
+ 	/* Check if AER is enabled */
+ 	pcie_capability_read_word(dev, PCI_EXP_DEVCTL, &reg16);
 
 
 
