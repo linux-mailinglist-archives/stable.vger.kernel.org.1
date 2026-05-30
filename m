@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEpwLvkoG2rg/ggAu9opvQ
-	(envelope-from <stable+bounces-258588-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:17 +0200
+	id WJoWHyUzG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5252D6114BE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B22612DC5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9B94B3008260
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D79B33040D99
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8DE3B7B72;
-	Sat, 30 May 2026 18:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C7F231A21;
+	Sat, 30 May 2026 18:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8VCFSpP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJqgXdUX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D519175A6B;
-	Sat, 30 May 2026 18:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30DE2E7398;
+	Sat, 30 May 2026 18:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164853; cv=none; b=Ijhd3jdl34hwixdaVPT1C1YxKetGY3L8DGXvaoS0QuW0u0VrRTYhLWctXUmjygGiLV3b1cKi56RnbJOFxQQ/9LVL2m2g3/QuLAHeNj3Mi7lvFcbVO4KigJGJOgZkiyaAmI0XM8G7t6VF1xxIw8rMSPFUCVHk0b/S7nEwC+pxolI=
+	t=1780167021; cv=none; b=EfW4vePBzBJv3O/WYGr1LTZe9ZODoi5AbDcDO2EH3f398Z4BFQrSYokq+KpYs4xL7F5UKsqqUtD3Pxl9R5AE3SHmFaQsb7iICCi7UZLIENPV5aLs26ugj+fDBvu1sfyhWyOl7QnLP4ZZNYJK4IJOYrTG4rcg1OsgO+HiAOiGGNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164853; c=relaxed/simple;
-	bh=Yvbpf/GiOdUm903y3qK/cAWPqcsZlDD0XRcrgzZIrag=;
+	s=arc-20240116; t=1780167021; c=relaxed/simple;
+	bh=TI8a9Whhbbckwx+dz/E7q1yzS1EGXz9++X/gugs3ksA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ap9JXoyD0+kIotScM/cYU8UaHlvH/fNHHeRkFPj/ZzDkY/5EgpMA6PkCE5yo6VESVueDVpqryOOC+5xWEGreLtFEM8rbNAfbpKm58/NpLgoaw63+KIkgIPyAxsUdKT2U5tobY5gHLqRlW1iO1k/X/DANQsT5vBGr332JuKAoaFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8VCFSpP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF0B1F00893;
-	Sat, 30 May 2026 18:14:11 +0000 (UTC)
+	 MIME-Version; b=XRMCMdxtefOi9Jm3N8Kb1/ZpcUxeByIKM0LT4NOJomuFBM7CmGHz/ePAgUllZeGWBbddiu/ne0gidGpkmKFJFIGW73vElUW5t0htVpeB7RClgTxu72/bw/+N6y/wrWZ6PUURqHCUIfXUcZoo+JZFtpsIlvm9pTBr8DA6IrTvN9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJqgXdUX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124B11F00893;
+	Sat, 30 May 2026 18:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164852;
-	bh=wKKRhPGx0h07JhCGiRRIC1RI46QI/pVXMAso/Oa1YGQ=;
+	s=korg; t=1780167020;
+	bh=EyLfYNrVj5LRtZ2eSIEvZd90UkISaF0IRlRGiWcpVhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=e8VCFSpPa9H6skl0uFYkzX7voeW6vFjKWO+SFaRtw3lzoyYAIlGZlC54mJ8hnnhe0
-	 ucfI9iIBRAH6cGG/qlDXlvkTtVs+psehY930LNoYmnTSnefW5pwV5PSL3L0O5nnx8k
-	 B0s0UhS94biFS2/Ru3ORJr2rT+Lg3OEmos7I8ZlM=
+	b=EJqgXdUXoO6Y869JPw9aDfs8SQJx9QsISYzFOdtoPKRVThfuJjrdzJmDXDI+QkEIK
+	 XpQVaPB7/kXjbXC8n15fJqRQSLbr3U+I1E9ZJQCMQj100WwAi8CXfc+v8OEcpFTTWu
+	 QmoUBPhzcnWZ3MA4hkopankHq8gdsQn8cJbj6hGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rajat Jain <rajatja@google.com>,
-	stable <stable@kernel.org>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 5.15 678/776] sysfs: dont remove existing directory on update failure
+	Ma Ke <make24@iscas.ac.cn>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 5.10 511/589] powerpc/warp: Fix error handling in pika_dtm_thread
 Date: Sat, 30 May 2026 18:06:32 +0200
-Message-ID: <20260530160257.389766587@linuxfoundation.org>
+Message-ID: <20260530160238.041709245@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +68,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258588-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259223-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5252D6114BE
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,iscas.ac.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,csgroup.eu:email]
+X-Rspamd-Queue-Id: D9B22612DC5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 237557b8a81ab948e8332f7c0058e758f081c0a3 upstream.
+commit 108d7f951271cbd36ca36efc5e5d106966f5180c upstream.
 
-When sysfs_update_group() is called for a named group and create_files()
-fails (e.g. -ENOMEM), internal_create_group() calls kernfs_remove(kn) on
-the group directory.  In the update path, kn was obtained via
-kernfs_find_and_get() and refers to a directory that already existed
-before this call.  Removing it silently destroys a sysfs group that the
-caller did not create.
+pika_dtm_thread() acquires client through of_find_i2c_device_by_node()
+but fails to release it in error handling path. This could result in a
+reference count leak, preventing proper cleanup and potentially
+leading to resource exhaustion. Add put_device() to release the
+reference in the error handling path.
 
-Only remove the directory if we created it ourselves.  On update failure
-the directory remains as it is left empty by remove_files() inside
-create_files(), but can be repopulated by a retry.
+Found by code review.
 
-Cc: Rajat Jain <rajatja@google.com>
-Fixes: c855cf2759d2 ("sysfs: Fix internal_create_group() for named group updates")
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_t1000
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patch.msgid.link/2026052003-uniquely-hastily-c093@gregkh
+Cc: stable@vger.kernel.org
+Fixes: 3984114f0562 ("powerpc/warp: Platform fix for i2c change")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20251116024411.21968-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/sysfs/group.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/44x/warp.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/sysfs/group.c
-+++ b/fs/sysfs/group.c
-@@ -148,7 +148,7 @@ static int internal_create_group(struct
- 	kernfs_get(kn);
- 	error = create_files(kn, kobj, uid, gid, grp, update);
- 	if (error) {
--		if (grp->name)
-+		if (grp->name && !update)
- 			kernfs_remove(kn);
+--- a/arch/powerpc/platforms/44x/warp.c
++++ b/arch/powerpc/platforms/44x/warp.c
+@@ -261,6 +261,8 @@ static int pika_dtm_thread(void __iomem
+ 		schedule_timeout(HZ);
  	}
- 	kernfs_put(kn);
+ 
++	put_device(&client->dev);
++
+ 	return 0;
+ }
+ 
 
 
 
