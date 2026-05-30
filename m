@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-257666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259085-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPafGhUeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257666-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:49 +0200
+	id qL1rOPAxG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259085-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8FE60FB5A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58BF8612AE8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6DC56305A868
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:22:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10BCB310F028
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E79332EA7;
-	Sat, 30 May 2026 17:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C698E1B87C0;
+	Sat, 30 May 2026 18:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbWhjNwc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTsVw/jQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C553161A3;
-	Sat, 30 May 2026 17:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8982026738C;
+	Sat, 30 May 2026 18:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161767; cv=none; b=gNYWp+5yl6tfWPZClxpSRH5Jvqr62BFxwfecOpnJLJOEBoR7r8Bse4EqitFKXPFxQsWe+GYZFvBPb7Hb/UdDgULQOZhmxtS8ixCzRKJqViY8nkeKJcz1abWBVWJCrcNMB6hXc0gpXFeMgEyvqseXiAUTVlIKUtrNO8VKyZ9Aa3Y=
+	t=1780166563; cv=none; b=r1tBWGi4pBGn4IUfXahpLzkAHqHHJCi78F3OBERqniNNhj6U5Aeurt88spHjBE/2ETxmQAftqSxaPx9RZYIbpYyWmU3L4GkPVLcBGWr0/tGo/B7rzyfJN/9Zq3o/WIQqsyaBQ+0otAokn4seRdHGwWpSIDJu4H+XUaij38vQDZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161767; c=relaxed/simple;
-	bh=5LWKTSfpDDvTunAj5vgUPKWWktivGeOlLwrd5ZhSIik=;
+	s=arc-20240116; t=1780166563; c=relaxed/simple;
+	bh=L9nHqrSNZMj89La8xriB2Rfyot1v2KdfRAKAc8283sA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNOcoG7cPx246F7JFdxDrXvpgYTC5rZKV/dIDXKjx5rdMvQQ7yD/FK21gri/OIwkI9LrnCf2TEuZmrHVSnBjJG0btuqme2W3FuWcgbbwfLoIS+iwCuFY2tdy9iFI1xc8r0v3CvItzzPVDSmh6NISBOl/NwJR1mK/HNSgEE8qcps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbWhjNwc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69631F00893;
-	Sat, 30 May 2026 17:22:45 +0000 (UTC)
+	 MIME-Version; b=i96dgKmInn62B/+T3RSIIR2Cj0rsah/Bgk8WQ6cktXU/qJ1X/uatPyjP6sH1V6nCaW4Z9h8Z9R+Vqgu8Swk0KZgUHrB6h7FOhVGMd6BpMTd8wKCtRogvRiwfB1T01bA7qLg63IctSKKXLB2vk9SNbqGh81fs/VeWN0CBhWAKvHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTsVw/jQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01A11F00893;
+	Sat, 30 May 2026 18:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161766;
-	bh=g0EHwQ+r95DHrZKU04Em0f0pXB1mngC/duZTAWpFDkE=;
+	s=korg; t=1780166562;
+	bh=93FqSRek8qXCIFtg80ySbqe/nDjw8fiNH3IKWk89ymU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MbWhjNwcdRu6Ac68Nw9WwD58cCLajasMtDjH8pDTH4HOgE8yydHGnnKm0U6u57GYA
-	 IiB2Gv/f5NDzhFEecI6CgZJLBLyeo4iv5qgdCXqEUXWXDwb2yPcKSmbR8nONj8n49t
-	 HNGfCpKvSpzk5uSD2bUKWelE4VGSl4TaVaZfI0hI=
+	b=qTsVw/jQ/eTMYVZy33vTKTdJbigI/dIZ7V0Ur2pOsyExLlAeBSJSKR2ehzMLQvZqy
+	 jK8Q5KrxzDryf5o+qlz29Vlv6cgRPQNkS6vDt1rQmkldnXjKtYAj+rVXWJ/pEDQnCx
+	 tk4xQVoQMvelTKXR7J40A4CKj7njmCVXnr7M+Dts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Lee Jones <lee@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Amit Pundir <amit.pundir@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@somainline.org>,
+	Bjorn Andersson <bjorn.andersson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 720/969] tipc: fix double-free in tipc_buf_append()
-Date: Sat, 30 May 2026 18:04:04 +0200
-Message-ID: <20260530160320.419978243@linuxfoundation.org>
+Subject: [PATCH 5.10 364/589] arm64: dts: qcom: sdm845-xiaomi-beryllium: Add DSI and panel bits
+Date: Sat, 30 May 2026 18:04:05 +0200
+Message-ID: <20260530160234.404414756@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,91 +68,163 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257666-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259085-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	DBL_PROHIBIT(0.00)[0.0.0.0:email];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,est.tech:email]
-X-Rspamd-Queue-Id: CF8FE60FB5A
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,somainline.org:email]
+X-Rspamd-Queue-Id: 58BF8612AE8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Sumit Semwal <sumit.semwal@linaro.org>
 
-[ Upstream commit d293ca716e7d5dffdaecaf6b9b2f857a33dc3d3a ]
+[ Upstream commit 0e5a6f27036e93110d3710d489fcc1408a674e62 ]
 
-tipc_msg_validate() can potentially reallocate the skb it is validating,
-freeing the old one.  In tipc_buf_append(), it was being called with a
-pointer to a local variable which was a copy of the caller's skb
-pointer.
+Enabling the Display panel for beryllium requires DSI
+labibb regulators and panel dts nodes to be added.
+It is also required to keep some of the regulators as
+always-on.
 
-If the skb was reallocated and validation subsequently failed, the error
-handling path would free the original skb pointer, which had already
-been freed, leading to double-free.
-
-Fix this by checking if head now points to a newly allocated reassembled
-skb.  If it does, reassign *headbuf for later freeing operations.
-
-Fixes: d618d09a68e4 ("tipc: enforce valid ratio between skb truesize and contents")
-Suggested-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+Link: https://lore.kernel.org/r/20210404194437.537011-1-amit.pundir@linaro.org
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Stable-dep-of: 3b0dd81eea6b ("arm64: dts: qcom: sdm845-xiaomi-beryllium: Mark l1a regulator as powered during boot")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/msg.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ .../boot/dts/qcom/sdm845-xiaomi-beryllium.dts | 71 +++++++++++++++++++
+ 1 file changed, 71 insertions(+)
 
-diff --git a/net/tipc/msg.c b/net/tipc/msg.c
-index 76284fc538ebd..b0bba0feef564 100644
---- a/net/tipc/msg.c
-+++ b/net/tipc/msg.c
-@@ -177,8 +177,20 @@ int tipc_buf_append(struct sk_buff **headbuf, struct sk_buff **buf)
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+index 86cbae63eaf7b..7d029425336e4 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+@@ -157,6 +157,14 @@ vreg_l13a_2p95: ldo13 {
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+ 		};
  
- 	if (fragid == LAST_FRAGMENT) {
- 		TIPC_SKB_CB(head)->validated = 0;
--		if (unlikely(!tipc_msg_validate(&head)))
++		vreg_l14a_1p8: ldo14 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-boot-on;
++			regulator-always-on;
++		};
 +
-+		/* If the reassembled skb has been freed in
-+		 * tipc_msg_validate() because of an invalid truesize,
-+		 * then head will point to a newly allocated reassembled
-+		 * skb, while *headbuf points to freed reassembled skb.
-+		 * In such cases, correct *headbuf for freeing the newly
-+		 * allocated reassembled skb later.
-+		 */
-+		if (unlikely(!tipc_msg_validate(&head))) {
-+			if (head != *headbuf)
-+				*headbuf = head;
- 			goto err;
-+		}
+ 		vreg_l17a_1p3: ldo17 {
+ 			regulator-min-microvolt = <1304000>;
+ 			regulator-max-microvolt = <1304000>;
+@@ -191,6 +199,7 @@ vreg_l26a_1p2: ldo26 {
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-boot-on;
+ 		};
+ 	};
+ };
+@@ -200,6 +209,43 @@ &cdsp_pas {
+ 	firmware-name = "qcom/sdm845/cdsp.mdt";
+ };
+ 
++&dsi0 {
++	status = "okay";
++	vdda-supply = <&vreg_l26a_1p2>;
 +
- 		*buf = head;
- 		TIPC_SKB_CB(head)->tail = NULL;
- 		*headbuf = NULL;
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	panel@0 {
++		compatible = "tianma,fhd-video";
++		reg = <0>;
++		vddi0-supply = <&vreg_l14a_1p8>;
++		vddpos-supply = <&lab>;
++		vddneg-supply = <&ibb>;
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
++
++		port {
++			tianma_nt36672a_in_0: endpoint {
++				remote-endpoint = <&dsi0_out>;
++			};
++		};
++	};
++};
++
++&dsi0_out {
++	remote-endpoint = <&tianma_nt36672a_in_0>;
++	data-lanes = <0 1 2 3>;
++};
++
++&dsi0_phy {
++	status = "okay";
++	vdds-supply = <&vreg_l1a_0p875>;
++};
++
+ &gcc {
+ 	protected-clocks = <GCC_QSPI_CORE_CLK>,
+ 			   <GCC_QSPI_CORE_CLK_SRC>,
+@@ -215,6 +261,31 @@ zap-shader {
+ 	};
+ };
+ 
++&ibb {
++	regulator-min-microvolt = <4600000>;
++	regulator-max-microvolt = <6000000>;
++	regulator-over-current-protection;
++	regulator-pull-down;
++	regulator-soft-start;
++	qcom,discharge-resistor-kohms = <300>;
++};
++
++&lab {
++	regulator-min-microvolt = <4600000>;
++	regulator-max-microvolt = <6000000>;
++	regulator-over-current-protection;
++	regulator-pull-down;
++	regulator-soft-start;
++};
++
++&mdss {
++	status = "okay";
++};
++
++&mdss_mdp {
++	status = "okay";
++};
++
+ &mss_pil {
+ 	status = "okay";
+ 	firmware-name = "qcom/sdm845/mba.mbn", "qcom/sdm845/modem.mdt";
 -- 
 2.53.0
 
