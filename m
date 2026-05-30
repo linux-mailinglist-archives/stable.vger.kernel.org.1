@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-257874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHCfBesgG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257874-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:55 +0200
+	id +L/qAvAgG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:40:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9143061024D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 926AD610255
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 916193090877
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E08413091C19
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B43933F8B4;
-	Sat, 30 May 2026 17:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828F23446AD;
+	Sat, 30 May 2026 17:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9s71UEO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyLaE0Sv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063CB30E853;
-	Sat, 30 May 2026 17:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4A230E853;
+	Sat, 30 May 2026 17:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162462; cv=none; b=r/3PSanGpe7PJBPt3hg3rOAB8k2C3FtKrNT5TYlyfgVJtk4vRN8QRDLy4KqxU8ZR+8k0HhoSHyyhZTlBXQFGkhnBYwcRreIupLSTaELQP2jgyOyQS7myyFwUAmuYQsFXANeRfQcvMJ85SYDMtMV3P6Mr+0KP5O8/TSEatbSAg9E=
+	t=1780162468; cv=none; b=bmEZdb3lrNJ1NOk1X8khYSEUvG+T6ixRp6gG2rx/l/Mqzx0mya1hk1Z0BNKCMrxADWjWtHhlM5EOL0NewvdT7L1TZE7E6inK/NqT21j3n6JV9WyjzWrzalvFaWt/YOibADtwsJGx5S4MnJAl6By6jSnKNF4rTqZAem8d60fi124=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162462; c=relaxed/simple;
-	bh=7BEb2zV8M/N1Dq0aXssgx14bR1NAZipW4ROrKgSqYpQ=;
+	s=arc-20240116; t=1780162468; c=relaxed/simple;
+	bh=BCsVWheMWAlDuCpthfbeeyKee3e+KBjY+nVpRc2ug/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fwdj0GmxYbkt1BMx7J3VYOJd2S5kLfrW0tupnnnt/+KsTUBvzpzaHSssLhTh6TtzYSuWQlCyQHFHwIriZambo7b9IfKEyYQvjSaOEwKR9q9Fq+RoDZWBw/BSfMd6L1PjLyb6LGQr7TtN2/PerKkKzkqXMLuKLTQlGKJlWlE/wsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9s71UEO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126D71F00893;
-	Sat, 30 May 2026 17:34:19 +0000 (UTC)
+	 MIME-Version; b=dmEBw25daNmqonPbrefGsROnilYL0d/EUkUXBtsmyRtBT9NdCXaliXtDrHR7q4uoWXnZbX6PytVZXET/OLUMAuS9QWRUdUDvsk7LrbI3XhA+EuHsoxX5bK6q1xgNjr81z7l0+2OdBjUIwc9pPnSrmPia5soyyv7y42tK6+NXWaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyLaE0Sv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49B81F00893;
+	Sat, 30 May 2026 17:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162460;
-	bh=U4/jOkhbwXiN8uOm3tlrus/03LarnOljvC343exq3Mc=;
+	s=korg; t=1780162467;
+	bh=aL8VmTJdG74DsuD/HXNaljp4PUUFiK3on49b3YhiQIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T9s71UEOQ99r3EtMa1hAV0eFdsZbhLnlhO9e+lwienppYBQuR2mb1ypV3cOaDfrBU
-	 ubTbovksF7N3jvg1uEvbQgEdQWyBo0/8WZhaClUMPIhC2zta5wlmir7Vuj88dJtADz
-	 tDSZ/KRJSYocDI9AlNNyrF1B+VrLWG0dnJNXTEqY=
+	b=PyLaE0SvZVfB4rqaKDKQPUvRIszxQ0LoVsPmeEeXbuXGzUgXu4LufniKsZjYkFiy3
+	 ZXWlXR1yvvAyqEyYxgn5dxUxJchfOBgEmkKJ6LaPpTxIp+KZGWreLAW2OcZOHQ8Pax
+	 LitWh8wERL7pZbsG02Lxgjjs5wKIGvj7aFkoeDHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linusw@kernel.org>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 928/969] net: ethernet: cortina: Carry over frag counter
-Date: Sat, 30 May 2026 18:07:32 +0200
-Message-ID: <20260530160326.364971986@linuxfoundation.org>
+Subject: [PATCH 6.1 929/969] net: ethernet: cs89x0: remove stale CONFIG_MACH_MX31ADS reference
+Date: Sat, 30 May 2026 18:07:33 +0200
+Message-ID: <20260530160326.394117872@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -66,32 +66,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-257876-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257874-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9143061024D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 926AD610255
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,116 +100,43 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Linus Walleij <linusw@kernel.org>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 
-[ Upstream commit ebd8ec2b309e3a447851b456ccaf8fb39f3661e7 ]
+[ Upstream commit 36a8d04a8293afcb9304cf0cd3741f67698f2a1a ]
 
-The gmac_rx() NAPI poll function assembles packets in an
-SKB from a ring buffer.
+The legacy ARM board file for MACH_MX31ADS was removed in commit
+c93197b0041d ("ARM: imx: Remove i.MX31 board files"), but a reference
+to it remained in the cs89x0 driver. Drop this unused code.
 
-If the ring buffer gets completely emptied during a poll cycle,
-we exit gmac_rx(), but the packet is not yet completely
-assembled in the SKB, yet the fragment counter frag_nr is
-reset to zero on the next invocation.
-
-Solve this by making the RX fragment counter a part of the
-port struct, and carry it over between invocations.
-
-Reset the fragment counter only right after calling
-napi_gro_frags(), on error (after calling napi_free_frags())
-or if stopping the port.
-
-Reset it in some place where not strictly necessary just to
-emphasize what is going on.
-
-This was found by Sashiko during normal patch review.
-
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Link: https://sashiko.dev/#/patchset/20260505-gemini-ethernet-fix-v2-1-997c31d06079%40kernel.org
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20260509-gemini-ethernet-fixes-v1-3-6c5d20ddc35b@kernel.org
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Fixes: c93197b0041d ("ARM: imx: Remove i.MX31 board files")
+Link: https://patch.msgid.link/20260509023732.42256-1-enelsonmoore@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cirrus/cs89x0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 51108bf65845d..3f0e63c7342bd 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -122,6 +122,7 @@ struct gemini_ethernet_port {
- 	struct hrtimer		rx_coalesce_timer;
- 	unsigned int		rx_coalesce_nsecs;
- 	struct sk_buff		*rx_skb;
-+	unsigned int		rx_frag_nr;
+diff --git a/drivers/net/ethernet/cirrus/cs89x0.c b/drivers/net/ethernet/cirrus/cs89x0.c
+index 06a0c00af99c7..75ab9b9668172 100644
+--- a/drivers/net/ethernet/cirrus/cs89x0.c
++++ b/drivers/net/ethernet/cirrus/cs89x0.c
+@@ -1270,7 +1270,6 @@ static const struct net_device_ops net_ops = {
  
- 	unsigned int		freeq_refill;
- 	struct gmac_txq		txq[TX_QUEUE_NUM];
-@@ -1449,6 +1450,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	unsigned short m = (1 << port->rxq_order) - 1;
- 	struct gemini_ethernet *geth = port->geth;
- 	void __iomem *ptr_reg = port->rxq_rwptr;
-+	unsigned int frag_nr = port->rx_frag_nr;
- 	struct sk_buff *skb = port->rx_skb;
- 	unsigned int frame_len, frag_len;
- 	struct gmac_rxdesc *rx = NULL;
-@@ -1462,7 +1464,6 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	unsigned short r, w;
- 	union dma_rwptr rw;
- 	dma_addr_t mapping;
--	int frag_nr = 0;
+ static void __init reset_chip(struct net_device *dev)
+ {
+-#if !defined(CONFIG_MACH_MX31ADS)
+ 	struct net_local *lp = netdev_priv(dev);
+ 	unsigned long reset_start_time;
  
- 	spin_lock_irqsave(&geth->irq_lock, flags);
- 	rw.bits32 = readl(ptr_reg);
-@@ -1502,6 +1503,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 				napi_free_frags(&port->napi);
- 				port->stats.rx_dropped++;
- 				skb = NULL;
-+				frag_nr = 0;
- 			}
- 			continue;
- 		}
-@@ -1512,6 +1514,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 				napi_free_frags(&port->napi);
- 				port->stats.rx_dropped++;
- 				skb = NULL;
-+				frag_nr = 0;
- 			}
- 
- 			skb = gmac_skb_if_good_frame(port, word0, frame_len);
-@@ -1546,6 +1549,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 		if (word3.bits32 & EOF_BIT) {
- 			napi_gro_frags(&port->napi);
- 			skb = NULL;
-+			frag_nr = 0;
- 			--budget;
- 		}
- 		continue;
-@@ -1554,6 +1558,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 		if (skb) {
- 			napi_free_frags(&port->napi);
- 			skb = NULL;
-+			frag_nr = 0;
- 		}
- 
- 		if (mapping)
-@@ -1563,6 +1568,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	}
- 
- 	port->rx_skb = skb;
-+	port->rx_frag_nr = frag_nr;
- 	writew(r, ptr_reg);
- 	return budget;
+@@ -1297,7 +1296,6 @@ static void __init reset_chip(struct net_device *dev)
+ 	while ((readreg(dev, PP_SelfST) & INIT_DONE) == 0 &&
+ 	       time_before(jiffies, reset_start_time + 2))
+ 		;
+-#endif /* !CONFIG_MACH_MX31ADS */
  }
-@@ -1892,6 +1898,7 @@ static int gmac_stop(struct net_device *netdev)
- 	gmac_stop_dma(port);
- 	napi_disable(&port->napi);
- 	port->rx_skb = NULL;
-+	port->rx_frag_nr = 0;
  
- 	gmac_enable_irq(netdev, 0);
- 	gmac_cleanup_rxq(netdev);
+ /* This is the real probe routine.
 -- 
 2.53.0
 
