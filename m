@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-258433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KKmgLjcpG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:19 +0200
+	id 8BtyO3gdG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2686115A8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CD960F987
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8162314E7EA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:05:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EE382301F815
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECF43AFCE3;
-	Sat, 30 May 2026 18:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B833438AE;
+	Sat, 30 May 2026 17:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8GudS0A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZAnPlWq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A4D341AC7;
-	Sat, 30 May 2026 18:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BDF33E36A;
+	Sat, 30 May 2026 17:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164334; cv=none; b=CTqRnLOgqrzoYpq5eU7k8wdOdaWEZ5b2CI3x/SX2qKp8srCZuWAcuq1D/e8XQKRqhcu2EvTgKMF/ZNEZVm2k3OWQj/pjrhbSUoZYhllntk4qYU/nFlf+s5+8AZ+JOql7iVMW0ojNhJ/fpZVYuauOYlKKic4fkDmru1joeSYW3WA=
+	t=1780161736; cv=none; b=u4JJ7cMcpUAkmVHxzZswqFkalOERE0ApvUOPiIbVdjViss94wwYWGPTEowkBYYLmOvFzWmk2T8Vu8ov/g4Gx40cLZLLBqwjtvmUiUn5rr8kgLL6siXi13fkQJffnHqpjvpVedB+I/jg29JCpAFLbwrx2unZtlIgF/8+oKO8kcS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164334; c=relaxed/simple;
-	bh=kACNz/s3caXLNysk2L7+KwDWaJ2DEyG8PZkPOgEF/Ag=;
+	s=arc-20240116; t=1780161736; c=relaxed/simple;
+	bh=3IK9iYludppDOohsiXg0nIwwG//y/UuudP68pK9cgB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SxZrmO3iCOWq7R1TQPdxamYsTvyIxLm7ZDIGEHGlBygdqzuMIwWn4XJe+8aK2TqyZZ1FAkL9SxXcttmdA3XNgJlAw27BC4HoJ9rK8qIw8yxWAN0hjwZno/aGnKL3PO3J6SWxo9fmsMB390KcgxfKzdgi/jJ8+NYDmzXR6MNnufc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8GudS0A; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016C61F00893;
-	Sat, 30 May 2026 18:05:32 +0000 (UTC)
+	 MIME-Version; b=nGoQotWlBUfp37uNs3vdWyKZ4ajjpvHHmb2B2zbZ17vwCy8bTmMOvInrzp6JCYEMKad6EpxIekg4ZqYO17+mno35Ht1w/bG/LbzC1dCa50vK2loUa4aVR7zy6cg50ujtKyqBhy8pTmBBI0/8Wj3eNX4+RKZ07WoIxOPwgA7RrPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZAnPlWq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C14F1F00893;
+	Sat, 30 May 2026 17:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164333;
-	bh=6zS2+Neu25QLsRM0HvB/mCRqGw15bloaZ0Xc8QfBVF4=;
+	s=korg; t=1780161735;
+	bh=sGmER7jhbehX10c4g5PaNQG0ZeGL8WWgRbtx97lhH4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R8GudS0AAXc0EWI3oOgYUcEbcu0BkEF0FXDzGB05g+yW6/aen/JrOnpX1kxPJCT6I
-	 nfzsQw+eYksA2u1YAFQUKTAkiR5RbQNgMCqaOR+THhf/3o1ClDT4UfnKWIluDfNcKd
-	 5D1jSVdTEh2dMU/OWWlOMJjP6bJHtnMmKGjWfwCE=
+	b=zZAnPlWqIY7gw6F8A12OfO18zncvXGyLmbcXemfUWSq5FAXdj1KxYXGbHayyFPnvm
+	 5hYdNcLqbpc7IA2jajLjyPxGxIny0QeR1n9Ru4J4chcIGbxrBLLZ32TRJL8wBu/yJ8
+	 mZy9eMlFk4ymS2f3RsjP7b17phaVp1QpYboQpliM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 522/776] dev_printk: add new dev_err_probe() helpers
+Subject: [PATCH 6.1 712/969] net/rds: zero per-item info buffer before handing it to visitors
 Date: Sat, 30 May 2026 18:03:56 +0200
-Message-ID: <20260530160253.721143951@linuxfoundation.org>
+Message-ID: <20260530160320.192082776@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +66,145 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258433-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_FROM(0.00)[bounces-257657-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,analog.com:email]
-X-Rspamd-Queue-Id: 2D2686115A8
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C3CD960F987
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit dbbe7eaf0e4795bf003ac06872aaf52b6b6b1310 ]
+[ Upstream commit c88eb7e8d8397a8c1db59c425332c5a30b2a1682 ]
 
-This is similar to dev_err_probe() but for cases where an ERR_PTR() or
-ERR_CAST() is to be returned simplifying patterns like:
+rds_for_each_conn_info() and rds_walk_conn_path_info() both hand a
+caller-allocated on-stack u64 buffer to a per-connection visitor and
+then copy the full item_len bytes back to user space via
+rds_info_copy() regardless of how much of the buffer the visitor
+actually wrote.
 
-	dev_err_probe(dev, ret, ...);
-	return ERR_PTR(ret)
-or
-	dev_err_probe(dev, PTR_ERR(ptr), ...);
-	return ERR_CAST(ptr)
+rds_ib_conn_info_visitor() and rds6_ib_conn_info_visitor() only
+write a subset of their output struct when the underlying
+rds_connection is not in state RDS_CONN_UP (src/dst addr, tos, sl
+and the two GIDs via explicit memsets). Several u32 fields
+(max_send_wr, max_recv_wr, max_send_sge, rdma_mr_max, rdma_mr_size,
+cache_allocs) and the 2-byte alignment hole between sl and
+cache_allocs remain as whatever stack contents preceded the visitor
+call and are then memcpy_to_user()'d out to user space.
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20240606-dev-add_dev_errp_probe-v3-1-51bb229edd79@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 797cc011ae02 ("backlight: sky81452-backlight: Check return value of devm_gpiod_get_optional() in sky81452_bl_parse_dt()")
+struct rds_info_rdma_connection and struct rds6_info_rdma_connection
+are the only rds_info_* structs in include/uapi/linux/rds.h that are
+not marked __attribute__((packed)), so they have a real alignment
+hole. The other info visitors (rds_conn_info_visitor,
+rds6_conn_info_visitor, rds_tcp_tc_info, ...) write all fields of
+their packed output struct today and are not known to be vulnerable,
+but a future visitor that adds a conditional write-path would have
+the same bug.
+
+Reproduction on a kernel built without CONFIG_INIT_STACK_ALL_ZERO=y:
+a local unprivileged user opens AF_RDS, sets SO_RDS_TRANSPORT=IB,
+binds to a local address on an RDMA-capable netdev (rxe soft-RoCE on
+any netdev is sufficient), sendto()'s any peer on the same subnet
+(fails cleanly but installs an rds_connection in the global hash in
+RDS_CONN_CONNECTING), then calls getsockopt(SOL_RDS,
+RDS_INFO_IB_CONNECTIONS). The returned 68-byte item contains 26
+bytes of stack garbage including kernel text/data pointers:
+
+    0..7   0a 63 00 01 0a 63 00 02     src=10.99.0.1 dst=10.99.0.2
+    8..39  00 ...                      gids (memset-zeroed)
+    40..47 e0 92 a3 81 ff ff ff ff     kernel pointer (max_send_wr)
+    48..55 7f 37 b5 81 ff ff ff ff     kernel pointer (rdma_mr_max)
+    56..59 01 00 08 00                 rdma_mr_size (garbage)
+    60..61 00 00                       tos, sl
+    62..63 00 00                       alignment padding
+    64..67 18 00 00 00                 cache_allocs (garbage)
+
+Fix by zeroing the per-item buffer in both rds_for_each_conn_info()
+and rds_walk_conn_path_info() before invoking the visitor. This
+covers the IPv4/IPv6 IB visitors and hardens all current and future
+visitors against the same class of bug.
+
+No functional change for visitors that fully populate their output.
+
+Changes in v2:
+- retarget at the net tree (subject prefix "[PATCH net v2]",
+  net/rds: prefix in the title)
+- pick up Reviewed-by tags from Sharath Srinivasan and
+  Allison Henderson
+
+Fixes: ec16227e1414 ("RDS/IB: Infiniband transport")
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Reviewed-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Assisted-by: Claude:claude-opus-4-7
+Link: https://patch.msgid.link/20260418141047.3398203-1-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dev_printk.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/rds/connection.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/include/linux/dev_printk.h b/include/linux/dev_printk.h
-index ae80a303c216b..ca32b5bb28eb5 100644
---- a/include/linux/dev_printk.h
-+++ b/include/linux/dev_printk.h
-@@ -277,4 +277,12 @@ do {									\
+diff --git a/net/rds/connection.c b/net/rds/connection.c
+index 98c0d5ff9de9c..cd41f83863c89 100644
+--- a/net/rds/connection.c
++++ b/net/rds/connection.c
+@@ -673,6 +673,13 @@ void rds_for_each_conn_info(struct socket *sock, unsigned int len,
+ 	     i++, head++) {
+ 		hlist_for_each_entry_rcu(conn, head, c_hash_node) {
  
- __printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
++			/* Zero the per-item buffer before handing it to the
++			 * visitor so any field the visitor does not write -
++			 * including implicit alignment padding - cannot leak
++			 * stack contents to user space via rds_info_copy().
++			 */
++			memset(buffer, 0, item_len);
++
+ 			/* XXX no c_lock usage.. */
+ 			if (!visitor(conn, buffer))
+ 				continue;
+@@ -722,6 +729,13 @@ static void rds_walk_conn_path_info(struct socket *sock, unsigned int len,
+ 			 */
+ 			cp = conn->c_path;
  
-+/* Simple helper for dev_err_probe() when ERR_PTR() is to be returned. */
-+#define dev_err_ptr_probe(dev, ___err, fmt, ...) \
-+	ERR_PTR(dev_err_probe(dev, ___err, fmt, ##__VA_ARGS__))
++			/* Zero the per-item buffer for the same reason as
++			 * rds_for_each_conn_info(): any byte the visitor
++			 * does not write (including alignment padding) must
++			 * not leak stack contents via rds_info_copy().
++			 */
++			memset(buffer, 0, item_len);
 +
-+/* Simple helper for dev_err_probe() when ERR_CAST() is to be returned. */
-+#define dev_err_cast_probe(dev, ___err_ptr, fmt, ...) \
-+	ERR_PTR(dev_err_probe(dev, PTR_ERR(___err_ptr), fmt, ##__VA_ARGS__))
-+
- #endif /* _DEVICE_PRINTK_H_ */
+ 			/* XXX no cp_lock usage.. */
+ 			if (!visitor(cp, buffer))
+ 				continue;
 -- 
 2.53.0
 
