@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-257433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258239-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HYhEqobG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:30 +0200
+	id ON1bDDklG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258239-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C767260F518
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA17610B81
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EA63630FAFF0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:09:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A8CA301BA6C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB97134165B;
-	Sat, 30 May 2026 17:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24217320CAD;
+	Sat, 30 May 2026 17:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9Zmqi/Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sz/al5Sj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA1F3148DA;
-	Sat, 30 May 2026 17:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3506261B9E;
+	Sat, 30 May 2026 17:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160979; cv=none; b=gFPtU9RJWPvD/hm+j9zXmGzJEeXP1LVBS0mWxG6d+GH0GQz9A5hJ85m26haav6Vf3YL1YDgeD5OdOV32a3c6T9C2H+xDUxYI/eBUQ7oHSA043aByXRGfkTn8OAXoQvOinv6Ojt5TZ072bSdD146l8WG4Q6T/XIRID37uvAXkBME=
+	t=1780163682; cv=none; b=Umdy6MGhO9kFbQ42jWTyl3VZbV4CIsLo42mQeynIB+QQQDdkR7s3fEQB5nIC1gB/nM5Pqb8fY38Z0DhF4c/dcTy8ed6HGHP9jcC5Tucf4IYuVzx6UN+cFpsTZjRgWET7M+DD9WH5Hjf8idV84CHV/PJ8oze65BGMb/a0BYulq/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160979; c=relaxed/simple;
-	bh=Q/GzLjuwxbIZX6soeFaXBCSEU6wzhnaooICD89nNOgo=;
+	s=arc-20240116; t=1780163682; c=relaxed/simple;
+	bh=gMava9Zm8yXFd4Yldli0sbk4myw+SrxQV2+gPStF0sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sovvZpzdZLZC9PeciC1penWbk1AcjXp1dB5SiiKazFK8LdCpJ8+1Vbc1bELJAXtX1YgSRCK5Cbo4eJ61dsZSc/fYSfjc3Tr9t3Sal03Af/x0UIK31AkOFdY5wM7m3C/Rw7LTiAdMA9xjv6IKs/r6Dqc1fwLvkHAXJEkX9TxoqGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9Zmqi/Y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9911F00893;
-	Sat, 30 May 2026 17:09:37 +0000 (UTC)
+	 MIME-Version; b=F9KyhQiJtVpqwfczHi7qfoYCfJTM4Z+q5blHe4Ur1SHefs9xuUpsuehr1yINVN92Mhe/5XstIeHkf4Ih8elTsnsCoNBQjzE/EBBo0Eaqm/ur2el7/BhAWKBOXnzAtXL3qX3/LekP4KcPsf0q7ALt2JWspRJP/uuw9XU004eQ/tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sz/al5Sj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BA71F00893;
+	Sat, 30 May 2026 17:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160978;
-	bh=AClRTyh/4crBDhfeEYy0UkXRJqucJ7nIgntyxdxXQN4=;
+	s=korg; t=1780163681;
+	bh=mdrc1G2asQT3iRPDXxwvMYOaL16Ys8tLS5tmGGHUbsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=k9Zmqi/YnVQ3cCb/Wm7G77Op9fOmm1eFJWygZVWLHJH9loq43ZEIwBkpjHXlDvyOz
-	 VudJlwG3wmokIaNaO+MNCM9CbwJpOI2XhFuV/Jr3VDKUcl88+Kt7+LLMS9OZryBjyg
-	 9UGern1nr9S2AyBRXPe5eFysL5SASbPsTtl9/9A4=
+	b=Sz/al5Sj2jGqQy+D8GhYlltDhVHGMwnYPKQdGTGrHOzUn5gunBfZfQWE743+crwOY
+	 devOxpCVo17lovQXVV6r0ndD+wspAs5vmJIr37Q0FSI31gwerJWMFhdDuUEP3aPXxr
+	 b/4YBYeH+0WGj249Rkrm8uNLe0RJTpA+lXhgSk70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 490/969] net, bpf: fix null-ptr-deref in xdp_master_redirect() for down master
-Date: Sat, 30 May 2026 18:00:14 +0200
-Message-ID: <20260530160313.844973640@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruijie Li <ruijieli51@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 5.15 301/776] xfrm: provide message size for XFRM_MSG_MAPPING
+Date: Sat, 30 May 2026 18:00:15 +0200
+Message-ID: <20260530160248.343907271@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,102 +69,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257433-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,secunet.com];
+	TAGGED_FROM(0.00)[bounces-258239-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,80e046b8da2820b6ba73];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C767260F518
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,secunet.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9EA17610B81
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Ruijie Li <ruijieli51@gmail.com>
 
-[ Upstream commit 1921f91298d1388a0bb9db8f83800c998b649cb3 ]
+commit 28465227c80fe417b4013c432be1f3737cb9f9a3 upstream.
 
-syzkaller reported a kernel panic in bond_rr_gen_slave_id() reached via
-xdp_master_redirect(). Full decoded trace:
+The compat 64=>32 translation path handles XFRM_MSG_MAPPING, but
+xfrm_msg_min[] does not provide the native payload size for this
+message type.
 
-  https://syzkaller.appspot.com/bug?extid=80e046b8da2820b6ba73
+Add the missing XFRM_MSG_MAPPING entry so compat translation can size
+and translate mapping notifications correctly.
 
-bond_rr_gen_slave_id() dereferences bond->rr_tx_counter, a per-CPU
-counter that bonding only allocates in bond_open() when the mode is
-round-robin. If the bond device was never brought up, rr_tx_counter
-stays NULL.
-
-The XDP redirect path can still reach that code on a bond that was
-never opened: bpf_master_redirect_enabled_key is a global static key,
-so as soon as any bond device has native XDP attached, the
-XDP_TX -> xdp_master_redirect() interception is enabled for every
-slave system-wide. The path xdp_master_redirect() ->
-bond_xdp_get_xmit_slave() -> bond_xdp_xmit_roundrobin_slave_get() ->
-bond_rr_gen_slave_id() then runs against a bond that has no
-rr_tx_counter and crashes.
-
-Fix this in the generic xdp_master_redirect() by refusing to call into
-the master's ->ndo_xdp_get_xmit_slave() when the master device is not
-up. IFF_UP is only set after ->ndo_open() has successfully returned,
-so this reliably excludes masters whose XDP state has not been fully
-initialized. Drop the frame with XDP_ABORTED so the exception is
-visible via trace_xdp_exception() rather than silently falling through.
-This is not specific to bonding: any current or future master that
-defers XDP state allocation to ->ndo_open() is protected.
-
-Fixes: 879af96ffd72 ("net, core: Add support for XDP redirection to slave device")
-Reported-by: syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/698f84c6.a70a0220.2c38d7.00cc.GAE@google.com/T/
-Suggested-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260411005524.201200-2-jiayuan.chen@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5461fc0c8d9f ("xfrm/compat: Add 64=>32-bit messages translator")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/xfrm/xfrm_user.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 271cb6881dbb1..aee85a0062ce6 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -4268,6 +4268,8 @@ u32 xdp_master_redirect(struct xdp_buff *xdp)
- 	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
- 
- 	master = netdev_master_upper_dev_get_rcu(xdp->rxq->dev);
-+	if (unlikely(!(master->flags & IFF_UP)))
-+		return XDP_ABORTED;
- 	slave = master->netdev_ops->ndo_xdp_get_xmit_slave(master, xdp);
- 	if (slave && slave != xdp->rxq->dev) {
- 		/* The target device is different from the receiving device, so
--- 
-2.53.0
-
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -2826,6 +2826,7 @@ const int xfrm_msg_min[XFRM_NR_MSGTYPES]
+ 	[XFRM_MSG_GETSADINFO  - XFRM_MSG_BASE] = sizeof(u32),
+ 	[XFRM_MSG_NEWSPDINFO  - XFRM_MSG_BASE] = sizeof(u32),
+ 	[XFRM_MSG_GETSPDINFO  - XFRM_MSG_BASE] = sizeof(u32),
++	[XFRM_MSG_MAPPING     - XFRM_MSG_BASE] = XMSGSIZE(xfrm_user_mapping),
+ 	[XFRM_MSG_SETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
+ 	[XFRM_MSG_GETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
+ };
 
 
 
