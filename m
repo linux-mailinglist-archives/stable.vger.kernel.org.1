@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258374-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WAJUCxUxG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-258949-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:53 +0200
+	id 0MhHFVgmG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258374-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5126128B7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E3E610DF5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1367630EB41A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:34:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C033E3016CCA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905EB349CCF;
-	Sat, 30 May 2026 18:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69FB3AB291;
+	Sat, 30 May 2026 18:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUYk8T8q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H72uRflj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C51141A8F;
-	Sat, 30 May 2026 18:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDDC2FDC5E;
+	Sat, 30 May 2026 18:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166087; cv=none; b=Z84BjWgcgbnGYDZJO8VVF9mlAb3ydxRnbBtLszTply9uaJbrn6CuGUj0l8lAvxsBgturCkZabKC7cVwVKrvsM16oGPYz0QQYd9aURjvfpqPkxQmy5j/aJtCE8ohuF4mo/kAA7vYb9RT2H3rHzs6LYRYLu5enASEcWaYg5LvhEh4=
+	t=1780164137; cv=none; b=sH7QKwAYYQwWSyxx/TtL5Yk7gjZksOREqtjYboHZBfxBeLrrefxA4DkPERQisnlfOPsWk3bJRT+KWtyO02tY/StDnz4d/UVPwDxu4QwOKr0FRoNnuQqeFehehuXQvgU1rU/3SdK3kywjkw1RFiwM5ilkC5FkZivXqXaRvKpWRrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166087; c=relaxed/simple;
-	bh=/XC4FOLilSJyvWy2wafLsBv68zUFSr91fBEaABJprgg=;
+	s=arc-20240116; t=1780164137; c=relaxed/simple;
+	bh=0LETy8Z0FWOJNzhjxCF2FDXGKFQkxC9eRbBWx17gTZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OwOUvuSzMYho+NIVotU1zOxgStJnZPvpi6e+LvwnoiMJXfOewanF+828N34ahMe9igBu1wQpo05WJiN4tBua+JfBpEhbZA+FPOIG2IkiRYUpkTIb6trFPDMWvOxPJ10IFfsJDBMncAoUcP9LdCaDCtt0OPbHYyBUrXUPfgPcLiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUYk8T8q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD25F1F00893;
-	Sat, 30 May 2026 18:34:44 +0000 (UTC)
+	 MIME-Version; b=FPhwuD1IGpTqET8pT1MmQNDSeXh9zKvPaa9xMQ152kHsA4H2imiwwBMcRArVeb2g5z+u363taoxNML4NmpruxsgvkL9PvekjG1qHoN0v9jJLEpf+BD0UlxTM/nDzeMDXS+Y11JwzPxHhezybCnTihs0QexEIiTSZbJ5mSrWbSBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H72uRflj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B8611F00893;
+	Sat, 30 May 2026 18:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166085;
-	bh=PQCU8bIkAmTA0/R1ZZ74NqqKkARJQgTjbPKf9ztwgYQ=;
+	s=korg; t=1780164136;
+	bh=Dwey2mgXobzyF1tiUQAAS1GGaiG1ktvuF4yhRde4sDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BUYk8T8q33Jjq4g3f+Rs3+xbYBW5jMxoigzuKZuR9oMi2g7CSqK+DTlWv7pp77Fxs
-	 q/zYpn+okxzoErQxPWR4ZZCKjRf9WdgiQd92rqBRrSlpTfFAl3J+LCYrO4fGAExhcg
-	 cJFTowtX/0lH248gRDuDOAyuRAux6MayolYcq4ck=
+	b=H72uRfljVZLi6B5meQD5Yoiybox5gSNHjz/kpyLnXrawHOoGyouXiXHupb1UtmwEW
+	 ljCH1JKJiZGqC1nYfqaIajt9RZhptF7xPppPXORJ8wuLqv0/H8qUVsb2eSvh/QS5iP
+	 rIgEy12uhkEHi9e1a43VDjqxCCx1y668gCnAqBB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@auroraos.dev>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.10 269/589] media: dib8000: avoid division by 0 in dib8000_set_dds()
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 436/776] dm cache: fix concurrent write failure in passthrough mode
 Date: Sat, 30 May 2026 18:02:30 +0200
-Message-ID: <20260530160232.056544331@linuxfoundation.org>
+Message-ID: <20260530160251.699618877@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,120 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [9.34 / 15.00];
-	URIBL_BLACK(7.50)[linuxtesting.org:url];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258949-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	GREYLIST(0.00)[pass,meta];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258374-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_SPAM(0.00)[0.986];
-	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxtesting.org:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,auroraos.dev:email]
-X-Rspamd-Queue-Id: 8D5126128B7
-X-Rspamd-Action: add header
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 15E3E610DF5
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit dde3c37af95cd6fa301c4906f33d627bc9dd874c upstream.
+[ Upstream commit e4f66341779d0cf4c83c74793753a84094286d9e ]
 
-In dib8000_set_dds(), 1 << 26 (67108864) divided by e.g. 1 apparently can't
-fit into 16-bit variable unit_khz_dds_val, being truncated to 0; this will
-cause division by 0 while calling dprintk() with debugging enabled (via the
-module parameter).  Use s32 instead of s16 to declare the variable, getting
-rid of the cast to u16 in the *else* branch as well...
+When bio prison cell lock acquisition fails due to concurrent writes to
+the same block in passthrough mode, dm-cache incorrectly returns an I/O
+error instead of properly handling the concurrency. This can occur in
+both process and workqueue contexts when invalidate_lock() is called for
+exclusive access to a data block. Fix this by deferring the write bios
+to ensure proper block device behavior.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
+Reproduce steps:
 
-Fixes: 173a64cb3fcf ("[media] dib8000: enhancement")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1. Create a cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. Promote the first data block into cache
+
+fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
+--direct=1 --size=64k
+
+3. Reload the cache into passthrough mode
+
+dmsetup suspend cache
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+dmsetup resume cache
+
+4. Write to the first cached block concurrently. Sometimes one of the
+   processes will receive I/O errors.
+
+fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
+--randrepeat=0 --direct=1 --numjobs=2 --size 64k
+
+ <snip>
+ fio-3.41
+ fio: io_u error on file /dev/mapper/cache: Input/output error: write offset=4096, buflen=4096
+ fio: pid=106, err=5/file:io_u.c:2008, func=io_u error, error=Input/output error
+ test: (groupid=0, jobs=1): err= 0: pid=105
+ test: (groupid=0, jobs=1): err= 5 (file:io_u.c:2008, func=io_u error, error=Input/output error): pid=106
+ <snip>
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/dib8000.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/dm-cache-target.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/media/dvb-frontends/dib8000.c
-+++ b/drivers/media/dvb-frontends/dib8000.c
-@@ -2694,7 +2694,7 @@ static void dib8000_viterbi_state(struct
- 
- static void dib8000_set_dds(struct dib8000_state *state, s32 offset_khz)
- {
--	s16 unit_khz_dds_val;
-+	s32 unit_khz_dds_val;
- 	u32 abs_offset_khz = abs(offset_khz);
- 	u32 dds = state->cfg.pll->ifreq & 0x1ffffff;
- 	u8 invert = !!(state->cfg.pll->ifreq & (1 << 25));
-@@ -2715,7 +2715,7 @@ static void dib8000_set_dds(struct dib80
- 			dds = (1<<26) - dds;
- 	} else {
- 		ratio = 2;
--		unit_khz_dds_val = (u16) (67108864 / state->cfg.pll->internal);
-+		unit_khz_dds_val = 67108864 / state->cfg.pll->internal;
- 
- 		if (offset_khz < 0)
- 			unit_khz_dds_val *= -1;
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index 783722a4c3364..1498ffbcb0e03 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1524,6 +1524,15 @@ static int invalidate_lock(struct dm_cache_migration *mg)
+ 			    READ_WRITE_LOCK_LEVEL, prealloc, &mg->cell);
+ 	if (r < 0) {
+ 		free_prison_cell(cache, prealloc);
++
++		/* Defer the bio for retrying the cell lock */
++		if (mg->overwrite_bio) {
++			struct bio *bio = mg->overwrite_bio;
++
++			mg->overwrite_bio = NULL;
++			defer_bio(cache, bio);
++		}
++
+ 		invalidate_complete(mg, false);
+ 		return r;
+ 	}
+-- 
+2.53.0
+
 
 
 
