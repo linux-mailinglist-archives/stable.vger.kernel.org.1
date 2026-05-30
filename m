@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-256945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCEZMwcPG2q/+ggAu9opvQ
-	(envelope-from <stable+bounces-256945-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:23:35 +0200
+	id 4KR/LQ8XG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:57:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3282C60E1E1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:23:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345C260EA97
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E7DB3025724
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:17:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 49BED3054CFC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D43D34846A;
-	Sat, 30 May 2026 16:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B5E33F5A3;
+	Sat, 30 May 2026 16:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYSIQJa+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxslgeNR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0178345CCA;
-	Sat, 30 May 2026 16:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36445332919;
+	Sat, 30 May 2026 16:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780157835; cv=none; b=rkpv/9dwe7JXbQQTOTl9/ku3nUWV7mhAc7NEE3CHBQo2StE9MZipBWvrglHsvIrW54ZVSIan4x7EJ4+XBvJz6WqrFm1aG0Zisg2QN5IA4gSc357QeySpd6Ruh7kLDphc9+kepqQBfdX3kGa18IKCh1Yv6ephJPy6t/qetqYvy8A=
+	t=1780160047; cv=none; b=RM2JOa9+LjjbyPD4++ouVSSLbP84qMzfNwre6rvQhf4ytWIXn0Mb9mkJ71FSmQFd8ehG2aMyfe4OJZEds7Xnw4FUBbCVkqPXRiY5yqJKcLvjBJE0M3mFjZom26jAAm3PxqncAI6mcdvt2irKWDYn6C1aHFYUKrnI2jIMAlIhtHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780157835; c=relaxed/simple;
-	bh=inhOmY3JRcty9w8no5VmxsgHPtRxp1zbZYmzqUaTY6s=;
+	s=arc-20240116; t=1780160047; c=relaxed/simple;
+	bh=CwhwKkM2DauJwGNL3JJcSslWwfe+oDlfWG6wFU8KlY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=guMbloOVH1MJPf+pNWZ8q5VjRPqMsgvaiG/Cle5miLN0TW1ye6+93RRDeyHwLOlSWDkOBMflzRQ1JaDpY7VVd2nlv/yrgI0q455HLtl97qSMH5udYbQDKSQTAffukkB7bRhXz/QWNN1oI1+YA27WKz4PWbuWzfvQBOEvugKQkDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYSIQJa+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56641F00898;
-	Sat, 30 May 2026 16:17:05 +0000 (UTC)
+	 MIME-Version; b=hdL1ipIAggoAlqTec7eUUzAzQGniMF9xqapbJx9teubkFc51Z4VBtS2qmv4ZoLgxYBSRiD/tcxXJHiT/MYUEP4VwO8sLHdyqTxOn0nA5pUWTe7RBi1MT9IVSl9hLPs/PQAypjZLID30ajknrDL+koS2HJ/mb9MWSc5lXfw1Ac6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxslgeNR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7071F00893;
+	Sat, 30 May 2026 16:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780157827;
-	bh=sNDoeVFNfbppw4LFFEgjG5jjfEkW+ukSo1KYBk/0FZU=;
+	s=korg; t=1780160046;
+	bh=dwfUdezlbox4zhCJKO+PFFXVflX17QDBmORT+kcuiK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FYSIQJa+CGtRvB3D/iSPV4/0UxeURgEVB9IQNBSGkelJMMczp2qJ8TDvQtfKp+AK8
-	 tMvkt5oQ/RDOPFy8Lf/f4jTUqyb1UP4gjxsfPOa2ifol0rca+qXkZKGpLZDTFekzw2
-	 duq47xuotlFr6FJQuqm9QaNsvjRB+WonA9FS0i90=
+	b=MxslgeNR98yEYUhgVR4D1hq2H7kWZv9ug1UnTSMjgvciPStSsRjCfenGxaE8/MNl0
+	 niS85b9E/QLpOxrR8qB7mTPdqhsP5f2LMtBCjdYl4V/Wh5K0gaeTIENqFF/tKB+LSV
+	 ePWPCXuyaKiBDfcZsMIoMlP357sQ3bDMAYOfYGbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 006/776] netfilter: nft_set_pipapo_avx2: dont return non-matching entry on expiry
-Date: Sat, 30 May 2026 17:55:20 +0200
-Message-ID: <20260530160240.410330144@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>
+Subject: [PATCH 6.1 197/969] erofs: fix the out-of-bounds nameoff handling for trailing dirents
+Date: Sat, 30 May 2026 17:55:21 +0200
+Message-ID: <20260530160305.914126121@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,192 +69,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257169-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,linux.alibaba.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256945-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
-X-Rspamd-Queue-Id: 3282C60E1E1
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 345C260EA97
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit d3c0037ffe1273fa1961e779ff6906234d6cf53c ]
+commit d18a3b5d337fa412a38e776e6b4b857a58836575 upstream.
 
-New test case fails unexpectedly when avx2 matching functions are used.
+Currently we already have boundary-checks for nameoffs, but the trailing
+dirents are special since the namelens are calculated with strnlen()
+with unchecked nameoffs.
 
-The test first loads a ranomly generated pipapo set
-with 'ipv4 . port' key, i.e.  nft -f foo.
+If a crafted EROFS has a trailing dirent with nameoff >= maxsize,
+maxsize - nameoff can underflow, causing strnlen() to read past the
+directory block.
 
-This works.  Then, it reloads the set after a flush:
-(echo flush set t s; cat foo) | nft -f -
+nameoff0 should also be verified to be a multiple of
+`sizeof(struct erofs_dirent)` as well [1].
 
-This is expected to work, because its the same set after all and it was
-already loaded once.
+[1] https://sashiko.dev/#/patchset/20260416063511.3173774-1-hsiangkao%40linux.alibaba.com
 
-But with avx2, this fails: nft reports a clashing element.
-
-The reported clash is of following form:
-
-    We successfully re-inserted
-      a . b
-      c . d
-
-Then we try to insert a . d
-
-avx2 finds the already existing a . d, which (due to 'flush set') is marked
-as invalid in the new generation.  It skips the element and moves to next.
-
-Due to incorrect masking, the skip-step finds the next matching
-element *only considering the first field*,
-
-i.e. we return the already reinserted "a . b", even though the
-last field is different and the entry should not have been matched.
-
-No such error is reported for the generic c implementation (no avx2) or when
-the last field has to use the 'nft_pipapo_avx2_lookup_slow' fallback.
-
-Bisection points to
-7711f4bb4b36 ("netfilter: nft_set_pipapo: fix range overlap detection")
-but that fix merely uncovers this bug.
-
-Before this commit, the wrong element is returned, but erronously
-reported as a full, identical duplicate.
-
-The root-cause is too early return in the avx2 match functions.
-When we process the last field, we should continue to process data
-until the entire input size has been consumed to make sure no stale
-bits remain in the map.
-
-Link: https://lore.kernel.org/netfilter-devel/20260321152506.037f68c0@elisabeth/
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3aa8ec716e52 ("staging: erofs: add directory operations")
+Fixes: 33bac912840f ("staging: erofs: keep corrupted fs from crashing kernel in erofs_readdir()")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Closes: https://lore.kernel.org/r/A0FD7E0F-7558-49B0-8BC8-EB1ECDB2479A@outlook.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ fs/erofs/dir.c |   28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index cf5683afaf833..650bb3a457073 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -242,7 +242,7 @@ static int nft_pipapo_avx2_lookup_4b_2(unsigned long *map, unsigned long *fill,
+--- a/fs/erofs/dir.c
++++ b/fs/erofs/dir.c
+@@ -22,20 +22,18 @@ static int erofs_fill_dentries(struct in
+ 		nameoff = le16_to_cpu(de->nameoff);
+ 		de_name = (char *)dentry_blk + nameoff;
  
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
+-		/* the last dirent in the block? */
+-		if (de + 1 >= end)
+-			de_namelen = strnlen(de_name, maxsize - nameoff);
+-		else
++		/* non-trailing dirent in the directory block? */
++		if (de + 1 < end)
+ 			de_namelen = le16_to_cpu(de[1].nameoff) - nameoff;
++		else if (maxsize <= nameoff)
++			goto err_bogus;
++		else
++			de_namelen = strnlen(de_name, maxsize - nameoff);
  
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -319,7 +319,7 @@ static int nft_pipapo_avx2_lookup_4b_4(unsigned long *map, unsigned long *fill,
+-		/* a corrupted entry is found */
+-		if (nameoff + de_namelen > maxsize ||
+-		    de_namelen > EROFS_NAME_LEN) {
+-			erofs_err(dir->i_sb, "bogus dirent @ nid %llu",
+-				  EROFS_I(dir)->nid);
+-			DBG_BUGON(1);
+-			return -EFSCORRUPTED;
+-		}
++		/* a corrupted entry is found (including negative namelen) */
++		if (!in_range32(de_namelen, 1, EROFS_NAME_LEN) ||
++		    nameoff + de_namelen > maxsize)
++			goto err_bogus;
  
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
+ 		if (!dir_emit(ctx, de_name, de_namelen,
+ 			      le64_to_cpu(de->nid), d_type))
+@@ -44,6 +42,10 @@ static int erofs_fill_dentries(struct in
+ 		ctx->pos += sizeof(struct erofs_dirent);
+ 	}
+ 	return 0;
++err_bogus:
++	erofs_err(dir->i_sb, "bogus dirent @ nid %llu", EROFS_I(dir)->nid);
++	DBG_BUGON(1);
++	return -EFSCORRUPTED;
+ }
  
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -414,7 +414,7 @@ static int nft_pipapo_avx2_lookup_4b_8(unsigned long *map, unsigned long *fill,
+ static int erofs_readdir(struct file *f, struct dir_context *ctx)
+@@ -71,7 +73,7 @@ static int erofs_readdir(struct file *f,
+ 		}
  
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -505,7 +505,7 @@ static int nft_pipapo_avx2_lookup_4b_12(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -641,7 +641,7 @@ static int nft_pipapo_avx2_lookup_4b_32(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -699,7 +699,7 @@ static int nft_pipapo_avx2_lookup_8b_1(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -764,7 +764,7 @@ static int nft_pipapo_avx2_lookup_8b_2(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -839,7 +839,7 @@ static int nft_pipapo_avx2_lookup_8b_4(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -925,7 +925,7 @@ static int nft_pipapo_avx2_lookup_8b_6(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
-@@ -1019,7 +1019,7 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
- 
- 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
- 		if (last)
--			return b;
-+			ret = b;
- 
- 		if (unlikely(ret == -1))
- 			ret = b / XSAVE_YMM_SIZE;
--- 
-2.53.0
-
+ 		nameoff = le16_to_cpu(de->nameoff);
+-		if (nameoff < sizeof(struct erofs_dirent) || nameoff >= bsz) {
++		if (!nameoff || nameoff >= bsz || (nameoff % sizeof(*de))) {
+ 			erofs_err(sb, "invalid de[0].nameoff %u @ nid %llu",
+ 				  nameoff, EROFS_I(dir)->nid);
+ 			err = -EFSCORRUPTED;
 
 
 
