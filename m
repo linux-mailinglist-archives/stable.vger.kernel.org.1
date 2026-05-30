@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-259261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kKspE+gyG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259261-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:40 +0200
+	id oCvJOFMqG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0371612CBD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 659E4611801
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D1F63309085F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1CD84301F4BF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1262367DF;
-	Sat, 30 May 2026 18:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8828132F770;
+	Sat, 30 May 2026 18:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LE1kRFdd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnaX+AXM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B8123C4F2;
-	Sat, 30 May 2026 18:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C2F241C8C;
+	Sat, 30 May 2026 18:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167148; cv=none; b=osYvL7Iqg8/cyNSu10xQyIcdLDsr8IXcWGwASCkrIHCW3KuonmfALVXy0qGVa56F04PTOOxpH9ojaQQoDP1Jidwj/mOxPAvPoNUHfFSTA4Qzg+ZesY7MUa3iK6dGwXaOJlelY5XODORlsgmZtGQYZUqbweW5oJlg33BcnsYkje8=
+	t=1780164964; cv=none; b=ImgSI03f08RSXzyeOTxBMluVtZ/aExCUqiUXGuGwGPbJEh/mUikLFnjUiNwOOwA2Vt8oUwft6IFxRUlzeCJ297VVgaK+NFmrjltEND/dBf7U/k2asfpQSlafjauSzF60MjfvidXh+k8ekHpnbOgBGHDxl+osvDoeDfHgNK3X/XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167148; c=relaxed/simple;
-	bh=Gks3K5ptxLUnju7e9LkpwEHmghO2+aNAqWgWhvMfbII=;
+	s=arc-20240116; t=1780164964; c=relaxed/simple;
+	bh=T3cEM8CXte04y9b5vhQY0LKPD6VwXQUKIeGvOI/MzaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XIgckLNFaLcVaBqo9tiqn6DicYc//OakghtIit/rS+d5cB+hhEKFeh/C94DIkjyaf9RWgcI/CdLAs5FkeKxROVhnVF3SHrP/n95BT4T1NGEKLB+52Rg4Q2g5LvFsBZtuj/4O17MC5VZ8Ilo/a21+cr6gfsldrl+k9VB54Uo/X24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LE1kRFdd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA8B1F00893;
-	Sat, 30 May 2026 18:52:26 +0000 (UTC)
+	 MIME-Version; b=RhFTlBRshteNMsI6hiPA+g1SRmzH3zU3sVi7MzBL3R6q0TgB79i3GE/I+P1LjN+IEuIaeWaH3xSZ6WxU12oBFxvYJvQO/a0icxJlHFXAg+DMUxrzeT6R5MwmqBHrl+QcZBBSCyHfDPU/XGQxU7xJ45oGgbBrEgcpkThLprYh1No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnaX+AXM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84051F00893;
+	Sat, 30 May 2026 18:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167147;
-	bh=ryvCJ8ej21G2SL7HizmSqHza1vZxfJPY+EuoHWhDsV8=;
+	s=korg; t=1780164963;
+	bh=I09w+/MFzgALbxIvJ4x/c8Hkec6Mz0O7raEzPqwPIsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LE1kRFddFYatC/dIgsLXkKmdYXReixGAWr5u6Ah1N4zpfQu+s50n2C42fErIiP2Gi
-	 j+x3KqGxfFr/pbHf77Xw/jJraXp4qhZ4UZ/BtDB+WzSqidbW/G0wRUixz7F3iDIY4g
-	 /KjujaVuWDDz1jvntADwjrgkgEgOVK6ZxnZH7LVI=
+	b=pnaX+AXMQ589RFz7BDby6dRIlm6/xlUzLKlWXTUjLxN213AdpMUVLFTawDHfFVqMF
+	 ihU00Rys77Zclr5C6t6xxRIpB09YmMqxyF9gnhgCoe7gD8Xs8kH1/fkfd1qb/Dvq5D
+	 G1Dv1uQaaIQlHn7wiEYGtDz3EQS1dbDU5VB7zwew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Walker <johnwalker0@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.10 542/589] wifi: cfg80211: advance loop vars in cfg80211_merge_profile()
-Date: Sat, 30 May 2026 18:07:03 +0200
-Message-ID: <20260530160238.925359839@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.15 710/776] batman-adv: fix tp_meter counter underflow during shutdown
+Date: Sat, 30 May 2026 18:07:04 +0200
+Message-ID: <20260530160258.186586234@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +71,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259261-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-258620-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: C0371612CBD
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 659E4611801
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Walker <johnwalker0@gmail.com>
+From: Luxiao Xu <rakukuip@gmail.com>
 
-commit 7666dbb1bacc4ba522b96740cba7283d243d16e1 upstream.
+commit 94f3b133168d1c49895e7cc6afbcf1cc0b354602 upstream.
 
-cfg80211_merge_profile() reassembles a Multi-BSSID non-transmitted BSS
-profile that has been split across multiple consecutive MBSSID elements.
-Its while-loop calls
+batadv_tp_sender_shutdown() unconditionally decrements the "sending"
+atomic counter. If multiple paths (e.g. timeout, user cancel, and
+normal finish) call this function, the counter can underflow to -1.
 
-	cfg80211_get_profile_continuation(ie, ielen, mbssid_elem, sub_elem)
+Since the sender logic treats any non-zero value as "still sending",
+a negative value causes the sender kthread to loop indefinitely.
+This leads to a use-after-free when the interface is removed while
+the zombie thread is still active.
 
-but never advances mbssid_elem or sub_elem inside the body.  Each
-iteration therefore searches for a continuation that follows the same
-fixed pair; the helper returns the same next_mbssid; and the same
-next_sub bytes are memcpy()'d into merged_ie at a growing offset until
-the buffer fills.
+Fix this by using atomic_xchg() to ensure the counter only transitions
+from 1 to 0 once.
 
-Advance both mbssid_elem and sub_elem to the just-consumed continuation
-so the next call to cfg80211_get_profile_continuation() searches for a
-further continuation beyond it (or returns NULL when none exists).
-
-A specially-crafted malicious beacon can take advantage of this bug
-to cause the kernel to spend an excessive amount of time in
-cfg80211_merge_profile (up to as much as 2ms per beacon received),
-which could theoretically be abused in some way.
-
-Cc: stable@vger.kernel.org
-Fixes: fe806e4992c9 ("cfg80211: support profile split between elements")
-Signed-off-by: John Walker <johnwalker0@gmail.com>
-Link: https://patch.msgid.link/20260507230720.64783-1-johnwalker0@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+[sven: added missing change in batadv_tp_send]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/scan.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/batman-adv/tp_meter.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -2176,6 +2176,9 @@ size_t cfg80211_merge_profile(const u8 *
- 		memcpy(merged_ie + copied_len, next_sub->data,
- 		       next_sub->datalen);
- 		copied_len += next_sub->datalen;
-+
-+		mbssid_elem = next_mbssid;
-+		sub_elem = next_sub;
- 	}
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -435,7 +435,7 @@ static void batadv_tp_sender_end(struct
+ static void batadv_tp_sender_shutdown(struct batadv_tp_vars *tp_vars,
+ 				      enum batadv_tp_meter_reason reason)
+ {
+-	if (!atomic_dec_and_test(&tp_vars->sending))
++	if (atomic_xchg(&tp_vars->sending, 0) != 1)
+ 		return;
  
- 	return copied_len;
+ 	tp_vars->reason = reason;
+@@ -869,7 +869,7 @@ static int batadv_tp_send(void *arg)
+ 				   "Meter: %s() cannot send packets (%d)\n",
+ 				   __func__, err);
+ 			/* ensure nobody else tries to stop the thread now */
+-			if (atomic_dec_and_test(&tp_vars->sending))
++			if (atomic_xchg(&tp_vars->sending, 0) == 1)
+ 				tp_vars->reason = err;
+ 			break;
+ 		}
 
 
 
