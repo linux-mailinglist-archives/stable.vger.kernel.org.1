@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-257785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGagKrseG2rC/QgAu9opvQ
-	(envelope-from <stable+bounces-257785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:35 +0200
+	id 8LjsCrExG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA0760FD37
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DE3612A18
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 16B3B3008FE6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:29:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 005CD307E90D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D848F340298;
-	Sat, 30 May 2026 17:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2FE14A60F;
+	Sat, 30 May 2026 18:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeU6tuWp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19QfvtHN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44512FDC5E;
-	Sat, 30 May 2026 17:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4A9137750;
+	Sat, 30 May 2026 18:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162163; cv=none; b=GKrSZ31HwRXFgW9C2+xRqoSQgN+mVN3Q4J+iO+21ibEYyip95sFZ5fmuiC7oPItS9MRGfAThXvV0VHlMQI8aS2Xh+2SgZde6ey8yct6eqiQGZRIzSK7Jfyl/4LUF4DSQH7ei9D9rjZd7tBiJdemBDL67D9cExBKjtQSboH/3Nfg=
+	t=1780166824; cv=none; b=EsTQGTKnrXJnh4uUKSJJEh80hxg+HXzmaA3L6FM9lINAd8ySjNZzVFtkYSgkBC+ThkydqyCOcQpDpmDhWKF6KZldaAa0/LcN/RSDjz9GITldKEHzFK3SVMpZYRtzrWPXXFrIPaIeZvnEQ0O/iit5P33LpiQcyhmMIkPHy+Jc2HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162163; c=relaxed/simple;
-	bh=0oq705O3hSIj0+trKnS6IDcMcWMZXUiO7ymqwljmpe8=;
+	s=arc-20240116; t=1780166824; c=relaxed/simple;
+	bh=7VD71YztWoDk9mYqU+mZCFtS5wnfLYfKzsLXkiEvLU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RiIGRSyiGuHynORPzciC52fdGZHGDrnpjIKZ5nep97ZLERqH1x/MfNT4T6Pk0JmXJvIcqlGi0hoUjKQsufJwWea9TblspEKu2Vq/F2kDIaIM5jRPB2+ogpSIan1EmccJQ7zOC6jvGQFUemknaeK59aPK2IIlt9J8cXB4dD4l7HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yeU6tuWp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81F71F00893;
-	Sat, 30 May 2026 17:29:21 +0000 (UTC)
+	 MIME-Version; b=tx8O0a69ibemhAHyHAf8dWuvawSu+ORLCrbVmWwwMb3Hu4BhFq2+kFtUxuraLBkLcy6GCCFf/8EYm/OCX0C7QV0cLkb19Q9CiWWsZRUMokPiNIPGcjVYevTBdQts6fdjB+qVeS+SnOrretKixH9maFyZhSuqPA0dmNYeavjySJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19QfvtHN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC0D1F00893;
+	Sat, 30 May 2026 18:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162162;
-	bh=7niFXu7eqAnSJMX/xGgYn8UUNtC1q8C+K+U2V+lRJ5w=;
+	s=korg; t=1780166823;
+	bh=Hats3IlYzWyjPSP4f/AlazXczSKbBWp/GMN5Fn2WlQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yeU6tuWpt+wVVJ3JM7vrwnwd6udxOgF9/BW3Liw5HTGiB5F8eP9dRymaQxnQlD9a3
-	 0dwpw9PNA/W1XqAmwQOzP+YrPAYEEw8eJXxqGcOlp5v1Y6+KwBMMLAmrE4j0fnxcW5
-	 XCN9Mt5idU/UKMFxor5T+vBbdNG42BqFKMKmR0NI=
+	b=19QfvtHNlTKPOtyaTKyuhNQNZU8tkL1HtYqjb67q7lb79YQXvuVOH4x9NjfpHLwGm
+	 0j+3zDqyMNno1LgdxrSxzmvWotA5JbGQqnoaXJJiHxksnEbnzo/+S/mssdaXbvtc6k
+	 b8pmx1g1lU1k2BnmWsDWTeDoahWPLT5BT70ejW9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 840/969] hwmon: (pmbus/adm1266) widen blackbox-info buffer to I2C_SMBUS_BLOCK_MAX
+	Paul Geurts <paul.geurts@prodrive-technologies.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Mark Greer <mgreer@animalcreek.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 483/589] NFC: trf7970a: Ignore antenna noise when checking for RF field
 Date: Sat, 30 May 2026 18:06:04 +0200
-Message-ID: <20260530160323.849581580@linuxfoundation.org>
+Message-ID: <20260530160237.342245975@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +70,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259165-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257785-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,roeck-us.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: AAA0760FD37
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.995];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A1DE3612A18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Paul Geurts <paul.geurts@prodrive-technologies.com>
 
-commit eee213daa1e1b402eb631bcd1b8c5aa340a6b081 upstream.
+[ Upstream commit a9bc28aa4e64320668131349436a650bf42591a5 ]
 
-adm1266_nvmem_read_blackbox() declares a 5-byte stack buffer and
-passes it to i2c_smbus_read_block_data() to retrieve the 4-byte
-BLACKBOX_INFO response.  i2c_smbus_read_block_data() does not honour
-caller buffer sizes -- it memcpy()s data.block[0] bytes from the
-SMBus transaction (where data.block[0] is the length byte returned by
-the slave device, up to I2C_SMBUS_BLOCK_MAX = 32):
+The main channel Received Signal Strength Indicator (RSSI) measurement
+is used to determine whether an RF field is present or not. RSSI != 0
+is interpreted as an RF Field is present. This does not take RF noise
+and measurement inaccuracy into account, and results in false positives
+in the field.
 
-	memcpy(values, &data.block[1], data.block[0]);
+Define a noise level and make sure the RF field is only interpreted as
+present when the RSSI is above the noise level.
 
-If the device returns any block length above 5, the call overflows
-the caller's 5-byte stack buffer before the post-call
-
-	if (ret != 4)
-		return -EIO;
-
-check has a chance to reject the response.
-
-Widen the local buffer to I2C_SMBUS_BLOCK_MAX so the helper has room
-for any well-formed SMBus block response, matching the convention used
-by the other i2c_smbus_read_block_data() callers in this driver.
-
-Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-2-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 851ee3cbf850 ("NFC: trf7970a: Don't turn on RF if there is already an RF field")
+Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Mark Greer <mgreer@animalcreek.com>
+Link: https://patch.msgid.link/20260422100930.581237-1-paul.geurts@prodrive-technologies.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nfc/trf7970a.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -351,7 +351,7 @@ static int adm1266_nvmem_read_blackbox(s
- {
- 	int record_count;
- 	char index;
--	u8 buf[5];
-+	u8 buf[I2C_SMBUS_BLOCK_MAX];
- 	int ret;
+diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
+index 081ec1105572e..4d99d4dbf817e 100644
+--- a/drivers/nfc/trf7970a.c
++++ b/drivers/nfc/trf7970a.c
+@@ -311,6 +311,7 @@
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_MASK	(BIT(2) | BIT(1) | BIT(0))
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_X_MASK	(BIT(5) | BIT(4) | BIT(3))
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_OSC_OK	BIT(6)
++#define TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL	1
  
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_BLACKBOX_INFO, buf);
+ #define TRF7970A_SPECIAL_FCN_REG1_COL_7_6		BIT(0)
+ #define TRF7970A_SPECIAL_FCN_REG1_14_ANTICOLL		BIT(1)
+@@ -1253,7 +1254,7 @@ static int trf7970a_is_rf_field(struct trf7970a *trf, bool *is_rf_field)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK)
++	if ((rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK) > TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL)
+ 		*is_rf_field = true;
+ 	else
+ 		*is_rf_field = false;
+-- 
+2.53.0
+
 
 
 
