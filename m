@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-259007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257632-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIY8J3gxG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-259007-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:32 +0200
+	id kDI1A8EcG2qQ/QgAu9opvQ
+	(envelope-from <stable+bounces-257632-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D73B612960
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7CFC60F80E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 677053115178
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5737B303CFAD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EACEA33E36A;
-	Sat, 30 May 2026 18:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31EF43242D7;
+	Sat, 30 May 2026 17:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11Gp+w9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNPODl/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB61333AD99;
-	Sat, 30 May 2026 18:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE88332EA7;
+	Sat, 30 May 2026 17:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166283; cv=none; b=jyY8wExDJ2+vEOCzIiPgmdAj3RMQtXEfdFmQUw1FOb9zwlofqH+62o3KA8zebUE/m3PRaO0d/M4+K0lNlL6QiUH+lqdG+AfkWD5tCh5ussQQSv3V9Aw0rOtj05XqD+8+0rn/SZEg0WFWiUQsBt2b+r94sDafVjgvjWmdvTxg5ms=
+	t=1780161653; cv=none; b=TBzBEFOMcK14+z2jrpFYrWO5eti/D1CKh8kvwk8pobyCFagY2OXRpD47RM5QIj5ebyT+5wQ8siHtb1Qje3kq7KtQLbIrINO8iOHUeCNX0Vu4V2YaBSrdSOhUE8E6TumeVIGxDI7y7W6UeBHFIpfnl6PuB9eNwq7khQxhmw+qpv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166283; c=relaxed/simple;
-	bh=spRRuw46p67DEPfe5PEVvoWKRDty/gOOnS0vKetKeBs=;
+	s=arc-20240116; t=1780161653; c=relaxed/simple;
+	bh=F0ZtX0VjBRnayMmsaSs2sqW3zxxgQMvrp+bwgnmcnOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qJA93ng0XZRdr/rCM5SiDm48mFHsCKAFc4y4pxalbdc/X19SyV4Zk/pVm95zSIdJizUnUg9sbXmB+EHZOPE8f1HLcW8bHfyT1nOMkYvm6pQSYXjJAhAh96khmrxmeLKNxeSk5Ry65ngh38t2mY7+sBQP5Y9z/FLjQbqhkOOWtDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11Gp+w9N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3C71F00893;
-	Sat, 30 May 2026 18:38:01 +0000 (UTC)
+	 MIME-Version; b=OkYTb8z/c+/Xrt6TdHH0S27Rie2vdNjDTE4uxS/ctkAkQ8Hu3SR+iQnqnc98QUhGjka+S78989L1AFUMLtSlrn8r6e/JnZASc29y/hmXL5OEul8l23OYVbf7LdB6A3jXOtZSCpXnnm6tiLyFgtGF4G6Z9WcUj/dmwqGp2536pHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNPODl/Z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDA11F00893;
+	Sat, 30 May 2026 17:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166282;
-	bh=DbsKuYjXEufoy0CPscX3XYaN5u7Q00EUomP9ngpv0Uw=;
+	s=korg; t=1780161651;
+	bh=kW0paqam0CJAVprf/N6IBzOEmcSTuvbMfazwqQ62ZMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=11Gp+w9NQjZ9OQXdOHDWzDLRVMDlek49ZVzqIylrev9+i6f3l/Rs6xrp0Lz9XFrDh
-	 FEJKU9wMHcb2X31m8h2wc4RHKpNP5S1HbCNibdv5IkqIgO1t8M+e/1U2vUvupAGYm9
-	 hv+PyH6XTJf6iKXlHRVA1s7AT1q5+m5mWElS9/Nc=
+	b=MNPODl/ZG6r+go+fqUXz7eIkcpyxd+Rpg5jyHTn+ThokHKw6aKulucIeDvokXL6Fe
+	 2TKrRPtBOr9Ow17/G8s66YYQAlTxiKMgwdMe6+Gy2+kNZrUePZQYcFPn2X0y3dESmq
+	 AWwoovN8R4coQvZkSTcO7702Vlj6pWB/AHE8rA2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 328/589] dm cache metadata: fix memory leak on metadata abort retry
-Date: Sat, 30 May 2026 18:03:29 +0200
-Message-ID: <20260530160233.537782947@linuxfoundation.org>
+Subject: [PATCH 6.1 686/969] container_of: remove container_of_safe()
+Date: Sat, 30 May 2026 18:03:30 +0200
+Message-ID: <20260530160319.450819357@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,150 +69,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257632-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259007-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3D73B612960
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B7CFC60F80E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 044ca491d4086dc5bf233e9fcb71db52df32f633 ]
+[ Upstream commit 848dba781f1951636c966c9f3a6a41a5b2f8b572 ]
 
-When failing to acquire the root_lock in dm_cache_metadata_abort because
-the block_manager is read-only, the temporary block_manager created
-outside the root_lock is not properly released, causing a memory leak.
+It came in from a staging driver that has been long removed from the
+tree, and there are no in-kernel users of the macro, and it's very
+dubious if anyone should ever use this thing, so just remove it
+entirely.
 
-Reproduce steps:
-
-This can be reproduced by reloading a new table while the metadata
-is read-only. While the second call to dm_cache_metadata_abort is
-caused by lack of support for table preload in dm-cache, mentioned
-in commit 9b1cc9f251af ("dm cache: share cache-metadata object across
-inactive and active DM tables"), it exposes the memory leak in
-dm_cache_metadata_abort when the function is called multiple times.
-Specifically, dm-cache fails to sync the new cache object's mode during
-preresume, creating the reproducer condition.
-
-This issue could also occur through concurrent metadata_operation_failed
-calls due to races in cache mode updates, but the table preload scenario
-below provides a reliable reproducer.
-
-1. Create a cache device with some faulty trailing metadata blocks
-
-dmsetup create cmeta <<EOF
-0 200 linear /dev/sdc 0
-200 7992 error
-EOF
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 131072 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 1 writethrough smq 0"
-
-2. Suspend and resume the cache to start a new metadata transaction and
-   trigger metadata io errors on the next metadata commit.
-
-dmsetup suspend cache
-dmsetup resume cache
-
-3. Write to the cache device to update metadata
-
-fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
---randrepeat=0 --direct=1 --size 64k
-
-4. Preload the same table
-
-dmsetup reload cache --table "$(dmsetup table cache)"
-
-5. Resume the new table. This triggers the memory leak.
-
-dmsetup suspend cache
-dmsetup resume cache
-
-kmemleak logs:
-
-<snip>
-unreferenced object 0xffff8880080c2010 (size 16):
-  comm "dmsetup", pid 132, jiffies 4294982580
-  hex dump (first 16 bytes):
-    00 38 b9 07 80 88 ff ff 6a 6b 6b 6b 6b 6b 6b a5 ...
-  backtrace (crc 3118f31c):
-    kmemleak_alloc+0x28/0x40
-    __kmalloc_cache_noprof+0x3d9/0x510
-    dm_block_manager_create+0x51/0x140
-    dm_cache_metadata_abort+0x85/0x320
-    metadata_operation_failed+0x103/0x1e0
-    cache_preresume+0xacd/0xe70
-    dm_table_resume_targets+0xd3/0x320
-    __dm_resume+0x1b/0xf0
-    dm_resume+0x127/0x170
-<snip>
-
-Fixes: 352b837a5541 ("dm cache: Fix ABBA deadlock between shrink_slab and dm_cache_metadata_abort")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20221024123933.3331116-1-gregkh@linuxfoundation.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 21e92a38cfd8 ("tcp: add data-race annotations around tp->data_segs_out and tp->total_retrans")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-metadata.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ include/linux/container_of.h | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-diff --git a/drivers/md/dm-cache-metadata.c b/drivers/md/dm-cache-metadata.c
-index 715ff419b63ba..43d271c358858 100644
---- a/drivers/md/dm-cache-metadata.c
-+++ b/drivers/md/dm-cache-metadata.c
-@@ -1017,6 +1017,12 @@ static bool cmd_write_lock(struct dm_cache_metadata *cmd)
- 			return;			\
- 	} while(0)
+diff --git a/include/linux/container_of.h b/include/linux/container_of.h
+index 2f4944b791b81..a6f242137b116 100644
+--- a/include/linux/container_of.h
++++ b/include/linux/container_of.h
+@@ -21,20 +21,4 @@
+ 		      "pointer type mismatch in container_of()");	\
+ 	((type *)(__mptr - offsetof(type, member))); })
  
-+#define WRITE_LOCK_OR_GOTO(cmd, label)		\
-+	do {					\
-+		if (!cmd_write_lock((cmd)))	\
-+			goto label;		\
-+	} while (0)
-+
- #define WRITE_UNLOCK(cmd) \
- 	up_write(&(cmd)->root_lock)
- 
-@@ -1815,11 +1821,8 @@ int dm_cache_metadata_abort(struct dm_cache_metadata *cmd)
- 	new_bm = dm_block_manager_create(cmd->bdev, DM_CACHE_METADATA_BLOCK_SIZE << SECTOR_SHIFT,
- 					 CACHE_MAX_CONCURRENT_LOCKS);
- 
--	WRITE_LOCK(cmd);
--	if (cmd->fail_io) {
--		WRITE_UNLOCK(cmd);
--		goto out;
--	}
-+	/* cmd_write_lock() already checks fail_io with cmd->root_lock held */
-+	WRITE_LOCK_OR_GOTO(cmd, out);
- 
- 	__destroy_persistent_data_objects(cmd, false);
- 	old_bm = cmd->bm;
+-/**
+- * container_of_safe - cast a member of a structure out to the containing structure
+- * @ptr:	the pointer to the member.
+- * @type:	the type of the container struct this is embedded in.
+- * @member:	the name of the member within the struct.
+- *
+- * If IS_ERR_OR_NULL(ptr), ptr is returned unchanged.
+- */
+-#define container_of_safe(ptr, type, member) ({				\
+-	void *__mptr = (void *)(ptr);					\
+-	static_assert(__same_type(*(ptr), ((type *)0)->member) ||	\
+-		      __same_type(*(ptr), void),			\
+-		      "pointer type mismatch in container_of_safe()");	\
+-	IS_ERR_OR_NULL(__mptr) ? ERR_CAST(__mptr) :			\
+-		((type *)(__mptr - offsetof(type, member))); })
+-
+ #endif	/* _LINUX_CONTAINER_OF_H */
 -- 
 2.53.0
 
