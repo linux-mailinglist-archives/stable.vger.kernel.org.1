@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHmhH4YoG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:22 +0200
+	id OEPOC/oxG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A2161137D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD611612B20
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 74F67300C328
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:12:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EDE0830C431F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B66631F98D;
-	Sat, 30 May 2026 18:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97DAB233952;
+	Sat, 30 May 2026 18:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzAQidJy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDe/laQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E75223DC6;
-	Sat, 30 May 2026 18:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA911A9F90;
+	Sat, 30 May 2026 18:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164725; cv=none; b=MyLHksT8T3ATrYYC8RNzWfVizmV1p06vLJZAvtepQF9P2oWz5usF5NJt6cM4eC6yhAzsill1qEuojn/+GRoD7p3tmPd5vGNhOX8fL8fhUqk8AiMfUeZHDIZ+qb6Ckay36MwlM8/uVkMPs3HyMO36kj9uS03KKidYjbLxwTKQ9wo=
+	t=1780166925; cv=none; b=FNELSggJ2IhD9x5c1TVmvq9nkQyGOtpYNIGMCnDeSz/QBv801oYAv9/y4x/RWZnyxo3d14RXbB9r0pR5dY1i3n8IukShBILeEZYxXQcGumVRQhb02a2a5y2zXxyKwcsdfZaidR2mw9dn0RBQxyCmvHeZFiD8WxqSTOgR6eJxzXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164725; c=relaxed/simple;
-	bh=XN8EgmBDcdBEgxaDNJQGPg75Xr78f+3ajLhQCO23Qhk=;
+	s=arc-20240116; t=1780166925; c=relaxed/simple;
+	bh=RNZ2zNhJ+MGsfcFcKTef4f2QReI0O2p75G0cR7JWybg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MhTtomhXtYD0cZgK1MVOoqdA8okSrP+jkFWlVE6C/I7vah9t/Kv5VpXP4YmF0WdAmSmfgbErvLHzbpeshYTGlNEl59hYIEfiw2SNGKzWHch7xJ9eIms+pPj0WGlPzPM7Pr2JbFSh35KX3MB3R0G4O2rI4P8yA2BtNf26I0sWYMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzAQidJy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50DC1F00893;
-	Sat, 30 May 2026 18:12:03 +0000 (UTC)
+	 MIME-Version; b=b6GtSyK3jqwuV56BMxj3N5i4gWxE4zqtfeYB6WqYteUMlXeUoYfO9LwLIOpPB0UGeXgm89RnmZzwi+5aXiApaddY3c7LFChXfjmBwUGwwCoNtV78VHqriOqlXifOvG1T0CAt5zlFO4LhAA6wVJSoX1rjuT3R287I5KRQrFhbQcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDe/laQT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF1EF1F00893;
+	Sat, 30 May 2026 18:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164724;
-	bh=F4YiZes3+DMvMZRg41X5gMoCMt0EDYOUwQeAUmsWGyk=;
+	s=korg; t=1780166924;
+	bh=xD/tNhQ0cNs9J2vC/l6KUe5ZI77jvLYU8GObShNkuis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dzAQidJyfyZGAu5iAwtlhdCbFRFLABCBegBPksNJ9kW/G21mfIsl5YIaZZjyZm9Gv
-	 p1jUY9j1x7vsq73yH4Av05QojDT8fI0Gj2q+JwxiHm9feKWHp/28fzKtCK/io2vdJW
-	 dWDZZZ/zn8MrsYP39n2ZYXLQulcDrshSjdVArsIg=
+	b=aDe/laQTDMF03dSkYERl8eD+K2JsKQXdVYWG6TcHuehLSB8HyWp0IHnFT1kfOe67V
+	 6bFI/lYv848iL5BSQPsBYonks72rslReXoqxbRNi7thQNeoifCi/x9yCQmMPXDM2sO
+	 NTORk2xF7/XCcjkFQsvBYE35ioP9h0U6AjdrAI60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 640/776] drm/amd/display: Read EDID from VBIOS embedded panel info
+Subject: [PATCH 5.10 473/589] net: sched: sch_netem: Refactor code in 4-state loss generator
 Date: Sat, 30 May 2026 18:05:54 +0200
-Message-ID: <20260530160256.491564421@linuxfoundation.org>
+Message-ID: <20260530160237.081970411@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,170 +64,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258550-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259195-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 37A2161137D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,davemloft.net:email,networkplumber.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BD611612B20
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit 9ea16f64189bf7b6ba50fc7f0325b3c1f836d105 ]
+[ Upstream commit cb3ef7b00042479277cda7871d899378ad91f081 ]
 
-Some board manufacturers hardcode the EDID for the embedded
-panel in the VBIOS. This EDID should be used when the panel
-doesn't have a DDC.
+Fixed comments to match description with variable names and
+refactored code to match the convention as per [1].
 
-For reference, see the legacy non-DC display code:
-amdgpu_atombios_encoder_get_lcd_info()
+To match the convention mapping is done as follows:
+State 3 - LOST_IN_BURST_PERIOD
+State 4 - LOST_IN_GAP_PERIOD
 
-This is necessary to support embedded connectors without DDC.
+[1] S. Salsano, F. Ludovici, A. Ordine, "Definition of a general
+and intuitive loss model for packet networks and its implementation
+in the Netem module in the Linux kernel"
 
-Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
-Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit eb105e63b474c11ef6a84a1c6b18100d851ff364)
+Fixes: a6e2fe17eba4 ("sch_netem: replace magic numbers with enumerate")
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Acked-by: Stephen Hemminger <stephen@networkplumber.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 732b463449fd ("net/sched: netem: fix probability gaps in 4-state loss model")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/bios/bios_parser.c | 62 +++++++++++++++++++
- .../display/include/grph_object_ctrl_defs.h   |  4 ++
- 2 files changed, 66 insertions(+)
+ net/sched/sch_netem.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-index 0f686e363d308..d8982aca8ef68 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-@@ -1215,6 +1215,60 @@ static enum bp_result bios_parser_get_embedded_panel_info(
- 	return BP_RESULT_FAILURE;
- }
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 951156d7e5485..cbd7f3032fccf 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -210,17 +210,17 @@ static bool loss_4state(struct netem_sched_data *q)
+ 	 * next state and if the next packet has to be transmitted or lost.
+ 	 * The four states correspond to:
+ 	 *   TX_IN_GAP_PERIOD => successfully transmitted packets within a gap period
+-	 *   LOST_IN_BURST_PERIOD => isolated losses within a gap period
+-	 *   LOST_IN_GAP_PERIOD => lost packets within a burst period
+-	 *   TX_IN_GAP_PERIOD => successfully transmitted packets within a burst period
++	 *   LOST_IN_GAP_PERIOD => isolated losses within a gap period
++	 *   LOST_IN_BURST_PERIOD => lost packets within a burst period
++	 *   TX_IN_BURST_PERIOD => successfully transmitted packets within a burst period
+ 	 */
+ 	switch (clg->state) {
+ 	case TX_IN_GAP_PERIOD:
+ 		if (rnd < clg->a4) {
+-			clg->state = LOST_IN_BURST_PERIOD;
++			clg->state = LOST_IN_GAP_PERIOD;
+ 			return true;
+ 		} else if (clg->a4 < rnd && rnd < clg->a1 + clg->a4) {
+-			clg->state = LOST_IN_GAP_PERIOD;
++			clg->state = LOST_IN_BURST_PERIOD;
+ 			return true;
+ 		} else if (clg->a1 + clg->a4 < rnd) {
+ 			clg->state = TX_IN_GAP_PERIOD;
+@@ -229,24 +229,24 @@ static bool loss_4state(struct netem_sched_data *q)
+ 		break;
+ 	case TX_IN_BURST_PERIOD:
+ 		if (rnd < clg->a5) {
+-			clg->state = LOST_IN_GAP_PERIOD;
++			clg->state = LOST_IN_BURST_PERIOD;
+ 			return true;
+ 		} else {
+ 			clg->state = TX_IN_BURST_PERIOD;
+ 		}
  
-+static enum bp_result get_embedded_panel_extra_info(
-+	struct bios_parser *bp,
-+	struct embedded_panel_info *info,
-+	const uint32_t table_offset)
-+{
-+	uint8_t *record = bios_get_image(&bp->base, table_offset, 1);
-+	ATOM_PANEL_RESOLUTION_PATCH_RECORD *panel_res_record;
-+	ATOM_FAKE_EDID_PATCH_RECORD *fake_edid_record;
-+
-+	while (*record != ATOM_RECORD_END_TYPE) {
-+		switch (*record) {
-+		case LCD_MODE_PATCH_RECORD_MODE_TYPE:
-+			record += sizeof(ATOM_PATCH_RECORD_MODE);
-+			break;
-+		case LCD_RTS_RECORD_TYPE:
-+			record += sizeof(ATOM_LCD_RTS_RECORD);
-+			break;
-+		case LCD_CAP_RECORD_TYPE:
-+			record += sizeof(ATOM_LCD_MODE_CONTROL_CAP);
-+			break;
-+		case LCD_FAKE_EDID_PATCH_RECORD_TYPE:
-+			fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
-+			if (fake_edid_record->ucFakeEDIDLength) {
-+				if (fake_edid_record->ucFakeEDIDLength == 128)
-+					info->fake_edid_size =
-+						fake_edid_record->ucFakeEDIDLength;
-+				else
-+					info->fake_edid_size =
-+						fake_edid_record->ucFakeEDIDLength * 128;
-+
-+				info->fake_edid = fake_edid_record->ucFakeEDIDString;
-+
-+				record += struct_size(fake_edid_record,
-+						      ucFakeEDIDString,
-+						      info->fake_edid_size);
-+			} else {
-+				/* empty fake edid record must be 3 bytes long */
-+				record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
-+			}
-+			break;
-+		case LCD_PANEL_RESOLUTION_RECORD_TYPE:
-+			panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
-+			info->panel_width_mm = panel_res_record->usHSize;
-+			info->panel_height_mm = panel_res_record->usVSize;
-+			record += sizeof(ATOM_PANEL_RESOLUTION_PATCH_RECORD);
-+			break;
-+		default:
-+			return BP_RESULT_BADBIOSTABLE;
-+		}
-+	}
-+
-+	return BP_RESULT_OK;
-+}
-+
- static enum bp_result get_embedded_panel_info_v1_2(
- 	struct bios_parser *bp,
- 	struct embedded_panel_info *info)
-@@ -1331,6 +1385,10 @@ static enum bp_result get_embedded_panel_info_v1_2(
- 	if (ATOM_PANEL_MISC_API_ENABLED & lvds->ucLVDS_Misc)
- 		info->lcd_timing.misc_info.API_ENABLED = true;
- 
-+	if (lvds->usExtInfoTableOffset)
-+		return get_embedded_panel_extra_info(bp, info,
-+			le16_to_cpu(lvds->usExtInfoTableOffset) + DATA_TABLES(LCD_Info));
-+
- 	return BP_RESULT_OK;
- }
- 
-@@ -1456,6 +1514,10 @@ static enum bp_result get_embedded_panel_info_v1_3(
- 			(uint32_t) (ATOM_PANEL_MISC_V13_GREY_LEVEL &
- 				lvds->ucLCD_Misc) >> ATOM_PANEL_MISC_V13_GREY_LEVEL_SHIFT;
- 
-+	if (lvds->usExtInfoTableOffset)
-+		return get_embedded_panel_extra_info(bp, info,
-+			le16_to_cpu(lvds->usExtInfoTableOffset) + DATA_TABLES(LCD_Info));
-+
- 	return BP_RESULT_OK;
- }
- 
-diff --git a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
-index 792652236c61b..d42b61ada427e 100644
---- a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
-+++ b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
-@@ -153,6 +153,10 @@ struct embedded_panel_info {
- 	uint32_t drr_enabled;
- 	uint32_t min_drr_refresh_rate;
- 	bool realtek_eDPToLVDS;
-+	uint16_t panel_width_mm;
-+	uint16_t panel_height_mm;
-+	uint16_t fake_edid_size;
-+	const uint8_t *fake_edid;
- };
- 
- struct dc_firmware_info {
+ 		break;
+-	case LOST_IN_GAP_PERIOD:
++	case LOST_IN_BURST_PERIOD:
+ 		if (rnd < clg->a3)
+ 			clg->state = TX_IN_BURST_PERIOD;
+ 		else if (clg->a3 < rnd && rnd < clg->a2 + clg->a3) {
+ 			clg->state = TX_IN_GAP_PERIOD;
+ 		} else if (clg->a2 + clg->a3 < rnd) {
+-			clg->state = LOST_IN_GAP_PERIOD;
++			clg->state = LOST_IN_BURST_PERIOD;
+ 			return true;
+ 		}
+ 		break;
+-	case LOST_IN_BURST_PERIOD:
++	case LOST_IN_GAP_PERIOD:
+ 		clg->state = TX_IN_GAP_PERIOD;
+ 		break;
+ 	}
 -- 
 2.53.0
 
