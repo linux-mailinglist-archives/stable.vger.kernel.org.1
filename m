@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-257355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBaJNzcbG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:35 +0200
+	id uAXjBAEjG2pa/ggAu9opvQ
+	(envelope-from <stable+bounces-258132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B67F60F3E0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E5BC6106CA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 525C130D41E5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:05:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F4139300104B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D115835200B;
-	Sat, 30 May 2026 17:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812E7342CA7;
+	Sat, 30 May 2026 17:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0UOwssX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGjOj8l6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A5C2690D5;
-	Sat, 30 May 2026 17:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6236F349CCF;
+	Sat, 30 May 2026 17:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160705; cv=none; b=YyPIobS2xKmkFvcuuGoEIW+tYhiAXQBGLIdWn2VRjE5F7/UAeSo2oPnRM2ObNE5zXMYaJ+RefB9V4Frk1TYbXiCWiFlOVNfJUZhC6B2OBIZJ/yDIaGV2ebcjS+/7WcWmHNzcVvMrgsJobNhNiWOVv3vtYEL7tv0+4RnzL+/fdq8=
+	t=1780163324; cv=none; b=dEeJy96xpvAR8vtGYIIPYZrMqh3tot0Kxar/Cmn/1P+GHsd2P4pB+UuHg/WfhXHyZuB0UEanyeQl0zlk2yXymV/2vrh2XRcPHIG3M3jj9sKtCDiSRlm3a6U7UFu5Rp6Rl0PbXJLS2BUbDmJF73nmoY5c8yyUFryc29rRo69wW3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160705; c=relaxed/simple;
-	bh=qgbSh3jmRugaQPOth2Y5mZEyIcZwy7O0bGFMKTN2iVA=;
+	s=arc-20240116; t=1780163324; c=relaxed/simple;
+	bh=ltiVSEG5CJ47iMI0VdGSCYERmib190fBtxWi2pjtr+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OwO9DD8ZmSo99idWBFTvSO67mgnbdvGdM66qp90hs6hs/EsGj0SPCy0kRqWyKreIAGhkJL6EeTKXr2NCxz3x7O81wdo6+jT5GO9SKo3kswac30ll1XT9wLJ8UfXa4mYSqEXfZpZO2jMOwmiGbskwY6pDFpLRVC72aW5ategwVUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0UOwssX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023401F00893;
-	Sat, 30 May 2026 17:05:03 +0000 (UTC)
+	 MIME-Version; b=R080rffYDb/dQHoj73IBQr68eV7M8tKUO82yG/c/akYR4hz980yb+vmbr1o043wJKFIs8qhmxxiXTOSlPof8G9hPJcm/CW66e4fgL37n1SxEy/2CDvOPFBw3qPJalhO+Gqe70F6FvjtmGg9sOzAdh2/BYj+sTmV1ecBsyTlo4JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGjOj8l6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B931F00893;
+	Sat, 30 May 2026 17:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160704;
-	bh=7TQLHbtNZmpd+Yl7RRj3sRA2UunBQKnTQI88Kz00ak8=;
+	s=korg; t=1780163323;
+	bh=LQLKOssmSNm5t8vdVePpxanc0xe5WD6m/RewBXYx1RE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o0UOwssXDOQxQUaZMV1b1CnK32Mjxtl48XxCLq9jPxyeV5JwcsJhKylcErp0fpuES
-	 ECvpoQJPHP4QakpaZVGfxL//nCn/DMYcl3O0FtLmwMf7t7U78Q4++wf5sQ6ivsMLIT
-	 vLMxU0j+heqVhQw+WihXWRsNnxyk5NO/rp/dNEpQ=
+	b=RGjOj8l6rQlZHdL1yAEjpIf4rnMi7foBP/K/6Nzh0Ncc1vy3Ks5y7Ejyb2izCMokq
+	 vEi8o/2v+g4Iyke9uu54mvJr3/IEIj01gt6CtoSRdrit863b+6a0HJ/h8X5AOdDynA
+	 fmIEXrpzWpU3XaKTWiMjt3drjjPaOt0mZUyc2AP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	"John B. Moore" <jbmoore61@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 412/969] drm/amdgpu/sdma4: replace BUG_ON with WARN_ON in fence emission
-Date: Sat, 30 May 2026 17:58:56 +0200
-Message-ID: <20260530160311.656085309@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruide Cao <caoruide123@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 223/776] ipv4: icmp: validate reply type before using icmp_pointers
+Date: Sat, 30 May 2026 17:58:57 +0200
+Message-ID: <20260530160246.285993769@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +69,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257355-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258132-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 4B67F60F3E0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 0E5BC6106CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John B. Moore <jbmoore61@gmail.com>
+From: Ruide Cao <caoruide123@gmail.com>
 
-commit 78d2e624fa073c14970aa097adcf3ea31c157a66 upstream.
+commit 67bf002a2d7387a6312138210d0bd06e3cf4879b upstream.
 
-sdma_v4_0_ring_emit_fence() contains two BUG_ON(addr & 0x3) assertions
-that verify fence writeback addresses are dword-aligned.  These
-assertions can be reached from unprivileged userspace via crafted
-DRM_IOCTL_AMDGPU_CS submissions, causing a fatal kernel panic in a
-scheduler worker thread.
+Extended echo replies use ICMP_EXT_ECHOREPLY as the outbound reply type.
+That value is outside the range covered by icmp_pointers[], which only
+describes the traditional ICMP types up to NR_ICMP_TYPES.
 
-Replace both BUG_ON() calls with WARN_ON() to log the condition without
-crashing the kernel.  A misaligned fence address at this point indicates
-a driver bug, but crashing the kernel is never the correct response when
-the assertion is reachable from userspace.
+Avoid consulting icmp_pointers[] for reply types outside that range, and
+use array_index_nospec() for the remaining in-range lookup. Normal ICMP
+replies keep their existing behavior unchanged.
 
-The CS IOCTL path is the correct place to filter invalid submissions;
-the ring emission callback is too late to do anything about it.
-
-Fixes: 2130f89ced2c ("drm/amdgpu: add SDMA v4.0 implementation (v2)")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: John B. Moore <jbmoore61@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b90250bd933afd1ba94d86d6b13821997b22b18e)
-Cc: stable@vger.kernel.org
+Fixes: d329ea5bd884 ("icmp: add response to RFC 8335 PROBE messages")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruide Cao <caoruide123@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/0dace90c01a5978e829ca741ef684dbd7304ce62.1776628519.git.caoruide123@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/icmp.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -884,7 +884,7 @@ static void sdma_v4_0_ring_emit_fence(st
- 	/* write the fence */
- 	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_FENCE));
- 	/* zero in first two bits */
--	BUG_ON(addr & 0x3);
-+	WARN_ON(addr & 0x3);
- 	amdgpu_ring_write(ring, lower_32_bits(addr));
- 	amdgpu_ring_write(ring, upper_32_bits(addr));
- 	amdgpu_ring_write(ring, lower_32_bits(seq));
-@@ -894,7 +894,7 @@ static void sdma_v4_0_ring_emit_fence(st
- 		addr += 4;
- 		amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_FENCE));
- 		/* zero in first two bits */
--		BUG_ON(addr & 0x3);
-+		WARN_ON(addr & 0x3);
- 		amdgpu_ring_write(ring, lower_32_bits(addr));
- 		amdgpu_ring_write(ring, upper_32_bits(addr));
- 		amdgpu_ring_write(ring, upper_32_bits(seq));
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -64,6 +64,7 @@
+ #include <linux/jiffies.h>
+ #include <linux/kernel.h>
+ #include <linux/fcntl.h>
++#include <linux/nospec.h>
+ #include <linux/socket.h>
+ #include <linux/in.h>
+ #include <linux/inet.h>
+@@ -361,7 +362,9 @@ static int icmp_glue_bits(void *from, ch
+ 				      to, len);
+ 
+ 	skb->csum = csum_block_add(skb->csum, csum, odd);
+-	if (icmp_pointers[icmp_param->data.icmph.type].error)
++	if (icmp_param->data.icmph.type <= NR_ICMP_TYPES &&
++	    icmp_pointers[array_index_nospec(icmp_param->data.icmph.type,
++					     NR_ICMP_TYPES + 1)].error)
+ 		nf_ct_attach(skb, icmp_param->skb);
+ 	return 0;
+ }
 
 
 
