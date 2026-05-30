@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259017-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +A13KCAnG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258412-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:24 +0200
+	id 4B0RD64uG2oLAAkAu9opvQ
+	(envelope-from <stable+bounces-259017-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3531E610FFF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F6B66122A8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7F20C301468A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:04:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8C196300845A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4116C341AC7;
-	Sat, 30 May 2026 18:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C8039989B;
+	Sat, 30 May 2026 18:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFHsxcbQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5l+S6Yu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245A423392B;
-	Sat, 30 May 2026 18:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DD9351C2F;
+	Sat, 30 May 2026 18:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164265; cv=none; b=N5xXmRF4Zf9+9q6LDzvcwpUp1w4/OdFzONL6wXlpaDHPd0tL829E6cpWO4lE9d7qQ0T4D1CoTE+Ob5u5qshIaUJcgo9FhdPjTQ0tGKxknxD38gniCowyhfJQE1jiOrHicn5T0Lj4lDeJIL9mbGAkwcfyrbZCbpXqR7lfDYGJ4ZQ=
+	t=1780166311; cv=none; b=ap6Mzj41Rong1bYJHar6GnUwYc67MznbQIXtOdN4IALfQGjAgzvrepCiZRlmSLbv6jKyWNMCu9HjyQnLwz+MDbkjtxi6IGp/0rmM1Lil2O/NKNPewM7kuZOS4PrEznlDPrbvMMJqKxhw5ChzxRyK3+wVrLrefcOzwrcNow61yuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164265; c=relaxed/simple;
-	bh=nVesS3kgsOQwvNK78T/80lZ30FlpPKcMXC5KA5Ww+CU=;
+	s=arc-20240116; t=1780166311; c=relaxed/simple;
+	bh=pu2ujlzRtGOTAiv3fFWsXbAfPabftRROKKIAIa3vpPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q3z63lsgxdlR/Q/9CXVjxs02JEp87/tYeROdzzAiPziSHzeL7cfB0gJQMNyPz8Qar1PrTBBAqm75ZJHCwyHeFu7fQh2EKjegDrAi+3Q5+V6y0T4o90Hxv8K2q4jH4kivxGm7yajkRLCh1pxSs2LPxyM290cVIB8cz32rv8B0ugg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFHsxcbQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716A41F00893;
-	Sat, 30 May 2026 18:04:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VuKDikhnN+wt+wgF7X05B7KJ1ViTih6GptdqiJtX+3CqS5Q/7jYUpNrzwB/MiBaCuMxCTdPmE/WO7IGxEVGlUDAVFi+vNwiDsJmeT64VUUcREdieq++JtZOPoKe+XaEiP4wy4oWpJneYiB7Ik/+T6Ei1ePBsignNVJujbdc23v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5l+S6Yu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC18E1F00893;
+	Sat, 30 May 2026 18:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164264;
-	bh=yMqvaUhoQStpaNgcH/eUTnWtAcakdZ9vcBqY3KftpCA=;
+	s=korg; t=1780166310;
+	bh=p67/AkF7wGfyN0l1WH1NPyM0qPA2QnpCI/tLOByAnAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zFHsxcbQbSDc1LHY7GvmtBu0pt/WUseDHd0o8sUTtWceOCGC4TQ2EkFSWONE/oDqO
-	 4VsaCcuIAuGluOh2PqHBkyrOAwLxxKCTGDhaYxPXF1V5l3cUm7aIu/2m0lxiOtNcyI
-	 Uu4sbwQi4p5X+oFHsNoZ95Yt1BUJk/yQTcwJhhZg=
+	b=D5l+S6YuHlICKzVZ0aYvZ8JOe79ZE+bpSU0LDpPxRwAPPBvKuSlaqFFosu1gM+4Og
+	 CBZruZJXuOrs1Oo0b43JrHaNiBqTxfTkFY/0xt6S6NTVKjzNYJKri/+e0DlxaG5ZzY
+	 qqDFQshPzXObJHm/7dqJj7FkpdL5mvzZ8JVRUxJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Hodges <hodgesd@meta.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 503/776] ima: check return value of crypto_shash_final() in boot aggregate
+Subject: [PATCH 5.10 336/589] ALSA: core: Validate compress device numbers without dynamic minors
 Date: Sat, 30 May 2026 18:03:37 +0200
-Message-ID: <20260530160253.287195808@linuxfoundation.org>
+Message-ID: <20260530160233.734774134@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258412-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259017-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3531E610FFF
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7F6B66122A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Hodges <hodgesd@meta.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit 870819434c8dfcc3158033b66e7851b81bb17e21 ]
+[ Upstream commit 796e119e9b14763be905ad0d023c71a14bc2e931 ]
 
-The return value of crypto_shash_final() is not checked in
-ima_calc_boot_aggregate_tfm(). If the hash finalization fails, the
-function returns success and a corrupted boot aggregate digest could
-be used for IMA measurements.
+Without CONFIG_SND_DYNAMIC_MINORS, ALSA reserves only two fixed minors
+for compress devices on each card: comprD0 and comprD1.
 
-Capture the return value and propagate any error to the caller.
+snd_find_free_minor() currently computes the compress minor as
+type + dev without validating dev first, so device numbers greater than
+1 spill into the HWDEP minor range instead of failing registration.
 
-Fixes: 76bb28f6126f ("ima: use new crypto_shash API instead of old crypto_hash")
-Signed-off-by: Daniel Hodges <hodgesd@meta.com>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+ASoC passes rtd->id to snd_compress_new(), so this can happen on real
+non-dynamic-minor builds.
+
+Add a dedicated fixed-minor check for SNDRV_DEVICE_TYPE_COMPRESS in
+snd_find_free_minor() and reject out-of-range device numbers with
+-EINVAL before constructing the minor.
+
+Also remove the stale TODO in compress_offload.c that still claims
+multiple compress nodes are missing.
+
+Fixes: 3eafc959b32f ("ALSA: core: add support for compressed devices")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260325-alsa-compress-static-minors-v1-1-0628573bee1c@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/ima_crypto.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/compress_offload.c | 7 -------
+ sound/core/sound.c            | 7 +++++++
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/security/integrity/ima/ima_crypto.c b/security/integrity/ima/ima_crypto.c
-index 64499056648ad..c5153f0d7306d 100644
---- a/security/integrity/ima/ima_crypto.c
-+++ b/security/integrity/ima/ima_crypto.c
-@@ -837,7 +837,7 @@ static int ima_calc_boot_aggregate_tfm(char *digest, u16 alg_id,
- 		}
- 	}
- 	if (!rc)
--		crypto_shash_final(shash, digest);
-+		rc = crypto_shash_final(shash, digest);
- 	return rc;
- }
+diff --git a/sound/core/compress_offload.c b/sound/core/compress_offload.c
+index 8d1f71a621787..222ea652edf37 100644
+--- a/sound/core/compress_offload.c
++++ b/sound/core/compress_offload.c
+@@ -40,13 +40,6 @@
+ #define COMPR_CODEC_CAPS_OVERFLOW
+ #endif
  
+-/* TODO:
+- * - add substream support for multiple devices in case of
+- *	SND_DYNAMIC_MINORS is not used
+- * - Multiple node representation
+- *	driver should be able to register multiple nodes
+- */
+-
+ struct snd_compr_file {
+ 	unsigned long caps;
+ 	struct snd_compr_stream stream;
+diff --git a/sound/core/sound.c b/sound/core/sound.c
+index b75f78f2c4b8e..93266542e318b 100644
+--- a/sound/core/sound.c
++++ b/sound/core/sound.c
+@@ -213,9 +213,16 @@ static int snd_find_free_minor(int type, struct snd_card *card, int dev)
+ 	case SNDRV_DEVICE_TYPE_RAWMIDI:
+ 	case SNDRV_DEVICE_TYPE_PCM_PLAYBACK:
+ 	case SNDRV_DEVICE_TYPE_PCM_CAPTURE:
++		if (snd_BUG_ON(!card))
++			return -EINVAL;
++		minor = SNDRV_MINOR(card->number, type + dev);
++		break;
+ 	case SNDRV_DEVICE_TYPE_COMPRESS:
+ 		if (snd_BUG_ON(!card))
+ 			return -EINVAL;
++		if (dev < 0 ||
++		    dev >= SNDRV_MINOR_HWDEP - SNDRV_MINOR_COMPRESS)
++			return -EINVAL;
+ 		minor = SNDRV_MINOR(card->number, type + dev);
+ 		break;
+ 	default:
 -- 
 2.53.0
 
