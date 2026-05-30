@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-258592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257817-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oMGfJgQpG2rg/ggAu9opvQ
-	(envelope-from <stable+bounces-258592-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:28 +0200
+	id iFACOSQgG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257817-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FBF6114EB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D7FA610031
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8C6F2300B5AC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8E92D308B9BF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DEF39A7FE;
-	Sat, 30 May 2026 18:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB7D329E46;
+	Sat, 30 May 2026 17:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzBEDPeD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/AMYw0P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6276223DC6;
-	Sat, 30 May 2026 18:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E551624DF;
+	Sat, 30 May 2026 17:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164866; cv=none; b=NLqZhZQ5nV4S9y8Q/MlRaZ0x50Bge6sIpoOtDBr+BmWMlsz6uWm7h3Hae3CCMqjQsq6wn9iYOqiUUgCEkfaL6jnfU7SvXcC/VYeQgrMU5ZLvuHYHUXXfGLPMJiQlK4zyFQiIl+xzLGcsj0UHKKTk4s1cWw12UWJK0DtQ/SGCoFk=
+	t=1780162269; cv=none; b=H+H33zJ+uiRdeNTmB9mdnQNpBpib3DXqg6JtCs+QGQR/LXDZn/hfBNFURaxd/5RCnw5WvM8wLyZ7skp2RONEgm4kCyBBUhxrnOtuREOHj5otH8l9KLVyLv6IPPGFaBL0+y3BUynpB0uZ3KFp2CW0dggA9++bk7VovEN2Q3osa6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164866; c=relaxed/simple;
-	bh=1Qb1vXFSYh5rq6nXhVWYZES14X1QBZQYwmFatMcuah8=;
+	s=arc-20240116; t=1780162269; c=relaxed/simple;
+	bh=3nYQYzzIDq2Ubz1YCsLOBYd4NhLcVzv5m+MmiADk2L8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ew6kcQAhUUoQuSIY5iITLc3LqSEuXTgBj2hi/DpGhJvKNye2eWMUO2jwcXW3kS2kfzItl7mmgattcK3yi2u57WmktQqvr31v5yIvlWJlUa2x2EqBFrylZM3bRBRB3ziu4w5nFavf+QLAKZ9S7UKeXL3Da/GJK3X2vPGvEXBqesY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzBEDPeD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB841F00898;
-	Sat, 30 May 2026 18:14:24 +0000 (UTC)
+	 MIME-Version; b=E4Y91kmP17+LHk23EEh7Q/+7A4duZm47WQ2Ld+2lxGbcJ6T1hTXmVXs3qPLtNNYMMSj2mUtgn3Fw7/e9oAlpjsWW2tYmJcApRnvdGEzhYU5taxsX6XLZfgOKCxsZja4wK1w6VwXvi86Y9l1Bv5sx1H3bbsePqhIUQ17leiTNTpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/AMYw0P; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386251F00893;
+	Sat, 30 May 2026 17:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164865;
-	bh=KVYM9AVvCP0vXUgpyoQGfafq9TkHBhAp2zQxoP9zWq0=;
+	s=korg; t=1780162268;
+	bh=zFuwGjiCW8i01zX6g4bqPXrQBnlol+L8EoGys2S/85w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TzBEDPeDCpDg5rQdQ8R3zcLiOpZa0MyffnsDjrI/hQzizi8ZuuxzDuGun5/iSuY1c
-	 odAc/iHQhb+wgcWyHdg/Q23HXLmUBqHNCbapSDLdZxybi8oSZhQ7no6tZqbTgxEQgs
-	 YRRGkrTwLxI9JsqL/2YM4ERJQHL4bRHLlqZNNoCY=
+	b=F/AMYw0P3zfIhMC9W0N0hHjBC9tx8RZWWSgqnDs5bB8nV80KuE7AJlZc+LTXy9zo2
+	 ogVGAR9V7zCTAXeKCopKY2dYY1r+Bz+AvUrwVSPP+XOVz8sY6guz4aMqV/dTC0OuoZ
+	 x5d34mYnLS2v5d6DJ1aTVmWO2rCMZYlUcOv2NVhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 681/776] ALSA: asihpi: Fix potential OOB array access at reading cache
-Date: Sat, 30 May 2026 18:06:35 +0200
-Message-ID: <20260530160257.467219036@linuxfoundation.org>
+	Guo Ren <guoren@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 872/969] LoongArch: Remove unused code to avoid build warning
+Date: Sat, 30 May 2026 18:06:36 +0200
+Message-ID: <20260530160324.763266162@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +67,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258592-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257817-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sashiko.dev:url]
-X-Rspamd-Queue-Id: 40FBF6114EB
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3D7FA610031
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 7b7d6572145c1dab2dd9bfb550b188e5f0ff3c3f upstream.
+commit 0ccc9d47cf020994097ff51827cebd04aa2b0bf4 upstream.
 
-find_control() to retrieve a cached info accesses the array with the
-given index blindly, which may lead to an OOB array access.
-Add a sanity check for avoiding it.
+After commit feee6b2989165631b1 ("mm/memory_hotplug: shrink zones when
+offlining memory"), __remove_pages() doesn't need the "zone" parameter
+so the "page" variable is also unused. Remove the unused code to avoid
+such build warning:
 
-Link: https://sashiko.dev/#/patchset/20260511230121.28606-1-rosenp%40gmail.com
+arch/loongarch/mm/init.c: In function 'arch_remove_memory':
+arch/loongarch/mm/init.c:134:22: warning: variable 'page' set but not used [-Wunused-but-set-variable=]
+  134 |         struct page *page = pfn_to_page(start_pfn);
+
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260515085606.242284-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Guo Ren <guoren@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/asihpi/hpicmn.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/loongarch/mm/init.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/sound/pci/asihpi/hpicmn.c
-+++ b/sound/pci/asihpi/hpicmn.c
-@@ -276,6 +276,12 @@ static short find_control(u16 control_in
- 		return 0;
- 	}
+--- a/arch/loongarch/mm/init.c
++++ b/arch/loongarch/mm/init.c
+@@ -132,11 +132,7 @@ void arch_remove_memory(u64 start, u64 s
+ {
+ 	unsigned long start_pfn = start >> PAGE_SHIFT;
+ 	unsigned long nr_pages = size >> PAGE_SHIFT;
+-	struct page *page = pfn_to_page(start_pfn);
  
-+	if (control_index >= p_cache->control_count) {
-+		HPI_DEBUG_LOG(VERBOSE, "control_index out of bounce %d\n",
-+			control_index);
-+		return 0;
-+	}
-+
- 	*pI = p_cache->p_info[control_index];
- 	if (!*pI) {
- 		HPI_DEBUG_LOG(VERBOSE, "Uncached Control %d\n",
+-	/* With altmap the first mapped page is offset from @start */
+-	if (altmap)
+-		page += vmem_altmap_offset(altmap);
+ 	__remove_pages(start_pfn, nr_pages, altmap);
+ }
+ 
 
 
 
