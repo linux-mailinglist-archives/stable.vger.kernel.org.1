@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258272-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGDcMAAcG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:56 +0200
+	id UDHaOs4mG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258272-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873ED60F5FD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61275610F20
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 037263106744
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F1CB302BDEC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA4634389B;
-	Sat, 30 May 2026 17:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D283C09F5;
+	Sat, 30 May 2026 17:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7hnghoW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqmAJMNM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFDF481DD;
-	Sat, 30 May 2026 17:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C565D3C1405;
+	Sat, 30 May 2026 17:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161090; cv=none; b=ETOZQhzcft1dEY/4Q/sRwUxvMqUobUl+jK+Kf7MOwNmAd0gC8k0nPzb8GgdXCZyCbBBlAPE2Bp5LH08RQ53XcnwJXVBhTWVFrdLZqIUofRFooKm/+breWebCEamrtnQjjpHVcQK1qUAEncsgf4vtK+eJnq90KLJxwBe7CMvrcxk=
+	t=1780163792; cv=none; b=k0jmNO4vbRuBusZloEJeyfhDzq35EIqJiUC5gKgsFQk+c3pgGCXbHwnPc6dw00vtaERoK4/ZlNxh7fAC4JYw/+b/9IrrUB1GNWz3B+WaDfo6DvG0nQrvBZiQwiv52Hd9w5juN2iZHeRC8C+PkNiqiky8qYa4VBSIDuRieYsh1fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161090; c=relaxed/simple;
-	bh=NVuxYHluqXh0cWP/ti6kZV6y8pI8e3WqDH3w+lQwDRc=;
+	s=arc-20240116; t=1780163792; c=relaxed/simple;
+	bh=QaT09MCLhTLnv8QlHr/oZENmtjqszkIBnyUmesiAfRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ALNOrPTGKGRRJzlKgiv8OeR6TkODjOJPNf6N3kmMPCaNkzVL5fEjJlbF0o+lIakEzrk5E4CWPJ+MdOtSsHRIBWTVHKzLcFRNn/EA5oRw/HRJeKe8V2f9YMEYmXKdMdFVdxQey9PPl9IlgkOUQu9079+5F54jRDVu6tpnqLSWy3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7hnghoW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B52C1F00893;
-	Sat, 30 May 2026 17:11:28 +0000 (UTC)
+	 MIME-Version; b=RpddJvZSW7TVXjj+osqJKfsLHEF9HNMjwsHMqZutuhKPJGMLqGcKuX9YcIg7lYJs6L9bW+6DLIJw6U4qQy9ODhwKjX0K9gSMR/7d2vq9YihK8INuMFx1iU5R7pZKFU+sklHq0Rmvd1SUhMTGBDe1KX8nG3YqpbCzlaQ1yXegoPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqmAJMNM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150EB1F00893;
+	Sat, 30 May 2026 17:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161088;
-	bh=hAWrQvIzS9jB+rVGUFgNkjo+x4Be+5qerJGvXecrYPY=;
+	s=korg; t=1780163791;
+	bh=tNDPocNxlJJxLCuqwqURINf3rVG4hJKCWB1tb07rexM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m7hnghoWGk7QUZGqBoKf6mTaNvor8Dm9rif7vZqaU29GQNgDW+a8fqyRXzFh0pwpK
-	 UhrUniKigGf1iDF50knI3bvkpPnmF6t0G4FstuWulEEr5SmN5llQPgXVjww2N20jxn
-	 m3QvENI7mjxM+wgV3AB+J2lJCLJzLYby4WlHKPIE=
+	b=FqmAJMNMa0xLcRRxvZ8UpaSZgqtOga/gBzScCz4Qa3NhENqV8YwMi6Kfkt51IFOwX
+	 m1wi2FXfPE4ZeLrqTSJl6KAxGByuTjpuaztmRPQkMIvyBZE4fKUQ7nnlwHdOcOZmPr
+	 dvoV4fMBTImMH4lcBkZUYa6BPn1O5jDPMZ//9OZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 522/969] drm/amd/pm/ci: Fill DW8 fields from SMC
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.15 332/776] isofs: validate Rock Ridge CE continuation extent against volume size
 Date: Sat, 30 May 2026 18:00:46 +0200
-Message-ID: <20260530160314.768270618@linuxfoundation.org>
+Message-ID: <20260530160249.154860560@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258272-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257465-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 873ED60F5FD
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.cz:email,msgid.link:url]
+X-Rspamd-Queue-Id: 61275610F20
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit baf28ec5795c077406d6f52b8ad39e614153bce6 ]
+commit a36d990f591320e9dd379ab30063ebfe91d47e1f upstream.
 
-In ci_populate_dw8() we currently just read a value from the SMU
-and then throw it away. Instead of throwing away the value,
-we should use it to fill other fields in DW8 (like radeon).
+rock_continue() reads rs->cont_extent verbatim from the Rock Ridge CE
+record and passes it to sb_bread() without checking that the block
+number is within the mounted ISO 9660 volume.  commit e595447e177b
+("[PATCH] rock.c: handle corrupted directories") added cont_offset
+and cont_size rejection for the CE continuation but did not validate
+the extent block number itself.  commit f54e18f1b831 ("isofs: Fix
+infinite looping over CE entries") later capped the CE chain length
+at RR_MAX_CE_ENTRIES = 32 but again left the block number unchecked.
 
-Otherwise the value of the other fiels is just cleared when
-we copy this data to the SMU later.
+With a crafted ISO mounted via udisks2 (desktop optical auto-mount)
+or via CAP_SYS_ADMIN mount, rs->cont_extent can therefore point at
+an out-of-range block or at blocks belonging to an adjacent
+filesystem on the same block device.  sb_bread() on an out-of-range
+block returns NULL cleanly via the block layer EIO path, so there
+is no memory-safety violation.  For in-range reads of adjacent-
+filesystem data, the CE buffer is parsed as Rock Ridge records and
+only the text of SL sub-records reaches userspace through
+readlink(), which makes the info-leak channel narrow and difficult
+to exploit; still, rejecting the malformed CE outright matches the
+rejection shape already present in the same function for
+cont_offset and cont_size.
 
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add an ISOFS_SB(sb)->s_nzones bounds check to rock_continue() next
+to the existing offset/size rejection, printing the same
+corrupted-directory-entry notice.
+
+Fixes: f54e18f1b831 ("isofs: Fix infinite looping over CE entries")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260419212155.2169382-2-michael.bommarito@gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/isofs/rock.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-index 0839be4dc38c7..0b22563450a83 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -544,12 +544,11 @@ static int ci_populate_dw8(struct pp_hwmgr *hwmgr, uint32_t fuse_table_offset)
- {
- 	struct ci_smumgr *smu_data = (struct ci_smumgr *)(hwmgr->smu_backend);
- 	const struct ci_pt_defaults *defaults = smu_data->power_tune_defaults;
--	uint32_t temp;
+--- a/fs/isofs/rock.c
++++ b/fs/isofs/rock.c
+@@ -101,6 +101,15 @@ static int rock_continue(struct rock_sta
+ 		goto out;
+ 	}
  
- 	if (ci_read_smc_sram_dword(hwmgr,
- 			fuse_table_offset +
- 			offsetof(SMU7_Discrete_PmFuses, TdcWaterfallCtl),
--			(uint32_t *)&temp, SMC_RAM_END))
-+			(uint32_t *)&smu_data->power_tune_table.TdcWaterfallCtl, SMC_RAM_END))
- 		PP_ASSERT_WITH_CODE(false,
- 				"Attempt to read PmFuses.DW6 (SviLoadLineEn) from SMC Failed!",
- 				return -EINVAL);
--- 
-2.53.0
-
++	if ((unsigned)rs->cont_extent >= ISOFS_SB(rs->inode->i_sb)->s_nzones) {
++		printk(KERN_NOTICE "rock: corrupted directory entry. "
++			"extent=%u out of volume (nzones=%lu)\n",
++			(unsigned)rs->cont_extent,
++			ISOFS_SB(rs->inode->i_sb)->s_nzones);
++		ret = -EIO;
++		goto out;
++	}
++
+ 	if (rs->cont_extent) {
+ 		struct buffer_head *bh;
+ 
 
 
 
