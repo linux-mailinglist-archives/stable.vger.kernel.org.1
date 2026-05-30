@@ -1,60 +1,73 @@
-Return-Path: <stable+bounces-257372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258751-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOuRM3YbG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:38 +0200
+	id OGrKFSorG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258751-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:23:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2E960F49B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18332611A41
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36D3B30C6986
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5D3BF3014379
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8184034104B;
-	Sat, 30 May 2026 17:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E1A279DC9;
+	Sat, 30 May 2026 18:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4B5O52W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPljWMLk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658EA481DD;
-	Sat, 30 May 2026 17:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4955217555;
+	Sat, 30 May 2026 18:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160770; cv=none; b=oM0m3mxuOueSPRlyLBEdHdFhODv1O1s2/FJAPOiiUkAb35iEBu03T9SxVbqM270ENPm0NjAZyHoT7SnRbYmj4oHNo6Xy+/5gEr9SIYM/uj5QbBV5/aZ3ftwpacZprCAv+Gf+2nqP4dz5hz4TNG3VoT771Cw4qNun6BD61B4EOIE=
+	t=1780165416; cv=none; b=mumqmju551aID9y9XNNy3aG2S0PmoM+grHUh3OipYvsM3NojBwg01xtB3WLG/LlsLhg5KI/oFx3r9Nxs+U9x1ipm55aj/pijoHmG/9gh+Sw8aLtdV3TRp6xieCPXvucAEf0QtQ/Qx8hzsBSn/7Q+DBiKvLiGTFFKgdZCs6q/WzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160770; c=relaxed/simple;
-	bh=PTgU8rO8l84CNznStLDJTXqLfkuu+PsPppV9sj/dzh8=;
+	s=arc-20240116; t=1780165416; c=relaxed/simple;
+	bh=FiI+gSChpHdU7c5B6InDMyGN7axw/dmIw7Ib7DoY4PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8JarKHfAs92IwFL4Pm80KDvI4/vZRZ6YuFGVoUcEQoJIrszlfIa6xUWvD0Yt8x8wXI1FbN3xjxYNbH5Ul5dH+ZKBhyyylEzcktawGFMw5rEsU2U7ZPoxdysoQXxK1PHkNsRnNIUL97ibEsIns4YKVUrWo7WG3NAHbm1BgU7a2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4B5O52W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81F41F00893;
-	Sat, 30 May 2026 17:06:08 +0000 (UTC)
+	 MIME-Version; b=lHN4yANg9LTP0jPGQXzZMcWuz6vCE3oyigZvJENj0rY4gobMdmfb/osPtQxYrJeLVgDriZuPJTyyxoj9qjw4ksqpfCkK4FY6E7NRZckktuApsDMWTTUGBslUcFB+mxBG59dz/99N/qTL8eH7AErAioHb94qABfgxaiY2PhD52XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPljWMLk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA711F00893;
+	Sat, 30 May 2026 18:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160769;
-	bh=WtdhLiGZtny/M2BI55VHJ2tm6cPMZreAcwJftAfxnSs=;
+	s=korg; t=1780165415;
+	bh=gAOOBFggUXr0Glxf0SP7jZGPeZf95oXToiPLB4GqOCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s4B5O52WgNoUYZ3kn5JGWh7zFv9WjuMDIbN23XXa8Km49n/M6C2Uv2CLmTP6NRhHM
-	 Ao9D+CSl+sSRk+ffLP9G3SPgZ71nLnMo/W0xBW6LoocUVmkmfe5DabxNPP+IX3Eq7S
-	 Q6QDLq0PvXb2A55TQjv7HZEsPa8Il4o30y97yWvw=
+	b=rPljWMLkATu5v2/qtB8Kgs0O1g0UeSLn+oAK1TIaD3w2AzkaCW8SiPZZMaLakFTC6
+	 wkCmUrwWqjPiX02/h71RQN8L2QbGn7FDfv7C14bJFm+hjom8/gbUwCJADFUk0k3yF8
+	 +Zcptluz63vsICQOVRYv6vqzn3d1athiXvH206Ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SDL <sdl@nppct.ru>,
-	Benjamin Cheng <benjamin.cheng@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 429/969] drm/amdgpu/vcn4: Avoid overflow on msg bound check
+	Angel4005 <ooara1337@gmail.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Ron Economos <re@w6rz.net>,
+	"Pavel Machek (CIP)" <pavel@nabladev.com>,
+	Brett A C Sheffield <bacs@librecast.net>,
+	Mark Brown <broonie@kernel.org>,
+	"Barry K. Nathan" <barryn@pobox.com>,
+	Peter Schneider <pschneider1968@googlemail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Vijayendra Suman <vijayendra.suman@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 072/589] media: uvcvideo: Use heuristic to find stream entity
 Date: Sat, 30 May 2026 17:59:13 +0200
-Message-ID: <20260530160312.104884223@linuxfoundation.org>
+Message-ID: <20260530160226.496219768@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +78,115 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257372-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-258751-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,chromium.org,kernel.org,w6rz.net,nabladev.com,librecast.net,pobox.com,googlemail.com,toradex.com,nvidia.com,broadcom.com,oracle.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.997];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3F2E960F49B
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 18332611A41
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Cheng <benjamin.cheng@amd.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 65bce27ea6192320448c30267ffc17ffa094e713 upstream.
+[ Upstream commit 758dbc756aad429da11c569c0d067f7fd032bcf7 ]
 
-As pointed out by SDL, the previous condition may be vulnerable to
-overflow.
+Some devices, like the Grandstream GUV3100 webcam, have an invalid UVC
+descriptor where multiple entities share the same ID, this is invalid
+and makes it impossible to make a proper entity tree without heuristics.
 
-Fixes: 0a78f2bac142 ("drm/amdgpu/vcn4: Prevent OOB reads when parsing dec msg")
-Cc: SDL <sdl@nppct.ru>
-Signed-off-by: Benjamin Cheng <benjamin.cheng@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3c5367d950140d4ec7af830b2268a5a6fdaa3885)
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We have recently introduced a change in the way that we handle invalid
+entities that has caused a regression on broken devices.
+
+Implement a new heuristic to handle these devices properly.
+
+Reported-by: Angel4005 <ooara1337@gmail.com>
+Closes: https://lore.kernel.org/linux-media/CAOzBiVuS7ygUjjhCbyWg-KiNx+HFTYnqH5+GJhd6cYsNLT=DaA@mail.gmail.com/
+Fixes: 0e2ee70291e6 ("media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Tested-by: Ron Economos <re@w6rz.net>
+Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
+Tested-by: Brett A C Sheffield <bacs@librecast.net>
+Tested-by: Mark Brown <broonie@kernel.org>
+Tested-by: Barry K. Nathan <barryn@pobox.com>
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
+Tested-by: Vijayendra Suman <vijayendra.suman@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_driver.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-@@ -1675,6 +1675,7 @@ static int vcn_v4_0_dec_msg(struct amdgp
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 34e3f04340a23..20a18caf77176 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -442,13 +442,26 @@ static struct uvc_entity *uvc_entity_by_reference(struct uvc_device *dev,
  
- 	for (i = 0, msg = &msg[6]; i < num_buffers; ++i, msg += 4) {
- 		uint32_t offset, size, *create;
-+		uint64_t buf_end;
+ static struct uvc_streaming *uvc_stream_by_id(struct uvc_device *dev, int id)
+ {
+-	struct uvc_streaming *stream;
++	struct uvc_streaming *stream, *last_stream;
++	unsigned int count = 0;
  
- 		if (msg[0] != RDECODE_MESSAGE_CREATE)
- 			continue;
-@@ -1682,7 +1683,8 @@ static int vcn_v4_0_dec_msg(struct amdgp
- 		offset = msg[1];
- 		size = msg[2];
+ 	list_for_each_entry(stream, &dev->streams, list) {
++		count += 1;
++		last_stream = stream;
+ 		if (stream->header.bTerminalLink == id)
+ 			return stream;
+ 	}
  
--		if (size < 4 || offset + size > end - addr) {
-+		if (size < 4 || check_add_overflow(offset, size, &buf_end) ||
-+		    buf_end > end - addr) {
- 			DRM_ERROR("VCN message buffer exceeds BO bounds!\n");
- 			r = -EINVAL;
- 			goto out;
++	/*
++	 * If the streaming entity is referenced by an invalid ID, notify the
++	 * user and use heuristics to guess the correct entity.
++	 */
++	if (count == 1 && id == UVC_INVALID_ENTITY_ID) {
++		dev_warn(&dev->intf->dev,
++			 "UVC non compliance: Invalid USB header. The streaming entity has an invalid ID, guessing the correct one.");
++		return last_stream;
++	}
++
+ 	return NULL;
+ }
+ 
+-- 
+2.53.0
+
 
 
 
