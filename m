@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-257706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LdROtEdG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257706-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:41 +0200
+	id 4H9eN+AnG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7FA60FACF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315026111DC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 77AED3012553
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:25:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6A5B030074E1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904163438AE;
-	Sat, 30 May 2026 17:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64BD340A6F;
+	Sat, 30 May 2026 18:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0UouiV3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qqh17d+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59590263F44;
-	Sat, 30 May 2026 17:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C1E3112C1;
+	Sat, 30 May 2026 18:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161900; cv=none; b=DEJlN6lYkvcTnokAAgzhdNJR12c5/mGH+IiHaQ8iEnNCgj/P533LDFo0N0OWsL3oeLJQglFmO/HNmO6ZuikpHsjrfm0B0ZsGcyKDj3Pn1VKFt1cpoXM9X/95hMJa0QA6x50gGzomleRR1HOxUrQfBlPRHyR3pgSjAS3tAIBkJk0=
+	t=1780164484; cv=none; b=WGrB8lPZfELASCIJfq33p83U/QL+CJzIQWfgcpB5LLnn2i8tsICuRY16GSuqn8bhgHCtqAieRAsTedSdZIP+yRJpfyfpZAuWvvFb8+kV8qUwz1NpMTiHjlQV1HIu3fU2t0RbBcwQ7s66P/+WlDv1I6mEDBEjAj3cXt2cAYgH4Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161900; c=relaxed/simple;
-	bh=HcrIldPu+YPVG702srQA4iqQ128R5LXoe7KJSaK0UPE=;
+	s=arc-20240116; t=1780164484; c=relaxed/simple;
+	bh=yukG93DF2uAZZaqDez6xzJLZ1DD0GU+V0gPPS87Xt0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r4bcCfzGatq3v1aG4IeU3c6CWTcypHPqGjrlgtf2N2zPBL0bg1WkS09U/FfZul17a/G1oYpgrmiXcxyUaKvgiYgdZzJNdFn2YMG3TyEA3MTt131xtsjQlDHAAB2sNr8PUpBH0AwG75xo/RKMz5gKmQcyW4ROSfRsarO5qE47wrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0UouiV3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62AEA1F00893;
-	Sat, 30 May 2026 17:24:58 +0000 (UTC)
+	 MIME-Version; b=MWxgY30XTYYdH8NV64meg4C61ipzK2sBKuctO+jNoXIksSUIFdOdrmureLMuakxcykeszw8QnThT6UjAdD2qHt3NkL0/FdXvMneLIJYD4Tp3eG39GFHQAKNfu+kMw8LnboOSr1zwWRfBQscVdRzQnZKgPZJdpSJ0llmTgJIoDgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qqh17d+x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6D11F00893;
+	Sat, 30 May 2026 18:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161899;
-	bh=6YzQ/hMf7KEDDQqlfZVSV/6JbJwADLC8TS8pEyYSHZw=;
+	s=korg; t=1780164483;
+	bh=/JG6hOw5mVUHRgAhaMOIf9tsn+pvx6MibUTsIgWwkoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q0UouiV3XIispF4t9Irtkv/LzAX+imWHxObRJmmeB5gd1jd5217J0mitWZZmw6EoF
-	 Hr0CyxKRRNeoVmEJqumIKdSvhcamsWESLzxNUQjHvTK/yMer00pAiZwQvsGzXgoGJV
-	 O1SxooXqIDk9Lu05FT/3e4WY5XinsgsP8wiSvu7E=
+	b=Qqh17d+xoAn/ntWX7/Q4nHz5OzRQVRbYeWEdnIY411aiIS8vd9+hKLWPnUwyyPY0O
+	 WDf4rWykyeHoYZghwIw9RWP6ocatuiQlm7b82EwyW/H+lYRaQ9gTsgQL5YmBCF1EpM
+	 x9e3bztxChO5q0dtagYusSczx2+MwfqHBKue0w3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"William A. Kennington III" <william@wkennington.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 759/969] net: mctp i2c: check length before marking flow active
+Subject: [PATCH 5.15 569/776] flow_dissector: Add PPPoE dissectors
 Date: Sat, 30 May 2026 18:04:43 +0200
-Message-ID: <20260530160321.524804176@linuxfoundation.org>
+Message-ID: <20260530160254.819444473@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257706-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258478-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -91,96 +91,184 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9C7FA60FACF
+X-Rspamd-Queue-Id: 315026111DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William A. Kennington III <william@wkennington.com>
+From: Wojciech Drewek <wojciech.drewek@intel.com>
 
-[ Upstream commit 4ca07b9239bd0478ae586632a2ed72be37ed8407 ]
+[ Upstream commit 46126db9c86110e5fc1e369b9bb89735ddefdae4 ]
 
-Currently, mctp_i2c_get_tx_flow_state() is called before the packet length
-sanity check. This function marks a new flow as active in the MCTP core.
+Allow to dissect PPPoE specific fields which are:
+- session ID (16 bits)
+- ppp protocol (16 bits)
+- type (16 bits) - this is PPPoE ethertype, for now only
+  ETH_P_PPP_SES is supported, possible ETH_P_PPP_DISC
+  in the future
 
-If the sanity check fails, mctp_i2c_xmit() returns early without calling
-mctp_i2c_lock_nest(). This results in a mismatched locking state: the
-flow is active, but the I2C bus lock was never acquired for it.
+The goal is to make the following TC command possible:
 
-When the flow is later released, mctp_i2c_release_flow() will see the
-active state and queue an unlock marker. The TX thread will then
-decrement midev->i2c_lock_count from 0, causing it to underflow to -1.
+  # tc filter add dev ens6f0 ingress prio 1 protocol ppp_ses \
+      flower \
+        pppoe_sid 12 \
+        ppp_proto ip \
+      action drop
 
-This underflow permanently breaks the driver's locking logic, allowing
-future transmissions to occur without holding the I2C bus lock, leading
-to bus collisions and potential hardware hangs.
+Note that only PPPoE Session is supported.
 
-Move the mctp_i2c_get_tx_flow_state() call to after the length sanity
-check to ensure we only transition the flow state if we are actually
-going to proceed with the transmission and locking.
-
-Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
-Signed-off-by: William A. Kennington III <william@wkennington.com>
-Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20260423074741.201460-1-william@wkennington.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Acked-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: cc1ff87bce1c ("pppoe: drop PFC frames")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mctp/mctp-i2c.c | 4 ++--
- net/sched/cls_flower.c      | 4 +++-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ include/linux/ppp_defs.h     | 14 ++++++++++
+ include/net/flow_dissector.h | 13 +++++++++
+ net/core/flow_dissector.c    | 53 +++++++++++++++++++++++++++++++-----
+ 3 files changed, 73 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
-index 2eeccc3b70eff..cf0947b64a123 100644
---- a/drivers/net/mctp/mctp-i2c.c
-+++ b/drivers/net/mctp/mctp-i2c.c
-@@ -461,8 +461,6 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
- 	u8 *pecp;
- 	int rc;
+diff --git a/include/linux/ppp_defs.h b/include/linux/ppp_defs.h
+index 9d2b388fae1a4..b7e57fdbd4139 100644
+--- a/include/linux/ppp_defs.h
++++ b/include/linux/ppp_defs.h
+@@ -11,4 +11,18 @@
+ #include <uapi/linux/ppp_defs.h>
  
--	fs = mctp_i2c_get_tx_flow_state(midev, skb);
--
- 	hdr = (void *)skb_mac_header(skb);
- 	/* Sanity check that packet contents matches skb length,
- 	 * and can't exceed MCTP_I2C_BUFSZ
-@@ -474,6 +472,8 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
- 		return;
- 	}
- 
-+	fs = mctp_i2c_get_tx_flow_state(midev, skb);
+ #define PPP_FCS(fcs, c) crc_ccitt_byte(fcs, c)
 +
- 	if (skb_tailroom(skb) >= 1) {
- 		/* Linear case with space, we can just append the PEC */
- 		skb_put(skb, 1);
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index a40a9e84c75f4..fd8c2f0f3256e 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -537,6 +537,7 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
- 		       struct netlink_ext_ack *extack)
- {
- 	struct cls_fl_head *head = fl_head_dereference(tp);
-+	struct fl_flow_mask *mask;
++/**
++ * ppp_proto_is_valid - checks if PPP protocol is valid
++ * @proto: PPP protocol
++ *
++ * Assumes proto is not compressed.
++ * Protocol is valid if the value is odd and the least significant bit of the
++ * most significant octet is 0 (see RFC 1661, section 2).
++ */
++static inline bool ppp_proto_is_valid(u16 proto)
++{
++	return !!((proto & 0x0101) == 0x0001);
++}
++
+ #endif /* _PPP_DEFS_H_ */
+diff --git a/include/net/flow_dissector.h b/include/net/flow_dissector.h
+index 7d154c3f90d14..44034e6af9387 100644
+--- a/include/net/flow_dissector.h
++++ b/include/net/flow_dissector.h
+@@ -277,6 +277,18 @@ struct flow_dissector_key_num_of_vlans {
+ 	u8 num_of_vlans;
+ };
  
- 	*last = false;
++/**
++ * struct flow_dissector_key_pppoe:
++ * @session_id: pppoe session id
++ * @ppp_proto: ppp protocol
++ * @type: pppoe eth type
++ */
++struct flow_dissector_key_pppoe {
++	__be16 session_id;
++	__be16 ppp_proto;
++	__be16 type;
++};
++
+ enum flow_dissector_key_id {
+ 	FLOW_DISSECTOR_KEY_CONTROL, /* struct flow_dissector_key_control */
+ 	FLOW_DISSECTOR_KEY_BASIC, /* struct flow_dissector_key_basic */
+@@ -307,6 +319,7 @@ enum flow_dissector_key_id {
+ 	FLOW_DISSECTOR_KEY_CT, /* struct flow_dissector_key_ct */
+ 	FLOW_DISSECTOR_KEY_HASH, /* struct flow_dissector_key_hash */
+ 	FLOW_DISSECTOR_KEY_NUM_OF_VLANS, /* struct flow_dissector_key_num_of_vlans */
++	FLOW_DISSECTOR_KEY_PPPOE, /* struct flow_dissector_key_pppoe */
  
-@@ -553,11 +554,12 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
- 	list_del_rcu(&f->list);
- 	spin_unlock(&tp->lock);
- 
--	*last = fl_mask_put(head, f->mask);
-+	mask = f->mask;
- 	if (!tc_skip_hw(f->flags))
- 		fl_hw_destroy_filter(tp, f, rtnl_held, extack);
- 	tcf_unbind_filter(tp, &f->res);
- 	__fl_put(f);
-+	*last = fl_mask_put(head, mask);
- 
- 	return 0;
+ 	FLOW_DISSECTOR_KEY_MAX,
+ };
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index c599bc81dfa76..164de39fd262c 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -902,6 +902,11 @@ bool bpf_flow_dissect(struct bpf_prog *prog, struct bpf_flow_dissector *ctx,
+ 	return result == BPF_OK;
  }
+ 
++static bool is_pppoe_ses_hdr_valid(struct pppoe_hdr hdr)
++{
++	return hdr.ver == 1 && hdr.type == 1 && hdr.code == 0;
++}
++
+ /**
+  * __skb_flow_dissect - extract the flow_keys struct and return it
+  * @net: associated network namespace, derived from @skb if NULL
+@@ -1221,26 +1226,60 @@ bool __skb_flow_dissect(const struct net *net,
+ 			struct pppoe_hdr hdr;
+ 			__be16 proto;
+ 		} *hdr, _hdr;
++		u16 ppp_proto;
++
+ 		hdr = __skb_header_pointer(skb, nhoff, sizeof(_hdr), data, hlen, &_hdr);
+ 		if (!hdr) {
+ 			fdret = FLOW_DISSECT_RET_OUT_BAD;
+ 			break;
+ 		}
+ 
+-		nhoff += PPPOE_SES_HLEN;
+-		switch (hdr->proto) {
+-		case htons(PPP_IP):
++		if (!is_pppoe_ses_hdr_valid(hdr->hdr)) {
++			fdret = FLOW_DISSECT_RET_OUT_BAD;
++			break;
++		}
++
++		/* least significant bit of the most significant octet
++		 * indicates if protocol field was compressed
++		 */
++		ppp_proto = ntohs(hdr->proto);
++		if (ppp_proto & 0x0100) {
++			ppp_proto = ppp_proto >> 8;
++			nhoff += PPPOE_SES_HLEN - 1;
++		} else {
++			nhoff += PPPOE_SES_HLEN;
++		}
++
++		if (ppp_proto == PPP_IP) {
+ 			proto = htons(ETH_P_IP);
+ 			fdret = FLOW_DISSECT_RET_PROTO_AGAIN;
+-			break;
+-		case htons(PPP_IPV6):
++		} else if (ppp_proto == PPP_IPV6) {
+ 			proto = htons(ETH_P_IPV6);
+ 			fdret = FLOW_DISSECT_RET_PROTO_AGAIN;
+-			break;
+-		default:
++		} else if (ppp_proto == PPP_MPLS_UC) {
++			proto = htons(ETH_P_MPLS_UC);
++			fdret = FLOW_DISSECT_RET_PROTO_AGAIN;
++		} else if (ppp_proto == PPP_MPLS_MC) {
++			proto = htons(ETH_P_MPLS_MC);
++			fdret = FLOW_DISSECT_RET_PROTO_AGAIN;
++		} else if (ppp_proto_is_valid(ppp_proto)) {
++			fdret = FLOW_DISSECT_RET_OUT_GOOD;
++		} else {
+ 			fdret = FLOW_DISSECT_RET_OUT_BAD;
+ 			break;
+ 		}
++
++		if (dissector_uses_key(flow_dissector,
++				       FLOW_DISSECTOR_KEY_PPPOE)) {
++			struct flow_dissector_key_pppoe *key_pppoe;
++
++			key_pppoe = skb_flow_dissector_target(flow_dissector,
++							      FLOW_DISSECTOR_KEY_PPPOE,
++							      target_container);
++			key_pppoe->session_id = hdr->hdr.sid;
++			key_pppoe->ppp_proto = htons(ppp_proto);
++			key_pppoe->type = htons(ETH_P_PPP_SES);
++		}
+ 		break;
+ 	}
+ 	case htons(ETH_P_TIPC): {
 -- 
 2.53.0
 
