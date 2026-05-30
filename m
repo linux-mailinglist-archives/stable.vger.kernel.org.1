@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258247-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WO6QMhYcG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257473-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:18 +0200
+	id cOgUJH8kG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258247-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F84E60F628
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B94610A62
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 41B57306CF48
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B1E5D300678E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:55:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27B3395AD8;
-	Sat, 30 May 2026 17:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2AA261B9E;
+	Sat, 30 May 2026 17:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aa45h4zu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGi5+ne9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E573148DA;
-	Sat, 30 May 2026 17:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B70341AC7;
+	Sat, 30 May 2026 17:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161117; cv=none; b=Li5+YNiv0FEIn0elbyjRLNqAkOdtMH3mZQJatBfPqyOmdWs3ykHhavtP00Hav1YxppGhMj+lUimqBGjVwqfTlpTLkV0Rb5ONTXJxS/ulSPgSM4HE5QpCGwg5sHYuUji2KadWlKTB8xgagLHo4Rg9DnODzLckeyDEuFNbdu6QM3Y=
+	t=1780163709; cv=none; b=RAbYjKIPLY9zBxmjPyc2Uha4AMmdWSSfc8ux7DuYkv+5ZdkkIVAb4I7DFFB/W93uSCy/kSJWyiN9hyDles7Xh6z5vcKqjR3vTcSJfQAi3C5vb604rRqrWLy+QqtUU34IgCKSh0riQKII6HhK68bq9ue738TIxtNpbGmI3ym6aPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161117; c=relaxed/simple;
-	bh=EPW5fgzJ0zXtsfBJsIeMSMPUWA5JbjOHl4F7v3PrQ6k=;
+	s=arc-20240116; t=1780163709; c=relaxed/simple;
+	bh=drW4+MLtI7IamaDzFKQQ7Z+GWsSdzhWt28t7ii2M/EQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qye/uSuAMhKvtzdQMc553wRvOHHYRUQYqKxcAhIdjnIJXrMMvNKhPLEQ1rA0yEicKibbl4yMFf+G3dMMAl5mTRPhc3GIG5cM7ms/Qv1ChdW5GknaRAiSK3CdPiIWYr8XQHtU4gNNR8zGmuhc5HpJxJgGmV0XmBvfWQaGaPoOkJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aa45h4zu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143D51F00893;
-	Sat, 30 May 2026 17:11:55 +0000 (UTC)
+	 MIME-Version; b=au4RdT+pr+0dUpa4bAbZqOv4HYUfvvmvIXXFb0dzH0R24wOf7uO75Xu9JIQgfJCRR8kwZlIF10VINQ04svSqyVRvTWimZkPV/vntKeMdl0KNksFxC03LuGBsO5RsjNaBhVeF+Tj9x5d+3idTexm4iUcHr2Ey6fLTbYY7zPKFnbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGi5+ne9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7698B1F00893;
+	Sat, 30 May 2026 17:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161116;
-	bh=ivpjZPYDPb2lawo4SQjwxuudGvXMoivrYN/N7njLjMI=;
+	s=korg; t=1780163708;
+	bh=FHgWuEPI4bqSmSORRBOFYGxCQ3jy1OfBHJKJ+Dv6gFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Aa45h4zu9IO31zV5HguZD0TxQM56rbqB0pQYuM31TpvgHX8/yD1eDI3LjRgvvJrIe
-	 1mXYVeP2Fm97aqep/AIuFgAq8tF5br7okOz135EU9yDk1eFTdFtwzfrEXvKCqnNz5U
-	 xcgt1m/CbA56D9R1FAuTJ7R4S/I8LZFE3hb7LrWU=
+	b=AGi5+ne9IgKhwDIrGLm+uWIAfykFmLkrGtemgnatDXNNmUaFKyJi8kuPg0NE7O0tD
+	 Ndg64Yx567sHCLE1Ad92GV1sOprLSvzTxMfF1NghzMaLp5+V3q6+0xR3j5ht/LRuAe
+	 pinNYbB91YG0MNpuhqiBDlYdc1jLUAUVh0GVAOTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <gu_0233@qq.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 529/969] pmdomain: ti: omap_prm: Fix a reference leak on device node
+	Lukas Wunner <lukas@wunner.de>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: [PATCH 5.15 339/776] PCI/AER: Clear only error bits in PCIe Device Status
 Date: Sat, 30 May 2026 18:00:53 +0200
-Message-ID: <20260530160314.967692213@linuxfoundation.org>
+Message-ID: <20260530160249.334119394@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,70 +67,98 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257473-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,linaro.org,kernel.org];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258247-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3F84E60F628
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,alibaba.com:email,intel.com:email]
+X-Rspamd-Queue-Id: 41B94610A62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <gu_0233@qq.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit 44c28e1c52764fef6dd1c1ada3a248728812e67f ]
+commit a8aeea1bf3c80cc87983689e0118770e019bd4f3 upstream.
 
-When calling of_parse_phandle_with_args(), the caller is responsible
-to call of_node_put() to release the reference of device node.
-In omap_prm_domain_attach_dev, it does not release the reference.
+Currently, pcie_clear_device_status() clears the entire PCIe Device Status
+register (PCI_EXP_DEVSTA) by writing back the value read from the register,
+which affects not only the error status bits but also other writable bits.
 
-Fixes: 58cbff023bfa ("soc: ti: omap-prm: Add basic power domain support")
-Signed-off-by: Felix Gu <gu_0233@qq.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+According to PCIe r7.0, sec 7.5.3.5, this register contains:
+
+  - RW1C error status bits (CED, NFED, FED, URD at bits 0-3): These are the
+    four error status bits that need to be cleared.
+
+  - Read-only bits (AUXPD at bit 4, TRPND at bit 5): Writing to these has
+    no effect.
+
+  - Emergency Power Reduction Detected (bit 6): A RW1C non-error bit
+    introduced in PCIe r5.0 (2019). This is currently the only writable
+    non-error bit in the Device Status register. Unconditionally clearing
+    this bit can interfere with other software components that rely on this
+    power management indication.
+
+  - Reserved bits (RsvdZ): These bits are required to be written as zero.
+    Writing 1s to them (as the current implementation may do) violates the
+    specification.
+
+To prevent unintended side effects, modify pcie_clear_device_status() to
+only write 1s to the four error status bits (CED, NFED, FED, URD), leaving
+the Emergency Power Reduction Detected bit and reserved bits unaffected.
+
+Fixes: ec752f5d54d7 ("PCI/AER: Clear device status bits during ERR_FATAL and ERR_NONFATAL")
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260211124624.49656-1-xueshuai@linux.alibaba.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/ti/omap_prm.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/pci.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
-index 33ef58195955d..1a85ae3507691 100644
---- a/drivers/soc/ti/omap_prm.c
-+++ b/drivers/soc/ti/omap_prm.c
-@@ -652,6 +652,7 @@ static int omap_prm_domain_attach_dev(struct generic_pm_domain *domain,
- 	if (pd_args.args_count != 0)
- 		dev_warn(dev, "%s: unusupported #power-domain-cells: %i\n",
- 			 prmd->pd.name, pd_args.args_count);
-+	of_node_put(pd_args.np);
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -2220,10 +2220,9 @@ EXPORT_SYMBOL_GPL(pci_set_pcie_reset_sta
  
- 	genpd_data = dev_gpd_data(dev);
- 	genpd_data->data = NULL;
--- 
-2.53.0
-
+ void pcie_clear_device_status(struct pci_dev *dev)
+ {
+-	u16 sta;
+-
+-	pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &sta);
+-	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta);
++	pcie_capability_write_word(dev, PCI_EXP_DEVSTA,
++				   PCI_EXP_DEVSTA_CED | PCI_EXP_DEVSTA_NFED |
++				   PCI_EXP_DEVSTA_FED | PCI_EXP_DEVSTA_URD);
+ }
+ 
+ /**
 
 
 
