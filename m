@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wO/tDAAuG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258948-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:44 +0200
+	id GITXCU4mG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6EB46120B6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B430610DE7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C9183024E1C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:34:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 619623006D79
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3965033AD99;
-	Sat, 30 May 2026 18:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C463AB291;
+	Sat, 30 May 2026 18:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLvaGgc4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pW3vMOl9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D99E41A8F;
-	Sat, 30 May 2026 18:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF2F23392B;
+	Sat, 30 May 2026 18:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166083; cv=none; b=ZKPfGfhFPCHlRe5EUmrxIcniyfEUVT+8ktalkyZdxl+xQ4gAK/bh4kZWA66pnLWgspNQrUAHkCb/A0Llrxkx6RY0g965lFEZoA96zGkXOBj/NPSVyc3RkVDq3VanVKisupQ6NfTukhZBEveMF/lenu4nK1TEH2VMcjwiXP7ffTg=
+	t=1780164134; cv=none; b=lrdHCk7LyshtB4RucQw+NjrGoTz6MqJmjQzB2AwwKwAVHa+rWhwqwOpYElc0vHYqLMor6luMfxtFT95HIBkqsqiEq/SSfB1VnK/Q9BohoFWu2FnaWvW7bNVpWhYvWb9vT1zlN2JwjnP1KzZmwTKBXKCPM3STrvzGKTU90qUriAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166083; c=relaxed/simple;
-	bh=4jPYPN38eMO4x0+7jB8JaSjLjnY9SqZ5uL1ai1iV39Y=;
+	s=arc-20240116; t=1780164134; c=relaxed/simple;
+	bh=q3nvOmoxJBZd2YGjES1nSlkWuWjxeD8ngNSFb0iHXPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/QJqAh7sesEzoDv14QplZVIpFlahF9fhDvz5zXN7CWfwmqTZ7umjfxhSJ5t/LYymqVnZ70FW4cF2GpipeluGOZ+zjKQP9+RlgHcy2vUN8aoLFr+RtE283j5l3iy6B3KVunSOHOt/2Sepi1PjvPpn6nIXci5NWp1vVDa9dpvei4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLvaGgc4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D3F1F00893;
-	Sat, 30 May 2026 18:34:41 +0000 (UTC)
+	 MIME-Version; b=uXclY5AleRZ6jN4tLFgzUyjEoddgUDMmilMA/r6eym5OBTVBqQ8VWMKcyk5ZRWmugkwRit4CYV1iv22BqNgw++hTbB9Z2T1UCe561h0awgim10psnB3sMWuOMVi+Hj38OWEAP24VmJnjZdzRC4Ek3a1/6KmXU1fsbmDqrD2tagY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pW3vMOl9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67C91F00893;
+	Sat, 30 May 2026 18:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166082;
-	bh=bc983a29zUuszsIYZvkdL5eIf/2N9p+qTOR8/K0WG6Q=;
+	s=korg; t=1780164133;
+	bh=G+VsG9vA8GznO51rQL/c/ZU988A0ksUB8EANmTzSk3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZLvaGgc4l/IC80gqGTohMF0b172fVxaxO8KcRP4XGZAVACcV8ER7iBb1RCleDyBlS
-	 HM5X0ZLrjBOyvtWibpkK/pI9zuYuKPQ84MbPuDO65q8/Q0q6HQUFuwCkdyyPcLNlH6
-	 sYrizUYOOyuEzsjPAVOh21/YNuKqAo5vWFrpW0S8=
+	b=pW3vMOl9Riiw70kBM+8bWCp3GY1FlVvOZWNyof3rhdsizMmlOZpd25eP6ADQT79Gy
+	 F5otNV4cGGnBW3ZCyhzc+8otH+mckcuCaQzEkMEDyvB0HEKkfmKBqg+S1gpp/DPE7m
+	 4cWrX54oqf34EVmZngdqXLFvoVnGlYYhCo5p4d2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenyou Yang <wenyou.yang@atmel.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 268/589] regulator: act8945a: fix OF node reference imbalance
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 435/776] dm cache policy smq: fix missing locks in invalidating cache blocks
 Date: Sat, 30 May 2026 18:02:29 +0200
-Message-ID: <20260530160232.030395195@linuxfoundation.org>
+Message-ID: <20260530160251.673835430@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,62 +78,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258948-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258373-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,atmel.com:email]
-X-Rspamd-Queue-Id: E6EB46120B6
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2B430610DE7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit 0d15ce31375ccef4162f960b34547a821b7619d2 upstream.
+[ Upstream commit 2d1f7b65f5deedd2e6b09fdc6ea27f8375f24b45 ]
 
-The driver reuses the OF node of the parent multi-function device but
-fails to take another reference to balance the one dropped by the
-platform bus code when unbinding the MFD and deregistering the child
-devices.
+In passthrough mode, the policy invalidate_mapping operation is called
+simultaneously from multiple workers, thus it should be protected by a
+lock. Otherwise, we might end up with data races on the allocated blocks
+counter, or even use-after-free issues with internal data structures
+when doing concurrent writes.
 
-Fix this by using the intended helper for reusing OF nodes.
+Note that the existing FIXME in smq_invalidate_mapping() doesn't affect
+passthrough mode since migration tasks don't exist there, but would need
+attention if supporting fast device shrinking via suspend/resume without
+target reloading.
 
-Fixes: 38c09961048b ("regulator: act8945a: add regulator driver for ACT8945A")
-Cc: stable@vger.kernel.org	# 4.6
-Cc: Wenyou Yang <wenyou.yang@atmel.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260408073055.5183-7-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reproduce steps:
+
+1. Create a cache device consisting of 1024 cache entries
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. Populate the cache, and record the number of cached blocks
+
+fio --name=populate --filename=/dev/mapper/cache --rw=randwrite --bs=4k \
+--size=64m --direct=1
+nr_cached=$(dmsetup status cache | awk '{split($7, a, "/"); print a[1]}')
+
+3. Reload the cache into passthrough mode
+
+dmsetup suspend cache
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+dmsetup resume cache
+
+4. Write to the passthrough cache. By setting multiple jobs with I/O
+   size equal to the cache block size, cache blocks are invalidated
+   concurrently from different workers.
+
+fio --filename=/dev/mapper/cache --name=test --rw=randwrite --bs=64k \
+--direct=1 --numjobs=2 --randrepeat=0 --size=64m
+
+5. Check if demoted matches cached block count. These numbers should
+   match but may differ due to the data race.
+
+nr_demoted=$(dmsetup status cache | awk '{print $12}')
+echo "$nr_cached, $nr_demoted"
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/act8945a-regulator.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/md/dm-cache-policy-smq.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/regulator/act8945a-regulator.c
-+++ b/drivers/regulator/act8945a-regulator.c
-@@ -302,8 +302,9 @@ static int act8945a_pmic_probe(struct pl
- 		num_regulators = ARRAY_SIZE(act8945a_regulators);
- 	}
+diff --git a/drivers/md/dm-cache-policy-smq.c b/drivers/md/dm-cache-policy-smq.c
+index 859073193f5b4..95b0670c32acd 100644
+--- a/drivers/md/dm-cache-policy-smq.c
++++ b/drivers/md/dm-cache-policy-smq.c
+@@ -1584,14 +1584,18 @@ static int smq_invalidate_mapping(struct dm_cache_policy *p, dm_cblock_t cblock)
+ {
+ 	struct smq_policy *mq = to_smq_policy(p);
+ 	struct entry *e = get_entry(&mq->cache_alloc, from_cblock(cblock));
++	unsigned long flags;
  
-+	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
+ 	if (!e->allocated)
+ 		return -ENODATA;
+ 
++	spin_lock_irqsave(&mq->lock, flags);
+ 	// FIXME: what if this block has pending background work?
+ 	del_queue(mq, e);
+ 	h_remove(&mq->table, e);
+ 	free_entry(&mq->cache_alloc, e);
++	spin_unlock_irqrestore(&mq->lock, flags);
 +
- 	config.dev = &pdev->dev;
--	config.dev->of_node = pdev->dev.parent->of_node;
- 	config.driver_data = act8945a;
- 	for (i = 0; i < num_regulators; i++) {
- 		rdev = devm_regulator_register(&pdev->dev, &regulators[i],
+ 	return 0;
+ }
+ 
+-- 
+2.53.0
+
 
 
 
