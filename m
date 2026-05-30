@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLGFBi0xG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-258987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:49:17 +0200
+	id 8JD4F9UcG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 797376128EA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:49:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9B960F846
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D0D3304C887
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0D6C43012E72
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E18349CCF;
-	Sat, 30 May 2026 18:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDDC30E829;
+	Sat, 30 May 2026 17:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jtuf8Ayd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHWrEOjw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1C141A8F;
-	Sat, 30 May 2026 18:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75493161A3;
+	Sat, 30 May 2026 17:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166215; cv=none; b=CnM2OWSTAd6Czi3wsqnVyC0BzM6EiKE+q2tJaV1TuSyWeOhlWHmY8ESqaA9odBLPUcXlV8R54jaDMe7mPqwAYQk7cTWORqU/gwMBO7bJWpACVl6T2ar7uHnrv3hbfOtHBT1XSEULA2UOkqG+/Fr3Yvei/WcnHb3pAyctffCsajE=
+	t=1780161587; cv=none; b=ZTGjXTXxA7jyCacTJO6DHJ4ecJire3yN1Lw1CWm8z4qtz2VT9bnXI77H8tnZ3M0VgHqemPtHg5ouQouMYCv+vO0qS3h/06Y/5cnnlbqOFltvl/HpQ8zokQ3Pd3AyzRf1kngvYGaj3YubfD+85zQnSDMWONIWrRCcYqLFfboLzkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166215; c=relaxed/simple;
-	bh=AjFwXVfeCrxKGRuQg7M+wzqOHMKlcUB7j2ekHXuZ+6E=;
+	s=arc-20240116; t=1780161587; c=relaxed/simple;
+	bh=iL8bKBPZPVZjQ4vp8vbysPEB3dHqiaHlXB+iOF5O8xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdY40bETxpEbJuCsH+29DT/DeMS5Deo8tfvCjG60VsLU1rHzEVUWGXIiVhfLrEY1dj6KSqVOQHm+Ph5gJEPOWlOZRZY3eRklipS2m3s/gq/nKfv1zh7KEU0qfOBZlDGYM2gC5KKusQjAhc5BVUNBMnGu/bc2swo5+ZM0cUb9ntQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jtuf8Ayd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE81A1F00893;
-	Sat, 30 May 2026 18:36:53 +0000 (UTC)
+	 MIME-Version; b=aczszEIkNV1oFh77wCbeYrEHNICot3GvossLAlcTYciFwEXaOUHWiPQ8PfvyRaTIQcrfZOgKDnvL0bmETe82mjYaL5Oqz2PvyfhUJWUc1j8cSZYied+YPkJUwqGHWgNTOaqUC+4x1Dwhukvc2Y/FEcnTpiK8a2NSmSSzkP4XngA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHWrEOjw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38BCA1F00893;
+	Sat, 30 May 2026 17:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166214;
-	bh=znttBtTI7xZYeJtX3/Tb3mmjJzytZkLqIWDsJwxsvFQ=;
+	s=korg; t=1780161586;
+	bh=u4fUWZXEM/5rfXeYxCZ+07q0P6LnrVcvVp2l4jg8ooo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jtuf8AydRPFyhbNfuvCCekaY4iy2XtLJtNotFKuW4P1P4kzdJ/dunFouK+lkNyjKl
-	 x8xSG4v6tc8iyQcbg38MRPBZitF5trYO4xevzRMDnZB4CCrKThHDjYON1cz5UYGAlx
-	 5hGjfEJ0J3Yt/uowPsjeS8UFf3RKH9M2VRc336iU=
+	b=GHWrEOjwJk5lpTamRtfuzcf7tVDWQNUHPLzuL5RrLRqvRM6+6lc/MaC/FH4umlGIM
+	 /OPSix5s3Gm7zkHXv+6ETtZ9zcMSwA+YVhiethrOwEfk+SJ08BVEIBvVSAVVTTBitW
+	 D9oYN8yeSwF0zXL2RGYn1WS2bvAP2QFmwO2Fseu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Morris <bmorris@anthropic.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 280/589] sctp: revalidate list cursor after sctp_sendmsg_to_asoc() in SCTP_SENDALL
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 637/969] dev_printk: add new dev_err_probe() helpers
 Date: Sat, 30 May 2026 18:02:41 +0200
-Message-ID: <20260530160232.316789025@linuxfoundation.org>
+Message-ID: <20260530160318.042808771@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +64,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258987-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,anthropic.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257613-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,anthropic.com:email]
-X-Rspamd-Queue-Id: 797376128EA
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5F9B960F846
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Morris <bmorris@anthropic.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit abb5f36771cc4c05899b34000829a787572a8817 upstream.
+[ Upstream commit dbbe7eaf0e4795bf003ac06872aaf52b6b6b1310 ]
 
-The SCTP_SENDALL path in sctp_sendmsg() iterates ep->asocs with
-list_for_each_entry_safe(), which caches the next entry in @tmp before
-the loop body runs.  The body calls sctp_sendmsg_to_asoc(), which may
-drop the socket lock inside sctp_wait_for_sndbuf().
+This is similar to dev_err_probe() but for cases where an ERR_PTR() or
+ERR_CAST() is to be returned simplifying patterns like:
 
-While the lock is dropped, another thread can SCTP_SOCKOPT_PEELOFF the
-association cached in @tmp, migrating it to a new endpoint via
-sctp_sock_migrate() (list_del_init() + list_add_tail() to
-newep->asocs), and optionally close the new socket which frees the
-association via kfree_rcu().  The cached @tmp can also be freed by a
-network ABORT for that association, processed in softirq while the
-lock is dropped.
+	dev_err_probe(dev, ret, ...);
+	return ERR_PTR(ret)
+or
+	dev_err_probe(dev, PTR_ERR(ptr), ...);
+	return ERR_CAST(ptr)
 
-sctp_wait_for_sndbuf() revalidates @asoc (the current entry) on re-lock
-via the "sk != asoc->base.sk" and "asoc->base.dead" checks, but nothing
-revalidates @tmp.  After a successful return, the iterator advances to
-the stale @tmp, yielding either a use-after-free (if the peeled socket
-was closed) or a list-walk onto the new endpoint's list head (type
-confusion of &newep->asocs as a struct sctp_association *).
-
-Both are reachable from CapEff=0; the type-confusion path gives
-controlled indirect call via the outqueue.sched->init_sid pointer.
-
-Fix by re-deriving @tmp from @asoc after sctp_sendmsg_to_asoc()
-returns.  @asoc is known to still be on ep->asocs at that point: the
-only callers that list_del an association from ep->asocs are
-sctp_association_free() (which sets asoc->base.dead) and
-sctp_assoc_migrate() (which changes asoc->base.sk), and
-sctp_wait_for_sndbuf() checks both under the lock before any
-successful return; a tripped check propagates as err < 0 and the loop
-bails before the re-derive.
-
-The SCTP_ABORT path in sctp_sendmsg_check_sflags() returns 0 and the
-loop hits 'continue' before sctp_sendmsg_to_asoc() is ever called, so
-the @tmp cached by list_for_each_entry_safe() still covers the
-lock-held free that ba59fb027307 ("sctp: walk the list of asoc
-safely") was added for.
-
-Fixes: 4910280503f3 ("sctp: add support for snd flag SCTP_SENDALL process in sendmsg")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ben Morris <bmorris@anthropic.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20260508001455.3137-1-joycathacker@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20240606-dev-add_dev_errp_probe-v3-1-51bb229edd79@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 797cc011ae02 ("backlight: sky81452-backlight: Check return value of devm_gpiod_get_optional() in sky81452_bl_parse_dt()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/linux/dev_printk.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -1988,6 +1988,15 @@ static int sctp_sendmsg(struct sock *sk,
- 				goto out_unlock;
+diff --git a/include/linux/dev_printk.h b/include/linux/dev_printk.h
+index ae80a303c216b..ca32b5bb28eb5 100644
+--- a/include/linux/dev_printk.h
++++ b/include/linux/dev_printk.h
+@@ -277,4 +277,12 @@ do {									\
  
- 			iov_iter_revert(&msg->msg_iter, err);
+ __printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
+ 
++/* Simple helper for dev_err_probe() when ERR_PTR() is to be returned. */
++#define dev_err_ptr_probe(dev, ___err, fmt, ...) \
++	ERR_PTR(dev_err_probe(dev, ___err, fmt, ##__VA_ARGS__))
 +
-+			/* sctp_sendmsg_to_asoc() may have released the socket
-+			 * lock (sctp_wait_for_sndbuf), during which other
-+			 * associations on ep->asocs could have been peeled
-+			 * off or freed.  @asoc itself is revalidated by the
-+			 * base.dead and base.sk checks in sctp_wait_for_sndbuf,
-+			 * so re-derive the cached cursor from it.
-+			 */
-+			tmp = list_next_entry(asoc, asocs);
- 		}
- 
- 		goto out_unlock;
++/* Simple helper for dev_err_probe() when ERR_CAST() is to be returned. */
++#define dev_err_cast_probe(dev, ___err_ptr, fmt, ...) \
++	ERR_PTR(dev_err_probe(dev, PTR_ERR(___err_ptr), fmt, ##__VA_ARGS__))
++
+ #endif /* _DEVICE_PRINTK_H_ */
+-- 
+2.53.0
+
 
 
 
