@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDzUJccjG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:07 +0200
+	id eNXJGl0YG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1121C6108C0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD0560ED03
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1A28330205E4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 054993017E4F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F613469FC;
-	Sat, 30 May 2026 17:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FD1395AEA;
+	Sat, 30 May 2026 17:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kodXujcQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1nNKbrB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9335533F590;
-	Sat, 30 May 2026 17:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162CA32B11D;
+	Sat, 30 May 2026 17:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163087; cv=none; b=up5rGocl82E2+eCvJJXpLpCQyXR7bxNbxS+9VFTx/aBG2pVJM08r4m55YC95Ej5832h8DGMWs3FAupRyy0g0wGoIqYQPR+0N6DTdfW4nUHDtb7QagJPoZo1eMc4JyiaDi5q0dBZ82DoBkkcB5B0q+8pKjrvu6SS3vmFhVmYRQ6s=
+	t=1780160547; cv=none; b=GP0rLz28jTMvAdGNkd2DD2OVyqp8N0Lp9gZIX11QowulZdba4y1H3aQ331gNiOyJzZg9c1tTqjBkZuHVevyL/uoam2FihzsDrmd+OH4qKe1GLJR8X1ASpVmqgIIX5kUBgdY++f2qIKrjadjerq+Dhb+hN/hTGFqqT1X+yeYDk4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163087; c=relaxed/simple;
-	bh=6m/JMIDDVEeBZk1tHxjUS+2z8sLL7Jj6DedrazIei5I=;
+	s=arc-20240116; t=1780160547; c=relaxed/simple;
+	bh=XIMW0pg7S5riCB+ifu8rGen/fdtSf8rwB5tnZFJ6EaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hjVjRaj+9BK5A/mUwqfWXx0Y0SKyORVn6wwXqAgQDIxmTqJ+rpIT5D4yMcHCmlr2J178FF+QyWEl35uOcHd3oN2QyIYr5o2ts2H67toGjUZqB1bZonq29DInMiSOiVzorzDgZUU/++aSNlU4dMbkvBLXZiRbGzPpqwAyGKj0lAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kodXujcQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65011F00893;
-	Sat, 30 May 2026 17:44:44 +0000 (UTC)
+	 MIME-Version; b=MBh7cGz+BvU4AY0409TyoR0l7ugtbr9HM0kuJ3/4LjkKY6hGTJyyUSy6mSXdem4RwByIshOIzydlH85nZD8X9gBjd32Gf85pDQYzn6C0Y5/bkGB4ObZRcEOU/5pjPjrxoMVBfkFNlhZOXnk8B5Y/1h+VnQ+eK4LAsa8+Zbe0+ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1nNKbrB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8241F00893;
+	Sat, 30 May 2026 17:02:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163085;
-	bh=DoPJYEd2GLCiqQQNnyEoTZN2p5sLobybNwvimTE5wcE=;
+	s=korg; t=1780160546;
+	bh=QhyjX1KDa32pWDZ9uPN6HCPMTdQDpz0fz0do/D0qOtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kodXujcQqjaGWi8OBdf1iY+/OP7rn7XPgLB3NsBiGQHMDpQ8oFJWMHugCGFIQrbl5
-	 kK9lkQRRCu5uPrfjD4/vMcRMTdZt++mU151VZUUmWUYms4XMdtBxJjIrdstLxgP8iS
-	 jp02oHo1uheRJWMj+YuBXrdRs8UBeP3EvPkgR3fQ=
+	b=D1nNKbrB+ACxgsJEKVp/btToYmHlBs4BEYIJoToHQHwBqhWPRqFKAJPqzAGpLxPZW
+	 VEonIUd9Sh82U5S3VioFZt2UOW8CPC8PbgwUMd0jhB751fk3G81Vd0bSgbRCS+7Yg5
+	 OIRuDqR7ZJS/A4yUMUi+i51MuAyJ8aPPabeneJB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 5.15 150/776] vdpa: Add max vqp attr to vdpa_nl_policy for nlattr length check
+	Brian Masney <bmasney@redhat.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 6.1 340/969] clk: microchip: mpfs-ccc: fix out of bounds access during output registration
 Date: Sat, 30 May 2026 17:57:44 +0200
-Message-ID: <20260530160244.333253840@linuxfoundation.org>
+Message-ID: <20260530160309.758630904@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,74 +68,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258060-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,zju.edu.cn,redhat.com,foxmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257306-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,foxmail.com:email,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,zju.edu.cn:email]
-X-Rspamd-Queue-Id: 1121C6108C0
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0BD0560ED03
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-[ Upstream commit 5d6ba607d6cb5c58a4ddf33381e18c83dbb4098f ]
+commit 2f7ae8ab6aa73daaf080d5332110357c29df9c36 upstream.
 
-The vdpa_nl_policy structure is used to validate the nlattr when parsing
-the incoming nlmsg. It will ensure the attribute being described produces
-a valid nlattr pointer in info->attrs before entering into each handler
-in vdpa_nl_ops.
+UBSAN reported an out of bounds access during registration of the last
+two outputs. This out of bounds access occurs because space is only
+allocated in the hws array for two PLLs and the four output dividers
+that each has, but the defined IDs contain two DLLS and their two
+outputs each, which are not supported by the driver. The ID order is
+PLLs -> DLLs -> PLL outputs -> DLL outputs. Decrement the PLL output IDs
+by two while adding them to the array to avoid the problem.
 
-That is to say, the missing part in vdpa_nl_policy may lead to illegal
-nlattr after parsing, which could lead to OOB read just like CVE-2023-3773.
-
-This patch adds the missing nla_policy for vdpa max vqp attr to avoid
-such bugs.
-
-Fixes: ad69dd0bf26b ("vdpa: Introduce query of device config layout")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Cc: stable@vger.kernel.org
-Message-Id: <20230727175757.73988-7-dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-[ Minor context conflict resolved. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Fixes: d39fb172760e ("clk: microchip: add PolarFire SoC fabric clock support")
+CC: stable@vger.kernel.org
+Reviewed-by: Brian Masney <bmasney@redhat.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vdpa/vdpa.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/microchip/clk-mpfs-ccc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/vdpa/vdpa.c
-+++ b/drivers/vdpa/vdpa.c
-@@ -847,6 +847,7 @@ static const struct nla_policy vdpa_nl_p
- 	[VDPA_ATTR_MGMTDEV_BUS_NAME] = { .type = NLA_NUL_STRING },
- 	[VDPA_ATTR_MGMTDEV_DEV_NAME] = { .type = NLA_STRING },
- 	[VDPA_ATTR_DEV_NAME] = { .type = NLA_STRING },
-+	[VDPA_ATTR_DEV_NET_CFG_MAX_VQP] = { .type = NLA_U16 },
- };
+diff --git a/drivers/clk/microchip/clk-mpfs-ccc.c b/drivers/clk/microchip/clk-mpfs-ccc.c
+index 3a3ea2d142f8..0a76a1aaa50f 100644
+--- a/drivers/clk/microchip/clk-mpfs-ccc.c
++++ b/drivers/clk/microchip/clk-mpfs-ccc.c
+@@ -178,7 +178,7 @@ static int mpfs_ccc_register_outputs(struct device *dev, struct mpfs_ccc_out_hw_
+ 			return dev_err_probe(dev, ret, "failed to register clock id: %d\n",
+ 					     out_hw->id);
  
- static const struct genl_ops vdpa_nl_ops[] = {
+-		data->hw_data.hws[out_hw->id] = &out_hw->divider.hw;
++		data->hw_data.hws[out_hw->id - 2] = &out_hw->divider.hw;
+ 	}
+ 
+ 	return 0;
+@@ -234,6 +234,10 @@ static int mpfs_ccc_probe(struct platform_device *pdev)
+ 	unsigned int num_clks;
+ 	int ret;
+ 
++	/*
++	 * If DLLs get added here, mpfs_ccc_register_outputs() currently packs
++	 * sparse clock IDs in the hws array
++	 */
+ 	num_clks = ARRAY_SIZE(mpfs_ccc_pll_clks) + ARRAY_SIZE(mpfs_ccc_pll0out_clks) +
+ 		   ARRAY_SIZE(mpfs_ccc_pll1out_clks);
+ 
+-- 
+2.54.0
+
 
 
 
