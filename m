@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-259265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258625-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GFKMCbUzG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:05 +0200
+	id +HMHI2YqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258625-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C85A612ED3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B6C2611842
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F0A830D0570
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DF3B83061188
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2A0242D67;
-	Sat, 30 May 2026 18:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86BF232F770;
+	Sat, 30 May 2026 18:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyrKt5LF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WT3qUWAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26C62367DF;
-	Sat, 30 May 2026 18:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFF8241C8C;
+	Sat, 30 May 2026 18:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167162; cv=none; b=KDk9Uwbu42K4zxFGBX3VdwsIhbuD4BckisUfVoXvf25BiP1zTvw2rMKnr69y2D1ILApXa6AlTCVqn/VVT8R1tj7lE97Ts1xKo61jRwayCI/v2K21mnChEhBQ7XSY2zt4RKRVExY8qUfcE3L25nyaDzLMoLu15gYVQuaGTEfHDWQ=
+	t=1780164982; cv=none; b=A5aELN/fnRYjxOjMDfRAunpP0Hi4s53pZtN78F4BNLF010kOl8l999EwZbuKNH9YfbKZiMzhp/XAa2jYcuvlOEyjB/47EthCglF1sh7BoIZfPj5w+qKJm948/mjA4pESZFJZwj8Vdn7fPmg4MKWo6OcSJ26krndDqZluPh3XQl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167162; c=relaxed/simple;
-	bh=OyvJL6im/TBQ0Le65ZAS3PscCva7xOgYQVVXg18Em4M=;
+	s=arc-20240116; t=1780164982; c=relaxed/simple;
+	bh=4asvzPisuQGJOHUQlNO1Ythnu5lJiHh8rFdtHGYtWtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZC+hQMRHcbILJmYsouCTwtKyqWfPkZ9L3YF65sL+9gLu6pR6L1miXp9HuqTAOvcL3ME3VvfvRvL5uHpEKZSShv6RlmSW1ia21aJ9u1wze2GRVWpGpP2+cg+E/dzMQTKzRn3H3WVnHGPcB1YuApdc8qlNINW5w7JAgVa5feI+r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyrKt5LF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193051F00893;
-	Sat, 30 May 2026 18:52:40 +0000 (UTC)
+	 MIME-Version; b=jwyYY4cDA+wcuYDrzDkPmbxJgohyv7B3lvDDworZ0LnJBo/Em9Im9iTBA7sANiCvZaN3kxyvPHBraQiqEL/indhHvu3NkH8V5Rb1AP17KxnmpmIomg/DP+7Y+H+wK+tknzNahmca0KaeH9ldC8RL25+W7PGS1DTuScFZkQEf2h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WT3qUWAD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47751F00893;
+	Sat, 30 May 2026 18:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167161;
-	bh=supnPoYcu5h6bbykFrSK1LPVN382y9TQzaqffemKPCo=;
+	s=korg; t=1780164981;
+	bh=EkJP6PErGV2vp5qec5Cvr1dH/7G1j4mJ6vVNVldEvE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DyrKt5LFCEXr1gGjva5CI2dpG9/OYCmzMtm6rqlpiRCZ208OdZTpw+GNBJvPU1oMk
-	 lEXZo/NB93dqcV34o5YsOWtqU9YeyyDmCLg5iAsgeD2rfeJ10qwg6ZmoHdDEq4TMKv
-	 65K4YRy6dKlpo8YYN5/UXOi1v/vELsmr7mJc5M/o=
+	b=WT3qUWADcbKIudJX1cBSDPjzLbpFpZHP3ISEGdVDoe7sM6mSF5bK2mBadgGdfI5IR
+	 swcFEz0R4rm0wG/Fvjk9ht8aIVfs5l8ArzO5dy6cxbtuAG4+GzlpBTbZyX5gBCu+7Y
+	 8hEFpc9gYESjLQ6g4RJWVGnN4VWZfpqg5c2sGaRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh R <vigneshr@ti.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 546/589] spi: ti-qspi: fix use-after-free after DMA setup failure
-Date: Sat, 30 May 2026 18:07:07 +0200
-Message-ID: <20260530160239.025432763@linuxfoundation.org>
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.15 714/776] batman-adv: tt: fix negative last_changeset_len
+Date: Sat, 30 May 2026 18:07:08 +0200
+Message-ID: <20260530160258.279641017@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,63 +77,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259265-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258625-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,sashiko.dev:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7C85A612ED3
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0B6C2611842
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit ea6ec3343e05f7937a53eb6d7617b3abdb4abc19 upstream.
+commit fc92cdfcb295cefa4344d71a527d61b638b7bfc4 upstream.
 
-The driver falls back to PIO mode if DMA setup fails during probe.
+batadv_piv_tt::last_changeset_len len was declared as s16, but the field is
+never intended to hold a negative value. When a value greater than 32767 is
+assigned, it wraps to a negative signed integer.
 
-Make sure to clear the DMA channel pointer also if buffer allocation
-fails to avoid passing a pointer to the released channel to the DMA
-engine (or trying to free the channel a second time on late probe errors
-or driver unbind).
+In batadv_send_my_tt_response(), last_changeset_len is temporarily widened
+to s32. The incorrectly negative s16 value propagates into the s32, causing
+batadv_tt_prepare_tvlv_local_data() to allocate a full sized buffer but
+populates only a small portion of it with the collected changeset. All
+remaining bits are kept uninitialized.
 
-This issue was flagged by Sashiko when reviewing a devres allocation
-conversion patch.
+Using an u16 avoids this type confusion and ensures that no (negative) sign
+extension is performed in batadv_send_my_tt_response().
 
-Fixes: c687c46e9e45 ("spi: spi-ti-qspi: Use bounce buffer if read buffer is not DMA'ble")
-Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=17
-Cc: stable@vger.kernel.org	# 4.12
-Cc: Vignesh R <vigneshr@ti.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260512074809.915084-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@kernel.org
+Fixes: a73105b8d4c7 ("batman-adv: improved client announcement mechanism")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-ti-qspi.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/batman-adv/types.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -873,6 +873,7 @@ static int ti_qspi_probe(struct platform
- 		dev_err(qspi->dev,
- 			"dma_alloc_coherent failed, using PIO mode\n");
- 		dma_release_channel(qspi->rx_chan);
-+		qspi->rx_chan = NULL;
- 		goto no_dma;
- 	}
- 	master->dma_rx = qspi->rx_chan;
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -993,7 +993,7 @@ struct batadv_priv_tt {
+ 	 * @last_changeset_len: length of last tt changeset this host has
+ 	 *  generated
+ 	 */
+-	s16 last_changeset_len;
++	u16 last_changeset_len;
+ 
+ 	/**
+ 	 * @last_changeset_lock: lock protecting last_changeset &
 
 
 
