@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-257821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258627-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BHfNz4gG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257821-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:02 +0200
+	id QBKBGG4qG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258627-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A40610058
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2184611850
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C29D30578DE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C062D3065C35
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8776B325701;
-	Sat, 30 May 2026 17:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFD6284690;
+	Sat, 30 May 2026 18:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhHRLIpY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deVnCgHt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E56B2E7379;
-	Sat, 30 May 2026 17:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A384241C8C;
+	Sat, 30 May 2026 18:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162283; cv=none; b=c2VWmXHebIcFxD/AsdLLXRmvj8WKwDNIP8+8pX7A/ffI8JniiieFmRKRrtHRQxECcBEr/ei5DLzx6AIXpgYQAZfpErdbCpS4fGojhzLMCuZMURic6MjaTRthMdlb5JDZRhPT1zFK4jGQ53/ExfHjROQ1Sqy9B5rqoZYPnlKqQs0=
+	t=1780164989; cv=none; b=efsRprhpk3VZzL+RU1Qn1E+jv7YkrNlKq/DRUrY7CWROwzP29fuIvCjBxYBopFOcnP0UwwOQc9ea/6/avE4mgT9ynOh6GvkgvRXzknuIcwwVA0MK03yVZKs3hEEYyTZJF4LOeQ9jc68Q0L4DqssxQBxAIabrKjEcmLoZgxK2ZHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162283; c=relaxed/simple;
-	bh=YsleyhcKVJ3kE80JIp6VBq4wPkA3vlytittg72D6FGk=;
+	s=arc-20240116; t=1780164989; c=relaxed/simple;
+	bh=lVqLVHGgd27+ETa1lbnRUdrAM/9I45zD5rWX5manRzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OaU7AMKfda3+OGe0On3VXJvT0/KsnHy+5oFB3uPNfi8dBmA6HgPSb2pFhW0A7F4cCMNWb8rLNHMyqNV0geWAEY+Ud2keFZ1SwlaMV9dXIWpbb5H2E5PUo4ssHM+gU6zZVRVviSCaMcYUZD0En16wUaqg9WHhMC4i+YOe/Y2m9sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhHRLIpY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D941F00893;
-	Sat, 30 May 2026 17:31:21 +0000 (UTC)
+	 MIME-Version; b=gAvdlFWegnZcaw//6pxjpfOLJI9zcdIi6IfHhHN5WVv3PJb6eiOFQQLNOcjD+szq1crfA570MRqTw2NLtE+pVAWfPMnI73pPFUOS2ShuwGqSdOfvWr3JmTaR6KOuefLkVNlGwF8jKQByeDv//Uo2tkIRJ3t3E2JZ/5MIR2qoXM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deVnCgHt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8809F1F00893;
+	Sat, 30 May 2026 18:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162282;
-	bh=UKI0GcAOQOkk3qNHQJyey01tOARsk7AODGsOoLxZVA4=;
+	s=korg; t=1780164988;
+	bh=LV4wTb0ISJb+4PuS62p67itgIR5ghOZvf36TYT2MHhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jhHRLIpYDrRfLjWi9GSXiOknizdMrcBubTw4dUogYAepe0RtVuMTwmDEAHMbnAsl9
-	 vM2H95l0jlOE1Halj1KOeVnhcsxjrs0tl4OofITDdLQvG5ee9WQKkelq3Y6P4pcctc
-	 isEWXmGWWjoLrUMZIngDgdvO5HYjznwffTzc16w8=
+	b=deVnCgHtHtlw1wU2T8+44wCqH1+eaIshL4YlDOCpAUp0zCWmOEn+QWbBoUX5pA1IV
+	 qk3LxFJdC3I7PILEUb1D1ufy6roLWJir8TY+6Tgs8tArclJRsPoKWNxiIS50BXRxcK
+	 1I1/3TPAJA4lI3LmJib2kvKNgvOB9vqN0cHMY8N8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Abdelkader <osama.abdelkader@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Ian Ray <ian.ray@gehealthcare.com>
-Subject: [PATCH 6.1 876/969] drm/bridge: megachips: remove bridge when irq request fails
-Date: Sat, 30 May 2026 18:06:40 +0200
-Message-ID: <20260530160324.876304422@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 687/776] netfilter: ip6t_hbh: reject oversized option lists
+Date: Sat, 30 May 2026 18:06:41 +0200
+Message-ID: <20260530160257.611946383@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +69,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257821-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,gehealthcare.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
+	TAGGED_FROM(0.00)[bounces-258627-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 57A40610058
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,netfilter.org:email]
+X-Rspamd-Queue-Id: D2184611850
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
+From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-commit d45d5c819f2cd0b6b5d76a194a537a5f4aeefecb upstream.
+commit 4322dcde6b4173c2d8e8e6118ed290794263bcc8 upstream.
 
-If devm_request_threaded_irq() fails after drm_bridge_add(), remove the
-bridge before returning.
+struct ip6t_opts stores at most IP6T_OPTS_OPTSNR option descriptors,
+but hbh_mt6_check() does not reject larger optsnr values supplied from
+userspace.
 
-Keep drm_bridge_add() rather than devm_drm_bridge_add(): registration is
-tied to the STDP4028 device while ge_b850v3_register() may complete from
-either I2C probe; devm would not unwind the bridge if the other client's
-probe fails.
+Validate optsnr in the rule setup path so only match data that fits the
+fixed-size opts array can be installed. This follows the existing xtables
+pattern of rejecting invalid user-provided counts in checkentry() and
+keeps the packet matching path unchanged.
 
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-Fixes: fcfa0ddc18ed ("drm/bridge: Drivers for megachips-stdpxxxx-ge-b850v3-fw (LVDS-DP++)")
-Cc: stable@vger.kernel.org
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Tested-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260430195700.80317-1-osama.abdelkader@gmail.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+`struct ip6t_opts` has a fixed `opts[IP6T_OPTS_OPTSNR]` array,
+where `IP6T_OPTS_OPTSNR` is 16, then off-by-one array access is possible:
+
+[  137.924693][ T8692] UBSAN: array-index-out-of-bounds in ../net/ipv6/netfilter/ip6t_hbh.c:110:29
+[  137.926167][ T8692] index 16 is out of range for type '__u16 [16]'
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c |   16 +++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ net/ipv6/netfilter/ip6t_hbh.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
-+++ b/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
-@@ -302,7 +302,6 @@ static void ge_b850v3_lvds_remove(void)
- 		goto out;
+--- a/net/ipv6/netfilter/ip6t_hbh.c
++++ b/net/ipv6/netfilter/ip6t_hbh.c
+@@ -168,6 +168,10 @@ static int hbh_mt6_check(const struct xt
+ 		pr_debug("unknown flags %X\n", optsinfo->invflags);
+ 		return -EINVAL;
+ 	}
++	if (optsinfo->optsnr > IP6T_OPTS_OPTSNR) {
++		pr_debug("too many supported opts specified\n");
++		return -EINVAL;
++	}
  
- 	drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
--
- 	ge_b850v3_lvds_ptr = NULL;
- out:
- 	mutex_unlock(&ge_b850v3_lvds_dev_mutex);
-@@ -312,6 +311,7 @@ static int ge_b850v3_register(void)
- {
- 	struct i2c_client *stdp4028_i2c = ge_b850v3_lvds_ptr->stdp4028_i2c;
- 	struct device *dev = &stdp4028_i2c->dev;
-+	int ret;
- 
- 	/* drm bridge initialization */
- 	ge_b850v3_lvds_ptr->bridge.funcs = &ge_b850v3_lvds_funcs;
-@@ -329,11 +329,15 @@ static int ge_b850v3_register(void)
- 	if (!stdp4028_i2c->irq)
- 		return 0;
- 
--	return devm_request_threaded_irq(&stdp4028_i2c->dev,
--			stdp4028_i2c->irq, NULL,
--			ge_b850v3_lvds_irq_handler,
--			IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
--			"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
-+	ret = devm_request_threaded_irq(&stdp4028_i2c->dev,
-+					stdp4028_i2c->irq, NULL,
-+					ge_b850v3_lvds_irq_handler,
-+					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+					"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
-+	if (ret)
-+		drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
-+
-+	return ret;
- }
- 
- static int stdp4028_ge_b850v3_fw_probe(struct i2c_client *stdp4028_i2c,
+ 	if (optsinfo->flags & IP6T_OPTS_NSTRICT) {
+ 		pr_debug("Not strict - not implemented");
 
 
 
