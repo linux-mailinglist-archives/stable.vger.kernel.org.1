@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-259217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259219-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gHwAIREzG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259217-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:21 +0200
+	id KFHqMhUzG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259219-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BB9612D33
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3861B612D48
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CEC93037DE9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3221303C623
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBB12367DF;
-	Sat, 30 May 2026 18:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742662E7398;
+	Sat, 30 May 2026 18:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uA4DtF9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIxPIH/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4241C1D63E4;
-	Sat, 30 May 2026 18:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C681D63E4;
+	Sat, 30 May 2026 18:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167000; cv=none; b=EG6tanRwAAQNyGqaY8xHRRynI7sHWw6+FWXehpcuvcWgEnd2fcNGlzz8H515eCIhcznCBkqlOZ0nFL2/Ld1kx7XmdOOvmBzW8VIKJaTa/wjt0wivmFSnybkGNz3/jP2ERb2BPIIHdFEcHK+x/tERvmftiUJ64Vmcw+wQizK/oDw=
+	t=1780167007; cv=none; b=uX5kmJAcTDzZ0d3FQxqT0rpbiKFUNec3OkoiyUa2XXMx6HE0+lxIXAKE+ckQZ7Zhg+PigSCznqVedttP+ffxy0n+b9nhMfkvb9jDogqGA+qi4/jwUhFzUSBJahTDObW6RPQtvUNNjyO9FCkIkC5tBvHTTXNNyI5if2K54eXkTKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167000; c=relaxed/simple;
-	bh=ooikgxw1fGitCVnjG58UC4I1IbnCbIagXfkGr3o4SOo=;
+	s=arc-20240116; t=1780167007; c=relaxed/simple;
+	bh=ixRj3TShjBaW9WvWgaK7fhkc/JjEI+JFbwbMxPa7pAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O9CrSV1WACnc58Cv4htYfO0vhC8+nGprGjnIS4zhiSiDKVhdCRVbeoeLJ6hELiprYh2gflbQhbyUtFjvD/v4G8KdEJyJMp8b9dqMrJbiMVG4MXDaH16xZHRc9S86QcKBcr0JSFdhVSDbeR1d3KmeNzk+tYwtVD6UfnaKTfAhDIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uA4DtF9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801F31F00893;
-	Sat, 30 May 2026 18:49:58 +0000 (UTC)
+	 MIME-Version; b=kCsLauMCbX8RYnUT8qgmDJZg0YjxDMgkFLEyAnFv8ILeoJNNw64nxfuOQRJM8dVUjv8QR3Nh0CHz+efVzhg9jwu1UZxb+oEv2jGNDlfSTVv/yjY1wZr84+DxQXBSayTcXEim7ZnMNW0nqINofB2PsFYkl17oCJ+T27XShGLq8Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIxPIH/Z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A9F1F00893;
+	Sat, 30 May 2026 18:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166999;
-	bh=EFg9lBlbwVE1nliQQXvxmxbL6nyFw25OH0RMPHR/830=;
+	s=korg; t=1780167006;
+	bh=2vslqwT4U23REHm2s7c1N4CCPrE+hpwMRPY4whcq92o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2uA4DtF97Rd9EahX/LTgcIeJFE8iiapnWHIkLNpTuQUY+fd6whMFB5K9fsrNSHxbu
-	 BLcAAndmfDwj71pUPpN8hV4z32RSI9S6OjaD3bDvURENJGMvNp8jKn3Sfb4NHtLa1e
-	 vp3ekWR7rwGfFgdRZbEd1UTl8FlD/UxfIzi+H/ek=
+	b=mIxPIH/ZqT4cYl0ZRKinnrx96VygX7c2tpaZ3rzGAxdoZRamuUlsRGJCVUoKMRyJn
+	 kVSqJ2euUgP6id2QSnXkmu8XXmdmhsZNfjVa4hkcjYRIr4yxvBmIWKdWHCVa+TkaMm
+	 y3AOnv0yReGyOFjg1Co5GOZAiewyUpe+7w8wDHHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 534/589] net: bcmgenet: keep RBUF EEE/PM disabled
-Date: Sat, 30 May 2026 18:06:55 +0200
-Message-ID: <20260530160238.735259751@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 535/589] netfilter: ip6t_hbh: reject oversized option lists
+Date: Sat, 30 May 2026 18:06:56 +0200
+Message-ID: <20260530160238.757949090@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
 References: <20260530160224.570625122@linuxfoundation.org>
@@ -68,30 +73,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
+	TAGGED_FROM(0.00)[bounces-259219-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259217-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E3BB9612D33
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3861B612D48
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,63 +105,52 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Nicolai Buchwitz <nb@tipi-net.de>
+From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-commit 9a1730245e416d11ad5c0f2c100061d61cc43f60 upstream.
+commit 4322dcde6b4173c2d8e8e6118ed290794263bcc8 upstream.
 
-Setting RBUF_EEE_EN | RBUF_PM_EN in RBUF_ENERGY_CTRL breaks the RX
-path on GENET hardware once MAC EEE becomes active. RX traffic stops
-flowing while the link stays up and the usual descriptor/RX error
-counters remain quiet. In that state the MAC still accepts frames
-(rbuf_ovflow_cnt keeps climbing) but RBUF no longer forwards them to
-DMA, so rx_packets is no longer incremented at the netdev level. On
-some boards the corruption ends up as a paging fault in
-skb_release_data via bcmgenet_rx_poll on an LPI exit.
+struct ip6t_opts stores at most IP6T_OPTS_OPTSNR option descriptors,
+but hbh_mt6_check() does not reject larger optsnr values supplied from
+userspace.
 
-Reproduced on Pi 4B (BCM2711 + BCM54213PE) and confirmed by Florian
-Fainelli on an internal Broadcom 4908-family board with the same crash
-signature. RBUF_PM_EN is not publicly documented.
+Validate optsnr in the rule setup path so only match data that fits the
+fixed-size opts array can be installed. This follows the existing xtables
+pattern of rejecting invalid user-provided counts in checkentry() and
+keeps the packet matching path unchanged.
 
-This shows up more often now that phy_support_eee() enables EEE by
-default, but it also affects older kernels as soon as TX LPI is
-turned on via ethtool, so it is not specific to recent changes.
+`struct ip6t_opts` has a fixed `opts[IP6T_OPTS_OPTSNR]` array,
+where `IP6T_OPTS_OPTSNR` is 16, then off-by-one array access is possible:
 
-Always clear RBUF_EEE_EN | RBUF_PM_EN in bcmgenet_eee_enable_set so
-the bits stay off across resets. UMAC and TBUF setup is left alone so
-TX-side EEE keeps working.
+[  137.924693][ T8692] UBSAN: array-index-out-of-bounds in ../net/ipv6/netfilter/ip6t_hbh.c:110:29
+[  137.926167][ T8692] index 16 is out of range for type '__u16 [16]'
 
-Link: https://github.com/raspberrypi/linux/issues/7304
-Fixes: 6ef398ea60d9 ("net: bcmgenet: add EEE support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260520184320.652053-1-nb@tipi-net.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/ipv6/netfilter/ip6t_hbh.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1271,13 +1271,12 @@ void bcmgenet_eee_enable_set(struct net_
- 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
- 	bcmgenet_writel(reg, priv->base + off);
- 
--	/* Do the same for thing for RBUF */
-+	/* RBUF EEE/PM can break the RX path on GENET. Keep it disabled. */
- 	reg = bcmgenet_rbuf_readl(priv, RBUF_ENERGY_CTRL);
--	if (enable)
--		reg |= RBUF_EEE_EN | RBUF_PM_EN;
--	else
-+	if (reg & (RBUF_EEE_EN | RBUF_PM_EN)) {
- 		reg &= ~(RBUF_EEE_EN | RBUF_PM_EN);
--	bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
-+		bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
+--- a/net/ipv6/netfilter/ip6t_hbh.c
++++ b/net/ipv6/netfilter/ip6t_hbh.c
+@@ -168,6 +168,10 @@ static int hbh_mt6_check(const struct xt
+ 		pr_debug("unknown flags %X\n", optsinfo->invflags);
+ 		return -EINVAL;
+ 	}
++	if (optsinfo->optsnr > IP6T_OPTS_OPTSNR) {
++		pr_debug("too many supported opts specified\n");
++		return -EINVAL;
 +	}
  
- 	if (!enable && priv->clk_eee_enabled) {
- 		clk_disable_unprepare(priv->clk_eee);
+ 	if (optsinfo->flags & IP6T_OPTS_NSTRICT) {
+ 		pr_debug("Not strict - not implemented");
 
 
 
