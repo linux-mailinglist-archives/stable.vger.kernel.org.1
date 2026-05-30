@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257332-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMWIFYssG2ow/wgAu9opvQ
-	(envelope-from <stable+bounces-258712-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:29:31 +0200
+	id kJjEEqcYG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257332-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:04:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEADB611D57
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:29:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E14D860ED80
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:04:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6B483081796
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:21:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5A7A2301477B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EBD6233D9E;
-	Sat, 30 May 2026 18:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8013934BA42;
+	Sat, 30 May 2026 17:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGutkpQC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gu4p39Uj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C49A17555;
-	Sat, 30 May 2026 18:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EB22690D5;
+	Sat, 30 May 2026 17:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165284; cv=none; b=e4WVgGVstkwgfMHlRK2/WyajjDVMUfKUAsEGfexRMHHzc1GwCHhjhZXym7e/vyQn5LUxJnl9Avjzqfm0iSIgN4zpx9dIDQZYksY0u7WG9nb4Egcvb3tMrvfIeOsspATTBD1BWmeVMb9pQzOFNXMiZL4pNHSeQLnqDH/m29AyRHU=
+	t=1780160627; cv=none; b=uSSp8zlJc29CMjsY9vDo0ktWL+q2sD3r+nkS1Y3kAbank9hpjNmI9ej1oW/YOEG1G5PksnHZnZstRFSB737vw+Ei/1W9rRpXxE92LpLgDISh49Z9oZqG6iEN84cVEXMvp51AvEzZ7Pf0SHLk1bkI6uTLd5h1UACpwI8Yx2q2ktY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165284; c=relaxed/simple;
-	bh=VYKjMHRI8mAMehmVLBhqwmrzporoub210zMgzDRo2d0=;
+	s=arc-20240116; t=1780160627; c=relaxed/simple;
+	bh=4YC/to4BWP8nP5AHyApC4h7pqG/95qq4YpZ3e13lmm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDuGYrefp/mcY/xWNnZCGn/KWzIjf4w/3brBxbxGw4nSgFBKA21Jczn/pAGUt7Av2JUUQt8M9VXfqS9btDt9Sa1HKNe85cfWIXRa9R0qtCaSbR7hTd4LMOa0OqKQGtmMlhgZg3xEpPZS8zH2RSm3M7I0C3BVykWLFba8UikDlMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGutkpQC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDB71F00893;
-	Sat, 30 May 2026 18:21:22 +0000 (UTC)
+	 MIME-Version; b=lEwpLl9O72PjpxdM/R30iA0skHlYoD6+FvQpqalqMW5p+yWSyeV31GEhMLi5c2bruBEZPJMCmsVLJPnLWFLrrPoZCtGKap9T8/pDaVhVDcspY2/FMp0w+Cirh2ciM31khDKZQU6INNoC9p9qA0lXyTajWrYPlhFUZSSjl+USlQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gu4p39Uj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08F21F00893;
+	Sat, 30 May 2026 17:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165283;
-	bh=xerdt+QZjeepIW2OiO6DfYILABdKUHX6zLK3ExOM82Q=;
+	s=korg; t=1780160626;
+	bh=bgCGHeDtp/xwGkx7kU1UEcBFb/3r6hSTQOlXQSGtsHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KGutkpQC9Zy2wWdP7e6XWlsMYvVFVHQVFKjaS1/mSauSO1MOXt1Vza+/yBcBp4is7
-	 DvSd7wHlYJtN4eq/tixlMOkFqp9O1R5wW+YgvUalKPGYY1JijQQ0gg9kR9o9FKF1r/
-	 uLaSyZhLtYBgCgpQlwuNVYgAgf3QoyG0mtUeso6w=
+	b=gu4p39UjBXxFyrBhmtx6VE1G210I7JUdolwzYpG03eN+2YyrKZ9H5M+kRp4vsKag4
+	 k2ycwZZcy8UgLoIFIZ+lDh0CX47l3J70DdbtdQ2N+9VgOrgsqVusj3WNMuY/muErvv
+	 37ZsryqyrImvrUgglkyrL5UNqvVMB115O7XMzZjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomasz Merta <tommerta@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 013/589] ASoC: stm32_sai: fix incorrect BCLK polarity for DSP_A/B, LEFT_J
-Date: Sat, 30 May 2026 17:58:14 +0200
-Message-ID: <20260530160224.926109234@linuxfoundation.org>
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Shardul Bankar <shardul.b@mpiricsoftware.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 371/969] mptcp: use MPJoinSynAckHMacFailure for SynAck HMAC failure
+Date: Sat, 30 May 2026 17:58:15 +0200
+Message-ID: <20260530160310.561340756@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,96 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258712-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257332-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arrow.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CEADB611D57
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E14D860ED80
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Merta <tomasz.merta@arrow.com>
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
 
-[ Upstream commit 0669631dbccd41cf3ca7aa70213fcd8bb41c4b38 ]
+commit c4a99a921949cddc590b22bb14eeb23dffcc3ba6 upstream.
 
-The STM32 SAI driver do not set the clock strobing bit (CKSTR) for DSP_A,
-DSP_B and LEFT_J formats, causing data to be sampled on the wrong BCLK
-edge when SND_SOC_DAIFMT_NB_NF is used.
+In subflow_finish_connect(), HMAC validation of the server's HMAC
+in SYN/ACK + MP_JOIN increments MPTCP_MIB_JOINACKMAC ("HMAC was
+wrong on ACK + MP_JOIN") on failure. The function processes the
+SYN/ACK, not the ACK; the matching MPTCP_MIB_JOINSYNACKMAC counter
+("HMAC was wrong on SYN/ACK + MP_JOIN") exists but is not
+incremented anywhere in the tree.
 
-Per ALSA convention, NB_NF requires sampling on the rising BCLK edge.
-The STM32MP25 SAI reference manual states that CKSTR=1 is required for
-signals received by the SAI to be sampled on the SCK rising edge.
-Without setting CKSTR=1, the SAI samples on the falling edge, violating
-the NB_NF convention. For comparison, the NXP FSL SAI driver correctly
-sets FSL_SAI_CR2_BCP for DSP_A, DSP_B and LEFT_J, consistent with its
-I2S handling.
+The mirror site on the server, subflow_syn_recv_sock(), already
+uses JOINACKMAC correctly for ACK HMAC failure. Use JOINSYNACKMAC
+at the SYN/ACK validation site so each counter reflects the packet
+whose HMAC actually failed.
 
-This patch adds SAI_XCR1_CKSTR for DSP_A, DSP_B and LEFT_J in
-stm32_sai_set_dai_fmt which was verified empirically with a cs47l35 codec.
-RIGHT_J (LSB) is not investigated and addressed by this patch.
-
-Note: the STM32 I2S driver (stm32_i2s_set_dai_fmt) may have the same issue
-for DSP_A mode, as I2S_CGFR_CKPOL is not set. This has not been verified
-and is left for a separate investigation.
-
-Signed-off-by: Tomasz Merta <tommerta@gmail.com>
-Link: https://patch.msgid.link/20260408084056.20588-1-tommerta@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: fc518953bc9c ("mptcp: add and use MIB counter infrastructure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260501-net-mptcp-misc-fixes-7-1-rc3-v1-1-b70118df778e@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/stm/stm32_sai_sub.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mptcp/subflow.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 1810c43d0833f..962e5606c2c9a 100644
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -671,6 +671,7 @@ static int stm32_sai_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
- 		break;
- 	/* Left justified */
- 	case SND_SOC_DAIFMT_MSB:
-+		cr1 |= SAI_XCR1_CKSTR;
- 		frcr |= SAI_XFRCR_FSPOL | SAI_XFRCR_FSDEF;
- 		break;
- 	/* Right justified */
-@@ -678,9 +679,11 @@ static int stm32_sai_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
- 		frcr |= SAI_XFRCR_FSPOL | SAI_XFRCR_FSDEF;
- 		break;
- 	case SND_SOC_DAIFMT_DSP_A:
-+		cr1 |= SAI_XCR1_CKSTR;
- 		frcr |= SAI_XFRCR_FSPOL | SAI_XFRCR_FSOFF;
- 		break;
- 	case SND_SOC_DAIFMT_DSP_B:
-+		cr1 |= SAI_XCR1_CKSTR;
- 		frcr |= SAI_XFRCR_FSPOL;
- 		break;
- 	default:
--- 
-2.53.0
-
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -469,7 +469,7 @@ static void subflow_finish_connect(struc
+ 			 subflow->backup);
+ 
+ 		if (!subflow_thmac_valid(subflow)) {
+-			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINACKMAC);
++			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNACKMAC);
+ 			subflow->reset_reason = MPTCP_RST_EMPTCP;
+ 			goto do_reset;
+ 		}
 
 
 
