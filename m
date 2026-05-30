@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-259262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257853-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OIrzML0zG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:13 +0200
+	id eABQAFwfG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257853-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A2E612EDA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9723D60FE76
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74A6E301778D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E23193004F38
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8499B25D527;
-	Sat, 30 May 2026 18:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE202341AB8;
+	Sat, 30 May 2026 17:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJTi0rXo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpldd44X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504B12857FA;
-	Sat, 30 May 2026 18:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA6D30E853;
+	Sat, 30 May 2026 17:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167153; cv=none; b=FOszsIECGKOOdUsJscBeeslUA0gLw2/yrMDyjpP86DfLv01aMoLi/ZF32Ze1y2yE61bMW+W8o4fJf7X+jkte/wD1eyAD/7fV7CjRVvdvX9rodK4hMZt9UdrBULU35kIc53+9LdzpBKDWUQhXWPPdspC9qN/V7IvEgVuSlWmsEIY=
+	t=1780162391; cv=none; b=rUBKBtfjvoOAE44mRXO19s02B1M70oe6OJbs7FG/217SO+9FcEsmM9NwrYurmODoejBHsHBceA/6kk9yftijL78z23+HkZeynUrwGHAGwUcNixbTJb3i/uxtJjraz7lgbhHjX0ql21302SFVi6LfOmErYKmEobxGo5V//ogF60g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167153; c=relaxed/simple;
-	bh=ulVuhOJbnQJQOSf04clh6B0l6iCZ6Cb6h4fTxzyF+Bc=;
+	s=arc-20240116; t=1780162391; c=relaxed/simple;
+	bh=skqgQQnuG8dbSYbXvoMke6/jiKA3lTEvrBo7ZdH0JN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YZVncFJdp2amhWCkOef8flnf+cdPdkrSsSs2qvYcKztQLOVS5ccDoMIsdlYMuyo93YFlXY1DxcJQcfWtWnxwV3WNMYB3FddsMudnIfwXtnPqaVq/yG1htXovqYG7/lispwFdeK6uwhhxoReh4MJkNLtZfe5SrXMw6ddrDeMhBeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJTi0rXo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B0D1F00893;
-	Sat, 30 May 2026 18:52:29 +0000 (UTC)
+	 MIME-Version; b=W955VMsGO1quXm+d5VCY1cdly02RexGohhPc/co7QR9nnfI3BbenOE6o4VdTFNIiEaGNCeydn/ZRLbiBcbqpZfKtFQkJfB5NdmTY6+CUMDWJerZrV+ZpaksawVyUw+TE+dYPFBjM2gPWWVsFcIX5z92QAPOYXo1otGx59xdpxYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpldd44X; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF3D1F00893;
+	Sat, 30 May 2026 17:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167150;
-	bh=SucX90gHg5Xd4Gw3/fJaipG2c/ui+EUQPc+agbyUvmU=;
+	s=korg; t=1780162390;
+	bh=uX/iARVBZEquKCqMdQsK+BkLCf9C7DPeA+KOdNwJDyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JJTi0rXogXXca1lmk1YZAdTzIw5Agc+UZ3FHr1RUEFaus0v21U+XlxK2F6FoNBifV
-	 mWlbSs/u53yRq+0PY+Qc7VDZUwt2WKUZ23PJZnKKrG1/8z2MTvelvC8A2pl0RtZT7U
-	 eCI3b8WIH0fiuvdPvj/YwJ0KD8S6kdM44QS+WdhA=
+	b=fpldd44XYY1H8eqBgNNheH3H5CAlqfmxUtZabBvsDpCq8LaB09NqANeU9GKsnC0hm
+	 ao1g1/P+783mZPB6n2BdRraSgj+ZMLkdWxYBv07ylZmIlg0VkZvMWXts5m2EyXY9tf
+	 oj1ZgsBU11rHV0/NpTW4jT9DqlZaQZY6567grc6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Zanussi <tom.zanussi@linux.intel.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Rosen Penev <rosenp@gmail.com>,
-	Sashiko <sashiko-bot@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 5.10 543/589] tracing: Do not call map->ops->elt_free() if elt_alloc() fails
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 900/969] firmware: arm_ffa: Check for NULL FF-A ID table while driver registration
 Date: Sat, 30 May 2026 18:07:04 +0200
-Message-ID: <20260530160238.948728314@linuxfoundation.org>
+Message-ID: <20260530160325.564236617@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,106 +67,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,efficios.com,gmail.com,kernel.org,goodmis.org];
-	TAGGED_FROM(0.00)[bounces-259262-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-257853-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[efficios.com:email,sashiko.dev:url,goodmis.org:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 33A2E612EDA
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9723D60FE76
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Sudeep Holla <sudeep.holla@kernel.org>
 
-commit 8f0f5c4fb9df0e19a341e0c6ed8dc4fda9124f03 upstream.
+[ Upstream commit 0a5e695095c557d2380131b613dea4e8d90371be ]
 
-In paths where tracing_map_elt_alloc() failed to allocate objects,
-the map->ops->elt_alloc() call was never successful. In this case,
-map->ops->elt_free() should not be called.
+The bus match callback assumes that every FF-A driver provides an
+id_table and dereferences it unconditionally. Enforce that contract at
+registration time so a buggy client driver cannot crash the bus during
+match.
 
-Link: https://sashiko.dev/#/patchset/20260520223101.34710-1-rosenp%40gmail.com
-
-Cc: stable@vger.kernel.org
-Cc: Tom Zanussi <tom.zanussi@linux.intel.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Rosen Penev <rosenp@gmail.com>
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Fixes: 2734b629525a ("tracing: Add per-element variable support to tracing_map")
-Link: https://patch.msgid.link/177933895460.108746.5396070821443932634.stgit@devnote2
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 92743071464f ("firmware: arm_ffa: Ensure drivers provide a probe function")
+Link: https://patch.msgid.link/20260428-ffa_fixes-v2-1-8595ae450034@kernel.org
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/tracing_map.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/firmware/arm_ffa/bus.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/tracing_map.c
-+++ b/kernel/trace/tracing_map.c
-@@ -386,13 +386,11 @@ static void tracing_map_elt_init_fields(
- 	}
- }
+diff --git a/drivers/firmware/arm_ffa/bus.c b/drivers/firmware/arm_ffa/bus.c
+index 5bda5d7ade42d..4ef02f0125ab9 100644
+--- a/drivers/firmware/arm_ffa/bus.c
++++ b/drivers/firmware/arm_ffa/bus.c
+@@ -24,6 +24,8 @@ static int ffa_device_match(struct device *dev, struct device_driver *drv)
  
--static void tracing_map_elt_free(struct tracing_map_elt *elt)
-+static void __tracing_map_elt_free(struct tracing_map_elt *elt)
+ 	id_table = to_ffa_driver(drv)->id_table;
+ 	ffa_dev = to_ffa_dev(dev);
++	if (!id_table)
++		return 0;
+ 
+ 	while (!uuid_is_null(&id_table->uuid)) {
+ 		/*
+@@ -107,7 +109,7 @@ int ffa_driver_register(struct ffa_driver *driver, struct module *owner,
  {
- 	if (!elt)
- 		return;
+ 	int ret;
  
--	if (elt->map->ops && elt->map->ops->elt_free)
--		elt->map->ops->elt_free(elt);
- 	kfree(elt->fields);
- 	kfree(elt->vars);
- 	kfree(elt->var_set);
-@@ -400,6 +398,17 @@ static void tracing_map_elt_free(struct
- 	kfree(elt);
- }
+-	if (!driver->probe)
++	if (!driver->probe || !driver->id_table)
+ 		return -EINVAL;
  
-+static void tracing_map_elt_free(struct tracing_map_elt *elt)
-+{
-+	if (!elt)
-+		return;
-+
-+	/* Only objects initialized with alloc_elt() should be passed to free_elt().*/
-+	if (elt->map->ops && elt->map->ops->elt_free)
-+		elt->map->ops->elt_free(elt);
-+	__tracing_map_elt_free(elt);
-+}
-+
- static struct tracing_map_elt *tracing_map_elt_alloc(struct tracing_map *map)
- {
- 	struct tracing_map_elt *elt;
-@@ -444,7 +453,7 @@ static struct tracing_map_elt *tracing_m
- 	}
- 	return elt;
-  free:
--	tracing_map_elt_free(elt);
-+	__tracing_map_elt_free(elt);
- 
- 	return ERR_PTR(err);
- }
+ 	driver->driver.bus = &ffa_bus_type;
+-- 
+2.53.0
+
 
 
 
