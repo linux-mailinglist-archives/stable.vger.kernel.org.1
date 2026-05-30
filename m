@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-257957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257179-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IH0eEk0iG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257957-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:49 +0200
+	id aNSICMYWG2rX/AgAu9opvQ
+	(envelope-from <stable+bounces-257179-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:56:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D7861053F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0C160EA5B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:56:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B31653012C76
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:39:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DDBDD300E32B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA29133F590;
-	Sat, 30 May 2026 17:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FD23438AE;
+	Sat, 30 May 2026 16:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1ondIM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IqFwui+U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8151134389F;
-	Sat, 30 May 2026 17:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064F632BF24;
+	Sat, 30 May 2026 16:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162746; cv=none; b=uXf79nfOUqgRFu0ykSAtVnCgmQb9P5rYnPgLEs9oWlwoITkOxVCrb8MLvWMkf/NQ4MppdGH/vZSCQpwIW0HCCF/d2NgG/rUA5BISY1hfIVh+lgIQUrSmEZ6KQE+fwh5XCNeB2M7eUje3gKQO8/6UQwENVOCKHIz+0EcdXMhWz9I=
+	t=1780160084; cv=none; b=lYi3HctIBORO6uEWrfPCqogXWoU5ueXIMqB5GmefX4rMCi2oDlzwIGN0MQfne+tWkZA4B+EbZIY8/xerqGPXI/WkGtBrKDfzyLFFgSpI5RhAjwYCg+owQXvejKtdOn5ACBHNWFL7gW6+m6usd9FnJqtm2zQPBOuBdHXQlEMY+Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162746; c=relaxed/simple;
-	bh=EHeqSIH1Iw9yb/+UDRZ1wPvsQab2GavGza+ye33fhas=;
+	s=arc-20240116; t=1780160084; c=relaxed/simple;
+	bh=kTlM/8LT0FkPMcOZqSrXCFoQ13pQzEyPuUd36URSQoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUCpClQfDiWgYuQUYRNIyac+USySx7HCu+zs3sHUu5adOkt1RPGxB8VlLfMMSJKHdEHPSt2PiY8xjN/el5dm5y9/+d8I4/Kx5cAGzUmKCZBImYD503/g06puCLwcrnfThfIM0syQ97r5QKiQ4FBzyQFwh94PzCqkDfp9lVKCzMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1ondIM/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BED1F00893;
-	Sat, 30 May 2026 17:39:03 +0000 (UTC)
+	 MIME-Version; b=VIkIPr+lvrVTTeFvAcb0hJlGaCQtgJfgBCf+YxMkJn71SKm/glmt7gFs8+ayuD8cpbrjBR7iQsaAtHlsUKtlVII9OEdVmnFRAS/RvAfVL3NDnqHQxSTfrl9POZNYMhUVNod6YpBUpeK/iyC36dw8AfLbFsV8hKM/ibNTqSeQpNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IqFwui+U; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 208C81F00893;
+	Sat, 30 May 2026 16:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162744;
-	bh=xh01yEAob+/Xlb/4jjVzdCe1SHZxHkDbyCGSxv3Gv+E=;
+	s=korg; t=1780160082;
+	bh=Y5t8frf5gCI7X1IGuLYz0pxgfVeXl3NmwlOfBtLiwoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f1ondIM/wjG1zTyzSmOcJfl5i+Fag+iXg8PD1xl1WnLBIcw8UDq61pEMzjtFKWL5S
-	 wwm+h/tJc/rswuHlvIGMl/Ui2WQgLFngCXWcNMajVVPJl4kPHZndcwnGOcGsWA9Ggb
-	 1IxMRSpwLu2UA6xato+CdOUsmwIcOomTLWPzBuqY=
+	b=IqFwui+UyAjZ96rZQgxmxtjg/ZuAEhOoAm5nRYjeKE7hKr05Hh5Dg9mNvaLeGaSkd
+	 YEPuFjCc7metILLMymNFssKX6hvH23BINJSyKT3vSND40T8BI+LYLoRHHjoFuCQm+k
+	 X74vZHDwZU+fspY5fUuBFhMXqdEjbQQvncn4f1y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Haoze Xie <royenheart@gmail.com>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 051/776] batman-adv: hold claim backbone gateways by reference
+	Yosry Ahmed <yosry@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 241/969] KVM: nSVM: Clear tracking of L1->L2 NMI and soft IRQ on nested #VMEXIT
 Date: Sat, 30 May 2026 17:56:05 +0200
-Message-ID: <20260530160241.629414884@linuxfoundation.org>
+Message-ID: <20260530160307.113943326@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,154 +68,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257957-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,narfation.org,simonwunderlich.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-257179-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email]
-X-Rspamd-Queue-Id: A9D7861053F
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 1E0C160EA5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoze Xie <royenheart@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit 82d8701b2c930d0e96b0dbc9115a218d791cb0d2 upstream.
+commit 8998e1d012f3f45d0456f16706682cef04c3c436 upstream.
 
-batadv_bla_add_claim() can replace claim->backbone_gw and drop the old
-gateway's last reference while readers still follow the pointer.
+KVM clears tracking of L1->L2 injected NMIs (i.e. nmi_l1_to_l2) and soft
+IRQs (i.e. soft_int_injected) on a synthesized #VMEXIT(INVALID) due to
+failed VMRUN. However, they are not explicitly cleared in other
+synthesized #VMEXITs.
 
-The netlink claim dump path dereferences claim->backbone_gw->orig and
-takes claim->backbone_gw->crc_lock without pinning the underlying
-backbone gateway. batadv_bla_check_claim() still has the same naked
-pointer access pattern.
+soft_int_injected is always cleared after the first VMRUN of L2 when
+completing interrupts, as any re-injection is then tracked by KVM
+(instead of purely in vmcb02).
 
-Reuse batadv_bla_claim_get_backbone_gw() in both readers so they operate
-on a stable gateway reference until the read-side work is complete.
-This keeps the dump and claim-check paths aligned with the lifetime
-rules introduced for the other BLA claim readers.
+nmi_l1_to_l2 is not cleared after the first VMRUN if NMI injection
+failed, as KVM still needs to keep track that the NMI originated from L1
+to avoid blocking NMIs for L1. It is only cleared when the NMI injection
+succeeds.
 
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Fixes: 04f3f5bf1883 ("batman-adv: add B.A.T.M.A.N. Dump BLA claims via netlink")
+KVM could synthesize a #VMEXIT to L1 before successfully injecting the
+NMI into L2 (e.g. due to a #NPF on L2's NMI handler in L1's NPTs). In
+this case, nmi_l1_to_l2 will remain true, and KVM may not correctly mask
+NMIs and intercept IRET when injecting an NMI into L1.
+
+Clear both nmi_l1_to_l2 and soft_int_injected in nested_svm_vmexit(), i.e.
+for all #VMEXITs except those that occur due to failed consistency checks,
+as those happen before nmi_l1_to_l2 or soft_int_injected are set.
+
+Fixes: 159fc6fa3b7d ("KVM: nSVM: Transparently handle L1 -> L2 NMI re-injection")
 Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Haoze Xie <royenheart@gmail.com>
-Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260303003421.2185681-13-yosry@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c | 27 +++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ arch/x86/kvm/svm/nested.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
-index 17687848daec5..fb9aaf82f7136 100644
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -2131,6 +2131,7 @@ batadv_bla_claim_dump_entry(struct sk_buff *msg, u32 portid,
- 			    struct batadv_bla_claim *claim)
- {
- 	u8 *primary_addr = primary_if->net_dev->dev_addr;
-+	struct batadv_bla_backbone_gw *backbone_gw;
- 	u16 backbone_crc;
- 	bool is_own;
- 	void *hdr;
-@@ -2146,32 +2147,35 @@ batadv_bla_claim_dump_entry(struct sk_buff *msg, u32 portid,
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -864,8 +864,6 @@ int nested_svm_vmrun(struct kvm_vcpu *vc
  
- 	genl_dump_check_consistent(cb, hdr);
+ out_exit_err:
+ 	svm->nested.nested_run_pending = 0;
+-	svm->nmi_l1_to_l2 = false;
+-	svm->soft_int_injected = false;
  
--	is_own = batadv_compare_eth(claim->backbone_gw->orig,
--				    primary_addr);
-+	backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
+ 	svm->vmcb->control.exit_code    = SVM_EXIT_ERR;
+ 	svm->vmcb->control.exit_code_hi = -1u;
+@@ -1131,6 +1129,10 @@ void svm_free_nested(struct vcpu_svm *sv
+ 	__free_page(virt_to_page(svm->nested.vmcb02.ptr));
+ 	svm->nested.vmcb02.ptr = NULL;
+ 
++	/* Drop tracking for L1->L2 injected NMIs and soft IRQs */
++	svm->nmi_l1_to_l2 = false;
++	svm->soft_int_injected = false;
 +
-+	is_own = batadv_compare_eth(backbone_gw->orig, primary_addr);
- 
--	spin_lock_bh(&claim->backbone_gw->crc_lock);
--	backbone_crc = claim->backbone_gw->crc;
--	spin_unlock_bh(&claim->backbone_gw->crc_lock);
-+	spin_lock_bh(&backbone_gw->crc_lock);
-+	backbone_crc = backbone_gw->crc;
-+	spin_unlock_bh(&backbone_gw->crc_lock);
- 
- 	if (is_own)
- 		if (nla_put_flag(msg, BATADV_ATTR_BLA_OWN)) {
- 			genlmsg_cancel(msg, hdr);
--			goto out;
-+			goto put_backbone_gw;
- 		}
- 
- 	if (nla_put(msg, BATADV_ATTR_BLA_ADDRESS, ETH_ALEN, claim->addr) ||
- 	    nla_put_u16(msg, BATADV_ATTR_BLA_VID, claim->vid) ||
- 	    nla_put(msg, BATADV_ATTR_BLA_BACKBONE, ETH_ALEN,
--		    claim->backbone_gw->orig) ||
-+		    backbone_gw->orig) ||
- 	    nla_put_u16(msg, BATADV_ATTR_BLA_CRC,
- 			backbone_crc)) {
- 		genlmsg_cancel(msg, hdr);
--		goto out;
-+		goto put_backbone_gw;
- 	}
- 
- 	genlmsg_end(msg, hdr);
- 	ret = 0;
- 
-+put_backbone_gw:
-+	batadv_backbone_gw_put(backbone_gw);
- out:
- 	return ret;
- }
-@@ -2467,6 +2471,7 @@ int batadv_bla_backbone_dump(struct sk_buff *msg, struct netlink_callback *cb)
- bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
- 			    u8 *addr, unsigned short vid)
- {
-+	struct batadv_bla_backbone_gw *backbone_gw;
- 	struct batadv_bla_claim search_claim;
- 	struct batadv_bla_claim *claim = NULL;
- 	struct batadv_hard_iface *primary_if = NULL;
-@@ -2489,9 +2494,13 @@ bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
- 	 * return false.
- 	 */
- 	if (claim) {
--		if (!batadv_compare_eth(claim->backbone_gw->orig,
-+		backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
-+
-+		if (!batadv_compare_eth(backbone_gw->orig,
- 					primary_if->net_dev->dev_addr))
- 			ret = false;
-+
-+		batadv_backbone_gw_put(backbone_gw);
- 		batadv_claim_put(claim);
- 	}
- 
--- 
-2.53.0
-
+ 	/*
+ 	 * When last_vmcb12_gpa matches the current vmcb12 gpa,
+ 	 * some vmcb12 fields are not loaded if they are marked clean
 
 
 
