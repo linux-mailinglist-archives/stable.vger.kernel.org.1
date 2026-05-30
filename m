@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257929-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MArBCb0XG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:45 +0200
+	id sHlhKd4hG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257929-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DFB60EB7B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B07610424
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4CD5E30158AA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:53:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3630F30FEAA1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E162D33F5A3;
-	Sat, 30 May 2026 16:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847A33546F6;
+	Sat, 30 May 2026 17:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aB4s3gRI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p52ytLIq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1141732BF24;
-	Sat, 30 May 2026 16:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC6E32B11F;
+	Sat, 30 May 2026 17:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159981; cv=none; b=ZzHDVa4xDLvgbfKF2RoHJClcGqC6MRrtLqNTF1Gyylkr1yCM1elsUZ6Jg3HJQNW4FSd+WPP0kjRd5A4TBLxygyDJI8MHdgAT/XuWH/SV2xmUYFpV1rlfbym1+DUdM+5rrVrlKqB5AsN3NpykIKpaSFi8LBksrC4hjWKfwvLWi+I=
+	t=1780162644; cv=none; b=cAxRnE3wbbvnz6/I0GtbZY4FQ6XAqjMx3u+yuVebbSHjeqT2gduJLumoos4cokdDEDp2kXZdwoRpP8ltV2RAkxcNwLw/Wz4FUL8P+XqA2VLKD3cEL5N68IFx+xTJBZE/poauHkFRgvMjXQf5iAo1tJKheoFq0JCh3Mqpq+pC7c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159981; c=relaxed/simple;
-	bh=n3BZe6eV9iSeANIPYAIWTy+VaiobGIveR+Q6StVYnQM=;
+	s=arc-20240116; t=1780162644; c=relaxed/simple;
+	bh=MvbredatniRebKRFCq8yBio7uOoyy7M7abualZQg8/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NeNPPTu6V4YjVw1JsJv9U/ucWgwudMmYJCds/NiFXcwyD8XKiYD2Vs98Mcy+EdCi/Z+eyMmBlKI4X8U3sk5w+sQT2z9C0QAZ4eeicr1WhN6DeFSJSkmCc3S/1QJKcmBsyi/SZOpID/BvyxeSQn+8gMaEy/J2YspjgqVHu2NGzr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aB4s3gRI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC2D1F00893;
-	Sat, 30 May 2026 16:52:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P7F66/KgkUrzGKEU4CrFYRJqxuIk7J8HP9B57VhADTc1AU637fEjZL3EqXKPGDlaA0ugBcDArkFkelIu8U4HxRNxIYLD5LhlO0T7s0b+eMJGLsoqdKE9JGlzLCRCOg8lVnppHKl5WnlerJavt2Ig+IGnsEIeKJ12CIWQ3lSteHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p52ytLIq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E121F00893;
+	Sat, 30 May 2026 17:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159979;
-	bh=ysR5uUuUBvY/FciMbbLOP9xqo+4NPQrYV8296Om2aNk=;
+	s=korg; t=1780162643;
+	bh=6KgGrjkyCAlO+MEcj9nl8FL7NL7SMYJsjKsdutooIDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aB4s3gRI7Ea+Z0yXBZdET5dWPb/rF5NJy8eENfpN5DsVj+hHAQq52K1ovQlOikJx9
-	 s2NAu4YkM1UJFUQhylJCDje/aI8lNMn58VkbqS9XxRrJWxlzSKlQyBHXJ71BoEkZM/
-	 45X2oene7yN6RPSqzpxHMOKQUL8DZSfj35m0dvHQ=
+	b=p52ytLIqo4jUkooGRr1EtBnNUG8jkgpK8T9HE3IfqyTuYgWYEaslpNX/9Y0RbpzQ8
+	 ugNwBE2GqSdfBYckE+5zvORHPYAz7i+6T4ebdXND9uWUXEutioxWFT54JbC5gj69/7
+	 YuYBWb2zEKvr4vwY78NqyqbDdTXvJVIuXh5z50TE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 212/969] iio: adc: ad7768-1: fix one-shot mode data acquisition
+	Melissa Wen <mwen@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 022/776] drm/vc4: Protect madv read in vc4_gem_object_mmap() with madv_lock
 Date: Sat, 30 May 2026 17:55:36 +0200
-Message-ID: <20260530160306.314606599@linuxfoundation.org>
+Message-ID: <20260530160240.837961841@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257151-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257929-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 97DFB60EB7B
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 40B07610424
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Santos <Jonathan.Santos@analog.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-commit 8be19e233744961db6069da9c9ab63eb085a0447 upstream.
+[ Upstream commit 338c56050d8e892604da97f67bfa8cc4015a955f ]
 
-According to the datasheet, one-shot mode requires a SYNC_IN pulse to
-trigger a new sample conversion. In the current implementation, No sync
-pulse was sent after switching to one-shot mode and reinit_completion()
-was called before mode switching, creating a race condition where spurious
-interrupts during mode change could trigger completion prematurely.
+The mmap callback reads bo->madv without holding madv_lock, racing with
+concurrent DRM_IOCTL_VC4_GEM_MADVISE calls that modify the field under
+the same lock. Add the missing locking to prevent the data race.
 
-Fix by sending a sync pulse after configuring one-shot mode and
-reinit_completion() to ensure it only waits for the actual conversion
-completion.
-
-Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b9f19259b84d ("drm/vc4: Add the DRM_IOCTL_VC4_GEM_MADVISE ioctl")
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-4-92defc940a29@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7768-1.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vc4/vc4_bo.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -241,12 +241,17 @@ static int ad7768_scan_direct(struct iio
- 	struct ad7768_state *st = iio_priv(indio_dev);
- 	int readval, ret;
+diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
+index f642bd6e71ff4..4703f180cde60 100644
+--- a/drivers/gpu/drm/vc4/vc4_bo.c
++++ b/drivers/gpu/drm/vc4/vc4_bo.c
+@@ -713,12 +713,15 @@ static int vc4_gem_object_mmap(struct drm_gem_object *obj, struct vm_area_struct
+ 		return -EINVAL;
+ 	}
  
--	reinit_completion(&st->completion);
--
- 	ret = ad7768_set_mode(st, AD7768_ONE_SHOT);
- 	if (ret < 0)
- 		return ret;
++	mutex_lock(&bo->madv_lock);
+ 	if (bo->madv != VC4_MADV_WILLNEED) {
+ 		DRM_DEBUG("mmaping of %s BO not allowed\n",
+ 			  bo->madv == VC4_MADV_DONTNEED ?
+ 			  "purgeable" : "purged");
++		mutex_unlock(&bo->madv_lock);
+ 		return -EINVAL;
+ 	}
++	mutex_unlock(&bo->madv_lock);
  
-+	reinit_completion(&st->completion);
-+
-+	/* One-shot mode requires a SYNC pulse to generate a new sample */
-+	ret = ad7768_send_sync_pulse(st);
-+	if (ret)
-+		return ret;
-+
- 	ret = wait_for_completion_timeout(&st->completion,
- 					  msecs_to_jiffies(1000));
- 	if (!ret)
+ 	return drm_gem_cma_mmap(obj, vma);
+ }
+-- 
+2.53.0
+
 
 
 
