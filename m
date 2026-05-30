@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-258137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iH+9HBklG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258137-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:45 +0200
+	id KKePI5klG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E3F610B4D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C0B610C89
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66A31308888C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA00B308B78A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D84F346E55;
-	Sat, 30 May 2026 17:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBE6342CA7;
+	Sat, 30 May 2026 17:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qhd9UkLB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0IZw1v6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE8519D8AC;
-	Sat, 30 May 2026 17:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974A7320CAD;
+	Sat, 30 May 2026 17:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163340; cv=none; b=EcCuvMqUHJUHyQro5YD1o6wjsTFQTyzqMcBEyGRbEwubf68945o78Z7Ck9o97Po3wJ/ZREEotdJZJz27AVe6plNG+i2h2gXpaTVefRXO/PY/PyNIwqzjzZ9sba+vNwsQ0MDTE1NQ5w629m9lXjHLNsjSvUrKrvpixVh9eDPFPgg=
+	t=1780163469; cv=none; b=pXNeoFgbshtypyW5txQk70NPmt7/M2RGGClpyuYMAwd9XU00lThnQJk+Y9egttBlenGQQPBVk+YfY0bQgMVDJrxoHUDpwexdYnHaEjuwt7HjgOpI0FBbE/Ph9Chtgohrc5VPK07nkNVfkEN+/47n9BNC35KjKHk1hp+ApnKlNNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163340; c=relaxed/simple;
-	bh=BK1a8pDN79W66P3ABawm8qpGNeB7jspaiKOnopDADGE=;
+	s=arc-20240116; t=1780163469; c=relaxed/simple;
+	bh=aJSJ4y9HzgJThU8hlZeXvgRwCpgpvVzyDTzidzQ7Qis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rt7KFz0TIdhG9MhwplflwgPtxjNwu6tYmUqkvt4BNl8RSZ/Oj+uxgOxaFSnWo4UUaDRz5imFP+4Rn+J3altlBo6M5DEZ4YZ+FmF17L/ps3IrNGg2rj76NG7kRb6L7+YirmXlWTCMNu46OnvHrxchFzwodGZMMoXrbm90BC6HuIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qhd9UkLB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3157F1F00893;
-	Sat, 30 May 2026 17:48:58 +0000 (UTC)
+	 MIME-Version; b=bFzeertAEjh0eXx2mEvtfI/TaiPzrbgrwg9hDj9CRblp43D96LDrdanIHZIZlP6xGWieYYJT+pPmVVv8I0QlHu7/Cr0zQrlVIG9vUzXMYV4QqML+8Ow8wS7W8C1giaKmVKj6fSONOcP4apyvoEdxOpVam9vNEgztdtj/ik+BBS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0IZw1v6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC44D1F00893;
+	Sat, 30 May 2026 17:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163339;
-	bh=2YRbBctd3tv2wYcPjDxn7cpuDRl0YcteoWv2pqMcdqQ=;
+	s=korg; t=1780163468;
+	bh=sLUojZ5YBo7ngXAZuKgEF9+MqkklszBv8NKFmrssvRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Qhd9UkLBGAZFgwKJACANQoGnMSBf/K9iOUsAJKEiTDnQYm1iruIL1Zw4Hb1T4ty+f
-	 xn1yGdfzQGVP8lojkBaEdFBaIJjdFRghfCX72bSHBwGZ3rwL1iybPJkMy4IxWDR0ML
-	 diEFc+o6Opmhy1VC6qwmzBI3ybsv4Co0Svm4WAoM=
+	b=e0IZw1v6iwbGHU3Mm2X758iQX7mb3LoubKOEQyeMxAxFVaI7K5yJ53kwyloD03UTt
+	 tW29Yu/nScJUwoFU0WCPnsKUy6jYJ1xIYDEswd2tFrsc5S1OXrgXA9xfRZqHu8zlne
+	 E7Zf3Aie29B5TMltzY51u2q4PYDy1YbpCa7pynjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Bin Liu <b-liu@ti.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 227/776] mmc: block: use single block write in retry
-Date: Sat, 30 May 2026 17:59:01 +0200
-Message-ID: <20260530160246.391049799@linuxfoundation.org>
+	Jacqueline Wong <jacqwong@google.com>,
+	Jordan Hand <jhand@google.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 5.15 228/776] tpm: tpm_tis: add error logging for data transfer
+Date: Sat, 30 May 2026 17:59:02 +0200
+Message-ID: <20260530160246.417477951@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
 References: <20260530160240.228940103@linuxfoundation.org>
@@ -66,32 +66,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258176-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258137-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,ti.com:url,ti.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D4E3F610B4D
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D4C0B610C89
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,93 +98,43 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Bin Liu <b-liu@ti.com>
+From: Jacqueline Wong <jacqwong@google.com>
 
-commit c7c6d4f5103864f73ee3a78bfd6da241f84197dd upstream.
+commit 0471921e2d1043dcc6de5cffb49dd37709521abe upstream.
 
-Due to errata i2493[0], multi-block write would still fail in retries.
+Add logging to more easily determine reason for transmit failure
 
-With i2493, the MMC interface has the potential of write failures when
-issuing multi-block writes operating in HS200 mode with excessive IO
-supply noise.
-
-While the errata provides guidance in hardware design and layout to
-minimize the IO supply noise, in theory the write failure cannot be
-resolved in hardware. The software solution to ensure the data integrity
-is to add minimum 5us delay between block writes. Single-block write is
-the practical way to introduce the delay.
-
-This patch reuses recovery_mode flag, and switches to single-block
-write in retry when multi-block write fails. It covers both CQE and
-non-CQE cases.
-
-[0] https://www.ti.com/lit/pdf/sprz582
-Cc: stable@vger.kernel.org
-Suggested-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Bin Liu <b-liu@ti.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: stable@vger.kernel.org # v6.6+
+Fixes: 280db21e153d8 ("tpm_tis: Resend command to recover from data transfer errors")
+Signed-off-by: Jacqueline Wong <jacqwong@google.com>
+Signed-off-by: Jordan Hand <jhand@google.com>
+Link: https://lore.kernel.org/r/20260415160006.2275325-2-jacqwong@google.com
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/block.c |   12 ++++++++++--
- drivers/mmc/core/queue.h |    3 +++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/char/tpm/tpm_tis_core.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -1361,6 +1361,9 @@ static void mmc_blk_data_prep(struct mmc
- 		    rq_data_dir(req) == WRITE &&
- 		    (md->flags & MMC_BLK_REL_WR);
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -410,6 +410,8 @@ static int tpm_tis_send_data(struct tpm_
+ 		status = tpm_tis_status(chip);
+ 		if (!itpm && (status & TPM_STS_DATA_EXPECT) == 0) {
+ 			rc = -EIO;
++			dev_err(&chip->dev, "TPM_STS_DATA_EXPECT should be set. sts = 0x%08x\n",
++				status);
+ 			goto out_err;
+ 		}
+ 	}
+@@ -427,6 +429,8 @@ static int tpm_tis_send_data(struct tpm_
+ 	status = tpm_tis_status(chip);
+ 	if (!itpm && (status & TPM_STS_DATA_EXPECT) != 0) {
+ 		rc = -EIO;
++		dev_err(&chip->dev, "TPM_STS_DATA_EXPECT should be unset. sts = 0x%08x\n",
++			status);
+ 		goto out_err;
+ 	}
  
-+	if (mqrq->flags & MQRQ_XFER_SINGLE_BLOCK)
-+		recovery_mode = 1;
-+
- 	memset(brq, 0, sizeof(struct mmc_blk_request));
- 
- 	mmc_crypto_prepare_req(mqrq);
-@@ -1500,10 +1503,13 @@ static void mmc_blk_cqe_complete_rq(stru
- 		err = 0;
- 
- 	if (err) {
--		if (mqrq->retries++ < MMC_CQE_RETRIES)
-+		if (mqrq->retries++ < MMC_CQE_RETRIES) {
-+			if (rq_data_dir(req) == WRITE)
-+				mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
- 			blk_mq_requeue_request(req, true);
--		else
-+		} else {
- 			blk_mq_end_request(req, BLK_STS_IOERR);
-+		}
- 	} else if (mrq->data) {
- 		if (blk_update_request(req, BLK_STS_OK, mrq->data->bytes_xfered))
- 			blk_mq_requeue_request(req, true);
-@@ -2041,6 +2047,8 @@ static void mmc_blk_mq_complete_rq(struc
- 	} else if (!blk_rq_bytes(req)) {
- 		__blk_mq_end_request(req, BLK_STS_IOERR);
- 	} else if (mqrq->retries++ < MMC_MAX_RETRIES) {
-+		if (rq_data_dir(req) == WRITE)
-+			mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
- 		blk_mq_requeue_request(req, true);
- 	} else {
- 		if (mmc_card_removed(mq->card))
---- a/drivers/mmc/core/queue.h
-+++ b/drivers/mmc/core/queue.h
-@@ -61,6 +61,8 @@ enum mmc_drv_op {
- 	MMC_DRV_OP_GET_EXT_CSD,
- };
- 
-+#define	MQRQ_XFER_SINGLE_BLOCK		BIT(0)
-+
- struct mmc_queue_req {
- 	struct mmc_blk_request	brq;
- 	struct scatterlist	*sg;
-@@ -69,6 +71,7 @@ struct mmc_queue_req {
- 	void			*drv_op_data;
- 	unsigned int		ioc_count;
- 	int			retries;
-+	u32			flags;
- };
- 
- struct mmc_queue {
 
 
 
