@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-257379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258126-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPZuBDIaG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:14 +0200
+	id 4FInNygjG2pa/ggAu9opvQ
+	(envelope-from <stable+bounces-258126-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E10560F0F8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3902610757
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E11153067728
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0EEBA301584D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A163A0E97;
-	Sat, 30 May 2026 17:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4EA351C2F;
+	Sat, 30 May 2026 17:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLoaYXm6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/Q0dfJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF4A32D42B;
-	Sat, 30 May 2026 17:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A516261B9E;
+	Sat, 30 May 2026 17:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160794; cv=none; b=Ju7quNbhfUXuBubzvxNHZzaGjwalYWdsFv9C6l7fuWLylRq2+AXb2Wta1uGe7SNh7Pq5Ddl/oTxKZxXZDdeBIGVUICMeNESlMgfu6L8cvPFMoWpJXNx7jnLZNkotfFJ26sC8Uhnp1IRp24JnnE1pm0icaVepRIUU/V9QWC62L+M=
+	t=1780163304; cv=none; b=laBkl9ninGo1uI0mZ+e2zqmz/5WC13vHGgL6FgMmd00mC2i0f8ynUfOXYmqLpZLUvs5xRcs386+NebtmcUcLlqbICjMTMTKa0vvnItt5miUOzkl/xXTOLB0yAE6F+bysfUvri4v6xx8HTsxOcE7vwxZwbC9P6RePAfy7B1djlEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160794; c=relaxed/simple;
-	bh=oeaKAFx/uX6pZAyVOXLTLDtUPtjK9R1bxrk8/oMxaxY=;
+	s=arc-20240116; t=1780163304; c=relaxed/simple;
+	bh=SL4gxPI7OTfCtgfLKMBG2VQx+7IxxlvPWytt1OeAxug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iy9DyOSCBggv1ftfQC27vREAvIy1jjAtDf7i8Jua6s86OyYwbL/TwRMydpo+LnMh8Kk1j/WhG8Fh05pFHsG2i23Rkx1GBB2jBR1qRxw7QE/ci3YK4+F0zn248SEZB8BWv/QnoWI30vJkksa8hbkh9YA73WEU/zErZHzV1L9voQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLoaYXm6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381A71F00893;
-	Sat, 30 May 2026 17:06:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M7DGkTGzWblTgaz+Ga/qnbJTUbkcOVlDdCARQvMCAzs4qqaMggq/CTeKuaqG0pSK+qH2yMW7ZoR+jXJ6Q/p0nGd3/GHgiUQ1WPZ4uNbyTGQ1tmQ18SYs6b97P4xcQVf4Bl+6UsZSLcuASUSfyTc3t6cCFflp2gdmr7hYiuwDdE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/Q0dfJf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703341F00893;
+	Sat, 30 May 2026 17:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160792;
-	bh=Nx8H03Cr/e7eT8eQb+W3E45jEmKrMCP6ctELxZwm7/U=;
+	s=korg; t=1780163303;
+	bh=ycvtkGWTsi4Ca1MDK+OA0LO0BgB9DroLiyhfVZ20xhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uLoaYXm6K89l01N0mLSkrh64KNVEOesE4H4/Et+wQy1jZT0zH0Axe1P250qHzvdmM
-	 SlIqJlpIIUQVOMPSkKSoExxeiV+YcTQ2nfXt7t64Sz0R5OUw4aUkLavBeRmn/PO/2b
-	 n0948PnDMxDtn5ubdyhxmuU+efQMmnJ9ZNakCznY=
+	b=V/Q0dfJfCjcuVaYdBZbO5EeoTKgWUekBqTMofwbzF4dsqiLN8nH3hZZNljwZ2QTZ2
+	 HUdWR2YddxAaX3KG0zY4sexLmR0kwh/eOoztIexXEw6ZyRH8lb6Bc9PY3+Yr1LVotd
+	 ZOtJ/oBaf102BBF05YVak1FnZF3wJARTSuwO3c5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>
-Subject: [PATCH 6.1 407/969] drm/gem: Fix inconsistent plane dimension calculation in drm_gem_fb_init_with_funcs()
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 217/776] ALSA: 6fire: Fix input volume change detection
 Date: Sat, 30 May 2026 17:58:51 +0200
-Message-ID: <20260530160311.520174865@linuxfoundation.org>
+Message-ID: <20260530160246.127580393@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,24 +62,25 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257379-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258126-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -89,66 +90,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7E10560F0F8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C3902610757
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 3d4c2268bd7243c3780fe32bf24ff876da272acf upstream.
+commit dc88eef8f55e85e92d016cdf7e291f5560efd79b upstream.
 
-drm_gem_fb_init_with_funcs() computes sub-sampled plane dimensions
-using plain integer division:
+usb6fire_control_input_vol_put() stores the analog capture volume
+as a signed offset in rt->input_vol[] (-15..+15), but it compares
+the cached value against the user-visible mixer value (0..30)
+before subtracting 15.
 
-  unsigned int width  = mode_cmd->width  / (i ? info->hsub : 1);
-  unsigned int height = mode_cmd->height / (i ? info->vsub : 1);
+This mixes two domains in the change detection path. Since the
+runtime is zero-initialized, the visible default is 15; writing 0
+right after probe is ignored, while writing 15 is reported as a
+change even though the cached value remains 0.
 
-However, the ioctl-level framebuffer_check() in drm_framebuffer.c uses
-drm_format_info_plane_width/height() which round up dimensions via
-DIV_ROUND_UP(). This inconsistency corrupts the subsequent GEM object
-size check for certain pixel format and dimension combinations.
+Normalize the user value before comparing it with the cached offset.
 
-For example, with NV12 (vsub=2) and a 1-pixel-tall framebuffer the
-GEM size validation path sees height=0 instead of height=1. The
-expression (height - 1) then wraps to UINT_MAX as an unsigned int,
-causing min_size to overflow and wrap back to a small value. A tiny
-GEM object therefore passes the size guard, yet when the GPU accesses
-the chroma plane it will read or write memory beyond the object's
-bounds.
-
-Fix by replacing the open-coded divisions with drm_format_info_plane_width()
-and drm_format_info_plane_height(), which use DIV_ROUND_UP() and match
-the calculation already used in framebuffer_check().
-
-Fixes: 4c3dbb2c312c ("drm: Add GEM backed framebuffer library")
-Cc: stable@vger.kernel.org # v4.14+
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/20260420013637.457751-1-ashutoshdesai993@gmail.com
+Fixes: 06bb4e743501 ("ALSA: snd-usb-6fire: add analog input volume control")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260416-alsa-6fire-input-volume-change-detection-v1-1-ec78299168df@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gem_framebuffer_helper.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/6fire/control.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
-+++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
-@@ -166,8 +166,8 @@ int drm_gem_fb_init_with_funcs(struct dr
+--- a/sound/usb/6fire/control.c
++++ b/sound/usb/6fire/control.c
+@@ -290,15 +290,17 @@ static int usb6fire_control_input_vol_pu
+ 		struct snd_ctl_elem_value *ucontrol)
+ {
+ 	struct control_runtime *rt = snd_kcontrol_chip(kcontrol);
++	int vol0 = ucontrol->value.integer.value[0] - 15;
++	int vol1 = ucontrol->value.integer.value[1] - 15;
+ 	int changed = 0;
+ 
+-	if (rt->input_vol[0] != ucontrol->value.integer.value[0]) {
+-		rt->input_vol[0] = ucontrol->value.integer.value[0] - 15;
++	if (rt->input_vol[0] != vol0) {
++		rt->input_vol[0] = vol0;
+ 		rt->ivol_updated &= ~(1 << 0);
+ 		changed = 1;
  	}
- 
- 	for (i = 0; i < info->num_planes; i++) {
--		unsigned int width = mode_cmd->width / (i ? info->hsub : 1);
--		unsigned int height = mode_cmd->height / (i ? info->vsub : 1);
-+		unsigned int width = drm_format_info_plane_width(info, mode_cmd->width, i);
-+		unsigned int height = drm_format_info_plane_height(info, mode_cmd->height, i);
- 		unsigned int min_size;
- 
- 		objs[i] = drm_gem_object_lookup(file, mode_cmd->handles[i]);
+-	if (rt->input_vol[1] != ucontrol->value.integer.value[1]) {
+-		rt->input_vol[1] = ucontrol->value.integer.value[1] - 15;
++	if (rt->input_vol[1] != vol1) {
++		rt->input_vol[1] = vol1;
+ 		rt->ivol_updated &= ~(1 << 1);
+ 		changed = 1;
+ 	}
 
 
 
