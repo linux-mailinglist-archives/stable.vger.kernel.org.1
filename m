@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-258908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257541-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wP/AGp0wG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-258908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:53 +0200
+	id 6G3CNxsdG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257541-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E254A6127D0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7223B60F8B9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55E323016CAE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:32:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 22DCD30D70FF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A3B2EF652;
-	Sat, 30 May 2026 18:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECB2263F44;
+	Sat, 30 May 2026 17:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVYF8oTb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqZozTDK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457E8313E34;
-	Sat, 30 May 2026 18:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A364D3A7848;
+	Sat, 30 May 2026 17:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165946; cv=none; b=nDA8l9lx6tf2/R2BfVkOO1xvfyH0bPqF+Y2FSwkJalp9xnLrOSkZimrwIa7C0QxHj2CP6CjOm72ADt/zdYaos3NKR5/Fcru3YJmvxX0cDUEdJ0NoObhO/jvRdpDvsgNGvAjrAqwn7NMc1szb43EAyzQYxbWebqnBznMg+5UUXvA=
+	t=1780161340; cv=none; b=OcuFcbWgwSFPWZxE9Md9OgmAMqnxy1r5HRW19xianV05vBnhEWZyiYC6QDw+8yswe3UNTr0d5NkEVd0xO+ch3i0LLlQ2Xe5DgVdkjvrV9SHsrFf05ofxN8c1yNAq+tIhX3Wjh2+38qInNxO1UzAL+01hOKo+CPJN4PCm+4Wjchg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165946; c=relaxed/simple;
-	bh=5k0ZSkH6PHX/1Hw/IurCKYuGH3q0M7PffYAjehzX9so=;
+	s=arc-20240116; t=1780161340; c=relaxed/simple;
+	bh=sfxUOViDDPYBFis2cyXo6TYP5mQZXx9aSLjCEEyhGk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OiLbFA8fOVR2S+qiSxPtXMQL4kcNm9c2Ceqhc1x8hG9qYFuWkHVfAPe/L7BzzdlpcWmaUERI1Au8vycZ6ndIcFeUyPtTcSvHpn0Y1/XN/DSbn0B5IX+oQoqd9kOorKQx1yIdBhX/XIVlxdKKN2HyTuwrDi6LdabX7J/nm0hKG9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVYF8oTb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF921F00893;
-	Sat, 30 May 2026 18:32:24 +0000 (UTC)
+	 MIME-Version; b=JaJV90shBQh+zXKTiPt8eVHTnRwqtkbanYi/zr6CuNY3OO0VCb5hPKybmInYEF6SFEtQBgow/M+QokhJ2WAwRjx3w0FuObeuYU0xYLKNXMkShTNBenJFyCvzHFLolGsG1ZMDdJQk1DDHEajC2Ikmo7RQ7v84hhdcNnEs+WAdDHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqZozTDK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66351F00893;
+	Sat, 30 May 2026 17:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165945;
-	bh=otIzd8BlvIUiD9khJ2jxpKT6GVZa2ekpLf+W/wLwvS4=;
+	s=korg; t=1780161339;
+	bh=kirhtgvf/UeDRUfeJIzubs2sy72g0CSbw6onaWjvWXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qVYF8oTbvd1ffWKxy0OSgduP3ccpxuhQ3Ej7m6NfX5beknMTA1qWoqeZmElt7k+Fb
-	 TQ4OTe1mgNhr4VB8zduxZUgAlzKjGhJJ4rw97p3lejxeWouBOQXY0/E9bXk6tV/Tvj
-	 UFcWSttCATYZOBHUQtDt1fXim1roPYyxvd4EGtBI=
+	b=oqZozTDKg4o+LRjkYY+rEdv/aDSNzcCC2LaqUsL5uY8+o7fzNEJHih40qbH3fqsr6
+	 LXmlfFXijzyONbDjLDFh04fjr6nrpaboCPYwl/8d8eTKqTX8n2EOAY6wB15v/CGjH/
+	 5iP07OHOeMdQ6e/vfVP8d3a2LaO1yl8UZ1ZHWLOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manas <ghandatmanas@gmail.com>,
-	Rakshit Awasthi <rakshitawasthi17@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 211/589] net/sched: sch_red: Replace direct dequeue call with peek and qdisc_dequeue_peeked
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 568/969] gfs2: add some missing log locking
 Date: Sat, 30 May 2026 18:01:32 +0200
-Message-ID: <20260530160230.510336558@linuxfoundation.org>
+Message-ID: <20260530160316.081177138@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,111 +65,142 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258908-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257541-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,mojatatu.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E254A6127D0
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7223B60F8B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit 458d5615272d3de535748342eb68ca492343048c upstream.
+[ Upstream commit fe2c8d051150b90b3ccb85f89e3b1d636cb88ec8 ]
 
-When red qdisc has children (eg qfq qdisc) whose peek() callback is
-qdisc_peek_dequeued(), we could get a kernel panic. When the parent of such
-qdiscs (eg illustrated in patch #3 as tbf) wants to retrieve an skb from
-its child (red in this case), it will do the following:
- 1a. do a peek() - and when sensing there's an skb the child can offer, then
-     - the child in this case(red) calls its child's (qfq) peek.
-        qfq does the right thing and will return the gso_skb queue packet.
-        Note: if there wasnt a gso_skb entry then qfq will store it there.
- 1b. invoke a dequeue() on the child (red). And herein lies the problem.
-     - red will call the child's dequeue() which will essentially just
-       try to grab something of qfq's queue.
+Function gfs2_logd() calls the log flushing functions gfs2_ail1_start(),
+gfs2_ail1_wait(), and gfs2_ail1_empty() without holding sdp->sd_log_flush_lock,
+but these functions require exclusion against concurrent transactions.
 
-[   78.667668][  T363] KASAN: null-ptr-deref in range [0x0000000000000048-0x000000000000004f]
-[   78.667927][  T363] CPU: 1 UID: 0 PID: 363 Comm: ping Not tainted 7.1.0-rc1-00033-g46f74a3f7d57-dirty #790 PREEMPT(full)
-[   78.668263][  T363] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-[   78.668486][  T363] RIP: 0010:qfq_dequeue+0x446/0xc90 [sch_qfq]
-[   78.668718][  T363] Code: 54 c0 e8 dd 90 00 f1 48 c7 c7 e0 03 54 c0 48 89 de e8 ce 90 00 f1 48 8d 7b 48 b8 ff ff 37 00 48 89 fa 48 c1 e0 2a 48 c1 ea 03 <80> 3c 02 00 74 05 e8 ef a1 e1 f1 48 8b 7b 48 48 8d 54 24 58 48 8d
-[   78.669312][  T363] RSP: 0018:ffff88810de573e0 EFLAGS: 00010216
-[   78.669533][  T363] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-[   78.669790][  T363] RDX: 0000000000000009 RSI: 0000000000000004 RDI: 0000000000000048
-[   78.670044][  T363] RBP: ffff888110dc4000 R08: ffffffffb1b0885a R09: fffffbfff6ba9078
-[   78.670297][  T363] R10: 0000000000000003 R11: ffff888110e31c80 R12: 0000001880000000
-[   78.670560][  T363] R13: ffff888110dc4150 R14: ffff888110dc42b8 R15: 0000000000000200
-[   78.670814][  T363] FS:  00007f66a8f09c40(0000) GS:ffff888163428000(0000) knlGS:0000000000000000
-[   78.671110][  T363] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   78.671324][  T363] CR2: 000055db4c6a30a8 CR3: 000000010da67000 CR4: 0000000000750ef0
-[   78.671585][  T363] PKRU: 55555554
-[   78.671713][  T363] Call Trace:
-[   78.671843][  T363]  <TASK>
-[   78.671936][  T363]  ? __pfx_qfq_dequeue+0x10/0x10 [sch_qfq]
-[   78.672148][  T363]  ? __pfx__printk+0x10/0x10
-[   78.672322][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.672496][  T363]  ? lockdep_hardirqs_on_prepare+0xa8/0x1a0
-[   78.672706][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.672875][  T363]  ? trace_hardirqs_on+0x19/0x1a0
-[   78.673047][  T363]  red_dequeue+0x65/0x270 [sch_red]
-[   78.673217][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.673385][  T363]  tbf_dequeue.cold+0xb0/0x70c [sch_tbf]
-[   78.673566][  T363]  __qdisc_run+0x169/0x1900
+To fix that, add a non-locking __gfs2_log_flush() function.  Then, in
+gfs2_logd(), take sdp->sd_log_flush_lock before calling the above mentioned log
+flushing functions and __gfs2_log_flush().
 
-The right thing to do in #1b is to grab the skb off gso_skb queue.
-This patchset fixes that issue by changing #1b to use qdisc_dequeue_peeked()
-method instead.
-
-Fixes: 77be155cba4e ("pkt_sched: Add peek emulation for non-work-conserving qdiscs.")
-Reported-by: Manas <ghandatmanas@gmail.com>
-Reported-by: Rakshit Awasthi <rakshitawasthi17@gmail.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260430152957.194015-2-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5e4c7632aae1c ("gfs2: Issue revokes more intelligently")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_red.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/log.c | 28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -153,7 +153,7 @@ static struct sk_buff *red_dequeue(struc
- 	struct red_sched_data *q = qdisc_priv(sch);
- 	struct Qdisc *child = q->qdisc;
+diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+index 45f519ececd97..de6f38523db33 100644
+--- a/fs/gfs2/log.c
++++ b/fs/gfs2/log.c
+@@ -1025,14 +1025,15 @@ static void trans_drain(struct gfs2_trans *tr)
+ }
  
--	skb = child->dequeue(child);
-+	skb = qdisc_dequeue_peeked(child);
- 	if (skb) {
- 		qdisc_bstats_update(sch, skb);
- 		qdisc_qstats_backlog_dec(sch, skb);
+ /**
+- * gfs2_log_flush - flush incore transaction(s)
++ * __gfs2_log_flush - flush incore transaction(s)
+  * @sdp: The filesystem
+  * @gl: The glock structure to flush.  If NULL, flush the whole incore log
+  * @flags: The log header flags: GFS2_LOG_HEAD_FLUSH_* and debug flags
+  *
+  */
+ 
+-void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
++static void __gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl,
++			     u32 flags)
+ {
+ 	struct gfs2_trans *tr = NULL;
+ 	unsigned int reserved_blocks = 0, used_blocks = 0;
+@@ -1040,7 +1041,6 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
+ 	unsigned int first_log_head;
+ 	unsigned int reserved_revokes = 0;
+ 
+-	down_write(&sdp->sd_log_flush_lock);
+ 	trace_gfs2_log_flush(sdp, 1, flags);
+ 
+ repeat:
+@@ -1151,7 +1151,6 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
+ 		gfs2_assert_withdraw_delayed(sdp, used_blocks < reserved_blocks);
+ 		gfs2_log_release(sdp, reserved_blocks - used_blocks);
+ 	}
+-	up_write(&sdp->sd_log_flush_lock);
+ 	gfs2_trans_free(sdp, tr);
+ 	if (gfs2_withdrawing(sdp))
+ 		gfs2_withdraw(sdp);
+@@ -1174,6 +1173,13 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
+ 	goto out_end;
+ }
+ 
++void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
++{
++	down_write(&sdp->sd_log_flush_lock);
++	__gfs2_log_flush(sdp, gl, flags);
++	up_write(&sdp->sd_log_flush_lock);
++}
++
+ /**
+  * gfs2_merge_trans - Merge a new transaction into a cached transaction
+  * @sdp: the filesystem
+@@ -1319,19 +1325,25 @@ int gfs2_logd(void *data)
+ 		}
+ 
+ 		if (gfs2_jrnl_flush_reqd(sdp) || t == 0) {
++			down_write(&sdp->sd_log_flush_lock);
+ 			gfs2_ail1_empty(sdp, 0);
+-			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
+-						  GFS2_LFC_LOGD_JFLUSH_REQD);
++			__gfs2_log_flush(sdp, NULL,
++					 GFS2_LOG_HEAD_FLUSH_NORMAL |
++					 GFS2_LFC_LOGD_JFLUSH_REQD);
++			up_write(&sdp->sd_log_flush_lock);
+ 		}
+ 
+ 		if (test_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags) ||
+ 		    gfs2_ail_flush_reqd(sdp)) {
+ 			clear_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags);
++			down_write(&sdp->sd_log_flush_lock);
+ 			gfs2_ail1_start(sdp);
+ 			gfs2_ail1_wait(sdp);
+ 			gfs2_ail1_empty(sdp, 0);
+-			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
+-						  GFS2_LFC_LOGD_AIL_FLUSH_REQD);
++			__gfs2_log_flush(sdp, NULL,
++					 GFS2_LOG_HEAD_FLUSH_NORMAL |
++					 GFS2_LFC_LOGD_AIL_FLUSH_REQD);
++			up_write(&sdp->sd_log_flush_lock);
+ 		}
+ 
+ 		t = gfs2_tune_get(sdp, gt_logd_secs) * HZ;
+-- 
+2.53.0
+
 
 
 
