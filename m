@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4B35EuIZG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257285-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:54 +0200
+	id 6ISIBSsiG2oN/ggAu9opvQ
+	(envelope-from <stable+bounces-258068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B0A60F038
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C74496104F7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D136E3102629
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:01:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 17D773004DEC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62EF5481DD;
-	Sat, 30 May 2026 17:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240FB3B1EC0;
+	Sat, 30 May 2026 17:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZLme5Ni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBLBc440"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CED62690D5;
-	Sat, 30 May 2026 17:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F7E3AB482;
+	Sat, 30 May 2026 17:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160469; cv=none; b=EEQ3bcFVatnLIS4NPzuBabjECS6fut0Drnq83umPZ1ufzaNAMW3rpllB16WlbIBMvQj3rzJGsiRYrd+5YGSdLlebl7sVONHbh+iA3VyKUa+LSQSgC3MrYsQOQSeqsPOMSmTOEH++WicKgPmTxXNxCYNH7tJBWMyhPo9IIqesIwY=
+	t=1780163112; cv=none; b=oOkglKKe54xjtW6RW7gxpvDI+KWzGdGDB9hkBDc8HI10X0M9sfmqq7R2VpiYfuyIcz/nIpBIYaoklH3MtYMo6XJeaha6IWma0vvEi/d579iHJvV19RJxDQdxOI0EER2+ng6KNAOGY5LLDnenW7ia6IOp4t/NedGjkeSen+JHDf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160469; c=relaxed/simple;
-	bh=+MK6hwz2L/zWPazNi0qHwc/ax7tTgWUccXcGRRBk3v8=;
+	s=arc-20240116; t=1780163112; c=relaxed/simple;
+	bh=z89j2dPO+Khgu65faqG++GTHmMa4yCW4AnhajwEmcUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDH8DW9U0A9dAJUR+n5jOtuYuF1TMNDjMntZRCAYaK1TCtzQHr03riW3tgYKnf4JsL1rNZP7nMSzrHy15blHwnEBt2+lk3cQ8eVSH/kTkNaHZ7HXJMDYGFk0+XtsjQ7seUtlXlL5gzdZkX4OMBDdahifwO2/PRpfvdyT0WvYXpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZLme5Ni; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432761F00893;
-	Sat, 30 May 2026 17:01:07 +0000 (UTC)
+	 MIME-Version; b=LgRPj2025oMVPhVPZ0YI8RolJ3NkZ8gzgnDIZCEo2XOTMfIU3dMsozhJ8mzoNkvLaQiXPXtJ8MEiT395XLz5YvLiiWWh5WhDrh77isRTt6+7MuOjNiFiKo8we4QN+PrbqNipeSzEm90pJNpnI7fvjJ8vMxRrFrMbEzc302je+mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBLBc440; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4595C1F00893;
+	Sat, 30 May 2026 17:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160467;
-	bh=Dh2hx5ayk3DC05kBP0V3oyLlzjOaWjch2+Vv+5la8BU=;
+	s=korg; t=1780163111;
+	bh=7zUL2vboSU8MrOqCcOE31/p4DIPpknH3jB46fk99vIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kZLme5NiIohRFv1rw+bGgm7blM6/cWh23l7OFVNQIGqPRzCY5s/0TvbTmVMB6E9HV
-	 C7eN0bQkaqYHUqzbf87otImjZp1op4qtkyUky7JCKaDS/BHh0QDx5zTONTi57VrX1W
-	 H+mWbHuPk22792D/xE+0bllBriEraGB4bqGDiUZU=
+	b=nBLBc440ISsHZJcmrah4HBck8CifSgxXUg74SsI9uHagq9I6MUsWYBrGBJmWMa4lW
+	 sAXwd24F0H4R0p4CD5VCg4gKNLjWWA9o0PkGTrgmaCHo4c/G2xSoii3u0EglR+5M+6
+	 6a0Dh/YXBI2VqkvW9dbZu23mxteJQZ5vKWEDGKzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 347/969] ASoC: qcom: q6apm: remove child devices when apm is removed
+	Liao Chang <liaochang1@huawei.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 157/776] cpufreq: governor: Free dbs_data directly when gov->init() fails
 Date: Sat, 30 May 2026 17:57:51 +0200
-Message-ID: <20260530160309.942948831@linuxfoundation.org>
+Message-ID: <20260530160244.528651669@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,70 +67,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257285-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258068-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A9B0A60F038
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,intel.com:email,linaro.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C74496104F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Liao Chang <liaochang1@huawei.com>
 
-commit 4a0e1bcc98f7281d1605768bd2fe71eacc34f9b7 upstream.
+[ Upstream commit 916f13884042f615cfbfc0b42cc68dadee826f2a ]
 
-looks like q6apm driver does not remove the child driver q6apm-dai and
-q6apm-bedais when the this driver is removed.
+Due to the kobject embedded in the dbs_data doest not has a release()
+method yet, it needs to use kfree() to free dbs_data directly when
+governor fails to allocate the tunner field of dbs_data.
 
-Fix this by depopulating them in remove callback.
-
-With this change when the dsp is shutdown all the devices associated with
-q6apm will now be removed.
-
-Fixes: 5477518b8a0e ("ASoC: qdsp6: audioreach: add q6apm support")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260402081118.348071-3-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Liao Chang <liaochang1@huawei.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 6dcf9d0064ce ("cpufreq: governor: fix double free in cpufreq_dbs_governor_init() error path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6apm.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/cpufreq_governor.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/soc/qcom/qdsp6/q6apm.c
-+++ b/sound/soc/qcom/qdsp6/q6apm.c
-@@ -763,6 +763,7 @@ static int apm_probe(gpr_device_t *gdev)
+--- a/drivers/cpufreq/cpufreq_governor.c
++++ b/drivers/cpufreq/cpufreq_governor.c
+@@ -440,7 +440,7 @@ int cpufreq_dbs_governor_init(struct cpu
  
- static void apm_remove(gpr_device_t *gdev)
- {
-+	of_platform_depopulate(&gdev->dev);
- 	snd_soc_unregister_component(&gdev->dev);
- }
+ 	ret = gov->init(dbs_data);
+ 	if (ret)
+-		goto free_policy_dbs_info;
++		goto free_dbs_data;
  
+ 	/*
+ 	 * The sampling interval should not be less than the transition latency
+@@ -475,6 +475,8 @@ int cpufreq_dbs_governor_init(struct cpu
+ 	if (!have_governor_per_policy())
+ 		gov->gdbs_data = NULL;
+ 	gov->exit(dbs_data);
++
++free_dbs_data:
+ 	kfree(dbs_data);
+ 
+ free_policy_dbs_info:
 
 
 
