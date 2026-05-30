@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-258146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OCQRGpAkG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258146-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:28 +0200
+	id aOuRM3YbG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 174A5610A81
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2E960F49B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3369B3023E01
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36D3B30C6986
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD25349CCF;
-	Sat, 30 May 2026 17:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8184034104B;
+	Sat, 30 May 2026 17:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXo6tDmj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4B5O52W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983F2304BCB;
-	Sat, 30 May 2026 17:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658EA481DD;
+	Sat, 30 May 2026 17:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163370; cv=none; b=QMdUXP2ZliytGpiUzPXzWQ89NZlfrXnMZjfz72hRNeX7xx8xgOB7zMNgSULKgjm+6rP6d4X5ga1hJYR6TEsppEczwa8Fj13i93xs+oS4WFmbYLxnysuCH6J3QtLdZgH5oMZrKL5rqLnB0QPJfbfF+4siKjfJ57LW7vchh/qCu5w=
+	t=1780160770; cv=none; b=oM0m3mxuOueSPRlyLBEdHdFhODv1O1s2/FJAPOiiUkAb35iEBu03T9SxVbqM270ENPm0NjAZyHoT7SnRbYmj4oHNo6Xy+/5gEr9SIYM/uj5QbBV5/aZ3ftwpacZprCAv+Gf+2nqP4dz5hz4TNG3VoT771Cw4qNun6BD61B4EOIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163370; c=relaxed/simple;
-	bh=etiKDPLPMDhyh7IVlK2Rc3ofos0kUzCNjBEF4i3Ci0Q=;
+	s=arc-20240116; t=1780160770; c=relaxed/simple;
+	bh=PTgU8rO8l84CNznStLDJTXqLfkuu+PsPppV9sj/dzh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rf9AfgMcSz5v465AUZ/eswxa6FfB52yRZ2xNRQFGq8dvkL7TmvtMMyxntgJ5vITvKNRIT/+GXuA03EvFIZrjH0O07UKJ7rKihYABHo7SdDYqPOnWBcDG0dd88XqA07/lPe5nYXlVwIwHVZB4gyVknA36B8+nf+RaWKNCOsmDvjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXo6tDmj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF531F00893;
-	Sat, 30 May 2026 17:49:28 +0000 (UTC)
+	 MIME-Version; b=r8JarKHfAs92IwFL4Pm80KDvI4/vZRZ6YuFGVoUcEQoJIrszlfIa6xUWvD0Yt8x8wXI1FbN3xjxYNbH5Ul5dH+ZKBhyyylEzcktawGFMw5rEsU2U7ZPoxdysoQXxK1PHkNsRnNIUL97ibEsIns4YKVUrWo7WG3NAHbm1BgU7a2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4B5O52W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81F41F00893;
+	Sat, 30 May 2026 17:06:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163369;
-	bh=OAlNjDFQqGkxyK/glH/RXhEwIFtVfZsTZyPFzszx5po=;
+	s=korg; t=1780160769;
+	bh=WtdhLiGZtny/M2BI55VHJ2tm6cPMZreAcwJftAfxnSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AXo6tDmj6FsGQOyG2aWt4lDiZQJiW/tnVgADDfpjU5JM9vmen6ODT3Q6CWjMmIozE
-	 Ackc0M5ILQ5pPPMTA7vK0xaEN1BcjQT2cvMv9voo2/amgtyb1GHa46FxLsGUsrakJo
-	 tuqqZV4JI6WSx1JTUvY8g9VKJ5kQ3Dbd3Fb2RwsM=
+	b=s4B5O52WgNoUYZ3kn5JGWh7zFv9WjuMDIbN23XXa8Km49n/M6C2Uv2CLmTP6NRhHM
+	 Ao9D+CSl+sSRk+ffLP9G3SPgZ71nLnMo/W0xBW6LoocUVmkmfe5DabxNPP+IX3Eq7S
+	 Q6QDLq0PvXb2A55TQjv7HZEsPa8Il4o30y97yWvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.15 238/776] KVM: nSVM: Clear GIF on nested #VMEXIT(INVALID)
-Date: Sat, 30 May 2026 17:59:12 +0200
-Message-ID: <20260530160246.682989516@linuxfoundation.org>
+	SDL <sdl@nppct.ru>,
+	Benjamin Cheng <benjamin.cheng@amd.com>,
+	Ruijing Dong <ruijing.dong@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 429/969] drm/amdgpu/vcn4: Avoid overflow on msg bound check
+Date: Sat, 30 May 2026 17:59:13 +0200
+Message-ID: <20260530160312.104884223@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,65 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257372-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258146-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 174A5610A81
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 3F2E960F49B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Benjamin Cheng <benjamin.cheng@amd.com>
 
-commit f85a6ce06e4a0d49652f57967a649ab09e06287c upstream.
+commit 65bce27ea6192320448c30267ffc17ffa094e713 upstream.
 
-According to the APM, GIF is set to 0 on any #VMEXIT, including
-an #VMEXIT(INVALID) due to failed consistency checks. Clear GIF on
-consistency check failures.
+As pointed out by SDL, the previous condition may be vulnerable to
+overflow.
 
-Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-11-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 0a78f2bac142 ("drm/amdgpu/vcn4: Prevent OOB reads when parsing dec msg")
+Cc: SDL <sdl@nppct.ru>
+Signed-off-by: Benjamin Cheng <benjamin.cheng@amd.com>
+Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 3c5367d950140d4ec7af830b2268a5a6fdaa3885)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -671,6 +671,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vc
- 		vmcb12->control.exit_code_hi = -1u;
- 		vmcb12->control.exit_info_1  = 0;
- 		vmcb12->control.exit_info_2  = 0;
-+		svm_set_gif(svm, false);
- 		goto out;
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
+@@ -1675,6 +1675,7 @@ static int vcn_v4_0_dec_msg(struct amdgp
  
+ 	for (i = 0, msg = &msg[6]; i < num_buffers; ++i, msg += 4) {
+ 		uint32_t offset, size, *create;
++		uint64_t buf_end;
+ 
+ 		if (msg[0] != RDECODE_MESSAGE_CREATE)
+ 			continue;
+@@ -1682,7 +1683,8 @@ static int vcn_v4_0_dec_msg(struct amdgp
+ 		offset = msg[1];
+ 		size = msg[2];
+ 
+-		if (size < 4 || offset + size > end - addr) {
++		if (size < 4 || check_add_overflow(offset, size, &buf_end) ||
++		    buf_end > end - addr) {
+ 			DRM_ERROR("VCN message buffer exceeds BO bounds!\n");
+ 			r = -EINVAL;
+ 			goto out;
 
 
 
