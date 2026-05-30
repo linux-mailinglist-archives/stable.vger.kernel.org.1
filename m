@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-259035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257655-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gG60NKMvG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259035-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:43 +0200
+	id uIkkNXYdG2qW/QgAu9opvQ
+	(envelope-from <stable+bounces-257655-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C416124CE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9E860F970
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A9E8A30D1AA9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:39:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3651A301D032
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5437539A7FE;
-	Sat, 30 May 2026 18:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2603242D7;
+	Sat, 30 May 2026 17:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCCE89ez"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGS0JktR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF64026738C;
-	Sat, 30 May 2026 18:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E881263F44;
+	Sat, 30 May 2026 17:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166372; cv=none; b=OHVfOtuUDyfzMLxOSR2drMPhdrgSdFYRMPRh5YZ+7k4JeIEuxBovNbzAifbDw8csFcWDDy77w6kE7haOiwY4O8/RgK8MhJgAEo/hh6gQY7YlFYCFB/RCPvtpLKi419g5m/Mbs36IFDqbspMX5yjsNQ5WLIwlDneT0EaYSLF7BDE=
+	t=1780161729; cv=none; b=mQt49rEM5Xp+QPp/6RZpodzdasJDClyWbfXW8l2WOCgATZAPlKAADQZZsfw2OZfsq2ZiedR+SvJBdZltfBtuBKaNWWWSSQxzCYAH58yy96BMnuvppy2aOQ19y7HIsjHlI310hssdNmKRiAiX9dTZl2E2DVUZz1kFG6A8TTUQwQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166372; c=relaxed/simple;
-	bh=VG2lvgonPhEpB9oDWGUu9FVH3V5XzCCFQpkBlQE8I6Q=;
+	s=arc-20240116; t=1780161729; c=relaxed/simple;
+	bh=sZ1bqXZ8FAkS5/JDR4VTQ+JX4eUhndmEPUsDiK90uKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ShAfzaxlNGtJUGV24tG1wmGDLCT9fjdajJH7QbagGZLjDDqSx1zFdAs1myePjk0nNzYqi23J/B7kbvDzu2HNk0sx6/vvpEaRX6auDq/GngRom7jzOAEqjQZavddodcPgOY+/pq3p0dAQGxWI3fp1tSnwLr9+X584gQzQBtuZ69g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCCE89ez; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B931F00893;
-	Sat, 30 May 2026 18:39:30 +0000 (UTC)
+	 MIME-Version; b=AyRcvjjNitKKEJkNtPvGfVFT5/lM181cvmyt+Ha3gPQ9FGx10z8lbqTHZIGTU8pF4gmvoB3LlgvSDOPzq6+s1rcazVJFqYrt7/hBa7adThPiLhJkvsWY+tJdNbsFGjCUmBm+wBPrOSBvqKtRzzhxshbZxEwI1OceN6xNZmyIpzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGS0JktR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729EB1F00893;
+	Sat, 30 May 2026 17:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166370;
-	bh=9U3CoSY0fjuXZbBBMAYaNSY/fU76HRCmnaThbSRDBl4=;
+	s=korg; t=1780161728;
+	bh=7ko/OY42WBS7u4N8COLJDh9MLz6Yb6hg6hb0xt8A6tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YCCE89ezJQgk8GazbBVw3bAcPTL/q3tceC6CxsUTuzns9viujl0+qAVqsp6m8AdIN
-	 7M/VxWHeiD4rOXC6h8fOy8bfX/C1m8StTYx31B6Qmm9w5xkRSaCLjxPaKl5nK2BRDe
-	 2V9qkyyK6csrzfDIt8PQIee6zaoRQSl4gmMIJfvU=
+	b=xGS0JktR00kB93HdE1LlBEtV4VU/dk4hAjPpvqwBzL84NF8ut82mYw+xwvUWBB2sR
+	 nng+lC0fyjTfexTxIu+uRArhA1KXuNhq+Ij1QkCRp2M76t7jz4D40IG7zLiwZZLE3e
+	 xLB2u+YCAmY6Hz57RJC9ho5PO7KNTelbjzETArNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shuah Khan <shuah@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 352/589] selftest: memcg: skip memcg_sock test if address family not supported
-Date: Sat, 30 May 2026 18:03:53 +0200
-Message-ID: <20260530160234.117141135@linuxfoundation.org>
+Subject: [PATCH 6.1 710/969] ksmbd: destroy tree_conn_ida in ksmbd_session_destroy()
+Date: Sat, 30 May 2026 18:03:54 +0200
+Message-ID: <20260530160320.137840890@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,106 +64,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259035-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257655-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,linux-foundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,cmpxchg.org:email]
-X-Rspamd-Queue-Id: 53C416124CE
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7E9E860F970
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-[ Upstream commit 2d028f3e4bbbfd448928a8d3d2814b0b04c214f4 ]
+[ Upstream commit c049ee14eb4343b69b6f7755563f961f5e153423 ]
 
-The test_memcg_sock test in memcontrol.c sets up an IPv6 socket and send
-data over it to consume memory and verify that memory.stat.sock and
-memory.current values are close.
+When per-session tree_conn_ida was converted from a dynamically
+allocated ksmbd_ida to an embedded struct ida, ksmbd_ida_free() was
+removed from ksmbd_session_destroy() but no matching ida_destroy()
+was added.  The session is therefore freed with the IDA's backing
+xarray still intact.
 
-On systems where IPv6 isn't enabled or not configured to support
-SOCK_STREAM, the test_memcg_sock test always fails.  When the socket()
-call fails, there is no way we can test the memory consumption and verify
-the above claim.  I believe it is better to just skip the test in this
-case instead of reporting a test failure hinting that there may be
-something wrong with the memcg code.
+The kernel IDA API expects ida_init() and ida_destroy() to be paired
+over an object's lifetime, so add the missing cleanup before the
+enclosing session is freed.
 
-Link: https://lkml.kernel.org/r/20260311200526.885899-1-longman@redhat.com
-Fixes: 5f8f019380b8 ("selftests: cgroup/memcontrol: add basic test for socket accounting")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Michal Koutný <mkoutny@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Also move ida_init() to right after the session is allocated so that
+it is always paired with the destroy call even on the early error
+paths of __session_create() (ksmbd_init_file_table() or
+__init_smb2_session() failures), both of which jump to the error
+label and invoke ksmbd_session_destroy() on a partially initialised
+session.
+
+No leak has been observed in testing; this is a pairing fix to match
+the IDA lifetime rules, not a response to a reproduced regression.
+
+Fixes: d40012a83f87 ("cifsd: declare ida statically")
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/cgroup/test_memcontrol.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/smb/server/mgmt/user_session.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index c19a97dd02d49..07ce722b2533b 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -833,8 +833,11 @@ static int tcp_server(const char *cgroup, void *arg)
- 	saddr.sin6_port = htons(srv_args->port);
+diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
+index 1b5ac28d7e66c..f7ba243c854e2 100644
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -168,6 +168,7 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
+ 	free_channel_list(sess);
+ 	kfree(sess->Preauth_HashValue);
+ 	ksmbd_release_id(&session_ida, sess->id);
++	ida_destroy(&sess->tree_conn_ida);
+ 	kfree(sess);
+ }
  
- 	sk = socket(AF_INET6, SOCK_STREAM, 0);
--	if (sk < 0)
-+	if (sk < 0) {
-+		/* Pass back errno to the ctl_fd */
-+		write(ctl_fd, &errno, sizeof(errno));
- 		return ret;
-+	}
+@@ -404,6 +405,8 @@ static struct ksmbd_session *__session_create(int protocol)
+ 	if (!sess)
+ 		return NULL;
  
- 	if (setsockopt(sk, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0)
- 		goto cleanup;
-@@ -964,6 +967,12 @@ static int test_memcg_sock(const char *root)
- 			goto cleanup;
- 		close(args.ctl[0]);
- 
-+		/* Skip if address family not supported by protocol */
-+		if (err == EAFNOSUPPORT) {
-+			ret = KSFT_SKIP;
-+			goto cleanup;
-+		}
++	ida_init(&sess->tree_conn_ida);
 +
- 		if (!err)
- 			break;
- 		if (err != EADDRINUSE)
+ 	if (ksmbd_init_file_table(&sess->file_table))
+ 		goto error;
+ 
+@@ -422,8 +425,6 @@ static struct ksmbd_session *__session_create(int protocol)
+ 	if (ret)
+ 		goto error;
+ 
+-	ida_init(&sess->tree_conn_ida);
+-
+ 	down_write(&sessions_table_lock);
+ 	hash_add(sessions_table, &sess->hlist, sess->id);
+ 	up_write(&sessions_table_lock);
 -- 
 2.53.0
 
