@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-258482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259088-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mD8lEu8nG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258482-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:51 +0200
+	id eOJZFDQwG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259088-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F416E611207
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD164612678
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AC09D3017FA7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 06648303B14D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E183B9D80;
-	Sat, 30 May 2026 18:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D262C11C4;
+	Sat, 30 May 2026 18:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcqkPhEz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v29k6Plu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A08340A6F;
-	Sat, 30 May 2026 18:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A3C2773DE;
+	Sat, 30 May 2026 18:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164497; cv=none; b=WNc2oUVm3n68geL717jiNMv8Q/qV5O4ztXIOwiGz+mk4EPSH/PsSveiOOdqEnFjxIenGVzPAng3Rtu+eyLOBZKnY2451dKTORD/Xh9yvHwDtL+B4wHnXdRqzevB0gFO21Wa1t/sjPzWsXHE0KEVJUGycDF1wqdFH3Ss8mVsDHtg=
+	t=1780166573; cv=none; b=eFaFEt6Z5FbtHNj9sqEqWE0JZjMgGznHFLT2YsQr0ABFMO5InuenFXwEb94Lt48zjyQqcNrapMNWDPiIc/ZBSAjAvxuI9homVodWkfNdfK3t0R8+bqUdfD8db9DrL1naDvqning5MeLAgGWDRmkcrOPL3wZyiry9yE34i7zEqA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164497; c=relaxed/simple;
-	bh=jqIv3V8KPLLBLCflwPYOEtBnwdktZ3Vpw9BPnxR5qLk=;
+	s=arc-20240116; t=1780166573; c=relaxed/simple;
+	bh=UtzTUWLd0H/w438HwFgx/JTxnJxiaGiK+PawH2zWJ+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2DLMoXKIgE/RGiS/oUBD4HbMqx/7Eubn+66ylaBk58YdEWqY1LsJLgauzuApW6KF/M0hAqaFQXoDyN1G787nE0qLh66FtK2TgifF2bMzv0LA/rQHN/rT9YUlK3gjLJGobw0TnAmijVZSmICUThwt/+xjG4WghnvteDCgPBexTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcqkPhEz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF811F00893;
-	Sat, 30 May 2026 18:08:15 +0000 (UTC)
+	 MIME-Version; b=hZrHeZJ4WLYKe4T5j6uLGtCCYyKMs0Nqys8sPqK446Z7/C+rhB4RF7c/zG2uCkkjtmtrbAVQtDh3+zrJjKEC3jhsTKayIyNL7RsBSynWCUjF0SNQ7gX2ox6mglqs8H+/jb06fJSimu78EHjOP6ekAuoBTX7li6bxTsLAabQ+1t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v29k6Plu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D7C1F00893;
+	Sat, 30 May 2026 18:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164496;
-	bh=HYRK4lrHrvYiMQckqu109PegflOFMQuzys2CDohGZNw=;
+	s=korg; t=1780166572;
+	bh=uu7TnpWCT9PKVWffHzFK/3kJ6lVzCcGl/RlrBBYzXcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qcqkPhEzNweNsuz09ytMMol6TahnZPOQ2X3Sg1vUotO7l7xzpFg3EIa0Mo9/QTfCB
-	 VWYnhc42KHYggY74HSJShGyf95SH+dkY2aTFvP7fY4Gw5Q5bbIlnWOzquIOtio7Tr3
-	 ilmsXppH3ZAml8jOcDgfjh2pJCw+QnNn0yaTaONA=
+	b=v29k6Plu9x380wk9GwlMWzRWKrACot0z6AaVqWTkOreLu8KczSHOyUqXYgyadzAGT
+	 PVP7k9Ibe10QHsf4RFn/Rw0K5gQQ/uL4Q1ep3ltmCBhn2gTFQogd5dfjdD2EoxMcgL
+	 8xraRptnz1c73Ecso0V7e8XhZVl5qSyMl6WhSuoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Xiang Mei <xmei5@asu.edu>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 573/776] netfilter: nfnetlink_osf: fix divide-by-zero in OSF_WSS_MODULO
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Val Packett <val@packett.cool>
+Subject: [PATCH 5.10 406/589] dt-bindings: clock: qcom,dispcc-sc7180: Define MDSS resets
 Date: Sat, 30 May 2026 18:04:47 +0200
-Message-ID: <20260530160254.912665479@linuxfoundation.org>
+Message-ID: <20260530160235.437264076@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,96 +71,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258482-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,asu.edu,suse.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259088-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F416E611207
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: CD164612678
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 2195574dc6d9017d32ac346987e12659f931d932 ]
+[ Upstream commit fc6e29d42872680dca017f2e5169eefe971f8d89 ]
 
-nf_osf_match_one() computes ctx->window % f->wss.val in the
-OSF_WSS_MODULO branch with no guard for f->wss.val == 0. A
-CAP_NET_ADMIN user can add such a fingerprint via nfnetlink; a
-subsequent matching TCP SYN divides by zero and panics the kernel.
+The MDSS resets have so far been left undescribed. Fix that.
 
-Reject the bogus fingerprint in nfnl_osf_add_callback() above the
-per-option for-loop. f->wss is per-fingerprint, not per-option, so
-the check must run regardless of f->opt_num (including 0). Also
-reject wss.wc >= OSF_WSS_MAX; nf_osf_match_one() already treats that
-as "should not happen".
-
-Crash:
- Oops: divide error: 0000 [#1] SMP KASAN NOPTI
- RIP: 0010:nf_osf_match_one (net/netfilter/nfnetlink_osf.c:98)
- Call Trace:
- <IRQ>
-  nf_osf_match (net/netfilter/nfnetlink_osf.c:220)
-  xt_osf_match_packet (net/netfilter/xt_osf.c:32)
-  ipt_do_table (net/ipv4/netfilter/ip_tables.c:348)
-  nf_hook_slow (net/netfilter/core.c:622)
-  ip_local_deliver (net/ipv4/ip_input.c:265)
-  ip_rcv (include/linux/skbuff.h:1162)
-  __netif_receive_skb_one_core (net/core/dev.c:6181)
-  process_backlog (net/core/dev.c:6642)
-  __napi_poll (net/core/dev.c:7710)
-  net_rx_action (net/core/dev.c:7945)
-  handle_softirqs (kernel/softirq.c:622)
-
-Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Suggested-by: Florian Westphal <fw@strlen.de>
-Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 75616da71291 ("dt-bindings: clock: Introduce QCOM sc7180 display clock bindings")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Tested-by: Val Packett <val@packett.cool> # sc7180-ecs-liva-qc710
+Link: https://lore.kernel.org/r/20260120-topic-7180_dispcc_bcr-v1-1-0b1b442156c3@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: b0bc6011c549 ("clk: qcom: dispcc-sc7180: Add missing MDSS resets")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_osf.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/dt-bindings/clock/qcom,dispcc-sc7180.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index da9d5d6de98f4..000a5c280ef96 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -320,6 +320,10 @@ static int nfnl_osf_add_callback(struct sk_buff *skb,
- 	if (f->opt_num > ARRAY_SIZE(f->opt))
- 		return -EINVAL;
+diff --git a/include/dt-bindings/clock/qcom,dispcc-sc7180.h b/include/dt-bindings/clock/qcom,dispcc-sc7180.h
+index b9b51617a335d..0705103060748 100644
+--- a/include/dt-bindings/clock/qcom,dispcc-sc7180.h
++++ b/include/dt-bindings/clock/qcom,dispcc-sc7180.h
+@@ -6,6 +6,7 @@
+ #ifndef _DT_BINDINGS_CLK_QCOM_DISP_CC_SC7180_H
+ #define _DT_BINDINGS_CLK_QCOM_DISP_CC_SC7180_H
  
-+	if (f->wss.wc >= OSF_WSS_MAX ||
-+	    (f->wss.wc == OSF_WSS_MODULO && f->wss.val == 0))
-+		return -EINVAL;
++/* Clocks */
+ #define DISP_CC_PLL0				0
+ #define DISP_CC_PLL0_OUT_EVEN			1
+ #define DISP_CC_MDSS_AHB_CLK			2
+@@ -40,7 +41,11 @@
+ #define DISP_CC_MDSS_VSYNC_CLK_SRC		31
+ #define DISP_CC_XO_CLK				32
+ 
+-/* DISP_CC GDSCR */
++/* Resets */
++#define DISP_CC_MDSS_CORE_BCR			0
++#define DISP_CC_MDSS_RSCC_BCR			1
 +
- 	for (i = 0; i < f->opt_num; i++) {
- 		if (!f->opt[i].length || f->opt[i].length > MAX_IPOPTLEN)
- 			return -EINVAL;
++/* GDSCs */
+ #define MDSS_GDSC				0
+ 
+ #endif
 -- 
 2.53.0
 
