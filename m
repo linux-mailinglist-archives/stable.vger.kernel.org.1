@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-259107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257728-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qITxBPIvG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259107-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:02 +0200
+	id cKW2OFcfG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257728-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1625F6125D3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D1D60FE67
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2AA64300809D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:43:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF1773066A8B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7A821B191;
-	Sat, 30 May 2026 18:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35F32FDC5E;
+	Sat, 30 May 2026 17:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5z9uEz7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ni9Ym3mq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F417825B08A;
-	Sat, 30 May 2026 18:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABFD33E36A;
+	Sat, 30 May 2026 17:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166634; cv=none; b=ji+j8MYM/d8DSENAqNtP5M7Y4GzoCjYuIO6V+yG+uytL4s3nMHrhB/A2MGEE+I//OJEMYWf6k3sKdX/0deQ9OERujT5+WxImJ/3H2XOwnpAeSp6Gb4tevdPO6vbPPfjnW6h0C5q/hxcDq6YCyXmOBnE+btc2LHPtkMEXGqeO0Iw=
+	t=1780161973; cv=none; b=eHhOX45H7BDYM/XMCrYm5ZHClJuZygevM044RjlVcLAeGqM4mNLJ2a9sQUSfZ7mvvFF2V1uJbpAARSN3UAUr7cKScdGh056I/VTUkntNEmF1+ufz7ZCfFV+ky1oDrTR5fTwYeJgb/S2XoPZaRhPT4R09H+vJbScF/6aJ2BfU3VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166634; c=relaxed/simple;
-	bh=n/qzWarChJXi0Xnt/NPPpHF6LCIzGUB2HElIbg6SSck=;
+	s=arc-20240116; t=1780161973; c=relaxed/simple;
+	bh=zSLW4ZEoCGezBvacqkacmQyZQ01NEiBcTuCMgIVmzQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L7BKea4sAEM6yiJ6eqi5fVo3Mj/R+TnBI80cMG6ha/nrGW6oaQUPRyiy/wQTQKdX9dzGEW3iZEL48AJSUPlkSpmPBtnOeAQgiKdvMRV4hfwByMOcZKfnaWGOpj8DOIr2f+8a1YrE5WeMdeTBGD8bWysl1XvQl7pb3DxIGjbi8lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5z9uEz7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3CD1F00893;
-	Sat, 30 May 2026 18:43:52 +0000 (UTC)
+	 MIME-Version; b=Vj8mGVK9UznNTTgA9+yo2G2Y6L8roruJWTeuaxIYdbFx5C9o8XeY3HK+zJZb98jSKs493bNYuTMjNzq3qHexRuTH77tnZwfN8qfQqZN4NxEJctAhfyrK60muPoL92KGPaD+iSOfK/ZKrsyQSAGigOclkFSM5WQfMyYQnv4xnTjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ni9Ym3mq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ABC41F00893;
+	Sat, 30 May 2026 17:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166633;
-	bh=K4qWCZ7jbdGy6TjhULLb8rrv04DNQqlxofWDGSddas8=;
+	s=korg; t=1780161971;
+	bh=6b/AstVSgQZZvEt0d/BF5YN1FA3+o2GgcVCfjwg8TUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c5z9uEz7HUS/wbgTg46USJSq1YrxlGPen7Yyc7GzXiyldhsYlkaj+y9jOGvU7IP+H
-	 E4QFQuVxcq1pUC01abWMpGL1tXHinupygy1epj5dkqaBuVPFPE/vVlnBHXvAyOKapG
-	 IEZ172MtGLKrAU8G7sQzJLuKk02gCWomGrOwQKf0=
+	b=Ni9Ym3mq/13KotJptB7PbdfaCtCaf2nmWhoX9d3JiZurmP9K7TPEREQaH8tU+UuQY
+	 RvbNvFW0QFR8p6AiRMaeQ5dpSNm5BaBK/MH8nJcWsWwTx6+wVDV0u8ENTGcmYfO4wM
+	 G3RdRglK7f8YzccsQhYjtGhxDSmlvQHPvqJISx7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <kohei@enjuk.jp>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	syzbot+9bb2ff2a4ab9e17307e1@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 424/589] i40e: dont advertise IFF_SUPP_NOFCS
-Date: Sat, 30 May 2026 18:05:05 +0200
-Message-ID: <20260530160235.872968238@linuxfoundation.org>
+Subject: [PATCH 6.1 782/969] bonding: 3ad: implement proper RCU rules for port->aggregator
+Date: Sat, 30 May 2026 18:05:06 +0200
+Message-ID: <20260530160322.193443903@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,86 +67,606 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257728-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259107-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,enjuk.jp:email]
-X-Rspamd-Queue-Id: 1625F6125D3
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,9bb2ff2a4ab9e17307e1,netdev];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,lunn.ch:email,appspotmail.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 44D1D60FE67
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a24162f18825684ad04e3a5d0531f8a50d679347 ]
+[ Upstream commit c4f050ce06c56cfb5993268af4a5cb66ed1cd04e ]
 
-i40e advertises IFF_SUPP_NOFCS, allowing users to use the SO_NOFCS
-socket option. However, this option is silently ignored, as the driver
-does not check skb->no_fcs, and always enables FCS insertion offload.
+syzbot found a data-race in bond_3ad_get_active_agg_info /
+bond_3ad_state_machine_handler [1] which hints at lack of proper
+RCU implementation.
 
-Fix this by removing the advertisement of IFF_SUPP_NOFCS.
+Add __rcu qualifier to port->aggregator, and add proper RCU API.
 
-This behavior can be reproduced with a simple AF_PACKET socket:
+[1]
 
-  import socket
-  s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW)
-  s.setsockopt(socket.SOL_SOCKET, 43, 1) # SO_NOFCS
-  s.bind(("eth0", 0))
-  s.send(b'\xff' * 64)
+BUG: KCSAN: data-race in bond_3ad_get_active_agg_info / bond_3ad_state_machine_handler
 
-Previously, send() succeeds but the driver ignores SO_NOFCS.
-With this change, send() fails with -EPROTONOSUPPORT, as expected.
+write to 0xffff88813cf5c4b0 of 8 bytes by task 36 on cpu 0:
+  ad_port_selection_logic drivers/net/bonding/bond_3ad.c:1659 [inline]
+  bond_3ad_state_machine_handler+0x9d5/0x2d60 drivers/net/bonding/bond_3ad.c:2569
+  process_one_work kernel/workqueue.c:3302 [inline]
+  process_scheduled_works+0x4f0/0x9c0 kernel/workqueue.c:3385
+  worker_thread+0x58a/0x780 kernel/workqueue.c:3466
+  kthread+0x22a/0x280 kernel/kthread.c:436
+  ret_from_fork+0x146/0x330 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
 
-Fixes: 41c445ff0f48 ("i40e: main driver core")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-9-686c33c9828d@intel.com
+read to 0xffff88813cf5c4b0 of 8 bytes by task 22063 on cpu 1:
+  __bond_3ad_get_active_agg_info drivers/net/bonding/bond_3ad.c:2858 [inline]
+  bond_3ad_get_active_agg_info+0x8c/0x230 drivers/net/bonding/bond_3ad.c:2881
+  bond_fill_info+0xe0f/0x10f0 drivers/net/bonding/bond_netlink.c:853
+  rtnl_link_info_fill net/core/rtnetlink.c:906 [inline]
+  rtnl_link_fill+0x1d7/0x4e0 net/core/rtnetlink.c:927
+  rtnl_fill_ifinfo+0xf8e/0x1380 net/core/rtnetlink.c:2168
+  rtmsg_ifinfo_build_skb+0x11c/0x1b0 net/core/rtnetlink.c:4453
+  rtmsg_ifinfo_event net/core/rtnetlink.c:4486 [inline]
+  rtmsg_ifinfo+0x6d/0x110 net/core/rtnetlink.c:4495
+  __dev_notify_flags+0x76/0x390 net/core/dev.c:9790
+  netif_change_flags+0xac/0xd0 net/core/dev.c:9823
+  do_setlink+0x905/0x2950 net/core/rtnetlink.c:3180
+  rtnl_group_changelink net/core/rtnetlink.c:3813 [inline]
+  __rtnl_newlink net/core/rtnetlink.c:3981 [inline]
+  rtnl_newlink+0xf55/0x1400 net/core/rtnetlink.c:4109
+  rtnetlink_rcv_msg+0x64b/0x720 net/core/rtnetlink.c:6995
+  netlink_rcv_skb+0x123/0x220 net/netlink/af_netlink.c:2550
+  rtnetlink_rcv+0x1c/0x30 net/core/rtnetlink.c:7022
+  netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+  netlink_unicast+0x5a8/0x680 net/netlink/af_netlink.c:1344
+  netlink_sendmsg+0x5c8/0x6f0 net/netlink/af_netlink.c:1894
+  sock_sendmsg_nosec net/socket.c:787 [inline]
+  __sock_sendmsg net/socket.c:802 [inline]
+  ____sys_sendmsg+0x563/0x5b0 net/socket.c:2698
+  ___sys_sendmsg+0x195/0x1e0 net/socket.c:2752
+  __sys_sendmsg net/socket.c:2784 [inline]
+  __do_sys_sendmsg net/socket.c:2789 [inline]
+  __se_sys_sendmsg net/socket.c:2787 [inline]
+  __x64_sys_sendmsg+0xd4/0x160 net/socket.c:2787
+  x64_sys_call+0x194c/0x3020 arch/x86/include/generated/asm/syscalls_64.h:47
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0x12c/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0x0000000000000000 -> 0xffff88813cf5c400
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 UID: 0 PID: 22063 Comm: syz.0.31122 Tainted: G        W           syzkaller #0 PREEMPT(full)
+Tainted: [W]=WARN
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+
+Fixes: 47e91f56008b ("bonding: use RCU protection for 3ad xmit path")
+Reported-by: syzbot+9bb2ff2a4ab9e17307e1@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/69f0a82f.050a0220.3aadc4.0000.GAE@google.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Link: https://patch.msgid.link/20260428123207.3809211-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/bonding/bond_3ad.c         | 109 ++++++++++++++-----------
+ drivers/net/bonding/bond_main.c        |   8 +-
+ drivers/net/bonding/bond_netlink.c     |  16 ++--
+ drivers/net/bonding/bond_procfs.c      |   3 +-
+ drivers/net/bonding/bond_sysfs_slave.c |  17 ++--
+ include/net/bond_3ad.h                 |   2 +-
+ 6 files changed, 89 insertions(+), 66 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 3d3816de72ec8..56bbaefbcbb7a 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -13192,7 +13192,6 @@ static int i40e_config_netdev(struct i40e_vsi *vsi)
- 	netdev->neigh_priv_len = sizeof(u32) * 4;
+diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
+index cf611dce8fad1..2849c2e6a8951 100644
+--- a/drivers/net/bonding/bond_3ad.c
++++ b/drivers/net/bonding/bond_3ad.c
+@@ -982,6 +982,7 @@ static int ad_marker_send(struct port *port, struct bond_marker *marker)
+ static void ad_mux_machine(struct port *port, bool *update_slave_arr)
+ {
+ 	struct bonding *bond = __get_bond_by_port(port);
++	struct aggregator *aggregator;
+ 	mux_states_t last_state;
  
- 	netdev->priv_flags |= IFF_UNICAST_FLT;
--	netdev->priv_flags |= IFF_SUPP_NOFCS;
- 	/* Setup netdev TC information */
- 	i40e_vsi_config_netdev_tc(vsi, vsi->tc_config.enabled_tc);
+ 	/* keep current State Machine state to compare later if it was
+@@ -989,6 +990,7 @@ static void ad_mux_machine(struct port *port, bool *update_slave_arr)
+ 	 */
+ 	last_state = port->sm_mux_state;
  
++	aggregator = rcu_dereference(port->aggregator);
+ 	if (port->sm_vars & AD_PORT_BEGIN) {
+ 		port->sm_mux_state = AD_MUX_DETACHED;
+ 	} else {
+@@ -1008,7 +1010,7 @@ static void ad_mux_machine(struct port *port, bool *update_slave_arr)
+ 				 * cycle to update ready variable, we check
+ 				 * READY_N and update READY here
+ 				 */
+-				__set_agg_ports_ready(port->aggregator, __agg_ports_are_ready(port->aggregator));
++				__set_agg_ports_ready(aggregator, __agg_ports_are_ready(aggregator));
+ 				port->sm_mux_state = AD_MUX_DETACHED;
+ 				break;
+ 			}
+@@ -1023,7 +1025,7 @@ static void ad_mux_machine(struct port *port, bool *update_slave_arr)
+ 			 * update ready variable, we check READY_N and update
+ 			 * READY here
+ 			 */
+-			__set_agg_ports_ready(port->aggregator, __agg_ports_are_ready(port->aggregator));
++			__set_agg_ports_ready(aggregator, __agg_ports_are_ready(aggregator));
+ 
+ 			/* if the wait_while_timer expired, and the port is
+ 			 * in READY state, move to ATTACHED state
+@@ -1039,7 +1041,7 @@ static void ad_mux_machine(struct port *port, bool *update_slave_arr)
+ 			if ((port->sm_vars & AD_PORT_SELECTED) &&
+ 			    (port->partner_oper.port_state & LACP_STATE_SYNCHRONIZATION) &&
+ 			    !__check_agg_selection_timer(port)) {
+-				if (port->aggregator->is_active) {
++				if (aggregator->is_active) {
+ 					int state = AD_MUX_COLLECTING_DISTRIBUTING;
+ 
+ 					if (!bond->params.coupled_control)
+@@ -1055,9 +1057,9 @@ static void ad_mux_machine(struct port *port, bool *update_slave_arr)
+ 				 * cycle to update ready variable, we check
+ 				 * READY_N and update READY here
+ 				 */
+-				__set_agg_ports_ready(port->aggregator, __agg_ports_are_ready(port->aggregator));
++				__set_agg_ports_ready(aggregator, __agg_ports_are_ready(aggregator));
+ 				port->sm_mux_state = AD_MUX_DETACHED;
+-			} else if (port->aggregator->is_active) {
++			} else if (aggregator->is_active) {
+ 				port->actor_oper_port_state |=
+ 				    LACP_STATE_SYNCHRONIZATION;
+ 			}
+@@ -1068,7 +1070,7 @@ static void ad_mux_machine(struct port *port, bool *update_slave_arr)
+ 				 * sure that a collecting distributing
+ 				 * port in an active aggregator is enabled
+ 				 */
+-				if (port->aggregator->is_active &&
++				if (aggregator->is_active &&
+ 				    !__port_is_collecting_distributing(port)) {
+ 					__enable_port(port);
+ 					*update_slave_arr = true;
+@@ -1087,7 +1089,7 @@ static void ad_mux_machine(struct port *port, bool *update_slave_arr)
+ 					 */
+ 					struct slave *slave = port->slave;
+ 
+-					if (port->aggregator->is_active &&
++					if (aggregator->is_active &&
+ 					    bond_is_slave_rx_disabled(slave)) {
+ 						ad_enable_collecting(port);
+ 						*update_slave_arr = true;
+@@ -1107,8 +1109,8 @@ static void ad_mux_machine(struct port *port, bool *update_slave_arr)
+ 				 * sure that a collecting distributing
+ 				 * port in an active aggregator is enabled
+ 				 */
+-				if (port->aggregator &&
+-				    port->aggregator->is_active &&
++				if (aggregator &&
++				    aggregator->is_active &&
+ 				    !__port_is_collecting_distributing(port)) {
+ 					__enable_port(port);
+ 					*update_slave_arr = true;
+@@ -1140,7 +1142,7 @@ static void ad_mux_machine(struct port *port, bool *update_slave_arr)
+ 			port->sm_mux_timer_counter = __ad_timer_to_ticks(AD_WAIT_WHILE_TIMER, 0);
+ 			break;
+ 		case AD_MUX_ATTACHED:
+-			if (port->aggregator->is_active)
++			if (aggregator->is_active)
+ 				port->actor_oper_port_state |=
+ 				    LACP_STATE_SYNCHRONIZATION;
+ 			else
+@@ -1513,9 +1515,9 @@ static void ad_port_selection_logic(struct port *port, bool *update_slave_arr)
+ 	bond = __get_bond_by_port(port);
+ 
+ 	/* if the port is connected to other aggregator, detach it */
+-	if (port->aggregator) {
++	temp_aggregator = rcu_dereference(port->aggregator);
++	if (temp_aggregator) {
+ 		/* detach the port from its former aggregator */
+-		temp_aggregator = port->aggregator;
+ 		for (curr_port = temp_aggregator->lag_ports; curr_port;
+ 		     last_port = curr_port,
+ 		     curr_port = curr_port->next_port_in_aggregator) {
+@@ -1538,7 +1540,7 @@ static void ad_port_selection_logic(struct port *port, bool *update_slave_arr)
+ 				/* clear the port's relations to this
+ 				 * aggregator
+ 				 */
+-				port->aggregator = NULL;
++				RCU_INIT_POINTER(port->aggregator, NULL);
+ 				port->next_port_in_aggregator = NULL;
+ 				port->actor_port_aggregator_identifier = 0;
+ 
+@@ -1561,7 +1563,7 @@ static void ad_port_selection_logic(struct port *port, bool *update_slave_arr)
+ 					     port->slave->bond->dev->name,
+ 					     port->slave->dev->name,
+ 					     port->actor_port_number,
+-					     port->aggregator->aggregator_identifier);
++					     temp_aggregator->aggregator_identifier);
+ 		}
+ 	}
+ 	/* search on all aggregators for a suitable aggregator for this port */
+@@ -1585,15 +1587,15 @@ static void ad_port_selection_logic(struct port *port, bool *update_slave_arr)
+ 		    )
+ 		   ) {
+ 			/* attach to the founded aggregator */
+-			port->aggregator = aggregator;
++			rcu_assign_pointer(port->aggregator, aggregator);
+ 			port->actor_port_aggregator_identifier =
+-				port->aggregator->aggregator_identifier;
++				aggregator->aggregator_identifier;
+ 			port->next_port_in_aggregator = aggregator->lag_ports;
+-			port->aggregator->num_of_ports++;
++			aggregator->num_of_ports++;
+ 			aggregator->lag_ports = port;
+ 			slave_dbg(bond->dev, slave->dev, "Port %d joined LAG %d (existing LAG)\n",
+ 				  port->actor_port_number,
+-				  port->aggregator->aggregator_identifier);
++				  aggregator->aggregator_identifier);
+ 
+ 			/* mark this port as selected */
+ 			port->sm_vars |= AD_PORT_SELECTED;
+@@ -1608,39 +1610,40 @@ static void ad_port_selection_logic(struct port *port, bool *update_slave_arr)
+ 	if (!found) {
+ 		if (free_aggregator) {
+ 			/* assign port a new aggregator */
+-			port->aggregator = free_aggregator;
+ 			port->actor_port_aggregator_identifier =
+-				port->aggregator->aggregator_identifier;
++				free_aggregator->aggregator_identifier;
+ 
+ 			/* update the new aggregator's parameters
+ 			 * if port was responsed from the end-user
+ 			 */
+ 			if (port->actor_oper_port_key & AD_DUPLEX_KEY_MASKS)
+ 				/* if port is full duplex */
+-				port->aggregator->is_individual = false;
++				free_aggregator->is_individual = false;
+ 			else
+-				port->aggregator->is_individual = true;
++				free_aggregator->is_individual = true;
+ 
+-			port->aggregator->actor_admin_aggregator_key =
++			free_aggregator->actor_admin_aggregator_key =
+ 				port->actor_admin_port_key;
+-			port->aggregator->actor_oper_aggregator_key =
++			free_aggregator->actor_oper_aggregator_key =
+ 				port->actor_oper_port_key;
+-			port->aggregator->partner_system =
++			free_aggregator->partner_system =
+ 				port->partner_oper.system;
+-			port->aggregator->partner_system_priority =
++			free_aggregator->partner_system_priority =
+ 				port->partner_oper.system_priority;
+-			port->aggregator->partner_oper_aggregator_key = port->partner_oper.key;
+-			port->aggregator->receive_state = 1;
+-			port->aggregator->transmit_state = 1;
+-			port->aggregator->lag_ports = port;
+-			port->aggregator->num_of_ports++;
++			free_aggregator->partner_oper_aggregator_key = port->partner_oper.key;
++			free_aggregator->receive_state = 1;
++			free_aggregator->transmit_state = 1;
++			free_aggregator->lag_ports = port;
++			free_aggregator->num_of_ports++;
++
++			rcu_assign_pointer(port->aggregator, free_aggregator);
+ 
+ 			/* mark this port as selected */
+ 			port->sm_vars |= AD_PORT_SELECTED;
+ 
+ 			slave_dbg(bond->dev, port->slave->dev, "Port %d joined LAG %d (new LAG)\n",
+ 				  port->actor_port_number,
+-				  port->aggregator->aggregator_identifier);
++				  free_aggregator->aggregator_identifier);
+ 		} else {
+ 			slave_err(bond->dev, port->slave->dev,
+ 				  "Port %d did not find a suitable aggregator\n",
+@@ -1652,13 +1655,12 @@ static void ad_port_selection_logic(struct port *port, bool *update_slave_arr)
+ 	 * in all aggregator's ports, else set ready=FALSE in all
+ 	 * aggregator's ports
+ 	 */
+-	__set_agg_ports_ready(port->aggregator,
+-			      __agg_ports_are_ready(port->aggregator));
++	aggregator = rcu_dereference(port->aggregator);
++	__set_agg_ports_ready(aggregator, __agg_ports_are_ready(aggregator));
+ 
+-	aggregator = __get_first_agg(port);
+-	ad_agg_selection_logic(aggregator, update_slave_arr);
++	ad_agg_selection_logic(__get_first_agg(port), update_slave_arr);
+ 
+-	if (!port->aggregator->is_active)
++	if (!aggregator->is_active)
+ 		port->actor_oper_port_state &= ~LACP_STATE_SYNCHRONIZATION;
+ }
+ 
+@@ -2012,13 +2014,15 @@ static void ad_initialize_port(struct port *port, const struct bond_params *bond
+  */
+ static void ad_enable_collecting(struct port *port)
+ {
+-	if (port->aggregator->is_active) {
++	struct aggregator *aggregator = rcu_dereference(port->aggregator);
++
++	if (aggregator->is_active) {
+ 		struct slave *slave = port->slave;
+ 
+ 		slave_dbg(slave->bond->dev, slave->dev,
+ 			  "Enabling collecting on port %d (LAG %d)\n",
+ 			  port->actor_port_number,
+-			  port->aggregator->aggregator_identifier);
++			  aggregator->aggregator_identifier);
+ 		__enable_collecting_port(port);
+ 	}
+ }
+@@ -2030,11 +2034,13 @@ static void ad_enable_collecting(struct port *port)
+  */
+ static void ad_disable_distributing(struct port *port, bool *update_slave_arr)
+ {
+-	if (port->aggregator && __agg_has_partner(port->aggregator)) {
++	struct aggregator *aggregator = rcu_dereference(port->aggregator);
++
++	if (aggregator && __agg_has_partner(aggregator)) {
+ 		slave_dbg(port->slave->bond->dev, port->slave->dev,
+ 			  "Disabling distributing on port %d (LAG %d)\n",
+ 			  port->actor_port_number,
+-			  port->aggregator->aggregator_identifier);
++			  aggregator->aggregator_identifier);
+ 		__disable_distributing_port(port);
+ 		/* Slave array needs an update */
+ 		*update_slave_arr = true;
+@@ -2051,11 +2057,13 @@ static void ad_disable_distributing(struct port *port, bool *update_slave_arr)
+ static void ad_enable_collecting_distributing(struct port *port,
+ 					      bool *update_slave_arr)
+ {
+-	if (port->aggregator->is_active) {
++	struct aggregator *aggregator = rcu_dereference(port->aggregator);
++
++	if (aggregator->is_active) {
+ 		slave_dbg(port->slave->bond->dev, port->slave->dev,
+ 			  "Enabling port %d (LAG %d)\n",
+ 			  port->actor_port_number,
+-			  port->aggregator->aggregator_identifier);
++			  aggregator->aggregator_identifier);
+ 		__enable_port(port);
+ 		/* Slave array needs update */
+ 		*update_slave_arr = true;
+@@ -2070,11 +2078,13 @@ static void ad_enable_collecting_distributing(struct port *port,
+ static void ad_disable_collecting_distributing(struct port *port,
+ 					       bool *update_slave_arr)
+ {
+-	if (port->aggregator && __agg_has_partner(port->aggregator)) {
++	struct aggregator *aggregator = rcu_dereference(port->aggregator);
++
++	if (aggregator && __agg_has_partner(aggregator)) {
+ 		slave_dbg(port->slave->bond->dev, port->slave->dev,
+ 			  "Disabling port %d (LAG %d)\n",
+ 			  port->actor_port_number,
+-			  port->aggregator->aggregator_identifier);
++			  aggregator->aggregator_identifier);
+ 		__disable_port(port);
+ 		/* Slave array needs an update */
+ 		*update_slave_arr = true;
+@@ -2314,7 +2324,7 @@ void bond_3ad_unbind_slave(struct slave *slave)
+ 				 */
+ 				for (temp_port = aggregator->lag_ports; temp_port;
+ 				     temp_port = temp_port->next_port_in_aggregator) {
+-					temp_port->aggregator = new_aggregator;
++					rcu_assign_pointer(temp_port->aggregator, new_aggregator);
+ 					temp_port->actor_port_aggregator_identifier = new_aggregator->aggregator_identifier;
+ 				}
+ 
+@@ -2783,15 +2793,16 @@ int bond_3ad_set_carrier(struct bonding *bond)
+ int __bond_3ad_get_active_agg_info(struct bonding *bond,
+ 				   struct ad_info *ad_info)
+ {
+-	struct aggregator *aggregator = NULL;
++	struct aggregator *aggregator = NULL, *tmp;
+ 	struct list_head *iter;
+ 	struct slave *slave;
+ 	struct port *port;
+ 
+ 	bond_for_each_slave_rcu(bond, slave, iter) {
+ 		port = &(SLAVE_AD_INFO(slave)->port);
+-		if (port->aggregator && port->aggregator->is_active) {
+-			aggregator = port->aggregator;
++		tmp = rcu_dereference(port->aggregator);
++		if (tmp && tmp->is_active) {
++			aggregator = tmp;
+ 			break;
+ 		}
+ 	}
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 97821c3c8b9a8..d3c41dc57e547 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1374,7 +1374,7 @@ static void bond_poll_controller(struct net_device *bond_dev)
+ 
+ 		if (BOND_MODE(bond) == BOND_MODE_8023AD) {
+ 			struct aggregator *agg =
+-			    SLAVE_AD_INFO(slave)->port.aggregator;
++			    rcu_dereference(SLAVE_AD_INFO(slave)->port.aggregator);
+ 
+ 			if (agg &&
+ 			    agg->aggregator_identifier != ad_info.aggregator_id)
+@@ -5183,15 +5183,16 @@ int bond_update_slave_arr(struct bonding *bond, struct slave *skipslave)
+ 		spin_unlock_bh(&bond->mode_lock);
+ 		agg_id = ad_info.aggregator_id;
+ 	}
++	rcu_read_lock();
+ 	bond_for_each_slave(bond, slave, iter) {
+ 		if (skipslave == slave)
+ 			continue;
+ 
+ 		all_slaves->arr[all_slaves->count++] = slave;
+ 		if (BOND_MODE(bond) == BOND_MODE_8023AD) {
+-			struct aggregator *agg;
++			const struct aggregator *agg;
+ 
+-			agg = SLAVE_AD_INFO(slave)->port.aggregator;
++			agg = rcu_dereference(SLAVE_AD_INFO(slave)->port.aggregator);
+ 			if (!agg || agg->aggregator_identifier != agg_id)
+ 				continue;
+ 		}
+@@ -5203,6 +5204,7 @@ int bond_update_slave_arr(struct bonding *bond, struct slave *skipslave)
+ 
+ 		usable_slaves->arr[usable_slaves->count++] = slave;
+ 	}
++	rcu_read_unlock();
+ 
+ 	bond_set_slave_arr(bond, usable_slaves, all_slaves);
+ 	return ret;
+diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
+index 086233dce9c8d..0eaf4b0e06ffb 100644
+--- a/drivers/net/bonding/bond_netlink.c
++++ b/drivers/net/bonding/bond_netlink.c
+@@ -65,27 +65,29 @@ static int bond_fill_slave_info(struct sk_buff *skb,
+ 		const struct port *ad_port;
+ 
+ 		ad_port = &SLAVE_AD_INFO(slave)->port;
+-		agg = SLAVE_AD_INFO(slave)->port.aggregator;
++		rcu_read_lock();
++		agg = rcu_dereference(SLAVE_AD_INFO(slave)->port.aggregator);
+ 		if (agg) {
+ 			if (nla_put_u16(skb, IFLA_BOND_SLAVE_AD_AGGREGATOR_ID,
+ 					agg->aggregator_identifier))
+-				goto nla_put_failure;
++				goto nla_put_failure_rcu;
+ 			if (nla_put_u8(skb,
+ 				       IFLA_BOND_SLAVE_AD_ACTOR_OPER_PORT_STATE,
+ 				       ad_port->actor_oper_port_state))
+-				goto nla_put_failure;
++				goto nla_put_failure_rcu;
+ 			if (nla_put_u16(skb,
+ 					IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE,
+ 					ad_port->partner_oper.port_state))
+-				goto nla_put_failure;
++				goto nla_put_failure_rcu;
+ 
+ 			if (nla_put_u8(skb, IFLA_BOND_SLAVE_AD_CHURN_ACTOR_STATE,
+ 				       ad_port->sm_churn_actor_state))
+-				goto nla_put_failure;
++				goto nla_put_failure_rcu;
+ 			if (nla_put_u8(skb, IFLA_BOND_SLAVE_AD_CHURN_PARTNER_STATE,
+ 				       ad_port->sm_churn_partner_state))
+-				goto nla_put_failure;
++				goto nla_put_failure_rcu;
+ 		}
++		rcu_read_unlock();
+ 
+ 		if (nla_put_u16(skb, IFLA_BOND_SLAVE_ACTOR_PORT_PRIO,
+ 				SLAVE_AD_INFO(slave)->port_priority))
+@@ -94,6 +96,8 @@ static int bond_fill_slave_info(struct sk_buff *skb,
+ 
+ 	return 0;
+ 
++nla_put_failure_rcu:
++	rcu_read_unlock();
+ nla_put_failure:
+ 	return -EMSGSIZE;
+ }
+diff --git a/drivers/net/bonding/bond_procfs.c b/drivers/net/bonding/bond_procfs.c
+index 43be458422b3f..bc919814eb504 100644
+--- a/drivers/net/bonding/bond_procfs.c
++++ b/drivers/net/bonding/bond_procfs.c
+@@ -187,6 +187,7 @@ static void bond_info_show_master(struct seq_file *seq)
+ 	}
+ }
+ 
++/* Note: runs under rcu_read_lock() */
+ static void bond_info_show_slave(struct seq_file *seq,
+ 				 const struct slave *slave)
+ {
+@@ -213,7 +214,7 @@ static void bond_info_show_slave(struct seq_file *seq,
+ 
+ 	if (BOND_MODE(bond) == BOND_MODE_8023AD) {
+ 		const struct port *port = &SLAVE_AD_INFO(slave)->port;
+-		const struct aggregator *agg = port->aggregator;
++		const struct aggregator *agg = rcu_dereference(port->aggregator);
+ 
+ 		if (agg) {
+ 			seq_printf(seq, "Aggregator ID: %d\n",
+diff --git a/drivers/net/bonding/bond_sysfs_slave.c b/drivers/net/bonding/bond_sysfs_slave.c
+index 313866f2c0e49..75df3e21b804d 100644
+--- a/drivers/net/bonding/bond_sysfs_slave.c
++++ b/drivers/net/bonding/bond_sysfs_slave.c
+@@ -62,10 +62,15 @@ static ssize_t ad_aggregator_id_show(struct slave *slave, char *buf)
+ 	const struct aggregator *agg;
+ 
+ 	if (BOND_MODE(slave->bond) == BOND_MODE_8023AD) {
+-		agg = SLAVE_AD_INFO(slave)->port.aggregator;
+-		if (agg)
+-			return sysfs_emit(buf, "%d\n",
+-					  agg->aggregator_identifier);
++		rcu_read_lock();
++		agg = rcu_dereference(SLAVE_AD_INFO(slave)->port.aggregator);
++		if (agg) {
++			ssize_t res = sysfs_emit(buf, "%d\n",
++						 agg->aggregator_identifier);
++			rcu_read_unlock();
++			return res;
++		}
++		rcu_read_unlock();
+ 	}
+ 
+ 	return sysfs_emit(buf, "N/A\n");
+@@ -78,7 +83,7 @@ static ssize_t ad_actor_oper_port_state_show(struct slave *slave, char *buf)
+ 
+ 	if (BOND_MODE(slave->bond) == BOND_MODE_8023AD) {
+ 		ad_port = &SLAVE_AD_INFO(slave)->port;
+-		if (ad_port->aggregator)
++		if (rcu_access_pointer(ad_port->aggregator))
+ 			return sysfs_emit(buf, "%u\n",
+ 				       ad_port->actor_oper_port_state);
+ 	}
+@@ -93,7 +98,7 @@ static ssize_t ad_partner_oper_port_state_show(struct slave *slave, char *buf)
+ 
+ 	if (BOND_MODE(slave->bond) == BOND_MODE_8023AD) {
+ 		ad_port = &SLAVE_AD_INFO(slave)->port;
+-		if (ad_port->aggregator)
++		if (rcu_access_pointer(ad_port->aggregator))
+ 			return sysfs_emit(buf, "%u\n",
+ 				       ad_port->partner_oper.port_state);
+ 	}
+diff --git a/include/net/bond_3ad.h b/include/net/bond_3ad.h
+index 579f3000a855e..3f4496df50acd 100644
+--- a/include/net/bond_3ad.h
++++ b/include/net/bond_3ad.h
+@@ -239,7 +239,7 @@ typedef struct port {
+ 	churn_state_t sm_churn_actor_state;
+ 	churn_state_t sm_churn_partner_state;
+ 	struct slave *slave;		/* pointer to the bond slave that this port belongs to */
+-	struct aggregator *aggregator;	/* pointer to an aggregator that this port related to */
++	struct aggregator __rcu *aggregator;	/* pointer to an aggregator that this port related to */
+ 	struct port *next_port_in_aggregator;	/* Next port on the linked list of the parent aggregator */
+ 	u32 transaction_id;		/* continuous number for identification of Marker PDU's; */
+ 	struct lacpdu lacpdu;		/* the lacpdu that will be sent for this port */
 -- 
 2.53.0
 
