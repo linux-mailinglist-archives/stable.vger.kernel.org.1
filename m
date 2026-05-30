@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-258888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258282-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDStN1EwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-258888-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:37 +0200
+	id yNCGCEElG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258282-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F5A6126D5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A5B610B98
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71B3931A508D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4FCAC3004614
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CCA331200;
-	Sat, 30 May 2026 18:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F4C341AC7;
+	Sat, 30 May 2026 17:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzCr9iuJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXh0+k21"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C7933E36A;
-	Sat, 30 May 2026 18:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B86030E0DC;
+	Sat, 30 May 2026 17:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165878; cv=none; b=ExAlFgwwGij29IjyZ2iRISbHgzpHxRcIN72DYNsE7nKIsuU4Xnah3K2DRnQUwaBoQZTpDabf1zy2i9N2KgNOopa0OTIViRXoNnmT19AUuaYNz7zsttvoIr7nZucVIKHQsDgqFpPWekBBiqe5vw9Fwhb51zIY01USF6c32HFsFns=
+	t=1780163826; cv=none; b=dVUo4Sk/BVjwcqr6dQWFT8Mefq7FaxKQG45SEckiEex5cJb6ZEmmFDahTGWlgDvYKCx1VhRxfR4ZDL1L5146SMOeA7QYvtF0eDXJG8piroKUaiAxuoX+v/IbDKLyNgMMbOdFpwZGf1S+WB2fw3FqQWJXNyetw1pflwSHN1m9AIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165878; c=relaxed/simple;
-	bh=MHTjPO+QlSflAnY/5tPtQONOS9B1uhsJ9hVg/sBL7oQ=;
+	s=arc-20240116; t=1780163826; c=relaxed/simple;
+	bh=bzeTaBtHNMrgnfm1Zfim7q25G8lRd7ykEsIHGIaj65I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i0O0QCxtFlAvBsV9QZFGNynupyqqrHiLmsRfnPUO0CQv2vim2jwU6Ye6qlOk2itjSrOwLvB42MAAsqJRPacN1FYeoOH+tkRSMrDEytaAJpFkcwa4VyW8fojtJn9Yihicz6epNxIeBDl57ejQkaCEzJT/39UHGf0oxFnpQGLtsX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzCr9iuJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588611F00893;
-	Sat, 30 May 2026 18:31:16 +0000 (UTC)
+	 MIME-Version; b=gPyvhJNXnGNYmeB3AUg5Oo/mfrjeOwXog3Fg83iNss9fZfRPMn390uNRJGoieOfJimZbzOeBrOFMxWeqpGcMQ9auFkrP8TzfXVYXx/V1i5fmw3ZbDNDyDtk4A/eHpIdroHWa8b3kUVL3VVdKhZld1MQTQkaXJCXWrUOyZCnMWiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXh0+k21; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DB01F00893;
+	Sat, 30 May 2026 17:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165877;
-	bh=DXsfHOfcWTv5Ds9T34kdi7//gxIyOWRtwjWPxPWLC6o=;
+	s=korg; t=1780163825;
+	bh=uuI48wPCzJqWrWwYALqux5aOO5wHHWbqISmnHE+vTZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pzCr9iuJ3Cp+vPBn6/tV7qO+dUWZqsq8ZJXKbd7dnG+0pPtyRut1xKY1uNyaKZ5QU
-	 MEFJee6TbAWn0PJhTMx/oMrJ1jbrGEtN9ywGeD+Sm2G0AsmuMyyxXCem+SkPK0tpi6
-	 Q5xzzMIoJxgMbLTyK08z80ZXI2GyXyYS69pw8Adc=
+	b=OXh0+k21k3HHAzvoA3JqdUFjTvRUVnTS8AwD4E6IXyi8Y2pvxgTbZV08chm09bkqH
+	 HYob8gnrY2UrYeCXw0fWP8hUz+jMlf7rOonK5U5CFNHxYDRdoNqfsFxRh9xpq8fdB4
+	 lsTLWoyPpebZG/4PsR+BpwC4Okj6i26DSAjbbnTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 5.10 207/589] ipmi:si: Return state to normal if message allocation fails
+	Lyes Bourennani <lbourennani@fuzzinglabs.com>,
+	Alexis Pinson <apinson@fuzzinglabs.com>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.15 374/776] batman-adv: fix integer overflow on buff_pos
 Date: Sat, 30 May 2026 18:01:28 +0200
-Message-ID: <20260530160230.389995204@linuxfoundation.org>
+Message-ID: <20260530160250.201315172@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +68,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258888-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258282-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,minyard.net:email]
-X-Rspamd-Queue-Id: 67F5A6126D5
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fuzzinglabs.com:email]
+X-Rspamd-Queue-Id: 49A5B610B98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Lyes Bourennani <lbourennani@fuzzinglabs.com>
 
-commit 09dd798270ff582d7309f285d4aaf5dbebae01cb upstream.
+commit 0799e5943611006b346b8813c7daf7dd5aa26bfd upstream.
 
-There were places where nothing would get started if a message
-allocation failed, so the driver needs to return to normal state.
+Fixing an integer overflow present in batadv_iv_ogm_send_to_if. The size
+check is done using the int type in batadv_iv_ogm_aggr_packet whereas the
+buff_pos variable uses the s16 type. This could lead to an out-of-bound
+read.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Cc: stable@vger.kernel.org
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Signed-off-by: Lyes Bourennani <lbourennani@fuzzinglabs.com>
+Signed-off-by: Alexis Pinson <apinson@fuzzinglabs.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_si_intf.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/batman-adv/bat_iv_ogm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/ipmi/ipmi_si_intf.c
-+++ b/drivers/char/ipmi/ipmi_si_intf.c
-@@ -479,15 +479,19 @@ retry:
- 	} else if (smi_info->msg_flags & RECEIVE_MSG_AVAIL) {
- 		/* Messages available. */
- 		smi_info->curr_msg = alloc_msg_handle_irq(smi_info);
--		if (!smi_info->curr_msg)
-+		if (!smi_info->curr_msg) {
-+			smi_info->si_state = SI_NORMAL;
- 			return;
-+		}
- 
- 		start_getting_msg_queue(smi_info);
- 	} else if (smi_info->msg_flags & EVENT_MSG_BUFFER_FULL) {
- 		/* Events available. */
- 		smi_info->curr_msg = alloc_msg_handle_irq(smi_info);
--		if (!smi_info->curr_msg)
-+		if (!smi_info->curr_msg) {
-+			smi_info->si_state = SI_NORMAL;
- 			return;
-+		}
- 
- 		start_getting_events(smi_info);
- 	} else if (smi_info->msg_flags & OEM_DATA_AVAIL &&
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -335,7 +335,7 @@ static void batadv_iv_ogm_send_to_if(str
+ 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
+ 	const char *fwd_str;
+ 	u8 packet_num;
+-	s16 buff_pos;
++	int buff_pos;
+ 	struct batadv_ogm_packet *batadv_ogm_packet;
+ 	struct sk_buff *skb;
+ 	u8 *packet_pos;
 
 
 
