@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-259147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257766-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8NrmEVAyG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:08 +0200
+	id IQqUG5ceG2rC/QgAu9opvQ
+	(envelope-from <stable+bounces-257766-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACFD4612C46
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 406F460FCD3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1F2B3125FF8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DEEC23009E1A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F414E21E098;
-	Sat, 30 May 2026 18:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D214B33E36A;
+	Sat, 30 May 2026 17:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRifDosd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KixQ9fDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A23025B0B5;
-	Sat, 30 May 2026 18:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1532FDC5E;
+	Sat, 30 May 2026 17:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166767; cv=none; b=s1e6KVCo7pHAabEnnn+cf8+t8G5GdtotbOLjeRN3/VcHPVb20Fw4yAvxR5wpdlFJ1QGuqe/95vQL1KkH+wVY/Ntfm2s4aaIUrm7+gTly6NLpKlbU/+3ywG9q/c7fEjWEb45niPQLrjiuaqQOyVFg6nO5G2sESYx70MiL/efAlqg=
+	t=1780162100; cv=none; b=gyINMYtDg4jH022OgPIUTfurlwbcJIDFQHsx8pmfhE3h0yViZfYLxL0iMDWe2xaeWd5WkYiabPzkJGDjCroeY+2ntHjMXSeeYye610N0UclOmuQVbFKQS+8CCzggFngwqEFXXFCKpwp7GhtTLiq6x3fGT0g3WqTh9RXkvUliwHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166767; c=relaxed/simple;
-	bh=LI9HXvnzhLnK2obWM2Hy0R8dVZV8FcmOFNWZg2UEzas=;
+	s=arc-20240116; t=1780162100; c=relaxed/simple;
+	bh=vTAHJ8wFF0OuFKah8xuST4e63Ri7XjGzQxql/0UiwPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PX87Vk3tT0QFFGiGNQQTVP85jjECPGyiJh5IEL9WAM56JElMMatUpX3nPbffFskxXFzxKeAljsymXk1qOM9OlbxReFwMNV9+uOQN4GbJWMI7KLRq6Z9VpSicnAObV9HHX5KJyIXOMnuqihjqLZULdmFUDP/fBgplKJrVrMNnpNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRifDosd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7AC1F00893;
-	Sat, 30 May 2026 18:46:03 +0000 (UTC)
+	 MIME-Version; b=KTA6R4rVDu3Y5gkGJn1ygWM77qFc0I03xyJWnQ4JzDJPxd4UQ/7QwfPes5pnP+rixJ2Dbi5HsCVp32mAsT0E/oADC/sgCVv0WZSZbvEdWfRYirUALx2+2sa+HV7QoNgpnhlxZiu6YuycGp4iGwFal7HYiyCokoyANW13medA2tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KixQ9fDe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA841F00893;
+	Sat, 30 May 2026 17:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166764;
-	bh=EyUdiCUhajJPxWmBCGEJnM4Yzlh83T4bUsxrMIbDdtE=;
+	s=korg; t=1780162099;
+	bh=ks1Z3CbX9vr4YGgpZxdJyvaIn4tIoWEcmXYEYHQAMck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cRifDosdxi0WneN3XXB1UX+HL7dbc/FuF3bIhgDVHuxFlRpMVFOWjy17ak5zuzEIp
-	 lu/fEFS2rTrDcK86N6dq/azWEUnlG0AfKZSCLZYlSadqqIyl68VmrZW0EpSdopQTTk
-	 f86nsvNBrJtrxN++VyLo33WM40bt8gEunlNfBWrk=
+	b=KixQ9fDe/S7jhFwqvbEFpMx+tBBqWMJIRNLgqxaYxGPRzGfs5ZwRe7Fie7EYUYiH2
+	 U7UHko0CdmPVKuzKKYX0WI1hc72gtcP3DDGo7shegVEImlr4QZ3hp0z8av5V0AIqgQ
+	 LDcqpKsb2IjhnZcuW6ZJQt2XQrRPLhYO2XbR2ol4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 463/589] btrfs: merge PAGE_CLEAR_DIRTY and PAGE_SET_WRITEBACK to PAGE_START_WRITEBACK
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.1 820/969] libceph: Fix potential out-of-bounds access in osdmap_decode()
 Date: Sat, 30 May 2026 18:05:44 +0200
-Message-ID: <20260530160236.837222381@linuxfoundation.org>
+Message-ID: <20260530160323.284729846@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,197 +65,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-257766-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259147-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,toxicpanda.com:email]
-X-Rspamd-Queue-Id: ACFD4612C46
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tu-ilmenau.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 406F460FCD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-[ Upstream commit 6869b0a8be775e920be54ee9b69a743ca20d8332 ]
+commit 35d0ed82d03e5ee77ea4f31f20e29562a7721649 upstream.
 
-PAGE_CLEAR_DIRTY and PAGE_SET_WRITEBACK are two defines used in
-__process_pages_contig(), to let the function know to clear page dirty
-bit and then set page writeback.
+When decoding osd_state and osd_weight from an incoming osdmap in
+osdmap_decode(), both are decoded for each osd, i.e., map->max_osd
+times. The ceph_decode_need() check only accounts for
+sizeof(*map->osd_weight) once. This can potentially result in an
+out-of-bounds memory access if the incoming message is corrupted such
+that the max_osd value exceeds the actual content of the osdmap message.
 
-However page writeback and dirty bits are conflicting (at least for
-sector size == PAGE_SIZE case), this means these two have to be always
-updated together.
+This patch fixes the issue by changing the corresponding part in the
+ceph_decode_need() check to account for
+map->max_osd*sizeof(*map->osd_weight).
 
-This means we can merge PAGE_CLEAR_DIRTY and PAGE_SET_WRITEBACK to
-PAGE_START_WRITEBACK.
-
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 82323b1a7088 ("btrfs: fix double-decrement of bytes_may_use in submit_one_async_extent()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: dcbc919a5dc8 ("libceph: switch osdmap decoding to use ceph_decode_entity_addr")
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c |  4 ++--
- fs/btrfs/extent_io.h | 12 ++++++------
- fs/btrfs/inode.c     | 28 ++++++++++------------------
- 3 files changed, 18 insertions(+), 26 deletions(-)
+ net/ceph/osdmap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 3d0b854e0c19d..38405087cc842 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -1983,10 +1983,10 @@ static int __process_pages_contig(struct address_space *mapping,
- 				pages_locked++;
- 				continue;
- 			}
--			if (page_ops & PAGE_CLEAR_DIRTY)
-+			if (page_ops & PAGE_START_WRITEBACK) {
- 				clear_page_dirty_for_io(pages[i]);
--			if (page_ops & PAGE_SET_WRITEBACK)
- 				set_page_writeback(pages[i]);
-+			}
- 			if (page_ops & PAGE_SET_ERROR)
- 				SetPageError(pages[i]);
- 			if (page_ops & PAGE_END_WRITEBACK)
-diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
-index e8ab48e5f282d..03aa1e6b3d332 100644
---- a/fs/btrfs/extent_io.h
-+++ b/fs/btrfs/extent_io.h
-@@ -34,12 +34,12 @@ enum {
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -1703,7 +1703,7 @@ static int osdmap_decode(void **p, void
+ 	ceph_decode_need(p, end, 3*sizeof(u32) +
+ 			 map->max_osd*(struct_v >= 5 ? sizeof(u32) :
+ 						       sizeof(u8)) +
+-				       sizeof(*map->osd_weight), e_inval);
++			 map->max_osd*sizeof(*map->osd_weight), e_inval);
+ 	if (ceph_decode_32(p) != map->max_osd)
+ 		goto e_inval;
  
- /* these are flags for __process_pages_contig */
- #define PAGE_UNLOCK		(1 << 0)
--#define PAGE_CLEAR_DIRTY	(1 << 1)
--#define PAGE_SET_WRITEBACK	(1 << 2)
--#define PAGE_END_WRITEBACK	(1 << 3)
--#define PAGE_SET_PRIVATE2	(1 << 4)
--#define PAGE_SET_ERROR		(1 << 5)
--#define PAGE_LOCK		(1 << 6)
-+/* Page starts writeback, clear dirty bit and set writeback bit */
-+#define PAGE_START_WRITEBACK	(1 << 1)
-+#define PAGE_END_WRITEBACK	(1 << 2)
-+#define PAGE_SET_PRIVATE2	(1 << 3)
-+#define PAGE_SET_ERROR		(1 << 4)
-+#define PAGE_LOCK		(1 << 5)
- 
- /*
-  * page->private values.  Every page that is controlled by the extent
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 7e66ebb91af78..6d2d799a0ed25 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -642,8 +642,7 @@ static noinline int compress_file_range(struct async_chunk *async_chunk)
- 						     NULL,
- 						     clear_flags,
- 						     PAGE_UNLOCK |
--						     PAGE_CLEAR_DIRTY |
--						     PAGE_SET_WRITEBACK |
-+						     PAGE_START_WRITEBACK |
- 						     page_error_op |
- 						     PAGE_END_WRITEBACK);
- 
-@@ -884,8 +883,7 @@ static noinline void submit_compressed_extents(struct async_chunk *async_chunk)
- 				async_extent->start +
- 				async_extent->ram_size - 1,
- 				NULL, EXTENT_LOCKED | EXTENT_DELALLOC,
--				PAGE_UNLOCK | PAGE_CLEAR_DIRTY |
--				PAGE_SET_WRITEBACK);
-+				PAGE_UNLOCK | PAGE_START_WRITEBACK);
- 		if (btrfs_submit_compressed_write(inode, async_extent->start,
- 				    async_extent->ram_size,
- 				    ins.objectid,
-@@ -921,9 +919,8 @@ static noinline void submit_compressed_extents(struct async_chunk *async_chunk)
- 				     NULL, EXTENT_LOCKED | EXTENT_DELALLOC |
- 				     EXTENT_DELALLOC_NEW |
- 				     EXTENT_DEFRAG | EXTENT_DO_ACCOUNTING,
--				     PAGE_UNLOCK | PAGE_CLEAR_DIRTY |
--				     PAGE_SET_WRITEBACK | PAGE_END_WRITEBACK |
--				     PAGE_SET_ERROR);
-+				     PAGE_UNLOCK | PAGE_START_WRITEBACK |
-+				     PAGE_END_WRITEBACK | PAGE_SET_ERROR);
- 	free_async_extent_pages(async_extent);
- 	kfree(async_extent);
- 	goto again;
-@@ -1020,8 +1017,7 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
- 				     EXTENT_LOCKED | EXTENT_DELALLOC |
- 				     EXTENT_DELALLOC_NEW | EXTENT_DEFRAG |
- 				     EXTENT_DO_ACCOUNTING, PAGE_UNLOCK |
--				     PAGE_CLEAR_DIRTY | PAGE_SET_WRITEBACK |
--				     PAGE_END_WRITEBACK);
-+				     PAGE_START_WRITEBACK | PAGE_END_WRITEBACK);
- 			*nr_written = *nr_written +
- 			     (end - start + PAGE_SIZE) / PAGE_SIZE;
- 			*page_started = 1;
-@@ -1143,8 +1139,7 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
- out_unlock:
- 	clear_bits = EXTENT_LOCKED | EXTENT_DELALLOC | EXTENT_DELALLOC_NEW |
- 		EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV;
--	page_ops = PAGE_UNLOCK | PAGE_CLEAR_DIRTY | PAGE_SET_WRITEBACK |
--		PAGE_END_WRITEBACK;
-+	page_ops = PAGE_UNLOCK | PAGE_START_WRITEBACK | PAGE_END_WRITEBACK;
- 	/*
- 	 * If we reserved an extent for our delalloc range (or a subrange) and
- 	 * failed to create the respective ordered extent, then it means that
-@@ -1269,9 +1264,8 @@ static int cow_file_range_async(struct btrfs_inode *inode,
- 		unsigned clear_bits = EXTENT_LOCKED | EXTENT_DELALLOC |
- 			EXTENT_DELALLOC_NEW | EXTENT_DEFRAG |
- 			EXTENT_DO_ACCOUNTING;
--		unsigned long page_ops = PAGE_UNLOCK | PAGE_CLEAR_DIRTY |
--			PAGE_SET_WRITEBACK | PAGE_END_WRITEBACK |
--			PAGE_SET_ERROR;
-+		unsigned long page_ops = PAGE_UNLOCK | PAGE_START_WRITEBACK |
-+					 PAGE_END_WRITEBACK | PAGE_SET_ERROR;
- 
- 		extent_clear_unlock_delalloc(inode, start, end, locked_page,
- 					     clear_bits, page_ops);
-@@ -1468,8 +1462,7 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
- 					     EXTENT_LOCKED | EXTENT_DELALLOC |
- 					     EXTENT_DO_ACCOUNTING |
- 					     EXTENT_DEFRAG, PAGE_UNLOCK |
--					     PAGE_CLEAR_DIRTY |
--					     PAGE_SET_WRITEBACK |
-+					     PAGE_START_WRITEBACK |
- 					     PAGE_END_WRITEBACK);
- 		return -ENOMEM;
- 	}
-@@ -1782,8 +1775,7 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
- 					     locked_page, EXTENT_LOCKED |
- 					     EXTENT_DELALLOC | EXTENT_DEFRAG |
- 					     EXTENT_DO_ACCOUNTING, PAGE_UNLOCK |
--					     PAGE_CLEAR_DIRTY |
--					     PAGE_SET_WRITEBACK |
-+					     PAGE_START_WRITEBACK |
- 					     PAGE_END_WRITEBACK);
- 	btrfs_free_path(path);
- 	return ret;
--- 
-2.53.0
-
 
 
 
