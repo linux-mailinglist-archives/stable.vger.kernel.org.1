@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258815-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qK0bKjElG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:09 +0200
+	id 4L0wNgUsG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258815-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 520C6610B6B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB707611C48
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AE8633016B99
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E1A723007ADF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590B8342CA7;
-	Sat, 30 May 2026 17:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFA529D291;
+	Sat, 30 May 2026 18:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6hCgb6i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybWi8zsG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3976E2628D;
-	Sat, 30 May 2026 17:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C971E2773DE;
+	Sat, 30 May 2026 18:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163676; cv=none; b=tJc1dAuENWt6nSus25QFnUvxE5mM5qcH6QE7gj98eYCTEgkLe+KeGQMZuU01KYYE0JBkQj39SBWL2EG/mJ2nlgTqXNKf1H/ubr8IhK70T8T87UveDVe3ce9/PKBo1l91FjHaV38W3jDh4V5GTjczXMi88Hi2Ff4BOC/75v9p1to=
+	t=1780165631; cv=none; b=uOYPF20cJZthHG0yBZANZxc6KLCIbJFmXd7LS1Unvz74M1qiUEJudpjJ3nhYpBhWla7t4ikeXgszi/54SektZyQGPRFFGDAqpXMhUtgsLIcJ2IBq1/z7ejzGzlb9IE2UDZa1/LGYzeb95SbwB3lD10G0ZVX7++oXg+4rrJkfwJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163676; c=relaxed/simple;
-	bh=qATxPr7tuiI9/KLjHuWxKmFD9qOPcir++BxCkTopnow=;
+	s=arc-20240116; t=1780165631; c=relaxed/simple;
+	bh=OhkxC7dWqTZ2G6U6sHtMv1KUANU9fSba4HGbqpHBtag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nCpUCo/gg6ZUHcBBEizykMTBAZ2Rg0Dwaiaxt92uimtJ3qAayD5r7yobdYgz03o5qrih9K/6wOqkM8T18vhwaiwrI6x+585LWNEFnCXuXZd3oqr3egiTJWwj8sja5GVzuRdc9nPOSZXrDEpvyYWxmBzSj5+dDVIZrDboUi5W9Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6hCgb6i; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760151F00893;
-	Sat, 30 May 2026 17:54:34 +0000 (UTC)
+	 MIME-Version; b=lwxo6fTcaVbkImQSDJkKe+Po1OUYmbj+OExtSmJHWkAZxpe0YksMuKEcMtKFcsmwKNKQQqx8y0gpp4d7BK1brxhZVmVfaiVdWBPjr4gRIhxyNg8rgsabO+w8k/AS1fr1slHbvjT9ub3o3KB+W0NxGqi5mBQWPsGpJFyj3Ud2HcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybWi8zsG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10F61F00893;
+	Sat, 30 May 2026 18:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163675;
-	bh=Uavf3k8IK/aRwxAyGoMsL/ym1W0iSxBIL57e+UzWrCk=;
+	s=korg; t=1780165630;
+	bh=pR7cwve6CON/EOZrWfUXmUblEYIK1iq7PW2FeKrzllU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=z6hCgb6i4i7I9d4Ic6/2h3Mz/ygH289Y4oEMjNVBlO1srcFpCPsyAJyIwYcu/Nn2U
-	 5IZ2/6A2GbdbQtmdu9ODaFz+JC+N2WxIkazC1IYWQCPbuzdDe6I1B/SIDaRXQsv2cL
-	 jKE1PNJhmyQIqQ65EHJwpXkKmn8CO8z0Ee7eD398=
+	b=ybWi8zsGyy6GfOrDQbOh7jzvsbAfZgaESHFRwu81TFmg9tOIFotdcqRYRzMEH7whl
+	 f3rdQ+5EvRowzPgAZ8TEuALx5qNWA7n/rd8SaB5y8fIq+YuBefgjOsMwRisixM5Ffz
+	 xLBiWFPysvROSGmRFld45DUBwQY0qalKKTn5BwGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Felix Gu <ustc.gu@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.15 299/776] usb: ulpi: fix memory leak on ulpi_register() error paths
-Date: Sat, 30 May 2026 18:00:13 +0200
-Message-ID: <20260530160248.292298821@linuxfoundation.org>
+	Alexander Potapenko <glider@google.com>,
+	Sebastian Alba Vives <sebasjosue84@gmail.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 133/589] crypto: ccp: Dont attempt to copy CSR to userspace if PSP command failed
+Date: Sat, 30 May 2026 18:00:14 +0200
+Message-ID: <20260530160228.275223004@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +65,121 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258237-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux.intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
+	TAGGED_FROM(0.00)[bounces-258815-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 520C6610B6B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: DB707611C48
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 0b9fcab1b8608d429e5f239afb197de928d4de7d upstream.
+commit abe4a6d6f606113251868c2c4a06ba904bb41eed upstream.
 
-Commit 01af542392b5 ("usb: ulpi: fix double free in
-ulpi_register_interface() error path") removed kfree(ulpi) from
-ulpi_register_interface() to fix a double-free when device_register()
-fails.
+When retrieving the PEK CSR, don't attempt to copy the blob to userspace
+if the firmware command failed.  If the failure was due to an invalid
+length, i.e. the userspace buffer+length was too small, copying the number
+of bytes _firmware_ requires will overflow the kernel-allocated buffer and
+leak data to userspace.
 
-But when ulpi_of_register() or ulpi_read_id() fail before
-device_register() is called, the ulpi allocation is leaked.
+  BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
+  BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
+  BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
+  Read of size 2084 at addr ffff898144612e20 by task syz.9.219/21405
 
-Add kfree(ulpi) on both error paths to properly clean up the allocation.
+  CPU: 14 UID: 0 PID: 21405 Comm: syz.9.219 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
+  Tainted: [U]=USER, [O]=OOT_MODULE
+  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
+   print_address_description ../mm/kasan/report.c:378 [inline]
+   print_report+0xbc/0x260 ../mm/kasan/report.c:482
+   kasan_report+0xa2/0xe0 ../mm/kasan/report.c:595
+   check_region_inline ../mm/kasan/generic.c:-1 [inline]
+   kasan_check_range+0x264/0x2c0 ../mm/kasan/generic.c:200
+   instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
+   _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
+   _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
+   copy_to_user ../include/linux/uaccess.h:236 [inline]
+   sev_ioctl_do_pek_csr+0x31f/0x590 ../drivers/crypto/ccp/sev-dev.c:1872
+   sev_ioctl+0x3a4/0x490 ../drivers/crypto/ccp/sev-dev.c:2562
+   vfs_ioctl ../fs/ioctl.c:51 [inline]
+   __do_sys_ioctl ../fs/ioctl.c:597 [inline]
+   __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
+   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xe0/0x800 ../arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   </TASK>
 
-Fixes: 01af542392b5 ("usb: ulpi: fix double free in ulpi_register_interface() error path")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260407-ulpi-v1-1-f3fafe53f7b2@gmail.com
+WARN if the driver says the command succeeded, but the firmware error code
+says otherwise, as __sev_do_cmd_locked() is expected to return -EIO on any
+firwmware error.
+
+Reported-by: Alexander Potapenko <glider@google.com>
+Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
+Fixes: e799035609e1 ("crypto: ccp: Implement SEV_PEK_CSR ioctl command")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/common/ulpi.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/crypto/ccp/sev-dev.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/common/ulpi.c
-+++ b/drivers/usb/common/ulpi.c
-@@ -244,12 +244,15 @@ static int ulpi_register(struct device *
- 	ACPI_COMPANION_SET(&ulpi->dev, ACPI_COMPANION(dev));
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -458,7 +458,10 @@ cmd:
  
- 	ret = ulpi_of_register(ulpi);
--	if (ret)
-+	if (ret) {
-+		kfree(ulpi);
- 		return ret;
-+	}
+ 	ret = __sev_do_cmd_locked(SEV_CMD_PEK_CSR, &data, &argp->error);
  
- 	ret = ulpi_read_id(ulpi);
- 	if (ret) {
- 		of_node_put(ulpi->dev.of_node);
-+		kfree(ulpi);
- 		return ret;
+-	 /* If we query the CSR length, FW responded with expected data. */
++	/*
++	 * Firmware will returns the length of the CSR blob (either the minimum
++	 * required length or the actual length written), return it to the user.
++	 */
+ 	input.length = data.len;
+ 
+ 	if (copy_to_user((void __user *)argp->data, &input, sizeof(input))) {
+@@ -466,6 +469,9 @@ cmd:
+ 		goto e_free_blob;
  	}
  
++	if (ret || WARN_ON_ONCE(argp->error))
++		goto e_free_blob;
++
+ 	if (blob) {
+ 		if (copy_to_user(input_address, blob, input.length))
+ 			ret = -EFAULT;
 
 
 
