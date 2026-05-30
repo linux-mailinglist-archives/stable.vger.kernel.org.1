@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IKtJPUrG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:01 +0200
+	id uCr2JsggG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DD6611C12
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B078E6101B9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D6FB23024C9D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:19:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AEFF83020FF7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B12A3242BE;
-	Sat, 30 May 2026 18:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7A83B0ADF;
+	Sat, 30 May 2026 17:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2aySFu7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMdI9VeY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600E117555;
-	Sat, 30 May 2026 18:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197C734A3C4;
+	Sat, 30 May 2026 17:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165153; cv=none; b=eTY5DJCOSJVG1u5pu304GzoCOP8m+CkU7mhgnR5XMVcAX7Bt1P87RVizc/1qi78pVCi6uJ+9D33WhG44p+AGRu5bD/ww8sXelRz7zgXRxRuqHfQ7tRZQchVFE71OjVv27qokx6LJRRoJmAoI6lukrAjmXi3LGslodji2BgD5Moc=
+	t=1780162621; cv=none; b=DQSLF4R5AZYXV+PQmSq/tlCiZHQ/s7uxeEgAYu8L727//s7CQPUA5/uR8OEhZwpYsMQuSC2xYM8kS4oQFMhbCPJou13S3bYDrYb0W/QqLF5yA4tQ0X5Z//Ob49oJxq5RVYNuTT/lpgtqg8F68i+o0Gw9JCOI/B7lBz3afkFC6OM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165153; c=relaxed/simple;
-	bh=ZFDs/TdEcWcnnc6MiMNW7adTwvSdWYG2iK7L7gldvUc=;
+	s=arc-20240116; t=1780162621; c=relaxed/simple;
+	bh=agIbeyJ5TT67SIAFQ4fy1Gp3cgVj4HJyQYqSsVny8Ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eG1WXIqN07orET2VzTVNR6EXwYs/zFri810uWH/BAt/C0WIOr8+cSd54DuesgsoQ3qUyjcFDCU4K+HPM+0N4GrbCrpadM0OItxzeO3cW+YYBysTv4p0TrQsusIGz90aGHRMPlNWy3u1QFd1UrC+xDG6UtpxLaRQnJnVLhz001oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2aySFu7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A385F1F00893;
-	Sat, 30 May 2026 18:19:11 +0000 (UTC)
+	 MIME-Version; b=smZ1wK/7DsvkSIrp1zGDarpeKyBzVLhdIPVwh3OlXyZqa+DWzTJmxeW81Qx1oFn3ZV/0+BZxrhVqK0DoyZx3qOwQycrHUfp8bMlVrRkpp7WaczWTAfgAz6l8kJtxiWFw3ccFYo36YQdlb4tOb4aHXn7nHXu26VHeYINkvGHLlPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMdI9VeY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 554251F00893;
+	Sat, 30 May 2026 17:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165152;
-	bh=pO8PF2sk4I+cm+jT11jkYm9igA08Fm6iOTyC55jbxYM=;
+	s=korg; t=1780162620;
+	bh=kriqaqFnMvMVoHzImEyqXAnfgHQlxb91e2VaWCypCA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d2aySFu7aRJmba+TrhdtlVrmjgTl4g6pRAUUaBN4o1WYNoG3p8hTU4O2mv5O3THZE
-	 SEPJVnjnLtzCvr9Peg+mhlAp3owVPtOh4F10b9df14yeuyHe5+z541vnGt+piCiG+O
-	 bVH7F7gPBQ4JYRMQE63DHKreXxzNxa+wixyI5tN4=
+	b=CMdI9VeY5//gpQakm5kDJ3qk47xMcy19dnSQy2hkSIMw0qaBHaY+xJK4DBwKQekGE
+	 JCvqjm6/dnvz6Szd8wN4lSYJAscTi15tlumiapxdq/I3PY2OwiTQ6piJIEm2zM5l/j
+	 8VteDf0oyKfGuASvDNlFOJvy5cmxDBeDg98l1w4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 765/776] platform/x86: hp_accel: Check ACPI_COMPANION() against NULL
+Subject: [PATCH 6.1 955/969] net: mana: Fix TOCTOU double-fetch of hwc_msg_id from DMA buffer
 Date: Sat, 30 May 2026 18:07:59 +0200
-Message-ID: <20260530160259.501268958@linuxfoundation.org>
+Message-ID: <20260530160327.138983564@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +63,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258674-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257922-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: 32DD6611C12
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B078E6101B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 
-[ Upstream commit abfbe5ee8ae89f1f5449790423d5dd3e423545bd ]
+[ Upstream commit 35f0f0a2536a4d604b4dbad92c85c4a8fdebb870 ]
 
-Every platform driver can be forced to match a device that doesn't match
-its list of device IDs because of device_match_driver_override(), so
-platform drivers that rely on the existence of a device's ACPI companion
-object need to verify its presence.
+In mana_hwc_rx_event_handler(), resp->response.hwc_msg_id is read from
+DMA-coherent memory and bounds-checked, then mana_hwc_handle_resp()
+re-reads the same field from the same DMA buffer for test_bit() and
+pointer arithmetic.
 
-Accordingly, add a requisite ACPI_COMPANION() check against NULL to the
-platform/x86 hp_accel driver.
+DMA-coherent memory is mapped uncacheable on x86 and is shared,
+unencrypted, in Confidential VMs (SEV-SNP/TDX), so each load goes
+directly to host-visible memory. A H/W can modify the value
+between the check and the use, bypassing the bounds validation.
 
-Fixes: 8ebcb6c94c71 ("platform/x86: hp_accel: Convert to be a platform driver")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/2425918.ElGaqSPkdT@rafael.j.wysocki
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fix this by reading hwc_msg_id exactly once using READ_ONCE() into a
+stack-local variable in mana_hwc_rx_event_handler(), and passing the
+validated value as a parameter to mana_hwc_handle_resp().
+
+Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Link: https://patch.msgid.link/20260514194156.466823-1-ernis@linux.microsoft.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/hp/hp_accel.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../net/ethernet/microsoft/mana/hw_channel.c  | 23 +++++++++++--------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/platform/x86/hp/hp_accel.c b/drivers/platform/x86/hp/hp_accel.c
-index 62a1d93464750..eb5e533bf0866 100644
---- a/drivers/platform/x86/hp/hp_accel.c
-+++ b/drivers/platform/x86/hp/hp_accel.c
-@@ -300,6 +300,9 @@ static int lis3lv02d_probe(struct platform_device *device)
- 	int ret;
+diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+index 8111f181f9572..d429ecdbc5d4f 100644
+--- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
++++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+@@ -75,21 +75,19 @@ static int mana_hwc_post_rx_wqe(const struct hwc_wq *hwc_rxq,
+ }
  
- 	lis3_dev.bus_priv = ACPI_COMPANION(&device->dev);
-+	if (!lis3_dev.bus_priv)
-+		return -ENODEV;
-+
- 	lis3_dev.init = lis3lv02d_acpi_init;
- 	lis3_dev.read = lis3lv02d_acpi_read;
- 	lis3_dev.write = lis3lv02d_acpi_write;
+ static void mana_hwc_handle_resp(struct hw_channel_context *hwc, u32 resp_len,
+-				 struct hwc_work_request *rx_req)
++				 struct hwc_work_request *rx_req, u16 msg_id)
+ {
+ 	const struct gdma_resp_hdr *resp_msg = rx_req->buf_va;
+ 	struct hwc_caller_ctx *ctx;
+ 	int err;
+ 
+-	if (!test_bit(resp_msg->response.hwc_msg_id,
+-		      hwc->inflight_msg_res.map)) {
+-		dev_err(hwc->dev, "hwc_rx: invalid msg_id = %u\n",
+-			resp_msg->response.hwc_msg_id);
++	if (!test_bit(msg_id, hwc->inflight_msg_res.map)) {
++		dev_err(hwc->dev, "hwc_rx: invalid msg_id = %u\n", msg_id);
+ 		mana_hwc_post_rx_wqe(hwc->rxq, rx_req);
+ 		return;
+ 	}
+ 
+-	ctx = hwc->caller_ctx + resp_msg->response.hwc_msg_id;
++	ctx = hwc->caller_ctx + msg_id;
+ 	err = mana_hwc_verify_resp_msg(ctx, resp_msg, resp_len);
+ 	if (err)
+ 		goto out;
+@@ -200,6 +198,7 @@ static void mana_hwc_rx_event_handler(void *ctx, u32 gdma_rxq_id,
+ 	struct gdma_sge *sge;
+ 	u64 rq_base_addr;
+ 	u64 rx_req_idx;
++	u16 msg_id;
+ 	u8 *wqe;
+ 
+ 	if (WARN_ON_ONCE(hwc_rxq->gdma_wq->id != gdma_rxq_id))
+@@ -218,13 +217,17 @@ static void mana_hwc_rx_event_handler(void *ctx, u32 gdma_rxq_id,
+ 	rx_req = &hwc_rxq->msg_buf->reqs[rx_req_idx];
+ 	resp = (struct gdma_resp_hdr *)rx_req->buf_va;
+ 
+-	if (resp->response.hwc_msg_id >= hwc->num_inflight_msg) {
+-		dev_err(hwc->dev, "HWC RX: wrong msg_id=%u\n",
+-			resp->response.hwc_msg_id);
++	/* Read msg_id once from DMA buffer to prevent TOCTOU:
++	 * DMA memory is shared/unencrypted in CVMs - host can
++	 * modify it between reads.
++	 */
++	msg_id = READ_ONCE(resp->response.hwc_msg_id);
++	if (msg_id >= hwc->num_inflight_msg) {
++		dev_err(hwc->dev, "HWC RX: wrong msg_id=%u\n", msg_id);
+ 		return;
+ 	}
+ 
+-	mana_hwc_handle_resp(hwc, rx_oob->tx_oob_data_size, rx_req);
++	mana_hwc_handle_resp(hwc, rx_oob->tx_oob_data_size, rx_req, msg_id);
+ 
+ 	/* Can no longer use 'resp', because the buffer is posted to the HW
+ 	 * in mana_hwc_handle_resp() above.
 -- 
 2.53.0
 
