@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-258631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257827-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONIpJn8qG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:47 +0200
+	id cIE/OFIfG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257827-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C23611880
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E95D060FE55
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AA6623075354
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1EEDD3003718
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF57241C8C;
-	Sat, 30 May 2026 18:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471203ACEEA;
+	Sat, 30 May 2026 17:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJoSYij/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnCzvqnW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93F03BFE3B;
-	Sat, 30 May 2026 18:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACA530E853;
+	Sat, 30 May 2026 17:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165003; cv=none; b=IUyopnUEkrjaUgmChDNkr2xU6VoDGJTkuv40cCuSdRMUa7Wg+6eSAMs/IHi3Gh+d2PpPW6qQh/+mBCXEn7s8+bSNiZCBcJIy5wC/ydUeyAOkNhx+WYu4DQAw6EpiL6LhPDYY32hf1Y7t1Bv2sfYNYn65P5SfugniPZZWFezMl7E=
+	t=1780162304; cv=none; b=XYMBD7yI/HM6KKxZ8hoeaUBF/v8VBFcKzJHnSrUxZJHmHrfTR01iQMD8kHQ7z5VpjfEDFX3VeK3PiQEuB3wusqUCUa9BioMTVvc3fl8SiQvYlFWBQ4jHOCiVtwYTc4FM7OhxKrT1wZD4SnEHFurBWd63vd7bqXHPVVEqIOJBO48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165003; c=relaxed/simple;
-	bh=7IHyO2ObSpOAJ3aG1uqbDbC1tQCsm1lRCr0w6j5V2Ro=;
+	s=arc-20240116; t=1780162304; c=relaxed/simple;
+	bh=5PJW3CEby3ZU2aQMmLNpMZ1FMFD8jV+N/KgDXHW1d5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Paalv86uI9yQK0C9nc4IJgMv1dkCiK7LICeMoZCNmeV9BBu+nx2XnILc8PalTaaA/m1fWAo+AcLy8m1gWEd9xfmrxVyKOcvVMjDoQHDWQyTGSBjt9aSs99sOnfffN93kBs2ZLSaMGTFbRsOIDQXgl4EeFG6XhFPjP8AUJiCUmeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJoSYij/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CF71F00893;
-	Sat, 30 May 2026 18:16:40 +0000 (UTC)
+	 MIME-Version; b=iDDaAbslWzZdKYWZhkmgw6kbzNCEpOdpUorwX9Ggryjx/1y+Dgo4FL4F8yA3eQTuBYnZRjt+X6k1sSmOGcVBfjHXQ+EDpYChrfh2gJM1DEa+9SkQ6ELR6LslLUoyyJQ/3kfMtYqSZWAzIRaeD2tMxA6lVb01BaIh7LK/3LWnhgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnCzvqnW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393AB1F00893;
+	Sat, 30 May 2026 17:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165001;
-	bh=+nDuGRSXQJZH67sCHSUA25ZCcuIoRfH1Jk3s2jdYacA=;
+	s=korg; t=1780162301;
+	bh=6oMqNCKb/bUpXDKKO06gEIiG73N5m3GuZha3dnOtda4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qJoSYij/0k5QFjzUvlhJKmMIJhAnmpqtOzbDF05lEgiBCmfKze/AI/7ciab3qIkFV
-	 /yd2pJe2NIxqt4qtVqiaUhfAzzrx0gQWrThlQtD5XEh+4jIfNe1wS9I/Kngj19DJvI
-	 tTQ1CueZTpGy02/Tu8v3TFFivh3W5EmppcDC8+hI=
+	b=pnCzvqnWvyF8P6gfBRLyqK9PlEnto6cRBheyBZyTciyd9qTWZ2YLDxWCvAmm+2qeO
+	 Jwax+gnSXiut2NHWZNT/zz/4n/Iy1HLOgOqlYvMwg8yI1rRUy8D64Eq9egWSxt5Vrm
+	 lQp2fntXSw9LGnWpsKBoXrmzdPaHOZSt9X/hiGiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minh Nguyen <minhnguyen.080505@gmail.com>,
-	Bryan Tan <bryan-bt.tan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 691/776] vsock/vmci: fix UAF when peer resets connection during handshake
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruijie Li <ruijieli51@gmail.com>,
+	Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.1 881/969] batman-adv: clear current gateway during teardown
 Date: Sat, 30 May 2026 18:06:45 +0200
-Message-ID: <20260530160257.705883331@linuxfoundation.org>
+Message-ID: <20260530160325.017528042@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +70,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258631-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257827-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,broadcom.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 50C23611880
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E95D060FE55
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minh Nguyen <minhnguyen.080505@gmail.com>
+From: Ruijie Li <ruijieli51@gmail.com>
 
-commit 99e22ddf4edb63dc8382bc028af928056d3450cf upstream.
+commit a340a51ed801eab7bb454150c226323b865263cc upstream.
 
-vmci_transport_recv_connecting_server() returned err = 0 for a peer
-RST in its default switch arm:
+batadv_gw_node_free() removes the gateway list entries during mesh teardown,
+but it does not clear the currently selected gateway. This leaves stale
+gateway state behind across cleanup and can break a later mesh recreation.
 
-	err = pkt->type == VMCI_TRANSPORT_PACKET_TYPE_RST ? 0 : -EINVAL;
+Clear bat_priv->gw.curr_gw before walking the gateway list so the selected
+gateway reference is dropped as part of teardown.
 
-That made vmci_transport_recv_listen() skip vsock_remove_pending(),
-leaving the pending socket on the listener's pending_links with
-sk_state = TCP_CLOSE while destroy: still dropped the explicit
-reference taken before schedule_delayed_work().
-
-One second later vsock_pending_work() observed is_pending=true and
-performed full cleanup: vsock_remove_pending() then the two trailing
-sock_put(sk) calls -- the first reached refcount 0 and __sk_freed
-the socket, and the second wrote into the freed object:
-
-  BUG: KASAN: slab-use-after-free in refcount_warn_saturate
-  Write of size 4 at addr ffff88800b1cac80 by task kworker
-  Workqueue: events vsock_pending_work
-
-Treat peer RST like any other unexpected packet type (err = -EINVAL).
-All destroy: arms now return err < 0, so vmci_transport_recv_listen()
-removes pending from pending_links synchronously and
-vsock_pending_work() takes the is_pending=false / !rejected branch,
-dropping only its own work reference.  This also closes the
-multi-packet race Sashiko reported on v2: pending is removed from
-the list before any subsequent packet can find it.
-
-The pre-existing sk_acceptq_removed() gap on the err < 0 path of
-vmci_transport_recv_listen() that Sashiko also noted is not
-introduced or changed by this patch.
-
-Tested on lts-6.12.79 with KASAN: 52/100 unpatched -> 0/100 patched.
-
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
-Acked-by: Bryan Tan <bryan-bt.tan@broadcom.com>
-Link: https://patch.msgid.link/20260519102310.237181-1-minhnguyen.080505@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2265c1410864 ("batman-adv: gateway election code refactoring")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
+Signed-off-by: Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/vmci_transport.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/gateway_client.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -1156,7 +1156,7 @@ vmci_transport_recv_connecting_server(st
- 		/* Close and cleanup the connection. */
- 		vmci_transport_send_reset(pending, pkt);
- 		skerr = EPROTO;
--		err = pkt->type == VMCI_TRANSPORT_PACKET_TYPE_RST ? 0 : -EINVAL;
-+		err = -EINVAL;
- 		goto destroy;
- 	}
+--- a/net/batman-adv/gateway_client.c
++++ b/net/batman-adv/gateway_client.c
+@@ -479,10 +479,14 @@ void batadv_gw_node_delete(struct batadv
+  */
+ void batadv_gw_node_free(struct batadv_priv *bat_priv)
+ {
++	struct batadv_gw_node *curr_gw;
+ 	struct batadv_gw_node *gw_node;
+ 	struct hlist_node *node_tmp;
  
+ 	spin_lock_bh(&bat_priv->gw.list_lock);
++	curr_gw = rcu_replace_pointer(bat_priv->gw.curr_gw, NULL, true);
++	batadv_gw_node_put(curr_gw);
++
+ 	hlist_for_each_entry_safe(gw_node, node_tmp,
+ 				  &bat_priv->gw.gateway_list, list) {
+ 		hlist_del_init_rcu(&gw_node->list);
 
 
 
