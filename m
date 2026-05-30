@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-258198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258802-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIbtLPklG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258198-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:29 +0200
+	id ONoDOqksG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258802-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4557C610D4D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFE4611D84
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:29:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 49F8030C1F5C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:52:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EBF6A30B5F5D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FE43546EA;
-	Sat, 30 May 2026 17:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A2627E05E;
+	Sat, 30 May 2026 18:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHxP9deg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQUd/7Bm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1902341AC7;
-	Sat, 30 May 2026 17:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C85D279DC9;
+	Sat, 30 May 2026 18:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163542; cv=none; b=Dq6hQ3mnUftPgBpfJuOncErVt8bhFmcKKaHeSJ3I5bMpjrzyeELdFE0ezHVKVob4nFSvvqdWtrAvkSTZRjVOAalE3TjDhEeK+QoNHRY2Vhd2UY22lt3loOEt5qLlLpFd8fgX7qqlB9bUYUftmTvNbwGc8O3G5EvlGzi1Bak+uCM=
+	t=1780165588; cv=none; b=uir98uxEW9xlzKAkHFaVl1vHW8XJ3smCopKAn6bEUW0+VnEgOwAzWD83Yyedh70gmBTIi3xeZIwLEeUt9XA3NTsbe2msNNHoq6RRAwS+n6+zmm7qJ/6Rz31Sd8XdYsKoeObzpPuVSC77qXQUptsHJcJVG860pqGJzjR8kQG2iZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163542; c=relaxed/simple;
-	bh=VceRoXooi3A8DhLrREjJl7HpS+YipTvenCt0CoJntQU=;
+	s=arc-20240116; t=1780165588; c=relaxed/simple;
+	bh=LOLGSp2v0jqdPbIswTDpmbZi9gGXkyeaE27tDGy4vR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FhiVFI6NUp9+VrfXnFgFTkgrLBUDzhQVLJNLQKae71MffAcHckcRUuh2sTcSYwAsHwyVrLJ8JhetJidOvidtscNnSgvbz7BhXuLJMFfR7Jj3wh8+znSaPXDkuBwvu3T5lgIOV+lBb0BmlfDmD2qMZhVb72JVYYrzZJmE4D+06JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHxP9deg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FA01F00893;
-	Sat, 30 May 2026 17:52:20 +0000 (UTC)
+	 MIME-Version; b=WxQvoBMYjToJT3N8Y4T7KirFCTZU5FhDqc1YNn+yvkKzQW32SxnDjAwEqxQ4Ijtf7oi5MELhzq9FULvJTMtAD3UUtLzQWkyjY7KOCjgYh6IoPxrlDdFlik8WeEo68EWmm2/43FylmPqh85W2ojTw3roThP3HnXKxibThLLNR/vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQUd/7Bm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6059E1F00893;
+	Sat, 30 May 2026 18:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163541;
-	bh=bekL264DQrxvPL2FlH8sMFutbQUV87MEnUkRiyVgFfM=;
+	s=korg; t=1780165587;
+	bh=nFsz5f2Jv/YkUV3v1O//B9oIp4WJOf2pnaJTUeIzFIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IHxP9deg/RmXvF7EYjclgueYkjl1Vd0JOZg7/MlBFoG3+jrv7dtlKiMChqdpSdjff
-	 dClhkFcKKgDX7YrtCXhkIwjCAsKNPB7zrVeMz4sQkYFmwNIbQ4+tpRzNjA0Ozwakv2
-	 Daj4Rb/EIfTK633dvYPFQQJ/fW1O8R9W3DPLyOmo=
+	b=rQUd/7BmwyHouTGuGNlMfOowPD2slEG9HiTTTqeXe5AWpzg4GbA82lTwWPzokEovZ
+	 6vBIgcoLyNbut7tIlgnEZEQpLvIC8gxPl6sg5spCBpCB8ZMLNPac8t2ceBI2RQi4pl
+	 xHVZkna+hKQ3lVS/HCZCHDm1GUSW4jy/6l8oHsDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 289/776] wifi: b43legacy: enforce bounds check on firmware key index in RX path
+	"stable@vger.kernel.org, devicetree@vger.kernel.org,  Nathan Chancellor" <nathan@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.10 122/589] scripts/dtc: Remove unused dts_version in dtc-lexer.l
 Date: Sat, 30 May 2026 18:00:03 +0200
-Message-ID: <20260530160248.029534673@linuxfoundation.org>
+Message-ID: <20260530160227.971184681@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +65,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258198-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258802-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4557C610D4D
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BCFE4611D84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit a035766f970bde2d4298346a31a80685be5c0205 upstream.
+This patch is for stable only. Commit 5a09df20872c ("scripts/dtc: Update
+to upstream version v1.7.2-69-g53373d135579") upstream applied it as
+part of a regular scripts/dtc sync, which may be unsuitable for older
+versions of stable where the warning it fixes is present.
 
-Same fix as b43: the firmware-controlled key index in b43legacy_rx()
-can exceed dev->max_nr_keys. The existing B43legacy_WARN_ON is
-non-enforcing in production builds, allowing an out-of-bounds read of
-dev->key[].
+A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
+in clang under a new subwarning, -Wunused-but-set-global, points out an
+unused static global variable in dtc-lexer.lex.c (compiled from
+dtc-lexer.l):
 
-Make the check enforcing by dropping the frame for invalid indices.
+  scripts/dtc/dtc-lexer.lex.c:641:12: warning: variable 'dts_version' set but not used [-Wunused-but-set-global]
+    641 | static int dts_version = 1;
+        |            ^
 
-Fixes: 75388acd0cd8 ("[B43LEGACY]: add mac80211-based driver for legacy BCM43xx devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Link: https://patch.msgid.link/20260417111145.2694196-2-tristmd@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Remove it to clear up the warning, as it is truly unused.
+
+Fixes: 658f29a51e98 ("of/flattree: Update dtc to current mainline.")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/b43legacy/xmit.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+This should apply cleanly to all supported stable branches.
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ scripts/dtc/dtc-lexer.l |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/net/wireless/broadcom/b43legacy/xmit.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/xmit.c
-@@ -476,7 +476,8 @@ void b43legacy_rx(struct b43legacy_wldev
- 		 * key index, but the ucode passed it slightly different.
- 		 */
- 		keyidx = b43legacy_kidx_to_raw(dev, keyidx);
--		B43legacy_WARN_ON(keyidx >= dev->max_nr_keys);
-+		if (B43legacy_WARN_ON(keyidx >= dev->max_nr_keys))
-+			goto drop;
+--- a/scripts/dtc/dtc-lexer.l
++++ b/scripts/dtc/dtc-lexer.l
+@@ -39,8 +39,6 @@ extern bool treesource_error;
+ #define DPRINT(fmt, ...)	do { } while (0)
+ #endif
  
- 		if (dev->key[keyidx].algorithm != B43legacy_SEC_ALGO_NONE) {
- 			/* Remove PROTECTED flag to mark it as decrypted. */
+-static int dts_version = 1;
+-
+ #define BEGIN_DEFAULT()		DPRINT("<V1>\n"); \
+ 				BEGIN(V1); \
+ 
+@@ -101,7 +99,6 @@ static void PRINTF(1, 2) lexical_error(c
+ 
+ <*>"/dts-v1/"	{
+ 			DPRINT("Keyword: /dts-v1/\n");
+-			dts_version = 1;
+ 			BEGIN_DEFAULT();
+ 			return DT_V1;
+ 		}
 
 
 
