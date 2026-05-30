@@ -1,156 +1,119 @@
-Return-Path: <stable+bounces-259300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259301-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id I5RvEqZJG2rVAgkAu9opvQ
-	(envelope-from <stable+bounces-259300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:33:42 +0200
+	id yxNXCD1LG2rpAgkAu9opvQ
+	(envelope-from <stable+bounces-259301-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:40:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA6C6133F0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:33:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A81AB6133FE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:40:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9414A3011BC2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:33:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7348A301135B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B63277C88;
-	Sat, 30 May 2026 20:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEABC309F1D;
+	Sat, 30 May 2026 20:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SokOz/3N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DIpqfVws"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B159D81AA8
-	for <stable@vger.kernel.org>; Sat, 30 May 2026 20:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E0781AA8;
+	Sat, 30 May 2026 20:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780173199; cv=none; b=cIwC6QIybGz32OUCrXhmKav/pUEC70/YoYsHz8+iSRa0edo1r37IQOJDiLxmbauM7ONBvSfef/7zljZ/w15nicvD8TIkikFVX8lVrufbC/Sjxv6c1p/uCRTXvP3AViy//dRZkfc27Za6PrdZ5E5fJjPz/Hfjbf11n4tdWijmVJw=
+	t=1780173625; cv=none; b=fCeyF17V5iN9pw/fZZu9X7XRLBuWA8Eh+leYZ26h7Ug/A34689gLI+vMwRgFPUt4ehu/exNP3BUFuRDFLdcxbsbJRrmeAJ4X4UZFf4Y93pBmZ2p/ZjrMedHL2k1SVnBa6xlUjrHsfz1953x6hrQ+VLKvHrFri00Sk8jtfeTTHWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780173199; c=relaxed/simple;
-	bh=v5WndbHKRnAUqjwbR6xWvciL7MBSL0Pe3m9qn7kKWAQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aeXOquyG1ipj2Q6QbQPJ4YSQPPV1I0tlPBlCy9XmpRLosktfu/vW9+aBnKY5aKglAdx9Y2C8m0qha/QI1Kwx1en+KuhTsgq339oG7hVDGA/fl2O6vO9PvzHfUuvOiPsQTE43EfHCEIdC+7wMuHJBVGeyTCSAbCe+T9zUxD3WocA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SokOz/3N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE0D1F00893;
-	Sat, 30 May 2026 20:33:17 +0000 (UTC)
+	s=arc-20240116; t=1780173625; c=relaxed/simple;
+	bh=WgRkJOyBiuORez769sm6fL6zDgEr+JalV+KLoc5lR/g=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=jlEYqUi1AI6mCGf10x/lwJSq4IuUFu5Cqi5by6uIVEzRzyHWST4aZa8q8L/8VSSjTJDV7j4S+3aEy42u6Bjnt7RlHg35M9g2fSKc9QNepZTNBtEWanVqGKHROWM/umyhPQUXllHTsYdB/THGKlIXOjswKLjy8by4vbkQ+zfKsy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DIpqfVws; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D441F00893;
+	Sat, 30 May 2026 20:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780173198;
-	bh=CZz5iLizJ83cuUdtld53bYm1Z1mEOgHex8fjpTlf39U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SokOz/3NQTVT1ohgqJVgSktLpQWMaNTrVXbIhpx6FZ8sql3r7LpqnzFMNJfVPEF1y
-	 UFjQc73rUO1Wr7HTYdc77omFq2CJET1NHWWJFWdrJMgacXwRYPg1EaKVEPtFEGHkMf
-	 p2E87Tf8YN6jthekGgroNefbYHtIyAJNic5N8KYfx6cQnyHZAZxlqELQkM4GVaWh1k
-	 GDgA2pinVDVyivKMtmHR+SxuKavTHJ2oArVo9dr2Y9LXd9/PYMDuicK3zjHi/UxG33
-	 lAV4PAhXXAPawxzjAHzGg0rl+p9GR701iu8+oCLgjeyz6GvPsU/5SpLSA/ptEHrsHN
-	 Dqo1ifi4li1jQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Dawei Feng <dawei.feng@seu.edu.cn>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] octeontx2-pf: avoid double free of pool->stack on AQ init failure
-Date: Sat, 30 May 2026 16:33:16 -0400
-Message-ID: <20260530203316.3338022-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026052846-passion-prevail-1d9d@gregkh>
-References: <2026052846-passion-prevail-1d9d@gregkh>
+	s=k20260515; t=1780173624;
+	bh=h6P+4e18fj4Wo82Qkuu3Z3wXeaTA4vAtamdzZqsN1ig=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=DIpqfVwsm/HJ1F9r/8VeiZdmNQQkJJsEbE85O3yvhVqKIllwKU5ccJq1JpUJYt7z0
+	 NyHHYP5KDKCXLoWF6ZOQuE72cK0IuvUWO7CtDHlPk/1L9KppzEWtwbtlYWeT//2ejC
+	 FZos0sWv+l8ULfPNGYrzQjA0N8ax6ghzn+fdhIImSA7C2lZZe98HgsRZIn7v0IYWNU
+	 159Ns+FklN+5soPoj/AJ299ily9AFe2/Z7RqG1HkNaFx18NERLvN57kT5JWysv3Yau
+	 ioMDsqhAtBIzgAH+VAb8AWMHKMYXf97r+inzOOUR/1fL6hFe4jQcUnh98+tsMHB0lR
+	 ca2FUa1EAuXvw==
+From: Srinivas Kandagatla <srini@kernel.org>
+To: Bartosz Golaszewski <brgl@kernel.org>, Johan Hovold <johan@kernel.org>, 
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: linux-kernel@vger.kernel.org, brgl@kernel.org, stable@vger.kernel.org
+In-Reply-To: <20260521-nvmem-unbind-v4-0-7fa136759491@oss.qualcomm.com>
+References: <20260521-nvmem-unbind-v4-0-7fa136759491@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH v4 00/10] nvmem: rework nvmem core and allow
+ unbinding with active consumers
+Message-Id: <178017362283.116578.3318264066349893407.b4-ty@kernel.org>
+Date: Sat, 30 May 2026 21:40:22 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259300-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259301-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[srini@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,seu.edu.cn:email]
-X-Rspamd-Queue-Id: 9AA6C6133F0
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A81AB6133FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Dawei Feng <dawei.feng@seu.edu.cn>
 
-[ Upstream commit 9b244c242bec48b37e82b89787afd6a4c43457e1 ]
+On Thu, 21 May 2026 16:25:33 +0200, Bartosz Golaszewski wrote:
+> Sashiko pointed out some issues so this iteration fixes them. I'm also
+> Cc'ing Loic who seems to have encountered the issue of unbinding with
+> active consumers when working on the block nvmem provider.
+> 
+> Nvmem is one of the subsystems vulnerable to object life-time issues.
+> The memory nvmem core dereferences is owned by nvmem providers which can
+> be unbound at any time and even though nvmem devices themselves are
+> reference-counted, there's no synchronization with the provider modules.
+> 
+> [...]
 
-otx2_pool_aq_init() frees pool->stack when mailbox sync or retry
-allocation fails, but leaves the pointer unchanged. Later,
-otx2_sq_aura_pool_init() unwinds the partial setup through
-otx2_aura_pool_free(), which frees pool->stack again. The CN20K-specific
-cn20k_pool_aq_init() implementation has the same bug in
-its corresponding error path.
+Applied, thanks!
 
-Set pool->stack to NULL immediately after the local free so the shared
-cleanup path does not free the same stack again while cleaning up
-partially initialized pool state.
+[01/10] nvmem: core: fix use-after-free bugs in error paths
+        commit: 034b31a7b03d5d0a0bf1ad67ccb84c2ddaddd7c2
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still present in
-v7.1-rc3.
-
-Runtime validation was not performed because reproducing this path
-requires OcteonTX2/CN20K hardware.
-
-Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
-Fixes: d322fbd17203 ("octeontx2-pf: Initialize cn20k specific aura and pool contexts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260515151826.1005397-1-dawei.feng@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 2b6baf0ad3f7d..fe562961b920c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -1194,11 +1194,13 @@ static int otx2_pool_init(struct otx2_nic *pfvf, u16 pool_id,
- 		err = otx2_sync_mbox_msg(&pfvf->mbox);
- 		if (err) {
- 			qmem_free(pfvf->dev, pool->stack);
-+			pool->stack = NULL;
- 			return err;
- 		}
- 		aq = otx2_mbox_alloc_msg_npa_aq_enq(&pfvf->mbox);
- 		if (!aq) {
- 			qmem_free(pfvf->dev, pool->stack);
-+			pool->stack = NULL;
- 			return -ENOMEM;
- 		}
- 	}
+Best regards,
 -- 
-2.53.0
+Srinivas Kandagatla <srini@kernel.org>
 
 
