@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258138-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sPMRLMUaG2pR/QgAu9opvQ
-	(envelope-from <stable+bounces-257331-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:41 +0200
+	id eAgRLRcjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258138-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A87E60F2CA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B8C61071D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CFF563050F5E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D60E330013AD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958FB34BA42;
-	Sat, 30 May 2026 17:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE6B3AFCF3;
+	Sat, 30 May 2026 17:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FztR87i2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YCezCYm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C718481DD;
-	Sat, 30 May 2026 17:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DB319D8AC;
+	Sat, 30 May 2026 17:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160623; cv=none; b=CLHgOHDW9BSDttQvZ83L06j2Chk0tAv9iiA/ylsTAj6PFMqYNM+ExOF82qmsNZ+xglZgddPSv98IwGMxkLCLkBVFEeycb7dFENJoVGEjMG+n3wFVdDvwVU20zILZ3Iv4eGRZBptAs3VN1lRUtC1O0vpVZ4yHP61kSNWFmL2eQEg=
+	t=1780163344; cv=none; b=e6V15jsaItozn6W4jKyknQZa0FF1Fwq+oxsMtV2gW8qvWyYPIIA6raeINL55eOlhBKKXDhUKYwZbpuLfCnW0beh2YtPQL5RAWERMDCgso0CkCkbjoEzDxIeZocrw7OFxmoSUTuQCZYoijbjImlM3keOqEoELzLauQr2Kx6+TLO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160623; c=relaxed/simple;
-	bh=lJ9DhHne/kK5l6o9Qm29Wkd9mUuxKiKPqFOoLiCYIiE=;
+	s=arc-20240116; t=1780163344; c=relaxed/simple;
+	bh=eFAi9TwHmFZtJn0ildawts+o49FA8HjyQ8Gcpftxc80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N0MqLh0/TRTatrHwMwAavDE33jr0ZAJNOgNprvat0YzG5oCl5vpMO7itwutSrCcCLXPy8Gv0HO9I3yzGB9XSJTTItgLjiweQwitMBOt1IyYgWdXx6evJmvW5CLKkqePn8a1YmwdbWCDm8++3YOnbo5CtDvOxVPAkwupwAFR5XbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FztR87i2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C031F00893;
-	Sat, 30 May 2026 17:03:41 +0000 (UTC)
+	 MIME-Version; b=NrUraoQBMh/XPpwnUNVbdhyx0x0+VUINK6AwFRSbpR8fBNBGBt1hajJoVBeCpVy9WGoxvwlmWy9l0j+7XTwp9MBNvh+DtKMF08jXEvrs7rp2WeUN9djc51JtXzO8KPyTuS8J9A/XlTPOJKggvTaldcUZB2uKFHKrJ/+Rf91ct7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YCezCYm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F271F00893;
+	Sat, 30 May 2026 17:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160622;
-	bh=N/GQ1AtFG7LduDfvGKYz2Edenj5hxg/L9wfFBTAms4Y=;
+	s=korg; t=1780163343;
+	bh=Dsv0GzrNer3lA4lgHGfklxqMAHUz7GNMfGWKF/zDoHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FztR87i2Gh8ppyOJAYQ2jR5oUTNdRYK6NGuglEtZUe+EYGKhoy3vQ3aK4ePO5fOWF
-	 uAAaoZbwyN+WdBZiXlU5+0xbNWgpHyqphOKgXqiNJMBLi+4y2cjhyK+cF3J/gGupBx
-	 JOLNFl9WqV9imE8QZInXsbk2IDc8vYiJGRPJ+A/k=
+	b=1YCezCYmc124DiiZmwdvs3j02U6A1KgFsVzS3yiofOnmSBPlpIdzFnwFkhZAY8sJ7
+	 IfC8yIVIIKSpMIAdpZ2fORDyj2h4q6NZ5DljPZaXbThysUXL5fTRKh4rSEOMGSHlM6
+	 t03gYv++E+wxIVbdBwhNDSewbETKdM+W61bq6hnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 388/969] media: rc: xbox_remote: heed DMA restrictions
-Date: Sat, 30 May 2026 17:58:32 +0200
-Message-ID: <20260530160311.022721508@linuxfoundation.org>
+	Ziqing Chen <chenziqing@xiaomi.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 199/776] ALSA: control: Validate buf_len before strnlen() in snd_ctl_elem_init_enum_names()
+Date: Sat, 30 May 2026 17:58:33 +0200
+Message-ID: <20260530160245.651827352@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +63,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257331-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258138-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0A87E60F2CA
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C8B8C61071D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Ziqing Chen <chenziqing@xiaomi.com>
 
-commit e280d1e5e3f2595bbb43fe6e1bce00c59a43c0ff upstream.
+commit e0da8a8cac74f4b9f577979d131f0d2b88a84487 upstream.
 
-The buffer for IO must not be part of the device structure
-because that violates the DMA coherency rules.
+snd_ctl_elem_init_enum_names() advances pointer p through the names
+buffer while decrementing buf_len. If buf_len reaches zero but items
+remain, the next iteration calls strnlen(p, 0).
 
-Fixes: 02d32bdad3123 ("media: rc: add driver for Xbox DVD Movie Playback Kit")
+While strnlen(p, 0) returns 0 and would hit the existing name_len == 0
+error path, CONFIG_FORTIFY_SOURCE's fortified strnlen() first checks
+maxlen against __builtin_dynamic_object_size(). When Clang loses track
+of p's object size inside the loop, this triggers a BRK exception panic
+before the return value is examined.
+
+Add a buf_len == 0 guard at the loop entry to prevent calling fortified
+strnlen() on an exhausted buffer.
+
+Found by kernel fuzz testing through Xiaomi Smartphone.
+
+Fixes: 8d448162bda5 ("ALSA: control: add support for ENUMERATED user space controls")
 Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Ziqing Chen <chenziqing@xiaomi.com>
+Link: https://patch.msgid.link/20260414132437.261304-1-chenziqing@xiaomi.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/xbox_remote.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ sound/core/control.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/media/rc/xbox_remote.c
-+++ b/drivers/media/rc/xbox_remote.c
-@@ -55,7 +55,7 @@ struct xbox_remote {
- 	struct usb_interface *interface;
- 
- 	struct urb *irq_urb;
--	unsigned char inbuf[DATA_BUFSIZE] __aligned(sizeof(u16));
-+	u8 *inbuf;
- 
- 	char rc_name[NAME_BUFSIZE];
- 	char rc_phys[NAME_BUFSIZE];
-@@ -218,6 +218,10 @@ static int xbox_remote_probe(struct usb_
- 	if (!xbox_remote || !rc_dev)
- 		goto exit_free_dev_rdev;
- 
-+	xbox_remote->inbuf = kzalloc(DATA_BUFSIZE, GFP_KERNEL);
-+	if (!xbox_remote->inbuf)
-+		goto exit_free_inbuf;
-+
- 	/* Allocate URB buffer */
- 	xbox_remote->irq_urb = usb_alloc_urb(0, GFP_KERNEL);
- 	if (!xbox_remote->irq_urb)
-@@ -262,6 +266,8 @@ exit_kill_urbs:
- 	usb_kill_urb(xbox_remote->irq_urb);
- exit_free_buffers:
- 	usb_free_urb(xbox_remote->irq_urb);
-+exit_free_inbuf:
-+	kfree(xbox_remote->inbuf);
- exit_free_dev_rdev:
- 	rc_free_device(rc_dev);
- 	kfree(xbox_remote);
-@@ -286,6 +292,7 @@ static void xbox_remote_disconnect(struc
- 	usb_kill_urb(xbox_remote->irq_urb);
- 	rc_unregister_device(xbox_remote->rdev);
- 	usb_free_urb(xbox_remote->irq_urb);
-+	kfree(xbox_remote->inbuf);
- 	kfree(xbox_remote);
- }
- 
+--- a/sound/core/control.c
++++ b/sound/core/control.c
+@@ -1441,6 +1441,10 @@ static int snd_ctl_elem_init_enum_names(
+ 	/* check that there are enough valid names */
+ 	p = names;
+ 	for (i = 0; i < ue->info.value.enumerated.items; ++i) {
++		if (buf_len == 0) {
++			kvfree(names);
++			return -EINVAL;
++		}
+ 		name_len = strnlen(p, buf_len);
+ 		if (name_len == 0 || name_len >= 64 || name_len == buf_len) {
+ 			kvfree(names);
 
 
 
