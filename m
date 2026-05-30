@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-256953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kB4qNmIQG2q/+ggAu9opvQ
-	(envelope-from <stable+bounces-256953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:29:22 +0200
+	id qMn5IMgOG2q/+ggAu9opvQ
+	(envelope-from <stable+bounces-256954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:22:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BBB860E2E9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:29:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0141B60E1B9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:22:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EDE33018AC4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:21:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D4C89300B999
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D68E340286;
-	Sat, 30 May 2026 16:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27EB53438A8;
+	Sat, 30 May 2026 16:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8x8JSqv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REMPlKfp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C05308F32;
-	Sat, 30 May 2026 16:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC94308F32;
+	Sat, 30 May 2026 16:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780158086; cv=none; b=dP+cq1GWd0yo0GLzy1SYFPS9wKVcBtp8kIBGoaU+oDofqzr1v5qaiHrBiEt8fLfnBxnbCJJN3Nxzhin7TSqnLKng84hRKfVBQ4BUx+H8LTIzCitlv4qqzBjQDsZJjwmnnK2VCWGMDN6ZE13P1pRcBCUCdd9NyeqhGyW10uHnd4A=
+	t=1780158094; cv=none; b=u7+RRJZnYfHEut24JMGJGeqCPnreTPaKVoVXqJOXDjHZDf8yyoEywXUvipPqoC+zbCMZUYkStei0toFZdIWSI/nQOWIXrL5x+gVM4KsK5Oc71TJ9hz/7ZKzyQdAQyLX2vn4HVJ5jDzFZVra1B6MISn0rmvHVeCfs0xOFv/8Ffws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780158086; c=relaxed/simple;
-	bh=wVTBPV6r8KQS+ESGu8Vivk1rXUXVYdDoiRNzyJWG5VQ=;
+	s=arc-20240116; t=1780158094; c=relaxed/simple;
+	bh=HYaO2a1lhnq3ZFCzG6VFB1lI3ABseC2GnPNpkwD+H+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lp2TDE6ppetTYn3AoNZhBxNlTD1Z40Slk63CbvWwF9lSYr8GI/0a0lbwyjwBDhoPjxyiUJ2AJqLyENaaWOwUsNnoBOk+HiSGURt085njPEQuGkkzAdr2bhfXvnv0oHkEfcWMtcJm38NMT5BH5WRwKXx1TTtdUVLM1TkO/o55sWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8x8JSqv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866D11F00893;
-	Sat, 30 May 2026 16:21:24 +0000 (UTC)
+	 MIME-Version; b=Q26t6tN/V7I24Sbh5UNDbi8ARafcV6/c/zs7dgIMf1FcPXhH9obprytw1J7wOKfDtZugIssQ6oB8cWy2eK8OGxSnMFFkKbdz80foxIg3BNdf8OBgbpfQIFDwGOyKgxnfGn9WjuMqJRCvqvFTMWjhabkGCXdWXof05RAZYHrQaXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REMPlKfp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC311F00893;
+	Sat, 30 May 2026 16:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780158085;
-	bh=eo1OcVEUslWTBDcCypbDA646EpzhHA8SlhUXsu+p5tc=;
+	s=korg; t=1780158093;
+	bh=zG4HcQ537h3RlfD2YuOhHXyaV7FNq+Jt4YEApvewzko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h8x8JSqvQTl+MUem26Yi0AsZ9055l+7BxKdd1k/ONpWnqEtw9q2BWgGbgFvgBSHC0
-	 7dKaamAKiwa3Rxd5FvZ0dRpNVC0i3VklRU+pBON9/Q2Y4UaMOF46MC0OT4uFz6dZgX
-	 D/uDqo9ylNF5Lx8QcMkyhojWAiw3HzqK4Btk29wY=
+	b=REMPlKfpykIWb0eV+YuA7WZE/A+3OycdTPX4h4L/QdHoSQmrFcYqjrmGgC0N6UnCh
+	 3dR8N5THWaTQEQTpC6ipO2JPmJpOLs7LObclEpNZ1JM7Z72IOHB8fxNdL1jGlu3h0c
+	 fABtP6zAOuq77fa/z9lM5YWyM1wPwzsPtpno5vTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	leo vriska <leo@60228.dev>,
-	Jiri Kosina <jkosina@suse.com>,
+	Fernando Garcia Corona <fgarcor@gmail.com>,
+	songxiebing <songxiebing@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/969] HID: quirks: add HID_QUIRK_ALWAYS_POLL for 8BitDo Pro 3
-Date: Sat, 30 May 2026 17:52:22 +0200
-Message-ID: <20260530160300.964760972@linuxfoundation.org>
+Subject: [PATCH 6.1 019/969] ALSA: hda/realtek: Add quirk for Lenovo Yoga Pro 7 14IAH10
+Date: Sat, 30 May 2026 17:52:23 +0200
+Message-ID: <20260530160300.991969182@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -68,30 +69,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kylinos.cn,suse.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-256954-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256953-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[60228.dev:email,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6BBB860E2E9
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kylinos.cn:email,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 0141B60E1B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,50 +101,39 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: leo vriska <leo@60228.dev>
+From: songxiebing <songxiebing@kylinos.cn>
 
-[ Upstream commit 532743944324a873bbaf8620fcabcd0e69e30c36 ]
+[ Upstream commit f0541edb2e7333f320642c7b491a67912c1f65db ]
 
-According to a mailing list report [1], this controller's predecessor
-has the same issue. However, it uses the xpad driver instead of HID, so
-this quirk wouldn't apply.
+The bass speakers are not working, and add the following entry
+in /etc/modprobe.d/snd.conf:
+options snd-sof-intel-hda-generic hda_model=alc287-yoga9-bass-spk-pin
+Fixes the bass speakers.
 
-[1]: https://lore.kernel.org/linux-input/unufo3$det$1@ciao.gmane.io/
+So add the quick ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN here.
 
-Signed-off-by: leo vriska <leo@60228.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reported-by: Fernando Garcia Corona <fgarcor@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221317
+Signed-off-by: songxiebing <songxiebing@kylinos.cn>
+Link: https://patch.msgid.link/20260405012651.133838-1-songxiebing@kylinos.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 3 +++
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 4 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index fd3198d4b7c5b..23adda52f6ef5 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -22,6 +22,9 @@
- #define USB_DEVICE_ID_3M2256		0x0502
- #define USB_DEVICE_ID_3M3266		0x0506
- 
-+#define USB_VENDOR_ID_8BITDO		0x2dc8
-+#define USB_DEVICE_ID_8BITDO_PRO_3	0x6009
-+
- #define USB_VENDOR_ID_A4TECH		0x09da
- #define USB_DEVICE_ID_A4TECH_WCP32PU	0x0006
- #define USB_DEVICE_ID_A4TECH_X5_005D	0x000a
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 030ad260e7566..99fca77d16641 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -25,6 +25,7 @@
-  */
- 
- static const struct hid_device_id hid_quirks[] = {
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_8BITDO, USB_DEVICE_ID_8BITDO_PRO_3), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_GAMEPAD), HID_QUIRK_BADPAD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_PREDATOR), HID_QUIRK_BADPAD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE), HID_QUIRK_ALWAYS_POLL },
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 82de15e176746..0889dfd80fa44 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10396,6 +10396,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
+ 	SND_PCI_QUIRK(0x17aa, 0x390d, "Lenovo Yoga Pro 7 14ASP10", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
++	SND_PCI_QUIRK(0x17aa, 0x3911, "Lenovo Yoga Pro 7 14IAH10", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x3913, "Lenovo 145", ALC236_FIXUP_LENOVO_INV_DMIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3977, "IdeaPad S210", ALC283_FIXUP_INT_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3978, "Lenovo B50-70", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
 -- 
 2.53.0
 
