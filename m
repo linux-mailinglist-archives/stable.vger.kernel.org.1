@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YHaUMBAtG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258846-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:44 +0200
+	id 4MfcIN4aG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893FE611E62
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC1660F30C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6B8CB305BB0D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D03A13017EAB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D9D3D16F8;
-	Sat, 30 May 2026 18:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D909B34104B;
+	Sat, 30 May 2026 17:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0dJws+2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVoik4uK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E34C3D091F;
-	Sat, 30 May 2026 18:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9600AEEA8;
+	Sat, 30 May 2026 17:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165736; cv=none; b=WYfrsJuDZH63Wo8SRu77TOduois++bIiGxw9ERHVOmrM89GnCTaHaZADdIe0XwK9N77g6vTEfibNkt3eBfY0RHUbb48xEzfnJ2AxkFYS/RsdjJl46EcpIKsw4Mgr0OS5P8YMla0mFuWkqgDbPNR1BhJJXLWgZqfbQPOO+w1Im/o=
+	t=1780161093; cv=none; b=DI3gIaP9nWVMqVxC1DTtdzunmR3V0OICR39CkT0SAvAKZPthXCx1aK7TC++IIIAnTtmZ3LwNcOq7qJ0C6ecwHKSnI5B5wI8SQMioEejsRyaQ3tA2x7IRLbEUuaQ1tF/YvRkaBy6iHkgnIedByoyv2jWsooAnThkyYw1uBZCGLFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165736; c=relaxed/simple;
-	bh=ZFjAsSCWmmK5mxLxP9Sl5uqezr1Vr0qJsYBoNP1RLok=;
+	s=arc-20240116; t=1780161093; c=relaxed/simple;
+	bh=mJwVDUebmr/c9kWRClXrjv9L/6MTNJcb/lonbT1QRdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fg/YOxvj8em4oxy18awpGQFww4c0b+1e4H2+a1yW3nxD8HJ6uxOZe4sZpNcQxt47yY+nBlmgVPvWN38QLw9I7+br7DaQ4X/WrosJPLxwC9QeSB7iYXlJqevW1W8wyA2KMHnwGX64w5Inwpco+v6nBv4GHvgQvrPAWZp0/kU284c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0dJws+2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1CA1F0089A;
-	Sat, 30 May 2026 18:28:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZUzhSqQmpW1MNydxBJ+ar5+7rTmyVJftmwaBBgbAgK75OYr5DQIJRrqiaaSIqQgRLFikHjotnKPk4szvE3RWFGFmCNr+HAitZ6YBKiNgeZGCWBbUo0gahQ9zJTHgwVtZFkQUfmPYN++RHmczccBl4WpRc/OsaRDC3e/lum5FKOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVoik4uK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C491D1F00893;
+	Sat, 30 May 2026 17:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165735;
-	bh=Tfn94C58H9z9/gQ3BhcR5nSdTOyQCvFwV4T6iNOcPgU=;
+	s=korg; t=1780161092;
+	bh=qdFthQ5ysaiwYU2QOP2BvzTwwXlHc3TxNfVP5Az7Oiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i0dJws+2A17tDwmmyTLFDFKM857zAh9IuYNWvfTq0GoTnxSzx/bDDBm9Yqz8+VYOX
-	 YkZ+5lBfBTgMv6xTetJtKdwMty5/PCMGUwuMiVncNFwP0i0FUoIvW22hEGY1fp5rwY
-	 9ycdldJD88lKQheRh9mOJ9VefofdLyvdN/Lc9xLY=
+	b=JVoik4uKtlubgPjjt5JIivBx6UJQAa+ImvMRbvmD/Se4xBoSQRAjdP3T/aqp9GZbf
+	 k5s0xy6HUNhRqCOfLzHEZP+4xXArHA0IzKI52UKjtwtspFgAxhdA7Zca2GwCeD4zlb
+	 CykfI6p04W5H1QRXqEMLn/Irn67L13d3ylBidCzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 165/589] ALSA: caiaq: Fix control_put() result and cache rollback
-Date: Sat, 30 May 2026 18:00:46 +0200
-Message-ID: <20260530160229.123326967@linuxfoundation.org>
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 523/969] drm/amd/pm/smu7: Add SCLK cap for quirky Hawaii board
+Date: Sat, 30 May 2026 18:00:47 +0200
+Message-ID: <20260530160314.795551253@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,157 +65,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258846-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257466-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 893FE611E62
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 8FC1660F30C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit a3542d1b30f92307f545f2def14e8d988dffdff0 upstream.
+[ Upstream commit 4724bc5b8d78c34b993594f9406135408ccb312a ]
 
-control_put() always returns 1 and updates cdev->control_state[]
-before sending the USB command. It also ignores transport errors
-from usb_bulk_msg(), snd_usb_caiaq_send_command(), and
-snd_usb_caiaq_send_command_bank().
+On a specific Radeon R9 390X board, the GPU can "randomly" hang
+while gaming. Initially I thought this was a RADV bug and tried
+to work around this in Mesa:
+commit 8ea08747b86b ("radv: Mitigate GPU hang on Hawaii in Dota 2 and RotTR")
 
-That breaks the ALSA .put() contract and can leave control_get()
-reporting a cached value the device never accepted.
+However, I got some feedback from other users who are reporting
+that the above mitigation causes a significant performance
+regression for them, and they didn't experience the hang on their
+GPU in the first place.
 
-Return 0 for unchanged values, propagate transport failures,
-and restore the cached byte when the write fails.
+After some further investigation, it turns out that the problem
+is that the highest SCLK DPM level on this board isn't stable.
+Lowering SCLK to 1040 MHz (from 1070 MHz) works around the issue,
+and has a negligible impact on performance compared to the Mesa
+patch. (Note that increasing the voltage can also work around it,
+but we felt that lowering the SCLK is the safer option.)
 
-Fixes: 8e3cd08ed8e59 ("[ALSA] caiaq - add control API and more input features")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260417-caiaq-control-put-v1-1-c37826e92447@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To solve the above issue, add an "sclk_cap" field to smu7_hwmgr
+and set this field for the affected board. The capped SCLK value
+correctly appears on the sysfs interface and shows up in GUI
+tools such as LACT.
+
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/caiaq/control.c |   54 +++++++++++++++++++++++++++++++---------------
- 1 file changed, 37 insertions(+), 17 deletions(-)
+ .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 30 ++++++++++++++++---
+ .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h   |  1 +
+ 2 files changed, 27 insertions(+), 4 deletions(-)
 
---- a/sound/usb/caiaq/control.c
-+++ b/sound/usb/caiaq/control.c
-@@ -87,6 +87,7 @@ static int control_put(struct snd_kcontr
- 	struct snd_usb_caiaqdev *cdev = caiaqdev(chip->card);
- 	int pos = kcontrol->private_value;
- 	int v = ucontrol->value.integer.value[0];
-+	int ret;
- 	unsigned char cmd;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index f9454e43e5c63..132669fb39860 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -788,7 +788,7 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
+ 		hwmgr->dyn_state.vddc_dependency_on_mclk;
+ 	struct phm_cac_leakage_table *std_voltage_table =
+ 		hwmgr->dyn_state.cac_leakage_table;
+-	uint32_t i;
++	uint32_t i, clk;
  
- 	switch (cdev->chip.usb_id) {
-@@ -103,6 +104,10 @@ static int control_put(struct snd_kcontr
+ 	PP_ASSERT_WITH_CODE(allowed_vdd_sclk_table != NULL,
+ 		"SCLK dependency table is missing. This table is mandatory", return -EINVAL);
+@@ -805,10 +805,12 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
+ 	data->dpm_table.sclk_table.count = 0;
  
- 	if (pos & CNT_INTVAL) {
- 		int i = pos & ~CNT_INTVAL;
-+		unsigned char old = cdev->control_state[i];
+ 	for (i = 0; i < allowed_vdd_sclk_table->count; i++) {
++		clk = min(allowed_vdd_sclk_table->entries[i].clk, data->sclk_cap);
 +
-+		if (old == v)
-+			return 0;
- 
- 		cdev->control_state[i] = v;
- 
-@@ -113,10 +118,11 @@ static int control_put(struct snd_kcontr
- 			cdev->ep8_out_buf[0] = i;
- 			cdev->ep8_out_buf[1] = v;
- 
--			usb_bulk_msg(cdev->chip.dev,
--				     usb_sndbulkpipe(cdev->chip.dev, 8),
--				     cdev->ep8_out_buf, sizeof(cdev->ep8_out_buf),
--				     &actual_len, 200);
-+			ret = usb_bulk_msg(cdev->chip.dev,
-+					   usb_sndbulkpipe(cdev->chip.dev, 8),
-+					   cdev->ep8_out_buf,
-+					   sizeof(cdev->ep8_out_buf),
-+					   &actual_len, 200);
- 		} else if (cdev->chip.usb_id ==
- 			USB_ID(USB_VID_NATIVEINSTRUMENTS, USB_PID_MASCHINECONTROLLER)) {
- 
-@@ -128,21 +134,36 @@ static int control_put(struct snd_kcontr
- 				offset = MASCHINE_BANK_SIZE;
- 			}
- 
--			snd_usb_caiaq_send_command_bank(cdev, cmd, bank,
--					cdev->control_state + offset,
--					MASCHINE_BANK_SIZE);
-+			ret = snd_usb_caiaq_send_command_bank(cdev, cmd, bank,
-+							      cdev->control_state + offset,
-+							      MASCHINE_BANK_SIZE);
- 		} else {
--			snd_usb_caiaq_send_command(cdev, cmd,
--					cdev->control_state, sizeof(cdev->control_state));
-+			ret = snd_usb_caiaq_send_command(cdev, cmd,
-+							 cdev->control_state,
-+							 sizeof(cdev->control_state));
+ 		if (i == 0 || data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count-1].value !=
+-				allowed_vdd_sclk_table->entries[i].clk) {
++				clk) {
+ 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].value =
+-				allowed_vdd_sclk_table->entries[i].clk;
++				clk;
+ 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].enabled = (i == 0) ? 1 : 0;
+ 			data->dpm_table.sclk_table.count++;
  		}
--	} else {
--		if (v)
--			cdev->control_state[pos / 8] |= 1 << (pos % 8);
--		else
--			cdev->control_state[pos / 8] &= ~(1 << (pos % 8));
- 
--		snd_usb_caiaq_send_command(cdev, cmd,
--				cdev->control_state, sizeof(cdev->control_state));
-+		if (ret < 0) {
-+			cdev->control_state[i] = old;
-+			return ret;
-+		}
-+	} else {
-+		int idx = pos / 8;
-+		unsigned char mask = 1 << (pos % 8);
-+		unsigned char old = cdev->control_state[idx];
-+		unsigned char val = v ? (old | mask) : (old & ~mask);
-+
-+		if (old == val)
-+			return 0;
-+
-+		cdev->control_state[idx] = val;
-+		ret = snd_usb_caiaq_send_command(cdev, cmd,
-+						 cdev->control_state,
-+						 sizeof(cdev->control_state));
-+		if (ret < 0) {
-+			cdev->control_state[idx] = old;
-+			return ret;
-+		}
- 	}
- 
- 	return 1;
-@@ -640,4 +661,3 @@ int snd_usb_caiaq_control_init(struct sn
- 
- 	return ret;
+@@ -3019,6 +3021,25 @@ static int smu7_init_voltage_dependency_on_display_clock_table(struct pp_hwmgr *
+ 	return 0;
  }
--
+ 
++static void smu7_set_sclk_cap(struct pp_hwmgr *hwmgr)
++{
++	struct amdgpu_device *adev = hwmgr->adev;
++	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
++
++	data->sclk_cap = 0xffffffff;
++
++	if (hwmgr->od_enabled)
++		return;
++
++	/* R9 390X board: last sclk dpm level is unstable, use lower sclk */
++	if (adev->pdev->device == 0x67B0 &&
++	    adev->pdev->subsystem_vendor == 0x1043)
++		data->sclk_cap = 104000; /* 1040 MHz */
++
++	if (data->sclk_cap != 0xffffffff)
++		dev_info(adev->dev, "sclk cap: %u kHz on quirky ASIC\n", data->sclk_cap * 10);
++}
++
+ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ {
+ 	struct amdgpu_device *adev = hwmgr->adev;
+@@ -3030,6 +3051,7 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 		return -ENOMEM;
+ 
+ 	hwmgr->backend = data;
++	smu7_set_sclk_cap(hwmgr);
+ 	smu7_patch_voltage_workaround(hwmgr);
+ 	smu7_init_dpm_defaults(hwmgr);
+ 
+@@ -3916,7 +3938,7 @@ static int smu7_get_pp_table_entry_callback_func_v0(struct pp_hwmgr *hwmgr,
+ 
+ 	/* Performance levels are arranged from low to high. */
+ 	performance_level->memory_clock = memory_clock;
+-	performance_level->engine_clock = engine_clock;
++	performance_level->engine_clock = min(engine_clock, data->sclk_cap);
+ 
+ 	pcie_gen_from_bios = visland_clk_info->ucPCIEGen;
+ 
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
+index d9e8b386bd4d3..66adabeab6a3a 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
+@@ -234,6 +234,7 @@ struct smu7_hwmgr {
+ 	uint32_t                       pcie_gen_cap;
+ 	uint32_t                       pcie_lane_cap;
+ 	uint32_t                       pcie_spc_cap;
++	uint32_t                       sclk_cap;
+ 	struct smu7_leakage_voltage          vddc_leakage;
+ 	struct smu7_leakage_voltage          vddci_leakage;
+ 	struct smu7_leakage_voltage          vddcgfx_leakage;
+-- 
+2.53.0
+
 
 
 
