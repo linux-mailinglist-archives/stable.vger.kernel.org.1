@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-258776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHzqFgMtG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:31 +0200
+	id 8N0vJYolG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7ACD611E2C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC547610C66
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 881EA301AD0E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BF8D30AAA68
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF6121B191;
-	Sat, 30 May 2026 18:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA69346E55;
+	Sat, 30 May 2026 17:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybobzYJV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SH42ClCO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD784217704;
-	Sat, 30 May 2026 18:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677D4320CAD;
+	Sat, 30 May 2026 17:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165500; cv=none; b=Els6Vgo1kyqhU2LYS39JAvxRAA58l8TzpPrMZiwAYy/i2Pss9ZZQraks0wbWpoYwm/9aKrvffjYRt4fXjTjxNeqQOgeelqOapL0aK+5SgcgwzMkoGdIovYE72YdQcRj/Lw/YJVRpux2vp934kS2T9fEXAqzFcAL/Q92G0QdJEho=
+	t=1780163456; cv=none; b=CZ9nK25CpWuclfsr/M5CGDmcaU+bIARavJYgxA6wtVhWULz1RBbgyB2kT3/OqLkkG6i5zAfzX1oHYfJinxX6+iJNWVoh+/M3jPosH7D5XsuG/9ha9Yutj48y7Sx00Ji+N8svcfqO9e3278WrbVr9COpQboX4ywHdLR4Xyiupjko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165500; c=relaxed/simple;
-	bh=yN2qZITi/K+Obe4W/ehtfYc+5OY+S4ANH91ifXxYbFk=;
+	s=arc-20240116; t=1780163456; c=relaxed/simple;
+	bh=FtDPm50zNsLsiVO4iEGZF+hhrXBNDbgNjL2wJ1osRes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oE0OGGTp0gdzuUmP2aopaGI6tsxch1QLCYTuPj1c13hP8TFzKPwjXesOV3PQVAptOoxJwakN7EapMl2lDGu/QxTep3EvaOxZy155FD+hoRDriD7zILCTZHyLk14ncuvViJE+98dGaYXWzRulPSC0yvS9il7nrONE0+cV4q0W0i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybobzYJV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC2C1F00893;
-	Sat, 30 May 2026 18:24:58 +0000 (UTC)
+	 MIME-Version; b=bQQi/1QvJ/HXsTX7Eqom5Lyx/tULRHfcRmmHVSx9bg88cID3gwLyIis2sG+15ILlFTlzkTos5fSVAwNvIvMtwY8mJ8gz5auICebzhvlXF5rDeG3evGCIXE1CD212ZJgRLDyRL6X9EhXgwfcpNa+waGjG/FQS2Z/iw1zzb8HwcV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SH42ClCO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8121F00893;
+	Sat, 30 May 2026 17:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165499;
-	bh=Q9ZSE1Ay+Qp/icOgEH+ms2XmtPnk++0vzYCebz/Zq0o=;
+	s=korg; t=1780163455;
+	bh=VTtqZJRrfWp+hC8+JoPp9Hb+f6hd+z/fknt1B9c5m2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ybobzYJV4uPUmb8fGiQx9lmpgThu5gaMj2BI0ukZE4FIxbX9PF4plZJaVw1hGKP9d
-	 cjoglh5z+1i8HA413fgnvNgMFG3/JAYKg5L2FAT2QTYTcEmbi0e/EveyML/AuRXm2h
-	 xgDE5Cw4EJlxSOmFQyxv4yYtJ+Qq8oPqoAt2/Qzc=
+	b=SH42ClCOzFSjRLTpz6n+TxR5b7sWvWTttLjn34ZTtBz4aUpgZV/2GyBOAwojt2d4n
+	 NldZ5KXRAmEE2Fa7ZZxRHoqVAYdP7LOvTCdaJKT74ghX95QHPrhSvOwH1ayna0PtvK
+	 nI28wNndPyMfXR2+RzCMmQM7gtiTE+3XQCeVghC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 067/589] rxrpc: Fix call removal to use RCU safe deletion
+	Kevin Cheng <chengkev@google.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.15 234/776] KVM: SVM: Inject #UD for INVLPGA if EFER.SVME=0
 Date: Sat, 30 May 2026 17:59:08 +0200
-Message-ID: <20260530160226.362038036@linuxfoundation.org>
+Message-ID: <20260530160246.579116039@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,128 +66,69 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258172-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258776-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,auristor.com:email,linux-foundation.org:email,infradead.org:email]
-X-Rspamd-Queue-Id: B7ACD611E2C
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: EC547610C66
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Kevin Cheng <chengkev@google.com>
 
-[ Upstream commit 146d4ab94cf129ee06cd467cb5c71368a6b5bad6 ]
+commit d99df02ff427f461102230f9c5b90a6c64ee8e23 upstream.
 
-Fix rxrpc call removal from the rxnet->calls list to use list_del_rcu()
-rather than list_del_init() to prevent stuffing up reading
-/proc/net/rxrpc/calls from potentially getting into an infinite loop.
+INVLPGA should cause a #UD when EFER.SVME is not set. Add a check to
+properly inject #UD when EFER.SVME=0.
 
-This, however, means that list_empty() no longer works on an entry that's
-been deleted from the list, making it harder to detect prior deletion.  Fix
-this by:
-
-Firstly, make rxrpc_destroy_all_calls() only dump the first ten calls that
-are unexpectedly still on the list.  Limiting the number of steps means
-there's no need to call cond_resched() or to remove calls from the list
-here, thereby eliminating the need for rxrpc_put_call() to check for that.
-
-rxrpc_put_call() can then be fixed to unconditionally delete the call from
-the list as it is the only place that the deletion occurs.
-
-Fixes: 2baec2c3f854 ("rxrpc: Support network namespacing")
-Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Linus Torvalds <torvalds@linux-foundation.org>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-5-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted spin_lock/spin_unlock to write_lock/write_unlock ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ff092385e828 ("KVM: SVM: Implement INVLPGA")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kevin Cheng <chengkev@google.com>
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20260228033328.2285047-3-chengkev@google.com
+[sean: tag for stable@]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/call_object.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ arch/x86/kvm/svm/svm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
-index 10dad2834d5b6..2240e93b0048a 100644
---- a/net/rxrpc/call_object.c
-+++ b/net/rxrpc/call_object.c
-@@ -634,11 +634,9 @@ void rxrpc_put_call(struct rxrpc_call *call, enum rxrpc_call_trace op)
- 		_debug("call %d dead", call->debug_id);
- 		ASSERTCMP(call->state, ==, RXRPC_CALL_COMPLETE);
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2363,6 +2363,9 @@ static int invlpga_interception(struct k
+ 	gva_t gva = kvm_rax_read(vcpu);
+ 	u32 asid = kvm_rcx_read(vcpu);
  
--		if (!list_empty(&call->link)) {
--			write_lock(&rxnet->call_lock);
--			list_del_init(&call->link);
--			write_unlock(&rxnet->call_lock);
--		}
-+		write_lock(&rxnet->call_lock);
-+		list_del_rcu(&call->link);
-+		write_unlock(&rxnet->call_lock);
- 
- 		rxrpc_cleanup_call(call);
- 	}
-@@ -709,24 +707,20 @@ void rxrpc_destroy_all_calls(struct rxrpc_net *rxnet)
- 	_enter("");
- 
- 	if (!list_empty(&rxnet->calls)) {
--		write_lock(&rxnet->call_lock);
-+		int shown = 0;
- 
--		while (!list_empty(&rxnet->calls)) {
--			call = list_entry(rxnet->calls.next,
--					  struct rxrpc_call, link);
--			_debug("Zapping call %p", call);
-+		write_lock(&rxnet->call_lock);
- 
-+		list_for_each_entry(call, &rxnet->calls, link) {
- 			rxrpc_see_call(call);
--			list_del_init(&call->link);
- 
- 			pr_err("Call %p still in use (%d,%s,%lx,%lx)!\n",
- 			       call, refcount_read(&call->ref),
- 			       rxrpc_call_states[call->state],
- 			       call->flags, call->events);
- 
--			write_unlock(&rxnet->call_lock);
--			cond_resched();
--			write_lock(&rxnet->call_lock);
-+			if (++shown >= 10)
-+				break;
- 		}
- 
- 		write_unlock(&rxnet->call_lock);
--- 
-2.53.0
-
++	if (nested_svm_check_permissions(vcpu))
++		return 1;
++
+ 	/* FIXME: Handle an address size prefix. */
+ 	if (!is_long_mode(vcpu))
+ 		gva = (u32)gva;
 
 
 
