@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHMBMwMmG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:39 +0200
+	id WBggGootG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:33:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C062610D70
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0190611F91
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:33:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ECF7B301F9F9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:52:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 346D3303850F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4DD341AC7;
-	Sat, 30 May 2026 17:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E126274FDC;
+	Sat, 30 May 2026 18:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8fLWWPl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0m0ouUom"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E272261B9E;
-	Sat, 30 May 2026 17:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F195F21B191;
+	Sat, 30 May 2026 18:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163549; cv=none; b=WOJ7UmPd+UajG8Zf0iEtzvnFsNezG2fxfDdrheiJP1lujX8cKNSMyxthu2EgKuN3nO595/wE5fb2pkRftYCJ8CexJKbk/vCqWt94tJPTGOlq6zjGKi65Zt29JyI6JGGZVB0/z9WWF6stniKMog6aS4i026+WLNdODrEqHhqSNU0=
+	t=1780165594; cv=none; b=PQbR+J4KO7fBZ7rlCKBWRSRrPlq5rPm1RJrJIf/FKeio3JIbC3HkzlViT6mlXm++Z4DCY+iQeh/L8Qm5go+gHRCZU8T5FKmvmNfZmbxATQm1BX8URg4orvrohCFZMie7xiGQHY2NsruNNbbrm1K+jmAP3OTJFjmhf5a94hG/lOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163549; c=relaxed/simple;
-	bh=mHpoQuVlR7AdGTq3RK/sUDCRZIZmhd2zfdnfdegPkAU=;
+	s=arc-20240116; t=1780165594; c=relaxed/simple;
+	bh=7tJeQLitcQgGsusKSAdWyKfxMavBOtT3B3wrwkonUIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WqzUeS0FfEY+ar2mheyTdKltkKyoGK5tdiusX5MG0VRGTKydOqcAz3TT9EcQ6FYuzQOz0uY84gFuuw+y94BgvBITfYe4cSrdZlndvEf9Uq+SE3nruBfqFB21awkdNOsQxgoqul4d9XPNexozFmRqIpzmMaEku+OZG8biJcGJsgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8fLWWPl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A331F00893;
-	Sat, 30 May 2026 17:52:27 +0000 (UTC)
+	 MIME-Version; b=AhuYmYlWwVmtICvVpM2shczqbOADH7oiNmP88LiZBelPwVfmypHNrjVB2zDkGe3u3wMvDKRc3h7EpAJ2g2oS2vlj7AQ8NHZfihJSQ4Fbj27W6GV+I9ulQkpdx0CJDg+b4xAAV6ke4V02lV3BkIuaziB7rml3Kz5qNg9T5Mf7srk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0m0ouUom; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A381F00893;
+	Sat, 30 May 2026 18:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163548;
-	bh=H1V5DVMpNyl/YS8sGasu/OCbxLIov8gxIaymW8kjnf4=;
+	s=korg; t=1780165593;
+	bh=kwAWAI4eZ95lfsZxZ0Fw9l5YF/y2ILBqC5JBv/ezKuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g8fLWWPlDbKgujYLNkGbrgSPiiLKRKSDAfRjgBWx9z7YtuTK3L4+lFwRdZUJSC5p9
-	 //oCPbuxdpb/9VahQnhVNU/6QmkSCNFEyqeINue+CJ3cEwUYtlEkMry4UPiNJIoxSX
-	 V0hXZnHeLyVBq7iy9zFASPemXioa0tiTnpevBKmE=
+	b=0m0ouUomRle4rNBBB745AQHUhX2RhaHEg7wGK0z9elua3V5bAR4wgQLbe1fb7Tfnx
+	 1RWxUE/+5STM2b1ZWzynpEtrjUnxgjZIFMgu8Vyn0nSNzXyfcPp8ZTJ9Ao+LeGSJLs
+	 G/g3uzn8zrDdKwHHNcr5L8NbJlxfCjSULqwLDzlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 290/776] wifi: rsi: fix kthread lifetime race between self-exit and external-stop
+	kernel test robot <lkp@intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jamie Iles <quic_jiles@quicinc.com>
+Subject: [PATCH 5.10 123/589] i3c: fix uninitialized variable use in i2c setup
 Date: Sat, 30 May 2026 18:00:04 +0200
-Message-ID: <20260530160248.054915624@linuxfoundation.org>
+Message-ID: <20260530160228.000607208@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +64,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258200-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258804-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,5de83f57cd8531f55596];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3C062610D70
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,quicinc.com:email]
+X-Rspamd-Queue-Id: E0190611F91
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Jamie Iles <quic_jiles@quicinc.com>
 
-commit db57a1aa54ff68669781976e4edb045e09e2b65b upstream.
+commit 6cbf8b38dfe3aabe330f2c356949bc4d6a1f034f upstream.
 
-RSI driver use both self-exit(kthread_complete_and_exit) and external-stop
-(kthread_stop) when killing a kthread. Generally, kthread_stop() is called
-first, and in this case, no particular issues occur.
+Commit 31b9887c7258 ("i3c: remove i2c board info from i2c_dev_desc")
+removed the boardinfo from i2c_dev_desc to decouple device enumeration from
+setup but did not correctly lookup the i2c_dev_desc to store the new
+device, instead dereferencing an uninitialized variable.
 
-However, in rare instances where kthread_complete_and_exit() is called
-first and then kthread_stop() is called, a UAF occurs because the kthread
-object, which has already exited and been freed, is accessed again.
+Lookup the device that has already been registered by address to store
+the i2c client device.
 
-Therefore, to prevent this with minimal modification, you must remove
-kthread_stop() and change the code to wait until the self-exit operation
-is completed.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69e5d03b.a00a0220.1bd0ca.0064.GAE@google.com/
-Fixes: 4c62764d0fc2 ("rsi: improve kernel thread handling to fix kernel panic")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Link: https://patch.msgid.link/20260422173846.37640-1-aha310510@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 31b9887c7258 ("i3c: remove i2c board info from i2c_dev_desc")
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Jamie Iles <quic_jiles@quicinc.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20220308134226.1042367-1-quic_jiles@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/rsi/rsi_common.h |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/i3c/master.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/rsi/rsi_common.h
-+++ b/drivers/net/wireless/rsi/rsi_common.h
-@@ -70,12 +70,11 @@ static inline int rsi_create_kthread(str
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2241,8 +2241,13 @@ static int i3c_master_i2c_adapter_init(s
+ 	 * We silently ignore failures here. The bus should keep working
+ 	 * correctly even if one or more i2c devices are not registered.
+ 	 */
+-	list_for_each_entry(i2cboardinfo, &master->boardinfo.i2c, node)
++	list_for_each_entry(i2cboardinfo, &master->boardinfo.i2c, node) {
++		i2cdev = i3c_master_find_i2c_dev_by_addr(master,
++							 i2cboardinfo->base.addr);
++		if (WARN_ON(!i2cdev))
++			continue;
+ 		i2cdev->dev = i2c_new_client_device(adap, &i2cboardinfo->base);
++	}
+ 
  	return 0;
  }
- 
--static inline int rsi_kill_thread(struct rsi_thread *handle)
-+static inline void rsi_kill_thread(struct rsi_thread *handle)
- {
- 	atomic_inc(&handle->thread_done);
- 	rsi_set_event(&handle->event);
--
--	return kthread_stop(handle->task);
-+	wait_for_completion(&handle->completion);
- }
- 
- void rsi_mac80211_detach(struct rsi_hw *hw);
 
 
 
