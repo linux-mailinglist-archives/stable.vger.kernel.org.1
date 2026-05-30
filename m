@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-258051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIFZOKYjG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258051-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:34 +0200
+	id iCxeAd4ZG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C99C61087E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A44C60F02F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B6912309E359
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32303304E0CF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2826C34389F;
-	Sat, 30 May 2026 17:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A6E34BA42;
+	Sat, 30 May 2026 17:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXxFdayV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1L1y3qH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA788344DB9;
-	Sat, 30 May 2026 17:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A165F39E162;
+	Sat, 30 May 2026 17:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163056; cv=none; b=lxsvnFKaJpaX2pqWZ2ogfT/PxyEBS0VxYPDChiTTOJmS8d4EeXMbAE5uYuuCmuS3xRMdNLgu7YW30tj/0Q1AQ38lj8AbPRw+cyMAeyzMfGfIMnDhJTvU9o3T3TRHcQNYfpmwVDxafe1WKPMW5LeRR66/sCwx1wuQyAQJ5UJc0+g=
+	t=1780160418; cv=none; b=Oa+buN5RiMcNNgD380fifJioVFSf+1Ia/PB36vVQV2mbCtjvHb9y1GSkMDZBYRXMMOX2g4q+fj6/ucMhC2zvBszU9s+sq1jDiZrAKZDotpJhNKnmnmk+ePt+B8wEZAPX7t/HXk8E23CuK5SFvzKiM5W3aGM8fxdAux9c7e6S0tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163056; c=relaxed/simple;
-	bh=lA21nnBqZPiiDCxXLJBdYZEfH9ZS/xFsK7VpDEhXJ+I=;
+	s=arc-20240116; t=1780160418; c=relaxed/simple;
+	bh=Fzpo25RDkGTVEphPYSfaIfGc0OtxSFJ8ImrZ9nrGhVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gECmCnk2TxSjulm+/8/Z+D0dGabYAr4aflTc4n0A8MBeuKIHxC4QjTkBJzS9gI0/pr0iGgvERvNwYnvuRvqlUApSWCNk5ISu8doxOTLmyArGToDVm7SVnrqsOWwXcIwtxVmvsVRkDe94TtjpU/2ecn8hL7g0y2uqQ1fHaYlfSlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXxFdayV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2839E1F00893;
-	Sat, 30 May 2026 17:44:14 +0000 (UTC)
+	 MIME-Version; b=p/SOVJTtyfBfnXkXVQ7dUNpMMIFJM2v9WIYRiB8k7eIaWx8Bo3WEYZV6/+NVCb4Swf1dBXDuk/w5nsS60Gg4KJb4ciHv+kuyKo+xRvWU7bfFVSe2+NmjVtUHohlI8AgeW9KiY2PiWHfZq0sFrJPILtztteVzQHM40KyDPIl5a7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1L1y3qH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB17A1F00893;
+	Sat, 30 May 2026 17:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163055;
-	bh=HRgZiS/OCVE9BTxpDW2VWdjttsXDI1jir019sMLCoBQ=;
+	s=korg; t=1780160417;
+	bh=e0DR1lPHcmOPCza7rjlZ7tOasSZPD/evRjc7bcRBEhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OXxFdayVWbE45zHpDufLZdD88ss8nrnbV0+mqT22U3/1ZsWS9KAeY+CSzvqOwPBrn
-	 ZQTqCemeNuOM2qQM7dAf1WmgIFj6+nxncVlual04b2aDjxWpY675ITmHy6qi4R90pP
-	 aLaf90e/RhwYrWsPDW/ibLcfeV7Lk8UD5uCviKxM=
+	b=r1L1y3qHiU+Nyzwfx4liTPAXXiF8RkUcxon3t2GmooHUkBKbaKdnwlAITvB3Gkm3U
+	 CfwGpNxsqg9TXlOvVKKIKY+pD20jweKJhUwatZU5YrE4PORuK02EXySzWjLkcbuaj2
+	 X/stIe7Enrl7HsSQf3K17hy2ica09RW9WHZE2mi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Furong Xu <0x1207@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 5.15 142/776] net: stmmac: fix TSO DMA API usage causing oops
+	Bharath SM <bharathsm@microsoft.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 332/969] cifs: change_conf needs to be called for session setup
 Date: Sat, 30 May 2026 17:57:36 +0200
-Message-ID: <20260530160244.089568445@linuxfoundation.org>
+Message-ID: <20260530160309.546679713@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,121 +64,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258051-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,gmail.com,armlinux.org.uk,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-257271-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,armlinux.org.uk:email]
-X-Rspamd-Queue-Id: 6C99C61087E
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6A44C60F02F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 4c49f38e20a57f8abaebdf95b369295b153d1f8e ]
+commit c208a2b95811d6e1ebae65d0d2fc13f73707f8e7 upstream.
 
-Commit 66600fac7a98 ("net: stmmac: TSO: Fix unbalanced DMA map/unmap
-for non-paged SKB data") moved the assignment of tx_skbuff_dma[]'s
-members to be later in stmmac_tso_xmit().
+Today we skip calling change_conf for negotiates and session setup
+requests. This can be a problem for mchan as the immediate next call
+after session setup could be due to an I/O that is made on the
+mount point. For single channel, this is not a problem as
+there will be several calls after setting up session.
 
-The buf (dma cookie) and len stored in this structure are passed to
-dma_unmap_single() by stmmac_tx_clean(). The DMA API requires that
-the dma cookie passed to dma_unmap_single() is the same as the value
-returned from dma_map_single(). However, by moving the assignment
-later, this is not the case when priv->dma_cap.addr64 > 32 as "des"
-is offset by proto_hdr_len.
+This change enforces calling change_conf when the total credits contain
+enough for reservations for echoes and oplocks. We expect this to happen
+during the last session setup response. This way, echoes and oplocks are
+not disabled before the first request to the server. So if that first
+request is an open, it does not need to disable requesting leases.
 
-This causes problems such as:
-
-  dwc-eth-dwmac 2490000.ethernet eth0: Tx DMA map failed
-
-and with DMA_API_DEBUG enabled:
-
-  DMA-API: dwc-eth-dwmac 2490000.ethernet: device driver tries to +free DMA memory it has not allocated [device address=0x000000ffffcf65c0] [size=66 bytes]
-
-Fix this by maintaining "des" as the original DMA cookie, and use
-tso_des to pass the offset DMA cookie to stmmac_tso_allocator().
-
-Full details of the crashes can be found at:
-https://lore.kernel.org/all/d8112193-0386-4e14-b516-37c2d838171a@nvidia.com/
-https://lore.kernel.org/all/klkzp5yn5kq5efgtrow6wbvnc46bcqfxs65nz3qy77ujr5turc@bwwhelz2l4dw/
-
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Reported-by: Thierry Reding <thierry.reding@gmail.com>
-Fixes: 66600fac7a98 ("net: stmmac: TSO: Fix unbalanced DMA map/unmap for non-paged SKB data")
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Furong Xu <0x1207@gmail.com>
-Link: https://patch.msgid.link/E1tJXcx-006N4Z-PC@rmk-PC.armlinux.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ The context change is due to the commit 041cc86b3653
-("net: stmmac: Enable TSO on VLANs") in v6.11 which is irrelevant to
-the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/smb/client/smb2ops.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4034,9 +4034,9 @@ static netdev_tx_t stmmac_tso_xmit(struc
- 	int tmp_pay_len = 0, first_tx;
- 	struct stmmac_tx_queue *tx_q;
- 	bool has_vlan, set_ic;
-+	dma_addr_t tso_des, des;
- 	u8 proto_hdr_len, hdr;
- 	u32 pay_len, mss;
--	dma_addr_t des;
- 	int i;
- 
- 	tx_q = &priv->tx_queue[queue];
-@@ -4120,14 +4120,15 @@ static netdev_tx_t stmmac_tso_xmit(struc
- 
- 		/* If needed take extra descriptors to fill the remaining payload */
- 		tmp_pay_len = pay_len - TSO_MAX_BUFF_SIZE;
-+		tso_des = des;
- 	} else {
- 		stmmac_set_desc_addr(priv, first, des);
- 		tmp_pay_len = pay_len;
--		des += proto_hdr_len;
-+		tso_des = des + proto_hdr_len;
- 		pay_len = 0;
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -94,10 +94,21 @@ smb2_add_credits(struct TCP_Server_Info
+ 					    add, server->in_flight);
  	}
- 
--	stmmac_tso_allocator(priv, des, tmp_pay_len, (nfrags == 0), queue);
-+	stmmac_tso_allocator(priv, tso_des, tmp_pay_len, (nfrags == 0), queue);
- 
- 	/* In case two or more DMA transmit descriptors are allocated for this
- 	 * non-paged SKB data, the DMA buffer address should be saved to
+ 	server->in_flight--;
++
++	/*
++	 * Rebalance credits when an op drains in_flight. For session setup,
++	 * do this only when the total accumulated credits are high enough (>2)
++	 * so that a newly established secondary channel can reserve credits for
++	 * echoes and oplocks. We expect this to happen at the end of the final
++	 * session setup response.
++	 */
+ 	if (server->in_flight == 0 &&
+ 	   ((optype & CIFS_OP_MASK) != CIFS_NEG_OP) &&
+ 	   ((optype & CIFS_OP_MASK) != CIFS_SESS_OP))
+ 		rc = change_conf(server);
++	else if (server->in_flight == 0 &&
++		 ((optype & CIFS_OP_MASK) == CIFS_SESS_OP) && *val > 2)
++		rc = change_conf(server);
+ 	/*
+ 	 * Sometimes server returns 0 credits on oplock break ack - we need to
+ 	 * rebalance credits in this case.
 
 
 
