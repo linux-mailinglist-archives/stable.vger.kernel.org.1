@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-258012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258014-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id i6e+FugiG2pa/ggAu9opvQ
-	(envelope-from <stable+bounces-258012-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:24 +0200
+	id kH+yLg4jG2pa/ggAu9opvQ
+	(envelope-from <stable+bounces-258014-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E112261069B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72EE26106F9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1720B3035277
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:42:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D449E307CD8D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746B83ACA4D;
-	Sat, 30 May 2026 17:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183B034389F;
+	Sat, 30 May 2026 17:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSeOCwxk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWDT+JuV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C4321B191;
-	Sat, 30 May 2026 17:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA6A348C5E;
+	Sat, 30 May 2026 17:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162929; cv=none; b=mNYhXnLBn3f1Ss9mmW5lg/nNm0KQj2c6ZyC/0dZX33WA3bcGvcVMXysTQz+AWuoWM9pr2gKoFeydBzilL8pMPH5MxZT/Q2V+K67CMz8pS1siGfRh8O+C+JRsOU4b5pdasvRxVjuzcJCzbzy/KARH1IV175yasDOcXuzchQpy3dg=
+	t=1780162935; cv=none; b=YIXz9mnv3z1UOAZOyweWsz2QJ7fLDePXa3+/X+o26/c3iFTsSbczbIWkH5A7f+KviAh4IF7VeuAfReXl4q8c6sfMOSoY8wpbxcGTYu3uEG20zXTKXVfBFdbct/W99UF/3txr7BYLsgA5PTTNPsp1V3U7sPqqw7oJIKl7jNetFJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162929; c=relaxed/simple;
-	bh=1odURRuwlIuYAZPYn3KloW+nkrhYgIOweGhretxU5sg=;
+	s=arc-20240116; t=1780162935; c=relaxed/simple;
+	bh=vzkyhW/ArS1YzU/eVCQu4JtlYaFxq+drKNz3qzn6Wn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PcESvxQZuS9eGU48yjSk3wf3+sERXySdyiMJncGZlL1sVfT6+CMR/4A9uxokraYfeIrXVBv5FUHODXn0qs26Yvcz4zKmnj3H4L7nxc8MaJribwiS42DTyzBCf11KyMeEoKBcn8/KGQyMW7TkfXbblwI20tx7gkG3VekWo9kkbj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSeOCwxk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFA11F00898;
-	Sat, 30 May 2026 17:42:07 +0000 (UTC)
+	 MIME-Version; b=UesxH+oMA0OVt+Qn883lMJdf0ik9nAXm/JY78BoTCxWs4TmW0MgEBaA+/+jVqUgYqqMmaw9e1Hxqaxfx6S5F9SDXQaR5n6BdKyXrHom95thBOPar3/kS05YVyQvgihzv/GTUGX+bd64d/ClAg+tJd8UMNOTpfncyeH0PbDcd784=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWDT+JuV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0FA1F00893;
+	Sat, 30 May 2026 17:42:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162928;
-	bh=TlxDsMfXv8nTcYiBdIEcqezZ33xWyzVftix1FAgipNU=;
+	s=korg; t=1780162934;
+	bh=XGdh4YCIi0GVnT7Nd3I5r/59ob5+NSs375rI8cbOh7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xSeOCwxkRh233jCz42mIQ50gfyMLCZTty5hvPL3tGp28aeK0GLNGr6PMYX/uRWQyw
-	 tmqlQZvUDhzdYr6ZijZMULQ7gq7mvl39hOlUU+s78NfpViXHe/AZxKsuOFTWJOCHVP
-	 yJr/29GQ9Lioh8ZlcvJED1ua8TtVl/e4QqWA/CdU=
+	b=tWDT+JuVOBW2AZFbZKnQ0Vl8KGprq4JeylpKcxBk+pPz+/gx5cXfq4F/owGlhPYHH
+	 GOykXrQCOgFYKZzjP+ZCKC8W45MR+dVeePBY9EDD0TY35iDQa/XQGGLQII3rmZ+NLC
+	 vp8Uz4TD7eygJw8bnJHwtxTTEtTQsmK+jLdJfNWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-	Frank Li <Frank.Li@nxp.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joseph Qi <jiangqi903@gmail.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 104/776] arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V
-Date: Sat, 30 May 2026 17:56:58 +0200
-Message-ID: <20260530160243.033711590@linuxfoundation.org>
+Subject: [PATCH 5.15 105/776] ocfs2: add inline inode consistency check to ocfs2_validate_inode_block()
+Date: Sat, 30 May 2026 17:56:59 +0200
+Message-ID: <20260530160243.062501285@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
 References: <20260530160240.228940103@linuxfoundation.org>
@@ -63,35 +72,37 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258012-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-258014-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yandex.ru,syzkaller.appspotmail.com,linux.alibaba.com,gmail.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,c16daba279a1161acfb0];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,puri.sm:email]
-X-Rspamd-Queue-Id: E112261069B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 72EE26106F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,39 +110,51 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 511f76bf1dce5acf8907b65a7d1bc8f7e7c0d637 ]
+[ Upstream commit a2b1c419ff72ec62ff5831684e30cd1d4f0b09ee ]
 
-The minimal voltage of VDD_SOC sourced from BUCK1 is 0.81V, which
-is the currently set value. However, BD71837 only guarantees accuracy
-of ±0.01V, and this still doesn't factor other reasons for actual
-voltage to slightly drop in, resulting in the possibility of running
-out of the operational range.
+In 'ocfs2_validate_inode_block()', add an extra check whether an inode
+with inline data (i.e.  self-contained) has no clusters, thus preventing
+an invalid inode from being passed to 'ocfs2_evict_inode()' and below.
 
-Bump the voltage up to 0.85V, which should give enough headroom.
-
-Cc: stable@vger.kernel.org
-Fixes: 8f0216b006e5 ("arm64: dts: Add a device tree for the Librem 5 phone")
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lkml.kernel.org/r/20251023141650.417129-1-dmantipov@yandex.ru
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reported-by: syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c16daba279a1161acfb0
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7bc5da4842be ("ocfs2: fix out-of-bounds write in ocfs2_write_end_inline")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/inode.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -706,7 +706,7 @@
- 				regulator-ramp-delay = <1250>;
- 				rohm,dvs-run-voltage = <900000>;
- 				rohm,dvs-idle-voltage = <850000>;
--				rohm,dvs-suspend-voltage = <810000>;
-+				rohm,dvs-suspend-voltage = <850000>;
- 				regulator-always-on;
- 			};
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -1416,6 +1416,14 @@ int ocfs2_validate_inode_block(struct su
+ 		goto bail;
+ 	}
  
++	if ((le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) &&
++	    le32_to_cpu(di->i_clusters)) {
++		rc = ocfs2_error(sb, "Invalid dinode %llu: %u clusters\n",
++				 (unsigned long long)bh->b_blocknr,
++				 le32_to_cpu(di->i_clusters));
++		goto bail;
++	}
++
+ 	rc = 0;
+ 
+ bail:
 
 
 
