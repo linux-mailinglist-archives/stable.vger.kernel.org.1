@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHhRNggqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:48 +0200
+	id IBa6KL8vG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E06611745
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4A6612540
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D219A3029798
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D140930B28D2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727D03B7B72;
-	Sat, 30 May 2026 18:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448143546F6;
+	Sat, 30 May 2026 18:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4QNC/pV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQf7B7xT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5696B3112C1;
-	Sat, 30 May 2026 18:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B44533AD99;
+	Sat, 30 May 2026 18:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164454; cv=none; b=gzEz2CVBUwOICCTlj4r8iyG59rjYkQHFNdzKeJ0PRUIPMbeFQtj/RgBYfiw22zc+PsWSK5zDzW6aG9pI4D+u07xO3ucMkChcyZDC9jm7jKN8BE4gyDRRA8pPAPOO8Hk3PNxyZ/R8LxvSPUCaXPPefV/7E2CaOElHXyuEeNQVhCg=
+	t=1780166409; cv=none; b=n3/WO7C7uvSaxJczVY1ZCn4RSLbEK9sfq1VeYJPcsO2Fomo6O8iRB9Onrpdnr+KRwiLQ+mWL1gemTgvb2MtjuITX0+vtERySVrc/OxG7EHTMmXbm0zjtBcMa9/3a3kU7YHWV3OTOvi89aWYapmccmzBd8Ex6AIYz+PmDzuU5+t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164454; c=relaxed/simple;
-	bh=4QGSyWTyPijHnGChRCN1MKq9QglkOq35KyPw7cPaN7U=;
+	s=arc-20240116; t=1780166409; c=relaxed/simple;
+	bh=EPujd+HtLHRNNUWc6G4XGxoE99U8HJlwRdpCHDLTWF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/saW/fGZGFzQG0F4C4jra9Vs7kDPBmCd/zsFPBhGDc6tD800+Bf/7VYhtlQSYiu777yIGrKQbrOpTyrsuG+xz3KBA7O30HbRled4kQCP7BwQccZj+yzN8T58yNneUWxM79czmSpuzOC8hCnSf+NphDc4/nCOVW+Ns2CVusKEZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4QNC/pV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9281F00893;
-	Sat, 30 May 2026 18:07:32 +0000 (UTC)
+	 MIME-Version; b=nFEmXCPZbAnGb8t5EfN6fNY9tFQQAZObDvdK1c2vASKiIk1pI0QfLq4YlfRxpvSa+DlEQ4kz/xfZOoLff3+aKhTxCn/P0Wh+U6fjXIzjjVGDM8g5E0ofVihfOp3f5WeOHj8kY8TrG5KkeJwOQn6o7oCIrJa5nY4tUCtYdWEphyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQf7B7xT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD511F00893;
+	Sat, 30 May 2026 18:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164453;
-	bh=yIGQ5hDgLaxNx1Aao9bxHMj+RIA1hfabPRov2fvOFMY=;
+	s=korg; t=1780166408;
+	bh=okfpKg/hEFYY0ZNlG0efEONrbI4lGnI95jCWddy4bOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y4QNC/pV7ZBc0IT/ad7O23g+QxmcYfRCmICWP1+kKFYpf48BSemSu6Nj7EnlvEQqZ
-	 a78VyBA/cD7YJX/kfzoUI4PwDbi0nboSIEeFln5AmO0Z2vGG0ag3TtWjmh3H0Z2tW2
-	 0RoTVPadcKSrDBN0Exd8RS6yFJVnmMXvfaR7FQ88=
+	b=RQf7B7xTl8xN6wq03Cgmvl798XbhMVImK8ZaHCf6/XbxdD15oN+wNxqSdKZpYCLjw
+	 gFRuSPO9lVf8HuS9RIWn2OZEI6DQqsM/dq7I+8lNl3D8vMGdBAzFu9OCvXYHI0prI4
+	 hYzNK/UkZJwskTzlQV1vx/zkbr6hB472MTiewvxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	David Heidelberg <david@ixit.cz>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 531/776] fs/ntfs3: terminate the cached volume label after UTF-8 conversion
-Date: Sat, 30 May 2026 18:04:05 +0200
-Message-ID: <20260530160253.930297859@linuxfoundation.org>
+Subject: [PATCH 5.10 365/589] arm64: dts: qcom: sdm845-xiaomi-beryllium: Mark l1a regulator as powered during boot
+Date: Sat, 30 May 2026 18:04:06 +0200
+Message-ID: <20260530160234.430600698@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,80 +69,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259046-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258469-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[paragon-software.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 76E06611745
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ixit.cz:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1B4A6612540
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: David Heidelberg <david@ixit.cz>
 
-[ Upstream commit a6cd43fe9b083fa23fe1595666d5738856cb261a ]
+[ Upstream commit 3b0dd81eea6b7a239fce456ce4545af76f1a9715 ]
 
-ntfs_fill_super() loads the on-disk volume label with utf16s_to_utf8s()
-and stores the result in sbi->volume.label. The converted label is later
-exposed through ntfs3_label_show() using %s, but utf16s_to_utf8s() only
-returns the number of bytes written and does not add a trailing NUL.
+The regulator must be on, since it provides the display subsystem and
+therefore the bootloader had turned it on before Linux booted.
 
-If the converted label fills the entire fixed buffer,
-ntfs3_label_show() can read past the end of sbi->volume.label while
-looking for a terminator.
-
-Terminate the cached label explicitly after a successful conversion and
-clamp the exact-full case to the last byte of the buffer.
-
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 77809cf74a8c ("arm64: dts: qcom: Add support for Xiaomi Poco F1 (Beryllium)")
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260320-beryllium-booton-v2-1-931d1be21eae@ixit.cz
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/super.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
-index a9952b0321837..4ba1501119bff 100644
---- a/fs/ntfs3/super.c
-+++ b/fs/ntfs3/super.c
-@@ -958,8 +958,13 @@ static int ntfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 				      le32_to_cpu(attr->res.data_size) >> 1,
- 				      UTF16_LITTLE_ENDIAN, sbi->volume.label,
- 				      sizeof(sbi->volume.label));
--		if (err < 0)
-+		if (err < 0) {
- 			sbi->volume.label[0] = 0;
-+		} else if (err >= sizeof(sbi->volume.label)) {
-+			sbi->volume.label[sizeof(sbi->volume.label) - 1] = 0;
-+		} else {
-+			sbi->volume.label[err] = 0;
-+		}
- 	} else {
- 		/* Should we break mounting here? */
- 		//err = -EINVAL;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+index 7d029425336e4..b38b3bcdf429e 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+@@ -131,6 +131,7 @@ vreg_l1a_0p875: ldo1 {
+ 			regulator-min-microvolt = <880000>;
+ 			regulator-max-microvolt = <880000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-boot-on;
+ 		};
+ 
+ 		vreg_l5a_0p8: ldo5 {
 -- 
 2.53.0
 
