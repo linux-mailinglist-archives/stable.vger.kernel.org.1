@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-259087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257701-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLuSG7EvG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:57 +0200
+	id aNmoBpweG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257701-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1176124FE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F13760FCF0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6C2B03008C96
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:42:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BB72E304F24A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925F7344DB9;
-	Sat, 30 May 2026 18:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3441334695;
+	Sat, 30 May 2026 17:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ECfZxh9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLXo0mKc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E902F6184;
-	Sat, 30 May 2026 18:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD357348C55;
+	Sat, 30 May 2026 17:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166570; cv=none; b=GA1ttvo4RLTwn9vz43qQxtNIQd7h5scn4SZqyBNcMmNGerBKP2KJiD3sx78Gy5kiJJ0jotcNkPiG+5P3++h8oqeurqFXmQnfBJHqYBLzQtOND7fG5c3AFEfuI/BYTB/jJXKRN/ZzcOraMvaz9/tl5d8MHg2CmqzZcC2zeRUU110=
+	t=1780161884; cv=none; b=PP6i7E1TwlEfuNL7I87ThcbPGhLILk7T1W/ckLaTCZ4UHCHxzpnmH/MuUl7LqTzYh2aeT4cQnroQX4bOM4i5rZvI2L4ffiK2HMkV7rhV8MYix1R/IUc34aNdqg+q/8PvtkMjG1Yrkeh9olHkVEXXP1VJL0ctaEZmbcKw5S/YlOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166570; c=relaxed/simple;
-	bh=pqPBd1MJlSa/N3TLyUhWq+TH2nBiC61TOSYqwjqcP9k=;
+	s=arc-20240116; t=1780161884; c=relaxed/simple;
+	bh=AhxfZ/32oZ4lddNgoGHqiGYcnAGDzA41mZhPTtnNehU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYeci52uF5vLjA0sPIAUwFfPjGJmHZ3jmZvOGQZcd0Y/WD2sew3IZ3OygdQI1R2ZEgc00PU/HGLsXCgSlRgk0QplpD2kAv9NEw8sa5QrTl8t+Che3IyuhC9u5rzaJc7r0mM5RRSCoFpDFfVUz9nNWZT5hW+ZZU/k8PM8SYsJ1yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ECfZxh9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530411F00893;
-	Sat, 30 May 2026 18:42:48 +0000 (UTC)
+	 MIME-Version; b=VM5MQwIWV0iFwsCEHtDY0JuhiP+Awe2MEUW/urTrpMJUgQIlZn8B5jcPxMAQq9jpFnm7QkKqPPEwONSCqutSxI6uiWHtPx3FmazwAGpUJNUg3VrZhV4n3LKeYpPQ0t/5BLo4boji+txAcmOX167XOGnDQsV5PbgLfa1jLJwfcWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLXo0mKc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD1A1F00893;
+	Sat, 30 May 2026 17:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166569;
-	bh=VdPGrbLWrdSI6bPjJHQeo8HZVg10C4tWvplZDqr4ws4=;
+	s=korg; t=1780161882;
+	bh=21GLyUZFq1AWMRnMVSntb3kAdv7pjZhEs712V3SMK9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1ECfZxh96zQkxXy23NPI0wuHshzPzxREtLnAugIdTxLlQIA2c9KHqJK1ROA2HaTsg
-	 GDLJHjwuLUHg9kr7ElcYx5zfmpb8PxQZE7Gdsd8sbYPWoI55HheMncVpNVtaz4nUO+
-	 i7TU5tJGRmfcB8tcgWtzjF7xLbSQe+ZHN3W5XGMk=
+	b=xLXo0mKctzgetY1EZuHmrmuKPVyCxv62GzHpIw2T8kor/TPCAMTMduKdGHl6MvJVG
+	 DqRbb+RXWdlKlum+WrwYLKAIFR6ugXjpHfdO7f2MNUiAU0uoLz7bT4zltYi2vPFZTp
+	 CIQfsbGGnFDp0cFG7NfwaesUarBVRLBaiunnBmMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huawei.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Paul Geurts <paul.geurts@prodrive-technologies.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Mark Greer <mgreer@animalcreek.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 397/589] scsi: sg: Resolve soft lockup issue when opening /dev/sgX
-Date: Sat, 30 May 2026 18:04:38 +0200
-Message-ID: <20260530160235.216712070@linuxfoundation.org>
+Subject: [PATCH 6.1 755/969] NFC: trf7970a: Ignore antenna noise when checking for RF field
+Date: Sat, 30 May 2026 18:04:39 +0200
+Message-ID: <20260530160321.413442386@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259087-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257701-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,112 +87,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,acm.org:email]
-X-Rspamd-Queue-Id: 7A1176124FE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,prodrive-technologies.com:email]
+X-Rspamd-Queue-Id: 8F13760FCF0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: Paul Geurts <paul.geurts@prodrive-technologies.com>
 
-[ Upstream commit d06a310b45e153872033dd0cf19d5a2279121099 ]
+[ Upstream commit a9bc28aa4e64320668131349436a650bf42591a5 ]
 
-The parameter def_reserved_size defines the default buffer size reserved
-for each Sg_fd and should be restricted to a range between 0 and 1,048,576
-(see https://tldp.org/HOWTO/SCSI-Generic-HOWTO/proc.html).  Although the
-function sg_proc_write_dressz enforces this limit, it is possible to bypass
-it by directly modifying the module parameter as shown below, which then
-causes a soft lockup:
+The main channel Received Signal Strength Indicator (RSSI) measurement
+is used to determine whether an RF field is present or not. RSSI != 0
+is interpreted as an RF Field is present. This does not take RF noise
+and measurement inaccuracy into account, and results in false positives
+in the field.
 
-echo -1 > /sys/module/sg/parameters/def_reserved_size
-exec 4<> /dev/sg0
+Define a noise level and make sure the RF field is only interpreted as
+present when the RSSI is above the noise level.
 
-watchdog: BUG: soft lockup - CPU#5 stuck for 26 seconds! [bash:537]
-Modules loaded:
-CPU: 5 UID: 0 PID: 537 Command: bash, kernel version 6.19.0-rc3+ #134,
-PREEMPT disabled
-Hardware: QEMU Standard PC (i440FX + PIIX, 1996), BIOS version
-1.16.1-2.fc37 dated 04/01/2014
-...
-Call Trace:
-
-  sg_build_reserve+0x5c/0xa0
-  sg_add_sfp+0x168/0x270
-  sg_open+0x16e/0x340
-  chrdev_open+0xbe/0x230
-  do_dentry_open+0x175/0x480
-  vfs_open+0x34/0xf0
-  do_open+0x265/0x3d0
-  path_openat+0x110/0x290
-  do_filp_open+0xc3/0x170
-  do_sys_openat2+0x71/0xe0
-  __x64_sys_openat+0x6d/0xa0
-  do_syscall_64+0x62/0x310
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The fix is to use module_param_cb to validate and reject invalid values
-assigned to def_reserved_size.
-
-Fixes: 6460e75a104d ("[SCSI] sg: fixes for large page_size")
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260127062044.3034148-3-yangerkun@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 851ee3cbf850 ("NFC: trf7970a: Don't turn on RF if there is already an RF field")
+Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Mark Greer <mgreer@animalcreek.com>
+Link: https://patch.msgid.link/20260422100930.581237-1-paul.geurts@prodrive-technologies.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sg.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ drivers/nfc/trf7970a.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index b24e80a9c8cac..3c06c035b85c0 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -1647,10 +1647,35 @@ sg_remove_device(struct device *cl_dev, struct class_interface *cl_intf)
- }
+diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
+index 7968baa626d16..b7a8d525e3c29 100644
+--- a/drivers/nfc/trf7970a.c
++++ b/drivers/nfc/trf7970a.c
+@@ -311,6 +311,7 @@
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_MASK	(BIT(2) | BIT(1) | BIT(0))
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_X_MASK	(BIT(5) | BIT(4) | BIT(3))
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_OSC_OK	BIT(6)
++#define TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL	1
  
- module_param_named(scatter_elem_sz, scatter_elem_sz, int, S_IRUGO | S_IWUSR);
--module_param_named(def_reserved_size, def_reserved_size, int,
--		   S_IRUGO | S_IWUSR);
- module_param_named(allow_dio, sg_allow_dio, int, S_IRUGO | S_IWUSR);
+ #define TRF7970A_SPECIAL_FCN_REG1_COL_7_6		BIT(0)
+ #define TRF7970A_SPECIAL_FCN_REG1_14_ANTICOLL		BIT(1)
+@@ -1253,7 +1254,7 @@ static int trf7970a_is_rf_field(struct trf7970a *trf, bool *is_rf_field)
+ 	if (ret)
+ 		return ret;
  
-+static int def_reserved_size_set(const char *val, const struct kernel_param *kp)
-+{
-+	int size, ret;
-+
-+	if (!val)
-+		return -EINVAL;
-+
-+	ret = kstrtoint(val, 0, &size);
-+	if (ret)
-+		return ret;
-+
-+	/* limit to 1 MB */
-+	if (size < 0 || size > 1048576)
-+		return -ERANGE;
-+
-+	def_reserved_size = size;
-+	return 0;
-+}
-+
-+static const struct kernel_param_ops def_reserved_size_ops = {
-+	.set	= def_reserved_size_set,
-+	.get	= param_get_int,
-+};
-+
-+module_param_cb(def_reserved_size, &def_reserved_size_ops, &def_reserved_size,
-+		   S_IRUGO | S_IWUSR);
-+
- MODULE_AUTHOR("Douglas Gilbert");
- MODULE_DESCRIPTION("SCSI generic (sg) driver");
- MODULE_LICENSE("GPL");
+-	if (rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK)
++	if ((rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK) > TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL)
+ 		*is_rf_field = true;
+ 	else
+ 		*is_rf_field = false;
 -- 
 2.53.0
 
