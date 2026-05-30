@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-258386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HS2FQUpG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258386-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:29 +0200
+	id CGuHD0YxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-258992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:49:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA56B6114F3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC92612910
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:49:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 190CE30CB94A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:03:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60B583072541
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B22355F53;
-	Sat, 30 May 2026 18:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D29933E36A;
+	Sat, 30 May 2026 18:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMACfXqx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIBDX14t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3C629B78B;
-	Sat, 30 May 2026 18:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DAE41A8F;
+	Sat, 30 May 2026 18:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164179; cv=none; b=JoQ84vRssVvv9DR2wZmFNOMIruO10oXhQnYrH0v5OFW1wdwarYn2O37Fc8vEeHtZYbobgwqiGjM1RPp2iLlnUgK6Bbh6WFQ+rDJxFcx850/6go6zCyzgo4qEY4+k9cqXte7MlzuirCQ/ZfzPG6GeLLwhxsljxlzpi421wcnvmfE=
+	t=1780166232; cv=none; b=dJ8ZFA4Yduf+PZgFQH2FaciwBhfKCy5xtSBxEmLWEoV49tvONWxjIpj5Us+uaZdvLfIkz5K3Aq1LMYXxfMd3Hl/r2GzRD1Nq198+IBzhcmBc4uDk5eP8wbBeR6K9ujIzbILRY50R/IV2cd6DDjasqZI4FSTL7paILUFGMBHqYLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164179; c=relaxed/simple;
-	bh=wsVAeuoZgGb0WklMAJxbhwun34U5nIZfsU720N/eRqs=;
+	s=arc-20240116; t=1780166232; c=relaxed/simple;
+	bh=If3W9X27ki87N1y8Gi85Czid8yQD1sXsBn2FFzxAFjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q51yWmkzalj1Ge8EliMJuqavfrM8KjtoiiFc1RCxc0IQiiZHUi5qobN+R/mLi/xA2DKehUqDxoUu/2aR+uIZQyeElQ13BZ6/S12RB12xJQ2DclsV8a7eNcEWaahBi+fCee3ZT6TIuYMq0pOoe9yUZ5eUclCjXbKm3fRwBCihj/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMACfXqx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6961F00893;
-	Sat, 30 May 2026 18:02:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nla46x7eAo0jTlLMteJ2fkid183y07sVOK1tmA6T4StqimbRcVknKSIgF9rBM6v+nKjM1B4wpOWqwxEdWepHVLj+32zeEERkFXFytSr9BfiJKS4/M7w59g//fcar3lPkaHBxAWSYPkx3Sc98CWK5psx8L5COkhoJT+q7gmE0/A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIBDX14t; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893761F00893;
+	Sat, 30 May 2026 18:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164178;
-	bh=rpvhktbKREc8xnV+/GCd1mYZPtP9y2Uj49fQSiBakAU=;
+	s=korg; t=1780166231;
+	bh=e5kawa85X1o8u4Q94LcKy1diudqgQhvMoJUCwS8zOQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sMACfXqxiMY7xBjsEhTPT6Z0vFk/azynzg5w2RHH2UylNX0+tWbkQSw6HsfFXKaKI
-	 g/MJrBGpsRjWAemPjGasWdsAwfbIgW3BSB4codCzViWi0pUOJ6caJZiYIvcaBaf5/I
-	 MR/eFIioWgMRbzuTvndzSDNt1NOnhhyALjOd6Loc=
+	b=UIBDX14t/IeCg20kIPVfJ2x2YAacQtM8WB4p2ISgCsjXkThsvnGSFRKYpGMRnZkMF
+	 MIhPGGNaYiKldufzVnesNVnG6uy8UZHRDYfSO0Lgb7nSeO+0/wyL2YUfJkFMq852jG
+	 nG2kRbjvykOJcgWy++ypgvd6Wd/neaOAkaPt2ajU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hawley <warthog9@eaglescrag.net>,
-	Andrea Righi <arighi@nvidia.com>,
-	Marcos Paulo de Souza <mpdesouza@suse.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+	Somasundaram Krishnasamy <somasundaram.krishnasamy@oracle.com>,
+	Gerd Rausch <gerd.rausch@oracle.com>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 478/776] ktest: Avoid undef warning when WARNINGS_FILE is unset
+Subject: [PATCH 5.10 311/589] net/rds: Optimize rds_ib_laddr_check
 Date: Sat, 30 May 2026 18:03:12 +0200
-Message-ID: <20260530160252.693721788@linuxfoundation.org>
+Message-ID: <20260530160233.118706947@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,75 +71,215 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258992-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258386-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,eaglescrag.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,suse.com:email]
-X-Rspamd-Queue-Id: EA56B6114F3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: ADC92612910
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Håkon Bugge <haakon.bugge@oracle.com>
 
-[ Upstream commit 057854f8a595160656fe77ed7bf0d2403724b915 ]
+[ Upstream commit 236f718ac885965fa886440b9898dfae185c9733 ]
 
-check_buildlog() probes $warnings_file with -f even when WARNINGS_FILE is
-not configured. Perl warns about the uninitialized value and adds noise to
-the test log, which can hide the output we actually care about.
+rds_ib_laddr_check() creates a CM_ID and attempts to bind the address
+in question to it. This in order to qualify the allegedly local
+address as a usable IB/RoCE address.
 
-Check that WARNINGS_FILE is defined before testing whether the file exists.
+In the field, ExaWatcher runs rds-ping to all ports in the fabric from
+all local ports. This using all active ToS'es. In a full rack system,
+we have 14 cell servers and eight db servers. Typically, 6 ToS'es are
+used. This implies 528 rds-ping invocations per ExaWatcher's "RDSinfo"
+interval.
 
-Cc: John Hawley <warthog9@eaglescrag.net>
-Cc: Andrea Righi <arighi@nvidia.com>
-Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Link: https://patch.msgid.link/20260307-ktest-fixes-v1-1-565d412f4925@suse.com
-Fixes: 4283b169abfb ("ktest: Add make_warnings_file and process full warnings")
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Adding to this, each rds-ping invocation creates eight sockets and
+binds the local address to them:
+
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 3
+bind(3, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 4
+bind(4, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 5
+bind(5, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 6
+bind(6, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 7
+bind(7, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 8
+bind(8, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 9
+bind(9, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 10
+bind(10, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+
+So, at every interval ExaWatcher executes rds-ping's, 4224 CM_IDs are
+allocated, considering this full-rack system. After the a CM_ID has
+been allocated, rdma_bind_addr() is called, with the port number being
+zero. This implies that the CMA will attempt to search for an un-used
+ephemeral port. Simplified, the algorithm is to start at a random
+position in the available port space, and then if needed, iterate
+until an un-used port is found.
+
+The book-keeping of used ports uses the idr system, which again uses
+slab to allocate new struct idr_layer's. The size is 2092 bytes and
+slab tries to reduce the wasted space. Hence, it chooses an order:3
+allocation, for which 15 idr_layer structs will fit and only 1388
+bytes are wasted per the 32KiB order:3 chunk.
+
+Although this order:3 allocation seems like a good space/speed
+trade-off, it does not resonate well with how it used by the CMA. The
+combination of the randomized starting point in the port space (which
+has close to zero spatial locality) and the close proximity in time of
+the 4224 invocations of the rds-ping's, creates a memory hog for
+order:3 allocations.
+
+These costly allocations may need reclaims and/or compaction. At
+worst, they may fail and produce a stack trace such as (from uek4):
+
+[<ffffffff811a72d5>] __inc_zone_page_state+0x35/0x40
+[<ffffffff811c2e97>] page_add_file_rmap+0x57/0x60
+[<ffffffffa37ca1df>] remove_migration_pte+0x3f/0x3c0 [ksplice_6cn872bt_vmlinux_new]
+[<ffffffff811c3de8>] rmap_walk+0xd8/0x340
+[<ffffffff811e8860>] remove_migration_ptes+0x40/0x50
+[<ffffffff811ea83c>] migrate_pages+0x3ec/0x890
+[<ffffffff811afa0d>] compact_zone+0x32d/0x9a0
+[<ffffffff811b00ed>] compact_zone_order+0x6d/0x90
+[<ffffffff811b03b2>] try_to_compact_pages+0x102/0x270
+[<ffffffff81190e56>] __alloc_pages_direct_compact+0x46/0x100
+[<ffffffff8119165b>] __alloc_pages_nodemask+0x74b/0xaa0
+[<ffffffff811d8411>] alloc_pages_current+0x91/0x110
+[<ffffffff811e3b0b>] new_slab+0x38b/0x480
+[<ffffffffa41323c7>] __slab_alloc+0x3b7/0x4a0 [ksplice_s0dk66a8_vmlinux_new]
+[<ffffffff811e42ab>] kmem_cache_alloc+0x1fb/0x250
+[<ffffffff8131fdd6>] idr_layer_alloc+0x36/0x90
+[<ffffffff8132029c>] idr_get_empty_slot+0x28c/0x3d0
+[<ffffffff813204ad>] idr_alloc+0x4d/0xf0
+[<ffffffffa051727d>] cma_alloc_port+0x4d/0xa0 [rdma_cm]
+[<ffffffffa0517cbe>] rdma_bind_addr+0x2ae/0x5b0 [rdma_cm]
+[<ffffffffa09d8083>] rds_ib_laddr_check+0x83/0x2c0 [ksplice_6l2xst5i_rds_rdma_new]
+[<ffffffffa05f892b>] rds_trans_get_preferred+0x5b/0xa0 [rds]
+[<ffffffffa05f09f2>] rds_bind+0x212/0x280 [rds]
+[<ffffffff815b4016>] SYSC_bind+0xe6/0x120
+[<ffffffff815b4d3e>] SyS_bind+0xe/0x10
+[<ffffffff816b031a>] system_call_fastpath+0x18/0xd4
+
+To avoid these excessive calls to rdma_bind_addr(), we optimize
+rds_ib_laddr_check() by simply checking if the address in question has
+been used before. The rds_rdma module keeps track of addresses
+associated with IB devices, and the function rds_ib_get_device() is
+used to determine if the address already has been qualified as a valid
+local address. If not found, we call the legacy rds_ib_laddr_check(),
+now renamed to rds_ib_laddr_check_cm().
+
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+Signed-off-by: Somasundaram Krishnasamy <somasundaram.krishnasamy@oracle.com>
+Signed-off-by: Gerd Rausch <gerd.rausch@oracle.com>
+Signed-off-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260408080420.540032-2-achender@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ebf71dd4aff4 ("net/rds: Restrict use of RDS/IB to the initial network namespace")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rds/ib.c      | 20 ++++++++++++++++++--
+ net/rds/ib.h      |  1 +
+ net/rds/ib_rdma.c |  2 +-
+ 3 files changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index b1bd8be3cf666..d752c4bd0d8b3 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -2465,7 +2465,7 @@ sub check_buildlog {
-     my $save_no_reboot = $no_reboot;
-     $no_reboot = 1;
+diff --git a/net/rds/ib.c b/net/rds/ib.c
+index 24c9a9005a6fb..dbc63493ade70 100644
+--- a/net/rds/ib.c
++++ b/net/rds/ib.c
+@@ -403,8 +403,8 @@ static void rds6_ib_ic_info(struct socket *sock, unsigned int len,
+  * allowed to influence which paths have priority.  We could call userspace
+  * asserting this policy "routing".
+  */
+-static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
+-			      __u32 scope_id)
++static int rds_ib_laddr_check_cm(struct net *net, const struct in6_addr *addr,
++				 __u32 scope_id)
+ {
+ 	int ret;
+ 	struct rdma_cm_id *cm_id;
+@@ -489,6 +489,22 @@ static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
+ 	return ret;
+ }
  
--    if (-f $warnings_file) {
-+    if (defined($warnings_file) && -f $warnings_file) {
- 	open(IN, $warnings_file) or
- 	    dodie "Error opening $warnings_file";
++static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
++			      __u32 scope_id)
++{
++	struct rds_ib_device *rds_ibdev = NULL;
++
++	if (ipv6_addr_v4mapped(addr)) {
++		rds_ibdev = rds_ib_get_device(addr->s6_addr32[3]);
++		if (rds_ibdev) {
++			rds_ib_dev_put(rds_ibdev);
++			return 0;
++		}
++	}
++
++	return rds_ib_laddr_check_cm(net, addr, scope_id);
++}
++
+ static void rds_ib_unregister_client(void)
+ {
+ 	ib_unregister_client(&rds_ib_client);
+diff --git a/net/rds/ib.h b/net/rds/ib.h
+index 2ba71102b1f1f..d6c1197731c1c 100644
+--- a/net/rds/ib.h
++++ b/net/rds/ib.h
+@@ -384,6 +384,7 @@ void rds_ib_cm_connect_complete(struct rds_connection *conn,
+ 	__rds_ib_conn_error(conn, KERN_WARNING "RDS/IB: " fmt)
  
+ /* ib_rdma.c */
++struct rds_ib_device *rds_ib_get_device(__be32 ipaddr);
+ int rds_ib_update_ipaddr(struct rds_ib_device *rds_ibdev,
+ 			 struct in6_addr *ipaddr);
+ void rds_ib_add_conn(struct rds_ib_device *rds_ibdev, struct rds_connection *conn);
+diff --git a/net/rds/ib_rdma.c b/net/rds/ib_rdma.c
+index 30fca2169aa7a..468fd60d818ff 100644
+--- a/net/rds/ib_rdma.c
++++ b/net/rds/ib_rdma.c
+@@ -47,7 +47,7 @@ struct rds_ib_dereg_odp_mr {
+ 
+ static void rds_ib_odp_mr_worker(struct work_struct *work);
+ 
+-static struct rds_ib_device *rds_ib_get_device(__be32 ipaddr)
++struct rds_ib_device *rds_ib_get_device(__be32 ipaddr)
+ {
+ 	struct rds_ib_device *rds_ibdev;
+ 	struct rds_ib_ipaddr *i_ipaddr;
 -- 
 2.53.0
 
