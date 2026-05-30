@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-258524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KvGMHSEoG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258524-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:41 +0200
+	id eMZFJuQeG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2D06112C1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D6E60FD5C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 99FF930074B5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:10:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DFB623014110
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A6A352027;
-	Sat, 30 May 2026 18:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F37340298;
+	Sat, 30 May 2026 17:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzltiSCo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozghKvRY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2ABE3B7B72;
-	Sat, 30 May 2026 18:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5680F334695;
+	Sat, 30 May 2026 17:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164638; cv=none; b=klYZIf7JHt1tXiWHWNQ8t8A4/IAxybXxW0dOKxr1SrjNcnN38G5Hg1VZ/HlFYJ7Kl99Rivbb8r4YpQ016U1lmrWgXgt0fpdTnNqg9ZdM2sfHSMTaSqMoouW0xk9RcRuY+UCvMQXFyLd05Ix6prVhPJJ97DLZL0/ibFBtoZNWhNk=
+	t=1780162043; cv=none; b=H9bipZpcC2dP9LyoLp/LkxS1/gFBmKvXjdwXumI0qob6geVN7kDqG4j2SfLrLcx0Fg4mzWrjfGEIFqYmUfkSJoJ2KVFpsX092AICrOrJBjScABA4LocEGbZkm+oKH7ghEQB9+lkZRSB9Unbxmy6QuphFkfqPaeKWUs6HHBH/PPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164638; c=relaxed/simple;
-	bh=aTsFHTLEHUdgqCt0qrqn6hqFrFg3Wo0vXkCtjH4Jcn4=;
+	s=arc-20240116; t=1780162043; c=relaxed/simple;
+	bh=1XkrABQ5huUWYG4MFGafohwGphvbXzH0mDc3rqxdDEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N1LsXHNXWRp3V/80cVv9TPErm8sFk4miOl7d1DWNioZedruVJnuDm235a0Zdg01WG2dpIR8KN6yleV7IhAsktoyyfUj3ogQ/pZxEOzHX1Pd+Kmg/44yzaCEB62oEzEd6Edh1H/Ws/F9YIHdZMk+eUff2seyuntn11+Gjtroc68E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzltiSCo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D201F00893;
-	Sat, 30 May 2026 18:10:37 +0000 (UTC)
+	 MIME-Version; b=nNv/pEaKElBNfl9rdWzx5PgpOBouCu/KyZ6i+OELuKDujFxVpGNlqocLW71/hBTWKFmT2+PkkV+VEP4z/WNW3TAYC1EM15nA2HWFIHrbAsAdBhL79tBH2uS81SP/CrSBcKxuOGQKU7uG/d7Gnd/DwI6jfi6gC4S+RRemN3Hz9W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozghKvRY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB131F00893;
+	Sat, 30 May 2026 17:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164637;
-	bh=yodlt6V3RtMlPMeODGVsgDCgUpD7Z5eWoWM9NGBwY7o=;
+	s=korg; t=1780162042;
+	bh=eItvgdo//jyE6ScQBLHDW6bRIhLBmQKnWO9R9BU4TT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pzltiSComFyO+koUa+zJKsnkG36saSQtcJmj5zLrIesbUJaHVurtYTZmPoIa8i2u4
-	 47RzBvQnDLJyRkMlNKm+dFcVgYJuAXhA5E6R3AubeF/uKjGFUOAUaG67L3/lKLNpkS
-	 SZvCpF2gMdIbnMx5eYMlU60UFSd0Npom1DJTCYso=
+	b=ozghKvRYnXYu188MZ4nZgrEPJSVTh8rlvv7fvbOw/PO84OcKZ2ljJUZi5w3nXA5yr
+	 pPXjGmRN4ef2otYYB/wQOsJHfMs2ui+DPhoa/fITtZRNlSNZcQN+j4HCCnt10v48hm
+	 H/FCV7ZEH2eg2NOjKab4QtPQDG8yeL7kXkss0jyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Tonghao Zhang <tonghao@bamaicloud.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 614/776] net: sched: sch_netem: Refactor code in 4-state loss generator
+Subject: [PATCH 6.1 804/969] net: bonding: update the slave array for broadcast mode
 Date: Sat, 30 May 2026 18:05:28 +0200
-Message-ID: <20260530160255.872926725@linuxfoundation.org>
+Message-ID: <20260530160322.832331032@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,121 +71,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258524-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-257749-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,lwn.net,lunn.ch,bamaicloud.com,gmail.com,blackwall.org,jvosburgh.net];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2C2D06112C1
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,jvosburgh.net:email,lunn.ch:email,bamaicloud.com:email,blackwall.org:email,lwn.net:email]
+X-Rspamd-Queue-Id: 07D6E60FD5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+From: Tonghao Zhang <tonghao@bamaicloud.com>
 
-[ Upstream commit cb3ef7b00042479277cda7871d899378ad91f081 ]
+[ Upstream commit e0caeb24f538c3c9c94f471882ceeb43d9dc2739 ]
 
-Fixed comments to match description with variable names and
-refactored code to match the convention as per [1].
+This patch fixes ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad").
+Before this commit, on the broadcast mode, all devices were traversed using the
+bond_for_each_slave_rcu. This patch supports traversing devices by using all_slaves.
+Therefore, we need to update the slave array when enslave or release slave.
 
-To match the convention mapping is done as follows:
-State 3 - LOST_IN_BURST_PERIOD
-State 4 - LOST_IN_GAP_PERIOD
-
-[1] S. Salsano, F. Ludovici, A. Ordine, "Definition of a general
-and intuitive loss model for packet networks and its implementation
-in the Netem module in the Linux kernel"
-
-Fixes: a6e2fe17eba4 ("sch_netem: replace magic numbers with enumerate")
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Acked-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 732b463449fd ("net/sched: netem: fix probability gaps in 4-state loss model")
+Fixes: ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad")
+Cc: Simon Horman <horms@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: <stable@vger.kernel.org>
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Tested-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/all/a97e6e1e-81bc-4a79-8352-9e4794b0d2ca@kernel.org/
+Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20251016125136.16568-1-tonghao@bamaicloud.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/bonding/bond_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 951156d7e5485..cbd7f3032fccf 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -210,17 +210,17 @@ static bool loss_4state(struct netem_sched_data *q)
- 	 * next state and if the next packet has to be transmitted or lost.
- 	 * The four states correspond to:
- 	 *   TX_IN_GAP_PERIOD => successfully transmitted packets within a gap period
--	 *   LOST_IN_BURST_PERIOD => isolated losses within a gap period
--	 *   LOST_IN_GAP_PERIOD => lost packets within a burst period
--	 *   TX_IN_GAP_PERIOD => successfully transmitted packets within a burst period
-+	 *   LOST_IN_GAP_PERIOD => isolated losses within a gap period
-+	 *   LOST_IN_BURST_PERIOD => lost packets within a burst period
-+	 *   TX_IN_BURST_PERIOD => successfully transmitted packets within a burst period
- 	 */
- 	switch (clg->state) {
- 	case TX_IN_GAP_PERIOD:
- 		if (rnd < clg->a4) {
--			clg->state = LOST_IN_BURST_PERIOD;
-+			clg->state = LOST_IN_GAP_PERIOD;
- 			return true;
- 		} else if (clg->a4 < rnd && rnd < clg->a1 + clg->a4) {
--			clg->state = LOST_IN_GAP_PERIOD;
-+			clg->state = LOST_IN_BURST_PERIOD;
- 			return true;
- 		} else if (clg->a1 + clg->a4 < rnd) {
- 			clg->state = TX_IN_GAP_PERIOD;
-@@ -229,24 +229,24 @@ static bool loss_4state(struct netem_sched_data *q)
- 		break;
- 	case TX_IN_BURST_PERIOD:
- 		if (rnd < clg->a5) {
--			clg->state = LOST_IN_GAP_PERIOD;
-+			clg->state = LOST_IN_BURST_PERIOD;
- 			return true;
- 		} else {
- 			clg->state = TX_IN_BURST_PERIOD;
- 		}
- 
- 		break;
--	case LOST_IN_GAP_PERIOD:
-+	case LOST_IN_BURST_PERIOD:
- 		if (rnd < clg->a3)
- 			clg->state = TX_IN_BURST_PERIOD;
- 		else if (clg->a3 < rnd && rnd < clg->a2 + clg->a3) {
- 			clg->state = TX_IN_GAP_PERIOD;
- 		} else if (clg->a2 + clg->a3 < rnd) {
--			clg->state = LOST_IN_GAP_PERIOD;
-+			clg->state = LOST_IN_BURST_PERIOD;
- 			return true;
- 		}
- 		break;
--	case LOST_IN_BURST_PERIOD:
-+	case LOST_IN_GAP_PERIOD:
- 		clg->state = TX_IN_GAP_PERIOD;
- 		break;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index d3c41dc57e547..e9e2dec1dcb13 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2258,7 +2258,9 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 		unblock_netpoll_tx();
  	}
+ 
+-	if (bond_mode_can_use_xmit_hash(bond))
++	/* broadcast mode uses the all_slaves to loop through slaves. */
++	if (bond_mode_can_use_xmit_hash(bond) ||
++	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
+ 		bond_update_slave_arr(bond, NULL);
+ 
+ 	if (!slave_dev->netdev_ops->ndo_bpf ||
+@@ -2432,7 +2434,8 @@ static int __bond_release_one(struct net_device *bond_dev,
+ 
+ 	bond_upper_dev_unlink(bond, slave);
+ 
+-	if (bond_mode_can_use_xmit_hash(bond))
++	if (bond_mode_can_use_xmit_hash(bond) ||
++	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
+ 		bond_update_slave_arr(bond, slave);
+ 
+ 	slave_info(bond_dev, slave_dev, "Releasing %s interface\n",
 -- 
 2.53.0
 
