@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MfcIN4aG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257466-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:06 +0200
+	id +BbrCjYlG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC1660F30C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C400A610B72
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D03A13017EAB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3E6543021EE0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D909B34104B;
-	Sat, 30 May 2026 17:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7D936EAB1;
+	Sat, 30 May 2026 17:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVoik4uK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fg2djrFQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9600AEEA8;
-	Sat, 30 May 2026 17:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A32E23D7E6;
+	Sat, 30 May 2026 17:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161093; cv=none; b=DI3gIaP9nWVMqVxC1DTtdzunmR3V0OICR39CkT0SAvAKZPthXCx1aK7TC++IIIAnTtmZ3LwNcOq7qJ0C6ecwHKSnI5B5wI8SQMioEejsRyaQ3tA2x7IRLbEUuaQ1tF/YvRkaBy6iHkgnIedByoyv2jWsooAnThkyYw1uBZCGLFo=
+	t=1780163796; cv=none; b=JaMKVT6zoPPTOhBiK9QA1MXuScgTDDW/4v2eoxwZ6Bh8i8yilSBKjla2aQV19JSIVt2V8Xh794OJmKaB+cLxSY2BTziGFva/5elQ+WDjvI7KC/nzUi0xNih/eTIkUA0b9sK2e6FEob8T1PmMB2nSSrnMCVTfCQAhEOJfGbJCye4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161093; c=relaxed/simple;
-	bh=mJwVDUebmr/c9kWRClXrjv9L/6MTNJcb/lonbT1QRdo=;
+	s=arc-20240116; t=1780163796; c=relaxed/simple;
+	bh=Cv83n99KBzccUWmR+3JcxOqBp7yRZ/7ZWaS8cROIvPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZUzhSqQmpW1MNydxBJ+ar5+7rTmyVJftmwaBBgbAgK75OYr5DQIJRrqiaaSIqQgRLFikHjotnKPk4szvE3RWFGFmCNr+HAitZ6YBKiNgeZGCWBbUo0gahQ9zJTHgwVtZFkQUfmPYN++RHmczccBl4WpRc/OsaRDC3e/lum5FKOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVoik4uK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C491D1F00893;
-	Sat, 30 May 2026 17:11:31 +0000 (UTC)
+	 MIME-Version; b=sVKgmILfT8IX2pqizs+OtTRvfJYkS8rxFnChZdIKcAX02ONiSpkxrlEXMAYAlaxlMCl8zWu81RxDgtYfKIvuEiJjKhd/EV1JwV+KBlPIu6tN2pMGUrn0tPu3T0Oq//lqwEjyuKXpgYVp4UYIQ6E9kC5OEZJD6OlrHSjMNGl6sBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fg2djrFQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF171F00893;
+	Sat, 30 May 2026 17:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161092;
-	bh=qdFthQ5ysaiwYU2QOP2BvzTwwXlHc3TxNfVP5Az7Oiw=;
+	s=korg; t=1780163795;
+	bh=wgJm/fONoFhrtdxk/MWxwFdsjEbJFTEtefBlrTTwADM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JVoik4uKtlubgPjjt5JIivBx6UJQAa+ImvMRbvmD/Se4xBoSQRAjdP3T/aqp9GZbf
-	 k5s0xy6HUNhRqCOfLzHEZP+4xXArHA0IzKI52UKjtwtspFgAxhdA7Zca2GwCeD4zlb
-	 CykfI6p04W5H1QRXqEMLn/Irn67L13d3ylBidCzA=
+	b=Fg2djrFQuOcnu84znbXKIIBWiozdgM4INzmBB5QNhqyFg55Q0avlXk6Vhr5TcOo0F
+	 igvyWeigu53+0RwoPXWvhuTpHprBRxDT0K41D8Zre4nPoXhtwdFVNdxOZuCwCaIsfQ
+	 7DkiLpzlirdrWx/Negy1GlmxM73LMUWZ9G/2LDlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 523/969] drm/amd/pm/smu7: Add SCLK cap for quirky Hawaii board
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.15 333/776] isofs: validate block number from NFS file handle in isofs_export_iget
 Date: Sat, 30 May 2026 18:00:47 +0200
-Message-ID: <20260530160314.795551253@linuxfoundation.org>
+Message-ID: <20260530160249.178606597@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,164 +62,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258273-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257466-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 8FC1660F30C
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C400A610B72
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 4724bc5b8d78c34b993594f9406135408ccb312a ]
+commit 24376458138387fb251e782e624c7776e9826796 upstream.
 
-On a specific Radeon R9 390X board, the GPU can "randomly" hang
-while gaming. Initially I thought this was a RADV bug and tried
-to work around this in Mesa:
-commit 8ea08747b86b ("radv: Mitigate GPU hang on Hawaii in Dota 2 and RotTR")
+isofs_fh_to_dentry() and isofs_fh_to_parent() pass an attacker-
+controlled block number (ifid->block or ifid->parent_block) from
+the NFS file handle to isofs_export_iget(), which only rejects
+block == 0 before calling isofs_iget() and ultimately sb_bread().
+A crafted file handle with fh_len sufficient to pass the check
+added by commit 0405d4b63d08 ("isofs: Prevent the use of too small
+fid") can still drive the server to read any in-range block on the
+backing device as if it were an iso_directory_record.  That earlier
+fix was assigned CVE-2025-37780.
 
-However, I got some feedback from other users who are reporting
-that the above mitigation causes a significant performance
-regression for them, and they didn't experience the hang on their
-GPU in the first place.
+sb_bread() on an out-of-range block returns NULL cleanly via the
+EIO path, so there is no memory-safety violation.  For in-range
+reads of adjacent-partition data on the same block device, the
+unrelated bytes end up in iso_inode_info fields that reach the NFS
+client as dentry metadata.  The deployment surface (isofs exported
+over NFS from loop-mounted images) is narrow and requires an
+authenticated NFS peer, but the malformed-file-handle class is
+reportable as hardening next to the existing CVE-2025-37780 fix.
 
-After some further investigation, it turns out that the problem
-is that the highest SCLK DPM level on this board isn't stable.
-Lowering SCLK to 1040 MHz (from 1070 MHz) works around the issue,
-and has a negligible impact on performance compared to the Mesa
-patch. (Note that increasing the voltage can also work around it,
-but we felt that lowering the SCLK is the safer option.)
+Reject block >= ISOFS_SB(sb)->s_nzones in isofs_export_iget() so
+the check covers both isofs_fh_to_dentry() and isofs_fh_to_parent()
+call sites with a single line.
 
-To solve the above issue, add an "sclk_cap" field to smu7_hwmgr
-and set this field for the affected board. The capped SCLK value
-correctly appears on the sysfs interface and shows up in GUI
-tools such as LACT.
-
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0405d4b63d08 ("isofs: Prevent the use of too small fid")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260419212155.2169382-3-michael.bommarito@gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 30 ++++++++++++++++---
- .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h   |  1 +
- 2 files changed, 27 insertions(+), 4 deletions(-)
+ fs/isofs/export.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index f9454e43e5c63..132669fb39860 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -788,7 +788,7 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
- 		hwmgr->dyn_state.vddc_dependency_on_mclk;
- 	struct phm_cac_leakage_table *std_voltage_table =
- 		hwmgr->dyn_state.cac_leakage_table;
--	uint32_t i;
-+	uint32_t i, clk;
- 
- 	PP_ASSERT_WITH_CODE(allowed_vdd_sclk_table != NULL,
- 		"SCLK dependency table is missing. This table is mandatory", return -EINVAL);
-@@ -805,10 +805,12 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
- 	data->dpm_table.sclk_table.count = 0;
- 
- 	for (i = 0; i < allowed_vdd_sclk_table->count; i++) {
-+		clk = min(allowed_vdd_sclk_table->entries[i].clk, data->sclk_cap);
-+
- 		if (i == 0 || data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count-1].value !=
--				allowed_vdd_sclk_table->entries[i].clk) {
-+				clk) {
- 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].value =
--				allowed_vdd_sclk_table->entries[i].clk;
-+				clk;
- 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].enabled = (i == 0) ? 1 : 0;
- 			data->dpm_table.sclk_table.count++;
- 		}
-@@ -3019,6 +3021,25 @@ static int smu7_init_voltage_dependency_on_display_clock_table(struct pp_hwmgr *
- 	return 0;
- }
- 
-+static void smu7_set_sclk_cap(struct pp_hwmgr *hwmgr)
-+{
-+	struct amdgpu_device *adev = hwmgr->adev;
-+	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-+
-+	data->sclk_cap = 0xffffffff;
-+
-+	if (hwmgr->od_enabled)
-+		return;
-+
-+	/* R9 390X board: last sclk dpm level is unstable, use lower sclk */
-+	if (adev->pdev->device == 0x67B0 &&
-+	    adev->pdev->subsystem_vendor == 0x1043)
-+		data->sclk_cap = 104000; /* 1040 MHz */
-+
-+	if (data->sclk_cap != 0xffffffff)
-+		dev_info(adev->dev, "sclk cap: %u kHz on quirky ASIC\n", data->sclk_cap * 10);
-+}
-+
- static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+--- a/fs/isofs/export.c
++++ b/fs/isofs/export.c
+@@ -24,7 +24,7 @@ isofs_export_iget(struct super_block *sb
  {
- 	struct amdgpu_device *adev = hwmgr->adev;
-@@ -3030,6 +3051,7 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- 		return -ENOMEM;
+ 	struct inode *inode;
  
- 	hwmgr->backend = data;
-+	smu7_set_sclk_cap(hwmgr);
- 	smu7_patch_voltage_workaround(hwmgr);
- 	smu7_init_dpm_defaults(hwmgr);
- 
-@@ -3916,7 +3938,7 @@ static int smu7_get_pp_table_entry_callback_func_v0(struct pp_hwmgr *hwmgr,
- 
- 	/* Performance levels are arranged from low to high. */
- 	performance_level->memory_clock = memory_clock;
--	performance_level->engine_clock = engine_clock;
-+	performance_level->engine_clock = min(engine_clock, data->sclk_cap);
- 
- 	pcie_gen_from_bios = visland_clk_info->ucPCIEGen;
- 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
-index d9e8b386bd4d3..66adabeab6a3a 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
-@@ -234,6 +234,7 @@ struct smu7_hwmgr {
- 	uint32_t                       pcie_gen_cap;
- 	uint32_t                       pcie_lane_cap;
- 	uint32_t                       pcie_spc_cap;
-+	uint32_t                       sclk_cap;
- 	struct smu7_leakage_voltage          vddc_leakage;
- 	struct smu7_leakage_voltage          vddci_leakage;
- 	struct smu7_leakage_voltage          vddcgfx_leakage;
--- 
-2.53.0
-
+-	if (block == 0)
++	if (block == 0 || block >= ISOFS_SB(sb)->s_nzones)
+ 		return ERR_PTR(-ESTALE);
+ 	inode = isofs_iget(sb, block, offset);
+ 	if (IS_ERR(inode))
 
 
 
