@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-257762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AB1cHREfG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257762-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:01 +0200
+	id gOMbK/4oG2rg/ggAu9opvQ
+	(envelope-from <stable+bounces-258565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0F260FDC6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D26B36114D4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D007D303AF9E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:28:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7F0CB300A246
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB52F342CA7;
-	Sat, 30 May 2026 17:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3986D39A7FE;
+	Sat, 30 May 2026 18:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lANKh+mT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GE+3BwNe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5B433B6C4;
-	Sat, 30 May 2026 17:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7BC223DC6;
+	Sat, 30 May 2026 18:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162087; cv=none; b=DOlIJFCW/b5wiSz1WM/OZokbNOqXZmPj55628AGRlys9obQ58tTFNqe98ysQTf+LxW/c6LAZkXe2L7IlAPD+5O1BfbQCI1BeNkuoPK1x22Vv2jKLD6TY+XfkQSTou7/ZlJrZKHXY4OaSmthHWM9iXAqPPfKoob3/8uqIckCKinU=
+	t=1780164775; cv=none; b=KD8+CaLd+b+aXtJdhqVCcoUB4Jwg9lyougqOIHA312hIP3uHwaI1wgwwkI8bcoI1FMdRWme1rvy8xMgjj9tyqkhWBt75t05ZEnfrLKEA6ViJuBpCDoXiacQEXXwu1Wdy2HyVuam0Gn5Rxa1ERzX4B77WtTUzHwJQ++WcpalA0Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162087; c=relaxed/simple;
-	bh=aO5MiF+x6vyPj1RK/OFLJMMyZL0BpWIFqVv4OFXu4Tc=;
+	s=arc-20240116; t=1780164775; c=relaxed/simple;
+	bh=GuLEwqgaT1pHcsG2QPpH4sVr+CbqbFg9vzWnAz2C5qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZPX6c+oL43EJbl8a3MReXfLUefSROl/T63FO04vsYCiIYniSJYftasqMWBbX0nmEhAy20pPrxv+jTMKEBHPrhsl0WFRs2JDLhiIw1gPp9UJ6l0EEgasf7cLRafI/h9KFH8w98as4VuI/UuRRf72sibSqgTTGxfXTEmr+ahuSUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lANKh+mT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5C01F00893;
-	Sat, 30 May 2026 17:28:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GPZWlQ5JrntxRbB2ikCB/m2/qt+Kf48KMrf2Ho7yyhgspsgY9FkGAMWYM+z1/91IlVvrkQyOIbV7kExKYV1Bl0D3iwSY2kL36QSFSkuA8KU2/BW9b0+4a7BiNXgNiUQxDVyicZ1fBEIgObT3u5sFhxon470Vxvtpk8tPG5LOP6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GE+3BwNe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632411F00893;
+	Sat, 30 May 2026 18:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162086;
-	bh=+O0b/ioNCRVRVfqquOR91zpkWWnMCdQ6YlA0ua65uEg=;
+	s=korg; t=1780164774;
+	bh=Cgb0BdEWxzfhfg1au+Z0ymmOdTxW2Gdq8w5k+Sy7mew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lANKh+mTxdKeXfjsg35JGIlwfkY7Lsh0k6Xas+53speI9UCckEOJbtm0W2w2KZ+iK
-	 Wi8nQtEKhOKy1aM5D5wMcuB9qNhoZD1ZoAiQnZnDlJqJCyO/fU0nFqhrA42MvkBw4u
-	 6rp+zYMOPiCEyTaC1qfYsdhPqxaG2SrLJXhzFQnk=
+	b=GE+3BwNeQpLWpOffcdqeXNiDPSdAfRHORq+7xTlb2xqV+XAsJ189aznj6eZILm2nJ
+	 lli1/KOWvzb4MtwlCVqA6mqj4mYGK8FB1mtYhWI0AM3crLicisA3wfWxaD90uQZgqv
+	 oxkt46zFiWuTa1S4hqFHI26cyjxsT4gARlcSs3fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	DeepChirp <DeepChirp@outlook.com>,
-	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.1 816/969] drm/i915/dp: Fix VSC dynamic range signaling for RGB formats
+	"Christian A. Ehrhardt" <christian.ehrhardt@codasip.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20 ?= <u.kleine-koenig@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 626/776] ASoC: codecs: ab8500: Fix casting of private data
 Date: Sat, 30 May 2026 18:05:40 +0200
-Message-ID: <20260530160323.171403071@linuxfoundation.org>
+Message-ID: <20260530160256.154971468@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258565-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,intel.com,ursulin.net];
-	TAGGED_FROM(0.00)[bounces-257762-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,outlook.com:email,ursulin.net:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EE0F260FDC6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,codasip.com:email,baylibre.com:email]
+X-Rspamd-Queue-Id: D26B36114D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+From: Christian A. Ehrhardt <christian.ehrhardt@codasip.com>
 
-commit 1ae15b6c7965d137eef21f2cc7d367b29cb88369 upstream.
+[ Upstream commit a201aef1a88b675e9eb8487e27d14e2eef3cef80 ]
 
-For RGB, set dynamic_range to CTA or VESA based on
-crtc_state->limited_color_range so sinks apply correct
-quantization. YCbCr remains limited (CTA) range.
-(DP v1.4, Table 5-1)
+ab8500_filter_controls[i].private_value is initialized using
 
-v2:
-- Added Reported-by and Tested-by tags
+	.private_value = (unsigned long)&(struct filter_control)
+		{.count = xcount, .min = xmin, .max = xmax}
 
-v3:
-- Add back YCbCr comment(Suraj)
+thus it's a pointer to a struct filter_control casted to unsigned long.
 
-Cc: stable@vger.kernel.org #v5.8+
-Reported-by: DeepChirp <DeepChirp@outlook.com>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/15874
-Tested-by: DeepChirp <DeepChirp@outlook.com>
-Fixes: 9799c4c3b76e ("drm/i915/dp: Add compute routine for DP VSC SDP")
-Assisted-by: GitHub-Copilot:GPT-5.4
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260505090920.2479112-1-chaitanya.kumar.borah@intel.com
-(cherry picked from commit 38e10ddae6f8d42a2e8437fcd25a1cac51106c64)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So to get back that pointer .private_data must be cast back, not its
+address.
+
+Fixes: 679d7abdc754 ("ASoC: codecs: Add AB8500 codec-driver")
+Signed-off-by: Christian A. Ehrhardt <christian.ehrhardt@codasip.com>
+Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/20260428192255.2294705-2-u.kleine-koenig@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ sound/soc/codecs/ab8500-codec.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -1810,8 +1810,13 @@ static void intel_dp_compute_vsc_colorim
- 	drm_WARN_ON(&dev_priv->drm,
- 		    vsc->bpc == 6 && vsc->pixelformat != DP_PIXELFORMAT_RGB);
+diff --git a/sound/soc/codecs/ab8500-codec.c b/sound/soc/codecs/ab8500-codec.c
+index 5525e1ccab767..eaf12c28db83b 100644
+--- a/sound/soc/codecs/ab8500-codec.c
++++ b/sound/soc/codecs/ab8500-codec.c
+@@ -2498,13 +2498,13 @@ static int ab8500_codec_probe(struct snd_soc_component *component)
+ 		return status;
+ 	}
+ 	fc = (struct filter_control *)
+-		&ab8500_filter_controls[AB8500_FILTER_ANC_FIR].private_value;
++		ab8500_filter_controls[AB8500_FILTER_ANC_FIR].private_value;
+ 	drvdata->anc_fir_values = (long *)fc->value;
+ 	fc = (struct filter_control *)
+-		&ab8500_filter_controls[AB8500_FILTER_ANC_IIR].private_value;
++		ab8500_filter_controls[AB8500_FILTER_ANC_IIR].private_value;
+ 	drvdata->anc_iir_values = (long *)fc->value;
+ 	fc = (struct filter_control *)
+-		&ab8500_filter_controls[AB8500_FILTER_SID_FIR].private_value;
++		ab8500_filter_controls[AB8500_FILTER_SID_FIR].private_value;
+ 	drvdata->sid_fir_values = (long *)fc->value;
  
--	/* all YCbCr are always limited range */
--	vsc->dynamic_range = DP_DYNAMIC_RANGE_CTA;
-+	/* All YCbCr formats are always limited range. */
-+	if (vsc->pixelformat == DP_PIXELFORMAT_RGB)
-+		vsc->dynamic_range = crtc_state->limited_color_range ?
-+			DP_DYNAMIC_RANGE_CTA : DP_DYNAMIC_RANGE_VESA;
-+	else
-+		vsc->dynamic_range = DP_DYNAMIC_RANGE_CTA;
-+
- 	vsc->content_type = DP_CONTENT_TYPE_NOT_DEFINED;
- }
- 
+ 	snd_soc_dapm_disable_pin(dapm, "ANC Configure Input");
+-- 
+2.53.0
+
 
 
 
