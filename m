@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258144-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHaTEq4aG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257324-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:18 +0200
+	id wJUlGzwjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258144-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05DA60F295
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E72A610798
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF49930D43AA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9EBC430117CB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852BF34104B;
-	Sat, 30 May 2026 17:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F043546EA;
+	Sat, 30 May 2026 17:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3j3jify"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IV7hUc7N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E13A481DD;
-	Sat, 30 May 2026 17:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42018304BCB;
+	Sat, 30 May 2026 17:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160611; cv=none; b=s4V1i87GkXyuUtVm4ta0xzBVzNrsJ+OGMXsbol8MejWyAwZBlNqrIdBWwpRlMmzYCnfWkdQdUN3fzr0lLqnRWBYDIiBnuWjyc3q2VItIXtrs4uXeOnI+2PZceiDLWls4DEF9+J7Nnj6mROqXjgJkDwN3bJ94mFNwFtNKB6CdsN4=
+	t=1780163364; cv=none; b=F4yI8OfF1jEji+kjYe1z2FRO8zyfFandpdztu5nVZOYmtOMyf86gfh5IiKPDnWeVoqpOhTtr+3r3NSQ4eFqAFLhWXq3XRc3tEyt55i+AfqiNF4pL0lq4jYlthF4w8vAi3fuJFy8qFVoCWWvl6Y85DkpZL31CCuiN9Z/UE1LXR9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160611; c=relaxed/simple;
-	bh=YgXKG/C4sme/MlY0TQ8kDWtIHiPOrhBwd7bTpyATCjo=;
+	s=arc-20240116; t=1780163364; c=relaxed/simple;
+	bh=gfR05gAHAf2KBS8o65aEZoWbNhD5XBjMlXn6d9umaLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WW+6RfF8OHXpKb2WfL4eUSd+AwwpC+mtK1VmtVUb3f0r6CIazjsqKARMP/NNDM7SVj0igVUMnzN/RoJZCLSvPydIy5pdmYHvgurOg+UvMXO9YbXU1FJfC+lpPtNIh+niMfc1ngZ49uRz+1ZmWJtEtwbNrNJREiH8/fJdQX/448Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3j3jify; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5FB1F00893;
-	Sat, 30 May 2026 17:03:29 +0000 (UTC)
+	 MIME-Version; b=llH13JV5W3/okR6XPV9YSumb2nCMnwMoHKOxn54e5K/+jFkPyLRxd0dOLfiI6C/k1oXWJQcfIUsJDwug5nUZJgChAbRRHmUPN4HnQJy+owoimDFeJ5yF6EcnEobK5M+aPVjEwn8Hz8vBa8aETtFHL0HWoiQ6DE3bkOoeGpp1b3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IV7hUc7N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488421F00893;
+	Sat, 30 May 2026 17:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160610;
-	bh=jw5yebGOOqG1nSIwehfQ4xlak62+MvQXF1paTs3jrzs=;
+	s=korg; t=1780163362;
+	bh=EOvPc/gMqHPf9LyT6Ml/KI39zmlcAjCoBTTxM6e37/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K3j3jifyMigBkY4iTwdKt90AQs2pKThmSrN+Oze0PYq+pHUV34y5ie047iaeQBivN
-	 if3OjT7gsH4kR0/NstNE3nLl6cmGmpfF3G1ZlVQ6fYwMAWpfvrw6XOHm90Tc3ipKo3
-	 m+BhNiGZVjVDtyvdW7sjMB5YZGAIMM27WLjLtor4=
+	b=IV7hUc7NNSrtNX0bQ1DuAieE5JnFWNHQN+/essV007K7BKOSCklyTxHsFhtC0YXvV
+	 oTvep4wKgc8sKnyHxXjiPKLSn03PbYZP2jAC3m7WkfpcRK+sK1Z2020ub2L3fVfFPy
+	 qUkkyQr8CnYdWKBp8vdV8iB9e9qlkJgqAt1KVfqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Koskovich <akoskovich@pm.me>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 385/969] media: i2c: ov8856: free control handler on error in ov8856_init_controls()
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Bin Lan <lanbincn@139.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 195/776] padata: Remove comment for reorder_work
 Date: Sat, 30 May 2026 17:58:29 +0200
-Message-ID: <20260530160310.936602943@linuxfoundation.org>
+Message-ID: <20260530160245.545782300@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +65,72 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257324-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,canb.auug.org.au,gondor.apana.org.au,139.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258144-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B05DA60F295
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,apana.org.au:email,139.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0E72A610798
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Koskovich <akoskovich@pm.me>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit f75e160745663ce9b13362ae6e90bd439c58df69 upstream.
+[ Upstream commit 82a0302e7167d0b7c6cde56613db3748f8dd806d ]
 
-The control handler wasn't freed if adding controls failed, add an error
-exit label and convert the existing error return to use it.
+Remove comment for reorder_work which no longer exists.
 
-Fixes: 879347f0c258 ("media: ov8856: Add support for OV8856 sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Fixes: 71203f68c774 ("padata: Fix pd UAF once and for all")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Bin Lan <lanbincn@139.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov8856.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/linux/padata.h | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/media/i2c/ov8856.c
-+++ b/drivers/media/i2c/ov8856.c
-@@ -1954,12 +1954,18 @@ static int ov8856_init_controls(struct o
- 			  V4L2_CID_HFLIP, 0, 1, 1, 0);
- 	v4l2_ctrl_new_std(ctrl_hdlr, &ov8856_ctrl_ops,
- 			  V4L2_CID_VFLIP, 0, 1, 1, 0);
--	if (ctrl_hdlr->error)
--		return ctrl_hdlr->error;
-+	if (ctrl_hdlr->error) {
-+		ret = ctrl_hdlr->error;
-+		goto err_ctrl_handler_free;
-+	}
- 
- 	ov8856->sd.ctrl_handler = ctrl_hdlr;
- 
- 	return 0;
-+
-+err_ctrl_handler_free:
-+	v4l2_ctrl_handler_free(ctrl_hdlr);
-+	return ret;
- }
- 
- static void ov8856_update_pad_format(struct ov8856 *ov8856,
+diff --git a/include/linux/padata.h b/include/linux/padata.h
+index 9ca779d7e310e..6f07e12a43819 100644
+--- a/include/linux/padata.h
++++ b/include/linux/padata.h
+@@ -90,7 +90,6 @@ struct padata_cpumask {
+  * @processed: Number of already processed objects.
+  * @cpu: Next CPU to be processed.
+  * @cpumask: The cpumasks in use for parallel and serial workers.
+- * @reorder_work: work struct for reordering.
+  */
+ struct parallel_data {
+ 	struct padata_shell		*ps;
+-- 
+2.53.0
+
 
 
 
