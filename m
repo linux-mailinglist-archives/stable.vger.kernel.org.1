@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-257911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qO+IFjIhG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257911-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:41:06 +0200
+	id CJPyA9ArG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D0E6102BD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:41:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F459611BB4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 849993016D33
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:36:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA072303814F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7FC1C5799;
-	Sat, 30 May 2026 17:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51403242BE;
+	Sat, 30 May 2026 18:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUJ2hLOz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9MLNgWV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B391B3ACEEA;
-	Sat, 30 May 2026 17:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A959117555;
+	Sat, 30 May 2026 18:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162587; cv=none; b=MueNAA3NJXINlD1/DcYWksy7zgNvMwy0++w2GvTfesU3IZ1nW+FmXaHA3LQQJtZm4//u1oFMy0/PLZrF7+wA8o4mYUy27yo5QOP8fNcROqL62dBIk33UThCbmzeXWCU9Y9hniqqJsyrUpoyzrM3Icp/Am8c/p4qiZ3AgDMYMHtw=
+	t=1780165126; cv=none; b=pgogai7L0UawGMBz85lNlMVp+EmKYCm8DHRvhZtuBvntK2E96n8rrb7LECna/KyyLMN1IXQm2JyHlarSC/mXbq77ggMU1eelsVZSWirZFZ3AqrvJwwrJ1yD5XdHAMEzfvqXb85qIuUF+jRJB6bxOFx9lGmQ0YAlcD16qty1Xxzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162587; c=relaxed/simple;
-	bh=MKA/dBzrgta5IUA9llrDP1vziLRAbx2kJTuaD3pqYE8=;
+	s=arc-20240116; t=1780165126; c=relaxed/simple;
+	bh=O+flBskoc0ZisfX/gCYxR5QzxlsGdKMQfwsW1Faq29Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IoryjaKk1IIhGPglJLmj1o1WY7FepE3Z7IhlplAJ/13JBM+Lw1stDi9V7OTykYCzosDEyVGWZeYjZoyWoFghBYjZVhhRjdwcP80gLwsa/0LqTsHD1CX5QmhCmTUC7Gwwvwe3x/WcfQJUVZEjR1EPdzPILnffURgsekIjLUNtXEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUJ2hLOz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7101F00893;
-	Sat, 30 May 2026 17:36:22 +0000 (UTC)
+	 MIME-Version; b=WvXapjBO73lD0G2P149Hyfeei7hlDDEdFKArSw1d+U3N4C+q4M3vHsjHisNvBUjTdC4TgXmTA7NmkAQuF7nLAcV546hUjhLdgBnXWRPyqkz14VpDgZjzraNWo0O54zZCP2Og1RusYwxCHwTYJkanvjzAoeHZ/skC8+b8h+VIXN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9MLNgWV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D9C1F00893;
+	Sat, 30 May 2026 18:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162583;
-	bh=IorSZpIfV13xM0jqYFFHh7zHkxtux9BWyXpklUK2awo=;
+	s=korg; t=1780165125;
+	bh=eOCPS+Ca5dXToT3BZ8bIuV7YHNrGTGMTB53Qpm1+RJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gUJ2hLOzcBVdby7d0lgrXC5FaC3wgsI1mAzpUUmKAfySl3szYArfucD8LNMVPcPdR
-	 MVUaiHkI1mjV3bQBNV6JI73AR7GhzVZw+zRDdK41e8NBU8H6MkPOf0asufcaZtglP7
-	 aOmjDE3GO0bSDG8ZmYtDtiSMyGwdx9DxQVtfVAbY=
+	b=y9MLNgWVljRXAkRaDlyKogeCRZpLV4RVDG3RbHGBFJHUXVd/jf2fzVWGskHVMrP/m
+	 Q0caqmsaOJRBJxoLBNGcH2kaKWKQ7mnXXHTJj6H1soO6DX0EGMovMmFQlm0gFqWYII
+	 MqE2pWkP1HpgnGLuQqcRzkP9MZI9D4t9bZuSZEuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sriram R <quic_srirrama@quicinc.com>,
-	Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Salendarsingh Gaud <sgaud@qti.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 948/969] wifi: ath11k: add new hw ops for IPQ5018 to get rx dest ring hashmap
+Subject: [PATCH 5.15 758/776] drm/msm/snapshot: fix dumping of the unaligned regions
 Date: Sat, 30 May 2026 18:07:52 +0200
-Message-ID: <20260530160326.936499918@linuxfoundation.org>
+Message-ID: <20260530160259.334542094@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257911-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258667-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,106 +86,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,quicinc.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D4D0E6102BD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: 5F459611BB4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sriram R <quic_srirrama@quicinc.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 69968f88f1770d61cae0febef805fd00d66cf6a1 ]
+[ Upstream commit 76824d2467feb1828b745d6add2541918d7be3da ]
 
-The Destination ring control register is different
-for IPQ5018 when compared to IPQ8074/IPQ6018/QCN9074.
-Hence create a new hw ops to fetch the hash ring map
-for different device variants. ipq5018 hw ops
-is similar to qcn9074 except for this change, so reuse
-all the qcn9074 ops for ipq5018.
+The snapshotting code internally aligns data segment to 16 bytes. This
+works fine for DPU code (where most of the regions are aligned), but
+fails for snapshotting of the DSI data (because DSI data region is
+shifted by 4 bytes). Fix the code by removing length alignment and by
+accurately printing last registers in the region. While reworking the
+code also fix the 16x memory overallocation in
+msm_disp_state_dump_regs().
 
-Tested-on: IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-Co-developed-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20221122132152.17771-8-quic_kathirve@quicinc.com
-Stable-dep-of: 2a2451a34afd ("wifi: ath11k: fix peer resolution on rx path when peer_id=0")
+Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
+Reported-by: Salendarsingh Gaud <sgaud@qti.qualcomm.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/725449/
+Message-ID: <20260516-msm-fix-dsi-dump-2-v2-1-9e49fb2d240e@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/hw.c | 44 ++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ .../gpu/drm/msm/disp/msm_disp_snapshot_util.c | 24 ++++++++++++++-----
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
-index 7632220469dab..60ac215e06786 100644
---- a/drivers/net/wireless/ath/ath11k/hw.c
-+++ b/drivers/net/wireless/ath/ath11k/hw.c
-@@ -792,6 +792,49 @@ static void ath11k_hw_wcn6855_reo_setup(struct ath11k_base *ab)
- 			   ring_hash_map);
+diff --git a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+index badafcd61998f..e3615a1339ade 100644
+--- a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
++++ b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+@@ -7,7 +7,7 @@
+ 
+ #include "msm_disp_snapshot.h"
+ 
+-static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *base_addr)
++static void msm_disp_state_dump_regs(u32 **reg, u32 len, void __iomem *base_addr)
+ {
+ 	u32 len_padded;
+ 	u32 num_rows;
+@@ -17,11 +17,11 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
+ 	void __iomem *end_addr;
+ 	int i;
+ 
+-	len_padded = aligned_len * REG_DUMP_ALIGN;
+-	num_rows = aligned_len / REG_DUMP_ALIGN;
++	len_padded = round_up(len, REG_DUMP_ALIGN);
++	num_rows = DIV_ROUND_UP(len, REG_DUMP_ALIGN);
+ 
+ 	addr = base_addr;
+-	end_addr = base_addr + aligned_len;
++	end_addr = base_addr + len;
+ 
+ 	if (!(*reg))
+ 		*reg = kvzalloc(len_padded, GFP_KERNEL);
+@@ -49,8 +49,8 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
+ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
+ 		void __iomem *base_addr, struct drm_printer *p)
+ {
++	void __iomem *addr, *end_addr;
+ 	int i;
+-	void __iomem *addr;
+ 	u32 num_rows;
+ 
+ 	if (!dump_addr) {
+@@ -59,6 +59,7 @@ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
+ 	}
+ 
+ 	addr = base_addr;
++	end_addr = base_addr + len;
+ 	num_rows = len / REG_DUMP_ALIGN;
+ 
+ 	for (i = 0; i < num_rows; i++) {
+@@ -68,6 +69,17 @@ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
+ 				dump_addr[i * 4 + 2], dump_addr[i * 4 + 3]);
+ 		addr += REG_DUMP_ALIGN;
+ 	}
++
++	if (addr != end_addr) {
++		drm_printf(p, "0x%lx : %08x",
++			   (unsigned long)(addr - base_addr),
++			   dump_addr[i * 4]);
++		if (addr + 0x4 < end_addr)
++			drm_printf(p, " %08x", dump_addr[i * 4 + 1]);
++		if (addr + 0x8 < end_addr)
++			drm_printf(p, " %08x", dump_addr[i * 4 + 2]);
++		drm_printf(p, "\n");
++	}
  }
  
-+static void ath11k_hw_ipq5018_reo_setup(struct ath11k_base *ab)
-+{
-+	u32 reo_base = HAL_SEQ_WCSS_UMAC_REO_REG;
-+	u32 val;
-+
-+	/* Each hash entry uses three bits to map to a particular ring. */
-+	u32 ring_hash_map = HAL_HASH_ROUTING_RING_SW1 << 0 |
-+		HAL_HASH_ROUTING_RING_SW2 << 4 |
-+		HAL_HASH_ROUTING_RING_SW3 << 8 |
-+		HAL_HASH_ROUTING_RING_SW4 << 12 |
-+		HAL_HASH_ROUTING_RING_SW1 << 16 |
-+		HAL_HASH_ROUTING_RING_SW2 << 20 |
-+		HAL_HASH_ROUTING_RING_SW3 << 24 |
-+		HAL_HASH_ROUTING_RING_SW4 << 28;
-+
-+	val = ath11k_hif_read32(ab, reo_base + HAL_REO1_GEN_ENABLE);
-+
-+	val &= ~HAL_REO1_GEN_ENABLE_FRAG_DST_RING;
-+	val |= FIELD_PREP(HAL_REO1_GEN_ENABLE_FRAG_DST_RING,
-+			HAL_SRNG_RING_ID_REO2SW1) |
-+		FIELD_PREP(HAL_REO1_GEN_ENABLE_AGING_LIST_ENABLE, 1) |
-+		FIELD_PREP(HAL_REO1_GEN_ENABLE_AGING_FLUSH_ENABLE, 1);
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_GEN_ENABLE, val);
-+
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_0(ab),
-+			   HAL_DEFAULT_REO_TIMEOUT_USEC);
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_1(ab),
-+			   HAL_DEFAULT_REO_TIMEOUT_USEC);
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_2(ab),
-+			   HAL_DEFAULT_REO_TIMEOUT_USEC);
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_3(ab),
-+			   HAL_DEFAULT_REO_TIMEOUT_USEC);
-+
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_DEST_RING_CTRL_IX_0,
-+			   ring_hash_map);
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_DEST_RING_CTRL_IX_1,
-+			   ring_hash_map);
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_DEST_RING_CTRL_IX_2,
-+			   ring_hash_map);
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_DEST_RING_CTRL_IX_3,
-+			   ring_hash_map);
-+}
-+
- static u16 ath11k_hw_ipq8074_mpdu_info_get_peerid(u8 *tlv_data)
- {
- 	u16 peer_id = 0;
-@@ -1118,6 +1161,7 @@ const struct ath11k_hw_ops ipq5018_ops = {
- 	.rx_desc_get_mpdu_ppdu_id = ath11k_hw_qcn9074_rx_desc_get_mpdu_ppdu_id,
- 	.rx_desc_set_msdu_len = ath11k_hw_qcn9074_rx_desc_set_msdu_len,
- 	.rx_desc_get_attention = ath11k_hw_qcn9074_rx_desc_get_attention,
-+	.reo_setup = ath11k_hw_ipq5018_reo_setup,
- 	.rx_desc_get_msdu_payload = ath11k_hw_qcn9074_rx_desc_get_msdu_payload,
- 	.mpdu_info_get_peerid = ath11k_hw_ipq8074_mpdu_info_get_peerid,
- 	.rx_desc_mac_addr2_valid = ath11k_hw_ipq9074_rx_desc_mac_addr2_valid,
+ void msm_disp_state_print(struct msm_disp_state *state, struct drm_printer *p)
+@@ -182,7 +194,7 @@ void msm_disp_snapshot_add_block(struct msm_disp_state *disp_state, u32 len,
+ 	va_end(va);
+ 
+ 	INIT_LIST_HEAD(&new_blk->node);
+-	new_blk->size = ALIGN(len, REG_DUMP_ALIGN);
++	new_blk->size = len;
+ 	new_blk->base_addr = base_addr;
+ 
+ 	msm_disp_state_dump_regs(&new_blk->state, new_blk->size, base_addr);
 -- 
 2.53.0
 
