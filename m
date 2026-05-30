@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0H0bFNonG2rM/ggAu9opvQ
-	(envelope-from <stable+bounces-258500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:30 +0200
+	id kMGKHo4eG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16F906111BE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E412F60FCB5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A600A3011055
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E2A0630CA906
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0943AB26B;
-	Sat, 30 May 2026 18:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744B6340293;
+	Sat, 30 May 2026 17:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuCRzGSq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tp5tdqDi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1325E2F90E0;
-	Sat, 30 May 2026 18:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B66D263F44;
+	Sat, 30 May 2026 17:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164559; cv=none; b=tB0nXY9T7flC9r/zSe6Dwm5ST/HvLmVa/eGbxq0dgI08oZ/zryZ0XiX8FxSI9g2BxRiT4Mio60yWMcTooWoaJ+Grp6sL1Lx+Mu6m6yjA6EqZMoZm2Mb1lZM6CBtqsvZYr4VeItzhaBX5GjDiCUOzltMGFNwZ2CNvmwB5SOr6wbs=
+	t=1780161870; cv=none; b=GamRm1lHKNEC7A6MbfzwSMkor0qyMsP8zRKI7joN3PB7Ay5v3APW+jKy++FKPM6L7IrfM/dcNqsNgYdvPdZlBms1/CuLzjeUUBrY4bVULuLh5SAFpbVdIyyjlGF5pPmDeK8P9Sp9bJX8IKYSDXAiAp895kmOvsjEX0/QAHoyVVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164559; c=relaxed/simple;
-	bh=qxTkqat+yqZO4IR/iYSodjmWkjr3PL95pfbB6JOuPmA=;
+	s=arc-20240116; t=1780161870; c=relaxed/simple;
+	bh=OBlybWGgiWzcgbxwESb6RcbWbq1XUZLWGVFkEpFpTlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V84PS4wYlv0/XQSImS3paKDAN7IwrPHu0lkFiSHx2yGsy1z1timo6fiYiGBHrNiRHy6FjnD5fZQhibHXxkS0nWZGs7mZR2lugGlsbJ0XJZkMnb2FrD0iDYyX8GCfUhRqA4v9yJvpVRRWA/LySgJGT7+V3DQOJOMBVAs2u0DN+80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuCRzGSq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A7B1F00893;
-	Sat, 30 May 2026 18:09:17 +0000 (UTC)
+	 MIME-Version; b=b4mDUYjNGoWoiS+tEM/RCx9/iRH5rt3bh6MZxfsKc7MlyQroB1EAia7kAQzTeo2lRmNkb5beaHIsgagRzTNgnIqmz+6eTQAPRlnDcItpyGygkH/Hh0fGRsyG5b3X79lZHhNOVqpFwWWBj3q8lTb9j5GIyPSN/JlzVy9ari8q6QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tp5tdqDi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F471F00893;
+	Sat, 30 May 2026 17:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164558;
-	bh=Ypty9D/P4+TZ9SBzsB5ovDT7Chw5INlYXjvhlFZcFgY=;
+	s=korg; t=1780161869;
+	bh=VktmHB12vOZ2Mp6d0F7j+lM8K2tZsuHBunE4sQYZP30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JuCRzGSqbHMmKcDSjakvN8+skiXp0oSan2eAdlKtQsa9knD25pIXBmDoKnmJpETMH
-	 BpnAbXpcpYkRtHw4OysEoXuP4IpDnAI856csKwDnSTMW3vN2HfxOTD1cia2pFlkO5d
-	 mjoIVBuRWnXcCQjnBq7CuDBNlvCqHF562+vpPHLI=
+	b=tp5tdqDig2fVyTFVBSrWttzlTQEqQtItQqTGkMA3shwVsSgmVYlUIDtVtJaXq2GyF
+	 HB9a7VQE6dE6al4bxzV7U0C8lewCHFF+BKDSO7I3nCBOTTLkSLNetRBvwTEkC/rHFE
+	 QnL44qlh5w5csBCTKGxBEDvC/tpaWWHMS5BhRTPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxi Qian <qjx1298677004@gmail.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 561/776] net/sched: taprio: fix use-after-free in advance_sched() on schedule switch
+Subject: [PATCH 6.1 751/969] net/sched: sch_fq_pie: annotate data-races in fq_pie_dump_stats()
 Date: Sat, 30 May 2026 18:04:35 +0200
-Message-ID: <20260530160254.633724342@linuxfoundation.org>
+Message-ID: <20260530160321.300971656@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,88 +69,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258500-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257697-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 16F906111BE
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E412F60FCB5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 105425b1969c5affe532713cfac1c0b320d7ac2b ]
+[ Upstream commit 59b145771c7982cfe9020d4e9e22da92d6b5ae31 ]
 
-In advance_sched(), when should_change_schedules() returns true,
-switch_schedules() is called to promote the admin schedule to oper.
-switch_schedules() queues the old oper schedule for RCU freeing via
-call_rcu(), but 'next' still points into an entry of the old oper
-schedule. The subsequent 'next->end_time = end_time' and
-rcu_assign_pointer(q->current_entry, next) are use-after-free.
+fq_codel_dump_stats() acquires the qdisc spinlock a bit too late.
 
-Fix this by selecting 'next' from the new oper schedule immediately
-after switch_schedules(), and using its pre-calculated end_time.
-setup_first_end_time() sets the first entry's end_time to
-base_time + interval when the schedule is installed, so the value
-is already correct.
+Move this acquisition before we fill tc_fq_pie_xstats with live data.
 
-The deleted 'end_time = sched_base_time(admin)' assignment was also
-harmful independently: it would overwrite the new first entry's
-pre-calculated end_time with just base_time.
+Alternative would be to add READ_ONCE() and WRITE_ONCE() annotations,
+but the spinlock is needed anyway to scan q->new_flows and q->old_flows.
 
-Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
-Reported-by: Junxi Qian <qjx1298677004@gmail.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260423063527.2568262-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/sched/sch_fq_pie.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 189101dfbaae9..8e7c0a3034cc4 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -729,11 +729,12 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
- 	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
+diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
+index 607c580d75e4b..4bd5ca9acc53f 100644
+--- a/net/sched/sch_fq_pie.c
++++ b/net/sched/sch_fq_pie.c
+@@ -498,18 +498,19 @@ static int fq_pie_dump(struct Qdisc *sch, struct sk_buff *skb)
+ static int fq_pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ {
+ 	struct fq_pie_sched_data *q = qdisc_priv(sch);
+-	struct tc_fq_pie_xstats st = {
+-		.packets_in	= q->stats.packets_in,
+-		.overlimit	= q->stats.overlimit,
+-		.overmemory	= q->overmemory,
+-		.dropped	= q->stats.dropped,
+-		.ecn_mark	= q->stats.ecn_mark,
+-		.new_flow_count = q->new_flow_count,
+-		.memory_usage   = q->memory_usage,
+-	};
++	struct tc_fq_pie_xstats st = { 0 };
+ 	struct list_head *pos;
  
- 	if (should_change_schedules(admin, oper, end_time)) {
--		/* Set things so the next time this runs, the new
--		 * schedule runs.
--		 */
--		end_time = sched_base_time(admin);
- 		switch_schedules(q, &admin, &oper);
-+		/* After changing schedules, the next entry is the first one
-+		 * in the new schedule, with a pre-calculated end_time.
-+		 */
-+		next = list_first_entry(&oper->entries, struct sched_entry, list);
-+		end_time = next->end_time;
- 	}
+ 	sch_tree_lock(sch);
++
++	st.packets_in	= q->stats.packets_in;
++	st.overlimit	= q->stats.overlimit;
++	st.overmemory	= q->overmemory;
++	st.dropped	= q->stats.dropped;
++	st.ecn_mark	= q->stats.ecn_mark;
++	st.new_flow_count = q->new_flow_count;
++	st.memory_usage   = q->memory_usage;
++
+ 	list_for_each(pos, &q->new_flows)
+ 		st.new_flows_len++;
  
- 	next->end_time = end_time;
 -- 
 2.53.0
 
