@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259071-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKLfCfsnG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:03 +0200
+	id YJI3HJUxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259071-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937EC611224
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D284A61299A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8575B30120C0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32D1A31346F2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245D83AB26B;
-	Sat, 30 May 2026 18:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924BA2C11C4;
+	Sat, 30 May 2026 18:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/QzXBI5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s47RDN0I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BBB31F98D;
-	Sat, 30 May 2026 18:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B4729E11A;
+	Sat, 30 May 2026 18:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164568; cv=none; b=A2VLR4oJML/daHHDvmcUpNvIajyFYrQ5q8XQdMMkzMTS1wtvJ+eFCL6GnWQwWXUUR+xmmvB7rMK1vt3MN9fM3pMnmg3OEj5OTKoHWDRjzijc2BiQ6t5TrQvRKX6VUro6qM8RqVowPI6Lsu7t64NuOfAH0JPfZ57yxLoYRdTOsxw=
+	t=1780166489; cv=none; b=Ot1eH77OHhlMAaK4LHc+vf0EiGLgPCVKpLWVnnh0/D+K+7oBfZqo/mM0RdvNKSD/A2DwizAEByxL0MKu2uBtiGTOakWbTlOETy1Vx4H8UBfJRKJrsTiDVWwCOJLPVj+2TtpvD9RwfmfmBQPGZz3EkHuq5+3no/Jmc+QjYfWSxaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164568; c=relaxed/simple;
-	bh=ofciWMdzVc50FZWt2AIbswuKk8sbvgsAr39A+glQHfk=;
+	s=arc-20240116; t=1780166489; c=relaxed/simple;
+	bh=gHqL4UZPaRSu9rdPzxwAkHQpkBGjOk30uALMkXCpMBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QpUBDWa4ZGZ5p0v7czzxXfmORo9G7War9mCmxiXgyf+2TVPeugHtHYRSgV9LI9sJUs5Tz7bbxtFxKI4Qiap4Q2b5fnWxHKaAKSUm4//oQ64ssVkfvSQpRwOoq6F30UlSwMFvLNYPYi7ouW4ykBqH8tswgfyqn9YRNIXKNQgGQDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/QzXBI5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE7B1F00893;
-	Sat, 30 May 2026 18:09:27 +0000 (UTC)
+	 MIME-Version; b=O2wMpStCtg0iJtLD4qVIshrjbn8Mxp02940+Gy++5x1RrOE1BewDrJvP01a3GQu0Hce0lV/d+kornRlPQJOfmd6RSa9ipxQUxT+qImNDpmDDEfNsc9CETTvIn4f0BDTlQwJJ4BZCjt+9CyO3WbgA5izO8IFrOVEkSWkNPWjSeIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s47RDN0I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64491F00893;
+	Sat, 30 May 2026 18:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164567;
-	bh=sFyrgkF8gNcEwb009dVASUQo+ZHmMAOjPGGJUaSEXTA=;
+	s=korg; t=1780166488;
+	bh=/NEXSC4StEb+AjGslFxLJInxweUwgokZg06Uu4rI/F8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C/QzXBI5yAkYHx9r3AKmY7wRdTQ7NYSvd7ZBPOEt5Je6nSt4Dg3AH3I6mElydb4DP
-	 zd1j2LZCSeY8WZJUlW/tt4JNVynX7mUoMignh/Jq6ENULvjbgd4xhrameoLiT/jeiJ
-	 xB1PpOiHD3x2CRGqAJe3vpeKSDssCPTMsa8pjz8Q=
+	b=s47RDN0Ie0S3fak5EjRSe/tJPhOfKg/5OkjUPMaPMA0T+gS64bQzpko+u3EQqPF8j
+	 13liO1yt6SUDU1/nrPb8Ez0AXtTgWSeDQwQy6smHnM6e1kOLJpf52C98uJwd5+SIL0
+	 T6UUlIUKiiNu3Yz2GqChi+dntdzvwjVDFcZ1HvXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dudu Lu <phx0fer@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 554/776] net/sched: sch_cake: fix NAT destination port not being updated in cake_update_flowkeys
+Subject: [PATCH 5.10 387/589] driver core: Move dev_err_probe() to where it belogs
 Date: Sat, 30 May 2026 18:04:28 +0200
-Message-ID: <20260530160254.466888247@linuxfoundation.org>
+Message-ID: <20260530160234.971847685@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +63,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,toke.dk,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258503-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259071-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 937EC611224
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: D284A61299A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dudu Lu <phx0fer@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit f9e40664706927d7ae22a448a3383e23c38a4c0b ]
+[ Upstream commit 9e0cace7a6254070159ebd86497eadc29ea307ca ]
 
-cake_update_flowkeys() is supposed to update the flow dissector keys
-with the NAT-translated addresses and ports from conntrack, so that
-CAKE's per-flow fairness correctly identifies post-NAT flows as
-belonging to the same connection.
+dev_err_probe() belongs to the printing API, hence
+move the definition from device.h to dev_printk.h.
 
-For the source port, this works correctly:
-    keys->ports.src = port;
+There is no change to the callers at all, since:
+1) implementation is located in the same core.c;
+2) dev_printk.h is guaranteed to be included by device.h.
 
-But for the destination port, the assignment is reversed:
-    port = keys->ports.dst;
-
-This means the NAT destination port is never updated in the flow keys.
-As a result, when multiple connections are NATed to the same destination,
-CAKE treats them as separate flows because the original (pre-NAT)
-destination ports differ. This breaks CAKE's NAT-aware flow isolation
-when using the "nat" mode.
-
-The bug was introduced in commit b0c19ed6088a ("sch_cake: Take advantage
-of skb->hash where appropriate") which refactored the original direct
-assignment into a compare-and-conditionally-update pattern, but wrote
-the destination port update backwards.
-
-Fix by reversing the assignment direction to match the source port
-pattern.
-
-Fixes: b0c19ed6088a ("sch_cake: Take advantage of skb->hash where appropriate")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Link: https://patch.msgid.link/20260413110041.44704-1-phx0fer@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20230721131309.16821-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 797cc011ae02 ("backlight: sky81452-backlight: Check return value of devm_gpiod_get_optional() in sky81452_bl_parse_dt()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/dev_printk.h | 2 ++
+ include/linux/device.h     | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index cfeda7b50cc2e..87578d05a0925 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -619,7 +619,7 @@ static bool cake_update_flowkeys(struct flow_keys *keys,
- 		}
- 		port = rev ? tuple.src.u.all : tuple.dst.u.all;
- 		if (port != keys->ports.dst) {
--			port = keys->ports.dst;
-+			keys->ports.dst = port;
- 			upd = true;
- 		}
- 	}
+diff --git a/include/linux/dev_printk.h b/include/linux/dev_printk.h
+index 6f009559ee540..6a6a6baa10bac 100644
+--- a/include/linux/dev_printk.h
++++ b/include/linux/dev_printk.h
+@@ -242,4 +242,6 @@ do {									\
+ 	WARN_ONCE(condition, "%s %s: " format, \
+ 			dev_driver_string(dev), dev_name(dev), ## arg)
+ 
++__printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
++
+ #endif /* _DEVICE_PRINTK_H_ */
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 11709e3ee811f..77d6493c26a48 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1032,8 +1032,6 @@ void device_links_supplier_sync_state_pause(void);
+ void device_links_supplier_sync_state_resume(void);
+ void device_link_wait_removal(void);
+ 
+-__printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
+-
+ /* Create alias, so I can be autoloaded. */
+ #define MODULE_ALIAS_CHARDEV(major,minor) \
+ 	MODULE_ALIAS("char-major-" __stringify(major) "-" __stringify(minor))
 -- 
 2.53.0
 
