@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-257268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257269-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aE8eDNQZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:40 +0200
+	id YPzeGaEXG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257269-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8C260F020
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D5160EB2C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 311BA30CB695
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:00:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 434683004436
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3DF366567;
-	Sat, 30 May 2026 17:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A241D3A542F;
+	Sat, 30 May 2026 17:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTkOVnDf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMYKWl8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC740352027;
-	Sat, 30 May 2026 17:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1BA366567;
+	Sat, 30 May 2026 17:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160407; cv=none; b=M4NvGrAY0fyQELdRInKQxO0Ez50wao4GSWXzilwONk7e4WZfSS43r3pjI5E+H9Q7ngJzhfTgLbFoYeBXYV9PuTweV3J/8ZuVIXxGows2a0tpNsyrLQfqSE50TlZqqgPLmIywXdNBqiAWe2NGuTPnMiaVXRvRSPzuh1ootes1D64=
+	t=1780160411; cv=none; b=NxTgMvaTVV9QYLZnksV5jHdoWg9oMBMP0+4QlZEQO36HP1+kVTZGFnAkjhBNaqCGBWC6CjlibRdc30MxVzw/zksTmtsKsL8COXsfa45U2jLR0d0b6gLAhS/2J9H7nQ5VgPSI3WxT4/tp2AVtBPdjwlYeAFjScDD/AaZA0tlFsbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160407; c=relaxed/simple;
-	bh=EgeM0Z0WYFNmcMEE0hSYodN9hG/PhB4X/10hRzJ3vZQ=;
+	s=arc-20240116; t=1780160411; c=relaxed/simple;
+	bh=qjzKqWotRLrhvbe29MraxH2IKKRPpWsp6eZGI2JXen0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q19Z49+r4heG4Sp0v906rKKom0EPrqMhQ3FYBN75MFYGJMu7227Asg+UXXP0sxN7hMKs8+8/xoJ3IMGlPepHkNo3Jj9nFHYrZ3GUax8NRWdKzb0QgcxePkCSh1OWjwp1xFVavCYpQ+5gW65+q0gHTgDToIkv+li2fULxaSCHCCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTkOVnDf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4231F00893;
-	Sat, 30 May 2026 17:00:05 +0000 (UTC)
+	 MIME-Version; b=Sk4jz29QKGgfX5yd7w7hrxzSpEPTPJ4Vuj/+J9oifE2F5ecI73EyViXAocii31yYtxEaaDMVzhrhlTklHcA2XLRHXIANNIIuLx9GYQrQ2ilaNUv0EEU4FSG/rzfJ1SsaJwNIipBM1YHpPsCb/++o0P8ZQ2MdrvcqEqniTwK+Sz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMYKWl8q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792211F00893;
+	Sat, 30 May 2026 17:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160406;
-	bh=GWvx9f7H1N8+7D7Y4Ip/GXu+WwarQ5+y1UvUdneU+Zg=;
+	s=korg; t=1780160410;
+	bh=rkGWEjZtcBvFdCiRz6DsPNSm9+7JJ/8VNQnuE1pOKro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WTkOVnDf024O4IUlxNPbKRS04NBoYKzx2Xztg88Exe9rhRtq6L7QLGorQeG9I1KnJ
-	 1CLAnkLrQL7weaZcsTBG+vtlkw8SEzgA7Sz5v56mvwwtEOzSE/Rs+2ToOoyyr6BBKs
-	 iUR6CYnkgkndju9K+8UFvxj9Apm8B7lXBeoBLtU4=
+	b=CMYKWl8qK2PANHQNXBcO1bF04iDgWFdEUKnwP9vBfw+5eS3PYg5jUCIDXUECF/ccU
+	 6x6fZERjWhsoMLBlnPs28iCjq6xVs5lKgEKOKqRV7PjpMsVXvjCdiYUOeJMdPERfOn
+	 z19rSIEMrzdpG3sw+Bl+dNe7SvH7SQsaSBwyuR6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
+	Myeonghun Pak <mhun512@gmail.com>,
+	Wilken Gottwalt <wilken.gottwalt@posteo.net>,
 	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 329/969] hwmon: (ltc2992) Fix u32 overflow in power read path
-Date: Sat, 30 May 2026 17:57:33 +0200
-Message-ID: <20260530160309.470268527@linuxfoundation.org>
+Subject: [PATCH 6.1 330/969] hwmon: (corsair-psu) Close HID device on probe errors
+Date: Sat, 30 May 2026 17:57:34 +0200
+Message-ID: <20260530160309.496988756@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -68,28 +69,29 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257268-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257269-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,posteo.net,roeck-us.net];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8A8C260F020
+X-Rspamd-Queue-Id: 64D5160EB2C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -97,50 +99,46 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Myeonghun Pak <mhun512@gmail.com>
 
-commit 2da0c1fd01dbd6b22844e8676585153dfc660cbe upstream.
+commit 174606451fbb17db506ebaacdd5e203e57773d5f upstream.
 
-ltc2992_get_power() computes the divisor for mul_u64_u32_div() as
-r_sense_uohm * 1000. This multiplication overflows u32 when
-r_sense_uohm exceeds about 4.29 ohms (4294967 micro-ohms), producing
-a truncated divisor and an incorrect power reading.
+corsairpsu_probe() opens the HID device before sending the device init
+and firmware-info commands. If either command fails, the error path jumps
+directly to fail_and_stop and skips hid_hw_close().
 
-Cancel the factor of 1000 from both the numerator
-(VADC_UV_LSB * IADC_NANOV_LSB = 312500000) and the divisor
-(r_sense_uohm * 1000), giving (VADC_UV_LSB / 1000) * IADC_NANOV_LSB
-= 312500 as the numerator and plain r_sense_uohm as the divisor.
-The cancellation is exact because LTC2992_VADC_UV_LSB (25000) is
-divisible by 1000.
+Use the existing fail_and_close label for those post-open failures so the
+open count and low-level close callback are balanced before hid_hw_stop().
 
-This is the read-path counterpart of the write-path fix applied in
-the preceding patch.
-
-Fixes: b0bd407e94b03 ("hwmon: (ltc2992) Add support")
+Fixes: d115b51e0e56 ("hwmon: add Corsair PSU HID controller driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260416215904.101969-3-sanman.pradhan@hpe.com
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+Reviewed-by: Wilken Gottwalt <wilken.gottwalt@posteo.net>
+Link: https://lore.kernel.org/r/20260424135107.13720-1-mhun512@gmail.com
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ltc2992.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hwmon/corsair-psu.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/hwmon/ltc2992.c
-+++ b/drivers/hwmon/ltc2992.c
-@@ -627,8 +627,10 @@ static int ltc2992_get_power(struct ltc2
- 	if (reg_val < 0)
- 		return reg_val;
+--- a/drivers/hwmon/corsair-psu.c
++++ b/drivers/hwmon/corsair-psu.c
+@@ -743,13 +743,13 @@ static int corsairpsu_probe(struct hid_d
+ 	ret = corsairpsu_init(priv);
+ 	if (ret < 0) {
+ 		dev_err(&hdev->dev, "unable to initialize device (%d)\n", ret);
+-		goto fail_and_stop;
++		goto fail_and_close;
+ 	}
  
--	*val = mul_u64_u32_div(reg_val, LTC2992_VADC_UV_LSB * LTC2992_IADC_NANOV_LSB,
--			       st->r_sense_uohm[channel] * 1000);
-+	*val = mul_u64_u32_div(reg_val,
-+			       LTC2992_VADC_UV_LSB / 1000 *
-+			       LTC2992_IADC_NANOV_LSB,
-+			       st->r_sense_uohm[channel]);
+ 	ret = corsairpsu_fwinfo(priv);
+ 	if (ret < 0) {
+ 		dev_err(&hdev->dev, "unable to query firmware (%d)\n", ret);
+-		goto fail_and_stop;
++		goto fail_and_close;
+ 	}
  
- 	return 0;
- }
+ 	corsairpsu_get_criticals(priv);
 
 
 
