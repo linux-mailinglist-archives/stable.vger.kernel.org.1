@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-258402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNXmGK0mG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:29 +0200
+	id GNdgHsAcG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 073DC610EEA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F1FA60F807
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CC1EF3016B52
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:03:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7E6B9301FC16
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6BE3B7B72;
-	Sat, 30 May 2026 18:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25C630E847;
+	Sat, 30 May 2026 17:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2ZoX2vt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A67+/EgM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295903C3782;
-	Sat, 30 May 2026 18:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94B61C5799;
+	Sat, 30 May 2026 17:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164230; cv=none; b=oxNBuUmKbWEJCzc+F2ewhHwoYILdb4wQ6QtRnjoNcjZQLC3F/enWF0xtUQbZRlT6cEGBtBNUeo34dU6hL43YX+jiOVEqIPZz++T01N4gqCYd5cH44fu1MI2v9qPoyIKiSV2iTNWiB8otIjX+lf9mD7Y9Q2h7aXUgNweZ75mEP/k=
+	t=1780161539; cv=none; b=tJRekavPOzUESQfBu4mK358wntXcRNNrkCCm0kUj0WKX/cJr7XKDowyE1HnTng+WheBgFa6bF0YoSx5F8RHs8MiQhQHj4SG96DLb4BX1oQ+CaPyQqqJ24Mh2BjsJmvVrxOXM4X1nI7JrGfsGM7Q7fY58kBGQY40Ts1Duo9Oj2kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164230; c=relaxed/simple;
-	bh=+EHMEG95a+JmKN+LRe5nUsK65N8xVRv+p+yn5+RS8VY=;
+	s=arc-20240116; t=1780161539; c=relaxed/simple;
+	bh=+qmN1yVMaxnhN3cNMxorj/7b7Pr47ZS27iZtNIVsG8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VaJ2Q+k4YovSDHwMUVA79sCd8Q1khwky9o29RmYZizAtIS29QFaDHffA9E+ZVtWZBgE0TEuG8sLcrOkr4etVBCXQml1Swgp1SgHdHkbRaAptNm67YZgrshs4TtGlSq6StJ04jr25BSEcZORq/qgm+4mMa9IUknt/s0n+fg8AI9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2ZoX2vt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DEFB1F00893;
-	Sat, 30 May 2026 18:03:48 +0000 (UTC)
+	 MIME-Version; b=HprQovlTm1/cXp7LMmxrfXZc6LLKqNevGsg63W6bU/M7YQyCmD9OhbkoAE1WG6ALHetzimj5zcMAywsdMh5KL2ZnALzrYrI2G/EoE5EuC23hMGj4WO8w6KEgNBnC8T8NI/QlxwRn1Nr6cIRnWocW4LLg9RYex8+gWw3WXGYg6wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A67+/EgM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2201F00893;
+	Sat, 30 May 2026 17:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164229;
-	bh=cfXfps6lMy57S9/ErMtn8O3vhnGm+B80MOLzP5x/cOw=;
+	s=korg; t=1780161538;
+	bh=wwYCrvblut0KuyY2I8xpDhY0hbZjeuPHuiFtCJywSWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U2ZoX2vtdEovmUxHrnQcMCgHFrKu7v9bFbKURVA4+SSUguPk6PGx5K9xox0UrJBaT
-	 pK/unf+kd+H/wwSp5tas8+xvAiJtwrYP5iNctFq5rOP/Zolnc8qi/AMZyw4XIxQ3vf
-	 OlHUPmtjiIy7xO86XR+yHbGpwZ3YzjLRX64+SK70=
+	b=A67+/EgM9LW/wIqCPoNj1unYw08cD2FgcaqFGdhm10hIskIi42zagdPD6XeXj7EcJ
+	 ItgjX+XnbvHDJX6KwD/9/HCWB+v0oaarGzruk/JzCUmZYAo+oJkGIHnrQf074a2tpq
+	 pcL5gq3ALQM7fMHwloxhtYeGZSVWOpjp1iuLs9Fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Val Packett <val@packett.cool>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 463/776] ASoC: fsl_xcvr: Fix event generation in fsl_xcvr_mode_put()
+Subject: [PATCH 6.1 653/969] clk: qcom: gcc-sc8180x: Add missing GDSCs
 Date: Sat, 30 May 2026 18:02:57 +0200
-Message-ID: <20260530160252.323384529@linuxfoundation.org>
+Message-ID: <20260530160318.502268468@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,88 +70,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257599-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258402-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 073DC610EEA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 8F1FA60F807
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 64a496ba976324615b845d60739dfcdae3d57434 ]
+[ Upstream commit 3565741eb985a8a7cc6656eb33496195468cb99e ]
 
-ALSA controls should return 1 if the value in the control changed but the
-control put operation fsl_xcvr_mode_put() only returns 0 or a negative
-error code, causing ALSA to not generate any change events.
+There are 5 more GDSCs that we were ignoring and not putting to sleep,
+which are listed in downstream DTS. Add them.
 
-Add a suitable check in the function before updating the mode variable.
-
-Fixes: 28564486866f ("ASoC: fsl_xcvr: Add XCVR ASoC CPU DAI driver")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20260401094226.2900532-9-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Val Packett <val@packett.cool>
+Link: https://lore.kernel.org/r/20260312112321.370983-3-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_xcvr.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/gcc-sc8180x.c | 50 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
-index 7475dcf58a366..446a81b1e14c7 100644
---- a/sound/soc/fsl/fsl_xcvr.c
-+++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -205,10 +205,17 @@ static int fsl_xcvr_mode_put(struct snd_kcontrol *kcontrol,
- 	struct fsl_xcvr *xcvr = snd_soc_dai_get_drvdata(dai);
- 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
- 	unsigned int *item = ucontrol->value.enumerated.item;
-+	int val = snd_soc_enum_item_to_val(e, item[0]);
- 	struct snd_soc_card *card = dai->component->card;
- 	struct snd_soc_pcm_runtime *rtd;
-+	int ret;
+diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
+index ba004281f2944..00e2e22a14175 100644
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -4200,6 +4200,51 @@ static struct gdsc usb30_mp_gdsc = {
+ 	.flags = POLL_CFG_GDSCR,
+ };
+ 
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc = {
++	.gdscr = 0x7d050,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
 +
-+	if (val < FSL_XCVR_MODE_SPDIF || val > FSL_XCVR_MODE_EARC)
-+		return -EINVAL;
- 
--	xcvr->mode = snd_soc_enum_item_to_val(e, item[0]);
-+	ret = (xcvr->mode != val);
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc = {
++	.gdscr = 0x7d058,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
 +
-+	xcvr->mode = val;
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf_gdsc = {
++	.gdscr = 0x7d054,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_sf_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu0_gdsc = {
++	.gdscr = 0x7d05c,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu0_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu1_gdsc = {
++	.gdscr = 0x7d060,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
+ static struct clk_regmap *gcc_sc8180x_clocks[] = {
+ 	[GCC_AGGRE_NOC_PCIE_TBU_CLK] = &gcc_aggre_noc_pcie_tbu_clk.clkr,
+ 	[GCC_AGGRE_UFS_CARD_AXI_CLK] = &gcc_aggre_ufs_card_axi_clk.clkr,
+@@ -4500,6 +4545,11 @@ static struct gdsc *gcc_sc8180x_gdscs[] = {
+ 	[USB30_MP_GDSC] = &usb30_mp_gdsc,
+ 	[USB30_PRIM_GDSC] = &usb30_prim_gdsc,
+ 	[USB30_SEC_GDSC] = &usb30_sec_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_SF_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU0_GDSC] = &hlos1_vote_turing_mmu_tbu0_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU1_GDSC] = &hlos1_vote_turing_mmu_tbu1_gdsc,
+ };
  
- 	fsl_xcvr_activate_ctl(dai, fsl_xcvr_arc_mode_kctl.name,
- 			      (xcvr->mode == FSL_XCVR_MODE_ARC));
-@@ -218,7 +225,7 @@ static int fsl_xcvr_mode_put(struct snd_kcontrol *kcontrol,
- 	rtd = snd_soc_get_pcm_runtime(card, card->dai_link);
- 	rtd->pcm->streams[SNDRV_PCM_STREAM_PLAYBACK].substream_count =
- 		(xcvr->mode == FSL_XCVR_MODE_SPDIF ? 1 : 0);
--	return 0;
-+	return ret;
- }
- 
- static int fsl_xcvr_mode_get(struct snd_kcontrol *kcontrol,
+ static const struct regmap_config gcc_sc8180x_regmap_config = {
 -- 
 2.53.0
 
