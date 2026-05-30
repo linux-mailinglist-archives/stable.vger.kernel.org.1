@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-257184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UElTO0wYG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257184-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:08 +0200
+	id CBD+Fp8iG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E41560ECCB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B166105FD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D2C53087959
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:55:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 82C4C3054F63
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4073348C72;
-	Sat, 30 May 2026 16:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E65B349CCF;
+	Sat, 30 May 2026 17:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6O3Bdb1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diT7wAZR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DA8332EA7;
-	Sat, 30 May 2026 16:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9790D34389F;
+	Sat, 30 May 2026 17:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160103; cv=none; b=GDexSqMzp2CQw9SVQXuHU2HmmyL8ikAWLaAAArVaGLv2oERr2YEadeSvuLENWcvGroCDofODjprUFm5KQeqejSnJhPntjwWEfSD7VnMCDhyK3u+SIl19u4W7+cboFc3XibwEz5SiHEJ6lKYOXlFsVhIL2kNPIObsyQWYce6Y+ro=
+	t=1780162766; cv=none; b=tZKtTVN6vCYr2qdoig+OFLNhrhHf4uK1O+Y6I2r0ve6YaIIDqwsZnArIWia1nOWzukqfsOjVrcWBuP/PnMTCPxhbhHevXmg8ZMNA4TcmlbknaNEkQRQTHISVrf+0ETKwIRyHvlhY7ZlW+cMcM+G0cxRkAY9eIpagMnDGSVAq7gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160103; c=relaxed/simple;
-	bh=X9plwmiq0vWH9z38CUWg4KSsvzCqFe8IzY7n5ASMiG0=;
+	s=arc-20240116; t=1780162766; c=relaxed/simple;
+	bh=vAoyYDztNTtSSED5jIKqo+y6hLpfX3nde+5Pak/6OV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PxpqU0YnHsqqwGFvdQo7vhSxnmo3BzznGQt/Fv7bYgJYuO4/rlkAdrStNbu2XrOrOQyMvDiiL0rWjAGYyRwoxtGEJ3JTU9pYExjJWF7Pbn5Ua3B6fVzd/WRi0/DUvg/VZc89RurwAMnDP6o6pPIq0TWXXB0aBYRjNPijTzP8Yuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6O3Bdb1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7865E1F00893;
-	Sat, 30 May 2026 16:55:01 +0000 (UTC)
+	 MIME-Version; b=dCTsLUjzdGPQRz7eII+IHs2JsH4ZgzarKg7hDR/ul0bE+JsRXjFCA2dYG85kcY7fTLJpABtjbktF9s8kIWpnlrNqgCBEHhqqeVfD1u9ydd85AZbtbCOyOVNpyHxsQK7wdr9TMziTDvFayiNwKD5JfRAgA39pbLaPHBavyJTEWRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diT7wAZR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD401F00893;
+	Sat, 30 May 2026 17:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160102;
-	bh=U6je7QEcIC+tvL/Rcl/QIf1f1Y+9blPWEg/xB66E9Cc=;
+	s=korg; t=1780162764;
+	bh=PjtiooSNFHoHgQrU2Y0NjFM63Fl1RGLI3tDDi6SQCDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n6O3Bdb1KYMf3pxDwmA02X1pYKIoA28b+VJLpDG9RuK5BVJXQujiguH8zzz6yG5mX
-	 Xf3uWn2OG0TZEvbCSLHHl144iArB3DPQ/nOYVRBNbAP1i8tv88n6uHiXCPpFEoJmur
-	 pzPQpnHw9jjx2vwZnIx6C9ymgBDI5BGGjHA170+U=
+	b=diT7wAZR2fBlb+euTkjHCLrmYRCXmLRBE+JoSD/hK+2l9T+1T8qXflgjWaufYXq5S
+	 aYebqlMJbCRfeu+d92f/KHZxfq6pgvdu6qu3V6GDZtFzUtPTPRnsr0dxeKtIDBBEM2
+	 PUgjZyvKwSzPKap3XMoQJ5R3w8UAKyDTlmb6cdYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francis Brosseau <francis@malagauche.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 246/969] io_uring/poll: fix multishot recv missing EOF on wakeup race
+	stable <stable@kernel.org>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Masaki Ota <masaki.ota@jp.alps.com>,
+	linux-input@vger.kernel.org,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.15 056/776] HID: alps: fix NULL pointer dereference in alps_raw_event()
 Date: Sat, 30 May 2026 17:56:10 +0200
-Message-ID: <20260530160307.258134013@linuxfoundation.org>
+Message-ID: <20260530160241.762132673@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +69,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257184-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257963-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7E41560ECCB
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alps.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 13B166105FD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit a68ed2df72131447d131531a08fe4dfcf4fa4653 ]
+commit 1badfc4319224820d5d890f8eab6aa52e4e83339 upstream.
 
-When a socket send and shutdown() happen back-to-back, both fire
-wake-ups before the receiver's task_work has a chance to run. The first
-wake gets poll ownership (poll_refs=1), and the second bumps it to 2.
-When io_poll_check_events() runs, it calls io_poll_issue() which does a
-recv that reads the data and returns IOU_RETRY. The loop then drains all
-accumulated refs (atomic_sub_return(2) -> 0) and exits, even though only
-the first event was consumed. Since the shutdown is a persistent state
-change, no further wakeups will happen, and the multishot recv can hang
-forever.
+Commit ecfa6f34492c ("HID: Add HID_CLAIMED_INPUT guards in raw_event
+callbacks missing them") attempted to fix up the HID drivers that had
+missed the previous fix that was done in 2ff5baa9b527 ("HID: appleir:
+Fix potential NULL dereference at raw event handle"), but the alps
+driver was missed.
 
-Check specifically for HUP in the poll loop, and ensure that another
-loop is done to check for status if more than a single poll activation
-is pending. This ensures we don't lose the shutdown event.
+Fix this up by properly checking in the hid-alps driver that it had been
+claimed correctly before attempting to process the raw event.
 
-Backport notes for linux-6.1.y:
-  - In 6.1.y the do-while masks v in the while-condition itself, so
-    v can carry IO_POLL_RETRY_FLAG/IO_POLL_CANCEL_FLAG bits when we
-    reach the multishot branch.  The HUP check therefore compares
-    `(v & IO_POLL_REF_MASK) != 1` rather than the upstream `v != 1`.
-  - io_poll_issue takes `bool *locked` here (renamed to `ts` in 6.6+).
-  - 6.1.y has no IOU_REQUEUE return path; only IOU_STOP_MULTISHOT.
-
-CVE: CVE-2026-23473
-Cc: stable@vger.kernel.org # 6.1.y
-Fixes: dbc2564cfe0f ("io_uring: let fast poll support multishot")
-Reported-by: Francis Brosseau <francis@malagauche.com>
-Link: https://github.com/axboe/liburing/issues/1549
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[backport for linux-6.1.y, verified 2026-05-01]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 73196ebe134d ("HID: alps: add support for Alps T4 Touchpad device")
+Cc: stable <stable@kernel.org>
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: Benjamin Tissoires <bentiss@kernel.org>
+Cc: Masaki Ota <masaki.ota@jp.alps.com>
+Cc: linux-input@vger.kernel.org
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/poll.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/hid/hid-alps.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/io_uring/poll.c b/io_uring/poll.c
-index 367605a5878fe..cdf1f2f57b9a2 100644
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -303,7 +303,13 @@ static int io_poll_check_events(struct io_kiocb *req, bool *locked)
- 				return IOU_POLL_REMOVE_POLL_USE_RES;
- 			}
- 		} else {
--			int ret = io_poll_issue(req, locked);
-+			int ret;
-+
-+			/* multiple refs and HUP, ensure we loop once more */
-+			if ((req->cqe.res & (POLLHUP | POLLRDHUP)) &&
-+			    (v & IO_POLL_REF_MASK) != 1)
-+				v--;
-+			ret = io_poll_issue(req, locked);
- 			io_kbuf_recycle(req, 0);
+--- a/drivers/hid/hid-alps.c
++++ b/drivers/hid/hid-alps.c
+@@ -437,6 +437,9 @@ static int alps_raw_event(struct hid_dev
+ 	int ret = 0;
+ 	struct alps_dev *hdata = hid_get_drvdata(hdev);
  
- 			if (ret == IOU_STOP_MULTISHOT)
--- 
-2.53.0
-
++	if (!(hdev->claimed & HID_CLAIMED_INPUT) || !hdata->input)
++		return 0;
++
+ 	switch (hdev->product) {
+ 	case HID_PRODUCT_ID_T4_BTNLESS:
+ 		ret = t4_raw_event(hdata, data, size);
 
 
 
