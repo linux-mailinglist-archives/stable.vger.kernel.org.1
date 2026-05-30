@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-257750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258525-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOWKFEkeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257750-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:41 +0200
+	id cEFWL5UqG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258525-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D993360FC0B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 284186118D6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 89512302408F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5277E3036614
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98B93ACA4D;
-	Sat, 30 May 2026 17:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594EC3B7B72;
+	Sat, 30 May 2026 18:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+mceqYL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7LovUXI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6D433E36A;
-	Sat, 30 May 2026 17:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AF329B799;
+	Sat, 30 May 2026 18:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162046; cv=none; b=E1ELIKiKFr+6izZVYFNNTYHfSBn3+6pHlQLe3FuPddqgeejrs8K9QlxKTAJQinhrBZckLcDjHcpqakgukFQJR75Ktbb2eDmkQ0XvOSpiXKonbKfYH9kigNQW2qXePWKoxjtjGDRrRYecgb2jHXIouq4Bj0prxmN/FcPjOQN8Ql8=
+	t=1780164642; cv=none; b=PSG9oxqIBzXXziBGu3Pae2LxGf6YZgdRz097toLt3foKFHuMBH8nAfUtCoa+A+2sD+XV66yTjtziPL2J7BP7zYzj4Wpk8QoLdAX1lUlzev+Dj51URsdUrYHfgBiXqT26VPnsH/+t1SebNm9h8QQfuGpXcKFTEx4/OEntPbSqty4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162046; c=relaxed/simple;
-	bh=dktG7vUzhn3jPisHLNDNKPJhE3DwuzFy527jxitmfBY=;
+	s=arc-20240116; t=1780164642; c=relaxed/simple;
+	bh=yNOHklpWFjhfZhBJrMHgNMDwJWUv11yGY1QmCpA/GdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pafTJ2wIORV/hJKrNFXNMsbuniZfcIsXQZrpTdHM0GRrmGRogDXY+PcLPolzRS9aNysQoSRnsOJFjl+Ig55nuy8r9+s5MIwUy6Bj4E5Q/of3VgdMGYGmqFZWucHWYbS0Fubr7CJyNbaGrFjTzIWRSXsZZ0rLspNUz6JHDp3snOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+mceqYL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DA61F00893;
-	Sat, 30 May 2026 17:27:24 +0000 (UTC)
+	 MIME-Version; b=RRi8AMQwvTz2DFSZv2DJEC1eqsD6Jr1qOsuz3XOnE/TGsvAQJSkuWJgaeiJ3063oqfvmxzQTpV+RpzSO0UZIxgWu30SCfFzhINdetmduBpo53NRaO7KjIZZaTNp6YA+2ibFZs/pfFA0+QaA4qq1ItAReBxYxvWNXOOVKvCXWUgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7LovUXI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7A71F00893;
+	Sat, 30 May 2026 18:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162045;
-	bh=fzo9zuoEKTIMrGQhyY9bDcuxKrKsAvpKjBz9lSVgTL4=;
+	s=korg; t=1780164641;
+	bh=XjmV2rKQv277RKO+v/pjiX7NwpjgVaXves92XLbUKv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s+mceqYLTkq1911W8hXAAiJxQHEh0Pb9A6BxGGEbC8I5MG39vWbFD//k6kwUuxkkC
-	 AtnpPH6t9ig0eni0MOQ3ao3KhYytcxVu9msi3urXAMC/M6McIUR4GmFJPJs5nkiZc/
-	 8C1XtGhR39S6Ds1deaRNVQDfrymYQYFUlC3PPMM0=
+	b=h7LovUXIOpASwZNx//ckqX+3qT/wUxwSe8qbVr5PpXW1MMEv5D6jukWz8gXzYclDd
+	 sATfx2Bafh0lyOUIyiTSucTZI0R3qFMMFXkWbGttr1VA+gRqM0Fv4YgZyKP6kmCTwS
+	 XVTlZ6r9Qs3pHedcPrTh6HWYFfz0/6lF38RUKltg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 805/969] crypto: af_alg - Cap AEAD AD length to 0x80000000
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 615/776] net/sched: netem: fix probability gaps in 4-state loss model
 Date: Sat, 30 May 2026 18:05:29 +0200
-Message-ID: <20260530160322.859980917@linuxfoundation.org>
+Message-ID: <20260530160255.894736273@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +67,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257750-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gondor.apana.org.au];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258525-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D993360FC0B
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,networkplumber.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 284186118D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-commit e4c06479d7059888adf2f22bc1ebcf053bf691a2 upstream.
+[ Upstream commit 732b463449fd0ef90acd13cda68eab1c91adb00c ]
 
-In order to prevent arithmetic overflows when checking the TX
-buffer size, cap the associated data length to 0x80000000.
+The 4-state Markov chain in loss_4state() has gaps at the boundaries
+between transition probability ranges. The comparisons use:
 
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Fixes: 400c40cf78da ("crypto: algif - add AEAD support")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  if (rnd < a4)
+  else if (a4 < rnd && rnd < a1 + a4)
+
+When rnd equals a boundary value exactly, neither branch matches and
+no state transition occurs. The redundant lower-bound check (a4 < rnd)
+is already implied by being in the else branch.
+
+Remove the unnecessary lower-bound comparisons so the ranges are
+contiguous and every random value produces a transition, matching
+the GI (General and Intuitive) loss model specification.
+
+This bug goes back to original implementation of this model.
+
+Fixes: 661b79725fea ("netem: revised correlated loss generator")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-2-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/af_alg.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/sched/sch_netem.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -475,6 +475,8 @@ static int af_alg_cmsg_send(struct msghd
- 			if (cmsg->cmsg_len < CMSG_LEN(sizeof(u32)))
- 				return -EINVAL;
- 			con->aead_assoclen = *(u32 *)CMSG_DATA(cmsg);
-+			if (con->aead_assoclen >= 0x80000000u)
-+				return -EINVAL;
- 			break;
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index cbd7f3032fccf..1f47711cb1667 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -219,10 +219,10 @@ static bool loss_4state(struct netem_sched_data *q)
+ 		if (rnd < clg->a4) {
+ 			clg->state = LOST_IN_GAP_PERIOD;
+ 			return true;
+-		} else if (clg->a4 < rnd && rnd < clg->a1 + clg->a4) {
++		} else if (rnd < clg->a1 + clg->a4) {
+ 			clg->state = LOST_IN_BURST_PERIOD;
+ 			return true;
+-		} else if (clg->a1 + clg->a4 < rnd) {
++		} else {
+ 			clg->state = TX_IN_GAP_PERIOD;
+ 		}
  
- 		default:
+@@ -239,9 +239,9 @@ static bool loss_4state(struct netem_sched_data *q)
+ 	case LOST_IN_BURST_PERIOD:
+ 		if (rnd < clg->a3)
+ 			clg->state = TX_IN_BURST_PERIOD;
+-		else if (clg->a3 < rnd && rnd < clg->a2 + clg->a3) {
++		else if (rnd < clg->a2 + clg->a3) {
+ 			clg->state = TX_IN_GAP_PERIOD;
+-		} else if (clg->a2 + clg->a3 < rnd) {
++		} else {
+ 			clg->state = LOST_IN_BURST_PERIOD;
+ 			return true;
+ 		}
+-- 
+2.53.0
+
 
 
 
