@@ -1,67 +1,59 @@
-Return-Path: <stable+bounces-259048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257671-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGJsIMUvG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259048-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:17 +0200
+	id aPniM28dG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257671-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F9461255E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A77960F95B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C326330D9FEC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:40:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 273DF301833C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E26351C2F;
-	Sat, 30 May 2026 18:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695B23161A3;
+	Sat, 30 May 2026 17:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVLZvbQU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1WhYtWQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF84A26738C;
-	Sat, 30 May 2026 18:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3670E332EA7;
+	Sat, 30 May 2026 17:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166415; cv=none; b=CL/YtGzTbs0wBg6ZSsG6jG0cTVly+KYT5U+Ud3SKsCbWV4iq9QX6mTCIgTCF9BbfogorNAMh5HCl63M0pRfz7Ge1WUnMx5lHZ/0t/Oujq9cq8s0O3KykZLh+tXPi61iMuMM8qHq2PNd78Hnwf+2zKFSVqLNPgtEjXhtsBY+6m94=
+	t=1780161784; cv=none; b=Tp4v91VqtAst+AQONG3aZ2cHDgeVLl5zHoUSb5rIp4M2EG/yFEsaeGoXmoQi9z0kWOObfbJP5NV0tWn94v2M77Pw77hpuCG5AW7AtwBiqmaIdUrCBUWFl/4lkSIguTUrQsds63kZFRcN33aDKjrBhsjnWvwCBHDk2hdGGBDw6d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166415; c=relaxed/simple;
-	bh=ANKGH1ZXQB+2hM3tnIyOpZ/YQaOF4Zu+UaXfK2Z/tz8=;
+	s=arc-20240116; t=1780161784; c=relaxed/simple;
+	bh=DE5pre0QbeL9N1JPf0hxzMatosNig02i8iuviD3bjhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dfzjUSty1Fb2pBmFGwqSqG+ZsZeaSQ4JKMDlSwdlHH1mdQP0fA5CGgLadmQuqVwfa3vjBK7nCnm85Xd8Sq8jewXmeX8pQLfD64ct90S4yplsEkoWTW/F2GTDz78d1rLMy+0y/3pM+Oj7wOORmBpYFTm6GOZLTAcRiRYy21JiLkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVLZvbQU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D8C1F00893;
-	Sat, 30 May 2026 18:40:14 +0000 (UTC)
+	 MIME-Version; b=VqxwpBV6nt0Txp/F5aYgy6aidi7I2L9BL5lKHgdPE94gP9UH4TdG3JSAdwGdwsj2Bn2MSZBVQnEBsOewH14MUzn4dcFQrp7P+8b8g00FjaUCDh5GmteRjJfLsQ3Q1RN8kh2yDz4XfRmEMzSeas9u77jtknAvKkTmlpH4rgU/ouY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1WhYtWQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFD51F00893;
+	Sat, 30 May 2026 17:23:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166414;
-	bh=lhO0C1j0uKkzLhdGZFkW4J6DZQ+h/7YKEdmNzeW1Ud0=;
+	s=korg; t=1780161782;
+	bh=wOSPwq4pCL3QpJ0TD7U6GMfJVp0HX6WyIE8s6+9vtsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tVLZvbQUHuUdzSL04G1Bh8Llvoz+dVm5AXxSO9pHhB9OG0ABam0S6EE11FGLoJaAU
-	 c0mPTXaP7uL4TOZZE3uq5fUh39Y5dPAjSEWzCe7IODUeMVLKwC35Hea6hNh5y+MFh5
-	 mvRwwus5Otfv8cvuIqmWfywj8rEHPAj9enwD9jrQ=
+	b=W1WhYtWQ2oGzcZX8pqhPJMMJ7w0YXhEfVK6L4N9y1D5+PU6GlvKNxFeXjfy5kiFew
+	 y/lHkpgaTUjsOgS1Htw0yIvy0PiU3j0dqlGQqhw56RmvVF+Ty0ewD28rc0e7T+0oTQ
+	 V2ZgUqJY0j0FD7w+/kbXqWWokQCVg9xTRddZVX90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 367/589] ocfs2/dlm: fix off-by-one in dlm_match_regions() region comparison
-Date: Sat, 30 May 2026 18:04:08 +0200
-Message-ID: <20260530160234.478122455@linuxfoundation.org>
+Subject: [PATCH 6.1 725/969] mailbox: mailbox-test: free channels on probe error
+Date: Sat, 30 May 2026 18:04:09 +0200
+Message-ID: <20260530160320.562482961@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,82 +64,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259048-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257671-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D2F9461255E
+	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0A77960F95B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 01b61e8dda9b0fdb0d4cda43de25f4e390554d7b ]
+[ Upstream commit c02053a9055d5fdfd32432287cca8958db1d5bc5 ]
 
-The local-vs-remote region comparison loop uses '<=' instead of '<',
-causing it to read one entry past the valid range of qr_regions.  The
-other loops in the same function correctly use '<'.
+On probe error, free the previously obtained channels. This not only
+prevents a leak, but also UAF scenarios because the client structure
+will be removed nonetheless because it was allocated with devm.
 
-Fix the loop condition to use '<' for consistency and correctness.
-
-Link: https://lkml.kernel.org/r/SYBPR01MB78813DA26B50EC5E01F00566AF7BA@SYBPR01MB7881.ausprd01.prod.outlook.com
-Fixes: ea2034416b54 ("ocfs2/dlm: Add message DLM_QUERY_REGION")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://sashiko.dev/#/patchset/20260327151217.5327-2-wsa%2Brenesas%40sang-engineering.com
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/dlm/dlmdomain.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mailbox/mailbox-test.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
-index 6881961dbde87..5201071c0080d 100644
---- a/fs/ocfs2/dlm/dlmdomain.c
-+++ b/fs/ocfs2/dlm/dlmdomain.c
-@@ -1004,7 +1004,7 @@ static int dlm_match_regions(struct dlm_ctxt *dlm,
- 	for (i = 0; i < localnr; ++i) {
- 		foundit = 0;
- 		r = remote;
--		for (j = 0; j <= qr->qr_numregions; ++j) {
-+		for (j = 0; j < qr->qr_numregions; ++j) {
- 			if (!memcmp(l, r, O2HB_MAX_REGION_NAME_LEN)) {
- 				foundit = 1;
- 				break;
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 29c04157b5e88..1d546cae922ce 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -405,18 +405,27 @@ static int mbox_test_probe(struct platform_device *pdev)
+ 	if (tdev->rx_channel) {
+ 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
+ 					       MBOX_MAX_MSG_LEN, GFP_KERNEL);
+-		if (!tdev->rx_buffer)
+-			return -ENOMEM;
++		if (!tdev->rx_buffer) {
++			ret = -ENOMEM;
++			goto err_free_chans;
++		}
+ 	}
+ 
+ 	ret = mbox_test_add_debugfs(pdev, tdev);
+ 	if (ret)
+-		return ret;
++		goto err_free_chans;
+ 
+ 	init_waitqueue_head(&tdev->waitq);
+ 	dev_info(&pdev->dev, "Successfully registered\n");
+ 
+ 	return 0;
++
++err_free_chans:
++	if (tdev->tx_channel)
++		mbox_free_channel(tdev->tx_channel);
++	if (tdev->rx_channel)
++		mbox_free_channel(tdev->rx_channel);
++	return ret;
+ }
+ 
+ static int mbox_test_remove(struct platform_device *pdev)
 -- 
 2.53.0
 
