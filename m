@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-258851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPbeGyMtG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258851-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:03 +0200
+	id +N4LDkQlG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EFF611E9C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B081D610BAE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A0D2D3045B6E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7FFCF3022DD4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E87B3C37A6;
-	Sat, 30 May 2026 18:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD0A341AC7;
+	Sat, 30 May 2026 17:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="piad7gs1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxM2Y2sM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1D73C199A;
-	Sat, 30 May 2026 18:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B1E237713;
+	Sat, 30 May 2026 17:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165754; cv=none; b=SD2xDgMQhmrDWtsU7GYooA1V8oed/C2mhY46CFAFJiHefuthpebCYZttAgR6JD1vR7Ckoi+SrDJg7cWp3XoChRPq9Q12dp0uyFztqLGJ1jR4hiU39HSyf/BRgecO5lwGaiVVOWSIlvdh7bnSowlN5/0s76lwp/i4WLnP4R8xe+Y=
+	t=1780163703; cv=none; b=TSK6RoM6WxVyoWL7IdR11K+8ekpgUvXusVit4VpL7lNsFlTVGs/PLyqrY8cbliTGYFK0RWpqeMJcrYXqgSM/tET1H/WtWkS8mfMeUntkSzfPP4asutwgTb7Ox+9EMIWlbUzYsNHnqlSXqT3kQiAKfo4GVqJYqyE6S8VJpfXPWBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165754; c=relaxed/simple;
-	bh=YLYNJoO2BtxQfI1Gfs28/yO8jnViWlJdFbO5nH2Sm3M=;
+	s=arc-20240116; t=1780163703; c=relaxed/simple;
+	bh=oaCOTwLql6BFDu6iVasWzksz97Q8PoX4vvRm1TDP2Y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XO1W4Q1orP7+rgQqQX3Ds0tiSN9SN73b/tSz7LITaa27HDaehQ/hXn57QOIyp/IqoW5Ak35dmGXQ66kYzgNQYJOLyUzgrsl1w24EFzhZzuUGjFY/Y2OEnacE1RlaGiR1VTEOiEi6hbXq5tUwEp7dC9pjsdMCjLU3Kpi1LZKaWEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=piad7gs1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E3041F00893;
-	Sat, 30 May 2026 18:29:11 +0000 (UTC)
+	 MIME-Version; b=ZLpeqx2hH3YQbfFMIPtU30huco4RmR05/5cLIlklkn60LxAZMomeePvg7h8QhF7bjiZcCgxgj098yKeZ9olc4g61tOHXN8oRfb47G0OZZPk13OM5NpjBzAJvExFuLKVQqoqM4rwLRKJkbdZLoLsf/h2rDkWW72xAXy0Opg0pUUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxM2Y2sM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73161F00898;
+	Sat, 30 May 2026 17:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165752;
-	bh=vuZ1fE1UWQ+B+l3GopNYAiuJsN1vcEPc/dtDaQTlJPY=;
+	s=korg; t=1780163701;
+	bh=Wn0X/tdyjrz03LqMJfanNN6edkgm++jUW+XhUOyX8E4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=piad7gs1O74rJn77StpMaCFJrBxqWj94lLBg6ioEotzDWRiX+QxjrHgg0ISqKTAXr
-	 4Y/FC+GJdq9Ti+DKKmGPC81FcTBw8dRNcspFFJRIQb6tsyfFdhSBChDENNz5XPvxcX
-	 45m/HZkBEP/lwdOxgkaZv6E24FpvCSemKHFkPv1U=
+	b=fxM2Y2sMjEWKoeBL8WG4kbWJLpGIqpW6pQvpYDVwnib/m9V66V0gi6Pn8GDjdgyL1
+	 OB5JfFC5IBmHD4heYxcjG4pAsPu4ueMPBiKw0hBRLq2WEqkFBWn7bPwIyLNiXphFtC
+	 Az29Ms2Uwz473UxP07scqQQ3BvtnuZdlfVFFkjHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ruijie Li <ruijieli51@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 170/589] net/smc: avoid early lgr access in smc_clc_wait_msg
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 5.15 337/776] RDMA/hns: Fix unlocked call to hns_roce_qp_remove()
 Date: Sat, 30 May 2026 18:00:51 +0200
-Message-ID: <20260530160229.266141571@linuxfoundation.org>
+Message-ID: <20260530160249.282252112@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,84 +65,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258851-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,linux.alibaba.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258245-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,alibaba.com:email]
-X-Rspamd-Queue-Id: 13EFF611E9C
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sashiko.dev:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,hisilicon.com:email]
+X-Rspamd-Queue-Id: B081D610BAE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruijie Li <ruijieli51@gmail.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit 5a8db80f721deee8e916c2cfdee78decda02ce4f upstream.
+commit 0c99acbc8b6c6dd526ae475a48ee1897b61072fb upstream.
 
-A CLC decline can be received while the handshake is still in an early
-stage, before the connection has been associated with a link group.
+Sashiko points out that hns_roce_qp_remove() requires the caller to hold
+locks.  The error flow in hns_roce_create_qp_common() doesn't hold those
+locks for the error unwind so it risks corrupting memory.
 
-The decline handling in smc_clc_wait_msg() updates link-group level sync
-state for first-contact declines, but that state only exists after link
-group setup has completed. Guard the link-group update accordingly and
-keep the per-socket peer diagnosis handling unchanged.
+Grab the same locks the other two callers use.
 
-This preserves the existing sync_err handling for established link-group
-contexts and avoids touching link-group state before it is available.
-
-Fixes: 0cfdd8f92cac ("smc: connection and link group creation")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Link: https://patch.msgid.link/08c68a5c817acf198cce63d22517e232e8d60718.1776850759.git.ruijieli51@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e088a685eae9 ("RDMA/hns: Support rq record doorbell for the user space")
+Link: https://sashiko.dev/#/patchset/0-v2-1c49eeb88c48%2B91-rdma_udata_rep_jgg%40nvidia.com?part=9
+Link: https://patch.msgid.link/r/15-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
+Reviewed-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/smc_clc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_qp.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -440,8 +440,8 @@ int smc_clc_wait_msg(struct smc_sock *sm
- 		dclc = (struct smc_clc_msg_decline *)clcm;
- 		reason_code = SMC_CLC_DECL_PEERDECL;
- 		smc->peer_diagnosis = ntohl(dclc->peer_diagnosis);
--		if (((struct smc_clc_msg_decline *)buf)->hdr.typev2 &
--						SMC_FIRST_CONTACT_MASK) {
-+		if ((dclc->hdr.typev2 & SMC_FIRST_CONTACT_MASK) &&
-+		    smc->conn.lgr) {
- 			smc->conn.lgr->sync_err = 1;
- 			smc_lgr_terminate_sched(smc->conn.lgr);
- 		}
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -1052,6 +1052,7 @@ static int hns_roce_create_qp_common(str
+ 	struct hns_roce_ib_create_qp_resp resp = {};
+ 	struct ib_device *ibdev = &hr_dev->ib_dev;
+ 	struct hns_roce_ib_create_qp ucmd = {};
++	unsigned long flags;
+ 	int ret;
+ 
+ 	mutex_init(&hr_qp->mutex);
+@@ -1135,7 +1136,13 @@ static int hns_roce_create_qp_common(str
+ 	return 0;
+ 
+ err_flow_ctrl:
++	spin_lock_irqsave(&hr_dev->qp_list_lock, flags);
++	hns_roce_lock_cqs(init_attr->send_cq ? to_hr_cq(init_attr->send_cq) : NULL,
++			  init_attr->recv_cq ? to_hr_cq(init_attr->recv_cq) : NULL);
+ 	hns_roce_qp_remove(hr_dev, hr_qp);
++	hns_roce_unlock_cqs(init_attr->send_cq ? to_hr_cq(init_attr->send_cq) : NULL,
++			    init_attr->recv_cq ? to_hr_cq(init_attr->recv_cq) : NULL);
++	spin_unlock_irqrestore(&hr_dev->qp_list_lock, flags);
+ err_store:
+ 	free_qpc(hr_dev, hr_qp);
+ err_qpc:
 
 
 
