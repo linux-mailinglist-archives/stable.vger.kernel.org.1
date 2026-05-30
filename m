@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-259255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257873-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFyUM/kxG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:41 +0200
+	id AOeBLZ4fG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257873-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB38612B1F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631C360FF48
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2315E303AB6F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC0D430117BF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CAFA1D63E4;
-	Sat, 30 May 2026 18:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75E93469FC;
+	Sat, 30 May 2026 17:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2hnA+HT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwlZCJrt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4428D238D52;
-	Sat, 30 May 2026 18:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71F3341AB8;
+	Sat, 30 May 2026 17:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167128; cv=none; b=SKGsx2j2wo5o60il+TNyUgnoDhotBqPQgW3Mnxdw/xESE1sVPyLW9E8tfeuk4aRg57glos5GS9OeiMW5hSOFmhUtUyEBv9X9rACzZrlBgvIaj8P4PSpDrIvVcGKZI2DZeCe7JL+dCNMwfLh/zWVZjcvYzQyHPNQb2uNUldOTjRM=
+	t=1780162458; cv=none; b=FoTj6VDqS5Ed4QiTKiOF96hcko9srMAoiAZgfesHFk7Qihzt4mr2LNJpKtRnDWy5gkDsXcE1nhHFIaVaKs3NKPIZ+aSlYp5sKJ3cd8tbCDsZdQB7V9lQ+atuIXJ5u+peqMsx9fp+SAUW17ZFudm3vqjdS9z6z0fdjCfX8ENw1mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167128; c=relaxed/simple;
-	bh=ZwiXyHMMXayKq7qjQQ738qHKcl9++EacUdK6p9MUGaU=;
+	s=arc-20240116; t=1780162458; c=relaxed/simple;
+	bh=bWIXNSN/bfG8/kbfZ9sfW+vc0JyitiGiaTyH8LPi+pM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0RpeSxcdhowDvrr60wBQKCJi/2gKCra8OxgzERWVzahuWb64i/t57ld93zqFRFjo3SxvSeq2Ty5HRsdx7kW8iH+B9Owktdff7tV27mSgRkkRKiGn70x5DCFA3jI+tADLCcEgsSO2XXmfchkzozw2Z7p119L394wGaYm2NggeRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2hnA+HT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DF01F00893;
-	Sat, 30 May 2026 18:52:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DLdyvejZyZ0nXQ7rnYLPuemwxWeJMt6wWIeF4zlLOIOfMJONW6cdyePBJNTLD6qJlechSDVY9H+Nlq80VxGY4hGnfEjGCs+x1sdS/RhceuCXnImzOwoIKXvQRbYy94jsKClfKCGt1Zzm7XAvdS6HvL3wrufIlcBNgy/j1eEoyjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwlZCJrt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3551F00893;
+	Sat, 30 May 2026 17:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167127;
-	bh=AggY5FCkA+oFkY/w7DUSMvbjiguTOKRxud9qlN8LjVQ=;
+	s=korg; t=1780162457;
+	bh=NJ70OBXakCeK3ZneqksRmXZ4wKPBmNtUBUMJ+fEtXZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=k2hnA+HT6gSVWSBKefX3nCBnXf+oguPiOdm0IFaBaoqCdlOK1h6Zqjiytn9J0PLKc
-	 wKw9ZcIZq2MBqgfuFQ4C05t8sSyGHVxE0tZvsaenU6aMQcucf+bW3BLByTIJ4BzumE
-	 yMMKeB4/Jbq347ZmplTLyx1VlPLKOTo7ziEDDAtk=
+	b=dwlZCJrtRY6EZMcCc90u9ADvEOAZPP4q5s09nwV/6xbGPIImdI9iya1c7fSFXEto8
+	 9g7Wyk0mJRv8dAdkTpj35T41bbO/EhCo8CQo2gmrzKM5JVU3pbCdqTgMJGNClxpPRf
+	 9suxVKI4f31abopQqYe/+caaPoO8w4WaiIMfQjYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <david@davidgow.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Andreas Haarmann-Thiemann <eitschman@nebelreich.de>,
+	Linus Walleij <linusw@kernel.org>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 570/589] kunit: config: KUNIT_DEBUGFS should depend on DEBUG_FS
+Subject: [PATCH 6.1 927/969] net: ethernet: cortina: Drop half-assembled SKB
 Date: Sat, 30 May 2026 18:07:31 +0200
-Message-ID: <20260530160239.603172659@linuxfoundation.org>
+Message-ID: <20260530160326.339786939@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +65,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257873-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259255-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,davidgow.net:email]
-X-Rspamd-Queue-Id: BCB38612B1F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,nebelreich.de:email]
+X-Rspamd-Queue-Id: 631C360FF48
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <david@davidgow.net>
+From: Andreas Haarmann-Thiemann <eitschman@nebelreich.de>
 
-[ Upstream commit 8f80b5b227ef9ea422080487715c841856339aed ]
+[ Upstream commit b266bacba796ff5c4dcd2ae2fc08aacf7ab39153 ]
 
-CONFIG_KUNIT_DEBUGFS is totally useless without debugfs, so it should
-depend on CONFIG_DEBUG_FS.
+In gmac_rx() (drivers/net/ethernet/cortina/gemini.c), when
+gmac_get_queue_page() returns NULL for the second page of a multi-page
+fragment, the driver logs an error and continues — but does not free the
+partially assembled skb that was being assembled via napi_build_skb() /
+napi_get_frags().
 
-Link: https://lore.kernel.org/r/20260425034155.53913-2-david@davidgow.net
-Fixes: e2219db280e3 ("kunit: add debugfs /sys/kernel/debug/kunit/<suite>/results display")
-Signed-off-by: David Gow <david@davidgow.net>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Free the in-progress partially assembled skb via napi_free_frags()
+and increase the number of dropped frames appropriately
+and assign the skb pointer NULL to make sure it is not lingering
+around, matching the pattern already used elsewhere in the driver.
+
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Signed-off-by: Andreas Haarmann-Thiemann <eitschman@nebelreich.de>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Link: https://patch.msgid.link/20260505-gemini-ethernet-fix-v2-1-997c31d06079@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/cortina/gemini.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
-index 9eb78ea5e90fc..48d4a2d95fd80 100644
---- a/lib/kunit/Kconfig
-+++ b/lib/kunit/Kconfig
-@@ -16,6 +16,7 @@ if KUNIT
- 
- config KUNIT_DEBUGFS
- 	bool "KUnit - Enable /sys/kernel/debug/kunit debugfs representation"
-+	depends on DEBUG_FS
- 	default y
- 	help
- 	  Enable debugfs representation for kunit.  Currently this consists
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index dbfcbdb8d751a..51108bf65845d 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -1498,6 +1498,11 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 		gpage = gmac_get_queue_page(geth, port, mapping + PAGE_SIZE);
+ 		if (!gpage) {
+ 			dev_err(geth->dev, "could not find mapping\n");
++			if (skb) {
++				napi_free_frags(&port->napi);
++				port->stats.rx_dropped++;
++				skb = NULL;
++			}
+ 			continue;
+ 		}
+ 		page = gpage->page;
 -- 
 2.53.0
 
