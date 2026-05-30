@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOE8BRAnG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:08 +0200
+	id 0J4wGvIcG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83DCE610FB7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5885860F879
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B8F5F306C58C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:03:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AC5BD3001A69
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB4029B78B;
-	Sat, 30 May 2026 18:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B175E33E36A;
+	Sat, 30 May 2026 17:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnSZNA1a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlCTZ2Oh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC48D39A4A4;
-	Sat, 30 May 2026 18:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9037630E829;
+	Sat, 30 May 2026 17:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164205; cv=none; b=tm514e0ygwp10O8J5cJjD/vw/3DSi1H3jkYIcdl23zhf8YXexw7ToJRh6wARKLIAiYLynaik8pyGl3MfeF7MU6uXQ5Cjy9ETPrhF3WarxNntTU5Dze6eeZP1lLxwrgzDIgm0+PiQ1ochrzLODZg1DfNqxDJWaAIYOrs98Xj2pwY=
+	t=1780161612; cv=none; b=qteLT5oea0Q92DPeEIXXL2FMqrVXo28REUZWm1iJGdhYgeSw4uKUF8vJWh+fRr+B+KztqBLF1P/9lthEToqHMj4oTy6uYbDmDuncim6m+zN3UivvTBqdIO+8Vt1CZRY6HJrjliZmiKUem5w6pWS7knVCNhDRvbEK1ppyAZoLEhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164205; c=relaxed/simple;
-	bh=E9j6N06N5SGYh3d8dmfI6msvTwe2EKIjKhgwc8MC43k=;
+	s=arc-20240116; t=1780161612; c=relaxed/simple;
+	bh=CM2IUZLubtRsZ/2AuSK1Hn+TbzfWaXToVw0nI8PotSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L+FyHJPJEl1nDH7eB8Awy4yHlBpRl+XssleQ5eDUfyMa+aXxIUozLdLPUcTTASXUm/mJALTvvi9PzfAhfwGc+3lmN3rXR99vet1eVg/klwsfxF/74HiulVCETo3vm9ZaeKyRU+TzU+uPU9YQVAHvyg8nOZCqJsadkmuQy7OC1tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YnSZNA1a; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC871F00893;
-	Sat, 30 May 2026 18:03:24 +0000 (UTC)
+	 MIME-Version; b=jmgNTRBaKwaTOD22GieCKJsc5oMc/bkaBQQBoRbMxRx2YPFgkrnXGvuAktMbm6JtLvDDRTA9AEA5RWVf1whqsXv0cpr4LzQVJql90s8pBeHg+QLTP8Io8RB0UlFD4+lhR4+OA3k574YYkiDznUe078REwo6YMbZxI2tzTMMrLqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dlCTZ2Oh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A5C1F00893;
+	Sat, 30 May 2026 17:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164204;
-	bh=JDYoJXONz+iS4/8wfE4Qrv+tmr+7g+IFKKEhnYy77ks=;
+	s=korg; t=1780161611;
+	bh=rAkNp028NpTYqyJMnC+S6hvc3dp7CPHh4wMC4Et198I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YnSZNA1atsEOVLeG9Xl8uW9+WfmHin1Q7Yw7eAuYAjODdMqoUc2LemFbV8osh1Ahw
-	 DOkSKvv0zCTmNvJsJoF0cnUsGuVC0UpPOrra9ky/1qBHOFnjZk0d/VhJ0XAcc1PgeL
-	 vC3J7HzZC6fUUDPNxfrio3jZrYxsItlOChbpvMh4=
+	b=dlCTZ2OhaFp68jekr5XLGY4WgCZh3QnlWdkCnFBQCQTakEosOBKU+2PKJUget6ukv
+	 OU2c++6USoLvaPsbfVvqQwbHvZtTLSdDRBCJpmLSe8B9yB/L55vEBJWOPyAljQR+lT
+	 pSfOshJlQLE3I8gWvP6Ha5UdrceWrMpgZfJNPzcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Klinesmith <joshuaklinesmith@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 485/776] ksmbd: fix use-after-free from async crypto on Qualcomm crypto engine
+Subject: [PATCH 6.1 675/969] arm64: dts: imx8mp-icore-mx8mp: Correct PAD settings for PMIC_nINT
 Date: Sat, 30 May 2026 18:03:19 +0200
-Message-ID: <20260530160252.866148887@linuxfoundation.org>
+Message-ID: <20260530160319.136584485@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,104 +66,66 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-258394-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257620-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 83DCE610FB7
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5885860F879
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 3e298897f41c61450c2e7a4f457e8b2485eb35b3 ]
+[ Upstream commit ea8c90f5c7ceeb6657a8fe564aa7b190dce298a6 ]
 
-ksmbd_crypt_message() sets a NULL completion callback on AEAD requests
-and does not handle the -EINPROGRESS return code from async hardware
-crypto engines like the Qualcomm Crypto Engine (QCE). When QCE returns
--EINPROGRESS, ksmbd treats it as an error and immediately frees the
-request while the hardware DMA operation is still in flight. The DMA
-completion callback then dereferences freed memory, causing a NULL
-pointer crash:
+With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
+there might be interrupt storm for this board. Need to set PAD PUE and PU
+together to make pull up work properly.
 
-  pc : qce_skcipher_done+0x24/0x174
-  lr : vchan_complete+0x230/0x27c
-  ...
-  el1h_64_irq+0x68/0x6c
-  ksmbd_free_work_struct+0x20/0x118 [ksmbd]
-  ksmbd_exit_file_cache+0x694/0xa4c [ksmbd]
-
-Use the standard crypto_wait_req() pattern with crypto_req_done() as
-the completion callback, matching the approach used by the SMB client
-in fs/smb/client/smb2ops.c. This properly handles both synchronous
-engines (immediate return) and async engines (-EINPROGRESS followed
-by callback notification).
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Link: https://github.com/openwrt/openwrt/issues/21822
-Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: eefe06b295087 ("arm64: dts: imx8mp: Add Engicam i.Core MX8M Plus SoM")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/auth.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ksmbd/auth.c b/fs/ksmbd/auth.c
-index 647692ca78a28..8fc7a1fffd55a 100644
---- a/fs/ksmbd/auth.c
-+++ b/fs/ksmbd/auth.c
-@@ -1108,6 +1108,7 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
- 	struct smb2_transform_hdr *tr_hdr = smb2_get_msg(iov[0].iov_base);
- 	unsigned int assoc_data_len = sizeof(struct smb2_transform_hdr) - 20;
- 	int rc;
-+	DECLARE_CRYPTO_WAIT(wait);
- 	struct scatterlist *sg;
- 	u8 sign[SMB2_SIGNATURE_SIZE] = {};
- 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
-@@ -1194,12 +1195,12 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi
+index a6319824ea2eb..69558ffefa9a6 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi
+@@ -132,7 +132,7 @@ MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA		0x400001c3
  
- 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
- 	aead_request_set_ad(req, assoc_data_len);
--	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_SLEEP, NULL, NULL);
-+	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
-+				  CRYPTO_TFM_REQ_MAY_SLEEP,
-+				  crypto_req_done, &wait);
- 
--	if (enc)
--		rc = crypto_aead_encrypt(req);
--	else
--		rc = crypto_aead_decrypt(req);
-+	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req) :
-+			     crypto_aead_decrypt(req), &wait);
- 	if (rc)
- 		goto free_iv;
+ 	pinctrl_pmic: pmicgrp {
+ 		fsl,pins = <
+-			MX8MP_IOMUXC_NAND_CE0_B__GPIO3_IO01	  0x41
++			MX8MP_IOMUXC_NAND_CE0_B__GPIO3_IO01	0x1c0
+ 		>;
+ 	};
  
 -- 
 2.53.0
