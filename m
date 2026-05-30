@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-257210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBS9C+EYG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257210-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:37 +0200
+	id gMXlH3MiG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 876A860EDFB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD026105A4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 692E530B25B4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F746302AF2B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C32352027;
-	Sat, 30 May 2026 16:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3E73546F6;
+	Sat, 30 May 2026 17:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5Tt0kTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/dwpIJK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D488E3A3E76;
-	Sat, 30 May 2026 16:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B934D3469FC;
+	Sat, 30 May 2026 17:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160194; cv=none; b=iglRf7n+Uezzi0XJYglmjHt7Wm4M4qmayP1BI7Wcjxt3O3416zx3E0mD0gUIybIK7Bul6oOMND96nPd+mwyNOsQ5JxsWVePE46aPmbKKI/Wv13AmlTJ/vwbNJYlmrRj7u4OQH69Hn68wRxI9xcawnnprpSMMeoUZeXZlMJkHF88=
+	t=1780162718; cv=none; b=rjh4QAMXtA7QpYdNqXq4B0ZhBHr6vWPBOQajWcSfpjDnUMKaP6dC0EqkFp6KdCzBItgmjBa4XoAfMcSiBuZpRVL/GjgEAePdtQtyNm/TiVbkaL4trRCQEYH7ZPL8IWHylluyyAm4uNobxlh/GTovHYY62h8LdsZRhRcO/Ff/UVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160194; c=relaxed/simple;
-	bh=xjSVlGjUIIV/x68C4CFwqMqNazaG8/QXwAxNBtUxHvQ=;
+	s=arc-20240116; t=1780162718; c=relaxed/simple;
+	bh=ITDg/c1NS9gqGGlL1wl7EMDFtY7Glgil+0eIGZiOya4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hB0W6Dn66/F05CU9iQWUNrBEGjd9JLULeFVf83IIGjem4v8ZxVhN2BxHG7JR/st5pA8KFciygnbRH9PTmH62zYB7JLRwoR4oCNB3hDObHRxYTphtTo1SVs07mM6vOfC+n7k0wO03YxYy2YVseP6DTv3nzpQ941lN3EJaew6aTJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5Tt0kTI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241241F00893;
-	Sat, 30 May 2026 16:56:32 +0000 (UTC)
+	 MIME-Version; b=mDGemITthkuvleoHhpVAqNy/FtcZk6Icdh9O6iN6TyzMOYGcJzGVNkB2NSpRKGRjmL2F+FSvBCLZ4zCjh1wNOS8Yupst/KfgCg0DD3bso+utAyyxqW40E1nRdSNRDLVGo4vcsqwMMggXnmwqn66GLk2pFnjXhv14qRV3IHg2rNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/dwpIJK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EF61F00893;
+	Sat, 30 May 2026 17:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160193;
-	bh=xPqJMDokA8I3hZ6Lve2Tc3FmXDTPs9lQXuLUTfSczGI=;
+	s=korg; t=1780162717;
+	bh=ykxOglHZ8gGVqB97LC6uGRfmtHjZHwANNZb5HyHG3f0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i5Tt0kTI5x+dKKl2RV2Hy2HB/oqSHCZ4EbUAnizyCsZqIcv4a/BnbIT+KGZ8V2zpx
-	 FNIy8Q/jePDZN+GYlBr+4Byithy/vxPdYtznl3tjlvdkFDPFZt2TF4iL5bUzEBEDCT
-	 hwfW7p9vivKbQCqiTodMv0Pk6zGVVSUFcbWdQ9GA=
+	b=z/dwpIJKUPiYbW6u6hj/zKyZ0bPc3t/VXYTWkAiGPBbIfpYGfm8gkteOdqd4VJVC6
+	 0SV9cL5Btkw6gnr6ehmYTqGaqT7W+8GWkfnqFK1WiOOJ41XxlWz5FsVzMsxQ4NVy1g
+	 Tu1pHdDfwGSi1fklng5DpvSHPLZj1SfWkKEA5Xag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 233/969] KVM: nSVM: Sync NextRIP to cached vmcb12 after VMRUN of L2
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Klara Modin <klarasmodin@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 043/776] MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow
 Date: Sat, 30 May 2026 17:55:57 +0200
-Message-ID: <20260530160306.894468203@linuxfoundation.org>
+Message-ID: <20260530160241.416741814@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +68,118 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257210-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,orcam.me.uk,bootlin.com,gmail.com,alpha.franken.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257949-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 876A860EDFB
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,orcam.me.uk:email]
+X-Rspamd-Queue-Id: EDD026105A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry@kernel.org>
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-commit 778d8c1b2a6ffe622ddcd3bb35b620e6e41f4da0 upstream.
+commit 841ecc979b18d3227fad5e2d6a1e6f92688776b5 upstream.
 
-After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
-fields written by the CPU from vmcb02 to the cached vmcb12. This is
-because the cached vmcb12 is used as the authoritative copy of some of
-the controls, and is the payload when saving/restoring nested state.
+Owing to Config4.MMUSizeExt and VTLB/FTLB MMU features later MIPSr2+
+cores can have more than 64 TLB entries.  Therefore allocate an array
+for uniquification instead of placing too an small array on the stack.
 
-NextRIP is also written by the CPU (in some cases) after VMRUN, but is
-not sync'd to the cached vmcb12. As a result, it is corrupted after
-save/restore (replaced by the original value written by L1 on nested
-VMRUN). This could cause problems for both KVM (e.g. when injecting a
-soft IRQ) or L1 (e.g. when using NextRIP to advance RIP after emulating
-an instruction).
-
-Fix this by sync'ing NextRIP to the cache after VMRUN of L2, but only
-after completing interrupts (not in nested_sync_control_from_vmcb02()),
-as KVM may update NextRIP (e.g. when re-injecting a soft IRQ).
-
-Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
-CC: stable@vger.kernel.org
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260225005950.3739782-2-yosry@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
+Co-developed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v6.17+: 9f048fa48740: MIPS: mm: Prevent a TLB shutdown on initial uniquification
+Cc: stable@vger.kernel.org # v6.17+
+Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Tested-by: Klara Modin <klarasmodin@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+[ Use memblock_free_ptr() for 5.15.y. ]
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/svm.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/mips/mm/tlb-r4k.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4146,6 +4146,16 @@ static __no_kcsan fastpath_t svm_vcpu_ru
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index d9a5ede8869bd..78e1420471b4e 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -12,6 +12,7 @@
+ #include <linux/init.h>
+ #include <linux/sched.h>
+ #include <linux/smp.h>
++#include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/hugetlb.h>
+ #include <linux/export.h>
+@@ -512,17 +513,26 @@ static int r4k_vpn_cmp(const void *a, const void *b)
+  * Initialise all TLB entries with unique values that do not clash with
+  * what we have been handed over and what we'll be using ourselves.
+  */
+-static void r4k_tlb_uniquify(void)
++static void __ref r4k_tlb_uniquify(void)
+ {
+-	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
+ 	int tlbsize = current_cpu_data.tlbsize;
++	bool use_slab = slab_is_available();
+ 	int start = num_wired_entries();
++	phys_addr_t tlb_vpn_size;
++	unsigned long *tlb_vpns;
+ 	unsigned long vpn_mask;
+ 	int cnt, ent, idx, i;
  
- 	svm_complete_interrupts(vcpu);
+ 	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
+ 	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
  
-+	/*
-+	 * Update the cache after completing interrupts to get an accurate
-+	 * NextRIP, e.g. when re-injecting a soft interrupt.
-+	 *
-+	 * FIXME: Rework svm_get_nested_state() to not pull data from the
-+	 *        cache (except for maybe int_ctl).
-+	 */
-+	if (is_guest_mode(vcpu))
-+		svm->nested.ctl.next_rip = svm->vmcb->control.next_rip;
++	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
++	tlb_vpns = (use_slab ?
++		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
++		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
++	if (WARN_ON(!tlb_vpns))
++		return; /* Pray local_flush_tlb_all() is good enough. */
 +
- 	return svm_exit_handlers_fastpath(vcpu);
+ 	htw_stop();
+ 
+ 	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
+@@ -575,6 +585,10 @@ static void r4k_tlb_uniquify(void)
+ 	tlbw_use_hazard();
+ 	htw_start();
+ 	flush_micro_tlb();
++	if (use_slab)
++		kfree(tlb_vpns);
++	else
++		memblock_free_ptr(tlb_vpns, tlb_vpn_size);
  }
  
+ /*
+-- 
+2.53.0
+
 
 
 
