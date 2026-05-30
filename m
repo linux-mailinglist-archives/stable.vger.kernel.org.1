@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258715-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPUxLvUjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:53 +0200
+	id aO84H9EqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258715-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3618F610924
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6106119B9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7FD1630C939F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:46:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9C192300F271
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D057A3546EA;
-	Sat, 30 May 2026 17:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33FE3ACA4D;
+	Sat, 30 May 2026 18:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJf+OYXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXX0+f7T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD474223DC6;
-	Sat, 30 May 2026 17:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19EA3AB285;
+	Sat, 30 May 2026 18:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163186; cv=none; b=FepKPtGkDJCiZUsfQi2j8YhRFKrLP3ea2ev1HmGRjtyg5J+eYdPsusXui6r05m7xISvVUAnLP7rsDrz2EfyE5TtKHtAdAR1HbQ0++F4Xcc4AYzyKoqx3/S/uGl/jsgbcTE1Wh6gVt+9IW6QQvxRcIni70pVnXkf2gcMBw47TiGs=
+	t=1780165295; cv=none; b=LDUbfg7SyMzmoFou1SxK+Xah0hQWAIq/6R8nkiF4WOHmf+Uvv2GFlisAYhot/0B9avY4Cb+eTaAMs0dJIqQ+Ir2VTQq4EBGmdwyJhvNXjUbJB3b0VYTNiNldupB/MFEERnBigbn9acLsJiEzYhFfZLcsKbweOX3i+wXmPn1jXv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163186; c=relaxed/simple;
-	bh=8QdHsQJ/P8IEAKj/4qeif9KQ9sw38RlDduxy3askZF4=;
+	s=arc-20240116; t=1780165295; c=relaxed/simple;
+	bh=PtdGHaankBqI/NpH4gC/i4ch/ZNQlkYtVll/u1mXnnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mws55t7g/SyCubKs0JXbLCYlFx4DB7HAnKcyAWNGBZz6DF8I+jmYfDnYtiX77R1R9dlJovlf8zC4FuxLOFNV1geyy+xrAaeiiV6dfB0MEmCuZ3c871a1ZYdanrLOgQItnFR/7xDi7/j1Mx/b6eaZIwm50T2/nnKniftwYv/YBxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJf+OYXN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE96B1F00893;
-	Sat, 30 May 2026 17:46:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=arpRVpqZYAg9T6rrdEAFUjZjyDGU+cIV8NPZYuZo4ApNVUdOzOzQ1WwMPvGLanl0XDiqzUnJC7UgI43IAumihQXjHA0V0obJeZPjJ4g4qGJ90ZBKX0uJmzX+xrZzv3i4fU58gfS3rAyN5frEGdshTOEAj77EaYhy+BClm4eocaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXX0+f7T; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEA51F00893;
+	Sat, 30 May 2026 18:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163185;
-	bh=wa4Lsk7qKCOMDEo6YwexRLuceZkZ5+D4KtAfW2BYC8w=;
+	s=korg; t=1780165293;
+	bh=MZepzH3fWlqNLqJoNWG1A0k+A+SsdqA0z/kORB2pDRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rJf+OYXNZzx1MmGsEvyRBoavlliew07od8pjcgpzUOrQwulrG0ZIowID3aFoLtx2N
-	 vCd87b1dMG1K1uGvkxae1mAdTK2GDxfcurgLlKLLbqaw35mUFTG1339hxYxS+xW7jk
-	 bb30Xd5dfWh93pqgtEh8U/1OnygWxh9f5XuwrdRQ=
+	b=MXX0+f7TtwOjSUn4YBk1OXsGNnFnSk7+AudJLfbSTC6vOceWsucLrFnpssx7UFz44
+	 FEpClN7wBdUpscjEMgmgNbTsGhaJyzyTfHrMsQtRRmDo2lk4Bb2w0GUKdGG+UMYba2
+	 CkPyeEyZkvjLsO3luaa7iF7Hh99PTGZdThqeab20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 182/776] ALSA: usb-audio: Avoid false E-MU sample-rate notifications
-Date: Sat, 30 May 2026 17:58:16 +0200
-Message-ID: <20260530160245.203187536@linuxfoundation.org>
+	Melissa Wen <mwen@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 016/589] drm/vc4: Fix memory leak of BO array in hang state
+Date: Sat, 30 May 2026 17:58:17 +0200
+Message-ID: <20260530160225.008743069@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,84 +68,69 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258090-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258715-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 3618F610924
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,igalia.com:email]
+X-Rspamd-Queue-Id: 7E6106119B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-commit fca9c850042a7ab4828ce3a9caa8bc40ea09856a upstream.
+[ Upstream commit f4dfd6847b3e5d24e336bca6057485116d17aea4 ]
 
-snd_emuusb_set_samplerate() unconditionally notifies the E-MU
-SampleRate Extension Unit control after issuing SET_CUR.
+The hang state's BO array is allocated separately with kzalloc() in
+vc4_save_hang_state() but never freed in vc4_free_hang_state(). Add the
+missing kfree() for the BO array before freeing the hang state struct.
 
-If snd_usb_mixer_set_ctl_value() fails, the control value has not
-changed, yet snd_usb_mixer_notify_id() still invalidates the cache and
-emits a value-change event to userspace.
-
-Notify the control only after a successful write.
-
-Fixes: 7d2b451e65d2 ("ALSA: usb-audio - Added functionality for E-mu 0404USB/0202USB/TrackerPre")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260421-alsa-emuusb-samplerate-notify-v1-1-8b63bbc1d7f1@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 214613656b51 ("drm/vc4: Add an interface for capturing the GPU state after a hang.")
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-2-92defc940a29@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/vc4/vc4_gem.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -1561,15 +1561,17 @@ void snd_emuusb_set_samplerate(struct sn
- {
- 	struct usb_mixer_interface *mixer;
- 	struct usb_mixer_elem_info *cval;
-+	int err;
- 	int unitid = 12; /* SampleRate ExtensionUnit ID */
+diff --git a/drivers/gpu/drm/vc4/vc4_gem.c b/drivers/gpu/drm/vc4/vc4_gem.c
+index b641252939d87..788f64154119b 100644
+--- a/drivers/gpu/drm/vc4/vc4_gem.c
++++ b/drivers/gpu/drm/vc4/vc4_gem.c
+@@ -60,6 +60,7 @@ vc4_free_hang_state(struct drm_device *dev, struct vc4_hang_state *state)
+ 	for (i = 0; i < state->user_state.bo_count; i++)
+ 		drm_gem_object_put(state->bo[i]);
  
- 	list_for_each_entry(mixer, &chip->mixer_list, list) {
- 		if (mixer->id_elems[unitid]) {
- 			cval = mixer_elem_list_to_info(mixer->id_elems[unitid]);
--			snd_usb_mixer_set_ctl_value(cval, UAC_SET_CUR,
--						    cval->control << 8,
--						    samplerate_id);
--			snd_usb_mixer_notify_id(mixer, unitid);
-+			err = snd_usb_mixer_set_ctl_value(cval, UAC_SET_CUR,
-+							  cval->control << 8,
-+							  samplerate_id);
-+			if (!err)
-+				snd_usb_mixer_notify_id(mixer, unitid);
- 			break;
- 		}
- 	}
++	kfree(state->bo);
+ 	kfree(state);
+ }
+ 
+-- 
+2.53.0
+
 
 
 
