@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257916-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJcGF8QqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258668-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:56 +0200
+	id IG4kB+4hG2oN/ggAu9opvQ
+	(envelope-from <stable+bounces-257916-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EB8611970
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0B4610459
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F3BF83028EB1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A0C8C308AAFB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A9D32F770;
-	Sat, 30 May 2026 18:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858F332B11F;
+	Sat, 30 May 2026 17:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wuAbFrD4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EC8//nOw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53161241C8C;
-	Sat, 30 May 2026 18:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4369933E36A;
+	Sat, 30 May 2026 17:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165130; cv=none; b=FjPkXshUf7ur6/MxAcZAPxCaqmD2lDw7j14dhSUxSc3OdLtgrTVWQtYGtczln0sbOE94zDGSHuRIP/Zje26I8x5/8rZXKdOXdp/O2sNBui5xCBWmGd5fdyLjYh6rLYzSsDdnvcFPNwvT7by/RMibql5sZ2/UNMzflDnmA1Xlv1g=
+	t=1780162601; cv=none; b=surZnumooESSSAb7pQ/ncIhMQxtUeV4Dsovw+UEyBINM7O5SpUIOXObTTCFM7V3VQX/3WRnxClCkF9P1aGK2JytXyqjSFO3IwZ3aLiGdGyCe/t/wCr9mfZUs1ABlweBAUJG2pnTwWByBg5EuG1rvr5Rk3Gh7CFV9C3zrAQaYO0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165130; c=relaxed/simple;
-	bh=KiSpY4MECdDsFrnZLnspBdkOTyotNAAytKTD7FJSeck=;
+	s=arc-20240116; t=1780162601; c=relaxed/simple;
+	bh=qDEHJIAbN/GXEvaPSYp8t9xEdb6fZoRP+K+elRnyyZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YP0EdKlC98XvgmJYfg49IBDGxo4jWzAKdYMksyXmPEWFxlZRzEnaFLqZ1YkvqXgepga0FumrLesgGoc1sTbq/b/xjnq2nZJaxzvCOs724cYIZ/lcTh/zKGsi8IHfyygoqwP4ZvApgzTekwKx6Xo9OWHXUrDLDB6tEmdREdy60AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wuAbFrD4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6A21F00893;
-	Sat, 30 May 2026 18:18:48 +0000 (UTC)
+	 MIME-Version; b=HgjTFwDjINACumfzoBnNo/YrU1sLbCVj33NY4ziDXcCHw872y312giXK70cTD+p+NcTyaIKIWgh4iF3Ryh6qlHT5wIfLFfu4PXHuseGQOPa+d+6nIbdO2F7WkLnp8Tc/yJld207CvA9nR+9ZLc/Z3OxP/BxbT6ELDEtmnRhuHak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EC8//nOw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868EB1F00893;
+	Sat, 30 May 2026 17:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165129;
-	bh=7ifciCnC27ge/WsO/gzwUMxT6z558VQCm/BVuvmE7+Y=;
+	s=korg; t=1780162600;
+	bh=Z9PknbvIpbRs4tg/EXBwgTABjdYrqgiDHvybmfQvvlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wuAbFrD4dzSN/IfJeTM53p+vStrifxs8U1bDtEO/X80sQg1oCYtUJEpRW/MlXD3lz
-	 PsrdYtpEjr92BPSGV0RoT0usYznDDgE8gKFh8B3UN3o7QRlzwpNna1MLZLQnPSXkA8
-	 19FIhNVqDly5a/z6iDJBgyVGf8cSU+xP9XW8kvpM=
+	b=EC8//nOwcdAoLIuTlyP5lTWp5qTOkKGAA3/KIFNyRDPIl7L1P2Fv0P5xi3RILz212
+	 qbZSQciJXr+3tL3oOl29lty2pQGO+Zq8hn3PPafGp1o4jVqOFQKid+UeP7gJEFHi6E
+	 Kt/LA+2jdK7M681WiNYYWiEgYeFzOcR2mIVIN/Pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	P Praneesh <quic_ppranees@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 759/776] net: dsa: mt7530: sync driver-specific behavior of MT7531 variants
+Subject: [PATCH 6.1 949/969] wifi: ath11k: fix rssi station dump not updated in QCN9074
 Date: Sat, 30 May 2026 18:07:53 +0200
-Message-ID: <20260530160259.358265573@linuxfoundation.org>
+Message-ID: <20260530160326.962950629@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,87 +68,204 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258668-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257916-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,arinc9.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,makrotopia.org:email]
-X-Rspamd-Queue-Id: 02EB8611970
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[quicinc.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9E0B4610459
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-[ Upstream commit 497041d763016c2e8314d2f6a329a9b77c3797ca ]
+[ Upstream commit 031ffa6c2cd305a57ccc6d610f2decd956b2e7f6 ]
 
-MT7531 standalone and MMIO variants found in MT7988 and EN7581 share
-most basic properties. Despite that, assisted_learning_on_cpu_port and
-mtu_enforcement_ingress were only applied for MT7531 but not for MT7988
-or EN7581, causing the expected issues on MMIO devices.
+In QCN9074, station dump signal values display default value which
+is -95 dbm, since there is firmware header change for HAL_RX_MPDU_START
+between QCN9074 and IPQ8074 which cause wrong peer_id fetch from msdu.
+Fix this by updating hal_rx_mpdu_info with corresponding QCN9074 tlv
+format.
 
-Apply both settings equally also for MT7988 and EN7581 by moving both
-assignments form mt7531_setup() to mt7531_setup_common().
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01695-QCAHKSWPL_SILICONZ-1
 
-This fixes unwanted flooding of packets due to unknown unicast
-during DA lookup, as well as issues with heterogenous MTU settings.
-
-Fixes: 7f54cc9772ce ("net: dsa: mt7530: split-off common parts from mt7531_setup")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Chester A. Unal <chester.a.unal@arinc9.com>
-Link: https://patch.msgid.link/89ed7ec6d4fa0395ac53ad2809742bb1ce61ed12.1745290867.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: e824e40d0e84 ("net: dsa: mt7530: fix FDB entries not aging out with short timeout")
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230320110312.20639-1-quic_ppranees@quicinc.com
+Stable-dep-of: 2a2451a34afd ("wifi: ath11k: fix peer resolution on rx path when peer_id=0")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mt7530.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/hal_rx.c | 10 ++++++++-
+ drivers/net/wireless/ath/ath11k/hal_rx.h | 18 +++++++++++++++-
+ drivers/net/wireless/ath/ath11k/hw.c     | 27 ++++++++++++++++--------
+ drivers/net/wireless/ath/ath11k/hw.h     |  2 +-
+ 4 files changed, 45 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 86db6a18c8377..abd61514d3361 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2534,6 +2534,9 @@ mt7531_setup_common(struct dsa_switch *ds)
- 	struct mt7530_priv *priv = ds->priv;
- 	int ret, i;
- 
-+	ds->assisted_learning_on_cpu_port = true;
-+	ds->mtu_enforcement_ingress = true;
-+
- 	mt753x_trap_frames(priv);
- 
- 	/* Enable and reset MIB counters */
-@@ -2673,9 +2676,6 @@ mt7531_setup(struct dsa_switch *ds)
- 	if (ret)
- 		return ret;
- 
--	ds->assisted_learning_on_cpu_port = true;
--	ds->mtu_enforcement_ingress = true;
--
- 	return 0;
+diff --git a/drivers/net/wireless/ath/ath11k/hal_rx.c b/drivers/net/wireless/ath/ath11k/hal_rx.c
+index d1785e71ffc98..47bd937591470 100644
+--- a/drivers/net/wireless/ath/ath11k/hal_rx.c
++++ b/drivers/net/wireless/ath/ath11k/hal_rx.c
+@@ -866,6 +866,12 @@ ath11k_hal_rx_populate_mu_user_info(void *rx_tlv, struct hal_rx_mon_ppdu_info *p
+ 	ath11k_hal_rx_populate_byte_count(rx_tlv, ppdu_info, rx_user_status);
  }
  
++static u16 ath11k_hal_rx_mpduinfo_get_peerid(struct ath11k_base *ab,
++					     struct hal_rx_mpdu_info *mpdu_info)
++{
++	return ab->hw_params.hw_ops->mpdu_info_get_peerid(mpdu_info);
++}
++
+ static enum hal_rx_mon_status
+ ath11k_hal_rx_parse_mon_status_tlv(struct ath11k_base *ab,
+ 				   struct hal_rx_mon_ppdu_info *ppdu_info,
+@@ -1460,9 +1466,11 @@ ath11k_hal_rx_parse_mon_status_tlv(struct ath11k_base *ab,
+ 		break;
+ 	}
+ 	case HAL_RX_MPDU_START: {
++		struct hal_rx_mpdu_info *mpdu_info =
++				(struct hal_rx_mpdu_info *)tlv_data;
+ 		u16 peer_id;
+ 
+-		peer_id = ab->hw_params.hw_ops->mpdu_info_get_peerid(tlv_data);
++		peer_id = ath11k_hal_rx_mpduinfo_get_peerid(ab, mpdu_info);
+ 		if (peer_id)
+ 			ppdu_info->peer_id = peer_id;
+ 		break;
+diff --git a/drivers/net/wireless/ath/ath11k/hal_rx.h b/drivers/net/wireless/ath/ath11k/hal_rx.h
+index f6bae07abfd3e..47e8208b22e13 100644
+--- a/drivers/net/wireless/ath/ath11k/hal_rx.h
++++ b/drivers/net/wireless/ath/ath11k/hal_rx.h
+@@ -405,7 +405,7 @@ struct hal_rx_phyrx_rssi_legacy_info {
+ #define HAL_RX_MPDU_INFO_INFO0_PEERID_WCN6855	GENMASK(15, 0)
+ #define HAL_RX_MPDU_INFO_INFO1_MPDU_LEN		GENMASK(13, 0)
+ 
+-struct hal_rx_mpdu_info {
++struct hal_rx_mpdu_info_ipq8074 {
+ 	__le32 rsvd0;
+ 	__le32 info0;
+ 	__le32 rsvd1[11];
+@@ -413,12 +413,28 @@ struct hal_rx_mpdu_info {
+ 	__le32 rsvd2[9];
+ } __packed;
+ 
++struct hal_rx_mpdu_info_qcn9074 {
++	__le32 rsvd0[10];
++	__le32 info0;
++	__le32 rsvd1[2];
++	__le32 info1;
++	__le32 rsvd2[9];
++} __packed;
++
+ struct hal_rx_mpdu_info_wcn6855 {
+ 	__le32 rsvd0[8];
+ 	__le32 info0;
+ 	__le32 rsvd1[14];
+ } __packed;
+ 
++struct hal_rx_mpdu_info {
++	union {
++		struct hal_rx_mpdu_info_ipq8074 ipq8074;
++		struct hal_rx_mpdu_info_qcn9074 qcn9074;
++		struct hal_rx_mpdu_info_wcn6855 wcn6855;
++	} u;
++} __packed;
++
+ #define HAL_RX_PPDU_END_DURATION	GENMASK(23, 0)
+ struct hal_rx_ppdu_end_duration {
+ 	__le32 rsvd0[9];
+diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
+index 60ac215e06786..6b4355a68e266 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.c
++++ b/drivers/net/wireless/ath/ath11k/hw.c
+@@ -835,26 +835,35 @@ static void ath11k_hw_ipq5018_reo_setup(struct ath11k_base *ab)
+ 			   ring_hash_map);
+ }
+ 
+-static u16 ath11k_hw_ipq8074_mpdu_info_get_peerid(u8 *tlv_data)
++static u16
++ath11k_hw_ipq8074_mpdu_info_get_peerid(struct hal_rx_mpdu_info *mpdu_info)
+ {
+ 	u16 peer_id = 0;
+-	struct hal_rx_mpdu_info *mpdu_info =
+-		(struct hal_rx_mpdu_info *)tlv_data;
+ 
+ 	peer_id = FIELD_GET(HAL_RX_MPDU_INFO_INFO0_PEERID,
+-			    __le32_to_cpu(mpdu_info->info0));
++			    __le32_to_cpu(mpdu_info->u.ipq8074.info0));
+ 
+ 	return peer_id;
+ }
+ 
+-static u16 ath11k_hw_wcn6855_mpdu_info_get_peerid(u8 *tlv_data)
++static u16
++ath11k_hw_qcn9074_mpdu_info_get_peerid(struct hal_rx_mpdu_info *mpdu_info)
++{
++	u16 peer_id = 0;
++
++	peer_id = FIELD_GET(HAL_RX_MPDU_INFO_INFO0_PEERID,
++			    __le32_to_cpu(mpdu_info->u.qcn9074.info0));
++
++	return peer_id;
++}
++
++static u16
++ath11k_hw_wcn6855_mpdu_info_get_peerid(struct hal_rx_mpdu_info *mpdu_info)
+ {
+ 	u16 peer_id = 0;
+-	struct hal_rx_mpdu_info_wcn6855 *mpdu_info =
+-		(struct hal_rx_mpdu_info_wcn6855 *)tlv_data;
+ 
+ 	peer_id = FIELD_GET(HAL_RX_MPDU_INFO_INFO0_PEERID_WCN6855,
+-			    __le32_to_cpu(mpdu_info->info0));
++			    __le32_to_cpu(mpdu_info->u.wcn6855.info0));
+ 	return peer_id;
+ }
+ 
+@@ -1042,7 +1051,7 @@ const struct ath11k_hw_ops qcn9074_ops = {
+ 	.rx_desc_get_attention = ath11k_hw_qcn9074_rx_desc_get_attention,
+ 	.rx_desc_get_msdu_payload = ath11k_hw_qcn9074_rx_desc_get_msdu_payload,
+ 	.reo_setup = ath11k_hw_ipq8074_reo_setup,
+-	.mpdu_info_get_peerid = ath11k_hw_ipq8074_mpdu_info_get_peerid,
++	.mpdu_info_get_peerid = ath11k_hw_qcn9074_mpdu_info_get_peerid,
+ 	.rx_desc_mac_addr2_valid = ath11k_hw_ipq9074_rx_desc_mac_addr2_valid,
+ 	.rx_desc_mpdu_start_addr2 = ath11k_hw_ipq9074_rx_desc_mpdu_start_addr2,
+ 	.get_ring_selector = ath11k_hw_ipq8074_get_tcl_ring_selector,
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index 9f45d061d8265..6a5dd2dbdb3ab 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -263,7 +263,7 @@ struct ath11k_hw_ops {
+ 	struct rx_attention *(*rx_desc_get_attention)(struct hal_rx_desc *desc);
+ 	u8 *(*rx_desc_get_msdu_payload)(struct hal_rx_desc *desc);
+ 	void (*reo_setup)(struct ath11k_base *ab);
+-	u16 (*mpdu_info_get_peerid)(u8 *tlv_data);
++	u16 (*mpdu_info_get_peerid)(struct hal_rx_mpdu_info *mpdu_info);
+ 	bool (*rx_desc_mac_addr2_valid)(struct hal_rx_desc *desc);
+ 	u8* (*rx_desc_mpdu_start_addr2)(struct hal_rx_desc *desc);
+ 	u32 (*get_ring_selector)(struct sk_buff *skb);
 -- 
 2.53.0
 
