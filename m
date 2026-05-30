@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257315-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BQVCwkiG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:41 +0200
+	id uGdrOHQYG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257315-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6132610493
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87FF360ED2F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1E75C30041E2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8DBD93016C6E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDA9348C5E;
-	Sat, 30 May 2026 17:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EADF932D42B;
+	Sat, 30 May 2026 17:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkiO/46y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deSVCEQX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2AE3AA182;
-	Sat, 30 May 2026 17:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FC826F288;
+	Sat, 30 May 2026 17:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163077; cv=none; b=KhR5WMmBBS8xhCbRnlmWmUD7yf1S7KR1qTYHa4axmwo2G9l09/6x79RP1i5gku54fmFa4WH5z9DhPQlJSQAtkFSplV1su2cfJSwkW4HPS5+58Xuj7XmSeTD7A4cWlxAhb/6qWbkA4hgq9jlhCDe/Wv7iaGvr1PprExP4FQvpGRI=
+	t=1780160581; cv=none; b=nvDqRHSQAD2w7zJNTCd7L+Pku+Ads48QjpYRPRJETRiMUrDDinl8EaaOOTNFvvYU8VFuZ7tsDxKyiQCc0F7HlxO75+IlhA5378L57/nKzStPjVEEaEUEZTunPZikYwW4iA9I6nXwYbh4IPcDX4i/HSJyWYD75NJRAJySsVphNro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163077; c=relaxed/simple;
-	bh=5CEERwxLFWm2aOgnfnl+0O0tHTEbij0/Ch36OsQ6xxE=;
+	s=arc-20240116; t=1780160581; c=relaxed/simple;
+	bh=oeEsOr9o4+zAR7XCC21hgwgekYa29p8KNGVMlKni9is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t/rbw/R9R0pe65bsKEPivcwvEkQyApX9TpD5SB61AhVGI0NGHilz3ut7qF9bIu2wth9DjEEZ+cZdCJnY6rjK7ExelnfbGRiY/VFgGR10al8nN9spj24/eeqHol+XkvX/lsH/+mpKK3QsIL/2A41etu3U/+5dAGk5ks/Y/iTf7s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkiO/46y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8DC1F00893;
-	Sat, 30 May 2026 17:44:34 +0000 (UTC)
+	 MIME-Version; b=ZvZqiw8oIt93pw37sXrCWpazMDXtSAH0C6hUGhkIsgVf6kY7ws7z/qS2upxRwlOnUq1DENDYYbbwIqn9hHZCAW33AQkaJMMwFRAeS61Wh1KagImTzIFAOY8yejg0o29bWDDT62I5vQne4xZKaMkWacB5vbwnsmwvsH8bi2X/vWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deSVCEQX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220461F00893;
+	Sat, 30 May 2026 17:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163075;
-	bh=VIwFizWpR5V61nO1JgbumISQbx+OchFfpsyVTYtMEEA=;
+	s=korg; t=1780160580;
+	bh=Owa6/D78hpStHWhQTRuX13GLeBJ7j/szfxc6+k+VQ98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rkiO/46y8pciig5EXCoH69w9vkShDmV8Nyxipdi9qkvdSfZ0sZXWizjZz3mxv36JR
-	 5cInpqChOGo3Cg9k22dH8jsGxsSJHRmR+ODqbEYYZhb69qk3GZmp9bL5bauvUWx8Ij
-	 zLhseXQV1oJuThuyTOWbBzJDdQ7su+ZjUPSkwiMA=
+	b=deSVCEQXApfvSh3rkbreUOYep6JUx2uwaVmq0gG2Hhp/1YZd0EdkWEDtyzgdpXlg7
+	 RL8gyGntbunPhEli0bKYOBH6Wl/fUpDwhxlygIpCeEQkiq1YmsqexuHAPFO5du3O28
+	 mULqvf+6rH4burGOVykR/ryeeuBhzwGaz8tdLSKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 147/776] iio: imu: inv_icm42600: fix odr switch when turning buffer off
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: [PATCH 6.1 337/969] thermal/drivers/sprd: Fix temperature clamping in sprd_thm_temp_to_rawdata
 Date: Sat, 30 May 2026 17:57:41 +0200
-Message-ID: <20260530160244.249752088@linuxfoundation.org>
+Message-ID: <20260530160309.674330097@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +66,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257315-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258057-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tdk.com:email]
-X-Rspamd-Queue-Id: C6132610493
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 87FF360ED2F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit ffd32db8263d2d785a2c419486a450dc80693235 ]
+commit 83c0f9a5d679a6f8d84fc49b2f62ea434ccab4b6 upstream.
 
-ODR switch is done in 2 steps when FIFO is on : change the ODR register
-value and acknowledge change when reading the FIFO ODR change flag.
-When we are switching odr and turning buffer off just afterward, we are
-losing the FIFO ODR change flag and ODR switch is blocked.
+The temperature was never clamped to SPRD_THM_TEMP_LOW or
+SPRD_THM_TEMP_HIGH because the return value of clamp() was not used. Fix
+this by assigning the clamped value to 'temp'.
 
-Fix the issue by force applying any waiting ODR change when turning
-buffer off.
+Casting SPRD_THM_TEMP_LOW and SPRD_THM_TEMP_HIGH to int is also
+redundant and can be removed.
 
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Fixes: 554fdbaf19b1 ("thermal: sprd: Add Spreadtrum thermal driver support")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://patch.msgid.link/20260307102422.306055-1-thorsten.blum@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/thermal/sprd_thermal.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-@@ -377,6 +377,7 @@ out_unlock:
- static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
+--- a/drivers/thermal/sprd_thermal.c
++++ b/drivers/thermal/sprd_thermal.c
+@@ -192,7 +192,7 @@ static int sprd_thm_temp_to_rawdata(int
  {
- 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-+	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
- 	struct device *dev = regmap_get_device(st->map);
- 	unsigned int sensor;
- 	unsigned int *watermark;
-@@ -398,6 +399,8 @@ static int inv_icm42600_buffer_postdisab
+ 	u32 val;
  
- 	mutex_lock(&st->lock);
+-	clamp(temp, (int)SPRD_THM_TEMP_LOW, (int)SPRD_THM_TEMP_HIGH);
++	temp = clamp(temp, SPRD_THM_TEMP_LOW, SPRD_THM_TEMP_HIGH);
  
-+	inv_icm42600_timestamp_apply_odr(ts, 0, 0, 0);
-+
- 	ret = inv_icm42600_buffer_set_fifo_en(st, st->fifo.en & ~sensor);
- 	if (ret)
- 		goto out_unlock;
+ 	/*
+ 	 * According to the thermal datasheet, the formula of converting
 
 
 
