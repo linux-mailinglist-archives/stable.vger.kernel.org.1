@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-257148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WCqhBB0WG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257148-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:49 +0200
+	id sPweNNwhG2oN/ggAu9opvQ
+	(envelope-from <stable+bounces-257927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B664460E8D5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30415610417
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0A60530264BC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:52:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 190CC30FCE2D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5747233FE15;
-	Sat, 30 May 2026 16:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1252A349CCF;
+	Sat, 30 May 2026 17:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LNHA97M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWsevauz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D288F1CAA6C;
-	Sat, 30 May 2026 16:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C279B3469FC;
+	Sat, 30 May 2026 17:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159970; cv=none; b=YQM/nnVFrsL2CC/4xgz3jTnl5AMeYdsuVopZQ5Tb9hunh/kT5Izmp2H3kG8uqlKQoVXztuNU88kW8BxHTy1Qguenl71TgEKlWafOxRYTFwQNhEiXxj6x3KtbSJmC8IFlBjtXderEFK7NHvZ2ud2oj5KwTsRrFUOwnBxWkz6oedU=
+	t=1780162637; cv=none; b=ooKbRs4lBU83hfj8oEkuIGxDcPjYqU6oJ6nevwZJeB3fvSpA6dOW18sbmZv6veO6h+VqOsKQZXSeZ9zpVi/feVsvuPD+2FExQLBjDI7xAJpjBprDq5Oo1QvuaJfd3BMfKb/QzvDC+rZejE/sO09yPXDSBJ7CImH8qJVhFsbwZ08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159970; c=relaxed/simple;
-	bh=pRHp96LBG7woT/irtDjQoeAgJZpF/snULqmK/wDEMZM=;
+	s=arc-20240116; t=1780162637; c=relaxed/simple;
+	bh=MwmqgOCUfZW2kCireG6zp6KL1XsSyQMgEmtKVI141cY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XcFJL62uap5NsDbQuOasyDCNwchQtgftAPGcuWGMMOkAPZzmDaa0fk7gt/AOdRItxVx2WCIC45Qx6qHNAG+fFj8QQO36ATzU7WMqtAIytKTASjgoTJT/cWj44OO+TpfLePM4zGQbuH2fyxX8znU8Fmh2SYPexYokm5lB9qTLbfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LNHA97M; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57AE1F00893;
-	Sat, 30 May 2026 16:52:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OTIbjU135F5IPMzWoIjvhp4ie2oDqy+89yQQMGx9wVn2DyxWMDL17SucAuFABRXZ3maSexOIMjcxlUNdgV0gQDF3sBAuJpiZb9VpE9JXh6abOSPqsP60qJuZz5pkxRg2qvnv/c6ml2oR+n+mIHyinUNHXppRMMudeqhHGJrY54w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWsevauz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123751F00893;
+	Sat, 30 May 2026 17:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159968;
-	bh=sP4ZNGwOL7W6lWHnTPDHbXwz8Dmzcfr4KEpYjUG2bbk=;
+	s=korg; t=1780162636;
+	bh=u54sG+XqeOQkZ0LgRCO+G6O0LSuy6rS0UYTc3lCR3sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0LNHA97MuAHskVF145UJIGKUBuQutUJQRiTHJ/5CiDHPdAYhi3TGS/lWPEMCPthQI
-	 EmgqagBJ3i196djxtSvLTmHnvmpc+GtmufYI50PUZT1Yj0DJ96qR9DHt2MhRlJQDUX
-	 eW402yVJj3HpCc7X07fCElZ9Hcuej+m4Xy0jfNA4=
+	b=QWsevauzEwfnEEfLW6eyGkPgpYzWT5tz7rKzVVb3n0EGiJWrVFd3MUTVatFDL01F6
+	 6hkuf+mRmK4X4r+Mj/PCKq/hOj2d30u+Cw/cl8rkxIagNFs/jKgQCO81FPU3dRxKYP
+	 ZExRGa2ho5Dryrz5/LpC17ak2XU+xD+xJFjc5ZqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 210/969] ALSA: caiaq: Handle probe errors properly
+	Melissa Wen <mwen@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 020/776] drm/vc4: Fix memory leak of BO array in hang state
 Date: Sat, 30 May 2026 17:55:34 +0200
-Message-ID: <20260530160306.266522061@linuxfoundation.org>
+Message-ID: <20260530160240.786130178@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,25 +63,26 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257927-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257148-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,135 +90,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B664460E8D5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 30415610417
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Maíra Canal <mcanal@igalia.com>
 
-commit 28abd224db4a49560b452115bca3672a20e45b2f upstream.
+[ Upstream commit f4dfd6847b3e5d24e336bca6057485116d17aea4 ]
 
-The probe procedure of setup_card() in caiaq driver doesn't treat the
-error cases gracefully, e.g. the error from snd_card_register() calls
-snd_card_free() but continues.  This would lead to a UAF for the
-further calls like snd_usb_caiaq_control_init(), as Berk suggested in
-another patch in the link below.
+The hang state's BO array is allocated separately with kzalloc() in
+vc4_save_hang_state() but never freed in vc4_free_hang_state(). Add the
+missing kfree() for the BO array before freeing the hang state struct.
 
-However, the problem is not only that; in general, this function drops
-the all error handlings (as it's a void function) although its caller
-can propagate an error to snd_probe(), which eventually calls
-snd_card_free() as a proper error path.  That said, we should treat
-each error case in setup_card(), and just return the error code
-promptly, which is then handled later as a fatal error in snd_probe().
-
-This patch achieves it by changing the setup_card() to return an error
-code.  Also, the superfluous snd_card_free() call is removed, too.
-
-Note that card->private_free can be set still safely at returning an
-error.  All called functions in card_free() have checks of the
-unassigned resources or NULL checks.
-
-Fixes: 8e3cd08ed8e5 ("[ALSA] caiaq - add control API and more input features")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20260413034941.1131465-2-berkcgoksel@gmail.com
-Link: https://patch.msgid.link/20260414105916.364073-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 214613656b51 ("drm/vc4: Add an interface for capturing the GPU state after a hang.")
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-2-92defc940a29@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/caiaq/device.c |   33 ++++++++++++++++++++++++---------
- 1 file changed, 24 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/vc4/vc4_gem.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -290,7 +290,7 @@ int snd_usb_caiaq_set_auto_msg(struct sn
- 					  tmp, sizeof(tmp));
+diff --git a/drivers/gpu/drm/vc4/vc4_gem.c b/drivers/gpu/drm/vc4/vc4_gem.c
+index 445d3bab89e0a..87900248d9f8d 100644
+--- a/drivers/gpu/drm/vc4/vc4_gem.c
++++ b/drivers/gpu/drm/vc4/vc4_gem.c
+@@ -60,6 +60,7 @@ vc4_free_hang_state(struct drm_device *dev, struct vc4_hang_state *state)
+ 	for (i = 0; i < state->user_state.bo_count; i++)
+ 		drm_gem_object_put(state->bo[i]);
+ 
++	kfree(state->bo);
+ 	kfree(state);
  }
  
--static void setup_card(struct snd_usb_caiaqdev *cdev)
-+static int setup_card(struct snd_usb_caiaqdev *cdev)
- {
- 	int ret;
- 	char val[4];
-@@ -325,8 +325,10 @@ static void setup_card(struct snd_usb_ca
- 		snd_usb_caiaq_send_command(cdev, EP1_CMD_READ_IO, NULL, 0);
- 
- 		if (!wait_event_timeout(cdev->ep1_wait_queue,
--					cdev->control_state[0] != 0xff, HZ))
--			return;
-+					cdev->control_state[0] != 0xff, HZ)) {
-+			dev_err(dev, "Read timeout for control state\n");
-+			return -EINVAL;
-+		}
- 
- 		/* fix up some defaults */
- 		if ((cdev->control_state[1] != 2) ||
-@@ -347,33 +349,43 @@ static void setup_card(struct snd_usb_ca
- 	    cdev->spec.num_digital_audio_out +
- 	    cdev->spec.num_digital_audio_in > 0) {
- 		ret = snd_usb_caiaq_audio_init(cdev);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(dev, "Unable to set up audio system (ret=%d)\n", ret);
-+			return ret;
-+		}
- 	}
- 
- 	if (cdev->spec.num_midi_in +
- 	    cdev->spec.num_midi_out > 0) {
- 		ret = snd_usb_caiaq_midi_init(cdev);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(dev, "Unable to set up MIDI system (ret=%d)\n", ret);
-+			return ret;
-+		}
- 	}
- 
- #ifdef CONFIG_SND_USB_CAIAQ_INPUT
- 	ret = snd_usb_caiaq_input_init(cdev);
--	if (ret < 0)
-+	if (ret < 0) {
- 		dev_err(dev, "Unable to set up input system (ret=%d)\n", ret);
-+		return ret;
-+	}
- #endif
- 
- 	/* finally, register the card and all its sub-instances */
- 	ret = snd_card_register(cdev->chip.card);
- 	if (ret < 0) {
- 		dev_err(dev, "snd_card_register() returned %d\n", ret);
--		snd_card_free(cdev->chip.card);
-+		return ret;
- 	}
- 
- 	ret = snd_usb_caiaq_control_init(cdev);
--	if (ret < 0)
-+	if (ret < 0) {
- 		dev_err(dev, "Unable to set up control system (ret=%d)\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
- }
- 
- static void card_free(struct snd_card *card)
-@@ -499,8 +511,11 @@ static int init_card(struct snd_usb_caia
- 	snprintf(card->longname, sizeof(card->longname), "%s %s (%s)",
- 		       cdev->vendor_name, cdev->product_name, usbpath);
- 
--	setup_card(cdev);
- 	card->private_free = card_free;
-+	err = setup_card(cdev);
-+	if (err < 0)
-+		return err;
-+
- 	return 0;
- 
-  err_kill_urb:
+-- 
+2.53.0
+
 
 
 
