@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257939-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GK1/Gu0XG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:33 +0200
+	id qMDyFyAhG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257939-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:40:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C087860EBE7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F3B6102A1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:40:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0CD5C303C4F8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:53:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8F4803031B6B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B603403F3;
-	Sat, 30 May 2026 16:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8961139478D;
+	Sat, 30 May 2026 17:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6a9spaT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAttm5mD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1DF332919;
-	Sat, 30 May 2026 16:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2710034389F;
+	Sat, 30 May 2026 17:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160020; cv=none; b=ttGNcamvCEuQrMBzBIKCg4c/AcKMFL1dtVT63wBq0mle6Kod+1oFHMH+UIZkrO+mwcUz5Zv9hWgdRefoF+FLib0hdG+QQU9bVlmIz/aBS+JwNoUmpm7qfibrXpeCwIxmHYXDQV1/1A4xpl+0rHajAvDhy2fJOEFUgMiDoKINTFI=
+	t=1780162685; cv=none; b=Z9vZkwAK0AhjwGg1d0Qgky43n99abZNWRVlXFa5KTb4r/RkAGhtdLJM5Qw+BNntGdAIpRHgTNjdwdqekC0s/aYKP16KDTnPLMf6TsB8o8cwU54DZGtUYz1y7vdjbF4JljRjmIqvQ4i0PNhYf3X4/wnflO+lpJrGiXbHcO7PHHFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160020; c=relaxed/simple;
-	bh=sqaEY4A64PCTmE+8my21YMVmr9SXmYa0Vk+/IVQH0v0=;
+	s=arc-20240116; t=1780162685; c=relaxed/simple;
+	bh=ZUBBkY29XwviwNr3ARfhvuODP1aMcYyi6zSr4TXhsDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qvrbfnpw1LVBJf+LKQ+ZvWJJ5K7KDog8dwAnRISrcrQ4QUntmmOANV8BpO0IIev5bIBt31pKkGH6yTGKGrj9GR8N4fuhekADyAgDpBoM9DoMUxfUESOSXL+6yTKp18JjELhSyguFNmSsqANIP6QgipMO+0Gyuq6oIQPOEE6JxAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6a9spaT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9641F00893;
-	Sat, 30 May 2026 16:53:38 +0000 (UTC)
+	 MIME-Version; b=trwEs+EM0rL2ZCMX0iyBg2fOkHlUHHdvkvo7mZkJ9esdEQ6JYKl98UhNADUihQqpq7tDHiknTmEbuulYWC6YULGrjEXSa0frRAj4HFbQqa/Scqe9TCYUEtYPwl43DxlAUpMSgsH/rrZbrSD9IhMZHX15R7kQUWf89AMB33CMIwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAttm5mD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C321F00893;
+	Sat, 30 May 2026 17:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160019;
-	bh=+lmHU5JW7IBCj09fuLj8QHrutfl14LnmTDr6gGGim34=;
+	s=korg; t=1780162684;
+	bh=Eb4dQoj7aRwo1cHDRK262i/VolhU+w54OEN7tSwwErc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r6a9spaTZRxb+3Twy1WUfEeBgKBSJHH8nq6iyDDqtjs8pxxkf03cQutQbPcQU52Ll
-	 SgpkbaLHMMaiSBIaNembjv8g+NLX6ppTEWR4qD0cnzr7w97kJ/4wdFJU1gyF3HeaK2
-	 yOZnEWX4OS1dM/VIsOv05KTSCkD7w73OjDQ/3iBg=
+	b=sAttm5mDyLQUWJhtqzSq5foLHlCjDZrwUTdOPhcJpzzOQ9C9TY8czkBJYy5pooALW
+	 AaHP2JeMn9ERr+b3ztC1aROXVTAZzXh9VvTnMZ60iRWDIzrO70Ko4SkX4gVqSD9wm1
+	 6WzcOhJOOkjUexfkc5gbeXkY/kPSu17A1x6kYpH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 6.1 222/969] extract-cert: Wrap key_pass with #ifdef USE_PKCS11_ENGINE
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 032/776] xfrm: Wait for RCU readers during policy netns exit
 Date: Sat, 30 May 2026 17:55:46 +0200
-Message-ID: <20260530160306.585144012@linuxfoundation.org>
+Message-ID: <20260530160241.107157604@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257162-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257939-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C087860EBE7
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,strlen.de:email,secunet.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 56F3B6102A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Steffen Klassert <steffen.klassert@secunet.com>
 
-commit 4f96b7c68a9904e01049ef610d701b382dca9574 upstream.
+[ Upstream commit 069daad4f2ae9c5c108131995529d5f02392c446 ]
 
-A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
-in clang under a new subwarning, -Wunused-but-set-global, points out an
-unused static global variable in certs/extract-cert.c:
+xfrm_policy_fini() frees the policy_bydst hash tables after flushing the
+policy work items and deleting all policies, but it does not wait for
+concurrent RCU readers to leave their read-side critical sections first.
 
-  certs/extract-cert.c:46:20: error: variable 'key_pass' set but not used [-Werror,-Wunused-but-set-global]
-     46 | static const char *key_pass;
-        |                    ^
+The policy_bydst tables are published via rcu_assign_pointer() and are
+looked up through rcu_dereference_check(), so netns teardown must also
+wait for an RCU grace period before freeing the table memory.
 
-After commit 558bdc45dfb2 ("sign-file,extract-cert: use pkcs11 provider
-for OPENSSL MAJOR >= 3"), key_pass is only used with the OpenSSL engine
-API, not the new provider API. Wrap key_pass's declaration and
-assignment with '#ifdef USE_PKCS11_ENGINE' so that it is only included
-with its use to clear up the warning. While this is a little uglier than
-just marking key_pass with the unused attribute, this will make it
-easier to clean up all code associated with the use of the engine API if
-it were ever removed in the future. While in the area, use a tab for
-the key_pass assignment line to match the rest of the file.
+Fix this by adding synchronize_rcu() before freeing the policy hash tables.
 
-Cc: stable@vger.kernel.org
-Fixes: 558bdc45dfb2 ("sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3")
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Tested-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://patch.msgid.link/20260325-certs-extract-cert-key_pass-unused-but-set-global-v1-1-ecf94326d532@kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e1e551bc5630 ("xfrm: policy: prepare policy_bydst hash for rcu lookups")
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- certs/extract-cert.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/xfrm/xfrm_policy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/certs/extract-cert.c
-+++ b/certs/extract-cert.c
-@@ -43,7 +43,9 @@ void format(void)
- 	exit(2);
- }
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 851029a5383a2..29b3db09e19cf 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -4125,6 +4125,8 @@ static void xfrm_policy_fini(struct net *net)
+ #endif
+ 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_MAIN, false);
  
-+#ifdef USE_PKCS11_ENGINE
- static const char *key_pass;
-+#endif
- static BIO *wb;
- static char *cert_dst;
- static int kbuild_verbose;
-@@ -132,7 +134,9 @@ int main(int argc, char **argv)
++	synchronize_rcu();
++
+ 	WARN_ON(!list_empty(&net->xfrm.policy_all));
  
- 	kbuild_verbose = atoi(getenv("KBUILD_VERBOSE")?:"0");
- 
--        key_pass = getenv("KBUILD_SIGN_PIN");
-+#ifdef USE_PKCS11_ENGINE
-+	key_pass = getenv("KBUILD_SIGN_PIN");
-+#endif
- 
- 	if (argc != 3)
- 		format();
+ 	for (dir = 0; dir < XFRM_POLICY_MAX; dir++) {
+-- 
+2.53.0
+
 
 
 
