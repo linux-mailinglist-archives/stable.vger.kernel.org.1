@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-259060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257710-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKcPCsExG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:45 +0200
+	id qCeqCNcdG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257710-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CF5612A44
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD00C60FADE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B2FA30B5B06
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:40:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AEE9E300FA9F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF20733AD99;
-	Sat, 30 May 2026 18:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C41D33E36A;
+	Sat, 30 May 2026 17:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrDg52Jd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLMhKnwo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA7026738C;
-	Sat, 30 May 2026 18:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC8533F8B4;
+	Sat, 30 May 2026 17:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166455; cv=none; b=DXMd53wdhtqqkQkyu1WVAaU1fHsTv589FVvHa2qEzFZMbfpbPVkaWg5zClB36yWL4VLOXD+WsqkrAIv0GNprHihFSxV2OQ5aG8NKcrEhrPxQiwkIq60k5dd+u/m4GXNAlI1HprxlkaeHZifmE6jpbOD6uJhVF55gkSoQBqZftWs=
+	t=1780161913; cv=none; b=q/cJmlZMNjEUSbNOBgo63Vm3GK2a7Ai9nqkZ9FvLh3ZRgFzYo5RETg0HoQ7vZJGKQLLXNc0Ujf0BIrNJxkmQv8xk+q2GOgoix1UipSuOl6uurT6+wgltK30BAQk+dhse6ojtZ0gX9vb5abdzrFxfwNVG6CicFr5rQw18KB5WeE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166455; c=relaxed/simple;
-	bh=Mjv+qtWdMAsPIZnjo42cpkwkr5DhOREmC3kl3pDnnk8=;
+	s=arc-20240116; t=1780161913; c=relaxed/simple;
+	bh=aw+obntB1e6T8DrnuRZ4rwn0OkDg1t0iviqTVSjxXEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=neQ93WcBt/B4Kk0V1sAFZ6jMh6F6dEHEnj4FgQDdPMvmXiMq0kjjiDM2mSrnZz1DodnxkbuPfMK0fgCp5rFkLUtwgq1b5IvfceS3+4U4gk/wcoObMyb5NYU/PBRiWCaDjGiBH4u4kKCYupoe+M8pZcphoei9Dg7TLv/p7HsTFos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrDg52Jd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FBE1F00893;
-	Sat, 30 May 2026 18:40:53 +0000 (UTC)
+	 MIME-Version; b=FU5Fna8hBvIcY5ZrjCU+Bd7d0FpmNOSedWIrrhxJlbnMYDlxJQD3YLSTDlKk4vTOzu0nHkhMsLFPWdc27RCZBY6BURH1enzU7Dcw6RQUQ1StmtVbYshz6xdizujS9If/oivR7shhs5H59sxLpTwv7o9Ox74R4FaW9J4PTrgTO0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLMhKnwo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAC21F00893;
+	Sat, 30 May 2026 17:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166454;
-	bh=+YoW6uHylO19swFd/6GAIWIS/Fe8OZYcNt9TisJCCHA=;
+	s=korg; t=1780161912;
+	bh=KvHgZ7b0upB/yAW458R1GcXyg2J18i0yI44K5vnyJg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yrDg52Jd4xAO29RH3KT3eVDYs+A+XH0aDgtr7e9N9A/DU3+4KMzA8Fu5Agyvb6umD
-	 3SDIv0tBOJ9c9+sdqmNmp1AgQkBtW8LpYSIIDIG3zXuhjEResPzqSV4SoDy9sqdwMh
-	 UwnktcPpa72bu/7bP2hnUQbOD2IrkHL685+YdQHA=
+	b=SLMhKnwoCmbMUayV3gjXSuHZyUdq5kIwu9nQ/SK/aOOko/fPnuzl+nkGmSOeRQnMd
+	 t9mMVO02gk0knWinVygj0SmvQ8QzzLzd6X3TcFWj/8q5pGxAu7o6l7H/yHwIOE9hDb
+	 ysVsl1/pnjIAqWFIn9mhrxRGGUXjHLxbj1AL+wkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 378/589] mtd: rawnand: sunxi: fix sunxi_nfc_hw_ecc_read_extra_oob
+Subject: [PATCH 6.1 735/969] nvme-pci: fix missed admin queue sq doorbell write
 Date: Sat, 30 May 2026 18:04:19 +0200
-Message-ID: <20260530160234.742236566@linuxfoundation.org>
+Message-ID: <20260530160320.846389394@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +65,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-259060-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257710-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 99CF5612A44
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BD00C60FADE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Genoud <richard.genoud@bootlin.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 848c13996c55fe4ea6bf5acc3ce6c8c5c944b5f6 ]
+[ Upstream commit 1cc4cdae2a3b7730d462d69e30f213fd2efe7807 ]
 
-When dumping the OOB, the bytes at the end where actually copied from
-the beginning of the OOB instead of current_offset.
+We can batch admin commands submitted through io_uring_cmd passthrough,
+which means bd->last may be false and skips the doorbell write to
+aggregate multiple commands per write. If a subsequent command can't be
+dispatched for whatever reason, we have to provide the blk-mq ops'
+commit_rqs callback in order to ensure we properly update the doorbell.
 
-That leads to something like:
-OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
-OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
-OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
-OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
-OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
-OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
-OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
-OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
-instead of:
-OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
-OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
-OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
-OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
-OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-(example with BCH16, user data [8,0], no scrambling)
-
-*cur_off (offset from the beginning of the page) was compared to offset
-(offset from the beginning of the OOB), and then, the
-nand_change_read_column_op() sets the current position to the beginning
-of the OOB instead of OOB+offset
-
-Fixes: 15d6f118285f ("mtd: rawnand: sunxi: Stop supporting ECC_HW_SYNDROME mode")
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 58e5bdeb9c2b ("nvme: enable uring-passthrough for admin commands")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/sunxi_nand.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/nvme/host/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/nand/raw/sunxi_nand.c b/drivers/mtd/nand/raw/sunxi_nand.c
-index 782190531f2f0..7ace279778db1 100644
---- a/drivers/mtd/nand/raw/sunxi_nand.c
-+++ b/drivers/mtd/nand/raw/sunxi_nand.c
-@@ -887,9 +887,9 @@ static void sunxi_nfc_hw_ecc_read_extra_oob(struct nand_chip *nand,
- 	if (len <= 0)
- 		return;
- 
--	if (!cur_off || *cur_off != offset)
--		nand_change_read_column_op(nand, mtd->writesize, NULL, 0,
--					   false);
-+	if (!cur_off || *cur_off != (offset + mtd->writesize))
-+		nand_change_read_column_op(nand, mtd->writesize + offset,
-+					   NULL, 0, false);
- 
- 	if (!randomize)
- 		sunxi_nfc_read_buf(nand, oob + offset, len);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 394673a7f75cb..660e8fbb18136 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1756,6 +1756,7 @@ static int nvme_create_queue(struct nvme_queue *nvmeq, int qid, bool polled)
+ static const struct blk_mq_ops nvme_mq_admin_ops = {
+ 	.queue_rq	= nvme_queue_rq,
+ 	.complete	= nvme_pci_complete_rq,
++	.commit_rqs	= nvme_commit_rqs,
+ 	.init_hctx	= nvme_admin_init_hctx,
+ 	.init_request	= nvme_pci_init_request,
+ 	.timeout	= nvme_timeout,
 -- 
 2.53.0
 
