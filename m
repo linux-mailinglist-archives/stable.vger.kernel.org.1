@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-257069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8D3kLiMVG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:39 +0200
+	id gIgoGvoTG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236D060E74D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C247460E603
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E553B302AD34
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:46:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A822C301572F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253C339989B;
-	Sat, 30 May 2026 16:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5051DE4EF;
+	Sat, 30 May 2026 16:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7vnkUru"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/osELQS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38FF30E853;
-	Sat, 30 May 2026 16:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEE7349CCF;
+	Sat, 30 May 2026 16:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159593; cv=none; b=WWj7aAcjR0BExkF/vsUOujdMUhi4FDW6jganOEjyFaYpUPlakALo3sN/dNnTkyouC7v5bZdXTnlapFrCC0XK1ystr4qOAdoWmK+Bvt5OdQkv4+RS1sqLdDSvkGYg6l3sytjqzzIYQ8iau9JcZlXz+pgabaSoRDqiHsCzc381b9s=
+	t=1780159137; cv=none; b=HYBYBCCb+wh6rpv6G3cKRuY/17b5cS2e3RKZ14pKBvJkwR4vLzNKIjjSZlw9p6injkfyiUhk3jlSLjhx06+18E9iY8wqCdy4FAZMIA7GVRdvYzOiU5FZ5kr/sZthXvhgtRy97ImJfiVArnRC1m9LabqH2mKbuoRBlGuvxzlyVyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159593; c=relaxed/simple;
-	bh=+pVl0Q40Oz2b99Y3IVU4IpNXIhveJnA74txKUyzpJzU=;
+	s=arc-20240116; t=1780159137; c=relaxed/simple;
+	bh=i68g4yOTjEqvVVqmj+9P4Krh64t2p9f+am9rqziRScM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IyLuyk/BUgSD3GzvfFRdJleVxIm8uPz8WbnH8i8xRMmX0Gst+UTJ+4hAoeakKD8YgdFkk/jh1UW0f32MiQQIsUQKMjPawizftIePbOqCpB8w6wq6Vb9HGZne2h/e+8JwnJfZEodg25keH8kNDJni4nEzN3yd5txUvkvIsh3thk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7vnkUru; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAC21F00893;
-	Sat, 30 May 2026 16:46:28 +0000 (UTC)
+	 MIME-Version; b=U9IQBfOscUx0ILCMscc7wR5BpTHfrF78pdLTcgj+fBhr6tEigZO0u7dMYh6gMRy29bOKSynH6TdqCgvjySMJgYU7CIbWZ2Rck8+UO4x9XLCjDy9DlrJbS/cAEHpbpnDftIBiz/ydm2BX3rkl9mVJjsFCxmK2rTo+tNpSd3TvwK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/osELQS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92411F00893;
+	Sat, 30 May 2026 16:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159591;
-	bh=nPICpTJ+r+Jy2iQhuc1ftVJnzlOh1IeZIPJzwc3gupk=;
+	s=korg; t=1780159133;
+	bh=SjLwDYdXQJ9Qu3rS4F6mA+21RgsRJqnkIcLz5GJ968U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r7vnkUrurbSZkz43pDJ8z16zxONkuV1Gdv9kqK5BED0kGKUduTmVJMSDu/OT0f/Le
-	 2I8OAhXv1yTH2gRvU2x4mj8eNsufjSF3QSCJXhsKJvdLrT6CEZiptA9+r2sR6bPofx
-	 htVLOt/sv3rv10WfZL2A9s2Vzx7ACU++eUXtJ96g=
+	b=1/osELQSTND7BVBl9Y+MSRF+HPbcMw5+10XZ4uR5r4BJlSwj5Fv+OkinDUIxe+5rt
+	 wIoWBA9Ku50PmzNv/2Ug1LDJpvo3OA29V2v5t/JZoHv1cxT+nQOeUN0talvejLC5z7
+	 X8dmCsQczmsRUkTDu6UkYfqtczPZn5n/dTJrETZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gurpreet Shergill <giki.shergill@proton.me>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Li hongliang <1468888505@139.com>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/969] nf_tables: nft_dynset: fix possible stateful expression memleak in error path
-Date: Sat, 30 May 2026 17:53:39 +0200
-Message-ID: <20260530160302.954447360@linuxfoundation.org>
+Subject: [PATCH 6.1 096/969] rxrpc: proc: size address buffers for %pISpc output
+Date: Sat, 30 May 2026 17:53:40 +0200
+Message-ID: <20260530160302.982131678@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -65,35 +69,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,proton.me,netfilter.org,strlen.de,139.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-257069-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257039-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 236D060E74D
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,iscas.ac.cn:email,auristor.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email]
+X-Rspamd-Queue-Id: C247460E603
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,103 +105,153 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit 0548a13b5a145b16e4da0628b5936baf35f51b43 ]
+[ Upstream commit a44ce6aa2efb61fe44f2cfab72bb01544bbca272 ]
 
-If cloning the second stateful expression in the element via GFP_ATOMIC
-fails, then the first stateful expression remains in place without being
-released.
+The AF_RXRPC procfs helpers format local and remote socket addresses into
+fixed 50-byte stack buffers with "%pISpc".
 
-   unreferenced object (percpu) 0x607b97e9cab8 (size 16):
-     comm "softirq", pid 0, jiffies 4294931867
-     hex dump (first 16 bytes on cpu 3):
-       00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-     backtrace (crc 0):
-       pcpu_alloc_noprof+0x453/0xd80
-       nft_counter_clone+0x9c/0x190 [nf_tables]
-       nft_expr_clone+0x8f/0x1b0 [nf_tables]
-       nft_dynset_new+0x2cb/0x5f0 [nf_tables]
-       nft_rhash_update+0x236/0x11c0 [nf_tables]
-       nft_dynset_eval+0x11f/0x670 [nf_tables]
-       nft_do_chain+0x253/0x1700 [nf_tables]
-       nft_do_chain_ipv4+0x18d/0x270 [nf_tables]
-       nf_hook_slow+0xaa/0x1e0
-       ip_local_deliver+0x209/0x330
+That is too small for the longest current-tree IPv6-with-port form the
+formatter can produce. In lib/vsprintf.c, the compressed IPv6 path uses a
+dotted-quad tail not only for v4mapped addresses, but also for ISATAP
+addresses via ipv6_addr_is_isatap().
 
-Fixes: 563125a73ac3 ("netfilter: nftables: generalize set extension to support for several expressions")
-Reported-by: Gurpreet Shergill <giki.shergill@proton.me>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+As a result, a case such as
+
+  [ffff:ffff:ffff:ffff:0:5efe:255.255.255.255]:65535
+
+is possible with the current formatter. That is 50 visible characters, so
+51 bytes including the trailing NUL, which does not fit in the existing
+char[50] buffers used by net/rxrpc/proc.c.
+
+Size the buffers from the formatter's maximum textual form and switch the
+call sites to scnprintf().
+
+Changes since v1:
+- correct the changelog to cite the actual maximum current-tree case
+  explicitly
+- frame the proof around the ISATAP formatting path instead of the earlier
+  mapped-v4 example
+
+Fixes: 75b54cb57ca3 ("rxrpc: Add IPv6 support")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Anderson Nascimento <anderson@allelesecurity.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-22-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted address accessors and variable declarations ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |  2 ++
- net/netfilter/nf_tables_api.c     |  4 ++--
- net/netfilter/nft_dynset.c        | 10 +++++++++-
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ net/rxrpc/proc.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 38c74f9fcce22..dafa0a32e6e1d 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -838,6 +838,8 @@ void *nft_set_elem_init(const struct nft_set *set,
- 			u64 timeout, u64 expiration, gfp_t gfp);
- int nft_set_elem_expr_clone(const struct nft_ctx *ctx, struct nft_set *set,
- 			    struct nft_expr *expr_array[]);
-+void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
-+			       struct nft_set_elem_expr *elem_expr);
- void nft_set_elem_destroy(const struct nft_set *set, void *elem,
- 			  bool destroy_expr);
- void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index fb3d529ebf5ab..0c42242826387 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6025,8 +6025,8 @@ static void __nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
- 	}
- }
+diff --git a/net/rxrpc/proc.c b/net/rxrpc/proc.c
+index 245418943e01c..47d36554ad311 100644
+--- a/net/rxrpc/proc.c
++++ b/net/rxrpc/proc.c
+@@ -10,6 +10,10 @@
+ #include <net/af_rxrpc.h>
+ #include "ar-internal.h"
  
--static void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
--				      struct nft_set_elem_expr *elem_expr)
-+void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
-+			       struct nft_set_elem_expr *elem_expr)
- {
- 	struct nft_expr *expr;
- 	u32 size;
-diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
-index 953aba871f45c..5f58ac874005a 100644
---- a/net/netfilter/nft_dynset.c
-+++ b/net/netfilter/nft_dynset.c
-@@ -30,18 +30,26 @@ static int nft_dynset_expr_setup(const struct nft_dynset *priv,
- 				 const struct nft_set_ext *ext)
- {
- 	struct nft_set_elem_expr *elem_expr = nft_set_ext_expr(ext);
-+	struct nft_ctx ctx = {
-+		.net	= read_pnet(&priv->set->net),
-+		.family	= priv->set->table->family,
-+	};
- 	struct nft_expr *expr;
- 	int i;
- 
- 	for (i = 0; i < priv->num_exprs; i++) {
- 		expr = nft_setelem_expr_at(elem_expr, elem_expr->size);
- 		if (nft_expr_clone(expr, priv->expr_array[i], GFP_ATOMIC) < 0)
--			return -1;
-+			goto err_out;
- 
- 		elem_expr->size += priv->expr_array[i]->ops->size;
- 	}
- 
- 	return 0;
-+err_out:
-+	nft_set_elem_expr_destroy(&ctx, elem_expr);
++#define RXRPC_PROC_ADDRBUF_SIZE \
++	(sizeof("[xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:255.255.255.255]") + \
++	 sizeof(":12345"))
 +
-+	return -1;
- }
+ static const char *const rxrpc_conn_states[RXRPC_CONN__NR_STATES] = {
+ 	[RXRPC_CONN_UNUSED]			= "Unused  ",
+ 	[RXRPC_CONN_CLIENT]			= "Client  ",
+@@ -55,7 +59,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+ 	unsigned long timeout = 0;
+ 	rxrpc_seq_t tx_hard_ack, rx_hard_ack;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
  
- static void *nft_dynset_new(struct nft_set *set, const struct nft_expr *expr,
+ 	if (v == &rxnet->calls) {
+ 		seq_puts(seq,
+@@ -72,7 +76,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 	if (rx) {
+ 		local = READ_ONCE(rx->local);
+ 		if (local)
+-			sprintf(lbuff, "%pISpc", &local->srx.transport);
++			scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 		else
+ 			strcpy(lbuff, "no_local");
+ 	} else {
+@@ -81,7 +85,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
+ 
+ 	peer = call->peer;
+ 	if (peer)
+-		sprintf(rbuff, "%pISpc", &peer->srx.transport);
++		scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
+ 	else
+ 		strcpy(rbuff, "no_connection");
+ 
+@@ -152,7 +156,7 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_connection *conn;
+ 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == &rxnet->conn_proc_list) {
+ 		seq_puts(seq,
+@@ -171,9 +175,9 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
+ 		goto print;
+ 	}
+ 
+-	sprintf(lbuff, "%pISpc", &conn->params.local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &conn->params.local->srx.transport);
+ 
+-	sprintf(rbuff, "%pISpc", &conn->params.peer->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &conn->params.peer->srx.transport);
+ print:
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %-47.47s %4x %08x %s %3u"
+@@ -210,7 +214,7 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_peer *peer;
+ 	time64_t now;
+-	char lbuff[50], rbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -223,9 +227,9 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
+ 
+ 	peer = list_entry(v, struct rxrpc_peer, hash_link);
+ 
+-	sprintf(lbuff, "%pISpc", &peer->local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &peer->local->srx.transport);
+ 
+-	sprintf(rbuff, "%pISpc", &peer->srx.transport);
++	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
+ 
+ 	now = ktime_get_seconds();
+ 	seq_printf(seq,
+@@ -335,7 +339,7 @@ const struct seq_operations rxrpc_peer_seq_ops = {
+ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
+ {
+ 	struct rxrpc_local *local;
+-	char lbuff[50];
++	char lbuff[RXRPC_PROC_ADDRBUF_SIZE];
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq,
+@@ -346,7 +350,7 @@ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
+ 
+ 	local = hlist_entry(v, struct rxrpc_local, link);
+ 
+-	sprintf(lbuff, "%pISpc", &local->srx.transport);
++	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
+ 
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %3u %3u\n",
 -- 
 2.53.0
 
