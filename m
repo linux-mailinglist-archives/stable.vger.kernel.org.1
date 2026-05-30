@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-258847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258242-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6A48DhMuG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258847-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:03 +0200
+	id iJfRGG8kG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258242-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF40E6120FA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287D1610A45
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 60653312B890
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 731423007496
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A833C819D;
-	Sat, 30 May 2026 18:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF370342CA7;
+	Sat, 30 May 2026 17:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwrtwCUZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJnC0Cx6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F693D171A;
-	Sat, 30 May 2026 18:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6413546EA;
+	Sat, 30 May 2026 17:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165739; cv=none; b=NTAXga+zGiB4CuHjVQn99EUphtj97SUNN1uw/Jprf7SB81HIY19X1qz537p4ABDQ3SwLz3mcLpiGQZGWeHv6PU2CO6bYHXytC535CREdu7DVEvalzP56JSnIaRk2Ci582az9S5M0xzozb9EnrSMQiTZ5vIIeBRZHNnmE2WS94s0=
+	t=1780163692; cv=none; b=hM1HAdFEd1YHGNZqwrjpezACXABA2dl5QnIvfVW2PzpvykfrJ2/o+LLC8SvVK5Wp9rjndz72PwZpi1JEjjmpAXXC7aeZKOmP18iC7zNTdloW3UXYk7va4wxagF0mBWd2DwzLhjLDfl1HWWKR0CRKjAU//DuU8FZqy1HTW8XsQ0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165739; c=relaxed/simple;
-	bh=XhmBOsi2QmBj6qsEXtX0N6N101MGm4UItATLe0hEvBk=;
+	s=arc-20240116; t=1780163692; c=relaxed/simple;
+	bh=TUu3ZineOpZ3oOm1jOfQNeGRCb1y1iu+DEYpgHzJcyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mEU1Wop/lMX/YyKKIknOsl7Z1zqjJYdSiiMNX9WjVpnb996rhsvzPm+hN99KHw0BAYeurOji29DzQBwiA5uQwnL9FW/y0s3VE/H4NcSSXij448smkJ0QafDkVQC9GNPupZQJ79fbM/NlyLOiRjxj26067h9d7etYCbxAFpMHMs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwrtwCUZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF87A1F00893;
-	Sat, 30 May 2026 18:28:57 +0000 (UTC)
+	 MIME-Version; b=C0hasvLM5rY3kreUp1gwFnzHr7USbhHAY/80CFXUWyiwYWdYxRl++OIrPCwR89n+9rykq9jE/1rHThha1nlHb1XhagXAfpGUvD2c+PliCaLVLrXjSGBITkZf1d44ig8NneXRvO7Lu8wAox5ic6eGVe9kul1Pjre9n7ZyWwsPeF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJnC0Cx6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31EA1F00893;
+	Sat, 30 May 2026 17:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165738;
-	bh=rV1sQxgCbLCZRxTYMdi+pN7sdK8OZOgIdwPGQzdz2BE=;
+	s=korg; t=1780163691;
+	bh=oDX6V1MlxLU5Nz5huQZ1a5GQ1SUlS8VZ8f8dHvXoiL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CwrtwCUZj1ViKt6tctGM49XLuWLlT/CuP9UboDheksZf/3RxMzePLmmQaT4CeTmQV
-	 ddrounx/RdwbhJEoJfU9VvJlZ1qpDdpcbuH+20IdgNny4BxLD37RGsVnyHkVBzZY9i
-	 H5WvgeBRIQ3H4BYtMPqnUjmicjwGt/4KDLGVj1bw=
+	b=vJnC0Cx6hY3mhdPkmZGm+3r/tlhucwNMqesXjSVo3Zk4G5B3DreeqzjABYxAK2AMa
+	 rhl+VvNPcVm6pMBfoxDauNbDhzl78Vhs5DYhtYf3dfXMAAPbWoxAAR7q3z5FVXQwxs
+	 DSQHw7OsiPVUr5/+FFrkjZey/9fL3jGIoz2rUO78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 166/589] ALSA: caiaq: Handle probe errors properly
-Date: Sat, 30 May 2026 18:00:47 +0200
-Message-ID: <20260530160229.153561609@linuxfoundation.org>
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.15 334/776] libceph: Fix slab-out-of-bounds access in auth message processing
+Date: Sat, 30 May 2026 18:00:48 +0200
+Message-ID: <20260530160249.204458907@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,159 +65,94 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258847-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258242-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
-X-Rspamd-Queue-Id: AF40E6120FA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tu-ilmenau.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 287D1610A45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-commit 28abd224db4a49560b452115bca3672a20e45b2f upstream.
+commit 1c439de70b1c3eb3c6bffa8245c16b9fc318f114 upstream.
 
-The probe procedure of setup_card() in caiaq driver doesn't treat the
-error cases gracefully, e.g. the error from snd_card_register() calls
-snd_card_free() but continues.  This would lead to a UAF for the
-further calls like snd_usb_caiaq_control_init(), as Berk suggested in
-another patch in the link below.
+If a (potentially corrupted) message of type CEPH_MSG_AUTH_REPLY
+contains a positive value in its result field, it is treated as an
+error code by ceph_handle_auth_reply() and returned to
+handle_auth_reply(). Thereafter, an attempt is made to send the
+preallocated message of type CEPH_MSG_AUTH, where the returned value is
+interpreted as the size of the front segment to send. If the result
+value in the message is greater than the size of the memory buffer
+allocated for the front segment, an out-of-bounds access occurs, and
+the content of the memory region beyond this buffer is sent out.
 
-However, the problem is not only that; in general, this function drops
-the all error handlings (as it's a void function) although its caller
-can propagate an error to snd_probe(), which eventually calls
-snd_card_free() as a proper error path.  That said, we should treat
-each error case in setup_card(), and just return the error code
-promptly, which is then handled later as a fatal error in snd_probe().
+This patch fixes the issue by treating only negative values in the
+result field as errors. Positive values are therefore treated as success
+in the same way as a zero value. Additionally, a BUG_ON is added to
+__send_prepared_auth_request() comparing the len parameter to
+front_alloc_len to prevent sending the message if it exceeds the bounds
+of the allocation and to make it easier to catch any logic flaws leading
+to this.
 
-This patch achieves it by changing the setup_card() to return an error
-code.  Also, the superfluous snd_card_free() call is removed, too.
-
-Note that card->private_free can be set still safely at returning an
-error.  All called functions in card_free() have checks of the
-unassigned resources or NULL checks.
-
-Fixes: 8e3cd08ed8e5 ("[ALSA] caiaq - add control API and more input features")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20260413034941.1131465-2-berkcgoksel@gmail.com
-Link: https://patch.msgid.link/20260414105916.364073-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/caiaq/device.c |   33 ++++++++++++++++++++++++---------
- 1 file changed, 24 insertions(+), 9 deletions(-)
+ net/ceph/auth.c       |    2 +-
+ net/ceph/mon_client.c |    2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -304,7 +304,7 @@ int snd_usb_caiaq_set_auto_msg(struct sn
- 					  tmp, sizeof(tmp));
- }
+--- a/net/ceph/auth.c
++++ b/net/ceph/auth.c
+@@ -257,7 +257,7 @@ int ceph_handle_auth_reply(struct ceph_a
+ 		ac->negotiating = false;
+ 	}
  
--static void setup_card(struct snd_usb_caiaqdev *cdev)
-+static int setup_card(struct snd_usb_caiaqdev *cdev)
+-	if (result) {
++	if (result < 0) {
+ 		pr_err("auth protocol '%s' mauth authentication failed: %d\n",
+ 		       ceph_auth_proto_name(ac->protocol), result);
+ 		ret = result;
+--- a/net/ceph/mon_client.c
++++ b/net/ceph/mon_client.c
+@@ -174,6 +174,8 @@ int ceph_monmap_contains(struct ceph_mon
+  */
+ static void __send_prepared_auth_request(struct ceph_mon_client *monc, int len)
  {
- 	int ret;
- 	char val[4];
-@@ -339,8 +339,10 @@ static void setup_card(struct snd_usb_ca
- 		snd_usb_caiaq_send_command(cdev, EP1_CMD_READ_IO, NULL, 0);
- 
- 		if (!wait_event_timeout(cdev->ep1_wait_queue,
--					cdev->control_state[0] != 0xff, HZ))
--			return;
-+					cdev->control_state[0] != 0xff, HZ)) {
-+			dev_err(dev, "Read timeout for control state\n");
-+			return -EINVAL;
-+		}
- 
- 		/* fix up some defaults */
- 		if ((cdev->control_state[1] != 2) ||
-@@ -361,33 +363,43 @@ static void setup_card(struct snd_usb_ca
- 	    cdev->spec.num_digital_audio_out +
- 	    cdev->spec.num_digital_audio_in > 0) {
- 		ret = snd_usb_caiaq_audio_init(cdev);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(dev, "Unable to set up audio system (ret=%d)\n", ret);
-+			return ret;
-+		}
- 	}
- 
- 	if (cdev->spec.num_midi_in +
- 	    cdev->spec.num_midi_out > 0) {
- 		ret = snd_usb_caiaq_midi_init(cdev);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(dev, "Unable to set up MIDI system (ret=%d)\n", ret);
-+			return ret;
-+		}
- 	}
- 
- #ifdef CONFIG_SND_USB_CAIAQ_INPUT
- 	ret = snd_usb_caiaq_input_init(cdev);
--	if (ret < 0)
-+	if (ret < 0) {
- 		dev_err(dev, "Unable to set up input system (ret=%d)\n", ret);
-+		return ret;
-+	}
- #endif
- 
- 	/* finally, register the card and all its sub-instances */
- 	ret = snd_card_register(cdev->chip.card);
- 	if (ret < 0) {
- 		dev_err(dev, "snd_card_register() returned %d\n", ret);
--		snd_card_free(cdev->chip.card);
-+		return ret;
- 	}
- 
- 	ret = snd_usb_caiaq_control_init(cdev);
--	if (ret < 0)
-+	if (ret < 0) {
- 		dev_err(dev, "Unable to set up control system (ret=%d)\n", ret);
-+		return ret;
-+	}
++	BUG_ON(len > monc->m_auth->front_alloc_len);
 +
-+	return 0;
- }
- 
- static void card_free(struct snd_card *card)
-@@ -513,8 +525,11 @@ static int init_card(struct snd_usb_caia
- 	snprintf(card->longname, sizeof(card->longname), "%s %s (%s)",
- 		       cdev->vendor_name, cdev->product_name, usbpath);
- 
--	setup_card(cdev);
- 	card->private_free = card_free;
-+	err = setup_card(cdev);
-+	if (err < 0)
-+		return err;
-+
- 	return 0;
- 
-  err_kill_urb:
+ 	monc->pending_auth = 1;
+ 	monc->m_auth->front.iov_len = len;
+ 	monc->m_auth->hdr.front_len = cpu_to_le32(len);
 
 
 
