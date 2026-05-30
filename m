@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-259186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257808-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIvRD+YxG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259186-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:22 +0200
+	id uOhfLMceG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257808-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDA9F612AB7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 529A960FD3E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5FA0630A7D44
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:48:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9E7BD3005982
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B179233943;
-	Sat, 30 May 2026 18:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17793341AB8;
+	Sat, 30 May 2026 17:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHYEpHml"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Flq8OWQH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49E3137750;
-	Sat, 30 May 2026 18:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E20430676E;
+	Sat, 30 May 2026 17:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166894; cv=none; b=a/T91YMg4NdmZpgrk+BSasa0/OBls8Ydmen3J2Shzi3G7AP0gMBxITnrWdqtjh5AH6fqGVH9xVYS5YtWhnxDcDgdcgm5t92zIF7XyLIA/v6U9FeW6x/Sgqe7GV/cR+ZmdLJeBXZY3cd4AL/8dlfskiPoUQRB2UgvhkmAib0WDcE=
+	t=1780162243; cv=none; b=HdqcAouVDfo5F+9z0mHcf1tMPQjpifZB8G1KWiqcP4ryTRQv/N4PUetnBt0gkh/u6A2WQmS8Mnt+eIAC0/KaU22XwJNUVQiVObW7Gw34c12oOuQ2egvQyhN6ZZc7uoeEeRVW7mAJKTIb6FcXaxAlMHvm3+4xCU4iowDk1U7xW1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166894; c=relaxed/simple;
-	bh=lSyj0XMSp3AcIWK8cuHibfvTGd/JBkHRcNUYX7lcpkU=;
+	s=arc-20240116; t=1780162243; c=relaxed/simple;
+	bh=m8V1rQtLJWQSpdj+POmonJGon6YdPFsO+22ylF/klB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OelsUYkujuKigd10j9i3WL/0MeBj0WgGFvTZ6DdftMrO99eQrhlK/CakHabwqkFiVrk+h/OSmketT2JAF8lh+HfMmduugWHdE6jGRnhQALjkScUEiSE+hLRpQj153pUUgXCyT2h2xtdCfYs/NGb7Rg+sQfmM5CTfnABMr3dgmzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHYEpHml; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B3B1F00893;
-	Sat, 30 May 2026 18:48:12 +0000 (UTC)
+	 MIME-Version; b=FGdGbLhSUV8cNQoQR+uamb5+VxTsPa7JrRyKPjHd3IV5nnrdbWYUobkawICBCaKRNrav7juSfB7JOnbb/obTu+wfanvO0zhCBwVh9jC5QnhGM0AS1g+xG4lmF/DMp1jgDy0HYMquQ1mD1ETaZS+O4qwzpOK9N0eSgC6b1Y/Rnps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Flq8OWQH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD0C1F00898;
+	Sat, 30 May 2026 17:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166893;
-	bh=ZIsR/Ylsr8QP5sm0ydf5qZVNfsj5Zkc51082cTxUTTo=;
+	s=korg; t=1780162238;
+	bh=Ysk59t3bVLD0+QMSKUYmZCKUi3+SoiL50NxjAInGXYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RHYEpHmlJk6uw3fBhuLglNXnH3ii3BkXyJeK2lGJWs2deunocAdnDGa0eOyMpAMBM
-	 a28W3qjKJumx4cASuSmilzpSguNTlYjxzSqBh7wNs4bFe/DdCSeU56NmcdBbnnwgVR
-	 yK0sDcu5HtnvCMd8ZWdALaAaZ6bgOWmjZZ0c+GmU=
+	b=Flq8OWQHlkPU8gXuLaeQ+HjZjItAz2OzWpnTeHx0ht6+spn45k+hNyQMt0HosdIJC
+	 XG7vsJsnpRa2g8Q9GEglGHQBGYBxmtBmiE3YH1ihgxg6ExLTFts9PrcC8Ck2pi+m+F
+	 ITyRmVe2Vo11ezdP9S+35YgetnGqkmeYLoYJOF1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Benjamin Block <bblock@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 476/589] net/sched: netem: validate slot configuration
+Subject: [PATCH 6.1 833/969] s390/debug: Reject zero-length input before trimming a newline
 Date: Sat, 30 May 2026 18:05:57 +0200
-Message-ID: <20260530160237.155124828@linuxfoundation.org>
+Message-ID: <20260530160323.648931128@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259186-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257808-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,98 +87,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,networkplumber.org:email]
-X-Rspamd-Queue-Id: CDA9F612AB7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 529A960FD3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit 01801c359a74737b9b1aa28568b60374d857241a ]
+[ Upstream commit c366a7b5ed7564e41345c380285bd3f6cb98971b ]
 
-Reject slot configurations that have no defensible meaning:
+debug_get_user_string() copies the userspace buffer into a newly
+allocated NUL-terminated buffer and then unconditionally looks at
+buffer[user_len - 1] to strip a trailing newline.
 
-  - negative min_delay or max_delay
-  - min_delay greater than max_delay
-  - negative dist_delay or dist_jitter
-  - negative max_packets or max_bytes
+A zero-length write reaches this helper unchanged, so the newline trim
+reads before the start of the allocated buffer.
 
-Negative or out-of-order delays underflow in get_slot_next(),
-producing garbage intervals. Negative limits trip the per-slot
-accounting (packets_left/bytes_left <= 0) on the first packet of
-every slot, defeating the rate-limiting half of the slot feature.
+Reject empty writes before accessing the last input byte.
 
-Note that dist_jitter has been silently coerced to its absolute
-value by get_slot() since the feature was introduced; rejecting
-negatives here converts that silent coercion into -EINVAL. The
-abs() can be removed in a follow-up.
-
-Fixes: 836af83b54e3 ("netem: support delivering packets in delayed time slots")
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260418032027.900913-5-stephen@networkplumber.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 66a464dbc8e0 ("[PATCH] s390: debug feature changes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Tested-by: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/r/20260417073530.96002-1-pengpeng@iscas.ac.cn
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ arch/s390/kernel/debug.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 64542c9c15340..3e3bced82c564 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -815,6 +815,29 @@ static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
- 	return 0;
- }
- 
-+static int validate_slot(const struct nlattr *attr, struct netlink_ext_ack *extack)
-+{
-+	const struct tc_netem_slot *c = nla_data(attr);
-+
-+	if (c->min_delay < 0 || c->max_delay < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot delay");
-+		return -EINVAL;
-+	}
-+	if (c->min_delay > c->max_delay) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "slot min delay greater than max delay");
-+		return -EINVAL;
-+	}
-+	if (c->dist_delay < 0 || c->dist_jitter < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative dist delay");
-+		return -EINVAL;
-+	}
-+	if (c->max_packets < 0 || c->max_bytes < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot limit");
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- static void get_slot(struct netem_sched_data *q, const struct nlattr *attr)
+diff --git a/arch/s390/kernel/debug.c b/arch/s390/kernel/debug.c
+index 9a94979ee4de5..65302aea77e85 100644
+--- a/arch/s390/kernel/debug.c
++++ b/arch/s390/kernel/debug.c
+@@ -1268,6 +1268,9 @@ static inline char *debug_get_user_string(const char __user *user_buf,
  {
- 	const struct tc_netem_slot *c = nla_data(attr);
-@@ -1030,6 +1053,12 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 			goto table_free;
- 	}
+ 	char *buffer;
  
-+	if (tb[TCA_NETEM_SLOT]) {
-+		ret = validate_slot(tb[TCA_NETEM_SLOT], extack);
-+		if (ret)
-+			goto table_free;
-+	}
++	if (!user_len)
++		return ERR_PTR(-EINVAL);
 +
- 	sch_tree_lock(sch);
- 	/* backup q->clg and q->loss_model */
- 	old_clg = q->clg;
+ 	buffer = kmalloc(user_len + 1, GFP_KERNEL);
+ 	if (!buffer)
+ 		return ERR_PTR(-ENOMEM);
 -- 
 2.53.0
 
