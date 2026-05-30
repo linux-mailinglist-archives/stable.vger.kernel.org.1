@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-258620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259262-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCvJOFMqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258620-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:03 +0200
+	id OIrzML0zG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259262-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659E4611801
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A2E612EDA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1CD84301F4BF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74A6E301778D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8828132F770;
-	Sat, 30 May 2026 18:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8499B25D527;
+	Sat, 30 May 2026 18:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnaX+AXM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJTi0rXo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C2F241C8C;
-	Sat, 30 May 2026 18:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504B12857FA;
+	Sat, 30 May 2026 18:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164964; cv=none; b=ImgSI03f08RSXzyeOTxBMluVtZ/aExCUqiUXGuGwGPbJEh/mUikLFnjUiNwOOwA2Vt8oUwft6IFxRUlzeCJ297VVgaK+NFmrjltEND/dBf7U/k2asfpQSlafjauSzF60MjfvidXh+k8ekHpnbOgBGHDxl+osvDoeDfHgNK3X/XA=
+	t=1780167153; cv=none; b=FOszsIECGKOOdUsJscBeeslUA0gLw2/yrMDyjpP86DfLv01aMoLi/ZF32Ze1y2yE61bMW+W8o4fJf7X+jkte/wD1eyAD/7fV7CjRVvdvX9rodK4hMZt9UdrBULU35kIc53+9LdzpBKDWUQhXWPPdspC9qN/V7IvEgVuSlWmsEIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164964; c=relaxed/simple;
-	bh=T3cEM8CXte04y9b5vhQY0LKPD6VwXQUKIeGvOI/MzaU=;
+	s=arc-20240116; t=1780167153; c=relaxed/simple;
+	bh=ulVuhOJbnQJQOSf04clh6B0l6iCZ6Cb6h4fTxzyF+Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RhFTlBRshteNMsI6hiPA+g1SRmzH3zU3sVi7MzBL3R6q0TgB79i3GE/I+P1LjN+IEuIaeWaH3xSZ6WxU12oBFxvYJvQO/a0icxJlHFXAg+DMUxrzeT6R5MwmqBHrl+QcZBBSCyHfDPU/XGQxU7xJ45oGgbBrEgcpkThLprYh1No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnaX+AXM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84051F00893;
-	Sat, 30 May 2026 18:16:02 +0000 (UTC)
+	 MIME-Version; b=YZVncFJdp2amhWCkOef8flnf+cdPdkrSsSs2qvYcKztQLOVS5ccDoMIsdlYMuyo93YFlXY1DxcJQcfWtWnxwV3WNMYB3FddsMudnIfwXtnPqaVq/yG1htXovqYG7/lispwFdeK6uwhhxoReh4MJkNLtZfe5SrXMw6ddrDeMhBeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJTi0rXo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B0D1F00893;
+	Sat, 30 May 2026 18:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164963;
-	bh=I09w+/MFzgALbxIvJ4x/c8Hkec6Mz0O7raEzPqwPIsY=;
+	s=korg; t=1780167150;
+	bh=SucX90gHg5Xd4Gw3/fJaipG2c/ui+EUQPc+agbyUvmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pnaX+AXMQ589RFz7BDby6dRIlm6/xlUzLKlWXTUjLxN213AdpMUVLFTawDHfFVqMF
-	 ihU00Rys77Zclr5C6t6xxRIpB09YmMqxyF9gnhgCoe7gD8Xs8kH1/fkfd1qb/Dvq5D
-	 G1Dv1uQaaIQlHn7wiEYGtDz3EQS1dbDU5VB7zwew=
+	b=JJTi0rXogXXca1lmk1YZAdTzIw5Agc+UZ3FHr1RUEFaus0v21U+XlxK2F6FoNBifV
+	 mWlbSs/u53yRq+0PY+Qc7VDZUwt2WKUZ23PJZnKKrG1/8z2MTvelvC8A2pl0RtZT7U
+	 eCI3b8WIH0fiuvdPvj/YwJ0KD8S6kdM44QS+WdhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxiao Xu <rakukuip@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.15 710/776] batman-adv: fix tp_meter counter underflow during shutdown
+	Tom Zanussi <tom.zanussi@linux.intel.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	Sashiko <sashiko-bot@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 5.10 543/589] tracing: Do not call map->ops->elt_free() if elt_alloc() fails
 Date: Sat, 30 May 2026 18:07:04 +0200
-Message-ID: <20260530160258.186586234@linuxfoundation.org>
+Message-ID: <20260530160238.948728314@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,89 +71,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-258620-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,efficios.com,gmail.com,kernel.org,goodmis.org];
+	TAGGED_FROM(0.00)[bounces-259262-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 659E4611801
+	DBL_BLOCKED_OPENRESOLVER(0.00)[efficios.com:email,sashiko.dev:url,goodmis.org:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 33A2E612EDA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luxiao Xu <rakukuip@gmail.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 94f3b133168d1c49895e7cc6afbcf1cc0b354602 upstream.
+commit 8f0f5c4fb9df0e19a341e0c6ed8dc4fda9124f03 upstream.
 
-batadv_tp_sender_shutdown() unconditionally decrements the "sending"
-atomic counter. If multiple paths (e.g. timeout, user cancel, and
-normal finish) call this function, the counter can underflow to -1.
+In paths where tracing_map_elt_alloc() failed to allocate objects,
+the map->ops->elt_alloc() call was never successful. In this case,
+map->ops->elt_free() should not be called.
 
-Since the sender logic treats any non-zero value as "still sending",
-a negative value causes the sender kthread to loop indefinitely.
-This leads to a use-after-free when the interface is removed while
-the zombie thread is still active.
+Link: https://sashiko.dev/#/patchset/20260520223101.34710-1-rosenp%40gmail.com
 
-Fix this by using atomic_xchg() to ensure the counter only transitions
-from 1 to 0 once.
-
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-[sven: added missing change in batadv_tp_send]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Cc: stable@vger.kernel.org
+Cc: Tom Zanussi <tom.zanussi@linux.intel.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Rosen Penev <rosenp@gmail.com>
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Fixes: 2734b629525a ("tracing: Add per-element variable support to tracing_map")
+Link: https://patch.msgid.link/177933895460.108746.5396070821443932634.stgit@devnote2
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/tracing_map.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -435,7 +435,7 @@ static void batadv_tp_sender_end(struct
- static void batadv_tp_sender_shutdown(struct batadv_tp_vars *tp_vars,
- 				      enum batadv_tp_meter_reason reason)
+--- a/kernel/trace/tracing_map.c
++++ b/kernel/trace/tracing_map.c
+@@ -386,13 +386,11 @@ static void tracing_map_elt_init_fields(
+ 	}
+ }
+ 
+-static void tracing_map_elt_free(struct tracing_map_elt *elt)
++static void __tracing_map_elt_free(struct tracing_map_elt *elt)
  {
--	if (!atomic_dec_and_test(&tp_vars->sending))
-+	if (atomic_xchg(&tp_vars->sending, 0) != 1)
+ 	if (!elt)
  		return;
  
- 	tp_vars->reason = reason;
-@@ -869,7 +869,7 @@ static int batadv_tp_send(void *arg)
- 				   "Meter: %s() cannot send packets (%d)\n",
- 				   __func__, err);
- 			/* ensure nobody else tries to stop the thread now */
--			if (atomic_dec_and_test(&tp_vars->sending))
-+			if (atomic_xchg(&tp_vars->sending, 0) == 1)
- 				tp_vars->reason = err;
- 			break;
- 		}
+-	if (elt->map->ops && elt->map->ops->elt_free)
+-		elt->map->ops->elt_free(elt);
+ 	kfree(elt->fields);
+ 	kfree(elt->vars);
+ 	kfree(elt->var_set);
+@@ -400,6 +398,17 @@ static void tracing_map_elt_free(struct
+ 	kfree(elt);
+ }
+ 
++static void tracing_map_elt_free(struct tracing_map_elt *elt)
++{
++	if (!elt)
++		return;
++
++	/* Only objects initialized with alloc_elt() should be passed to free_elt().*/
++	if (elt->map->ops && elt->map->ops->elt_free)
++		elt->map->ops->elt_free(elt);
++	__tracing_map_elt_free(elt);
++}
++
+ static struct tracing_map_elt *tracing_map_elt_alloc(struct tracing_map *map)
+ {
+ 	struct tracing_map_elt *elt;
+@@ -444,7 +453,7 @@ static struct tracing_map_elt *tracing_m
+ 	}
+ 	return elt;
+  free:
+-	tracing_map_elt_free(elt);
++	__tracing_map_elt_free(elt);
+ 
+ 	return ERR_PTR(err);
+ }
 
 
 
