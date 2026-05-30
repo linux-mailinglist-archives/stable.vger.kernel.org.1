@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GITXCU4mG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258373-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:54 +0200
+	id WAJUCxUxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-258949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B430610DE7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5126128B7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 619623006D79
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:02:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1367630EB41A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C463AB291;
-	Sat, 30 May 2026 18:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905EB349CCF;
+	Sat, 30 May 2026 18:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pW3vMOl9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUYk8T8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF2F23392B;
-	Sat, 30 May 2026 18:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C51141A8F;
+	Sat, 30 May 2026 18:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164134; cv=none; b=lrdHCk7LyshtB4RucQw+NjrGoTz6MqJmjQzB2AwwKwAVHa+rWhwqwOpYElc0vHYqLMor6luMfxtFT95HIBkqsqiEq/SSfB1VnK/Q9BohoFWu2FnaWvW7bNVpWhYvWb9vT1zlN2JwjnP1KzZmwTKBXKCPM3STrvzGKTU90qUriAk=
+	t=1780166087; cv=none; b=Z84BjWgcgbnGYDZJO8VVF9mlAb3ydxRnbBtLszTply9uaJbrn6CuGUj0l8lAvxsBgturCkZabKC7cVwVKrvsM16oGPYz0QQYd9aURjvfpqPkxQmy5j/aJtCE8ohuF4mo/kAA7vYb9RT2H3rHzs6LYRYLu5enASEcWaYg5LvhEh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164134; c=relaxed/simple;
-	bh=q3nvOmoxJBZd2YGjES1nSlkWuWjxeD8ngNSFb0iHXPE=;
+	s=arc-20240116; t=1780166087; c=relaxed/simple;
+	bh=/XC4FOLilSJyvWy2wafLsBv68zUFSr91fBEaABJprgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXclY5AleRZ6jN4tLFgzUyjEoddgUDMmilMA/r6eym5OBTVBqQ8VWMKcyk5ZRWmugkwRit4CYV1iv22BqNgw++hTbB9Z2T1UCe561h0awgim10psnB3sMWuOMVi+Hj38OWEAP24VmJnjZdzRC4Ek3a1/6KmXU1fsbmDqrD2tagY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pW3vMOl9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67C91F00893;
-	Sat, 30 May 2026 18:02:12 +0000 (UTC)
+	 MIME-Version; b=OwOUvuSzMYho+NIVotU1zOxgStJnZPvpi6e+LvwnoiMJXfOewanF+828N34ahMe9igBu1wQpo05WJiN4tBua+JfBpEhbZA+FPOIG2IkiRYUpkTIb6trFPDMWvOxPJ10IFfsJDBMncAoUcP9LdCaDCtt0OPbHYyBUrXUPfgPcLiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUYk8T8q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD25F1F00893;
+	Sat, 30 May 2026 18:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164133;
-	bh=G+VsG9vA8GznO51rQL/c/ZU988A0ksUB8EANmTzSk3o=;
+	s=korg; t=1780166085;
+	bh=PQCU8bIkAmTA0/R1ZZ74NqqKkARJQgTjbPKf9ztwgYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pW3vMOl9Riiw70kBM+8bWCp3GY1FlVvOZWNyof3rhdsizMmlOZpd25eP6ADQT79Gy
-	 F5otNV4cGGnBW3ZCyhzc+8otH+mckcuCaQzEkMEDyvB0HEKkfmKBqg+S1gpp/DPE7m
-	 4cWrX54oqf34EVmZngdqXLFvoVnGlYYhCo5p4d2Y=
+	b=BUYk8T8q33Jjq4g3f+Rs3+xbYBW5jMxoigzuKZuR9oMi2g7CSqK+DTlWv7pp77Fxs
+	 q/zYpn+okxzoErQxPWR4ZZCKjRf9WdgiQd92rqBRrSlpTfFAl3J+LCYrO4fGAExhcg
+	 cJFTowtX/0lH248gRDuDOAyuRAux6MayolYcq4ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 435/776] dm cache policy smq: fix missing locks in invalidating cache blocks
-Date: Sat, 30 May 2026 18:02:29 +0200
-Message-ID: <20260530160251.673835430@linuxfoundation.org>
+	Sergey Shtylyov <s.shtylyov@auroraos.dev>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.10 269/589] media: dib8000: avoid division by 0 in dib8000_set_dds()
+Date: Sat, 30 May 2026 18:02:30 +0200
+Message-ID: <20260530160232.056544331@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +63,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [9.34 / 15.00];
+	URIBL_BLACK(7.50)[linuxtesting.org:url];
+	SUSPICIOUS_RECIPS(1.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-258949-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	GREYLIST(0.00)[pass,meta];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258373-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2B430610DE7
-X-Rspamd-Action: no action
+	NEURAL_SPAM(0.00)[0.986];
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxtesting.org:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,auroraos.dev:email]
+X-Rspamd-Queue-Id: 8D5126128B7
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
 
-[ Upstream commit 2d1f7b65f5deedd2e6b09fdc6ea27f8375f24b45 ]
+commit dde3c37af95cd6fa301c4906f33d627bc9dd874c upstream.
 
-In passthrough mode, the policy invalidate_mapping operation is called
-simultaneously from multiple workers, thus it should be protected by a
-lock. Otherwise, we might end up with data races on the allocated blocks
-counter, or even use-after-free issues with internal data structures
-when doing concurrent writes.
+In dib8000_set_dds(), 1 << 26 (67108864) divided by e.g. 1 apparently can't
+fit into 16-bit variable unit_khz_dds_val, being truncated to 0; this will
+cause division by 0 while calling dprintk() with debugging enabled (via the
+module parameter).  Use s32 instead of s16 to declare the variable, getting
+rid of the cast to u16 in the *else* branch as well...
 
-Note that the existing FIXME in smq_invalidate_mapping() doesn't affect
-passthrough mode since migration tasks don't exist there, but would need
-attention if supporting fast device shrinking via suspend/resume without
-target reloading.
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
 
-Reproduce steps:
-
-1. Create a cache device consisting of 1024 cache entries
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. Populate the cache, and record the number of cached blocks
-
-fio --name=populate --filename=/dev/mapper/cache --rw=randwrite --bs=4k \
---size=64m --direct=1
-nr_cached=$(dmsetup status cache | awk '{split($7, a, "/"); print a[1]}')
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the passthrough cache. By setting multiple jobs with I/O
-   size equal to the cache block size, cache blocks are invalidated
-   concurrently from different workers.
-
-fio --filename=/dev/mapper/cache --name=test --rw=randwrite --bs=64k \
---direct=1 --numjobs=2 --randrepeat=0 --size=64m
-
-5. Check if demoted matches cached block count. These numbers should
-   match but may differ due to the data race.
-
-nr_demoted=$(dmsetup status cache | awk '{print $12}')
-echo "$nr_cached, $nr_demoted"
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 173a64cb3fcf ("[media] dib8000: enhancement")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-policy-smq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/dvb-frontends/dib8000.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-cache-policy-smq.c b/drivers/md/dm-cache-policy-smq.c
-index 859073193f5b4..95b0670c32acd 100644
---- a/drivers/md/dm-cache-policy-smq.c
-+++ b/drivers/md/dm-cache-policy-smq.c
-@@ -1584,14 +1584,18 @@ static int smq_invalidate_mapping(struct dm_cache_policy *p, dm_cblock_t cblock)
+--- a/drivers/media/dvb-frontends/dib8000.c
++++ b/drivers/media/dvb-frontends/dib8000.c
+@@ -2694,7 +2694,7 @@ static void dib8000_viterbi_state(struct
+ 
+ static void dib8000_set_dds(struct dib8000_state *state, s32 offset_khz)
  {
- 	struct smq_policy *mq = to_smq_policy(p);
- 	struct entry *e = get_entry(&mq->cache_alloc, from_cblock(cblock));
-+	unsigned long flags;
+-	s16 unit_khz_dds_val;
++	s32 unit_khz_dds_val;
+ 	u32 abs_offset_khz = abs(offset_khz);
+ 	u32 dds = state->cfg.pll->ifreq & 0x1ffffff;
+ 	u8 invert = !!(state->cfg.pll->ifreq & (1 << 25));
+@@ -2715,7 +2715,7 @@ static void dib8000_set_dds(struct dib80
+ 			dds = (1<<26) - dds;
+ 	} else {
+ 		ratio = 2;
+-		unit_khz_dds_val = (u16) (67108864 / state->cfg.pll->internal);
++		unit_khz_dds_val = 67108864 / state->cfg.pll->internal;
  
- 	if (!e->allocated)
- 		return -ENODATA;
- 
-+	spin_lock_irqsave(&mq->lock, flags);
- 	// FIXME: what if this block has pending background work?
- 	del_queue(mq, e);
- 	h_remove(&mq->table, e);
- 	free_entry(&mq->cache_alloc, e);
-+	spin_unlock_irqrestore(&mq->lock, flags);
-+
- 	return 0;
- }
- 
--- 
-2.53.0
-
+ 		if (offset_khz < 0)
+ 			unit_khz_dds_val *= -1;
 
 
 
