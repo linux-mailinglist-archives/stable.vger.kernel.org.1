@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-257096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOYDBykVG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:45 +0200
+	id mBdzFMYVG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF24B60E763
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E18C260E840
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 043B3301106B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:49:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6DEFF3014756
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4CA34D38B;
-	Sat, 30 May 2026 16:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A8433F5A3;
+	Sat, 30 May 2026 16:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oY3FzQjI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hs0RpH8g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430803264DC;
-	Sat, 30 May 2026 16:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6391CAA6C;
+	Sat, 30 May 2026 16:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159781; cv=none; b=WdErZ8Uf9GUjm9Ebnn6+j5mgBfiOrmLtI1PmyzTYN98E3oL8iBZ6MicV10SgIoXexdCkIYZtJY8ACAdl+wmrwId4fIyqhjaa7Hqeq2JDjoPsdKGpgwowtQObIfCkLLSjhmw5v4rAGpwHDhIQS/O88ts+layNXtQkVbzGY+RBAjY=
+	t=1780159930; cv=none; b=grwR0aYgHmMF28RJtsMl4Us/YVRqq2WnlAytih5/mPBX3wJZOMvB6ftdtwuZghIadEjZRnbQPi3sWqVE71tmEMjOc9fYrKafqVgGByV83GjZo+r7XVXkug+4Ajd1KDgTtH9NZmd0rIUt5WpUNSqLRUpxp5Fdpsus1T/Kjd4Y4Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159781; c=relaxed/simple;
-	bh=jSNMkmh7G6WB1tu4XPssbj4eF9/RATSLASVMmfZgPUM=;
+	s=arc-20240116; t=1780159930; c=relaxed/simple;
+	bh=2LRlCed4DZegtsZ3J0k8byvbCsBmGIA8M6meGBXoYpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nxC/bZWWwC03/odem3N3q3GGNruc5HsDfer4pRPH48Qwd8vRwEhfxTFiVEbQo/FKdJOYI4Z4kDf9cLUiYU/LO9JgKYW9MSNwd7glnmzAKon69oRw5+Ke4WNrfx9V4FXLQSr+lnsQez1CqSkaDFT4crEPcXG/k9PVJ3AD+oJepPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oY3FzQjI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865E81F00893;
-	Sat, 30 May 2026 16:49:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QyfT6kMOOcFANQ733Jw+NopOsnrA4qT7cdWB1ERZmqln+qstu6yX311zsHJk+HyPCTZyUFrAQQyacyfrt7cFjTJTHJUD9b1AASceaYuJUJ1Txos8MVnjh0czMbEqPPVJhAHYhrxh6gnaUAtJYKrgcyAiafdyQz6Y8P+81XyrO/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hs0RpH8g; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AA81F00893;
+	Sat, 30 May 2026 16:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159780;
-	bh=CvNslfQQ/FYCk6XhK9Gf7NdpDqMt9LxDzr/+csKt4oo=;
+	s=korg; t=1780159928;
+	bh=W0i6uj+qWDd8c1pPJiwehCeTda+C+gkR4632DlIEq/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oY3FzQjIGCcgdu8nzsTCBdFiwX4hqxW388lRP0Ktcz6NLT6RvQ5+yKZTe3d94gH+C
-	 Ov+DbPX1CTAfbTN2MAWnEvbH9h6pNs68xgNiHg1EO3wYfc9rm4U70XhmsNi7PhlqbZ
-	 ckAqTSyYBkNoTYhChsR7ghsUDPsVo1f7FV1SbNsE=
+	b=hs0RpH8gOnZourPFEuIQZy2dufPJECAZTLTJHNRXfIuxpZisxBFQPhBDpxAoHtvTS
+	 URLH5MT5aJhrEov1h3CjwNxknGB889Meq/zuFUKnIR779AqumpklhbIIoJ3kQ4nkD5
+	 5iRAVqSS+RJzq8+/Wd7tju08hbFo+yh6E7odmxR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 158/969] rxrpc: Fix missing validation of ticket length in non-XDR key preparsing
-Date: Sat, 30 May 2026 17:54:42 +0200
-Message-ID: <20260530160304.897014487@linuxfoundation.org>
+	syzbot+d56178c27a4710960820@syzkaller.appspotmail.com,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 159/969] ALSA: usb-audio: stop parsing UAC2 rates at MAX_NR_RATES
+Date: Sat, 30 May 2026 17:54:43 +0200
+Message-ID: <20260530160304.922953470@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -68,34 +63,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257096-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,suse.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257136-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,d56178c27a4710960820];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AF24B60E763
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: E18C260E840
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,57 +100,43 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Anderson Nascimento <anderson@allelesecurity.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit ac33733b10b484d666f97688561670afd5861383 upstream.
+commit 3c318f97dcc50b2e0556a1813bd6958678e881fd upstream.
 
-In rxrpc_preparse(), there are two paths for parsing key payloads: the
-XDR path (for large payloads) and the non-XDR path (for payloads <= 28
-bytes). While the XDR path (rxrpc_preparse_xdr_rxkad()) correctly
-validates the ticket length against AFSTOKEN_RK_TIX_MAX, the non-XDR
-path fails to do so.
+parse_uac2_sample_rate_range() caps the number of enumerated
+rates at MAX_NR_RATES, but it only breaks out of the current
+rate loop. A malformed UAC2 RANGE response with additional
+triplets continues parsing the remaining triplets and repeatedly
+prints "invalid uac2 rates" while probe still holds
+register_mutex.
 
-This allows an unprivileged user to provide a very large ticket length.
-When this key is later read via rxrpc_read(), the total
-token size (toksize) calculation results in a value that exceeds
-AFSTOKEN_LENGTH_MAX, triggering a WARN_ON().
+Stop the whole parse once the cap is reached and return the
+number of rates collected so far.
 
-[ 2001.302904] WARNING: CPU: 2 PID: 2108 at net/rxrpc/key.c:778 rxrpc_read+0x109/0x5c0 [rxrpc]
-
-Fix this by adding a check in the non-XDR parsing path of rxrpc_preparse()
-to ensure the ticket length does not exceed AFSTOKEN_RK_TIX_MAX,
-bringing it into parity with the XDR parsing logic.
-
-Fixes: 8a7a3eb4ddbe ("KEYS: RxRPC: Use key preparsing")
-Fixes: 84924aac08a4 ("rxrpc: Fix checker warning")
-Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
-Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-7-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4fa0e81b8350 ("ALSA: usb-audio: fix possible hang and overflow in parse_uac2_sample_rate_range()")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+d56178c27a4710960820@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d56178c27a4710960820
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260415-usb-audio-uac2-rate-cap-v1-1-5ecbafc120d8@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/key.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ sound/usb/format.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rxrpc/key.c
-+++ b/net/rxrpc/key.c
-@@ -340,6 +340,10 @@ static int rxrpc_preparse(struct key_pre
- 	if (v1->security_index != RXRPC_SECURITY_RXKAD)
- 		goto error;
+--- a/sound/usb/format.c
++++ b/sound/usb/format.c
+@@ -461,7 +461,7 @@ static int parse_uac2_sample_rate_range(
+ 			nr_rates++;
+ 			if (nr_rates >= MAX_NR_RATES) {
+ 				usb_audio_err(chip, "invalid uac2 rates\n");
+-				break;
++				return nr_rates;
+ 			}
  
-+	ret = -EKEYREJECTED;
-+	if (v1->ticket_length > AFSTOKEN_RK_TIX_MAX)
-+		goto error;
-+
- 	plen = sizeof(*token->kad) + v1->ticket_length;
- 	prep->quotalen += plen + sizeof(*token);
- 
+ skip_rate:
 
 
 
