@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-257500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258880-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKsHBjgbG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:36 +0200
+	id SPYtG1cuG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258880-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:37:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508CD60F3E1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE356121BE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:37:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0B9FB300EC5A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:13:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DFF3230B9276
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3882733F8A2;
-	Sat, 30 May 2026 17:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA879313E34;
+	Sat, 30 May 2026 18:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/dAKaV3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUqZRgJY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178083016E1;
-	Sat, 30 May 2026 17:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4CA3AB285;
+	Sat, 30 May 2026 18:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161211; cv=none; b=pqRBPltx5azFMv1RuZdkdZKAtvgXHF1HudobhwlaNAuFZ6lMw/CCFxAqwFGWHIss7LfBspqkLRK3wRIuRknwYrgKVpEPZvRV+oVvpufgt4s7ZDtgMhqeqCD+qtCacUgL1uO62rYdpyU9a9fNIN9mdfBWShWEJY77pgHpCKRgRBw=
+	t=1780165851; cv=none; b=tMzSFeQmsNptk9j7rMwhlPbPdUubnZhBW1GkpfyQ1VFslI2mepTSPz6MhL5VeujeUChs4jC3R8mJ9LXpS/KRqXSV+8yQP3XRySWjBHdo5DONIpGyLCg6LlvjSxgY/XKp0S3KFF2tCcdp2I4fdfMvHg5eOJJnx5CLaEHPAMKJW58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161211; c=relaxed/simple;
-	bh=oYBL+YO6SemXwQ53mOFEjtiWzrueefyKq18Aq6AFUx0=;
+	s=arc-20240116; t=1780165851; c=relaxed/simple;
+	bh=nZMqz6YRN5oII3hc+eP59ONU4vynAI4+gIvSO+UUIqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXTED+iwbJTPL3spGZk/8uhC0BSOJaFMG9LhtsoPq5oXOvqYpk/ayEcKbGZCyL6TO8BgDxv37BjB+PWG55EVW3oF7+cDsbCtBWINE/tvJUhfSdb1b8xdrUW0pYeTvXtf5xzSQ65mqxcS/Zf/gRwex5Uc+kQ3D7pANCmsSe4XXxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/dAKaV3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC941F00893;
-	Sat, 30 May 2026 17:13:29 +0000 (UTC)
+	 MIME-Version; b=LF4mEmngDkr4W4A66nRGQCNVRDy77zYnMkpca+A6d7vLlCcIQMxGttMcdm2kcG5wXdZoi+4pUoteBYCDIEG6hrfSqgyZLLkuab1ini15uXe1gbUzzJ+/th/xYVWH53XhXRNCsuyIeWqUPTpN5ukS3B+GRVvVMhZxTJBRIqqwb80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUqZRgJY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672BB1F00893;
+	Sat, 30 May 2026 18:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161210;
-	bh=iRTUiGZ5ztRFpbuGTlwjpUN2ejXluiJcuv4pVvYyBYk=;
+	s=korg; t=1780165849;
+	bh=B33XKN7d4nolhZ5cKT2wfBkLn2IeJfQhwGx4M615uiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=y/dAKaV3ZlaZ9ebwS95Ovx7oqNaHwJL6VybFUGNP0oieSxwhYafjTZJIOTYD/qpEI
-	 xlbYpoMPedHbd8/lEojw2Hl9vw5Qybk7NNnAAgrmjTCeIzcaW4KIKPkMvLq0NKM8g3
-	 c98ibhvRRFoZID8SrIO3rTpyD6FbwB+kFIX3kIqQ=
+	b=lUqZRgJY5FQTaSXjOxWR2S+y+km6HOINDlKG8r2d8MVlvtRrYzYcMxP14FWGI4DcW
+	 RVgfWfDPE901CywmWd7pU4Hk0Iw2i4cev1m8QqGTG0BytueTBwPCTRDBMe9hfLkI9p
+	 Th67ACPi0O+MgEsJladBc47PIt8aP6UxTlwCFLWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 557/969] PCI: tegra194: Disable direct speed change for Endpoint mode
+	stable <stable@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 200/589] ipv6: rpl: reserve mac_len headroom when recompressed SRH grows
 Date: Sat, 30 May 2026 18:01:21 +0200
-Message-ID: <20260530160315.765670667@linuxfoundation.org>
+Message-ID: <20260530160230.176233378@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,83 +67,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257500-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258880-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 508CD60F3E1
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 0DE356121BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 976f6763f57970388bcd7118931f33f447916927 ]
+commit 9e6bf146b55999a095bb14f73a843942456d1adc upstream.
 
-Pre-silicon simulation showed the controller operating in Endpoint mode
-initiating link speed change after completing Secondary Bus Reset. Ideally,
-the Root Port or the Switch Downstream Port should initiate the link speed
-change post SBR, not the Endpoint.
+ipv6_rpl_srh_rcv() decompresses an RFC 6554 Source Routing Header, swaps
+the next segment into ipv6_hdr->daddr, recompresses, then pulls the old
+header and pushes the new one plus the IPv6 header back.  The
+recompressed header can be larger than the received one when the swap
+reduces the common-prefix length the segments share with daddr (CmprI=0,
+CmprE>0, seg[0][0] != daddr[0] gives the maximum +8 bytes).
 
-So, as per the hardware team recommendation, disable direct speed change
-for the Endpoint mode to prevent it from initiating speed change after the
-physical layer link is up at Gen1, leaving speed change ownership with the
-host.
+pskb_expand_head() was gated on segments_left == 0, so on earlier
+segments the push consumed unchecked headroom.  Once skb_push() leaves
+fewer than skb->mac_len bytes in front of data,
+skb_mac_header_rebuild()'s call to:
 
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-[mani: commit log]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-8-mmaddireddy@nvidia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	skb_set_mac_header(skb, -skb->mac_len);
+
+will store (data - head) - mac_len into the u16 mac_header field, which
+wraps to ~65530, and the following memmove() writes mac_len bytes ~64KiB
+past skb->head.
+
+A single AF_INET6/SOCK_RAW/IPV6_HDRINCL packet over lo with a two
+segment type-3 SRH (CmprI=0, CmprE=15) reaches headroom 8 after one
+pass; KASAN reports a 14-byte OOB write in ipv6_rthdr_rcv.
+
+Fix this by expanding the head whenever the remaining room is less than
+the push size plus mac_len, and request that much extra so the rebuilt
+MAC header fits afterwards.
+
+Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
+Cc: stable <stable@kernel.org>
+Reported-by: Anthropic
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026042133-gout-unvented-1bd9@gregkh
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/ipv6/exthdrs.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 87851a56ebd2d..431ae321ba055 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1825,6 +1825,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -480,6 +480,7 @@ static int ipv6_rpl_srh_rcv(struct sk_bu
+ 	struct inet6_dev *idev;
+ 	struct ipv6hdr *oldhdr;
+ 	struct in6_addr addr;
++	unsigned int chdr_len;
+ 	unsigned char *buf;
+ 	int accept_rpl_seg;
+ 	int i, err;
+@@ -601,8 +602,10 @@ looped_back:
+ 	skb_pull(skb, ((hdr->hdrlen + 1) << 3));
+ 	skb_postpull_rcsum(skb, oldhdr,
+ 			   sizeof(struct ipv6hdr) + ((hdr->hdrlen + 1) << 3));
+-	if (unlikely(!hdr->segments_left)) {
+-		if (pskb_expand_head(skb, sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3), 0,
++	chdr_len = sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3);
++	if (unlikely(!hdr->segments_left ||
++		     skb_headroom(skb) < chdr_len + skb->mac_len)) {
++		if (pskb_expand_head(skb, chdr_len + skb->mac_len, 0,
+ 				     GFP_ATOMIC)) {
+ 			__IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)), IPSTATS_MIB_OUTDISCARDS);
+ 			kfree_skb(skb);
+@@ -612,7 +615,7 @@ looped_back:
  
- 	reset_control_deassert(pcie->core_rst);
- 
-+	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
-+	val &= ~PORT_LOGIC_SPEED_CHANGE;
-+	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
-+
- 	if (pcie->update_fc_fixup) {
- 		val = dw_pcie_readl_dbi(pci, CFG_TIMER_CTRL_MAX_FUNC_NUM_OFF);
- 		val |= 0x1 << CFG_TIMER_CTRL_ACK_NAK_SHIFT;
--- 
-2.53.0
-
+ 		oldhdr = ipv6_hdr(skb);
+ 	}
+-	skb_push(skb, ((chdr->hdrlen + 1) << 3) + sizeof(struct ipv6hdr));
++	skb_push(skb, chdr_len);
+ 	skb_reset_network_header(skb);
+ 	skb_mac_header_rebuild(skb);
+ 	skb_set_transport_header(skb, sizeof(struct ipv6hdr));
 
 
 
