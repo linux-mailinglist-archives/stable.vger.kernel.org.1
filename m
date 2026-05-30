@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-257610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258986-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AE3oLs4cG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257610-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:22 +0200
+	id +F7wHEovG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258986-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FF960F838
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 006D0612413
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C218930091D8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:19:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7BE0630AFD95
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DE2332EA7;
-	Sat, 30 May 2026 17:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FED741A8F;
+	Sat, 30 May 2026 18:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tsnn5FYu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bx1zRzAt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9493730E829;
-	Sat, 30 May 2026 17:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410D93546F6;
+	Sat, 30 May 2026 18:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161577; cv=none; b=i6e99d+abtBaxtL4ZiegM81PdOJNkM22BOziMy+Ev9sbuyWES5slyi55pO67Nh8ZUy/GQTh3YZP7flKb0FcXlwxIyeOQAsEjfQZ5rcYkM26M/Lu0bqsqcqUXLjX92P38FDK4zq2h91R7diZ0OgdgXBX41U1LbJj8+dDsrlYSzts=
+	t=1780166212; cv=none; b=FdyoIV18lf9bdFWfyAlQ9858TkToi4ACut5Lblnv8OkmBchIgZ6dj+1K3wRWPXyBdEX9YZ9ish1awHIQyn0myCYpYhwzCQMENbVTAwrbL0Few8UgLujF0tJyB9EeFjVmFOEi7sEiYjdv1kMw4BFJLHMTvhLleCvSQLi+dV9JzHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161577; c=relaxed/simple;
-	bh=2Rup4C7Vg599hVuJKtfPseEZNPPGoSYo0lZm3An2OPI=;
+	s=arc-20240116; t=1780166212; c=relaxed/simple;
+	bh=XEc7kb5xRPZLwDjOl71p0M4F2RwmGVO8RMdgb7bIkwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ne7GMAsCwWkSI7ks8v8GWpr+9W6REwmYxSdSHSayKO4sX30j14bEBoydJAtVYt0Hazqr9CPBFFPW8ivJ8GKXFjdZFYRy1ti0pYYImK1m0qNtY0Uc5zkS9RPFdVgXMA406v7N6WjHQXA24rvRI+Iqtyqm7KGP/6NEj1vEor/lGYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tsnn5FYu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB891F00893;
-	Sat, 30 May 2026 17:19:35 +0000 (UTC)
+	 MIME-Version; b=n0IPpTf5b+jktobmg8xnegYF+UMMR3eyjz8lwFlKv9oHv9KR9gkANfv+Omr/Cu3lI3UCgTdcfGZXvS03Pf4vYsklBJXDd0W6UcAssFZaSM+VVIUiUo4YDLgehAobDctaJyP9yjR5yf6jXkUew4P9smupa8NPD7vX10014etjjI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bx1zRzAt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EC41F00893;
+	Sat, 30 May 2026 18:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161576;
-	bh=InlFF0/YoV4Gw8oMkMwfR/m58JwM9tnrhDBihhtsCQE=;
+	s=korg; t=1780166211;
+	bh=9N7QarNWBOGFLmY3wzJswskGuyyx3TD5ZMrhMKxLNsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Tsnn5FYu2/9LuacH2/SNjzu9f0m6cJOVfzd77c7gcJYoEONxvJLyyOTvmfMnoBgZ2
-	 R7/iQ5meW8Vaf7OuxgBhxR/7VSiBUubuyKhzh/Cu/LEJUTkNE7jyHIFd7Nt0dn0Dmv
-	 DimD7A4lBsRS1suK/fM8BaADebOtKyvYZM+ongwo=
+	b=Bx1zRzAtuJaoG1KKiz/kxVP+UFbZGDlMR1fs3gp8QYvV97Mip2d06xzS3W1fJwXuS
+	 4Lcd3qDeQntKLy0aQ6vSriXpAt6pu2fpy6WBk0sns59esfNjhJQMmItJoKmTemlAB8
+	 JJh7WVYD3oQhdQIXFaYZ6n99qhYW6ZK3PFx8X+xU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Val Packett <val@packett.cool>
-Subject: [PATCH 6.1 663/969] dt-bindings: clock: qcom,dispcc-sc7180: Define MDSS resets
+	Justin Chen <justin.chen@broadcom.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 306/589] net: bcmgenet: fix off-by-one in bcmgenet_put_txcb
 Date: Sat, 30 May 2026 18:03:07 +0200
-Message-ID: <20260530160318.788369035@linuxfoundation.org>
+Message-ID: <20260530160232.995928062@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,80 +69,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257610-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258986-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D5FF960F838
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,broadcom.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 006D0612413
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-[ Upstream commit fc6e29d42872680dca017f2e5169eefe971f8d89 ]
+[ Upstream commit 57f3f53d2c9c5a9e133596e2f7bc1c50688a6d38 ]
 
-The MDSS resets have so far been left undescribed. Fix that.
+The write_ptr points to the next open tx_cb. We want to return the
+tx_cb that gets rewinded, so we must rewind the pointer first then
+return the tx_cb that it points to. That way the txcb can be correctly
+cleaned up.
 
-Fixes: 75616da71291 ("dt-bindings: clock: Introduce QCOM sc7180 display clock bindings")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Tested-by: Val Packett <val@packett.cool> # sc7180-ecs-liva-qc710
-Link: https://lore.kernel.org/r/20260120-topic-7180_dispcc_bcr-v1-1-0b1b442156c3@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: b0bc6011c549 ("clk: qcom: dispcc-sc7180: Add missing MDSS resets")
+Fixes: 876dbadd53a7 ("net: bcmgenet: Fix unmapping of fragments in bcmgenet_xmit()")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Link: https://patch.msgid.link/20260406175756.134567-2-justin.chen@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/qcom,dispcc-sc7180.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/dt-bindings/clock/qcom,dispcc-sc7180.h b/include/dt-bindings/clock/qcom,dispcc-sc7180.h
-index b9b51617a335d..0705103060748 100644
---- a/include/dt-bindings/clock/qcom,dispcc-sc7180.h
-+++ b/include/dt-bindings/clock/qcom,dispcc-sc7180.h
-@@ -6,6 +6,7 @@
- #ifndef _DT_BINDINGS_CLK_QCOM_DISP_CC_SC7180_H
- #define _DT_BINDINGS_CLK_QCOM_DISP_CC_SC7180_H
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 2fc21aae1004e..8a68384383f7d 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -1696,15 +1696,15 @@ static struct enet_cb *bcmgenet_put_txcb(struct bcmgenet_priv *priv,
+ {
+ 	struct enet_cb *tx_cb_ptr;
  
-+/* Clocks */
- #define DISP_CC_PLL0				0
- #define DISP_CC_PLL0_OUT_EVEN			1
- #define DISP_CC_MDSS_AHB_CLK			2
-@@ -40,7 +41,11 @@
- #define DISP_CC_MDSS_VSYNC_CLK_SRC		31
- #define DISP_CC_XO_CLK				32
+-	tx_cb_ptr = ring->cbs;
+-	tx_cb_ptr += ring->write_ptr - ring->cb_ptr;
+-
+ 	/* Rewinding local write pointer */
+ 	if (ring->write_ptr == ring->cb_ptr)
+ 		ring->write_ptr = ring->end_ptr;
+ 	else
+ 		ring->write_ptr--;
  
--/* DISP_CC GDSCR */
-+/* Resets */
-+#define DISP_CC_MDSS_CORE_BCR			0
-+#define DISP_CC_MDSS_RSCC_BCR			1
++	tx_cb_ptr = ring->cbs;
++	tx_cb_ptr += ring->write_ptr - ring->cb_ptr;
 +
-+/* GDSCs */
- #define MDSS_GDSC				0
+ 	return tx_cb_ptr;
+ }
  
- #endif
 -- 
 2.53.0
 
