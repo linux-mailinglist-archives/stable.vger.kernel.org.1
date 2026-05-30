@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-258120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257354-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KIbNJIskG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:23 +0200
+	id EGxDJzMbG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257354-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED18B610A6B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D7A60F3CB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D67E930D688E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:48:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2B7C30A7353
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B941349CCF;
-	Sat, 30 May 2026 17:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669F434BA42;
+	Sat, 30 May 2026 17:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pM3piKv+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep9xegoK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED5B19D8AC;
-	Sat, 30 May 2026 17:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4753534104B;
+	Sat, 30 May 2026 17:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163283; cv=none; b=ioDYZ+szddS5oP//BnOVSqBHaGN8IAAn+Qv4Dbncc8StaeUGjV8C74C5cGIZtdizxepVvsXQ2+7jOtDubagHvcSphY7BZug7tcjGzQV0Zm58DvRCJ02d6J2Fq1hBWvEktcZrLO/G4e35OWuNU1m5wf985LV1PcWUk43sYw37mn8=
+	t=1780160702; cv=none; b=a6wEhpynGpgXkeqKlIimlMcMsoLnCruxNmGlIzPo+4/yH+cj073R6wGoeyCwMEEZFLfOAgJ1eLvSPE2dpSMdNwSl/2Qhb0ofNuQt5a8gLrshEdL//eX2J8GSq1So+eRR3k7Herm/6d783fKIQz8/xy+CVmxnPzzK9aG1a0Yghtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163283; c=relaxed/simple;
-	bh=puy1xcI0pbM7TM57EN1TuTdtk56eOMbof7aAbnXhA7k=;
+	s=arc-20240116; t=1780160702; c=relaxed/simple;
+	bh=XRSXKstmwwB6IwzxFxoPGpgRXhP1p1SnAcGOj7cPUHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qspdeQUqLq/fSi1iAR8YuGdJ5xVJBJdHpXzvygQrgzPV/UQDCqlESF9QeYUvU5qz1qEyRup7vgWuscaethZJXcMhYEbuBupIfIhGvRHjuIhhJqAQWmHeDRi9OQM09T+udmIIguBcKjKGNtwVS38FY71m7eojTQsZCS5SxvuE9Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pM3piKv+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C431F00893;
-	Sat, 30 May 2026 17:48:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XmMRwwEXv8P31grDKMgvzg+vWPQNZoGif1O2K6U3Sy1ZPbw/ANun2gCGsnS+T7SJ+1+3+ILKSzSnJ1IHJIy5TC646FxnvDcdaaDj4pOBSKDG/uZYxIHxyCGhqmw2WNeYHKooYwJx7VPqX3KWELWxfegyi+DKYhqgAKgApSAmEAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep9xegoK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6DF1F00893;
+	Sat, 30 May 2026 17:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163282;
-	bh=J9p1EiHhM5FPhEKIADRPOsfG2/4wq5Jp2XCQIu7GZa0=;
+	s=korg; t=1780160701;
+	bh=cRPCkRXGcFacZJdk/vd+pkTxIX62dJ+hgszmAJWdv3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pM3piKv+Uw5rqCTEhZ/rEx3kRgR16ktPiruec9vDGqRa4DYvfam/1Tj/zEaBZgk1Y
-	 q7WL66tmSPRy6W3sbb/cD424eFd9mJe/KoDfyjNTAvKlDGEKDeSOwEbfEXA6yjFWnm
-	 SIvEsF0cevhr0gT1VGSVTaNp0lxyb4MjiYO5lh1k=
+	b=ep9xegoKZVYbeltmevtu2jjowCihT2mFm647axcX+rJTMy285rMlmGXpxOAtjJ0W8
+	 Wa/EVZewEo04tfr2Upr840fq8Fqw7JqrKufdlEiT+zKYv1bGitECPoka0/hzsqGR22
+	 7VUqzGTaQ8/p/6HcztSY/AANdI/K27s+jw19qYmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Beckett <bob.beckett@collabora.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 5.15 212/776] nvme-pci: add NVME_QUIRK_DISABLE_WRITE_ZEROES for Kingston OM3SGP4
-Date: Sat, 30 May 2026 17:58:46 +0200
-Message-ID: <20260530160245.993989938@linuxfoundation.org>
+	Benjamin Cheng <benjamin.cheng@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Ruijing Dong <ruijing.dong@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 403/969] drm/amdgpu: Add bounds checking to ib_{get,set}_value
+Date: Sat, 30 May 2026 17:58:47 +0200
+Message-ID: <20260530160311.416057991@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-257354-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258120-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email]
-X-Rspamd-Queue-Id: ED18B610A6B
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 04D7A60F3CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Beckett <bob.beckett@collabora.com>
+From: Benjamin Cheng <benjamin.cheng@amd.com>
 
-commit a8eebf9699d69987cc49cec4e4fdb4111ab32423 upstream.
+commit 66085e206431ef88ce36f53c1f53d570790ccc9e upstream.
 
-The Kingston OM3SGP42048K2-A00 (PCI ID 2646:502f) firmware has a race
-condition when processing concurrent write zeroes and DSM (discard)
-commands, causing spurious "LBA Out of Range" errors and IOMMU page
-faults at address 0x0.
+The uvd/vce/vcn code accesses the IB at predefined offsets without
+checking that the IB is large enough. Check the bounds here. The caller
+is responsible for making sure it can handle arbitrary return values.
 
-The issue is reliably triggered by running two concurrent mkfs commands
-on different partitions of the same drive, which generates interleaved
-write zeroes and discard operations.
+Also make the idx a uint32_t to prevent overflows causing the condition
+to fail.
 
-Disable write zeroes for this device, matching the pattern used for
-other Kingston OM* drives that have similar firmware issues.
-
+Signed-off-by: Benjamin Cheng <benjamin.cheng@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Robert Beckett <bob.beckett@collabora.com>
-Assisted-by: claude-opus-4-6-v1
-Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.h |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3478,6 +3478,8 @@ static const struct pci_device_id nvme_i
- 		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
- 	{ PCI_DEVICE(0x2646, 0x501E),   /* KINGSTON OM3PGP4xxxxQ OS21011 NVMe SSD */
- 		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
-+	{ PCI_DEVICE(0x2646, 0x502F),   /* KINGSTON OM3SGP4xxxxK NVMe SSD */
-+		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
- 	{ PCI_DEVICE(0x1f40, 0x1202),   /* Netac Technologies Co. NV3000 NVMe SSD */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1f40, 0x5236),   /* Netac Technologies Co. NV7000 NVMe SSD */
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.h
+@@ -392,15 +392,18 @@ void amdgpu_debugfs_ring_init(struct amd
+ 
+ int amdgpu_ring_init_mqd(struct amdgpu_ring *ring);
+ 
+-static inline u32 amdgpu_ib_get_value(struct amdgpu_ib *ib, int idx)
++static inline u32 amdgpu_ib_get_value(struct amdgpu_ib *ib, uint32_t idx)
+ {
+-	return ib->ptr[idx];
++	if (idx < ib->length_dw)
++		return ib->ptr[idx];
++	return 0;
+ }
+ 
+-static inline void amdgpu_ib_set_value(struct amdgpu_ib *ib, int idx,
++static inline void amdgpu_ib_set_value(struct amdgpu_ib *ib, uint32_t idx,
+ 				       uint32_t value)
+ {
+-	ib->ptr[idx] = value;
++	if (idx < ib->length_dw)
++		ib->ptr[idx] = value;
+ }
+ 
+ int amdgpu_ib_get(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 
 
 
