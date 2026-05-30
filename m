@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258365-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHC6HnocG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:58 +0200
+	id FJxbDskoG2rg/ggAu9opvQ
+	(envelope-from <stable+bounces-258365-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2134D60F751
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9061A611434
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 117D03052215
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:18:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D13530C20AE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BB93161A3;
-	Sat, 30 May 2026 17:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47732FDC5E;
+	Sat, 30 May 2026 18:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwjAk5t5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qu1NKn8c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A6533E36A;
-	Sat, 30 May 2026 17:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA3039478D;
+	Sat, 30 May 2026 18:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161512; cv=none; b=gIqtK2qZydAfzqq6yYLCkax9BcAshbJZ+pAR0CUWwYH7Cbo0Ai/yBE4mtfhpJ8Wm3oZXYdOOlfDQ0Xsu6CkLFDUmQNT2DCHABWyx9ujBCAsQOYV23DK0UE3eXAuVmJnJ77w8OsjPmQ5I6ow2t+4k7pTkmI1yqzS34owkupgwoVM=
+	t=1780164107; cv=none; b=Tu+143JPPFG411eownsQiq49pFtEgm89Mqso1wostyqGp8bcYPpithXwcAKVnJ8eny93sYRgB8YZBSAEDRLjZDr1yuww6KxzTFD34Y+NOFOsl5gOsIgK4n/yb9xBHfdQ/GV+oLiR51ZcXQRQgw3o0/mXeqIWCodjam3qDGl6tzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161512; c=relaxed/simple;
-	bh=rYicNLW6mUkEwx3gD/4wERiL0tHb9u2OohsHdk8r6VY=;
+	s=arc-20240116; t=1780164107; c=relaxed/simple;
+	bh=l0pauLJ9E0yRZ8YG17knLkrNFaxcJqRLZSBqzd+dKEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e0RU7z5dXx34HanyAIOUMi+iHYQdursndDIZ+x3kPc3gD4QsaeOIcuFJlPMoRSt89GV5xWqbvfyBdom5jMOHYwECKfcaxL5uW/v7+It1PFUN9KoC1xH16DwSGTkzl2R3KLH0x/iRSEYKJkGfCH2//so+vWmbyBwXrmyeYsGvFGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwjAk5t5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322791F00893;
-	Sat, 30 May 2026 17:18:30 +0000 (UTC)
+	 MIME-Version; b=CkrVdieW3Dl8a8wTIo2r4XnBXQ7eB9mKoxT2JnD+Da5srFhxNqpKoAc7yXBy0gcVnXk9/SSyxG8cPtJq0ccec++kcMFiDBd07mDU5/T5ANDjEIFwcFyJ0UWL0KDkhFoOFmu5ceWMF1wvSVvKxOpIhK0Z1E478m2rJcBegjvE/8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qu1NKn8c; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE851F00893;
+	Sat, 30 May 2026 18:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161511;
-	bh=cG9YNgww9462JJaFiOT7BRyR1YSNS9cJgKZEHEHXrEk=;
+	s=korg; t=1780164106;
+	bh=edA+lTVJMQvY2h9qJB2rjhzASVcbE3oyEsXzREHKK/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vwjAk5t5a+4XwVE00zZ8auYfXmpATGEEuaX9q3BN1LQp1HDcDBXFVdZPzrRMoVYrh
-	 LEj8IYHmsZJQn78Bu7LxVkITw63MCDapzUo8BRtXvxDI8gXolOhChy51RSSL5+ga+a
-	 kjazOYCpmj3W8kcuvaiMutfe5LhI4T4I6CSuy0VM=
+	b=Qu1NKn8cl68y2Vw92niVLgwStLABwqPg4vKFuMbxIuxKAlhXh6BDYeXLPoPmENfqK
+	 4MRqWpuzBtOmqDM9RIjstQ42R8kbWHUTQC+a0JOHsRBtCKCXoZxX9uy8Y94rayzG3G
+	 bgQgwTIZKG8zlZxP8Q0fpByqXWRxY5bag9IuKYII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 646/969] platform/x86: dell_rbu: avoid uninit value usage in packet_size_write()
+Subject: [PATCH 5.15 456/776] ALSA: hda/realtek: Whitespace fix
 Date: Sat, 30 May 2026 18:02:50 +0200
-Message-ID: <20260530160318.299695775@linuxfoundation.org>
+Message-ID: <20260530160252.159747025@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [7.34 / 15.00];
-	URIBL_BLACK(7.50)[linuxtesting.org:url];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257591-lists,stable=lfdr.de];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	GREYLIST(0.00)[pass,meta];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258365-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 2134D60F751
-X-Rspamd-Action: add header
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ljones.dev:email]
+X-Rspamd-Queue-Id: 9061A611434
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Luke D. Jones <luke@ljones.dev>
 
-[ Upstream commit f8fd138c2363c0e2d3235c32bfb4fb5c6474e4ae ]
+[ Upstream commit 72cea3a3175b50a4875b3c112fb13df20c6218a5 ]
 
-Ensure the temp value has been properly parsed from the user-provided
-buffer and initialized to be used in later operations.  While at it,
-prefer a convenient kstrtoul() helper.
+Remove an erroneous whitespace.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
-
-Fixes: ad6ce87e5bd4 ("[PATCH] dell_rbu: changes in packet update mechanism")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20260403134240.604837-1-pchelkin@ispras.ru
-[ij: add include]
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 31278997add6 ("ALSA: hda/realtek - Add headset quirk for Dell DT")
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Link: https://lore.kernel.org/r/20230704044619.19343-6-luke@ljones.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: d1888bf848ad ("ALSA: hda/realtek: fix code style (ERROR: else should follow close brace '}')")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell_rbu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
-index fee20866b41e4..9039e494131fd 100644
---- a/drivers/platform/x86/dell/dell_rbu.c
-+++ b/drivers/platform/x86/dell/dell_rbu.c
-@@ -30,6 +30,7 @@
- #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
- 
- #include <linux/init.h>
-+#include <linux/kstrtox.h>
- #include <linux/module.h>
- #include <linux/slab.h>
- #include <linux/string.h>
-@@ -617,9 +618,12 @@ static ssize_t packet_size_write(struct file *filp, struct kobject *kobj,
- 				 char *buffer, loff_t pos, size_t count)
- {
- 	unsigned long temp;
-+
-+	if (kstrtoul(buffer, 10, &temp))
-+		return -EINVAL;
-+
- 	spin_lock(&rbu_data.lock);
- 	packet_empty_list();
--	sscanf(buffer, "%lu", &temp);
- 	if (temp < 0xffffffff)
- 		rbu_data.packetsize = temp;
- 
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 9cb5705577f72..c847e9ab36b31 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6011,7 +6011,7 @@ static void alc_fixup_headset_mode_alc255_no_hp_mic(struct hda_codec *codec,
+ 		struct alc_spec *spec = codec->spec;
+ 		spec->parse_flags |= HDA_PINCFG_HEADSET_MIC;
+ 		alc255_set_default_jack_type(codec);
+-	} 
++	}
+ 	else
+ 		alc_fixup_headset_mode(codec, fix, action);
+ }
 -- 
 2.53.0
 
