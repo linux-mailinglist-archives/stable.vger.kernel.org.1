@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-257004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256975-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDhQGg0VG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257004-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:17 +0200
+	id qBKSF1MRG2qC+wgAu9opvQ
+	(envelope-from <stable+bounces-256975-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:33:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B519A60E715
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8BA360E3EE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:33:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2CF5230151C0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:30:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B1F8302710E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B01534A79D;
-	Sat, 30 May 2026 16:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B4E3403FC;
+	Sat, 30 May 2026 16:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKMiK/aA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmoKoBsh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE76D1DE4EF;
-	Sat, 30 May 2026 16:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE85F348C4E;
+	Sat, 30 May 2026 16:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780158645; cv=none; b=sCiFq0j42s9XGLI+aoejFkh/zWVL7ucZuNv1HguWkJD7qAqmEKbYWl5A5bYrYEKDJ0G34z8YP8lVlOGGbqI1Y0vuAVS1Xy8btuRzgPye3BZrGdfxjkzUP/CqEkzvOk7bA4Tz/XQyCzRLIHF3ED8rVYxP5RPTerC+KSpReWyUFkM=
+	t=1780158331; cv=none; b=I6IOGV98giH2KzN2pknkjSKQIhTUN6E/wUy1kKQnGPy+bleA61rOpDml+SXy98TGRloOsKR9rMihBIC+84EWHTb1Nq5MoNxBlISEL7+L1R+EZK760PaveVcUub+Vt+awpg0SpJqfrti9GPyDGkip7hfviDqE0tGXCorP461CZqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780158645; c=relaxed/simple;
-	bh=46uwWTudn09OiZ1JK01YP0H5ZAKr19FzBQdrTS9roEM=;
+	s=arc-20240116; t=1780158331; c=relaxed/simple;
+	bh=g+77wZFkFPwza8jiyQfgfCaF90SETTuxLSswJoiewF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OstTIX+SqiNElgM5dfDPeOJg/mAwv9mtrVY9QqAZM+lsubiPRIyKlTInou7Le8YTSOhEJgLt8dphdXtolIjRkeKLe+AbY9sBH5A1/bRxPKnpmrWGH+UEtne4Q4IJyqUrb3fDewstnV701s8oidhcRaTUclmnTUl3Za6Q1YNiaB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKMiK/aA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F80A1F00893;
-	Sat, 30 May 2026 16:30:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=diLVYWyo2OGOnW2FvZG0WYyhCtNsivEj5wJJjaI9Pr8FesmR2pIro7dj13Iaz0dydeKkmImFlJZ7BHzWX6VTrvyBXeAIPMK2V2aNaot1fX0kzP8d0xKWZJeiJz67zUbR7FnLZ1lrO+wxcBJwYj1Cb0iV0GezdrGD8Y1woGTdPzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmoKoBsh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AB31F00898;
+	Sat, 30 May 2026 16:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780158643;
-	bh=1LOl4wj0iqKyT8gMoMVi/4P9u2knNo+3pEy4BOPphjQ=;
+	s=korg; t=1780158329;
+	bh=SkIyCN8RdIhZZrYdJAgo/wxJLvEue1FC7iZ+fmoWWkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iKMiK/aAJpQ9vb7FjuH1ihgppIr+1xZQDhJEmRo7kS6eauoCu8i6Rco2OWpKLoLiA
-	 bM++cYv82x5h5OdGa9Mg/spVoCYy+vOgD4/kn/dnO3YUNQTmVlmDxJpA/ezE2ROCO0
-	 fYYbC6C+S9yGMcHSJIRXO3mWlk21P3JeMiH7rWSM=
+	b=xmoKoBsh//GOMsiIgEAUn6siZ3QG5FOwi4n4ZK4moClvC5+5jkHMDEsub17ZsiD1G
+	 6Ng/dc4/Angykvj8Hez9mt4Nq7xkvq+cYAh4y8Xpuz8NRDpD1J3BkcV8wWkR3VJgvQ
+	 DU92EWRj5QNWfg7LXxUKy7v9HvRzU5Mwr/PIzBQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iskhakov Daniil <dish@amicon.ru>,
-	Agalakov Daniil <ade@amicon.ru>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/969] e1000: check return value of e1000_read_eeprom
-Date: Sat, 30 May 2026 17:52:44 +0200
-Message-ID: <20260530160301.526687195@linuxfoundation.org>
+Subject: [PATCH 6.1 041/969] xsk: tighten UMEM headroom validation to account for tailroom and min frame
+Date: Sat, 30 May 2026 17:52:45 +0200
+Message-ID: <20260530160301.552488452@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -65,107 +65,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [7.84 / 15.00];
-	URIBL_BLACK(7.50)[linuxtesting.org:url];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257004-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256975-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	MIME_TRACE(0.00)[0:+];
-	GREYLIST(0.00)[pass,body];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.962];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B519A60E715
-X-Rspamd-Action: add header
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,fomichev.me:email]
+X-Rspamd-Queue-Id: B8BA360E3EE
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Agalakov Daniil <ade@amicon.ru>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit d3baa34a470771399c1495bc04b1e26ac15d598e ]
+[ Upstream commit a315e022a72d95ef5f1d4e58e903cb492b0ad931 ]
 
-[Why]
-e1000_set_eeprom() performs a read-modify-write operation when the write
-range is not word-aligned. This requires reading the first and last words
-of the range from the EEPROM to preserve the unmodified bytes.
+The current headroom validation in xdp_umem_reg() could leave us with
+insufficient space dedicated to even receive minimum-sized ethernet
+frame. Furthermore if multi-buffer would come to play then
+skb_shared_info stored at the end of XSK frame would be corrupted.
 
-However, the code does not check the return value of e1000_read_eeprom().
-If the read fails, the operation continues using uninitialized data from
-eeprom_buff. This results in corrupted data being written back to the
-EEPROM for the boundary words.
+HW typically works with 128-aligned sizes so let us provide this value
+as bare minimum.
 
-Add the missing error checks and abort the operation if reading fails.
+Multi-buffer setting is known later in the configuration process so
+besides accounting for 128 bytes, let us also take care of tailroom space
+upfront.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Iskhakov Daniil <dish@amicon.ru>
-Signed-off-by: Iskhakov Daniil <dish@amicon.ru>
-Signed-off-by: Agalakov Daniil <ade@amicon.ru>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Björn Töpel <bjorn@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Fixes: 99e3a236dd43 ("xsk: Add missing check on user supplied headroom size")
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://patch.msgid.link/20260402154958.562179-2-maciej.fijalkowski@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000/e1000_ethtool.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/xdp/xdp_umem.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-index d06d29c6c0370..c7b50059663d9 100644
---- a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-+++ b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-@@ -496,14 +496,19 @@ static int e1000_set_eeprom(struct net_device *netdev,
- 		 */
- 		ret_val = e1000_read_eeprom(hw, first_word, 1,
- 					    &eeprom_buff[0]);
-+		if (ret_val)
-+			goto out;
-+
- 		ptr++;
- 	}
--	if (((eeprom->offset + eeprom->len) & 1) && (ret_val == 0)) {
-+	if ((eeprom->offset + eeprom->len) & 1) {
- 		/* need read/modify/write of last changed EEPROM word
- 		 * only the first byte of the word is being modified
- 		 */
- 		ret_val = e1000_read_eeprom(hw, last_word, 1,
- 					    &eeprom_buff[last_word - first_word]);
-+		if (ret_val)
-+			goto out;
- 	}
+diff --git a/net/xdp/xdp_umem.c b/net/xdp/xdp_umem.c
+index 02207e852d796..561290f9e68b5 100644
+--- a/net/xdp/xdp_umem.c
++++ b/net/xdp/xdp_umem.c
+@@ -196,7 +196,8 @@ static int xdp_umem_reg(struct xdp_umem *umem, struct xdp_umem_reg *mr)
+ 	if (!unaligned_chunks && chunks_rem)
+ 		return -EINVAL;
  
- 	/* Device's eeprom is always little-endian, word addressable */
-@@ -522,6 +527,7 @@ static int e1000_set_eeprom(struct net_device *netdev,
- 	if ((ret_val == 0) && (first_word <= EEPROM_CHECKSUM_REG))
- 		e1000_update_eeprom_checksum(hw);
+-	if (headroom >= chunk_size - XDP_PACKET_HEADROOM)
++	if (headroom > chunk_size - XDP_PACKET_HEADROOM -
++		       SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) - 128)
+ 		return -EINVAL;
  
-+out:
- 	kfree(eeprom_buff);
- 	return ret_val;
- }
+ 	umem->size = size;
 -- 
 2.53.0
 
