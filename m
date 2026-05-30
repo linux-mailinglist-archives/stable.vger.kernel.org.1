@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-258784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +EDAEDktG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258784-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:25 +0200
+	id 8NMAO68lG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD87611EDA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD3A610CAF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B29B2302F273
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 861BC30AF684
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA99833E36A;
-	Sat, 30 May 2026 18:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF61342CA7;
+	Sat, 30 May 2026 17:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFzwBa54"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxFxV98I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6301B217704;
-	Sat, 30 May 2026 18:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA89C3AB482;
+	Sat, 30 May 2026 17:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165527; cv=none; b=rK88Wkacd4F6QPX/VUP7aXMM+TJXSA59Ibw2ZU1lkJe/FQxnKXKSovSQAPKLfWDOa0ane4aTDmKCbY+4whEZk/A24H/d7A1yco87ZdYX/zc+gw2AgqDVzn9cEIj4cY9YhmgWF0oJyPFi6wm/uDxzILisvOKw1FAbEkIDywfVhqo=
+	t=1780163483; cv=none; b=sfS3kGu1Jz/1gsSiTvF1lgEbuT6trnK0oCFUs6NJ1ahjIeativBsHkkifxenFG4KfHVyP/O8BIGBxvr4E+9VelWKigEwT5krKJGvhwu5bxhuJxRxVguoe6Kq+sd5W/3+NFbTBSlTGZPuKOhAYVtr3TiGQvq7fvCW3lMLKoeZkSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165527; c=relaxed/simple;
-	bh=dY75Bae0KNjbxnrmQi8ffxB9kb53nQc1iJ2VV9vfsHw=;
+	s=arc-20240116; t=1780163483; c=relaxed/simple;
+	bh=7b5bkrkU7c8/uKC2HVld+gfAPz+t+atHR1TRUhi6MoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b5tu09H9Dcv2/T1tg/GUgH3463MKj/H3ud7UvMAiQiyfzYFoKvNxOsOrMCts48ZBM1NigNOvKReVWGTsRTW0qQntBdfcB613RgDcO03W5uH4poEfl7SNU/hmBYEpBKUcG5kz2j60K6wtzvsPI6bkx9qNFwNrlgTfr9uoiU9T9xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFzwBa54; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92F21F00893;
-	Sat, 30 May 2026 18:25:25 +0000 (UTC)
+	 MIME-Version; b=NCDyfWC5im6q8/Lkhu03cVelLkBfry7zDEJcjnoZLKMO5mGu0xLnPjT2Kp0mjmI9DxpsvxJyR3VO0l7T7bVLjRrpJv/AAdU+S8FV7O6diwhKhFQbzdgd5zEgaZD2bAR0o3UI69MIX0pnHFkhh5T7El/kScwMzfBN5HZ+HTz1P4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxFxV98I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19AD51F00893;
+	Sat, 30 May 2026 17:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165526;
-	bh=lllKGFvNTN4ipEVTBfZrIRVA0jeaCp8jvmClGkmCqkg=;
+	s=korg; t=1780163481;
+	bh=taLjFNdAZkmBCBOB0iHYJwuKL7apOexb5nThJDETlKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dFzwBa54HMgb8KOB1nFrbxCkBzDt1VRsHjWdpCg1RSgCtyBlRYIhnP4Qv71r7z4WK
-	 xci7WZTxX2yyEG8CEQlnfA2XKDLvE8zMzZ56JEhu0Ot4aTOsuiONpIUYw7cf4AG7K3
-	 U1JzvK2LJmCiUOz+vBMox15Q+2KOBatEToGR1xRE=
+	b=GxFxV98I99DZxqiuc0xGQhsFkJcQO9QJXlqeesTd4k0V92lYeFXOdNsLpXMZplvkZ
+	 RZ1pAiK0T4IRWL6xnYMmwnPz3YcTCURidFM9finAyn0WnI+wVmO8KaQ1iuB61HbO8t
+	 j6OAXK6VDWNTqr2bE+usMF2t1ZNvzmiY1VBH6REY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	syzbot+62c1793956716ea8b28a@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 105/589] ocfs2: fix out-of-bounds write in ocfs2_write_end_inline
+	Matt Fleming <mfleming@cloudflare.com>,
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 5.15 272/776] ipmi: Add limits to event and receive message requests
 Date: Sat, 30 May 2026 17:59:46 +0200
-Message-ID: <20260530160227.503340257@linuxfoundation.org>
+Message-ID: <20260530160247.588866401@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,112 +63,244 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-258784-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.alibaba.com,syzkaller.appspotmail.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258180-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,62c1793956716ea8b28a];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: CAD87611EDA
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5BD3A610CAF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
+From: Corey Minyard <corey@minyard.net>
 
-[ Upstream commit 7bc5da4842bed3252d26e742213741a4d0ac1b14 ]
+commit c4cca236968683eb0d59abfb12d5c7e4d8514227 upstream.
 
-KASAN reports a use-after-free write of 4086 bytes in
-ocfs2_write_end_inline, called from ocfs2_write_end_nolock during a
-copy_file_range splice fallback on a corrupted ocfs2 filesystem mounted on
-a loop device.  The actual bug is an out-of-bounds write past the inode
-block buffer, not a true use-after-free.  The write overflows into an
-adjacent freed page, which KASAN reports as UAF.
+The driver would just fetch events and receive messages until the
+BMC said it was done.  To avoid issues with BMCs that never say they are
+done, add a limit of 10 fetches at a time.
 
-The root cause is that ocfs2_try_to_write_inline_data trusts the on-disk
-id_count field to determine whether a write fits in inline data.  On a
-corrupted filesystem, id_count can exceed the physical maximum inline data
-capacity, causing writes to overflow the inode block buffer.
+In addition, an si interface has an attn state it can return from the
+hardware which is supposed to cause a flag fetch to see if the driver
+needs to fetch events or message or a few other things.  If the attn
+bit gets stuck, it's a similar problem.  So allow messages in between
+flag fetches so the driver itself doesn't get stuck.
 
-Call trace (crash path):
+This is a more general fix than the previous fix for the specific bad
+BMC, but should fix the more general issue of a BMC that won't stop
+saying it has data.
 
-   vfs_copy_file_range (fs/read_write.c:1634)
-     do_splice_direct
-       splice_direct_to_actor
-         iter_file_splice_write
-           ocfs2_file_write_iter
-             generic_perform_write
-               ocfs2_write_end
-                 ocfs2_write_end_nolock (fs/ocfs2/aops.c:1949)
-                   ocfs2_write_end_inline (fs/ocfs2/aops.c:1915)
-                     memcpy_from_folio     <-- KASAN: write OOB
+This has been there from the beginning of the driver.  It's not a bug
+per-se, but it is accounting for bugs in BMCs.
 
-So add id_count upper bound check in ocfs2_validate_inode_block() to
-alongside the existing i_size check to fix it.
-
-Link: https://lkml.kernel.org/r/20260403063830.3662739-1-joseph.qi@linux.alibaba.com
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: syzbot+62c1793956716ea8b28a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=62c1793956716ea8b28a
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Matt Fleming <mfleming@cloudflare.com>
+Closes: https://lore.kernel.org/lkml/20260415115930.3428942-1-matt@readmodwrite.com/
+Fixes: <1da177e4c3f4> ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/inode.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/char/ipmi/ipmi_si_intf.c |   54 +++++++++++++++++++++++++++++++--------
+ drivers/char/ipmi/ipmi_ssif.c    |   23 +++++++++++++++-
+ 2 files changed, 64 insertions(+), 13 deletions(-)
 
---- a/fs/ocfs2/inode.c
-+++ b/fs/ocfs2/inode.c
-@@ -1429,6 +1429,16 @@ int ocfs2_validate_inode_block(struct su
- 			goto bail;
- 		}
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -162,6 +162,10 @@ struct smi_info {
+ 			     OEM2_DATA_AVAIL)
+ 	unsigned char       msg_flags;
  
-+		if (le16_to_cpu(data->id_count) >
-+		    ocfs2_max_inline_data_with_xattr(sb, di)) {
-+			rc = ocfs2_error(sb,
-+					 "Invalid dinode #%llu: inline data id_count %u exceeds max %d\n",
-+					 (unsigned long long)bh->b_blocknr,
-+					 le16_to_cpu(data->id_count),
-+					 ocfs2_max_inline_data_with_xattr(sb, di));
-+			goto bail;
-+		}
++	/* When requesting events and messages, don't do it forever. */
++	unsigned int        num_requests_in_a_row;
++	bool		    last_was_flag_fetch;
 +
- 		if (le64_to_cpu(di->i_size) > le16_to_cpu(data->id_count)) {
- 			rc = ocfs2_error(sb,
- 					 "Invalid dinode #%llu: inline data i_size %llu exceeds id_count %u\n",
+ 	/* Does the BMC have an event buffer? */
+ 	bool		    has_event_buffer;
+ 
+@@ -393,7 +397,10 @@ static void start_getting_msg_queue(stru
+ 
+ 	start_new_msg(smi_info, smi_info->curr_msg->data,
+ 		      smi_info->curr_msg->data_size);
+-	smi_info->si_state = SI_GETTING_MESSAGES;
++	if (smi_info->si_state != SI_GETTING_MESSAGES) {
++		smi_info->num_requests_in_a_row = 0;
++		smi_info->si_state = SI_GETTING_MESSAGES;
++	}
+ }
+ 
+ static void start_getting_events(struct smi_info *smi_info)
+@@ -404,7 +411,10 @@ static void start_getting_events(struct
+ 
+ 	start_new_msg(smi_info, smi_info->curr_msg->data,
+ 		      smi_info->curr_msg->data_size);
+-	smi_info->si_state = SI_GETTING_EVENTS;
++	if (smi_info->si_state != SI_GETTING_EVENTS) {
++		smi_info->num_requests_in_a_row = 0;
++		smi_info->si_state = SI_GETTING_EVENTS;
++	}
+ }
+ 
+ /*
+@@ -578,6 +588,7 @@ static void handle_transaction_done(stru
+ 			smi_info->si_state = SI_NORMAL;
+ 		} else {
+ 			smi_info->msg_flags = msg[3];
++			smi_info->last_was_flag_fetch = true;
+ 			handle_flags(smi_info);
+ 		}
+ 		break;
+@@ -623,6 +634,11 @@ static void handle_transaction_done(stru
+ 		} else {
+ 			smi_inc_stat(smi_info, events);
+ 
++			smi_info->num_requests_in_a_row++;
++			if (smi_info->num_requests_in_a_row > 10)
++				/* Stop if we do this too many times. */
++				smi_info->msg_flags &= ~EVENT_MSG_BUFFER_FULL;
++
+ 			/*
+ 			 * Do this before we deliver the message
+ 			 * because delivering the message releases the
+@@ -661,6 +677,11 @@ static void handle_transaction_done(stru
+ 		} else {
+ 			smi_inc_stat(smi_info, incoming_messages);
+ 
++			smi_info->num_requests_in_a_row++;
++			if (smi_info->num_requests_in_a_row > 10)
++				/* Stop if we do this too many times. */
++				smi_info->msg_flags &= ~RECEIVE_MSG_AVAIL;
++
+ 			/*
+ 			 * Do this before we deliver the message
+ 			 * because delivering the message releases the
+@@ -789,6 +810,26 @@ restart:
+ 	}
+ 
+ 	/*
++	 * If we are currently idle, or if the last thing that was
++	 * done was a flag fetch and there is a message pending, try
++	 * to start the next message.
++	 *
++	 * We do the waiting message check to avoid a stuck flag
++	 * completely wedging the driver.  Let a message through
++	 * in between flag operations if that happens.
++	 */
++	if (si_sm_result == SI_SM_IDLE ||
++	    (si_sm_result == SI_SM_ATTN && smi_info->waiting_msg &&
++	     smi_info->last_was_flag_fetch)) {
++		smi_info->last_was_flag_fetch = false;
++		smi_inc_stat(smi_info, idles);
++
++		si_sm_result = start_next_msg(smi_info);
++		if (si_sm_result != SI_SM_IDLE)
++			goto restart;
++	}
++
++	/*
+ 	 * We prefer handling attn over new messages.  But don't do
+ 	 * this if there is not yet an upper layer to handle anything.
+ 	 */
+@@ -821,15 +862,6 @@ restart:
+ 		}
+ 	}
+ 
+-	/* If we are currently idle, try to start the next message. */
+-	if (si_sm_result == SI_SM_IDLE) {
+-		smi_inc_stat(smi_info, idles);
+-
+-		si_sm_result = start_next_msg(smi_info);
+-		if (si_sm_result != SI_SM_IDLE)
+-			goto restart;
+-	}
+-
+ 	if ((si_sm_result == SI_SM_IDLE)
+ 	    && (atomic_read(&smi_info->req_events))) {
+ 		/*
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -225,6 +225,9 @@ struct ssif_info {
+ 	bool		    has_event_buffer;
+ 	bool		    supports_alert;
+ 
++	/* When requesting events and messages, don't do it forever. */
++	unsigned int        num_requests_in_a_row;
++
+ 	/*
+ 	 * Used to tell what we should do with alerts.  If we are
+ 	 * waiting on a response, read the data immediately.
+@@ -419,7 +422,10 @@ static void start_event_fetch(struct ssi
+ 	}
+ 
+ 	ssif_info->curr_msg = msg;
+-	ssif_info->ssif_state = SSIF_GETTING_EVENTS;
++	if (ssif_info->ssif_state != SSIF_GETTING_EVENTS) {
++		ssif_info->num_requests_in_a_row = 0;
++		ssif_info->ssif_state = SSIF_GETTING_EVENTS;
++	}
+ 	ipmi_ssif_unlock_cond(ssif_info, flags);
+ 
+ 	msg->data[0] = (IPMI_NETFN_APP_REQUEST << 2);
+@@ -442,7 +448,10 @@ static void start_recv_msg_fetch(struct
+ 	}
+ 
+ 	ssif_info->curr_msg = msg;
+-	ssif_info->ssif_state = SSIF_GETTING_MESSAGES;
++	if (ssif_info->ssif_state != SSIF_GETTING_MESSAGES) {
++		ssif_info->num_requests_in_a_row = 0;
++		ssif_info->ssif_state = SSIF_GETTING_MESSAGES;
++	}
+ 	ipmi_ssif_unlock_cond(ssif_info, flags);
+ 
+ 	msg->data[0] = (IPMI_NETFN_APP_REQUEST << 2);
+@@ -851,6 +860,11 @@ static void msg_done_handler(struct ssif
+ 			ssif_info->msg_flags &= ~EVENT_MSG_BUFFER_FULL;
+ 			handle_flags(ssif_info, flags);
+ 		} else {
++			ssif_info->num_requests_in_a_row++;
++			if (ssif_info->num_requests_in_a_row > 10)
++				/* Stop if we do this too many times. */
++				ssif_info->msg_flags &= ~EVENT_MSG_BUFFER_FULL;
++
+ 			handle_flags(ssif_info, flags);
+ 			ssif_inc_stat(ssif_info, events);
+ 			deliver_recv_msg(ssif_info, msg);
+@@ -884,6 +898,11 @@ static void msg_done_handler(struct ssif
+ 			ssif_info->msg_flags &= ~RECEIVE_MSG_AVAIL;
+ 			handle_flags(ssif_info, flags);
+ 		} else {
++			ssif_info->num_requests_in_a_row++;
++			if (ssif_info->num_requests_in_a_row > 10)
++				/* Stop if we do this too many times. */
++				ssif_info->msg_flags &= ~RECEIVE_MSG_AVAIL;
++
+ 			ssif_inc_stat(ssif_info, incoming_messages);
+ 			handle_flags(ssif_info, flags);
+ 			deliver_recv_msg(ssif_info, msg);
 
 
 
