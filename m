@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-256848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOrYJhE8GmqR2QgAu9opvQ
-	(envelope-from <stable+bounces-256848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 03:23:29 +0200
+	id ALQuHV88GmqR2QgAu9opvQ
+	(envelope-from <stable+bounces-256849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 03:24:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85A060ABFD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 03:23:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E139360AC0D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 03:24:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3244F3072B78
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:17:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 91AD53002E73
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A0B233946;
-	Sat, 30 May 2026 01:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1502247DE1;
+	Sat, 30 May 2026 01:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q3gUOVYX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kfz4ilTQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EC91E511
-	for <stable@vger.kernel.org>; Sat, 30 May 2026 01:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BBC86334
+	for <stable@vger.kernel.org>; Sat, 30 May 2026 01:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780103873; cv=none; b=MoDv0I5tCFAAA4zFshQeDD4JPW3b9+alSxfMKclUZHL4TiLWb/lh7sFE2E2zcUUd30SRz2MU/B5R39yWsihZyYksvMvEMeZVXl2+pMXU6wUwI3Xk3n2H+H9Ofmn84VtUc+T7Alxu+bAss+51DmkLwbN3rSwh9c4Wv8G6/HUbSS4=
+	t=1780104056; cv=none; b=Eqcc6K0Y/f3dYx92O6w0/R5zW6ihddo0bOaogC8GaQSi1Qw9PHPyKxOZLOmjgCbb5HppGIlJhDnTlyblwCf3qVEK4djxnDJc/4d2yqf3kZtx0vImjzoH7SYqmvyy3A993iWfy4A+9B7xP9vzGU88HACCXljeAH4xEaKUCDA7raA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780103873; c=relaxed/simple;
-	bh=SzyZI3+Q4pAmeaKZJcyPuda4Jmcspa2KEro0bEBZCi4=;
+	s=arc-20240116; t=1780104056; c=relaxed/simple;
+	bh=9Jbml+IZhGpfs4onsDDJDmgwABzznVk8ScqQbKIhWpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEc4b4Q6u7cSC1AftldY9sU+slNh35HxDY3uoGOOSr06vyQ4T+TUOQDu5/BrlxFMzpNXMQe+uFlKiNL4saR7KLpkhxXVJ6CABC4nvWNe6hbp1XD5ObdV20yIqQw74aGVDHkNXa2kT8lNxtlHLfPVuq0bWU8jPefFarM4faUGPgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q3gUOVYX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176C21F00893;
-	Sat, 30 May 2026 01:17:51 +0000 (UTC)
+	 MIME-Version; b=BDmIySUtUng1oJQwAAlaSwHavwdzxiMdg5VNx2BtB9QeW7ZjKXoL6f9ziTLpk8lu4F10GlkElJ+lUBa0t4FVnNaX9iAfzGw/fZyZHMmhlalRT2KZxHPigBLfjSNzgvxcEI5XeQkeic+BCA+t4qfU5XQxQ+0EqLveaqYK0bG/TcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kfz4ilTQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256641F00893;
+	Sat, 30 May 2026 01:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780103872;
-	bh=hioexobH9K1jk6RdtkivkU9bnE2XD04AYmOQluJiGdE=;
+	s=k20260515; t=1780104055;
+	bh=ru8BqlWIKVS6uzvtmM8c6hrO++cXlHjRWVNEoPMgmkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q3gUOVYXDBM6PqF0DZ0EVLjnsSdpa5EK/rFZP9SxSRP1OQAvF6B9H8HX+YGJ7ntww
-	 AEElm45h/O2F9UgmBEscAI5XcGfRoBkTuzCcqu24owUslgBy5oEEM5tJfNpUGIM+Q+
-	 3iNRiEcHVbHuvWXO+9GXwhc8oDzHdXhCv/3Qi2uwtO73faFfZJEUtoHruIw55UOlJU
-	 hvc/CgzpE/+xfR1Z4/R1TfPRmvvKgaduSnLHJ09BRkLwSCAnWAkTVXNUAr5/UdvRLu
-	 DOQ0vLZgQ+PEMVA7BSNOJAE5j9Ebli/vH8vkULjkMWBrRyuGxckketoIsRsKu6UXj2
-	 2e4oM1Ya4PFXQ==
+	b=Kfz4ilTQw448EZFpj1D84XKxVvAHAt0LglQDNJMXjY6DbqSwJukrhF7jUAzod7vn4
+	 B9PGeNpL1bFgK9Epq7B78IdgCS3091g5zdUU4DchuvVUYP4CoDKM9KvUAjf4K3su8M
+	 kv0a1dMAeovQRJh0kEf6Y/lC7Ccx9k/pmd6nqngHuvxFMAAMIohohJ4BGdNRnntCDp
+	 U4VG/9hWCkp57y0pPkbLdu2uVcF4d/TVo/YoBRtDSt7ij5qfM29Lq5VCn1CzjKu52l
+	 YjYeSchymyLS+P4JAafVLEVtaLQ2CZ2dMgQmRqFwKqXdYrKrnKPDW2RlqfT1oomG4A
+	 seJyjVd0OCfLA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
@@ -54,12 +54,12 @@ Cc: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] ice: fix VF queue configuration with low MTU values
-Date: Fri, 29 May 2026 21:17:49 -0400
-Message-ID: <20260530011749.2555710-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] ice: fix VF queue configuration with low MTU values
+Date: Fri, 29 May 2026 21:20:52 -0400
+Message-ID: <20260530012052.2574044-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026052802-enigmatic-canyon-c282@gregkh>
-References: <2026052802-enigmatic-canyon-c282@gregkh>
+In-Reply-To: <2026052803-argue-spendable-595e@gregkh>
+References: <2026052803-argue-spendable-595e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,13 +72,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256848-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256849-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -92,9 +92,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,msgid.link:url,mpg.de:email]
-X-Rspamd-Queue-Id: C85A060ABFD
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,mpg.de:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E139360AC0D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -142,18 +142,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-index 471d64d202b76..e98acbc41a813 100644
+index 1edcf93031831..61c40219de1a0 100644
 --- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
 +++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-@@ -1746,7 +1746,7 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
+@@ -1681,7 +1681,7 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
  
  			if (qpi->rxq.databuffer_size != 0 &&
  			    (qpi->rxq.databuffer_size > ((16 * 1024) - 128) ||
 -			     qpi->rxq.databuffer_size < 1024))
 +			     qpi->rxq.databuffer_size < 128))
  				goto error_param;
- 			ring->rx_buf_len = qpi->rxq.databuffer_size;
- 			if (qpi->rxq.max_pkt_size > max_frame_size ||
+ 			vsi->rx_buf_len = qpi->rxq.databuffer_size;
+ 			ring->rx_buf_len = vsi->rx_buf_len;
 -- 
 2.53.0
 
