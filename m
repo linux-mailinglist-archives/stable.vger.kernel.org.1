@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-258553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDofIo8oG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:31 +0200
+	id mIvRD+YxG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3BB611393
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA9F612AB7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0DABD3012225
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:12:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5FA0630A7D44
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93AC39A7FE;
-	Sat, 30 May 2026 18:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B179233943;
+	Sat, 30 May 2026 18:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zx2WMJn6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHYEpHml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A30223DC6;
-	Sat, 30 May 2026 18:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49E3137750;
+	Sat, 30 May 2026 18:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164735; cv=none; b=oDdj25738dd1uABZ5MLtgBLlX53dutqektKiWLZk5ZtPb61dJ6dfHiOPD24FLOg3oYG/HuxzoxupW0fQvgLyGTpdqy2e1deT02vB4mPiW0fNw4EIeHLy4s9rdXYxTGSjztVZ4u6l8ixDdTJoLxltx7s0wVB1Gsff8xO/fzz/nW8=
+	t=1780166894; cv=none; b=a/T91YMg4NdmZpgrk+BSasa0/OBls8Ydmen3J2Shzi3G7AP0gMBxITnrWdqtjh5AH6fqGVH9xVYS5YtWhnxDcDgdcgm5t92zIF7XyLIA/v6U9FeW6x/Sgqe7GV/cR+ZmdLJeBXZY3cd4AL/8dlfskiPoUQRB2UgvhkmAib0WDcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164735; c=relaxed/simple;
-	bh=jnYLcPqIx3ilxE0Z22XADADlVD96uHQOgfO+ACN4q1E=;
+	s=arc-20240116; t=1780166894; c=relaxed/simple;
+	bh=lSyj0XMSp3AcIWK8cuHibfvTGd/JBkHRcNUYX7lcpkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NxMZyCctM+WLJnf0oorVw5eIb+B/O9JFNqlPWnJcgTKQ6SRqgpNe58qfrmzzXX/IkcORYVvJ431kSnOT1KEiEqwQZiRcNdqndRzVqchJd4aIffaYyJXALUy3ztd1Ypy9YzQau/Q7FgLyX1GKekxTiY+wIwdR1nXsjI7HvMukU5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zx2WMJn6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC6B1F00893;
-	Sat, 30 May 2026 18:12:13 +0000 (UTC)
+	 MIME-Version; b=OelsUYkujuKigd10j9i3WL/0MeBj0WgGFvTZ6DdftMrO99eQrhlK/CakHabwqkFiVrk+h/OSmketT2JAF8lh+HfMmduugWHdE6jGRnhQALjkScUEiSE+hLRpQj153pUUgXCyT2h2xtdCfYs/NGb7Rg+sQfmM5CTfnABMr3dgmzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHYEpHml; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B3B1F00893;
+	Sat, 30 May 2026 18:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164734;
-	bh=8zmcrcAo/ggfJxiRlTQrZk7wednHot94QmLWw/HJPXc=;
+	s=korg; t=1780166893;
+	bh=ZIsR/Ylsr8QP5sm0ydf5qZVNfsj5Zkc51082cTxUTTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Zx2WMJn6VtZDgO1DmK/rA+pKQ93TqF84KM1I0Ez4YgIJGdLjRMPthAgtlzjSLzpU1
-	 XkfusZyOE7YMOdy3dpmtFgVI8iT8ITHpuNOONtgm/96RF7wSbHSAqYrxK2tRKrZPNF
-	 M3oUFsJahx+s2WI5JYbijUsxYAIEUaQX79wSaZY0=
+	b=RHYEpHmlJk6uw3fBhuLglNXnH3ii3BkXyJeK2lGJWs2deunocAdnDGa0eOyMpAMBM
+	 a28W3qjKJumx4cASuSmilzpSguNTlYjxzSqBh7wNs4bFe/DdCSeU56NmcdBbnnwgVR
+	 yK0sDcu5HtnvCMd8ZWdALaAaZ6bgOWmjZZ0c+GmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 643/776] SUNRPC: Do not dereference non-socket transports in sysfs
+Subject: [PATCH 5.10 476/589] net/sched: netem: validate slot configuration
 Date: Sat, 30 May 2026 18:05:57 +0200
-Message-ID: <20260530160256.561305345@linuxfoundation.org>
+Message-ID: <20260530160237.155124828@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,253 +69,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259186-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258553-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,hammerspace.com:email]
-X-Rspamd-Queue-Id: 4E3BB611393
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,networkplumber.org:email]
+X-Rspamd-Queue-Id: CDA9F612AB7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-[ Upstream commit 421ab1be43bd015ffe744f4ea25df4f19d1ce6fe ]
+[ Upstream commit 01801c359a74737b9b1aa28568b60374d857241a ]
 
-Do not cast the struct xprt to a sock_xprt unless we know it is a UDP or
-TCP transport. Otherwise the call to lock the mutex will scribble over
-whatever structure is actually there. This has been seen to cause hard
-system lockups when the underlying transport was RDMA.
+Reject slot configurations that have no defensible meaning:
 
-Fixes: b49ea673e119 ("SUNRPC: lock against ->sock changing during sysfs read")
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+  - negative min_delay or max_delay
+  - min_delay greater than max_delay
+  - negative dist_delay or dist_jitter
+  - negative max_packets or max_bytes
+
+Negative or out-of-order delays underflow in get_slot_next(),
+producing garbage intervals. Negative limits trip the per-slot
+accounting (packets_left/bytes_left <= 0) on the first packet of
+every slot, defeating the rate-limiting half of the slot feature.
+
+Note that dist_jitter has been silently coerced to its absolute
+value by get_slot() since the feature was introduced; rejecting
+negatives here converts that silent coercion into -EINVAL. The
+abs() can be removed in a follow-up.
+
+Fixes: 836af83b54e3 ("netem: support delivering packets in delayed time slots")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-5-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/xprt.h     |  3 ++
- include/linux/sunrpc/xprtsock.h |  1 -
- net/sunrpc/sysfs.c              | 55 ++++++++++++++++-----------------
- net/sunrpc/xprtsock.c           | 26 ++++++++++++++--
- 4 files changed, 54 insertions(+), 31 deletions(-)
+ net/sched/sch_netem.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/include/linux/sunrpc/xprt.h b/include/linux/sunrpc/xprt.h
-index 955ea4d7af0b2..eef5e87c03b43 100644
---- a/include/linux/sunrpc/xprt.h
-+++ b/include/linux/sunrpc/xprt.h
-@@ -139,6 +139,9 @@ struct rpc_xprt_ops {
- 	void		(*rpcbind)(struct rpc_task *task);
- 	void		(*set_port)(struct rpc_xprt *xprt, unsigned short port);
- 	void		(*connect)(struct rpc_xprt *xprt, struct rpc_task *task);
-+	int		(*get_srcaddr)(struct rpc_xprt *xprt, char *buf,
-+				       size_t buflen);
-+	unsigned short	(*get_srcport)(struct rpc_xprt *xprt);
- 	int		(*buf_alloc)(struct rpc_task *task);
- 	void		(*buf_free)(struct rpc_task *task);
- 	void		(*prepare_request)(struct rpc_rqst *req);
-diff --git a/include/linux/sunrpc/xprtsock.h b/include/linux/sunrpc/xprtsock.h
-index 3eb0079669c50..38284f25eddfd 100644
---- a/include/linux/sunrpc/xprtsock.h
-+++ b/include/linux/sunrpc/xprtsock.h
-@@ -10,7 +10,6 @@
- 
- int		init_socket_xprt(void);
- void		cleanup_socket_xprt(void);
--unsigned short	get_srcport(struct rpc_xprt *);
- 
- #define RPC_MIN_RESVPORT	(1U)
- #define RPC_MAX_RESVPORT	(65535U)
-diff --git a/net/sunrpc/sysfs.c b/net/sunrpc/sysfs.c
-index 33e8fb85ce4f4..e643dd8748a29 100644
---- a/net/sunrpc/sysfs.c
-+++ b/net/sunrpc/sysfs.c
-@@ -97,7 +97,7 @@ static ssize_t rpc_sysfs_xprt_dstaddr_show(struct kobject *kobj,
- 		return 0;
- 	ret = sprintf(buf, "%s\n", xprt->address_strings[RPC_DISPLAY_ADDR]);
- 	xprt_put(xprt);
--	return ret + 1;
-+	return ret;
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 64542c9c15340..3e3bced82c564 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -815,6 +815,29 @@ static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
+ 	return 0;
  }
  
- static ssize_t rpc_sysfs_xprt_srcaddr_show(struct kobject *kobj,
-@@ -105,33 +105,31 @@ static ssize_t rpc_sysfs_xprt_srcaddr_show(struct kobject *kobj,
- 					   char *buf)
- {
- 	struct rpc_xprt *xprt = rpc_sysfs_xprt_kobj_get_xprt(kobj);
--	struct sockaddr_storage saddr;
--	struct sock_xprt *sock;
--	ssize_t ret = -1;
-+	size_t buflen = PAGE_SIZE;
-+	ssize_t ret = -ENOTSOCK;
- 
- 	if (!xprt || !xprt_connected(xprt)) {
--		xprt_put(xprt);
--		return -ENOTCONN;
-+		ret = -ENOTCONN;
-+	} else if (xprt->ops->get_srcaddr) {
-+		ret = xprt->ops->get_srcaddr(xprt, buf, buflen);
-+		if (ret > 0) {
-+			if (ret < buflen - 1) {
-+				buf[ret] = '\n';
-+				ret++;
-+				buf[ret] = '\0';
-+			}
-+		}
- 	}
--
--	sock = container_of(xprt, struct sock_xprt, xprt);
--	mutex_lock(&sock->recv_mutex);
--	if (sock->sock == NULL ||
--	    kernel_getsockname(sock->sock, (struct sockaddr *)&saddr) < 0)
--		goto out;
--
--	ret = sprintf(buf, "%pISc\n", &saddr);
--out:
--	mutex_unlock(&sock->recv_mutex);
- 	xprt_put(xprt);
--	return ret + 1;
-+	return ret;
- }
- 
- static ssize_t rpc_sysfs_xprt_info_show(struct kobject *kobj,
--					struct kobj_attribute *attr,
--					char *buf)
-+					struct kobj_attribute *attr, char *buf)
- {
- 	struct rpc_xprt *xprt = rpc_sysfs_xprt_kobj_get_xprt(kobj);
-+	unsigned short srcport = 0;
-+	size_t buflen = PAGE_SIZE;
- 	ssize_t ret;
- 
- 	if (!xprt || !xprt_connected(xprt)) {
-@@ -139,7 +137,11 @@ static ssize_t rpc_sysfs_xprt_info_show(struct kobject *kobj,
- 		return -ENOTCONN;
- 	}
- 
--	ret = sprintf(buf, "last_used=%lu\ncur_cong=%lu\ncong_win=%lu\n"
-+	if (xprt->ops->get_srcport)
-+		srcport = xprt->ops->get_srcport(xprt);
-+
-+	ret = snprintf(buf, buflen,
-+		       "last_used=%lu\ncur_cong=%lu\ncong_win=%lu\n"
- 		       "max_num_slots=%u\nmin_num_slots=%u\nnum_reqs=%u\n"
- 		       "binding_q_len=%u\nsending_q_len=%u\npending_q_len=%u\n"
- 		       "backlog_q_len=%u\nmain_xprt=%d\nsrc_port=%u\n"
-@@ -147,14 +149,11 @@ static ssize_t rpc_sysfs_xprt_info_show(struct kobject *kobj,
- 		       xprt->last_used, xprt->cong, xprt->cwnd, xprt->max_reqs,
- 		       xprt->min_reqs, xprt->num_reqs, xprt->binding.qlen,
- 		       xprt->sending.qlen, xprt->pending.qlen,
--		       xprt->backlog.qlen, xprt->main,
--		       (xprt->xprt_class->ident == XPRT_TRANSPORT_TCP) ?
--		       get_srcport(xprt) : 0,
-+		       xprt->backlog.qlen, xprt->main, srcport,
- 		       atomic_long_read(&xprt->queuelen),
--		       (xprt->xprt_class->ident == XPRT_TRANSPORT_TCP) ?
--				xprt->address_strings[RPC_DISPLAY_PORT] : "0");
-+		       xprt->address_strings[RPC_DISPLAY_PORT]);
- 	xprt_put(xprt);
--	return ret + 1;
-+	return ret;
- }
- 
- static ssize_t rpc_sysfs_xprt_state_show(struct kobject *kobj,
-@@ -201,7 +200,7 @@ static ssize_t rpc_sysfs_xprt_state_show(struct kobject *kobj,
- 	}
- 
- 	xprt_put(xprt);
--	return ret + 1;
-+	return ret;
- }
- 
- static ssize_t rpc_sysfs_xprt_switch_info_show(struct kobject *kobj,
-@@ -220,7 +219,7 @@ static ssize_t rpc_sysfs_xprt_switch_info_show(struct kobject *kobj,
- 		      xprt_switch->xps_nunique_destaddr_xprts,
- 		      atomic_long_read(&xprt_switch->xps_queuelen));
- 	xprt_switch_put(xprt_switch);
--	return ret + 1;
-+	return ret;
- }
- 
- static ssize_t rpc_sysfs_xprt_dstaddr_store(struct kobject *kobj,
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 07acc6845ce29..a829da4bbb09e 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -1677,7 +1677,7 @@ static int xs_get_srcport(struct sock_xprt *transport)
- 	return port;
- }
- 
--unsigned short get_srcport(struct rpc_xprt *xprt)
-+static unsigned short xs_sock_srcport(struct rpc_xprt *xprt)
- {
- 	struct sock_xprt *sock = container_of(xprt, struct sock_xprt, xprt);
- 	unsigned short ret = 0;
-@@ -1687,7 +1687,25 @@ unsigned short get_srcport(struct rpc_xprt *xprt)
- 	mutex_unlock(&sock->recv_mutex);
- 	return ret;
- }
--EXPORT_SYMBOL(get_srcport);
-+
-+static int xs_sock_srcaddr(struct rpc_xprt *xprt, char *buf, size_t buflen)
++static int validate_slot(const struct nlattr *attr, struct netlink_ext_ack *extack)
 +{
-+	struct sock_xprt *sock = container_of(xprt, struct sock_xprt, xprt);
-+	union {
-+		struct sockaddr sa;
-+		struct sockaddr_storage st;
-+	} saddr;
-+	int ret = -ENOTCONN;
++	const struct tc_netem_slot *c = nla_data(attr);
 +
-+	mutex_lock(&sock->recv_mutex);
-+	if (sock->sock) {
-+		ret = kernel_getsockname(sock->sock, &saddr.sa);
-+		if (ret >= 0)
-+			ret = snprintf(buf, buflen, "%pISc", &saddr.sa);
++	if (c->min_delay < 0 || c->max_delay < 0) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot delay");
++		return -EINVAL;
 +	}
-+	mutex_unlock(&sock->recv_mutex);
-+	return ret;
++	if (c->min_delay > c->max_delay) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "slot min delay greater than max delay");
++		return -EINVAL;
++	}
++	if (c->dist_delay < 0 || c->dist_jitter < 0) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "negative dist delay");
++		return -EINVAL;
++	}
++	if (c->max_packets < 0 || c->max_bytes < 0) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot limit");
++		return -EINVAL;
++	}
++	return 0;
 +}
- 
- static unsigned short xs_next_srcport(struct sock_xprt *transport, unsigned short port)
++
+ static void get_slot(struct netem_sched_data *q, const struct nlattr *attr)
  {
-@@ -2678,6 +2696,8 @@ static const struct rpc_xprt_ops xs_udp_ops = {
- 	.rpcbind		= rpcb_getport_async,
- 	.set_port		= xs_set_port,
- 	.connect		= xs_connect,
-+	.get_srcaddr		= xs_sock_srcaddr,
-+	.get_srcport		= xs_sock_srcport,
- 	.buf_alloc		= rpc_malloc,
- 	.buf_free		= rpc_free,
- 	.send_request		= xs_udp_send_request,
-@@ -2700,6 +2720,8 @@ static const struct rpc_xprt_ops xs_tcp_ops = {
- 	.rpcbind		= rpcb_getport_async,
- 	.set_port		= xs_set_port,
- 	.connect		= xs_connect,
-+	.get_srcaddr		= xs_sock_srcaddr,
-+	.get_srcport		= xs_sock_srcport,
- 	.buf_alloc		= rpc_malloc,
- 	.buf_free		= rpc_free,
- 	.prepare_request	= xs_stream_prepare_request,
+ 	const struct tc_netem_slot *c = nla_data(attr);
+@@ -1030,6 +1053,12 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 			goto table_free;
+ 	}
+ 
++	if (tb[TCA_NETEM_SLOT]) {
++		ret = validate_slot(tb[TCA_NETEM_SLOT], extack);
++		if (ret)
++			goto table_free;
++	}
++
+ 	sch_tree_lock(sch);
+ 	/* backup q->clg and q->loss_model */
+ 	old_clg = q->clg;
 -- 
 2.53.0
 
