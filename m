@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJRwINMfG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257886-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:35:15 +0200
+	id GFKMCbUzG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DBBD60FFA1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:35:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C85A612ED3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3ADD0300809E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:35:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F0A830D0570
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B9333A9DA;
-	Sat, 30 May 2026 17:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2A0242D67;
+	Sat, 30 May 2026 18:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JH4jhNgi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyrKt5LF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70EAD341AB8;
-	Sat, 30 May 2026 17:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26C62367DF;
+	Sat, 30 May 2026 18:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162501; cv=none; b=f2/OcXjm2tV0CT3j9qCYC4tMwIoBBg+bgR6tyOdHxeE1KdgPh8tZGwnmri4lWsh0GfYsSgWB+9X1KLfk+G4jbPOAzB+JRPjSipSgMZeoYtdLBvPGs3XWjRivBwcCYBlkf4CAgjtsuZvkTaqEUT1ON5j5MGHxYQWrNHhOc7xGpz0=
+	t=1780167162; cv=none; b=KDk9Uwbu42K4zxFGBX3VdwsIhbuD4BckisUfVoXvf25BiP1zTvw2rMKnr69y2D1ILApXa6AlTCVqn/VVT8R1tj7lE97Ts1xKo61jRwayCI/v2K21mnChEhBQ7XSY2zt4RKRVExY8qUfcE3L25nyaDzLMoLu15gYVQuaGTEfHDWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162501; c=relaxed/simple;
-	bh=25zegvqdhZijrxAOR4itcOCU8Fg2Elahh3tMorvpuoY=;
+	s=arc-20240116; t=1780167162; c=relaxed/simple;
+	bh=OyvJL6im/TBQ0Le65ZAS3PscCva7xOgYQVVXg18Em4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/fAOJQpZY+VUzaviwXqUdxqFu6leIRgiTjMRx1cdxgcl9uuxtoeZDIE5LGae/lKCcJMCjMhmu4EZE2xaQ5nqIbVy4cSUpGRO2eYMF4ZAJ3zw5w5CjX1Lyy1bP9tnOblG87KhMMMV96qyr0gmNKs0f0x1MpaMB08F1j8i9GBnKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JH4jhNgi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8FF1F00893;
-	Sat, 30 May 2026 17:34:59 +0000 (UTC)
+	 MIME-Version; b=GZC+hQMRHcbILJmYsouCTwtKyqWfPkZ9L3YF65sL+9gLu6pR6L1miXp9HuqTAOvcL3ME3VvfvRvL5uHpEKZSShv6RlmSW1ia21aJ9u1wze2GRVWpGpP2+cg+E/dzMQTKzRn3H3WVnHGPcB1YuApdc8qlNINW5w7JAgVa5feI+r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyrKt5LF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193051F00893;
+	Sat, 30 May 2026 18:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162500;
-	bh=v0PHmh0A/ZyBnLCTn6mmiGHt2UFybNTCbOQYp3vxIsY=;
+	s=korg; t=1780167161;
+	bh=supnPoYcu5h6bbykFrSK1LPVN382y9TQzaqffemKPCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JH4jhNgiuqwXFFzCBUeKiRqv9TkpS97zUy9hlWFvmEyk9DmVufJjH5hNL+3YET4lI
-	 jswl/7q7mCDguLAfRT463JrZRANR62mHX/ikAutrz2LypEd9MMlhV4wE4eSvWOqVXe
-	 d9vukFf7Akw0Y1369nR+aqI4aew3hf66udvlYDEY=
+	b=DyrKt5LFCEXr1gGjva5CI2dpG9/OYCmzMtm6rqlpiRCZ208OdZTpw+GNBJvPU1oMk
+	 lEXZo/NB93dqcV34o5YsOWtqU9YeyyDmCLg5iAsgeD2rfeJ10qwg6ZmoHdDEq4TMKv
+	 65K4YRy6dKlpo8YYN5/UXOi1v/vELsmr7mJc5M/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <david@davidgow.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 903/969] kunit: config: KUNIT_DEBUGFS should depend on DEBUG_FS
+	Vignesh R <vigneshr@ti.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 546/589] spi: ti-qspi: fix use-after-free after DMA setup failure
 Date: Sat, 30 May 2026 18:07:07 +0200
-Message-ID: <20260530160325.647948521@linuxfoundation.org>
+Message-ID: <20260530160239.025432763@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,58 +78,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257886-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259265-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,davidgow.net:email]
-X-Rspamd-Queue-Id: 7DBBD60FFA1
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,sashiko.dev:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7C85A612ED3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <david@davidgow.net>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 8f80b5b227ef9ea422080487715c841856339aed ]
+commit ea6ec3343e05f7937a53eb6d7617b3abdb4abc19 upstream.
 
-CONFIG_KUNIT_DEBUGFS is totally useless without debugfs, so it should
-depend on CONFIG_DEBUG_FS.
+The driver falls back to PIO mode if DMA setup fails during probe.
 
-Link: https://lore.kernel.org/r/20260425034155.53913-2-david@davidgow.net
-Fixes: e2219db280e3 ("kunit: add debugfs /sys/kernel/debug/kunit/<suite>/results display")
-Signed-off-by: David Gow <david@davidgow.net>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make sure to clear the DMA channel pointer also if buffer allocation
+fails to avoid passing a pointer to the released channel to the DMA
+engine (or trying to free the channel a second time on late probe errors
+or driver unbind).
+
+This issue was flagged by Sashiko when reviewing a devres allocation
+conversion patch.
+
+Fixes: c687c46e9e45 ("spi: spi-ti-qspi: Use bounce buffer if read buffer is not DMA'ble")
+Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=17
+Cc: stable@vger.kernel.org	# 4.12
+Cc: Vignesh R <vigneshr@ti.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260512074809.915084-1-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/kunit/Kconfig | 1 +
+ drivers/spi/spi-ti-qspi.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
-index 785c2cfc530c2..49defb2f21b69 100644
---- a/lib/kunit/Kconfig
-+++ b/lib/kunit/Kconfig
-@@ -17,6 +17,7 @@ if KUNIT
- 
- config KUNIT_DEBUGFS
- 	bool "KUnit - Enable /sys/kernel/debug/kunit debugfs representation"
-+	depends on DEBUG_FS
- 	default y
- 	help
- 	  Enable debugfs representation for kunit.  Currently this consists
--- 
-2.53.0
-
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -873,6 +873,7 @@ static int ti_qspi_probe(struct platform
+ 		dev_err(qspi->dev,
+ 			"dma_alloc_coherent failed, using PIO mode\n");
+ 		dma_release_channel(qspi->rx_chan);
++		qspi->rx_chan = NULL;
+ 		goto no_dma;
+ 	}
+ 	master->dma_rx = qspi->rx_chan;
 
 
 
