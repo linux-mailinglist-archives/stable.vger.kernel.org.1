@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-257093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257097-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +EFWMyAVG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257093-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:36 +0200
+	id SCQnDS0VG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257097-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D3F60E746
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E55060E772
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2EC6330193BF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:49:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 56DD0301220F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5757D332EA7;
-	Sat, 30 May 2026 16:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B845332EA7;
+	Sat, 30 May 2026 16:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/IDyiyf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPtbwItM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C25F3242BE;
-	Sat, 30 May 2026 16:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DE23242BE;
+	Sat, 30 May 2026 16:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159770; cv=none; b=oaDWxL0JpkaIXbxs4YuWbEn60wq8w7vmopALdXdq6E7GhCWBDaqI61lDjgzrj7zPGAphKXf46km1BxYfn47C2whNI4Ba9sGZiz2rIytnx54Qh08b2eQ5jsXu9h8bqo7w6ctYczGPLBhvuKjn/7nuM7ToWu1IpZb0INWBNJp9xJI=
+	t=1780159785; cv=none; b=mRlsn57TUBB+UzmamsisKvKS3modLLqGNYI+1O1a7A1KTGTRo2QUqhNzdupbbFekG2KXq+ztJ8Qb7Xam9nrnvxMuXr4XKQrHyMLMoLdpDrrvfvgkUtYtTaX3XTPGPbUVssGxYTIFJ4uIZLwNk7UkPeIjk3hXEwCNK3Tfx5qu6rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159770; c=relaxed/simple;
-	bh=Bxm9gaIBzJzkTJY1pGJQiEbE5Ii8GoEUpAaj9yWjrsM=;
+	s=arc-20240116; t=1780159785; c=relaxed/simple;
+	bh=iZT0CN7S4A2jLOWkTy6xbvq/zfZyOrOnc+e1W+yc4sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ugy5j9kqa2mT8/gvh59jZVoToxp6wPH6s5iOjoGC34x21QpVriZxdQYy4pSoA5CWYNoQfa5TWktx8AlsYY35YoCxiuv7TjXFcYjh1ZnrcAr0/8YbB+6VR5tXxc04MGLrwIKclM9ntSoprENMXbUABzHDvMq399S5aLrwDOLpI1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/IDyiyf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5BE1F00893;
-	Sat, 30 May 2026 16:49:27 +0000 (UTC)
+	 MIME-Version; b=T1eHWXhFu1N+SDb93s3tPI+IBHnirMj9PgGakAgpT3y1IVHhhcycVhB/U0Ndp7TlwNIh4qfhPJJysRutVFEZn4zAxcJoWC+9+s62CULninjgqc4M4W78hszcAPml2/ia++yJebcE7M06+Pm9+6b+SXmkxnZKVBA1I/4+E/GDwms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPtbwItM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4EF1F00893;
+	Sat, 30 May 2026 16:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159768;
-	bh=YMYMC3AKAhNG8NJBzbOUPyo7kMiGwKwLbs4Tkw+yODs=;
+	s=korg; t=1780159783;
+	bh=pWLRkusrer7Ww/kKd7EL43uJxjwu3mSLAgatrqqxiG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t/IDyiyfAuAmnRA6x376juYur1uIMylJOZWLFjeflTG5bFlyx7Tt5dvcRdw4Gm2J6
-	 JLUSKtfcI1JsMqJSh70+ghQIc5BqX2ol4+aEDwl52pLznk/cVAWS/U8hfX4c4lmgHn
-	 Iz1qE3lr7Coni/xX0b/30dCCYjrc4NWJbuf4kzy0=
+	b=zPtbwItMgqBQ/j0SkLzUdXv+BlAKbTW6fwALutBwqvHzy7zQNO/MT0xYawL75nvbl
+	 E6efAVIFih985GHmh98TwkuiaEWw54hTAqV/7XMFQAnSGOyyWPwIbw520Z1TvK/2+M
+	 q2w2C3RYW9n9jTsPgBaAzPgWxW5k1/5oofgjaE7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Ruohan Lan <ruohanlan@aliyun.com>
-Subject: [PATCH 6.1 129/969] ublk: fix deadlock when reading partition table
-Date: Sat, 30 May 2026 17:54:13 +0200
-Message-ID: <20260530160304.135563374@linuxfoundation.org>
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Fiona Behrens <me@kloenk.dev>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 130/969] scripts: generate_rust_analyzer.py: define scripts
+Date: Sat, 30 May 2026 17:54:14 +0200
+Message-ID: <20260530160304.161820555@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -70,29 +71,28 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257093-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,purestorage.com,kernel.dk,aliyun.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257097-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 56D3F60E746
+X-Rspamd-Queue-Id: 0E55060E772
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,99 +100,61 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Tamir Duberstein <tamird@kernel.org>
 
-[ Upstream commit c258f5c4502c9667bccf5d76fa731ab9c96687c1 ]
+[ Upstream commit 36c619f6bd793493294becb10a02fea370b67a91 ]
 
-When one process(such as udev) opens ublk block device (e.g., to read
-the partition table via bdev_open()), a deadlock[1] can occur:
+Add IDE support for host-side scripts written in Rust. This support has
+been missing since these scripts were initially added in commit
+9a8ff24ce584 ("scripts: add `generate_rust_target.rs`"), thus add it.
 
-1. bdev_open() grabs disk->open_mutex
-2. The process issues read I/O to ublk backend to read partition table
-3. In __ublk_complete_rq(), blk_update_request() or blk_mq_end_request()
-   runs bio->bi_end_io() callbacks
-4. If this triggers fput() on file descriptor of ublk block device, the
-   work may be deferred to current task's task work (see fput() implementation)
-5. This eventually calls blkdev_release() from the same context
-6. blkdev_release() tries to grab disk->open_mutex again
-7. Deadlock: same task waiting for a mutex it already holds
+Change the existing instance of extension stripping to
+`pathlib.Path.stem` to maintain code consistency.
 
-The fix is to run blk_update_request() and blk_mq_end_request() with bottom
-halves disabled. This forces blkdev_release() to run in kernel work-queue
-context instead of current task work context, and allows ublk server to make
-forward progress, and avoids the deadlock.
-
-Fixes: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
-Link: https://github.com/ublk-org/ublksrv/issues/170 [1]
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
-[axboe: rewrite comment in ublk]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ The fix omits the change in __ublk_do_auto_buf_reg() since this function
-doesn't exist in 6.1. ]
-Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
+Fixes: 9a8ff24ce584 ("scripts: add `generate_rust_target.rs`")
+Cc: stable@vger.kernel.org
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Link: https://patch.msgid.link/20260122-rust-analyzer-scripts-v1-1-ff6ba278170e@kernel.org
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+[ changed `[std]` dep to `["std"]` and kept untyped `is_root_crate()` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/ublk_drv.c |   28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ scripts/generate_rust_analyzer.py |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -603,12 +603,20 @@ static inline bool ubq_daemon_is_dying(s
- 	return ubq->ubq_daemon->flags & PF_EXITING;
- }
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -113,6 +113,18 @@ def generate_crates(srctree, objtree, sy
+         "exclude_dirs": [],
+     }
  
-+static void ublk_end_request(struct request *req, blk_status_t error)
-+{
-+	local_bh_disable();
-+	blk_mq_end_request(req, error);
-+	local_bh_enable();
-+}
++    scripts = srctree / "scripts"
++    makefile = (scripts / "Makefile").read_text()
++    for path in scripts.glob("*.rs"):
++        name = path.stem
++        if f"{name}-rust" not in makefile:
++            continue
++        append_crate(
++            name,
++            path,
++            ["std"],
++        )
 +
- /* todo: handle partial completion */
- static void ublk_complete_rq(struct request *req)
- {
- 	struct ublk_queue *ubq = req->mq_hctx->driver_data;
- 	struct ublk_io *io = &ubq->ios[req->tag];
- 	unsigned int unmapped_bytes;
-+	bool requeue;
+     def is_root_crate(build_file, target):
+         try:
+             contents = build_file.read_text()
+@@ -129,7 +141,7 @@ def generate_crates(srctree, objtree, sy
+     for folder in extra_dirs:
+         for path in folder.rglob("*.rs"):
+             logging.info("Checking %s", path)
+-            name = path.name.replace(".rs", "")
++            name = path.stem
  
- 	/* failed read IO if nothing is read */
- 	if (!io->res && req_op(req) == REQ_OP_READ)
-@@ -641,7 +649,23 @@ static void ublk_complete_rq(struct requ
- 	if (unlikely(unmapped_bytes < io->res))
- 		io->res = unmapped_bytes;
- 
--	if (blk_update_request(req, BLK_STS_OK, io->res))
-+	/*
-+	 * Run bio->bi_end_io() with softirqs disabled. If the final fput
-+	 * happens off this path, then that will prevent ublk's blkdev_release()
-+	 * from being called on current's task work, see fput() implementation.
-+	 *
-+	 * Otherwise, ublk server may not provide forward progress in case of
-+	 * reading the partition table from bdev_open() with disk->open_mutex
-+	 * held, and causes dead lock as we could already be holding
-+	 * disk->open_mutex here.
-+	 *
-+	 * Preferably we would not be doing IO with a mutex held that is also
-+	 * used for release, but this work-around will suffice for now.
-+	 */
-+	local_bh_disable();
-+	requeue = blk_update_request(req, BLK_STS_OK, io->res);
-+	local_bh_enable();
-+	if (requeue)
- 		blk_mq_requeue_request(req, true);
- 	else
- 		__blk_mq_end_request(req, BLK_STS_OK);
-@@ -694,7 +718,7 @@ static inline void __ublk_abort_rq(struc
- 	if (ublk_queue_can_use_recovery(ubq))
- 		blk_mq_requeue_request(rq, false);
- 	else
--		blk_mq_end_request(rq, BLK_STS_IOERR);
-+		ublk_end_request(rq, BLK_STS_IOERR);
- 
- 	mod_delayed_work(system_wq, &ubq->dev->monitor_work, 0);
- }
+             # Skip those that are not crate roots.
+             if not is_root_crate(path.parent / "Makefile", name) and \
 
 
 
