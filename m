@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yObDGVMlG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:43 +0200
+	id Yyg9CnocG2qQ/QgAu9opvQ
+	(envelope-from <stable+bounces-257504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A274610BEE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B429860F750
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D4B553011EB4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:56:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7639330960C1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4363B7B72;
-	Sat, 30 May 2026 17:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AEA34A79D;
+	Sat, 30 May 2026 17:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkwMMQd6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+sFiSiW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2130123D7E6;
-	Sat, 30 May 2026 17:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0675395AD8;
+	Sat, 30 May 2026 17:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163816; cv=none; b=jHtD6dy4/REaOjbj9mNMqqGb357HAl11sFuobiM28iv97AlDmxhrvGjWhLZy1lh/8/jeStewle+3JeVs+FGavM4dCJuLNsOEiI7vFr3PT7sB3TkkjWncqwFd+5R9ysvAGeTkWG22/HdgY3SkdUuMp/YB+GjxkVSS4Cc5/T+R0Ho=
+	t=1780161224; cv=none; b=aUptWQMrQRaZJYIRzZDL3kYYDUOs4PqD2T0qGjSi64ap5aLQOLlBwAuJcWRSuT+vRAyH/mmn+G47EA6LtZzVBza+TUNHQLZ+j54SRxS4kdJCNlJ3V2K0n9d8roOcl4F6F+HNgOSQ/UmfKBTxxyIkjjvA3C9tSBETk8SfSjhJMtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163816; c=relaxed/simple;
-	bh=AVF1yD7eJdU/WjosqsHYt9WsMlt57AJE9LftHPClJqM=;
+	s=arc-20240116; t=1780161224; c=relaxed/simple;
+	bh=B9VT9rQzi2yi3jF5CIiB9+w6JG9ihz+Z3oFhHvHy9+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GIdrqqpsqAY/Lqqvu7NXYf1HYKrOBPOhm/qB/o3xf7EgfHKNd38zwK/ZZbSe+tMmBNfel1Kx+0ep2POqVDsaWDVC5VHeaRlkzjoOqgVap1YQqZY1sq4tqF9Cndp0PrdttZWYJ+5XRXQUozcjlgybENsK+X2PnxXe+JryuD8ON3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkwMMQd6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D12A1F00893;
-	Sat, 30 May 2026 17:56:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=al1GPSdDEXloljdtZKJyalXtt0MGLIC/2918LmsJYRWSf3m+dyLy1cGTWjYcAy1Kme/zlDqlcwvGxZ9qIB0aOd9G0NB2WOmDTpGCIGjGIk/Uer06XwHo2IKUarr/rGMrrSoqaYfrSmXJ05Jml30rl9Cz1292xFaFWkCxRWCgpws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+sFiSiW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40251F00893;
+	Sat, 30 May 2026 17:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163814;
-	bh=cn3TQpdOX5bwCOKox6YrGtaBQ/m6KOjGlRQ6f747ALU=;
+	s=korg; t=1780161223;
+	bh=S21rN+L8YNZpDgR+rYC5lEArqPvTqfxuIckMkK/Zxbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hkwMMQd6Q1Mj1LMtSVcrH0AF3cle8qzKlg5QmmzQYb17rPiVMooOrzzbxQFl9XpNE
-	 OcSy8EivSWVbxU3eFpX7iGYfDmyHXu9HolHdiPiia2UAlTTLVC763CBOrStJZwglTO
-	 VewErN6WLULy19haNHH/9yCJ3geqgOL4fkazryoo=
+	b=X+sFiSiWaFQpo7m6V/MsjCbwGOc0wd7e6S2bYMgiTDWjwIcXVAqiIRI+4GonKv3DK
+	 MmBG/0WXJppWX8agOc45p9/u/1Wla5dmjEfUMcJtTDFMXV92aMsrhRnAjJie6K13bc
+	 cbaRdVogzNjKnwhgAJtdjLW0GY1+Js/TJ65vE+lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Kent Russell <kent.russell@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 371/776] drm/amdgpu/pm: add missing revision check for CI
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 561/969] ALSA: sc6000: Keep the programmed board state in card-private data
 Date: Sat, 30 May 2026 18:01:25 +0200
-Message-ID: <20260530160250.133238845@linuxfoundation.org>
+Message-ID: <20260530160315.877357778@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +65,321 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-257504-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258279-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 1A274610BEE
+X-Rspamd-Queue-Id: B429860F750
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 2a561b361b7681509710f3cfc3d95d54c87ac69f upstream.
+[ Upstream commit fb79bf127ac2577b4876132da6dba768018aad4c ]
 
-The ci_populate_all_memory_levels() workaround only
-applies to revision 0 SKUs.
+The driver may auto-select IRQ and DMA resources at probe time, but
+sc6000_init_board() still derives the SC-6000 soft configuration from
+the module parameter arrays.  When irq=auto or dma=auto is used, the
+codec is created with the selected resources while the board is
+programmed with the unresolved values.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/1816
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Kent Russell <kent.russell@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1db15ba8f72f400bbad8ae0ce24fafc43429d4bd)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Store the mapped ports and generated SC-6000 board configuration in
+card-private data, build that configuration from the live probe
+results instead of the raw module parameters, and keep the probe-time
+board programming in a shared helper.
+
+This fixes the resource-programming mismatch and leaves the driver
+with a stable board-state block that can be reused by suspend/resume.
+
+Fixes: c282866101bf ("ALSA: sc6000: add support for SC-6600 and SC-7000")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260410-alsa-sc6000-pm-v1-1-4d9e95493d26@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/isa/sc6000.c | 152 +++++++++++++++++++++++++++------------------
+ 1 file changed, 92 insertions(+), 60 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -1325,8 +1325,9 @@ static int ci_populate_all_memory_levels
+diff --git a/sound/isa/sc6000.c b/sound/isa/sc6000.c
+index 3115c32b4061b..4066b68a102e2 100644
+--- a/sound/isa/sc6000.c
++++ b/sound/isa/sc6000.c
+@@ -100,6 +100,15 @@ MODULE_PARM_DESC(joystick, "Enable gameport.");
+ #define PFX "sc6000: "
+ #define DRV_NAME "SC-6000"
  
- 	dev_id = adev->pdev->device;
++struct snd_sc6000 {
++	char __iomem *vport;
++	char __iomem *vmss_port;
++	u8 mss_config;
++	u8 config;
++	u8 hw_cfg[2];
++	bool old_dsp;
++};
++
+ /* hardware dependent functions */
  
--	if ((dpm_table->mclk_table.count >= 2)
--		&& ((dev_id == 0x67B0) ||  (dev_id == 0x67B1))) {
-+	if ((dpm_table->mclk_table.count >= 2) &&
-+	    ((dev_id == 0x67B0) ||  (dev_id == 0x67B1)) &&
-+	    (adev->pdev->revision == 0)) {
- 		smu_data->smc_state_table.MemoryLevel[1].MinVddci =
- 				smu_data->smc_state_table.MemoryLevel[0].MinVddci;
- 		smu_data->smc_state_table.MemoryLevel[1].MinMvdd =
+ /*
+@@ -267,7 +276,7 @@ static int sc6000_dsp_reset(char __iomem *vport)
+ 
+ /* detection and initialization */
+ static int sc6000_hw_cfg_write(struct device *devptr,
+-			       char __iomem *vport, const int *cfg)
++			       char __iomem *vport, const u8 *cfg)
+ {
+ 	if (sc6000_write(devptr, vport, COMMAND_6C) < 0) {
+ 		dev_warn(devptr, "CMD 0x%x: failed!\n", COMMAND_6C);
+@@ -353,8 +362,7 @@ static int sc6000_init_mss(struct device *devptr,
+ 	return 0;
+ }
+ 
+-static void sc6000_hw_cfg_encode(struct device *devptr,
+-				 char __iomem *vport, int *cfg,
++static void sc6000_hw_cfg_encode(struct device *devptr, u8 *cfg,
+ 				 long xport, long xmpu,
+ 				 long xmss_port, int joystick)
+ {
+@@ -376,27 +384,83 @@ static void sc6000_hw_cfg_encode(struct device *devptr,
+ 	dev_dbg(devptr, "hw cfg %x, %x\n", cfg[0], cfg[1]);
+ }
+ 
+-static int sc6000_init_board(struct device *devptr,
+-			     char __iomem *vport,
+-			     char __iomem *vmss_port, int dev)
++static void sc6000_prepare_board(struct device *devptr,
++				 struct snd_sc6000 *sc6000,
++				 unsigned int dev, int xirq, int xdma)
++{
++	sc6000->mss_config = sc6000_irq_to_softcfg(xirq) |
++			     sc6000_dma_to_softcfg(xdma);
++	sc6000->config = sc6000->mss_config |
++			 sc6000_mpu_irq_to_softcfg(mpu_irq[dev]);
++	sc6000_hw_cfg_encode(devptr, sc6000->hw_cfg, port[dev], mpu_port[dev],
++			     mss_port[dev], joystick[dev]);
++}
++
++static void sc6000_detect_old_dsp(struct device *devptr,
++				  struct snd_sc6000 *sc6000)
++{
++	sc6000_write(devptr, sc6000->vport, COMMAND_5C);
++	sc6000->old_dsp = sc6000_read(sc6000->vport) < 0;
++}
++
++static int sc6000_program_board(struct device *devptr,
++				struct snd_sc6000 *sc6000)
++{
++	int err;
++
++	if (!sc6000->old_dsp) {
++		if (sc6000_hw_cfg_write(devptr, sc6000->vport,
++					sc6000->hw_cfg) < 0) {
++			dev_err(devptr, "sc6000_hw_cfg_write: failed!\n");
++			return -EIO;
++		}
++	}
++
++	err = sc6000_setup_board(devptr, sc6000->vport, sc6000->config);
++	if (err < 0) {
++		dev_err(devptr, "sc6000_setup_board: failed!\n");
++		return -ENODEV;
++	}
++
++	sc6000_dsp_reset(sc6000->vport);
++
++	if (!sc6000->old_dsp) {
++		sc6000_write(devptr, sc6000->vport, COMMAND_60);
++		sc6000_write(devptr, sc6000->vport, 0x02);
++		sc6000_dsp_reset(sc6000->vport);
++	}
++
++	err = sc6000_setup_board(devptr, sc6000->vport, sc6000->config);
++	if (err < 0) {
++		dev_err(devptr, "sc6000_setup_board: failed!\n");
++		return -ENODEV;
++	}
++
++	err = sc6000_init_mss(devptr, sc6000->vport, sc6000->config,
++			      sc6000->vmss_port, sc6000->mss_config);
++	if (err < 0) {
++		dev_err(devptr, "Cannot initialize Microsoft Sound System mode.\n");
++		return -ENODEV;
++	}
++
++	return 0;
++}
++
++static int sc6000_init_board(struct device *devptr, struct snd_sc6000 *sc6000)
+ {
+ 	char answer[15];
+ 	char version[2];
+-	int mss_config = sc6000_irq_to_softcfg(irq[dev]) |
+-			 sc6000_dma_to_softcfg(dma[dev]);
+-	int config = mss_config |
+-		     sc6000_mpu_irq_to_softcfg(mpu_irq[dev]);
+ 	int err;
+-	int old = 0;
+ 
+-	err = sc6000_dsp_reset(vport);
++	err = sc6000_dsp_reset(sc6000->vport);
+ 	if (err < 0) {
+ 		dev_err(devptr, "sc6000_dsp_reset: failed!\n");
+ 		return err;
+ 	}
+ 
+ 	memset(answer, 0, sizeof(answer));
+-	err = sc6000_dsp_get_answer(devptr, vport, GET_DSP_COPYRIGHT, answer, 15);
++	err = sc6000_dsp_get_answer(devptr, sc6000->vport, GET_DSP_COPYRIGHT,
++				    answer, 15);
+ 	if (err <= 0) {
+ 		dev_err(devptr, "sc6000_dsp_copyright: failed!\n");
+ 		return -ENODEV;
+@@ -408,54 +472,17 @@ static int sc6000_init_board(struct device *devptr,
+ 	if (strncmp("SC-6000", answer, 7))
+ 		dev_warn(devptr, "Warning: non SC-6000 audio card!\n");
+ 
+-	if (sc6000_dsp_get_answer(devptr, vport, GET_DSP_VERSION, version, 2) < 2) {
++	if (sc6000_dsp_get_answer(devptr, sc6000->vport,
++				  GET_DSP_VERSION, version, 2) < 2) {
+ 		dev_err(devptr, "sc6000_dsp_version: failed!\n");
+ 		return -ENODEV;
+ 	}
+ 	dev_info(devptr, "Detected model: %s, DSP version %d.%d\n",
+ 		answer, version[0], version[1]);
+ 
+-	/* set configuration */
+-	sc6000_write(devptr, vport, COMMAND_5C);
+-	if (sc6000_read(vport) < 0)
+-		old = 1;
+-
+-	if (!old) {
+-		int cfg[2];
+-		sc6000_hw_cfg_encode(devptr,
+-				     vport, &cfg[0], port[dev], mpu_port[dev],
+-				     mss_port[dev], joystick[dev]);
+-		if (sc6000_hw_cfg_write(devptr, vport, cfg) < 0) {
+-			dev_err(devptr, "sc6000_hw_cfg_write: failed!\n");
+-			return -EIO;
+-		}
+-	}
+-	err = sc6000_setup_board(devptr, vport, config);
+-	if (err < 0) {
+-		dev_err(devptr, "sc6000_setup_board: failed!\n");
+-		return -ENODEV;
+-	}
+-
+-	sc6000_dsp_reset(vport);
+-
+-	if (!old) {
+-		sc6000_write(devptr, vport, COMMAND_60);
+-		sc6000_write(devptr, vport, 0x02);
+-		sc6000_dsp_reset(vport);
+-	}
++	sc6000_detect_old_dsp(devptr, sc6000);
+ 
+-	err = sc6000_setup_board(devptr, vport, config);
+-	if (err < 0) {
+-		dev_err(devptr, "sc6000_setup_board: failed!\n");
+-		return -ENODEV;
+-	}
+-	err = sc6000_init_mss(devptr, vport, config, vmss_port, mss_config);
+-	if (err < 0) {
+-		dev_err(devptr, "Cannot initialize Microsoft Sound System mode.\n");
+-		return -ENODEV;
+-	}
+-
+-	return 0;
++	return sc6000_program_board(devptr, sc6000);
+ }
+ 
+ static int snd_sc6000_mixer(struct snd_wss *chip)
+@@ -538,10 +565,10 @@ static int snd_sc6000_match(struct device *devptr, unsigned int dev)
+ 
+ static void snd_sc6000_free(struct snd_card *card)
+ {
+-	char __iomem *vport = (char __force __iomem *)card->private_data;
++	struct snd_sc6000 *sc6000 = card->private_data;
+ 
+-	if (vport)
+-		sc6000_setup_board(card->dev, vport, 0);
++	if (sc6000->vport)
++		sc6000_setup_board(card->dev, sc6000->vport, 0);
+ }
+ 
+ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+@@ -552,15 +579,17 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+ 	int xirq = irq[dev];
+ 	int xdma = dma[dev];
+ 	struct snd_card *card;
++	struct snd_sc6000 *sc6000;
+ 	struct snd_wss *chip;
+ 	struct snd_opl3 *opl3;
+ 	char __iomem *vport;
+ 	char __iomem *vmss_port;
+ 
+ 	err = snd_devm_card_new(devptr, index[dev], id[dev], THIS_MODULE,
+-				0, &card);
++				sizeof(*sc6000), &card);
+ 	if (err < 0)
+ 		return err;
++	sc6000 = card->private_data;
+ 
+ 	if (xirq == SNDRV_AUTO_IRQ) {
+ 		xirq = snd_legacy_find_free_irq(possible_irqs);
+@@ -587,7 +616,7 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+ 		dev_err(devptr, "I/O port cannot be iomapped.\n");
+ 		return -EBUSY;
+ 	}
+-	card->private_data = (void __force *)vport;
++	sc6000->vport = vport;
+ 
+ 	/* to make it marked as used */
+ 	if (!devm_request_region(devptr, mss_port[dev], 4, DRV_NAME)) {
+@@ -600,12 +629,15 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+ 		dev_err(devptr, "MSS port I/O cannot be iomapped.\n");
+ 		return -EBUSY;
+ 	}
++	sc6000->vmss_port = vmss_port;
+ 
+ 	dev_dbg(devptr, "Initializing BASE[0x%lx] IRQ[%d] DMA[%d] MIRQ[%d]\n",
+ 		port[dev], xirq, xdma,
+ 		mpu_irq[dev] == SNDRV_AUTO_IRQ ? 0 : mpu_irq[dev]);
+ 
+-	err = sc6000_init_board(devptr, vport, vmss_port, dev);
++	sc6000_prepare_board(devptr, sc6000, dev, xirq, xdma);
++
++	err = sc6000_init_board(devptr, sc6000);
+ 	if (err < 0)
+ 		return err;
+ 	card->private_free = snd_sc6000_free;
+-- 
+2.53.0
+
 
 
 
