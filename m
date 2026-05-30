@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-257039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257050-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIgoGvoTG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:42 +0200
+	id QOyvLVYUG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257050-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C247460E603
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F3B160E653
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A822C301572F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:38:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1330930305C6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5051DE4EF;
-	Sat, 30 May 2026 16:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A21348C5E;
+	Sat, 30 May 2026 16:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/osELQS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHw8Ukgm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEE7349CCF;
-	Sat, 30 May 2026 16:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9513734AB17;
+	Sat, 30 May 2026 16:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159137; cv=none; b=HYBYBCCb+wh6rpv6G3cKRuY/17b5cS2e3RKZ14pKBvJkwR4vLzNKIjjSZlw9p6injkfyiUhk3jlSLjhx06+18E9iY8wqCdy4FAZMIA7GVRdvYzOiU5FZ5kr/sZthXvhgtRy97ImJfiVArnRC1m9LabqH2mKbuoRBlGuvxzlyVyQ=
+	t=1780159298; cv=none; b=lZAePuxrUplPQqfj11syk5PbGwtQ54sFHOi1QQ1i1ML8PA+ZV0/t7GG8J6tDA+pKu2WyjSrqf+dgjmFBH/G/CrHXt8bVZB8+hhDvw6lSyqC3n8wX/bxuH7J+3heXqpYatmABRl67T39j0z10HNmsULm1x3VUVAXqGuzcd2Non2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159137; c=relaxed/simple;
-	bh=i68g4yOTjEqvVVqmj+9P4Krh64t2p9f+am9rqziRScM=;
+	s=arc-20240116; t=1780159298; c=relaxed/simple;
+	bh=aF/oIzdzka7M6H7bx5CZfzGkjEurhptFL3SP+C3K0bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9IQBfOscUx0ILCMscc7wR5BpTHfrF78pdLTcgj+fBhr6tEigZO0u7dMYh6gMRy29bOKSynH6TdqCgvjySMJgYU7CIbWZ2Rck8+UO4x9XLCjDy9DlrJbS/cAEHpbpnDftIBiz/ydm2BX3rkl9mVJjsFCxmK2rTo+tNpSd3TvwK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/osELQS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92411F00893;
-	Sat, 30 May 2026 16:38:50 +0000 (UTC)
+	 MIME-Version; b=aT8Ra5cZpq4TaHfd9o0losAo6PnXdgipzZ/sQogJXvbgFR44JawZtukv8fR/gwalBaEM14npJ0iqjgNdiHJOq1IbiOdQgClkI+XZPihD3DsKQJn/MSSOs36rGvQ3STCsDshc4qKPEcYieQf/QkQtiqXLqIbEoCiO/4NERallLgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHw8Ukgm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573201F00893;
+	Sat, 30 May 2026 16:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159133;
-	bh=SjLwDYdXQJ9Qu3rS4F6mA+21RgsRJqnkIcLz5GJ968U=;
+	s=korg; t=1780159297;
+	bh=O1S4OZulTTfz7rRna7Y4E5iyYMLAQn44zW357+48Tow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1/osELQSTND7BVBl9Y+MSRF+HPbcMw5+10XZ4uR5r4BJlSwj5Fv+OkinDUIxe+5rt
-	 wIoWBA9Ku50PmzNv/2Ug1LDJpvo3OA29V2v5t/JZoHv1cxT+nQOeUN0talvejLC5z7
-	 X8dmCsQczmsRUkTDu6UkYfqtczPZn5n/dTJrETZ4=
+	b=XHw8Ukgmu9AkxYyQZ/G6VDpf14ChriulQ1c9NRL2JHFKRjNlaVyTMSrkBq5upYAO/
+	 GNoaYPAM35ssjLcdmpzytnMG84A9BtB/z2+wxx/Z8Iih9pwVIz1ZnynMbxTjTgbLBt
+	 f+FIVtDghgqkrk87qq1r8BY6Y/J+s0YijjtQuHts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/969] rxrpc: proc: size address buffers for %pISpc output
-Date: Sat, 30 May 2026 17:53:40 +0200
-Message-ID: <20260530160302.982131678@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Joe Perches <joe@perches.com>,
+	Andy Whitcroft <apw@canonical.com>,
+	Dwaipayan Ray <dwaipayanray1@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 097/969] checkpatch: add support for Assisted-by tag
+Date: Sat, 30 May 2026 17:53:41 +0200
+Message-ID: <20260530160303.007893753@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -70,34 +69,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257039-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-257050-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,acm.org,perches.com,canonical.com,gmail.com,lwn.net,linux-foundation.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,iscas.ac.cn:email,auristor.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email]
-X-Rspamd-Queue-Id: C247460E603
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,canonical.com:email,lwn.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,checkpatch.pl:url]
+X-Rspamd-Queue-Id: 1F3B160E653
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -105,156 +106,64 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Sasha Levin <sashal@kernel.org>
 
-[ Upstream commit a44ce6aa2efb61fe44f2cfab72bb01544bbca272 ]
+commit d1db4118489fffd2b2f612140b7acbb477880839 upstream.
 
-The AF_RXRPC procfs helpers format local and remote socket addresses into
-fixed 50-byte stack buffers with "%pISpc".
+The Assisted-by tag was introduced in
+Documentation/process/coding-assistants.rst for attributing AI tool
+contributions to kernel patches.  However, checkpatch.pl did not recognize
+this tag, causing two issues:
 
-That is too small for the longest current-tree IPv6-with-port form the
-formatter can produce. In lib/vsprintf.c, the compressed IPv6 path uses a
-dotted-quad tail not only for v4mapped addresses, but also for ISATAP
-addresses via ipv6_addr_is_isatap().
+  WARNING: Non-standard signature: Assisted-by:
+  ERROR: Unrecognized email address: 'AGENT_NAME:MODEL_VERSION'
 
-As a result, a case such as
+Fix this by:
+1. Adding Assisted-by to the recognized $signature_tags list
+2. Skipping email validation for Assisted-by lines since they use the
+   AGENT_NAME:MODEL_VERSION format instead of an email address
+3. Warning when the Assisted-by value doesn't match the expected format
 
-  [ffff:ffff:ffff:ffff:0:5efe:255.255.255.255]:65535
-
-is possible with the current formatter. That is 50 visible characters, so
-51 bytes including the trailing NUL, which does not fit in the existing
-char[50] buffers used by net/rxrpc/proc.c.
-
-Size the buffers from the formatter's maximum textual form and switch the
-call sites to scnprintf().
-
-Changes since v1:
-- correct the changelog to cite the actual maximum current-tree case
-  explicitly
-- frame the proof around the ISATAP formatting path instead of the earlier
-  mapped-v4 example
-
-Fixes: 75b54cb57ca3 ("rxrpc: Add IPv6 support")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Anderson Nascimento <anderson@allelesecurity.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-22-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted address accessors and variable declarations ]
+Link: https://lkml.kernel.org/r/20260311215818.518930-1-sashal@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Bart Van Assche <bvanassche@acm.org>
+Acked-by: Joe Perches <joe@perches.com>
+Cc: Andy Whitcroft <apw@canonical.com>
+Cc: Dwaipayan Ray <dwaipayanray1@gmail.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/proc.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ scripts/checkpatch.pl |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/rxrpc/proc.c b/net/rxrpc/proc.c
-index 245418943e01c..47d36554ad311 100644
---- a/net/rxrpc/proc.c
-+++ b/net/rxrpc/proc.c
-@@ -10,6 +10,10 @@
- #include <net/af_rxrpc.h>
- #include "ar-internal.h"
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -616,6 +616,7 @@ our $signature_tags = qr{(?xi:
+ 	Reviewed-by:|
+ 	Reported-by:|
+ 	Suggested-by:|
++	Assisted-by:|
+ 	To:|
+ 	Cc:
+ )};
+@@ -3031,6 +3032,15 @@ sub process {
+ 				}
+ 			}
  
-+#define RXRPC_PROC_ADDRBUF_SIZE \
-+	(sizeof("[xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:255.255.255.255]") + \
-+	 sizeof(":12345"))
++			# Assisted-by uses AGENT_NAME:MODEL_VERSION format, not email
++			if ($sign_off =~ /^Assisted-by:/i) {
++				if ($email !~ /^\S+:\S+/) {
++					WARN("BAD_SIGN_OFF",
++					     "Assisted-by expects 'AGENT_NAME:MODEL_VERSION [TOOL1] [TOOL2]' format\n" . $herecurr);
++				}
++				next;
++			}
 +
- static const char *const rxrpc_conn_states[RXRPC_CONN__NR_STATES] = {
- 	[RXRPC_CONN_UNUSED]			= "Unused  ",
- 	[RXRPC_CONN_CLIENT]			= "Client  ",
-@@ -55,7 +59,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
- 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
- 	unsigned long timeout = 0;
- 	rxrpc_seq_t tx_hard_ack, rx_hard_ack;
--	char lbuff[50], rbuff[50];
-+	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
- 
- 	if (v == &rxnet->calls) {
- 		seq_puts(seq,
-@@ -72,7 +76,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
- 	if (rx) {
- 		local = READ_ONCE(rx->local);
- 		if (local)
--			sprintf(lbuff, "%pISpc", &local->srx.transport);
-+			scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
- 		else
- 			strcpy(lbuff, "no_local");
- 	} else {
-@@ -81,7 +85,7 @@ static int rxrpc_call_seq_show(struct seq_file *seq, void *v)
- 
- 	peer = call->peer;
- 	if (peer)
--		sprintf(rbuff, "%pISpc", &peer->srx.transport);
-+		scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
- 	else
- 		strcpy(rbuff, "no_connection");
- 
-@@ -152,7 +156,7 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
- {
- 	struct rxrpc_connection *conn;
- 	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
--	char lbuff[50], rbuff[50];
-+	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
- 
- 	if (v == &rxnet->conn_proc_list) {
- 		seq_puts(seq,
-@@ -171,9 +175,9 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
- 		goto print;
- 	}
- 
--	sprintf(lbuff, "%pISpc", &conn->params.local->srx.transport);
-+	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &conn->params.local->srx.transport);
- 
--	sprintf(rbuff, "%pISpc", &conn->params.peer->srx.transport);
-+	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &conn->params.peer->srx.transport);
- print:
- 	seq_printf(seq,
- 		   "UDP   %-47.47s %-47.47s %4x %08x %s %3u"
-@@ -210,7 +214,7 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
- {
- 	struct rxrpc_peer *peer;
- 	time64_t now;
--	char lbuff[50], rbuff[50];
-+	char lbuff[RXRPC_PROC_ADDRBUF_SIZE], rbuff[RXRPC_PROC_ADDRBUF_SIZE];
- 
- 	if (v == SEQ_START_TOKEN) {
- 		seq_puts(seq,
-@@ -223,9 +227,9 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
- 
- 	peer = list_entry(v, struct rxrpc_peer, hash_link);
- 
--	sprintf(lbuff, "%pISpc", &peer->local->srx.transport);
-+	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &peer->local->srx.transport);
- 
--	sprintf(rbuff, "%pISpc", &peer->srx.transport);
-+	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &peer->srx.transport);
- 
- 	now = ktime_get_seconds();
- 	seq_printf(seq,
-@@ -335,7 +339,7 @@ const struct seq_operations rxrpc_peer_seq_ops = {
- static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
- {
- 	struct rxrpc_local *local;
--	char lbuff[50];
-+	char lbuff[RXRPC_PROC_ADDRBUF_SIZE];
- 
- 	if (v == SEQ_START_TOKEN) {
- 		seq_puts(seq,
-@@ -346,7 +350,7 @@ static int rxrpc_local_seq_show(struct seq_file *seq, void *v)
- 
- 	local = hlist_entry(v, struct rxrpc_local, link);
- 
--	sprintf(lbuff, "%pISpc", &local->srx.transport);
-+	scnprintf(lbuff, sizeof(lbuff), "%pISpc", &local->srx.transport);
- 
- 	seq_printf(seq,
- 		   "UDP   %-47.47s %3u %3u\n",
--- 
-2.53.0
-
+ 			my ($email_name, $name_comment, $email_address, $comment) = parse_email($email);
+ 			my $suggested_email = format_email(($email_name, $name_comment, $email_address, $comment));
+ 			if ($suggested_email eq "") {
 
 
 
