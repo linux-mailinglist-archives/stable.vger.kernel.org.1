@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258034-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OEs2MqUZG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:53 +0200
+	id GLL4HkwjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258034-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD9260EF96
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A2B6107BC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A344E30F5EA3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:59:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BD814302C37F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C153403F3;
-	Sat, 30 May 2026 16:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E62344DB9;
+	Sat, 30 May 2026 17:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzWLD49x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6B3Je+q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F223832D42B;
-	Sat, 30 May 2026 16:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65D821B191;
+	Sat, 30 May 2026 17:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160359; cv=none; b=ljB8ezP3sqTqqstl0F/yGC7li3TG5gp1npFtyiFMq41e/U5bSIGNMNLBkrdiY2JxqdGMuOCHpGxrpRH/ycIGd9eEfnuYtU0bIctBHVwicJazjFqUBva+Wk1b1fW2e1APTJsPabRXWEOe2elgGj8ko6sQaaAfNUtJnGa6AJuHjm8=
+	t=1780163003; cv=none; b=Ijv+vkgcWacYR1GFcWq+SkOeneB3KLtI1OjTPRdtaF+cgDS8OmmBn0q/RXk5FL0iqc9kvH2J4+Ms/N7Y7GqZ9yJgzcL/xANCzkAgcLLwR8Dsfa0BhMTONwDs7bI6uTX5A7WUTjfAKr+yek/yVKETAwiVwm3MSRwbxyj9c/e7KcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160359; c=relaxed/simple;
-	bh=tkr0Zbf3vz7iMfwKYZodtoqds+gbGZd2LpAYlK15Vg0=;
+	s=arc-20240116; t=1780163003; c=relaxed/simple;
+	bh=VsHf6A9E1wgAM5ZeBOxpB3AVSNwNtJTJTzDOTuKD1hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFgQdoPv0lIXbpqL5z2i4Am4+VGfQw49eRMwL0iM0OOHna0yHpwx/HbtudhE81hl7GdrLIw+XTJQyfI0f844wwkHCFA9WNK47sVPxae7e3sQ2P+Mn5ajIKwd9yO27o0Amnn+hPKLxsFeDRcqwbUChqgtPv2fuQtodGyy+vYowKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzWLD49x; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A131F00893;
-	Sat, 30 May 2026 16:59:17 +0000 (UTC)
+	 MIME-Version; b=ZuTOKS4Mfu1rJZsOeBvSxgJ1YSTPKZza3qAt1Paf3ltLOY+vsRSWAE+Q7QCNdKy5cXXH3VgJ1kFrUeSt0Et91dV8E1p9CUSl8nyP4btSSnAR+brQJYUWau5cqKCTrNkSnrWebd3Ygoiwlo3QW7udUd7WMnYMjknkQjlrvRKtaDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6B3Je+q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 266B61F00893;
+	Sat, 30 May 2026 17:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160357;
-	bh=uw0mvup6QCsVzsWpfcgEHF1oSyWsk1cTMiPOCth0fcY=;
+	s=korg; t=1780163002;
+	bh=7YicRz8aeBIAoguIUNLGSycnSbmlp/jYZgmGvTYy4/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CzWLD49xzfuiwQDAjLW1t6zkvbKyKewQQM7DSS3HwZ/ZvhX3pixgQ68cawhtVzEFe
-	 QXiKTWfx1mwTP0lxZDGgxWfcNfyg2J7yAltAfaZONP3CC/+DXcHp2wHMd7/cvMG3je
-	 Dkk+obmMCBYeXLO5HAXsDlGcP1wKZjts/XK/QlEI=
+	b=T6B3Je+qf3OvWzPBGSQu4wK17Le93kn9Ps7CC/msKnmWj+7+NMoiOI2C+7fWm+H9L
+	 /yk8zHvuSEgMCowamN3fMWraJvJTN5b6biwwmNcIOJS6ewBwa3G9abUPlCy33gxISA
+	 Hihx+Chw6QO4RaUL3HNKLx8HNfl0Djav1eUyTsVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Soenke Huster <soenke.huster@eknoes.de>,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 317/969] Bluetooth: virtio_bt: validate rx pkt_type header length
+	GangMin Kim <km.kim1503@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Bin Lan <lanbincn@139.com>
+Subject: [PATCH 5.15 127/776] net/sched: cls_u32: use skb_header_pointer_careful()
 Date: Sat, 30 May 2026 17:57:21 +0200
-Message-ID: <20260530160309.161009638@linuxfoundation.org>
+Message-ID: <20260530160243.663889860@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,127 +68,101 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257255-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,eknoes.de,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258034-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org,139.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2CD9260EF96
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,139.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 04A2B6107BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit daf23014e5d975e72ea9c02b5160d3fcf070ea47 upstream.
+[ Upstream commit cabd1a976375780dabab888784e356f574bbaed8 ]
 
-virtbt_rx_handle() reads the leading pkt_type byte from the RX skb
-and forwards the remainder to hci_recv_frame() for every
-event/ACL/SCO/ISO type, without checking that the remaining payload
-is at least the fixed HCI header for that type.
+skb_header_pointer() does not fully validate negative @offset values.
 
-After the preceding patch bounds the backend-supplied used.len to
-[1, VIRTBT_RX_BUF_SIZE], a one-byte completion still reaches
-hci_recv_frame() with skb->len already pulled to 0. If the byte
-happened to be HCI_ACLDATA_PKT, the ACL-vs-ISO classification
-fast-path in hci_dev_classify_pkt_type() dereferences
-hci_acl_hdr(skb)->handle whenever the HCI device has an active
-CIS_LINK, BIS_LINK, or PA_LINK connection, reading two bytes of
-uninitialized RX-buffer data. The same hazard exists for every
-packet type the driver accepts because none of the switch cases in
-virtbt_rx_handle() check skb->len against the per-type minimum HCI
-header size before handing the frame to the core.
+Use skb_header_pointer_careful() instead.
 
-After stripping pkt_type, require skb->len to cover the fixed
-header size for the selected type (event 2, ACL 4, SCO 3, ISO 4)
-before calling hci_recv_frame(); drop ratelimited otherwise.
-Unknown pkt_type values still take the original kfree_skb() default
-path.
+GangMin Kim provided a report and a repro fooling u32_classify():
 
-Use bt_dev_err_ratelimited() because both the length and pkt_type
-values come from an untrusted backend that can otherwise flood the
-kernel log.
+BUG: KASAN: slab-out-of-bounds in u32_classify+0x1180/0x11b0
+net/sched/cls_u32.c:221
 
-Fixes: 160fbcf3bfb9 ("Bluetooth: virtio_bt: Use skb_put to set length")
-Cc: stable@vger.kernel.org
-Cc: Soenke Huster <soenke.huster@eknoes.de>
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: fbc2e7d9cf49 ("cls_u32: use skb_header_pointer() to dereference data safely")
+Reported-by: GangMin Kim <km.kim1503@gmail.com>
+Closes: https://lore.kernel.org/netdev/CANn89iJkyUZ=mAzLzC4GdcAgLuPnUoivdLaOs6B9rq5_erj76w@mail.gmail.com/T/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260128141539.3404400-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Bin Lan <lanbincn@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/virtio_bt.c |   23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ net/sched/cls_u32.c |   13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/drivers/bluetooth/virtio_bt.c
-+++ b/drivers/bluetooth/virtio_bt.c
-@@ -190,6 +190,7 @@ static int virtbt_shutdown_generic(struc
+--- a/net/sched/cls_u32.c
++++ b/net/sched/cls_u32.c
+@@ -149,10 +149,8 @@ next_knode:
+ 			int toff = off + key->off + (off2 & key->offmask);
+ 			__be32 *data, hdata;
  
- static void virtbt_rx_handle(struct virtio_bluetooth *vbt, struct sk_buff *skb)
- {
-+	size_t min_hdr;
- 	__u8 pkt_type;
+-			if (skb_headroom(skb) + toff > INT_MAX)
+-				goto out;
+-
+-			data = skb_header_pointer(skb, toff, 4, &hdata);
++			data = skb_header_pointer_careful(skb, toff, 4,
++							  &hdata);
+ 			if (!data)
+ 				goto out;
+ 			if ((*data ^ key->val) & key->mask) {
+@@ -202,8 +200,9 @@ check_terminal:
+ 		if (ht->divisor) {
+ 			__be32 *data, hdata;
  
- 	pkt_type = *((__u8 *) skb->data);
-@@ -197,16 +198,32 @@ static void virtbt_rx_handle(struct virt
+-			data = skb_header_pointer(skb, off + n->sel.hoff, 4,
+-						  &hdata);
++			data = skb_header_pointer_careful(skb,
++							  off + n->sel.hoff,
++							  4, &hdata);
+ 			if (!data)
+ 				goto out;
+ 			sel = ht->divisor & u32_hash_fold(*data, &n->sel,
+@@ -217,7 +216,7 @@ check_terminal:
+ 			if (n->sel.flags & TC_U32_VAROFFSET) {
+ 				__be16 *data, hdata;
  
- 	switch (pkt_type) {
- 	case HCI_EVENT_PKT:
-+		min_hdr = sizeof(struct hci_event_hdr);
-+		break;
- 	case HCI_ACLDATA_PKT:
-+		min_hdr = sizeof(struct hci_acl_hdr);
-+		break;
- 	case HCI_SCODATA_PKT:
-+		min_hdr = sizeof(struct hci_sco_hdr);
-+		break;
- 	case HCI_ISODATA_PKT:
--		hci_skb_pkt_type(skb) = pkt_type;
--		hci_recv_frame(vbt->hdev, skb);
-+		min_hdr = sizeof(struct hci_iso_hdr);
- 		break;
- 	default:
- 		kfree_skb(skb);
--		break;
-+		return;
- 	}
-+
-+	if (skb->len < min_hdr) {
-+		bt_dev_err_ratelimited(vbt->hdev,
-+				       "rx pkt_type 0x%02x payload %u < hdr %zu\n",
-+				       pkt_type, skb->len, min_hdr);
-+		kfree_skb(skb);
-+		return;
-+	}
-+
-+	hci_skb_pkt_type(skb) = pkt_type;
-+	hci_recv_frame(vbt->hdev, skb);
- }
- 
- static void virtbt_rx_work(struct work_struct *work)
+-				data = skb_header_pointer(skb,
++				data = skb_header_pointer_careful(skb,
+ 							  off + n->sel.offoff,
+ 							  2, &hdata);
+ 				if (!data)
 
 
 
