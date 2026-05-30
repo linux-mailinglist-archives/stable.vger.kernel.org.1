@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-258810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258233-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WL51IwgsG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258810-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:20 +0200
+	id YKxJO3smG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258233-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313C5611C5C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78705610E18
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 843BE3014266
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:26:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACA263101B8C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36DB2773DE;
-	Sat, 30 May 2026 18:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EEC3B1EC0;
+	Sat, 30 May 2026 17:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yAD0s1xH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRFcPVR6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B907219303;
-	Sat, 30 May 2026 18:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F3B341AC7;
+	Sat, 30 May 2026 17:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165614; cv=none; b=vAgEmSyngyh00Kv+IvHqFOVfLrCqME/nhUa6w4f5MyyQvoLZffKIDePzieYxfNMVdtTjdg0M1GR4dVU6JcLihOJ+CXLKhWSm1jMEQk9pY3QwINiQ5HFh7Nld0BURfoCWUeZTvJoS5uDjsffTy0Fp6GgDlCCCf8SPsm/q7vRMgH8=
+	t=1780163665; cv=none; b=DZDDDoWRHn7M5eKBUjmpaHAs/kzAzVKGeYuSNMACxKfT9J5IUAkMzySjTHtFEH+zz8xnqO6x/ocq29EzFSNgFTbW0R0Hi8mF3X7N6JC631WG6BK6k6HVPK5TKe9FcYHqceBm8Vtrj/zONVZ0vqnp+BN9kj1B5+94zYq0pYaVoAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165614; c=relaxed/simple;
-	bh=A3mqkrx/mFOJjt9TUqD+TnVUe88r0qn7yuuNKK97X84=;
+	s=arc-20240116; t=1780163665; c=relaxed/simple;
+	bh=6EY1Np2MMWwsHG4DuKEuF+TXoxYXTXicuPXm8nDLx/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4isXg0HVhbfbMSNqoSm2T437pA7EnsKExeD0iPQLjnyp9FCrTWmBJFa0K3z09IKUm3I/6GX6rZc2ElTPXHIt7sMhn/8fhHVKV0X/bQkOO4NhjzazlbZ7l/6MuLbTmbbTr1+8LCKw10WZhuBHLlPFiRMtsnDckLAaQ64HNDtakM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAD0s1xH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B2F1F00893;
-	Sat, 30 May 2026 18:26:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=crHYVF8/DfgFmaYGQ6DW5NW6UFxdnSqTnl2uqVGHMZXXcsWVQ1OJIQNdYdfemg/ftt1RFfYVkHGJNHoKRqk7wENvoSxYz6U3qiYwqCwWzW8N9vBMXDZ/fwYxdBkCtbIvDgs9tg3I/nZ4NMfXcHDF9mDEOeh0kGNvwi5sjD3ATPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRFcPVR6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226181F00898;
+	Sat, 30 May 2026 17:54:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165613;
-	bh=ykYhWK55qvT7wpifCRTYGPnIEwK7yH1oNAHB9RpeqSI=;
+	s=korg; t=1780163664;
+	bh=sQ72OfCeN9rQV+VsBiDN6i73vKB2EBKZU8aR3ZZatMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yAD0s1xH5dj39CHVf4cFC+aNl8z4OGYyuR0wQmRdEKsiZrlPxta8o5ZVNTXzwC9mi
-	 JK/cQ5uC3HDr7RuaL0EvuKO+wV43ykDI8vXqydL0aJyxuoPWmJ2Zkc70oFWn0pFsUH
-	 f7K5SqHTSHsAtUYUNZXHe/FHYjl27fqprYtqy8Z8=
+	b=ZRFcPVR6Gwqik7aUrdAuipMuIE66PXqmLb8GvKVoKGq/fsHVyFHmeBqf8yGEpXzZY
+	 HrBWOSO4EKitRY1dVVRp3TsMvypbulWRQTIGB6oQv/23FijlEBpBeNEuMSxXIWoLtd
+	 v7k9cEWXJWa7mEAl+lG/WCNiVIJzH8xJ1OEl40Xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Page <sam@bynar.io>,
-	Qi Tang <tpluszz77@gmail.com>,
-	Zijun Hu <nightu@northwestern.edu>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 129/589] fuse: reject oversized dirents in page cache
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 296/776] ALSA: usb-audio: Fix UAC3 cluster descriptor size check
 Date: Sat, 30 May 2026 18:00:10 +0200
-Message-ID: <20260530160228.164344445@linuxfoundation.org>
+Message-ID: <20260530160248.212153571@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +62,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bynar.io,gmail.com,northwestern.edu,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258810-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258233-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bynar.io:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 313C5611C5C
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 78705610E18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Page <sam@bynar.io>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 51a8de6c50bf947c8f534cd73da4c8f0a13e7bed upstream.
+commit 26265dd69da32d88a88d21987853cec899d9e21f upstream.
 
-fuse_add_dirent_to_cache() computes a serialized dirent size from the
-server-controlled namelen field and copies the dirent into a single
-page-cache page. The existing logic only checks whether the dirent fits
-in the remaining space of the current page and advances to a fresh page
-if not. It never checks whether the dirent itself exceeds PAGE_SIZE.
+The UAC3 cluster descriptor length check in
+snd_usb_get_audioformat_uac3()was added to
+make sure that the buffer is large enough for
+a struct uac3_cluster_header_descriptor before the
+returned data is cast and used.
 
-As a result, a malicious FUSE server can return a dirent with
-namelen=4095, producing a serialized record size of 4120 bytes. On 4 KiB
-page systems this causes memcpy() to overflow the cache page by 24 bytes
-into the following kernel page.
+However, the check uses sizeof(cluster), where cluster
+is a pointer, not the size of the descriptor header.
+This makes the validation depend on the architecture
+pointer size and does not match the intended object size.
 
-Reject dirents that cannot fit in a single page before copying them into
-the readdir cache.
+Check against sizeof(*cluster) instead.
 
-Fixes: 69e34551152a ("fuse: allow caching readdir")
-Cc: stable@vger.kernel.org # v6.16+
-Assisted-by: Bynario AI
-Signed-off-by: Samuel Page <sam@bynar.io>
-Reported-by: Qi Tang <tpluszz77@gmail.com>
-Reported-by: Zijun Hu <nightu@northwestern.edu>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Link: https://patch.msgid.link/20260420090139.662772-1-mszeredi@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: fb4e2a6e8f28 ("ALSA: usb-audio: Fix out-of-bounds read in snd_usb_get_audioformat_uac3()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260424-alsa-usb-uac3-cluster-size-v1-1-99a5808898a3@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/readdir.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ sound/usb/stream.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/fuse/readdir.c
-+++ b/fs/fuse/readdir.c
-@@ -41,6 +41,10 @@ static void fuse_add_dirent_to_cache(str
- 	unsigned int offset;
- 	void *addr;
- 
-+	/* Dirent doesn't fit in readdir cache page?  Skip caching. */
-+	if (reclen > PAGE_SIZE)
-+		return;
-+
- 	spin_lock(&fi->rdc.lock);
- 	/*
- 	 * Is cache already completed?  Or this entry does not go at the end of
+--- a/sound/usb/stream.c
++++ b/sound/usb/stream.c
+@@ -993,7 +993,7 @@ snd_usb_get_audioformat_uac3(struct snd_
+ 	 * and request Cluster Descriptor
+ 	 */
+ 	wLength = le16_to_cpu(hc_header.wLength);
+-	if (wLength < sizeof(cluster))
++	if (wLength < sizeof(*cluster))
+ 		return NULL;
+ 	cluster = kzalloc(wLength, GFP_KERNEL);
+ 	if (!cluster)
 
 
 
