@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258836-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +G5qJColG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:02 +0200
+	id 2En6ODotG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258836-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F051610B5C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8069E611EE7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 10F36301389A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D030A3077C86
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB99341AC7;
-	Sat, 30 May 2026 17:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45FDE3C5546;
+	Sat, 30 May 2026 18:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3KqYlUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJC0OeiT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F7A342CA7;
-	Sat, 30 May 2026 17:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189CC3C455B;
+	Sat, 30 May 2026 18:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163667; cv=none; b=jk/2t1tuMXVReijApRY0SGf/G5cmq7h1ctFLCGIoVWDIjj9N68I8DPGRCv/QbCRzHnKDZSIIMyWv4yZR2aEHZeyUhMCAmh4oOM+DZIGLJSsREMlgz0Kvw9nC+rLju8VSNP/Zl/v1xr7yMC8eeDX6bLWMD0Yz+8MLvYqU3mlEz8w=
+	t=1780165702; cv=none; b=ZM7RGpiK/CV416pIOvGIjE0T/bu2sWW/hcIMQP8KA60ck/O4Yzof8dFnHIk9+kMbk/lL3X7XrX8aMzTwtVopg9ov9o/zyd3VjlSPlcTXG9w9qKf1nF2+jgb9xwI/ciQ4gk4J54U8yDHObgVWZRnB0TwSNDzCL9o2DDfRVXcgLj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163667; c=relaxed/simple;
-	bh=1DwKcCVbyHSG0NglLdtUs0+JalyaG0RTCkn8c5tErjg=;
+	s=arc-20240116; t=1780165702; c=relaxed/simple;
+	bh=WlvssRbRH7XABY/AFYLG2dqIzvbpukSvnEv/Xi7RYro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nb2Y7p5EcI90SwtBwAaBCsyCdwQje2TK9Jg0A0TNJ8P5zv2EqCzhIQ2t291KWsVs0Yp1/Ghx86GxqAEe9OwCYqqS3NTbs6m+tUWNYMN3ddDuyNf96uhdQMvYUVyBVBASJ+Ty1/7SrRzvSWUfcpzv8noMXPsPq1T2pJtiWvQIqZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3KqYlUA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4AB1F00893;
-	Sat, 30 May 2026 17:54:20 +0000 (UTC)
+	 MIME-Version; b=LM1jt3iedfiDK8grI9l13zQW0VVtPnWYWKabQ9qmjVXF6F63CAFjmDGvDBqASsgIWjh/+T/8PgvGhyMdGNawcluOSkj5rFduyadeJvLlGohOaOAyDbf5utSluVzP221ipSkUlhw6Q3f0RB9aXgJcBTT4SroouHrj4YYSANOF55I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJC0OeiT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573B51F00899;
+	Sat, 30 May 2026 18:28:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163661;
-	bh=5k69gmqfJQBwAHF0+ftY2YkJQtf3pcEdkROGBB4M+es=;
+	s=korg; t=1780165701;
+	bh=mWO9wYpzDsYxzUR3lGLp2BkKTvttqtSi7m3tV0w2ZYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I3KqYlUA4qQ86DmjNu+r12XdXuO6DtNB2GbJnJOB1Ag0KDb1UhRazAiqEPzsqQHeL
-	 A2reWmUhLLWGSbh6J4lJe+cTyTMsKFUtEL0bNcV5kVypryE68vhGlNXrNeQ1RGMSUH
-	 OJ0QhbWjoRDPPtBxooxx30Sm6BOk04oDoA7jFC2g=
+	b=mJC0OeiTxuGQSZr0TV0SVxzevPFqmz9i6IQ1qJjgd1tSI+XllMx82TKNApkEAau/8
+	 kAqpHMAvv+9nWuLZzMxqSeInO6UtyaB6IHi6Oww1kgm1jIu896oSvC+HXPclXk9S2Y
+	 DOU4/rUcuyP/JmB0POGodEFdX2QeO83vM5njLhlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 323/776] spi: topcliff-pch: fix use-after-free on unbind
+	Josh Law <objecting@objecting.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 156/589] lib/ts_kmp: fix integer overflow in pattern length calculation
 Date: Sat, 30 May 2026 18:00:37 +0200
-Message-ID: <20260530160248.916193890@linuxfoundation.org>
+Message-ID: <20260530160228.886204977@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,67 +77,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258234-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258836-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-0.994];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,okisemi.com:email]
-X-Rspamd-Queue-Id: 0F051610B5C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,objecting.org:email]
+X-Rspamd-Queue-Id: 8069E611EE7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Josh Law <objecting@objecting.org>
 
-commit 9d72732fe70c11424bc90ed466c7ccfa58b42a9a upstream.
+commit 8cdf30813ea8ce881cecc08664144416dbdb3e16 upstream.
 
-Give the driver a chance to flush its queue before releasing the DMA
-buffers on driver unbind
+The ts_kmp algorithm stores its prefix_tbl[] table and pattern in a single
+allocation sized from the pattern length.  If the prefix_tbl[] size
+calculation wraps, the resulting allocation can be too small and
+subsequent pattern copies can overflow it.
 
-Fixes: c37f3c2749b5 ("spi/topcliff_pch: DMA support")
-Cc: stable@vger.kernel.org	# 3.1
-Cc: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260414134319.978196-9-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix this by rejecting zero-length patterns and by using overflow helpers
+before calculating the combined allocation size.
+
+
+This fixes a potential heap overflow.  The pattern length calculation can
+wrap during a size_t addition, leading to an undersized allocation.
+Because the textsearch library is reachable from userspace via Netfilter's
+xt_string module, this is a security risk that should be backported to LTS
+kernels.
+
+Link: https://lkml.kernel.org/r/20260308202028.2889285-2-objecting@objecting.org
+Signed-off-by: Josh Law <objecting@objecting.org>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-topcliff-pch.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ lib/ts_kmp.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1427,9 +1427,6 @@ static int pch_spi_pd_remove(struct plat
- 	dev_dbg(&plat_dev->dev, "%s:[ch%d] irq=%d\n",
- 		__func__, plat_dev->id, board_dat->pdev->irq);
- 
--	if (use_dma)
--		pch_free_dma_buf(board_dat, data);
--
- 	/* check for any pending messages; no action is taken if the queue
- 	 * is still full; but at least we tried.  Unload anyway */
- 	count = 500;
-@@ -1453,6 +1450,9 @@ static int pch_spi_pd_remove(struct plat
- 		free_irq(board_dat->pdev->irq, data);
- 	}
- 
-+	if (use_dma)
-+		pch_free_dma_buf(board_dat, data);
+--- a/lib/ts_kmp.c
++++ b/lib/ts_kmp.c
+@@ -94,8 +94,22 @@ static struct ts_config *kmp_init(const
+ 	struct ts_config *conf;
+ 	struct ts_kmp *kmp;
+ 	int i;
+-	unsigned int prefix_tbl_len = len * sizeof(unsigned int);
+-	size_t priv_size = sizeof(*kmp) + len + prefix_tbl_len;
++	unsigned int prefix_tbl_len;
++	size_t priv_size;
 +
- 	pci_iounmap(board_dat->pdev, data->io_remap_addr);
- 	spi_unregister_master(data->master);
++	/* Zero-length patterns would make kmp_find() read beyond kmp->pattern. */
++	if (unlikely(!len))
++		return ERR_PTR(-EINVAL);
++
++	/*
++	 * kmp->pattern is stored immediately after the prefix_tbl[] table.
++	 * Reject lengths that would wrap while sizing either region.
++	 */
++	if (unlikely(check_mul_overflow(len, sizeof(*kmp->prefix_tbl),
++					&prefix_tbl_len) ||
++		     check_add_overflow(sizeof(*kmp), (size_t)len, &priv_size) ||
++		     check_add_overflow(priv_size, prefix_tbl_len, &priv_size)))
++		return ERR_PTR(-EINVAL);
  
+ 	conf = alloc_ts_config(priv_size, gfp_mask);
+ 	if (IS_ERR(conf))
 
 
 
