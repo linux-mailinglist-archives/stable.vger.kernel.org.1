@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259142-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IukHXQeG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257761-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:24 +0200
+	id cDj2H2AwG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259142-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655B860FC92
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F6026126FB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 457623008D30
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:28:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8794930182DE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E59933F5A0;
-	Sat, 30 May 2026 17:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEFC2147F9;
+	Sat, 30 May 2026 18:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tN4Pcb07"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SP+tLGkt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439222FDC5E;
-	Sat, 30 May 2026 17:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5C32E7398;
+	Sat, 30 May 2026 18:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162084; cv=none; b=CEUiTGiTiJP4tFz0JT/IrmaVdf+ut+GUkxwJO/d7S92Jhb+8v8DIz+bzuZVqij4jEWWmBGhO8pfzWrT+Jt/u90hzF6HdFcZXA0+XOy3PJEE/wPJ7iWP2SYoJjVyW3XdeEYBxqVe3GhzyuEnVdCcX3Oq073hQsOcZEg4J6b9aOz0=
+	t=1780166749; cv=none; b=tX2v84KtxKqQMBeJodTGcgUL5Ib3443m3AiETbzvMS0BzUz9BKEpNFYhAeiW1iBsldiUW4NNxINPZXxIzL+JDLQ/9E6+1ehu+NeqCHiPnwv2PnUG8t+GCXja1rPyyvEsamuGmKg2N/MeNyfz7Ayd5eX/D6Qo3NFS+UCOz6n+jAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162084; c=relaxed/simple;
-	bh=zHp/uvuQBa8nwA4OMk3aQMjV/p35JW/r1lZr41qTSzE=;
+	s=arc-20240116; t=1780166749; c=relaxed/simple;
+	bh=HflaUW732wta8c1DV5PJno3VdlYS7mnEOZ/WzzhK0IA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqP8xaM96vcxIEcKE4H3q9T7D0TesJyMv+K3Lk8E+a3O6Za7JVJrLFElQ+yLJjjPlPikFYiRgq00NmzzvO9mHrZkBMt56uq/Bq+47u++AbDIyIVKQMEWuOypkEiHxPyzCht4hO63U/TV7zsQ63Lx46jyYlBK3pY77RNWXZbyMvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tN4Pcb07; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8668B1F00893;
-	Sat, 30 May 2026 17:28:02 +0000 (UTC)
+	 MIME-Version; b=VhAYoVkcOSgDI7Wh7tpsLdOnmspmfUHSTSic7RoRbFYZ9QlCldrcBQLUugyqMOCDFhX/Wwte8dPmk4ELM5kIoUxW51ZVkO2fAdQywW8GrF9Xz2KeSlhUn5CFXam56nuI3n1j2krRose2Q76Dj7dVibeF95RnczWrH+BjmLcxs3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SP+tLGkt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D0E1F00893;
+	Sat, 30 May 2026 18:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162083;
-	bh=qr9nwkRbVhG6fPyjA6eQ6gTN4w5tk/zVfN/CzvNcm8c=;
+	s=korg; t=1780166747;
+	bh=/UYoVmDqDdP+RSZNZxbawr6EZWEmMBjZoVf/ZAiZiB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tN4Pcb07wu+xKxW1AOugM/D/8MXYjxgI1jYqj3PYos32TnBkTZ4qgrRCAL3UOzaXe
-	 gbKm8HSFf5Ll8Txdl7Z27EtBp6OlayKuI1Mykumas2lVxq6/KNTOGB2L+68eh7Vtvj
-	 ypzxgD2uq63fVQvmSY+Gcrk7//LPPgaSyuAzhQ1c=
+	b=SP+tLGktoqGMqVkEsOlDnJjIuseVcSL4eEDmIzvTyxQjMMNYay8PXkBbjXNfXBRdS
+	 sqpChHXCOe3+P4OSOOK3jO2M4+XCEEwNtPeXZPQ5kd1xnH1i9NVJCdhMg1fY2N/fpy
+	 TmskeAv34ta/Ko187bUHRfINeakXbTXkhgzAuK/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Ye Bin <yebin10@huawei.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 815/969] smb/client: fix possible infinite loop and oob read in symlink_data()
-Date: Sat, 30 May 2026 18:05:39 +0200
-Message-ID: <20260530160323.143026556@linuxfoundation.org>
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 459/589] mailbox: add sanity check for channel array
+Date: Sat, 30 May 2026 18:05:40 +0200
+Message-ID: <20260530160236.740096340@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +65,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257761-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259142-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,glider.be,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,kylinos.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 655B860FC92
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sang-engineering.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,glider.be:email]
+X-Rspamd-Queue-Id: 3F6026126FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 7d9a7f1f96cd617ee9e75bb22217c709038e26b8 upstream.
+[ Upstream commit c1aad75595fb67edc7fda8af249d3b886efa1be9 ]
 
-On 32-bit architectures, the infinite loop is as follows:
+Fail gracefully if there is no channel array attached to the mailbox
+controller. Otherwise the later dereference will cause an OOPS which
+might not be seen because mailbox controllers might instantiate very
+early. Remove the comment explaining the obvious while here.
 
-  len = p->ErrorDataLength == 0xfffffff8
-  u8 *next = p->ErrorContextData + len
-  next == p
-
-On 32-bit architectures, the out-of-bounds read is as follows:
-
-  len = p->ErrorDataLength == 0xfffffff0
-  u8 *next = p->ErrorContextData + len
-  next == (u8 *)p - 8
-
-Reported-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Fixes: 76894f3e2f71 ("cifs: improve symlink handling for smb2+")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2b6d83e2b8b7 ("mailbox: Introduce framework for mailbox")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2file.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mailbox/mailbox.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -48,6 +48,9 @@ static struct smb2_symlink_err_rsp *syml
- 				 __func__, le32_to_cpu(p->ErrorId));
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index 090795c1b65db..363eaf3c962ec 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -484,8 +484,7 @@ int mbox_controller_register(struct mbox_controller *mbox)
+ {
+ 	int i, txdone;
  
- 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
-+			if (len > end - ((u8 *)p + sizeof(*p)))
-+				return ERR_PTR(-EINVAL);
-+
- 			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
- 		}
- 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
+-	/* Sanity check */
+-	if (!mbox || !mbox->dev || !mbox->ops || !mbox->num_chans)
++	if (!mbox || !mbox->dev || !mbox->ops || !mbox->chans || !mbox->num_chans)
+ 		return -EINVAL;
+ 
+ 	if (mbox->txdone_irq)
+-- 
+2.53.0
+
 
 
 
