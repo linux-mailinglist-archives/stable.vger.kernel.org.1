@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-259237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257857-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIDiDqIxG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:14 +0200
+	id wPIMJ2kfG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257857-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A75A6129D1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 417C060FE99
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1B2F33002B64
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8CFDF3013865
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BECC238D52;
-	Sat, 30 May 2026 18:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E2F32B106;
+	Sat, 30 May 2026 17:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gEKkZ0RJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBElI2b6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C844315F;
-	Sat, 30 May 2026 18:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421893403F9;
+	Sat, 30 May 2026 17:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167068; cv=none; b=MziNg1frvHa/P6U+HK2pUlrURG/D/6lS3OlwGdQ+7sdG3iX5Pm/NDm5QMwm37sPXoUQQ3w2qP51/bd67KK4/pVFzctbTkZLreTxKi1vXMXeO56E7aPxeK9yR8pZZdyGe7bKAVPf4MscDdUvBT0BOIHU7j0eT/n4UNtva7w8xg0A=
+	t=1780162405; cv=none; b=rN6mydFDMHmJkpAJJU0ulEUJ8tikXqV0sPczQkHgP6o5Z6/FOTxdaPSHr0SZuVDOIE1UlkNssBmYKdn3eayzBHn6fP1qQG46hPJ6dduR/hZX8L6LMLidP0dhx+s5KTsSvK23eExY7wUs3os1wejK90ZJ1B9aOGHYJW3fhLuBZms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167068; c=relaxed/simple;
-	bh=of/sRuqPg3Kr4YLPtHClzPjFvP9ddwZGO7+f2AZkKsk=;
+	s=arc-20240116; t=1780162405; c=relaxed/simple;
+	bh=JWtP2hkYT0QfVZovaPJhzCxvVROfC+CrT/mX4k9r3rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kygbc2G5BNfOIpsIHXfWW70JMv+R9EXyNAVfHLGvmTmu1dH5VEDfFfUoQ6Qok2cvkX7bZLAwhWYN7Y5i5339UKDUZQsVM/dGlnaAEUnAnOVhYLwM/TPgjkQqX1e1k6w81HKF1Wwuo+XDyWikbm887PZ6oe2BxvZMbU1RBNfMLqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gEKkZ0RJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273781F00893;
-	Sat, 30 May 2026 18:51:06 +0000 (UTC)
+	 MIME-Version; b=gex7MjtBy0ia4z4qkLkT943/cBIbRft2ywHRRpHSiWscQ/2wT7HCueS8EWceg/d9GfD8kT0nhtwXrtDj9q9NXaaDtcvVbp7fmfKQXcifZM4YC+cNsZIYYZEvETQv3xeYStIUCzP2cIzacRToXxCdg/NR36NSmH0G33Wu1iFEcr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBElI2b6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B021F00898;
+	Sat, 30 May 2026 17:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167067;
-	bh=KDpOFackidJj7Fx+LeJIdP+PIR/SLXTKonPRiiTBjbE=;
+	s=korg; t=1780162404;
+	bh=ClIschycb6WdQUlK3v6fI5g2Jfvz36MwoMJQwEsTJMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gEKkZ0RJQQOlOEHaqIOpjXCIJjn1a1fGweuT87FD7GzyW2YeEa2rEFo1KMStcE1HC
-	 dA75Pubn85q14djuR9BWFZQag5OL2Nzb21Vtfd8zGhumqGvXH5+mv5PsOS02ctF6WB
-	 B0EXLfo9ssNJoo04xQzBFpt7BiE7GarliVKbv8F8=
+	b=TBElI2b6RmlYPlf6xpAkSkRxbNuZIO84Xvnu4SzyHsnpvj8o4l8azDhDsUvAuyYQ6
+	 cmNb1S3lEMUCO6zyYMxCpOK+OGKzMJUAg15Pz4jDfdtw12/SAh9s7znhsnQZsuzxJq
+	 wgnOOfmwQR4qk+hGl/t+891IktSJlLBdqF6U64MU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.10 555/589] batman-adv: frag: disallow unicast fragment in fragment
+	Breno Leitao <leitao@debian.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 912/969] netfilter: Make legacy configs user selectable
 Date: Sat, 30 May 2026 18:07:16 +0200
-Message-ID: <20260530160239.246234102@linuxfoundation.org>
+Message-ID: <20260530160325.913225001@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,120 +68,136 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-259237-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-257857-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,narfation.org:email]
-X-Rspamd-Queue-Id: 3A75A6129D1
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
+X-Rspamd-Queue-Id: 417C060FE99
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Breno Leitao <leitao@debian.org>
 
-commit bc62216dc8e221e3781afa14430f45208bfa9af9 upstream.
+[ Upstream commit 6c959fd5e17387201dba3619b2e6af213939a0a7 ]
 
-batadv_frag_skb_buffer() is called by batadv_batman_skb_recv() when a
-BATADV_UNICAST_FRAG packet is received. Once all fragments are collected
-and the packet is reassembled, batadv_recv_frag_packet() calls
-batadv_batman_skb_recv() again to process the defragmented payload.
+This option makes legacy Netfilter Kconfig user selectable, giving users
+the option to configure iptables without enabling any other config.
 
-A malicious sender can craft a BATADV_UNICAST_FRAG packet whose reassembled
-payload is itself a BATADV_UNICAST_FRAG packet (matryoshka-style nesting).
-Each nesting level recurses through batadv_batman_skb_recv() without bound,
-growing the kernel stack until it is exhausted.
+Make the following KConfig entries user selectable:
+ * BRIDGE_NF_EBTABLES_LEGACY
+ * IP_NF_ARPTABLES
+ * IP_NF_IPTABLES_LEGACY
+ * IP6_NF_IPTABLES_LEGACY
 
-Since refragmentation or fragments in fragments are not actually allowed,
-discard all packets which are still BATADV_UNICAST_FRAG packets after the
-defragmentation process.
-
-Cc: stable@kernel.org
-Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: b4597d5fd7d2 ("netfilter: x_tables: add and use xtables_unregister_table_exit")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/fragmentation.c |   35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ net/bridge/netfilter/Kconfig |  8 +++++++-
+ net/ipv4/netfilter/Kconfig   | 16 ++++++++++++++--
+ net/ipv6/netfilter/Kconfig   |  9 ++++++++-
+ 3 files changed, 29 insertions(+), 4 deletions(-)
 
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -307,6 +307,31 @@ free:
- }
+diff --git a/net/bridge/netfilter/Kconfig b/net/bridge/netfilter/Kconfig
+index 104c0125e32e8..f16bbbbb94817 100644
+--- a/net/bridge/netfilter/Kconfig
++++ b/net/bridge/netfilter/Kconfig
+@@ -41,7 +41,13 @@ config NF_CONNTRACK_BRIDGE
  
- /**
-+ * batadv_skb_is_frag() - check if newly merged skb is gain a unicast packet
-+ * @skb: newly merged skb
-+ *
-+ * Return: if newly skb is of type BATADV_UNICAST_FRAG
-+ */
-+static bool batadv_skb_is_frag(struct sk_buff *skb)
-+{
-+	struct batadv_ogm_packet *batadv_ogm_packet;
-+
-+	/* packet should hold at least type and version */
-+	if (unlikely(!pskb_may_pull(skb, 2)))
-+		return false;
-+
-+	batadv_ogm_packet = (struct batadv_ogm_packet *)skb->data;
-+
-+	if (batadv_ogm_packet->version != BATADV_COMPAT_VERSION)
-+		return false;
-+
-+	if (batadv_ogm_packet->packet_type != BATADV_UNICAST_FRAG)
-+		return false;
-+
-+	return true;
-+}
-+
-+/**
-  * batadv_frag_skb_buffer() - buffer fragment for later merge
-  * @skb: skb to buffer
-  * @orig_node_src: originator that the skb is received from
-@@ -339,6 +364,16 @@ bool batadv_frag_skb_buffer(struct sk_bu
- 	if (!skb_out)
- 		goto out_err;
+ # old sockopt interface and eval loop
+ config BRIDGE_NF_EBTABLES_LEGACY
+-	tristate
++	tristate "Legacy EBTABLES support"
++	depends on BRIDGE && NETFILTER_XTABLES
++	default n
++	help
++	 Legacy ebtables packet/frame classifier.
++	 This is not needed if you are using ebtables over nftables
++	 (iptables-nft).
  
-+	/* fragment in fragment is not allowed. otherwise it is possible
-+	 * to exhaust the stack when receiving a matryoshka-style
-+	 * "fragments in a fragment packet"
-+	 */
-+	if (batadv_skb_is_frag(skb_out)) {
-+		kfree_skb(skb_out);
-+		skb_out = NULL;
-+		goto out_err;
-+	}
-+
- out:
- 	ret = true;
- out_err:
+ menuconfig BRIDGE_NF_EBTABLES
+ 	tristate "Ethernet Bridge tables (ebtables) support"
+diff --git a/net/ipv4/netfilter/Kconfig b/net/ipv4/netfilter/Kconfig
+index 6146ef5fc728f..1d0a89a67acf5 100644
+--- a/net/ipv4/netfilter/Kconfig
++++ b/net/ipv4/netfilter/Kconfig
+@@ -12,7 +12,13 @@ config NF_DEFRAG_IPV4
+ 
+ # old sockopt interface and eval loop
+ config IP_NF_IPTABLES_LEGACY
+-	tristate
++	tristate "Legacy IP tables support"
++	default	n
++	select NETFILTER_XTABLES
++	help
++	  iptables is a legacy packet classifier.
++	  This is not needed if you are using iptables over nftables
++	  (iptables-nft).
+ 
+ config NF_SOCKET_IPV4
+ 	tristate "IPv4 socket lookup support"
+@@ -332,7 +338,13 @@ endif # IP_NF_IPTABLES
+ 
+ # ARP tables
+ config IP_NF_ARPTABLES
+-	tristate
++	tristate "Legacy ARPTABLES support"
++	depends on NETFILTER_XTABLES
++	default n
++	help
++	  arptables is a legacy packet classifier.
++	  This is not needed if you are using arptables over nftables
++	  (iptables-nft).
+ 
+ config NFT_COMPAT_ARP
+ 	tristate
+diff --git a/net/ipv6/netfilter/Kconfig b/net/ipv6/netfilter/Kconfig
+index f3c8e2d918e13..e087a8e97ba78 100644
+--- a/net/ipv6/netfilter/Kconfig
++++ b/net/ipv6/netfilter/Kconfig
+@@ -8,7 +8,14 @@ menu "IPv6: Netfilter Configuration"
+ 
+ # old sockopt interface and eval loop
+ config IP6_NF_IPTABLES_LEGACY
+-	tristate
++	tristate "Legacy IP6 tables support"
++	depends on INET && IPV6
++	select NETFILTER_XTABLES
++	default n
++	help
++	  ip6tables is a legacy packet classifier.
++	  This is not needed if you are using iptables over nftables
++	  (iptables-nft).
+ 
+ config NF_SOCKET_IPV6
+ 	tristate "IPv6 socket lookup support"
+-- 
+2.53.0
+
 
 
 
