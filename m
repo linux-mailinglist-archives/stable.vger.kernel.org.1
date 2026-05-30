@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-256931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YA6PES8NG2rM+ggAu9opvQ
-	(envelope-from <stable+bounces-256931-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:15:43 +0200
+	id oBBEBo0XG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:59:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4653560E0A7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:15:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 989E960EAF7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:59:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 32B7830230EF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:11:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D847C30416F9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9155D3246E8;
-	Sat, 30 May 2026 16:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149E534E75C;
+	Sat, 30 May 2026 16:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAivxwm3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWWDmlk1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1F7331A43;
-	Sat, 30 May 2026 16:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B99332919;
+	Sat, 30 May 2026 16:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780157488; cv=none; b=bFp11l8pwk5SJBmuce7IgFAM0iTrs89cnZL9W/ZglwFVq6qgienL61BcK4kdzn9NJXTnj0OKh5HzImwGHNC83PCr4AI4UYVtdSFoP12gH5cxKF8Fn0RgjO94ze6AQz5Fp8lPmo/rYM8TAWf7Sexqdb4WVByrN5YIVYTrQCXaYLU=
+	t=1780159933; cv=none; b=uf1BCz8eJgAk8hVz1y05Ma3I2DfBBBAxzRLaCoaCrFHQTbykzU1sboqYCnjPfyE99saXiltbDpLtNNcJpC/2GY9BCk3+Ox4KNiMRmgkntW7ns7x1A0+/s5dhkFRXSM8qWGdqoCyd46/QiW9op3vM2feI+W0W5znqmEOr2Rd9Xzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780157488; c=relaxed/simple;
-	bh=h3L8ND1Xleqh9k4pkrcRrR25q/8059AS03fBg29dUBM=;
+	s=arc-20240116; t=1780159933; c=relaxed/simple;
+	bh=1c65al4uaQsL/pkR7BL+HZMusmqavpFbLlM9VtxJJZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GGIYbSHO5ZX0XNHwJT9Jasam8QwPZj962aPsjj4E7gSNjqW8F6ldgQbbkVWvkpqWTxqm8Q2Op2jstwWaDyIfqC92jjekZDwxi5S7yEsWlRzWXOurfKJRay8xP4Po7RLCTrasYjZJpJoKoSjvKgyWmdxVrka2zKPF+7Lu1Pm1KAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YAivxwm3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32ECC1F00898;
-	Sat, 30 May 2026 16:11:23 +0000 (UTC)
+	 MIME-Version; b=Uc4umD1wBXUSyIHibkNCj+POG+ztmc8GX+yZuumWkICrx4ItV3WhrmswRuiBwjlDQvDS8lY51+Nuu6AOFuHBwRKoALvoYhrJJNzPINK42xtlNVfe05kUoWHK1VQ9UZ0q6s2uhNgMyoR/zYu5iMWUhA9fPcYPNoSG+VhUi/dQG0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWWDmlk1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE20C1F00893;
+	Sat, 30 May 2026 16:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780157484;
-	bh=F/9mH4Rfk7W5y1YJySmJMcQf5vzzWoJLLsPmtZXGm/Y=;
+	s=korg; t=1780159932;
+	bh=eBP9bXrTtGWK4/eBoKijz1yMhf3hsc4XZqQmIajA2J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YAivxwm3Rdi/AnRRMW0mTHDyQ4ZLJQV7sNKGyDo8xYbSjC2jgX0OvYvP9MedRxnfM
-	 WUrvMp96yPjYMepC2jv6YbDXqJLx9kqfEKWW/Reh4SndFYv75L3p+SkNwOAYqA6KtI
-	 mzW20QVoFORafo9tRaHsncmbI2xTOKcxbfAZ5dtE=
+	b=hWWDmlk1jFc/IWFDd2Htd/NEiwiUarMFOCGwoZgLSf/YbYqyqpJNvtA7DlLlphNIU
+	 O/PZJDlL9EgYXVeRlICHzecV6fr/aFmow5VbvGFNY2U6aW4wucxsNT/mUTxRsefcsj
+	 UcgAhwFwf92h/3sRVKiH+TfNyB1RizmEq+XOkMpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 002/776] ASoC: SOF: topology: reject invalid vendor array size in token parser
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 192/969] net: qrtr: ns: Fix use-after-free in driver remove()
 Date: Sat, 30 May 2026 17:55:16 +0200
-Message-ID: <20260530160240.299407655@linuxfoundation.org>
+Message-ID: <20260530160305.778462636@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +62,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256931-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257137-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4653560E0A7
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 989E960EAF7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit 215e5fe75881a7e2425df04aeeed47a903d5cd5d ]
+commit 7809fea20c9404bfcfa6112ec08d1fe1d3520beb upstream.
 
-sof_parse_token_sets() accepts array->size values that can be invalid
-for a vendor tuple array header. In particular, a zero size does not
-advance the parser state and can lead to non-progress parsing on
-malformed topology data.
+In the remove callback, if a packet arrives after destroy_workqueue() is
+called, but before sock_release(), the qrtr_ns_data_ready() callback will
+try to queue the work, causing use-after-free issue.
 
-Validate array->size against the minimum header size and reject values
-smaller than sizeof(*array) before parsing. This preserves behavior for
-valid topologies and hardens malformed-input handling.
+Fix this issue by saving the default 'sk_data_ready' callback during
+qrtr_ns_init() and use it to replace the qrtr_ns_data_ready() callback at
+the start of remove(). This ensures that even if a packet arrives after
+destroy_workqueue(), the work struct will not be dereferenced.
 
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20260319-sof-topology-array-size-fix-v1-1-f9191b16b1b7@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that it is also required to ensure that the RX threads are completed
+before destroying the workqueue, because the threads could be using the
+qrtr_ns_data_ready() callback.
+
+Cc: stable@vger.kernel.org
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-5-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/topology.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/qrtr/ns.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
-index 1bb2dcf37ffe9..16feb5d268022 100644
---- a/sound/soc/sof/topology.c
-+++ b/sound/soc/sof/topology.c
-@@ -941,7 +941,7 @@ static int sof_parse_token_sets(struct snd_soc_component *scomp,
- 		asize = le32_to_cpu(array->size);
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -23,6 +23,7 @@ static struct {
+ 	struct list_head lookups;
+ 	struct workqueue_struct *workqueue;
+ 	struct work_struct work;
++	void (*saved_data_ready)(struct sock *sk);
+ 	int local_node;
+ } qrtr_ns;
  
- 		/* validate asize */
--		if (asize < 0) { /* FIXME: A zero-size array makes no sense */
-+		if (asize < sizeof(*array)) {
- 			dev_err(scomp->dev, "error: invalid array size 0x%x\n",
- 				asize);
- 			return -EINVAL;
--- 
-2.53.0
-
+@@ -788,6 +789,7 @@ int qrtr_ns_init(void)
+ 		goto err_sock;
+ 	}
+ 
++	qrtr_ns.saved_data_ready = qrtr_ns.sock->sk->sk_data_ready;
+ 	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns_data_ready;
+ 
+ 	sq.sq_port = QRTR_PORT_CTRL;
+@@ -828,6 +830,10 @@ int qrtr_ns_init(void)
+ 	return 0;
+ 
+ err_wq:
++	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
++	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++
+ 	destroy_workqueue(qrtr_ns.workqueue);
+ err_sock:
+ 	sock_release(qrtr_ns.sock);
+@@ -837,7 +843,12 @@ EXPORT_SYMBOL_GPL(qrtr_ns_init);
+ 
+ void qrtr_ns_remove(void)
+ {
++	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
++	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++
+ 	cancel_work_sync(&qrtr_ns.work);
++	synchronize_net();
+ 	destroy_workqueue(qrtr_ns.workqueue);
+ 
+ 	/* sock_release() expects the two references that were put during
 
 
 
