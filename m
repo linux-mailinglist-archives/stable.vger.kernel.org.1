@@ -1,61 +1,54 @@
-Return-Path: <stable+bounces-258085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6EO+JAkkG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:13 +0200
+	id cFquMfAjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13C13610933
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F9F61090D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D5C153012C94
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:46:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52A9F30C6CCD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2973AFCF3;
-	Sat, 30 May 2026 17:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5443AB482;
+	Sat, 30 May 2026 17:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2SLpFuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLR2FHZn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3149E3546EA;
-	Sat, 30 May 2026 17:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C364C223DC6;
+	Sat, 30 May 2026 17:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163170; cv=none; b=KkaPBs8fW39fZyz3lDkKq3P3I2pyKjqJWmLxMUjVrkQsKO7RkAbD69DwUBNtGZANe+ppS4xLxJTmQnmAs0uv3nx3spD0B45ZjJHH1kkiHUtFU6p8VqFZAqB0qmfb8U6NSnocoi4eZ6DF10Lg2GcS5FEkcm/ItuBmiF+ocqz5iKg=
+	t=1780163176; cv=none; b=Xgi9zqCzdaZYzRtumiCcYJyQWp9OhrN657wGL1azSR0veYz0h8rpTutlNYwifyXFpXqBQX5SGvkNALp6Rmb89dgtD6RG2qlMlPRiCxolpNKsnXUS6M1xgAUvxgiEIbxVukqLS/IXz+90IQ6xanVBUVTLN5KwLTNpzRgIXg1VoFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163170; c=relaxed/simple;
-	bh=lwqRqj5aKQYCbUZ6za3TCSH+qYojs1/a9pBiw0KHiZQ=;
+	s=arc-20240116; t=1780163176; c=relaxed/simple;
+	bh=krFK53l77oo/a1ZxlOzR4TGfvCD58u3HrSliXOBUgMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n16mAnyU7jg9eU5ISO7IWzAztSmYMmtj1mtmohmqON1PmxX87UWExkGeYcJfytwwP3+DS6c880TbfGQ28dX3MqR2fMj2+3qXCtnEDXZvj4EzIrVRJKwQYOvAu0LddghjLTTk/gU0MCiykbRE6hwBpB4uTk/QfegzFEiw2QmKI2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2SLpFuS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FF11F00898;
-	Sat, 30 May 2026 17:46:08 +0000 (UTC)
+	 MIME-Version; b=CKti9ul4J4krpsNybKopqdwpITqKXD5O+fmMuWZoJ8bdGk5n+05UDwsaYKZZnk9JzweVLIwMp62xjFIP4a9vEhvJ0Tku8Liuu5BuCBwvO1lAXbkOmJpOfUYdQMfdd/6q+TDCteU3t/MGj7YuL0dkhDkg6Zl1lLGfaKHfNN/pCy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLR2FHZn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1379A1F00893;
+	Sat, 30 May 2026 17:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163169;
-	bh=0TyNf207hxAMzoh9NiSBYt0YbVAJbFhgjtf7+NZCCUI=;
+	s=korg; t=1780163175;
+	bh=PTISUM+ESGvFjLBRWrTmMIHQGQ2+PhIJ4TfcNa1I5TU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H2SLpFuSTZFOKvIov6tn+uwaOkiZurnHXl7gHNcFtO9XEiOPL2y1A8lK+WajDzeYD
-	 e9N8u+13M+Lg91L0Bp/SosGttN9fo5fd/yZDWSXtMHl0DmbAQT2tMV2oqeC9i6kUrO
-	 Zpi8NMbAfPwVmSyc4K98lTJdPUFB46jHArj2C/wo=
+	b=pLR2FHZnemC9Qup/66QMs1gBsPEpRbxrFy44dqrqSqf3uH4T8BfmmY44MHjRR4jn7
+	 65sK2ae74l6VuSGjivRFtg3ESypGL/FWvK6gIxE++qDRKDs+OELy06Ed1+ipqiwknZ
+	 hNdf9IqfM3hR+8FIyCTsiO15wd+NsVXxboroTk44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 178/776] rxrpc: Fix missing validation of ticket length in non-XDR key preparsing
-Date: Sat, 30 May 2026 17:58:12 +0200
-Message-ID: <20260530160245.099832909@linuxfoundation.org>
+	Daniel Starke <daniel.starke@siemens.com>
+Subject: [PATCH 5.15 179/776] tty: n_gsm: fix flow control handling in tx path
+Date: Sat, 30 May 2026 17:58:13 +0200
+Message-ID: <20260530160245.125617544@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
 References: <20260530160240.228940103@linuxfoundation.org>
@@ -71,31 +64,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258085-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-258087-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 13C13610933
+X-Rspamd-Queue-Id: 59F9F61090D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,57 +96,36 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Anderson Nascimento <anderson@allelesecurity.com>
+From: Daniel Starke <daniel.starke@siemens.com>
 
-commit ac33733b10b484d666f97688561670afd5861383 upstream.
+commit 59ff0680ecbfec742b1e0381e7cc46b41eb06647 upstream.
 
-In rxrpc_preparse(), there are two paths for parsing key payloads: the
-XDR path (for large payloads) and the non-XDR path (for payloads <= 28
-bytes). While the XDR path (rxrpc_preparse_xdr_rxkad()) correctly
-validates the ticket length against AFSTOKEN_RK_TIX_MAX, the non-XDR
-path fails to do so.
+The current implementation constipates all transmission paths during flow
+control except for flow control frames. However, these may not be located
+at the beginning of the transmission queue of the control channel.
+Ensure that flow control frames in the transmission queue for the control
+channel are always handled even if constipated by skipping through other
+messages.
 
-This allows an unprivileged user to provide a very large ticket length.
-When this key is later read via rxrpc_read(), the total
-token size (toksize) calculation results in a value that exceeds
-AFSTOKEN_LENGTH_MAX, triggering a WARN_ON().
-
-[ 2001.302904] WARNING: CPU: 2 PID: 2108 at net/rxrpc/key.c:778 rxrpc_read+0x109/0x5c0 [rxrpc]
-
-Fix this by adding a check in the non-XDR parsing path of rxrpc_preparse()
-to ensure the ticket length does not exceed AFSTOKEN_RK_TIX_MAX,
-bringing it into parity with the XDR parsing logic.
-
-Fixes: 8a7a3eb4ddbe ("KEYS: RxRPC: Use key preparsing")
-Fixes: 84924aac08a4 ("rxrpc: Fix checker warning")
-Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
-Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-7-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0af021678d5d ("tty: n_gsm: fix deadlock and link starvation in outgoing data path")
+Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
+Link: https://lore.kernel.org/r/20220707113223.3685-3-daniel.starke@siemens.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/key.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/tty/n_gsm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rxrpc/key.c
-+++ b/net/rxrpc/key.c
-@@ -340,6 +340,10 @@ static int rxrpc_preparse(struct key_pre
- 	if (v1->security_index != RXRPC_SECURITY_RXKAD)
- 		goto error;
- 
-+	ret = -EKEYREJECTED;
-+	if (v1->ticket_length > AFSTOKEN_RK_TIX_MAX)
-+		goto error;
-+
- 	plen = sizeof(*token->kad) + v1->ticket_length;
- 	prep->quotalen += plen + sizeof(*token);
- 
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -897,7 +897,7 @@ static int gsm_data_kick(struct gsm_mux
+ 	/* Serialize control messages and control channel messages first */
+ 	list_for_each_entry_safe(msg, nmsg, &gsm->tx_ctrl_list, list) {
+ 		if (gsm->constipated && !gsm_is_flow_ctrl_msg(msg))
+-			return -EAGAIN;
++			continue;
+ 		ret = gsm_send_packet(gsm, msg);
+ 		switch (ret) {
+ 		case -ENOSPC:
 
 
 
