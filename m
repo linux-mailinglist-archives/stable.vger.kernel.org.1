@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-258282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257508-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNCGCEElG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258282-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:25 +0200
+	id cBgZIokcG2qQ/QgAu9opvQ
+	(envelope-from <stable+bounces-257508-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A5B610B98
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F29960F775
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4FCAC3004614
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D02D3099667
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:13:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F4C341AC7;
-	Sat, 30 May 2026 17:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AB534BA42;
+	Sat, 30 May 2026 17:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXh0+k21"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7gaKypw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B86030E0DC;
-	Sat, 30 May 2026 17:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BF334EF07;
+	Sat, 30 May 2026 17:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163826; cv=none; b=dVUo4Sk/BVjwcqr6dQWFT8Mefq7FaxKQG45SEckiEex5cJb6ZEmmFDahTGWlgDvYKCx1VhRxfR4ZDL1L5146SMOeA7QYvtF0eDXJG8piroKUaiAxuoX+v/IbDKLyNgMMbOdFpwZGf1S+WB2fw3FqQWJXNyetw1pflwSHN1m9AIo=
+	t=1780161239; cv=none; b=bnYMekUSMAUOo2yu1sZB0ptmS23DDn5Q6yIys37fStKw0ZMKWTBOgv0aRhYh0rqhmHwhQDWRGd9rWTZUkC8kHxMZv7QzU+Wi7N+88FDHkHAPVN+KPcC+MkIgFGGTxt3cXz+wiWGrjShLMeGnRykNFQzTFTDaIJ5//pivAW2jpdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163826; c=relaxed/simple;
-	bh=bzeTaBtHNMrgnfm1Zfim7q25G8lRd7ykEsIHGIaj65I=;
+	s=arc-20240116; t=1780161239; c=relaxed/simple;
+	bh=omRfopVejZgPNDU8dvQ0gQ2PFIx6YxwNZqQ0vvyKpYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPyvhJNXnGNYmeB3AUg5Oo/mfrjeOwXog3Fg83iNss9fZfRPMn390uNRJGoieOfJimZbzOeBrOFMxWeqpGcMQ9auFkrP8TzfXVYXx/V1i5fmw3ZbDNDyDtk4A/eHpIdroHWa8b3kUVL3VVdKhZld1MQTQkaXJCXWrUOyZCnMWiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXh0+k21; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DB01F00893;
-	Sat, 30 May 2026 17:57:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lqpC0+a90/inQRcDTCqGQYBg92qT94FD5OpsrXLMQqgzG0GJBmqutdS+jASiibmCvASNSwkn6siS89yfT4oaM0ci4KF91k09/Mgme62eLZz7TvteC9szYuc5or/VLF6/7/g4ci4VMQvmZB5fGlPwhvFYdQ6Jt4fCDn/lSvaIick=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7gaKypw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307EE1F00893;
+	Sat, 30 May 2026 17:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163825;
-	bh=uuI48wPCzJqWrWwYALqux5aOO5wHHWbqISmnHE+vTZM=;
+	s=korg; t=1780161237;
+	bh=ncY9R+Dfi2TK1c4BvYmhUrG75uYvkTGF3BWPLFeKHfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OXh0+k21k3HHAzvoA3JqdUFjTvRUVnTS8AwD4E6IXyi8Y2pvxgTbZV08chm09bkqH
-	 HYob8gnrY2UrYeCXw0fWP8hUz+jMlf7rOonK5U5CFNHxYDRdoNqfsFxRh9xpq8fdB4
-	 lsTLWoyPpebZG/4PsR+BpwC4Okj6i26DSAjbbnTc=
+	b=J7gaKypw52IQ2CIdZXM6pBbGZhfnJpTOAfCi1pWTAEat1VCArYEMdZLtw1OzXRZXK
+	 MTGfdzk5bHg0MfROAzQN4kUMXkOjEPEbQyJYjaAj4nQrvDoATWQRX6v99l5IMIxW47
+	 r4V8g8TEk/HY4g61dDVQMZgzs2fAndYfxkkz0JRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyes Bourennani <lbourennani@fuzzinglabs.com>,
-	Alexis Pinson <apinson@fuzzinglabs.com>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.15 374/776] batman-adv: fix integer overflow on buff_pos
+	John Hawley <warthog9@eaglescrag.net>,
+	Andrea Righi <arighi@nvidia.com>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 564/969] ktest: Avoid undef warning when WARNINGS_FILE is unset
 Date: Sat, 30 May 2026 18:01:28 +0200
-Message-ID: <20260530160250.201315172@linuxfoundation.org>
+Message-ID: <20260530160315.963395607@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +69,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257508-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258282-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fuzzinglabs.com:email]
-X-Rspamd-Queue-Id: 49A5B610B98
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 2F29960F775
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lyes Bourennani <lbourennani@fuzzinglabs.com>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-commit 0799e5943611006b346b8813c7daf7dd5aa26bfd upstream.
+[ Upstream commit 057854f8a595160656fe77ed7bf0d2403724b915 ]
 
-Fixing an integer overflow present in batadv_iv_ogm_send_to_if. The size
-check is done using the int type in batadv_iv_ogm_aggr_packet whereas the
-buff_pos variable uses the s16 type. This could lead to an out-of-bound
-read.
+check_buildlog() probes $warnings_file with -f even when WARNINGS_FILE is
+not configured. Perl warns about the uninitialized value and adds noise to
+the test log, which can hide the output we actually care about.
 
-Cc: stable@vger.kernel.org
-Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
-Signed-off-by: Lyes Bourennani <lbourennani@fuzzinglabs.com>
-Signed-off-by: Alexis Pinson <apinson@fuzzinglabs.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Check that WARNINGS_FILE is defined before testing whether the file exists.
+
+Cc: John Hawley <warthog9@eaglescrag.net>
+Cc: Andrea Righi <arighi@nvidia.com>
+Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Link: https://patch.msgid.link/20260307-ktest-fixes-v1-1-565d412f4925@suse.com
+Fixes: 4283b169abfb ("ktest: Add make_warnings_file and process full warnings")
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bat_iv_ogm.c |    2 +-
+ tools/testing/ktest/ktest.pl | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -335,7 +335,7 @@ static void batadv_iv_ogm_send_to_if(str
- 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
- 	const char *fwd_str;
- 	u8 packet_num;
--	s16 buff_pos;
-+	int buff_pos;
- 	struct batadv_ogm_packet *batadv_ogm_packet;
- 	struct sk_buff *skb;
- 	u8 *packet_pos;
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index b1bd8be3cf666..d752c4bd0d8b3 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -2465,7 +2465,7 @@ sub check_buildlog {
+     my $save_no_reboot = $no_reboot;
+     $no_reboot = 1;
+ 
+-    if (-f $warnings_file) {
++    if (defined($warnings_file) && -f $warnings_file) {
+ 	open(IN, $warnings_file) or
+ 	    dodie "Error opening $warnings_file";
+ 
+-- 
+2.53.0
+
 
 
 
