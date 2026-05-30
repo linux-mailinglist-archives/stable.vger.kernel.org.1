@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-257823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259202-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GxZJ0ofG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:58 +0200
+	id GI0+Aw0yG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259202-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A080360FE39
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8594F612B86
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1011D301237F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C7497303EB8A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21319329E46;
-	Sat, 30 May 2026 17:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C67F233943;
+	Sat, 30 May 2026 18:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOOKdt/c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1bddLX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007682E7379;
-	Sat, 30 May 2026 17:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B6A137750;
+	Sat, 30 May 2026 18:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162289; cv=none; b=t2KtMay7IbmCbWqrY4F+FrxcGwWViAZmrEf/TUYxR9kVfxbdrvTl52G2tNfASHCLYDALKT/dgfA0zW932IclMIzsEvlmi6sW6Dc+ZVMVMharm8KcXk8fSImA7kbtl3OjVGryU3BlTk9Tqn/bYsSsaHSoX6/6yuKmOgput8gh4Xs=
+	t=1780166949; cv=none; b=Y6t4emE6et3dYpQ8eNANjA5M9kHw1cAg/0sLuhzPYCj82RCReaBqmE6VHRmzdlspn6G9evsiqIgJ7i2zOraR3qzvn2kmMId8Q4D6GFDhNbEDh1kx2m0ciKObBiUX8Rb0Xxjfat7Ctt6/Jy6t18msZLtwZ9LTcsmpntZxMaPwc40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162289; c=relaxed/simple;
-	bh=1xuH/34sczTn3p2kcWbVBCI0yR+S+UHb62I6fGY4q/Q=;
+	s=arc-20240116; t=1780166949; c=relaxed/simple;
+	bh=ZhFRo4HjPmorB1vLVak0Yj2CEo0pMrg5rj5bBXtZChE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R9zaIm5MMjhtFcGQ+xAxhXWq6MzcsrdJAcnIYxC8AUJwqr8akJiVobfWtk4p2y7huuCyf+bCLqGxmmfCDcc+iSEYHejqUaQVLi9kBRESb+SpoYlZUhxr4J2kpjYZI64ruxM+2SydYkvAJKr8MGfTtW95Ebe4+W2pg/fiUQxSiC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOOKdt/c; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CD31F00893;
-	Sat, 30 May 2026 17:31:27 +0000 (UTC)
+	 MIME-Version; b=TtU/r9DZ0l4ej7SwV+hSdvI0UVfRlopRZDL2uncCgMdwAzNT+4m6oGWxjrm1YWz90aNvW8eQGSU/wPofP3VPwlToD61zDsmQZRmVdMHl/etzxXUZrEvi2xDpd7ryUuDWqq67B1xWMFDP1WVEmM8FgaDUb7ZwqHPTBskYVonDxMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1bddLX6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AA51F00893;
+	Sat, 30 May 2026 18:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162288;
-	bh=z0co9dQSBFJhk619Q3+mTFgPgHSdfWBB40cHa1o+830=;
+	s=korg; t=1780166948;
+	bh=TYBPkkIq+4fiNAXZQlF+0utg9qqp7vB+24BgbvJPTpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kOOKdt/cOPxCnjgWWCGql0s547+lE1C6gpX5S6f+A2TGNWPSblDEJLLZ+cn3OVxzv
-	 a+AxnjpdWA2XwlCDAUY1A2bV6iPc/yU1MEGaFLnZMF4L6TV7oAwBo9RyL1OqPJVBcz
-	 gaMbtJMALCF2z8GGOwlO8N1Icid16NAguYF78NjI=
+	b=x1bddLX6eOBHh7yvC8JXBwhi8L9fZC6pkc59EraFdsPsz22i48lUcN5l9Guw9zign
+	 ISfYsnszVaoFdAlcQsJufcFvz1qhMHYDuw/xCUzY44w1oPd39Z6qTgferYybCbATE2
+	 LCI8avrN0SAJJ/dBfAeYl8aW1EamCanNYo+wATfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 877/969] drm/amd/display: Fix integer overflow in bios_get_image()
+	Allison Henderson <achender@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 520/589] net/rds: reset op_nents when zerocopy page pin fails
 Date: Sat, 30 May 2026 18:06:41 +0200
-Message-ID: <20260530160324.905725762@linuxfoundation.org>
+Message-ID: <20260530160238.286570069@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,88 +68,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257823-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259202-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A080360FE39
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 8594F612B86
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Allison Henderson <achender@kernel.org>
 
-commit cd86529ec61474a38c3837fb7823790a7c3f8cce upstream.
+commit e174929793195e0cd6a4adb0cad731b39f9019b4 upstream.
 
-[Why&How]
-The bounds check in bios_get_image() computes 'offset + size' using
-unsigned 32-bit arithmetic before comparing against bios_size. If a
-VBIOS image contains a near-UINT32_MAX offset the addition wraps to a
-small value, the comparison passes, and the function returns a wild
-pointer past the VBIOS mapping.
+When iov_iter_get_pages2() fails in rds_message_zcopy_from_user(),
+the pinned pages are released with put_page(), and
+rm->data.op_mmp_znotifier is cleared.  But we fail to properly
+clear rm->data.op_nents.
 
-Additionally, the comparison uses '<' (strict), which incorrectly
-rejects the valid exact-fit case where offset + size == bios_size.
+Later when rds_message_purge() is called from rds_sendmsg() the
+cleanup loop iterates over the incorrectly non zero number of
+op_nents and frees them again.
 
-Fix both issues by restructuring the check to avoid the addition
-entirely: first reject if offset alone exceeds bios_size, then check
-size against the remaining space (bios_size - offset). This eliminates
-the overflow and correctly permits exact-fit accesses.
+Fix this by properly resetting op_nents when it should be in
+rds_message_zcopy_from_user().
 
-Assisted-by: GitHub Copilot:claude-opus-4.6
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d40fb392af659c4a02b560319f226842f6ec1a95)
-Cc: stable@vger.kernel.org
+Fixes: 0cebaccef3ac ("rds: zerocopy Tx support.")
+Signed-off-by: Allison Henderson <achender@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260505234336.2132721-1-achender@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/rds/message.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c
-@@ -37,10 +37,13 @@ uint8_t *bios_get_image(struct dc_bios *
- 	uint32_t offset,
- 	uint32_t size)
- {
--	if (bp->bios && offset + size < bp->bios_size)
--		return bp->bios + offset;
--	else
-+	if (!bp->bios)
- 		return NULL;
-+
-+	if (offset > bp->bios_size || size > bp->bios_size - offset)
-+		return NULL;
-+
-+	return bp->bios + offset;
- }
+--- a/net/rds/message.c
++++ b/net/rds/message.c
+@@ -409,6 +409,7 @@ static int rds_message_zcopy_from_user(s
  
- #include "reg_helper.h"
+ 			for (i = 0; i < rm->data.op_nents; i++)
+ 				put_page(sg_page(&rm->data.op_sg[i]));
++			rm->data.op_nents = 0;
+ 			mmp = &rm->data.op_mmp_znotifier->z_mmp;
+ 			mm_unaccount_pinned_pages(mmp);
+ 			ret = -EFAULT;
 
 
 
