@@ -1,97 +1,59 @@
-Return-Path: <stable+bounces-257535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258310-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPx6CQkdG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257535-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:21 +0200
+	id YAktHmYlG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258310-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A6060F89D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2E8610C29
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DBCA130C85B0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EC90130072AB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6583546F6;
-	Sat, 30 May 2026 17:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441C5362157;
+	Sat, 30 May 2026 17:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fj1Y1Vnm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlw43Ckr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEEA39A4A4;
-	Sat, 30 May 2026 17:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EFE332EA7;
+	Sat, 30 May 2026 17:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161331; cv=none; b=aA2GGNFvgu/OEVXPyzc/f0iM1v3BxgpgGXcnV5TLJe1+C7N0ZHBVoRcTubm84aut0EuoV3ksm4Dz31LvLElscoNw8alzaxjkK2W21t9l+vR0amfhCtKV9bUwknEqg0KASJsHAz9WKwapaFSZ4WdlU3VVyWZJS68lfpX2pp4V4I8=
+	t=1780163921; cv=none; b=enilvbwfuaKNxVU84IYTUTaSFRFF7LfvlFPdithDUGffxn8iQ/wi4plDPHxLgXnFFsxXYyAE5togBpmM8IR1fNuVWN4RPmn6deX/66aevFjgAJJLE3u1u1AZATk7iFDXUfLV3iZiNh1vLMxAnX6F4rQCMNtoxOesUH1rRQYR+F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161331; c=relaxed/simple;
-	bh=qHUE/1TFoZYD2TpOsaCDceb2039oxsmxh5CG5V1MOrg=;
+	s=arc-20240116; t=1780163921; c=relaxed/simple;
+	bh=lmVEf9p58E3zLk3G607EQGjPLRyp4PK18cQZwQZgJq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZsgvQR8L8bcEri7c4vw/DeA+01+n0UXN3/eR4wdcXbbdmUeWn6DaMyrTaHaLxecb74rLDU1GQRJ7Yogc/SVSuk21dsRT0dg1lUboe5Ae8qQ9mr4PFkQwGnlHAPG4n9/NstxHll9SUjNrMrlVQJLRKSLNVEHvuE7mS87CSPxSEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fj1Y1Vnm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B99A1F00893;
-	Sat, 30 May 2026 17:15:29 +0000 (UTC)
+	 MIME-Version; b=noXLoi3eY3560Ir5xnYnFxIT2muL4vD73jhkQLVyg3cLTFrIJlnr5itxC2Z5+xxdOv86k7GcK32oQHMgASWExDNgH+vVE1STIvyRWV5xX7zOv9T7u+LpSNOvC6K1hq8rkeKnqb0Oogh9cm5KyjvxSy+Y+f7T4wOLf0y/rIVzvX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dlw43Ckr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5568B1F00893;
+	Sat, 30 May 2026 17:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161329;
-	bh=Z31vyFptaDP6H4LHIrX1Am4fsS2IKqwmHovDgzTQIMo=;
+	s=korg; t=1780163920;
+	bh=ZJujABl5rm7BGQD5tX97CLQQSywD9D99/PnMk5Yqdeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Fj1Y1VnmYs7097m08ajpV49d+qC3q7dPoa68ZZa+PXBJCPt5E7by1jGMwA+7RDUzn
-	 C+PgxuyAhVWz95hwPy6RqfDZ/LS3rD8r3VuP/MBNhIZ3BFDouDIpvoIX03VQjwqNQw
-	 sOSzZYaMyCGUDfjVl2zNxOzdgrtA61EcLpNVvvxI=
+	b=dlw43CkrdCInT2xHa7+w6LDHvKIEmVZTmXEDAJYaj9ExHlnq0jAPp9jjQjnfwE0ku
+	 eNHSlZEh3hmGiukRkA0GmujFGjGtEuJ7iW1u5fDEGYDUr2JtY3sGUKvKsPoRW/WWCS
+	 t18pmHJ+ku2Z3W8KmPQF4zkZVg92pLdny0Q6cdks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chris Mason <clm@fb.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Sterba <dsterba@suse.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	"Jason A. Donenfeld" <jason@zx2c4.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Li Nan <linan122@huawei.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Song Liu <song@kernel.org>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ted Tso <tytso@mit.edu>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 592/969] arm64/xor: fix conflicting attributes for xor_block_template
+Subject: [PATCH 5.15 402/776] module: Fix freeing of charp module parameters when CONFIG_SYSFS=n
 Date: Sat, 30 May 2026 18:01:56 +0200
-Message-ID: <20260530160316.763476772@linuxfoundation.org>
+Message-ID: <20260530160250.895366720@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -107,107 +69,149 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257535-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lst.de,kernel.org,eecs.berkeley.edu,linux.ibm.com,ghiti.fr,gaisler.com,cambridgegreys.com,arndb.de,alien8.de,arm.com,fb.com,intel.com,davemloft.net,suse.com,gondor.apana.org.au,zytor.com,redhat.com,zx2c4.com,sipsolutions.net,huawei.com,gmail.com,ellerman.id.au,dabbelt.com,linaro.org,nod.at,armlinux.org.uk,mit.edu,xen0n.name,linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[44];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258310-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A0A6060F89D
+X-Rspamd-Queue-Id: 8D2E8610C29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 675a0dd596e712404557286d0a883b54ee28e4f4 ]
+[ Upstream commit deffe1edba626d474fef38007c03646ca5876a0e ]
 
-Commit 2c54b423cf85 ("arm64/xor: use EOR3 instructions when available")
-changes the definition to __ro_after_init instead of const, but failed to
-update the external declaration in xor.h.  This was not found because
-xor-neon.c doesn't include <asm/xor.h>, and can't easily do that due to
-current architecture of the XOR code.
+When setting a charp module parameter, the param_set_charp() function
+allocates memory to store a copy of the input value. Later, when the module
+is potentially unloaded, the destroy_params() function is called to free
+this allocated memory.
 
-Link: https://lkml.kernel.org/r/20260327061704.3707577-4-hch@lst.de
-Fixes: 2c54b423cf85 ("arm64/xor: use EOR3 instructions when available")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
-Tested-by: Eric Biggers <ebiggers@kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Chris Mason <clm@fb.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: David Sterba <dsterba@suse.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jason A. Donenfeld <jason@zx2c4.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: Li Nan <linan122@huawei.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Magnus Lindholm <linmag7@gmail.com>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Song Liu <song@kernel.org>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Ted Ts'o <tytso@mit.edu>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: WANG Xuerui <kernel@xen0n.name>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+However, destroy_params() is available only when CONFIG_SYSFS=y, otherwise
+only a dummy variant is present. In the unlikely case that the kernel is
+configured with CONFIG_MODULES=y and CONFIG_SYSFS=n, this results in
+a memory leak of charp values when a module is unloaded.
+
+Fix this issue by making destroy_params() always available when
+CONFIG_MODULES=y. Rename the function to module_destroy_params() to clarify
+that it is intended for use by the module loader.
+
+Fixes: e180a6b7759a ("param: fix charp parameters set via sysfs")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/xor.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/moduleparam.h | 11 +++--------
+ kernel/module.c             |  4 ++--
+ kernel/params.c             | 27 ++++++++++++++++++---------
+ 3 files changed, 23 insertions(+), 19 deletions(-)
 
-diff --git a/arch/arm64/include/asm/xor.h b/arch/arm64/include/asm/xor.h
-index befcd8a7abc98..7c03207157196 100644
---- a/arch/arm64/include/asm/xor.h
-+++ b/arch/arm64/include/asm/xor.h
-@@ -13,7 +13,7 @@
+diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
+index 061e19c94a6bc..f73ca4d62683b 100644
+--- a/include/linux/moduleparam.h
++++ b/include/linux/moduleparam.h
+@@ -392,14 +392,9 @@ extern char *parse_args(const char *name,
+ 				     const char *doing, void *arg));
  
- #ifdef CONFIG_KERNEL_MODE_NEON
+ /* Called by module remove. */
+-#ifdef CONFIG_SYSFS
+-extern void destroy_params(const struct kernel_param *params, unsigned num);
+-#else
+-static inline void destroy_params(const struct kernel_param *params,
+-				  unsigned num)
+-{
+-}
+-#endif /* !CONFIG_SYSFS */
++#ifdef CONFIG_MODULES
++void module_destroy_params(const struct kernel_param *params, unsigned int num);
++#endif
  
--extern struct xor_block_template const xor_block_inner_neon;
-+extern struct xor_block_template xor_block_inner_neon __ro_after_init;
+ /* All the helper functions */
+ /* The macros to do compile-time type checking stolen from Jakub
+diff --git a/kernel/module.c b/kernel/module.c
+index 07fa34461fa2f..b6409b0032b85 100644
+--- a/kernel/module.c
++++ b/kernel/module.c
+@@ -2179,7 +2179,7 @@ static void free_module(struct module *mod)
+ 	module_unload_free(mod);
  
- static void
- xor_neon_2(unsigned long bytes, unsigned long * __restrict p1,
+ 	/* Free any allocated parameters. */
+-	destroy_params(mod->kp, mod->num_kp);
++	module_destroy_params(mod->kp, mod->num_kp);
+ 
+ 	if (is_livepatch_module(mod))
+ 		free_module_elf(mod);
+@@ -4166,7 +4166,7 @@ static int load_module(struct load_info *info, const char __user *uargs,
+ 	mod_sysfs_teardown(mod);
+  coming_cleanup:
+ 	mod->state = MODULE_STATE_GOING;
+-	destroy_params(mod->kp, mod->num_kp);
++	module_destroy_params(mod->kp, mod->num_kp);
+ 	blocking_notifier_call_chain(&module_notify_list,
+ 				     MODULE_STATE_GOING, mod);
+ 	klp_module_going(mod);
+diff --git a/kernel/params.c b/kernel/params.c
+index 9a76f556b898a..1233673b42ecc 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -743,15 +743,6 @@ void module_param_sysfs_remove(struct module *mod)
+ }
+ #endif
+ 
+-void destroy_params(const struct kernel_param *params, unsigned num)
+-{
+-	unsigned int i;
+-
+-	for (i = 0; i < num; i++)
+-		if (params[i].ops->free)
+-			params[i].ops->free(params[i].arg);
+-}
+-
+ struct module_kobject * __init_or_module
+ lookup_or_create_module_kobject(const char *name)
+ {
+@@ -971,3 +962,21 @@ static int __init param_sysfs_init(void)
+ subsys_initcall(param_sysfs_init);
+ 
+ #endif /* CONFIG_SYSFS */
++
++#ifdef CONFIG_MODULES
++
++/*
++ * module_destroy_params - free all parameters for one module
++ * @params: module parameters (array)
++ * @num: number of module parameters
++ */
++void module_destroy_params(const struct kernel_param *params, unsigned int num)
++{
++	unsigned int i;
++
++	for (i = 0; i < num; i++)
++		if (params[i].ops->free)
++			params[i].ops->free(params[i].arg);
++}
++
++#endif /* CONFIG_MODULES */
 -- 
 2.53.0
 
