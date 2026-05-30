@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-257687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBwfE0weG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:44 +0200
+	id 6Cl7IhwwG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00F4260FC19
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 341DF612641
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D1E7530AFDB8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:23:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 196EB301C92C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10BED332EA7;
-	Sat, 30 May 2026 17:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216CB3469FC;
+	Sat, 30 May 2026 18:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ql1yBhl0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xD+Zo+65"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D6F3161A3;
-	Sat, 30 May 2026 17:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4B02C11C4;
+	Sat, 30 May 2026 18:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161836; cv=none; b=Hj1CSACtqyLtfWtIQ6INBewV80lw+0qzU58GLzxVx7i36tyaBI07eoDF1Y/j5C5hp2/Q0rRukDIZCsIvwAA96qd0O0/RhqP8vdVX7eqpkTgzdA2cP9CNtfzrpvf8538ejlkWyn586uwcBcWuD61WubZUG4SQR1cKl9EMAU5obqo=
+	t=1780166485; cv=none; b=THLJsGye4MaKysWfGb8LqCtU8OxJQu7+nl15/PXGg/eE85t6UO/oOqYormcverfMrK1iGokJOyQ6GTmitCJdTWcVoIwRyY7IwpQLFsTZRnqOBy6Y0Kee5qoo7BhEX8yyQNbg5w0wo6Oc2mIXGHjXbM24Ru0P2kDV8gzS6xaiXeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161836; c=relaxed/simple;
-	bh=SKE6WVnJQffz0KBg/1lxSsmc4tzbvnUVvItwlY1xrs8=;
+	s=arc-20240116; t=1780166485; c=relaxed/simple;
+	bh=LYmtTtyWnO0tI/cXHGox6iXVFL2HPDJQGVhc+jV5MIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXadtZ21V3GznuygcGHFN8O6TJaYT4tiBSvl7qI57/t9b7jrnK7fofK2VVgJVZj7VxC42HJJHqnR2LH7wutgFrE/gsmtYjTY6RHvAFJNI5r2PD1cu9v6dyDg/uQRhp1Mxa1J/ZIoT8jC1gfATN7GAVgLrUadlSXQarQ6jK0G5c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ql1yBhl0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE081F00893;
-	Sat, 30 May 2026 17:23:54 +0000 (UTC)
+	 MIME-Version; b=Qccz20am3nLeAJgqEYDKYz6cUgdaKaMbQqRZ6Qum+vERbUaJaAXK1wKa1gIYlIx3elAQCaaZ5o+F/UVmJcY6M9HLt50iR9679lSOvLf39VyOWp8n5zeh/dwGWnVRmDbBMgFwRMRPSwggsWNk4/JL/7/fx8YuxlGopea/CPUE4iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xD+Zo+65; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4026E1F00893;
+	Sat, 30 May 2026 18:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161835;
-	bh=Cm96KVneqL6GcRL5/o3ZhXW2gRu/p0AHpfOiuuGVTj4=;
+	s=korg; t=1780166484;
+	bh=hvOq7sB2cgnQVJNSQucjsZVdX0Tqc9eOCqZE9bebVOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ql1yBhl02AEf7048VoDDq3mvK8KpR1y1PEcWhrkCjNwhwbw79WTCljTA6dihUolkJ
-	 qIeFA/m5Tg/RcK9Dy/Mo9nou5P/LpnrP68OvWSqXHgy/9DOqlbYeg2yr1k3lC8Zryc
-	 MFZVrwJwMq54vBfY1W48MC+0cZQGlPotggfLvABk=
+	b=xD+Zo+6520OBNrMPzXXjbsA/wFSCuOcYjoBe1QFsDDU3+ohmot81O17RfNeew/eTG
+	 iWj/F20de968xjXo9gFKUtaTxQGemkx5tPBVzwsdU4I/2FESo72uxqHVxGfEED32fT
+	 5bfuA9K26sTFQoNolnsH213LXAK0P46SZp6xXy64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Heiko Stuebner <heiko@sntech.e>,
-	Mark Brown <broonie@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 742/969] spi: rockchip: switch to use modern name
-Date: Sat, 30 May 2026 18:04:26 +0200
-Message-ID: <20260530160321.049275535@linuxfoundation.org>
+Subject: [PATCH 5.10 386/589] driver core: device.h: remove extern from function prototypes
+Date: Sat, 30 May 2026 18:04:27 +0200
+Message-ID: <20260530160234.945926511@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,237 +72,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257687-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259070-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 00F4260FC19
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 341DF612641
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 1a3ccff3bc39acc04e69e3a65833d474471598ec ]
+[ Upstream commit f43243c66e5e9ad839d235f82a58e73a7e7612af ]
 
-Change legacy name master/slave to modern name host/target or controller.
+The kernel coding style does not require 'extern' in function prototypes
+in .h files, so remove them from include/linux/device.h as they are not
+needed.
 
-No functional changed.
-
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Acked-by: Heiko Stuebner <heiko@sntech.e>
-Link: https://lore.kernel.org/r/20230818093154.1183529-14-yangyingliang@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: b4683a239a40 ("spi: rockchip: Read ISR, not IMR, to detect cs-inactive IRQ")
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Link: https://lore.kernel.org/r/20230324122711.2664537-1-gregkh@linuxfoundation.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 797cc011ae02 ("backlight: sky81452-backlight: Check return value of devm_gpiod_get_optional() in sky81452_bl_parse_dt()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 58 +++++++++++++++++++-------------------
- 1 file changed, 29 insertions(+), 29 deletions(-)
+ include/linux/device.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index b3247fad5f7e2..6383451b6612c 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -104,8 +104,8 @@
- #define CR0_XFM_RO					0x2
+diff --git a/include/linux/device.h b/include/linux/device.h
+index b2a2109b170c5..11709e3ee811f 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1032,8 +1032,7 @@ void device_links_supplier_sync_state_pause(void);
+ void device_links_supplier_sync_state_resume(void);
+ void device_link_wait_removal(void);
  
- #define CR0_OPM_OFFSET				20
--#define CR0_OPM_MASTER				0x0
--#define CR0_OPM_SLAVE				0x1
-+#define CR0_OPM_HOST				0x0
-+#define CR0_OPM_TARGET				0x1
+-extern __printf(3, 4)
+-int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
++__printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
  
- #define CR0_SOI_OFFSET				23
- 
-@@ -125,7 +125,7 @@
- #define SR_TF_EMPTY					(1 << 2)
- #define SR_RF_EMPTY					(1 << 3)
- #define SR_RF_FULL					(1 << 4)
--#define SR_SLAVE_TX_BUSY				(1 << 5)
-+#define SR_TARGET_TX_BUSY				(1 << 5)
- 
- /* Bit fields in ISR, IMR, ISR, RISR, 5bit */
- #define INT_MASK					0x1f
-@@ -151,7 +151,7 @@
- #define RXDMA					(1 << 0)
- #define TXDMA					(1 << 1)
- 
--/* sclk_out: spi master internal logic in rk3x can support 50Mhz */
-+/* sclk_out: spi host internal logic in rk3x can support 50Mhz */
- #define MAX_SCLK_OUT				50000000U
- 
- /*
-@@ -194,8 +194,8 @@ struct rockchip_spi {
- 
- 	bool cs_asserted[ROCKCHIP_SPI_MAX_CS_NUM];
- 
--	bool slave_abort;
--	bool cs_inactive; /* spi slave tansmition stop when cs inactive */
-+	bool target_abort;
-+	bool cs_inactive; /* spi target tansmition stop when cs inactive */
- 	bool cs_high_supported; /* native CS supports active-high polarity */
- 
- 	struct spi_transfer *xfer; /* Store xfer temporarily */
-@@ -206,13 +206,13 @@ static inline void spi_enable_chip(struct rockchip_spi *rs, bool enable)
- 	writel_relaxed((enable ? 1U : 0U), rs->regs + ROCKCHIP_SPI_SSIENR);
- }
- 
--static inline void wait_for_tx_idle(struct rockchip_spi *rs, bool slave_mode)
-+static inline void wait_for_tx_idle(struct rockchip_spi *rs, bool target_mode)
- {
- 	unsigned long timeout = jiffies + msecs_to_jiffies(5);
- 
- 	do {
--		if (slave_mode) {
--			if (!(readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_SLAVE_TX_BUSY) &&
-+		if (target_mode) {
-+			if (!(readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_TARGET_TX_BUSY) &&
- 			    !((readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_BUSY)))
- 				return;
- 		} else {
-@@ -349,9 +349,9 @@ static irqreturn_t rockchip_spi_isr(int irq, void *dev_id)
- 	struct spi_controller *ctlr = dev_id;
- 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 
--	/* When int_cs_inactive comes, spi slave abort */
-+	/* When int_cs_inactive comes, spi target abort */
- 	if (rs->cs_inactive && readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE) {
--		ctlr->slave_abort(ctlr);
-+		ctlr->target_abort(ctlr);
- 		writel_relaxed(0, rs->regs + ROCKCHIP_SPI_IMR);
- 		writel_relaxed(0xffffffff, rs->regs + ROCKCHIP_SPI_ICR);
- 
-@@ -403,7 +403,7 @@ static void rockchip_spi_dma_rxcb(void *data)
- 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 	int state = atomic_fetch_andnot(RXDMA, &rs->state);
- 
--	if (state & TXDMA && !rs->slave_abort)
-+	if (state & TXDMA && !rs->target_abort)
- 		return;
- 
- 	if (rs->cs_inactive)
-@@ -419,11 +419,11 @@ static void rockchip_spi_dma_txcb(void *data)
- 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 	int state = atomic_fetch_andnot(TXDMA, &rs->state);
- 
--	if (state & RXDMA && !rs->slave_abort)
-+	if (state & RXDMA && !rs->target_abort)
- 		return;
- 
- 	/* Wait until the FIFO data completely. */
--	wait_for_tx_idle(rs, ctlr->slave);
-+	wait_for_tx_idle(rs, ctlr->target);
- 
- 	spi_enable_chip(rs, false);
- 	spi_finalize_current_transfer(ctlr);
-@@ -523,7 +523,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
- 
- static int rockchip_spi_config(struct rockchip_spi *rs,
- 		struct spi_device *spi, struct spi_transfer *xfer,
--		bool use_dma, bool slave_mode)
-+		bool use_dma, bool target_mode)
- {
- 	u32 cr0 = CR0_FRF_SPI  << CR0_FRF_OFFSET
- 		| CR0_BHT_8BIT << CR0_BHT_OFFSET
-@@ -532,9 +532,9 @@ static int rockchip_spi_config(struct rockchip_spi *rs,
- 	u32 cr1;
- 	u32 dmacr = 0;
- 
--	if (slave_mode)
--		cr0 |= CR0_OPM_SLAVE << CR0_OPM_OFFSET;
--	rs->slave_abort = false;
-+	if (target_mode)
-+		cr0 |= CR0_OPM_TARGET << CR0_OPM_OFFSET;
-+	rs->target_abort = false;
- 
- 	cr0 |= rs->rsd << CR0_RSD_OFFSET;
- 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
-@@ -612,7 +612,7 @@ static size_t rockchip_spi_max_transfer_size(struct spi_device *spi)
- 	return ROCKCHIP_SPI_MAX_TRANLEN;
- }
- 
--static int rockchip_spi_slave_abort(struct spi_controller *ctlr)
-+static int rockchip_spi_target_abort(struct spi_controller *ctlr)
- {
- 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 	u32 rx_fifo_left;
-@@ -657,7 +657,7 @@ static int rockchip_spi_slave_abort(struct spi_controller *ctlr)
- 		dmaengine_terminate_sync(ctlr->dma_tx);
- 	atomic_set(&rs->state, 0);
- 	spi_enable_chip(rs, false);
--	rs->slave_abort = true;
-+	rs->target_abort = true;
- 	spi_finalize_current_transfer(ctlr);
- 
- 	return 0;
-@@ -695,7 +695,7 @@ static int rockchip_spi_transfer_one(
- 	rs->xfer = xfer;
- 	use_dma = ctlr->can_dma ? ctlr->can_dma(ctlr, spi, xfer) : false;
- 
--	ret = rockchip_spi_config(rs, spi, xfer, use_dma, ctlr->slave);
-+	ret = rockchip_spi_config(rs, spi, xfer, use_dma, ctlr->target);
- 	if (ret)
- 		return ret;
- 
-@@ -755,15 +755,15 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	struct resource *mem;
- 	struct device_node *np = pdev->dev.of_node;
- 	u32 rsd_nsecs, num_cs;
--	bool slave_mode;
-+	bool target_mode;
- 
--	slave_mode = of_property_read_bool(np, "spi-slave");
-+	target_mode = of_property_read_bool(np, "spi-slave");
- 
--	if (slave_mode)
--		ctlr = spi_alloc_slave(&pdev->dev,
-+	if (target_mode)
-+		ctlr = spi_alloc_target(&pdev->dev,
- 				sizeof(struct rockchip_spi));
- 	else
--		ctlr = spi_alloc_master(&pdev->dev,
-+		ctlr = spi_alloc_host(&pdev->dev,
- 				sizeof(struct rockchip_spi));
- 
- 	if (!ctlr)
-@@ -853,9 +853,9 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	ctlr->auto_runtime_pm = true;
- 	ctlr->bus_num = pdev->id;
- 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP | SPI_LSB_FIRST;
--	if (slave_mode) {
-+	if (target_mode) {
- 		ctlr->mode_bits |= SPI_NO_CS;
--		ctlr->slave_abort = rockchip_spi_slave_abort;
-+		ctlr->target_abort = rockchip_spi_target_abort;
- 	} else {
- 		ctlr->flags = SPI_MASTER_GPIO_SS;
- 		ctlr->max_native_cs = ROCKCHIP_SPI_MAX_CS_NUM;
-@@ -910,7 +910,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	case ROCKCHIP_SPI_VER2_TYPE2:
- 		rs->cs_high_supported = true;
- 		ctlr->mode_bits |= SPI_CS_HIGH;
--		if (ctlr->can_dma && slave_mode)
-+		if (ctlr->can_dma && target_mode)
- 			rs->cs_inactive = true;
- 		else
- 			rs->cs_inactive = false;
+ /* Create alias, so I can be autoloaded. */
+ #define MODULE_ALIAS_CHARDEV(major,minor) \
 -- 
 2.53.0
 
