@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CPpBL3EfG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:37 +0200
+	id cJo4NTUzG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C286E60FEBE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64628612E31
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EE697300B9F1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4116E304B112
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1FF329E46;
-	Sat, 30 May 2026 17:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD55F2367DF;
+	Sat, 30 May 2026 18:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VgnjVPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aV1BzsbQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F003403F9;
-	Sat, 30 May 2026 17:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40261D63E4;
+	Sat, 30 May 2026 18:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162354; cv=none; b=P3yaAi+kijwSYrvOI3znCO8FT0pRv3sIWmK2cUwiOKNh5s+Z09b6sP5Yeai851KsHDcCiUz2CFiKhPOYhFKos7CFF8bxD4LYB5A0SkUlbb9wEXHjwlmvpSf1heokrx7cQhYUR14L+f6awAZDdwwLrkMCxbvUqs93DcM/RX5TRvY=
+	t=1780167038; cv=none; b=kjS04Zl6QmMQzbkJPdIdV4VDhsIqwXSM46nXDlGmVfBzFtLswTH9Etnw2VZY0oYUVx8QBUXLeHN7uekuHQCVFI5K0Fwav6X4klTUzrk0QjjdoOHrc2YTE/zjsW8flz/SOjsPEmrg73YpIax5lidhvuwCpeJOmDsQeFhzFDnT3+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162354; c=relaxed/simple;
-	bh=YX3x7U8gM8RFKVTJWDEzbOU6OOLqD9p5GKl7rAe73Es=;
+	s=arc-20240116; t=1780167038; c=relaxed/simple;
+	bh=Ww1rYVA0a3Hp3oC8TifdagWuFmtBM6mvdmQiIGLnRqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nf+7z+PwnbQJ/kpfQcDtbKDK8fz3p7E9HpQu/08F/gTBP8mH3d0mHHZuboP65EZg+jAnyOqPv5ieeA/ffYrzcsAhiI/Kdj9aNTHmqM5BAP1/e3WrltX9EeKkD7gyCDjlgr1Fmbbn2KFQdc68SFsjvGUL/RD9cQaROcFx3R0H4us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VgnjVPe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFCB1F00893;
-	Sat, 30 May 2026 17:32:31 +0000 (UTC)
+	 MIME-Version; b=pHh12P89SgGNtLGFTeE4bpstn2DrbX6ZW/A1CDz3XvCW6DH+lmTTpxd1RzaWNuN6paeBY0OmCOaliOS1UxTPAFGB3bNxDDFQeMQ/49S8ckO3TYji58Q33t2WrL+a3u1Ph+w9Z8csDxQFGY1RxJrlPB289g7BrcmaBmnErUt/I94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aV1BzsbQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04ACA1F00893;
+	Sat, 30 May 2026 18:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162352;
-	bh=PzD7aHGICZVt5W1twf1mK8Xy2N8a0wlnIpZKNua13WA=;
+	s=korg; t=1780167037;
+	bh=I9t32nd3mQeGUZOalHv1h4qBEO5DLcuGw5Un7s4jf6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0VgnjVPeHUgPskQ7UQXDiTZWB9zHxt3qBKFgiwJ+Hn/uxKHNRhsOYqpIjIgB+UIz5
-	 wk1icG0Fsey+fPyMG9SKQaMtsGuNcO3h5fgcbARrbUutPKOBOvIdBZi6rkZuaG/6eK
-	 Lg/2ivrGOejeZQh0Grxk5ncz/Ktn6Yf3ovA3LiPI=
+	b=aV1BzsbQHZlBuHswfFg/S3jZJvcc6szTyhdzEpiQWe1CTDzOpgnBTSdbs2Drp5sIb
+	 /kIRFZ6Hpv/PgeQC6uX1Z9o3ROj/T5+jQc/z4dTOqXh02Gx6yudt+qCg8c6pDJxfxo
+	 3h+JMzPtbtu9NzfWXXVVXAS1LDjKEvsglshuRX34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 895/969] hwmon: (pmbus/adm1266) dont clobber GPIO bits before PDIO read in get_multiple
+	Minh Nguyen <minhnguyen.080505@gmail.com>,
+	Bryan Tan <bryan-bt.tan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 538/589] vsock/vmci: fix UAF when peer resets connection during handshake
 Date: Sat, 30 May 2026 18:06:59 +0200
-Message-ID: <20260530160325.421093130@linuxfoundation.org>
+Message-ID: <20260530160238.833252523@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,91 +64,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257842-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259228-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,nexthop.ai:email,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C286E60FEBE
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 64628612E31
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Minh Nguyen <minhnguyen.080505@gmail.com>
 
-commit 3327a12aee9e10ffa903e28b8445dfd1af5307c0 upstream.
+commit 99e22ddf4edb63dc8382bc028af928056d3450cf upstream.
 
-adm1266_gpio_get_multiple() zeroes *bits before the GPIO_STATUS loop
-and then a second time before the PDIO_STATUS loop:
+vmci_transport_recv_connecting_server() returned err = 0 for a peer
+RST in its default switch arm:
 
-	*bits = 0;
-	for_each_set_bit(gpio_nr, mask, ADM1266_GPIO_NR) {
-		...
-		set_bit(gpio_nr, bits);
-	}
+	err = pkt->type == VMCI_TRANSPORT_PACKET_TYPE_RST ? 0 : -EINVAL;
 
-	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, ...);
-	...
-	*bits = 0;
-	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
-		...
-		set_bit(gpio_nr, bits);
-	}
+That made vmci_transport_recv_listen() skip vsock_remove_pending(),
+leaving the pending socket on the listener's pending_links with
+sk_state = TCP_CLOSE while destroy: still dropped the explicit
+reference taken before schedule_delayed_work().
 
-The second *bits = 0 throws away every GPIO bit the first loop just
-populated, so callers asking for any combination of GPIO and PDIO
-pins always see the GPIO portion of the returned bits as zero.
+One second later vsock_pending_work() observed is_pending=true and
+performed full cleanup: vsock_remove_pending() then the two trailing
+sock_put(sk) calls -- the first reached refcount 0 and __sk_freed
+the socket, and the second wrote into the freed object:
 
-Drop the redundant second assignment so both halves of the result
-survive.
+  BUG: KASAN: slab-use-after-free in refcount_warn_saturate
+  Write of size 4 at addr ffff88800b1cac80 by task kworker
+  Workqueue: events vsock_pending_work
 
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Treat peer RST like any other unexpected packet type (err = -EINVAL).
+All destroy: arms now return err < 0, so vmci_transport_recv_listen()
+removes pending from pending_links synchronously and
+vsock_pending_work() takes the is_pending=false / !rejected branch,
+dropping only its own work reference.  This also closes the
+multi-packet race Sashiko reported on v2: pending is removed from
+the list before any subsequent packet can find it.
+
+The pre-existing sk_acceptq_removed() gap on the err < 0 path of
+vmci_transport_recv_listen() that Sashiko also noted is not
+introduced or changed by this patch.
+
+Tested on lts-6.12.79 with KASAN: 52/100 unpatched -> 0/100 patched.
+
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
 Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-2-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
+Acked-by: Bryan Tan <bryan-bt.tan@broadcom.com>
+Link: https://patch.msgid.link/20260519102310.237181-1-minhnguyen.080505@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    1 -
- 1 file changed, 1 deletion(-)
+ net/vmw_vsock/vmci_transport.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -211,7 +211,6 @@ static int adm1266_gpio_get_multiple(str
+--- a/net/vmw_vsock/vmci_transport.c
++++ b/net/vmw_vsock/vmci_transport.c
+@@ -1158,7 +1158,7 @@ vmci_transport_recv_connecting_server(st
+ 		/* Close and cleanup the connection. */
+ 		vmci_transport_send_reset(pending, pkt);
+ 		skerr = EPROTO;
+-		err = pkt->type == VMCI_TRANSPORT_PACKET_TYPE_RST ? 0 : -EINVAL;
++		err = -EINVAL;
+ 		goto destroy;
+ 	}
  
- 	status = read_buf[0] + (read_buf[1] << 8);
- 
--	*bits = 0;
- 	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
- 		if (test_bit(gpio_nr - ADM1266_GPIO_NR, &status))
- 			set_bit(gpio_nr, bits);
 
 
 
