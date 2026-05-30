@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-258140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258743-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AMr1FzgjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258140-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:44 +0200
+	id OJ9xERYrG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258743-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:23:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DC78610783
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 455A7611A2B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:23:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D7FAE3008D5A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 31F073004685
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0C52E06EF;
-	Sat, 30 May 2026 17:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C1F2641C6;
+	Sat, 30 May 2026 18:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/ToUOpT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0W4+RBxP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA25346E55;
-	Sat, 30 May 2026 17:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA61317555;
+	Sat, 30 May 2026 18:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163351; cv=none; b=qe1k+L8FY5Evbgb06673uprnV4opB0c/mG0//AoNi2eocRh2UKWaGoFuxYMNx4o0WTjOqPX34/77unygqcpMmuO9bjrSHcdOM63Z9HpjVEMh9B3ohqRdkmvRbyKfK1Tv/n+/1pNrCh9bnD6hIzx+3S6no2yh3mr3UnL6T7Nyphs=
+	t=1780165389; cv=none; b=iWK3c0jHSIzUONl+XxVyxTPeDTflhsb67GhDAyy+wof/pFjOU6/GvgfNXP87D2DLNb4r+XbVrxpp1NLlCW2hDP3cUPLUEf/YtNJ2aoGuV7bPf4RdYRV6vTiRNNsTHzbXvRXiAzahdKthWFEHD2o0TrjQvwIy+w/x1z+yEvF27jM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163351; c=relaxed/simple;
-	bh=M3NetrKi7ubpmgXfH0UDvILM/nk3cPFj0yx9w03JcjY=;
+	s=arc-20240116; t=1780165389; c=relaxed/simple;
+	bh=Vj3lZF1gsJOYLKCSrw9d4chgfZaRtTvmrC1VBDGCrgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/UvC2axtP6V4EIyG8kzzhvo/3fTLF60+c00LBS1HctIxKAXxch9rxaWqB6RmFEozgq/87A4hcTf+VTxLDbUpvyCIq/A/G5QtcG2RVmYAB4j422nibSBgHibOhoHJkC5rTP8gX0bCtdsCXnUNuAGfL2OQjID4a/ohmZaEJZvI1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/ToUOpT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A7B1F00893;
-	Sat, 30 May 2026 17:49:08 +0000 (UTC)
+	 MIME-Version; b=bMQpBGiaML4EGvlfrnP2yITxQ17qq4qMTwxDAC1xYI3SI4tu1t29xSH+XXLieBuoPawniYYNwriwK3yV4jrvy4QHX7u8H6+982Iv52GUJOBaakqDEdiLK3Ur3C7JqbFJXBJCw7ucy6vAPkvOvhMbZKLjuhhchK6tZdwYq+tt3do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0W4+RBxP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E966D1F00893;
+	Sat, 30 May 2026 18:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163349;
-	bh=cDyMtiELO3UYBh8GMLP+uZXzTMmFocjORpIdGtgfB2Q=;
+	s=korg; t=1780165388;
+	bh=+2DcQvs764hduMOIep5vOBovT26LTFmKPZ1yh0N3epk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q/ToUOpTG/5B4RnyyG2UPaVn+ZXn3YMgDzmnRlwpwfFtCFtFKEBhahYFao8rNHt7i
-	 e3EzHKsKZJHwEIdF4cKVVNSGLNopATT/Gh3GRnd9w9tgaN+kv82MWWaj40CBB0PKJF
-	 sHUokRP/y7GiWIKqU0r/doPaviaS5hl13T/Brn6Q=
+	b=0W4+RBxPj51ctMi8NopJECu1QvQ/D3tSKXCm6x9ELTMijjpJTnnNZ0CWPJKz9OZSP
+	 mG/Y2J/e+T1njKdWmSxCHGfdmn34XDKRf0SjclueQOl3iwJEPwE7tfe1GSZIPZA8Kc
+	 m/Ygx1HHHegoPHOtDBO94kYDwzqzd3I2hQ/yVz1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxiao Xu <rakukuip@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 201/776] net: strparser: fix skb_head leak in strp_abort_strp()
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 034/589] netfilter: conntrack: add missing netlink policy validations
 Date: Sat, 30 May 2026 17:58:35 +0200
-Message-ID: <20260530160245.705672679@linuxfoundation.org>
+Message-ID: <20260530160225.480820224@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,89 +66,99 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,redhat.com];
-	TAGGED_FROM(0.00)[bounces-258140-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258743-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,lzu.edu.cn:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2DC78610783
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 455A7611A2B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luxiao Xu <rakukuip@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit fe72340daaf1af588be88056faf98965f39e6032 upstream.
+[ Upstream commit f900e1d77ee0ef87bfb5ab3fe60f0b3d8ad5ba05 ]
 
-When the stream parser is aborted, for example after a message assembly timeout,
-it can still hold a reference to a partially assembled message in
-strp->skb_head.
+Hyunwoo Kim reports out-of-bounds access in sctp and ctnetlink.
 
-That skb is not released in strp_abort_strp(), which leaks the partially
-assembled message and can be triggered repeatedly to exhaust memory.
+These attributes are used by the kernel without any validation.
+Extend the netlink policies accordingly.
 
-Fix this by freeing strp->skb_head and resetting the parser state in the
-abort path. Leave strp_stop() unchanged so final cleanup still happens in
-strp_done() after the work and timer have been synchronized.
+Quoting the reporter:
+  nlattr_to_sctp() assigns the user-supplied CTA_PROTOINFO_SCTP_STATE
+  value directly to ct->proto.sctp.state without checking that it is
+  within the valid range. [..]
 
-Fixes: 43a0c6751a32 ("strparser: Stream parser for messages")
-Cc: stable@kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Link: https://patch.msgid.link/ade3857a9404999ce9a1c27ec523efc896072678.1775482694.git.rakukuip@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  and: ... with exp->dir = 100, the access at
+  ct->master->tuplehash[100] reads 5600 bytes past the start of a
+  320-byte nf_conn object, causing a slab-out-of-bounds read confirmed by
+  UBSAN.
+
+Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
+Fixes: a258860e01b8 ("netfilter: ctnetlink: add full support for SCTP to ctnetlink")
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/strparser/strparser.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/netfilter/nf_conntrack_netlink.c    | 2 +-
+ net/netfilter/nf_conntrack_proto_sctp.c | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/strparser/strparser.c
-+++ b/net/strparser/strparser.c
-@@ -45,6 +45,14 @@ static void strp_abort_strp(struct strpa
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index befc9d2bc0b52..46bdc38081164 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3474,7 +3474,7 @@ ctnetlink_change_expect(struct nf_conntrack_expect *x,
  
- 	strp->stopped = 1;
+ #if IS_ENABLED(CONFIG_NF_NAT)
+ static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
+-	[CTA_EXPECT_NAT_DIR]	= { .type = NLA_U32 },
++	[CTA_EXPECT_NAT_DIR]	= NLA_POLICY_MAX(NLA_BE32, IP_CT_DIR_REPLY),
+ 	[CTA_EXPECT_NAT_TUPLE]	= { .type = NLA_NESTED },
+ };
+ #endif
+diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
+index 6b2a215b27862..2a1d00e702d1b 100644
+--- a/net/netfilter/nf_conntrack_proto_sctp.c
++++ b/net/netfilter/nf_conntrack_proto_sctp.c
+@@ -595,7 +595,8 @@ static int sctp_to_nlattr(struct sk_buff *skb, struct nlattr *nla,
+ }
  
-+	if (strp->skb_head) {
-+		kfree_skb(strp->skb_head);
-+		strp->skb_head = NULL;
-+	}
-+
-+	strp->skb_nextp = NULL;
-+	strp->need_bytes = 0;
-+
- 	if (strp->sk) {
- 		struct sock *sk = strp->sk;
- 
+ static const struct nla_policy sctp_nla_policy[CTA_PROTOINFO_SCTP_MAX+1] = {
+-	[CTA_PROTOINFO_SCTP_STATE]	    = { .type = NLA_U8 },
++	[CTA_PROTOINFO_SCTP_STATE]	    = NLA_POLICY_MAX(NLA_U8,
++							 SCTP_CONNTRACK_HEARTBEAT_SENT),
+ 	[CTA_PROTOINFO_SCTP_VTAG_ORIGINAL]  = { .type = NLA_U32 },
+ 	[CTA_PROTOINFO_SCTP_VTAG_REPLY]     = { .type = NLA_U32 },
+ };
+-- 
+2.53.0
+
 
 
 
