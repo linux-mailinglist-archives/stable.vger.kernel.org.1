@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-258445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258446-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPQkL3onG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258445-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:07:54 +0200
+	id KNGTNiMnG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258446-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34DC561108E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:07:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8795161100E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 80B943009B1B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:06:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6930A300A310
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9FF3AC0FC;
-	Sat, 30 May 2026 18:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20EF3B7B72;
+	Sat, 30 May 2026 18:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSZuUzsr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWGKL8Kz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC14F3C2B80;
-	Sat, 30 May 2026 18:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED56D3C1961;
+	Sat, 30 May 2026 18:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164375; cv=none; b=Y+Jq6k7yMtOGcBQawiLPViYstypy0RlCMCiwmoM3YORe7wIO0TLCRwu8c4ywWrGaQxgpbfRdjQdfwISdbpzMiQFmo+nRk9HVa8FqmpEzYs/EZibD9M7sfCYIykFPanSlp+j1VaXMpxM8lh1162//Hptn7sQW+z/USGFzaUhbxE4=
+	t=1780164378; cv=none; b=EDoBvJjgCYAgNSRdZT5xQR5VPjJ9GJ3iv71JxFoYW/4GjbD/gtTMnTadmQwX+2bZzn2AG4NKDcVL42FrVCdrtyXqnEg67aQYMQZmXnlRbNfNZsWKVo43KIcCOITR9+wBV3QzHQKyo354PvsmxTS6qSTxkVWxdbvjwoWnjUTLXEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164375; c=relaxed/simple;
-	bh=rLrr7GSC6CD6Fu0Y5wuaK5jyTKDokVZM7iflSbaRtWA=;
+	s=arc-20240116; t=1780164378; c=relaxed/simple;
+	bh=gWQSvCPASqQIENAZuPWGOv0klNp0ORUe2TJhM0O6pLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2Ikxrp4ge5fW1KdWNwRmQbe5DMuywqdEZKV/ecaBZDsB5asXxp/J17i4CcBtJsS9bE8puD0loGitJI7dbGQmB34dY90GkyQvXpUqX+Lw8PHOA+jD9IBF1BzL9lE9V7cQicTG8ki2z+LEioYxbpBaiDgIytwl9iOJAzgVXa5qb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSZuUzsr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD871F00893;
-	Sat, 30 May 2026 18:06:12 +0000 (UTC)
+	 MIME-Version; b=qigfyuEsglCnF5rgZLFi3WjMx8eXoV95B0kix+ytpb2Em8iJISSisNDZdQjpO8gHJzQyWd6lhNvsIxZ2zMUYb3pD41pY+78pYPZZ6CACOW7vSbnjTRQCvdQY+PkHlXh69NF+Hu+1okTePBnWQO2DYn28WuGEDGoEqt2v+4rE89U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWGKL8Kz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F3D1F00893;
+	Sat, 30 May 2026 18:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164373;
-	bh=BnqGX8Y2FdFZrKan2TtSX+x4qlsNO30U1LKnG6E3O8s=;
+	s=korg; t=1780164376;
+	bh=12vzsUiV4NCW8dwVift3nDiPh+6GWrVreUmRpojzrx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oSZuUzsrItqdLo/6f0znKsAlO45XbsCZ0EvyEV0AdmS2CnarPh6pOQG0NAU/YRuMb
-	 5Z29gO8H/AprCsN5dpTcKcMeZIRxy+oMOmy3774A+AoV8wt8h7BtVCqOZLMRhOLfNI
-	 F+EXVJUpgSIgDPvZZwe3OVextsI+SU0uQ4FcktHk=
+	b=rWGKL8KzRLN9lJLwEZSXxTChewpR3AmvmL5V/gXPkhGPauSi3cSt82UGuszP8m8zB
+	 1KQZUdKNbUNmtOSaM0udsDjSSc+RQgpq1IXmN0bNGvOIxqZGdN6LFMK7gH3orAefqS
+	 oArlIYthNHqn7UncM17OMWngmM5SjPcuIjoGplEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Val Packett <val@packett.cool>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 536/776] scsi: target: core: Fix integer overflow in UNMAP bounds check
-Date: Sat, 30 May 2026 18:04:10 +0200
-Message-ID: <20260530160254.047858552@linuxfoundation.org>
+Subject: [PATCH 5.15 537/776] dt-bindings: clock: qcom,gcc-sc8180x: Add missing GDSCs
+Date: Sat, 30 May 2026 18:04:11 +0200
+Message-ID: <20260530160254.072161434@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
 References: <20260530160240.228940103@linuxfoundation.org>
@@ -69,31 +69,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,oracle.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258445-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258446-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email,outlook.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 34DC561108E
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.995];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8795161100E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,40 +100,38 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 2bf2d65f76697820dbc4227d13866293576dd90a ]
+[ Upstream commit 76404ffbf07f28a5ec04748e18fce3dac2e78ef6 ]
 
-sbc_execute_unmap() checks LBA + range does not exceed the device capacity,
-but does not guard against LBA + range wrapping around on 64-bit overflow.
+There are 5 more GDSCs that we were ignoring and not putting to sleep,
+which are listed in downstream DTS. Add them.
 
-Add an overflow check matching the pattern already used for WRITE_SAME in
-the same file.
-
-Fixes: 86d7182985d2 ("target: Add sbc_execute_unmap() helper")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881593C61AD52C69FBDB0BDAF7CA@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Val Packett <val@packett.cool>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260312112321.370983-2-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 3565741eb985 ("clk: qcom: gcc-sc8180x: Add missing GDSCs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_sbc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/dt-bindings/clock/qcom,gcc-sc8180x.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/target/target_core_sbc.c b/drivers/target/target_core_sbc.c
-index f6132836eb387..2d76f2f455942 100644
---- a/drivers/target/target_core_sbc.c
-+++ b/drivers/target/target_core_sbc.c
-@@ -1232,7 +1232,8 @@ sbc_execute_unmap(struct se_cmd *cmd)
- 			goto err;
- 		}
+diff --git a/include/dt-bindings/clock/qcom,gcc-sc8180x.h b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
+index 2569f874fe13c..be97a0ca2ade4 100644
+--- a/include/dt-bindings/clock/qcom,gcc-sc8180x.h
++++ b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
+@@ -308,5 +308,10 @@
+ #define USB30_MP_GDSC						8
+ #define USB30_PRIM_GDSC						9
+ #define USB30_SEC_GDSC						10
++#define HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC		11
++#define HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC		12
++#define HLOS1_VOTE_MMNOC_MMU_TBU_SF_GDSC		13
++#define HLOS1_VOTE_TURING_MMU_TBU0_GDSC			14
++#define HLOS1_VOTE_TURING_MMU_TBU1_GDSC			15
  
--		if (lba + range > dev->transport->get_blocks(dev) + 1) {
-+		if (lba + range < lba ||
-+		    lba + range > dev->transport->get_blocks(dev) + 1) {
- 			ret = TCM_ADDRESS_OUT_OF_RANGE;
- 			goto err;
- 		}
+ #endif
 -- 
 2.53.0
 
