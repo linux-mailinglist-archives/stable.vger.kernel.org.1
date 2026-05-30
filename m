@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kEN1JSksG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258792-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:53 +0200
+	id 2HXQIv8lG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13388611C88
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E4F5610D62
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D59030435B7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6449A304698F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F385F25B0B3;
-	Sat, 30 May 2026 18:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BB0342CA7;
+	Sat, 30 May 2026 17:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8BJG1db"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o20OMVoe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2409217704;
-	Sat, 30 May 2026 18:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF7D25B095;
+	Sat, 30 May 2026 17:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165553; cv=none; b=E4rU38xQVyS/EpXsR5K9gSSdL+XIRHDtJuoPS5loJdqHDzk5IUGppxubGUxBRWdfWclbqtErkK8Old/1Fyf+Y5zlQZojgNSrFuIuZ36qLVni5UttVh0L68BdpIUgakJKzX8zeJ3lk7BY1Ym1hcCqz88l+zYvzaf2Z/JQwumHL24=
+	t=1780163545; cv=none; b=JypwY0R8lFdyXoE4XzGlbL6toHHu0Hf0T1x7wesPw+U6e/zFvSbskZq02eQoik2CKg0nloxAPmt2nCpgWk2Kp0YkLZZQO7c1210Kppj++kTwHYTMB+e8Qbj7EopnPBLxb0yxL+MOING7tuiPsC7Cgo1hGXrGgseJL4hip7KrWq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165553; c=relaxed/simple;
-	bh=ZiFc8loYAX/OjX5Yki/z862+xsJfsdcn59QPBgAcPIA=;
+	s=arc-20240116; t=1780163545; c=relaxed/simple;
+	bh=YKFoEdrgzJUj4vE5IzTtS/PEAFOlBXV/rcu9j8bXJNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=avjWBt+iJmRKG9tjJZq0BmXdvimDAvwsasG6V1qMXc6xHQhTgBzVpCS0muiEtgXlBLAbuYwK3nk3xEF+AFAaha8smDfoT5S0jYGawJ93i7Y/iER3zcfRmqLIwDH3TdDE2om+Vs1FzN+t9uUInoMqAromE1fniUb9E8w8rqSmXYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8BJG1db; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140801F00893;
-	Sat, 30 May 2026 18:25:51 +0000 (UTC)
+	 MIME-Version; b=i00QZwAceBDjutcVHEBzqT5Std4S2U72TLfkrKTPE06J4JFbM2sg/igi4BcdmeCbHBgbdbbc++lfnKNOElq3Ctst6JcmBolvg+nK65Y4vsDU/4e7PSem5My0T2wFdRoyABACMvt8mWvMjYiSP9yohk2eZzaXU1ME8yFRI3Iwpfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o20OMVoe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B7C41F00893;
+	Sat, 30 May 2026 17:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165552;
-	bh=lpBdBQ6Wh520vq/vICYgUPd7VRG4sx2lyYIc8v24ZPc=;
+	s=korg; t=1780163544;
+	bh=92W+EHKiXiyhs7Z7sEqs1wf7Rc5L2Kw5VOHkdZk8WBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q8BJG1db8tBReQ9uNTGh+pj7RIgOkHWbZDRrNwiC8+C+79Sq2luLNs/g1APbLl8hR
-	 uzd+fZmYGyyjgixYGQLw/5Vwy6Hiu9jZAqvcjA5pCPZ7MMrCg3Bw64Yc3CNSNkGrkz
-	 pCkHFzl7i+CQ/xf+4q3W3LODGK1fHwZaJd+2gW6M=
+	b=o20OMVoeLg67kWTyhEYA0Pnjnsrhk+jvyYPnwn+cBKsmOuAWisM+hIcP0mAN/ACbo
+	 JNw1+jrJtOiGEq1SRlb1DOpJkq0e0797mWg8btLoNUWk3AxBuO0OwM+u7kTGVgZIUT
+	 YnRFju7OFIuqJEqiK5yx05t5UFEMIfl0BErUiTyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengfeng Ye <cyeaa@connect.ust.hk>,
-	Takashi Iwai <tiwai@suse.de>,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 095/589] ALSA: usb-audio: fix null pointer dereference on pointer cs_desc
-Date: Sat, 30 May 2026 17:59:36 +0200
-Message-ID: <20260530160227.194081368@linuxfoundation.org>
+	Randy Dunlap <rdunlap@infradead.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 5.15 263/776] driver core: Add kernel-doc for DEV_FLAG_COUNT enum value
+Date: Sat, 30 May 2026 17:59:37 +0200
+Message-ID: <20260530160247.336622934@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,87 +66,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258792-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258199-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[altlinux.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ust.hk:email]
-X-Rspamd-Queue-Id: 13388611C88
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 1E4F5610D62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <cyeaa@connect.ust.hk>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit b97053df0f04747c3c1e021ecbe99db675342954 upstream.
+commit 5b484311507b5d403c1f7a45f6aa3778549e268b upstream.
 
-The pointer cs_desc return from snd_usb_find_clock_source could
-be null, so there is a potential null pointer dereference issue.
-Fix this by adding a null check before dereference.
+Even though nobody should use this value (except when declaring the
+"flags" bitmap), kernel-doc still gets upset that it's not documented.
+It reports:
 
-Signed-off-by: Chengfeng Ye <cyeaa@connect.ust.hk>
-Link: https://lore.kernel.org/r/20211024111736.11342-1-cyeaa@connect.ust.hk
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Fixes: 1dc669fed61a ("ALSA: usb-audio: UAC2: support read-only freq control")
-[ kovalev: bp to fix CVE-2021-47211; added Fixes tag; the null
-  check was added into both UAC2 and UAC3 branches since the
-  older kernel still has the clock source lookup split between
-  snd_usb_find_clock_source() and snd_usb_find_clock_source_v3()
-  (see upstream commit 9ec730052fa2) ]
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  WARNING: ../include/linux/device.h:519
+  Enum value 'DEV_FLAG_COUNT' not described in enum 'struct_device_flags'
+
+Add the description of DEV_FLAG_COUNT.
+
+Fixes: a2225b6e834a ("driver core: Don't let a device probe until it's ready")
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Closes: https://lore.kernel.org/f318cd43-81fd-48b9-abf7-92af85f12f91@infradead.org
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260413195910.1.I23aca74fe2d3636a47df196a80920fecb2643220@changeid
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/clock.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/device.h |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/usb/clock.c b/sound/usb/clock.c
-index 197a6b7d8ad6f..3d5d4f3aafce4 100644
---- a/sound/usb/clock.c
-+++ b/sound/usb/clock.c
-@@ -646,11 +646,17 @@ static int set_sample_rate_v2v3(struct snd_usb_audio *chip, int iface,
- 		struct uac3_clock_source_descriptor *cs_desc;
- 
- 		cs_desc = snd_usb_find_clock_source_v3(chip->ctrl_intf, clock);
-+
-+		if (!cs_desc)
-+			return 0;
- 		bmControls = le32_to_cpu(cs_desc->bmControls);
- 	} else {
- 		struct uac_clock_source_descriptor *cs_desc;
- 
- 		cs_desc = snd_usb_find_clock_source(chip->ctrl_intf, clock);
-+
-+		if (!cs_desc)
-+			return 0;
- 		bmControls = cs_desc->bmControls;
- 	}
- 
--- 
-2.53.0
-
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -380,6 +380,7 @@ struct dev_links_info {
+  *
+  * @DEV_FLAG_READY_TO_PROBE: If set then device_add() has finished enough
+  *		initialization that probe could be called.
++ * @DEV_FLAG_COUNT: Number of defined struct_device_flags.
+  */
+ enum struct_device_flags {
+ 	DEV_FLAG_READY_TO_PROBE = 0,
 
 
 
