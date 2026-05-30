@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMvWBtMbG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257463-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:11 +0200
+	id ABM1CMkuG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A2B60F56B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FDC46122C5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 869733105AA9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14B75308AAFD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52EA34104B;
-	Sat, 30 May 2026 17:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879693CC334;
+	Sat, 30 May 2026 18:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvTdgk5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnsIPle3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FFD481DD;
-	Sat, 30 May 2026 17:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F603C4174;
+	Sat, 30 May 2026 18:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161083; cv=none; b=eHkag+gtaIvmB1niURsl2kbkeHKDfLM1q71aB4mphcGKUDN8GOHVmTO9OtasKYhyvJpYjLLOudEtzP8f1fupFXT9JK5M54a5azO1i9Z5PYWvqFdrdckNNpfLQ7xkrJvDb+Sv9bePFwL2A+7128S2DlqFSFDLBJg2/0F/tpl0g5o=
+	t=1780165733; cv=none; b=iWP2bxkPRqtbvUCH3yc9k/RzBblmmMoMvq7gedOhzV+EKKlMtOlpU827GjeYfMIfFChctMkjIbwlKyZeMdcvuC2MfkFYgys+2+393HVVDsApLVSMjLgjE1f7dMKoINxirb/6BBuW9eW9IicSlBMnABuTivKADkMQvaY1DgOaQnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161083; c=relaxed/simple;
-	bh=KBRlM2WzTpRkgy28tAjx0buOuoYz/+q2kWKflp2P8ME=;
+	s=arc-20240116; t=1780165733; c=relaxed/simple;
+	bh=mrurF4Yzb7qVJmEYxg2B5dTR9uGGB3yGRvIiKjD78BA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kbg44JNGzkdh4gHa8uJ7cS1bM0TVpkJNXirDLpz+BBd1us+oCrf02TpxEDw6f7YiCQVDB0CZCYcgV8uIcjPUsps59NM0FIT2Capi2jBaRhUAuDI7mqIv+OiaUeDFtywfr+Ps3uDG7cfVq3iAZMXx4osadM1Ek4Pw5oGY7ifpRPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvTdgk5p; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FD71F00893;
-	Sat, 30 May 2026 17:11:21 +0000 (UTC)
+	 MIME-Version; b=V4ZWkvFKpzwSCFRKBDaL6vV2mgxbqHcUpfATBsFdU9z9PVHO3EVxdsyZ2yiVIbrigEL4kHcelQpd6kZwt5ekwfNvpUwFpX4U3EJnUx93f4CLYQJjjXF3ikqhVMxhR18lg3twGJn7oawh6m7WDKIT1CqfS6XGbZ3GTv8H5MlGCV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnsIPle3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51F91F00893;
+	Sat, 30 May 2026 18:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161082;
-	bh=t7k4JAzBgJgmcYGa+j5PGSLAiVfuuXQ1B4Pg6FyLcrI=;
+	s=korg; t=1780165731;
+	bh=LqKKpavjjbyzEVZT49FBcmAOO3B/HEyx0oyp6jiFkGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HvTdgk5pI2KrsI3UZWDeEd3cznp9lp2aHdVxSrzf8+jeeatqvN7++//M+LQgrPzgc
-	 OtfXV0s3dPLLvYD+mRi/BsFElVfPPFhMmPIo00j5lEnogtacy4jfd/RTtYrbAM9nsN
-	 JfXuIpnFZj2dHfEdznDaZEeh7cKczdis+eAkLYCs=
+	b=nnsIPle3zu/DGz5mAr+T985r+9XPbAshjEBUPYd95MTwcbDNSCPZ887H9T01Sc4ZY
+	 Qu1HHnojdZkpt4sUkZmEbNCv3kdw2Jd7jZbdXxcar0tWKNNBVP1UgghE15pPrIWMgL
+	 Swgv51JHU37Mt+H1xEyd7ivPhyMlPV5ORz/ddz28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 520/969] drm/amd/pm/ci: Fix powertune defaults for Hawaii 0x67B0
-Date: Sat, 30 May 2026 18:00:44 +0200
-Message-ID: <20260530160314.712704891@linuxfoundation.org>
+	Simon Liebold <simonlie@amazon.de>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 5.10 164/589] selftests/mqueue: Fix incorrectly named file
+Date: Sat, 30 May 2026 18:00:45 +0200
+Message-ID: <20260530160229.097820162@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257463-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258845-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 96A2B60F56B
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amazon.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7FDC46122C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Simon Liebold <simonlie@amazon.de>
 
-[ Upstream commit d784759c07924280f3c313f205fc48eb62d7cb71 ]
+commit 64fac99037689020ad97e472ae898e96ea3616dc upstream.
 
-There is no AMD GPU with the ID 0x66B0, this looks like a typo.
-It should be 0x67B0 which is actually part of the PCI ID list,
-and should use the Hawaii XT powertune defaults according to
-the old radeon driver.
+Commit 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
+intended to increase the timeout for mq_perf_tests from the default
+kselftest limit of 45 seconds to 180 seconds.
 
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Unfortunately, the file storing this information was incorrectly named
+`setting` instead of `settings`, causing the kselftest runner not to
+pick up the limit and keep using the default 45 seconds limit.
+
+Fix this by renaming it to `settings` to ensure that the kselftest
+runner uses the increased timeout of 180 seconds for this test.
+
+Fixes: 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
+Cc: <stable@vger.kernel.org> # 5.10.y
+Signed-off-by: Simon Liebold <simonlie@amazon.de>
+Link: https://lore.kernel.org/r/20260312140200.2224850-1-simonlie@amazon.de
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/mqueue/{setting => settings} | 0
+ tools/testing/selftests/mqueue/setting  |    1 -
+ tools/testing/selftests/mqueue/settings |    1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ rename tools/testing/selftests/mqueue/{setting => settings} (100%)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-index 20419da731993..a43753f11ee96 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -246,7 +246,7 @@ static void ci_initialize_power_tune_defaults(struct pp_hwmgr *hwmgr)
- 		smu_data->power_tune_defaults = &defaults_hawaii_pro;
- 		break;
- 	case 0x67B8:
--	case 0x66B0:
-+	case 0x67B0:
- 		smu_data->power_tune_defaults = &defaults_hawaii_xt;
- 		break;
- 	case 0x6640:
--- 
-2.53.0
-
+--- a/tools/testing/selftests/mqueue/setting
++++ /dev/null
+@@ -1 +0,0 @@
+-timeout=180
+--- /dev/null
++++ b/tools/testing/selftests/mqueue/settings
+@@ -0,0 +1 @@
++timeout=180
 
 
 
