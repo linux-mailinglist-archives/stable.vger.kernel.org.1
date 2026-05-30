@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259006-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDd+K/gcG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:04 +0200
+	id 2Bd2A3cxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259006-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B1860F888
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C20612959
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C64073018F4C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:20:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC5EA307C7E9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E2514A62B;
-	Sat, 30 May 2026 17:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B3C39989B;
+	Sat, 30 May 2026 18:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3Kixaxj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J0RRO9/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9377263F44;
-	Sat, 30 May 2026 17:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7147C33E36A;
+	Sat, 30 May 2026 18:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161615; cv=none; b=jatDQjZXf9RltEy5MczADj8RQ8rS9gqLKZ2RAxlp4OP/zz8pUxYM+uaWElaiakjSY8RVm8ozkzWyHeDpmVNJWhKDjaAZiTyOSmFWoe3iT0UrY8k9p9C1S/MvnfSG4cejM/KXH+rJp7MeIs1zdmlTd/czg4hQhK3mry35SN7T9L0=
+	t=1780166280; cv=none; b=CDrckG3im/9DGDF2sR10Rbcm126/gU9PgJtOq8DG3tJiaOs452Vyq9V7JoCgUr7hBN6/y6Si8Udq9gRg1FHV7nUydBbhrFh8LwyOV/CZT5o6Y9Pkq6Y76x4ebv3AOcWMjVbBPsoEh6OC3lzHmhhWD7vMvh+RJqS8wuQ5GkFQQ8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161615; c=relaxed/simple;
-	bh=Mjc4K5EQ1WsJ9AYPZG2nMSYpmKBT8uAC5Qz5b3Fle30=;
+	s=arc-20240116; t=1780166280; c=relaxed/simple;
+	bh=/UW6mHbtcgNRAi63F5TSFvyjl10VQZBhidhrI8BoxSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYE4YAW9RdMxRkYJivQvnOtcqqci4v4We7gfDIzvEGYCm1VP4hGODY6E4bZ1812kREwC/NnY7M0AQ7r1/kI66YbNl3VHuQUAZsrbxWixrdrqwK9ki3TWBJUKxr8qw/jbiKjxPudKsZfOQDd30/xRz9DdvCRgJD/T+qK0PWKey4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3Kixaxj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217261F00893;
-	Sat, 30 May 2026 17:20:13 +0000 (UTC)
+	 MIME-Version; b=lpcSuZ7IWimAsWWyXozqAPchz/g5Dp5GHJ2vp/0oymnqdpQAEH1HJs4OI4AhRbZP9IKKKEZXqn3YJs5GFdeC+jO/wTP4Zo4U3dEzeh7rWvR4eRtzdU0C+sUwL+DUO+d4FKUMxi+RqDfY5GbseBp8RrGfdsfM0zBE3K9KzoeaVMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J0RRO9/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B545B1F00893;
+	Sat, 30 May 2026 18:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161614;
-	bh=OwwgR7PIpy2XnM5NceXuP+sCtJpYD0zTG+/pq7GFnmE=;
+	s=korg; t=1780166279;
+	bh=ZmL8sACOeafROQ6ixzyXYjepkPyX7AxUuo4Ceazp/zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K3KixaxjDBsd/L2CBzy0SbKAU/QChGnAxSjujDbjD7OqN1EiRP4AwO9YLo36UjQs+
-	 OPouRX3I7rbRoiMdN1MGiQN/UNTNdv0cGQagZGB9CTh2hYVjY1vz2L6Ln9iV/E570b
-	 4Neiz2llw/ekAzvM22sNde5MhTwuGWz37tq5blYs=
+	b=1J0RRO9/cPro6sfXK3Tu7GWfKQDJd+mgq2tPG7cptP5bmIEZNM3Eeo6MSPS5N0bSj
+	 sGYJD5P0KVmF/sq/EbNlT0NNaZ5ES4qOjOKTLj33M26cnU9LKgaz02p1uoRhnuBVsE
+	 uPaH6bqDJqV+Y8Xh3FYkRl6ioA5D8q1qZYa7RVms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Alexander Konyukhov <Alexander.Konyukhov@kaspersky.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 676/969] arm64: dts: imx8mp-dhcom-som: Correct PAD settings for PMIC_nINT
+Subject: [PATCH 5.10 319/589] drm/komeda: fix integer overflow in AFBC framebuffer size check
 Date: Sat, 30 May 2026 18:03:20 +0200
-Message-ID: <20260530160319.164343603@linuxfoundation.org>
+Message-ID: <20260530160233.317930262@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +64,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [7.84 / 15.00];
+	URIBL_BLACK(7.50)[linuxtesting.org:url];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-259006-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257621-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	GREYLIST(0.00)[pass,meta];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_SPAM(0.00)[0.885];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A8B1860F888
-X-Rspamd-Action: no action
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxtesting.org:url,arm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 60C20612959
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Alexander Konyukhov <Alexander.Konyukhov@kaspersky.com>
 
-[ Upstream commit f9ed5afc988da3e22543725e35be6addbb0497bc ]
+[ Upstream commit 779ec12c85c9e4547519e3903a371a3b26a289de ]
 
-PMIC_nINT is low level triggered, but the current PAD settings is
-PE=0,PUE=0,FSEL_1_FAST_SLEW_RATE=1,SION=1. So PAD needs to be configured
-as PULL UP with PULL Enable, no need SION. Correct it.
+The AFBC framebuffer size validation calculates the minimum required
+buffer size by adding the AFBC payload size to the framebuffer offset.
+This addition is performed without checking for integer overflow.
 
-Fixes: 8d6712695bc8e ("arm64: dts: imx8mp: Add support for DH electronics i.MX8M Plus DHCOM and PDK2")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+If the addition oveflows, the size check may incorrectly succed and
+allow userspace to provide an undersized drm_gem_object, potentially
+leading to out-of-bounds memory access.
+
+Add usage of check_add_overflow() to safely compute the minimum
+required size and reject the framebuffer if an overflow is detected.
+This makes the AFBC size validation more robust against malformed.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 65ad2392dd6d ("drm/komeda: Added AFBC support for komeda driver")
+Signed-off-by: Alexander Konyukhov <Alexander.Konyukhov@kaspersky.com>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://lore.kernel.org/r/20260203134907.1587067-1-Alexander.Konyukhov@kaspersky.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-index 0b81b85887f40..9379a5b08e6dd 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-@@ -807,7 +807,7 @@ MX8MP_IOMUXC_HDMI_DDC_SDA__GPIO3_IO27		0x84
- 	pinctrl_pmic: dhcom-pmic-grp {
- 		fsl,pins = <
- 			/* PMIC_nINT */
--			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x40000090
-+			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x1c0
- 		>;
- 	};
- 
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c b/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c
+index 170f9dc8ec19c..9ca65f94503fb 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c
+@@ -4,6 +4,8 @@
+  * Author: James.Qian.Wang <james.qian.wang@arm.com>
+  *
+  */
++#include <linux/overflow.h>
++
+ #include <drm/drm_device.h>
+ #include <drm/drm_fb_cma_helper.h>
+ #include <drm/drm_gem.h>
+@@ -92,7 +94,9 @@ komeda_fb_afbc_size_check(struct komeda_fb *kfb, struct drm_file *file,
+ 	kfb->afbc_size = kfb->offset_payload + n_blocks *
+ 			 ALIGN(bpp * AFBC_SUPERBLK_PIXELS / 8,
+ 			       AFBC_SUPERBLK_ALIGNMENT);
+-	min_size = kfb->afbc_size + fb->offsets[0];
++	if (check_add_overflow(kfb->afbc_size, fb->offsets[0], &min_size)) {
++		goto check_failed;
++	}
+ 	if (min_size > obj->size) {
+ 		DRM_DEBUG_KMS("afbc size check failed, obj_size: 0x%zx. min_size 0x%llx.\n",
+ 			      obj->size, min_size);
 -- 
 2.53.0
 
