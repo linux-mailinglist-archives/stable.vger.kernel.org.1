@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258384-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKgZELodG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257618-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:18 +0200
+	id 6M5cLQYpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258384-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2E260FA60
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4576114FC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2858B306DF95
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:20:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29F0D3061537
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C46E334695;
-	Sat, 30 May 2026 17:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995FB3AC0FA;
+	Sat, 30 May 2026 18:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWfWyJpa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6Lkajss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06D2263F44;
-	Sat, 30 May 2026 17:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE05123392B;
+	Sat, 30 May 2026 18:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161605; cv=none; b=C3l9VDx/4BkJch+IqtodI/MaqYA5qedNRyy0ffsnGYIQ9pi/Zqi+DGFRj2WQWSSZLwjvmqaUb3FI2qeiQC8IhTy8aYYgHB0BJz0h5IEN/jOwQIvmALO3tHKyqBPuFJD1cF2NYet0JrtlHP6RR6zgtm46nF/CTJTLpxG0mzJSnzk=
+	t=1780164173; cv=none; b=drLyEF6O0rhHeMk2dCZ2H8mrA4WqAs7WQUkZCCV9SY6EYR0ZUwJHeuNg1wEVuG4P2X8xDbV2FfvEsgpLGYtMckfAOvcG8PCMGH6uZA88dg31965IMtJabnSkz6NDiPNX09cTrbh6onxGEGUtHmfUxoUuJTMrYqP+YorDfqWsL+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161605; c=relaxed/simple;
-	bh=bqUwW4/BjJ2uq/DdmirhKjbneFjGeWFRKcSmQC4HibQ=;
+	s=arc-20240116; t=1780164173; c=relaxed/simple;
+	bh=1cr45e4EhgER2uNz6H8xaLIYpuoqX4VwbCgnz4iK1Yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uU4pHqSbGvVvTc1NzA/Q31p3PgI+zNAFRrJzJ4TaNTXlwpCm9NtwjdmrgIKIXBWgsYVF95qefTiof7jyjA6zsfugF4sEjHcDA3x1JuZaJoORLLf+qxcgHyVL23Diq95IUJstX7abwSNtcLFeLO3lR4ilfaRtNBMrzrdu5rWeQEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWfWyJpa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418981F00893;
-	Sat, 30 May 2026 17:20:04 +0000 (UTC)
+	 MIME-Version; b=FJnVRY8H1J6oO2NExIR/VQazKjsKbSZyTsvv1blMAvXhAZEXS9qAV2wTBeXpxfCtx5SKiqdCM2bMf9FbG3KR/08vfAqs00M2+S9DTjn6v+Dc9SYbxY2S0EH0tY8Y9xtdwIa8LgIkaW4nwSJnT10gdsJPpgcr8pcp5Dio9bVvDag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6Lkajss; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB6F1F00893;
+	Sat, 30 May 2026 18:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161604;
-	bh=Wu6OtE4pi5XYuIWYhlVCqJ7SxfWt6lD5JYMaMtPXPRI=;
+	s=korg; t=1780164171;
+	bh=ll09suTwZnBVr9XCzp//1H634D1S9/nHpD/QH2NY3fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QWfWyJpaSqccwLvv+z7hanOIh3ZeF3r7WJL2YrGRgXc9CJkQq12Cg9B69vilCyfwY
-	 9J0QvYyZ/I3YD7NnmiH60FIpQEsDW+ph7wfUs47KbLM4bRKRgOg5WWKOfK+N6PNn0f
-	 NNpbMTifVnbnivQugcClS3z7lSgN85M7vU4BVXL8=
+	b=U6LkajssxC0EjPK41osznyQg09ITMX6bIVrKtcgP/jRzuDbYF+GERijtQA5+YKFI+
+	 zy7RZsCxK70UxoReu40racud2nkLsdrKgQ0D1CY2QTTYbim61zw7HGVW5b6iMDJcz0
+	 2IVf+zsQ38vmchIsYmvzneJXlr7SAlCPel78yHE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Petr Mladek <pmladek@suse.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 665/969] lib/hexdump: print_hex_dump_bytes() calls print_hex_dump_debug()
-Date: Sat, 30 May 2026 18:03:09 +0200
-Message-ID: <20260530160318.846804470@linuxfoundation.org>
+Subject: [PATCH 5.15 476/776] ALSA: sc6000: Use standard print API
+Date: Sat, 30 May 2026 18:03:10 +0200
+Message-ID: <20260530160252.644812075@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +64,486 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257618-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258384-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AF2E260FA60
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,perex.cz:email]
+X-Rspamd-Queue-Id: 2B4576114FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 36776b7f8a8955b4e75b5d490a75fee0c7a2a7ef ]
+[ Upstream commit e7c475b92043c02c3e6cd0c20e308fbb6f03ebde ]
 
-print_hex_dump_bytes() claims to be a simple wrapper around
-print_hex_dump(), but it actally calls print_hex_dump_debug(), which
-means no output is printed if (dynamic) DEBUG is disabled.
+Use the standard print API with dev_*() instead of the old house-baked
+one.  It gives better information and allows dynamically control of
+debug prints.
 
-Update the documentation to match the implementation.
+Some functions are changed to receive a device pointer to be passed to
+dev_*() calls.
 
-Fixes: 091cb0994edd20d6 ("lib/hexdump: make print_hex_dump_bytes() a nop on !DEBUG builds")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://patch.msgid.link/3d5c3069fd9102ecaf81d044b750cd613eb72a08.1774970392.git.geert+renesas@glider.be
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20240807133452.9424-34-tiwai@suse.de
+Stable-dep-of: fb79bf127ac2 ("ALSA: sc6000: Keep the programmed board state in card-private data")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/printk.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/isa/sc6000.c | 177 +++++++++++++++++++++++----------------------
+ 1 file changed, 90 insertions(+), 87 deletions(-)
 
-diff --git a/include/linux/printk.h b/include/linux/printk.h
-index b1a12916f0361..90f991cb2a5c9 100644
---- a/include/linux/printk.h
-+++ b/include/linux/printk.h
-@@ -748,7 +748,8 @@ static inline void print_hex_dump_debug(const char *prefix_str, int prefix_type,
- #endif
+diff --git a/sound/isa/sc6000.c b/sound/isa/sc6000.c
+index 60398fced046b..3115c32b4061b 100644
+--- a/sound/isa/sc6000.c
++++ b/sound/isa/sc6000.c
+@@ -204,7 +204,7 @@ static int sc6000_read(char __iomem *vport)
  
- /**
-- * print_hex_dump_bytes - shorthand form of print_hex_dump() with default params
-+ * print_hex_dump_bytes - shorthand form of print_hex_dump_debug() with default
-+ *                        params
-  * @prefix_str: string to prefix each line with;
-  *  caller supplies trailing spaces for alignment if desired
-  * @prefix_type: controls whether prefix of an offset, address, or none
-@@ -756,7 +757,7 @@ static inline void print_hex_dump_debug(const char *prefix_str, int prefix_type,
-  * @buf: data blob to dump
-  * @len: number of bytes in the @buf
-  *
-- * Calls print_hex_dump(), with log level of KERN_DEBUG,
-+ * Calls print_hex_dump_debug(), with log level of KERN_DEBUG,
-  * rowsize of 16, groupsize of 1, and ASCII output included.
-  */
- #define print_hex_dump_bytes(prefix_str, prefix_type, buf, len)	\
+ }
+ 
+-static int sc6000_write(char __iomem *vport, int cmd)
++static int sc6000_write(struct device *devptr, char __iomem *vport, int cmd)
+ {
+ 	unsigned char val;
+ 	int loop = 500000;
+@@ -221,18 +221,19 @@ static int sc6000_write(char __iomem *vport, int cmd)
+ 		cpu_relax();
+ 	} while (loop--);
+ 
+-	snd_printk(KERN_ERR "DSP Command (0x%x) timeout.\n", cmd);
++	dev_err(devptr, "DSP Command (0x%x) timeout.\n", cmd);
+ 
+ 	return -EIO;
+ }
+ 
+-static int sc6000_dsp_get_answer(char __iomem *vport, int command,
++static int sc6000_dsp_get_answer(struct device *devptr,
++				 char __iomem *vport, int command,
+ 				 char *data, int data_len)
+ {
+ 	int len = 0;
+ 
+-	if (sc6000_write(vport, command)) {
+-		snd_printk(KERN_ERR "CMD 0x%x: failed!\n", command);
++	if (sc6000_write(devptr, vport, command)) {
++		dev_err(devptr, "CMD 0x%x: failed!\n", command);
+ 		return -EIO;
+ 	}
+ 
+@@ -265,82 +266,86 @@ static int sc6000_dsp_reset(char __iomem *vport)
+ }
+ 
+ /* detection and initialization */
+-static int sc6000_hw_cfg_write(char __iomem *vport, const int *cfg)
++static int sc6000_hw_cfg_write(struct device *devptr,
++			       char __iomem *vport, const int *cfg)
+ {
+-	if (sc6000_write(vport, COMMAND_6C) < 0) {
+-		snd_printk(KERN_WARNING "CMD 0x%x: failed!\n", COMMAND_6C);
++	if (sc6000_write(devptr, vport, COMMAND_6C) < 0) {
++		dev_warn(devptr, "CMD 0x%x: failed!\n", COMMAND_6C);
+ 		return -EIO;
+ 	}
+-	if (sc6000_write(vport, COMMAND_5C) < 0) {
+-		snd_printk(KERN_ERR "CMD 0x%x: failed!\n", COMMAND_5C);
++	if (sc6000_write(devptr, vport, COMMAND_5C) < 0) {
++		dev_err(devptr, "CMD 0x%x: failed!\n", COMMAND_5C);
+ 		return -EIO;
+ 	}
+-	if (sc6000_write(vport, cfg[0]) < 0) {
+-		snd_printk(KERN_ERR "DATA 0x%x: failed!\n", cfg[0]);
++	if (sc6000_write(devptr, vport, cfg[0]) < 0) {
++		dev_err(devptr, "DATA 0x%x: failed!\n", cfg[0]);
+ 		return -EIO;
+ 	}
+-	if (sc6000_write(vport, cfg[1]) < 0) {
+-		snd_printk(KERN_ERR "DATA 0x%x: failed!\n", cfg[1]);
++	if (sc6000_write(devptr, vport, cfg[1]) < 0) {
++		dev_err(devptr, "DATA 0x%x: failed!\n", cfg[1]);
+ 		return -EIO;
+ 	}
+-	if (sc6000_write(vport, COMMAND_C5) < 0) {
+-		snd_printk(KERN_ERR "CMD 0x%x: failed!\n", COMMAND_C5);
++	if (sc6000_write(devptr, vport, COMMAND_C5) < 0) {
++		dev_err(devptr, "CMD 0x%x: failed!\n", COMMAND_C5);
+ 		return -EIO;
+ 	}
+ 
+ 	return 0;
+ }
+ 
+-static int sc6000_cfg_write(char __iomem *vport, unsigned char softcfg)
++static int sc6000_cfg_write(struct device *devptr,
++			    char __iomem *vport, unsigned char softcfg)
+ {
+ 
+-	if (sc6000_write(vport, WRITE_MDIRQ_CFG)) {
+-		snd_printk(KERN_ERR "CMD 0x%x: failed!\n", WRITE_MDIRQ_CFG);
++	if (sc6000_write(devptr, vport, WRITE_MDIRQ_CFG)) {
++		dev_err(devptr, "CMD 0x%x: failed!\n", WRITE_MDIRQ_CFG);
+ 		return -EIO;
+ 	}
+-	if (sc6000_write(vport, softcfg)) {
+-		snd_printk(KERN_ERR "sc6000_cfg_write: failed!\n");
++	if (sc6000_write(devptr, vport, softcfg)) {
++		dev_err(devptr, "%s: failed!\n", __func__);
+ 		return -EIO;
+ 	}
+ 	return 0;
+ }
+ 
+-static int sc6000_setup_board(char __iomem *vport, int config)
++static int sc6000_setup_board(struct device *devptr,
++			      char __iomem *vport, int config)
+ {
+ 	int loop = 10;
+ 
+ 	do {
+-		if (sc6000_write(vport, COMMAND_88)) {
+-			snd_printk(KERN_ERR "CMD 0x%x: failed!\n",
+-				   COMMAND_88);
++		if (sc6000_write(devptr, vport, COMMAND_88)) {
++			dev_err(devptr, "CMD 0x%x: failed!\n",
++				COMMAND_88);
+ 			return -EIO;
+ 		}
+ 	} while ((sc6000_wait_data(vport) < 0) && loop--);
+ 
+ 	if (sc6000_read(vport) < 0) {
+-		snd_printk(KERN_ERR "sc6000_read after CMD 0x%x: failed\n",
+-			   COMMAND_88);
++		dev_err(devptr, "sc6000_read after CMD 0x%x: failed\n",
++			COMMAND_88);
+ 		return -EIO;
+ 	}
+ 
+-	if (sc6000_cfg_write(vport, config))
++	if (sc6000_cfg_write(devptr, vport, config))
+ 		return -ENODEV;
+ 
+ 	return 0;
+ }
+ 
+-static int sc6000_init_mss(char __iomem *vport, int config,
++static int sc6000_init_mss(struct device *devptr,
++			   char __iomem *vport, int config,
+ 			   char __iomem *vmss_port, int mss_config)
+ {
+-	if (sc6000_write(vport, DSP_INIT_MSS)) {
+-		snd_printk(KERN_ERR "sc6000_init_mss [0x%x]: failed!\n",
+-			   DSP_INIT_MSS);
++	if (sc6000_write(devptr, vport, DSP_INIT_MSS)) {
++		dev_err(devptr, "%s [0x%x]: failed!\n", __func__,
++			DSP_INIT_MSS);
+ 		return -EIO;
+ 	}
+ 
+ 	msleep(10);
+ 
+-	if (sc6000_cfg_write(vport, config))
++	if (sc6000_cfg_write(devptr, vport, config))
+ 		return -EIO;
+ 
+ 	iowrite8(mss_config, vmss_port);
+@@ -348,7 +353,8 @@ static int sc6000_init_mss(char __iomem *vport, int config,
+ 	return 0;
+ }
+ 
+-static void sc6000_hw_cfg_encode(char __iomem *vport, int *cfg,
++static void sc6000_hw_cfg_encode(struct device *devptr,
++				 char __iomem *vport, int *cfg,
+ 				 long xport, long xmpu,
+ 				 long xmss_port, int joystick)
+ {
+@@ -367,10 +373,11 @@ static void sc6000_hw_cfg_encode(char __iomem *vport, int *cfg,
+ 		cfg[0] |= 0x02;
+ 	cfg[1] |= 0x80;		/* enable WSS system */
+ 	cfg[1] &= ~0x40;	/* disable IDE */
+-	snd_printd("hw cfg %x, %x\n", cfg[0], cfg[1]);
++	dev_dbg(devptr, "hw cfg %x, %x\n", cfg[0], cfg[1]);
+ }
+ 
+-static int sc6000_init_board(char __iomem *vport,
++static int sc6000_init_board(struct device *devptr,
++			     char __iomem *vport,
+ 			     char __iomem *vmss_port, int dev)
+ {
+ 	char answer[15];
+@@ -384,14 +391,14 @@ static int sc6000_init_board(char __iomem *vport,
+ 
+ 	err = sc6000_dsp_reset(vport);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "sc6000_dsp_reset: failed!\n");
++		dev_err(devptr, "sc6000_dsp_reset: failed!\n");
+ 		return err;
+ 	}
+ 
+ 	memset(answer, 0, sizeof(answer));
+-	err = sc6000_dsp_get_answer(vport, GET_DSP_COPYRIGHT, answer, 15);
++	err = sc6000_dsp_get_answer(devptr, vport, GET_DSP_COPYRIGHT, answer, 15);
+ 	if (err <= 0) {
+-		snd_printk(KERN_ERR "sc6000_dsp_copyright: failed!\n");
++		dev_err(devptr, "sc6000_dsp_copyright: failed!\n");
+ 		return -ENODEV;
+ 	}
+ 	/*
+@@ -399,52 +406,52 @@ static int sc6000_init_board(char __iomem *vport,
+ 	 * if we have something different, we have to be warned.
+ 	 */
+ 	if (strncmp("SC-6000", answer, 7))
+-		snd_printk(KERN_WARNING "Warning: non SC-6000 audio card!\n");
++		dev_warn(devptr, "Warning: non SC-6000 audio card!\n");
+ 
+-	if (sc6000_dsp_get_answer(vport, GET_DSP_VERSION, version, 2) < 2) {
+-		snd_printk(KERN_ERR "sc6000_dsp_version: failed!\n");
++	if (sc6000_dsp_get_answer(devptr, vport, GET_DSP_VERSION, version, 2) < 2) {
++		dev_err(devptr, "sc6000_dsp_version: failed!\n");
+ 		return -ENODEV;
+ 	}
+-	printk(KERN_INFO PFX "Detected model: %s, DSP version %d.%d\n",
++	dev_info(devptr, "Detected model: %s, DSP version %d.%d\n",
+ 		answer, version[0], version[1]);
+ 
+ 	/* set configuration */
+-	sc6000_write(vport, COMMAND_5C);
++	sc6000_write(devptr, vport, COMMAND_5C);
+ 	if (sc6000_read(vport) < 0)
+ 		old = 1;
+ 
+ 	if (!old) {
+ 		int cfg[2];
+-		sc6000_hw_cfg_encode(vport, &cfg[0], port[dev], mpu_port[dev],
++		sc6000_hw_cfg_encode(devptr,
++				     vport, &cfg[0], port[dev], mpu_port[dev],
+ 				     mss_port[dev], joystick[dev]);
+-		if (sc6000_hw_cfg_write(vport, cfg) < 0) {
+-			snd_printk(KERN_ERR "sc6000_hw_cfg_write: failed!\n");
++		if (sc6000_hw_cfg_write(devptr, vport, cfg) < 0) {
++			dev_err(devptr, "sc6000_hw_cfg_write: failed!\n");
+ 			return -EIO;
+ 		}
+ 	}
+-	err = sc6000_setup_board(vport, config);
++	err = sc6000_setup_board(devptr, vport, config);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "sc6000_setup_board: failed!\n");
++		dev_err(devptr, "sc6000_setup_board: failed!\n");
+ 		return -ENODEV;
+ 	}
+ 
+ 	sc6000_dsp_reset(vport);
+ 
+ 	if (!old) {
+-		sc6000_write(vport, COMMAND_60);
+-		sc6000_write(vport, 0x02);
++		sc6000_write(devptr, vport, COMMAND_60);
++		sc6000_write(devptr, vport, 0x02);
+ 		sc6000_dsp_reset(vport);
+ 	}
+ 
+-	err = sc6000_setup_board(vport, config);
++	err = sc6000_setup_board(devptr, vport, config);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "sc6000_setup_board: failed!\n");
++		dev_err(devptr, "sc6000_setup_board: failed!\n");
+ 		return -ENODEV;
+ 	}
+-	err = sc6000_init_mss(vport, config, vmss_port, mss_config);
++	err = sc6000_init_mss(devptr, vport, config, vmss_port, mss_config);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "Cannot initialize "
+-			   "Microsoft Sound System mode.\n");
++		dev_err(devptr, "Cannot initialize Microsoft Sound System mode.\n");
+ 		return -ENODEV;
+ 	}
+ 
+@@ -491,39 +498,39 @@ static int snd_sc6000_match(struct device *devptr, unsigned int dev)
+ 	if (!enable[dev])
+ 		return 0;
+ 	if (port[dev] == SNDRV_AUTO_PORT) {
+-		printk(KERN_ERR PFX "specify IO port\n");
++		dev_err(devptr, "specify IO port\n");
+ 		return 0;
+ 	}
+ 	if (mss_port[dev] == SNDRV_AUTO_PORT) {
+-		printk(KERN_ERR PFX "specify MSS port\n");
++		dev_err(devptr, "specify MSS port\n");
+ 		return 0;
+ 	}
+ 	if (port[dev] != 0x220 && port[dev] != 0x240) {
+-		printk(KERN_ERR PFX "Port must be 0x220 or 0x240\n");
++		dev_err(devptr, "Port must be 0x220 or 0x240\n");
+ 		return 0;
+ 	}
+ 	if (mss_port[dev] != 0x530 && mss_port[dev] != 0xe80) {
+-		printk(KERN_ERR PFX "MSS port must be 0x530 or 0xe80\n");
++		dev_err(devptr, "MSS port must be 0x530 or 0xe80\n");
+ 		return 0;
+ 	}
+ 	if (irq[dev] != SNDRV_AUTO_IRQ && !sc6000_irq_to_softcfg(irq[dev])) {
+-		printk(KERN_ERR PFX "invalid IRQ %d\n", irq[dev]);
++		dev_err(devptr, "invalid IRQ %d\n", irq[dev]);
+ 		return 0;
+ 	}
+ 	if (dma[dev] != SNDRV_AUTO_DMA && !sc6000_dma_to_softcfg(dma[dev])) {
+-		printk(KERN_ERR PFX "invalid DMA %d\n", dma[dev]);
++		dev_err(devptr, "invalid DMA %d\n", dma[dev]);
+ 		return 0;
+ 	}
+ 	if (mpu_port[dev] != SNDRV_AUTO_PORT &&
+ 	    (mpu_port[dev] & ~0x30L) != 0x300) {
+-		printk(KERN_ERR PFX "invalid MPU-401 port %lx\n",
++		dev_err(devptr, "invalid MPU-401 port %lx\n",
+ 			mpu_port[dev]);
+ 		return 0;
+ 	}
+ 	if (mpu_port[dev] != SNDRV_AUTO_PORT &&
+ 	    mpu_irq[dev] != SNDRV_AUTO_IRQ && mpu_irq[dev] != 0 &&
+ 	    !sc6000_mpu_irq_to_softcfg(mpu_irq[dev])) {
+-		printk(KERN_ERR PFX "invalid MPU-401 IRQ %d\n", mpu_irq[dev]);
++		dev_err(devptr, "invalid MPU-401 IRQ %d\n", mpu_irq[dev]);
+ 		return 0;
+ 	}
+ 	return 1;
+@@ -534,7 +541,7 @@ static void snd_sc6000_free(struct snd_card *card)
+ 	char __iomem *vport = (char __force __iomem *)card->private_data;
+ 
+ 	if (vport)
+-		sc6000_setup_board(vport, 0);
++		sc6000_setup_board(card->dev, vport, 0);
+ }
+ 
+ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+@@ -558,7 +565,7 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+ 	if (xirq == SNDRV_AUTO_IRQ) {
+ 		xirq = snd_legacy_find_free_irq(possible_irqs);
+ 		if (xirq < 0) {
+-			snd_printk(KERN_ERR PFX "unable to find a free IRQ\n");
++			dev_err(devptr, "unable to find a free IRQ\n");
+ 			return -EBUSY;
+ 		}
+ 	}
+@@ -566,42 +573,39 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+ 	if (xdma == SNDRV_AUTO_DMA) {
+ 		xdma = snd_legacy_find_free_dma(possible_dmas);
+ 		if (xdma < 0) {
+-			snd_printk(KERN_ERR PFX "unable to find a free DMA\n");
++			dev_err(devptr, "unable to find a free DMA\n");
+ 			return -EBUSY;
+ 		}
+ 	}
+ 
+ 	if (!devm_request_region(devptr, port[dev], 0x10, DRV_NAME)) {
+-		snd_printk(KERN_ERR PFX
+-			   "I/O port region is already in use.\n");
++		dev_err(devptr, "I/O port region is already in use.\n");
+ 		return -EBUSY;
+ 	}
+ 	vport = devm_ioport_map(devptr, port[dev], 0x10);
+ 	if (!vport) {
+-		snd_printk(KERN_ERR PFX
+-			   "I/O port cannot be iomapped.\n");
++		dev_err(devptr, "I/O port cannot be iomapped.\n");
+ 		return -EBUSY;
+ 	}
+ 	card->private_data = (void __force *)vport;
+ 
+ 	/* to make it marked as used */
+ 	if (!devm_request_region(devptr, mss_port[dev], 4, DRV_NAME)) {
+-		snd_printk(KERN_ERR PFX
+-			   "SC-6000 port I/O port region is already in use.\n");
++		dev_err(devptr,
++			"SC-6000 port I/O port region is already in use.\n");
+ 		return -EBUSY;
+ 	}
+ 	vmss_port = devm_ioport_map(devptr, mss_port[dev], 4);
+ 	if (!vmss_port) {
+-		snd_printk(KERN_ERR PFX
+-			   "MSS port I/O cannot be iomapped.\n");
++		dev_err(devptr, "MSS port I/O cannot be iomapped.\n");
+ 		return -EBUSY;
+ 	}
+ 
+-	snd_printd("Initializing BASE[0x%lx] IRQ[%d] DMA[%d] MIRQ[%d]\n",
+-		   port[dev], xirq, xdma,
+-		   mpu_irq[dev] == SNDRV_AUTO_IRQ ? 0 : mpu_irq[dev]);
++	dev_dbg(devptr, "Initializing BASE[0x%lx] IRQ[%d] DMA[%d] MIRQ[%d]\n",
++		port[dev], xirq, xdma,
++		mpu_irq[dev] == SNDRV_AUTO_IRQ ? 0 : mpu_irq[dev]);
+ 
+-	err = sc6000_init_board(vport, vmss_port, dev);
++	err = sc6000_init_board(devptr, vport, vmss_port, dev);
+ 	if (err < 0)
+ 		return err;
+ 	card->private_free = snd_sc6000_free;
+@@ -613,25 +617,24 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+ 
+ 	err = snd_wss_pcm(chip, 0);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR PFX
+-			   "error creating new WSS PCM device\n");
++		dev_err(devptr, "error creating new WSS PCM device\n");
+ 		return err;
+ 	}
+ 	err = snd_wss_mixer(chip);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR PFX "error creating new WSS mixer\n");
++		dev_err(devptr, "error creating new WSS mixer\n");
+ 		return err;
+ 	}
+ 	err = snd_sc6000_mixer(chip);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR PFX "the mixer rewrite failed\n");
++		dev_err(devptr, "the mixer rewrite failed\n");
+ 		return err;
+ 	}
+ 	if (snd_opl3_create(card,
+ 			    0x388, 0x388 + 2,
+ 			    OPL3_HW_AUTO, 0, &opl3) < 0) {
+-		snd_printk(KERN_ERR PFX "no OPL device at 0x%x-0x%x ?\n",
+-			   0x388, 0x388 + 2);
++		dev_err(devptr, "no OPL device at 0x%x-0x%x ?\n",
++			0x388, 0x388 + 2);
+ 	} else {
+ 		err = snd_opl3_hwdep_new(opl3, 0, 1, NULL);
+ 		if (err < 0)
+@@ -645,8 +648,8 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+ 					MPU401_HW_MPU401,
+ 					mpu_port[dev], 0,
+ 					mpu_irq[dev], NULL) < 0)
+-			snd_printk(KERN_ERR "no MPU-401 device at 0x%lx ?\n",
+-					mpu_port[dev]);
++			dev_err(devptr, "no MPU-401 device at 0x%lx ?\n",
++				mpu_port[dev]);
+ 	}
+ 
+ 	strcpy(card->driver, DRV_NAME);
 -- 
 2.53.0
 
