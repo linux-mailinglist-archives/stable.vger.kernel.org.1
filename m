@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258793-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EwTLx8kG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:35 +0200
+	id wOq0J1ctG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258793-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8DCB61096C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A8C611F31
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E85C83017CC1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2945830D1733
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5EB349CCF;
-	Sat, 30 May 2026 17:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34AD433F5A0;
+	Sat, 30 May 2026 18:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8a3djFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7qDV8K3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3837346E55;
-	Sat, 30 May 2026 17:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187C5279DC9;
+	Sat, 30 May 2026 18:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163505; cv=none; b=ccRoVRfy/fJIDyVPc8pUuFIOwkikxe//WT3nXn9+AjCvLvsopFOHDoKC62nlomYicB1kDIrhvpFbu6aHcsQJJ9FXlybHHTosnIZ1Ri2hZOGCELCwlqHm37j48JLouQFTbAoIUXPKz5wQMDKWbyLRsSO6ElEYM/5iiHAuIE/Ys8A=
+	t=1780165557; cv=none; b=iDb4JY6C6pGpnvSqHAudqvbYr5va0YSfQjcgqvr5f+lsh/dL+0x1daGqStbXG3yjgaAaEQrG+4Y3xS0DBWnxkDopSZaCtJS9+4u00DzRromdhBdUK9bacxeXcc8NYlTTJ72h01e9DvdJLOWfhsrm6YbsedNE9WaJjMhfuJ6AFPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163505; c=relaxed/simple;
-	bh=9lDoUSY0LoMa/qIGjPZXW7BlrNwiG51nLEn6FoOjWsA=;
+	s=arc-20240116; t=1780165557; c=relaxed/simple;
+	bh=iTuTvCsFc8sr6IA3VQpn4MZ0g1omJ9t4wrV+BcJ+fD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGAuKMtnJotQI3iKwBP7gzalgHptaMdtgM8Os3CWISOO9tBvvRl0slMuwZtc9B3I8Rlw3/qG3YnQkyJiV1ceNsVFJb58b01Ny/hnBF7MwYUc+EOq4NEVEYmvbXAqjtPcDk0X+6YHkIDlEzNJ8aeY0H7vdRQfF8CDm9FLzVwOqWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8a3djFz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320251F00893;
-	Sat, 30 May 2026 17:51:43 +0000 (UTC)
+	 MIME-Version; b=GEH+SiZaR/MtKNlCbYfjC4XrHc0jGz5ajguXZbmhumojQPk9r3iBMb5nU6TM+IpREn0CNGGYxPEyPHo9YIcm4c53mHE869H3dFyOIc3sZBr/oaYK1hFwhoLsfR6gbp7/jLqCn4BIYpdPihe7+eSepH+M/93oc/+CORxzuA0dAiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7qDV8K3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CED01F00893;
+	Sat, 30 May 2026 18:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163504;
-	bh=JA30y6Ct5xtFx9N222i7wiCtakH30chbK6gATq5HPZc=;
+	s=korg; t=1780165556;
+	bh=E/oU0nkpFRvsuVCZCN4yiC14sQRQuKWS2QUVA8QY2Vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K8a3djFzxNJ63900sIfZCX8Po921Ug5AWQjnUJy5iMSnh9tM7+m0FWIffYZ3QYk7G
-	 tJsd/WKOkV6zqQ0DH6ko5k+k0s5iJkLogtddyKxAiqViJeYfPts11pTX/fj66QJp/A
-	 9Cv6B3RRh8oGlXHg3lh6ZRYrCoIZ93nRUQDE/WCk=
+	b=L7qDV8K3nWL+Q2LYPVtbDTrsprdhfBrPMMV74Gs1nixiQPjuISgajhuwQ06qJk2wk
+	 +2X0K2QHkaxEFHcUsFkcphM0cbdwUCVjJRT/U4n5GcX+3vYWqC6U9RJtHxs8CBcD56
+	 MHu2i+UGXzgrZoJZCIHndW5OKAmMjZFMabs2bjto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	addy ke <addy.ke@rock-chips.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 279/776] spi: rockchip: fix controller deregistration
-Date: Sat, 30 May 2026 17:59:53 +0200
-Message-ID: <20260530160247.767519712@linuxfoundation.org>
+	Martin Kepplinger <martin.kepplinger@puri.sm>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 113/589] arm64: dts: imx8mq-librem5-r3: workaround i2c1 issue with 1GHz cpu voltage
+Date: Sat, 30 May 2026 17:59:54 +0200
+Message-ID: <20260530160227.728272219@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +66,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258187-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258793-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D8DCB61096C
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,puri.sm:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 08A8C611F31
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Martin Kepplinger <martin.kepplinger@puri.sm>
 
-commit 53e7a16070feb7d1d4d81a583eaac5e25048b9c3 upstream.
+[ Upstream commit 1773b8d6697ac8e9380843fe5c13c25e95baa702 ]
 
-Make sure to deregister the controller before freeing underlying
-resources like DMA channels during driver unbind.
+This is a workaround for a hardware bug in the r3 revision that basically would
+stop the system due to traffic on the i2c1 bus. A cpu voltage change would
+trigger such traffic and that's what is avoided in order to work around it.
 
-Fixes: 64e36824b32b ("spi/rockchip: add driver for Rockchip RK3xxx SoCs integrated SPI")
-Cc: stable@vger.kernel.org	# 3.17
-Cc: addy ke <addy.ke@rock-chips.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260324082326.901043-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: 511f76bf1dce ("arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-rockchip.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -917,7 +917,7 @@ static int rockchip_spi_probe(struct pla
- 		break;
- 	}
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
+@@ -10,6 +10,12 @@
+ 	compatible = "purism,librem5r3", "purism,librem5", "fsl,imx8mq";
+ };
  
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to register controller\n");
- 		goto err_free_dma_rx;
-@@ -953,6 +953,8 @@ static int rockchip_spi_remove(struct pl
- 	clk_disable_unprepare(rs->spiclk);
- 	clk_disable_unprepare(rs->apb_pclk);
- 
-+	spi_unregister_controller(ctlr);
++&a53_opp_table {
++	opp-1000000000 {
++		opp-microvolt = <1000000>;
++	};
++};
 +
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
+ &accel_gyro {
+ 	mount-matrix =  "1",  "0",  "0",
+ 			"0",  "1",  "0",
 
 
 
