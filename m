@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-259116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258508-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CH5hO5swG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:51 +0200
+	id 8D6BO+0nG2rM/ggAu9opvQ
+	(envelope-from <stable+bounces-258508-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF906127C7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3BF7611200
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1A83A30A8FAE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EBCA5300144F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A43A33E36A;
-	Sat, 30 May 2026 18:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382A0352027;
+	Sat, 30 May 2026 18:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8A9o6Ab"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbZI7CGS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384E321B191;
-	Sat, 30 May 2026 18:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0242531F98D;
+	Sat, 30 May 2026 18:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166665; cv=none; b=bkrxjvE6yy1gyezpDEP1zDYhYUImFePTVuS2as6x8FU+dbW6uA8m6FueCms+Uxr0/rmbx3gUfgrp57T3oN2+BOPFqv2urrWm7px+UPFLypc1sdNV7RLbJ5TIscbddRQzdqOBYJj0u90npw7Sy1AsMTViB87Sf17V3d4jsieMLHU=
+	t=1780164586; cv=none; b=ED6yJz9sVsuz5dqYccUSrXJcg8rzGZ7D3HYvP3mcHZfV5RHjIBFKL03hEuFdvpyFAdvGxLYcsphYrgAqNbvqXQfuvf14gz1QjKfBss7MhX6tu6JfXKN3k3gbHVI5PGHNQY1FRxy/CgwFKCeLDK0Jv7xVvILdKqACKwWR7RboCcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166665; c=relaxed/simple;
-	bh=CfwF6Oy+45wHuWH7KYQbvd8tPawEXNq9tq3vT10AxC0=;
+	s=arc-20240116; t=1780164586; c=relaxed/simple;
+	bh=jGkSFU+PjOSesU16Z2n8wg1NGTfh8WxHRp7stX+qfDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j+wfkMO3ItWYY0Ss7d452domUnxNwNR7PdImt/uOjquoOC1iNWogacTF25bw+eyJgN6Uf0W+1gw3/ZJAeAsHRqb0RoLoTYrYfjKzU7u+Gl4MDau7KBF2gA+RgrWh3Mp88NctGmTnHGqDLRkLU0drq5TAywPugDGKM0ibG7Qpu40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8A9o6Ab; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3FD1F00893;
-	Sat, 30 May 2026 18:44:23 +0000 (UTC)
+	 MIME-Version; b=M2+B2Mu+/iRUGgeO0zPsqoiTagUSCGp46Uqyy3lPkefcqOB1Nx/e7TKMsxydSeJuBeLqE+iIl3jd+3XKGO0bexFcK5TxFGCmIHtwLrWqY0IITtPSFlGZ+ifNU45AEGVxlfQLtGksvf8TA3hUaqgjkun2rJq+uhc5/U9qQm2kMtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbZI7CGS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED66F1F00893;
+	Sat, 30 May 2026 18:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166664;
-	bh=7ncOqJ0XEdi35Xkh15t5tfdinGfKNaPR5yagIWrwlVU=;
+	s=korg; t=1780164584;
+	bh=t/Agsxf2cMVZlFcPmvv0NiKuMnjQprv7gymQhW+tBuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d8A9o6AbqNlpH1v75N/eNEI5wQsBIZj8t3l1vYKRoYDcDFS0ja8DBYf+IcLJFbTxl
-	 QOZjfyfvVvZo/gZ4VV+qeJs8UV71AW7/dnwu6CcUCrIJEP9z5rOUKtKx+yY+okUL+c
-	 Wr9LorAnUZAEFgpuG/Kt8BsP29r1mlWJ2JwN6aCA=
+	b=DbZI7CGStlcSzuQEWXXwcDvRrLgtDTIw312eJ6hkhT3o7pXq8Kqyil/VmCA0TW7SH
+	 IwnulXqIP0maWTws3uuQED4Ilqzt9ceLq7NLcXbg41MJErh9j1oG7ZEZG1W7Dgs2MN
+	 capmPdha2q6NFobjy7EHZCoBKQzanfw/r+JgwmeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 432/589] openvswitch: cap upcall PID array size and pre-size vport replies
+Subject: [PATCH 5.15 599/776] mailbox: add sanity check for channel array
 Date: Sat, 30 May 2026 18:05:13 +0200
-Message-ID: <20260530160236.070301369@linuxfoundation.org>
+Message-ID: <20260530160255.516864397@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,166 +65,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,ovn.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-259116-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,glider.be,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258508-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,asu.edu:email]
-X-Rspamd-Queue-Id: 8AF906127C7
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A3BF7611200
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 2091c6aa0df6aba47deb5c8ab232b1cb60af3519 ]
+[ Upstream commit c1aad75595fb67edc7fda8af249d3b886efa1be9 ]
 
-The vport netlink reply helpers allocate a fixed-size skb with
-nlmsg_new(NLMSG_DEFAULT_SIZE, ...) but serialize the full upcall PID
-array via ovs_vport_get_upcall_portids().  Since
-ovs_vport_set_upcall_portids() accepts any non-zero multiple of
-sizeof(u32) with no upper bound, a CAP_NET_ADMIN user can install a PID
-array large enough to overflow the reply buffer, causing nla_put() to
-fail with -EMSGSIZE and hitting BUG_ON(err < 0).  On systems with
-unprivileged user namespaces enabled (e.g., Ubuntu default), this is
-reachable via unshare -Urn since OVS vport mutation operations use
-GENL_UNS_ADMIN_PERM.
+Fail gracefully if there is no channel array attached to the mailbox
+controller. Otherwise the later dereference will cause an OOPS which
+might not be seen because mailbox controllers might instantiate very
+early. Remove the comment explaining the obvious while here.
 
- kernel BUG at net/openvswitch/datapath.c:2414!
- Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
- CPU: 1 UID: 0 PID: 65 Comm: poc Not tainted 7.0.0-rc7-00195-geb216e422044 #1
- RIP: 0010:ovs_vport_cmd_set+0x34c/0x400
- Call Trace:
-  <TASK>
-  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1116)
-  genl_rcv_msg (net/netlink/genetlink.c:1194)
-  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-  genl_rcv (net/netlink/genetlink.c:1219)
-  netlink_unicast (net/netlink/af_netlink.c:1344)
-  netlink_sendmsg (net/netlink/af_netlink.c:1894)
-  __sys_sendto (net/socket.c:2206)
-  __x64_sys_sendto (net/socket.c:2209)
-  do_syscall_64 (arch/x86/entry/syscall_64.c:63)
-  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-  </TASK>
- Kernel panic - not syncing: Fatal exception
-
-Reject attempts to set more PIDs than nr_cpu_ids in
-ovs_vport_set_upcall_portids(), and pre-compute the worst-case reply
-size in ovs_vport_cmd_msg_size() based on that bound, similar to the
-existing ovs_dp_cmd_msg_size().  nr_cpu_ids matches the cap already
-used by the per-CPU dispatch configuration on the datapath side
-(ovs_dp_cmd_fill_info() serialises at most nr_cpu_ids PIDs), so the
-two sides stay consistent.
-
-Fixes: 5cd667b0a456 ("openvswitch: Allow each vport to have an array of 'port_id's.")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
-Link: https://patch.msgid.link/20260416024653.153456-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2b6d83e2b8b7 ("mailbox: Introduce framework for mailbox")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/datapath.c | 35 +++++++++++++++++++++++++++++++++--
- net/openvswitch/vport.c    |  3 +++
- 2 files changed, 36 insertions(+), 2 deletions(-)
+ drivers/mailbox/mailbox.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index b493931433e99..1c69aa986633a 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -2032,9 +2032,40 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
- 	return err;
- }
- 
-+static size_t ovs_vport_cmd_msg_size(void)
-+{
-+	size_t msgsize = NLMSG_ALIGN(sizeof(struct ovs_header));
-+
-+	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_PORT_NO */
-+	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_TYPE */
-+	msgsize += nla_total_size(IFNAMSIZ);    /* OVS_VPORT_ATTR_NAME */
-+	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_IFINDEX */
-+	msgsize += nla_total_size(sizeof(s32)); /* OVS_VPORT_ATTR_NETNSID */
-+
-+	/* OVS_VPORT_ATTR_STATS */
-+	msgsize += nla_total_size_64bit(sizeof(struct ovs_vport_stats));
-+
-+	/* OVS_VPORT_ATTR_UPCALL_STATS(OVS_VPORT_UPCALL_ATTR_SUCCESS +
-+	 *                             OVS_VPORT_UPCALL_ATTR_FAIL)
-+	 */
-+	msgsize += nla_total_size(nla_total_size_64bit(sizeof(u64)) +
-+				  nla_total_size_64bit(sizeof(u64)));
-+
-+	/* OVS_VPORT_ATTR_UPCALL_PID */
-+	msgsize += nla_total_size(nr_cpu_ids * sizeof(u32));
-+
-+	/* OVS_VPORT_ATTR_OPTIONS(OVS_TUNNEL_ATTR_DST_PORT +
-+	 *                        OVS_TUNNEL_ATTR_EXTENSION(OVS_VXLAN_EXT_GBP))
-+	 */
-+	msgsize += nla_total_size(nla_total_size(sizeof(u16)) +
-+				  nla_total_size(nla_total_size(0)));
-+
-+	return msgsize;
-+}
-+
- static struct sk_buff *ovs_vport_cmd_alloc_info(void)
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index 090795c1b65db..363eaf3c962ec 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -484,8 +484,7 @@ int mbox_controller_register(struct mbox_controller *mbox)
  {
--	return nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	return genlmsg_new(ovs_vport_cmd_msg_size(), GFP_KERNEL);
- }
+ 	int i, txdone;
  
- /* Called with ovs_mutex, only via ovs_dp_notify_wq(). */
-@@ -2044,7 +2075,7 @@ struct sk_buff *ovs_vport_cmd_build_info(struct vport *vport, struct net *net,
- 	struct sk_buff *skb;
- 	int retval;
- 
--	skb = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	skb = ovs_vport_cmd_alloc_info();
- 	if (!skb)
- 		return ERR_PTR(-ENOMEM);
- 
-diff --git a/net/openvswitch/vport.c b/net/openvswitch/vport.c
-index 1c05d4bef3313..da733b92ae8a7 100644
---- a/net/openvswitch/vport.c
-+++ b/net/openvswitch/vport.c
-@@ -340,6 +340,9 @@ int ovs_vport_set_upcall_portids(struct vport *vport, const struct nlattr *ids)
- 	if (!nla_len(ids) || nla_len(ids) % sizeof(u32))
+-	/* Sanity check */
+-	if (!mbox || !mbox->dev || !mbox->ops || !mbox->num_chans)
++	if (!mbox || !mbox->dev || !mbox->ops || !mbox->chans || !mbox->num_chans)
  		return -EINVAL;
  
-+	if (nla_len(ids) / sizeof(u32) > nr_cpu_ids)
-+		return -EINVAL;
-+
- 	old = ovsl_dereference(vport->upcall_portids);
- 
- 	vport_portids = kmalloc(sizeof(*vport_portids) + nla_len(ids),
+ 	if (mbox->txdone_irq)
 -- 
 2.53.0
 
