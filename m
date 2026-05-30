@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-257188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IZxIFgYG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257188-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:20 +0200
+	id yLrtL6siG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F396760ECF5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55310610630
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A0804308CA6C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:55:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E9893061DFD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA0E348C72;
-	Sat, 30 May 2026 16:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F8034C9AF;
+	Sat, 30 May 2026 17:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8DN5352"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4xT/e9f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA1232D42B;
-	Sat, 30 May 2026 16:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66DE39478D;
+	Sat, 30 May 2026 17:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160117; cv=none; b=AgjgCrhRMn3fPlLIu6Qe96UX8Gt4HRZv1OiObdpRoADqFZ2/S97lPtehnAkRH3abSe6nIk6sKbEBkzucjoAjB7dQrwT9tegMnweCgAqOgd6B7RCsPUpAEwfTOxZ6CV/PYKkq5bVrYqnRmbvYJ7GsTv4GMID0ByukNwdOZcapRKU=
+	t=1780162775; cv=none; b=KJgx5AT9SFO/Wp5W5q6GtyPH5k35QDTgYq4gctgh/TFkxrOsrjlfirKkeRq38bw5Y4zafEDP3a6LqsoE+DBtdXP9puDPQ/cwW8D9p4oquVLeCqDYf5nNiLQulS9WKHYLpI6n4+j14o2dIfo/KGM97LcwycfHp3BS7hwdkOL0lpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160117; c=relaxed/simple;
-	bh=GESWl/z8+dt7v+nOK4u5ItRcWxubmh3IbpNbkomR8Ro=;
+	s=arc-20240116; t=1780162775; c=relaxed/simple;
+	bh=XY3tIEQ4uKsI9m74MnNTOO8ekmdUKcusuGG3JUUpmL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hLy5OL1xg1QZrzfAYvd+txBb573owwHH5Sw920GCbCDhwNieLtAL7ZMjgbZNPuc0dtHIBMV2ApOx+njpKc8dbjOnHgvV8eb0H3V9uI4argPyfwc2NFgzh3tob/RNYM0FGJCQllVRvePGF+OG+po7j+6m87+2q+4GooE5zSMMdRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8DN5352; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC3B1F00898;
-	Sat, 30 May 2026 16:55:15 +0000 (UTC)
+	 MIME-Version; b=bEm9bBOFN6PRxVbA8x2MAjOfAE7la/5gTjVVtd2rcQTxohU3J985U/r1c3zKnYksZaToKHvVxuIK+JORswCEyATBYD773dgRSUgNZd+smZsCvHXjG/pGhvCXgTkC8PHjmV83xv87xaRLH6F7BzvKurZ7aCKodFre3kg0QllZfA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4xT/e9f; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C771F00893;
+	Sat, 30 May 2026 17:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160116;
-	bh=5emSgzHkLOE3d/lE813nZ4efoPHSQXpP6QuS5w3acDc=;
+	s=korg; t=1780162774;
+	bh=kv7uZNX6+/Rk1wkXgCfS2SVEvNNScNSs3Nz+T8kceDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=y8DN5352HWd8o4YP1mfp8OSuTTidNGKJEVXKGek61tRHVp2/hDIeN+D0FEnBAKEnV
-	 skeoZC5jVuqknOyFzUVoZbJlSH/1iOWQ6OGffIMkDlpJL5AbUbwjiIsOpB5qvEkxcA
-	 3GqyLKy9Dn2KP77zhNlX2VUxL/voLTiqEFhjK478=
+	b=q4xT/e9fxsJfiwoENo+SokxWJjcxFweDPpH2gpwt0SJzwNjHKeDjv0bHJQa+/t8U8
+	 ZKkMixQLzWlDtQ9n4StsyhitN0E77EsAjxqM/bx2xTSEP02gvQ9dsxAIx9Jlr94AfY
+	 TEQvJ4Rqe8RE1Si92CqV90CoU8DFS9OPRLsGLwjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Yu Kuai <yukuai@fnnas.com>
-Subject: [PATCH 6.1 249/969] md/raid5: validate payload size before accessing journal metadata
+	Simon Horman <horms@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Thierry Escande <thierry.escande@linux.intel.com>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	stable <stable@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 059/776] NFC: digital: Bounds check NFC-A cascade depth in SDD response handler
 Date: Sat, 30 May 2026 17:56:13 +0200
-Message-ID: <20260530160307.344135035@linuxfoundation.org>
+Message-ID: <20260530160241.841130989@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,176 +69,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257188-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,fnnas.com];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257966-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F396760ECF5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 55310610630
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit b0cc3ae97e893bf54bbce447f4e9fd2e0b88bff9 upstream.
+commit 46ce8be2ced389bccd84bcc04a12cf2f4d0c22d1 upstream.
 
-r5c_recovery_analyze_meta_block() and
-r5l_recovery_verify_data_checksum_for_mb() iterate over payloads in a
-journal metadata block using on-disk payload size fields without
-validating them against the remaining space in the metadata block.
+The NFC-A anti-collision cascade in digital_in_recv_sdd_res() appends 3
+or 4 bytes to target->nfcid1 on each round, but the number of cascade
+rounds is controlled entirely by the peer device.  The peer sets the
+cascade tag in the SDD_RES (deciding 3 vs 4 bytes) and the
+cascade-incomplete bit in the SEL_RES (deciding whether another round
+follows).
 
-A corrupted journal contains payload sizes extending beyond the PAGE_SIZE
-boundary can cause out-of-bounds reads when accessing payload fields or
-computing offsets.
+ISO 14443-3 limits NFC-A to three cascade levels and target->nfcid1 is
+sized accordingly (NFC_NFCID1_MAXSIZE = 10), but nothing in the driver
+actually enforces this.  This means a malicious peer can keep the
+cascade running, writing past the heap-allocated nfc_target with each
+round.
 
-Add bounds validation for each payload type to ensure the full payload
-fits within meta_size before processing.
+Fix this by rejecting the response when the accumulated UID would exceed
+the buffer.
 
-Fixes: b4c625c67362 ("md/r5cache: r5cache recovery: part 1")
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://lore.kernel.org/linux-raid/SYBPR01MB78815E78D829BB86CD7C8015AF5FA@SYBPR01MB7881.ausprd01.prod.outlook.com/
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Commit e329e71013c9 ("NFC: nci: Bounds check struct nfc_target arrays")
+fixed similar missing checks against the same field on the NCI path.
+
+Cc: Simon Horman <horms@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Thierry Escande <thierry.escande@linux.intel.com>
+Cc: Samuel Ortiz <sameo@linux.intel.com>
+Fixes: 2c66daecc409 ("NFC Digital: Add NFC-A technology support")
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026040913-figure-seducing-bd3f@gregkh
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid5-cache.c |   48 ++++++++++++++++++++++++++++++++---------------
- 1 file changed, 33 insertions(+), 15 deletions(-)
+ net/nfc/digital_technology.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/md/raid5-cache.c
-+++ b/drivers/md/raid5-cache.c
-@@ -2012,15 +2012,27 @@ r5l_recovery_verify_data_checksum_for_mb
- 		return -ENOMEM;
- 
- 	while (mb_offset < le32_to_cpu(mb->meta_size)) {
-+		sector_t payload_len;
-+
- 		payload = (void *)mb + mb_offset;
- 		payload_flush = (void *)mb + mb_offset;
- 
- 		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_DATA) {
-+			payload_len = sizeof(struct r5l_payload_data_parity) +
-+				(sector_t)sizeof(__le32) *
-+				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
-+			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
-+				goto mismatch;
- 			if (r5l_recovery_verify_data_checksum(
- 				    log, ctx, page, log_offset,
- 				    payload->checksum[0]) < 0)
- 				goto mismatch;
- 		} else if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_PARITY) {
-+			payload_len = sizeof(struct r5l_payload_data_parity) +
-+				(sector_t)sizeof(__le32) *
-+				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
-+			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
-+				goto mismatch;
- 			if (r5l_recovery_verify_data_checksum(
- 				    log, ctx, page, log_offset,
- 				    payload->checksum[0]) < 0)
-@@ -2033,22 +2045,18 @@ r5l_recovery_verify_data_checksum_for_mb
- 				    payload->checksum[1]) < 0)
- 				goto mismatch;
- 		} else if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
--			/* nothing to do for R5LOG_PAYLOAD_FLUSH here */
-+			payload_len = sizeof(struct r5l_payload_flush) +
-+				(sector_t)le32_to_cpu(payload_flush->size);
-+			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
-+				goto mismatch;
- 		} else /* not R5LOG_PAYLOAD_DATA/PARITY/FLUSH */
- 			goto mismatch;
- 
--		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
--			mb_offset += sizeof(struct r5l_payload_flush) +
--				le32_to_cpu(payload_flush->size);
--		} else {
--			/* DATA or PARITY payload */
-+		if (le16_to_cpu(payload->header.type) != R5LOG_PAYLOAD_FLUSH) {
- 			log_offset = r5l_ring_add(log, log_offset,
- 						  le32_to_cpu(payload->size));
--			mb_offset += sizeof(struct r5l_payload_data_parity) +
--				sizeof(__le32) *
--				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
- 		}
--
-+		mb_offset += payload_len;
+--- a/net/nfc/digital_technology.c
++++ b/net/nfc/digital_technology.c
+@@ -424,6 +424,12 @@ static void digital_in_recv_sdd_res(stru
+ 		size = 4;
  	}
  
- 	put_page(page);
-@@ -2099,6 +2107,7 @@ r5c_recovery_analyze_meta_block(struct r
- 	log_offset = r5l_ring_add(log, ctx->pos, BLOCK_SECTORS);
- 
- 	while (mb_offset < le32_to_cpu(mb->meta_size)) {
-+		sector_t payload_len;
- 		int dd;
- 
- 		payload = (void *)mb + mb_offset;
-@@ -2107,6 +2116,12 @@ r5c_recovery_analyze_meta_block(struct r
- 		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
- 			int i, count;
- 
-+			payload_len = sizeof(struct r5l_payload_flush) +
-+				(sector_t)le32_to_cpu(payload_flush->size);
-+			if (mb_offset + payload_len >
-+			    le32_to_cpu(mb->meta_size))
-+				return -EINVAL;
++	if (target->nfcid1_len + size > NFC_NFCID1_MAXSIZE) {
++		PROTOCOL_ERR("4.7.2.1");
++		rc = -EPROTO;
++		goto exit;
++	}
 +
- 			count = le32_to_cpu(payload_flush->size) / sizeof(__le64);
- 			for (i = 0; i < count; ++i) {
- 				stripe_sect = le64_to_cpu(payload_flush->flush_stripes[i]);
-@@ -2120,12 +2135,17 @@ r5c_recovery_analyze_meta_block(struct r
- 				}
- 			}
- 
--			mb_offset += sizeof(struct r5l_payload_flush) +
--				le32_to_cpu(payload_flush->size);
-+			mb_offset += payload_len;
- 			continue;
- 		}
- 
- 		/* DATA or PARITY payload */
-+		payload_len = sizeof(struct r5l_payload_data_parity) +
-+			(sector_t)sizeof(__le32) *
-+			(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
-+		if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
-+			return -EINVAL;
-+
- 		stripe_sect = (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_DATA) ?
- 			raid5_compute_sector(
- 				conf, le64_to_cpu(payload->location), 0, &dd,
-@@ -2190,9 +2210,7 @@ r5c_recovery_analyze_meta_block(struct r
- 		log_offset = r5l_ring_add(log, log_offset,
- 					  le32_to_cpu(payload->size));
- 
--		mb_offset += sizeof(struct r5l_payload_data_parity) +
--			sizeof(__le32) *
--			(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
-+		mb_offset += payload_len;
- 	}
- 
- 	return 0;
+ 	memcpy(target->nfcid1 + target->nfcid1_len, sdd_res->nfcid1 + offset,
+ 	       size);
+ 	target->nfcid1_len += size;
 
 
 
