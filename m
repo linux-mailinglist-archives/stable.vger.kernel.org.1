@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIAkBKUZG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257342-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:53 +0200
+	id oEF5ImYkG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E5360EF92
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08EE1610A2C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EEFD5304DAFD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:04:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 72DD03048F24
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CAD134104B;
-	Sat, 30 May 2026 17:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C16351C2F;
+	Sat, 30 May 2026 17:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fdkCv2u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qGtkvmtS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B7F32B11D;
-	Sat, 30 May 2026 17:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B84D3AC0FC;
+	Sat, 30 May 2026 17:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160661; cv=none; b=YRusSSnBvbHJAO7ilM/AnjpwyS5DkbfL7o6OM1wFMJiCAtzIIJep7rt3cdrJVM4H4WB4QhQVUSc5Doq2Xe7QZuSZmlRLSESh+9c4xBSXXIZBjvk6M8DCz85Gql6kloAPIe6RBhJ6JSRspIYa9Y4SBzuoRzhtpMoipIXS4iVitDU=
+	t=1780163273; cv=none; b=FhJnX4W8rceuAH+xkQMQJeDiwM9+Xr49oVC5aqddOMi5ZlyFRSAFLpCHkgOTNvuJmmdBFLjoBVgnffKr7Rs1+l1yPR1RJCX7mn05joi7+GmEMXIxxQk2GK/LXnjNdIDaEEkFDaoZDnKsZjHcb8iDlQsudI+DIWitcySayC2IiYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160661; c=relaxed/simple;
-	bh=pFxI0Yj6i1JglaoY07Zodp9qTfcLqWYMPW8o8qy103E=;
+	s=arc-20240116; t=1780163273; c=relaxed/simple;
+	bh=2hEg407cFRucaY3/uO/AwM4U7wIWBwPmAG4AY9Dl4i0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WuKVNfyoT7626KplweY4HymNZj+vUao14B2l2r5Ml0OR574FTvZZ6q1gO0liFOw6iu8uSPy+qXlKmmoy7TYA2uOiUj2qM4ZAgV1IHW2FiKoRROlZx4n+vIpxIXQNmbwd7u2He4pNiiUL7oA/I7e2Ypszt+2Q3eNyO2b7rD66w1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fdkCv2u; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACBA1F00893;
-	Sat, 30 May 2026 17:04:19 +0000 (UTC)
+	 MIME-Version; b=UlFlXQedC+Onn9Rn5EbEXxNct+dxaFG1/NEa1l24W/drij180JqNkiY5NgQ7G9PigX7om0m7HkCdtLP+PC4UqpRCa4+Eqwf5kypo2LyauNp2JvunnHZ8Qf8HfLAwUlFpY3lZVvn9zcGtGijVB6g9qPOjSOR4n3nPjeBMRXqo19g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qGtkvmtS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19691F00893;
+	Sat, 30 May 2026 17:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160660;
-	bh=PU7BTLBQSbmfxlvn9HqqY34WLFxAsZ0Gm35ULwDdYa0=;
+	s=korg; t=1780163272;
+	bh=yStrkZQjTnqidEzcWQPWfiW6ZN18cJFcw1IvXRsaPf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1fdkCv2umafWoO2JAR72hllIdDM6u2Jul7S/ZmtfawiZyab8ODdU9xQ9OlU0tnxEe
-	 Cx23nAJSkyJ8BDgq/8f98Ld9JohlBSPXF3abcC9zdVJTy6tJiw7Ij74e/OAhrGANqh
-	 2rvnDETTpsft3PIvjbl6IBfNq7NNEkpyiAq2Y7Ow=
+	b=qGtkvmtSdadnQn3CQnxlvID6t+bNPOILVA2UdyTwGAkyqmycU24l/E+xf4nG6XWf3
+	 +W+GtoBRSUQPaX24gofnkahVistGxaSDUkcb/PXLylLacKfNNNwGlWzf2zm85mv11O
+	 lxtoNLLeelJeJoCb9ARgiPHise7SXkWjMjxXZs+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.1 398/969] media: omap3isp: drop the use count of v4l2 pipeline
-Date: Sat, 30 May 2026 17:58:42 +0200
-Message-ID: <20260530160311.282816602@linuxfoundation.org>
+	Harin Lee <me@harin.net>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 209/776] ALSA: ctxfi: Add fallback to default RSR for S/PDIF
+Date: Sat, 30 May 2026 17:58:43 +0200
+Message-ID: <20260530160245.914903761@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257342-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258117-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,huawei];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 80E5360EF92
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[harin.net:email,msgid.link:url,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 08EE1610A2C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Harin Lee <me@harin.net>
 
-commit 9da49bd9d4224035cff39b40d7395310abb10201 upstream.
+commit 7d61662197ecdc458e33e475b6ada7f6da61d364 upstream.
 
-In isp_video_open(), drop the use count of v4l2
-pipeline if vb2_queue_init() fails.
+spdif_passthru_playback_get_resources() uses atc->pll_rate as the RSR
+for the MSR calculation loop. However, pll_rate is only updated in
+atc_pll_init() and not in hw_pll_init(), so it remains 0 after the
+card init.
 
-Fixes: 8fd390b89cc8 ("media: Split v4l2_pipeline_pm_use into v4l2_pipeline_pm_{get, put}")
+When spdif_passthru_playback_setup() skips atc_pll_init() for
+32000 Hz, (rsr * desc.msr) always becomes 0, causing the loop to spin
+indefinitely.
+
+Add fallback to use atc->rsr when atc->pll_rate is 0. This reflects
+the hardware state, since hw_card_init() already configures the PLL
+to the default RSR.
+
+Fixes: 8cc72361481f ("ALSA: SB X-Fi driver merge")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Harin Lee <me@harin.net>
+Link: https://patch.msgid.link/20260406074913.217374-1-me@harin.net
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/ti/omap3isp/ispvideo.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/ctxfi/ctatc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/ti/omap3isp/ispvideo.c
-+++ b/drivers/media/platform/ti/omap3isp/ispvideo.c
-@@ -1328,6 +1328,7 @@ static int isp_video_open(struct file *f
+--- a/sound/pci/ctxfi/ctatc.c
++++ b/sound/pci/ctxfi/ctatc.c
+@@ -791,7 +791,8 @@ static int spdif_passthru_playback_get_r
+ 	struct src *src;
+ 	int err;
+ 	int n_amixer = apcm->substream->runtime->channels, i;
+-	unsigned int pitch, rsr = atc->pll_rate;
++	unsigned int pitch;
++	unsigned int rsr = atc->pll_rate ? atc->pll_rate : atc->rsr;
  
- 	ret = vb2_queue_init(&handle->queue);
- 	if (ret < 0) {
-+		v4l2_pipeline_pm_put(&video->video.entity);
- 		omap3isp_put(video->isp);
- 		goto done;
- 	}
+ 	/* first release old resources */
+ 	atc_pcm_release_resources(atc, apcm);
 
 
 
