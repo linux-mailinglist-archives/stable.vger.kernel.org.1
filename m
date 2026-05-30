@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-257948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257959-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0M9NOiwiG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257948-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:16 +0200
+	id qJLRAkUiG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257959-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B13B6104FF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA6F610531
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0FEDA303DAB4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 688C5300B631
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFC034A3C4;
-	Sat, 30 May 2026 17:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736F23B27D6;
+	Sat, 30 May 2026 17:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/IyAvrz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VCunKts"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5422E7379;
-	Sat, 30 May 2026 17:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306F23B6359;
+	Sat, 30 May 2026 17:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162715; cv=none; b=OKoADOFa58iFug3xWRIqA+JhN+/sgLf3DiMZsitgbtapIVpULMsmL6i5vlDTN6H2zHjH4JBoQBf5/XLAPfv0sDM+oV3t1u5wIkzlnoILETJYLm3r/4BSkSfN2Bg+xaaerskqftFvWvpCDdJ/CfGS3VQZFeIg8fL2h9oX8bPittQ=
+	t=1780162753; cv=none; b=SinE2oIe2JwUMZZnCQc3dRvbIHTBxL1U6VftblbOl+aa0gRxuRUpJgPQca48XYRngw/50Ydk1gZQ7xHZzjTy0ZRhwK+rLMr24Wb00OWIaU6VMHD303mtse1j/3gaUZBX10xm4MZwaYqI7LnN7kxgaECSNOCXQVz5SkJuENXheLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162715; c=relaxed/simple;
-	bh=vtie2bKHPHhY2/yR4Bo2g5R8NEJizzRFt+xLyzieNCw=;
+	s=arc-20240116; t=1780162753; c=relaxed/simple;
+	bh=iTWjfo8ZUCJSJWnPVpA63wOOt+YRETywmvAzaP3GUAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSQ4rBSSEqdhRSZaTpIp/ggJPdXQjBikK9txKZwgoeLmZZJZi3fTJ9wQ5Gt3q1BXoyg2B2tZyOFGWBj/RWbpPUm35yjFa4sVsk7GrByh0s5HZC31jTZyKk9ty9VvsjGJqszzJZKvWNn2fCmig5sX+J4dlPpRBWB6tE61hVMS+VI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/IyAvrz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FFC1F00893;
-	Sat, 30 May 2026 17:38:33 +0000 (UTC)
+	 MIME-Version; b=I383HhN+k4yQMg03iXi8iY8C59iJ7m6bVb/GiaQA9bzvqruuock7zrB0uq5ZSVWcbefiVCMuGrfbFF7naIelhmqO7F//7hyrBN8XeCfsSbfqIPhq1mkGL5p3E3Q230mAdlikRxksRnmX7gcldh+sA9WPHbBnA0CJXtl1JB5Ws0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VCunKts; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0CA1F00893;
+	Sat, 30 May 2026 17:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162714;
-	bh=o629ZnRffokwAYxPg6+WYVTRY+pu9gtCvrPqQf6G/Q8=;
+	s=korg; t=1780162750;
+	bh=hdz0vCWMaUSAbpH0n13nJG+OGyeDNHukItoSH1oKpgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=L/IyAvrzwVx7sw8QA0J+KNkTppmRT1yNdCQdCJj/QehrJ4S16uf2+5sdo5z3XtPyH
-	 gfiJzxF2BjKOVfX0W1825rh2vUuDzLyKDXYJEGseNrqzXS6FmkjebPXfjoV2NJCuyv
-	 C7T/9RxfzCNonsLNbr7V0DzeVwJBSqCGJjZW7YZs=
+	b=1VCunKtsohinMFw6fS3O1KIIsG0NotuEoQPtGHnCy3Cekm5+2VDwNuf8E3zzZcYR+
+	 XcOm5133hnofdMlbUto4DsFXgd6e11EJqE7PCIgtXWSqRcYXwq+lZOatN1odmvs/Y6
+	 JMpDifAhM1pAAOiegWgqasnLciHH5SXkpj1XtiFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuhang Zheng <z1652074432@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
 	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 034/776] netfilter: nfnetlink_log: initialize nfgenmsg in NLMSG_DONE terminator
-Date: Sat, 30 May 2026 17:55:48 +0200
-Message-ID: <20260530160241.161551464@linuxfoundation.org>
+Subject: [PATCH 5.15 035/776] netfilter: xt_multiport: validate range encoding in checkentry
+Date: Sat, 30 May 2026 17:55:49 +0200
+Message-ID: <20260530160241.191010797@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
 References: <20260530160240.228940103@linuxfoundation.org>
@@ -75,8 +79,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,strlen.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-257948-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257959-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -88,12 +92,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4B13B6104FF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 6AA6F610531
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,49 +105,97 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Ren Wei <n05ec@lzu.edu.cn>
 
-[ Upstream commit 1f3083aec8836213da441270cdb1ab612dd82cf4 ]
+[ Upstream commit ff64c5bfef12461df8450e0f50bb693b5269c720 ]
 
-When batching multiple NFLOG messages (inst->qlen > 1), __nfulnl_send()
-appends an NLMSG_DONE terminator with sizeof(struct nfgenmsg) payload via
-nlmsg_put(), but never initializes the nfgenmsg bytes. The nlmsg_put()
-helper only zeroes alignment padding after the payload, not the payload
-itself, so four bytes of stale kernel heap data are leaked to userspace
-in the NLMSG_DONE message body.
+ports_match_v1() treats any non-zero pflags entry as the start of a
+port range and unconditionally consumes the next ports[] element as
+the range end.
 
-Use nfnl_msg_put() to build the NLMSG_DONE terminator, which initializes
-the nfgenmsg payload via nfnl_fill_hdr(), consistent with how
-__build_packet_message() already constructs NFULNL_MSG_PACKET headers.
+The checkentry path currently validates protocol, flags and count, but
+it does not validate the range encoding itself. As a result, malformed
+rules can mark the last slot as a range start or place two range starts
+back to back, leaving ports_match_v1() to step past the last valid
+ports[] element while interpreting the rule.
 
-Fixes: 29c5d4afba51 ("[NETFILTER]: nfnetlink_log: fix sending of multipart messages")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Reject malformed multiport v1 rules in checkentry by validating that
+each range start has a following element and that the following element
+is not itself marked as another range start.
+
+Fixes: a89ecb6a2ef7 ("[NETFILTER]: x_tables: unify IPv4/IPv6 multiport match")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yuhang Zheng <z1652074432@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
 Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_log.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/xt_multiport.c | 34 ++++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
-index 37d10c3d19b60..db309c4167427 100644
---- a/net/netfilter/nfnetlink_log.c
-+++ b/net/netfilter/nfnetlink_log.c
-@@ -350,10 +350,10 @@ static void
- __nfulnl_send(struct nfulnl_instance *inst)
- {
- 	if (inst->qlen > 1) {
--		struct nlmsghdr *nlh = nlmsg_put(inst->skb, 0, 0,
--						 NLMSG_DONE,
--						 sizeof(struct nfgenmsg),
--						 0);
-+		struct nlmsghdr *nlh = nfnl_msg_put(inst->skb, 0, 0,
-+						    NLMSG_DONE, 0,
-+						    AF_UNSPEC, NFNETLINK_V0,
-+						    htons(inst->group_num));
- 		if (WARN_ONCE(!nlh, "bad nlskb size: %u, tailroom %d\n",
- 			      inst->skb->len, skb_tailroom(inst->skb))) {
- 			kfree_skb(inst->skb);
+diff --git a/net/netfilter/xt_multiport.c b/net/netfilter/xt_multiport.c
+index 44a00f5acde8a..a1691ff405d3c 100644
+--- a/net/netfilter/xt_multiport.c
++++ b/net/netfilter/xt_multiport.c
+@@ -105,6 +105,28 @@ multiport_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 	return ports_match_v1(multiinfo, ntohs(pptr[0]), ntohs(pptr[1]));
+ }
+ 
++static bool
++multiport_valid_ranges(const struct xt_multiport_v1 *multiinfo)
++{
++	unsigned int i;
++
++	for (i = 0; i < multiinfo->count; i++) {
++		if (!multiinfo->pflags[i])
++			continue;
++
++		if (++i >= multiinfo->count)
++			return false;
++
++		if (multiinfo->pflags[i])
++			return false;
++
++		if (multiinfo->ports[i - 1] > multiinfo->ports[i])
++			return false;
++	}
++
++	return true;
++}
++
+ static inline bool
+ check(u_int16_t proto,
+       u_int8_t ip_invflags,
+@@ -127,8 +149,10 @@ static int multiport_mt_check(const struct xt_mtchk_param *par)
+ 	const struct ipt_ip *ip = par->entryinfo;
+ 	const struct xt_multiport_v1 *multiinfo = par->matchinfo;
+ 
+-	return check(ip->proto, ip->invflags, multiinfo->flags,
+-		     multiinfo->count) ? 0 : -EINVAL;
++	if (!check(ip->proto, ip->invflags, multiinfo->flags, multiinfo->count))
++		return -EINVAL;
++
++	return multiport_valid_ranges(multiinfo) ? 0 : -EINVAL;
+ }
+ 
+ static int multiport_mt6_check(const struct xt_mtchk_param *par)
+@@ -136,8 +160,10 @@ static int multiport_mt6_check(const struct xt_mtchk_param *par)
+ 	const struct ip6t_ip6 *ip = par->entryinfo;
+ 	const struct xt_multiport_v1 *multiinfo = par->matchinfo;
+ 
+-	return check(ip->proto, ip->invflags, multiinfo->flags,
+-		     multiinfo->count) ? 0 : -EINVAL;
++	if (!check(ip->proto, ip->invflags, multiinfo->flags, multiinfo->count))
++		return -EINVAL;
++
++	return multiport_valid_ranges(multiinfo) ? 0 : -EINVAL;
+ }
+ 
+ static struct xt_match multiport_mt_reg[] __read_mostly = {
 -- 
 2.53.0
 
