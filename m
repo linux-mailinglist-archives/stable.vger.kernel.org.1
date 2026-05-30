@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-258991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WATtKUQxG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-258991-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:49:40 +0200
+	id uI5WMO4dG2qW/QgAu9opvQ
+	(envelope-from <stable+bounces-257640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 109A4612909
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:49:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D23A60FB21
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60C29306BAA3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:37:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 114263084850
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B81B39A7FE;
-	Sat, 30 May 2026 18:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F4034A796;
+	Sat, 30 May 2026 17:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkb+hPJM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Le6a5I5C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A7B41A8F;
-	Sat, 30 May 2026 18:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7165A33FE15;
+	Sat, 30 May 2026 17:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166229; cv=none; b=HUxbjUuar10mW6SU/U9dHCst8meFQCiE3UzISthxo0lBtAJZ/0wjMdUDmoKZA7kvfky3JoNB5MsO1+Rb3efTfmIPi77gF4+nqD5ZokRNzFFuo7G9nQf9ufpdW88qujfI25xx+dpZpsJLoDUkN07NlzP1oByqZqUQAzWrdekY+78=
+	t=1780161679; cv=none; b=bte/SXBWWNEnltpb4TVx4Pv1E1uuUJjeYoP6F+lumn0AQNW96WEFzkoXQq47bYzniY9VuulFMv7B5SHQT8ldkGn7u1aALnFiwD37uTdPg7Ka3fWZsfQ5iqudOMUO7Ny19yk7MD8v4zVGPDB+676afZQfrAdTBFjQ5cUfC+PiSUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166229; c=relaxed/simple;
-	bh=LrPMl8P67d6anE7WoxJw9T3OrWez1luKAakTKC3gcwE=;
+	s=arc-20240116; t=1780161679; c=relaxed/simple;
+	bh=vQ6EPHYnlWlGzM1vopqI0sc+lDzdYd6tthjzwa8pmtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eaAiAqicwBr8WGFlmgJrjQnkd1b53qupV8SPBBO6WommfHxtc4Vpg7lAn+typCrtJF/k2a46kQeAO/pqr0ir7f9JfPxI54t+Fi7sofdvXhWRqw4qu6jq84ZgaiC/279lt427oblSrmcH0egnbStwelF+lpDltZrx/iBewTPH2UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkb+hPJM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FEBF1F00893;
-	Sat, 30 May 2026 18:37:07 +0000 (UTC)
+	 MIME-Version; b=VMLR1BxHbNyaC5qAHMc1ST/2XVvSCMazD5+r0wzXQKCClqtJQDR9sQ31Betl1kzBoL+uskmLMrV75rT0PxBEwBl5b23IiKECkGrnMK3Ie1UXtWxT6Q9TZk3cpKX5Q17knkHbqww8SA8b5SCdwBvVyKpZhX6MEhilKLbNc/qdmA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Le6a5I5C; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60A61F00893;
+	Sat, 30 May 2026 17:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166227;
-	bh=Wf39MyOfF/GFuHg1y8MBHayKE7NUpDG8dE/MiA0Ra2U=;
+	s=korg; t=1780161678;
+	bh=OzNGU/v0NBRGc2Jpi7q17D6z3SMI2N/t9Yd890lQyLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bkb+hPJMS5oDiDWqj09vdRap1Ojydu0mcm/FyU/GH2EZXgGSHZDlINTCImOphghw9
-	 ZS3X/TVpizYP4szoPN9vn+4bmXSCBy8ur2z6mIVTlRcAKGjKWCeuJHG4OLqUE6t932
-	 aXUaiygtcbWe5fs1tBEliDbzoDJZOe/N04pAA5R8=
+	b=Le6a5I5CGsr0Cm2RdqIWma0HKWnOg5h0VzwY9CdGAY79AbSILZy14BtOHSV6T7WNg
+	 zotPy5F1d/FTbBDqFS/+qd0Jgs7um/puchciIDaM83FkhxdaYTWGPED8NRzgXVPl5U
+	 I7SFsA19x2WX3fBHuRNVCE/mPa4MXobkBVWlGRcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zdi-disclosures@trendmicro.com,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 310/589] net/sched: act_ct: Only release RCU read lock after ct_ft
+Subject: [PATCH 6.1 667/969] f2fs: Use sysfs_emit_at() to simplify code
 Date: Sat, 30 May 2026 18:03:11 +0200
-Message-ID: <20260530160233.095774212@linuxfoundation.org>
+Message-ID: <20260530160318.906306103@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,159 +69,149 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257640-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,wanadoo.fr];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258991-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,mojatatu.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,trendmicro.com:email]
-X-Rspamd-Queue-Id: 109A4612909
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5D23A60FB21
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit f462dca0c8415bf0058d0ffa476354c4476d0f09 ]
+[ Upstream commit f7a678bbe5a8f22cfcef5369757cc9b95f73e027 ]
 
-When looking up a flow table in act_ct in tcf_ct_flow_table_get(),
-rhashtable_lookup_fast() internally opens and closes an RCU read critical
-section before returning ct_ft.
-The tcf_ct_flow_table_cleanup_work() can complete before refcount_inc_not_zero()
-is invoked on the returned ct_ft resulting in a UAF on the already freed ct_ft
-object. This vulnerability can lead to privilege escalation.
+This file already uses sysfs_emit(). So be consistent and also use
+sysfs_emit_at().
 
-Analysis from zdi-disclosures@trendmicro.com:
-When initializing act_ct, tcf_ct_init() is called, which internally triggers
-tcf_ct_flow_table_get().
+This slightly simplifies the code and makes it more readable.
 
-static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
-
-{
-                struct zones_ht_key key = { .net = net, .zone = params->zone };
-                struct tcf_ct_flow_table *ct_ft;
-                int err = -ENOMEM;
-
-                mutex_lock(&zones_mutex);
-                ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params); // [1]
-                if (ct_ft && refcount_inc_not_zero(&ct_ft->ref)) // [2]
-                                goto out_unlock;
-                ...
-}
-
-static __always_inline void *rhashtable_lookup_fast(
-                struct rhashtable *ht, const void *key,
-                const struct rhashtable_params params)
-{
-                void *obj;
-
-                rcu_read_lock();
-                obj = rhashtable_lookup(ht, key, params);
-                rcu_read_unlock();
-
-                return obj;
-}
-
-At [1], rhashtable_lookup_fast() looks up and returns the corresponding ct_ft
-from zones_ht . The lookup is performed within an RCU read critical section
-through rcu_read_lock() / rcu_read_unlock(), which prevents the object from
-being freed. However, at the point of function return, rcu_read_unlock() has
-already been called, and there is nothing preventing ct_ft from being freed
-before reaching refcount_inc_not_zero(&ct_ft->ref) at [2]. This interval becomes
-the race window, during which ct_ft can be freed.
-
-Free Process:
-
-tcf_ct_flow_table_put() is executed through the path tcf_ct_cleanup() call_rcu()
-tcf_ct_params_free_rcu() tcf_ct_params_free() tcf_ct_flow_table_put().
-
-static void tcf_ct_flow_table_put(struct tcf_ct_flow_table *ct_ft)
-{
-                if (refcount_dec_and_test(&ct_ft->ref)) {
-                                rhashtable_remove_fast(&zones_ht, &ct_ft->node, zones_params);
-                                INIT_RCU_WORK(&ct_ft->rwork, tcf_ct_flow_table_cleanup_work); // [3]
-                                queue_rcu_work(act_ct_wq, &ct_ft->rwork);
-                }
-}
-
-At [3], tcf_ct_flow_table_cleanup_work() is scheduled as RCU work
-
-static void tcf_ct_flow_table_cleanup_work(struct work_struct *work)
-
-{
-                struct tcf_ct_flow_table *ct_ft;
-                struct flow_block *block;
-
-                ct_ft = container_of(to_rcu_work(work), struct tcf_ct_flow_table,
-                                                                rwork);
-                nf_flow_table_free(&ct_ft->nf_ft);
-                block = &ct_ft->nf_ft.flow_block;
-                down_write(&ct_ft->nf_ft.flow_block_lock);
-                WARN_ON(!list_empty(&block->cb_list));
-                up_write(&ct_ft->nf_ft.flow_block_lock);
-                kfree(ct_ft); // [4]
-
-                module_put(THIS_MODULE);
-}
-
-tcf_ct_flow_table_cleanup_work() frees ct_ft at [4]. When this function executes
-between [1] and [2], UAF occurs.
-
-This race condition has a very short race window, making it generally
-difficult to trigger. Therefore, to trigger the vulnerability an msleep(100) was
-inserted after[1]
-
-Fixes: 138470a9b2cc2 ("net/sched: act_ct: fix lockdep splat in tcf_ct_flow_table_get")
-Reported-by: zdi-disclosures@trendmicro.com
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260410111627.46611-1-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 5909bedbed38 ("f2fs: protect extension_list reading with sb_lock in f2fs_sbi_show()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_ct.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/f2fs/sysfs.c | 45 +++++++++++++++++++++------------------------
+ 1 file changed, 21 insertions(+), 24 deletions(-)
 
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index d75f4b2b97daa..adb421684440a 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -289,9 +289,13 @@ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
- 	int err = -ENOMEM;
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index 4e643abbd891a..aeb95c74710eb 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -150,50 +150,50 @@ static ssize_t features_show(struct f2fs_attr *a,
+ 	int len = 0;
  
- 	mutex_lock(&zones_mutex);
--	ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params);
--	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref))
-+	rcu_read_lock();
-+	ct_ft = rhashtable_lookup(&zones_ht, &key, zones_params);
-+	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref)) {
-+		rcu_read_unlock();
- 		goto out_unlock;
-+	}
-+	rcu_read_unlock();
+ 	if (f2fs_sb_has_encrypt(sbi))
+-		len += scnprintf(buf, PAGE_SIZE - len, "%s",
++		len += sysfs_emit_at(buf, len, "%s",
+ 						"encryption");
+ 	if (f2fs_sb_has_blkzoned(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "blkzoned");
+ 	if (f2fs_sb_has_extra_attr(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "extra_attr");
+ 	if (f2fs_sb_has_project_quota(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "projquota");
+ 	if (f2fs_sb_has_inode_chksum(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "inode_checksum");
+ 	if (f2fs_sb_has_flexible_inline_xattr(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "flexible_inline_xattr");
+ 	if (f2fs_sb_has_quota_ino(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "quota_ino");
+ 	if (f2fs_sb_has_inode_crtime(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "inode_crtime");
+ 	if (f2fs_sb_has_lost_found(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "lost_found");
+ 	if (f2fs_sb_has_verity(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "verity");
+ 	if (f2fs_sb_has_sb_chksum(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "sb_checksum");
+ 	if (f2fs_sb_has_casefold(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "casefold");
+ 	if (f2fs_sb_has_readonly(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "readonly");
+ 	if (f2fs_sb_has_compression(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "compression");
+-	len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++	len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "pin_file");
+-	len += scnprintf(buf + len, PAGE_SIZE - len, "\n");
++	len += sysfs_emit_at(buf, len, "\n");
+ 	return len;
+ }
  
- 	ct_ft = kzalloc(sizeof(*ct_ft), GFP_KERNEL);
- 	if (!ct_ft)
+@@ -310,17 +310,14 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
+ 		int hot_count = sbi->raw_super->hot_ext_count;
+ 		int len = 0, i;
+ 
+-		len += scnprintf(buf + len, PAGE_SIZE - len,
+-						"cold file extension:\n");
++		len += sysfs_emit_at(buf, len, "cold file extension:\n");
+ 		for (i = 0; i < cold_count; i++)
+-			len += scnprintf(buf + len, PAGE_SIZE - len, "%s\n",
+-								extlist[i]);
++			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
+ 
+-		len += scnprintf(buf + len, PAGE_SIZE - len,
+-						"hot file extension:\n");
++		len += sysfs_emit_at(buf, len, "hot file extension:\n");
+ 		for (i = cold_count; i < cold_count + hot_count; i++)
+-			len += scnprintf(buf + len, PAGE_SIZE - len, "%s\n",
+-								extlist[i]);
++			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
++
+ 		return len;
+ 	}
+ 
 -- 
 2.53.0
 
