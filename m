@@ -1,192 +1,144 @@
-Return-Path: <stable+bounces-259378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259380-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EB0vMNKXHGp6PgkAu9opvQ
-	(envelope-from <stable+bounces-259378-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 31 May 2026 22:19:30 +0200
+	id +E0kO2CgHGooQwkAu9opvQ
+	(envelope-from <stable+bounces-259380-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 31 May 2026 22:56:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 401C9617DFC
-	for <lists+stable@lfdr.de>; Sun, 31 May 2026 22:19:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 013F2617F01
+	for <lists+stable@lfdr.de>; Sun, 31 May 2026 22:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F2653300D61C
-	for <lists+stable@lfdr.de>; Sun, 31 May 2026 20:19:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5CFD63002F4A
+	for <lists+stable@lfdr.de>; Sun, 31 May 2026 20:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AF421C173;
-	Sun, 31 May 2026 20:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1FA369D79;
+	Sun, 31 May 2026 20:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="IgxWhxqR"
+	dkim=permerror (0-bit key) header.d=kousu.ca header.i=@kousu.ca header.b="CpA7w6gB";
+	dkim=pass (2048-bit key) header.d=kousu.ca header.i=@kousu.ca header.b="ONJ2JNJ2"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from comms.kousu.ca (comms.kousu.ca [46.23.90.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829AA25333F
-	for <stable@vger.kernel.org>; Sun, 31 May 2026 20:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0F43403EA;
+	Sun, 31 May 2026 20:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.23.90.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780258768; cv=none; b=VNpVyVY0Bmeia5HGrn7cWYILsP/y1q0+C9sfoaJN4Cf0xb/femFJi4HxzCBb+wtIpBEGMtXM07njKPYwFt4bTGRNbqThR9icVog9S6kRusZEzYmPr4j1nroYwHm6KDGjOZU3OAzhDJoEPjkJ2PwQZ0esLHQkHLz+JN8bmgS2PGs=
+	t=1780260951; cv=none; b=EbFvrk/gv7e88UzQKOKgT6Fr+AYlLt+yKTpoEP+iPsyNTwrG72isPlxF9BJwWlwVX3YNu69J7GIQS7MSaw6hUMwQmRslg72d0T4RufP9+8KCcLySaSXbeLyZYcKbg22/3L7MwighghIIlUMB1gUC89v29m643V/MnLuoZBrcdK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780258768; c=relaxed/simple;
-	bh=9dXrm7pQRO9xLM4M+O8SD4kdnQ+Wj0M4604wOGM8wug=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=X1BltQ7gNO2ZMZJ5Qr3MBSgSFYfLFfPLDSmGDPXhQfXC5u1kq7b1GCO2N+JxFjYNr5stp5PJsOW3KM8W3fCn8RgiL0Je/cNs8iH64R8gMYAmxP3yO0jhCdSF8NeaAplEsPag8OiEDyawJgglV6b1ZYs+YkaURjzJpSGL7BGgIhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=IgxWhxqR; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=cgLu62+w1OMg0zxozb4iDUz7avTk6NK4BJ7f4xO3MmY=; b=IgxWhxqRtp+me1/0mDBh5K7W84
-	uXcfRzagCdBnnBlDnkgn7bkS5b6RuxXcOkIyE/GDZE17jTnFKpYIlfjhmP5ETPhDZ/TouuexQv2zb
-	8X9anM1larEBmuEM2iej7dMqJ0IJdG9OMG2+5mh8qwpqRfX5tIyxkjRa6fOP3DH5p4UMkXMh2V/Ok
-	F/roX94llINbYIt3+8xxHjwepkRornvI6mP/46Q/z6TIbFI7KMctWNBxCNdPAlwTfv6Hj9q1uXqHm
-	M0A2v13vHAmy5F7EZXgeITKuLj0+iU1wfc75qOEM0Jn2yWL57igdubIJp/5Nf3G3Oqv1vXiVWsaC/
-	EMq8TEkg==;
-Received: from [189.7.87.67] (helo=[10.0.0.1])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wTmcu-00Agcp-SJ; Sun, 31 May 2026 22:19:17 +0200
-From: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Date: Sun, 31 May 2026 17:18:55 -0300
-Subject: [PATCH v2 1/4] drm/v3d: Fix global performance monitor reference
- counting
+	s=arc-20240116; t=1780260951; c=relaxed/simple;
+	bh=jbTNWhwRndBe/mVL+d70N8jfHasPnypOTPoQZy75zdA=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=XBW3vCt3+N9BH6rGl9Vi6VHwTJ5unG2APGVcguokRzuan93g+pvHohvKNCwIEmWx82JoqJJWwrslUNSZr8rnpnL88mGWsLJ2Z211WeHLhiw9aoxR4i7EoBe1Pyj+nE/9ILqI0lhsChfn0e0RiPbWlWzOqJXUSaPjmFYHd/606Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kousu.ca; spf=pass smtp.mailfrom=kousu.ca; dkim=permerror (0-bit key) header.d=kousu.ca header.i=@kousu.ca header.b=CpA7w6gB; dkim=pass (2048-bit key) header.d=kousu.ca header.i=@kousu.ca header.b=ONJ2JNJ2; arc=none smtp.client-ip=46.23.90.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kousu.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kousu.ca
+DKIM-Signature: v=1; a=ed25519-sha256; c=simple/simple; s=ed25519; bh=jbTNWhwR
+	ndBe/mVL+d70N8jfHasPnypOTPoQZy75zdA=; h=references:in-reply-to:
+	subject:cc:to:from:date; d=kousu.ca; b=CpA7w6gB2JlTc5jTyd+RffjydzAeIN1
+	dOseUah03OXLKGGdvaa8JaiN13/TLtcrh7qGuy1E8djTQQ5RKrJsMAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=rsa; bh=jbTNWhwRndBe/mVL
+	+d70N8jfHasPnypOTPoQZy75zdA=; h=references:in-reply-to:subject:cc:to:
+	from:date; d=kousu.ca; b=ONJ2JNJ28HFs2UWnALkXu9hXPsOd3JwCDmgSYe+FmxKRy
+	vKfk6j5os6PEkcezplTMJAUrrmDJ6G2FzY7WpdjFVclqCZFd8jA+amQhaTcL/2uPp1C/P9
+	rysnEtyhlys+3mwXQ+wsfQCBaJb+NTN0aqHBm2biDlQf9367TcBTTqP6PmhL+S0Y7ZABOE
+	Fkv5NpDc4OMNCIsmPmBAkN9yluOtii+WtY6N3QxApB7Cq8h57ddW0jwhd17hhWlqXFhoC/
+	NUuSOCmMGbwDmIEwP+i/2Mz2Vxe/QyFMKGhUB9l8EJmw0o8mZDAwNUMuRDPik79XsiuIjn
+	WPQsRFQg2tENmJcuw==
+Received: from comms.kousu.ca (localhost [127.0.0.1])
+	by comms.kousu.ca (OpenSMTPD) with ESMTP id 6e368829;
+	Sun, 31 May 2026 22:29:06 +0200 (CEST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260531-v3d-perfmon-lifetime-v2-1-60ed4485a203@igalia.com>
-References: <20260531-v3d-perfmon-lifetime-v2-0-60ed4485a203@igalia.com>
-In-Reply-To: <20260531-v3d-perfmon-lifetime-v2-0-60ed4485a203@igalia.com>
-To: Melissa Wen <mwen@igalia.com>, Iago Toral <itoral@igalia.com>, 
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: kernel-dev@igalia.com, dri-devel@lists.freedesktop.org, 
- stable@vger.kernel.org, =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2508; i=mcanal@igalia.com;
- h=from:subject:message-id; bh=9dXrm7pQRO9xLM4M+O8SD4kdnQ+Wj0M4604wOGM8wug=;
- b=owEBbQGS/pANAwAKAT/zDop2iPqqAcsmYgBqHJe99zvk1ZtOjuQ+oxcjeV+/SQWQULPiWHcp1
- 5afe6Xsp1OJATMEAAEKAB0WIQT45F19ARZ3Bymmd9E/8w6Kdoj6qgUCahyXvQAKCRA/8w6Kdoj6
- qtC3CADH8FLiJ4HMn3yQbQCZOCFXi40h8RGnRpgucnOodnbnvslH3rTaTcjXI9Xhyken8Cn36zP
- siMRDr+EonDgIg1rd8k72SdI0FTeS8NPie3DBe3p3XZ/v/GjDWhqheXa/wty6dVLVNwIwrLAy5j
- y6y2mkzI1aFGswGqNUS3uxQdamLaXcugRxeEgNsCR5H+SrX6rRGHtA232vBVGUjVPU82vZW9Pni
- 8vYb4NyzqeDQTeA/Wba8GAQJQBx/UeBdbuj+iBrbeBKIQXTLiYai+nrcBEl5Kgj2DgZGYq2CRJ+
- 3iaepRCKKF0qiblO3WcSLieQTWTbcGCINID5YUXUCvSONMeX
-X-Developer-Key: i=mcanal@igalia.com; a=openpgp;
- fpr=F8E45D7D0116770729A677D13FF30E8A7688FAAA
-X-Spamd-Result: default: False [-0.36 / 15.00];
+Date: Sun, 31 May 2026 16:29:06 -0400
+From: Nick <nick@kousu.ca>
+To: linux-acpi@vger.kernel.org
+Cc: johannes.goede@oss.qualcomm.com, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ regressions@lists.linux.dev, John Veness <john-linux@pelago.org.uk>,
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [REGRESSION] Toshiba Fn keys + lidswitch
+In-Reply-To: <75398536-2ca8-4205-9205-18afc5227397@pelago.org.uk>
+References: <E2OXET.4X5GTP37VTNC3@kousu.ca>
+ <CAJZ5v0jVQyWYqPo_MiUwNQb7FLNR_Q_++Xq=xA1owcHpcjN=OA@mail.gmail.com>
+ <bc9d5258-d4df-46a1-bba9-de3486f722ab@pelago.org.uk>
+ <8503d297-68ca-4bfe-bbdf-537a85890d86@oss.qualcomm.com>
+ <75398536-2ca8-4205-9205-18afc5227397@pelago.org.uk>
+Message-ID: <eddc6acd74abcea6131f3cfc606bc596@kousu.ca>
+X-Sender: nick@kousu.ca
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kousu.ca,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kousu.ca:s=ed25519,kousu.ca:s=rsa];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-259380-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259378-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[igalia.com,gmail.com,ffwll.ch];
-	DKIM_TRACE(0.00)[igalia.com:-];
+	DKIM_TRACE(0.00)[kousu.ca:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.962];
-	FROM_NEQ_ENVFROM(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[nick@kousu.ca,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:mid,igalia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 401C9617DFC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kousu.ca:mid,kousu.ca:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 013F2617F01
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In the SET_GLOBAL ioctl, v3d_perfmon_find() bumps the reference count on
-the perfmon it returns, but v3d_perfmon_set_global_ioctl() and
-v3d_perfmon_delete() fail to release that reference on several paths:
+On 2026-05-31 11:17, John Veness wrote:
+> On 30/05/2026 14:34, johannes.goede@oss.qualcomm.com wrote:
+>> In case you've not seen it yet, Rafael send out the test patch
+>> publicly later that day in another email in this thread:
+>> 
+>> https://lore.kernel.org/linux-acpi/12896447.O9o76ZdvQC@rafael.j.wysocki/
+>> 
+>> Regards,
+>> 
+>> Hans
+> 
+> Thanks for the pointer, and sorry for missing that! I had only been
+> looking in the archives of platform-driver-x86@vger.kernel.org which 
+> for
+> some reason didn't receive the patch.
+> 
+> John
 
-  1. v3d_perfmon_set_global_ioctl() leaks the reference on its error
-     paths.
+On 2026-05-31 11:25, John Veness wrote:
+> I'm not Nick, but I have tested the patch here on my old Toshiba Tecra 
+> Z50-A
+> and it seems to have worked - I now have Fn+keys working fine, after 
+> losing them
+> in a recent kernel update (apart from Fn+3 for volume down, and Fn+4 
+> for volume up,
+> which for some reason continued to work when the others didn't).
+> 
+> John
 
-  2. CLEAR_GLOBAL leaks both the find reference and the reference
-     previously stashed in v3d->global_perfmon by the SET_GLOBAL ioctl
-     that configured it.
+Same here. All my Fn keys work except for Esc through F8. Glad Rafael's 
+patch worked for you too! There's a newer copy of it at 
+https://lore.kernel.org/linux-acpi/2046403.PYKUYFuaPT@rafael.j.wysocki/T/#t 
+by the way.
 
-  3. Destroying a perfmon that is the current global perfmon leaks the
-     reference stashed by the SET_GLOBAL ioctl.
-
-Release each of these references explicitly.
-
-Cc: stable@vger.kernel.org
-Fixes: c6eabbab359c ("drm/v3d: Add DRM_IOCTL_V3D_PERFMON_SET_GLOBAL")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- drivers/gpu/drm/v3d/v3d_perfmon.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/gpu/drm/v3d/v3d_perfmon.c b/drivers/gpu/drm/v3d/v3d_perfmon.c
-index 02451fc09dbb..48ae748247be 100644
---- a/drivers/gpu/drm/v3d/v3d_perfmon.c
-+++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
-@@ -319,8 +319,11 @@ static void v3d_perfmon_delete(struct v3d_file_priv *v3d_priv,
- 	if (perfmon == v3d->active_perfmon)
- 		v3d_perfmon_stop(v3d, perfmon, false);
- 
--	/* If the global perfmon is being destroyed, set it to NULL */
--	cmpxchg(&v3d->global_perfmon, perfmon, NULL);
-+	/* If the global perfmon is being destroyed, clean it and release
-+	 * the reference stashed in v3d_perfmon_set_global_ioctl().
-+	 */
-+	if (cmpxchg(&v3d->global_perfmon, perfmon, NULL) == perfmon)
-+		v3d_perfmon_put(perfmon);
- 
- 	v3d_perfmon_put(perfmon);
- }
-@@ -471,16 +474,27 @@ int v3d_perfmon_set_global_ioctl(struct drm_device *dev, void *data,
- 
- 	/* If the request is to clear the global performance monitor */
- 	if (req->flags & DRM_V3D_PERFMON_CLEAR_GLOBAL) {
--		if (!v3d->global_perfmon)
-+		struct v3d_perfmon *old;
-+
-+		/* DRM_V3D_PERFMON_CLEAR_GLOBAL doesn't check if
-+		 * v3d->global_perfmon == perfmon. Therefore, there
-+		 * is no need to keep perfmon's reference.
-+		 */
-+		v3d_perfmon_put(perfmon);
-+
-+		old = xchg(&v3d->global_perfmon, NULL);
-+		if (!old)
- 			return -EINVAL;
- 
--		xchg(&v3d->global_perfmon, NULL);
-+		v3d_perfmon_put(old);
- 
- 		return 0;
- 	}
- 
--	if (cmpxchg(&v3d->global_perfmon, NULL, perfmon))
-+	if (cmpxchg(&v3d->global_perfmon, NULL, perfmon)) {
-+		v3d_perfmon_put(perfmon);
- 		return -EBUSY;
-+	}
- 
- 	return 0;
- }
-
--- 
-2.54.0
-
+- Nick
 
