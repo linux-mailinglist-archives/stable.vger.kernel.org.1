@@ -1,111 +1,221 @@
-Return-Path: <stable+bounces-259334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHlZHYkTHGraJQkAu9opvQ
-	(envelope-from <stable+bounces-259334-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 31 May 2026 12:55:05 +0200
+	id +F85N1ITHGraJQkAu9opvQ
+	(envelope-from <stable+bounces-259333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 31 May 2026 12:54:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB203615AD1
-	for <lists+stable@lfdr.de>; Sun, 31 May 2026 12:55:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AAB5615AB3
+	for <lists+stable@lfdr.de>; Sun, 31 May 2026 12:54:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B668F3013680
-	for <lists+stable@lfdr.de>; Sun, 31 May 2026 10:55:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA5D5302FB7B
+	for <lists+stable@lfdr.de>; Sun, 31 May 2026 10:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BAD376A10;
-	Sun, 31 May 2026 10:55:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.b="yssDv48P"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A629A376A06;
+	Sun, 31 May 2026 10:53:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpo49.interia.pl (smtpo49.interia.pl [217.74.67.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A10C376A08
-	for <stable@vger.kernel.org>; Sun, 31 May 2026 10:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.74.67.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780224903; cv=none; b=cMapPI6E9GtDxM/JAu1eIQCcsIYcEmbVXFQRZhb4op/0bTXPMnXPiYtbpqusLmXHua1Gc77YqR2fkMV5gSGbpdP2xxvu+as/EUU3J+pQOP4q3dpdqmFOdP7hYjsjWTg+fMdX9l3OBp08ZAIArLqjeEIhjRoSQiqN6Nf8R9TkGc0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780224903; c=relaxed/simple;
-	bh=23Hr6bVV2eGzZD4V9CAprmCqyNkeGDWQ61jdUyLqKXA=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=dKosFPT3f5J1fBxBWk6pX3ahH5sq4GiaytcQoVBPUTe/gm32JzVDjig64mVYbpceN5x+IJwWugifnefNMQE8Lyj/o6vXKfqxoTAlTJGNiNRcaay+XrioWryz2Pa4KUmrDe5/lColvmpYfB9VdBhYh4fQyiCCYMjAGduOkN35smk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm; spf=pass smtp.mailfrom=poczta.fm; dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.b=yssDv48P; arc=none smtp.client-ip=217.74.67.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poczta.fm
-Received: from Stacjonarny (62-133-144-026.dynamicip.ostnet.pl [62.133.144.26])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by www.poczta.fm (INTERIA.PL) with ESMTPSA;
-	Sun, 31 May 2026 12:52:26 +0200 (CEST)
-From: "Artur Chlebek" <achlebek@poczta.fm>
-To: <amd-gfx@lists.freedesktop.org>
-Cc: <regressions@lists.linux.dev>,
-	<stable@vger.kernel.org>
-References: 
-In-Reply-To: 
-Subject: 7.0.9 vs 7.0.10/7.1 Radeon 260X regression
-Date: Sun, 31 May 2026 12:52:30 +0200
-Message-ID: <002901dcf0eb$9472e210$bd58a630$@poczta.fm>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C65E376A18;
+	Sun, 31 May 2026 10:53:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780224811; cv=none; b=jU2VcSIBgsBwoURTADtLC1PEIaiXc6nXpHMJO4ewM4hlmoWAWpRwbOsU6IHuVRU48TIHEfzoLnvs2VLjxrgaXdtLGrm6bf3bICa1puMiBbllNKGOBCRaAh7e/18fVLWk2TG7cbU5pmr/jKFsnYiWYXLjGoQkt6q34ypkRJoIoQ8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780224811; c=relaxed/simple;
+	bh=i45gdTuZiRDSr0I/OSp/H4C/1/l9afk6RfqlpF+CjIs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=K6h1PXeLQ99q/KpKyJ53TrZZXjMlWnLSFsjCw4v3K+NCphlvQIVibjCC6gTtUsfNFr9Xm9Sqg6YfOH858/UaSDx2R95CiNVJw+I+eXlg28PTNJe22GWAMn0V+nwHK/DK1eOnIuQDHDsr3O6lj92TnSCoZ4a80yoeyxyXm98y3M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wTdnL-000Ncn-0a;
+	Sun, 31 May 2026 10:53:27 +0000
+Received: from ben by deadeye with local (Exim 4.99.2)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wTdnJ-0000000F8HQ-417y;
+	Sun, 31 May 2026 12:53:25 +0200
+Message-ID: <136f03aa6f51bdfecc786e5278f5fd03b4a6966e.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 072/589] media: uvcvideo: Use heuristic to find
+ stream entity
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Angel4005 <ooara1337@gmail.com>, Ricardo
+ Ribalda	 <ribalda@chromium.org>, Hans de Goede <hansg@kernel.org>, Hans
+ Verkuil	 <hverkuil+cisco@kernel.org>, Sasha Levin <sashal@kernel.org>
+Date: Sun, 31 May 2026 12:53:20 +0200
+In-Reply-To: <20260530160226.496219768@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
+	 <20260530160226.496219768@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-1/MpVFW9o6bj11MJxigQ"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQKsb98F3W6w4/I7L4gnl9a4wKSh5rSI9UcA
-Content-Language: pl
-X-IPL-Priority-Group: 0-0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poczta.fm; s=dk;
-	t=1780224748; bh=23Hr6bVV2eGzZD4V9CAprmCqyNkeGDWQ61jdUyLqKXA=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=yssDv48Pev+PIQ+2CWFB85IQ+Bh6vUyB6EcyUY2JsblfJOKTNoUR7JLfmAhe6gNC4
-	 dqvPb+ENrbHGkxt0B+x00HJ4DMy/YsPADm3FfDuKs0HmsHKhSqJllvi8Tlu5OG7HTU
-	 s0rGTY07+HRX9nBmszgqidtRxpebVUdIXJG4X9fU=
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+X-Spamd-Result: default: False [-2.06 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[poczta.fm,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[poczta.fm:s=dk];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259334-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[poczta.fm:+];
-	RCPT_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[lists.linux.dev,gmail.com,chromium.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-259333-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[poczta.fm];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[achlebek@poczta.fm,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DMARC_NA(0.00)[decadent.org.uk];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.633];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: EB203615AD1
+X-Rspamd-Queue-Id: 5AAB5615AB3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi, I have 5x fps drop on amdgpu Radeon 260X 1GB between kernel 7.0.9 and
-7.0.10 or 7.1rc
 
-Original sparse mail got flagged as spam so let me elaborate:
-Newest vanilla Fedora with Plasma, Gigabyte GA-H97-D3H, looked into things
-like clocks, PM, ASPM, tried flags, GTTSIZE, .dc=0 - all seems fine nothing
-helps.
+--=-1/MpVFW9o6bj11MJxigQ
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Regards.
+On Sat, 2026-05-30 at 17:59 +0200, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Ricardo Ribalda <ribalda@chromium.org>
+>=20
+> [ Upstream commit 758dbc756aad429da11c569c0d067f7fd032bcf7 ]
 
+This doesn't properly fix the problem.  Commit 3d9f32e02c2e "media:
+uvcvideo: Create an ID namespace for streaming output terminals" (which
+reverts this) needs to be applied on top.  I haven't checked whether
+that would apply cleanly.
+
+Ben.
+
+> Some devices, like the Grandstream GUV3100 webcam, have an invalid UVC
+> descriptor where multiple entities share the same ID, this is invalid
+> and makes it impossible to make a proper entity tree without heuristics.
+>=20
+> We have recently introduced a change in the way that we handle invalid
+> entities that has caused a regression on broken devices.
+>=20
+> Implement a new heuristic to handle these devices properly.
+>=20
+> Reported-by: Angel4005 <ooara1337@gmail.com>
+> Closes: https://lore.kernel.org/linux-media/CAOzBiVuS7ygUjjhCbyWg-KiNx+HF=
+TYnqH5+GJhd6cYsNLT=3DDaA@mail.gmail.com/
+> Fixes: 0e2ee70291e6 ("media: uvcvideo: Mark invalid entities with id UVC_=
+INVALID_ENTITY_ID")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> Reviewed-by: Hans de Goede <hansg@kernel.org>
+> Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+> Tested-by: Ron Economos <re@w6rz.net>
+> Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
+> Tested-by: Brett A C Sheffield <bacs@librecast.net>
+> Tested-by: Mark Brown <broonie@kernel.org>
+> Tested-by: Barry K. Nathan <barryn@pobox.com>
+> Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+> Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+> Tested-by: Jon Hunter <jonathanh@nvidia.com>
+> Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> Tested-by: Miguel Ojeda <ojeda@kernel.org>
+> Tested-by: Vijayendra Suman <vijayendra.suman@oracle.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/media/usb/uvc/uvc_driver.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/u=
+vc_driver.c
+> index 34e3f04340a23..20a18caf77176 100644
+> --- a/drivers/media/usb/uvc/uvc_driver.c
+> +++ b/drivers/media/usb/uvc/uvc_driver.c
+> @@ -442,13 +442,26 @@ static struct uvc_entity *uvc_entity_by_reference(s=
+truct uvc_device *dev,
+> =20
+>  static struct uvc_streaming *uvc_stream_by_id(struct uvc_device *dev, in=
+t id)
+>  {
+> -	struct uvc_streaming *stream;
+> +	struct uvc_streaming *stream, *last_stream;
+> +	unsigned int count =3D 0;
+> =20
+>  	list_for_each_entry(stream, &dev->streams, list) {
+> +		count +=3D 1;
+> +		last_stream =3D stream;
+>  		if (stream->header.bTerminalLink =3D=3D id)
+>  			return stream;
+>  	}
+> =20
+> +	/*
+> +	 * If the streaming entity is referenced by an invalid ID, notify the
+> +	 * user and use heuristics to guess the correct entity.
+> +	 */
+> +	if (count =3D=3D 1 && id =3D=3D UVC_INVALID_ENTITY_ID) {
+> +		dev_warn(&dev->intf->dev,
+> +			 "UVC non compliance: Invalid USB header. The streaming entity has an=
+ invalid ID, guessing the correct one.");
+> +		return last_stream;
+> +	}
+> +
+>  	return NULL;
+>  }
+> =20
+
+--=20
+Ben Hutchings
+Time is nature's way of making sure that
+everything doesn't happen at once.
+
+--=-1/MpVFW9o6bj11MJxigQ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmocEyEACgkQ57/I7JWG
+EQkVPA/+MSEar0a53RF8fIgTGxoLwkeWNKLzZhkG9fOcIZmi0r8auU5XNvRih+d6
+KRPticuZoFDHDQm/vO4w/RtFJW4akPT2d2QJ/UcezxuncNegCNLdKxeEpnfCW5d8
+UvSoGJpvCSX/bLa3+/NmyvvF+GvmYlBo60dJNF8Dh3WG+3FHOmriPTazfy2irXsk
+yOX9prSpjDOheDBf+cQ+dfqMJ3mPFS12Piecb9yO4uNVQZgE01Vt6Hfx7qUdwt93
+D4Jgp1Gn7NF0YKE4q856q36LLFUeMZRZnEiP9+cQtosH/XFdxF1sE8lzgtASwDww
+BygE8Ov4NTDCAhUFQikpPqq3IAq1tpQoKK/X001dzT2SJGXuym0zGFg5jACzda54
+UAWWLnvymCho3IwR9UcTwKo73hBgp2wyZMDXAHDAOKLYKoooxfxnXBvoffPF150g
+0G12MACYLRHBsKgkDaf+MshMGDu36qrFN2DGjRSvEa8bje+JfMHYJVY33QJVzZ71
+xQ00yOYKU2NgZqdYIM6oVScNiePL/eX86r98YbdXszlHAvi39w7kYNQYh/LdZnbb
+eJFDBECC+xKJP9qxZLzw5vqVyr+fTo0Pt6RdVVYuhFCybFTXTqt3i4vFEJ7YCbfD
+qF0sUqrcbzqc5fdvcIbckF7ZDUFRCHgBZgbMdIQhGjzwFWJndLQ=
+=706S
+-----END PGP SIGNATURE-----
+
+--=-1/MpVFW9o6bj11MJxigQ--
 
