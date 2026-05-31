@@ -1,142 +1,147 @@
-Return-Path: <stable+bounces-259359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4InWAGlUHGqeMgkAu9opvQ
-	(envelope-from <stable+bounces-259359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 31 May 2026 17:31:53 +0200
+	id cCrbFkRVHGqFMwkAu9opvQ
+	(envelope-from <stable+bounces-259360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 31 May 2026 17:35:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E98616E26
-	for <lists+stable@lfdr.de>; Sun, 31 May 2026 17:31:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65496616E9E
+	for <lists+stable@lfdr.de>; Sun, 31 May 2026 17:35:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DD02E301E7CD
-	for <lists+stable@lfdr.de>; Sun, 31 May 2026 15:30:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 509343004617
+	for <lists+stable@lfdr.de>; Sun, 31 May 2026 15:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5106438E8A7;
-	Sun, 31 May 2026 15:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82AE35F60E;
+	Sun, 31 May 2026 15:35:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8536C3002AB
-	for <stable@vger.kernel.org>; Sun, 31 May 2026 15:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110B238F63D
+	for <stable@vger.kernel.org>; Sun, 31 May 2026 15:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780241403; cv=none; b=bGmRQoi89+Mu9tTnCwZ3/y9PS0QodxYcvztsTlEWYSDQRO8wyLmv6qY8zoP383fKcbtWOcVz7/ytdR19A41tl1wAz1OAwLY85nq8+Ik1daM7kVcRuDL+/JIHrpNVNYrqkZ7PNjTkTMw/x+8Ad7a/Ojp72uV9kAiIFUVa0v1fKls=
+	t=1780241723; cv=none; b=azt1skLWXlpALeeYBsLsrBrJtBUJG0Pftb3lC+K883fb7ApSl+5okJ2i84uPXmscdaxpDc643bJv1XhHVnHQSsHsHIBybOptTdxmA3ntAHqIcTXD2wMrHuEpEAttaYIn75S64Hf/xTtepEXUkoR7SoDpRkbbrLLbId8G6E+SlmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780241403; c=relaxed/simple;
-	bh=yg5rsPofvjlbY/T1oBhBGcDsq5RRca5BvMM41jKdXKI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mH/wtUz12q2k2z7KpRauRi6XpEGJI/0pDo+0ugY/etDXsKyVDlW4XMbQSvKZHMFsWH3jqxDXwLUMxD8WgxIXbGn8OEwfJscMmh69oBNi3vga9F5rK8JAAARwhsIr3DHJ8zTF2kYZuqOF4WUXPhIdnyNL8jV1wDBzc+0IL97so88=
+	s=arc-20240116; t=1780241723; c=relaxed/simple;
+	bh=Sz2DmgnbadyAo3Dz86pJGRgTp2LYw+19Ug46KEiSCB0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OHJV2tQ5eOL21Kgf5zyr87UvfNziLlMcXOCzcuYi0Cma4lVoKEpGLSVevnQZg0d0nHxMHuqf2Hiafk8wzk73TgvYOv9gDGvzzzke18kIPnRCbqjYjBM8r+haq1w5nHDPE7HyOWE42WKZjxLrzIrM/z6gkF6hJgl77eE3ZdRWfTA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.ipa.basealt.ru (unknown [193.43.11.2])
+Received: from [10.88.16.7] (unknown [193.43.11.2])
 	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id CA04B2336D;
-	Sun, 31 May 2026 18:29:51 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: stable@vger.kernel.org
-Cc: Ben Hutchings <ben@decadent.org.uk>,
-	Takashi Iwai <tiwai@suse.com>,
-	alsa-devel@alsa-project.org,
-	lvc-project@linuxtesting.org,
-	kovalev@altlinux.org
-Subject: [PATCH v2 5.10.y] ALSA: usb-audio: fix null pointer dereference on pointer cs_desc
-Date: Sun, 31 May 2026 18:29:50 +0300
-Message-Id: <20260531152950.191924-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+	by air.basealt.ru (Postfix) with ESMTPSA id 4E77C2336D;
+	Sun, 31 May 2026 18:35:19 +0300 (MSK)
+Message-ID: <fc9b0b14-be90-71be-17a8-695549dedd5d@basealt.ru>
+Date: Sun, 31 May 2026 18:35:18 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 5.10 095/589] ALSA: usb-audio: fix null pointer
+ dereference on pointer cs_desc
+To: Ben Hutchings <ben@decadent.org.uk>, Chengfeng Ye <cyeaa@connect.ust.hk>,
+ Takashi Iwai <tiwai@suse.de>
+Cc: patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ stable <stable@vger.kernel.org>
+References: <20260530160224.570625122@linuxfoundation.org>
+ <20260530160227.194081368@linuxfoundation.org>
+ <ca469f4a22fe4688bbf88c355d074ae5be16a621.camel@decadent.org.uk>
+Content-Language: en-US
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+In-Reply-To: <ca469f4a22fe4688bbf88c355d074ae5be16a621.camel@decadent.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[altlinux.org];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259359-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[kovalev@altlinux.org,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.937];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,basealt.ru:mid,ust.hk:email];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ust.hk:email]
-X-Rspamd-Queue-Id: 73E98616E26
+	NEURAL_HAM(-0.00)[-0.928];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	R_DKIM_NA(0.00)[];
+	DMARC_NA(0.00)[altlinux.org];
+	FROM_NEQ_ENVFROM(0.00)[kovalev@altlinux.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259360-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 65496616E9E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Chengfeng Ye <cyeaa@connect.ust.hk>
+On 5/31/26 15:33, Ben Hutchings wrote:
+> On Sat, 2026-05-30 at 17:59 +0200, Greg Kroah-Hartman wrote:
+>> 5.10-stable review patch.  If anyone has any objections, please let me know.
+>>
+>> ------------------
+>>
+>> From: Chengfeng Ye <cyeaa@connect.ust.hk>
+>>
+>> commit b97053df0f04747c3c1e021ecbe99db675342954 upstream.
+>>
+>> The pointer cs_desc return from snd_usb_find_clock_source could
+>> be null, so there is a potential null pointer dereference issue.
+>> Fix this by adding a null check before dereference.
+>>
+>> Signed-off-by: Chengfeng Ye <cyeaa@connect.ust.hk>
+>> Link: https://lore.kernel.org/r/20211024111736.11342-1-cyeaa@connect.ust.hk
+>> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+>> Fixes: 1dc669fed61a ("ALSA: usb-audio: UAC2: support read-only freq control")
+>> [ kovalev: bp to fix CVE-2021-47211; added Fixes tag; the null
+>>    check was added into both UAC2 and UAC3 branches since the
+>>    older kernel still has the clock source lookup split between
+>>    snd_usb_find_clock_source() and snd_usb_find_clock_source_v3()
+>>    (see upstream commit 9ec730052fa2) ]
+> 
+> In the upstream version the return statement was added in
+> snd_usb_set_sample_rate_v2v3(), so set_sample_rate_v2v3() will do:
+> 
+>          cur_rate = snd_usb_set_sample_rate_v2v3(chip, fmt, clock, rate);  // = 0
+>          if (cur_rate < 0) ...                              // false
+>          if (!cur_rate)                                     // true
+>                  cur_rate = prev_rate;
+>          if (cur_rate != rate) ...
+>   validation:
+>          if (!uac_clock_source_is_valid(chip, fmt, clock))  // true because clock soure is missing
+>                  return -ENXIO;
+> 
+> so it will ultimately return -ENXIO.
+> 
+> Whereas this backport puts the return statements in
+> set_sample_rate_v2v3(), so it directly returns 0 i.e. silently fails.
+> Shouldn't these be changed to return -ENXIO?
+> 
+> Ben.
 
-commit b97053df0f04747c3c1e021ecbe99db675342954 upstream.
+Hi Ben,
+You're right. In 5.10 set_sample_rate_v2v3() is a single function, so 
+return 0 here is consumed as success by snd_usb_pcm_prepare(), diverging 
+from upstream which ends up at -ENXIO via !uac_clock_source_is_valid().
 
-The pointer cs_desc return from snd_usb_find_clock_source could
-be null, so there is a potential null pointer dereference issue.
-Fix this by adding a null check before dereference.
+v2 sent: 
+https://lore.kernel.org/all/20260531152950.191924-1-kovalev@altlinux.org/
 
-Signed-off-by: Chengfeng Ye <cyeaa@connect.ust.hk>
-Link: https://lore.kernel.org/r/20211024111736.11342-1-cyeaa@connect.ust.hk
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Fixes: 1dc669fed61a ("ALSA: usb-audio: UAC2: support read-only freq control")
-[ kovalev: bp to fix CVE-2021-47211; added Fixes tag; the null
-  check was added into both UAC2 and UAC3 branches since the
-  older kernel still has the clock source lookup split between
-  snd_usb_find_clock_source() and snd_usb_find_clock_source_v3()
-  (see upstream commit 9ec730052fa2); return -ENXIO instead of 0
-  to match upstream behavior, where the caller reaches the clock
-  validation path and returns -ENXIO ]
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
----
-v2:
- - Return -ENXIO instead of 0 on missing cs_desc to match upstream
-   behavior. Suggested by Ben Hutchings.
-   Link: https://lore.kernel.org/all/ca469f4a22fe4688bbf88c355d074ae5be16a621.camel@decadent.org.uk/
-v1:
-   Link: https://lore.kernel.org/all/20260421132047.38233-1-kovalev@altlinux.org/
----
- sound/usb/clock.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/sound/usb/clock.c b/sound/usb/clock.c
-index 197a6b7d8..8759e20c4 100644
---- a/sound/usb/clock.c
-+++ b/sound/usb/clock.c
-@@ -646,11 +646,17 @@ static int set_sample_rate_v2v3(struct snd_usb_audio *chip, int iface,
- 		struct uac3_clock_source_descriptor *cs_desc;
- 
- 		cs_desc = snd_usb_find_clock_source_v3(chip->ctrl_intf, clock);
-+
-+		if (!cs_desc)
-+			return -ENXIO;
- 		bmControls = le32_to_cpu(cs_desc->bmControls);
- 	} else {
- 		struct uac_clock_source_descriptor *cs_desc;
- 
- 		cs_desc = snd_usb_find_clock_source(chip->ctrl_intf, clock);
-+
-+		if (!cs_desc)
-+			return -ENXIO;
- 		bmControls = cs_desc->bmControls;
- 	}
- 
 -- 
-2.50.1
-
+Thanks,
+Vasiliy
 
