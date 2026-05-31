@@ -1,139 +1,218 @@
-Return-Path: <stable+bounces-259379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259381-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLJWK3CdHGodQQkAu9opvQ
-	(envelope-from <stable+bounces-259379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 31 May 2026 22:43:28 +0200
+	id eHyaDFKiHGrjQwkAu9opvQ
+	(envelope-from <stable+bounces-259381-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 31 May 2026 23:04:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E9BA617E66
-	for <lists+stable@lfdr.de>; Sun, 31 May 2026 22:43:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 957D4617F29
+	for <lists+stable@lfdr.de>; Sun, 31 May 2026 23:04:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74C43301982A
-	for <lists+stable@lfdr.de>; Sun, 31 May 2026 20:43:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53FD2301F9DE
+	for <lists+stable@lfdr.de>; Sun, 31 May 2026 21:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6280834889F;
-	Sun, 31 May 2026 20:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB07313E34;
+	Sun, 31 May 2026 21:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rtRbvVNt"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="rH0G9PPr"
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB991A9FA0
-	for <stable@vger.kernel.org>; Sun, 31 May 2026 20:42:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDDE28FFF6
+	for <stable@vger.kernel.org>; Sun, 31 May 2026 21:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780260181; cv=none; b=t55//9qc2TrCw1MF0V9P/VxJaAEk7nzhCebcw29EaXZIGAXP+sTpOsXjH+HYD0tQsLY2ESZa3s0JpGZDarPXGB5DZUp2WceFeubsiQA0MpvZOFXWSN8sA2wQE41nm9esN5aNNF0AN1IwjFPbebnfhhuAW3CFVGcX9Ys1xpeC0rM=
+	t=1780261425; cv=none; b=crM1IUwkspWltbRiWM80vF/GNpQG7kxX1znhygV5g7kVd1CH6vEyeliKTJO8pBkDRc5xvlMO+XYw8tki/jwa8pq2i9Lx4HGlW0DCZfbnMHAbJnLHPYCiScFG36kNBYIBvojJfJihgDvY0awFEA5E3/IWE3+/BESwO3HpDy0HgBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780260181; c=relaxed/simple;
-	bh=K9rdvMtrnZVho4l72+9X4eVyV5teUZKLUUzsbCLc2Os=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dJTMq/bXj4Mgb7bUYIkZzKDs2+Eu8DnZh4OC5niyAMgIQXhtIB/h+XVVhw9lggqiJYkzsJfR+MxFlieYjuyoSAsHtntGfbbNFImaciPN2G21BC0RKVrDjctFBJBMrEpphcWio88LHorNImGIFtjtgghD+oZTfWz7nh9Pb7feobk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rtRbvVNt; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780260167;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=IBZfgEBkACCVPCY7cmNFU2XJMM4Oc8OiZa4+OutXhL4=;
-	b=rtRbvVNt/FVTtFQI8eay7CtAJiC+YH8+qMSrnGE5bJsNcddDC+kHU/ZtB+2BlHiFt1OhPa
-	D86IaCSZ4+acAqIFkgfp1FlCwLFQM5AW4AjMdfVtHyGDkwK2Mo0M+AVTTOzs0MYnrVw8EF
-	sdwZ7kkPjRdOsgZN25qhy7ZJPiQTWLM=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Nicolas Royer <nicolas@eukrea.com>,
-	=?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	stable@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] crypto: atmel-tdes - use scatterlist length before DMA mapping
-Date: Sun, 31 May 2026 22:41:17 +0200
-Message-ID: <20260531204115.689052-3-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1780261425; c=relaxed/simple;
+	bh=MKxBXFUVPv7lrp/B/zQ8eAYIXsFELqEcvpKTjggTUR8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=krKJB0QTVqM+c8qbI/BegeL21WgvOM0kUO1bxFTciJuF7uo6XpDdyr0McvKUBFKVWjwaxA1OmlDYwhZNcAnlarwEfjDxgBOVV1qxLmCOtZnnHTHmO1wjChMkLPAJCDVf7iTsFbQOKApINypFZeiYlJcKcvRbjQngetJ5P9ix8Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=rH0G9PPr; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=nJ33K3gDEA0ztP2VLjZkr3Myqsk6mdBomiJLKiUFsFM=; b=rH0G9PPr5z4eQHJKuJnYdJioyz
+	ENmm2xBcSXOed6hcYAI/Rh4zYAFfX+A6UUtCuVQmZllPe8dCZBvel9gE421TdZslGbVAq4VUM0fu/
+	MF1GhEgAVOO+eaLO4PkpMOd42HBehRInPXKgan5gS/FAs5uo4eIhP0Sa2xobyPYs3+Nlg2ZVF3Fqu
+	YiyjS/h1GD5eRw9XPzw3BNd0NUjmqq/lGxHggJLBXs6qI7mkjn6CoctgSbxlT7iw3EJUjxxFo/55t
+	LOcKrKCgTtRSrmWTNli1FejjkJTVNbrrN2na5NvFnnkED6inNYpUY91kkTWwYWIOB5f/A94eewOaH
+	6tNxqKJw==;
+Received: from [189.7.87.67] (helo=prince)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1wTnJr-00AhRK-7X; Sun, 31 May 2026 23:03:39 +0200
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	kernel-dev@igalia.com,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 6.12.y 1/2] drm/v3d: Fix use-after-free of CPU job query arrays on error path
+Date: Sun, 31 May 2026 18:02:01 -0300
+Message-ID: <20260531210323.1637818-1-mcanal@igalia.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1508; i=thorsten.blum@linux.dev; h=from:subject; bh=K9rdvMtrnZVho4l72+9X4eVyV5teUZKLUUzsbCLc2Os=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFkyc14zLOBhNjCuaTd/pfVb4pHF3gns6/kMd7At6zi+b ZPuHJ57HaUsDGJcDLJiiiwPZv2Y4VtaU7nJJGInzBxWJrAhXJwCMJG2Iob/BR/25Lx+13xjwXmn BQlPbz2dW7NcJj9/V3tMpI5wjbvOS4Z/asytH2LqD0e5LTKMs4vaF3Wj4r/r1Tk7U/LYT+z5NyO MHwA=
-X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.64 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259379-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259381-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[igalia.com:-];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0E9BA617E66
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_SPAM(0.00)[0.947];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 957D4617F29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Using sg_dma_len() is only valid after mapping the scatterlist with
-dma_map_sg(). However, atmel_tdes_crypt_start() uses it before mapping
-to compare input/output lengths and to compute the transfer count.
+The CPU job ioctl's fail label calls kvfree() on cpu_job's timestamp and
+performance query arrays after v3d_job_cleanup(), which drops the job's
+last reference and frees cpu_job. Reading cpu_job at that point is a
+use-after-free. Also, on the early v3d_job_init() failure path, it is a
+NULL dereference, since v3d_job_deallocate() zeroes the local pointer.
 
-Use the original scatterlist lengths before DMA mapping to avoid reading
-stale or uninitialized DMA lengths when CONFIG_NEED_SG_DMA_LENGTH=y.
+In the success path, the arrays are released from the scheduler's
+.free_job callback, but on the error path, they are freed manually, as
+the job was never pushed to the scheduler. While the success path deals
+with this correctly, the fail path doesn't.
 
-Fixes: 13802005d8f2 ("crypto: atmel - add Atmel DES/TDES driver")
-Fixes: 1f858040c2f7 ("crypto: atmel-tdes - add support for latest release of the IP (0x700)")
+On top of that, the manual kvfree() calls only free the array storage;
+they don't drm_syncobj_put() the per-query syncobjs that
+v3d_timestamp_query_info_free() and v3d_performance_query_info_free()
+release on the success path. So the same fail path that triggers the
+use-after-free also leaks one syncobj reference per query.
+
+Unify the CPU job teardown into the CPU job's kref destructor, mirroring
+v3d_render_job_free(). The scheduler's .free_job slot reverts to the
+generic v3d_sched_job_free() and the fail label drops the manual
+kvfree() calls, leaving a single teardown path that is reached from both
+the scheduler and the ioctl error path. That removes the use-after-free,
+the NULL dereference, and the syncobj leak by construction.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Fixes: 9ba0ff3e083f ("drm/v3d: Create a CPU job extension for the timestamp query job")
+Assisted-by: Claude:claude-opus-4.7
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://patch.msgid.link/20260515-v3d-cpu-job-leaks-v1-1-7f147cbbf935@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+(cherry picked from commit b0fe80c0b9250b35e2211bf3117e7aca814a21b0)
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
- drivers/crypto/atmel-tdes.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/v3d/v3d_sched.c  | 16 +---------------
+ drivers/gpu/drm/v3d/v3d_submit.c | 19 ++++++++++++++++---
+ 2 files changed, 17 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/crypto/atmel-tdes.c b/drivers/crypto/atmel-tdes.c
-index 643e507f9c02..0d62b24e9fc7 100644
---- a/drivers/crypto/atmel-tdes.c
-+++ b/drivers/crypto/atmel-tdes.c
-@@ -463,14 +463,14 @@ static int atmel_tdes_crypt_start(struct atmel_tdes_dev *dd)
- 			IS_ALIGNED(dd->out_sg->length, dd->ctx->block_size);
- 		fast = in && out;
- 
--		if (sg_dma_len(dd->in_sg) != sg_dma_len(dd->out_sg))
-+		if (dd->in_sg->length != dd->out_sg->length)
- 			fast = 0;
+diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+index c9c88d3ad669..90eef062766c 100644
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -103,20 +103,6 @@ v3d_performance_query_info_free(struct v3d_performance_query_info *query_info,
  	}
+ }
  
+-static void
+-v3d_cpu_job_free(struct drm_sched_job *sched_job)
+-{
+-	struct v3d_cpu_job *job = to_cpu_job(sched_job);
+-
+-	v3d_timestamp_query_info_free(&job->timestamp_query,
+-				      job->timestamp_query.count);
+-
+-	v3d_performance_query_info_free(&job->performance_query,
+-					job->performance_query.count);
+-
+-	v3d_job_cleanup(&job->base);
+-}
+-
+ static void
+ v3d_switch_perfmon(struct v3d_dev *v3d, struct v3d_job *job)
+ {
+@@ -846,7 +832,7 @@ static const struct drm_sched_backend_ops v3d_cache_clean_sched_ops = {
+ static const struct drm_sched_backend_ops v3d_cpu_sched_ops = {
+ 	.run_job = v3d_cpu_job_run,
+ 	.timedout_job = v3d_generic_job_timedout,
+-	.free_job = v3d_cpu_job_free
++	.free_job = v3d_sched_job_free
+ };
  
- 	if (fast)  {
--		count = min_t(size_t, dd->total, sg_dma_len(dd->in_sg));
--		count = min_t(size_t, count, sg_dma_len(dd->out_sg));
-+		count = min_t(size_t, dd->total, dd->in_sg->length);
-+		count = min_t(size_t, count, dd->out_sg->length);
+ int
+diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
+index ddc20191a1ce..40c21aaade0d 100644
+--- a/drivers/gpu/drm/v3d/v3d_submit.c
++++ b/drivers/gpu/drm/v3d/v3d_submit.c
+@@ -118,6 +118,21 @@ v3d_render_job_free(struct kref *ref)
+ 	v3d_job_free(ref);
+ }
  
- 		err = dma_map_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
- 		if (!err) {
++static void
++v3d_cpu_job_free(struct kref *ref)
++{
++	struct v3d_cpu_job *job = container_of(ref, struct v3d_cpu_job,
++					       base.refcount);
++
++	v3d_timestamp_query_info_free(&job->timestamp_query,
++				      job->timestamp_query.count);
++
++	v3d_performance_query_info_free(&job->performance_query,
++					job->performance_query.count);
++
++	v3d_job_free(ref);
++}
++
+ void v3d_job_cleanup(struct v3d_job *job)
+ {
+ 	if (!job)
+@@ -1310,7 +1325,7 @@ v3d_submit_cpu_ioctl(struct drm_device *dev, void *data,
+ 	trace_v3d_submit_cpu_ioctl(&v3d->drm, cpu_job->job_type);
+ 
+ 	ret = v3d_job_init(v3d, file_priv, &cpu_job->base,
+-			   v3d_job_free, 0, &se, V3D_CPU);
++			   v3d_cpu_job_free, 0, &se, V3D_CPU);
+ 	if (ret) {
+ 		v3d_job_deallocate((void *)&cpu_job);
+ 		goto fail;
+@@ -1393,8 +1408,6 @@ v3d_submit_cpu_ioctl(struct drm_device *dev, void *data,
+ 	v3d_job_cleanup((void *)csd_job);
+ 	v3d_job_cleanup(clean_job);
+ 	v3d_put_multisync_post_deps(&se);
+-	kvfree(cpu_job->timestamp_query.queries);
+-	kvfree(cpu_job->performance_query.queries);
+ 
+ 	return ret;
+ }
+-- 
+2.54.0
+
 
