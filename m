@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-259421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBDuClb4HGplUgkAu9opvQ
-	(envelope-from <stable+bounces-259421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 05:11:18 +0200
+	id MIM+GJr4HGqJUgkAu9opvQ
+	(envelope-from <stable+bounces-259422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 05:12:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2C0619126
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 05:11:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE97B61919E
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 05:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68D27301992B
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 03:10:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 08BBF3049FDE
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 03:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDD32550D5;
-	Mon,  1 Jun 2026 03:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BF0258EC1;
+	Mon,  1 Jun 2026 03:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XQhM+l1k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j90Ru5of"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D27821257E;
-	Mon,  1 Jun 2026 03:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E7425392A;
+	Mon,  1 Jun 2026 03:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780283431; cv=none; b=hNNpQIbx1BNI74ooJkOLXRkH4h4wnrWJ8pIJtcBpkpBpLta5i3KTJQkQxJCuGemyfD+dgFmj6Ff3RwfJO5gbt7p6ygv9DpakHBinWO3dTMBeu8pop8hO7YyjqKUUHJ3lkY3HWVycTgxek9M5ZNTqcujL13IDkERFFJTjAIhOi/Y=
+	t=1780283436; cv=none; b=lYyVeFzUqz+rpCz2EigZzX+MOXXqtkRWIEIURJqYowhgCkwX+qEew+kWQlotHUm8IODxFAu3hDt3r92qp+ss9kYZpKPjxWUeODdQkN/4s3n4ZhOR1jG1QSfzqyahJcpZY1knKIvQ1NGPrl/DVT+7F7n+yKwqr6ss9i4FcSicxG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780283431; c=relaxed/simple;
-	bh=ne+DJHD93LLyymoAeSSDLgFRQhj1Q3IEaR9V1l8aPNA=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BDPCWdYbiMv+9wrsY8Olo8vj7OV0T0yqbK2pSN839eLFxlxMsrm4PeliC64QC22FnM1xOHiqQWb3D60GWbtMNPBedUqAYNC4cjyW3u4jjSdO9on1VuDrrs49/RNER+9gWpeT8gsZqGn8uNDG8Wcj5MQTENjDChQNj6hoWCfwsGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XQhM+l1k; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839C21F00893;
-	Mon,  1 Jun 2026 03:10:23 +0000 (UTC)
+	s=arc-20240116; t=1780283436; c=relaxed/simple;
+	bh=rkQBiCaZv3FLsMCB1B/qXFTAapBqRO/jjIMFsa8uZvQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=vDrusjgbALcqF5wmQxJP3AGeCfNzxpslceJjDGpyiPZCXqoCkbo+66TJ2BH1WAvl4NskgjQrdQDQhsz4I4yHaNb8jgHb/rVEZTDzOPPI1PTR7T/pMr65Ux5KgDWmWJo1eNmwuYD/Omgw4F2eXUB88gZPOvmv2jKxV/ZOUcde3zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j90Ru5of; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD781F00898;
+	Mon,  1 Jun 2026 03:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780283430;
-	bh=qOInkgrH4hk12Hs+AqpAJkTYyJwCGH22KfY2gfjsZ0w=;
-	h=From:Subject:Date:To:Cc;
-	b=XQhM+l1kZD0iM581UzqiOx2CvebDkvV9bc2TuP6IsgXpYpDrg0u2IAo3hvHeoak1H
-	 +rIwYhhtlKEOnWeS4n1wQ07MmeyuTSVPNSjxwVBn0JtGOTfUSNvUNMmWVDadB08Ww2
-	 m5zMifo1ZtXrtsvpIvkhBMoraFEvBny+NmkWriY1Yz3w+DsoSacqg8CM9PfKoRq6zp
-	 67ZageuR7Mozq5Rkaf1LselAgMm2cYBMT9j27TyVKHvCgcxavH7MbuXZW4HIeqiRM7
-	 v/v1CKR/FDDNRIomFt0SXkoU5Toi9sjzhavzoBCvO9zwjTodrsb6qODV1xeg/j6RFq
-	 nheZJDSf9KKUg==
+	s=k20260515; t=1780283434;
+	bh=8up5MYwx4EhVVjUDefYI07aSVy3uzwumnDLm7oQTWB4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=j90Ru5ofFQR6tfLeXt3M9QYttFUSXJDFzKu4LWxYyZolJuPboyLpZMpjpTrpkPpMx
+	 NJDK18w6ZD68e5M1exaRHRdsgPBItBfdLsW1GoXtQo2KZq8LtzDsxj3Y47tKriKf2g
+	 sDvWYY3T2LSREytYVeMJRdBWAXZnQfOgDkZmOAlzDYxHP2hcAqDF8Z5pHeMRBp6/GE
+	 4KlkAc0UciW4dewva14nwI5HnkPhGO6lcND2vyIDsBFSCS6guxJ9xlRxrEFC8XamXZ
+	 k09DQZbBt7uD08jTi/lIFlTMG0pUMymps/6hbiYvcCWPTHti7LdUI3JwPYqapSMpdL
+	 gP2nZX84NRupQ==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH net 00/10] mptcp: misc fixes for v7.1-rc7
-Date: Mon, 01 Jun 2026 13:09:56 +1000
-Message-Id: <20260601-net-mptcp-misc-fixes-7-1-rc7-v1-0-a5ae7791754b@kernel.org>
+Date: Mon, 01 Jun 2026 13:09:57 +1000
+Subject: [PATCH net 01/10] mptcp: fix missing wakeups in edge scenarios
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,133 +55,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0Q6CMAxFf4X02SZsTEB/hfggpWpNmMs6CQnh3
- 636eG7uORsoZ2GFc7VB5kVUXtHAHSqgxzXeGWUyBl/7tj42DiMXnFOhhLMo4U1WVuzQYaYOm9D
- 3gU6jD+0ElkiZfwcrDGAmXP6jvscnU/mGYd8/HaOACYUAAAA=
-X-Change-ID: 20260531-net-mptcp-misc-fixes-7-1-rc7-34884c9b246d
+Message-Id: <20260601-net-mptcp-misc-fixes-7-1-rc7-v1-1-a5ae7791754b@kernel.org>
+References: <20260601-net-mptcp-misc-fixes-7-1-rc7-v1-0-a5ae7791754b@kernel.org>
+In-Reply-To: <20260601-net-mptcp-misc-fixes-7-1-rc7-v1-0-a5ae7791754b@kernel.org>
 To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
  Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>
 Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
  linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
- Tao Cui <cuitao@kylinos.cn>, Shuah Khan <shuah@kernel.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
- Hannes Reinecke <hare@kernel.org>, linux-rt-devel@lists.linux.dev, 
- Gang Yan <yangang@kylinos.cn>
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2224; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=ne+DJHD93LLyymoAeSSDLgFRQhj1Q3IEaR9V1l8aPNA=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBqHPgetCAlRRs5NJvuXuaCLQNMSOUzpOYc+yyIK
- YyOEqVBbcGJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCahz4HgAKCRD2t4JPQmmg
- c96RD/46EzUoWxTwKhuU47LoUgTR+tUa4qxJc+WagSu32vb2ISXt1yibna8sVpSu3kJjF3/abxH
- XALPE8bZK3zhDRvvV8WsFYTZqeDAa8SlVQZRx1Why93vtFkUdXqu0QVt24Pg7DHasksNQ40isl7
- fDo1HtzKoKhci0c6+5buJY9rDcTXz1K/xnKUzF5XvlgtivLfP1RT07jCCX8WU0D9tXqtYyCBiFN
- w0irMcLVjd489SEVig0/aUR8aSipWa7r16UK0DkXnqKJ/q/0BWVql8Cj9lMYyXRUDlEVTlPXIY0
- U5qcW//ZiunkUylea4EmPyq+2XKfjr0KjtHHErIx/Geihe6kAQYXvqiG2GYjJ8xBmXkBvgHEJKV
- w2jnnXL6FfmQsEFFtrm8XauYLgXHWiq1b6ilM8T9eq6Dhtxgqprw/m4UdAPuy3CWugbSF6RK7TT
- d49d26ikFLnH4JikxhC4pxGsPfq30Lx4c9UgSpOtqQuh00DHHdHwV2xC/X6BFDvnkbXyAxptPQ4
- p8hVMuljjAJpBfUPjMkHoabbKwskqoAkoL/34gVrJdRr3xbQ2eK7C30/82BCQGzMtPoq4ZkRvez
- olfPKUvPAbAhi/thfnf7h3UuZ0r89v3Gtp4ZPvNpY9JUXJE0i1KXNyf3wItko4ZWCVOzNmkPusk
- wh1JOfZ4chCXvTQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1069; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=8bYMyyvhQFOSZqNFT4QxJeSNWbzfPC95/VwNPuygVVk=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBqHPgeZgFodtIontn8IIYicd3TfOUSdbzXDubYs
+ PfRbYalSpGJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCahz4HgAKCRD2t4JPQmmg
+ cy3ND/9DCCfRlf36Ay6eG+KHTojqRx8sQ23aUnz4q7wAxn1KUzCH+hxcq7fmb6TBtfYK4GUc2PH
+ 53B4D8AM5y6gNzLVOFLrfg2nQ0qlmvRhwhLbxKgum+KyqlfmX0dRRbrg/zaSVW43zw/kgipaTVK
+ 3418YYJc4dMgNaiscoQi85kW7Kw9O+O2J4ZHvkwW2uMVTF5Wb7yZ3l2Ji41lcaFD4xyz15gOSPc
+ AFAEmu3BG5tkqbV6YNVhie8EI4KgDGtWnlFodL791qVkZ6KIU9g25/wDyVoIyTmi0QtOZR1fH4Q
+ FkTXy+XtbjVS/hd6b+VNadn8AmooDZEcxi0ncofhk+o9mbCM2H4besACQuixpiwF5p0dOi6q4s4
+ 8XqC/ojf+7DH+EMl+p3/Sc1FYpLl0y8QlNRf5oXRqQ1MIsjIr7QO1CmE2lDgk7l3mQGypLXBGa6
+ eR2Uf2b1J7ZLTBVIpPsKQtavh/B+qUf8UNLzEgmTFnI2pPUFmGJKdSZxIHPDiAnad2NrbsW270d
+ 4BfCTDsyZTQbnOIYuEioIxZFEd2hZdmUwO5T6sub3l3sE59Ne1J+iQsIBwJXgqIRhLrWHlaCseA
+ JhcVGJbDtdDC2wl4K2eLmpwcT9Sxs3nOvMaV4LrnyYdD94OC1bUOPXFlEOtKjJKmtt6PdXPIOIN
+ KFm0RfAtiET9+SA==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259421-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,kernel.org,kylinos.cn,gmail.com,linutronix.de,goodmis.org];
-	RCPT_COUNT_TWELVE(0.00)[23];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259422-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7E2C0619126
+X-Rspamd-Queue-Id: AE97B61919E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Here are various unrelated fixes:
+From: Paolo Abeni <pabeni@redhat.com>
 
-- Patch 1: fix missing wakeups when multiple threads are reading from
-  the same fd. A fix for v5.7.
+The mptcp_recvmsg() can fill MPTCP socket receive queue via
+mptcp_move_skbs(), but currently does not try to wakeup any listener,
+because the same process is going to check the receive queue soon.
 
-- Patch 2: fix retransmission loop when MPTCP checksum is enabled. A fix
-  for v5.14.
+When multiple threads are reading from the same fd, the above can
+cause stall. Add the missing wakeup.
 
-- Patch 3: fix a TOCTOU race while computing rcv_wnd. A fix for v5.11.
-
-- Patch 4: allow subflows receive window to shrink if needed. A fix for
-  v5.19.
-
-- Patches 5-6: avoid 'extra_subflows' to underflow with the userspace
-  PM. A fix for v5.19.
-
-- Patch 7: report errors if one subflow cannot set SO_TIMESTAMPING. A
-  fix for v5.14.
-
-- Patch 8: try to set TCP_MAXSEG on all subflows, before reporting
-  errors, if any. A fix for v6.17.
-
-- Patch 9: avoid a lockdep splat when PREEMPT_RT is used. A fix for
-  v5.10.
-
-- Patch 10: check desc->count in read_sock, to act as expected. A fix
-  for v7.0.
-
+Fixes: 6771bfd9ee24 ("mptcp: update mptcp ack sequence from work queue")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
-Gang Yan (1):
-      mptcp: check desc->count in read_sock
+ net/mptcp/protocol.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Matthieu Baerts (NGI0) (3):
-      mptcp: sockopt: check timestamping ret value
-      mptcp: sockopt: set sockopt on all subflows
-      mptcp: pm: avoid sleeping while holding rcu_read_lock
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index a72a6ad6ee8b..5a20ab2789ae 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2276,6 +2276,10 @@ static bool mptcp_move_skbs(struct sock *sk)
+ 		mptcp_backlog_spooled(sk, moved, &skbs);
+ 	}
+ 	mptcp_data_unlock(sk);
++
++	if (enqueued && mptcp_epollin_ready(sk))
++		sk->sk_data_ready(sk);
++
+ 	return enqueued;
+ }
+ 
 
-Paolo Abeni (4):
-      mptcp: fix missing wakeups in edge scenarios
-      mptcp: fix retransmission loop when csum is enabled
-      mptcp: close TOCTOU race while computing rcv_wnd
-      mptcp: allow subflow rcv wnd to shrink
-
-Tao Cui (2):
-      mptcp: pm: fix extra_subflows underflow on userspace PM subflow creation
-      selftests: mptcp: add test for extra_subflows underflow on userspace PM
-
- net/mptcp/options.c                             | 43 ++++++++++++++-----------
- net/mptcp/pm.c                                  | 18 +++++------
- net/mptcp/pm_userspace.c                        | 14 ++++----
- net/mptcp/protocol.c                            | 10 ++++++
- net/mptcp/sockopt.c                             | 15 ++++++---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |  4 +++
- 6 files changed, 66 insertions(+), 38 deletions(-)
----
-base-commit: 78ef59e7a6459b16f8102e0ee1c718443323d1af
-change-id: 20260531-net-mptcp-misc-fixes-7-1-rc7-34884c9b246d
-
-Best regards,
---  
-Matthieu Baerts (NGI0) <matttbe@kernel.org>
+-- 
+2.53.0
 
 
