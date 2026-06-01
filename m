@@ -1,150 +1,149 @@
-Return-Path: <stable+bounces-259647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNSIDfbRHWqjewkAu9opvQ
-	(envelope-from <stable+bounces-259647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 20:39:50 +0200
+	id QMYaOf7ZHWpsfQkAu9opvQ
+	(envelope-from <stable+bounces-259648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 21:14:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A03C4624216
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 20:39:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D02E6247DF
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 21:14:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ED01630B695D
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 18:36:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 66650302D30A
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 19:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BA03EDE73;
-	Mon,  1 Jun 2026 18:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C7337DEA8;
+	Mon,  1 Jun 2026 19:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pq5t7mS0"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="ncHLTk+1"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3463DCD9C;
-	Mon,  1 Jun 2026 18:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3420D364024
+	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 19:13:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780338966; cv=none; b=uftnow93J6lsWiTeFH4J4vcV4SQfLrHrho58eP9wuVOWPbx7NViZd29dQH0MwOKDpFDbIydBqteEKePLv9eSLzb2OeN3enRCDBGPu26DtpyN9/kQBStfBHrPEqW+3TnEFofet8tZUouKNjjKKRH9egh83SUwQeY9ROetG3/R5MI=
+	t=1780341243; cv=none; b=OkA4lrR9wD/OpWelVx5tYD+Hz1GfORJv6iBC4ERzeu6jRNUU2FcH4fC3l5jPhpoGSAYsnVbkeF4xkP08hNmp2tPXnO0fBKB26faxGbT6+ZzeoWLnwjTfnQL2JmZFX59scqx1NFDsEnER7rIqp6C+Gvrt/nctZL93R8oIgD2BTI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780338966; c=relaxed/simple;
-	bh=jenn7I20NCdJlbj10XSmpXB6s906sLiVHK08GuoeAl8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CinsxBMI9VP7Sd5mvsZReUebbxjWG8ZdHmZDfCAsB5mpl2ilCgw6gaRFYCwmaUbxsvy2AB9qRbyeJ2B1tJd1QTHarHwfoK1ZdSPizkpvkMise4wWxZ/J4amETxa+6Yf2M/BCUd+TFGeR4I0ILgJ9m8mMqfByJOjoBfNkjKE3OsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pq5t7mS0; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780338965; x=1811874965;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jenn7I20NCdJlbj10XSmpXB6s906sLiVHK08GuoeAl8=;
-  b=Pq5t7mS0tqBz4Qg6C9MXOvLIQdEyU5t9QSHQr/rpfaRkhIYgoAw2Fb3i
-   W8SkkH0HxwRcu89xrwU/RLfqtGdhBoaSkovBvLJDT8wa3bVQPvwPNhfd1
-   913umI5KueYRBZqO+Js2FUJc4+mROHCpq5VRyrUGpv3B+e6C096fKsvmG
-   EyRtrLTH64Sl3l/BzQkLCegwcXyXhg9Mmo7jDXSK0VqgPOkYUZkwrc3ZK
-   qum8UiFashdPxhJYI1SgEfckYL3MmIWtQftqipJsd73xlDBKMEtCBP/Ij
-   B8fdF+2BgDeGqH9UPrDoAIJYhl/5q4TsRqrxXppG9iHdD9k+nWG8Qks6W
-   Q==;
-X-CSE-ConnectionGUID: XU5ieRbpSBm69xc8TisEwg==
-X-CSE-MsgGUID: oqLywgQyQ7qRUVOS/m1lMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="91677933"
-X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
-   d="scan'208";a="91677933"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 11:36:04 -0700
-X-CSE-ConnectionGUID: zIG4o9SVR/uVdLmPR84CeA==
-X-CSE-MsgGUID: 4uKTD85oSjyhqPJl1Ypsmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
-   d="scan'208";a="241146782"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.245.111])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 11:36:02 -0700
-Date: Mon, 1 Jun 2026 21:36:00 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Stepan Ionichev <sozdayvek@gmail.com>, dlechner@baylibre.com,
-	nuno.sa@analog.com, andy@kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] iio: pressure: rohm-bm1390: notify trigger on all
- error paths
-Message-ID: <ah3REJeg8KMB694A@ashevche-desk.local>
-References: <20260517160801.269-1-sozdayvek@gmail.com>
- <20260518094238.1986-1-sozdayvek@gmail.com>
- <20260518161516.53f21777@jic23-huawei>
- <61d9cec3-6aed-416f-9604-94fe94cb2e3b@gmail.com>
- <20260520120822.351aa58f@jic23-huawei>
- <0d58842a-aa5c-4d12-9435-3264070038cc@gmail.com>
- <aa2c2f98-454d-489c-a652-b8023b0773bf@gmail.com>
+	s=arc-20240116; t=1780341243; c=relaxed/simple;
+	bh=hD9ZyK/6hHSNBHm2d6rNF/7VjnRepNqxvoX09MKzYjQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Gv7z11vHT0udZNBdEmKdmZKsIr1KvexHZJdLMG7904GHswP8ikW+sO3nSTQZC0/3MDAUsHejLfcGxzxroMcM9CIkzE9cmF+JXyB0ymsgbcqLJdGPx8SXyNxJuzIkQz8WaAVdHVNT1j6D4ZRK/yx7Sna7xW6pM7AMZNqjzfzAa1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=ncHLTk+1; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=y99MWSkT3U44gIyTsTR6uqD1N8j0ka6iS4rLudm/EkE=; b=ncHLTk+1zSXdLat/q5YeVhwesa
+	3lAJY/GpD2KZT3HIWoYgM7jFpwEbj4evQfcMCVKjmIfKh4d52vDDZflihuhNVA1L+7tZ7lKbC1wsU
+	5yKA/84HZ+2ROhNIApNT8RMQZnXuH6vLlNYEePHPNK1wbGmUkJiEk2iQ3QUbfcRqLFvtmFWYOw1dG
+	gTkVl+Y0frkk3uWDYWHJ8mA2GQqDdoHX0FR1rQxevjn5NiL0ER1XPizrm8e3oBSFrWZHO7Cvsxuqo
+	tr75NCEA1+YPm5wDc6kqBOiPuKzpv0pDOBur7s60p3lvrGLcXSr1jMIelYpghUP1WOeq84MdODFzJ
+	d4FrpDDQ==;
+Received: from [189.7.87.67] (helo=[10.0.0.1])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1wU85C-00BGx8-G7; Mon, 01 Jun 2026 21:13:54 +0200
+From: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Subject: [PATCH v2 0/2] drm/v3d: Fix indirect CSD jobs with zeroed
+ workgroups
+Date: Mon, 01 Jun 2026 16:13:46 -0300
+Message-Id: <20260601-v3d-fix-indirect-csd-v2-0-aaebf035b936@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aa2c2f98-454d-489c-a652-b8023b0773bf@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NywrCMBREf6XctVfyMLG68j+ki5BHe0HTkpSgl
+ Py7sbh0eYaZMxtkn8hnuHYbJF8o0xwbiEMHdjJx9EiuMQgmNFNcY5EOA72QoqPk7Yo2O9Q90zY
+ IZtTZQJsuybfOrr0PjSfK65ze+0vh3/QnlOy/sHBkyJWS8nLqtZbhRqN5kDna+QlDrfUDR2EQk
+ LkAAAA=
+X-Change-ID: 20260516-v3d-fix-indirect-csd-6806cf20a57a
+To: Melissa Wen <mwen@igalia.com>, Iago Toral Quiroga <itoral@igalia.com>, 
+ Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+Cc: kernel-dev@igalia.com, dri-devel@lists.freedesktop.org, 
+ stable@vger.kernel.org, =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1124; i=mcanal@igalia.com;
+ h=from:subject:message-id; bh=hD9ZyK/6hHSNBHm2d6rNF/7VjnRepNqxvoX09MKzYjQ=;
+ b=owEBbQGS/pANAwAKAT/zDop2iPqqAcsmYgBqHdnvcGOnhYyEe7HVEnHErw4S4WeA1u3BS63mu
+ MZE/kWvhKmJATMEAAEKAB0WIQT45F19ARZ3Bymmd9E/8w6Kdoj6qgUCah3Z7wAKCRA/8w6Kdoj6
+ qnjDB/9e+uRJ2DLb/Jj+tUpb0bIC6PFJxNw46qvBJn29fiRs99QE5TeGn338iud6qzN0BjzGMgc
+ 4XZMQYWCakrcssM51og8rT5BdjzQ1iDUh+17z13pLklbx27LFYkrCcglu+ORm2aexoPRk6U/anK
+ F4x/mlaSkUIktNYWyfsBS0XFwWBZhvsOd2gjxy9xlaA5gcO7eibGji+gOa74iIhA63eO+Asa/dn
+ np4OoUyS72osheT/DrfntGZxfnv/PP39TJypr8BzoBrcRJwEO/WydQSAEIFl2i3Ffx0a8BBTu/0
+ bEpxPzv7dXoOBPVlWhWCg1JmsDPtXl1D+3PNnSkCA/g3jUyM
+X-Developer-Key: i=mcanal@igalia.com; a=openpgp;
+ fpr=F8E45D7D0116770729A677D13FF30E8A7688FAAA
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,baylibre.com,analog.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-259647-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[igalia.com:-];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259648-lists,stable=lfdr.de];
+	NEURAL_SPAM(0.00)[0.938];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: A03C4624216
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 6D02E6247DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, May 29, 2026 at 11:21:40AM +0300, Matti Vaittinen wrote:
-> On 22/05/2026 15:38, Matti Vaittinen wrote:
-> > On 20/05/2026 14:08, Jonathan Cameron wrote:
-> > > On Tue, 19 May 2026 08:48:13 +0300
-> > > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+Hi,
 
-...
+Indirect CSD lets userspace defer the workgroup counts to a GPU buffer
+that is only filled at runtime, so the counts are unknown at submission
+time and can legitimately turn out to be zero.
 
-> +#ifdef TEST_FORCE_IRQ_NONE
-> +       /* HACK, return IRQ_NONE and see if IRQ gets disabled */
-> +       if (!(first2 % 1000))
-> +               pr_info("Hack, return IRQ_NONE (%lu th)\n", first2);
+However, exercing this case exposed two issues in the CSD path.
 
-Hint: pr_info_ratelimited() seems better?
+  1. Virtual address leaks when the indirect CSD has zeroed workgroups.
 
-> +       first2++;
-> +
-> +       return IRQ_NONE;
-> +#else
->         return IRQ_HANDLED;
-> +#endif
+  2. CSD jobs with zeroed workgroups shouldn't be submitted to hardware.
 
--- 
-With Best Regards,
-Andy Shevchenko
+This series intends to address both issues.
 
+Best regards,
+- Maíra
+
+---
+v1 -> v2: https://lore.kernel.org/r/20260530-v3d-fix-indirect-csd-v1-0-15533948663f@igalia.com
+
+- [2/2] Don't check the whole cfg[0-2], check only the number of workgroups (Iago Toral)
+- [2/2] Add a comment about how the HW interprets 0 (Iago Toral)
+
+---
+Maíra Canal (2):
+      drm/v3d: Fix vaddr leak when indirect CSD has zeroed workgroups
+      drm/v3d: Skip CSD when it has zeroed workgroups
+
+ drivers/gpu/drm/v3d/v3d_sched.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+---
+base-commit: 5ab62dd3687bcc2cc542b99385aabac5c996db6f
+change-id: 20260516-v3d-fix-indirect-csd-6806cf20a57a
 
 
