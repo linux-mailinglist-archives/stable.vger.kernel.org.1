@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-259393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259394-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6M+JIq/UHGqUTAkAu9opvQ
-	(envelope-from <stable+bounces-259393-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 02:39:11 +0200
+	id z5frEuTVHGrmTAkAu9opvQ
+	(envelope-from <stable+bounces-259394-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 02:44:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156B06187CA
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 02:39:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91EB1618808
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 02:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3483430041EE
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 00:39:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F355B3015709
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 00:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3801986329;
-	Mon,  1 Jun 2026 00:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA0D4175A83;
+	Mon,  1 Jun 2026 00:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNxhKvdV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KUwjgqIG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F773F9FB
-	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 00:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912EE1465B4
+	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 00:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780274349; cv=none; b=YjdGHGoqxG+O8nEEHuKRiesUVxShG8sekMR019z08YL4FQmQo+A527uJLcWsprmUJFeWUwTYcWgcMVdcAap5FsqxGGLjREpjUM5oIaLj9max1CEbpWxsVNCPO3Hdp8tq5gzeT6Zr49Kjr1YO/4r8CRkihD/WCFkBM4Bfa6yphdw=
+	t=1780274656; cv=none; b=LXjli6WI5FsNZ0YVDlag+cPG+VluSjXb+KQcBbislPv0168NP+mFdlKBD2jwCaxMqPkNMIPawSGXs+UhkxplplgOt0TstUplvySHs6AtjyKB/XxzOdqy5his7mu1rV1h5ldvZ3gMBebQdSaunBtOnzTU3e8A27YPJj5B33FEpZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780274349; c=relaxed/simple;
-	bh=OAUhShPwUr9ucLakdDfQ+nHSH4mMGn/PkJXt7HbxODk=;
+	s=arc-20240116; t=1780274656; c=relaxed/simple;
+	bh=C5K+IURjv1GFRGM6G2rDKQkH9tyxqZ8qkMSQ+yWMaJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNPKdb3gEVwGs1x/Rj7wuwCHPLdinCjLtjqzjnei8gWgp7C2nju9fkvrh62DWLE6NhT2Gl4hLEzbt63mxYEJWbWaZMt1WWKetvcORlUc9NN2k+HujgBAFO57yzi3dGr92yNWzEUUWmHRNpXqyrKLtr8vwihiFJRJPL9H4wxZBpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNxhKvdV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13ADD1F00893;
-	Mon,  1 Jun 2026 00:39:06 +0000 (UTC)
+	 MIME-Version; b=NEIfGUvsAfA2zHvtjpJpDt1QbBoSEcse4el6Z2WdRM6g0I3ixX+usnYzjnLRtn74C2WCUG1woUpbNIk2DVsTCqa0C2gHRXF6ieExApHTJ9s6lrX++rlt3IFbi6zO3vmgqABpyyQdnciDgVITtk45tJdCgAgVKGdWcDI/3zVU/+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KUwjgqIG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF15B1F00893;
+	Mon,  1 Jun 2026 00:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780274347;
-	bh=vp8+bDDY5VdToqJn3J2Et+7d7TZBbHFOxwkingLt/5M=;
+	s=k20260515; t=1780274655;
+	bh=bt/RlMss2gDhEF0SrsIdoI+u5Z2Bk/zlNfVfB1kckSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NNxhKvdVdDDM0qBi9oG8dBLM1Pnhq5cHBxK53lZKSL11McEaZ3SuiBrBs+kRt45oK
-	 aQ3j53G7x9fm26CKUl9Ba6VFGGlC22x128hPNgI2zBSM5bbYZyDAQY9YZkjkY9TxYs
-	 j8GutSuPGFJXpauIvmco7TkGlvWuK0bYrZwPAq4nEEB+3rp6rLZWLLlUxBhYbhIgki
-	 mBsSlrKv80eNDo9kBThmEdHmGZxMzlycLz/Aa362j1Bdejj5qfS7UsbzPvrnoBzjYO
-	 1geFQwEYmKkq0dDlu9pPNAhQle6S2mfdF8jUTweXK39BdVkjAOCKVpyFoNZMDaPeyQ
-	 FPO9kalEVVfvA==
+	b=KUwjgqIGHNDiD9frPHc8nYzlio+yMWDd1NBByYaTTRd9DvOtaX2oMT0e6sJHRTjWL
+	 JM3pP4WhJTzJOQ+cKcufdBQGyqb5EPAfYjHmtZUwkm1xf4prNmoLo4Ngz4p6eqgiL8
+	 b2OmqWfOus/HqkXi0/tjoVlT72ra8ekotWiQFkG3BATM/sO6Be0DpqWa0Z1X33E6kF
+	 0tSCbDvvVDOtxPlhm3I+DKOb8bD0UDgcACwBusMTZkFqZTbZTvPGAI/tRBFPUG++I5
+	 fuUyK12QD9px6GhqpcEzLMfpeg5hqxOAa12LaUWPAKZyqw3A04wOGbTMCuLlUjG3Lf
+	 V4Oz9yGiriJIg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Gang Yan <yangang@kylinos.cn>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0.y] mptcp: update window_clamp on subflows when SO_RCVBUF is set
-Date: Sun, 31 May 2026 20:39:05 -0400
-Message-ID: <20260601003905.84041-1-sashal@kernel.org>
+Subject: [PATCH 6.18.y] mptcp: update window_clamp on subflows when SO_RCVBUF is set
+Date: Sun, 31 May 2026 20:44:13 -0400
+Message-ID: <20260601004413.90717-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026052819-liberty-cramp-97fe@gregkh>
-References: <2026052819-liberty-cramp-97fe@gregkh>
+In-Reply-To: <2026052819-lifter-chariot-8dc6@gregkh>
+References: <2026052819-lifter-chariot-8dc6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,18 +68,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259393-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259394-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -89,8 +89,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kylinos.cn:email]
-X-Rspamd-Queue-Id: 156B06187CA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 91EB1618808
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -127,7 +127,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
-index 1cf608e7357bd..52f4accf2bba4 100644
+index de12b3c548edd..566ab5e6c8621 100644
 --- a/net/mptcp/sockopt.c
 +++ b/net/mptcp/sockopt.c
 @@ -67,6 +67,12 @@ static int mptcp_get_int_option(struct mptcp_sock *msk, sockptr_t optval,
@@ -152,7 +152,7 @@ index 1cf608e7357bd..52f4accf2bba4 100644
  			break;
  		case SO_MARK:
  			if (READ_ONCE(ssk->sk_mark) != sk->sk_mark) {
-@@ -1560,7 +1566,7 @@ static void sync_socket_options(struct mptcp_sock *msk, struct sock *ssk)
+@@ -1558,7 +1564,7 @@ static void sync_socket_options(struct mptcp_sock *msk, struct sock *ssk)
  			mptcp_subflow_ctx(ssk)->cached_sndbuf = sk->sk_sndbuf;
  		}
  		if (sk->sk_userlocks & SOCK_RCVBUF_LOCK)
