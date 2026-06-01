@@ -1,188 +1,219 @@
-Return-Path: <stable+bounces-259480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCPuC/ZLHWphYgkAu9opvQ
-	(envelope-from <stable+bounces-259480-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 11:08:06 +0200
+	id oF+ZB+5DHWpbXwkAu9opvQ
+	(envelope-from <stable+bounces-259473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 10:33:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8D761C1F4
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 11:08:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 144B061B878
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 10:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 92AEC306E29C
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 08:55:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 75E7D30074DE
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 08:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F244833B6F8;
-	Mon,  1 Jun 2026 08:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D60D34250D;
+	Mon,  1 Jun 2026 08:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YUT1YuqG"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Mo0iu9jr"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011055.outbound.protection.outlook.com [40.107.130.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48602385D60
-	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 08:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780304064; cv=none; b=GuEdoy3Imn1D4mh/RzRp9Ciq7wxdlT6W0oZ8IydTgefZ+XteD7B4nAx5S0+S9ykayVgUN0b2061IWzWKnV6AilhNG16ZJGn9cqpxvZcdRyMkQd/81Oci5sZkXWXwlrwzj1pkcEqql1O1obPVI+bjIF3iUWvxK9Q5AvQD7N0y9dU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780304064; c=relaxed/simple;
-	bh=Rl4xuY1v9VBtAe/BpnRqX4uCDCp+AZh+liY7lQ03n5g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WQvamQG4sJDy9z/6+xIrtr/drFZ6155HqeB5r914izITvnr2mFxBoTyCAkHm68kWuhNYrl2s21r06Gg3GBvVOULSVr3G+eKP6VPniOXdhwLBjcpe65MIW+P44+fVDCd5Pkc6+MbhTrDPMURVOUolLs88OwS4cZLE8lsbjZ3CSQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YUT1YuqG; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780304064; x=1811840064;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Rl4xuY1v9VBtAe/BpnRqX4uCDCp+AZh+liY7lQ03n5g=;
-  b=YUT1YuqGs23qrboTwAiLu/I+h/+hvBiMVbtWgsrFxJrtdt4Pxp+tGJKT
-   24uJIPubZRvg7C5c7NvjgMbcDUmPqBgUXqXYv2LNPJ/Vw0Ee8rO08RI4f
-   ohd0CoiohOw/o0kqKPGsj0zLvtA1ZBGIzJFa8EV/li17Chnui+jUoAY8V
-   YQQRF//BVSp+RlYFyOLSNCt/MOyRwcVdcj/7ZhydrowJzlUn7pU8rSPod
-   hS3a4fg1hLELb2HvuDwEdAVOdSLKXV3sOTUFbk6BwdEFyCSPdb7sney5/
-   5TchluyX1os7ZzAsZxfwHEdgrqRTFr4kpm6+kp63cM2CkXuU/OApOm0Rh
-   w==;
-X-CSE-ConnectionGUID: +tr1R01oTEGwEsVnppYD6g==
-X-CSE-MsgGUID: r2hpBd7tSjWqEaaIBFoQPQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11803"; a="91368926"
-X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; 
-   d="scan'208";a="91368926"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 01:54:23 -0700
-X-CSE-ConnectionGUID: vPz26myOQSO1bqY57bHFaw==
-X-CSE-MsgGUID: MChDPTJNQaCjQbQvM+58RQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,180,1774335600"; 
-   d="scan'208";a="239110460"
-Received: from dut-2a59.iind.intel.com ([10.190.239.113])
-  by fmviesa006.fm.intel.com with ESMTP; 01 Jun 2026 01:54:20 -0700
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Cc: ville.syrjala@linux.intel.com,
-	uma.shankar@intel.com,
-	chaitanya.kumar.borah@intel.com,
-	pranay.samala@intel.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C439330D28;
+	Mon,  1 Jun 2026 08:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780302820; cv=fail; b=IX/tB2pvStdTW34STIZpS6WC8gBxKxvIzOg3VYYhQ71Ln6e8+znw7FHsv5fYANLwoXsDVcBId+RdzYnQTEItHUrU4aN8g5HLivTTVy0bvJEkGQNnfVl+IM5WqNQmFx2Yk15lP6mUwaYptR8sHLzGx9/ZpGwkts3lZLQgycty6Mw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780302820; c=relaxed/simple;
+	bh=X6szSaTwqvNS+xKSfGF9ZoDiW40tfkpshJiY+wX4wGE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=De+/wKXFGIIpgdve0s8szCm8RgjiN1QD9Tqm2xv/hRMeaT81I+nuJlP5t/auUJiLdRf26Lkzl+TNcaq4/telAUlM54enq82JJmu3lKEsNqobTaQ8bKSlu13cw+xzpd6kh9uen4vvnGcANnfuaYXtsFnTdbTfKkCIMWATzHgKUXY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Mo0iu9jr; arc=fail smtp.client-ip=40.107.130.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xHF2ISdVaQ2YdphKGylNZnnOMqcHioLnfS5B7Fnl4xA288Eci5hqoBubH+yyq5RLmnig0SjZd3mxCU74AdNtKLQfbNphHd45+3JW1Cn6RRZynJAF+OZ4yMTOQMcnpTdLGtFVrxp7Tk3Q6Bcceive5o9c4kPpf64CUQl/enYhsvDv+G5DUle4bbE3xIG+u9PEVeHU/MPs4j9Tl1bEmVJqKVSKhQvrfqI4rby712hzWcvmhPLN30h60EC9V6SVcwmues3FQ8PbRtRmloJabeXV/pDM+UR+LnfCr7GPE7oFjDkq9C54+F60ItabRfNF+WKoeVdifjLN8ajeZBY2aUoYiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rglN3qgDL7bQtrWGGDujSghFcRf2EwAVhAzRD0z7ivU=;
+ b=vZbE7SEo9VEmk61MmSRQ3OGZV8hG7Ih3/JTXQlS15YREhrCWlDfKOq25cM3Sf7b/XnCHxWTo/Cqj0B4oct7A3x04ugQ0lBs9sZO0dO2Y17CJx/20fYekDToBcGFnAiuBr8/FhMPAJfrkHp4IBK3o/Cwc4mWSEibbOMfsPP6JpRYgiv/638jtZPzIhLN2HV+Up+hLRCuF8xUhDEfI0smHjvmqn1K4HX894VEKlgX57hR7k0K5nsMCv45hECcRG8fsZH2USn7ILJZ0UmRyzyEFXBui+dTmOVU+sF0e5JRs4j75TBwZ+Qj3xNxs38ezT7Ma0+2i7hKclIZMg1T7O+mStQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rglN3qgDL7bQtrWGGDujSghFcRf2EwAVhAzRD0z7ivU=;
+ b=Mo0iu9jrnkNGbXkresaMP6v1Qm+JCTvfMQhzrma2VGEyeCIUAKAFOxcpRLAFDVdXWPoNhuoW6dDtdSdAWT0DD5NzGVpxePExh5UKH3eTVAa2DButTdEubARxU0l9YdZC6F9fPBrUw/pbLZah9RV1tY9NHDebzPDc5yY81YUXEHVPesXBXjTqbuIXxI+g2HQd1d8X0iXZFwWWJFda3GZmOzO0oMnv7GVKdQ/7mvfvb4KvloBuWKasaI+iCneCDOp30nfSbJRHxTrIz+3Rk6NQh7VFu/e9FMe44MYStkrINFAzxviH9LCIY1Fkh6tHwewm9lWppsqJOStoRVh8Ctl7jw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GVXPR04MB10021.eurprd04.prod.outlook.com
+ (2603:10a6:150:112::20) by PA4PR04MB7839.eurprd04.prod.outlook.com
+ (2603:10a6:102:c9::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
+ 08:33:34 +0000
+Received: from GVXPR04MB10021.eurprd04.prod.outlook.com
+ ([fe80::d247:853:3e16:1994]) by GVXPR04MB10021.eurprd04.prod.outlook.com
+ ([fe80::d247:853:3e16:1994%5]) with mapi id 15.21.0071.015; Mon, 1 Jun 2026
+ 08:33:34 +0000
+From: chancel.liu@oss.nxp.com
+To: shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com
+Cc: linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [v4 3/3] drm/i915: Fix color blob reference handling in intel_plane_state
-Date: Mon,  1 Jun 2026 13:59:53 +0530
-Message-Id: <20260601082953.128539-4-chaitanya.kumar.borah@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260601082953.128539-1-chaitanya.kumar.borah@intel.com>
-References: <20260601082953.128539-1-chaitanya.kumar.borah@intel.com>
+Subject: [PATCH v3] ASoC: fsl_sai: Fix 32 slots TDM broken by integer shift UB in xMR write
+Date: Mon,  1 Jun 2026 17:33:27 +0900
+Message-ID: <20260601083327.1535185-1-chancel.liu@oss.nxp.com>
+X-Mailer: git-send-email 2.50.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SEWP216CA0132.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2c0::18) To GVXPR04MB10021.eurprd04.prod.outlook.com
+ (2603:10a6:150:112::20)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB10021:EE_|PA4PR04MB7839:EE_
+X-MS-Office365-Filtering-Correlation-Id: e942727e-14af-47c7-ee09-08debfb87821
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|19092799006|18002099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	J28MWrSFU+5rHiWnyN99Km8hXSXwB9wUIFVEd9OavSbRVJiB8PH57C9YBwX1IV11dWIZrfWgt2KOG/dTDD2a1Uhgw9/xB61JZWz0fvnVGbqP1NNDn++Tjk+e1gyt2z3fJQ4VyPoK7L6Y+2g6kfwrMqCG9mW0GnYbMHE1sIlzt7abUGTIiRoesMKSwKXMZU3G4ny49URxQeN0PEOB7NU0xTPQ7BRhVLPNrWKoShFtF8V/gafAdCPOw2xpf2sHXoHzZVSuToa+xdt7jRZ9pIxMpV92clFyVE9rdB8g+3nrx98MUvgFEh+QTnsnEapitlNebKP+GLQGkPk0ShCibAYVe2NSuhWGV+xA+QEHzQD4cltgFKr+z3eFcgNrA5wEXKKS1YxX4bVdFDdEp4Y2+CLVYC2VP+zSREeyPbtaocAdbajs8YkG8BqlhduSa+kyb5p0gCBi0rqjd/0tXHDr4kNuyrwIRvUBDp7qyp3suEctTuofiW+ZC4MEcNc40FCayISwSTKOfZdKoB60gqVHXxQ925XtpeFzAAe1jnp857Fzka234TUBiG1UVNevOfFCAcyFb0Cgg4zdOup/YFTdLBLiT3Jtn5z0hX2Ntod8Ug3n4tCaUEEdhc7XKvUaMC2Vi5u3K25a12vPZeJyHSUgnWLhPOZUNk5cLdw8Sb/T2Qrrjr7C7UbWC1iD3FQXO0qQNxUM
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB10021.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(19092799006)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9T2AV9YzVvUkY4Oo1xWybY9q0COygvpner0aPTvUL5JLygE7msYbUXetxPPV?=
+ =?us-ascii?Q?xPomd4saIuZm/jH82LCkbpZIcBhV/4dyQgIG9jfne60ny/4mNwbduhn3FrY3?=
+ =?us-ascii?Q?imoSN7Q4KTCfL/QtwXlegrSn8/BUqg9xpKaAOc6aockUk+4JM9FY7TTa3guU?=
+ =?us-ascii?Q?CHbJq7OG5nJHVpQ+87e2wM/4H1dqF5wPk7ulI2Kh5ZyCeShpoVlxjD9szxtf?=
+ =?us-ascii?Q?ICz9MYI5em0gvu8xOpzoW40rxKGcei4IUqxqPvJHNoG5fh01KYKcYPVwL2kK?=
+ =?us-ascii?Q?ssYVWh6IQv6yAoopDeTtmDM0Sxx/n3plzZiqBNlv66aIgzmIxWQF1cnLupCG?=
+ =?us-ascii?Q?rwE6F+cV05pQG/Qgt0CRyIKTsig9JpA6sj8TpiN5VVBnZz6N1F3uJjWgqO6F?=
+ =?us-ascii?Q?8xTwdxPoXPcBl32CrvSTH927zmokA0a7zFr7boPnUkHQRkIHKO+ZyQcWbUFo?=
+ =?us-ascii?Q?aVCBU0b0ZsRB7nki2eFeGm9UY2+QmOx9AUcBzeHzkCWdAN4msRjLkwoaHvS3?=
+ =?us-ascii?Q?OYS0HvAVWjxjya/bFnFQztxGnqrTQDD/9xdmd2BU9LAyqsKOZiLf43JEauqE?=
+ =?us-ascii?Q?Izcd1/6RZN1DW4Nj74NkjOO1poQtd6qzwfakzq5w+u8pebSuuUWQkLIF/sIW?=
+ =?us-ascii?Q?SKcBsXbBU3Paf5p6pc+U7qJXYibFASoXYEW8Os5sDtsIERZBb9mOMtRKN8S/?=
+ =?us-ascii?Q?KqptMLS2YcZWVB3lehWqI8HgM1FbCchgknZ7tvRZ4iUs5Q3Ztf0Ku0KyKG64?=
+ =?us-ascii?Q?mi6OJku7d1+b4N8Bqa1AV4lilYuvMdo50XkJ4sRnWa/osJB0AbU9ZS3kexFi?=
+ =?us-ascii?Q?dWeVAXgwBv0hfc6kKdRpwbFkeqZfAekb3jBL7DPN/xq3zw3WAFHbkFNVCc7X?=
+ =?us-ascii?Q?1lZHBGr/VTZWgiVBEW6GdPDFsVcLuzDoMTuyiFOynPFtoot9IuUe92LTgrPC?=
+ =?us-ascii?Q?W3yQsJnHs6jD42XXTJzZE/DkJIiRPneTOfB2YmWRHRVLwKnbla6fAnD4yPgk?=
+ =?us-ascii?Q?UpFexEbw3iUQ07xFiizQ5rMX9IpAnou6/H/XJd8fvShSkwQLaeAN3oeSh8vG?=
+ =?us-ascii?Q?AkEEuGldIXUddXeAXcN9Eksba9yErRJjjhtaMUtoOVvsP+1h7k07uxCr7R/P?=
+ =?us-ascii?Q?H2W6NyGqQKHyx2X5taG+QUzi09+jPDFEPU6bqh02NPmzDDAqvAvDrVVqCY0/?=
+ =?us-ascii?Q?bsyiXFjtaiLHLa1qyTGMd4D9xf8kqkIlk/hJ4lhnNjPfzQVIPO5zmMKupaQy?=
+ =?us-ascii?Q?17+sox/03/1XAESIrNYkbGg4owROiWLg9e2jU7+rR0pZkiYrqkzwgBHytklW?=
+ =?us-ascii?Q?f8bD9ZrLGuDRMQS+7bAS4JEkcIAD9brJyl5yWrsCXSYbVQRjO3sLopTC2Ukw?=
+ =?us-ascii?Q?5ZpuQ3A7hhbOn+rqxn4x83RORNywjk6DFVqWoBNzgpiuhrutYrqehMOwRcv3?=
+ =?us-ascii?Q?IaLR492V8L9qemL97LHxR0LQNVdlB479IXupJGt/CtrzGLk9Sg4iQP8k2H7l?=
+ =?us-ascii?Q?qtFshK2bCSJ1bJpSPCoXwdMyHuJiHHC+eBT0SwcCNsl7YZTkYmr0Vtux3sFC?=
+ =?us-ascii?Q?4xU+G3JsSfgeKVgXtbwumJmAsIEb1W5MxSijPcEIec3eYb25N6tfBhFrcuA5?=
+ =?us-ascii?Q?y2vBm3hzfuzFGpdF5gcz4CE+eLuQC25doUJ/lFyeGiGfeYE3aYe99HpKvOIN?=
+ =?us-ascii?Q?lfmTKNb5ptXi98qREcLecTFpU9GSWsCKXng+aYffMS0Mi0lp53W2jQLwqaEC?=
+ =?us-ascii?Q?p7Qz2+n+2d6mSunYsnUdYiZHyes9lrSrfgFynygIhNCNVaT9q10Y?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e942727e-14af-47c7-ee09-08debfb87821
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB10021.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 08:33:34.5613
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3aBKbh8pMVlhhG1ZX6PYC/G83sCCTB9YEiW/KFBXAx+/iBgiBtTi1ct/0RoqYiUF0s+WAFXkNIFyKMFTXdz+0dAtsfzJ1+4BZhvhtdnH4XvQxBam2JHyM0UQaiCcOX45
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7839
+X-Spamd-Result: default: False [3.44 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[chaitanya.kumar.borah@intel.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-259480-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,perex.cz,suse.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259473-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chancel.liu@oss.nxp.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2E8D761C1F4
+	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.nxp.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,NXP1.onmicrosoft.com:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: 144B061B878
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Take proper references for hw color blobs (degamma_lut, gamma_lut,
-ctm, lut_3d) in intel_plane_duplicate_state() and drop them in
-intel_plane_destroy_state().
+From: Chancel Liu <chancel.liu@nxp.com>
 
-v2:
-- handle blobs in hw state clear
+When configuring 32 slots TDM (channels == slots == 32), the xMR
+(Mask Register) write used:
+~0UL - ((1 << min(channels, slots)) - 1)
 
-Cc: <stable@vger.kernel.org> #v6.19+
-Fixes: 3b7476e786c2 ("drm/i915/color: Add framework to program PRE/POST CSC LUT")
-Fixes: a78f1b6baf4d ("drm/i915/color: Add framework to program CSC")
-Fixes: 65db7a1f9cf7 ("drm/i915/color: Add 3D LUT to color pipeline")
-Reviewed-by: Pranay Samala <pranay.samala@intel.com> #v1
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+The literal "1" is a signed 32-bit int. Shifting it by 32 positions is
+undefined behaviour which may set this register to 0xFFFFFFFF, masking
+all 32 slots.
+
+Use GENMASK_U32() macro instead. For 32 slots this produces a zero mask:
+~GENMASK_U32(31, 0) = ~0xFFFFFFFF = 0x00000000
+Behaviour for fewer than 32 slots is unchanged.
+
+Fixes: 770f58d7d2c5 ("ASoC: fsl_sai: Support multiple data channel enable bits")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
 ---
- drivers/gpu/drm/i915/display/intel_plane.c | 27 ++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+Changes in v3
+- Fix patch can't be applied
 
-diff --git a/drivers/gpu/drm/i915/display/intel_plane.c b/drivers/gpu/drm/i915/display/intel_plane.c
-index b8348c0189aa..3eaf82477f49 100644
---- a/drivers/gpu/drm/i915/display/intel_plane.c
-+++ b/drivers/gpu/drm/i915/display/intel_plane.c
-@@ -145,6 +145,15 @@ intel_plane_duplicate_state(struct drm_plane *plane)
- 	if (intel_state->hw.fb)
- 		drm_framebuffer_get(intel_state->hw.fb);
- 
-+	if (intel_state->hw.degamma_lut)
-+		drm_property_blob_get(intel_state->hw.degamma_lut);
-+	if (intel_state->hw.gamma_lut)
-+		drm_property_blob_get(intel_state->hw.gamma_lut);
-+	if (intel_state->hw.ctm)
-+		drm_property_blob_get(intel_state->hw.ctm);
-+	if (intel_state->hw.lut_3d)
-+		drm_property_blob_get(intel_state->hw.lut_3d);
-+
- 	return &intel_state->uapi;
+Changes in v2
+- Use GENMASK_U32() macro instead to make it clearer and safer
+
+ sound/soc/fsl/fsl_sai.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index d6dd95680892..9661602b53c5 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -797,7 +797,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 				   FSL_SAI_CR4_FSD_MSTR, FSL_SAI_CR4_FSD_MSTR);
+
+ 	regmap_write(sai->regmap, FSL_SAI_xMR(tx),
+-		     ~0UL - ((1 << min(channels, slots)) - 1));
++		     ~GENMASK_U32(min(channels, slots) - 1, 0));
+
+ 	return 0;
  }
- 
-@@ -168,6 +177,16 @@ intel_plane_destroy_state(struct drm_plane *plane,
- 	__drm_atomic_helper_plane_destroy_state(&plane_state->uapi);
- 	if (plane_state->hw.fb)
- 		drm_framebuffer_put(plane_state->hw.fb);
-+
-+	if (plane_state->hw.degamma_lut)
-+		drm_property_blob_put(plane_state->hw.degamma_lut);
-+	if (plane_state->hw.gamma_lut)
-+		drm_property_blob_put(plane_state->hw.gamma_lut);
-+	if (plane_state->hw.ctm)
-+		drm_property_blob_put(plane_state->hw.ctm);
-+	if (plane_state->hw.lut_3d)
-+		drm_property_blob_put(plane_state->hw.lut_3d);
-+
- 	kfree(plane_state);
- }
- 
-@@ -340,6 +359,14 @@ static void intel_plane_clear_hw_state(struct intel_plane_state *plane_state)
- {
- 	if (plane_state->hw.fb)
- 		drm_framebuffer_put(plane_state->hw.fb);
-+	if (plane_state->hw.degamma_lut)
-+		drm_property_blob_put(plane_state->hw.degamma_lut);
-+	if (plane_state->hw.gamma_lut)
-+		drm_property_blob_put(plane_state->hw.gamma_lut);
-+	if (plane_state->hw.ctm)
-+		drm_property_blob_put(plane_state->hw.ctm);
-+	if (plane_state->hw.lut_3d)
-+		drm_property_blob_put(plane_state->hw.lut_3d);
- 
- 	memset(&plane_state->hw, 0, sizeof(plane_state->hw));
- }
--- 
-2.25.1
+--
+2.50.1
 
 
