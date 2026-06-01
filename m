@@ -1,179 +1,143 @@
-Return-Path: <stable+bounces-259478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMAfExNGHWpbXwkAu9opvQ
-	(envelope-from <stable+bounces-259478-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 10:42:59 +0200
+	id eGDTJgpFHWqlXwkAu9opvQ
+	(envelope-from <stable+bounces-259474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 10:38:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056A561BA64
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 10:42:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F192F61B94B
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 10:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5C91530819F5
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 08:37:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6BD230078C0
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 08:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F99388876;
-	Mon,  1 Jun 2026 08:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F2E348860;
+	Mon,  1 Jun 2026 08:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KDw9Ev1h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Awl2Qklw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BB937F729;
-	Mon,  1 Jun 2026 08:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71396343880;
+	Mon,  1 Jun 2026 08:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780303049; cv=none; b=TXvq1yo7ZammY+YF+5Esz1m7S3QLb7xeddz/z99nmlBHacXoUjFWLT8XDw6+IaZ1Pw059oQ2Q0gXC7a3obcVVwf7mHjEoYPFz55xmrlg1hVIiFWSavncFP2G5kAD2PbZ1ikBhM1uqzN/RqeJA6xzx/Cu2gnZgsopkC2ZQ5rbYlE=
+	t=1780302994; cv=none; b=sSVkanNvlTk3K0eZ5XM0wEpsBKD1xJhirb1jg9c8zD133pLz6dATxlJW7/hsmfevlTiJdWIEnjiaW6uDJriD4WtN8suyyYBAycw/ARssjVuLfFIn/USeW2jc+3gRXu7M4dAK62cGgamNvzXlAqUI/cNbD70y2JFFr0XJ70Lei6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780303049; c=relaxed/simple;
-	bh=JE9TaM48ZtwXiXb91iLyKzYjBT2SZ64YKZWsUyVnn/4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cqd9ViwCdwJcr0lnz4/GntCrkgFIgq1kgDyJaBlpgKHE+AXkkjvq5PBw/zIWN5E3EZYky9nBBJqr9lA8sP8fL36u2YHk749UlQ3taL30bNdWfm5x0/kM9EbZtC/TeZkztRf2bgCl/28MkN8uJlB/HsLsbi4Pj5KG3tIWxx3KLOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KDw9Ev1h; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241621F00893;
-	Mon,  1 Jun 2026 08:37:23 +0000 (UTC)
+	s=arc-20240116; t=1780302994; c=relaxed/simple;
+	bh=TPL6+rsKbNhPyrQQTQEjlwSh9kLDLG0Y6sGr+rFpXhY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=igA+kamkHYKnvJS8CtlC8MhIujgp0cCrTbl2HnEYsXjE8t6NhphLrXLtzrT8yFvZ3uihl7ynlO0+Nav5Bv+i3aWQTuYT2D7GZenWlnwBIor8gdcf/rcURb52W8H0IKUzEPLZTkiZcyoO98VC3t4uioxwcy+mn2JBWP3aanl7law=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Awl2Qklw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257101F00893;
+	Mon,  1 Jun 2026 08:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780303048;
-	bh=wKc+Pic6kUT/6n8WdeX34Gv1g4QfhyifwzIHCQKyiyc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KDw9Ev1h1HwJ3bUlx/uQfSspPwfPx570BGMaevqnnYGFNnspJc2mvurKaGYlvJ3Vk
-	 NszVH/c1fDXJdE3VTZA6sURL0KE+DfFuOdo/8ATOCVBYSdhsFq5UX9UrDFu7pg5fEB
-	 XxtZ0IA4oMM8eCX85fWY/Y3llvwtS4qU9s3qs1N6rUHMZ/ZwoI9pMPxtejeVPUZrJv
-	 eXMdLW9g/10hu7NPNcdAR1Hn445D0ohfNkT6h+GlYklNClIQ3m/e8GJ993XMAT/15x
-	 wRmww34hquFU6NTJtIyQ78997Xj7Aj8msWOKaLAgeBLPSL374ThNMoP3AC7sA1zph/
-	 G4EWBpgv42isQ==
-From: Lee Jones <lee@kernel.org>
-To: lee@kernel.org,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	=?UTF-8?q?Filipe=20La=C3=ADns?= <lains@riseup.net>,
-	Bastien Nocera <hadess@hadess.net>,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Alex Elder <elder@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Kwok Kin Ming <kenkinming2002@gmail.com>,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	greybus-dev@lists.linaro.org,
-	linux-staging@lists.linux.dev,
-	bpf@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [linux-6.12.y 4/4] HID: core: Fix size_t specifier in hid_report_raw_event()
-Date: Mon,  1 Jun 2026 09:36:12 +0100
-Message-ID: <20260601083642.908433-4-lee@kernel.org>
-X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-In-Reply-To: <20260601083642.908433-1-lee@kernel.org>
-References: <20260601083642.908433-1-lee@kernel.org>
+	s=k20260515; t=1780302993;
+	bh=CX5wVcPdVJkxD/ZKWZzIB+4vPMQ2papSJP/qE9C6oOw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Awl2QklwSbEIG3Ymmd/OBdnI2yrmd9PK72eTuZp3LX9nHwhVMIzRzLGFQk6SZ1o2S
+	 ncZ3w9g4e2iUbkhDsSSkC3ALcDImuEI+dTTHJiQ21HFQ5JOaKtp/167LjQSweZrhXt
+	 UYrjXTkkR6ZddsE3MksHgsRv+AyJaPky0bR5MG7NrjVIrWDCyj/KOSmG3ipFJasuHg
+	 zXjPhmaxA13c4/fa5npvcWvQvK3Y5inlaUNG6iv9SzD2AJzY4QMABYBi2qLdT3xt96
+	 f8+vJvJ4yVZnu5Q+5NTA/ehtvPidzGijaJURJI7eSKw5rVl88J8pWiygMLPMcX4EpZ
+	 GNpxzWpy33NMQ==
+Date: Mon, 1 Jun 2026 09:36:25 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, liam@infradead.org, jgg@ziepe.ca, 
+	leon@kernel.org, david@kernel.org, shuah@kernel.org, vbabka@kernel.org, 
+	jannh@google.com, pfalcato@suse.de, balbirs@nvidia.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, linux-kselftest@vger.kernel.org, 
+	usama.arif@linux.dev, ryan.roberts@arm.com, anshuman.khandual@arm.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] fs/proc/task_mmu: do not warn on seeing
+ non-migration pmd entry
+Message-ID: <ah1EZHWhO077k7tG@lucifer>
+References: <20260530085413.1270139-1-dev.jain@arm.com>
+ <20260530085413.1270139-2-dev.jain@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260530085413.1270139-2-dev.jain@arm.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259478-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259474-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[22];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FREEMAIL_TO(0.00)[kernel.org,riseup.net,hadess.net,wacom.com,linuxfoundation.org,gmail.com,vger.kernel.org,lists.linaro.org,lists.linux.dev];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 056A561BA64
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email]
+X-Rspamd-Queue-Id: F192F61B94B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Nathan Chancellor <nathan@kernel.org>
+On Sat, May 30, 2026 at 08:54:11AM +0000, Dev Jain wrote:
+> pagemap_pmd_range_thp() warns if a non-present PMD is not a migration
+> entry. This became false once device-private entries at the PMD level were
+> added.
+>
+> Therefore, remove the stale migration-only assertion.
+>
+> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-[ Upstream commit 4d3a2a466b8d68d852a1f3bbf11204b718428dc4 ]
+LGTM so:
 
-When building for 32-bit platforms, for which 'size_t' is
-'unsigned int', there are warnings around using the incorrect format
-specifier to print bsize in hid_report_raw_event():
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
-  drivers/hid/hid-core.c:2054:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
-   2053 |                 hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-        |                                                                                         ~~~
-        |                                                                                         %zu
-   2054 |                                      report->id, csize, bsize);
-        |                                                         ^~~~~
-  drivers/hid/hid-core.c:2076:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
-   2075 |                 hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-        |                                                                                          ~~~
-        |                                                                                          %zu
-   2076 |                                      report->id, rsize, bsize);
-        |                                                         ^~~~~
+I also verified that I could trigger this locally with your test, so feel free
+to add:
 
-Use the proper 'size_t' format specifier, '%zu', to clear up the
-warnings.
+Tested-by: Lorenzo Stoakes <ljs@kernel.org>
 
-Cc: stable@vger.kernel.org
-Fixes: 2c85c61d1332 ("HID: pass the buffer size to hid_report_raw_event")
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://lore.kernel.org/20260516020430.110135-1-ojeda@kernel.org/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-(cherry picked from commit 3ab135238832446399614e7a4bb796d620717806)
-Signed-off-by: Lee Jones <lee@kernel.org>
----
- drivers/hid/hid-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Cheers, Lorenzo
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index d9ea99cdb68e..87d990ada868 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2015,7 +2015,7 @@ int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *
- 		return 0;
- 
- 	if (unlikely(bsize < csize)) {
--		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-+		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %zu)\n",
- 				     report->id, csize, bsize);
- 		return -EINVAL;
- 	}
-@@ -2037,7 +2037,7 @@ int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *
- 		rsize = max_buffer_size;
- 
- 	if (bsize < rsize) {
--		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-+		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %zu)\n",
- 				     report->id, rsize, bsize);
- 		return -EINVAL;
- 	}
--- 
-2.54.0.823.g6e5bcc1fc9-goog
-
+> ---
+>  fs/proc/task_mmu.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 1e3a15bf46f4e..58938e62154d9 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -2129,7 +2129,6 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
+>  			flags |= PM_SOFT_DIRTY;
+>  		if (pmd_swp_uffd_wp(pmd))
+>  			flags |= PM_UFFD_WP;
+> -		VM_WARN_ON_ONCE(!pmd_is_migration_entry(pmd));
+>  		page = softleaf_to_page(entry);
+>  	}
+>
+> --
+> 2.43.0
+>
 
