@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-259554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259556-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YA1XCd6GHWrAbQkAu9opvQ
-	(envelope-from <stable+bounces-259554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 15:19:26 +0200
+	id 8A5aLlGHHWrAbQkAu9opvQ
+	(envelope-from <stable+bounces-259556-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 15:21:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 765DC61FE8A
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 15:19:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EFB261FF17
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 15:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6007C30166C3
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 13:17:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E75DB3046417
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 13:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0423A4F5F;
-	Mon,  1 Jun 2026 13:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDF73A5452;
+	Mon,  1 Jun 2026 13:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hpq3u2Jl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U1qE4NoZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDBF365A0F
-	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 13:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A10E365A0F
+	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 13:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780319850; cv=none; b=apWdMepo+MML/HC4fv1F/4wux5Hxbn3Csu65Q0XxAnKYNQAsM8U/v0Y72hHtwrunuA5TPUfhbBf/ysW3SY++2u1cO7Jgm7gb3yhbqj9Mko6Lr4wz6A/SBYNfhOzETKGmjp/7JlMsBzPgP/FY8L+HSfXWEfkurmKS5E43hoMCsO4=
+	t=1780319855; cv=none; b=ImfOyFbaZaxdltZuIxvkaB8UtF/7hdBIKKJ5UGXY8XqIxyBHEs0vQzpE1P70aFIJdSMekPiBIKE6luHvPVyUj1CgPKGVYFA84hZt9+RlYJkY3NE5qVTysEQ/7eHLo6NP09at6a9OzMZjTmCAmJC3XjInLJWKxya4hls4+CuaiOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780319850; c=relaxed/simple;
-	bh=OJ9RuobannAvkyw1IT1tHyo6Y4y9Jh3FRX7Jxlr6XVg=;
+	s=arc-20240116; t=1780319855; c=relaxed/simple;
+	bh=W/6KVdvVU7TFc3d5NvQwveMQ5Ljho5Tw2OFwiyTF7Io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CCjDTy/FGfPqAbP2jPMvijOQU6PM9KJvUEteDbJthkSvAqDBpqjo+Ojn3oa1nu3SazRnuvujBQraXR3MhGl9WB3o50KvXg4tl4HtKjVb4BmKg0nglt1hfjmgcydqRqBWm/2wj/f/RlpDglckwZYXtX9EcZC5fFlmrs9E8uCtGGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hpq3u2Jl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8847A1F0089A;
-	Mon,  1 Jun 2026 13:17:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d2T1ejx9w87RTDPdcoewsbbv2FSsrCWtA3V9phkcfhIZ/qATsGJT8G9qeISrZ8GEITF7O0s7cEsS7NQkhBY+4b9zrWhaEjPtHkKxFJiABz4imbaJLJq7XCEiBj6XsEKWS6Za7M7h0D9S5QC/tvViDkR3ucOb4UQxi+a3NWJK0/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U1qE4NoZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF121F00893;
+	Mon,  1 Jun 2026 13:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780319849;
-	bh=123A7HprqI8OIIqDrS2szhlS5d1WSCZ+LoNop6dItOw=;
+	s=k20260515; t=1780319853;
+	bh=D57kvu1ojMK2EvE7dWd0Jxdx0qKIaDUhT0mMIFLKnkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hpq3u2JlulJ+t98uwY3rDTCQuW0aLoFWkyp/+b4QbGenlAqeXzUKj55UMgV81VE48
-	 ewnuDMBI30jB5CvAbhGFY2iJoGCS1+vlr6JGpGqjE7w29Po3jXr68pSheFi/yibFID
-	 WF9ArwgA+lmpnw2rPUiHxB58jE7OwxhsjncI4hgBLKca6whEHCCPp89fqz/KJneRZG
-	 r612lVRXnRVrx8twUTrKm0ZWZUHDn5zsTRZ9/gYasJBDKjT6SD9olewdCjx5+qYnAd
-	 lmkcWQJZbW/MNrD3Ng4Lo9yE3TNvdSjHeY6uwVdq8j5oRjg3mZ5LxXkcN1uNY58A8O
-	 XvUv0I+yhpQSA==
+	b=U1qE4NoZNa8NjfirmG5BlsDbbHK6W+dJXYYArNKUewAQLPjTFPKc9E9yuxymFZ3A+
+	 oFLRUOHPM/1CGEdnLDPn3XbLfXNS65ZsrXIlgBSdQn3KbIZ361Wt2/pDeHbtakPpDG
+	 TCLIJMgMs3njA8CW4extU1locokELjQUeW2sWvFZ6QrOYk5Eb48FEd8AIbwTVc1rQw
+	 AkOzPJeP9Fi/uUBjahRIp7mVFhOnVnSZveTDaF5wn2lSw4Ysse6kmjAthXfQ2yQDHw
+	 QeZWMlWaK7r2zPrMYzl5wvV09Ic9f/7dnKb2cQ6FR1xP4gnC4x76bo2jLqIpexeDRU
+	 yR7Jahr0y2l4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Iago Toral Quiroga <itoral@igalia.com>,
+	Melissa Wen <mwen@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/3] drm/v3d: Release indirect CSD GEM reference on CPU job free
-Date: Mon,  1 Jun 2026 09:17:25 -0400
-Message-ID: <20260601131725.780793-3-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] drm/v3d: Synchronous operations can't timeout
+Date: Mon,  1 Jun 2026 09:17:30 -0400
+Message-ID: <20260601131731.780919-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260601131725.780793-1-sashal@kernel.org>
-References: <2026052815-arose-kabob-9b34@gregkh>
- <20260601131725.780793-1-sashal@kernel.org>
+In-Reply-To: <2026052855-portable-pardon-850e@gregkh>
+References: <2026052855-portable-pardon-850e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,68 +68,104 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259554-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259556-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-0.997];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 765DC61FE8A
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,igalia.com:email]
+X-Rspamd-Queue-Id: 2EFB261FF17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 6eb6e5acafa46854d4363e6c34981289995f3ace ]
+[ Upstream commit 78fe02d090d38393cc00de9d1929e59426f202a4 ]
 
-v3d_get_cpu_indirect_csd_params() takes a reference to the indirect BO via
-drm_gem_object_lookup() and stashes it in cpu_job->indirect_csd.indirect,
-but nothing on the CPU job teardown path ever drops that reference.
+CPU jobs and CACHE CLEAN jobs execute synchronously once the DRM
+scheduler starts running them. Therefore, there is no fence to wait on,
+neither are those jobs able to timeout.
 
-Drop the extra reference in v3d_cpu_job_free(). The NULL check covers ioctl
-errors before the lookup ran and CPU job types other than
-V3D_CPU_JOB_TYPE_INDIRECT_CSD, which leave the field zero-initialised.
+Hence, remove the `timedout_job` hook from the CPU and CACHE CLEAN
+scheduler ops.
 
-Cc: stable@vger.kernel.org
-Fixes: 18b8413b25b7 ("drm/v3d: Create a CPU job extension for a indirect CSD job")
-Assisted-by: Claude:claude-opus-4.7
 Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://patch.msgid.link/20260515-v3d-cpu-job-leaks-v1-2-7f147cbbf935@igalia.com
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+Link: https://lore.kernel.org/r/20250826-v3d-queue-lock-v3-5-979efc43e490@igalia.com
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Stable-dep-of: b0fe80c0b925 ("drm/v3d: Fix use-after-free of CPU job query arrays on error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_submit.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/v3d/v3d_sched.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
-index 40c21aaade0d6..23472c7af41a9 100644
---- a/drivers/gpu/drm/v3d/v3d_submit.c
-+++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -130,6 +130,9 @@ v3d_cpu_job_free(struct kref *ref)
- 	v3d_performance_query_info_free(&job->performance_query,
- 					job->performance_query.count);
+diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+index c9c88d3ad6698..63564266135f6 100644
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -684,6 +684,7 @@ v3d_cpu_job_run(struct drm_sched_job *sched_job)
+ 	trace_v3d_cpu_job_end(&v3d->drm, job->job_type);
+ 	v3d_job_update_stats(&job->base, V3D_CPU);
  
-+	if (job->indirect_csd.indirect)
-+		drm_gem_object_put(job->indirect_csd.indirect);
-+
- 	v3d_job_free(ref);
++	/* Synchronous operation, so no fence to wait on. */
+ 	return NULL;
  }
+ 
+@@ -699,6 +700,7 @@ v3d_cache_clean_job_run(struct drm_sched_job *sched_job)
+ 
+ 	v3d_job_update_stats(job, V3D_CACHE_CLEAN);
+ 
++	/* Synchronous operation, so no fence to wait on. */
+ 	return NULL;
+ }
+ 
+@@ -786,7 +788,7 @@ v3d_render_job_timedout(struct drm_sched_job *sched_job)
+ }
+ 
+ static enum drm_gpu_sched_stat
+-v3d_generic_job_timedout(struct drm_sched_job *sched_job)
++v3d_tfu_job_timedout(struct drm_sched_job *sched_job)
+ {
+ 	struct v3d_job *job = to_v3d_job(sched_job);
+ 
+@@ -827,7 +829,7 @@ static const struct drm_sched_backend_ops v3d_render_sched_ops = {
+ 
+ static const struct drm_sched_backend_ops v3d_tfu_sched_ops = {
+ 	.run_job = v3d_tfu_job_run,
+-	.timedout_job = v3d_generic_job_timedout,
++	.timedout_job = v3d_tfu_job_timedout,
+ 	.free_job = v3d_sched_job_free,
+ };
+ 
+@@ -839,13 +841,11 @@ static const struct drm_sched_backend_ops v3d_csd_sched_ops = {
+ 
+ static const struct drm_sched_backend_ops v3d_cache_clean_sched_ops = {
+ 	.run_job = v3d_cache_clean_job_run,
+-	.timedout_job = v3d_generic_job_timedout,
+ 	.free_job = v3d_sched_job_free
+ };
+ 
+ static const struct drm_sched_backend_ops v3d_cpu_sched_ops = {
+ 	.run_job = v3d_cpu_job_run,
+-	.timedout_job = v3d_generic_job_timedout,
+ 	.free_job = v3d_cpu_job_free
+ };
  
 -- 
 2.53.0
