@@ -1,221 +1,553 @@
-Return-Path: <stable+bounces-259388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFWZNKvPHGqkSwkAu9opvQ
-	(envelope-from <stable+bounces-259388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 02:17:47 +0200
+	id oPirH43UHGqUTAkAu9opvQ
+	(envelope-from <stable+bounces-259390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 02:38:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C67D61871F
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 02:17:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6DB06187B3
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 02:38:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 47BA4300DA67
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 00:17:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CC0A93008280
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 00:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AB51A6824;
-	Mon,  1 Jun 2026 00:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB28E175A83;
+	Mon,  1 Jun 2026 00:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ncBMRqsD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aqe2CpmT"
 X-Original-To: stable@vger.kernel.org
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013062.outbound.protection.outlook.com [40.107.201.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6AC415A86D;
-	Mon,  1 Jun 2026 00:17:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780273062; cv=fail; b=LtqqO1hEcfeKhscdEL0V1BwAGcTJilqJWBhF2cibDQD47REe5jikc5BxdqRO3BJRE8iUZXnkIe8UG7+nh0nC1cyS5uU2Ln1tEfOCKNta4BZg0S4aq4U4VmeR6yyX2g5hLXhInuTZ7QEebCP6oyhPfYPp7eeWsSKKx05RkG82Jco=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780273062; c=relaxed/simple;
-	bh=NL2HOlpFiqAIrLdcF/0eyA43sOQ8yYZBJMqyBt/idJg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=PkMdVCmdtI0ngW1v2elIt67rVDcbiIHVLhxM0BPjAiY+N2CXrTwcmNLi4c9wmqIDUaCjWkd5PLNGDxLqg/YYti4EoHOpK0sIucLNNLsDeXTf0yw6pbfSNiMeS3KWUCU1zokADjLFZIHjBC5mwiuceh4OCheBieCLf+oojRalDFo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ncBMRqsD; arc=fail smtp.client-ip=40.107.201.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b4TmjYNPSLqQgjnZuyq4rRjcxFqy7kI1EHlHFwfmcPmYekuAbLJQQcgbdcyNwBjBsfsmQ9mZwfeF39Pzj1C2ZmRr4Mm5DuCaNu9Ue+zsuG4REkdiq+PVOV5KKgv+4JrntSov9ldLOmM1WK5n21COTl5ydQk00BbgeaoT5bko0Q0YYHUlCRuIjUpGNs/+9pfe3yf0Wjj/YySsQNQtThpgn3bunK8r+STqPO6S5HPHHsr6VeKYCZzjVGeM0sgd6zTkveFQDgam7WW1vApbm4ZKHXzSlqkAzF9mf8YGKAFI4BVCbh4UcQfTyjFTF7esvJ3TaVBnHxZSr5CwdWu8x7PosQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xdmjuujdw5Tvq3osOU2KMftKkC1tXXpDqilWTfFkzg8=;
- b=Y245R1UMOK7NDm8lWkbh58lZkTbGQJROhPbI+dhX+Dw5mpJiakw74CRrowvNyy3dNA0ScyrX7FfePAqY93xxi5E3DMYGF4vAfMlm4d4cSajTOY1AzmKr6omW9roXj0pNyO/Ao8RKfg4Lbs608S4Bxal48cOifETeUzbjXFoKH7SrZ0sKtx6P8vRC57FYSrEoTJbkCwzd5E9trAfVSYeDrvI/kuTMnypU4a+7r034GuikDBQWO5qhHp/9rrf4jPixufBEilS2OuZNlhjH37S7bCNeiGfsjNPLq7Jraho3v/mKdYdJnpoD2z6mpe+Zs3Ca4R79G2ubD7pxWWtnQHKV0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xdmjuujdw5Tvq3osOU2KMftKkC1tXXpDqilWTfFkzg8=;
- b=ncBMRqsDVcgF49BndMqlIlM+aMQQWlTaQ/RlzzRAHN0XKwSAsWwoFcLNj/OaRcYbMXgeOzTooZs+hxjGOM5OGb4wTzaEHQM/1ZfwFk+Yif8+c5bSj6PsuryjP2Bel0t3aqbjMIKVU+54uALBVUKqVFMw+UsUebgJK2Vuuzlos1VwBzaT8xHYHbIASgkb1JHCjfzZt0lV/WIOe9YoXPwZS37XAbpNvWuzqtcfk3JadpOD2rTEoFNsZr6WRUMnVbm2i/VzDJGuK7nVkngsNaWq1IjpypI3VcQvx3CU6qXrO2Hlbx4Hh+CLlWg6YK/0opHGEptxLgMsl+Sb2gCJ8q+UdA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by DS0PR12MB8319.namprd12.prod.outlook.com (2603:10b6:8:f7::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
- 00:17:36 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.21.0071.015; Mon, 1 Jun 2026
- 00:17:36 +0000
-Message-ID: <ccdca325-a33c-45ae-aac1-3ac4aea77a42@nvidia.com>
-Date: Mon, 1 Jun 2026 10:17:28 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] mm/huge_memory: preserve pmd_swp_uffd_wp on
- device-private PMD downgrade
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@kernel.org>, stable@vger.kernel.org,
- Sashiko AI review <sashiko-bot@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>
-References: <20260529172331.356655-1-kas@kernel.org>
- <20260529172331.356655-5-kas@kernel.org>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260529172331.356655-5-kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ME3P282CA0073.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:220:f6::6) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304593F9FB
+	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 00:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780274314; cv=none; b=LoBoHwsPDwLidS/gOrZEhTvW+lfoim9SouX2ZXSLEBd5HLTk0LZhMzGV1VbL20mJ6cr/KczsIV244/lMojMhiDtb6iAIv8rWzB53e+dYZVlTDKxcuI6K/g/xCzh6B/b+AqM/EsWyhrxGE9+yaqZkSSo8vvnAFuAp+Va3n3/DlFk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780274314; c=relaxed/simple;
+	bh=bAX8qUNLQ3MM8KXGgYLxlL2t8sQUymrCWmkDFd8Adgg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BF52g6wM6hmPlzfKMnzbhUXPJBWKkYGQWdB2N1rQ35Z7Et5vAORJQEMTmwUxnDWu7zbG+dAXD375F8UnyxQYbsA2xBAKNIEP2CVleOUJuqPLGwdGtvErxjzy/j4OR2sEnC9giT7dEqwvTyeZJEuO9SPGJMclDDxHiP+S8k3b8Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aqe2CpmT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D291F00893;
+	Mon,  1 Jun 2026 00:38:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780274312;
+	bh=VDufph6ExFSbqNl/pLap+EXvg5F8jbeKMCR4O4wa0Hk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=aqe2CpmTzbDXLRmzJRPReKvzfqfXjAwbmeE/G1EGx+DZYthiELIdyxR8DNyrIgD9W
+	 wEMCKDlcXfTtOyo82aFqOU6jX+aQMc410A60mR8+wl8JNSkpAMH55lTnO0joPpNME6
+	 HUzCdGaKfTDyg0Z9ZtlwEqtBwDiUgAgGvpCgWU3W8fZOf8IsHwU3OPHfl7EoIWs3TT
+	 KZr7olxNvhmjqc/UtQuMBeB7XuaWQQJ6MMT4f2gnMWufyVDiwB82cfc31xkuR0BTIo
+	 acxZJWGmHSKqGPJgmd/xRZFYU2sw17cOK4VuWKJ4ENP3RG0L4FvhyN46EfTy/rmsLC
+	 ZWPYqkbv5OIKw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Yang Yingliang <yangyingliang@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] spi: qup: switch to use modern name
+Date: Sun, 31 May 2026 20:38:29 -0400
+Message-ID: <20260601003830.82222-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026052837-task-immovably-904e@gregkh>
+References: <2026052837-task-immovably-904e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|DS0PR12MB8319:EE_
-X-MS-Office365-Filtering-Correlation-Id: b6fa8bca-cbdc-43c6-b9fb-08debf732edf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|18002099003|22082099003|56012099006|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	Kzw6wK9YGX2zVKd5KlCG/ihZOzCAUuoCWOhTlikdXPc2HimcuEOcODBfq2L9rLX3bYK1IkoTrr79SSWrVE28CzFWpUy0O/DG1X1yOVoweA9MlVW69pDQtb94Ni92BqjOyyysoeTtIBDGkC/w51IfbFE8avf796n+7/QrgX//hTR1TwaPbuTqbkCeZqkMCPv5Tzcnbm/M3l0T1y4OO3ls8QbNUSdfvdw7jSNtbR4NS62dANh5qPQAp0zk6a2mLzaz1kHd/onAV/l/WvMVLKFNMX4lzhmlaPgUkuvWWeY+HeTwb0etaXaFhqYMQJKEPvQ3WqtWZp4pCOl7+m3TfWzTL2rbL5VNi2BnvfaRpS1Nz20AkQ3k9a9xUa9kRuMaFMFtg9jEZ7LLEcmlmyL5l/djMlezyDNNrqX6idM+m/T7Yocawbek7SEbbW3xc+n1AxlTTCWsbEMBSHSJ2erpdA7ltoFjv54tM7me5bv99lzyJyM2zSC5f1cBoQ/y1pmecHfxSkcteo4NjKhlRlFPN0KjNaTcADpNPVaYVZjxDl1KyHHEyEaXHuOd1xbXUiNo/JOyFXWYrLR+QWbz7qX/cgiqQ9rFZvMrIopOyU5ifD8oSpJxLSJC/YTWiYIhPAXni/bAoVxfxxdxPXUmABCuv4AGTmbLEs7QpuNHMG0fRY8py/F3D+VnB8ZZaT4/UOayoyei
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WlphVnBSOGpCeFRoZHZLQUVYZVRab1BZeG1pc1QrQXZqbWp1ZE04cHN6S2xn?=
- =?utf-8?B?eE16NjlUcUdtendoN3dJd2ZwdCtUVStyOUdWU2FlSkxpTmZzMEtPa3dCMXZX?=
- =?utf-8?B?a1FFdmI3ZHlrLzVDNnVSTnlmRlduWHM0WmlxeGhaSmlOcFJuYlRINVY0anlR?=
- =?utf-8?B?MG1yYzNMM3hoT0hmSm1CY2M4bmxVZTl4NEE3aml1Zmc1WWJuSi85ditXNnpj?=
- =?utf-8?B?SXJON0N0QVV2cHhlTWFJbGpPTmZEMEx0b2xMUnk5cTZQaFB0SVpUOCtHL253?=
- =?utf-8?B?ZldLMUJOM0Vub0pSYzcwbHFYOExKRGlhTkpJbmJseEpKOTlmeEhPeU5oMUxv?=
- =?utf-8?B?Y2pvVGF1aUxBUWNkVldrcmV1TDNwK0xKTVAzWTFFRkNZM2RnaFFwT3M5LzNu?=
- =?utf-8?B?aWVBSkdLbkhCUno2QzQ2dTJPVGpYbVF1QjZyazdHd29DQTA0VnU4WTg1Z2hT?=
- =?utf-8?B?d0JwSDdTUGRxTktMNnM3SFlhOS9Hc0pJa1o3MUVtQXVkb05lTk10amFhdTJs?=
- =?utf-8?B?U2U3WUlEcDJWSzduQmVienpkcU96TFBMOUZlR0JPcnJDOXpQQjVJWVpSZ0xH?=
- =?utf-8?B?RVFpcWt2b01GeFhYcWsycUxObUFrai9WQmdxbzJWWEw3SjZqdGh4a0VEdGpE?=
- =?utf-8?B?aU4zVEZQRVE1RGV5WEJldjFHT3kxOXBoaFFxVEhzaXZWR2xaSjZ0L1lRTjdL?=
- =?utf-8?B?WG91Vm9qbCtkZldzeTNET2xka1pEc1BZYytmTGVQOHltT0haMnQ4N2dmZUhx?=
- =?utf-8?B?MnJlbnJ2b1VnaTlIajVMam5aQjdLbFJ4L2o4Mzl3RGdrMWRBNzdJSXhYOWVU?=
- =?utf-8?B?aVpTM3VSRlZXTkx0by8zUjRHUXJpcFRCbDg5TEsva2FmSVBoeUVaS2JJbWYy?=
- =?utf-8?B?UkNvYVJrVndZSHdyTWlXWmFSZllPK1lBZ0EzTGFzU0pYSzRyckpZZjMvYzJl?=
- =?utf-8?B?WHhIY2padjVVeGREeGRydXdhS1B6MmgrazZsMTNENnZKa29hUXFGY0Q1WXhE?=
- =?utf-8?B?d0ltelZXbE1qZ3pDRkd6RG1EVEUyeU0xNEpaa2Z1U3lBaDJzZjg1eTd3N0FI?=
- =?utf-8?B?bjQ1WjBuL3B1aURVaER5VE00cWV2NlFKb0JWb3NveGh3RGl6ZVlKNUh6QTVX?=
- =?utf-8?B?dFpCZjBraHhFbHA3a3RtNVcyR2RIYk1MQnBHWmRWSmdSZXVKQVNNSWs2am00?=
- =?utf-8?B?UWs5U3cyK09HMzZIRjRiaGRrNnF2U3Npdk42dEdlV3BYeVdGZUduWHBtSW13?=
- =?utf-8?B?cmpIemtpWDlGeUZ0MG5pYW90bzQ3SDgvK0VYS1Y1K0ZmUW03NFAzc0Rya3Vn?=
- =?utf-8?B?b21BdUJ6UjFLZFF0L2NzMXpGZHNDbzQ2N1Fwc29Gb1FtTXBPRW8rWm5mZ2w1?=
- =?utf-8?B?aWhJZDd2ZWtsQnRhWjVkZWg0S0hkYTltK0U4cGNPZ2p0bmhQai9nT21QcFY2?=
- =?utf-8?B?bUxnZmxSbzhUOXF2OGl3OUQ5VVFxTWpsNmJ0bnpIZnFTdlVaYjNadndDZXBM?=
- =?utf-8?B?T2x6TUttYVFoeFg2YlFFVE95U1Y5eSs4akRaMTB3N1ZJQ3FTMzhyMVcwclhB?=
- =?utf-8?B?MVJseWxsSUp6RHRnenBqNlVSZnNzWnI2UzhZQm93ZXJPeCtqdzVObXJaajhx?=
- =?utf-8?B?N25FaUV3V0dINDdWZjl3TXlHV3hmTlkxVzRNUnRUUHlyVFJYUWwvS2lwZ2NW?=
- =?utf-8?B?dTNvcnBUd2NHaXFYZ0ZzdSs0SGpiR1hzejdJSFNjTWc0NnJzRjloeVUzNlEv?=
- =?utf-8?B?LzkyZm4zbEZFTWxqVHJ4RW9rQzNzSy9vMUNQU05teGZUenpRYUh2dmRCTUhS?=
- =?utf-8?B?ZWY4S0pXangzNVlXMUdhTHhlcTBObjltUXcrbndqWWh1YVpvVyt4RGYwSkU5?=
- =?utf-8?B?RkQ5VmNSbVQ4ZCtQVWpSZWtyMVhsbTN1aWxpUnBSSFZnRGxHWmxWSXEwa21t?=
- =?utf-8?B?MVI1dTNYLzBpQTI1RUNVTW1XNkkzY1BCWmhOUzlqQVdRNjRoaG5RZGFCQnVF?=
- =?utf-8?B?MVkwM09zT2ZRWmM1UENVT1lqc1JFdDdPc2xaRHRWUWgwYzdwMzQrVlVlR2x3?=
- =?utf-8?B?b2wyR2JUclRFd1VvUWhLZlJwVVVsMFR6SVlHRW9lOTFzdnhOSUp0NzU5WDBU?=
- =?utf-8?B?aDd4UnFXOE9pZWNlWW1uQm9kaS9rZ005eDM5Q3NrSktOSDRmcTI5MnhnV1lQ?=
- =?utf-8?B?dHRWdk9ncXQyekNJUktNbzFhNGVwd2k3UmhOd1VFY2xqeFJuUW5yYzRDRnFM?=
- =?utf-8?B?VThBbExLRU44dWtpQmIxZU5LY2owWFFFYXk1cGF6c2Q4azlWa3Jkd3ZDcllp?=
- =?utf-8?Q?JM2hIADe/r5jeifRvY?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6fa8bca-cbdc-43c6-b9fb-08debf732edf
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 00:17:36.2890
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5y6h8GNAJ3gh/CT+vsUKKozPqTkfWAnNzOQ1s92pZjqe5Quu9LeMO6LR8tXA7Z8TOQBEBkP83BFQLeEqzfqRqA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8319
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259388-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-259390-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[balbirs@nvidia.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.994];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,Nvidia.com:dkim,nvidia.com:mid,nvidia.com:email]
-X-Rspamd-Queue-Id: 4C67D61871F
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D6DB06187B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/30/26 03:23, Kiryl Shutsemau (Meta) wrote:
-> change_non_present_huge_pmd() rewrites a writable device-private PMD
-> swap entry into a readable one without carrying pmd_swp_uffd_wp()
-> across. The PTE-level change_softleaf_pte() does this correctly;
-> mirror that here, matching what copy_huge_pmd() does for the fork
-> path. Without the carry, a plain mprotect() over a UFFD_WP-marked
-> device-private THP strips the bit and the trap is bypassed on
-> swap-in.
-> 
-> Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
-> Cc: stable@vger.kernel.org
-> Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> ---
->  mm/huge_memory.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 42b86e8ab7c0..b7c895b1d366 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2663,6 +2663,8 @@ static void change_non_present_huge_pmd(struct mm_struct *mm,
->  	} else if (softleaf_is_device_private_write(entry)) {
->  		entry = make_readable_device_private_entry(swp_offset(entry));
->  		newpmd = swp_entry_to_pmd(entry);
-> +		if (pmd_swp_uffd_wp(*pmd))
-> +			newpmd = pmd_swp_mkuffd_wp(newpmd);
->  	} else {
->  		newpmd = *pmd;
->  	}
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+[ Upstream commit 597442ff4f6226206b7cc28b86eb2be0ae9c6418 ]
 
-Balbir
+Change legacy name master to modern name host or controller.
+
+No functional changed.
+
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Link: https://lore.kernel.org/r/20230818093154.1183529-10-yangyingliang@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: a7e8f3efd50a ("spi: qup: fix error pointer deref after DMA setup failure")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-qup.c | 166 +++++++++++++++++++++---------------------
+ 1 file changed, 83 insertions(+), 83 deletions(-)
+
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index fb6b7738b4f55..2eee5af4cf4b1 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -386,20 +386,20 @@ static void spi_qup_write(struct spi_qup *controller)
+ 	} while (remainder);
+ }
+ 
+-static int spi_qup_prep_sg(struct spi_master *master, struct scatterlist *sgl,
++static int spi_qup_prep_sg(struct spi_controller *host, struct scatterlist *sgl,
+ 			   unsigned int nents, enum dma_transfer_direction dir,
+ 			   dma_async_tx_callback callback)
+ {
+-	struct spi_qup *qup = spi_master_get_devdata(master);
++	struct spi_qup *qup = spi_controller_get_devdata(host);
+ 	unsigned long flags = DMA_PREP_INTERRUPT | DMA_PREP_FENCE;
+ 	struct dma_async_tx_descriptor *desc;
+ 	struct dma_chan *chan;
+ 	dma_cookie_t cookie;
+ 
+ 	if (dir == DMA_MEM_TO_DEV)
+-		chan = master->dma_tx;
++		chan = host->dma_tx;
+ 	else
+-		chan = master->dma_rx;
++		chan = host->dma_rx;
+ 
+ 	desc = dmaengine_prep_slave_sg(chan, sgl, nents, dir, flags);
+ 	if (IS_ERR_OR_NULL(desc))
+@@ -413,13 +413,13 @@ static int spi_qup_prep_sg(struct spi_master *master, struct scatterlist *sgl,
+ 	return dma_submit_error(cookie);
+ }
+ 
+-static void spi_qup_dma_terminate(struct spi_master *master,
++static void spi_qup_dma_terminate(struct spi_controller *host,
+ 				  struct spi_transfer *xfer)
+ {
+ 	if (xfer->tx_buf)
+-		dmaengine_terminate_all(master->dma_tx);
++		dmaengine_terminate_all(host->dma_tx);
+ 	if (xfer->rx_buf)
+-		dmaengine_terminate_all(master->dma_rx);
++		dmaengine_terminate_all(host->dma_rx);
+ }
+ 
+ static u32 spi_qup_sgl_get_nents_len(struct scatterlist *sgl, u32 max,
+@@ -446,8 +446,8 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 			  unsigned long timeout)
+ {
+ 	dma_async_tx_callback rx_done = NULL, tx_done = NULL;
+-	struct spi_master *master = spi->master;
+-	struct spi_qup *qup = spi_master_get_devdata(master);
++	struct spi_controller *host = spi->controller;
++	struct spi_qup *qup = spi_controller_get_devdata(host);
+ 	struct scatterlist *tx_sgl, *rx_sgl;
+ 	int ret;
+ 
+@@ -482,20 +482,20 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 			return ret;
+ 		}
+ 		if (rx_sgl) {
+-			ret = spi_qup_prep_sg(master, rx_sgl, rx_nents,
++			ret = spi_qup_prep_sg(host, rx_sgl, rx_nents,
+ 					      DMA_DEV_TO_MEM, rx_done);
+ 			if (ret)
+ 				return ret;
+-			dma_async_issue_pending(master->dma_rx);
++			dma_async_issue_pending(host->dma_rx);
+ 		}
+ 
+ 		if (tx_sgl) {
+-			ret = spi_qup_prep_sg(master, tx_sgl, tx_nents,
++			ret = spi_qup_prep_sg(host, tx_sgl, tx_nents,
+ 					      DMA_MEM_TO_DEV, tx_done);
+ 			if (ret)
+ 				return ret;
+ 
+-			dma_async_issue_pending(master->dma_tx);
++			dma_async_issue_pending(host->dma_tx);
+ 		}
+ 
+ 		if (!wait_for_completion_timeout(&qup->done, timeout))
+@@ -514,8 +514,8 @@ static int spi_qup_do_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ static int spi_qup_do_pio(struct spi_device *spi, struct spi_transfer *xfer,
+ 			  unsigned long timeout)
+ {
+-	struct spi_master *master = spi->master;
+-	struct spi_qup *qup = spi_master_get_devdata(master);
++	struct spi_controller *host = spi->controller;
++	struct spi_qup *qup = spi_controller_get_devdata(host);
+ 	int ret, n_words, iterations, offset = 0;
+ 
+ 	n_words = qup->n_words;
+@@ -659,7 +659,7 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
+ /* set clock freq ... bits per word, determine mode */
+ static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
+ {
+-	struct spi_qup *controller = spi_master_get_devdata(spi->master);
++	struct spi_qup *controller = spi_controller_get_devdata(spi->controller);
+ 	int ret;
+ 
+ 	if (spi->mode & SPI_LOOP && xfer->len > controller->in_fifo_sz) {
+@@ -680,9 +680,9 @@ static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
+ 
+ 	if (controller->n_words <= (controller->in_fifo_sz / sizeof(u32)))
+ 		controller->mode = QUP_IO_M_MODE_FIFO;
+-	else if (spi->master->can_dma &&
+-		 spi->master->can_dma(spi->master, spi, xfer) &&
+-		 spi->master->cur_msg_mapped)
++	else if (spi->controller->can_dma &&
++		 spi->controller->can_dma(spi->controller, spi, xfer) &&
++		 spi->controller->cur_msg_mapped)
+ 		controller->mode = QUP_IO_M_MODE_BAM;
+ 	else
+ 		controller->mode = QUP_IO_M_MODE_BLOCK;
+@@ -693,7 +693,7 @@ static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
+ /* prep qup for another spi transaction of specific type */
+ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
+ {
+-	struct spi_qup *controller = spi_master_get_devdata(spi->master);
++	struct spi_qup *controller = spi_controller_get_devdata(spi->controller);
+ 	u32 config, iomode, control;
+ 	unsigned long flags;
+ 
+@@ -841,11 +841,11 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
+ 	return 0;
+ }
+ 
+-static int spi_qup_transfer_one(struct spi_master *master,
++static int spi_qup_transfer_one(struct spi_controller *host,
+ 			      struct spi_device *spi,
+ 			      struct spi_transfer *xfer)
+ {
+-	struct spi_qup *controller = spi_master_get_devdata(master);
++	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	unsigned long timeout, flags;
+ 	int ret;
+ 
+@@ -879,21 +879,21 @@ static int spi_qup_transfer_one(struct spi_master *master,
+ 	spin_unlock_irqrestore(&controller->lock, flags);
+ 
+ 	if (ret && spi_qup_is_dma_xfer(controller->mode))
+-		spi_qup_dma_terminate(master, xfer);
++		spi_qup_dma_terminate(host, xfer);
+ 
+ 	return ret;
+ }
+ 
+-static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
++static bool spi_qup_can_dma(struct spi_controller *host, struct spi_device *spi,
+ 			    struct spi_transfer *xfer)
+ {
+-	struct spi_qup *qup = spi_master_get_devdata(master);
++	struct spi_qup *qup = spi_controller_get_devdata(host);
+ 	size_t dma_align = dma_get_cache_alignment();
+ 	int n_words;
+ 
+ 	if (xfer->rx_buf) {
+ 		if (!IS_ALIGNED((size_t)xfer->rx_buf, dma_align) ||
+-		    IS_ERR_OR_NULL(master->dma_rx))
++		    IS_ERR_OR_NULL(host->dma_rx))
+ 			return false;
+ 		if (qup->qup_v1 && (xfer->len % qup->in_blk_sz))
+ 			return false;
+@@ -901,7 +901,7 @@ static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
+ 
+ 	if (xfer->tx_buf) {
+ 		if (!IS_ALIGNED((size_t)xfer->tx_buf, dma_align) ||
+-		    IS_ERR_OR_NULL(master->dma_tx))
++		    IS_ERR_OR_NULL(host->dma_tx))
+ 			return false;
+ 		if (qup->qup_v1 && (xfer->len % qup->out_blk_sz))
+ 			return false;
+@@ -914,30 +914,30 @@ static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
+ 	return true;
+ }
+ 
+-static void spi_qup_release_dma(struct spi_master *master)
++static void spi_qup_release_dma(struct spi_controller *host)
+ {
+-	if (!IS_ERR_OR_NULL(master->dma_rx))
+-		dma_release_channel(master->dma_rx);
+-	if (!IS_ERR_OR_NULL(master->dma_tx))
+-		dma_release_channel(master->dma_tx);
++	if (!IS_ERR_OR_NULL(host->dma_rx))
++		dma_release_channel(host->dma_rx);
++	if (!IS_ERR_OR_NULL(host->dma_tx))
++		dma_release_channel(host->dma_tx);
+ }
+ 
+-static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
++static int spi_qup_init_dma(struct spi_controller *host, resource_size_t base)
+ {
+-	struct spi_qup *spi = spi_master_get_devdata(master);
++	struct spi_qup *spi = spi_controller_get_devdata(host);
+ 	struct dma_slave_config *rx_conf = &spi->rx_conf,
+ 				*tx_conf = &spi->tx_conf;
+ 	struct device *dev = spi->dev;
+ 	int ret;
+ 
+ 	/* allocate dma resources, if available */
+-	master->dma_rx = dma_request_chan(dev, "rx");
+-	if (IS_ERR(master->dma_rx))
+-		return PTR_ERR(master->dma_rx);
++	host->dma_rx = dma_request_chan(dev, "rx");
++	if (IS_ERR(host->dma_rx))
++		return PTR_ERR(host->dma_rx);
+ 
+-	master->dma_tx = dma_request_chan(dev, "tx");
+-	if (IS_ERR(master->dma_tx)) {
+-		ret = PTR_ERR(master->dma_tx);
++	host->dma_tx = dma_request_chan(dev, "tx");
++	if (IS_ERR(host->dma_tx)) {
++		ret = PTR_ERR(host->dma_tx);
+ 		goto err_tx;
+ 	}
+ 
+@@ -952,13 +952,13 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
+ 	tx_conf->dst_addr = base + QUP_OUTPUT_FIFO;
+ 	tx_conf->dst_maxburst = spi->out_blk_sz;
+ 
+-	ret = dmaengine_slave_config(master->dma_rx, rx_conf);
++	ret = dmaengine_slave_config(host->dma_rx, rx_conf);
+ 	if (ret) {
+ 		dev_err(dev, "failed to configure RX channel\n");
+ 		goto err;
+ 	}
+ 
+-	ret = dmaengine_slave_config(master->dma_tx, tx_conf);
++	ret = dmaengine_slave_config(host->dma_tx, tx_conf);
+ 	if (ret) {
+ 		dev_err(dev, "failed to configure TX channel\n");
+ 		goto err;
+@@ -967,9 +967,9 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
+ 	return 0;
+ 
+ err:
+-	dma_release_channel(master->dma_tx);
++	dma_release_channel(host->dma_tx);
+ err_tx:
+-	dma_release_channel(master->dma_rx);
++	dma_release_channel(host->dma_rx);
+ 	return ret;
+ }
+ 
+@@ -979,7 +979,7 @@ static void spi_qup_set_cs(struct spi_device *spi, bool val)
+ 	u32 spi_ioc;
+ 	u32 spi_ioc_orig;
+ 
+-	controller = spi_master_get_devdata(spi->master);
++	controller = spi_controller_get_devdata(spi->controller);
+ 	spi_ioc = readl_relaxed(controller->base + SPI_IO_CONTROL);
+ 	spi_ioc_orig = spi_ioc;
+ 	if (!val)
+@@ -993,7 +993,7 @@ static void spi_qup_set_cs(struct spi_device *spi, bool val)
+ 
+ static int spi_qup_probe(struct platform_device *pdev)
+ {
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 	struct clk *iclk, *cclk;
+ 	struct spi_qup *controller;
+ 	struct resource *res;
+@@ -1029,34 +1029,34 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 		return -ENXIO;
+ 	}
+ 
+-	master = spi_alloc_master(dev, sizeof(struct spi_qup));
+-	if (!master) {
+-		dev_err(dev, "cannot allocate master\n");
++	host = spi_alloc_host(dev, sizeof(struct spi_qup));
++	if (!host) {
++		dev_err(dev, "cannot allocate host\n");
+ 		return -ENOMEM;
+ 	}
+ 
+ 	/* use num-cs unless not present or out of range */
+ 	if (of_property_read_u32(dev->of_node, "num-cs", &num_cs) ||
+ 	    num_cs > SPI_NUM_CHIPSELECTS)
+-		master->num_chipselect = SPI_NUM_CHIPSELECTS;
++		host->num_chipselect = SPI_NUM_CHIPSELECTS;
+ 	else
+-		master->num_chipselect = num_cs;
++		host->num_chipselect = num_cs;
+ 
+-	master->use_gpio_descriptors = true;
+-	master->max_native_cs = SPI_NUM_CHIPSELECTS;
+-	master->bus_num = pdev->id;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
+-	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+-	master->max_speed_hz = max_freq;
+-	master->transfer_one = spi_qup_transfer_one;
+-	master->dev.of_node = pdev->dev.of_node;
+-	master->auto_runtime_pm = true;
+-	master->dma_alignment = dma_get_cache_alignment();
+-	master->max_dma_len = SPI_MAX_XFER;
++	host->use_gpio_descriptors = true;
++	host->max_native_cs = SPI_NUM_CHIPSELECTS;
++	host->bus_num = pdev->id;
++	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
++	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
++	host->max_speed_hz = max_freq;
++	host->transfer_one = spi_qup_transfer_one;
++	host->dev.of_node = pdev->dev.of_node;
++	host->auto_runtime_pm = true;
++	host->dma_alignment = dma_get_cache_alignment();
++	host->max_dma_len = SPI_MAX_XFER;
+ 
+-	platform_set_drvdata(pdev, master);
++	platform_set_drvdata(pdev, host);
+ 
+-	controller = spi_master_get_devdata(master);
++	controller = spi_controller_get_devdata(host);
+ 
+ 	controller->dev = dev;
+ 	controller->base = base;
+@@ -1064,16 +1064,16 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	controller->cclk = cclk;
+ 	controller->irq = irq;
+ 
+-	ret = spi_qup_init_dma(master, res->start);
++	ret = spi_qup_init_dma(host, res->start);
+ 	if (ret == -EPROBE_DEFER)
+ 		goto error;
+ 	else if (!ret)
+-		master->can_dma = spi_qup_can_dma;
++		host->can_dma = spi_qup_can_dma;
+ 
+ 	controller->qup_v1 = (uintptr_t)of_device_get_match_data(dev);
+ 
+ 	if (!controller->qup_v1)
+-		master->set_cs = spi_qup_set_cs;
++		host->set_cs = spi_qup_set_cs;
+ 
+ 	spin_lock_init(&controller->lock);
+ 	init_completion(&controller->done);
+@@ -1151,7 +1151,7 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_enable(dev);
+ 
+-	ret = devm_spi_register_master(dev, master);
++	ret = devm_spi_register_controller(dev, host);
+ 	if (ret)
+ 		goto disable_pm;
+ 
+@@ -1163,17 +1163,17 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	clk_disable_unprepare(cclk);
+ 	clk_disable_unprepare(iclk);
+ error_dma:
+-	spi_qup_release_dma(master);
++	spi_qup_release_dma(host);
+ error:
+-	spi_master_put(master);
++	spi_controller_put(host);
+ 	return ret;
+ }
+ 
+ #ifdef CONFIG_PM
+ static int spi_qup_pm_suspend_runtime(struct device *device)
+ {
+-	struct spi_master *master = dev_get_drvdata(device);
+-	struct spi_qup *controller = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(device);
++	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	u32 config;
+ 
+ 	/* Enable clocks auto gaiting */
+@@ -1189,8 +1189,8 @@ static int spi_qup_pm_suspend_runtime(struct device *device)
+ 
+ static int spi_qup_pm_resume_runtime(struct device *device)
+ {
+-	struct spi_master *master = dev_get_drvdata(device);
+-	struct spi_qup *controller = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(device);
++	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	u32 config;
+ 	int ret;
+ 
+@@ -1215,8 +1215,8 @@ static int spi_qup_pm_resume_runtime(struct device *device)
+ #ifdef CONFIG_PM_SLEEP
+ static int spi_qup_suspend(struct device *device)
+ {
+-	struct spi_master *master = dev_get_drvdata(device);
+-	struct spi_qup *controller = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(device);
++	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	if (pm_runtime_suspended(device)) {
+@@ -1224,7 +1224,7 @@ static int spi_qup_suspend(struct device *device)
+ 		if (ret)
+ 			return ret;
+ 	}
+-	ret = spi_master_suspend(master);
++	ret = spi_controller_suspend(host);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1239,8 +1239,8 @@ static int spi_qup_suspend(struct device *device)
+ 
+ static int spi_qup_resume(struct device *device)
+ {
+-	struct spi_master *master = dev_get_drvdata(device);
+-	struct spi_qup *controller = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(device);
++	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	ret = clk_prepare_enable(controller->iclk);
+@@ -1257,7 +1257,7 @@ static int spi_qup_resume(struct device *device)
+ 	if (ret)
+ 		goto disable_clk;
+ 
+-	ret = spi_master_resume(master);
++	ret = spi_controller_resume(host);
+ 	if (ret)
+ 		goto disable_clk;
+ 
+@@ -1272,8 +1272,8 @@ static int spi_qup_resume(struct device *device)
+ 
+ static int spi_qup_remove(struct platform_device *pdev)
+ {
+-	struct spi_master *master = dev_get_drvdata(&pdev->dev);
+-	struct spi_qup *controller = spi_master_get_devdata(master);
++	struct spi_controller *host = dev_get_drvdata(&pdev->dev);
++	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	int ret;
+ 
+ 	ret = pm_runtime_get_sync(&pdev->dev);
+@@ -1291,7 +1291,7 @@ static int spi_qup_remove(struct platform_device *pdev)
+ 			 ERR_PTR(ret));
+ 	}
+ 
+-	spi_qup_release_dma(master);
++	spi_qup_release_dma(host);
+ 
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+-- 
+2.53.0
+
 
