@@ -1,146 +1,154 @@
-Return-Path: <stable+bounces-259495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259497-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AT4MolcHWoBZwkAu9opvQ
-	(envelope-from <stable+bounces-259495-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 12:18:49 +0200
+	id 6CxJC1FgHWojZwkAu9opvQ
+	(envelope-from <stable+bounces-259497-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 12:34:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F55661D359
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 12:18:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B0761D901
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 12:34:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 67C6530E4B8C
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 10:04:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9051E30D8DB4
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 10:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9EE3A875F;
-	Mon,  1 Jun 2026 09:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5799D3A3E74;
+	Mon,  1 Jun 2026 10:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BSiUw/7F"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="gTuTbwC4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B5639EF14
-	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 09:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFF439AD25;
+	Mon,  1 Jun 2026 10:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780307812; cv=none; b=J/vVs5/tb4hNxfaWgmJq2Nb6ObLBvJA2p8WwAL2Zhh1t3PyvbfGnW5IdDoto0xbfSs4qJD/EVsgeh+7DpBMLI1T3KMT0A39oCNYZgxABINW4ZI/pxsXwJU+sWxzoY8Mua5ISB+AEY70MAM/Dnu/o4M5PKmE1Own6lXv5+BU4J0c=
+	t=1780308437; cv=none; b=n/HESJ8LOdniT7XtMdS2dvVVzz25wB31EagmmzMYwMNyHpKLazO6pYTKAbHkuJc0npADcgZHvTgJfJqMjZCJB1eLqkccs6EnPGWmWT2qSvkTYq1/4G3bhJ/Zenf4K5ty7bveYQucrlI9nf6tJ+XU/FXauAW21b9Uk405Yvtqx9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780307812; c=relaxed/simple;
-	bh=oTyuv/4q8lfTEk2MTKANVi4deoOAEf8o5emx4pw77kM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=alrsQBTFWjKAK19qbTkmYBGJy0uQze+hFiOSUb38IHcf8k+4Xo8IF+2eevmLtzaUtvA74Yk/H7IBLdvgjpzjagW6alkn1BijFax0Qv4nuk2UaKkeYKkOzcbVlBKhB7Gyuhc5nirWxjSjXD4IGeYyRcTOl+FcU7Aqxk6/jjUOz+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BSiUw/7F; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c0c379e8ffso7776905ad.3
-        for <stable@vger.kernel.org>; Mon, 01 Jun 2026 02:56:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780307803; x=1780912603; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oTyuv/4q8lfTEk2MTKANVi4deoOAEf8o5emx4pw77kM=;
-        b=BSiUw/7Fk3WHa0LGaHe9B8pASuTyDGRPQt51lsLMgL9A3IyNQc+L1Y2U25nhQ+fNMf
-         gAWJMCkxK63AElqZ8EUZYqC9arhMMGTGNPu1RkYgYj0RxWw+SjtfWoXKDlgCOC33a8JF
-         pUCBHTaEUOE/5j+laAI+myPJ4EDfzMDvoj5RnPVA47Z9S8dqROsOthSrGnJQQqYlsG/y
-         IlIH/MKPXOZ9SXg34arUEIdqgTHTBtIgRQn9fmm/8YUB5hB6RWXh8Xf6z6jjBWmCVbKT
-         kBu8m7WD/CPec+UM9Z2Fui4W90zqXqlLo9PhjUWRwVAHEl4lUUZrVIcVVY4fnxffp/oz
-         pY6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780307803; x=1780912603;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=oTyuv/4q8lfTEk2MTKANVi4deoOAEf8o5emx4pw77kM=;
-        b=SbU7ew1EzgsuG2fDIGyzL9NaZnRdi/qDbZDLXIAu11sCToVPDbKGYzGXyKjPH3NUCe
-         x3xxz1MB7C76OBZj5ohLbU4S4S3a8l5d1rhTE1thBEYLFvn1pgIQERDijZnLZuxhvqLh
-         Qml1/l17gh/+D749BvO1B+YOu9ZSstsIHZrw3aEmp4Xw95fLvc45zy06TWlq04WB09Tg
-         HJV/EGXuAMbN60pkWeQCTjkwCLJv397FhMOcJtjOTVcUl/jiiU1twdDs7Yd3ViKSn78w
-         kNbe1VKYaSNDpGkrZK6DNEb5W6yELo3FH1BtLLjVyhOq7nuTOZ8uJHu1hM61pablXotO
-         DxHg==
-X-Forwarded-Encrypted: i=1; AFNElJ9vrXme2xeA7i9DBPZood/X7liVegn04x0knEbqFNFGvZGEtcq2J7OwfI94IsbTbafqsS0y7Ds=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCrb19yEpXcxZ8fUKQvARok47G9VtYzQv9iv5rpPdmrTjx3gdx
-	CaPfsIZ9i4NJMHBukdN8M9uQ5DUQAekX4W9aOlbr7yrXZiD98LBaQGg=
-X-Gm-Gg: Acq92OFAKVuzPhXS0SlIRRxqTJnAPDq2AGwdKpEpf5pW8D9nwfD5iX4RkLXYRQ9AvCF
-	6fAMyy7WdzuKgfxU2sIyrBrJ7MIbCTZKQJ2kdVJrTtBqq9mxAXLLHTtJIVZmvqAqHmZEDwGIDYD
-	1MTPtjHgwWT/ciEyvq6Hx0iEG7QmQUXJG0O1zDddT38DjDIkMbWPBZioVXgF2Ea+DJDX/x5XZzB
-	v4aE0IMjBEQlePQu0qwOR2SO3L6uALe5vfwPNFmE8IYeqxSQNNe2q8y4OPePv6oHyBrHBKVfnPo
-	OduEAG882NdsuK6YUSAA0IhCCb4RDUWO2lIUMOlB3SQvf+a9nOCGKej1byO2Fj2viH9mi2LF31V
-	GojEsXpuWTMbW1WdF2dMg7H+c8Jm6t4JWymIo/RbR6mF1koJfTIsAWrjt0g5nFBpEWV9V2i5WBT
-	lgGcnrOQAEStv8p0826fJvdmHSfsuVUPNACqxH6k5iGLVbJ402DwYoUV1CxVYvrIv/DpBjx7kVt
-	CrJPQ==
-X-Received: by 2002:a17:903:4b4c:b0:2bf:2243:d4ee with SMTP id d9443c01a7336-2bf368021a9mr119460275ad.18.1780307802630;
-        Mon, 01 Jun 2026 02:56:42 -0700 (PDT)
-Received: from raf.tailb4a862.ts.net ([153.124.163.116])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf23c4dd4csm102143265ad.78.2026.06.01.02.56.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 02:56:42 -0700 (PDT)
-From: Raf Dickson <rafdog35@gmail.com>
-To: pabeni@redhat.com
-Cc: sgarzare@redhat.com,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stefanha@redhat.com,
-	bryan-bt.tan@broadcom.com,
-	vishnu.dasa@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] vsock/vmci: fix sk_ack_backlog leak on failed handshake
-Date: Mon,  1 Jun 2026 09:56:46 +0000
-Message-ID: <20260601095646.180085-1-rafdog35@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <97069506-352b-4152-a57b-5a974320529d@redhat.com>
-References: <97069506-352b-4152-a57b-5a974320529d@redhat.com>
+	s=arc-20240116; t=1780308437; c=relaxed/simple;
+	bh=SkdmBOZ3XElDVGwpjH+3ctHe2Thn7Ye0kr6/wP9Q8gA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GOdUFxfH45rwyxFQuHIt+rBJFbzN8cUmSnJLQXclXXAgyn0Qp1TBhPipOFAW74rxAlASVX4m+7YKuH5094B5PGOjTVRh653aTBZLSP3vFtItgzNTA7wryAsNkI2DA3WBhkzuwL6+3PcArXwWX5KTGvD6RdgIZfBfbm+lIULxApE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=gTuTbwC4; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1780308421; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=xTBzogHjY5tKT0n6JoprK9cC3L7c3pO2FxATE7b3Juo=;
+	b=gTuTbwC4ArdPht4EF8/+UhyWqQynYMJO88KANQWMPkc5PwXQFyZtCTxVE7jDjoRxX7iMKExBBNHdvUG25CRZwuRJMk7LbqsixrN/F8+K+P99hemr+jXMQf0X0Eb2xtnf1p1Z0XpW9DLpV38eDBBEaXiq06MSYzkKPoqHCOncewE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=libaokun@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0X4-1I8A_1780308418;
+Received: from 30.221.147.139(mailfrom:libaokun@linux.alibaba.com fp:SMTPD_---0X4-1I8A_1780308418 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 01 Jun 2026 18:06:59 +0800
+Message-ID: <f367eae6-3cfd-48b4-8da8-465a21e51386@linux.alibaba.com>
+Date: Mon, 1 Jun 2026 18:06:58 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] jbd2: fix integer underflow in
+ jbd2_journal_initialize_fast_commit()
+To: Junrui Luo <moonafterrain@outlook.com>
+Cc: Theodore Ts'o <tytso@mit.edu>, Jan Kara <jack@suse.com>,
+ Harshad Shirwadkar <harshadshirwadkar@gmail.com>,
+ linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org
+References: <SYBPR01MB7881663C927DE9D7BBF4D1DFAF062@SYBPR01MB7881.ausprd01.prod.outlook.com>
+From: Baokun Li <libaokun@linux.alibaba.com>
+In-Reply-To: <SYBPR01MB7881663C927DE9D7BBF4D1DFAF062@SYBPR01MB7881.ausprd01.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-9.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259495-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-259497-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[outlook.com];
+	FREEMAIL_CC(0.00)[mit.edu,suse.com,gmail.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafdog35@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7F55661D359
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[libaokun@linux.alibaba.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.alibaba.com:mid,linux.alibaba.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,alibaba.com:email,outlook.com:email]
+X-Rspamd-Queue-Id: 83B0761D901
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Jun 1, 2026 at 9:26 AM Paolo Abeni wrote:
-> I'm wondering if sk_acceptq_removed() should be bounded in
-> vsock_remove_pending() ? (even if that change would probably be
-> net-next material).
+On 2026/5/13 17:28, Junrui Luo wrote:
+> jbd2_journal_initialize_fast_commit() validates journal capacity by
+> checking (journal->j_last - num_fc_blks < JBD2_MIN_JOURNAL_BLOCKS).
+> Both j_last and num_fc_blks are unsigned, so when num_fc_blks exceeds
+> j_last the subtraction wraps to a large value, bypassing the bounds
+> check.
+>
+> The resulting underflow corrupts j_last, j_fc_first, and j_free,
+> leading to journal abort.
+>
+> Fix by checking num_fc_blks against j_last before the subtraction,
+> returning -EFSCORRUPTED.
+>
+> Fixes: 6866d7b3f2bb ("ext4 / jbd2: add fast commit initialization")
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 
-Agreed, that would prevent this class of bug entirely. Happy to prepare
-a follow-up patch for net-next once this fix lands, if that would be
-useful.
+The Fixes tag is not quite accurate, it should be:
 
-Raf
+Fixes: e029c5f279872 ("ext4: make num of fast commit blocks configurable")
+
+Otherwise looks good to me:
+
+Reviewed-by: Baokun Li libaokun@linux.alibaba.com
+
+> ---
+> Changes in v2:
+> - Return -EFSCORRUPTED instead of -ENOSPC
+> - Link to v1: https://lore.kernel.org/all/SYBPR01MB78813DD23B28BD49B1AA1123AF392@SYBPR01MB7881.ausprd01.prod.outlook.com/
+> ---
+>  fs/jbd2/journal.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+> index cb2c529a8f1b..0bb97459fbf0 100644
+> --- a/fs/jbd2/journal.c
+> +++ b/fs/jbd2/journal.c
+> @@ -2263,6 +2263,8 @@ jbd2_journal_initialize_fast_commit(journal_t *journal)
+>  	unsigned long long num_fc_blks;
+>  
+>  	num_fc_blks = jbd2_journal_get_num_fc_blks(sb);
+> +	if (num_fc_blks > journal->j_last)
+> +		return -EFSCORRUPTED;
+>  	if (journal->j_last - num_fc_blks < JBD2_MIN_JOURNAL_BLOCKS)
+>  		return -ENOSPC;
+>  
+>
+> ---
+> base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
+> change-id: 20260513-fixes-e6dcda3273d4
+>
+> Best regards,
+
+
 
