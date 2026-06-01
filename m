@@ -1,61 +1,96 @@
-Return-Path: <stable+bounces-259565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPxMA7WLHWqKbwkAu9opvQ
-	(envelope-from <stable+bounces-259565-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 15:40:05 +0200
+	id cEXrHVhfHWojZwkAu9opvQ
+	(envelope-from <stable+bounces-259496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 12:30:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 832E86202DB
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 15:40:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D882561D701
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 12:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EDB94302BCDB
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 13:36:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E4E4530E7104
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 10:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4044A3A6B7F;
-	Mon,  1 Jun 2026 13:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08A53AC0C6;
+	Mon,  1 Jun 2026 09:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNg6G6vy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SAEi59EA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8C2342C8B
-	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 13:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B751C3AB5AC
+	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 09:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780320991; cv=none; b=MuFsVPWcn8foV9mUyP5HbsZZVxYxE87VegD62d3zup2J6tju+qzHK6YTbPIblyx3NQJPBRZe1beX9AC8lSMhZSrpk5B2O4unzhHVWyZlbTYvES0Nbq3QqXTi//NYWBHI7HJUhqLziuFH0BeMWIRH6aCp5bZ4qLexs7EZ6tbGZKM=
+	t=1780307873; cv=none; b=JwThl/ZWt8HpjjDmKhOa0u4c553uHKVqGTI4jAI1C50k76P2hvvOu3kYEV9lAWY/HMIjqQp4fnNb2ood4ReRVgC00RwTjPU9s8rnQg4AdOxXCyL01pKXhGOpyHBSKzIS+6jfkYqHJ8oxQdznfjIkmWzRWbgtjZQboOgBu4TRh4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780320991; c=relaxed/simple;
-	bh=cmblam7K6agUgq7vkJIUslSVCxej/Wx3+QRq6TsEys4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fO+lTeDBoATrhgo15P1xRdecZ2CBcHVWuM4fjJqGKu4DXrXKMK2oTJFsPeilT6IHUAr4BliR2su28vwq1+eCV1ZvcPfsp3kRBZspM8SU8xpNC1J03RP53WtHnp0hSbucyqINaPzSpZ2rAjPnk8BFAv0A05sHzWKqEdKlxe85qk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNg6G6vy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F6B31F00899;
-	Mon,  1 Jun 2026 13:36:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780320989;
-	bh=M5Fpqfuw+65m/Q26Pg3TH3AWZSD9AXENG6vyJ8/QjAE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aNg6G6vy0I2Vq6BIlurfQkpjsDZXlYNWgaLuCafyJshitDS5TIIsK2SQLRZf1kwwM
-	 9eS2EUURMD+ae3j6rnrc4dUuMqAm5yKsr//Ou+YVxKzumeEintAFZv/et9KJXx6yJb
-	 fthwbMaOhbYwRSK1Fa5gYjP2XoUV1Ac06cYcOom3yYS6V7cjU4XVVX8VIsISboWTYs
-	 ryntN1JrbhK+7kCsubEAbi6wm31lTGdIkvFaBFYnQw+BgH+1iwtav4oLQQAGQYDylf
-	 RpgkPh8YhWMN1+83MUqpCDYh0h9wH/28kMffLQj6ohzPtbdt8CraAU+ckk/fpHXSuE
-	 LKsrRs+Kd3N9w==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0.y 2/2] hwmon: (pmbus/adm1266) serialize NVMEM blackbox read with pmbus_lock
-Date: Mon,  1 Jun 2026 09:36:27 -0400
-Message-ID: <20260601133627.790087-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260601133627.790087-1-sashal@kernel.org>
-References: <2026052829-nutshell-shank-d239@gregkh>
- <20260601133627.790087-1-sashal@kernel.org>
+	s=arc-20240116; t=1780307873; c=relaxed/simple;
+	bh=2VZS15ovfor2YtE2z2p5xiUQ/ptnv6btt6wjTVbphAc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uwMHyl25/HLIyNgqkzS6ER+CarDesRHP/CCmd/tq4a6DBkQFb/DztDD0oJ6j+ojepsxB3BgmtFlbaYJ4ZPHGCeBF5AdqcWPjAiY1IxDc5hBZrkpdEXbbj6n1gE5lvG+D3Ya1TV3DjY1C+n6vp51QGKHbkLicDOh1/lwzJnjwaUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SAEi59EA; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490a78fbd7bso1521695e9.2
+        for <stable@vger.kernel.org>; Mon, 01 Jun 2026 02:57:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780307862; x=1780912662; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VeYhkIkkPdmPxP0oRNh636yFz6Mw8IPmOd/UUON7A0w=;
+        b=SAEi59EAqg34v+vIMfU0v0WPdXDPQwJ1g9AjmaBVxhu6FSfDRzR2k96BtaVsbm2AXx
+         Dmjh48oiRkhQSSQbPLK7FkKKjWND3tsVQbAvaB3S8kga1FsIBEnP1eKpkilaXcRiTPKq
+         flPK3z8jtKCHauwpAz5OR52MynHoyUuoiqHJUmcEUBgdoOI6vfMCUgyD9FgKXSfwKq0C
+         AdNW41nUsVopejl4DkrwgbKDT/SUYH3VZafu7QwNjtSfq0yRkmAilNsFS/wuuR/ihwDj
+         oxrMu+t68bOO5ibArUSi8G8XCDwCX4S3aPMt7T6CmpSrFJ2b5Pv0Xl6TkcbbERpDxmze
+         blww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780307862; x=1780912662;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VeYhkIkkPdmPxP0oRNh636yFz6Mw8IPmOd/UUON7A0w=;
+        b=OWF1b6Z3HMsXp4FF4hGFarx2Obfcrf5zTLncDGFMMYJRKpvT/QBifsxVqZ1joyktAG
+         O5/mE9oP3+/h+v4pRkEhQ7+nYeAMY9HSsr1UGyiS+LRrrucndM4HfMPWMvrnUKjxD2R9
+         176BchuuJPdlhc/uxjZp/scjqdB7oMStzpBVtJ+J2xsNmEgyrAQQeAS+SVZTStjafqLd
+         XW6SK5+Sk5lLEuSEpc/P5an+1Ok1UhJ/P73al8LDOE/64qJsTROZxRldiPk4MiB6GzzC
+         pvfrsmC/3Pkb8qtDvXtZtUJHLr/b+POALkUSc5us4vXU9nxdDpsM6F0y5sqOG0I6Ia0n
+         4uTg==
+X-Forwarded-Encrypted: i=1; AFNElJ/3YrDus+y/CKRUeUo9kEzhsBdNcC/ED7Vg2ae7hIB5dVq7MGVAPjBpwKFJkKSYGZn+hCkhAlE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDl/Xt/KeqHN7/8LmaGb/tyCBOUzvRwh6J2ruCKHnxE9mfyJrX
+	NRXJTHL7Vcj1R6NqTQ6gm9IlDyxecVr5kLjQsb39BNhkIWoxZC8iDwJi
+X-Gm-Gg: Acq92OFE00B6Jv021RBc/CBIbfIlPJUZtisn4qZuGEoB4227ZqhteuDfRvfLpbrTLlx
+	QBDyTe+n7c5Z6ltokpr7LgEsgo+TxQCAX7dfnIcEHyCwkMPqsW/wxq/SHf7BDys60SvUdbXpnqs
+	HnBUbI9kilERhyBN0aOE/TTQAh/CSKwFsUyHKZD316FW1G/SyavAattLxRPC4nYIQFEMrPttDV9
+	f1cri+qYoestok7vN7fAQ5bYp7yzqqJooHBBWGEOLPRWovFD/0sW8k4gF5Kge63Yj+25yJNYbiO
+	ZmxJmVUF8/MNikQbdwHlF/4D79+zKwTgTuCaDComHMV2mlVTlJ50omWMMhU3T9aAmUUjokJYxP0
+	o8tCUZwyw8UBR7LuW2zF/vtrYQxtqTtha9nhPL9wfGyFoXL2h1BL80lEFNH13N/3hjUM/eezXeW
+	EO1OBFSlaWZTn0bQ8pfpvs5MCj3/R1o66w6w/3wnmk9iM7YrBam+mitPuq/O/tc9vrb6SBCZkAT
+	DdZo5WsaXQigkr3aoahLNOt98X1BwLB5goGIBbCZubE4ul4oeLwWpLnnXRlmkhmOwd6QuDhoA==
+X-Received: by 2002:a7b:cbc4:0:b0:490:a2f4:c499 with SMTP id 5b1f17b1804b1-490a2f4c5f7mr49990015e9.6.1780307861689;
+        Mon, 01 Jun 2026 02:57:41 -0700 (PDT)
+Received: from fedora ([149.3.87.76])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef34a03f8sm25589419f8f.7.2026.06.01.02.57.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 02:57:41 -0700 (PDT)
+From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+Subject: [PATCH] mm/compaction: guard move_freelist_head() against invalid freepage
+Date: Mon,  1 Jun 2026 17:39:42 +0400
+Message-ID: <20260601133941.111989-2-giorgitchankvetadze1997@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,93 +98,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [3.34 / 15.00];
+	DATE_IN_FUTURE(4.00)[3];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[google.com,suse.com,cmpxchg.org,nvidia.com,kvack.org,vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259565-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-259496-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[giorgitchankvetadze1997@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,roeck-us.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 832E86202DB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,use_after_iter.cocci:url]
+X-Rspamd-Queue-Id: D882561D701
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+In fast_isolate_freepages(), freepage is declared uninitialized and
+is only assigned a valid page pointer if list_for_each_entry_reverse
+exits via break. If the loop runs to completion (all pages in the
+freelist have pfn < min_pfn), freepage holds the list head sentinel
+and high_pfn remains zero, so the high_pfn fallback does not update
+it either.
 
-[ Upstream commit 9f1dd8f9491eb840cbea7ffdf4cad031e25f8ae0 ]
+The subsequent unconditional call to move_freelist_head(freelist,
+freepage) then passes the sentinel as a page pointer, which is
+invalid.
 
-adm1266_nvmem_read() is the reg_read callback the NVMEM core invokes
-when userspace reads /sys/bus/nvmem/devices/.../nvmem on this chip.
-On the first byte of every read it does a memset of data->dev_mem,
-walks the device blackbox through adm1266_nvmem_read_blackbox()
-(which issues a chain of PMBus block transactions), and then memcpys
-the refreshed buffer out to userspace.  None of that runs under
-pmbus_lock today.
+Guard move_freelist_head() inside the existing 'if (page)' block
+where freepage is guaranteed to refer to a real page.
 
-Two consequences:
+This issue was identified via Coccinelle (use_after_iter.cocci).
 
-  - The PMBus traffic the refresh issues is not serialised against
-    pmbus_core's own multi-step PAGE+register sequences.  A paged
-    hwmon attribute read from another thread can land between a
-    PAGE write and the paged read in either direction and corrupt
-    one side's view of the device state machine.
-
-  - The NVMEM core does not serialise concurrent reg_read calls, so
-    two userspace readers racing at offset 0 can interleave the
-    memset of data->dev_mem with another reader's
-    adm1266_nvmem_read_blackbox() refill or memcpy out, returning
-    torn data to userspace.
-
-Take pmbus_lock at the top of adm1266_nvmem_read() via the
-scope-based guard().  Patch 5 of this series moves
-adm1266_config_nvmem() past pmbus_do_probe() so the lock is
-guaranteed to be live before the callback is reachable from
-userspace.
-
-Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
+Fixes: 5a811889de10 ("mm, compaction: use free lists to quickly locate a migration target")
 Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-7-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
 ---
- drivers/hwmon/pmbus/adm1266.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/compaction.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
-index d90f8f80be8e0..3efa704410538 100644
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -383,6 +383,8 @@ static int adm1266_nvmem_read(void *priv, unsigned int offset, void *val, size_t
- 	if (offset + bytes > data->nvmem_config.size)
- 		return -EINVAL;
+diff --git a/mm/compaction.c b/mm/compaction.c
+index 8f664fb09f24..320c082420fd 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -1611,11 +1611,10 @@ static void fast_isolate_freepages(struct compact_control *cc)
+ 			freepage = page;
+ 		}
  
-+	guard(pmbus_lock)(data->client);
-+
- 	if (offset == 0) {
- 		memset(data->dev_mem, 0, data->nvmem_config.size);
- 
+-		/* Reorder to so a future search skips recent pages */
+-		move_freelist_head(freelist, freepage);
+-
+-		/* Isolate the page if available */
+ 		if (page) {
++			/* Reorder so a future search skips recent pages */
++			move_freelist_head(freelist, freepage);
++			/* Isolate the page if available */
+ 			if (__isolate_free_page(page, order)) {
+ 				set_page_private(page, order);
+ 				nr_isolated = 1 << order;
 -- 
-2.53.0
+2.52.0
 
 
