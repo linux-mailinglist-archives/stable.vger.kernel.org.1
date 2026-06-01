@@ -1,170 +1,173 @@
-Return-Path: <stable+bounces-259498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259492-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKI3F/VgHWojZwkAu9opvQ
-	(envelope-from <stable+bounces-259498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 12:37:41 +0200
+	id GKZZJIBVHWqnYwkAu9opvQ
+	(envelope-from <stable+bounces-259492-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 11:48:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B95E961DA2B
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 12:37:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0310161CBC0
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 11:48:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A1D130BCC5F
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 10:13:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BC702309EDD7
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 09:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C47B399358;
-	Mon,  1 Jun 2026 10:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8BC392820;
+	Mon,  1 Jun 2026 09:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="qLkav5iT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T6l/voAi"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF18390C9F
-	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 10:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDEC38F239
+	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 09:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780308710; cv=none; b=lCaAn+AP2K74JZxVlJanP6e6vveO+gSUg3uOw753Nrt0syDXEPdqFrTvl8b0y8Wt9n2HEr+150VTfc4e8r8U0ySDwOUByzbdvZytVooJvJIYMzJawwndZk1g/W5drlxSOlXAH80hfMvM93xvY4jMnuDzPtqUJytOnO0/xzl/zCI=
+	t=1780306830; cv=none; b=Ftc3jU+yqnpo4K+8TUhJZkkwWURi25aQ6voXzYrxdnwYv0jg/A3ps/hWd/xJQ+CSD288s24QSu/oYo4Zl4jKRwPATDBJZAG6gQsu6c63igWpBDnrZsGLo1vzl7PoeT/mMv+E+VIWPY4viIDV74NHkkvdW3B/rGbywSujRK9A/p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780308710; c=relaxed/simple;
-	bh=Fb7LeDpXYSoMzPHGb+BLFXUA1x8RElEbKlqXfIVsTuc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TQpxO1/mmHiNWmHGzM81cF6/bl1T2TSrG/xJzwLUyuVFjUkGVsjVoLV2N0KofY6e/G8qTB8RhoEPaFUIq0QMrwkbhYu4176gdK4z7CrlMYAmw7oix63YTuBu5RaiykPre1isKMD0mR6lJjz081poSxXXzWvl19+rmnbLdtFGGBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=qLkav5iT; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=3NNJq5se+S0sYBMco9FFh7hZ/lpbqS+JiOZ8c2N40CU=; b=qLkav5iT4am9euQJ5OrRYPF10E
-	p83ZqwMTBuLuWj8OfKw+Ia8fjGNVBbsXBsbYXwbeKURMp9mW44e0zM1Ri7tTMK9VWqoXPBdg0vNdJ
-	eknjvKlOBp4v5r3oC+DB8ejeXaMctfHudR59YjzQpV6Z9H3w4/4LpvbL/suMsbNt64+xMVNVcpavM
-	MhArAswBqkxTg6/P6OrasuwjrKVJ8J6eT29smlGmAuD+0RGtIty93D8EZeuKPYWtbi6SreuPmtuLm
-	bs2Xp48TubwePRXjHwYR7jAJSNJrLCJB6oqApTDCzpStfC8ggGD9WhxPvMdXQhAH3oFffqhYXWyME
-	CIXZcjJA==;
-Received: from static-234-112-85-188.ipcom.comunitel.net ([188.85.112.234] helo=[192.168.0.17])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wTzcJ-00AxPj-Qi; Mon, 01 Jun 2026 12:11:31 +0200
-Message-ID: <47df01b2fab27fc3df9074d18d417f5a7d1b4db1.camel@igalia.com>
-Subject: Re: [PATCH 2/2] drm/v3d: Skip CSD when it has zeroed workgroups
-From: Iago Toral <itoral@igalia.com>
-To: =?ISO-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>, Melissa Wen
-	 <mwen@igalia.com>, Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Cc: kernel-dev@igalia.com, dri-devel@lists.freedesktop.org, 
-	stable@vger.kernel.org
-Date: Mon, 01 Jun 2026 12:11:21 +0200
-In-Reply-To: <20260530-v3d-fix-indirect-csd-v1-2-15533948663f@igalia.com>
-References: <20260530-v3d-fix-indirect-csd-v1-0-15533948663f@igalia.com>
-	 <20260530-v3d-fix-indirect-csd-v1-2-15533948663f@igalia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	s=arc-20240116; t=1780306830; c=relaxed/simple;
+	bh=+RSiV4t9ZMPDIDecXW8eTPPICHYbj/MQhsKjjWhoYsQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KZWfIdo54Bp8FQrbmNBKq/lGugUq6rwhwPiTBHV5/LLgvGD+MA5urUY1zyOjO9CiBEQ2Usm+0n9OtEn6Sz0qqbuLcUOqQX/OxHzD7+i/PiYTgivI8xBZSfJDj4MiB0pd7UiHkpSnXT+ySKs3x/3P9cQnRidiOow7fmOJxm9DyoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T6l/voAi; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780306828; x=1811842828;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+RSiV4t9ZMPDIDecXW8eTPPICHYbj/MQhsKjjWhoYsQ=;
+  b=T6l/voAiKBBAwYTC2983HeH1286gMa4dbgJM+Tnvl66spsv4hBgTWDPg
+   1L/BYMkQen0FOoGrgsVnd98CmwLcM0oBGeHcCfWHeFSIATA88Iyl/j19Q
+   ti8QTCnVPNMSY+qLnP1qtzOpbc4R9ZuRd353inEsMcj77SJbfpzQTbJP1
+   ljhIPu4zHjMadQLgs+mQOVP6EFw2FzVpvHnq7OKjOMOU2HYxISiwjOm15
+   RDCysszdnyKRHzDZi5XSwRRHNHvS7HYpLdgjjsqJirneXJh0iSzcdm/ft
+   i8OyDwrh/qQqHISlg3BU4gPVAH8oiTMb+O8wA9xFXMwceiB5cQzMHIFeD
+   A==;
+X-CSE-ConnectionGUID: adz3J4x2QRmXtsqcL4iMSg==
+X-CSE-MsgGUID: D24/tZJrRJaaMifgXvlVig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11803"; a="68595816"
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
+   d="scan'208";a="68595816"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 02:40:28 -0700
+X-CSE-ConnectionGUID: 9BJz7sp5Smmqb/5ZXjUfGg==
+X-CSE-MsgGUID: b9cZHzXPTa29C6uRfpUttw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
+   d="scan'208";a="239344266"
+Received: from nitin-super-server.iind.intel.com ([10.190.238.72])
+  by fmviesa010.fm.intel.com with ESMTP; 01 Jun 2026 02:40:26 -0700
+From: Nitin Gote <nitin.r.gote@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Nitin Gote <nitin.r.gote@intel.com>,
+	stable@vger.kernel.org,
+	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH] drm/xe: Fix UAF in xe_gem_prime_import() on attach failure
+Date: Mon,  1 Jun 2026 15:45:37 +0530
+Message-ID: <20260601101536.1333480-2-nitin.r.gote@intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-0.36 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259498-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[igalia.com:-];
-	NEURAL_SPAM(0.00)[0.093];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259492-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[itoral@igalia.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nitin.r.gote@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.983];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,igalia.com:mid,igalia.com:email]
-X-Rspamd-Queue-Id: B95E961DA2B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gitlab.freedesktop.org:url,xe_live_ktest:email]
+X-Rspamd-Queue-Id: 0310161CBC0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-El s=C3=A1b, 30-05-2026 a las 16:51 -0300, Ma=C3=ADra Canal escribi=C3=B3:
-> A compute shader dispatch encodes its workgroup counts in the
-> CFG0..CFG2
-> registers. Kicking off a dispatch with a zero count in any of the
-> three
-> dimensions is invalid. First, the hardware will process 0 as 65536,
-> causing an illegitimate submission. But over that, a submission with
-> a
-> zeroed workgroup dimension should be a no-op.
->=20
-> These zeroed counts can reach the dispatch path through an indirect
-> CSD
-> job, whose workgroup counts are only known once the indirect buffer
-> is
-> read and may legitimately be zero, but such scenario should only
-> result in
-> a no-op.
->=20
-> Don't submit the job to the hardware when any of the workgroup counts
-> is
-> zero, so the job completes immediately instead of running the shader.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader
-> dispatch.")
-> Suggested-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
-> ---
-> =C2=A0drivers/gpu/drm/v3d/v3d_sched.c | 3 +++
-> =C2=A01 file changed, 3 insertions(+)
->=20
-> diff --git a/drivers/gpu/drm/v3d/v3d_sched.c
-> b/drivers/gpu/drm/v3d/v3d_sched.c
-> index 47f83936cd73..5476fcf43793 100644
-> --- a/drivers/gpu/drm/v3d/v3d_sched.c
-> +++ b/drivers/gpu/drm/v3d/v3d_sched.c
-> @@ -352,6 +352,9 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
-> =C2=A0		return NULL;
-> =C2=A0	}
-> =C2=A0
-> +	if (!job->args.cfg[0] || !job->args.cfg[1] || !job-
-> >args.cfg[2])
-> +		return NULL;
+xe_dma_buf_create_obj() creates the importer BO with obj->resv
+pointing at the exporter's dma_buf->resv. When dma_buf_dynamic_attach()
+fails, no dma_buf reference is held so the exporter can be freed
+immediately. Since ttm_bo_release() now always defers cleanup for
+ttm_bo_type_sg BOs to the TTM workqueue, the worker later calls
+dma_resv_lock() on the already-freed exporter resv, causing a UAF.
 
-I think this is not correct: cfg[0-2] have the actual dispatch sizes
-encoded in the 16 MSB bits of these registers, allowing the lower 16-
-bit to specify a base offset for the generated workgroup ids that may
-not be zero. Therefore, I think we would want to rewrite this check as:
+Reset obj->resv to the BO's private _resv before calling xe_bo_put()
+in the error path. The BO is not yet published (attach failed) and
+carries no fences, so the switch is safe.
 
-if ((job->args.cfg[0] & 0xffff0000u) =3D=3D 0 ||
-    (job->args.cfg[1] & 0xffff0000u) =3D=3D 0 ||
-    (job->args.cfg[2] & 0xffff0000u) =3D=3D 0) {
-        return NULL;
-}
+Observed with igt@xe_live_ktest@xe_dma_buf_kunit on BMG (QEMU):
 
-Also, we probably want to add a comment here explaining that at the hw
-level, 0 is interpreted as 65536 but the user-space driver only exposes
-65535 as the maximum workgroup size allowed.
+  Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b9c
+  Workqueue: ttm ttm_bo_delayed_delete [ttm]
+  RIP: 0010:mutex_can_spin_on_owner+0x3f/0xc0
+  Call Trace:
+   <TASK>
+   ? __ww_mutex_lock.constprop.0+0x2dd/0x18e0
+   ? ttm_bo_delayed_delete+0x41/0xc0 [ttm]
+   ww_mutex_lock+0x3c/0xb0
+   ttm_bo_delayed_delete+0x41/0xc0 [ttm]
+   process_one_work+0x239/0x740
+   worker_thread+0x200/0x3f0
+   kthread+0x10d/0x150
+   ret_from_fork+0x3bd/0x470
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
 
-Iago
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/8023
+Fixes: d99fbd9aab62 ("drm/ttm: Always take the bo delayed cleanup path for imported bos")
+Cc: stable@vger.kernel.org # v6.8+
+Cc: Thomas Hellstrom <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+---
+ drivers/gpu/drm/xe/xe_dma_buf.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-> +
-> =C2=A0	v3d->queue[V3D_CSD].active_job =3D &job->base;
-> =C2=A0
-> =C2=A0	v3d_invalidate_caches(v3d);
->=20
+diff --git a/drivers/gpu/drm/xe/xe_dma_buf.c b/drivers/gpu/drm/xe/xe_dma_buf.c
+index 8a920e58245c..6d944bd4065c 100644
+--- a/drivers/gpu/drm/xe/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+@@ -384,6 +384,14 @@ struct drm_gem_object *xe_gem_prime_import(struct drm_device *dev,
+ 
+ 	attach = dma_buf_dynamic_attach(dma_buf, dev->dev, attach_ops, obj);
+ 	if (IS_ERR(attach)) {
++		/*
++		 * The BO was created with resv = dma_buf->resv (exporter's
++		 * resv). Since attach failed, no dma_buf reference is held and
++		 * the exporter may be freed before TTM's delayed_delete worker
++		 * runs. Switch to the BO's own resv to prevent a UAF when
++		 * ttm_bo_delayed_delete() tries to lock the stale pointer.
++		 */
++		obj->resv = &obj->_resv;
+ 		xe_bo_put(gem_to_xe_bo(obj));
+ 		return ERR_CAST(attach);
+ 	}
+-- 
+2.50.1
 
 
