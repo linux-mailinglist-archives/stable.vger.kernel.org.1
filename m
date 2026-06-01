@@ -1,221 +1,163 @@
-Return-Path: <stable+bounces-259442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMnBBSQRHWrLVQkAu9opvQ
-	(envelope-from <stable+bounces-259442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 06:57:08 +0200
+	id 8LGtLWEYHWrFVgkAu9opvQ
+	(envelope-from <stable+bounces-259444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 07:28:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7189A619867
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 06:57:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B72F9619AC6
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 07:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D940B301111D
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 04:57:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7E0C9300A674
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 05:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54556334C3D;
-	Mon,  1 Jun 2026 04:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9EB347515;
+	Mon,  1 Jun 2026 05:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="HaUyy/Q3"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="WMXPzYHs"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E1B25B0B9;
-	Mon,  1 Jun 2026 04:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D27034403D;
+	Mon,  1 Jun 2026 05:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780289819; cv=none; b=jlqxH4GAvlITHcnf1COrus/dKiwRPQxGmvWLH/x5byrJ+utMb+j9HI2nTDJk3RmGkOr6fRaDfgkTj9XmDFZ2RYvYYbuyyNh8NVIhtTDPW7qGOgIUlt/FbkdCcaq9fc+1ptuMPcMT/9N3W18ghB20F6Z/n187GvaX45ChMxpdymM=
+	t=1780291508; cv=none; b=kYtgkhpjuhaQ0AlXTDRg35jPWRVE4hlYBO94S0rXU6QPWBUZ7F6f+qsFpsB7DdciXSgqW2RmrEWRuNhv5jsI4x2o5cIvQOfsRqhiyIumi+1ak5ATqnVNVb+35i67HZANS11rb8sPM82CX512vuj5dwFwwq+C4DI4/HS62VUSZ9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780289819; c=relaxed/simple;
-	bh=uh04jOx1nBkRcF0Uf+qmlp1xwS9hdzC1jSrjru2+IQE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nrqZOaimYef0mIAzO/J1pV0wM+L6AwBN7QjasKeZXnxCw8nANRHzCbitudpGY2rAiqIND6Mki/hEil1DrQNVaQwnwrNEGbuBv6aIqvmi/EximpeI2FdsNRioeTrJm0AsR4JW/fYpUkPObDGr20bszUL2Z4IpHxNp/BJcU4kykpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=HaUyy/Q3; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 169751E8D;
-	Sun, 31 May 2026 21:56:50 -0700 (PDT)
-Received: from [10.164.19.28] (unknown [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BB7FB3F93E;
-	Sun, 31 May 2026 21:56:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780289815; bh=uh04jOx1nBkRcF0Uf+qmlp1xwS9hdzC1jSrjru2+IQE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HaUyy/Q3QQY8LFo0HHWNssQu++Ryy4dWmAHD4fasvlTInFEZouDCQj/vtZBX+P2ZC
-	 VtrFIsX83pVwwuosFxTpDu3u1Et3kGCE7TcgrBQlrgqw5orWkEXPYGukRONyM8mxS9
-	 fpXC/jZe5fUPVnPzy7oIKCbV0BibT+oV/WFEDKT4=
-Message-ID: <9d13d62f-df3d-46aa-8411-4abebb92c35e@arm.com>
-Date: Mon, 1 Jun 2026 10:26:45 +0530
+	s=arc-20240116; t=1780291508; c=relaxed/simple;
+	bh=+rXhp5enUiqzUqXZ8+cReVBPFeph94Y1vMCw3pnuRIE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gbftrr6KMLQHNVqmjlqa1n/94oK0GewYIGzkvRcMclIzb3CbAp/ssVW3XaaP6hFIsk8diH7G6JVVmZ+K6eeAk2giqLfgFK//RQDnP09Yrf+g6gKnSFWfv+QGV6rivJztGI29s2O6BDAga7oIJE/RXH67soq4GXqsqdTxTkgLb5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WMXPzYHs; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=vw
+	awXOS85N266Kc92qEO6y0kEvBacHRvTjnktzIuO10=; b=WMXPzYHsgFxvRZ0PoK
+	DXghH+R+P/bMY/LjfxZvOj15K5WIMQMEMen9eXu6aWpK0aA85ntTAf4VJLNO6ZoG
+	nH9WlVm31No2/eyrm6FSHoW5KaiSHIm531FzENn4ggmRXH2GV71IW31+vYOCu61W
+	n3jbAmjo42e+7oeoeuzkI4P2c=
+Received: from China-163-team (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgBHerB+Fx1qZmXdFw--.291S2;
+	Mon, 01 Jun 2026 13:24:25 +0800 (CST)
+From: Wenshan Lan <jetlan9@163.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 5.15.y] dmaengine: idxd: Fix not releasing workqueue on .release()
+Date: Mon,  1 Jun 2026 13:24:12 +0800
+Message-ID: <20260601052412.72913-1-jetlan9@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs/proc/task_mmu: do not warn on seeing non-migration pmd
- entry
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- liam@infradead.org, ljs@kernel.org, jgg@ziepe.ca, leon@kernel.org,
- shuah@kernel.org
-Cc: vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, balbirs@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20260529111704.1078346-1-dev.jain@arm.com>
- <a62302f8-24ea-4d21-963d-48bec766766b@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <a62302f8-24ea-4d21-963d-48bec766766b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgBHerB+Fx1qZmXdFw--.291S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WF1DGF17JF1rCrW5KFyDKFg_yoW5Jr4Dpr
+	43JFW5W3s2qr9xG3W7XF18ury5G3WSy3yfurWfWw13uay5Za45X34ftFW29398JrZ5GF42
+	qF90q34rXF48tFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEEoG9UUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbCwwrJkmodF4raPgAA3c
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-259442-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[arm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259444-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,kernel.org,163.com];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.991];
+	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7189A619867
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: B72F9619AC6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
+[ Upstream commit 3d33de353b1ff9023d5ec73b9becf80ea87af695 ]
 
-On 01/06/26 12:41 am, David Hildenbrand (Arm) wrote:
-> On 5/29/26 13:17, Dev Jain wrote:
->> pagemap_pmd_range_thp() warns if a non-present PMD is not a migration
->> entry. This became false once device-private entries at the PMD level were
->> added.
->>
->> One can hit the warning by patching hmm-tests.c with the following:
->>
->> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
->> index e1c8a679a4cf3..7f0a3384f3c5f 100644
->> --- a/tools/testing/selftests/mm/hmm-tests.c
->> +++ b/tools/testing/selftests/mm/hmm-tests.c
->> @@ -209,6 +209,37 @@ static int hmm_dmirror_cmd(int fd,
->>  	return 0;
->>  }
->>
->> +static int hmm_read_self_pagemap(void *addr, unsigned long npages,
->> +				 unsigned long page_size)
->> +{
->> +	const size_t entry_size = sizeof(uint64_t);
->> +	const off_t offset = ((uintptr_t)addr / page_size) * entry_size;
->> +	uint64_t *entries;
->> +	ssize_t nread;
->> +	int fd;
->> +
->> +	entries = malloc(npages * entry_size);
->> +	if (!entries)
->> +		return -ENOMEM;
->> +
->> +	fd = open("/proc/self/pagemap", O_RDONLY);
->> +	if (fd < 0) {
->> +		free(entries);
->> +		return -errno;
->> +	}
->> +
->> +	nread = pread(fd, entries, npages * entry_size, offset);
->> +	close(fd);
->> +	free(entries);
->> +
->> +	if (nread < 0)
->> +		return -errno;
->> +	if ((size_t)nread != npages * entry_size)
->> +		return -EIO;
->> +
->> +	return 0;
->> +}
->> +
->>  static void hmm_buffer_free(struct hmm_buffer *buffer)
->>  {
->>  	if (buffer == NULL)
->> @@ -2314,6 +2345,10 @@ TEST_F(hmm, migrate_anon_huge_fault)
->>  	ASSERT_EQ(ret, 0);
->>  	ASSERT_EQ(buffer->cpages, npages);
->>
->> +	/* Exercise pagemap on a PMD device-private entry. */
->> +	ret = hmm_read_self_pagemap(buffer->ptr, npages, self->page_size);
->> +	ASSERT_EQ(ret, 0);
->> +
->>  	/* Check what the device read. */
->>  	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
->>  		ASSERT_EQ(ptr[i], i);
->>
->>
-> 
-> 
->> Therefore, remove the stale migration-only assertion.
->>
->> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
->> Applies on mm-unstable (404fb4f38e8f).
->>
->>  fs/proc/task_mmu.c | 1 -
->>  1 file changed, 1 deletion(-)
->>
->> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
->> index 1e3a15bf46f4e..58938e62154d9 100644
->> --- a/fs/proc/task_mmu.c
->> +++ b/fs/proc/task_mmu.c
->> @@ -2129,7 +2129,6 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
->>  			flags |= PM_SOFT_DIRTY;
->>  		if (pmd_swp_uffd_wp(pmd))
->>  			flags |= PM_UFFD_WP;
->> -		VM_WARN_ON_ONCE(!pmd_is_migration_entry(pmd));
->>  		page = softleaf_to_page(entry);
->>  	}
->>  
-> 
-> The whole thp_migration_supported() guard is a bit shaky, right?
+The workqueue associated with an DSA/IAA device is not released when
+the object is freed.
 
-I think if you remove this, then you will trigger a WARN_ON in softleaf_to_page(),
-for the case of !CONFIG_ARCH_ENABLE_THP_MIGRATION.
-> 
-> I guess device-private entries currently imply thp_migration_supported(), but
-> that thp_migration_supported() check is really questionable and should likely
-> just go away (else if -> else).
-> 
-> Staring at pte_to_pagemap_entry(), likely we'd also want
-> 
-> if (softleaf_has_pfn(entry))
-> 	page = softleaf_to_page(entry);
-> 
-> to prepare for PMD swap entries.
+Fixes: 47c16ac27d4c ("dmaengine: idxd: fix idxd conf_dev 'struct device' lifetime")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-7-7ed70658a9d1@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+[ Remove destroy_workqueue(idxd->wq) from the function idxd_remove() to
+avoid the workqueue is released twice. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
+---
+On 5.15.x, destroy_workqueue(idxd->wq) is still called directly in 
+idxd_remove(). Applying the upstream patch as-is would cause a double
+destroy: 
+once in idxd_remove() and again in idxd_conf_device_release() when 
+put_device() triggers the release callback.
 
-Correct, and this is done in
-https://lore.kernel.org/all/20260427100553.2754667-4-usama.arif@linux.dev/
+Resolution: In addition to adding destroy_workqueue(idxd->wq) to 
+idxd_conf_device_release(), the call was removed from idxd_remove(). 
+This is safe because idxd_remove() ends with
+put_device(idxd_confdev(idxd)) which drops the last reference and 
+triggers idxd_conf_device_release(), where the workqueue is now destroyed.
 
-I think in addition to that, Usama can also remove the thp_migration_supported() check.
-> 
-> 
-> Anyhow, both are unrelated (can you send patches to clean it up?)
-> 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
+---
+ drivers/dma/idxd/init.c  | 1 -
+ drivers/dma/idxd/sysfs.c | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
+index f2d27c6ec1ce..698387103da7 100644
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -829,7 +829,6 @@ static void idxd_remove(struct pci_dev *pdev)
+ 	pci_iounmap(pdev, idxd->reg_base);
+ 	iommu_dev_disable_feature(&pdev->dev, IOMMU_DEV_FEAT_SVA);
+ 	pci_disable_device(pdev);
+-	destroy_workqueue(idxd->wq);
+ 	perfmon_pmu_remove(idxd);
+ 	put_device(idxd_confdev(idxd));
+ }
+diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
+index 489a9d885076..ee208dfdd0cb 100644
+--- a/drivers/dma/idxd/sysfs.c
++++ b/drivers/dma/idxd/sysfs.c
+@@ -1271,6 +1271,7 @@ static void idxd_conf_device_release(struct device *dev)
+ {
+ 	struct idxd_device *idxd = confdev_to_idxd(dev);
+ 
++	destroy_workqueue(idxd->wq);
+ 	kfree(idxd->groups);
+ 	kfree(idxd->wqs);
+ 	kfree(idxd->engines);
+-- 
+2.43.0
 
 
