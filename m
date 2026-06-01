@@ -1,173 +1,238 @@
-Return-Path: <stable+bounces-259492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKZZJIBVHWqnYwkAu9opvQ
-	(envelope-from <stable+bounces-259492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 11:48:48 +0200
+	id 4A4RBfBbHWrnZgkAu9opvQ
+	(envelope-from <stable+bounces-259499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 12:16:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0310161CBC0
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 11:48:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B61061D2DF
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 12:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BC702309EDD7
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 09:40:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5199E3007A4A
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 10:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8BC392820;
-	Mon,  1 Jun 2026 09:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412EB395ADC;
+	Mon,  1 Jun 2026 10:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T6l/voAi"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bG97OOPA";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qYqFzf19"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDEC38F239
-	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 09:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC00C395AD4
+	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 10:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780306830; cv=none; b=Ftc3jU+yqnpo4K+8TUhJZkkwWURi25aQ6voXzYrxdnwYv0jg/A3ps/hWd/xJQ+CSD288s24QSu/oYo4Zl4jKRwPATDBJZAG6gQsu6c63igWpBDnrZsGLo1vzl7PoeT/mMv+E+VIWPY4viIDV74NHkkvdW3B/rGbywSujRK9A/p4=
+	t=1780308969; cv=none; b=pn8mRzPf5pZ8ahEKpsjSGvrnoe+MwEi09Cs3u/cyANtJ499Q+QJtrQK7pvf15IQa+EJcpfF2WXMZDASCu5aDLheMdKISvXmoc74dobx8cL2NP2Z+ZO4goQHGzeSosDlroJXZFeGrbT6ACTAkadCyTjk/eR99VUy6Q6x08m6VNO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780306830; c=relaxed/simple;
-	bh=+RSiV4t9ZMPDIDecXW8eTPPICHYbj/MQhsKjjWhoYsQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KZWfIdo54Bp8FQrbmNBKq/lGugUq6rwhwPiTBHV5/LLgvGD+MA5urUY1zyOjO9CiBEQ2Usm+0n9OtEn6Sz0qqbuLcUOqQX/OxHzD7+i/PiYTgivI8xBZSfJDj4MiB0pd7UiHkpSnXT+ySKs3x/3P9cQnRidiOow7fmOJxm9DyoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T6l/voAi; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780306828; x=1811842828;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=+RSiV4t9ZMPDIDecXW8eTPPICHYbj/MQhsKjjWhoYsQ=;
-  b=T6l/voAiKBBAwYTC2983HeH1286gMa4dbgJM+Tnvl66spsv4hBgTWDPg
-   1L/BYMkQen0FOoGrgsVnd98CmwLcM0oBGeHcCfWHeFSIATA88Iyl/j19Q
-   ti8QTCnVPNMSY+qLnP1qtzOpbc4R9ZuRd353inEsMcj77SJbfpzQTbJP1
-   ljhIPu4zHjMadQLgs+mQOVP6EFw2FzVpvHnq7OKjOMOU2HYxISiwjOm15
-   RDCysszdnyKRHzDZi5XSwRRHNHvS7HYpLdgjjsqJirneXJh0iSzcdm/ft
-   i8OyDwrh/qQqHISlg3BU4gPVAH8oiTMb+O8wA9xFXMwceiB5cQzMHIFeD
-   A==;
-X-CSE-ConnectionGUID: adz3J4x2QRmXtsqcL4iMSg==
-X-CSE-MsgGUID: D24/tZJrRJaaMifgXvlVig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11803"; a="68595816"
-X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
-   d="scan'208";a="68595816"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 02:40:28 -0700
-X-CSE-ConnectionGUID: 9BJz7sp5Smmqb/5ZXjUfGg==
-X-CSE-MsgGUID: b9cZHzXPTa29C6uRfpUttw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
-   d="scan'208";a="239344266"
-Received: from nitin-super-server.iind.intel.com ([10.190.238.72])
-  by fmviesa010.fm.intel.com with ESMTP; 01 Jun 2026 02:40:26 -0700
-From: Nitin Gote <nitin.r.gote@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Nitin Gote <nitin.r.gote@intel.com>,
-	stable@vger.kernel.org,
-	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH] drm/xe: Fix UAF in xe_gem_prime_import() on attach failure
-Date: Mon,  1 Jun 2026 15:45:37 +0530
-Message-ID: <20260601101536.1333480-2-nitin.r.gote@intel.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1780308969; c=relaxed/simple;
+	bh=//fpv6KtnZGPacElQOdywvJfvUtWfzycEBrOQGiMPzk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lag2h8w6m5LuI/5KJs8SZPcr0LacO+jYJSaLvctPXOxL/oTB3CIxP5bneD65Zi4HJAyZOcZo1P+xlSR1msuhoHFbX2gmwGPWeWV1IQRp9QZ1uO5BhFDbNIIJVMq2xMJr7tnqfcP04bGE0GGqmayCO6zAx+XZ43VdzetyLFAXs54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bG97OOPA; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qYqFzf19; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780308964;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ec/J4tNvrAMdwkOq5RTOf80WrT+IRWDMG7cFT7/0gaw=;
+	b=bG97OOPAoHu9sfEqhiUz+D42kqucPKFn4+sshDR/VXpNGLmDVaTEgP2R54uiN2L3HHo2zO
+	jzvjYnrPIG4a3Jzhet9bvw/ibed2K84i6Ofv5Wc+4N19MY+Z1W2OQ3QyccwWNqWYrsA6Y5
+	yHQkjhDV+Vc7NUW2GqIz90nagSVmSFw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-304-NeNDhsWPMnCJMBEDGaZC0Q-1; Mon, 01 Jun 2026 06:16:03 -0400
+X-MC-Unique: NeNDhsWPMnCJMBEDGaZC0Q-1
+X-Mimecast-MFC-AGG-ID: NeNDhsWPMnCJMBEDGaZC0Q_1780308962
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4909ea0ffbeso22693125e9.1
+        for <stable@vger.kernel.org>; Mon, 01 Jun 2026 03:16:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1780308962; x=1780913762; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ec/J4tNvrAMdwkOq5RTOf80WrT+IRWDMG7cFT7/0gaw=;
+        b=qYqFzf198t5SPjnGYTxm2tKTCvzMBJI2CCWRPxD/dU3kRMjYnN/ed9VLpQGypAl5Ho
+         i4eXAZE4oKfy/iOKRi8EoCjlTsPIDbf5+pOdP20Y5kgylUZBD40govnhIm5EQ6N4NrRa
+         Wb7OYlj/DVytwIL5+uMkcU53JMnU4adtZ0FoZdDJUaBdJbrmIVU88xJOFhtNky9FwnXK
+         /gvlEUJD4nRuaNkhon5QjDtGDIt0eitUjXr+cL51lm7cO8v0wjNLpwj3Fo6kW3mVzKcs
+         +clN1HG6CImY9UL1mRmZsfVXzWrMXt88sCM0SE1UvBMbKKGn66gbqD1R7hVWmCBSRn4t
+         Pm6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780308962; x=1780913762;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ec/J4tNvrAMdwkOq5RTOf80WrT+IRWDMG7cFT7/0gaw=;
+        b=UUMIWHur6oBFgWErIhy0aNGh0gDlHJP58/cvzFuLWOddcS3owOOihHR0a/0K67IOjo
+         HDFpTGACms7gp/DYTrtSu31W6NyFaxU3GFcOG1arFlx+qbQjarIC4MeZs1KgMOHaLq9K
+         zzKA7/2u3ACIkGLfHo8FViqbh3rs7RR9FKv7t8Zv6hmDBWqDvuEb+wE2WlBPjIXkyR6I
+         +zbiOB6R/cRbiLQlLqonfPjW+ozDDNBX4n6nQgOMmmnThrTTGD7oBpfyrfyMyNjk6u0d
+         InWiN4S1YzBsSi+H25TryhOtAW9Tfkbqq/Sq9RMiueTUpxUMKPHNTqIx93nsWJy0WXGv
+         IXcw==
+X-Forwarded-Encrypted: i=1; AFNElJ8EgC4f7IG1EKXToiGntTx1ZNG7zmEcBDWFWJZ9LKWk5Po+nBjQ7nsVa4iAag8I91GWEjV+cio=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy84nPgtui0njcfRLwRV1krcf4wkuDPMI8GDYzJDPjeOdxu4c7v
+	GrYkLIHVr9Cxh0E0HrEjQlvI+zeq2uyCqLlm8uDjKIWHXznAPYJ4O/qJPLz/OLii86JfoR2iThV
+	sA/c7DxPrVJwK5/rWK7g0giX0m7KC97NCgbleDUl3/cXScFgk4fW2f4MrUw==
+X-Gm-Gg: Acq92OHX5/pXWS5ZyOERd7CzAPpgnx1WpimZ8J3gMM6pX9svyeNINA+YdC+vr6eDExD
+	db7UKSLCaAJWwo8MFeTzaqKX+KXdK+HhIb4tJ5etOvBDIiLoA/EssMsVSOl9XsAeSP4Im6E443j
+	rjWIiC9pBAREtyf0LGatqeNZrOizSAJJzMUCYub73RMFhKVdbLqLHYBgl/c8Cd2Dx8abMsaO+tU
+	hjWb1hwBrSh3X6HMu7eNMEPJMX2pP2rWt3Vf47DU9doxGzc8/v5wF1f5VsjyWvAggLeegULcBIz
+	c+6qbzE/PZqUuQAUM0k4WVWxdan4346sgZBZt393xY9a3tYnb+fzMrNyAVXT/jfDtRNIHpTodFV
+	Ju2zrdWQecacaprD/hP7EFHcd7ztVkUBUVbcpvI3w5faA4/CywvDosCCFpD1lPcHRznki2kFy/m
+	GOUa0o74MN+3JnApI=
+X-Received: by 2002:a05:600c:1c06:b0:490:a298:3859 with SMTP id 5b1f17b1804b1-490a29838b6mr211911695e9.24.1780308962231;
+        Mon, 01 Jun 2026 03:16:02 -0700 (PDT)
+X-Received: by 2002:a05:600c:1c06:b0:490:a298:3859 with SMTP id 5b1f17b1804b1-490a29838b6mr211910935e9.24.1780308961705;
+        Mon, 01 Jun 2026 03:16:01 -0700 (PDT)
+Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef32fabcasm23621879f8f.0.2026.06.01.03.16.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 03:16:01 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, mripard@kernel.org,
+ maarten.lankhorst@linux.intel.com, airlied@redhat.com, airlied@gmail.com,
+ simona@ffwll.ch, admin@kodeit.net, gargaditya08@proton.me,
+ paul@crapouillou.net, jani.nikula@linux.intel.com, mhklinux@outlook.com,
+ zack.rusin@broadcom.com, bcm-kernel-feedback-list@broadcom.com
+Cc: dri-devel@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-mips@vger.kernel.org, virtualization@lists.linux.dev, Thomas
+ Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
+Subject: Re: [PATCH v4 01/10] drm/damage-helper: Do not alter damage clips
+ on modeset, but ignore them
+In-Reply-To: <20260530185716.65688-2-tzimmermann@suse.de>
+References: <20260530185716.65688-1-tzimmermann@suse.de>
+ <20260530185716.65688-2-tzimmermann@suse.de>
+Date: Mon, 01 Jun 2026 12:16:00 +0200
+Message-ID: <87y0gylg67.fsf@ocarina.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259492-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[nitin.r.gote@intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-259499-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[suse.de,kernel.org,linux.intel.com,redhat.com,gmail.com,ffwll.ch,kodeit.net,proton.me,crapouillou.net,outlook.com,broadcom.com];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[javierm@redhat.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.983];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gitlab.freedesktop.org:url,xe_live_ktest:email]
-X-Rspamd-Queue-Id: 0310161CBC0
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,ocarina.mail-host-address-is-not-set:mid]
+X-Rspamd-Queue-Id: 1B61061D2DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-xe_dma_buf_create_obj() creates the importer BO with obj->resv
-pointing at the exporter's dma_buf->resv. When dma_buf_dynamic_attach()
-fails, no dma_buf reference is held so the exporter can be freed
-immediately. Since ttm_bo_release() now always defers cleanup for
-ttm_bo_type_sg BOs to the TTM workqueue, the worker later calls
-dma_resv_lock() on the already-freed exporter resv, causing a UAF.
+Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-Reset obj->resv to the BO's private _resv before calling xe_bo_put()
-in the error path. The BO is not yet published (attach failed) and
-carries no fences, so the switch is safe.
+Hello Thomas,
 
-Observed with igt@xe_live_ktest@xe_dma_buf_kunit on BMG (QEMU):
+> User space supplies rectangles for damage clipping in a plane property.
+> For full mode sets, drivers still require a full plane update. In this
+> case, leave the information as-is and set the ignore_damage_clips flag
+> instead. The damage iterator will later ignore any damage information.
+>
+> Also fixes a bug where ignore_damage_clips was not cleared across plane-
+> state duplications.
+>
+> Leaving the damage information as-is might be helpful to drivers that
+> benefit from this information even on full modesets (e.g., for cache
+> management). It will also help with consolidating the damage-handling
+> logic.
+>
+> Also add a new unit test that evaluates the ignore_damage_clips flag. It
+> sets two damage clips plus the flag and tests if the reported damage
+> covers the entire framebuffer.
+>
+> v4:
+> - slightly reword the commit description
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: 35ed38d58257 ("drm: Allow drivers to indicate the damage helpers to ignore damage clips")
+> Acked-by: Zack Rusin <zack.rusin@broadcom.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.10+
+> ---
+>  drivers/gpu/drm/drm_atomic_state_helper.c     |  1 +
+>  drivers/gpu/drm/drm_damage_helper.c           |  6 ++--
+>  .../gpu/drm/tests/drm_damage_helper_test.c    | 28 +++++++++++++++++++
+>  3 files changed, 31 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/drm_atomic_state_helper.c b/drivers/gpu/drm/drm_atomic_state_helper.c
+> index cc70508d4fdb..84d5231ccac1 100644
+> --- a/drivers/gpu/drm/drm_atomic_state_helper.c
+> +++ b/drivers/gpu/drm/drm_atomic_state_helper.c
+> @@ -359,6 +359,7 @@ void __drm_atomic_helper_plane_duplicate_state(struct drm_plane *plane,
+>  	state->fence = NULL;
+>  	state->commit = NULL;
+>  	state->fb_damage_clips = NULL;
+> +	state->ignore_damage_clips = false;
+>  	state->color_mgmt_changed = false;
+>  }
 
-  Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b9c
-  Workqueue: ttm ttm_bo_delayed_delete [ttm]
-  RIP: 0010:mutex_can_spin_on_owner+0x3f/0xc0
-  Call Trace:
-   <TASK>
-   ? __ww_mutex_lock.constprop.0+0x2dd/0x18e0
-   ? ttm_bo_delayed_delete+0x41/0xc0 [ttm]
-   ww_mutex_lock+0x3c/0xb0
-   ttm_bo_delayed_delete+0x41/0xc0 [ttm]
-   process_one_work+0x239/0x740
-   worker_thread+0x200/0x3f0
-   kthread+0x10d/0x150
-   ret_from_fork+0x3bd/0x470
-   ret_from_fork_asm+0x1a/0x30
-   </TASK>
+I would split this as a separate patch since is the bug you are fixing for
+commit 35ed38d58257 ("drm: Allow drivers to indicate the damage helpers to
+ignore damage clips").
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/8023
-Fixes: d99fbd9aab62 ("drm/ttm: Always take the bo delayed cleanup path for imported bos")
-Cc: stable@vger.kernel.org # v6.8+
-Cc: Thomas Hellstrom <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
----
- drivers/gpu/drm/xe/xe_dma_buf.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+>  EXPORT_SYMBOL(__drm_atomic_helper_plane_duplicate_state);
+> diff --git a/drivers/gpu/drm/drm_damage_helper.c b/drivers/gpu/drm/drm_damage_helper.c
+> index 74a7f4252ecf..945fac8dc27b 100644
+> --- a/drivers/gpu/drm/drm_damage_helper.c
+> +++ b/drivers/gpu/drm/drm_damage_helper.c
+> @@ -78,10 +78,8 @@ void drm_atomic_helper_check_plane_damage(struct drm_atomic_commit *state,
+>  		if (WARN_ON(!crtc_state))
+>  			return;
+>  
+> -		if (drm_atomic_crtc_needs_modeset(crtc_state)) {
+> -			drm_property_blob_put(plane_state->fb_damage_clips);
+> -			plane_state->fb_damage_clips = NULL;
+> -		}
+> +		if (drm_atomic_crtc_needs_modeset(crtc_state))
+> +			plane_state->ignore_damage_clips = true;
+>  	}
+>  }
 
-diff --git a/drivers/gpu/drm/xe/xe_dma_buf.c b/drivers/gpu/drm/xe/xe_dma_buf.c
-index 8a920e58245c..6d944bd4065c 100644
---- a/drivers/gpu/drm/xe/xe_dma_buf.c
-+++ b/drivers/gpu/drm/xe/xe_dma_buf.c
-@@ -384,6 +384,14 @@ struct drm_gem_object *xe_gem_prime_import(struct drm_device *dev,
- 
- 	attach = dma_buf_dynamic_attach(dma_buf, dev->dev, attach_ops, obj);
- 	if (IS_ERR(attach)) {
-+		/*
-+		 * The BO was created with resv = dma_buf->resv (exporter's
-+		 * resv). Since attach failed, no dma_buf reference is held and
-+		 * the exporter may be freed before TTM's delayed_delete worker
-+		 * runs. Switch to the BO's own resv to prevent a UAF when
-+		 * ttm_bo_delayed_delete() tries to lock the stale pointer.
-+		 */
-+		obj->resv = &obj->_resv;
- 		xe_bo_put(gem_to_xe_bo(obj));
- 		return ERR_CAST(attach);
- 	}
+This makes sense to me as well and I agree that re-using the flag for this
+is better than making plane_state->fb_damage_clips == NULL the condition.
+
+As mentioned though, I would make it a separate patch. Both changes look
+good to me:
+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+
 -- 
-2.50.1
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
 
