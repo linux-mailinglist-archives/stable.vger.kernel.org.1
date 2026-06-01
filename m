@@ -1,167 +1,112 @@
-Return-Path: <stable+bounces-259408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPtLAiDqHGpWUAkAu9opvQ
-	(envelope-from <stable+bounces-259408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 04:10:40 +0200
+	id 0GtqMVnqHGpWUAkAu9opvQ
+	(envelope-from <stable+bounces-259409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 04:11:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74BCF618BD7
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 04:10:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AC5618BFE
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 04:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DE18530062CB
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 02:10:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DA9D33006531
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 02:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7021D5160;
-	Mon,  1 Jun 2026 02:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022D21E5207;
+	Mon,  1 Jun 2026 02:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="n1IIuaPx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UO+XxBhQ"
 X-Original-To: stable@vger.kernel.org
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599E01E5201
-	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 02:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4291D5160;
+	Mon,  1 Jun 2026 02:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780279834; cv=none; b=I8bZ0Lhk0WrdD4dhEJNCpY/I4Abee93e5p5XU813bQGwADONvJ3BryuuJNUHvojSEqonvWyugsUtkwtGtgJ+RsZA529jW6E98Lrhylkm/K0BnhjagmQXMoRGbqGP6O8kvRkHIJzOJWkM0dZamnBPR1SXY+kFY+FNALi4NlfCRwk=
+	t=1780279894; cv=none; b=CJsURy1WZChgbWi6d+e2FZU2CxRbKK1IA2axdjhXScLnF37vEBveQX0xdY4LhJk1zQrN6ImqzioPRGVZ2teKMvFUk2TR17hrhTaLpJVVcOrSC8Y+hnGN1DnVA0Zgv5XxIf6Wkjs+lNNn7FOqscy45ivm4HGoYo68dWnXDymHZH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780279834; c=relaxed/simple;
-	bh=fN6ZAPmjC1KT89ZRwLzHO526BhwwrqeIL5qrOeC69Hk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=geQDZCF5CfXC9rZMmn74+dzz/L893X7HohOVBCjQtDukU8hg7HTgwo0f3oyXXmhfm4UBiswJX3Xw21/Y2tD8R1BptqCvhdwipH2S2ZmaCS7VnJpdcg5ToJgotpKYrw7CXfGJap0tLIUDKk025UHujLUUHyA78ZCrIfPo6VCIKGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=n1IIuaPx; arc=none smtp.client-ip=35.89.44.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6004b.ext.cloudfilter.net ([10.0.30.210])
-	by cmsmtp with ESMTPS
-	id TovuwFW2XMFEgTs6kwF1im; Mon, 01 Jun 2026 02:10:26 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id Ts6jwUPKB7Q5NTs6kwfxsi; Mon, 01 Jun 2026 02:10:26 +0000
-X-Authority-Analysis: v=2.4 cv=UIDdHDfy c=1 sm=1 tr=0 ts=6a1cea12
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=orxGh90K4GmqgqR1d9oA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=G/+VodVezhYEEYX7ciq1egDyX2LcPy3ByuPpQFaOJGI=; b=n1IIuaPxa0A36ZeETBhxELh/y+
-	LkFO+QdcU6c6rBLD/ODHUoaQyU0wgmUn8EAWvfxHpVBftKfZHD03yvjEXZbmkIJinWIgZlnct0vBm
-	sRxr6RDBPudroQUtOylR5b6hImM3FsK211wdqxEKoMKVC37EEXDe8HCRcALFnhPCvv1/mf2C1u0At
-	35bpty/0/AoFN5G/kWfSMq0cfzRxroSoR6yER8hKuuFm0AdqDemxz1xao69HnC7tbJsmcUWc4fKGU
-	dRF0m2osAHWPHnsCC1KmyLSP7x+E24rpSAa+GiW0oSE9vQlLaQTzicFWtI/KArgHX5/62k59+vgR9
-	F1GlTUYw==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:53850 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.99.2)
-	(envelope-from <re@w6rz.net>)
-	id 1wTs6j-00000002Bia-1PUA;
-	Sun, 31 May 2026 20:10:25 -0600
-Message-ID: <a69e6390-8285-4d19-9f03-d97444064801@w6rz.net>
-Date: Sun, 31 May 2026 19:10:23 -0700
+	s=arc-20240116; t=1780279894; c=relaxed/simple;
+	bh=Z0X8ECxyJvOkM5nccMTpeR65nfHis5uykHGw0CXbfow=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jDEmiSDkHH0pK4ga7ZROE6cRWyC9uuU7i0GWXYRQOBWg8Bx/M+G9RM9NsTIH3/NZb10r+N9+o9m6I4AQUHpwz/aeLktekp1f91BG2xNupry65lv96hnLFQqdxg4loBy6/opyC9B0QLn35EEXb69K/cTrHfxJk0FgkZmltYAbrwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UO+XxBhQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF87D1F00893;
+	Mon,  1 Jun 2026 02:11:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780279893;
+	bh=Z0X8ECxyJvOkM5nccMTpeR65nfHis5uykHGw0CXbfow=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=UO+XxBhQVHJKP0VUMeQX1zGtsd5O/DQQVcZMvJSkHgUutcUQC69TGTRgn1Ns3d/87
+	 iwH4jJZkZ+EZPimSB2Se/JVhn7Jyvz9rIq2YqhsfvBjuSktvWjf5dY051l5t/pjJTD
+	 Ph9hLIIEVek5wGhN80IQrbQ5jYtlzNXt9DnXSeFUZdbXcr9P328bWyOWud/csNIsC8
+	 2uSSKgLZDidbvLJCBlQ89FRxYD+HB0bfp1xtj8eornVlCLKikgDoLJGZCHZUzcOn2X
+	 7LuS5q+trXjDqP5Rfez5akRN3xiO54DOe9EFKdQCT45NKZ/ijTN4kYjIn1so5hUdyP
+	 DtzBT2+a7ye7A==
+From: Sasha Levin <sashal@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	patches@lists.linux.dev,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Florian Westphal <fw@strlen.de>,
+	Ben Hutchings <ben@decadent.org.uk>
+Subject: Re: [PATCH 5.10 027/589] xfrm: Wait for RCU readers during policy netns exit
+Date: Sun, 31 May 2026 22:11:18 -0400
+Message-ID: <20260601015021.rc-xfrm-netns-exit@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <56652caf63e8db874a3ebd761ec134c003d4986c.camel@decadent.org.uk>
+References: <20260530160224.570625122@linuxfoundation.org> <20260530160225.295450347@linuxfoundation.org> <56652caf63e8db874a3ebd761ec134c003d4986c.camel@decadent.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/776] 5.15.209-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260530160240.228940103@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1wTs6j-00000002Bia-1PUA
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:53850
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 39
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfI4XwCeE2nMw8xUEYxJqHh0JTKxI6gB5Yr/cu9Wrj33gQZk6Rs0N9QylwLSL1rOBWnUBgGrOJswntBD6Jo0U62swkKw+E4gH5FZgxQTcayornir/8mSp
- inFG0AyjtaMKNQVjKx8ikPQI1WvU6yV3Glc4pX8q8yeIwbVAQv1PxRNIm8xgTWAZ1mINwxA588tajA==
-X-Spamd-Result: default: False [1.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259408-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[w6rz.net];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_X_SOURCE(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[w6rz.net:-];
-	NEURAL_HAM(-0.00)[-0.434];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-259409-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,w6rz.net:mid,w6rz.net:email]
-X-Rspamd-Queue-Id: 74BCF618BD7
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 75AC5618BFE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/30/26 08:55, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.209 release.
-> There are 776 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Sat, 2026-05-30 at 21:45 +0200, Ben Hutchings wrote:
+> This is broken - it needs commit 3e5241731847 "xfrm: move policy_bydst
+> RCU sync from per-netns .exit to .pre_exit" as a further fix.
 >
-> Responses should be made by Mon, 01 Jun 2026 16:01:37 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.209-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> I haven't checked whether that applies cleanly or needs backporting
+> work.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+I've dropped this from the 5.10, 5.15 and 6.1 queues; I'll (try to) re-queue it
+together with the backported follow-up. Thanks for the catch.
 
-Tested-by: Ron Economos <re@w6rz.net>
-
+--
+Thanks,
+Sasha
 
