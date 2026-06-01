@@ -1,156 +1,135 @@
-Return-Path: <stable+bounces-259431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259432-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOmuCab4HGqJUgkAu9opvQ
-	(envelope-from <stable+bounces-259431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 05:12:38 +0200
+	id SMkmE1T+HGoYUwkAu9opvQ
+	(envelope-from <stable+bounces-259432-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 05:36:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B06616191B7
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 05:12:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6626193EA
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 05:36:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 24535300B47C
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 03:11:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44D813011123
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 03:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF2D280A51;
-	Mon,  1 Jun 2026 03:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C37277CA5;
+	Mon,  1 Jun 2026 03:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D7+YuXA8"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="hHDQyNG/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882CB24A06A;
-	Mon,  1 Jun 2026 03:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B554727144B;
+	Mon,  1 Jun 2026 03:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780283483; cv=none; b=P6d53FJfsXzeboE6cDyhUaPZjMzvdZE+9JZobgVd076tRzoc+EXteTqJM+9ozapyVKcIEihRIOoN2SgY/JIxJ6ll9LaZt+zuG9/yeyTszGoTQjTNfeY/piqtB970QrRq3CMTM2xj0Q0+CqWB2W8NOD9nRtNxXrkWLGiMW57+pv4=
+	t=1780285006; cv=none; b=seuyhA0zEGasIzgl+ASmn7TkynT8b3NNGZLnrWkxPtOesqXKOyskqwdGZkBdJIhL64r3OxLl/CuUm55AG8qGltbtByUSRswi1cg1qYJVagkg8iK4S6xKji3tC42O2ukuGJ5XKw8tagzGpXLwmoxvt6QHTlyq1jAsH7bHdFtVers=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780283483; c=relaxed/simple;
-	bh=RT/E+puSLaZidPDXPx3TDleWNistOBZUBVAzhbx9FHw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sH0rwjveHFwpvb0eCq22i2pQHCTMT0uvrXNIx0pZzTzUPlxFRzfM3ZOX3dpvxZ5RmQfi8FRrlvfRy/rjqUUzIh7prUIwfHyxgCIVc245bQ4zBjpB6bNVneTBXDPD/E9EPMWvRJ4OjD68bfdvaxeoVTneKqXHyFjBGGKH+vByxCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D7+YuXA8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BACF21F00893;
-	Mon,  1 Jun 2026 03:11:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780283482;
-	bh=TE32s63FN7oiWP8Km/xUybIoPrIk9f292PR3zY9E4mU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=D7+YuXA8/hANe0DEyFcvVWJ4I1LUJ+VsGacyuy4Gg6aF7u0B2434LWnlieWx6Z0On
-	 4A7xUOVqrTNH8vlYGZbfeKPId1vR98jVaLCaE6I5y9wnZ1PF+MWhAKu47iidaKMWA3
-	 vuJOzdG1vcMFT2iIaq3Yv+DboU5N6GJ7KEqnifPiwBUXkLeV5P+2HjDFmDkymEHf5N
-	 VSGSGPMHwnDZvVFrBDTK44r/Sg/nlThYA9PJGJzNpfOM69cxKh47k50t0mIhmDnWqF
-	 hg4KDHUP0jzRrclwlEFjghJkYJsiuNOInU9hoJjEAHuGe+5J+Roi7kWvNbXIMkvDE5
-	 17I3FAaMvYiuw==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 01 Jun 2026 13:10:06 +1000
-Subject: [PATCH net 10/10] mptcp: check desc->count in read_sock
+	s=arc-20240116; t=1780285006; c=relaxed/simple;
+	bh=BI9tI918GfzIZSRsUdqAB8+iapy2l9qK0mRkNsU+fhM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l4ONAk5rNnLpJA1vlYiLwAx8p/cj0EfwhzczV0zQ0dD3+U3bx1GWpI3OvDbQWxGxvj5KycEFw22NXywKy3lxoERxa5ZS8meqa5q5nCiaZ/mPkC2RoopRmPMPBP7vjl2T8KGC/CK2AcDdYSzHG9GnjUxn76DNX+k4E0lkiT2qsxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=hHDQyNG/; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 2367014C2D6;
+	Mon,  1 Jun 2026 05:36:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1780284995;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LISSrtzA05F3JkeZ9vD+SSIOhByZOvSq9XHTmt/ltr4=;
+	b=hHDQyNG/VsAkALfCA0zGrp2tsbaqZ3UMedgfpXTevkzIe5vKVyTbBOQmca8ErFtDn2+d1Z
+	iC93JejHHn8WvJmEnYfxPkclLv8+4jzNHbXMaHW4+zs6sJH+OMCVyS885nXX5CjTiy+0eR
+	/S8wyurUy8cmKqvgqGXg354J4hOsbvwdsHjd8ydDcyeE1CvKKOcggE5wau6uxv9s6dJF6i
+	HyUHwJz1w0jcgHQUBLOzoc/Jy0ZoC39zdnudlBmS4Ie69DPwmrvn//8GvHlPz/3SgBw3/t
+	Z3hbx4brSBhqxB0Du4Xdxqv8HSCn0j0sjMOB0Jl0llX3vSin+n/yfc/jakfDkA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 90bf2db0;
+	Mon, 1 Jun 2026 03:36:28 +0000 (UTC)
+Date: Mon, 1 Jun 2026 12:36:13 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 5.10 000/589] 5.10.258-rc1 review
+Message-ID: <ahz-LRETxhw5zg_V@codewreck.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260601-net-mptcp-misc-fixes-7-1-rc7-v1-10-a5ae7791754b@kernel.org>
-References: <20260601-net-mptcp-misc-fixes-7-1-rc7-v1-0-a5ae7791754b@kernel.org>
-In-Reply-To: <20260601-net-mptcp-misc-fixes-7-1-rc7-v1-0-a5ae7791754b@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Gang Yan <yangang@kylinos.cn>, stable@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1199; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=ouh+8y0QVk20uitc41ZjPExokNTNSrOLDbO4PTnW4No=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBqHPgfPWYM9vCBC658ItD/tsv5LQUz+/8nLaps8
- Z6VvIX3bz6JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCahz4HwAKCRD2t4JPQmmg
- c/T2D/9NKT/NKw81WzfQsMRXmA1ESwXdsFG3H/6mCVv4zqskxlBEkJLebZQOGopVl8adzJ3Pk8w
- +kjBEUh/Q+eLkKapvvr7lC/LeM6Wet34dIhx7HMuyYn2JVDqUWBETfwiB5WiU3uAor1qo6dJf//
- d5bf71N/LG0m3FvcamVvPJoYZMxxOVaqdWhwAlGICdvw0eLkeUjdOe8kijaFAvTsfnn96T0pFV8
- 4hTTCvVvVZiSDqE9HiSuPkdWgSoO8Y4OsjE563Jx71q/Qmu2/V6R3ouxS3BQ8oxo4sHfX61PIrG
- Lrk2NOzXU71R+Qj87RvVwUxUz1U+w5b3qDo2sVK4xgdN42Z9hnMwWnY6n2wvGMycUmlwy51WehF
- +fgqbeYRSKFm5p+Bel7JV6MphTOk7HbjxwTchpn8sdq7oXb9b3WoAPpEdvW3mrtvbMeaNw/MqtV
- TbvRDGtaQvFdRCMWG6/v3UTcxA2hqiu98uk62I1LhkFEIr/dnBmKNgZUcUy5VZtdIMTznDwga06
- xqPqKr9rtTHY/czXYZLAeAYmhRFK1i5kEWFD0oGONdqnqJb9G3/YsgzBng/i95HA3mG90rUhIXH
- st9LD6bv7OHIdoNP17U6HIyeyEexsqmGZTja7Si+qoHJPUCCVBAxx6LB7JBY7LyAzFwRzKnQm7J
- Eu9Vz0tSwFwFAjw==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[codewreck.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[codewreck.org:s=2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259431-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259432-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[codewreck.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[asmadeus@codewreck.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kylinos.cn:email]
-X-Rspamd-Queue-Id: B06616191B7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,codewreck.org:mid,codewreck.org:dkim]
+X-Rspamd-Queue-Id: 9A6626193EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Gang Yan <yangang@kylinos.cn>
+Greg Kroah-Hartman wrote on Sat, May 30, 2026 at 05:58:01PM +0200:
+> This is the start of the stable review cycle for the 5.10.258 release.
+> There are 589 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Mon, 01 Jun 2026 16:01:34 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.258-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
-__tcp_read_sock() checks desc->count after each skb is consumed and
-breaks the loop when it reaches 0. The MPTCP variant lacks this check.
+Tested 01c1356f563d ("Linux 5.10.258-rc1") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
+- arm64 i.MX8ULP (Armadillo IoT A9E)
 
-This is a functional bug, other subsystems also rely on this check:
-TLS strparser sets desc->count to 0 once a full TLS record is assembled
-and depends on this break to stop reading.
-
-Add the same desc->count check to __mptcp_read_sock(), mirroring
-__tcp_read_sock().
-
-Fixes: 250d9766a984 ("mptcp: implement .read_sock")
-Cc: stable@vger.kernel.org
-Co-developed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/protocol.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 7fac5fac2097..cb9515f505aa 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -4428,6 +4428,8 @@ static int __mptcp_read_sock(struct sock *sk, read_descriptor_t *desc,
- 		}
- 
- 		mptcp_eat_recv_skb(sk, skb);
-+		if (!desc->count)
-+			break;
- 	}
- 
- 	if (noack)
-
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 -- 
-2.53.0
-
+Dominique Martinet
 
