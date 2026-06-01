@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-259548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLXLMpB9HWrEbAkAu9opvQ
-	(envelope-from <stable+bounces-259548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 14:39:44 +0200
+	id gHl0LfN/HWpPbQkAu9opvQ
+	(envelope-from <stable+bounces-259549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 14:49:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD2761F692
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 14:39:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D0EA61F8A1
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 14:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 396F43024606
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 12:38:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 202A630062D3
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 12:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E059937C902;
-	Mon,  1 Jun 2026 12:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DD9375AA8;
+	Mon,  1 Jun 2026 12:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XeBY90QM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pwh5SAHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE97A37C900
-	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 12:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1C88287E
+	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 12:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780317437; cv=none; b=iBGBUCHKZcB1epODk2frt5q2vWgsPUAne6pjcWXM0ARp4rMLrK9e0gHBKgneNZcnMdJ76OnbEB1lPXcHRAvEe4GSy4s9v2IUJKjsZt9rDs+MUNCJh86B4eiWeyTd3yjuj/yrLBM92clzSn6xH3kfrt3YpilqafarvYqC2A8dcL0=
+	t=1780318193; cv=none; b=BvLCf07G5QK9IaA1F0Pp4i1vQ8SwLc51uImFTkjZm5nA6waT965n+VmV7SKBEWTUr4TuxYdzDrUg/KkFI2+S02ngUCrchFJ4zZpqZ3g5znYvEEMLBlttVY01CjK845b9uz/KnwYJZG2AyGL/8/f+9y3ioUS8b7jC4ER5O2aN4ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780317437; c=relaxed/simple;
-	bh=+lYGb4+b0w8GwYp/G3TBEJqntPg7krben7s3Uub1FF4=;
+	s=arc-20240116; t=1780318193; c=relaxed/simple;
+	bh=UeuPLvOAXO0PgPZuPCJdVXx497EuEZw4yG64HJQOr2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NubZst5726pZu9RZlKGFdgLyGrxoyDeTG8WivCGPcMhxYcW0eCF5XJxJR1tpETzfRskkJObvzKtBbNp0ZSvLizvUIVD1w8klyIuRRWMIaUidKqYh6WXXPT2zg54upC1cL/wrQ/tTdwQCALU7hFtOLNKOxyo3hrTXp1Vuu73ktYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XeBY90QM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD3A1F00899;
-	Mon,  1 Jun 2026 12:37:15 +0000 (UTC)
+	 MIME-Version; b=O+1gziDnowk0mCrBbNTerkbHOy/dvY/AA3FrFuaQtQq5+OdOdFF4iPyCr1/Rqq5VRG8fhRvUbEKKqoATSYao0LQyaZme/2SKQt2nMRrAPPUr0Q8nBC59X78HRCAfre6zfkeotnoIbppf0VzwUUU8ASX6Zs+LBA4hPERGI424As4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pwh5SAHP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDC21F00893;
+	Mon,  1 Jun 2026 12:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780317436;
-	bh=+FRhqR9v4KLDe+3m+Be/TtbDq0LmDlvDNNY2gzlEQTY=;
+	s=k20260515; t=1780318191;
+	bh=1erm8ibW2jwrRcAn/oIMjdMpj7Qych7Vl2Gu7gWaRMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XeBY90QMcYZ1RmjPrbVKMnC2gM/ECZlu4IcwoGtyH8QdjbTqTA5sj6rtWVTZDrQ1g
-	 g9vL+aFplkcXvHi8hHmsJ4vZ/1M4wd+UO0liyZ8jbtk1BJZeJ0iEeshHy/6yoqoGtJ
-	 zVkCLZTPYiH/+0E8LEDeyWJikLgoZOxRiQS8v0/hxvyPzTCGf+Hp6LsoFErcjyf+fW
-	 JPYJCmiMztmv+g+RGsU0tye5I1FS7stFSxSoUAhEa6K2LO5SDKI9yQceyO9ysxEEJ8
-	 hZ8tOon3lNWfH5trmmIpD4cEMpfnh2JRj4LYmp76yUQYJSd+NkOXrE60H/AnDlBpIv
-	 JQSZwN+dYo0rA==
+	b=Pwh5SAHPEuEQqzqoBbuxplfyoZCOZBPCBaZjUr42zabaD/ymwa4os5BpZun7pigG5
+	 L1HVZvsAX5smhK0Rbc8JYCVxSv4IHlSgXVtmlohenF85TPCy/Ir2F4qDvKXw1WKGUo
+	 73xrKnyUC4GxwLn95h5VBd0Bax6tHyU9dFbY+VR01zyfU3rgxb+EV1Jmfv+Tf+fNK4
+	 G5W9JdokF0/vTnE61I2frzWFYoaV9Pi0O6TElGvuGR9sKfH1NPDkvABdO9kl3ZTR5v
+	 /g3Jn2lx+e8w0xwWmYsVDKLGEAorPBeZbVYQVBCzixEEqFzFoDMtcGH/36N/NbIvRU
+	 WI+wLfGA4TvoA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>,
+Cc: Guenter Roeck <linux@roeck-us.net>,
+	Sanman Pradhan <psanman@juniper.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0.y 2/2] hwmon: (pmbus/adm1266) serialize sequencer_state debugfs read with pmbus_lock
-Date: Mon,  1 Jun 2026 08:37:13 -0400
-Message-ID: <20260601123713.718815-2-sashal@kernel.org>
+Subject: [PATCH 6.18.y 1/2] hwmon: (pmbus) Add support for guarded PMBus lock
+Date: Mon,  1 Jun 2026 08:49:48 -0400
+Message-ID: <20260601124949.768588-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260601123713.718815-1-sashal@kernel.org>
-References: <2026052822-saloon-auction-5094@gregkh>
- <20260601123713.718815-1-sashal@kernel.org>
+In-Reply-To: <2026052823-ending-creation-bc11@gregkh>
+References: <2026052823-ending-creation-bc11@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -78,63 +77,84 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259548-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-259549-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.994];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,roeck-us.net:email,nexthop.ai:email]
-X-Rspamd-Queue-Id: 6AD2761F692
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,roeck-us.net:email]
+X-Rspamd-Queue-Id: 2D0EA61F8A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 4e4af55aaca7f6d7673d5f9889ad0529db86a048 ]
+[ Upstream commit 1814f4d3ff358277a5b6957e7f133c2812dc80ec ]
 
-adm1266_state_read() backs the sequencer_state debugfs entry and
-issues an i2c_smbus_read_word_data(client, ADM1266_READ_STATE)
-against the device without taking pmbus_lock.  pmbus_core holds
-pmbus_lock around its own multi-transaction sequences (notably the
-"set PAGE, then read paged register" pattern used by hwmon
-attributes), so an unlocked debugfs reader can land between a PAGE
-write and the subsequent paged read in another thread.  READ_STATE
-itself is not paged, so it cannot corrupt PAGE in flight, but the
-same defensive serialisation that applies to the GPIO accessors
-applies here: any direct device access from outside pmbus_core
-should be ordered with respect to pmbus_core's own.
+Add support for guard(pmbus_lock)() and scoped_guard(pmbus_lock)()
+to be able to simplify the PMBus code.
 
-Take pmbus_lock at the top of adm1266_state_read() via the
-scope-based guard().
+Also introduce pmbus_lock() as pre-requisite for supporting
+guard().
 
-Fixes: ed1ff457e187 ("hwmon: (pmbus/adm1266) add debugfs for states")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-8-e425e4f88139@nexthop.ai
+Reviewed-by: Sanman Pradhan <psanman@juniper.net>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 4e4af55aaca7 ("hwmon: (pmbus/adm1266) serialize sequencer_state debugfs read with pmbus_lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/pmbus/pmbus.h      | 5 +++++
+ drivers/hwmon/pmbus/pmbus_core.c | 8 ++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
-index d90f8f80be8e0..84e01acb0796d 100644
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -322,6 +322,7 @@ static int adm1266_state_read(struct seq_file *s, void *pdata)
- 	struct i2c_client *client = to_i2c_client(dev);
- 	int ret;
+diff --git a/drivers/hwmon/pmbus/pmbus.h b/drivers/hwmon/pmbus/pmbus.h
+index d2e9bfb5320fc..e499cdae9442c 100644
+--- a/drivers/hwmon/pmbus/pmbus.h
++++ b/drivers/hwmon/pmbus/pmbus.h
+@@ -10,6 +10,7 @@
+ #define PMBUS_H
  
-+	guard(pmbus_lock)(client);
- 	ret = i2c_smbus_read_word_data(client, ADM1266_READ_STATE);
- 	if (ret < 0)
- 		return ret;
+ #include <linux/bitops.h>
++#include <linux/cleanup.h>
+ #include <linux/regulator/driver.h>
+ 
+ /*
+@@ -563,7 +564,11 @@ int pmbus_get_fan_rate_device(struct i2c_client *client, int page, int id,
+ int pmbus_get_fan_rate_cached(struct i2c_client *client, int page, int id,
+ 			      enum pmbus_fan_mode mode);
+ int pmbus_lock_interruptible(struct i2c_client *client);
++void pmbus_lock(struct i2c_client *client);
+ void pmbus_unlock(struct i2c_client *client);
++
++DEFINE_GUARD(pmbus_lock, struct i2c_client *, pmbus_lock(_T), pmbus_unlock(_T))
++
+ int pmbus_update_fan(struct i2c_client *client, int page, int id,
+ 		     u8 config, u8 mask, u16 command);
+ struct dentry *pmbus_get_debugfs_dir(struct i2c_client *client);
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index 572be3ebc03df..7150f12d26300 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -3871,6 +3871,14 @@ struct dentry *pmbus_get_debugfs_dir(struct i2c_client *client)
+ }
+ EXPORT_SYMBOL_NS_GPL(pmbus_get_debugfs_dir, "PMBUS");
+ 
++void pmbus_lock(struct i2c_client *client)
++{
++	struct pmbus_data *data = i2c_get_clientdata(client);
++
++	mutex_lock(&data->update_lock);
++}
++EXPORT_SYMBOL_NS_GPL(pmbus_lock, "PMBUS");
++
+ int pmbus_lock_interruptible(struct i2c_client *client)
+ {
+ 	struct pmbus_data *data = i2c_get_clientdata(client);
 -- 
 2.53.0
 
