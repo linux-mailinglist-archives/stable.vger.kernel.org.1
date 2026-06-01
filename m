@@ -1,246 +1,175 @@
-Return-Path: <stable+bounces-259636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LqDLkXHHWrgdwkAu9opvQ
-	(envelope-from <stable+bounces-259636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 19:54:13 +0200
+	id MOSJL2THHWrgdwkAu9opvQ
+	(envelope-from <stable+bounces-259637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 19:54:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE78623863
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 19:54:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0AD623888
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 19:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E85CA303C668
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 17:51:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16C033038121
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 17:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268EF3E0749;
-	Mon,  1 Jun 2026 17:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47D33E0C46;
+	Mon,  1 Jun 2026 17:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tFeTSrGP"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="KwF7uc1C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499FE3E0C44
-	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 17:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780336270; cv=pass; b=ZR65EPSj3beNsezXVbXQjtt0aEAR6/Ji1imetUhujAvq7tCNsOVkv3moW72Csc8ZmG9KEyNfbPZH/lVcQNBbALNbWuY9pO7V4lpKmjFrZGHGVBh0jyinw/f8mJ5GbitXVyK1500LAK4WwAn/CN4dIlYBuQ1Sn4Skf0sz5ewsdkg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780336270; c=relaxed/simple;
-	bh=flOdQbFMjfUG0jkFksI2WZ1HJzXvIy8Dsk0tvu6DNig=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lxguYz30viK0RQIwL3kRki5YAua9PdZ37oTGn5Joi6+fvwDodc8VoGODSJXfOGl5+JTjuRvq7uIiNMC3/0rDSNfbAe3+Dz4pn1ZBf0D5XKWrDrRT4IWXqWjwE7nSLotxCjfQhAdjYo1mQSWH56kDPWlhRggSBixOeNoHkAu7BXo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tFeTSrGP; arc=pass smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-bdf8add254dso968585866b.1
-        for <stable@vger.kernel.org>; Mon, 01 Jun 2026 10:51:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780336266; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZG+PC1pe9UO7dq9AyMnUHczahX/9cmdBLoynAM3HN8txgkHPAV6KGDffBen2/cLOLQ
-         YrqHtxk/9QcWMUdHXIz9+u6SdZjbL940iBm6abwLYmNlpxIYwMbEFFa7nUH+HW8TCazo
-         2o6Vo21aVpiqYQ2jJTauL3yWDBr30+G0O/RhAJyiR0JQSvQbnr3mQOwjAOzCaxu09hM9
-         AbO4LBdoqVBA6BpS8ybYtH6Eq7vMuwG9lgsZTs8fTwMSs3AOrzvOb3UFJ9b8JZMqpfCZ
-         ce7wvhMjaa783YnWHWoyY8uvwNT8WoeXAGQ0FlqRYWk2ZXz/5BTRZYcZ06i0epUO2UMe
-         LADQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1oyN2GHO/W1PVNw6MHzzvIqAiryGCw8vjjyfHSwiSxY=;
-        fh=6zTPu7a/Mmy/U4u+Fd381rsTEZtTojEfZIo48I63LsE=;
-        b=kTNvuvGsgwR3wpxl+NGC2flfXnPxebDUDyoUUnpDnFI3cj84iY4eXlO4TKZic8VbOQ
-         IlXKFrvXZ2Xsdrzfnh1GAfPxR8zF0BdcuvoUY8XKEr05cGU4Tq874WMdYtEPT8a9b7Ny
-         /lb6pum9qsEJlphxo6YEIbKb16loYT6GVGfRhxJ6m3K/NYdC7iHCA7JKjwIVaQ1i5j6g
-         /FD3mieLl33RqwAAw2fDM1HvBghp3rpInG5mJhOSut/RdiZ3V3r8nasysDGWOXTPbAP8
-         OjdIeFWvXnU5o3RUMoc3yPNFiyQWirradVYmrODIPPvVQlrW3et+OV8UoZpivUy9/gt4
-         QtSA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530983314B7
+	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 17:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780336375; cv=none; b=RYhKbrp8CutdCq4Zj0yRQwu5bnkti88Oz9RD+J0wpZbN6uh6LzQg6tWHcZvAN8pll4id3Zh4QsWMZgtP7AbbnZO7vs5fQuAdz2t+nnRyqmsffzZjHM0f07yyURSP0WcPFi/TJ3rjomLSoSz4cxVXeLxVE9snGIv/8qAQSX0ehCY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780336375; c=relaxed/simple;
+	bh=xCSmiTgW2gp0UZZcRgch+bSYZxNYHdqPa15p3QyPPNQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pvfUTi6fZ7OnIUEusMMJ0bHtOfN9BZ7+I6JOeQgGjDdfm0Ohw6tpCG44aByaiof2ApyLO/lT27jeWEL9txHLKNlwNEerN8fhKqgUqeQdD0SN8F5KpY6+tLPbF8U7PEEX6ngzxr5MEk8WVYZCRYq7ekF2YJRy5seWZxzl2rAz8+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=KwF7uc1C; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-9155183b42cso195004585a.0
+        for <stable@vger.kernel.org>; Mon, 01 Jun 2026 10:52:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780336266; x=1780941066; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1oyN2GHO/W1PVNw6MHzzvIqAiryGCw8vjjyfHSwiSxY=;
-        b=tFeTSrGPap1yf2dbp8FM1Wl0GY22tAy1HeqCwDyDijuqOFsKzJQB3U/iZC/IkcXwkv
-         JT0YYWTrK9SOhBTAsSeqIK3JSUc2fFILOIr2uWJvlqUTRWGrUg1Q89K5gYx/qfd3ESPC
-         XqMnHMSgO+YgVCukGPQAXwW1NmqIXNTDqq90IgCaOqFt1vqAYYIzxY5rV51c3VUw97l9
-         QLlwIs2r69eyDzv9vCg+gbKH0jsi1lK74Nlnh82Z3TJTc8ikKyGKUHrkeoXpF4LiMj2+
-         6KRL1rnJ5LteFdxJOuYXJmwMClELpnX60Eb258zZLF5V6+e5d0EkWjRdt4dki3z+j9va
-         V2Mw==
+        d=ziepe.ca; s=google; t=1780336373; x=1780941173; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ajzqlQYEAeycmyed8yu6upDmFOo140vP8s+rqI6MeM4=;
+        b=KwF7uc1C0EDYQ61nhF93rVhA0bqtAx73msjzRBzrBDEbe81L/xHDF6f+VW6dSE3Ufg
+         Vl0XmTuNjXehaCS9SjnZW4f2xAZeKtIdE6lcbq806hV/aoV49126yyXWFoFy2ZxEWm8R
+         9uXcFVpdp2UJ1U+EKyESL5NFk2JwVwzM/9+sKVzWF0aZOm/ikyeOaiBsqSvsc84Coojl
+         5jxAkApUh/Z5ZoDFUWZ0l/P98cuu2TXGAnyMEdqCR9MkeT30KMyV9OxxyQTkregpkh1z
+         lq/9AHebWG9oCOLfvj495dYXOyrvbEb9pfqTtzewdXD/w+zxf6UTvm4GCOYtsxbqYW4J
+         6u7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780336266; x=1780941066;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1oyN2GHO/W1PVNw6MHzzvIqAiryGCw8vjjyfHSwiSxY=;
-        b=NCHuiQtjqQX3dcIqOllAsN5i/3Qu7YVNtupHsnjTnWnOhuq7Pm/A3DH6vo1TEVRqY3
-         T/YRRj+pkh3wXmLYgj8xT/LFeFuvxqns/RysfBsbaH/IpNpxaP0InPfSWCVkcWXGVoKT
-         s67yatj5bVUnGhDx5fp+pNNZSPZkpSBdTjQWFKinb/RBMzknJpwF3zZzGqr0BgyepG6X
-         Cf+n/A0/Rwkw8r9B5CCvNIyJEFpesqWnMYuFFMa3ts8jdu4JtSs7uSOXOsVvdhjmb1MH
-         PtyP0uqBaPNBnOyDEWtuoMaBYAQbahoU067vjXd2CpdVOuBN8CqvDgrd8EcPFEbE4MPi
-         4uyw==
-X-Forwarded-Encrypted: i=1; AFNElJ8IYVzAv5R6hXxdykXgKJpbB27EkC5CNqG7wOvhAehc09YXQA7d3jabUkTdv0nv14qHwwnQQCo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjXbJXGIPxgHqlvAcgae0nHay60lyui6iycXLuZX1mZSzV8MWc
-	X1/m8L9yFeM8a5nuU+rLd9oG3hVhJ5LMVAkN6wcUkG6bpYq8cd3GzvJ37cd0ngUiBBMi8ms7bZl
-	pRbUJIBLg1notVgBHsTEysCh+80cIpy8=
-X-Gm-Gg: Acq92OE9mYG79HnHAxKVYIyawDNGE5xe6qkn6HqGknvbB3zsoQdXgAZneIzZBN3pYOg
-	yQwfy+ChSObzjuyAhsDQIC6rTa6JdD0heR8XWXpeIdNPVaaiNhYo1mIw2R3cH0eOvTbid/4IJe2
-	6LzgO8saBLmOcxc0C1W3VQ8tybzPzDiLLTbkfSBuUyFaiDmOM3diZPpi6knWUirXKIZcK3fBZV8
-	tZJmNKG2QQuLJ33UtdmyUPj7OyokhzHYPAFhVEYg5WL+ef0u7xhdIBq7U+MIYa4rO45DYDL4KBa
-	OBzLy+1UfD5CYv6gTn7MoQ4G5zbXILuwrPfv82nzBBZjERMLBVA=
-X-Received: by 2002:a17:907:3d55:b0:bcb:4046:63ee with SMTP id
- a640c23a62f3a-beab17aaa7fmr558548966b.31.1780336265621; Mon, 01 Jun 2026
- 10:51:05 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780336373; x=1780941173;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ajzqlQYEAeycmyed8yu6upDmFOo140vP8s+rqI6MeM4=;
+        b=jYRiPeYv+In3qX3baQstQ6yRDa/bFXkMnVR32nQyJRs4xAh5q0H0L/WrU+DWnWvOJV
+         2GwW7YbAzYp49OftBQBFQBOvlA1i+x8l1O7eMUtvefbigtVMisfBPR1QEGpuQRBgIGoT
+         1uxxKRQWH911hTMg2SfcwGeV86RKBB9ojl9Lr4I+sBtyXOAfdM05mF6MYUipHgnEvDP4
+         PKqWCXXVlOtq+t6PMm53hFDkXbMgTuHG3ItKUGdIj+qn57wHha1icJIbXq4/V+u0TrzF
+         PcuV64R2iOfsWXOPtauSx9o4AFwNG1PnmBBWGDAbRUB2xHeB1pzi4lwjloTR28GULSWA
+         UR2Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9GlHRBsuznKqSNotKcGqJ77CHSRFSPF9xYQtWTay6wWcnuduGpG94j18E/hX1Bl+JsDVNvfcg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMMoNl01OoLCEaxtW/olUULYLB22x7v92UDwdT5/SFCeiRezIv
+	tiQ9h3PLeykA+dAmADbNFBWI7is/DTqxKsYspvibR+AsAkozSSYFzRhoDH5Xl9g+kD0=
+X-Gm-Gg: Acq92OFqAQhMLGXQb6+hnytsaJKrCtpW8zlrxpoeimHUsf1bvcmB85Hu1T/K9TQ5tAT
+	JBMAYKDKECo8DTlr1kUgqagYIYeHKEW7mnNy5ZkKy726hn+N/nHI3mpXRDQyoiUsf+4OjosiDPV
+	Xi0T+hDtcMS4AYqK+4C0akhtE1+62EWJ+A2xnr69ioaJJhxQJT2tmrkuU2YXDds1uFWSACX2rhM
+	vsq4tWYY/3GXuP66Qz6e6A6Ad+n6Bnvqz1dlCAmxZxcQ3r/X/dH4T4CYJ4iYns0hzJRvJW6b54k
+	8tJEi1V79jLM3t/WHjGojQX5tcwanaEvcuVJxs5ywy7+VWhTnP4XU1Nk3Un17x8/nu2hrB/tE4o
+	bMqTnb2MVGPrIYiBO0dg1r79vt/Ye9QhAIYXTZuPXQdO+vtlqRII0887B87k4CrIsSdgfJGCxNA
+	zUf9uSOdfWDn8lbo12k0NSH5ZrXWBz8qsOh/R4+3S+gUI9m+LrF9tg3THMPq7pQoRxY7SbhDfsV
+	MbBCFi2yHyLmstx
+X-Received: by 2002:a05:620a:2202:b0:915:4c9b:4120 with SMTP id af79cd13be357-91578006ac3mr63386685a.37.1780336373342;
+        Mon, 01 Jun 2026 10:52:53 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9153265126asm1064337685a.45.2026.06.01.10.52.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 10:52:52 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wU6om-000000027gs-1lLx;
+	Mon, 01 Jun 2026 14:52:52 -0300
+Date: Mon, 1 Jun 2026 14:52:52 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: David Hu <xuehaohu@google.com>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Alex Williamson <alex@shazbot.org>, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-kernel@vger.kernel.org, jmoroni@google.com, praan@google.com,
+	stable@vger.kernel.org, iommu@lists.linux.dev
+Subject: Re: [PATCH v4] dma-buf: Fix silent overflow for phys vec to sgt
+Message-ID: <20260601175252.GD2487554@ziepe.ca>
+References: <20260528191658.2506362-1-xuehaohu@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260601161501.1444829-1-shakeel.butt@linux.dev>
-In-Reply-To: <20260601161501.1444829-1-shakeel.butt@linux.dev>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 2 Jun 2026 01:50:28 +0800
-X-Gm-Features: AVHnY4IV1F6PCCbzzYjlKLYKIUjD5M0VssnH2_2WxHth41_Ifdx4MpgpS8XDWPI
-Message-ID: <CAMgjq7CQt+W5jAB1DM=nCRpLOFnCK3FkdKT6O0sznOEGpo6=Zw@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/list_lru: drain before clearing xarray entry on reparent
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Dave Chinner <david@fromorbit.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Chris Mason <clm@fb.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260528191658.2506362-1-xuehaohu@google.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-259637-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[ziepe.ca:+];
+	DMARC_NA(0.00)[ziepe.ca];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259636-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ryncsn@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid,tencent.com:email,fb.com:email]
-X-Rspamd-Queue-Id: 3CE78623863
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ziepe.ca:mid,ziepe.ca:dkim]
+X-Rspamd-Queue-Id: 3A0AD623888
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Jun 2, 2026 at 12:28=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.de=
-v> wrote:
->
-> memcg_reparent_list_lrus() clears the dying memcg's xarray entry with
-> xas_store(&xas, NULL) before reparenting its per-node lists into the
-> parent. This opens a window where a concurrent list_lru_del() arriving
-> for the dying memcg sees xa_load() =3D=3D NULL, walks to the parent in
-> lock_list_lru_of_memcg(), takes the parent's per-node lock, and calls
-> list_del_init() on an item still physically linked on the dying
-> memcg's list.
->
-> If another in-flight thread holds the dying memcg's per-node lock at
-> the same moment (another list_lru_del, or a list_lru_walk_one running
-> an isolate callback), both threads modify ->next/->prev pointers on the
-> same physical list under different locks. Adjacent items can corrupt
-> each other's links.
->
-> Fix it by reversing the order: reparent each per-node list and mark the
-> child's list lru dead and then clear the xarray entry. Any concurrent
-> list_lru op that finds the still-set xarray entry either takes the dying
-> memcg's per-node lock (synchronizing with the drain) or sees LONG_MIN
-> and walks to the parent, where the items now live.
->
-> Fixes: fb56fdf8b9a2 ("mm/list_lru: split the lock to per-cgroup scope")
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Reported-by: Chris Mason <clm@fb.com>
-> Cc: stable@vger.kernel.org
-> ---
-> Changes since v1:
-> - Use xa_erase_irq() instead of xa_erase() (Sashiko & Claude).
-> - Added comment on CSS_DYING check in memcg_list_lru_alloc avoiding a new=
- mlru
->   allocation.
->
->  mm/list_lru.c | 21 ++++++++++++---------
->  1 file changed, 12 insertions(+), 9 deletions(-)
->
-> diff --git a/mm/list_lru.c b/mm/list_lru.c
-> index dd29bcf8eb5f..d454bce9a78e 100644
-> --- a/mm/list_lru.c
-> +++ b/mm/list_lru.c
-> @@ -473,26 +473,29 @@ void memcg_reparent_list_lrus(struct mem_cgroup *me=
-mcg, struct mem_cgroup *paren
->         mutex_lock(&list_lrus_mutex);
->         list_for_each_entry(lru, &memcg_list_lrus, list) {
->                 struct list_lru_memcg *mlru;
-> -               XA_STATE(xas, &lru->xa, memcg->kmemcg_id);
->
->                 /*
-> -                * Lock the Xarray to ensure no on going list_lru_memcg
-> -                * allocation and further allocation will see css_is_dyin=
-g().
-> +                * css_is_dying() check in memcg_list_lru_alloc() avoids
-> +                * allocating a new mlru since CSS_DYING is already set f=
-or this
-> +                * memcg a rcu grace period ago.
->                  */
-> -               xas_lock_irq(&xas);
-> -               mlru =3D xas_store(&xas, NULL);
-> -               xas_unlock_irq(&xas);
-> +               mlru =3D xa_load(&lru->xa, memcg->kmemcg_id);
->                 if (!mlru)
->                         continue;
->
->                 /*
-> -                * With Xarray value set to NULL, holding the lru lock be=
-low
-> -                * prevents list_lru_{add,del,isolate} from touching the =
-lru,
-> -                * safe to reparent.
-> +                * Reparent each per-node list and mark the child dead
-> +                * (LONG_MIN) before clearing xarray entry otherwise a
-> +                * concurrent list_lru_del() may corrupt the list if it a=
-rrives
-> +                * after xarray clear but before reparenting as
-> +                * lock_list_lru_of_memcg will acquire parent's lock whil=
-e the
-> +                * item is still on child's list.
->                  */
->                 for_each_node(i)
->                         memcg_reparent_list_lru_one(lru, i, &mlru->node[i=
-], parent);
->
-> +               xa_erase_irq(&lru->xa, memcg->kmemcg_id);
-> +
->                 /*
->                  * Here all list_lrus corresponding to the cgroup are gua=
-ranteed
->                  * to remain empty, we can safely free this lru, any furt=
-her
-> --
-> 2.53.0-Meta
->
->
+On Thu, May 28, 2026 at 07:16:58PM +0000, David Hu wrote:
+> diff --git a/drivers/dma-buf/dma-buf-mapping.c b/drivers/dma-buf/dma-buf-mapping.c
+> index 794acff2546a..1aabc0ee70bb 100644
+> --- a/drivers/dma-buf/dma-buf-mapping.c
+> +++ b/drivers/dma-buf/dma-buf-mapping.c
+> @@ -10,7 +10,7 @@ static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
+>  					 dma_addr_t addr)
+>  {
+>  	unsigned int len, nents;
+> -	int i;
+> +	unsigned int i;
+>  
+>  	nents = DIV_ROUND_UP(length, UINT_MAX);
+>  	for (i = 0; i < nents; i++) {
+> @@ -36,7 +36,7 @@ static unsigned int calc_sg_nents(struct dma_iova_state *state,
+>  				  struct phys_vec *phys_vec, size_t nr_ranges,
+>  				  size_t size)
+>  {
+> -	unsigned int nents = 0;
+> +	size_t nents = 0;
+>  	size_t i;
+>  
+>  	if (!state || !dma_use_iova(state)) {
+> @@ -51,6 +51,9 @@ static unsigned int calc_sg_nents(struct dma_iova_state *state,
+>  		nents = DIV_ROUND_UP(size, UINT_MAX);
+>  	}
+>  
+> +	if (WARN_ON_ONCE(nents > UINT_MAX))
+> +		return 0;
 
-Nice catch! Thanks a lot!
+The WARN seems a bit much, but if you have it then it should be
+arranged so the caller ultimately fails.
 
-Reviewed-by: Kairui Song <kasong@tencent.com>
+But otherwise I think correcting the types is a good idea
+
+Jason
 
