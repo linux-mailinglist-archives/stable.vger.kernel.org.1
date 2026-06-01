@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-259389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BqNOhHVHGqUTAkAu9opvQ
-	(envelope-from <stable+bounces-259389-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 02:40:49 +0200
+	id ICNWIBnVHGqUTAkAu9opvQ
+	(envelope-from <stable+bounces-259391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 02:40:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4157D6187F5
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 02:40:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5D96187FD
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 02:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 955D03010C0A
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 00:38:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6CF8A301C168
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 00:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97A8175A80;
-	Mon,  1 Jun 2026 00:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4642175A7C;
+	Mon,  1 Jun 2026 00:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2axhccQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ah0NBdJG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BAB1E511
-	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 00:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCF21E511
+	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 00:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780274314; cv=none; b=EUwvPRZ/mDuPLXOjtXeymYuV6nsvcd64yPCvntxN5jQs8SPwBMS9CHsuMNd6W4tpgrOprc1Vthb9xvVbPDEPFxr6a4jTe0NMbZ/pNUfUDRLXaJAT0faxA4VvCO0IarVFxIsiPnYab4qmedrwAeL3Xm6zsNlsp9LAvXeVXuQPBNk=
+	t=1780274327; cv=none; b=od1+99R9oh6BPo6D+j2EwnQq4ddk09Rl91TZgo4a/YCnGItWgSiVD5SDL2bZFE1DjE5hSgQaMDmqr7sph9c8meVdxuhr0BSqGckLYn9OgtceuSICqJSHk8rzbgd7Q5sFqCID5PJ3JG4avgjksmL7utaiXdII2peeufDSifPph6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780274314; c=relaxed/simple;
-	bh=r9QnXbS/XkVtku61ReWP9gj8rrOBQKSevT7oW9k0b6k=;
+	s=arc-20240116; t=1780274327; c=relaxed/simple;
+	bh=oX0daeg8ynx0o+iswV5MzD9RzG7Ux8Kw64yIIafEYmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WR1uwY1vkbUk3ZDY2ZQjgrdg5CrlH2wWQzepE8LdP7wjInA26WcoabURAz+VAG1nwUaz0oe+YjaTXMomsvvLTSjEu/Bi+MHJhMWKzjpE6OCSZd7N2F79SrePpOvEnYeKd7AAYZQuC7bVCXI7k0B9B7itbyFvV8RfJYfoE+FXUTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2axhccQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D171F0089A;
-	Mon,  1 Jun 2026 00:38:32 +0000 (UTC)
+	 MIME-Version; b=lOTv6R66DdWiaH5UNHEyHv9wqDMj0je6rC3bikEokS5JMA25xaYLedbFVH6Vt/foF8g7oewYMqm1NxaUOiGX0/smfNRQL+vqCCJPzqOYBZTA121gy6dxRvuPqJAHe5/zofWGcFsLjG7kZ6ElJVr6YNqjiaExjy5FDaeaOu/5CJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ah0NBdJG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FD31F00893;
+	Mon,  1 Jun 2026 00:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780274313;
-	bh=l/V1aY8GYyO5z4bYD9aamepkmHBR23qb829t/GwjxdQ=;
+	s=k20260515; t=1780274326;
+	bh=NtoV8qb6tjST5Xueyvuzyc6EU1hQ24lu29zLz5ttzQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q2axhccQhD1sBfZ4LpZL4Utc7a9uRZBsvoeLSRFWt0OKkCdXkiQpO7fc76xoLQKsk
-	 Gcp5ej6p5OQguLjgEJ08sqL0i72Gaf5/NvDs8HwegKc3LB3jQUq1QUvJaM5Phv41h9
-	 plbvVRUs4RZtavIWhJw3khKPu6VwdzvFmnDELDojeYVinbsbng0H91hWV5t8mEjeup
-	 KmUnULCDXmNLny419AOhBqlAjY+b7t/SQ1EahaTqLzxuU2u8V7BDdCgf5161VqGjJQ
-	 W2IqY7OC/WQ8ZfVkMAftojMRpz0qoPoijMQOkqxkzr9vcLqlJPatp+MeFIIDFIR4Ne
-	 iH5HVeEzUv8Rg==
+	b=ah0NBdJGYt18ZSTSxjA6TD0dapDUCcyZFN6qdcEjOgx6H+Lr8j3KI00n+PlkWQFXm
+	 RMQY5YIp41q2ukwB9KB3eTZT7sC4dMkTLha8W64M4gDnuyjkMTiU0y3lnseJuKj0NS
+	 9xe17Tw+XlX0amhF8rxtQ/k+1p/TQ3g+u2JUeLF9rI8nEAyykt+Eh0QMGEMnUfOGgC
+	 tTGW7XHHou9n5CoEWGYX8pNQ0MmUnOK/MJbig/MzuEQXVgbTGBOohVGf/MC13lWT+g
+	 5oZSXrpDzNLbx1Iq37FuGqRKPIFMLzjCbBBpRhyEs/8aRZ2W1moiXw5GCM/MJp2/pK
+	 R7AKV18Dv19Wg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Saurav Sachidanand <sauravsc@amazon.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] spi: qup: fix error pointer deref after DMA setup failure
-Date: Sun, 31 May 2026 20:38:30 -0400
-Message-ID: <20260601003830.82222-2-sashal@kernel.org>
+Subject: [PATCH 7.0.y] i2c: tegra: make tegra_i2c_mutex_unlock() return void
+Date: Sun, 31 May 2026 20:38:43 -0400
+Message-ID: <20260601003844.82662-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260601003830.82222-1-sashal@kernel.org>
-References: <2026052837-task-immovably-904e@gregkh>
- <20260601003830.82222-1-sashal@kernel.org>
+In-Reply-To: <2026052820-freewill-rural-eb35@gregkh>
+References: <2026052820-freewill-rural-eb35@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,72 +69,103 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259389-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259391-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.996];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sashiko.dev:url]
-X-Rspamd-Queue-Id: 4157D6187F5
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
+X-Rspamd-Queue-Id: EE5D96187FD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Johan Hovold <johan@kernel.org>
+From: Saurav Sachidanand <sauravsc@amazon.com>
 
-[ Upstream commit a7e8f3efd50a165ba0189f6dc57f7e51a7d149db ]
+[ Upstream commit 30792d12842901f5276f466a960962d5bfa15cc8 ]
 
-The driver falls back to PIO mode if DMA setup fails during probe.
+tegra_i2c_mutex_unlock() returning an error that overwrites the transfer
+result causes silent loss of I2C transfer errors. If the transfer failed
+but the unlock succeeded, the error was lost and the function incorrectly
+reported success.
 
-Make sure to the clear the DMA channel pointers on setup failure to
-avoid dereferencing an error pointer (or attempting to release a channel
-a second time) on later probe errors or driver unbind.
+Rather than propagating the unlock error (which is not actionable by the
+caller - the I2C message may have been sent regardless), convert the
+function to return void and WARN on the unexpected condition. If the
+unlock fails, subsequent lock attempts will fail anyway, making the error
+visible on the next transfer.
 
-This issue was flagged by Sashiko when reviewing a devres allocation
-conversion patch.
-
-Fixes: 612762e82ae6 ("spi: qup: Add DMA capabilities")
-Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=4
-Cc: stable@vger.kernel.org	# 4.1
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260512074334.914735-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 6077cfd716fb ("i2c: tegra: Add support for SW mutex register")
+Signed-off-by: Saurav Sachidanand <sauravsc@amazon.com>
+Cc: <stable@vger.kernel.org> # v7.0+
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260507221145.62183-3-sauravsc@amazon.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-qup.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i2c/busses/i2c-tegra.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 2eee5af4cf4b1..4bbee82c5d8a9 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -968,8 +968,11 @@ static int spi_qup_init_dma(struct spi_controller *host, resource_size_t base)
- 
- err:
- 	dma_release_channel(host->dma_tx);
-+	host->dma_tx = NULL;
- err_tx:
- 	dma_release_channel(host->dma_rx);
-+	host->dma_rx = NULL;
-+
+diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
+index 4eaeb395d5db1..3a7f0439b2b3d 100644
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -445,25 +445,22 @@ static int tegra_i2c_mutex_lock(struct tegra_i2c_dev *i2c_dev)
  	return ret;
  }
  
+-static int tegra_i2c_mutex_unlock(struct tegra_i2c_dev *i2c_dev)
++static void tegra_i2c_mutex_unlock(struct tegra_i2c_dev *i2c_dev)
+ {
+ 	unsigned int reg = tegra_i2c_reg_addr(i2c_dev, I2C_SW_MUTEX);
+ 	u32 val, id;
+ 
+ 	if (!i2c_dev->hw->has_mutex)
+-		return 0;
++		return;
+ 
+ 	val = readl(i2c_dev->base + reg);
+ 
+ 	id = FIELD_GET(I2C_SW_MUTEX_GRANT, val);
+-	if (id && id != I2C_SW_MUTEX_ID_CCPLEX) {
+-		dev_warn(i2c_dev->dev, "unable to unlock mutex, mutex is owned by: %u\n", id);
+-		return -EPERM;
+-	}
++	if (WARN(id && id != I2C_SW_MUTEX_ID_CCPLEX,
++		 "unable to unlock mutex, mutex is owned by: %u\n", id))
++		return;
+ 
+ 	writel(0, i2c_dev->base + reg);
+-
+-	return 0;
+ }
+ 
+ static void tegra_i2c_mask_irq(struct tegra_i2c_dev *i2c_dev, u32 mask)
+@@ -1554,7 +1551,7 @@ static int tegra_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
+ 			break;
+ 	}
+ 
+-	ret = tegra_i2c_mutex_unlock(i2c_dev);
++	tegra_i2c_mutex_unlock(i2c_dev);
+ 	pm_runtime_put(i2c_dev->dev);
+ 
+ 	return ret ?: i;
 -- 
 2.53.0
 
