@@ -1,147 +1,98 @@
-Return-Path: <stable+bounces-259459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259460-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDRfLbMwHWqtWAkAu9opvQ
-	(envelope-from <stable+bounces-259459-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 09:11:47 +0200
+	id 4GlRHlYzHWoqWQkAu9opvQ
+	(envelope-from <stable+bounces-259460-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 09:23:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5663761ABD9
-	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 09:11:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E975B61ACDE
+	for <lists+stable@lfdr.de>; Mon, 01 Jun 2026 09:23:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6E844300B443
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 07:11:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 42819303CE0E
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 07:13:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA69343889;
-	Mon,  1 Jun 2026 07:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ULN6gKvF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A92348C7B;
+	Mon,  1 Jun 2026 07:13:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BEEA258EC1;
-	Mon,  1 Jun 2026 07:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE581A6815
+	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 07:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780297886; cv=none; b=SdcKpxN8mUle/Cjuy0D+sR/uHbeaTbzLD+dgN/megYnRpRZvzovRlpdrsFIk/EMAbOZnw/JADj9JI+kudDghupYSsI+fCTBHL2OQxPoJbzt+D02QhXuLKRUImjBrPJnZ9VKjlJR0yfikKThdQ3+cCOdaxjs471njZzxsCHTChEc=
+	t=1780297995; cv=none; b=CPJh4bM95sAPOaGrXTeWQm2Fr6nAzMiLzTMDwbRCfO3IMxk0/PxyhXZUJnSEHgD7bDeGA6rLrMDfqw1OXM9YUyRZcZqnjgLCnIyncL4oLpZ1OV1C/jK+fPp7Gc8xw0JLTD2lIBgtJojzqVUxDWE18H9HTNKU+bWf52im8xY+I4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780297886; c=relaxed/simple;
-	bh=H17aj6dp4+RqkfWxsMkjE2STWSXHTP7bDRPzFtWRFvE=;
+	s=arc-20240116; t=1780297995; c=relaxed/simple;
+	bh=p1SJzXxY2u9L5GvhpaKSoycutsl+0AYMgIYio8M5mH8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FXwkvT7XTjWbC0heXiH9o8WATA1iyO54812M/pNBcMT1BOd1Ih03k7oYqzHaEvrWaBVxsGjLuWTLCXyDBxHBnHl4F2AgI8sf7q2JHpbnpG6ecABUA4qo3Ibfu4XsOBMdHIWDnZg3Hl53VrQvxxBnr7osUT/GITAQtZ0iApNklTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ULN6gKvF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376D61F00893;
-	Mon,  1 Jun 2026 07:11:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780297884;
-	bh=H17aj6dp4+RqkfWxsMkjE2STWSXHTP7bDRPzFtWRFvE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ULN6gKvFCFauR1tYq/Qf0Cg9N09C47mfwmWWIPby/qvj52hcqIwoGLie7Qyjuk7eN
-	 zRRZ781t9eoFI0EDtFNVOUWA6zxqNIj7TUoaKj49fA+PoCBo7L0zwLh5VdUE8+oOmU
-	 PmKHi3z1bhMwRS0PJG73KTR/NqAn57qWdwwDDp08y4nHJYsju0yOFxf2HLBS2a9+ob
-	 E+FiWSVCjVzZeaE6QgB9BdfJxihcMAJORNgWQd+ExmNLn/nLxbzBxFY/9mL6WYDK9X
-	 hzwQztU2ULoX9nF5dUZRdCty5O/Nv77jkyoNQj+LDu+cmXIKHNv5m6lGIz40foZF7B
-	 eaqNNZLsv+jDQ==
-Date: Mon, 1 Jun 2026 09:11:21 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Romain Gantois <romain.gantois@bootlin.com>
-Cc: Paul Kocialkowski <paulk@sys-base.io>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Paul Kocialkowski <paul.kocialkowski@bootlin.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/logicvc: Avoid use-after-free with devm_kzalloc()
-Message-ID: <20260601-ultra-wapiti-of-imagination-ba59e8@houat>
-References: <20260601-logicvc-uaf-v1-1-8c9ca5b3429c@bootlin.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=EruC3HVKmDpdhGSPhaDZZjPCBG2po9QLzeisaFckz/b0yeT8yPjF/EducjejBGS/8q6L9GR3KR3SgrdBlHYzOVMDooF/ZBbpabYGr/CHDcrz9pL0x+bQ6MBtp3yJaMcHqQ8LtWKFngYw/if1gaL4ToGYV5xf0f7I7Kl1xmNhP7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 7797A68BEB; Mon,  1 Jun 2026 09:13:11 +0200 (CEST)
+Date: Mon, 1 Jun 2026 09:13:11 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: hexlabsecurity@proton.me
+Cc: "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Greg KH <gregkh@linuxfoundation.org>, sagi@grimberg.me,
+	kch@nvidia.com, "bvanassche@acm.org" <bvanassche@acm.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] nvmet: fix pre-auth out-of-bounds heap read in
+ Discovery Get Log Page
+Message-ID: <20260601071311.GB7533@lst.de>
+References: <Q8CVAA098pa1LIPOSNGvR2qrzqdOBQqRTLK54O4KsGMzSh4IOT2Ucrlv87C0ULvpILYim-FotD-OumzPcjFauZM2iyjJ4tjzaMRsXE7G_3Q=@proton.me> <20260527132353.GB11071@lst.de> <QQhn1zPqAyjwS7XXM_jeFtjpyW7pXcVTGMP38boMl6zWR5ehel-nsdJdksZf0ASO03qt5pX1B5UAnlANuO7KZISSgggAjnjLruly7nAjJ2A=@proton.me> <20260528083537.GA7590@lst.de> <39YwPS5jntghiVQLt9ikZnmMc7O2g1AY3OVDcxdZjaK53FZHyzQNmyaS5eYBTS93g0Wc-S-UDC0auDRcGgC4iMR5RgXLEBPvqHfFZfbaeoU=@proton.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="lbqgwgxdtws5js22"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260601-logicvc-uaf-v1-1-8c9ca5b3429c@bootlin.com>
-X-Spamd-Result: default: False [-3.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
+In-Reply-To: <39YwPS5jntghiVQLt9ikZnmMc7O2g1AY3OVDcxdZjaK53FZHyzQNmyaS5eYBTS93g0Wc-S-UDC0auDRcGgC4iMR5RgXLEBPvqHfFZfbaeoU=@proton.me>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[lst.de : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[sys-base.io,linux.intel.com,suse.de,gmail.com,ffwll.ch,bootlin.com,lists.freedesktop.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-259459-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mripard@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-259460-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,bootlin.com:email]
-X-Rspamd-Queue-Id: 5663761ABD9
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hch@lst.de,stable@vger.kernel.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.972];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:mid,lst.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,proton.me:email]
+X-Rspamd-Queue-Id: E975B61ACDE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Thu, May 28, 2026 at 04:02:17PM +0000, hexlabsecurity@proton.me wrote:
+> Suggested-by: Christoph Hellwig <hch@lst.de>
 
---lbqgwgxdtws5js22
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] drm/logicvc: Avoid use-after-free with devm_kzalloc()
-MIME-Version: 1.0
+My only suggestion was for a slight cleanup to the flow, so I don't think
+this tag makes sense.
 
-Hi,
+The patch itself looks fine, though:
 
-On Mon, Jun 01, 2026 at 08:52:44AM +0200, Romain Gantois wrote:
-> The logicvc driver calls drm_universal_plane_init(),
-> drm_crtc_init_with_planes(), and drm_encoder_alloc(). These functions
-> should not be called with structs allocated with devm_kzalloc(), as this
-> can lead to use-after-free bugs. In fact, a use-after-free caused by this
-> has been observed on a v6.6 kernel.
->=20
-> Use DRM-managed allocations instead for panel, CRTC and encoder objects.
->=20
-> Found using KASAN.
->=20
-> Fixes: efeeaefe9be56 ("drm: Add support for the LogiCVC display controlle=
-r")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-You're only partially fixing the issue. You also need to protect any
-device resource (register mapping, clocks, etc) are no longer accessed
-after the device has been removed, and this is typically done using
-drm_dev_enter/exit.
-
-Maxime
-
---lbqgwgxdtws5js22
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCah0wmQAKCRAnX84Zoj2+
-dg89AYDWmy2puaE/0V1ioSSd74fzTf4MeiUHmCAPWW/PNSHvcKBjIr0ydZ45hMgv
-wjhkMM0BfjR613xm9Qev4KwK9ANZ7uKfa4Jboc95pcuAAXCXO2YvcbeEmDJbRCIC
-jvCckEorpQ==
-=33cf
------END PGP SIGNATURE-----
-
---lbqgwgxdtws5js22--
 
