@@ -1,309 +1,279 @@
-Return-Path: <stable+bounces-259665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNtnLQsGHmpRggkAu9opvQ
-	(envelope-from <stable+bounces-259665-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 00:22:03 +0200
+	id YD5EMQkJHmrsggkAu9opvQ
+	(envelope-from <stable+bounces-259667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 00:34:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A546625E87
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 00:22:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFD9625F9E
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 00:34:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9EAED300A8CD
-	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 22:20:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AD61301DE1F
+	for <lists+stable@lfdr.de>; Mon,  1 Jun 2026 22:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FAC37DE99;
-	Mon,  1 Jun 2026 22:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E539633F39C;
+	Mon,  1 Jun 2026 22:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NAulVJ+E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNqRe5Np"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158093403E8
-	for <stable@vger.kernel.org>; Mon,  1 Jun 2026 22:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780352444; cv=fail; b=B+1q7mG5Tfl4YARXTUm5tYBrM31sdG2B2/E0UBHhrO3rBTRYRMy6WqksFHuBOFqiWOZe/zghsIu7Fo4NKOlWP2Ld1wZAFAhAvnkIWxCh25d9NqJjmcY35t7IJoNdugiElb1ajhKwikWPpo3D420zpyz9HYHsAQ/RheD/1bczDFg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780352444; c=relaxed/simple;
-	bh=2LSVxjI4TNVEHsg9A5W/Hh0yz1BQ7R/QOcq5XcrUgBk=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=EXBb+Zr63GK1QifGLxyo8CseyWGHDBaKRVARqS1hfv8zmihN12YK0i3nPZdcfvGrVTQJRg8pLSfcZ2ybNZjvSWF3S3edcTAYsIAVkld0gfBv2nCNSBykLNTfbrOO+8TuqzU3hxw8yu32rGMTaArISn29S1HDJsW7rWh7pFGcbvA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NAulVJ+E; arc=fail smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780352442; x=1811888442;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=2LSVxjI4TNVEHsg9A5W/Hh0yz1BQ7R/QOcq5XcrUgBk=;
-  b=NAulVJ+EWekgVnIZnh2YoEfaWyMYkYqdxmOFVzh8lhG+3jhlh5Hk6NZd
-   +etmEhinHdTjAsOh8zD0FlnNKtZTcx/UKS/JWPILyJ0T34DrzT8Tp9gQU
-   P7OO5iTm/rHh7JXLSaKkBfxScXlc+iALnsVCS0oJici1gpQiWEA+Lhufc
-   UtuE/OgVnSxoeXDpm9ZcNeaaZPk1xWm9G/tdf2QU+lTw9J7RunsXYFBKk
-   IOH3iL0Uxqp4fRZRaU7c9gxGQYqaou7ms5KRX0xu8Eghh2s9CsZPnVKMc
-   cnDO8B1RCHbYtrXpysi7nyV8077wxZvhwIeFBj7ETr8/Dor/nFFLNKZJ1
-   w==;
-X-CSE-ConnectionGUID: lU1TjsL6R2G1Td5vg6umPw==
-X-CSE-MsgGUID: ZpOzLNqjQoqax6clXLv5ew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="81115017"
-X-IronPort-AV: E=Sophos;i="6.24,182,1774335600"; 
-   d="scan'208";a="81115017"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 15:20:41 -0700
-X-CSE-ConnectionGUID: BqBvYDT2TamxiZKABnPF1w==
-X-CSE-MsgGUID: 5NmrcjgzTh2zJVJTPzEptw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,182,1774335600"; 
-   d="scan'208";a="242668944"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 15:20:41 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 1 Jun 2026 15:20:40 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 1 Jun 2026 15:20:40 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.35) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 1 Jun 2026 15:20:35 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=clddhgm+iw7q9mEtJw8WpuS2FFoTCxGE9VPwLv638IxqluX4OJcVkD0BC7gS4QD1KcsM+r9GINOTZzw88nMgMUGbRNwCHwCIlQvUYTeW5GG0l1QvUJLs98335LyUwcS6Ni5T/CSGd+ea60ePA9sjBufAZ3jKvG2xpV8ob34Ba5+3EzTPob0fleGXPnmzpSMi2cuUiyzqAkuXhxwIIA6v3v9vNsIi7ObycCOw8RAIEzRqmMhWWP4v2fW33ahZdBJZBffWzgfr8MxGdza6gPEe5C5pfR/+IAcye2w9TwXzxSNEAqwlIx53OnqCXSkunZldtCk80w1T/akRtVhrPk4IdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iBTna+JUTJWgVMDzow4vlV3o5UmfbRwt33UZ1uAqs5E=;
- b=c+e2gfSuBy3QJ4dMbU6nzzfOEOWbNxibwcMSeeV3RlnLrmIyZXGurhfce4b2LamMjIokQ5FtKeyalQyC2U0Z1O1r/jp/45JYsW1C0WuNtyvhMvXn8+jKj+vUPld2igCKjRAHidrOP0BgYQjvliQDpa/VQif86YKtTSZwiQq/mtzsvMXt2gjM84VMZv/MXhL8uQptvXda7bRgmLKcWdWlBP5Sm8PiItjDBuskGP4C34pvd+csWjw/EHorvDXfVTv2c7OxGe94ubJz7F9bQpD+JJo0fOmsnxqBcp6LqMYlhc6UZGVSqel/27R7cvwfN9rLCyFbOJYKEg9GqtBsA3AU9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by CH0PR11MB5300.namprd11.prod.outlook.com (2603:10b6:610:bf::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Mon, 1 Jun 2026
- 22:20:32 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%5]) with mapi id 15.21.0071.015; Mon, 1 Jun 2026
- 22:20:32 +0000
-Message-ID: <34103d30-acf0-481c-a387-26a9fc4769c6@intel.com>
-Date: Mon, 1 Jun 2026 15:20:30 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 178/272] ice: fix setting RSS VSI hash for E830
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, Aleksandr Loktionov
-	<aleksandr.loktionov@intel.com>, Przemek Kitszel
-	<przemyslaw.kitszel@intel.com>, Marcin Szycik
-	<marcin.szycik@linux.intel.com>, Jakub Kicinski <kuba@kernel.org>, "Sasha
- Levin" <sashal@kernel.org>
-References: <20260528194629.379955525@linuxfoundation.org>
- <20260528194634.287856530@linuxfoundation.org>
- <89da255b-a781-4ccd-bcd2-b2f856a8d7a8@oracle.com>
-Content-Language: en-US
-From: Jacob Keller <jacob.e.keller@intel.com>
-In-Reply-To: <89da255b-a781-4ccd-bcd2-b2f856a8d7a8@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR02CA0029.namprd02.prod.outlook.com
- (2603:10b6:303:16d::34) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D13726D4CA;
+	Mon,  1 Jun 2026 22:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780353279; cv=none; b=BoItrKe01zNFqbAih9xuttFM0r3l5kKzBgechMe0RLsf9wsCzpg4fv+XDU+HgX93uL7qtTHvE9mTbz4pCJST2vPHJ+k9AEn5hw9FdZ4k0MsdrS5hW+ycJ28X7JH/uvBISpUclKrr9jtN1UrGqerbqYxszM1eAsGVglTQ/0B073E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780353279; c=relaxed/simple;
+	bh=CIzIWNVf34aOPvHlVu+ySQFIdPlKYMZyzzJHFxOBORU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IqFGJxX6W85ROKJrS0urm5wStAnEa02sGz0NsFgLPtAa6YQnQGOdsbvSQ4UJfTF5CrlbaMbTJOWZqCn2HBIknmc6WL0WbzcHj8i4Y6Mwi7eT5mnVmWSR0QkRNUI/EoUbceWseh0IkvF7QYK60XBxHlnGERcj/vuvpWbxKTAlSqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNqRe5Np; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155DC1F00893;
+	Mon,  1 Jun 2026 22:34:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780353278;
+	bh=q491PBlHFC4UtfwHYxYQwseyQjhxUQHPoJfdmYhu258=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aNqRe5NpO1/4PooV0sbdbMfUDoAWu45ZFyHg0sQuOUJzivCXm6hzvLvrhyAAF7dvJ
+	 Nm3m/T80gUwMDhqwWhnTGNRUsAOL12DcJ/SNMNtfJr3gpC6hM63sjfYT0oJOqhb/+H
+	 RVVB1stgiRYJja7fjn06hrls1Gazt5xssideFaOy7q4EWLqvTJC+k2vmUCto6LZ3re
+	 LpB6oUDgnmfFnLZEL6P0+A/0S/81k7LoufQQkEfgmhJ59xXtLUDQRnea6zFFhyxKfl
+	 AHlip1vJqJHRVi90p8dwySpuO+sRjOISVlJXmRNH+k1TVU592rXVFCfC4WHpx3CP44
+	 lf4NkWj5kEzaQ==
+Date: Mon, 1 Jun 2026 15:34:36 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: arm64: Preserve all guest ZCR_EL2.LEN values
+Message-ID: <ah4I_G_T_-bZ7pgb@kernel.org>
+References: <20260529-kvm-arm64-fix-zcr-len-nv-v2-1-86cad51992bd@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|CH0PR11MB5300:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5614bcee-576a-4ad0-a83f-08dec02bfec6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|3023799007|18002099003|22082099003|6133799003|11063799006|4143699003|56012099006|5023799004;
-X-Microsoft-Antispam-Message-Info: Wj4B1QT8emtubvDbQc1NIpIcIR5vFkl1fa5lRB+IOwcDs0K6jAjzrS8Hk0xsih7hMM/xiD52sNNAG9l9SF0OELhWJOeCIlPlKzbwLE0se7qlz2DCgEuy5o8atRFuOM+dd+39UJo7wzEmP6fW1AD+BBrudNHSLWFmjJ6A3f58XTcwcAmzHOr/ITS4XxhWn+837FaZUIliHgY56GH4TJizP7+8+TSnM7xP7Gmldfr/bGBfPW40MrKnaLlZ06BW6xVjoJSVFFIEzCr+wlu6PzEXZb1F1RmggW5Hhc94+gYhCMdQztq59OgNiwXrKHo3uDmo9TN5ZpdZtodnvfwmRjijKo//sMLs2fAp170vrNgRxsgg3SgbiVSfiJArehVIfjUNRG7uoaJ+PqOaTNvKnn8lpIN7ek4at9BCZK9tse9/mvTDj6c3WSeMCQGSd2yPe4R1vSOJ/k3vr1bCVMphZjBJ+YCrpedOtH25ykz7RkGB+upSTFnvuLiq3ib5Q8C9KpWWOp/uht+/kMkAzj15iDh/JqvMZorM5YvFsDBbZkDJG5X+5rZFMnvW44WdUaXjasuGHBZpY1RiUZqwExBcZlw1LbelMd7bASTWMsOo/IX2aoY60rPtT9Vldl2A9jSkh/AULMqp1Dy8Qkf5M7KsfOP9kw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(3023799007)(18002099003)(22082099003)(6133799003)(11063799006)(4143699003)(56012099006)(5023799004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a043NUtkSmUzdVBsTXlLOFhZR2kxSmovclh2b24rajdmMDUxTTkyclZkYXNp?=
- =?utf-8?B?dHdIMzFYMjFja2ZNa3VJandmRGZyV2s0SE5ZSTdpMTBiYVhoSDRHVXB2NG0z?=
- =?utf-8?B?UGZsMU1DbS92c1RFdEh1c0tKd21DTkVIL0VQWjJZSmFFNkc3VnlwMUl5ZUZD?=
- =?utf-8?B?cHJTNXVqUkhCcFcwM1pHZEx3U0RNd0Z2YmVoTFIzUDNHaElKakpBZTBBT0E4?=
- =?utf-8?B?cEdaV0RMQVFtMjEzMXRkRk0xeDZ2S3lCRXl6YTYvcjgyQnczMFpRRVdLek9n?=
- =?utf-8?B?N0hSWmloeUtnWEVCSTRvdkFYa3VMNVFFV3Z2RkRjbENLM2kxQWZhNzF3OC9w?=
- =?utf-8?B?YkpwZm5kVURDZFlweUxqT3VLdVJRb0JPdUpad1BjWElKWkhWangwQVdzUGhU?=
- =?utf-8?B?V0JZTGw2RXhVSC9jYXpNRmF3eGxta2FsUm5nN1RUQmYyK1ppcVFFaXpZa0F0?=
- =?utf-8?B?dERvY0Nzc0UxU3cvL2l5K3A5cjdTa0VHbk1iTklQTTNGU1VoblZqRmdMZ0xP?=
- =?utf-8?B?cURQc0hVRk9LdEhZRkViS0NTWndBM0dKVFdEV0dPWkl2eGhOYVhOL0pVRHky?=
- =?utf-8?B?dWZvVzM0MXFqNHAvRkFuNkJFMmlWd2xDVzN1T1dCbHc0SGpaTUl0MWE2YWJ2?=
- =?utf-8?B?aDBiZ0RQdGRpSzFNcGNYa3ZET3UzQ1FlTFlILzduamZsN2tjbFNCd0FyY3hv?=
- =?utf-8?B?a0JkKyszdDRxbmxiUXJqaEE5TlZVNm5SdFR5V0JjWEp1dVRlZHhHajNjbVR6?=
- =?utf-8?B?dTRySmk5UFZrMHc2aVRNcjFad3ZhdFpsNDRxL3Y3S1RGM1lmZWx3aDZRZmgv?=
- =?utf-8?B?UWhtY0FaZ21JVVIrRUxWYjRNVUNCS1I4VTNGNEdhUzNFekR2eVFFM2N4bG4r?=
- =?utf-8?B?bEE0eXpsb3U5RUxRRFJ3R3dnSTZlK3lLeExXdEJnYnVPbiswOHU1VVl5bUxH?=
- =?utf-8?B?Z2RoWHhvV2FEVVBUM1hualpDcm1aNHE4Tm41dFlWRzlHdVVnUE9uNmYrY0NV?=
- =?utf-8?B?TmpSNDBHYVFMcElDcUFaY0JHLytwSTEySmpnUk5ZRXB2bFVvdmtFUnZ6NEg3?=
- =?utf-8?B?Ny9XRWxwZzMxS2o3MytyKzMvUUdqeU55elhRc25tSmp5VERIeFJNZUZjMkJU?=
- =?utf-8?B?T3FRT0JTait0SmNCWGRValRsZ3ZoTjQ4bm53MEFpQ1c5czY3c3lubjZvUExl?=
- =?utf-8?B?d2tnRmVIcEJVL05QQjQzaXpaRzFqcU0zSmdtc2llRENqUmhCUExQYlprTGhm?=
- =?utf-8?B?aFVmSThPNlNJeUtYRmpWYTU2dEc4RHRjVVBuVW13ZVVjRGtadlVkVzVKR1Fr?=
- =?utf-8?B?ZVVFK21aUzJMWkFXYXRHWEZ1bUY3VE9QK1FES2w5dTVHQUxoVGthNXBINU56?=
- =?utf-8?B?bVY5YjZzUy9UQ0VOL3NiTXVRSm5uWGZOdVlJOG5tc2xrb2IzYy9YbmVKMXVa?=
- =?utf-8?B?RmNDOHBrZGRYT1NNTk8ySHEwTCtkYnhlQmZObkI5dFNvSTdOQ1Jzb1dmbTUz?=
- =?utf-8?B?MjFZcmpRK0QrMGFiN2pxL0NqQTVGTnJXKzRQMktuTVlEemNoSzJqQW84MTNF?=
- =?utf-8?B?RHYxSzA2K3lsa3BtSlJ0U0tld1NFb1o4eUhEU0g5aXkvRXhXRHc4QUVSYzF0?=
- =?utf-8?B?cDZMOVFySzdWRWhLVGtBOUp0M3IrUDl1Zi9hd2hOSncwUmhGYTZvRmVDZ1RB?=
- =?utf-8?B?NlR4ejBOcUZmUXdGUVBsZ0JjODR5MVZwSC96d3kwSHFnaEk2SUZFTWtQL0dD?=
- =?utf-8?B?K0lnMThPSGF2N3RsMWIweWpjK2plQzFBbjNvT3o3Q0xnOFQ5dUNRRWdseWJ1?=
- =?utf-8?B?Yno5RTRhRVNsL0tpZWNiTUNHNDJnOThBcGZiR2pRenp6VzBBNlJtZ1VFOWFF?=
- =?utf-8?B?OE9hZzIrU2hGdFQvdVVpSjJJb1ovVkM0SXBRTFlQTUxUT1l1dlBQbzBpNkNw?=
- =?utf-8?B?OWliaWJFdnJKNWdUZ3pqdVYxTHJnbHZzQU9IVk83emhNUmVWd3hBM1lsMmpL?=
- =?utf-8?B?b1RKUmNPdXRkM3U3WXJCTTJ0REZoUHdiTjFoQmR2amZ2c0h6cWUvQ1F4N1Y3?=
- =?utf-8?B?Uk1Xc2xDNlNRaVAvbHhxZWF1VTBaYlpMVi9SMFA3VlRDMEdHS1U1V2FldDRQ?=
- =?utf-8?B?QUdJWDdkUlhkYmpDRXNKWlE2QVZ6VFRCQVc4d3hoaEcvSjdyQ3lXUk9NSFI0?=
- =?utf-8?B?ZDFDRTBSRmk0em83RkY4VjQrRjkwVzlBZEZPM211SVdtbzBIN2xyWFBaL3NL?=
- =?utf-8?B?a3ozVkRMR3BYOTBQQjk1WXcybjloblpkNnRmV0c0VDZWRjFnSXVPTjZIM1Jm?=
- =?utf-8?B?Y0pJKzlPekEweWp1dFQ5VWkweUdxbGx4WUhRZ2IwWjJUaWJ4RGRRZz09?=
-X-Exchange-RoutingPolicyChecked: N7NOJb3z7078907FWiWIthtpsn+uEQzkZxZg4vFHiSl6SYInIP5FAOZS+ulsqUIlcAsBuu+1qvc+LJIAWRBGUpKIC8ib6zWcuwxfPS4NFA9BYjbA4Pro0co4FJiA8iQxQ/dfz/qfVOU4yTSaIIelnBwMm3Z9ndIi7G8H62WIFxf9FJJB123HPltN1eHwfXI5pjdGHTSJ1GBVFgIcc5PIu6MXE+zTpwMPCCq4YrJdXFHxqH2SBKEjjNBQnRezW9btuAerx/p2p3KB/XxlIdEoLutmugSQVgn8jQbElyCAZqg7Cjso1e2scbOUNsbNCmkIgVi5esj9p7RFhfrLocPpTQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5614bcee-576a-4ad0-a83f-08dec02bfec6
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 22:20:32.5303
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fpp4pFpkHCi38k3C4jx2kmIAaGh4peJIFsCDs/ffzrP4jcmvJjlRrE3L5RxuShftue7/IeB63QFatRgyL6uzaS9WpGKnJAzkeYhr4JiP/D0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5300
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260529-kvm-arm64-fix-zcr-len-nv-v2-1-86cad51992bd@kernel.org>
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259665-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,intel.com:email,intel.com:mid,intel.com:dkim];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jacob.e.keller@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.983];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	URIBL_MULTI_FAIL(0.00)[msgid.link:server fail,sea.lore.kernel.org:server fail];
+	TAGGED_FROM(0.00)[bounces-259667-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oupton@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 1A546625E87
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 2AFD9625F9E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 6/1/2026 9:37 AM, Harshit Mogalapalli wrote:
-> Hi Greg/Sasha,
+On Fri, May 29, 2026 at 12:01:44AM +0100, Mark Brown wrote:
+> Since commit b3d29a823099 ("KVM: arm64: nv: Handle ZCR_EL2 traps") when
+> guests write to ZCR_EL2 we have clamped the value of ZCR_EL2.LEN to be
+> at most that configuring the maximum guest VL when accessed directly as
+> ZCR_EL2. This is not clearly the behaviour the architecture documents
+> for ZCR_EL2.LEN, while things are a little ambiguous currently there is
+> a fairly direct reading that suggests values will be read as written.
+> Further, the documented procedure for enumerating vector lengths means
+> that it is expected that values larger than the largest supported vector
+> length will be written in practice.
 > 
-> On 29/05/26 01:19, Greg Kroah-Hartman wrote:
->> 6.12-stable review patch.  If anyone has any objections, please let me
->> know.
->>
->> ------------------
->>
->> From: Marcin Szycik <marcin.szycik@linux.intel.com>
->>
->> [ Upstream commit b3cda96feb60d91fe88d52b974ff110dcfa91239 ]
->>
->> ice_set_rss_hfunc() performs a VSI update, in which it sets hashing
->> function, leaving other VSI options unchanged. However, ::q_opt_flags is
->> mistakenly set to the value of another field, instead of its original
->> value, probably due to a typo. What happens next is hardware-dependent:
->>
->> On E810, only the first bit is meaningful (see
->> ICE_AQ_VSI_Q_OPT_PE_FLTR_EN) and can potentially end up in a different
->> state than before VSI update.
->>
->> On E830, some of the remaining bits are not reserved. Setting them
->> to some unrelated values can cause the firmware to reject the update
->> because of invalid settings, or worse - succeed.
->>
->> Reproducer:
->>    sudo ethtool -X $PF1 equal 8
->>
->> Output in dmesg:
->>    Failed to configure RSS hash for VSI 6, error -5
->>
->> Fixes: 352e9bf23813 ("ice: enable symmetric-xor RSS for Toeplitz hash
->> function")
->> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
->> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
->> Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
->> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
->> Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-5-
->> a5ea4dc837a9@intel.com
->> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>   drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/
->> ethernet/intel/ice/ice_main.c
->> index 2a629b9a9e03a..664bedfbd8054 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_main.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
->> @@ -8108,7 +8108,7 @@ int ice_set_rss_hfunc(struct ice_vsi *vsi, u8
->> hfunc)
->>       ctx->info.q_opt_rss |=
->>           FIELD_PREP(ICE_AQ_VSI_Q_OPT_RSS_HASH_M, hfunc);
->>       ctx->info.q_opt_tc = vsi->info.q_opt_tc;
->> -    ctx->info.q_opt_flags = vsi->info.q_opt_rss;
->> +    ctx->info.q_opt_flags = vsi->info.q_opt_flags;
->>   
+> The reasoning for the current behaviour is not specifically articulated, my
+> best guess is that it is intended to ensure that the guest can not see an
+> effective VL greater than the maximum that has been configured, though
+> this will be ineffective when a VHE guest uses the ZCR_EL1 accessor.
+> The VL can instead be constrained by configuring ZCR_EL2 when loading
+> L2 guest state:
 > 
+>  - When the L2 guest is running in EL1 or EL0 state configure
+>    ZCR_EL2.LEN to the minimum of the guest ZCR_EL2.LEN and
+>    vcpu_sve_max_vq(vcpu)-1.
+>  - When the L2 guest is running at EL2 configure the maximum VL for
+>    the guest in ZCR_EL2.LEN like we do for L1 guests and load the
+>    guest ZCR_EL2 into ZCR_EL1.
 > 
-> I ran an AI-assisted backport review and checked this against the 6.12.y
-> ice driver. I think the E830 RSS fix is incomplete on this branch.
+> This will ensure that the effective VL seen by the guest is always
+> constrained by all of the maximum VL configured by the VMM and the
+> ZCR_ELx values in effect.
 > 
-> The backport fixed the PF path in ice_main.c, so 6.12.y now has:
+> With the above implemented we can simplify the emulation for trapped
+> writes to ZCR_EL2 to store LEN configured by the guest directly,
+> matching the handling for ZCR_EL1. We still need to sanitise the values
+> written to ensure no unsupported fields are written, do this by adding
+> the register to our generic sanitisation infrastructure. This register
+> is a bit unusual in that as an unnamed field at bits 8:4 which is
+> RAZ/WI, for the purposes of sanitisation treat these bits as though they
+> were RES0.
 > 
-> ctx->info.q_opt_flags = vsi->info.q_opt_flags;
-> 
-> But 6.12.y still has the older VF virtchnl RSS path in ice_virtchnl.c,
-> and that path still does:
-> 
-> ctx->info.q_opt_flags = vsi->info.q_opt_rss;
-> 
-> Upstream has newer VF helper in virt/rss.c preserves q_opt_flags as
-> well, but that helper/refactor is not present in this 6.12.y tree.
-> 
-> See commit: 3a6d87e2eaac ("ice: implement GTP RSS context tracking and
-> configuration") which is not yet in 6.12.y
-> 
-> I think 6.12.y needs the equivalent one-line fix in drivers/net/
-> ethernet/intel/ice/ice_virtchnl.c, changing q_opt_flags to preserve vsi-
->>info.q_opt_flags there too. Thoughts?
-> 
-> Maybe lets drop this and backport it again ?
-> 
+> Fixes: b3d29a823099 ("KVM: arm64: nv: Handle ZCR_EL2 traps")
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Cc: stable@vger.kernel.org
 
-I think you're correct that this won't fully resolve the issue.
+Yeah... Can't say what I was thinking here.
 
-> thanks,
-> Harshit
-> 
->>       err = ice_update_vsi(hw, vsi->idx, ctx, NULL);
->>       if (err) {
-> 
+With Marc's changelog suggestion:
 
+Reviewed-by: Oliver Upton <oupton@kernel.org>
+
+> ---
+> Changes in v2:
+> - Use generic santisation infrastructure.
+> - Remove redundant !is_hyp_ctxt() check.
+> - Also fix ZCR_EL2 configuration in __hyp_sve_restore_guest().
+> - Commit message clarifications.
+> - Link to v1: https://patch.msgid.link/20260522-kvm-arm64-fix-zcr-len-nv-v1-1-ec254e9078cf@kernel.org
+> ---
+>  arch/arm64/include/asm/kvm_host.h       |  2 +-
+>  arch/arm64/kvm/hyp/include/hyp/switch.h | 16 ++++++++++------
+>  arch/arm64/kvm/nested.c                 |  5 +++++
+>  arch/arm64/kvm/sys_regs.c               |  6 +-----
+>  4 files changed, 17 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index 65eead8362e0..a49042bfa801 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -511,7 +511,6 @@ enum vcpu_sysreg {
+>  	ACTLR_EL2,	/* Auxiliary Control Register (EL2) */
+>  	CPTR_EL2,	/* Architectural Feature Trap Register (EL2) */
+>  	HACR_EL2,	/* Hypervisor Auxiliary Control Register */
+> -	ZCR_EL2,	/* SVE Control Register (EL2) */
+>  	TTBR0_EL2,	/* Translation Table Base Register 0 (EL2) */
+>  	TTBR1_EL2,	/* Translation Table Base Register 1 (EL2) */
+>  	TCR_EL2,	/* Translation Control Register (EL2) */
+> @@ -543,6 +542,7 @@ enum vcpu_sysreg {
+>  	SCTLR2_EL2,	/* System Control Register 2 (EL2) */
+>  	MDCR_EL2,	/* Monitor Debug Configuration Register (EL2) */
+>  	CNTHCTL_EL2,	/* Counter-timer Hypervisor Control register */
+> +	ZCR_EL2,	/* SVE Control Register (EL2) */
+>  
+>  	/* Any VNCR-capable reg goes after this point */
+>  	MARKER(__VNCR_START__),
+> diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
+> index bf0eb5e43427..320cd45d49c5 100644
+> --- a/arch/arm64/kvm/hyp/include/hyp/switch.h
+> +++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+> @@ -462,11 +462,13 @@ static inline bool kvm_hyp_handle_mops(struct kvm_vcpu *vcpu, u64 *exit_code)
+>  
+>  static inline void __hyp_sve_restore_guest(struct kvm_vcpu *vcpu)
+>  {
+> +	u64 zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
+> +
+>  	/*
+>  	 * The vCPU's saved SVE state layout always matches the max VL of the
+>  	 * vCPU. Start off with the max VL so we can load the SVE state.
+>  	 */
+> -	sve_cond_update_zcr_vq(vcpu_sve_max_vq(vcpu) - 1, SYS_ZCR_EL2);
+> +	sve_cond_update_zcr_vq(zcr_el2, SYS_ZCR_EL2);
+>  	__sve_restore_state(vcpu_sve_pffr(vcpu),
+>  			    &vcpu->arch.ctxt.fp_regs.fpsr,
+>  			    true);
+> @@ -476,8 +478,10 @@ static inline void __hyp_sve_restore_guest(struct kvm_vcpu *vcpu)
+>  	 * nested guest, as the guest hypervisor could select a smaller VL. Slap
+>  	 * that into hardware before wrapping up.
+>  	 */
+> -	if (is_nested_ctxt(vcpu))
+> -		sve_cond_update_zcr_vq(__vcpu_sys_reg(vcpu, ZCR_EL2), SYS_ZCR_EL2);
+> +	if (is_nested_ctxt(vcpu)) {
+> +		zcr_el2 = min(zcr_el2, __vcpu_sys_reg(vcpu, ZCR_EL2));
+> +		sve_cond_update_zcr_vq(zcr_el2, SYS_ZCR_EL2);
+> +	}
+>  
+>  	write_sysreg_el1(__vcpu_sys_reg(vcpu, vcpu_sve_zcr_elx(vcpu)), SYS_ZCR);
+>  }
+> @@ -501,11 +505,11 @@ static inline void fpsimd_lazy_switch_to_guest(struct kvm_vcpu *vcpu)
+>  		return;
+>  
+>  	if (vcpu_has_sve(vcpu)) {
+> +		zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
+> +
+>  		/* A guest hypervisor may restrict the effective max VL. */
+>  		if (is_nested_ctxt(vcpu))
+> -			zcr_el2 = __vcpu_sys_reg(vcpu, ZCR_EL2);
+> -		else
+> -			zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
+> +			zcr_el2 = min(zcr_el2, __vcpu_sys_reg(vcpu, ZCR_EL2));
+>  
+>  		write_sysreg_el2(zcr_el2, SYS_ZCR);
+>  
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index 883b6c1008fb..38f672e94087 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -1834,6 +1834,11 @@ int kvm_init_nv_sysregs(struct kvm_vcpu *vcpu)
+>  	resx.res1 = VNCR_EL2_RES1;
+>  	set_sysreg_masks(kvm, VNCR_EL2, resx);
+>  
+> +	/* ZCR_EL2 - bits 8:4 are RAZ/WI so treat them as RES0 */
+> +	resx.res0 = ZCR_ELx_RES0 | GENMASK_ULL(8, 4);
+> +	resx.res1 = ZCR_ELx_RES1;
+> +	set_sysreg_masks(kvm, ZCR_EL2, resx);
+> +
+>  out:
+>  	for (enum vcpu_sysreg sr = __SANITISED_REG_START__; sr < NR_SYS_REGS; sr++)
+>  		__vcpu_rmw_sys_reg(vcpu, sr, |=, 0);
+> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> index 148fc3400ea8..77e1b5d223c6 100644
+> --- a/arch/arm64/kvm/sys_regs.c
+> +++ b/arch/arm64/kvm/sys_regs.c
+> @@ -2862,8 +2862,6 @@ static bool access_zcr_el2(struct kvm_vcpu *vcpu,
+>  			   struct sys_reg_params *p,
+>  			   const struct sys_reg_desc *r)
+>  {
+> -	unsigned int vq;
+> -
+>  	if (guest_hyp_sve_traps_enabled(vcpu)) {
+>  		kvm_inject_nested_sve_trap(vcpu);
+>  		return false;
+> @@ -2874,9 +2872,7 @@ static bool access_zcr_el2(struct kvm_vcpu *vcpu,
+>  		return true;
+>  	}
+>  
+> -	vq = SYS_FIELD_GET(ZCR_ELx, LEN, p->regval) + 1;
+> -	vq = min(vq, vcpu_sve_max_vq(vcpu));
+> -	__vcpu_assign_sys_reg(vcpu, ZCR_EL2, vq - 1);
+> +	__vcpu_assign_sys_reg(vcpu, ZCR_EL2, p->regval);
+>  	return true;
+>  }
+>  
+> 
+> ---
+> base-commit: 5200f5f493f79f14bbdc349e402a40dfb32f23c8
+> change-id: 20260519-kvm-arm64-fix-zcr-len-nv-9e9e7bae012a
+> 
+> Best regards,
+> --  
+> Mark Brown <broonie@kernel.org>
+> 
 
