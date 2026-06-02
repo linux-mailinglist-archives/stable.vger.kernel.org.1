@@ -1,187 +1,264 @@
-Return-Path: <stable+bounces-259779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259781-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDdnMYurHmq3IwAAu9opvQ
-	(envelope-from <stable+bounces-259779-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 12:08:11 +0200
+	id 8HRuE46wHmr7JAAAu9opvQ
+	(envelope-from <stable+bounces-259781-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 12:29:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4357462C2D7
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 12:08:11 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC9C62C90F
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 12:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9ED4030433C4
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 10:06:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BD0133018D6F
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 10:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414413D524F;
-	Tue,  2 Jun 2026 10:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463AC3E5EC2;
+	Tue,  2 Jun 2026 10:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="SM3HDZGy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QS3wn+1B"
 X-Original-To: stable@vger.kernel.org
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081B92BD5B4;
-	Tue,  2 Jun 2026 10:06:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4ECA3E5A1C
+	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 10:12:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780394775; cv=none; b=uO3+2lDNZrx86C2T6nU3+hmidSaSqXViJ3tOaYV2kA0Xe/eemK2L7/ZTOFFxQ4s9V4HezswBrdVuvdgZAlxC/vdiHhPUkueFWWdoCwvPRMRhY+45L96E6Thvz/0fJ4M3F+UcT2FIxpYdYXsaO2e+5YYE1bgfVEERiLm/rxhdrlM=
+	t=1780395136; cv=none; b=QLIcFCMz/3M9NIgTtxbae6tQJ6IAVjVGC0xzBi8KdFWfyRqWR8+DMvoGIY7TdVdfy2djx9VmRZgq6qDwkChz2Mz8Ai69gd8Bw6zESz+vFzwyFmhM/lJQCxe+0YPvu73WlEYvLKw44+k5mlDK4eIkv2Hgvg4Q7iDKq+u/HS/ZF0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780394775; c=relaxed/simple;
-	bh=BEdbwmGbIBnnbQ+wIL9cNcKcyM+hW5MjQ/S/FB5eMII=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O6jcyKWC+h7MAZ9qFziF8A3GYG7ts8E8UQJZb6CgKQv9uHJCPtnNrruhmgZFqNWx7y2CewaKSCcHOqzm7Ovm8O/ZrfpESXj9bzQDK3bcYsZnsuRltxEEuq2o64p/bCl39o/BLsWRK4BdKhR+eJUDMCm3yiyp+6pkMumQRRZ+xOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=SM3HDZGy; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id B97AC2074F;
-	Tue,  2 Jun 2026 12:06:03 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 3MQyhY0hl7PI; Tue,  2 Jun 2026 12:06:03 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 1361C20508;
-	Tue,  2 Jun 2026 12:06:03 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 1361C20508
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1780394763;
-	bh=acdeYbVitHm7oHVUpkd4RKXf1Knk3DzGdPy8GFVCVvY=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=SM3HDZGyWDrEr6DgHdoQ87pQMTdvnHdRy/TfMxFXVww2iSzh0Ry/iZ9jDsWBBvCI0
-	 GTx6TJt7VIrpwXHneUA9++3dwI6B9GM/pFEvQ1Vwrn2Tk0rG4SbNh+5F3mPKG7APzj
-	 t1gGhg9PNRGsKpI+8wmBu19R3YjeCcI41uK02zsVOY9TswpMvqI2hEGP3E1uGn7MrY
-	 22eH501UmKTRd7BT2gvPd2C+8+E5bFrySL7FdT1Sn6xGLvEKziU8muyO7Qe2cYld+C
-	 qNJe5d4NVlqEdzhOIH9K+LEuyoNhz3wpiy+SJDrnQF/Eo6EgEiTEK75Q8QbrhgDLjc
-	 1v6wHS90FVIBg==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 2 Jun
- 2026 12:06:02 +0200
-Received: (nullmailer pid 523192 invoked by uid 1000);
-	Tue, 02 Jun 2026 10:06:01 -0000
-Date: Tue, 2 Jun 2026 12:06:01 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Tristan Madani <tristmd@gmail.com>
-CC: Herbert Xu <herbert@gondor.apana.org.au>, Christian Hopps
-	<chopps@labn.net>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	<netdev@vger.kernel.org>, <stable@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] xfrm: iptfs: fix ABBA deadlock in iptfs_destroy_state()
-Message-ID: <ah6rCd7up8i6173I@secunet.com>
-References: <20260528160318.2631699-1-tristan@talencesecurity.com>
+	s=arc-20240116; t=1780395136; c=relaxed/simple;
+	bh=z3ty/ZdUawtY5dkPdrb/MMmFZ3eM0oC0peNaIucAUAs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kNomy6TkLiY7DD7n8NcOYDg4F2aPIqOxfic/guehoYVRCQgOWCx2V06jRZ5R6Z5Zce/YNHc0VW0fVFrQvZkZdexoHuGqHuKEsgcncXuRuRwJ3SXsimjx3R0DThePgiMXVRw/31v9x9BnNaExg18k/4NX8dI2MO8qeldNAZuday8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QS3wn+1B; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800231F00898
+	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 10:12:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780395134;
+	bh=e/TCg1uIVA8+dNYHPD8jbrJl5eIIsO+os0J5gb+iRFY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=QS3wn+1BRxuED9UmM0zeA7ezqFyxRkVDr/wVqlq9r2qf26KPKLJPHQ6wLB/XmiUzf
+	 nyNZ4dgZxpc13NGQ1Hbe6i6qg/E9HJTG7pNHIf3+QjBP/ki/dkmD5cdC7oyC5kqqd4
+	 9S4rXwWPzsmW/shYrV+pvZCWErd5KI7TwxW9vWW7XHfyTRmWn4i+wKh9htnmE88q+3
+	 Py1XfqgGZnbgtOzQDsIzFA+9fU9niwVWzBqsGgkJy6YMi82I4QMmdxzzhupGZx68Xm
+	 USo7Dx3Xy4KE13/IvuK0izvDI5A7M8sKbSnzVQNHqtjBK7flImOEni8ySMeHci94TD
+	 lkLq8HWTYUJ7A==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bec4639953dso401974866b.1
+        for <stable@vger.kernel.org>; Tue, 02 Jun 2026 03:12:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/uZ7vBjtDG4ryPmkQBZ8gVlJr0GHgUh8g4jb7HMHGHIBVF2EgxgbzW4OGgBVRSPlcfv5XtrDk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDsbD5rcpZRcOoAZJb3leF/JA1eODLxJZKx/q2aR8VTYDOExPl
+	2PKNZcIFo22VrlXnoMqJP7ZlMyEChGQ+HMF8Qtz1xWA3fPXnssdwL/MQFQNexSbg9tP+x9pZscl
+	3eAFRwZNhpnisSlFbKDtteVN7f/Mosl8=
+X-Received: by 2002:a17:906:630e:b0:bee:f402:5567 with SMTP id
+ a640c23a62f3a-beef4025730mr232735766b.41.1780395133086; Tue, 02 Jun 2026
+ 03:12:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260528160318.2631699-1-tristan@talencesecurity.com>
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
- (10.32.0.171)
-X-Rspamd-Queue-Id: 4357462C2D7
+References: <0d25653c3bc93726e259dbb9d01559c4cfdf47ac.1780373081.git.wqu@suse.com>
+In-Reply-To: <0d25653c3bc93726e259dbb9d01559c4cfdf47ac.1780373081.git.wqu@suse.com>
+From: Filipe Manana <fdmanana@kernel.org>
+Date: Tue, 2 Jun 2026 11:11:35 +0100
+X-Gmail-Original-Message-ID: <CAL3q7H4kaY_y749iKN9SyTKSggcfZKg2D=EBvF-Yt-WypAW_kg@mail.gmail.com>
+X-Gm-Features: AVHnY4JFcsk5GqVrzwhtEu5nP4-PdU4Xqej5gZZLtjdghnNH4hRU3Y-nH2YcQpg
+Message-ID: <CAL3q7H4kaY_y749iKN9SyTKSggcfZKg2D=EBvF-Yt-WypAW_kg@mail.gmail.com>
+Subject: Re: [PATCH] btrfs: do not trim a device which is not writeable
+To: Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, Su Yue <glass.su@suse.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 3CC9C62C90F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[secunet.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[secunet.com:s=202301];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259779-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,secunet.com:mid,secunet.com:dkim,secunet.com:email,labn.net:email,talencesecurity.com:email];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259781-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[secunet.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[steffen.klassert@secunet.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fdmanana@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,suse.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Thu, May 28, 2026 at 04:03:18PM +0000, Tristan Madani wrote:
-> iptfs_destroy_state() calls hrtimer_cancel() while holding a spinlock
-> that the timer callback also acquires, leading to an ABBA deadlock on
-> SMP systems.
-> 
-> For the output timer (iptfs_timer):
->   - iptfs_destroy_state() holds x->lock, calls hrtimer_cancel()
->   - iptfs_delay_timer() callback takes x->lock
-> 
-> For the drop timer (drop_timer):
->   - iptfs_destroy_state() holds drop_lock, calls hrtimer_cancel()
->   - iptfs_drop_timer() callback takes drop_lock
-> 
-> Both timers use HRTIMER_MODE_REL_SOFT, so their callbacks run in softirq
-> context.  When hrtimer_cancel() is called for a soft timer that is
-> currently executing on another CPU, hrtimer_cancel_wait_running() spins
-> on softirq_expiry_lock -- the same lock held by the softirq running the
-> callback.  If the callback is blocked waiting for the spinlock held by
-> the caller of hrtimer_cancel(), a circular dependency forms:
-> 
->   CPU 0: holds lock_A -> waits for softirq_expiry_lock
->   CPU 1: holds softirq_expiry_lock -> waits for lock_A
-> 
-> Fix this by cancelling both timers before acquiring their respective
-> locks.  hrtimer_cancel() is safe to call without holding any lock and
-> will wait for any in-progress callback to complete.  The locks are still
-> acquired afterwards to synchronize with any in-flight packet processing
-> before tearing down the state.
-> 
-> Found by source code audit.
-> 
-> Fixes: 4b3faf610cc6 ("xfrm: iptfs: add new iptfs xfrm mode impl")
-> Cc: Christian Hopps <chopps@labn.net>
-> Cc: Steffen Klassert <steffen.klassert@secunet.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-> ---
->  net/xfrm/xfrm_iptfs.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-> index 97bc979e55baf..fd25b2b230793 100644
-> --- a/net/xfrm/xfrm_iptfs.c
-> +++ b/net/xfrm/xfrm_iptfs.c
-> @@ -2708,8 +2708,9 @@ static void iptfs_destroy_state(struct xfrm_state *x)
->  	if (!xtfs)
->  		return;
->  
-> -	spin_lock_bh(&xtfs->x->lock);
->  	hrtimer_cancel(&xtfs->iptfs_timer);
-> +
-> +	spin_lock_bh(&xtfs->x->lock);
->  	__skb_queue_head_init(&list);
->  	skb_queue_splice_init(&xtfs->queue, &list);
->  	spin_unlock_bh(&xtfs->x->lock);
-> @@ -2717,8 +2718,9 @@ static void iptfs_destroy_state(struct xfrm_state *x)
->  	while ((skb = __skb_dequeue(&list)))
->  		kfree_skb(skb);
->  
-> -	spin_lock_bh(&xtfs->drop_lock);
->  	hrtimer_cancel(&xtfs->drop_timer);
-> +
-> +	spin_lock_bh(&xtfs->drop_lock);
->  	spin_unlock_bh(&xtfs->drop_lock);
+On Tue, Jun 2, 2026 at 5:05=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
+>
+> [BUG]
+> There is a bug report that btrfs/242 can randomly fail with the
+> following NULL pointer dereference:
+>
+>  run fstests btrfs/242 at 2026-06-01 10:25:08
+>  BTRFS: device fsid d4d7f234-487c-4787-88e4-47a8b68c9874 devid 1 transid =
+9 /dev/sdc (8:32) scanned by mount (122609)
+>  BTRFS info (device sdc): first mount of filesystem d4d7f234-487c-4787-88=
+e4-47a8b68c9874
+>  BTRFS info (device sdc): using crc32c checksum algorithm
+>  BTRFS warning (device sdc): devid 2 uuid fbe72d72-3272-482d-80fb-ab88ed3=
+98192 is missing
+>  BTRFS warning (device sdc): devid 2 uuid fbe72d72-3272-482d-80fb-ab88ed3=
+98192 is missing
+>  BTRFS info (device sdc): allowing degraded mounts
+>  BTRFS info (device sdc): turning on async discard
+>  BTRFS info (device sdc): enabling free space tree
+>  Unable to handle kernel NULL pointer dereference at virtual address 0000=
+000000000018
+>  user pgtable: 4k pages, 48-bit VAs, pgdp=3D000000013fd6b000
+>  CPU: 4 UID: 0 PID: 122625 Comm: fstrim Not tainted 7.0.10-2-default #1 P=
+REEMPT(full) openSUSE Tumbleweed e9a5f6b24978fba3bf015a992f865837fdfff3dd
+>  Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20250812-19.fc42 08/1=
+2/2025
+>  pstate: 01400005 (nzcv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=3D--)
+>  pc : btrfs_trim_fs+0x34c/0xa00 [btrfs]
+>  lr : btrfs_trim_fs+0x1f0/0xa00 [btrfs]
+>  Call trace:
+>   btrfs_trim_fs+0x34c/0xa00 [btrfs f02c1d570ceea621c69d302ba75dd618680838=
+40] (P)
+>   btrfs_ioctl_fitrim+0xe8/0x178 [btrfs f02c1d570ceea621c69d302ba75dd61868=
+083840]
+>   btrfs_ioctl+0xdd4/0x2bd8 [btrfs f02c1d570ceea621c69d302ba75dd6186808384=
+0]
+>   __arm64_sys_ioctl+0xac/0x108
+>   invoke_syscall.constprop.0+0x5c/0xd0
+>   el0_svc_common.constprop.0+0x40/0xf0
+>   do_el0_svc+0x24/0x40
+>   el0_svc+0x40/0x1d0
+>   el0t_64_sync_handler+0xa0/0xe8
+>   el0t_64_sync+0x1b0/0x1b8
+>  Code: 17ffff83 f94017e0 f9002be0 f9402ea0 (f9400c00)
+>  ---[ end trace 0000000000000000  ]---
+>
+> Also the reporter is very kind to test the following ASSERT() added to
+> btrfs_trim_free_extents_throttle():
+>
+>         ASSERT(device->bdev,
+>                "devid=3D%llu path=3D%s dev_state=3D0x%lx\n",
+>                device->devid, btrfs_dev_name(device), device->dev_state);
+>
+> And it shows the following output:
+>
+>  assertion failed: device->bdev, in extent-tree.c:6630 (devid=3D2 path=3D=
+/dev/sdd dev_state=3D0x82)
+>
+> Which means the device->bdev is NULL, and the dev_state is
+> BTRFS_DEV_STATE_IN_FS_METADATA | BTRFS_DEV_STATE_ITEM_FOUND, without
+> BTRFS_DEV_STATE_WRITEABLE flag set.
+>
+> [CAUSE]
+> The pc points to the following call chain:
+>
+>  btrfs_trim_fs()
+>  |- btrfs_trim_free_extents()
+>     |- btrfs_trim_free_extents_throttle()
+>        |- bdev_max_discard_sectors(device->bdev)
+>
+> So the NULL pointer dereference is caused by device->bdev being NULL.
+>
+> This looks impossible by a quick glance, as just before calling
+> btrfs_trim_free_extents_throttle(), we have skipped any device that has
+> BTRFS_DEV_STATE_MISSING flag set.
+>
+> However in this particular case, there is a window where the missing
+> device is later re-scanned, causing btrfs to remove the
+> BTRFS_DEV_STATE_MISSING flag:
+>
+>  btrfs_control_ioctl()
+>  |- btrfs_scan_one_device()
+>     |- device_list_add()
+>        |- rcu_assign_pointer(device->name, name);
+>        |  This updates the missing device's path to the new good path.
+>        |
+>        |- clear_bit(BTRFS_DEV_STATE_MISSING, &device->dev_state)
+>           This removes the BTRFS_DEV_STATE_MISSING flag.
+>
+> This allows the missing device to re-appear and clear the
+> BTRFS_DEV_STATE_MISSING flag.
+> However the device still does not have the BTRFS_DEV_STATE_WRITEABLE
+> flag set, nor is its bdev pointer updated.
+>
+> The bdev pointer remains NULL, triggering the crash later.
+>
+> [FIX]
+> This is a big de-synchronization between BTRFS_DEV_STATE_MISSING and
+> device->bdev pointer, and shows a gap in btrfs's re-appearing-device
+> handling.
+>
+> The proper handling of re-appearing device will need quite some extra
+> work, which is out of the context of this small fix.
+>
+> Thankfully the regular bbio submission path has already handled it well
+> by checking if the device->bdev is NULL before submitting.
+>
+> So here we just fix the crash by checking if the device is writeable and
+> has a bdev pointer before calling bdev_max_discard_sectors().
+>
+> Reported-by: Su Yue <glass.su@suse.com>
+> Link: https://lore.kernel.org/linux-btrfs/wlwir19t.fsf@damenly.org/
+> Cc: stable@vger.kernel.org # 5.10+
 
-What is this? You take the drop_lock just to release it in the next
-line.
+Fixes: 499f377f49f0 ("btrfs: iterate over unused chunk space in FITRIM")
+
+Please always try to include the offending commit to make downstream
+work easier.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+
+Thanks.
+
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
+> ---
+>  fs/btrfs/extent-tree.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+>
+> diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+> index 6030cdbdb742..f3c3eb508f86 100644
+> --- a/fs/btrfs/extent-tree.c
+> +++ b/fs/btrfs/extent-tree.c
+> @@ -6624,12 +6624,17 @@ static int btrfs_trim_free_extents_throttle(struc=
+t btrfs_device *device,
+>
+>         *trimmed =3D 0;
+>
+> -       /* Discard not supported =3D nothing to do. */
+> -       if (!bdev_max_discard_sectors(device->bdev))
+> +       /*
+> +        * The caller only filters out MISSING devices, but a device that=
+ was
+> +        * missing at mount and later rescanned has MISSING cleared while
+> +        * bdev is still NULL and WRITEABLE is still unset. Skip those he=
+re.
+> +        */
+> +       if (!test_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state) ||
+> +           !device->bdev)
+>                 return 0;
+>
+> -       /* Not writable =3D nothing to do. */
+> -       if (!test_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state))
+> +       /* Discard not supported =3D nothing to do. */
+> +       if (!bdev_max_discard_sectors(device->bdev))
+>                 return 0;
+>
+>         /* No free space =3D nothing to do. */
+> --
+> 2.54.0
+>
+>
 
