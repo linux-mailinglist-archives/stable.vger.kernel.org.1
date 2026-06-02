@@ -1,51 +1,69 @@
-Return-Path: <stable+bounces-259754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259751-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFEVKfudHmq5CgAAu9opvQ
-	(envelope-from <stable+bounces-259754-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 11:10:19 +0200
+	id WGf9LmSfHmquDAAAu9opvQ
+	(envelope-from <stable+bounces-259751-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 11:16:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A37FC62B15D
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 11:10:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F259F62B356
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 11:16:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1129A300530E
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 09:08:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 07BF13029A5F
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 08:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238E63C988D;
-	Tue,  2 Jun 2026 09:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A773C81BF;
+	Tue,  2 Jun 2026 08:54:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CC02248A8;
-	Tue,  2 Jun 2026 09:08:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D29A3ABD90;
+	Tue,  2 Jun 2026 08:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780391291; cv=none; b=pur0mNSWYz4lvkyOxbj99wwVRc8qQsvbDnEj48l+51v1BxKizuMHSe2sIEmgejkzXlMVhaL66bM9/V6UfhD63uHtZ5zstXAdEfNXFHM0cAdFeSKXAHVj3ceQI2tb5T6eea5T01OHPA55DXS55+TBu32201f5XJS9qUTn46s/YT0=
+	t=1780390480; cv=none; b=Y1Jq+zjiofcQ+EYvsYbVGO/0GO75FwbsT+HQPGZlDkFZppgQPhbrA3OYyQeB9iEsXRJETSrvOTP1zGGXzBpGZCd6QASHfFbzndNp2i/SS4yseIA4sry3Ik1ioNBvYnN7wui4N99QfON3RLssf41jNX5sA12X0R1hawVK8d7ndsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780391291; c=relaxed/simple;
-	bh=RLHqs4ruFHCdEfMVhzZ4nPP3z3y2MP3bCIMu2ejcYdA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZVb9d/Ls70oBxut9TOiuo5/GJIsjN6oXdVKtFVeC8z0iWylgxj8wPnFdTIE4N8XPRd+FY1fzavXwuyFiejBg9f3UisTD4l2QveTSy8NML+YMAKY6E/Glyau139e9OmzFI+lSTbAZrIFKwc/Zdpo/2WUWj+HiPuV1fs8NYiltCYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowADnCOB1nR5qQe5ZEw--.8153S2;
-	Tue, 02 Jun 2026 17:08:05 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: idryomov@gmail.com,
-	amarkuze@redhat.com,
-	slava@dubeyko.com
-Cc: ceph-devel@vger.kernel.org,
+	s=arc-20240116; t=1780390480; c=relaxed/simple;
+	bh=s/NqkKJNSTETvFnS0nfunoNI170anRHxd3SfMlLlib8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KsldWEUtTKOtOIFeG6y7IRjxC1ICGfuZE5wCMFBa+3VxFHoeTYAKPgEt4+PGLfI1PfYLaXCUmFGIG7vLhlWpX4PGgnxUQIoseoWNCgrJ3zczGKPLso9RQXE7dGZMzD0AfsWPIaOfIwRVf+Pc4sYlWTtpW0EjUhRpU7ZVXfMBd+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: a851a1445e6011f1aa26b74ffac11d73-20260602
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:1baf43aa-68a6-4e0b-a061-ca1ef8690dd0,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:e7bac3a,CLOUDID:3cc60c41068e423c827b16910d238445,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
+	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: a851a1445e6011f1aa26b74ffac11d73-20260602
+X-User: zenghongling@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zenghongling@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1218831346; Tue, 02 Jun 2026 16:54:25 +0800
+From: Hongling Zeng <zenghongling@kylinos.cn>
+To: deller@gmx.de,
+	kees@kernel.org
+Cc: linux-omap@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
+	zhongling0719@126.com,
+	Hongling Zeng <zenghongling@kylinos.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] ceph: fix writeback_count leak in write_folio_nounlock()
-Date: Tue,  2 Jun 2026 09:07:54 +0000
-Message-Id: <20260602090754.3678981-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH v2] fbdev: omap2: fix use-after-free in omapfb_mmap
+Date: Tue,  2 Jun 2026 16:54:21 +0800
+Message-Id: <20260602085421.194325-1-zenghongling@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,115 +71,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowADnCOB1nR5qQe5ZEw--.8153S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr4UXF4xKw4fKrWDtrW3Awb_yoW5Jry7pr
-	Wjk34qkr40vr1xGr98Cas5t3W5C3y8CrWfKF4UJF17ZFn5Xr4jgayjq34YqF13JryfJa9a
-	qF4qkry8uayqyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUHpBfUUU
-	UU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwsGA2oeXMX2VwAAsF
-X-Rspamd-Queue-Id: A37FC62B15D
+X-Rspamd-Queue-Id: F259F62B356
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259751-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmx.de,kernel.org];
+	DMARC_NA(0.00)[kylinos.cn];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,redhat.com,dubeyko.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259754-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	R_DKIM_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,126.com,kylinos.cn];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	FROM_NEQ_ENVFROM(0.00)[zenghongling@kylinos.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kylinos.cn:email,kylinos.cn:mid]
 X-Rspamd-Action: no action
 
-write_folio_nounlock() increments fsc->writeback_count to track
-in-flight writeback operations. On several error paths where the
-function returns early (folio lookup failure, snapshot context
-allocation failure, and writepages submission failure), the function
-returns without calling atomic_long_dec() to decrement the counter.
+omapfb_mmap() has a race condition with OMAPFB_SETUP_PLANE ioctl that
+can lead to use-after-free:
 
-Each leaked increment keeps the counter above zero, which can prevent
-the filesystem from cleanly unmounting or suspending writes.
+The fb_mmap() entry point holds mm_lock but not lock (fb_info->lock),
+while ioctl handlers like OMAPFB_SETUP_PLANE hold lock but not mm_lock.
+This allows concurrent execution.
 
-Add atomic_long_dec() calls on all error paths that currently return
-without decrementing the counter.
+In omapfb_mmap():
+1. rg = omapfb_get_mem_region(ofbi->region);      // Get old region ref
+2. start = omapfb_get_region_paddr(ofbi);          // Read from NEW region
+3. len = fix->smem_len;                             // Read from NEW region
+4. vm_iomap_memory(vma, start, len);               // Map NEW region memory
+5. atomic_inc(&rg->map_count);                      // Increment OLD region!
 
-Fixes: d55207717ded ("ceph: add encryption support to writepage and writepages")
+Concurrently, OMAPFB_SETUP_PLANE can:
+- Reassign ofbi->region = new_rg
+- Update fix->smem_len
+- OMAPFB_SETUP_MEM then checks NEW region's map_count (0!) and frees it
+
+This leaves userspace with a mapping to freed physical memory.
+
+The fix is to read all required values (start, len) from the same
+region reference (rg) that will have its map_count incremented,
+preventing the region from being freed while still mapped.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
 
 ---
-Change in v2:
-- Also clear write_congested flag when decrementing writeback_count
-  on error paths, as suggested by Viacheslav Dubeyko.
+ Change in V2:
+  -Restore fix->smem_len to maintain VRFB sparse mapping.
+  -Increment map_count before mapping to prevent use-after-free
+   on driver unload
+  -Add proper error handling for map_count
 ---
- fs/ceph/addr.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/omap2/omapfb/omapfb-main.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index a606378649c3..7fab73874068 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -790,7 +790,9 @@ static int write_folio_nounlock(struct folio *folio,
- 				    ceph_wbc.truncate_size, true);
- 	if (IS_ERR(req)) {
- 		folio_redirty_for_writepage(wbc, folio);
--		atomic_long_dec(&fsc->writeback_count);
-+		if (atomic_long_dec_return(&fsc->writeback_count) <
-+				CONGESTION_OFF_THRESH(fsc->mount_options->congestion_kb))
-+			fsc->write_congested = false;
- 		return PTR_ERR(req);
- 	}
+diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+index d70deb6a9150..046892682fc6 100644
+--- a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
++++ b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+@@ -1099,7 +1099,11 @@ static int omapfb_mmap(struct fb_info *fbi, struct vm_area_struct *vma)
  
-@@ -810,7 +812,9 @@ static int write_folio_nounlock(struct folio *folio,
- 			folio_redirty_for_writepage(wbc, folio);
- 			folio_end_writeback(folio);
- 			ceph_osdc_put_request(req);
--			atomic_long_dec(&fsc->writeback_count);
-+			if (atomic_long_dec_return(&fsc->writeback_count) <
-+					CONGESTION_OFF_THRESH(fsc->mount_options->congestion_kb))
-+				fsc->write_congested = false;
- 			return PTR_ERR(bounce_page);
- 		}
- 	}
-@@ -849,7 +853,9 @@ static int write_folio_nounlock(struct folio *folio,
- 			      ceph_vinop(inode), folio);
- 			folio_redirty_for_writepage(wbc, folio);
- 			folio_end_writeback(folio);
--			atomic_long_dec_return(&fsc->writeback_count);
-+			if (atomic_long_dec_return(&fsc->writeback_count) <
-+					CONGESTION_OFF_THRESH(fsc->mount_options->congestion_kb))
-+				fsc->write_congested = false;
- 			return err;
- 		}
- 		if (err == -EBLOCKLISTED)
+ 	rg = omapfb_get_mem_region(ofbi->region);
+ 
+-	start = omapfb_get_region_paddr(ofbi);
++	if (ofbi->rotation_type == OMAP_DSS_ROT_VRFB)
++		start = rg->vrfb.paddr[0];
++	else
++		start = rg->paddr;
++
+ 	len = fix->smem_len;
+ 
+ 	DBG("user mmap region start %lx, len %d, off %lx\n", start, len,
+@@ -1109,6 +1113,8 @@ static int omapfb_mmap(struct fb_info *fbi, struct vm_area_struct *vma)
+ 	vma->vm_ops = &mmap_user_ops;
+ 	vma->vm_private_data = rg;
+ 
++	atomic_inc(&rg->map_count);
++
+ 	r = vm_iomap_memory(vma, start, len);
+ 	if (r)
+ 		goto error;
+@@ -1121,6 +1127,7 @@ static int omapfb_mmap(struct fb_info *fbi, struct vm_area_struct *vma)
+ 	return 0;
+ 
+ error:
++	atomic_dec(&rg->map_count);
+ 	omapfb_put_mem_region(rg);
+ 
+ 	return r;
 -- 
-2.34.1
+2.25.1
 
 
