@@ -1,162 +1,196 @@
-Return-Path: <stable+bounces-259985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259841-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id R9XRGK7TH2oQqgAAu9opvQ
-	(envelope-from <stable+bounces-259985-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 09:11:42 +0200
+	id d2PQLG39HmrcbwAAu9opvQ
+	(envelope-from <stable+bounces-259841-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 17:57:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0239963508B
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 09:11:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9BB8630053
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 17:57:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n7Oq5YUt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-259985-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259985-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NjBf3n5n;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-259841-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259841-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C8664311434A
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 07:06:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3C1403035C0A
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 15:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1237739D6EE;
-	Wed,  3 Jun 2026 07:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DE63EAC9A;
+	Tue,  2 Jun 2026 15:33:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E672D2877DE;
-	Wed,  3 Jun 2026 07:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F583630B3;
+	Tue,  2 Jun 2026 15:33:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780470284; cv=none; b=YaBBW3CdtUpe5kIdzKJcqaAjwvA8u4c+frctDYUsHNw1DFdtQo/2MQuCYIpiR2TuVgT5kuGiHIPQvBnZpIsNPppv1iGaKCmc+a04QgHJQMv2H0k5Ks2wv9EkLOHaz3k++8Ce8zYkFg00WEdAe62DZDTwI54CC1/dWawE8e9q81E=
+	t=1780414392; cv=none; b=tPuVbY0sDPzZfys5pUyP+NE7gOTIM0omwY7g13jPE3fmoydJFu+8ViTytekBy9exRl63mTMDlasIZn1D5ymfE3zZg/ML4jYWzAJ3dgt5q1ir1uwbx0Jm8VxERx0Ghnr3cWU1Wm6AvOcZprQe+Unj703Iq9XMNewsOx0SueBulUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780470284; c=relaxed/simple;
-	bh=omcsqXZIrjlqQYaLvoAefesboTuwmjaOhgkh4sN/v3s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=bMoRtUrHVi256ygIZceYMG42Zhe+7saDYZU62vJoA7Q5VNBOiZovnAC3f04Gwxjx3fTQwqstNeApXi/7zOmF8hhUzEjnez9AbmFVhWiRjTFYrmQi7P3ymq8z7fNBUzOxArlk9rFdd8qNWCBldkzVhHP2Tbgz0L7lxH+suPde3qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n7Oq5YUt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59D41F00893;
-	Wed,  3 Jun 2026 07:04:40 +0000 (UTC)
+	s=arc-20240116; t=1780414392; c=relaxed/simple;
+	bh=hE5lg4ZrxvxGScNyLw5phbE5nMNRaCGZ5U0DzxNOAyE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cyZTaTnEDG/kMp4OmrwmSfvMBaKW1MhSwC6Jurw4AhraG8OINaeIlKgKQnXaumBuG3GwVJfQCw6I1W2xW5rW78bG4JFBEUqzGtAo1XmCnKDi47k82xmy093R1n8KAIkSFFNr/nqUu1RG/vM8WsegQcxbFpmIJXIf+ixGbJS/jaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NjBf3n5n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188361F00893;
+	Tue,  2 Jun 2026 15:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780470283;
-	bh=HJ8mECA75kUOQcjtQgtAIPOPtq8u7hZP0f/rp6Q850s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=n7Oq5YUtLDaMxkOTwEH9/lffKLtQ89ngP7idpkE63mC51fdHY7a/PWDigxIi8vaMg
-	 wcb+wa9ls9QKRtkyPKqQOuA2mL0gfYQnlSiiaRRAjGuoHW4CbZAjFDLBQ40WP1F2gY
-	 +RrrOE758ljDi+0t31xv3w919ENSVkujHYTW9SEGrT/G1osv7NpWFNlgXPaqT3kKX7
-	 +Ex2IHWnU0j4ck0VXO8Bo1dp6jAVdJ11HZfVTgPZdvn3+/oSzg7eqy/fhMpB8BuzrP
-	 fXdZFgZlsO1kRw/uAyy6z/u378msePpjBn2paZHN7Q0uLyFO4OMX6SbtJaVpb/Gj0K
-	 WiGoDOQRsVWGA==
-From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, Takashi Iwai <tiwai@suse.com>, 
- Jaroslav Kysela <perex@perex.cz>, Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Chen-Yu Tsai <wenst@chromium.org>, Jiaxin Yu <jiaxin.yu@mediatek.com>, 
- =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- notify@kernel.org, stable@vger.kernel.org
-In-Reply-To: <20260527-asoc-mt8192-probe-cleanup-v1-0-1bb834d05b72@gmail.com>
-References: <20260527-asoc-mt8192-probe-cleanup-v1-0-1bb834d05b72@gmail.com>
-Subject: Re: [PATCH 0/2] ASoC: mediatek: mt8192 probe cleanup
-Message-Id: <178041319393.93058.14289988542820157532.b4-ty@b4>
-Date: Tue, 02 Jun 2026 16:13:13 +0100
+	s=k20260515; t=1780414391;
+	bh=Hy916jDLgWGpIbUAJ39IRE6QY96PsOceJjyl4DGOzLU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NjBf3n5nQkOvvlpZTghOdxPPRIeOcZybYu5rbM+vh1V/k8/y5pdJzelPWvfju7KfR
+	 JS9nD/DxVzzqoNx+X0GwCU+G4kNb974pcer9WAz4sAhJOYK+o3ZE4VVyJ87xEQr2H1
+	 kk8IXu45tMgAAqtU9uEbwiQHNkhnkA0SqdODylsN3o7UEBuSxLSKAiqwzhygzGA/Wz
+	 nDlJ/F7ItBjxROHtL/CXS2GKAEQVA2/UHZ6gH183A0w3m0aFhhlYE304NnJ++epVd0
+	 pRsIaffiJNllZfgIIOwnxKrVzIO17AZ6G9Iz7SC+K/Fa/UHDAhyiAC6XY1NGH8H3Lk
+	 1x0iKDwFQRFlg==
+Message-ID: <d09da32c-5c87-473e-8f02-74bd6e165f46@kernel.org>
+Date: Tue, 2 Jun 2026 16:33:06 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1517; i=broonie@kernel.org;
- h=from:subject:message-id; bh=omcsqXZIrjlqQYaLvoAefesboTuwmjaOhgkh4sN/v3s=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqH9IHRwReoqhf5cLMJ8qmFQaLwz8otJHMPte41
- nJ7EnZcH9+JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCah/SBwAKCRAk1otyXVSH
- 0O4rB/9RHsCPVXWkcxMYSsFb1OiZkZvz4SgI/HeA7wO5PWl6cBpRHbv19PAItK8oTmx9A6n/G9X
- Kr60hNXyoxPL9RPEtE+Ps8mu4/wfAvog9Bj7+a41T6JFdEyHVOMso5Gy3fXCM2uT3MczYZOlt3T
- WiVzj34FPJYHOR1v/CeiC9p3oZxCl/Fym9Y0AzW3HOdW5A15VzOY1lqpCRjP7I90oDaJgqng7KB
- wg5dPmMrDAP0R6DIa+ONoB+DmW5j1oEG9xHseoW4TYru47HWi9FURHAbpAH2da0JW/8eHUCdAq/
- 1o/SDmNiPtnSeP8Rhg1v1aaFGLCCRiANmvhkHKq/YjeYEW3D
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: hamoa: Reserve low IOVA range for
+ Iris
+To: Val Packett <val@packett.cool>, Daniel J Blueman <daniel@quora.org>,
+ Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+ Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+ Abhinav Kumar <abhinav.kumar@linux.dev>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+ linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260601041336.9497-1-daniel@quora.org>
+ <ecavEnqJTDXvfFykc9uJb5No7ioighpjrCdw2CFZ4c8Izr5DxpTs-606Bg7K0RtHTaOqksWivHxWQLzMBP6qow==@protonmail.internalid>
+ <20260601041336.9497-2-daniel@quora.org>
+ <ec7c564e-745a-4998-af9a-e9632fe063f7@kernel.org>
+ <_39fGr5QVBbTJK-SvJ9y9KoxUbgVw5Sda8smTkFt4BjPipARemW3jLSyt6wnfB0b5i0weVC-dD7RRZ9J0_fHsw==@protonmail.internalid>
+ <809635d9-6e66-4ace-8f47-4a5a268f4f18@packett.cool>
+From: Bryan O'Donoghue <bod@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=bod@kernel.org; keydata=
+ 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
+In-Reply-To: <809635d9-6e66-4ace-8f47-4a5a268f4f18@packett.cool>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:lgirdwood@gmail.com,m:tiwai@suse.com,m:perex@perex.cz,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:wenst@chromium.org,m:jiaxin.yu@mediatek.com,m:cassiogabrielcontato@gmail.com,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:notify@kernel.org,m:stable@vger.kernel.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,suse.com,perex.cz,collabora.com,chromium.org,mediatek.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259841-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:val@packett.cool,m:daniel@quora.org,m:vikash.garodia@oss.qualcomm.com,m:dikshita.agarwal@oss.qualcomm.com,m:abhinav.kumar@linux.dev,m:andersson@kernel.org,m:konradybcio@kernel.org,m:mchehab@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-media@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[bod@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-259985-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[bod@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,dt];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0239963508B
+X-Rspamd-Queue-Id: A9BB8630053
 
-On Wed, 27 May 2026 10:55:45 -0300, Cássio Gabriel wrote:
-> ASoC: mediatek: mt8192 probe cleanup
+On 02/06/2026 16:03, Val Packett wrote:
 > 
-> Fix two MT8192 AFE probe cleanup issues that mirror the recently fixed
-> MT8189 and MT8196 paths.
+> On 6/2/26 7:26 AM, Bryan O'Donoghue wrote:
+>> On 01/06/2026 05:13, Daniel J Blueman wrote:
+>>> On X1-family hamoa platforms, Iris DMA below IOVA 0x25800000 (600MB)
+>>> triggers unhandled SMMU page faults
+>>
+>> How do we know that is a correct address - does it come from qcom
+>> documentation or trial and error ?
 > 
-> The first patch registers a devm cleanup action for a successful
-> reserved-memory assignment so later probe failures and driver unbind
-> release it.
 > 
-> [...]
+> If you follow the Link:, you can see that it does come from qcom..
+> 
+> https://github.com/qualcomm-linux/kernel-topics/issues/1157#issuecomment-4458933574
 
-Applied to
+A rhetorical and leading question - the commit log should just explain 
+what is going on..
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.2
+> This series is basically a "hotfix" version of a more complicated series:
+> 
+> https://lore.kernel.org/linux-media/20250627-video_cb-v3-0-51e18c0ffbce@quicinc.com/
 
-Thanks!
 
-[1/2] ASoC: mediatek: mt8192: Release reserved memory on cleanup
-      https://git.kernel.org/broonie/sound/c/965e17ae6751
-[2/2] ASoC: mediatek: mt8192: Check runtime resume during probe
-      https://git.kernel.org/broonie/sound/c/e24d5dde56a5
+> that introduced an extra subnode that let the driver only use that
+> restricted IOVA range for non-pixel buffers (only those actually need
+> the restriction) but that resulted in a very long discussion and was
+> kinda shelved because of that.. x_x
+This and the subsequent require a Fixes:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+I think this change is OK wrt to bindings because we are adding not 
+subtracting - but I'd like the commit log to actually explain whats 
+happening not give me links to random places.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+---
+bod
 
