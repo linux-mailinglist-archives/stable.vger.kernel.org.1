@@ -1,189 +1,189 @@
-Return-Path: <stable+bounces-259846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id plYKAKEAH2oMcwAAu9opvQ
-	(envelope-from <stable+bounces-259846-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 18:11:13 +0200
+	id x7BMGQ7/Hmp/cgAAu9opvQ
+	(envelope-from <stable+bounces-259847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 18:04:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D80F630167
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 18:11:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01FB36300E2
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 18:04:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CojUq1mV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-259846-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259846-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CYwZ5782;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-259847-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-259847-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28F5130053DD
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 16:00:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 633B8300D4F0
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 16:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DAB03F23C4;
-	Tue,  2 Jun 2026 16:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584623EC2E6;
+	Tue,  2 Jun 2026 16:04:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756073F23B1
-	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 16:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3898F3F1AB2
+	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 16:04:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780416011; cv=none; b=A7+nqn5Ud4TevHKoT1XXVWAhgAtryWrivGC/ub/9/M5FGhL0uPROFNaRC7i2BA4vGnawUZaTISyymXeUpCyEgfv9V4mxs8PxAQUaNxQUiDMl/R6SwTMrRR6J1u3HMMrJx797QcO4bWLPsaogY+4Lw4hj1DvnlpkGOyPcLbVbgW8=
+	t=1780416268; cv=none; b=EPbHuMdnuQk3GoFZZShsm4W+0x3FdoY7B98W3S+IH7beBLy5vlht5dNepm+DE4tk4mFSBHK3ajNg7FH8vN0wY+nyTXb2PTmbePQ0D7TQ5LKe0gstctz3A2iRFkU3poLKPcIImS205qKAy9JXdxBLLxZCbQbJ7+z7Hj9RxHNNyYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780416011; c=relaxed/simple;
-	bh=57rMn/0EZ3x6IXyJimA+fwdGVCPxwuCpwKe+xk5jTic=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=sI7wZSwz8hCG4UnGTYuGI5K9RSwCN5euzH7Le9FsOnLK9WS02lRCYmUgCZTsncEZX9yPOL1ourSDugrE752CQQzVQKV7brzR5ufqwQ1Apudmwk8s/SuFu80VM2+4kBRkGPQ0w4sMdvNSTJpmuTDle8SyhYh4RJHbNIejcXsAtig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CojUq1mV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD7B1F00898;
-	Tue,  2 Jun 2026 16:00:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780416010;
-	bh=BEHR8ze24SyZJBrL1pA7nVPYf7sE8uNT00yc/6Gx19o=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=CojUq1mVGUp6wqJ2ttixTPGTOYnWhWMNoM+huAKdaP5KXgSSRV/HOnQsrKa0r0ubz
-	 g/2fqYzzlKyWbjbezvGSOBuU7/lxahMrHEVMNYJsXbQRAqwj/Z+DIfypXt048ajcZG
-	 qnQPXwjm8X8cwlvY2UinsG6WYYEyyJ783c5U8f0tzwRiAOdu446yy3dMNcdx/QssZE
-	 iOIRi/V/zZThP2XgMz/I6c6M4yJA+U9mUaBVVEcpf7xunhWTAmYMNf0GM1HD9z+DrH
-	 qSGRxBkJZ/BlhOtl9pkpNNB+qdn/SXKUuDOEl0KcKqih2510Z1gGie3PJUVVkQLYsA
-	 YIBJXkU195TFQ==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 22AB9F4007A;
-	Tue,  2 Jun 2026 12:00:09 -0400 (EDT)
-Received: from phl-imap-04 ([10.202.2.82])
-  by phl-compute-02.internal (MEProxy); Tue, 02 Jun 2026 12:00:09 -0400
-X-ME-Sender: <xms:Cf4eah_qjOjVGbuwT-rEA174_Q3PuLWOt4GGI8MGdr_lWh61QwKd4A>
-    <xme:Cf4eaghdejCN7yO_W_ZRNUkPSvgGOT_b69PUk5Hc5TTcKAHgU5UNL5HeTEx7BpZrM
-    zTlMKBFJpEzRTnIg1PcyyZLLkE1KpgqzRovdZwwMfm5dkOWYU1bPgs>
-X-ME-Proxy-Cause: dmFkZTFaGV8MzM3OJKc+HfmPXv6Se7zjc5Ynp8Pd6ghhePPJRXILF2eVF1nSaX1FFXfMxi
-    1R/IF74U5ktSjYatvoG9d9aYv+ygG7uGnGxSQqMWGdoA/XTf3DFUz6CfNZK4d3zrjixBLa
-    9R5xzpbs1btp30XZPGwXMXS3xgAcGNY+FleezIlX5OWk8fsw1wMSJxdMUEkktp9TkzqNJ8
-    mxcPQYhBaQhxHqn0LAOIOjuNUDqv3vlAY66xMzWJuCBboBnu5rC9onQhE0pV1fkn5Dh8U2
-    46E0f2QevnkkwE+yzm+zyzucdHmIaG9K9RgPMcXOlFgMa2F6MvSJID6pYUhdkwTB3qpDG1
-    oAazJMUlTaaVKl8sxG7uHHlIvoSX5oMv2EW2GndySbUlyD934Tu1jcEjZH5NBJWkIKZGS/
-    wHNACIzzhtZlTGJc5wtrIY2b6FwAW+yhzwwvqCFdc69yU+ArdXwml3w0m0MEjawpq8jYgE
-    9Or6jlOUyxlswpCvv+SztXm/EjsErguJ71q1vocKK979uprbTzTyD6lS+Ae3zHW9RN3/RZ
-    sjuVW8VpjHDwIcqMNcx8+8pE/fEg1JO8dg5GXduJrEiMBuo3VFXGXe9uTLmy3K3Zz6IR7h
-    3TC46Ji+hXjHaw/D0VoojPnwV5h7uJNxz2kO1TZ6WCg8Melgw9lOoUbYFmBw
-X-ME-Proxy: <xmx:Cf4eavf683o93XKwkU9zSST1WBWw-6xmZ08gYsVKJHGoqSgol716rw>
-    <xmx:Cf4eahiPkchKnHCwgspAUNjXLrBj0VLtVklYiPXe--dKo7VHI7GNoA>
-    <xmx:Cf4eaqIfn6BrCf0ME0rILzcS4ye82f2rBEF2NlHQNrdQTXuEvi7OIA>
-    <xmx:Cf4eauHCyEgxqXb1WG6JEYpbO-FPdtyOabt0DCxDsMbxhUpo_1j8xQ>
-    <xmx:Cf4eag283uQ7pCv8RNK_uF5sjkZqK8v3AlNW2HgrVVqNeel9fnukgUiz>
-Feedback-ID: i20964851:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id F1A14B6006F; Tue,  2 Jun 2026 12:00:08 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1780416268; c=relaxed/simple;
+	bh=CgUR528ltaPd7rr9XGuU8qxQxZkouETPRzdIsLLIalI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=G2ei2EBv6xIND9lVC6hkx8KDienlfgZaHydBwBnozDmidrePrCkg+Zfkd8LETl2LhR4+c/2RmnxamuvkSbamf44OTkGbvEaEl2rPdMQnikee3Bi+o9te1XpZ8FdSnpwaEOvim7swDwCDy0IGlg/WxuimtY+A4/GtzjOvK/eV1Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CYwZ5782; arc=none smtp.client-ip=209.85.214.174
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2bf02708e8fso41229505ad.2
+        for <stable@vger.kernel.org>; Tue, 02 Jun 2026 09:04:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780416265; x=1781021065; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CPM66VcrINL92Jo5ORupc7PN6tPDPcidTQjTGXaIkdE=;
+        b=CYwZ5782lx3sJHEUp6vyF1fuIaPOlVjOYynaRkzZJ9bC6AgU7txDIvoaJHohR5PS8G
+         Q1esYI57WdVBHXino1XHWZ1gFr3bV+kO0mDtUVHTSWHwA9OQ6qaGAkNMDETOYkZ2rhDH
+         OGfAcWMfnMTZItArvLSQ0Mlhd9g9DRy8UEtIuk3HHOEjofx87Lq/S/raL6osy80XIi2o
+         Ye+rIQlWvwvKllPFl0QW/tHQxSL4Ld2FBwj1qTDHBlxtMVatAHf4/b6TmQm37tifzdsh
+         2Q0pxJ25D9ef5ASHtAJ6Ze9vJ7yRrOYSnN1HSPQQA4p25nDe1rnw86/PKfBlU3uuHFrZ
+         M5Nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780416265; x=1781021065;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CPM66VcrINL92Jo5ORupc7PN6tPDPcidTQjTGXaIkdE=;
+        b=lrhb+jsOC0ujnuAoZC6ChGnR1kZwOf0h+jRIlmeINEejsEXdhWx5amLwF5FxV9php/
+         gIOCT0z7rWaJKDqetd4djCqRy8fo29whDEYInt5/J4aJk2+w6i3md7vAMHBGd32VmP4R
+         xJ+IBzam/EbKN/TiCy9Kv4r+2H4Zx+Tx4KflClW7ycRFWas7ITGdawvVh2OBUKjLG15q
+         ue6lGyNMvwe2cfJKLChq3XFkimD2ZtFfnG8l3rG8O0QMjyPDyGHm+5lpeGVMbHvHot9r
+         qwK5rTZXLs5fwIXgnrT6Asp3q88zSncT1RzJrYMtWkZiM5aXph3/p45p5onltDQg5FGs
+         o3SQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/+15srvjNS8yxDwZ2DgOhVrEJh+TCBiBw4MgCwwGgqPqVi92YnjAA8gGqcNyie06OYhU+t0nA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxydiQMg4S+ggf9yfgnnhhkdjpNaEwZiheRjAVftb+MRR7aNJEa
+	aoWQ9laBOOvIUqksgQB1wFCwv9fQO0Ma3F1mQaOb+OvSe9EirrzOLkn7
+X-Gm-Gg: Acq92OEdGlXF8UHmFlLs4aXt5A01SHhmpNe2Jm4tW6xgdU7+8exUL45HSQ5QHxrhENk
+	8hFaR+3r0NoDWI8OnGsAeZUpSGPgNKmOfmF9zdUaNdyCLp86zrtdjaUwAmkK8jrbH0zDrcAYQN5
+	YROw4TWmuYI1x0BBGqWSdjyk/v9KwmWPJ9eeRfmHW8sR18LhYaMhMzdPxxMw5/q5jvP9zfCA0L/
+	U17T1Z6DVsXbJPl1RMSh2TVT0q2DKHg909gaGRUVNRzTXrILp2L6CCxNM/YC3m3fQKQON6xx6VX
+	J9BSD9KKi2hUm8P7YWZTAlB7zUCZSGKMc2funAY3L+TWcU7IT3ncTZ48i+AKvMgKLM0TFO41bX5
+	2LFlvd3NrX7kmvqV0zQBmuDSws5Bf1vx0adSHnx6GxNXBmLNHNayxqObUo8572FvCuaD/vlrShY
+	xwEithX+sntejBrEG2K6+1BswJqZ3iboPkYlnniddUQC3TZeXaFkziGA==
+X-Received: by 2002:a17:903:4b07:b0:2c0:b6c7:2273 with SMTP id d9443c01a7336-2c0b6c7267emr145511365ad.3.1780416265235;
+        Tue, 02 Jun 2026 09:04:25 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf23c2381bsm140818235ad.62.2026.06.02.09.04.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2026 09:04:24 -0700 (PDT)
+Date: Wed, 3 Jun 2026 01:04:20 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com,
+	seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
+	catalin.marinas@arm.com, will@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	stable@vger.kernel.org, imv4bel@gmail.com
+Subject: [PATCH] KVM: arm64: Take the SRCU lock for page table walks in fault
+ injection and AT emulation
+Message-ID: <ah7_BAAzHggzdZeI@v4bel>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AA_jvV1aNDqJ
-Date: Tue, 02 Jun 2026 11:59:47 -0400
-From: "Anna Schumaker" <anna@kernel.org>
-To: "Hongling Zeng" <zenghongling@kylinos.cn>,
- "Chuck Lever" <chuck.lever@oracle.com>, "Jeff Layton" <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- "Trond Myklebust" <trondmy@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>
-Cc: linux-nfs@vger.kernel.org, netdev@vger.kernel.org, zhongling0719@126.com,
- stable@vger.kernel.org
-Message-Id: <c3dc789b-c8c0-43e6-ae8d-615c932f4fa1@app.fastmail.com>
-In-Reply-To: <20260602083205.183807-1-zenghongling@kylinos.cn>
-References: <20260602083205.183807-1-zenghongling@kylinos.cn>
-Subject: Re: [PATCH] sunrpc: fix uninitialized xprt_create_args structure
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.15 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259846-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:zenghongling@kylinos.cn,m:chuck.lever@oracle.com,m:jlayton@kernel.org,m:neil@brown.name,m:okorniev@redhat.com,m:Dai.Ngo@oracle.com,m:tom@talpey.com,m:trondmy@kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:linux-nfs@vger.kernel.org,m:netdev@vger.kernel.org,m:zhongling0719@126.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[anna@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,126.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,app.fastmail.com:mid];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[anna@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.infradead.org,lists.linux.dev,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-259847-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER(0.00)[imv4bel@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS(0.00)[m:maz@kernel.org,m:oupton@kernel.org,m:joey.gouly@arm.com,m:seiden@linux.ibm.com,m:suzuki.poulose@arm.com,m:yuzenghui@huawei.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:kvmarm@lists.linux.dev,m:stable@vger.kernel.org,m:imv4bel@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[imv4bel@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4D80F630167
+X-Rspamd-Queue-Id: 01FB36300E2
 
-Hi Hongling,
+inject_abt64() rewalks the guest stage-1 page tables via
+__kvm_find_s1_desc_level() when injecting an abort for a failed S1PTW, and
+__kvm_at_s12() calls kvm_walk_nested_s2() to perform the stage-2
+translation. Both walks reference kvm->memslots through kvm_read_guest(),
+which reads the descriptors, and __kvm_at_swap_desc(), which updates the
+access flag, so they must run while holding the kvm->srcu read lock.
+__kvm_at_swap_desc() asserts srcu_read_lock_held() on entry, and the other
+callers of these walks, handle_at_slow(), kvm_translate_vncr() and
+kvm_handle_guest_abort(), take the lock before calling them.
 
-Thanks for the patch!
+inject_abt64() is reached from the SEA and size fault injection paths,
+which run before kvm_handle_guest_abort() takes the lock, and
+__kvm_at_s12() does not hold the lock across the stage-2 walk. Take the
+kvm->srcu read lock with guard(srcu) in both places so that it is held for
+the duration of the walk.
 
-On Tue, Jun 2, 2026, at 4:32 AM, Hongling Zeng wrote:
-> The xprt_create_args structure is allocated on the stack without
-> initialization in rpc_sysfs_xprt_switch_add_xprt_store(). While some
-> fields are manually populated, critical fields like srcaddr, bc_xps,
-> and flags contain uninitialized stack garbage.
->
-> This can lead to:
-> 1. Kernel panic when xs_setup_xprt() dereferences garbage srcaddr
-> 2. Information leak if srcaddr points to sensitive stack data
-> 3. Unpredictable behavior if flags has random bits set
+Cc: stable@vger.kernel.org
+Fixes: 50f77dc87f13 ("KVM: arm64: Populate level on S1PTW SEA injection")
+Fixes: be04cebf3e78 ("KVM: arm64: nv: Add emulation of AT S12E{0,1}{R,W}")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+---
+ arch/arm64/kvm/at.c           | 3 +++
+ arch/arm64/kvm/inject_fault.c | 2 ++
+ 2 files changed, 5 insertions(+)
 
-I took a look through the transport setup function to see what they
-do when these fields are set to NULL, and it looks like thy do their
-best to choose a default value which might be different than the
-values set to the original transport that we are trying to clone.
+diff --git a/arch/arm64/kvm/at.c b/arch/arm64/kvm/at.c
+index 9f8f0ae8e86e..eb334a1c2672 100644
+--- a/arch/arm64/kvm/at.c
++++ b/arch/arm64/kvm/at.c
+@@ -1569,6 +1569,9 @@ int __kvm_at_s12(struct kvm_vcpu *vcpu, u32 op, u64 vaddr)
+ 	/* Do the stage-2 translation */
+ 	ipa = (par & GENMASK_ULL(47, 12)) | (vaddr & GENMASK_ULL(11, 0));
+ 	out.esr = 0;
++
++	guard(srcu)(&vcpu->kvm->srcu);
++
+ 	ret = kvm_walk_nested_s2(vcpu, ipa, &out);
+ 	if (ret < 0)
+ 		return ret;
+diff --git a/arch/arm64/kvm/inject_fault.c b/arch/arm64/kvm/inject_fault.c
+index 89982bd3345f..868895ed0930 100644
+--- a/arch/arm64/kvm/inject_fault.c
++++ b/arch/arm64/kvm/inject_fault.c
+@@ -121,6 +121,8 @@ static void inject_abt64(struct kvm_vcpu *vcpu, bool is_iabt, unsigned long addr
+ 		if (hpfar == INVALID_GPA)
+ 			return;
+ 
++		guard(srcu)(&vcpu->kvm->srcu);
++
+ 		ret = __kvm_find_s1_desc_level(vcpu, addr, hpfar, &level);
+ 		if (ret)
+ 			return;
+-- 
+2.43.0
 
-Can we instead set the missing fields in the xprt_create_args based
-on how the main xprt is configured?
-
-Thanks,
-Anna
-
->
-> The fix is to zero-initialize the structure to ensure all unused
-> fields are NULL/0, preventing the transport setup code from acting
-> on garbage data.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
-> ---
->  net/sunrpc/sysfs.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/net/sunrpc/sysfs.c b/net/sunrpc/sysfs.c
-> index a90480f80154..0a99d0f1eb4c 100644
-> --- a/net/sunrpc/sysfs.c
-> +++ b/net/sunrpc/sysfs.c
-> @@ -333,6 +333,7 @@ static ssize_t 
-> rpc_sysfs_xprt_switch_add_xprt_store(struct kobject *kobj,
->  	if (!xprt_switch)
->  		return 0;
-> 
-> +	memset(&xprt_create_args, 0, sizeof(xprt_create_args));
->  	xprt = rpc_xprt_switch_get_main_xprt(xprt_switch);
->  	if (!xprt)
->  		goto out;
-> -- 
-> 2.25.1
 
