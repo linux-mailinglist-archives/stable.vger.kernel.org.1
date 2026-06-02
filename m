@@ -1,177 +1,166 @@
-Return-Path: <stable+bounces-259758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iI4uKc6jHmq3IwAAu9opvQ
-	(envelope-from <stable+bounces-259758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 11:35:10 +0200
+	id mHN2Cn2lHmq3IwAAu9opvQ
+	(envelope-from <stable+bounces-259761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 11:42:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D2D162BA6E
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 11:35:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB7C62BBF7
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 11:42:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6015C30E06F3
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 09:18:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE1303028029
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 09:25:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A653C8C75;
-	Tue,  2 Jun 2026 09:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890BC3B8BCC;
+	Tue,  2 Jun 2026 09:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="N9ZByfFV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EBioeMKz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3EB30FC21
-	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 09:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133FF3624BC
+	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 09:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780391899; cv=none; b=OQHjyHKPxMKJHoiteH7itxnGuPG+iQxA+j7tXwsp0QIcyulQPvN4Qzg+CZjIsFUdcDtfVeX7OZSye8l3HlhHP46PPvCAFkFOsXU5sUxCBRZPrStrsay8qNacr4to0GBOU8fi4YJ4l24w3RHwAtFPBUV7EnMAIRjS5zwaGneWCuI=
+	t=1780392344; cv=none; b=lwucmaPcPHo1CYEd4sMSSkA8Clsm7I9Z5xfFbgsAdUr3PbGwcIW+us2+HB2j2aOffwunxnVN7KjHLeoQWeAGFlavsIykI003Gf1Srhz2EpB58E253u67ffyJ6emyNhaQ/pmb+/1H4ZySextFFs0uFSQ0Qic+QPulUYm9FOPFnlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780391899; c=relaxed/simple;
-	bh=FYGX+z1NHS6G0DY02oZQ6hTTBFd4DJcBw8FAvVlqv/Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SlUjmbhX6dFNsMdi/UY3EHTL+F17FbLgQ0Vp/y5Ng9TYdQHboMDyH6MNxd2t0IXpWzwD0ryrbqJRLaZYDccrHtA8PqQvXhCQJY5Cz/3+NqBgU/egTOzHDaVcrq/0GeTbZ8wZncP6IQG/QEf9Wegl/hmhAfB9OYrwGMil2eZfbco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=N9ZByfFV; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-68d23430690so4327090a12.3
-        for <stable@vger.kernel.org>; Tue, 02 Jun 2026 02:18:17 -0700 (PDT)
+	s=arc-20240116; t=1780392344; c=relaxed/simple;
+	bh=9T0dBdjKmtpuSBlZJADZ1e/C7LfQuy/aeaKDkRDtpk4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CQEp7wYqpTTaj3sza3bzVV5l17No1rcxkMfbFtLergH4W5KDnpsgxvhG8x8IVMTkYEPaZsI/thS97s2zZrUfoFi9ZA0Lt9/mTD4z+4Wb6e+SoyT2qqk+a8sGQx4TD4hV6TNtiwBk9naafFlm/24nt0E8xaY4i0cZxIrolKfOXiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EBioeMKz; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-45efb698ef2so1474340f8f.3
+        for <stable@vger.kernel.org>; Tue, 02 Jun 2026 02:25:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1780391896; x=1780996696; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8weWZwvlicUS0dvAxblKD1HBMYQh1u5mQ2U5bxBouSc=;
-        b=N9ZByfFVeFBhHG9bFqF6uwAaa3UmmgQCXvV16kc+mco9kF7bWhuafCJ0CJVKZ31UbN
-         E4Iag7AZXP8vTFT2664twUfhM6cek9Mzsz35LmYYa1tD3GNi0ErjNzpdpwN43xE5fTL6
-         IichCTHHgc7msv6FC6ZrIgylzA/7Bwr40LIAqk2eLTC8+N4veLYDn4gtNMMkuUB2mSt2
-         u9VTvRYUD1rw5cTkAIJZAl7mg9lPB4KmabO+vZe9EUzVts1KD/aCc8s7k+/An6OkBvRX
-         l38Fusca3Oz52WA0lKE7gbUz9v29W2f6b5XpwgzYj3e7UZNsR4wueBQ2byJHMvqag6id
-         4Mnw==
+        d=gmail.com; s=20251104; t=1780392341; x=1780997141; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Zekd0wCuq43OHwA3CF1X5oLlOYbGs1agYSly9jzdzX4=;
+        b=EBioeMKzT7HOH05euYxaIwYZYEhnRBilNKovVRRT4Oh1Xt/q5VpwjG6JOmtllZ5uqL
+         N2rgV/gJ9GuC3n9vnMuidXMQCDjIwqykqiy/cR3ebUGmh1lr8hocpidN1+dznvMoJKCu
+         cn2ncyhAqtRT9AlFMXJ7UwHETzEF7u8vLjqGm5KrFgW6Lo3Kw3dw63/6Lh1Z9KZuJ3y5
+         sntYa0UqZrKWTX/trVAgvSpIdv8eLZNwSOMzbxxIlHePWnknCiQbgzHTGy6P+cCZAPsB
+         FW0CbwcjicbxTHiao2mp8hOforIhSYnNCunIwOiPevvDZt9KD7hyWLruERGD0fJnRSRv
+         1cBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780391896; x=1780996696;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8weWZwvlicUS0dvAxblKD1HBMYQh1u5mQ2U5bxBouSc=;
-        b=ITF09ENFrSkQA9iJu513CBkDU0PWzRgp7frvDv/Dvq3+Y0OOBwzguwPexU++XwO4mf
-         zJPP4/LpbyE5TN3GctZQqtiE/dyMTnZnLM6Z7a6iNRLOM/ed81L5W7ps/H7GHRj0Kvjd
-         BkrHug/O5lMa1ku/Ejxd6X46bFefM24VvaKFii3CPfTNxP34F8V02U07S+6L4yqDeoqf
-         KNxg4kHgiWOya+IiYszcXzKlSEd9mCwn8/v4iLT4A5hiTi7tq+fib18zx7JNghdpJ8iQ
-         w8mtbGAWVw9rk04Y1UxdNyUmoX54ZRXfbEtIE9GAWonHc7cWbtljYKABj2Y1Lgp5KwRX
-         wW5A==
-X-Gm-Message-State: AOJu0YzdhKfWIkoHS2/WyICoQVp8BJRzcf+u/6PuX9767UQhJGt023bQ
-	KJ9jyF2/LfhpX8z2F16LyzSetE3tHF1BAWi95aPxAM3jI30bvIYJDofz0WdhF5+qG04=
-X-Gm-Gg: Acq92OEk6zVs9cqjWECrdJsldUsUDSfI3AcVDbVI+6FYYoqWSEBppq0Ok5ajaCZNofN
-	CIxUdBPldm9lZ4iN7cmEOHRidGs9PsO/knDdUJ1aPNxZ4sY1W8h2Ed28sgu8ZCLAZn8ES+dcOKr
-	S1NK4yiSKGyETQJTk+W1ZHdRZgv7427R4YcuOrpxEkVDWSFxlV7BPczqN7/EcO8BiUlTIJOcrI1
-	IMfsF1bYF7kxq8cSDHTSZKe93kaN7GWL1sWTfZ2QGdkmG66KqDwTVB11q08zgGito133j/OmNpa
-	LvSnGpzSyBXx78jbLmrGfgRGglJPKsLer/FH3K8m5nVHqSCKNRITmQRv21IxGJx/VyMQib1XBUu
-	WN28X86Fpbt3APC+UzVbJ0Od+F0ZLKV1CPze6m/7jkNKecDAHjzL7pvvyNQxlTJgMhbsF9wd4Z0
-	pzBfsiDI/9Fwfm6dvtDgh17uSGgemOZ+Q5zmYlYIsyEkDM/VCcl6uZxg==
-X-Received: by 2002:a17:907:9453:b0:bea:5cc7:95a4 with SMTP id a640c23a62f3a-beab03de8a1mr933593866b.0.1780391895233;
-        Tue, 02 Jun 2026 02:18:15 -0700 (PDT)
-Received: from u94a (27-240-75-84.adsl.fetnet.net. [27.240.75.84])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36dd91846f8sm2382956a91.4.2026.06.02.02.18.04
+        d=1e100.net; s=20251104; t=1780392341; x=1780997141;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Zekd0wCuq43OHwA3CF1X5oLlOYbGs1agYSly9jzdzX4=;
+        b=cSBBvVXjnDHT8aC0Gwc00MtN5hY5P56n6iKVIjMcLpuLJBpixwDzkhOnzgiS7Rd7Mp
+         QyvAtb5HM0qGubxYaluCoVO5LKylpfdTieaA85ETxMS5zYfxKyuOy1HZe56YTPWZccyi
+         FrZ5toBvIX1u2En8CxwrJ3T07Vz7SVvwq60J1X+D3dhkM+uNRxtChV0xZ8WuFKgJNNIk
+         UUAOjkKegSf3/UF7sKBgoD078R6X6wEnwzCS7kkNCF6Blo/DCudLV91XkizAa+mzlyr1
+         1ENILUMA6AKxtobukHSfVN+f7RRD+6Gbwo7t3bWovqmmP+A4OPsK3yipKLQWMZlprxed
+         ysFQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+WyjPtZTobiwmKva9w/8FYinOc7CfEZPRibXUn08yyM8XhtEkNMGbKpRFJi7h1aMcgtT99u6w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7YTiuFK21cgMQ42FkSoEboL+JFywSLxkip088ZCVQopoc3miz
+	SrErIDgGqce+E47fcQYFpl7rJMitzfbdAWUf5r4rLMn2jXxDAnNCcrqC
+X-Gm-Gg: Acq92OE/MZiNbvhgMNIt3b1B7J/SDNzbNJPFLo4PKcREPySPcV9QZ8gyTYzEb8GaTlN
+	1if5+bxS8ymrw/eg5wRkXWP9YALH3rHQXbZPqfGPhH4xiTRWr9YLPdXWoTSiPVWFW2UwXoPzHQQ
+	4snS3cv/6UOWgnAFYmW7BADlZKgfrCySsu9SDwwBhEa5IZo/MsHNCPDCXAr9QS52aU+6WmMVvwq
+	QrzcQU3aBBwI/e+YK3dm6QHuFYY8poGkFvLB/kb7D4Cr02MA8AexFbfilo/gPCdDgEft7y6iAjv
+	NnYIvaKj3yhCQzPP2XAbMRnAhiBm2CbInNBJW+r1ocY6sN5qOimevX58uAS92RAQe0cLdXMTxC1
+	wv5M2u1GK4yw0y2zObQmb27ZR1/Y5MwLvGykwVD4NTxtlkiRfvbicev6o5jpgSkTOjs0IRA2W4h
+	+z/mOvE4q9ShnPKoaaRg3fmArYenVnxkZdilSwWzWH8ehE7ArToA4ZUBsl/TZCS0thPztSfJE=
+X-Received: by 2002:a05:600c:4755:b0:490:4e3e:b483 with SMTP id 5b1f17b1804b1-490a29335camr246690315e9.22.1780392341077;
+        Tue, 02 Jun 2026 02:25:41 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490b29f49b8sm25092905e9.15.2026.06.02.02.25.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 02:18:14 -0700 (PDT)
-Date: Tue, 2 Jun 2026 17:17:59 +0800
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: Zhenzhong Wu <jt26wzz@gmail.com>
-Cc: stable@vger.kernel.org, Paul Chaignon <paul.chaignon@gmail.com>, 
-	bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ast@kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com, 
-	andrii@kernel.org, martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev, 
-	kpsingh@kernel.org, haoluo@google.com, jolsa@kernel.org, menglong8.dong@gmail.com, 
-	tamird@kernel.org, eddyz87@gmail.com
-Subject: Re: [RFC PATCH 6.1.y 0/2] bpf: backport scalar not-equal tracking
- fixes
-Message-ID: <ah6dLESn8tHAtxS9@u94a>
-References: <20260601180400.1381736-1-jt26wzz@gmail.com>
- <ah5pf25fhVH9WuU-@u94a>
- <ah56iBM2P_9hF3_L@u94a>
+        Tue, 02 Jun 2026 02:25:40 -0700 (PDT)
+Date: Tue, 2 Jun 2026 10:25:39 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Aiden Bowling <aidenlbowling56@gmail.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] kernel/sys.c: fix prctl_set_auxv to use sizeof instead
+ of user-supplied len
+Message-ID: <20260602102539.07f8d1fe@pumpkin>
+In-Reply-To: <20260602024001.14119-2-aidenlbowling56@gmail.com>
+References: <20260602024001.14119-2-aidenlbowling56@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ah56iBM2P_9hF3_L@u94a>
-X-Rspamd-Queue-Id: 0D2D162BA6E
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7DB7C62BBF7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259758-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,kernel.org,iogearbox.net,linux.dev,google.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259761-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Tue, Jun 02, 2026 at 02:42:35PM +0800, Shung-Hsi Yu wrote:
-> On Tue, Jun 02, 2026 at 01:47:01PM +0800, Shung-Hsi Yu wrote:
-> ...
-> > On Tue, Jun 02, 2026 at 02:03:58AM +0800, Zhenzhong Wu wrote:
-> > > Hi BPF maintainers,
-> > > 
-> > > This RFC backports two BPF verifier scalar range-tracking fixes to 6.1.y.
-> > > The series is intended to fix a verifier state-pruning issue where an
-> > > impossible scalar path can be kept while the real success path is pruned.
-> > > 
-> > > This is a verifier scalar range-tracking issue, not a helper-specific
-> > > issue.
-> > > The visible failure is that the verifier can prune the real success
-> > > continuation, which should not be skipped, and keep only an impossible one.
-> > ...
-> > 
-> > This sounds somewhat similar to the issue fixed in "backport of iterator
-> > and callback handling fixes" for stable 6.6[1] by @Eduard. Could you try
-> > to test on the latest stable 6.6.y as well at see if you can reproduce
-> > the issue there?
-> ...
+On Mon,  1 Jun 2026 22:40:02 -0400
+Aiden Bowling <aidenlbowling56@gmail.com> wrote:
+
+> prctl_set_auxv() passed the user-supplied 'len' to memcpy() when copying
+> into mm->saved_auxv, instead of sizeof(user_auxv). Since user_auxv is
+> already sized to the full auxv buffer, using 'len' risks a partial write
+> if the caller supplies a smaller value. Use sizeof(user_auxv) to always
+> copy the full buffer after validation.
+
+Is it possibly that the caller only wants to write the first few values?
+
+-- David
+
 > 
-> My mistake, the reproducer you had doesn't use iterator or callback, so
-> probably not fixed in stable 6.6. I'll take a better look at this later
-> this week.
+> Signed-off-by: Aiden Bowling <aidenlbowling56@gmail.com>
+> ---
+>  kernel/sys.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/sys.c b/kernel/sys.c
+> index 62e842055cc9..d3f5229649e3 100644
+> --- a/kernel/sys.c
+> +++ b/kernel/sys.c
+> @@ -2189,7 +2189,7 @@ static int prctl_set_auxv(struct mm_struct *mm, unsigned long addr,
+>  	BUILD_BUG_ON(sizeof(user_auxv) != sizeof(mm->saved_auxv));
+>  
+>  	task_lock(current);
+> -	memcpy(mm->saved_auxv, user_auxv, len);
+> +	memcpy(mm->saved_auxv, user_auxv, sizeof(user_auxv));
+>  	task_unlock(current);
+>  
+>  	return 0;
+> 
+> base-commit: e43ffb69e0438cddd72aaa30898b4dc446f664f8
 
-Two more ideas beside testing on latest stable 6.6. 
-
-1. Can you try testing on bpf-next, but with commit d028f87517d6 'bpf:
-   make the verifier tracks the "not equal" for regs' reverted? My
-   concern is that it is possible that commit d028f87517d6 does not
-   address the root cause of incorrect state pruning here.
-
-   If the reproducer _fails_ to reproduce the issue even with commit
-   d028f87517d6 reverted, then it is possible that the root cause was
-   fixed by another commit further down the line.
-
-2. Have you consider adding your reproducer into BPF selftests? Would be
-   very useful to have in stable (though it needs to first land in
-   bpf-next first).
-
-> > 1: https://lore.kernel.org/stable/20240125001554.25287-1-eddyz87@gmail.com/
-> > 2: https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
 
