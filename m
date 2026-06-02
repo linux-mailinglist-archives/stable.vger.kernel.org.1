@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-259736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259737-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGHvNzKMHmr0kgkAu9opvQ
-	(envelope-from <stable+bounces-259736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 09:54:26 +0200
+	id OMxHNt2OHmodlAkAu9opvQ
+	(envelope-from <stable+bounces-259737-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 10:05:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0599629F55
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 09:54:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 759B362A210
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 10:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 83D27304196A
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 07:38:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B05783064EC2
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 07:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DF33B442F;
-	Tue,  2 Jun 2026 07:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093703B95E3;
+	Tue,  2 Jun 2026 07:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="C90EEA/W"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="O6bM1H6a"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
+Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A241C37754D;
-	Tue,  2 Jun 2026 07:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EECA3B636A;
+	Tue,  2 Jun 2026 07:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780385787; cv=none; b=QlIDjZXGDRTQIsmt2p0kGivPSnWnKUl/n9M1YmE06i5f0TeT5r7+BNXAgtxBQnvGyKxplJWde19IYxyqTEmXV5aUWogoGQ2NGFV2BXPJOWrZwbpPWFkxqJRBvPc/owUUFhOgwKpjTrRZTi+bE8IVWDRB7lv4r4k5j9YCzHSYu7s=
+	t=1780386617; cv=none; b=g95HtRMk3QDlL8aOXOcp9XZ37LPvw9R9OfCi2QsPkCvtFeqbLjyY40UhACZhgVh5zn36crgM5fkZCtJIK2pVBAzlxaBM6M10rhiRbCXBdYPNRTnjFwSZpAe8hKS15os0kidhZI5754VhLzSH8NqMjcJbJIbuOoCXG0umJERhdi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780385787; c=relaxed/simple;
-	bh=Sg2qPMeNeyuw/NqPm8wrriZb6ypvSn/sq+DRxgxDR8g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QVn7WtuL5QEG3/f/sB/AakzBbQUawFG3R4CVOjF4fsTozjjOOKfa2c2N8wQkR1AkfyYI9wuJwR/eJmTlCsjbwTncJRCKt0hdqI4RuQIfpv+/E14cGUFUges34BKiReGSkNw+uHiRo3TpHl5uSWDYGuuHIikO2hannlBmWPW2mR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=C90EEA/W; arc=none smtp.client-ip=120.232.169.110
+	s=arc-20240116; t=1780386617; c=relaxed/simple;
+	bh=WtN4eaIts+Ftcwn9eMgaXtTeXR/Gk9lkpwWarXWxRCo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o6cgdfywNGi58FXTzK48gP/X2fMC8THPxdYvu0HuESn5eaXkND+GFCcJMjrb4/m3lqkEO25dowkv1/QymZZb7EiaJPgAl5d40Fht5vlsXVU8tTGn4UJFHEtSdmVJs5XnLEh3T8YhnVxWPjbD6YOhmIYiM8/nALFwSq+UkzTVnkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=O6bM1H6a; arc=none smtp.client-ip=120.232.169.114
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=139.com; s=dkim; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=C90EEA/WmY5MswcMj5MyPoDvQ1N6XcA5ujsLSw2ZM3en1q9bZa0vEZVseFovEJRMoP1uB3Aj5NbV7
-	 KisCpeqOeYCw/hIhTmbTR0xXXpD683apUGE5+Lmq4M9xCWzyzMsFeL0oxC2Z4hyXNVb+mmh2WNgc+L
-	 kGAfOa9UmvqmNK+k=
+	b=O6bM1H6aJU3LrKKjAq/eUb2UlvzkpxTmQ2vyVTubqr++xoyICwZI2Y595b+y/CrxhgcvWYBHqHJmt
+	 73q9MNMtqkjIpdyhcy1Lqw5hW6EyX6SaFRewjv3EYgcPmWjEIX+kfjNrER0qsp0TePpWTGCqmjYV8v
+	 NXut8Ozl9G97TmIw=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM:                                                                                        
 X-RM-SPAM-FLAG:00000000
 Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-07-12085 (RichMail) with SMTP id 2f356a1e87ee00a-0101c;
-	Tue, 02 Jun 2026 15:36:18 +0800 (CST)
-X-RM-TRANSID:2f356a1e87ee00a-0101c
+	by rmsmtp-lg-appmail-45-12076 (RichMail) with SMTP id 2f2c6a1e8b2a7ba-027e8;
+	Tue, 02 Jun 2026 15:50:06 +0800 (CST)
+X-RM-TRANSID:2f2c6a1e8b2a7ba-027e8
 From: Li hongliang <1468888505@139.com>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -60,9 +60,9 @@ Cc: patches@lists.linux.dev,
 	pabeni@redhat.com,
 	horms@kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 6.6.y] net: mctp: ensure our nlmsg responses are initialised
-Date: Tue,  2 Jun 2026 15:36:17 +0800
-Message-Id: <20260602073617.2922418-1-1468888505@139.com>
+Subject: [PATCH 6.1.y] net: mctp: ensure our nlmsg responses are initialised
+Date: Tue,  2 Jun 2026 15:50:05 +0800
+Message-Id: <20260602075005.3210862-1-1468888505@139.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [5.84 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259736-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259737-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
 	DMARC_NA(0.00)[139.com];
@@ -90,18 +90,18 @@ X-Spamd-Result: default: False [5.84 / 15.00];
 	GREYLIST(0.00)[pass,body];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[139.com];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[139.com:-];
 	TAGGED_RCPT(0.00)[stable];
 	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c15:e001:75::/64:c];
-	NEURAL_SPAM(0.00)[0.889];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,codeconstruct.com.au:email,139.com:mid,139.com:email]
-X-Rspamd-Queue-Id: F0599629F55
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
+	NEURAL_SPAM(0.00)[0.885];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,codeconstruct.com.au:email,139.com:mid,139.com:email]
+X-Rspamd-Queue-Id: 759B362A210
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -132,10 +132,10 @@ Signed-off-by: Li hongliang <1468888505@139.com>
  3 files changed, 3 insertions(+)
 
 diff --git a/net/mctp/device.c b/net/mctp/device.c
-index 8d1386601bbe..67576cb2728e 100644
+index 85cc5f31f1e7..fd368249246d 100644
 --- a/net/mctp/device.c
 +++ b/net/mctp/device.c
-@@ -70,6 +70,7 @@ static int mctp_fill_addrinfo(struct sk_buff *skb,
+@@ -71,6 +71,7 @@ static int mctp_fill_addrinfo(struct sk_buff *skb,
  		return -EMSGSIZE;
  
  	hdr = nlmsg_data(nlh);
@@ -156,10 +156,10 @@ index 590f642413e4..c0151a69d2b7 100644
  	hdr->ndm_ifindex = dev->ifindex;
  	hdr->ndm_state = 0; // TODO other state bits?
 diff --git a/net/mctp/route.c b/net/mctp/route.c
-index a565cf2bc733..6d6e19c04939 100644
+index fdeaf80691e5..c9b0b7542243 100644
 --- a/net/mctp/route.c
 +++ b/net/mctp/route.c
-@@ -1332,6 +1332,7 @@ static int mctp_fill_rtinfo(struct sk_buff *skb, struct mctp_route *rt,
+@@ -1331,6 +1331,7 @@ static int mctp_fill_rtinfo(struct sk_buff *skb, struct mctp_route *rt,
  		return -EMSGSIZE;
  
  	hdr = nlmsg_data(nlh);
