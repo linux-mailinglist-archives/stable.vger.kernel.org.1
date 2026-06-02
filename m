@@ -1,42 +1,42 @@
-Return-Path: <stable+bounces-259713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGHgHN1lHmrCiwkAu9opvQ
-	(envelope-from <stable+bounces-259713-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 07:10:53 +0200
+	id IOjBIfxlHmoNjAkAu9opvQ
+	(envelope-from <stable+bounces-259714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 07:11:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E15956286FD
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 07:10:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FB4628714
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 07:11:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0B0430602A6
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 05:09:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F228330699E8
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 05:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370352EC0A6;
-	Tue,  2 Jun 2026 05:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608652EC081;
+	Tue,  2 Jun 2026 05:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="MKydO2UR"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="EWm+v6Wp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376912DA759;
-	Tue,  2 Jun 2026 05:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969C72D7DEA;
+	Tue,  2 Jun 2026 05:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780376975; cv=none; b=ZDNtI37jswGyy1UFsBqPaXz96HcaUflIoq4weG0aSEi0xhJClr0itwSLGNIKus2sPNNFad8HG4ZUDsTA100qbi8EVm6PMG8xbfEIBadOh52TQqGjC4iNUw6Nm9WedG3BBKd0MyQcxC20esMjzyVam+OX91V4UCXGKGvY6lv/Cp8=
+	t=1780376989; cv=none; b=rzvTjf0j6YMjmINdzFZ5PN9dlM1z6I2StasI42oBP0uBAsl54DHwo1OMsL7sKmfL01OESu1t59h1EMNlXtL+aXh7B6Pxr01AOCthm2zzfsUpuXWkSQetJ55xkcav+KELoON9eobGD+7sUR8TuXiv/hqFAfblqrGKw34i9y8RebY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780376975; c=relaxed/simple;
-	bh=Qt4cnTAcUdjy3wEVaZhzjOTQVPC1tGRaVX2tb1jacN4=;
+	s=arc-20240116; t=1780376989; c=relaxed/simple;
+	bh=1sdhyNwedp3nB+fvuVo8riohKlXgGy0/Fcp4a3geIbI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lfiP4WyDM8i7tB+r810NUpMiMwrV2Xbf7sXR0iRT4/6EMgID/BY0fKkiAOqMwwBB7DPBllEpnHF0YbAPtJ4Ioms1ZCnaEtBURFJSKOmKZbBoLnkiyur4U0zptrQD6mq7LYeZGpgLY/0ki1L5274smAxOUolZHPfKGsms35Qwxqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=MKydO2UR; arc=none smtp.client-ip=45.254.49.197
+	 MIME-Version; b=D/CuDn8UeAnjayvZjCvp/W0bz4Ojvyd2EEoXEBKWlkAvrWfxDPMR/VXPsd5ugAcqaHdsjeVjMlmwRkztUlFErV4B4YZcGZoa+TqcWzVPdXDhVRTGNc1AUJwuTZUAfzIdzf7imiNY54PcSdADfma4echLM9q9qVD1iEJvqljphfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=EWm+v6Wp; arc=none smtp.client-ip=101.71.155.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Received: from PC-202605011814.localdomain (unknown [223.112.146.162])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 40b387ce2;
-	Tue, 2 Jun 2026 13:04:19 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 40b387ce5;
+	Tue, 2 Jun 2026 13:04:23 +0800 (GMT+08:00)
 From: Runyu Xiao <runyu.xiao@seu.edu.cn>
 To: alexander.deucher@amd.com,
 	christian.koenig@amd.com
@@ -50,9 +50,9 @@ Cc: airlied@gmail.com,
 	jianhao.xu@seu.edu.cn,
 	runyu.xiao@seu.edu.cn,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] drm/amdgpu/mes11: fix queue init wptr reset
-Date: Tue,  2 Jun 2026 13:03:53 +0800
-Message-Id: <20260602050354.2237095-2-runyu.xiao@seu.edu.cn>
+Subject: [PATCH 2/2] drm/amdgpu/mes12: fix queue init wptr reset
+Date: Tue,  2 Jun 2026 13:03:54 +0800
+Message-Id: <20260602050354.2237095-3-runyu.xiao@seu.edu.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260602050354.2237095-1-runyu.xiao@seu.edu.cn>
 References: <20260602050354.2237095-1-runyu.xiao@seu.edu.cn>
@@ -63,15 +63,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e86b7e7c603a1kunmb7f79aef178bd9
+X-HM-Tid: 0a9e86b7f5ff03a1kunmb7f79aef178c11
 X-HM-MType: 10
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaQx1MVkMaSxkZSUIdGE9OS1YeHw
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCQkJJVkIfHkgeTUIdSk5LSVYeHw
 	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSU
 	hOQ0NVSktLVUtZBg++
 DKIM-Signature: a=rsa-sha256;
-	b=MKydO2URJvMNqsbFPbiRAoftsZowajUZtt6lsy9k19RG7YsszGIn5LmMGQaosIYM6+c/S90Sw7gnIha8QPsAH7wbK62uz0Y1nb4ZsfK7VNOj0rmdrGd8LuTi0jdW/B+evOnS7Yt+QL1E08BXd52T3SvimSJ7OUNN5AiOgG1+y4A=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=A2XxhCSxRVdO/XEV+e5GPXDXNkjjX++njluVS+LkACU=;
+	b=EWm+v6Wp4FQK2zA0zKjBoe6WZIbg1GLxC77rp9x4rOA7jma/PQApAPonjXeJxRjIhW3h9+rqihkc7+SGMXo1yVBo6927wrOhGwcEyCCxlKvEhEzkzfKzNv/Rrw+/KOWitjp99jh5BGxmwZBKZzz6yV0ZL5HBVbNCjTSOwE4yjFo=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=D3xcZv25/w2ySOWXApKK8LTp/+QDmMdOM7MaVAFD9Og=;
 	h=date:mime-version:subject:message-id:from;
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -88,8 +88,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-259713-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-259714-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
@@ -100,11 +100,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E15956286FD
+X-Rspamd-Queue-Id: E9FB4628714
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-mes_v11_0_queue_init() resets ring->wptr_cpu_addr with a plain 32-bit
+mes_v12_0_queue_init() resets ring->wptr_cpu_addr with a plain 32-bit
 store in the reset/suspend path even though the same carrier is
 accessed with atomic64_set()/atomic64_read() and support_64bit_ptrs is
 enabled.
@@ -118,24 +118,24 @@ Use atomic64_set((atomic64_t *)ring->wptr_cpu_addr, 0) so the reset
 path updates the full 64-bit wptr with the same access family as the
 existing readers and writers.
 
-Build-tested by compiling mes_v11_0.o.
+Build-tested by compiling mes_v12_0.o.
 
 No AMDGPU hardware was available for end-to-end runtime testing.
 
-Fixes: d81d75c99936 ("drm/amdgpu/gfx11: enable kiq to map mes ring")
+Fixes: 785f0f9fe742 ("drm/amdgpu: Add mes v12_0 ip block support (v4)")
 Cc: stable@vger.kernel.org
 Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/mes_v12_0.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-index a926a3307..e2f762c2e 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -1308,7 +1308,7 @@ static int mes_v11_0_queue_init(struct amdgpu_device *adev,
+diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
+index 023c7345e..22ed7bb51 100644
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
+@@ -1476,7 +1476,7 @@ static int mes_v12_0_queue_init(struct amdgpu_device *adev,
  
- 	if ((pipe == AMDGPU_MES_SCHED_PIPE) &&
+ 	if ((adev->enable_uni_mes || pipe == AMDGPU_MES_SCHED_PIPE) &&
  	    (amdgpu_in_reset(adev) || adev->in_suspend)) {
 -		*(ring->wptr_cpu_addr) = 0;
 +		atomic64_set((atomic64_t *)ring->wptr_cpu_addr, 0);
