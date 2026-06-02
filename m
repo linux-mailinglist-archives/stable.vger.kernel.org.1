@@ -1,194 +1,120 @@
-Return-Path: <stable+bounces-259864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259865-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id g4vDKjEeH2rlggAAu9opvQ
-	(envelope-from <stable+bounces-259864-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 20:17:21 +0200
+	id vBpDODkfH2qcgwAAu9opvQ
+	(envelope-from <stable+bounces-259865-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 20:21:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B7B630FE2
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 20:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F20CA631050
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 20:21:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="BB8/dpvx";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-259864-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259864-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.dev;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TbJlZNZ+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-259865-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259865-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 57E193026241
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 18:17:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 89965302814B
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 18:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2B9390989;
-	Tue,  2 Jun 2026 18:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A9B392C47;
+	Tue,  2 Jun 2026 18:21:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E066C23D7E6
-	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 18:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C01738839D;
+	Tue,  2 Jun 2026 18:21:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780424239; cv=none; b=M/A3XIzS/7aPmGWtpaFcuUZJfnKRdaSsWu7VHk0iOSlRL/ydJ4ehlJVLYwafLICHl7TUW2e5t91NABHMalV7hcns1Bfe9H2eZewFPkKE48n//3f9/fE9ybWXq5FYYHbIOU62rszy9P6bUuPxxOcar4MGmI2/2V6nbw6EbtWN5jk=
+	t=1780424501; cv=none; b=N1R74AzYwG/FvB9dciNSxApQg50nEm+lEYqKqPTnCTgjyr/PI69MEgVJGJGXpQR3V4g5hX2CC573vEmNl1e0Zeeeu/xc9tu2DwvhvRe7EZFoMLmrKcfBGr+PorUDFIhdt8PcNriAr/Vz3o8cQGq1GeoYzaZW6/qpGysmVZL3o/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780424239; c=relaxed/simple;
-	bh=lKrbErFL33y0hvZLmkIS71x1sxFvJ5v/SI1TpWYA9xA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ELOvbQOsF/gN6Kso9eTtcJmChzVWvdjZ3jE/mqHo5RpkFJXR+kuk/75ZNAOFyOFaJdV21JrniA/kOR5OEsc835nTjEkX1+CHhXmmchLZa9eOvKoynJ2fwpNw3WhSqNIbN0RhlCNBBsUz0Zd0Qv+avnUZuw1W8ZZpA4emARgDoik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BB8/dpvx; arc=none smtp.client-ip=91.218.175.180
-Message-ID: <9f134eb4-1c64-47c4-8c4d-feb3c75072e6@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780424234;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KwNAHhnYjbAwxb3CujRs87uODn/mS6bwBRlR99Zbexw=;
-	b=BB8/dpvxkI7ABBOHbbeUMG9d/OHBj/j+bxj8pt9mKsrjGzrzANg73shTc6xoqaD/+aPP0Y
-	vjKYgCbcV3WOG7slgBbAE1+AzCYXkkR0MeM4lA+LI99GrQz1UM1pgr8frkxXrK2lpQb7mG
-	ZbKZwEmW1VvzZbsEBSBae6FKovSch1A=
-Date: Tue, 2 Jun 2026 11:17:06 -0700
+	s=arc-20240116; t=1780424501; c=relaxed/simple;
+	bh=VX8/5J1UHVi6WOFIgYIpOxAZUnFMdQy0KtAPIzqi6VA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YSytDIV2n2wz60lA5/KOodNO+UEBDr89EYIY5TjXMXuU6VAtBpZJLws0/30E3nvH5h4BDEszpMyR2h+eEnSuey368ajg3kkY4pr0iOYqnYiJK2rex8bByQDvWSzvNTHqypdPs8xT5DWoRzaJUZ3t6kNJhvIfCH5YTTRBqcxtIMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TbJlZNZ+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB1D1F00893;
+	Tue,  2 Jun 2026 18:21:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780424498;
+	bh=BRXmaFtHlGtmlACxC5RELFhg8zad2ITbAOk9CjyKfFA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TbJlZNZ+lDckIQHwqLqi7pwz3DgXXMoniCMFQMYrqutjoc8Um5Q9oG4p8QhWTL41a
+	 /Z9PpXTzCEh2emlG8ENEFmtD5bInXIzumSvFwDHnx0m0ktbfM8jhSfCiCyxlt7rIuD
+	 bq0Wdcvdk57ruf6L4AhaqAnvx9Y9a0KlwImQSbGhSE3AYL/hLP+qldzTnOz0asE8GO
+	 U7d5J/rQMlBaaIBgowckw6nNSrtN+cZMa4x3BNxfKW3q9bOQXTbH9Fmin+rxN0IBff
+	 APiCEXmGor1Z0PAEhAO6s9qgCkXOrLZi+MPlrh3+Jxrs+GmBxRaz/arPHwWU2s/1hj
+	 kcJJvyoriEZvg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	Prathamesh Shete <pshete@nvidia.com>
+Cc: Sasha Levin <sashal@kernel.org>,
+	Thierry Reding <treding@nvidia.com>,
+	Petlozu Pravareshwar <petlozup@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Meng Li <Meng.Li@windriver.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Robert Garcia <rob_garcia@163.com>,
+	linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.6.y] soc/tegra: pmc: Fix unsafe generic_handle_irq() call
+Date: Tue,  2 Jun 2026 14:21:18 -0400
+Message-ID: <20260602180500.tegra-pmc-reply@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260602025812.3535026-1-rob_garcia@163.com>
+References: <20260602025812.3535026-1-rob_garcia@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 4/4] crypto: ccp: Fix memory leak in SEV INIT_EX path
-To: Tom Lendacky <thomas.lendacky@amd.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Peter Gonda <pgonda@google.com>,
- Brijesh Singh <brijesh.singh@amd.com>, Youngjae Lee <youngjaelee@meta.com>,
- Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>,
- John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>
-Cc: clm@meta.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, stable@vger.kernel.org,
- Atish Patra <atishp@meta.com>, Sashiko <sashiko-bot@kernel.org>
-References: <20260601-sev_snp_fixes-v2-0-611891b28a86@meta.com>
- <20260601-sev_snp_fixes-v2-4-611891b28a86@meta.com>
- <f57a427b-0fc8-41f6-bc3c-cd86e7812629@amd.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Atish Patra <atish.patra@linux.dev>
-In-Reply-To: <f57a427b-0fc8-41f6-bc3c-cd86e7812629@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:thomas.lendacky@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:pgonda@google.com,m:brijesh.singh@amd.com,m:youngjaelee@meta.com,m:ashish.kalra@amd.com,m:michael.roth@amd.com,m:john.allen@amd.com,m:herbert@gondor.apana.org.au,m:clm@meta.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-crypto@vger.kernel.org,m:stable@vger.kernel.org,m:atishp@meta.com,m:sashiko-bot@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[atish.patra@linux.dev,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-259865-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:pshete@nvidia.com,m:sashal@kernel.org,m:treding@nvidia.com,m:petlozup@nvidia.com,m:jonathanh@nvidia.com,m:gregkh@linuxfoundation.org,m:Meng.Li@windriver.com,m:ulf.hansson@linaro.org,m:rob_garcia@163.com,m:linux-tegra@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-259864-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,nvidia.com,linuxfoundation.org,windriver.com,linaro.org,163.com,vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[atish.patra@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:email,linux.dev:mid,linux.dev:from_mime,linux.dev:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,amd.com:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F3B7B630FE2
+X-Rspamd-Queue-Id: F20CA631050
 
+On Tue, Jun 02, 2026 at 10:58:12AM +0800, Robert Garcia wrote:
+> [PATCH 6.6.y] soc/tegra: pmc: Fix unsafe generic_handle_irq() call
 
-On 6/2/26 7:54 AM, Tom Lendacky wrote:
-> On 6/1/26 18:04, Atish Patra wrote:
->> From: Atish Patra <atishp@meta.com>
->>
->> allocated pages in _init_ext_path are never freed and sev_init_ex_buffer
->> is left pointing at the leaked memory in case of any failures during the
->> function..
->>
->> Fix by adding an error path that frees the pages and clears
->> sev_init_ex_buffer. Make sure we only free the memory if the failure
->> happens before the conversion. Otherwise, we may end up trying to free
->> up converted pages in case of reclaim failure. rmp_mark_pages_firmware
->> failures should be rare enough to avoid more code complexity to track
->> down which pages were reclaimed/leaked vs which are not.
->>
->> Fixes: 7364a6fbca45 ("crypto: ccp: Handle non-volatile INIT_EX data when SNP is enabled")
->>
->> Reported-by: Sashiko <sashiko-bot@kernel.org>
->> Signed-off-by: Atish Patra <atishp@meta.com>
-> Not sure the goto's are the best, but they do the job - just a personal
-> preference for me here.
->
-> The new comment below is a bit verbose, I would think it is sufficient to
-> just say something like "Pages can be in an inconsistent state, don't
-> release them back to the system" or such.
-Sure. I will update the comment.
-> It might be nice in the future if we can identify if the reclaim was
-> successful and use that for determining whether the pages are safe to
-> freed... but the failure chance should be practically zero, so I'm not
-> sure it is worth it.
+Thanks, but this doesn't apply to 6.6.y.
 
-Yes. I had started that path but was not sure if the code churn is worth it.
-I can send it as a separate patch and we can take a call if you are 
-think it's worth.
-
->
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
->
->> ---
->>   drivers/crypto/ccp/sev-dev.c | 16 ++++++++++++++--
->>   1 file changed, 14 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
->> index 3d4793e8e34b..8566f164430b 100644
->> --- a/drivers/crypto/ccp/sev-dev.c
->> +++ b/drivers/crypto/ccp/sev-dev.c
->> @@ -1550,7 +1550,7 @@ static int __sev_platform_init_handle_init_ex_path(struct sev_device *sev)
->>   
->>   	rc = sev_read_init_ex_file();
->>   	if (rc)
->> -		return rc;
->> +		goto err_free;
->>   
->>   	/* If SEV-SNP is initialized, transition to firmware page. */
->>   	if (sev->snp_initialized) {
->> @@ -1559,11 +1559,23 @@ static int __sev_platform_init_handle_init_ex_path(struct sev_device *sev)
->>   		npages = 1UL << get_order(NV_LENGTH);
->>   		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, true)) {
->>   			dev_err(sev->dev, "SEV: INIT_EX NV memory page state change failed.\n");
->> -			return -ENOMEM;
->> +			rc = -ENOMEM;
->> +			/*
->> +			 * Don't free on conversion failure: the rollback may
->> +			 * have left pages firmware-owned, and a high-order
->> +			 * block can't be partially freed.
->> +			 */
->> +			goto err_reset;
->>   		}
->>   	}
->>   
->>   	return 0;
->> +
->> +err_free:
->> +	__free_pages(page, get_order(NV_LENGTH));
->> +err_reset:
->> +	sev_init_ex_buffer = NULL;
->> +	return rc;
->>   }
->>   
->>   static int __sev_platform_init_locked(int *error)
->>
+-- 
+Thanks,
+Sasha
 
