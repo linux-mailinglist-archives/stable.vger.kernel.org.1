@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-259823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QI2EIf7cHmpEWgAAu9opvQ
-	(envelope-from <stable+bounces-259823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 15:39:10 +0200
+	id JcWACXLbHmqPWQAAu9opvQ
+	(envelope-from <stable+bounces-259824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 15:32:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6EF62E925
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 15:39:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5936162E84A
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 15:32:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Py4aq7dZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-259823-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-259823-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YXvVOurL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-259824-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-259824-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AB00B305D382
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 13:29:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AB0DD30AA131
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 13:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831A03E7160;
-	Tue,  2 Jun 2026 13:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2259C3E7BC4;
+	Tue,  2 Jun 2026 13:28:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589F73E275E;
-	Tue,  2 Jun 2026 13:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3BB3E5A21;
+	Tue,  2 Jun 2026 13:28:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780406929; cv=none; b=kcJ7Qdd84VU+Ueo0q8UX6wUpQj8cqwYjZLsx8j/m5sRxZbd0303P1ELhwxcmTamWvFp0J2myOV7IMtjXtz6YffBJFKHkLwrWzyn05dLEjn8FfP9DHCiERnKLni6oIKduhBUzMeGWp/iYopx2/McyU6USlS0wQozaoALg0BVI0Ww=
+	t=1780406931; cv=none; b=d1/J5zEK/KpooGRsnC9HOYSpE2GgUne/P4aviGjlTYFOskW4gGGnaWTzaKC5bx30Y4Q264L9fVeopC6pbGdl+c4ZFu6HdT6kdtOnJrDJ0kqvWZWfaw6omVI21H7Vd0w7nzcnA84UU0z8N4povRl80DriNfCS6IqbTfOs4EQozxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780406929; c=relaxed/simple;
-	bh=wLImk5vqFccHsK3MrHUG9UepGlm9irtdb2ohnox9GPA=;
+	s=arc-20240116; t=1780406931; c=relaxed/simple;
+	bh=/D9myWzOYhiJGEiwkgYqt1RXn9mtu4prLjo/v6yL5EY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8PcNdlybWirNHU07pQs7q6nShQfYGI6HxFZj8sPGwgJDi04ipBfP42v8lPcp39OjF/gi3ik/aPjYQZ+VhUItIihbRZTfzOjqj6jdzhGMPLCtcZDOJhHrogXfLGmND2hurqDmGu44Pm+zTGtcrHt7d7H4Xc8n11pFJiChxNFfN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Py4aq7dZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5EE1F00898;
-	Tue,  2 Jun 2026 13:28:45 +0000 (UTC)
+	 MIME-Version; b=Tj+Rtd3RUF3sMcVoWESsz2T/Pk8qp5BDGmpSfWzwZV9ZvJFJplee1xfAAa1e+1+OOyPN9A2YwJTmPJJ0/iNgVtSwslSAvdBx24egiGnIQSWpywI5jBoOtkW5pqfyambeinvtvUFTiQGJ+qniw0wtGiZDPsPCUwywTReHOrakRAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YXvVOurL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0731F00893;
+	Tue,  2 Jun 2026 13:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780406928;
-	bh=zqUdJFTffah41MiqYor0O0hc6fcUw1Q2v/wZzX4zQWU=;
+	s=k20260515; t=1780406930;
+	bh=Qspis+L1JNnAbvAkosgr7KtefAU+xomaTqjuuxz6cHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Py4aq7dZrQ1FCbnEndd+CRni4u0RDiKOUsa6gmolzaKatuU0pCuC2FRpwDaRZfAX4
-	 lCP5nZdgFlqNU/wLnNPFDpVBcOda9UpYok0Uef7zrEVWQbJkjFDD1yKlD9qyvhOaiz
-	 ZgIhlyucyrd5RmQtP1LWfN806vh9zIfHnDecB5W2N7PGF0D0tD95tFZX33RVPSTHB0
-	 AJw7SNGyHSiioOavXAO9WBFKaT7EEqT6J3D+e3RvOCBQL6s2/cB8HW8Ce7FgnP/PXd
-	 pPMt4wmtjd2IwY+BUa+rUVbXq/0xcmBvhqiriX1wlYkvioQBQMaK9Uai3yj28juf2q
-	 //7LbxAdhTSPw==
+	b=YXvVOurLIVFgjm79RDECMKuvCjFBgY75NtILZzbDKD0Io5/oDfLID3eWGgOEU4hK1
+	 GcKYI1dHMRdOvN5R8b/x+s6TSm1LpfNRIn4Y0h9on78kTHDy4gU5EjvRYZjHYEWefh
+	 jPADOZ6qzfIvnobCL+nVmJ3eW6GTbR8Nu9ZlRii5pddhUrzKmbuIg3yYhLc7vBRvW/
+	 UbhiYhydeaFbxfF4V4RYILBK+n1Y3Rv4ndJn9wAzDvrsPtddVSsYAq/hYPI2MNrGZj
+	 NT/pMu9/rvd1D7B/OPQFTGjRQ3rpy23qV7oG7mNJYqO5ujO2F9C1ft5E29ltMlyCv5
+	 60tTZvY33VkgA==
 From: Claudiu Beznea <claudiu.beznea@kernel.org>
 To: wsa+renesas@sang-engineering.com,
 	tommaso.merciai.xr@bp.renesas.com,
@@ -58,9 +58,9 @@ Cc: claudiu.beznea@kernel.org,
 	linux-kernel@vger.kernel.org,
 	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 03/17] i3c: renesas: Follow the reset deassert order used in probe
-Date: Tue,  2 Jun 2026 16:28:10 +0300
-Message-ID: <20260602132824.3541151-4-claudiu.beznea@kernel.org>
+Subject: [PATCH v2 04/17] i3c: renesas: Reconfigure the DATBAS register on re-attach
+Date: Tue,  2 Jun 2026 16:28:11 +0300
+Message-ID: <20260602132824.3541151-5-claudiu.beznea@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260602132824.3541151-1-claudiu.beznea@kernel.org>
 References: <20260602132824.3541151-1-claudiu.beznea@kernel.org>
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -87,11 +87,11 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-259823-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259824-lists,stable=lfdr.de];
 	FORGED_SENDER(0.00)[claudiu.beznea@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS(0.00)[m:wsa+renesas@sang-engineering.com,m:tommaso.merciai.xr@bp.renesas.com,m:alexandre.belloni@bootlin.com,m:Frank.Li@nxp.com,m:p.zabel@pengutronix.de,m:claudiu.beznea@kernel.org,m:claudiu.beznea@tuxon.dev,m:linux-i3c@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:claudiu.beznea.uj@bp.renesas.com,m:stable@vger.kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -104,64 +104,63 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,renesas.com:email,vger.kernel.org:from_smtp,nxp.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,renesas.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7B6EF62E925
+X-Rspamd-Queue-Id: 5936162E84A
 
 From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-Use the same reset deassert order in the resume and probe paths to avoid
-potential failures due to ordering differences.
+During re-attach, the device may change its position in the i3c->addrs[]
+array. As a result, it may use a different Device Address Table Basic
+Register (DATBAS), which needs to be reconfigured.
 
-Fixes: e7218986319b ("i3c: renesas: Add suspend/resume support")
+Reconfigure the DATBAS register on re-attach. Along with it update
+software caches.
+
+Fixes: d028219a9f14 ("i3c: master: Add basic driver for the Renesas I3C controller")
 Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 ---
 
 Changes in v2:
-- collected tags
+- dropped the "if (pos < 0)" check in renesas_i3c_reattach_i3c_dev() to allow
+  re-attaching in case of a full bus; along with it the condition to update
+  the DATBAS register and software caches was updated to
+  if (data->index != pos && pos >= 0)
+- adjusted the patch title
 
- drivers/i3c/master/renesas-i3c.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/i3c/master/renesas-i3c.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
-index 88a16efe096d..4c86e7257804 100644
+index 4c86e7257804..76a4831098c9 100644
 --- a/drivers/i3c/master/renesas-i3c.c
 +++ b/drivers/i3c/master/renesas-i3c.c
-@@ -1455,17 +1455,17 @@ static int renesas_i3c_resume_noirq(struct device *dev)
- 	struct renesas_i3c *i3c = dev_get_drvdata(dev);
- 	int i, ret;
+@@ -892,10 +892,26 @@ static int renesas_i3c_reattach_i3c_dev(struct i3c_dev_desc *dev,
+ 	struct i3c_master_controller *m = i3c_dev_get_master(dev);
+ 	struct renesas_i3c *i3c = to_renesas_i3c(m);
+ 	struct renesas_i3c_i2c_dev_data *data = i3c_dev_get_master_data(dev);
++	int pos;
++
++	pos = renesas_i3c_get_free_pos(i3c);
++
++	if (data->index != pos && pos >= 0) {
++		renesas_writel(i3c->regs, DATBAS(data->index), 0);
++		i3c->addrs[data->index] = 0;
++		i3c->free_pos |= BIT(data->index);
++
++		data->index = pos;
++		i3c->free_pos &= ~BIT(data->index);
++	}
  
--	ret = reset_control_deassert(i3c->presetn);
-+	ret = reset_control_deassert(i3c->tresetn);
- 	if (ret)
- 		return ret;
+ 	i3c->addrs[data->index] = dev->info.dyn_addr ? dev->info.dyn_addr :
+ 							dev->info.static_addr;
  
--	ret = reset_control_deassert(i3c->tresetn);
-+	ret = reset_control_deassert(i3c->presetn);
- 	if (ret)
--		goto err_presetn;
-+		goto err_tresetn;
- 
- 	ret = clk_bulk_enable(i3c->num_clks, i3c->clks);
- 	if (ret)
--		goto err_tresetn;
-+		goto err_presetn;
- 
- 	/* Re-store I3C registers value. */
- 	renesas_writel(i3c->regs, STDBR, i3c->i3c_STDBR);
-@@ -1486,10 +1486,10 @@ static int renesas_i3c_resume_noirq(struct device *dev)
- 
++	renesas_writel(i3c->regs, DATBAS(data->index),
++		       DATBAS_DVSTAD(dev->info.static_addr) |
++		       datbas_dvdyad_with_parity(i3c->addrs[data->index]));
++
  	return 0;
- 
--err_tresetn:
--	reset_control_assert(i3c->tresetn);
- err_presetn:
- 	reset_control_assert(i3c->presetn);
-+err_tresetn:
-+	reset_control_assert(i3c->tresetn);
- 	return ret;
  }
  
 -- 
