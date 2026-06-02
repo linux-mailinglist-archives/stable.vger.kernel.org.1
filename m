@@ -1,177 +1,155 @@
-Return-Path: <stable+bounces-259757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mA5wNPWhHmquDAAAu9opvQ
-	(envelope-from <stable+bounces-259757-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 11:27:17 +0200
+	id SFlXBySlHmq3IwAAu9opvQ
+	(envelope-from <stable+bounces-259760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 11:40:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AF462B806
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 11:27:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE4762BB77
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 11:40:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC02F3210E9F
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 09:17:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 62F02313FFB4
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 09:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32B83CE0A0;
-	Tue,  2 Jun 2026 09:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9D13CC7D1;
+	Tue,  2 Jun 2026 09:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GNrP10ut"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="besnalRX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D693C8C75;
-	Tue,  2 Jun 2026 09:16:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC593CB2D5;
+	Tue,  2 Jun 2026 09:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780391772; cv=none; b=fNpuU3p2z7hq7fKc8J92Z50b1vdcwCEcXsTYV/9futcEFwwcIx8IvXNbMjy8bIWdsrhdkq5uNDIT7xGUxK/54iPwq/Eh+itwkeKMV4c2SKwA7nU6ImXXg8abkGC187YpZRRTOtHMKryWWtGlEHIEB0GIa2VKK1PfKEPEKjVtdGs=
+	t=1780392176; cv=none; b=qN9MFO4OLgnaxwJfIkM943n72tj7K2+jiaK5CpWO+yo/9FN2Py6ZKhCXfYX4QNqCHKRZyarX1Lts9/yIefTz30hZhTiXnDDj1RAE5u4EbOVfgsCqf9W8CM3JTQ1ohRFhmN+cu2FYsIwr8HX+0BTAN42Kcfr3CMF8UcWHsT1Cn4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780391772; c=relaxed/simple;
-	bh=A7SImd4o2fER31n0dIMnWc6Bq/UDFpwvfvraQ0AODm4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kVNGXTXZSjTnAsuOvZtgmplcbf9H4hPOcWecw31MH4WdmAoNU2Mjb6QpFbKT0paLSKAcBdtlYGy5X8j2DTEV9YquawY9ftbq4KCTDIIPxYCbGKl/St80cgEV09am8dyrwccxFyypP2/QoRBkZFDGQDUEFZV3xSUgA97LlnK6iIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GNrP10ut; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769191F00893;
-	Tue,  2 Jun 2026 09:16:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780391771;
-	bh=lH5knxgbqX8/3lsdm5nj+uNvYVsYtKLfkK4ffYsxzK0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GNrP10utxVtWXLzXcio7C2JL9/NrdSxZvzDuIOA3uSC0Ty+8VpWHqaNFng1NMziOX
-	 3mc6LBWe/F77mrn1g95sXRCZV/ZP4VKmhC8f3LL8Bu61L+EsyHPZUIljWnyphEfxNO
-	 kGxYxNnFjrSm+IdcnZN7iL1EO9hdgQp2QjzpzebF+M8NmUpABTcsd0b4sCCjfY3d2K
-	 NfbQKGBYn5lipbgrf7W3zdokvhRDUQSKpiFs+jOrkWw2WV3z1DFe9DF4y9bJVtYq7j
-	 eF1UyYiyCdujLNueVtJBOxhVPVkaUrB7lO94PHHAQQWUNwN4xYsMwdZZhoGHRMH9f4
-	 DHjeWny4inQuQ==
-Date: Tue, 2 Jun 2026 10:16:07 +0100
-From: Conor Dooley <conor@kernel.org>
-To: linux-riscv@lists.infradead.org
-Cc: Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org,
-	Valentina.FernandezAlanis@microchip.com,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-rtc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] rtc: mpfs: fix counter upload completion condition
-Message-ID: <20260602-buddy-lumber-2be20af90924@spud>
-References: <20260513-panhandle-ashy-70c6abf84d59@spud>
+	s=arc-20240116; t=1780392176; c=relaxed/simple;
+	bh=f7hLJmXwtvM6Tx6T8GUm9IwslgZRI60axDYXHE0vU8Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ZAkhkVjHI+ponkxGsRAlgLDcuvNzq926XQi1JW2o+ZnzmxsyUXA0eAhhL57OqKYl8fx32HIW1MM9uSY1WTEcO6x0w5Twg/yZCPd7ykayHkk5BXdz+lp1v7pHhHwH82pA7s7VkecHbMFtF8z3b+F9Vvr7vACg3icbjY7EvsMCtHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=besnalRX; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from PC-202605011814.localdomain (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 40be0f4eb;
+	Tue, 2 Jun 2026 17:17:39 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: jic23@kernel.org
+Cc: nuno.sa@analog.com,
+	lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	dlechner@baylibre.com,
+	andy@kernel.org,
+	benato.denis96@gmail.com,
+	martin@martingkelly.com,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	runyu.xiao@seu.edu.cn,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] iio: imu: adis: add IRQF_NO_THREAD to non-FIFO trigger IRQ
+Date: Tue,  2 Jun 2026 17:17:26 +0800
+Message-Id: <20260602091727.2406720-2-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260602091727.2406720-1-runyu.xiao@seu.edu.cn>
+References: <20260602091727.2406720-1-runyu.xiao@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3s4pjNosPPIt5FlC"
-Content-Disposition: inline
-In-Reply-To: <20260513-panhandle-ashy-70c6abf84d59@spud>
-X-Rspamd-Queue-Id: 32AF462B806
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9e879fd4c303a1kunm7cf82aeb184127
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTRgdVk1MHktDSUNKHxpMTFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
+	5DQ1VKS0tVS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=besnalRXmebGXA435kWNDxcL23uncpbOfCxDsHuaxYmbMi9JY/2QBL6INdgP0jyXNjCtqyBkjza8O8brBo7MMO3z+U1Trc7HQCZkKMWNvR718OAnCO1+oepSyhDyQBiQ2HTQAYdMoO0akGKuPQN84Iw1vJx99mZwN9DgEy48vLk=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=2TIJWJd27ymwSuCVs9p+Cqrpo7B5FqOVmlAdS/REayY=;
+	h=date:mime-version:subject:message-id:from;
+X-Rspamd-Queue-Id: 6EE4762BB77
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-3.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259757-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FREEMAIL_CC(0.00)[analog.com,metafoo.de,baylibre.com,kernel.org,gmail.com,martingkelly.com,vger.kernel.org,seu.edu.cn];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259760-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[conor@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,infradead.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bootlin.com:email]
+	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:mid,seu.edu.cn:dkim,seu.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
+devm_adis_probe_trigger() registers iio_trigger_generic_data_rdy_poll()
+through devm_request_irq() on the non-FIFO path, but it does not add
+IRQF_NO_THREAD to the IRQ flags.
 
---3s4pjNosPPIt5FlC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+When the kernel is booted with forced IRQ threading, the parent IRQ can
+otherwise be threaded by the IRQ core and the subsequent IIO trigger
+child IRQ is then dispatched from irq/... thread context instead of
+hardirq context. Because iio_trigger_generic_data_rdy_poll()
+immediately drives iio_trigger_poll(), this violates the hardirq-only
+IIO trigger helper contract and can push downstream trigger consumers
+through the wrong execution context.
 
-Hey Alexandrew,
+Add IRQF_NO_THREAD on top of the existing adis->irq_flag value for the
+non-FIFO request_irq() path, while preserving the current trigger
+polarity and IRQF_NO_AUTOEN behavior.
 
-On Wed, May 13, 2026 at 06:55:55PM +0100, Conor Dooley wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
->=20
-> The condition that needs to be checked for upload completion is the
-> UPLOAD bit in the completion register going low. The original iterations
-> of this driver used a do-while and this was converted to a
-> read_poll_timeout() during upstreaming without the condition being
-> inverted as it should have been.
->=20
-> I suspect that this went unnoticed until now because a) the first read
-> was done when the bit was still set, immediately completing the
-> read_poll_timeout() and b) because the RTC doesn't hold time when power
-> is removed from the SoC reducing its utility (I for one keep it
-> disabled). If my first suspicion was true when the driver was
-> upstreamed, it's not true any longer though, hence the detection of the
-> problem.
->=20
-> Fixes: 0b31d703598dc ("rtc: Add driver for Microchip PolarFire SoC")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Build-tested by compiling adis_trigger.o.
 
-Any chance this could be applied as 7.1 fixes material?
+No ADIS hardware was available for end-to-end runtime testing on this
+submission branch.
 
-Apologies if I missed an application mail somewhere,
-Conor.
+Fixes: fec86c6b8369 ("iio: imu: adis: Add Managed device functions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+---
+ drivers/iio/imu/adis_trigger.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> ---
-> CC: Valentina.FernandezAlanis@microchip.com
-> CC: Conor Dooley <conor.dooley@microchip.com>
-> CC: Daire McNamara <daire.mcnamara@microchip.com>
-> CC: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> CC: linux-riscv@lists.infradead.org
-> CC: linux-rtc@vger.kernel.org
-> CC: linux-kernel@vger.kernel.org
-> ---
->  drivers/rtc/rtc-mpfs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/rtc/rtc-mpfs.c b/drivers/rtc/rtc-mpfs.c
-> index 6aa3eae575d2a..ece6de4a6adbd 100644
-> --- a/drivers/rtc/rtc-mpfs.c
-> +++ b/drivers/rtc/rtc-mpfs.c
-> @@ -112,7 +112,7 @@ static int mpfs_rtc_settime(struct device *dev, struc=
-t rtc_time *tm)
->  	ctrl |=3D CONTROL_UPLOAD_BIT;
->  	writel(ctrl, rtcdev->base + CONTROL_REG);
-> =20
-> -	ret =3D read_poll_timeout(readl, prog, prog & CONTROL_UPLOAD_BIT, 0, UP=
-LOAD_TIMEOUT_US,
-> +	ret =3D read_poll_timeout(readl, prog, !(prog & CONTROL_UPLOAD_BIT), 0,=
- UPLOAD_TIMEOUT_US,
->  				false, rtcdev->base + CONTROL_REG);
->  	if (ret) {
->  		dev_err(dev, "timed out uploading time to rtc");
-> --=20
-> 2.53.0
->=20
-
---3s4pjNosPPIt5FlC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCah6fVwAKCRB4tDGHoIJi
-0v7oAQCz1CCZBWpyWPNGEqYZ863RGC7Cs4/nJxTSqZo+lbBpjgD/S0fCwGvik9ow
-UdXAUzjUecYvu2M9n+kHvZgLi3/dbA4=
-=Buf5
------END PGP SIGNATURE-----
-
---3s4pjNosPPIt5FlC--
+diff --git a/drivers/iio/imu/adis_trigger.c b/drivers/iio/imu/adis_trigger.c
+index d76e13cbac68..ae1506ca85fd 100644
+--- a/drivers/iio/imu/adis_trigger.c
++++ b/drivers/iio/imu/adis_trigger.c
+@@ -94,7 +94,7 @@ int devm_adis_probe_trigger(struct adis *adis, struct iio_dev *indio_dev)
+ 	else
+ 		ret = devm_request_irq(&adis->spi->dev, adis->spi->irq,
+ 				       &iio_trigger_generic_data_rdy_poll,
+-				       adis->irq_flag,
++				       adis->irq_flag | IRQF_NO_THREAD,
+ 				       indio_dev->name,
+ 				       adis->trig);
+ 	if (ret)
+@@ -103,4 +103,4 @@ int devm_adis_probe_trigger(struct adis *adis, struct iio_dev *indio_dev)
+ 	return devm_iio_trigger_register(&adis->spi->dev, adis->trig);
+ }
+ EXPORT_SYMBOL_NS_GPL(devm_adis_probe_trigger, "IIO_ADISLIB");
+-- 
+2.34.1
 
