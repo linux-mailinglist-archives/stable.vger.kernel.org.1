@@ -1,166 +1,161 @@
-Return-Path: <stable+bounces-259859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259936-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MjUoFj0VH2rwfAAAu9opvQ
-	(envelope-from <stable+bounces-259859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 19:39:09 +0200
+	id x/AsMUKHH2p5mwAAu9opvQ
+	(envelope-from <stable+bounces-259936-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 03:45:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E288C630C69
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 19:39:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65FFC633830
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 03:45:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FgU+bvAw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-259859-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259859-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=proton.me header.s=protonmail header.b=ZxOK2uCq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-259936-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-259936-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=proton.me;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D96D53031034
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 17:26:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3FDB330530E1
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 01:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F6E3F9294;
-	Tue,  2 Jun 2026 17:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFBBE37B3F6;
+	Wed,  3 Jun 2026 01:38:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-106121.protonmail.ch (mail-106121.protonmail.ch [79.135.106.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294C13655DB;
-	Tue,  2 Jun 2026 17:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A62737BE8C;
+	Wed,  3 Jun 2026 01:38:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780421160; cv=none; b=rYULutYjCex8bAvVoN1plSD/LMnSOAf+N9B+CKvnGdxjWTfcc7Pvt8U7X+SQbihauN98m3Ifi7nWH6saxQ96L6R9VEAM3IFst8TV09N9VltduirPiHQ/8WM+95c3L6GoIbbqCDP/UGmGAG8Ge9FVeMcqekXyrXaDTXYa3TM9GIo=
+	t=1780450700; cv=none; b=sOTaC/edDsK4yINO8EoL4YbdMqdvP/pOhT5jwiHqXpLsZ/NoS/amS/FSBbUYXd+0T72GvjJDida99cZPiztibReCWdZJJ9nKAiE+2u31h2Xd6g0lEVxFsLeco7JGQaVRWaNO/tNQTI+VCLA5GPma+agtSGq3+FjIhIRMhl1G/Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780421160; c=relaxed/simple;
-	bh=a5a5ljYBkMcosKeZd76EEJBkTbTnm9xS61a4Pk60/D8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d5ebyjK6vjZw8SJnchOOAV0UZuHfVHbqhzjzLPaLx9cEIQGx+It/VKfFxAS/qALvOtb128AxcyahaC0jELZH9FHq/ijmwYUPuskY1G/o77FnAuRmply2G1Fcf9T61tRxeYqCk0V+O+MLhmxNFDIUxdoP1O14Qisw/2+VYHIuQyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgU+bvAw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1991F00893;
-	Tue,  2 Jun 2026 17:25:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780421158;
-	bh=kfe19sVn9ZhdUldoutwKGgWSVE+tCqxFrQg7po2PBy0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FgU+bvAwoVjr76+Fer3oZ7cSF5VHreVThRx31VnTidu4O49pZYUriWac6WrwD/WK7
-	 Cx4b8tM3Z+hEWG2MlX1YJR6E7yC+u6DBgjCO5DIqOIQs7d2Xci2/2f4bbMaVVWTyEw
-	 Kf/plgXN49UuYAkff0TxP3OVRQ+cwfRpW5yDehmNUKcsKx5H4xekCXm3bjP0C/F2r3
-	 7Yog5Us50t7xcUs/0uGtGfW9UVJl6kYznUl6SAr+MsfHD4u4bKZFuBO9djJJbGAnZD
-	 GZ9BX6i3/+QfPEk8xe+VLT4Y2xI2OE4u4/MOCslNtrHOSpSXQRv/7nanSJ3DAnLLn3
-	 gRna1C15fvU2Q==
-Message-ID: <f6d59be4-db98-431b-97d8-d991e7381135@kernel.org>
-Date: Tue, 2 Jun 2026 19:25:56 +0200
+	s=arc-20240116; t=1780450700; c=relaxed/simple;
+	bh=6K4kwWVj+MVW/8WTrSVGKkdwyz8YfNbYNzUN2tzQ5YY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XGZY2wZp62BK2SnCWp89815eHvFl1tUeg76DO5iwc/y4rLGqQ65v7WGxwxuSa9ROcmHoEbwBp/H0yeveWRmpG3xsaGDtjn0lrII+yHFvglj9nLJ8a4gvr8gAPOefnplulFbBr0LUlWF0O31ZGykUf09Ao6bgl+J93znGxiTi0EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ZxOK2uCq; arc=none smtp.client-ip=79.135.106.121
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1780450687; x=1780709887;
+	bh=V4RAZ7YsxCmaPJkYuxbidNGulBV6q3DaB47ubschr+A=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=ZxOK2uCqHVInKh0XmtoOTk2Y+FABI8H3O9i84g/rzLu2QCHdSn16CBQpvCLL4CPJY
+	 QvG1tZZIju/WdQ/ponqN00a707kw5Jy2AnqnBrFyJP1a6ryKguG7RqTwacnExHoYY9
+	 5hs0QNvsKM1T07ySA6VbqrSeiiaqnFxL9U2RZs9jmd3igVSsHd2LNk3IElIqoliAet
+	 ZeMfLCX5YLZy3x+denNS7IXN244H6VuMKkhOab7W7fr5J/3qFGVQu1JxaABoJPKb/O
+	 9if9b6X62R6HHe7y8OhDVHQNy9WLABD1ZE38IwyBbZMBsGJzTayivSAgZof4nPRR1Y
+	 iLvRbMxmqnlXQ==
+Date: Tue, 02 Jun 2026 17:27:47 +0000
+To: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>
+From: Bryam Vargas <hexlabsecurity@proton.me>
+Cc: Justin Suess <utilityemal77@gmail.com>, Christian Brauner <brauner@kernel.org>, Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E . Hallyn" <serge@hallyn.com>, linux-security-module@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/2] landlock: fix SCOPE_SIGNAL bypass on the SIGIO/fowner path
+Message-ID: <20260602172741.18760-1-hexlabsecurity@proton.me>
+In-Reply-To: <20260531.irah0eiM3Chi@digikod.net>
+References: <7rvmLIHR1Zh8RDF1IY1-SYRHzErgw9gPHq0k98RLYVsmHqAejjxcuJi8V3QaSbW-SnNvY5tfM2Xn_S1dEajKV_f7iyitoPwJgOSTZQ0nytc=@proton.me> <20260531.irah0eiM3Chi@digikod.net>
+Feedback-ID: 199661219:user:proton
+X-Pm-Message-ID: dd76b6c270b492527521f76e045ccb5f6023a19d
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] kernel/sys.c: fix prctl_set_auxv to use sizeof instead of
- user-supplied len
-To: Aiden Bowling <aidenlbowling56@gmail.com>,
- Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260602024001.14119-2-aidenlbowling56@gmail.com>
- <ah6jS246wBcTH6gr@lucifer>
- <CAGOa741UNr5DzK4vr8RBLvhZcCs9zdva6tqmMptQw5P8ooNEOA@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAGOa741UNr5DzK4vr8RBLvhZcCs9zdva6tqmMptQw5P8ooNEOA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
+	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-259936-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,paul-moore.com,namei.org,hallyn.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:aidenlbowling56@gmail.com,m:ljs@kernel.org,m:akpm@linux-foundation.org,m:vbabka@kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[david@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-259859-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:mic@digikod.net,m:gnoack@google.com,m:utilityemal77@gmail.com,m:brauner@kernel.org,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:linux-security-module@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[hexlabsecurity@proton.me,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hexlabsecurity@proton.me,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[proton.me:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E288C630C69
+X-Rspamd-Queue-Id: 65FFC633830
 
-On 6/2/26 16:14, Aiden Bowling wrote:
-> The issue is that using the user-supplied 'len' risks a partial write into mm-
->>saved_auxv if they pass something smaller than the actual buffer size, even if
-> the buffer is validated. We should always copy the full buffer size after
-> validation to maintain consistency and prevent accidental partial data exposure/
-> corruption.
+This series fixes a LANDLOCK_SCOPE_SIGNAL bypass on the asynchronous SIGIO
+(fcntl(F_SETOWN)) delivery path, and adds a regression test.
 
-Which partial data exposure?
+A sandboxed process that owns a file or socket can request a signal
+(F_SETSIG, e.g. SIGKILL) to be delivered to a whole process group on I/O
+readiness (F_SETOWN(-pgid) + O_ASYNC).  When it is the head of its own
+process group -- the default after fork() -- that group still contains the
+non-sandboxed process that launched it (a supervisor, a security monitor),
+so the sandbox can signal processes that SCOPE_SIGNAL is meant to protect
+from it.
 
--- 
-Cheers,
+Patch 1 narrows the same-thread-group exemption in control_current_fowner()
+so a process-group fowner always records the caller's Landlock domain; the
+delivery-time check in hook_file_send_sigiotask() then runs against every
+group member.  The direct kill() path (hook_task_kill) is unaffected.
 
-David
+Patch 2 adds the regression test in scoped_signal_test.c.
+
+The defect was introduced by commit 18eb75f3af40 ("landlock: Always allow
+signals between threads of the same process") in v6.15, and is present in t=
+he
+stable branches that backported it (6.12.y, 6.13.y, 6.14.y).
+control_current_fowner() is identical across those branches.
+
+A/B verified on 6.12.90 + CONFIG_SECURITY_LANDLOCK (same .config, only the =
+fix
+hunk differs): without patch 1 the new test fails (the non-sandboxed parent=
+ is
+signaled, SCOPE_SIGNAL bypassed); with patch 1 the new test passes and the
+landlock signal-scoping suite is 20/20.
+
+v3 -> v4 (review feedback from Micka=C3=ABl Sala=C3=BCn):
+  - patch 1: rewrite the commit message -- drop the "cache" framing, lead w=
+ith
+    the threat scenario, mostly "why" and minimal "what", "process" not "ta=
+sk";
+  - patch 1: drop PIDTYPE_SID (not possible for an fowner) and use the defe=
+nsive
+    condition "!=3D PIDTYPE_PID && !=3D PIDTYPE_TGID"; simplify the in-code=
+ comment;
+  - patch 1: remove Reported-by (implicit with the same Signed-off-by);
+  - send as a proper git send-email threaded series.
+  - v1/v2 were sent to security@kernel.org (embargoed; not in a public arch=
+ive).
+
+Bryam Vargas (2):
+  landlock: fix LANDLOCK_SCOPE_SIGNAL bypass on the SIGIO path
+  selftests/landlock: test SCOPE_SIGNAL on the SIGIO/fowner pgid path
+
+ security/landlock/fs.c                        |  9 ++
+ .../selftests/landlock/scoped_signal_test.c   | 97 +++++++++++++++++++
+ 2 files changed, 106 insertions(+)
+
+
+base-commit: 6f3ed7fec72fc8979b2a8c7219c0a9fcfc8d07b5
+--=20
+2.43.0
+
+
 
