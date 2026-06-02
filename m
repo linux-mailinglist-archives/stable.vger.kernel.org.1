@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-259685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJi6AXI7HmpriAkAu9opvQ
-	(envelope-from <stable+bounces-259685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 04:09:54 +0200
+	id QAGCAJk7HmpriAkAu9opvQ
+	(envelope-from <stable+bounces-259686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 04:10:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99808627164
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 04:09:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 792BA627189
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 04:10:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB723302FB77
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 02:05:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D866730B6CD0
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 02:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C99331A63;
-	Tue,  2 Jun 2026 02:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE53934DCE6;
+	Tue,  2 Jun 2026 02:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XcR0bYFI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W6lLc8uD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B4D29BD9A
-	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 02:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7FD33B6FB
+	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 02:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780365929; cv=none; b=evI+1SjSHN5rCDeJGiDGU/fJaKpGajqx/zwaq8PmnRqIjai2iKhzLhpoXMIQVo+EJwhir/+kOIsWaLSeCGMWlV/ynjzd8hs1cOcRR2Pde5FWwcNEEWo0ilJoF8AhuQol2ssXgvGWVxf57kGMBCQW4sJyaonkuKtjPZ8SqRZDSjg=
+	t=1780365946; cv=none; b=Jt9pr4vxoAiGh668TAL/zokmDRXk9Bt8L7JtWzDlZuu58G9rP4nPZGpHxwr0fABAEbzKQdrrXjxYBHq9d6HHTMWbNsJmHs1Bvbe5+6vHM12bq1+ED83y9DNDCqNl2k+srrW5alFUF4Shg8f9TyZ/G5JtOgi6aHFvoiTFIcZyQ9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780365929; c=relaxed/simple;
-	bh=uANqIiROyK8Y9+c4KmhS7e/umjDNKKvL6zcY+5pm5gw=;
+	s=arc-20240116; t=1780365946; c=relaxed/simple;
+	bh=VcY1ZuHRtLksuXrT+HYZEYkHXr0ZOSNJwLQZh9zL3Tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I6iVR+LXpN9Uue1LzuG+lY2YTLhQzQdiv0+wXOMwV0yHLipJ4Dk+D2J94vzMfpERl69TYqUuZF9K0ZG9Mzs/xPxXTiy4WUYX3ZA5jzUbMXaRmtmHR8d/Er8iMzSocnNUw3q9tWxbzs5mWksa4dgMpmo+Alp3ByWfwLwk2Nv+cwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XcR0bYFI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856301F00893;
-	Tue,  2 Jun 2026 02:05:27 +0000 (UTC)
+	 MIME-Version; b=PIXcQU0k+lSyssiURn5qlzLtGEs/zCCocx0DQGKVIqBHL7aflSvn6YabkYz237s+mh+VXWj5cjJSKfB3AR5MKI/C5H8RYNeHSwEqNco9fwiIgI/Xq0UXwA68PZWYWWEy5wl263T2SrXGBfH41pvCDyf6AYm+VvhTuW5xJBn5Hw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W6lLc8uD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A431F00898;
+	Tue,  2 Jun 2026 02:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780365928;
-	bh=g3Sgf/bZHlp8vNhNkJ7jXf22IgiBdTcar75fJpRMt0k=;
+	s=k20260515; t=1780365945;
+	bh=2Yfg+PU8lOd4lnyKAHQwKoKw3ef0OEu6H3IghsygdFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XcR0bYFIUprUiMQjMJTWQqUApoHxu+iHnnohnkJNMcev9sNpKSGCMG1DvNGkIKRbc
-	 j76k7BCjwlrwDRxNjYXwAZ2gO0OoHZsALkhu4KxlmiQxUI3emsOxC1LBcqI4PcCMj2
-	 N2HmdNesD5VCq0Zj1ptWFFZ7KIuPDlXXhhrB5j33/he7ssVN7HujF9NDtbtKf3YgSb
-	 E7T3NDprSCHk6rqGdH10hOLBulNYKeBDDuQ0UqkTEsz5GcCT5YerwUAtOiDSyAz3zz
-	 2Kh9g4ONLvCgl7s0k3nEoIe604fUSdB+WJk5E7trnZNAoLRfpL2DoYHgdgbS/8reK1
-	 ED1W+B1kC6vmQ==
+	b=W6lLc8uDnlYnLlt1NWZ8VQJAegTlLkL+IbtNOmBkv5VZx4MO0p8sDyn8xOAkVkTPH
+	 9PNOkiQBmaBC6Wzm5j8vOvme5HCoO6AEk0C5Hrc2Hszryluu/XFEF0+4lanGucJoO8
+	 /Tdi1oh60CNOPj9p0ogieo5nChr2ahKuElyUUiUztq+x4r5rjGq83V0TXewSzjOXKb
+	 VkZ+9RAfKC+WRgi21yQBv2V7WSQ7x581yF/kB+zeb1MrDFQwvWcPFYsA8DMVjwGmQC
+	 p0R+2qb9MSSLpNPiWgYpvNuy+tdqmUC7KMrt2JhyD8OLYuzL9msa2VcvAPkwuUAHRq
+	 5tBF3MzVmR/lg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Abdurrahman Hussain <abdurrahman@nexthop.ai>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
 Subject: [PATCH 6.1.y] hwmon: (pmbus/adm1266) serialize sequencer_state debugfs read with pmbus_lock
-Date: Mon,  1 Jun 2026 22:05:25 -0400
-Message-ID: <20260602020525.603691-1-sashal@kernel.org>
+Date: Mon,  1 Jun 2026 22:05:43 -0400
+Message-ID: <20260602020543.607205-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <2026052855-crummy-unequal-904f@gregkh>
 References: <2026052855-crummy-unequal-904f@gregkh>
@@ -77,19 +77,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259685-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259686-lists,stable=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-0.996];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,roeck-us.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 99808627164
+X-Rspamd-Queue-Id: 792BA627189
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -117,7 +117,7 @@ Cc: stable@vger.kernel.org
 Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-8-e425e4f88139@nexthop.ai
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-[ changed `guard(pmbus_lock)(client)` to manual `pmbus_lock_interruptible()`/`pmbus_unlock()` calls ]
+[ open-coded `guard(pmbus_lock)(client)` as `pmbus_lock_interruptible()`/`pmbus_unlock()` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  drivers/hwmon/pmbus/adm1266.c | 7 +++++++
