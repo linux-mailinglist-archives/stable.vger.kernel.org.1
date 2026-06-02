@@ -1,172 +1,237 @@
-Return-Path: <stable+bounces-259829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oIKfCrbcHmoXWgAAu9opvQ
-	(envelope-from <stable+bounces-259829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 15:37:58 +0200
+	id WjG2J83cHmoqWgAAu9opvQ
+	(envelope-from <stable+bounces-259821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 15:38:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E434662E8FB
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 15:37:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A08AB62E90F
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 15:38:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=swemel.ru header.s=mail header.b=cbpbLoTz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-259829-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-259829-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=swemel.ru;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o3FbB+7r;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-259821-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259821-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A77B83039B5A
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 13:32:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DBE9D3056A36
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 13:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C6173E92A5;
-	Tue,  2 Jun 2026 13:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A2E3E3167;
+	Tue,  2 Jun 2026 13:28:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AA03E7171;
-	Tue,  2 Jun 2026 13:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF113E1D17;
+	Tue,  2 Jun 2026 13:28:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780407069; cv=none; b=SUtTlEQ4Nw2NrtilMox9YeiKwxiBllOp5grKKyCDVoJ4Q2UQQU+ggjuATQgy+1KzjgwCttwQOHQqEHbud+CJO1qpxNdXmLofp++/AcVelfJ6rw8qqZteaYCwnE5qOWXiI5NzM9f0/M42bBglT2K6i3BXnZ9XFExreZjmqK+WKnM=
+	t=1780406923; cv=none; b=Itwetw+tL6st2tukGWRlYwK3eshQNCCA4+aXhbNuGEuD8d17fpue+NOHEzXXxLklIJPOtZ2WwxXXKODL/cN/UB2ZfGOF6hdHRtxEi57HFH9+GTV8t4kWhqXJLgrtjhVlcBcK+K0lQ1FLAxm3n45wkUKIg6L2tRTm1yE+DNVC5zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780407069; c=relaxed/simple;
-	bh=+tVLcVlWVP8sqA7lcmKWAuZAAP00CuiC8QnEgRnHuvc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FhSGmmm+3qUdXCbK+jmUoK8P78Lj/pua6haGdD7mAUup1PmG/cxVuebz/W6Jevv7/w9EEEc+cOv/sccsmtbntzdjD5prIHAvDbFofTgVa13V36qBsdhZTasGOJOJ+eGpViKgcOCU0c3vhV7RWbllGc7aX4wxLLnU1ZYfNjis+2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=cbpbLoTz; arc=none smtp.client-ip=95.143.211.150
-Message-ID: <b106ed26-e6ec-4254-b337-1d2e8e2adc58@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1780406602;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Bh8OAXfhHS+6UAIB+GXE6Q+p6KA2mvrNI8Yp5MV9FiA=;
-	b=cbpbLoTz3fhAq6WM7lXrYdZGeB7naQwe5N0UC5QK7+PEtHI5Cq9ayNOvBytoW6sN+/zn73
-	crabGRwY/QRAYO5E0NwlDADTj2rID14S3oyJXtrMIXIs5H8z8VIG6G6DT2LSFHTfl81Bbf
-	6Hy/QXYvreiBx5qNmHJ9W77Js5Ig9l4=
-Date: Tue, 2 Jun 2026 16:23:21 +0300
+	s=arc-20240116; t=1780406923; c=relaxed/simple;
+	bh=46GrvLvuc3Abquq1ngoYfLCfFgAigrm6D87Q7GpT2zE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dQWPu0nPf6bMjT0W72c3ztwpOj9leFvUsyNH5e6OAxptNFV53d+LlHaecsAgjdixMPGxGasPSj0poAPPbS5Pv1B8TSSrvoAXXbbmBMQ+YsS2EAAbOBu5JCgB/VpnBAhfe9uqaj/5i9XJS1On7NfeP4HWE1efrMPMpTa36CIk2SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o3FbB+7r; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886F31F00899;
+	Tue,  2 Jun 2026 13:28:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780406922;
+	bh=tigAzvPOAhkM1zZ1LjDTmzJC8sEde+ltVFI35MgB/YU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=o3FbB+7rt0/09v/va6NQq+tvGHT4C9GUbpGxPniRWEgRF4uz5hXMBVFooEnYrguLZ
+	 qqBN5Q8S88ZAmLCKW0sKo2wkBXKJ0c3rWvVqSUyNOcbq0cO9bmx+x7u/rVpc846lpk
+	 irNk6NxVIg/dkfTK0QhmdbLh2bZ+u4CI7Wq8yw9kez+Gv825umfpnrPLrpYQ1kZiM6
+	 dRGE4OYlOFhOOXyucJzciWOFTa1/D4ZKhqvMNjYGSAgNICowe5PbME5eAaFAJw3o4Y
+	 5BtvhFjPaQzClqjGuzSNplRHaRQXP0M0lPoFweRftl0tNngdUs5oXiyxcAdFX3EiBt
+	 KJFVeQal/Zl9Q==
+From: Claudiu Beznea <claudiu.beznea@kernel.org>
+To: wsa+renesas@sang-engineering.com,
+	tommaso.merciai.xr@bp.renesas.com,
+	alexandre.belloni@bootlin.com,
+	Frank.Li@nxp.com,
+	p.zabel@pengutronix.de
+Cc: claudiu.beznea@kernel.org,
+	claudiu.beznea@tuxon.dev,
+	linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 01/17] i3c: renesas: Check that the transfer is valid before accessing it
+Date: Tue,  2 Jun 2026 16:28:08 +0300
+Message-ID: <20260602132824.3541151-2-claudiu.beznea@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260602132824.3541151-1-claudiu.beznea@kernel.org>
+References: <20260602132824.3541151-1-claudiu.beznea@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] make new mount API honour SB_NOUSER (was Re: [PATCH]
- block: Avoid mounting the bdev pseudo-filesystem in userspace)
-To: Jan Kara <jack@suse.cz>, Al Viro <viro@zeniv.linux.org.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
- Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
- stable@vger.kernel.org
-References: <20260521072857.5078-1-arefev@swemel.ru>
- <20260602011907.GM2636677@ZenIV> <20260602013526.GO2636677@ZenIV>
- <20260602020444.GP2636677@ZenIV>
- <eevyuiiqt5b4n7kws2lc24jk2njdllanojl76t5cftx6he6hba@y46tiknbebj4>
-Content-Language: en-US
-From: Arefev <arefev@swemel.ru>
-In-Reply-To: <eevyuiiqt5b4n7kws2lc24jk2njdllanojl76t5cftx6he6hba@y46tiknbebj4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[swemel.ru,quarantine];
-	R_DKIM_ALLOW(-0.20)[swemel.ru:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259829-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[arefev@swemel.ru,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:jack@suse.cz,m:viro@zeniv.linux.org.uk,m:torvalds@linux-foundation.org,m:brauner@kernel.org,m:linux-fsdevel@vger.kernel.org,m:axboe@kernel.dk,m:linux-block@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[swemel.ru:+];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arefev@swemel.ru,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-259821-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[claudiu.beznea@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:wsa+renesas@sang-engineering.com,m:tommaso.merciai.xr@bp.renesas.com,m:alexandre.belloni@bootlin.com,m:Frank.Li@nxp.com,m:p.zabel@pengutronix.de,m:claudiu.beznea@kernel.org,m:claudiu.beznea@tuxon.dev,m:linux-i3c@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:claudiu.beznea.uj@bp.renesas.com,m:stable@vger.kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.org.uk:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,swemel.ru:mid,swemel.ru:dkim,swemel.ru:from_mime,swemel.ru:email]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,nxp.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,renesas.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E434662E8FB
+X-Rspamd-Queue-Id: A08AB62E90F
+
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+
+The Renesas I3C driver uses an asynchronous model to transfer data. It
+prepares a struct renesas_i3c_xfer, enqueues it, and waits for completion.
+The interrupt handler dequeues the transfer, updates/uses it, and signals
+the waiting thread.
+
+If the completion times out, the waiting thread dequeues the transfer and
+free it. If an interrupt fires after that, the handler may access freed
+memory, leading to crashes.
+
+Check that the transfer is still valid before accessing it in the
+interrupt handler. Along with it, clear any status flag to avoid
+triggering the same interrupts again.
+
+Fixes: d028219a9f14 ("i3c: master: Add basic driver for the Renesas I3C controller")
+Cc: stable@vger.kernel.org
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+---
+
+Changes in v2:
+- clean the IRQ status bits before returning IRQ_HANDLED and adjusted the
+  patch description to reflect this change
+- collected Frank's tag. Frank, please let me know if you consider
+  I should drop your tag. Thanks!
 
 
-02.06.2026 12:11, Jan Kara пишет:
-> On Tue 02-06-26 03:04:44, Al Viro wrote:
->> one should *not* be allowed to mount one of those, new API or not.
->>
->> Reported-by: Denis Arefev <arefev@swemel.ru>
->> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-> Won't it make sense to actually check fc->sb_flags before we call
-> vfs_create_mount()? Otherwise it looks good to me.
->
-> 								Honza
+ drivers/i3c/master/renesas-i3c.c | 44 +++++++++++++++++++++++++++++---
+ 1 file changed, 41 insertions(+), 3 deletions(-)
 
-Hi all.
+diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
+index f39c449922ca..6e7ece2e0b4e 100644
+--- a/drivers/i3c/master/renesas-i3c.c
++++ b/drivers/i3c/master/renesas-i3c.c
+@@ -1014,6 +1014,12 @@ static irqreturn_t renesas_i3c_tx_isr(int irq, void *data)
+ 
+ 	scoped_guard(spinlock, &i3c->xferqueue.lock) {
+ 		xfer = i3c->xferqueue.cur;
++		if (!xfer) {
++			/* Clear the Transmit Buffer Empty status flag. */
++			renesas_clear_bit(i3c->regs, NTST, NTST_TDBEF0);
++			return IRQ_HANDLED;
++		}
++
+ 		cmd = xfer->cmds;
+ 
+ 		if (xfer->is_i2c_xfer) {
+@@ -1053,11 +1059,18 @@ static irqreturn_t renesas_i3c_resp_isr(int irq, void *data)
+ 	int ret = 0;
+ 
+ 	scoped_guard(spinlock, &i3c->xferqueue.lock) {
++		/* Clear the Respone Queue Full status flag */
++		renesas_clear_bit(i3c->regs, NTST, NTST_RSPQFF);
++
+ 		xfer = i3c->xferqueue.cur;
+-		cmd = xfer->cmds;
++		if (!xfer) {
++			/* Clear any error flags. */
++			renesas_clear_bit(i3c->regs, BCTL, BCTL_ABT);
++			renesas_clear_bit(i3c->regs, NTST, NTST_TEF | NTST_TABTF);
++			return IRQ_HANDLED;
++		}
+ 
+-		/* Clear the Respone Queue Full status flag*/
+-		renesas_clear_bit(i3c->regs, NTST, NTST_RSPQFF);
++		cmd = xfer->cmds;
+ 
+ 		data_len = NRSPQP_DATA_LEN(resp_descriptor);
+ 
+@@ -1138,6 +1151,12 @@ static irqreturn_t renesas_i3c_tend_isr(int irq, void *data)
+ 
+ 	scoped_guard(spinlock, &i3c->xferqueue.lock) {
+ 		xfer = i3c->xferqueue.cur;
++		if (!xfer) {
++			/* Clear any status flag. */
++			renesas_clear_bit(i3c->regs, BST, BST_NACKDF | BST_TENDF);
++			return IRQ_HANDLED;
++		}
++
+ 		cmd = xfer->cmds;
+ 
+ 		if (xfer->is_i2c_xfer) {
+@@ -1184,6 +1203,14 @@ static irqreturn_t renesas_i3c_rx_isr(int irq, void *data)
+ 
+ 	scoped_guard(spinlock, &i3c->xferqueue.lock) {
+ 		xfer = i3c->xferqueue.cur;
++		if (!xfer) {
++			/* Clear any status registers. */
++			renesas_clear_bit(i3c->regs, BST, BST_SPCNDDF);
++			/* Clear the Read Buffer Full status flag. */
++			renesas_clear_bit(i3c->regs, NTST, NTST_RDBFF0);
++			return IRQ_HANDLED;
++		}
++
+ 		cmd = xfer->cmds;
+ 
+ 		if (xfer->is_i2c_xfer) {
+@@ -1235,6 +1262,11 @@ static irqreturn_t renesas_i3c_stop_isr(int irq, void *data)
+ 
+ 	scoped_guard(spinlock, &i3c->xferqueue.lock) {
+ 		xfer = i3c->xferqueue.cur;
++		if (!xfer) {
++			/* Clear the RX/TX Data Buffer Full status flag. */
++			renesas_clear_bit(i3c->regs, NTST, NTST_TDBEF0 | NTST_RDBFF0);
++			return IRQ_HANDLED;
++		}
+ 
+ 		/* read back registers to confirm writes have fully propagated */
+ 		renesas_writel(i3c->regs, BST, 0);
+@@ -1259,6 +1291,12 @@ static irqreturn_t renesas_i3c_start_isr(int irq, void *data)
+ 
+ 	scoped_guard(spinlock, &i3c->xferqueue.lock) {
+ 		xfer = i3c->xferqueue.cur;
++		if (!xfer) {
++			/* Clear any status registers. */
++			renesas_clear_bit(i3c->regs, BST, BST_STCNDDF);
++			return IRQ_HANDLED;
++		}
++
+ 		cmd = xfer->cmds;
+ 
+ 		if (xfer->is_i2c_xfer) {
+-- 
+2.43.0
 
-The sequence of system calls before the crash could be as follows:
-
-fsopen("bdev", ...)
-fsconfig(fd_fs, FSCONFIG_CMD_CREATE, 0,0,0)
-fsmount(fd_fs, 0,0)
-move_mount(fd_mnt, "", AT_FDCWD, "./file1", 0x46ul)
-
-The system call executed at the time of the cras:
-
-open("/dev/media0", ...);
-
-Simplified stacktrace:
-
-path_openat
-|-> link_path_walk
-    |-> walk_component
-       |-> __lookup_slow
-          |-> ld = inode->i_op->lookup(inode, dentry, flags);   <- Oops
-
-
-Searching for possible solutions in the commit history yielded the 
-following result:
-
-commit fd3e007f6c6a0f677e4ee8aca4b9bab8ad6cab9a
-commit 1a6e9e76b713d9632783efe78295ed3507fdad64
-commit d6f2589ad561aa5fa39f347eca6942668b7560a1
-
-Checking the fc->sb_flags flag before calling vfs_create_mount() is a 
-great idea,
-if it helps prevent crashes in two more file systems, 'sockfs' and 'pipefs'.
-
-Best regards, Denis.
->
->> ---
->> [[ I still want to see the rest of the reproducer - report smells like a missing
->> d_can_lookup() somewhere, on top of fsmount(2) bug]]
->> diff --git a/fs/namespace.c b/fs/namespace.c
->> index fe919abd2f01..17777c837683 100644
->> --- a/fs/namespace.c
->> +++ b/fs/namespace.c
->> @@ -4499,6 +4499,10 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, flags,
->>   	new_mnt = vfs_create_mount(fc);
->>   	if (IS_ERR(new_mnt))
->>   		return PTR_ERR(new_mnt);
->> +	if (new_mnt->mnt_sb->s_flags & SB_NOUSER) {
->> +		mntput(new_mnt);
->> +		return -EINVAL;
->> +	}
->>   	new_mnt->mnt_flags = mnt_flags;
->>   
->>   	new_path.dentry = dget(fc->root);
 
