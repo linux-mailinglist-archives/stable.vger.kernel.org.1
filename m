@@ -1,259 +1,189 @@
-Return-Path: <stable+bounces-259816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Qv3ZDS/RHmq5VQAAu9opvQ
-	(envelope-from <stable+bounces-259816-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 14:48:47 +0200
+	id 3eJ1Dj3WHmqnVgAAu9opvQ
+	(envelope-from <stable+bounces-259818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 15:10:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9754762E25B
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 14:48:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9EB962E506
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 15:10:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.com header.s=google header.b=IW45O6Va;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-259816-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-259816-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PokTYaYg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-259818-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259818-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C75EB309E56E
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 12:41:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E5C73306FCC8
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 13:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B283D6462;
-	Tue,  2 Jun 2026 12:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966AE3E3170;
+	Tue,  2 Jun 2026 13:05:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012006.outbound.protection.outlook.com [52.101.48.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F136B313283
-	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 12:41:00 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780404063; cv=none; b=CBruwzAaLFHcOj4PYvUEbtjT550VKIpIJ96DTDl7PU0vItSdzkhpb1jkV29D0VX9MIQoGFrMFROvqS6fEzjy62HkPB/sPGcGPZ9yGqGKGZI9tSaEA3XVl8gNkehef6K0IZxY1RYCbYAHIsctnVIXS4EM0RxaixB7bj0Oeju/9+E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780404063; c=relaxed/simple;
-	bh=lcXbnLDgLgVs2uXAQfjp2nc6EET+6EBNWhFE8+/l0xY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qp+iw5oCKfXAtNpWpn9qNLJj9Fnh/wDSdRXhIpfZpeBf4R4Fpvzc2nV73D6wDGgkEWQStLCBdRsGhanjddRDMMT7alacgjvd+eIWUZQ5dKHSsgbOBQMxebs09xnIXU9TpzM2oItwhXvCHl3w6CD5M3TA+lPPQuJT/meCFquT07g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=IW45O6Va; arc=none smtp.client-ip=209.85.128.50
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-490a765d410so28009805e9.1
-        for <stable@vger.kernel.org>; Tue, 02 Jun 2026 05:41:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1780404059; x=1781008859; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qSDM2Nyr7WYYlYXf1yBwq5GfCMjSOs4ctNyEmP6XpQA=;
-        b=IW45O6VaRSkblMVsvJfCNyHg2woDizBEVSqXSFKF9GWHXDhMwxrR4n6wD/4430W96W
-         ww6pa8LvU+lsoX8S9/O1YE3/oN/lBHog9MWlyifEFPlZKNLbd/+L6ipQKMToRONbwfVv
-         z93iQsvup+wSCajULsETGntW836vgYJLGFem+CuCSuhTiYGfAwEPL8v2rzQIORrc4mUI
-         EhW5pYCH2Nd/37lSh8o7NNYGIx6/1SHV5P/LpGdsd1Y0Qktp2LZkj/8nHdydufjZlVTW
-         JKlA1WP1Ao02jsaMqnU2/o5G+k3RPKh5xpBD4yJqVvCs0SBdEVFq9QCshIWBJKKWa6Ry
-         k+Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780404059; x=1781008859;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qSDM2Nyr7WYYlYXf1yBwq5GfCMjSOs4ctNyEmP6XpQA=;
-        b=LAtR3wPlCbNY6f2TL55CfI/RDEpCbnR088y5vYWEAzRxlYBMmzt0pORMMCZmlKt1hE
-         vCkPHZK/jpIQqYHvJRv75uN6PRNg5BAkZIXzlMBhWieG9yAcr9AcOWmbNPjuyzUKlq9q
-         xr+FCC5kei2OndUp4ELs8FftcX2x/tvIBgTwLJhd0flv0elij2R9Hx+NJL1b7YhuqQlA
-         tMyoDd+KGsow8+gMSTc4xgwKJ0ti0npx3A/x234Ody+hkSC2Z4ro4G8ImcXYR6sJv0mq
-         twsH/lxQu9Ai2O7NvbRyGVhIJgXYgqv24RMqyTJ0N+RXycpkinPUBoDVDdEGBfTFkWkp
-         lIrA==
-X-Forwarded-Encrypted: i=1; AFNElJ86v3ZBn1fVs/QcFCW5I7C2+P7St5Yb0PvTm543zYQ3D1XImtQAuVDq+tIaWjPcayMvH67L7J8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzR99mJstHBrXhBl90IYpA75EeKj4mwtATxQCdatLICUccuRhCR
-	isBFqBA2/9TH2AiWDVrfflb2OgqoYcM7Szj+TvGoCycMO/2hXr/lEw95uJogpxa5Bi0=
-X-Gm-Gg: Acq92OE3akheiuIcNZvNoM6vXc025g0URaVnJq1ofJYl7Dn+YxqgZt6xvxnTdtvP5bu
-	HGg7QdjLE3o20TCiRfPbr7q7nKHGy0/4Rje2B2WLGyCOPPZIdWX+4uZJQGrH17UUTtfCr08EJKS
-	jFDKt3S2uWHVZQsYNaiTqPdThtOcoa4zt1jRUMWk6Z3LV9jo32BwjHudogxqUgBWm/+FiUmEOyh
-	86F31uHY9HXMaX2ZFwYwqJlgiSYqMfuB5os7AmSNwKoTv0FlFWdGaOhnRdNQCFBMsWGJxDDQhnf
-	u/3Mn9m9PeW9dEWN5Zrmug4eGyIzzRnVny3PPd3lSRkLR4tcZ2mYZpqD8ihl83kZUDGw7xicxan
-	wjHo7PUsWWJ/naawLJRCvpWGCvv/hrwQl1+Hj1AmZjXM4dNGzBexHtk4SnzhdusMAtp0kKnihAj
-	HySuoXxAzj+/CRXNpCIhUWQ3gGvFfsh+DZCDyX
-X-Received: by 2002:a05:600c:4e43:b0:490:ace2:f8f with SMTP id 5b1f17b1804b1-490ace2109bmr139640425e9.21.1780404059323;
-        Tue, 02 Jun 2026 05:40:59 -0700 (PDT)
-Received: from pathway ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490b0e38126sm55399785e9.14.2026.06.02.05.40.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 05:40:59 -0700 (PDT)
-Date: Tue, 2 Jun 2026 14:40:56 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, mm-commits@vger.kernel.org,
-	stable@vger.kernel.org, nathan@kernel.org, hca@linux.ibm.com,
-	gor@linux.ibm.com, ansuelsmth@gmail.com, andersson@kernel.org,
-	aleksander.lobakin@intel.com, agordeev@linux.ibm.com, arnd@arndb.de,
-	Tamir Duberstein <tamird@kernel.org>
-Subject: Re: + errh-use-__always_inline-on-all-error-pointer-helpers.patch
- added to mm-nonmm-unstable branch
-Message-ID: <ah7PWK4gTdOYG1t_@pathway>
-References: <20260526184100.3BA431F000E9@smtp.kernel.org>
- <ah6WDkwO8eYY5f2a@ashevche-desk.local>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B67B3E1D08;
+	Tue,  2 Jun 2026 13:05:07 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780405509; cv=fail; b=ZJuebQjJx5tJTZLq+4fZ2kUpSKc5rjS77Gf+GZgRjrNws8kf7jLTV/AbRnl5x/CYQ6bSqYhhr0ZMsPVqIuXjTGIl4f8vy/xrkj6tMp+dronKOh0SlDPp5zotmQLakjtU+vJvstMmlhTJLrUFhMg1Hurktah/4EGZJoF2rJTCRgU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780405509; c=relaxed/simple;
+	bh=mYOZgjgOIcu/Gu2Ydm4lQRJNcRDecJSBqFckkv5ZcBo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=bhluqTpCYuDCboVFWATG/ep613eAAZPIvgxf2SNNXuEe25thyD4bTVkfhQN4HtsapPEiUaOi4gxcRXr7da4eVbao8Dlz0H+0LnrL1hozwvqKL45P2QW6olfY60vPyS+iXg5lJKnv9+bExvNI1kVV6FbmKPGmvgwBBtllpEGoet4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PokTYaYg; arc=fail smtp.client-ip=52.101.48.6
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wp0EfFmG1TjOWgP0r3Z/fWMx8f/RPtE7xu1LHHb00vnJjJoV3JK1ot4kajd8kco/Sshs1wMUx8UVkQQC4uGWNjHa+eVHQqAo3707x4XWezVWvVAzFnoFSOpgsPtLTjSg3F32NaHjIbvHUdQ1msXQqqAVIUw010jkDuAaQU9KfC1zyQ8bKVmuJatYpE4qaWqyAspkAbLDWn4de8QMgUTJPYkMsN6Lqx2gBdVUBJXMYD1ZMUByLNfG0KcvUOteEWVtnh7lp1sLQrLQTzHTxxNXK3SgRCKnr02G48+0o32ITAUYxKidOQfB0macmyWZy5aDNlGrfr9MR87k3pcNJsfqRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GJS/bOfP3mH/lUxqIYzsu1vJBmCzfh2C9kwla2ZlDKk=;
+ b=mSZ3TXuaLuo3SSfp152c9tgvV9STjB5ATzJZr7EMNSf9AnKDDA7u4imlK83giJn/NkbfV/2YA93DV0JK2jIuIryFyDr6iY898VMafxSPwNzUiJpQKeQJ3+aaRm7+9Yp58ijTFzhqgXiBV2h8JREA1h5fhvnhk19nOvYL5Po4lJlpF9OK8B0yoQyJLUugNvbFDa2JBoq9a3zhXlH3M13ayecwXpLxxmh3gZF7xx6YCWRKQ4dnc6eNa2AfwAXzvIyqGRabvokKy5GvZ8Fx7tAsVJF4QJHxmRf2HB7FWBb2IvI5gqx01/2a1lPPP5WvG6xFRVrsYSzMyEUzXfWbgQgvXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GJS/bOfP3mH/lUxqIYzsu1vJBmCzfh2C9kwla2ZlDKk=;
+ b=PokTYaYgRO7K/s6DyRJPwO4+I/9WTcppbljn2Hh2vjZPjMXPciwoEH9UUcpxbYUTez9LPUFdYb+cY4UOXTNU9tOwdtSY9WhUdio5j15drxxfSQyAGEFTwlLsQk3jIODHEe0A4hWV12Tfbkh6RVYImKHfs+Tb4AIbbA8i9NF1xAL71wInzxOPWkaoWOUIv39RZUy1UDJMALMKERn4ZUM16QahJux10c3TDn7YTp2U66ClD+6LrXpFwQf0K9n98ZVPmcdIAsvYNo9zjFP58F74Nqh5KPwo1xvvXwJ0fE4siWshRSri1IW7e3COvc8w0iC55Mdm+eHT8zf4l8orlvZWnQ==
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by MN2PR12MB4359.namprd12.prod.outlook.com (2603:10b6:208:265::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Tue, 2 Jun 2026
+ 13:04:51 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0071.015; Tue, 2 Jun 2026
+ 13:04:51 +0000
+Date: Tue, 2 Jun 2026 10:04:46 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: linux-rdma@vger.kernel.org
+Cc: Chiara Meiohas <cmeiohas@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	patches@lists.linux.dev, stable@vger.kernel.org,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Yishai Hadas <yishaih@nvidia.com>
+Subject: Re: [PATCH rc] RDMA/core: Validate the passed in fops for
+ ib_get_ucaps()
+Message-ID: <20260602130446.GA910183@nvidia.com>
+References: <0-v1-fd9482545e37+1e25-ib_ucaps_fd_ops_jgg@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0-v1-fd9482545e37+1e25-ib_ucaps_fd_ops_jgg@nvidia.com>
+X-ClientProxiedBy: BN0PR04CA0143.namprd04.prod.outlook.com
+ (2603:10b6:408:ed::28) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ah6WDkwO8eYY5f2a@ashevche-desk.local>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|MN2PR12MB4359:EE_
+X-MS-Office365-Filtering-Correlation-Id: fc2397c7-d147-41ed-dd56-08dec0a785eb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|6133799003|11063799006|18002099003|56012099006|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	BDXYGFZSppOgcPBrG83lsufa/0asETNkQEeyaQB08K2KAOlWeMlXqxsn+v3EXrfep1+8zNO5sSYSYg7sH5Ds+yyUk/r0lXHaXoBz5ZbUIvEZxe2hjxJqbUgJl7K/Y6KWRrss/QfHjjERUHTVUoqDk1sDPcFw3Us+6EVKLWuiF0zAS6VfqPeRDczS/06ePC+z6uhiXopnQUBUgtES5DcZRUYkyPF+Z251mBWPzzuPM/2CZ4rcLDcF3rT/420c6WU+l147GOKFcjWGAqZuSsx4KvNVghfscWmjklYDf4T0Ezv8dOlX4C+XstGVV9toh4xzUuWyNkgcah2I2evc/HMpwBRc6m6amxT9rw6wqrPloUDxUEn6slRtAH2kWLtkEY9ML0vGTbAohHTvfaZFXQZ+aACEZf+NJoJ9HRvcoJXgEp3idRjqCi2FzO2iSNUHyKoZ7kXKen3Q7YG8Dp8FssZNDx18uP57eS9b3y9YQsTydNvTMvVQHGjr4GDYLPZ4rJI5UyU601WdT2qonKt6TJ2ELdtwhpn4OpTkIRUratZ9rIcpvBvD5XaKlOXFx6NHcZkNfTJjwrjKpoxdGmPNG4yBM9xobCtguoq0+mxRHGq33iyHJsWz8hzlfmV6cBTBgoyr+Hccg0sBnqAaGn9QHoAqPDFK84F5ZlO8lIR7Kk89QcbQ3otA1YMRCl3lHhV8i1/T
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(6133799003)(11063799006)(18002099003)(56012099006)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?iMh6xQ1tRIvXzr/cwVw2rmsFCQcWsAedVIi+RsAtY6/mBybr8KDgzGxRYsQl?=
+ =?us-ascii?Q?p3+wPyEhsD2HCxVMyF15wKlkrl//wJszvi9R2xZyyroP3vbQBVytraxV0tPM?=
+ =?us-ascii?Q?xKzeQrry31VLTdDcBmt6RdC5BGnkM7Yhpu44N8IOdpZCZU1T0+WjMRjhcEY0?=
+ =?us-ascii?Q?xdEs7dBS0XvB6NB1MY9AMcCW0e4CePxFss0xVVzDVjzlQ9Hdwgr9HFdD/MWn?=
+ =?us-ascii?Q?5OMFuyySIk18uq55AP8TXybGMknxKIqYAk6kGNrnJsODmQpoNf0Wv9NUyy3v?=
+ =?us-ascii?Q?qqhCn4FMnASzHi/E/fQnN6I1CdaSaOkOJOigRyqIr4B5JaRSjVo6ayLezqpe?=
+ =?us-ascii?Q?GG0XKWaJaDo9I1p0NCJo1Ib1MyEwkqQZvAX3wsKKEIZl+0kaBMcB97Y3rE/8?=
+ =?us-ascii?Q?nS+KmvLSfeHKHedxFMpPhdPgwhwRRaJ78ijnz2oZJn/ePer1Ck20YY4bPEdc?=
+ =?us-ascii?Q?9OFtXWU7UCrMRWYxJBZrvEKL0ntXCrafh49gXLV7VJNitDLazWj1T0c5M+lU?=
+ =?us-ascii?Q?qMn7sxr1Ek+NvRFYSby75IJGehwaI74c0d23qHCahvsBL3WwwXq9HRZefNwB?=
+ =?us-ascii?Q?W8Atyuru7bdkAqzLcgPy6pRIMBtwl7jXcIMc4SY4DFNTR7fEU0luwHhqknqy?=
+ =?us-ascii?Q?sq7Z/Dx0S8yvvxwvr9UfBRTRpuvF3rQiW5vTu1tNET/AgT+dGkzvS08V9jGt?=
+ =?us-ascii?Q?Lt3uqO0ELgq17ZqyvFbQaTWMDRMMxxCaDWoXRplrNwXtp0ItzS3dAFyLV5Bz?=
+ =?us-ascii?Q?0HmTy8SqLa9ZHvujyI7SnNd8jf3VNpat3JYomsPmE7UHnh+wzbU+LFsMHNfw?=
+ =?us-ascii?Q?w100RZH+QOdaYjbo1pNbJ9x/C6bW5/4fCiG9DfF0k6gQW9Sa23TRVUe2AFfc?=
+ =?us-ascii?Q?d9EDLEDM3npFsJ9AD4C4OvNWnyo53/c7KLpzwncp7IW+QHo8wNsBXiMoTUGF?=
+ =?us-ascii?Q?VW7gueSxSZva32m1NjMstj8dwMM6Jv63i7ht6pXUdxUuF7JMfvTSN+wdQD83?=
+ =?us-ascii?Q?Ta0QYWkB2R4hUaDd2Oj4vuP8O4B1udFWJSXizxNAhIW+4SBchPXw6QvGh4A7?=
+ =?us-ascii?Q?yUSyUoKygv8grByzgpGBJHTAMDejLLjdF3gLVFEolhryWPmL+jloU4ZskwlT?=
+ =?us-ascii?Q?HKvC6kaX9ZpxBKqTXnuIWWrft8VAYIpwqKBN0hEh3owByVeaPUKbiZWO8odg?=
+ =?us-ascii?Q?J4LJIM+8pKhUrOX0vmxt2h7zVaczZOapHTPnzNmIvLWyp2IKiH7/Aqwi/WFw?=
+ =?us-ascii?Q?By/Vy9x3k7TDjdG3yL6x1TKp6VNhtC3Dz7Y7Bmls6K339n6xkUOG2b5beaVQ?=
+ =?us-ascii?Q?zEum8WfWtgtZScNPvulfIj8reqcogYmZahMarH+GFKTwzXIxsX7c79Lush8F?=
+ =?us-ascii?Q?8IpcZ+NgKw3Oc1d+7PROS90VdYQCwVnHccq6d4xKzsEYZxMd8o179MwV+V4a?=
+ =?us-ascii?Q?7dgtiJV6wr65hDi1jYKh4TveLCeSLy9qDPS0QPD0j8pd4Mb85n8nqWu8/5sE?=
+ =?us-ascii?Q?JvJItxjNraEf9XCl48JhICNcuPVTqWYtKJ7VuMMeI0TPf11499D71o9PYbwj?=
+ =?us-ascii?Q?ucOfcn0lQf82StypUsTklntGu/hL/uA157IdigRJB4D7c3uFXrjYnOZbmvd5?=
+ =?us-ascii?Q?TH51RR95GuhAAO2Om3NMH7+S+c8K43453tjm0dQ+c2xe9fkJ/4gu5E4WF3Tn?=
+ =?us-ascii?Q?j+F59Fop3CL61bwkqIZVGIh5BGGP0Qmcz/L9Rzyu0+pkcR5C?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fc2397c7-d147-41ed-dd56-08dec0a785eb
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 13:04:47.4906
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4h3nOzkEADzPnXQYmM8MefTd0X0Va5J/6OwwDLSarWL4mgt6X7LlIxovWS58JOlR
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4359
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259816-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:andriy.shevchenko@linux.intel.com,m:akpm@linux-foundation.org,m:mm-commits@vger.kernel.org,m:stable@vger.kernel.org,m:nathan@kernel.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:ansuelsmth@gmail.com,m:andersson@kernel.org,m:aleksander.lobakin@intel.com,m:agordeev@linux.ibm.com,m:arnd@arndb.de,m:tamird@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[pmladek@suse.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linux-foundation.org,vger.kernel.org,kernel.org,linux.ibm.com,gmail.com,intel.com,arndb.de];
+	TAGGED_FROM(0.00)[bounces-259818-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-rdma@vger.kernel.org,m:cmeiohas@nvidia.com,m:leon@kernel.org,m:patches@lists.linux.dev,m:stable@vger.kernel.org,m:yanjun.zhu@linux.dev,m:yishaih@nvidia.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmladek@suse.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.com:from_mime,suse.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,pathway:mid]
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9754762E25B
+X-Rspamd-Queue-Id: C9EB962E506
 
-Adding Tamir into Cc.
-
-On Tue 2026-06-02 11:36:30, Andy Shevchenko wrote:
-> On Tue, May 26, 2026 at 11:40:59AM -0700, Andrew Morton wrote:
+On Tue, May 26, 2026 at 12:40:25PM -0300, Jason Gunthorpe wrote:
+> Sashiko pointed out it is not safe to rely only on the devt because
+> char/block alias so if the user finds a block device with the same dev_t
+> it can masquerade as a ucap cdev fd.
 > 
-> > The patch titled
-> >      Subject: err.h: use __always_inline on all error pointer helpers
-> > has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-> >      errh-use-__always_inline-on-all-error-pointer-helpers.patch
-> > 
-> > This patch will shortly appear at
-> >      https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/errh-use-__always_inline-on-all-error-pointer-helpers.patch
+> Test the f_ops to only accept authentic cdevs.
 > 
-> Petr, shouldn't this also fix the problem with old (buggy) GCC for xtensa
-> (IIRC) that we encountered in some tests a couple of months ago?
+> Cc: stable@vger.kernel.org
+> Fixes: 61e51682816d ("RDMA/uverbs: Introduce UCAP (User CAPabilities) API")
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>  drivers/infiniband/core/ucaps.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
 
-It might here there as well. Unfortunately, I could not test it easily
-because it required some old GCC.
+Applied to for-rc
 
-I wonder if Tamir could try to revert the commit 8901ac9d2c7eb8ed
-("printf: Compile the kunit test with DISABLE_BRANCH_PROFILING")
-and try this patch instead.
-
-Best Regards,
-Petr
-
-> > ------------------------------------------------------
-> > From: Arnd Bergmann <arnd@arndb.de>
-> > Subject: err.h: use __always_inline on all error pointer helpers
-> > Date: Tue, 26 May 2026 12:18:41 +0200
-> > 
-> > While testing randconfig builds on s390, I came across a link failure with
-> > CONFIG_DMA_SHARED_BUFFER disabled:
-> > 
-> > ERROR: modpost: "dma_buf_put" [drivers/iommu/iommufd/iommufd.ko] undefined!
-> > 
-> > The problem here is that IS_ERR() is not inlined and dead code elimination
-> > fails as a consequence.
-> > 
-> > The err.h helpers all turn into a trivial assignment of a bit mask and
-> > should never result in a function call, so force them to always be inline.
-> > This should generally result in better object code aside from avoiding
-> > the link failure above.
-> > 
-> > Link: https://lore.kernel.org/20260526101851.2495110-1-arnd@kernel.org
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-> > Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-> > Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Cc: Ansuel Smith <ansuelsmth@gmail.com>
-> > Cc: Bjorn Andersson <andersson@kernel.org>
-> > Cc: Heiko Carstens <hca@linux.ibm.com>
-> > Cc: Nathan Chancellor <nathan@kernel.org>
-> > Cc: Vasily Gorbik <gor@linux.ibm.com>
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> > ---
-> > 
-> >  include/linux/err.h |   12 ++++++------
-> >  1 file changed, 6 insertions(+), 6 deletions(-)
-> > 
-> > --- a/include/linux/err.h~errh-use-__always_inline-on-all-error-pointer-helpers
-> > +++ a/include/linux/err.h
-> > @@ -36,7 +36,7 @@
-> >   *
-> >   * Return: A pointer with @error encoded within its value.
-> >   */
-> > -static inline void * __must_check ERR_PTR(long error)
-> > +static __always_inline void * __must_check ERR_PTR(long error)
-> >  {
-> >  	return (void *) error;
-> >  }
-> > @@ -60,7 +60,7 @@ static inline void * __must_check ERR_PT
-> >   * @ptr: An error pointer.
-> >   * Return: The error code within @ptr.
-> >   */
-> > -static inline long __must_check PTR_ERR(__force const void *ptr)
-> > +static __always_inline long __must_check PTR_ERR(__force const void *ptr)
-> >  {
-> >  	return (long) ptr;
-> >  }
-> > @@ -73,7 +73,7 @@ static inline long __must_check PTR_ERR(
-> >   * @ptr: The pointer to check.
-> >   * Return: true if @ptr is an error pointer, false otherwise.
-> >   */
-> > -static inline bool __must_check IS_ERR(__force const void *ptr)
-> > +static __always_inline bool __must_check IS_ERR(__force const void *ptr)
-> >  {
-> >  	return IS_ERR_VALUE((unsigned long)ptr);
-> >  }
-> > @@ -87,7 +87,7 @@ static inline bool __must_check IS_ERR(_
-> >   *
-> >   * Like IS_ERR(), but also returns true for a null pointer.
-> >   */
-> > -static inline bool __must_check IS_ERR_OR_NULL(__force const void *ptr)
-> > +static __always_inline bool __must_check IS_ERR_OR_NULL(__force const void *ptr)
-> >  {
-> >  	return unlikely(!ptr) || IS_ERR_VALUE((unsigned long)ptr);
-> >  }
-> > @@ -99,7 +99,7 @@ static inline bool __must_check IS_ERR_O
-> >   * Explicitly cast an error-valued pointer to another pointer type in such a
-> >   * way as to make it clear that's what's going on.
-> >   */
-> > -static inline void * __must_check ERR_CAST(__force const void *ptr)
-> > +static __always_inline void * __must_check ERR_CAST(__force const void *ptr)
-> >  {
-> >  	/* cast away the const */
-> >  	return (void *) ptr;
-> > @@ -122,7 +122,7 @@ static inline void * __must_check ERR_CA
-> >   *
-> >   * Return: The error code within @ptr if it is an error pointer; 0 otherwise.
-> >   */
-> > -static inline int __must_check PTR_ERR_OR_ZERO(__force const void *ptr)
-> > +static __always_inline int __must_check PTR_ERR_OR_ZERO(__force const void *ptr)
-> >  {
-> >  	if (IS_ERR(ptr))
-> >  		return PTR_ERR(ptr);
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
+Jason
 
