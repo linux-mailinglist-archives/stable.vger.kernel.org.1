@@ -1,124 +1,171 @@
-Return-Path: <stable+bounces-259792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259793-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qE6BLb6zHmr7JAAAu9opvQ
-	(envelope-from <stable+bounces-259792-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 12:43:10 +0200
+	id oM69Mum9HmpNKQAAu9opvQ
+	(envelope-from <stable+bounces-259793-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 13:26:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B9D62CCC6
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 12:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6537762D729
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 13:26:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6A9613019387
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 10:43:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 340A3308AD6A
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 11:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD5A3D6CAA;
-	Tue,  2 Jun 2026 10:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7236D1CEAC2;
+	Tue,  2 Jun 2026 11:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XcV/x2Ve"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i/TnlJm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E0A36657C
-	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 10:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB1C8248B
+	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 11:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780396983; cv=none; b=GILNYB3o8Mu6ftQLKIMRv/lJ1T5Xniy6pqyoaozWftieFCualXaws8+sFeQNs+ywjdSQPM9LXrzLY5YaGSgxjWIt3mOcmCw5r2nLNBOLzkRVbJv7JrbWKrOudiwPbJ3MbTFO5+/cyrjcuSHxh7FQ9kG78Tc8Mjg9wF7DXXiegg4=
+	t=1780399110; cv=none; b=NtgLzFRTr/WT24O1TsajlADGWNQhGV1HodnFH4surcXcfnEkKLR1ijeHEyVmPjH81f7YQPc99SqtEN0wFDaS1gsJPwhZgFtByH+fh2nT+kwvqb3YaPSwkFjD1iXZDY2XrBZWWFxWHvpcL+OtsdI1H8TWWoyqk4yt/4RJiiiBB48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780396983; c=relaxed/simple;
-	bh=RtvHospS3Wp5cPDvduQUj3YHzTIC5fGzFo7nXYRGWSQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OsQc7Yb/hvgoHiCCP4w7F0N29kFhdDTajOpmjN7iJImlsTDK8IG90tId+SnrZ4OxThgXgWIQj7Mep/GWSr5yCxX2SBzahDIEPgXX0eUqtYTout1uIQgMLyh/aDfq9NaBBjKp8pS5guwAo4vTQxJK6YyKRd1pQhC1JHt4CXns1+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XcV/x2Ve; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CF21F00898;
-	Tue,  2 Jun 2026 10:43:00 +0000 (UTC)
+	s=arc-20240116; t=1780399110; c=relaxed/simple;
+	bh=kr7KOp1qE3yXrCDCS5SUTK5Q2Blq06QYsCAg/qbr+N8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=E2D6l2KvifFNqlW49r/o8wOrRRQwPTQ/cRE9PXaQ4U/ubVEDnXeEEpWqb7MSoxhwN8EDeNNvy+tCJmi30rDs1IcIrTcEkw32L2mvKVU+UDjb5DlBvIwk8Pia/THIEye2HbnHVSksgsXCEETWU7q9hSFXZs8kX/91xGnetPKHZoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i/TnlJm+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85E41F00898;
+	Tue,  2 Jun 2026 11:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780396982;
-	bh=dBN7+LCKUuURwXu2/RKNcqi0MvqbJNp++LcpFA1slnA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XcV/x2VeYtkg5UrNU9uOcrK0TMbijwcJJ4toN0W6+5548cpZqaaR9NWLhSGy+8oSF
-	 K8t7EzxcQklb1nFS1xNxnXyhDXU7bH9dg0DcEjHhR29y7dfK4CwHKrkmXRMbAzMdrB
-	 3sJ6AxcHv7PPkZXo0gC0ydXyYczOb8q8Ot5u5cAYekMudp+Nu8C746mJlC4qJDvP2H
-	 G43vGNSNW4CAV7HJdoo6xt1N4tWd6xjWye96QYgKX/u9PTShz/wNHSJGQF7CG/9PF9
-	 xU4abwF2FgkIsIyqQMLNgvhcK9/zb8jTEVFu4tu3kKhOMVWCS3JxeAi5qLxKk4F0/Q
-	 RQ0y8kxELSXuQ==
-Date: Tue, 2 Jun 2026 11:42:56 +0100
-From: Keith Busch <kbusch@kernel.org>
-To: hexlabsecurity@proton.me
-Cc: "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Greg KH <gregkh@linuxfoundation.org>, sagi@grimberg.me,
-	kch@nvidia.com, "bvanassche@acm.org" <bvanassche@acm.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] nvmet: fix pre-auth out-of-bounds heap read in
- Discovery Get Log Page
-Message-ID: <ah6zr4-8hLlY-Gzn@kbusch-mbp>
-References: <Q8CVAA098pa1LIPOSNGvR2qrzqdOBQqRTLK54O4KsGMzSh4IOT2Ucrlv87C0ULvpILYim-FotD-OumzPcjFauZM2iyjJ4tjzaMRsXE7G_3Q=@proton.me>
- <20260527132353.GB11071@lst.de>
- <QQhn1zPqAyjwS7XXM_jeFtjpyW7pXcVTGMP38boMl6zWR5ehel-nsdJdksZf0ASO03qt5pX1B5UAnlANuO7KZISSgggAjnjLruly7nAjJ2A=@proton.me>
- <20260528083537.GA7590@lst.de>
- <39YwPS5jntghiVQLt9ikZnmMc7O2g1AY3OVDcxdZjaK53FZHyzQNmyaS5eYBTS93g0Wc-S-UDC0auDRcGgC4iMR5RgXLEBPvqHfFZfbaeoU=@proton.me>
+	s=k20260515; t=1780399107;
+	bh=q3zw2w9lAwexKKQWE91f+PQx0foacpyzQu5XkZ0ON38=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=i/TnlJm+Vw0BukAxcauOcaQP9f8zoZROcTUpyL5OnCdf/9DUCeN+J+cLpec/X+zIA
+	 TbCojF8cYMDBWQpO484ruqpTAdlK0QgCY6R+p9gF52KJRZCVuO0amead2T4hxBzNqK
+	 3jGqa7d3iUWTvJTzqBkKjO4HKqi7yEZ2Xtp9e/ZRDonugXN6HXVV6CGRtpPprKxVHO
+	 h1LWRQezWTl8K7dGNX9coACXxyXht5iovTWKPuDEFrIIibESHdxm6Z52GnCvrvV4P3
+	 f1D2a7tfGVUNfpn1O4cKy4UJAvuc+umcRx+4sDqJ8LAuAz86Ot4XDPfp9G1//cRW2d
+	 RMAQsnK5hXbxA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] hwmon: (pmbus/adm1266) serialize NVMEM blackbox read with pmbus_lock
+Date: Tue,  2 Jun 2026 07:18:25 -0400
+Message-ID: <20260602111825.1305810-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026052847-broadcast-elevating-8bc4@gregkh>
+References: <2026052847-broadcast-elevating-8bc4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <39YwPS5jntghiVQLt9ikZnmMc7O2g1AY3OVDcxdZjaK53FZHyzQNmyaS5eYBTS93g0Wc-S-UDC0auDRcGgC4iMR5RgXLEBPvqHfFZfbaeoU=@proton.me>
-X-Rspamd-Queue-Id: 55B9D62CCC6
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6537762D729
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259792-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kbusch@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259793-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,proton.me:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nexthop.ai:email,roeck-us.net:email]
 X-Rspamd-Action: no action
 
-On Thu, May 28, 2026 at 04:02:17PM +0000, hexlabsecurity@proton.me wrote:
-> From 6710e68439c458d691a4fe5c7fa354404745dd0a Mon Sep 17 00:00:00 2001
-> From: Bryam Vargas <hexlabsecurity@proton.me>
-> Date: Wed, 27 May 2026 15:00:00 -0500
-> Subject: [PATCH v2] nvmet: fix pre-auth out-of-bounds heap read in Discovery
->  Get Log Page
-> 
-> nvmet_execute_disc_get_log_page() validates only the dword alignment
-> of the host-supplied Log Page Offset (lpo).  The 64-bit offset is then
-> added to a small kzalloc'd buffer that holds the discovery log page
-> and the result is passed straight to nvmet_copy_to_sgl(), which
-> memcpy()s data_len bytes out to the host with no source-side bound
-> check:
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-I've manaully applied this one, but next time, could you please just
-send a proper patch instead? This whole thing is badly formatted. Have a
-look at the raw message:
+[ Upstream commit 9f1dd8f9491eb840cbea7ffdf4cad031e25f8ae0 ]
 
-  https://lore.kernel.org/linux-nvme/39YwPS5jntghiVQLt9ikZnmMc7O2g1AY3OVDcxdZjaK53FZHyzQNmyaS5eYBTS93g0Wc-S-UDC0auDRcGgC4iMR5RgXLEBPvqHfFZfbaeoU=@proton.me/raw
+adm1266_nvmem_read() is the reg_read callback the NVMEM core invokes
+when userspace reads /sys/bus/nvmem/devices/.../nvmem on this chip.
+On the first byte of every read it does a memset of data->dev_mem,
+walks the device blackbox through adm1266_nvmem_read_blackbox()
+(which issues a chain of PMBus block transactions), and then memcpys
+the refreshed buffer out to userspace.  None of that runs under
+pmbus_lock today.
 
-Just use 'git send-email' on a 'git format-patch' created patch.
+Two consequences:
+
+  - The PMBus traffic the refresh issues is not serialised against
+    pmbus_core's own multi-step PAGE+register sequences.  A paged
+    hwmon attribute read from another thread can land between a
+    PAGE write and the paged read in either direction and corrupt
+    one side's view of the device state machine.
+
+  - The NVMEM core does not serialise concurrent reg_read calls, so
+    two userspace readers racing at offset 0 can interleave the
+    memset of data->dev_mem with another reader's
+    adm1266_nvmem_read_blackbox() refill or memcpy out, returning
+    torn data to userspace.
+
+Take pmbus_lock at the top of adm1266_nvmem_read() via the
+scope-based guard().  Patch 5 of this series moves
+adm1266_config_nvmem() past pmbus_do_probe() so the lock is
+guaranteed to be live before the callback is reachable from
+userspace.
+
+Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-7-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+[ adapted `guard(pmbus_lock)(data->client)` to manual `pmbus_lock_interruptible()`/`pmbus_unlock()` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/hwmon/pmbus/adm1266.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
+index a616439cecbf51..e265bfd93dd7c4 100644
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -395,18 +395,25 @@ static int adm1266_nvmem_read(void *priv, unsigned int offset, void *val, size_t
+ 	if (offset + bytes > data->nvmem_config.size)
+ 		return -EINVAL;
+ 
++	ret = pmbus_lock_interruptible(data->client);
++	if (ret)
++		return ret;
++
+ 	if (offset == 0) {
+ 		memset(data->dev_mem, 0, data->nvmem_config.size);
+ 
+ 		ret = adm1266_nvmem_read_blackbox(data, data->dev_mem);
+ 		if (ret) {
+ 			dev_err(&data->client->dev, "Could not read blackbox!");
++			pmbus_unlock(data->client);
+ 			return ret;
+ 		}
+ 	}
+ 
+ 	memcpy(val, data->dev_mem + offset, bytes);
+ 
++	pmbus_unlock(data->client);
++
+ 	return 0;
+ }
+ 
+-- 
+2.53.0
+
 
