@@ -1,133 +1,143 @@
-Return-Path: <stable+bounces-259838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3H2yOVvvHmrHZQAAu9opvQ
-	(envelope-from <stable+bounces-259838-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 16:57:31 +0200
+	id IQZ+HBLzHmosZwAAu9opvQ
+	(envelope-from <stable+bounces-259840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 17:13:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCC862F855
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 16:57:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78A562FA2D
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 17:13:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GcJKL2Cv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-259838-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259838-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=packett.cool header.s=key1 header.b="BFgAAH/x";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-259840-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-259840-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=packett.cool;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C3EA8301AA52
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 14:56:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 905D330BEC93
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 15:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E3C3630B3;
-	Tue,  2 Jun 2026 14:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA793E7BAC;
+	Tue,  2 Jun 2026 15:04:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3CA317155;
-	Tue,  2 Jun 2026 14:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7313CAA59
+	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 15:04:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780412186; cv=none; b=TnprcXFRVRW4o7lrbppN7Te6fBzrIrTTblfLP87zbirruaG3REcPyMAHtvwYzUISvaSSz51gNPbe/C7Qx2yygjLYLBNziyHb8SbCo5z56bxpJvDl53a852VbVz4IC18o0G4Ahy7imO+ggxei7iTrAu+7eVnMEqNygna4INpBZrc=
+	t=1780412666; cv=none; b=OpTt4Vd002/X5e03Q4WwkNhsLq5ky9yMXCEIk4PVBVIc34mXDDRLyEzAITLx9wOqAHaGB4EqPm+2o2cSsLBDwINU0FOMj2T66gc4hgf0ga+gUfP8IBqKWbo+qM4iASw+dPtz2X6hwn6Oiut09nTZt7/ThaVeLEukPRY08x68RPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780412186; c=relaxed/simple;
-	bh=YIJ7rX18HompEVY/4NNVgbjIACeu2JguLfv2oFETzRw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NGiEihQKKeF0/3jthXqW2qF9Uj6tyPF3GZtOPV8SIDkUCGE0JH0pddm8LfFnm9iD2GU607P3Eo1RbE42Jd6jXMVcSfllhdyOslzovfHNFEmncofxtSM7Rgsy1O5wtJUpFnrDWH+3pUs2huJZ3QLg5k7BWxRNK8ZpaSBwg9vGLPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GcJKL2Cv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571D61F00893;
-	Tue,  2 Jun 2026 14:56:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780412185;
-	bh=0e2WjIs6vl0bBZ5EFT0fhM25ePLzt3kOIfXa7ZB9L/0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GcJKL2CvaHnwZW6E7iGjBIFcbBHLFvPp9WHiVlMihkSzVt6lTfMwhubopJb69WO8y
-	 aS9UKuMoKGvl4hkPXh5hVhPeXaxkEh/P/7jahkX925GzB71OLePVeukYnU3bobi/cy
-	 StjmYBKRu1bEKq6LJ745EKvE0Kq8wMrvp7JsOkvSDCvTX50qW8IGpVKuM/ZRleq3e+
-	 Gpncx5Dt/sHaog6DCc+zanVtzY33MiUWMv69GkxKFcqpWYxpqa/aNX8GL3FPUfOfFa
-	 QhlFJ6cfaMuao0Zicw5vmxvAtdLa61RHcOnEu4Cqk6tzVnOV8JyDM2gJQw+4hACeBa
-	 +VzOXWGoyH30w==
-From: Christian Brauner <brauner@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org,
-	Denis Arefev <arefev@swemel.ru>
-Subject: Re: [PATCH] make new mount API honour SB_NOUSER (was Re: [PATCH] block: Avoid mounting the bdev pseudo-filesystem in userspace)
-Date: Tue,  2 Jun 2026 16:55:43 +0200
-Message-ID: <20260602-qualifizieren-besagen-raspel-96ecdd95091e@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260602020444.GP2636677@ZenIV>
-References: <20260602020444.GP2636677@ZenIV>
+	s=arc-20240116; t=1780412666; c=relaxed/simple;
+	bh=hhLyU1suKqRemMZ3uMjdPzeVwrqN8+HIhvS6Kah3daM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ksrRrRgxgwsGp5iL3HyJyqw2Q3t472HoiFXHub9uDoNtn7hF3X/H/+KLsalGZtRs0nLCILYxAt34xg50nLOtAYW0lDstSZugqheB2osnJKRwTzyjKVqUf4o47nj8/ZMnkMfKXWQSqN4xxDKLris0nonN1+z3062bs3/9fB33UVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=BFgAAH/x; arc=none smtp.client-ip=95.215.58.173
+Message-ID: <809635d9-6e66-4ace-8f47-4a5a268f4f18@packett.cool>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1780412652;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qHszsEN8PB3ekey0lEf70Vm5pm7eZsuxWjxfuJZ2+RI=;
+	b=BFgAAH/xcynmV8UeSdeG6LKfgfP4MDNJFZp6R2gs0qShyj4nudTtq4HPYoLRzSCxM9Q07h
+	S1Bs1hlDJFHvewK5FG2GtTvPu6On7jrT47U9dCsObZJ4qcmTaYpELOFFDop47C1nUjkdKp
+	4p7LeOgwfHBZmMNNdAtTmnCfVnAO1hS2FmTw9rsw9MUR/HRiPwHhL4aZinED5PCg04yoiX
+	8il1U+Dw6dtacMog5D3eXtfu0UsCocDvUxBGFAFRLycFYJaPCl0kQt/ARiekfRIXJy36bl
+	lF0nMon19m8s8y3wQlA7IqUh9deLu1ALcxMtcXUaDeH3BVHO7Xbjo4pfwMyoKA==
+Date: Tue, 2 Jun 2026 12:03:53 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=891; i=brauner@kernel.org; h=from:subject:message-id; bh=YIJ7rX18HompEVY/4NNVgbjIACeu2JguLfv2oFETzRw=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTJvRcpWOl/4NJv3VmVSx93vGr3PpK+83pRd2yRkCyPT +4VZz/ejlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgImccGFk6GDlS5smNDukyEhL esIk72L/pftkbO5OW/ZFftOidq/4PIZ/VkGajL21x85YpE7if992sXTiz8Pf1j9tnhXn+DTr2Jd pjAA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: hamoa: Reserve low IOVA range for
+ Iris
+To: Bryan O'Donoghue <bod@kernel.org>, Daniel J Blueman <daniel@quora.org>,
+ Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+ Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+ Abhinav Kumar <abhinav.kumar@linux.dev>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+ linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260601041336.9497-1-daniel@quora.org>
+ <ecavEnqJTDXvfFykc9uJb5No7ioighpjrCdw2CFZ4c8Izr5DxpTs-606Bg7K0RtHTaOqksWivHxWQLzMBP6qow==@protonmail.internalid>
+ <20260601041336.9497-2-daniel@quora.org>
+ <ec7c564e-745a-4998-af9a-e9632fe063f7@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Val Packett <val@packett.cool>
+In-Reply-To: <ec7c564e-745a-4998-af9a-e9632fe063f7@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[packett.cool,quarantine];
+	R_DKIM_ALLOW(-0.20)[packett.cool:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[brauner@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-259840-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:bod@kernel.org,m:daniel@quora.org,m:vikash.garodia@oss.qualcomm.com,m:dikshita.agarwal@oss.qualcomm.com,m:abhinav.kumar@linux.dev,m:andersson@kernel.org,m:konradybcio@kernel.org,m:mchehab@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-media@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[val@packett.cool,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:torvalds@linux-foundation.org,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:linux-fsdevel@vger.kernel.org,m:axboe@kernel.dk,m:linux-block@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,m:stable@vger.kernel.org,m:arefev@swemel.ru,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-259838-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brauner@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[val@packett.cool,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[packett.cool:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,dt];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[packett.cool:mid,packett.cool:from_mime,packett.cool:dkim,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7BCC862F855
+X-Rspamd-Queue-Id: B78A562FA2D
 
-On Tue, 02 Jun 2026 03:04:44 +0100, Al Viro wrote:
-> one should *not* be allowed to mount one of those, new API or not.
 
-Applied to the vfs-7.2.misc branch of the vfs/vfs.git tree.
-Patches in the vfs-7.2.misc branch should appear in linux-next soon.
+On 6/2/26 7:26 AM, Bryan O'Donoghue wrote:
+> On 01/06/2026 05:13, Daniel J Blueman wrote:
+>> On X1-family hamoa platforms, Iris DMA below IOVA 0x25800000 (600MB)
+>> triggers unhandled SMMU page faults
+>
+> How do we know that is a correct address - does it come from qcom 
+> documentation or trial and error ? 
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+If you follow the Link:, you can see that it does come from qcom..
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+https://github.com/qualcomm-linux/kernel-topics/issues/1157#issuecomment-4458933574
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-7.2.misc
+This series is basically a "hotfix" version of a more complicated series:
 
-[1/1] mount: honour SB_NOUSER in the new mount API 
-      https://git.kernel.org/vfs/vfs/c/67d8c452fae1
+https://lore.kernel.org/linux-media/20250627-video_cb-v3-0-51e18c0ffbce@quicinc.com/
+
+that introduced an extra subnode that let the driver only use that 
+restricted IOVA range for non-pixel buffers (only those actually need 
+the restriction) but that resulted in a very long discussion and was 
+kinda shelved because of that.. x_x
+
+
+~val
+
 
