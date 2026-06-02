@@ -1,63 +1,72 @@
-Return-Path: <stable+bounces-259870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RVOOJKcfH2rygwAAu9opvQ
-	(envelope-from <stable+bounces-259870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 20:23:35 +0200
+	id EldmN8kfH2o/hAAAu9opvQ
+	(envelope-from <stable+bounces-259872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 20:24:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55C5363109D
-	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 20:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 715BE6310B1
+	for <lists+stable@lfdr.de>; Tue, 02 Jun 2026 20:24:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lrs7P6Gc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-259870-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259870-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DegjCoFi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-259872-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259872-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D62F33027940
-	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 18:22:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D0153034B02
+	for <lists+stable@lfdr.de>; Tue,  2 Jun 2026 18:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB943395AC0;
-	Tue,  2 Jun 2026 18:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE945395ADF;
+	Tue,  2 Jun 2026 18:21:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3643947A4
-	for <stable@vger.kernel.org>; Tue,  2 Jun 2026 18:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7693932DF;
+	Tue,  2 Jun 2026 18:21:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780424509; cv=none; b=gWlldc/t+Vpz9exwG89EuhwO1bc7/KBQ/yR1hKHbbYOTDe30PyCgynLPkF9fkGTGrJlj2/OtsyIrCS9oyreEFmVbk3WcJvoH3bwJ52IqvRk1oU+eYHk8VMPWZrSciRUq2XH0nPwDTqoGlgdJfBjfipgjvgi84pC2CQAYeQoWcls=
+	t=1780424512; cv=none; b=lyCsZDl+Zh16/bvrMvN8gM7zcPedlTGt22cxT2lYSD/24PavrwD9hoYaCirnti3bbR/JcJ9futWcTDSCqXmzJKKpIjR5tp4klA4bc37lq/TsIQ4cai/+DIU5HGGbSefP6vy+C3SWWNw6N9E1zjXSJIjPY+3l/Zu8rDg90CZfaSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780424509; c=relaxed/simple;
-	bh=GI6hjdP/5HmA4fKqJ5A165UD/zmfoUqQgcXUXppDea0=;
+	s=arc-20240116; t=1780424512; c=relaxed/simple;
+	bh=TjhMaKmbzFKu0YPMq2ASEiXF2D8wL4JT28AVZJffb5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2hTOgKBZ1qFYOIkBg26Bu9Fx59nZtpAd1wNT1Z9CfiQR3ckxrYzacOTl0meXdV3dol+AqRkZyhPg8xcBkdvyCGkZR/B1BBn+MfKud3o1TSeSlOQp6OiOpKmemW/MznOHw3lBpGxB6QFK8wmwx/a6l1hfGnjrAylLmBm3h78H0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lrs7P6Gc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDF61F0089B;
-	Tue,  2 Jun 2026 18:21:44 +0000 (UTC)
+	 MIME-Version; b=rhNlxAdlo44CXAg5okscPucar3BjDh6fkBQ6RZE0cf0JJlRPx204IGdKfkBN8aQ0/IY5tRFpCfwiVZt+ji3NaaqMz8z9mXnaZ6loOsh+qVUZp3rgKq2L5oVnAr19FV75+pLYtd/v6ilumi7VaYRZfea4qHZDMHd6+gSWHlVOFJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DegjCoFi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465BF1F00899;
+	Tue,  2 Jun 2026 18:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780424505;
-	bh=GI6hjdP/5HmA4fKqJ5A165UD/zmfoUqQgcXUXppDea0=;
+	s=k20260515; t=1780424506;
+	bh=AwhvWq8jq32F10Q19a4FxceijCZmhX/vQjsozC4t1s4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lrs7P6GcOS5yZo1uewm4Wa7DCimGEhqvMxpgPgF5ZmgoBcL1ONYs1KimyusopX9gD
-	 qLlsajvYrZ6NrzuTjerQ0Q8X2IOD0lQ5TyK/L8wVGikatZW4h1gaZ8u+Pj5md66r16
-	 kwnZk0xEOioavlx9cv7Snr+xG42VknuB+7j5hoCcxakWh5DBTBcFAv9JVhkT7KZnpJ
-	 md4UCrq0Mmgo3uKlgpamcdqWjCFGozQQnazg8b8clwnoSH9NQafRHMC/VjlwMNq+wW
-	 Tq9gFL7hnlGVrjwXVxQXDWN5IDYtsd8xJ1mj/VdI6m+iqokHF4l7wHnZCjttgk7RWg
-	 ZcNwYzVdk4lMA==
+	b=DegjCoFiSu9OvXPzaRGFpo3n++/0dm6YgsyPsSyLwCLGAh67cNkP1rH6J61WgSTju
+	 14HFz7mI3ON8zsCh6PmM5xma3B2JvruEb8Wtky8T/YyPBgSEP079giZORTTLcKEXWD
+	 bvlqHIUgJPBigGDX83mwgBoCHI5pJZQ0O2G6BpBdkxTyrDa6ibuyv4vo3KgKV+r7o9
+	 KBXdiIRFP9qNBSi54gHiENUlySEm9kV9Hg4vRvcs1sMBKu7QIfZqHvG+DmNCOrn+H9
+	 VfoXWO5zlrFSYMQ9wpI+ir/GoTthA9g+9Eun490QnxvU+JGYVpbtrZ1NfO2ga7GdAM
+	 02T4axV+shgig==
 From: Sasha Levin <sashal@kernel.org>
-To: Mahmoud Nagy Adam <mngyadam@amazon.de>,
-	stable@vger.kernel.org
+To: Li hongliang <1468888505@139.com>,
+	gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	jk@codeconstruct.com.au
 Cc: Sasha Levin <sashal@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	nagy@khwaternagy.com
-Subject: Re: Backport "net/sched: cls_fw: fix NULL dereference of "old" filters before change()"
-Date: Tue,  2 Jun 2026 14:21:23 -0400
-Message-ID: <20260602180900.cls-fw-reply@kernel.org>
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	matt@codeconstruct.com.au,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 6.18.y] net: mctp: ensure our nlmsg responses are initialised
+Date: Tue,  2 Jun 2026 14:21:24 -0400
+Message-ID: <20260602180900.mctp-nlmsg-reply@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <lrkyqmrxe16vj.fsf@dev-dsk-mngyadam-1c-cb3f7548.eu-west-1.amazon.com>
-References: <lrkyqmrxe16vj.fsf@dev-dsk-mngyadam-1c-cb3f7548.eu-west-1.amazon.com>
+In-Reply-To: <20260602073428.2865362-1-1468888505@139.com>
+References: <20260602073428.2865362-1-1468888505@139.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,43 +79,45 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259870-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:1468888505@139.com,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:jk@codeconstruct.com.au,m:sashal@kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:matt@codeconstruct.com.au,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netdev@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:mngyadam@amazon.de,m:stable@vger.kernel.org,m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:nagy@khwaternagy.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[139.com,linuxfoundation.org,vger.kernel.org,codeconstruct.com.au];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-259872-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 55C5363109D
+X-Rspamd-Queue-Id: 715BE6310B1
 
-On Sun, Jun 01, 2026 at 07:57:04PM +0200, Mahmoud Nagy Adam wrote:
-> Backport "net/sched: cls_fw: fix NULL dereference of "old" filters before change()"
+On Tue, Jun 02, 2026 at 03:34:28PM +0800, Li hongliang wrote:
+> [PATCH 6.18.y] net: mctp: ensure our nlmsg responses are initialised
 
-Now queued from mainline (65782b2db732) to 6.18.y, 6.12.y, 6.6.y, 6.1.y,
-5.15.y and 5.10.y.
+Thanks. All five per-branch submissions (backports of upstream
+a6a9bc544b67) are now queued.
 
+-- 
 Thanks,
 Sasha
 
