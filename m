@@ -1,171 +1,149 @@
-Return-Path: <stable+bounces-260013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260014-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +EsCIYD1H2oHtQAAu9opvQ
-	(envelope-from <stable+bounces-260013-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:36:00 +0200
+	id GJ0VHWT1H2oCtQAAu9opvQ
+	(envelope-from <stable+bounces-260014-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:35:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8AA63634B
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:35:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D038263633E
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:35:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=QqUvZf56;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260013-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260013-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=foxmail.com;
+	dkim=pass header.d=sang-engineering.com header.s=k1 header.b="jrj/wLJG";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260014-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260014-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5211330FC07A
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 09:31:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E49EB300CC18
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 09:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D20410D06;
-	Wed,  3 Jun 2026 09:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86C83FD943;
+	Wed,  3 Jun 2026 09:32:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-58-216.mail.qq.com (out162-62-58-216.mail.qq.com [162.62.58.216])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F6943C065;
-	Wed,  3 Jun 2026 09:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0143F411B
+	for <stable@vger.kernel.org>; Wed,  3 Jun 2026 09:32:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780479061; cv=none; b=VqjfgCNuOR/SiBTpQhk1aWKlkeZJJy29T8vNYUkdbV7UsS7aauTNk0m2gGyl948DSLFa0tatD7uMMCkopJh6BjJoIiPRL2zBbqdHUcCHF4p/xWj2ZNrHuPjc8oG1D/UAOsXgKz0q8EV9tcxtd6jLamuSUsFkIHq2xbu/atd4blA=
+	t=1780479130; cv=none; b=C1/SbgHlImarfBvrZiFBBwo9te2WCw4yAj18PQlgFrbeppntR3wc9HS8j8jTQ5HpqLcLLRGifDmO7FQsWQ9Z3nWOSyt1BPNcZxwA7l+WAUuRbw+1gVBD8PRzKRwCsstOC05j+URi+rvfSdHcqV4xJGwT6ByVnDRiHW2LHLVEcS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780479061; c=relaxed/simple;
-	bh=u5JMMRJBUAGWREzp42H+JYxu0TwT5f7ye1hd4H1g+Xs=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=RgBNQdb1A6bvTyEN2D7YoribDf+C1cidNNKPI6k5WrAmLQnkKIgt+K+39WIY8W71N+CH3mP88JmNhwDooXxUu0GWq99yZYMSDhFQIlkHfSf9HzzgGKU7AUOSYGx+HTHWnepZ0YzHgyuu9JnC/30TyrIYYSEo0w6KOqxjzt8hCAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=QqUvZf56; arc=none smtp.client-ip=162.62.58.216
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1780479048;
-	bh=kuYo8OrY6VjKTU2IM0TzRqqs0rJ+oVTg+2X1ZXefV+8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QqUvZf560jDQfT4PDdJCAQVkIfIrlLd/PZ6wsaxX+2ixTPvpOknAeRQZWXxA0Dh1m
-	 B1cWZyrV5NV45BF7lBaYKG1ay/N7o0fOEq4G0TOqEr7ei0GgrU8IPdJSgq6ynZ4MQK
-	 vM67Jgul8k6zhyX3tYRkBLYqFcLLFaDiemrrVbSM=
-Received: from localhost.localdomain ([116.128.244.169])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id 7AD2A816; Wed, 03 Jun 2026 17:30:45 +0800
-X-QQ-mid: xmsmtpt1780479046t2if38kad
-Message-ID: <tencent_BBC0716F510542067A1D9D6CCC0DB87E470A@qq.com>
-X-QQ-XMAILINFO: NbgegmlEc3Juwytx9IypIk/WRv+0i4EE5+yPQcZvljJLgZLOThl4142bT1bMCZ
-	 tpXb0tUaCQHWN5bXb4kbNDThYxa54eYu9VTuXsohrTHonYX8orxjGXCP3fRwsFNgQwgqsNIPxFXY
-	 /V+a44L+pp9TH2M0pTSFbgVGabofkVwmstdfIPQWQv2eMjDUzuNkRv2TYqUXTe05Gii+Y41K/IbN
-	 m8ZfUza9Yo/SV7NepUv2tXBYHAiDQ1z1TVH6qK7LmP5CQ0F+BW9R8ghR81FukYhQfTsNEaytblTV
-	 PXUkwefWxTq+b9Ljzylc+OFRr4OkZt3EO44Dtdc0NlMqNrjbUIBFEkO6SS2bh3QhvhtnRxYP2C0z
-	 G7phl3x0t1tnJ0B2UBHfsjiWLZ1rvNpxJfbvEQiYxY5+e0sO+sNxO/ohvOECyDthbeP0Z4MUEDyj
-	 b8bs4idxodkSIEsZ+cOixS6g9C/Nc3XWvlQ8PGVQ+gQfSQyCDi5eFasvCTOu7TjtHUw+bO4b2BSD
-	 9ci/P8+S4gamOzuj8mecICayt8QIDatjiFC9gpcniMufvi++cVqHFLKlKhwuCUwRfhQ0R1ZAWlvR
-	 g9jT2FI7QXYKO73NpimRI8ytU2zRLSNsGZHTks6xHrOA8+xwC/r9bn2u2Vjhnu3+Vix3NdQwcAEb
-	 ud17IL2G5M+Ky2IXHPaDwQaOGN1sWCZgO4kEiCSpw9SFawFSG1eeHx7Cagla8wPodoj5hbExcl37
-	 2xTumLm9qE3I2GU+DMqNXVLSdzvvGkqMchR8cTHRXGi1RD5fHe4QUDSTW1Ifo3vFoxDsUvXT0JnE
-	 ya+dg2yfAH3oXtp+N0+YqkeEx7c386ptPoHJIgSa/acagTSAZ2yJuZfc8ntZc939rygdu2JsAOuq
-	 gT3yEous14JlnP29M2/qUt41iENaKYRPJaOy/fmIWkZXwFkv21Bn3Q/P9bYbC+IwwktZOsKamQZ2
-	 8rbfho7dZxIqrqsx7SQfIx+I+/7jmRNlKAktxl3kwLnepIgBqr26fa4Ag50vgVMQTRGA1uFOGlLG
-	 UoxRiL5W07Q5G7mHu4n9zAFDs3tp2IkjyxvED/Ysw21aTjrcu90NTPP4WSy2I=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-From: xiaopeitux@foxmail.com
-To: shuangpeng.kernel@gmail.com,
-	mchehab@kernel.org,
-	mchehab+huawei@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	aha310510@gmail.com,
-	hverkuil+cisco@kernel.org,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] media: as102: fix frontend leak on dvb_register() error path
-Date: Wed,  3 Jun 2026 17:30:24 +0800
-X-OQ-MSGID: <00af53af93553984fcace5adf329c9ca3bd42ea7.1780478859.git.xiaopei01@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <f439482f78c398f7a342357c0848550189712d07.1780478859.git.xiaopei01@kylinos.cn>
-References: <f439482f78c398f7a342357c0848550189712d07.1780478859.git.xiaopei01@kylinos.cn>
+	s=arc-20240116; t=1780479130; c=relaxed/simple;
+	bh=Ob8wxHCO6PRz1nBSHnxcaRaWXqCaoG4xtQffslKTzrU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R9B0ZFbln8tVAkCfmAVNDB5SuN8Kab//XEJMV/R4CuQn44ZuQB5IN752FeeX2SLqh/5uCxOOfKIH6VPsf+jv+wykTITGN/2NgiEwjJ/eGR3TulF+Df3B7gQrHWl9N0MBlQKwKZYu2P6hLG0v2EkgYSREOpV9n2oh3Qfx5s6tqo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=jrj/wLJG; arc=none smtp.client-ip=194.117.254.33
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=8gLX
+	THVGs634p2369jecAE6hm7OpEG0A266Yw88MJL4=; b=jrj/wLJG2SHQ+Aak+anq
+	rqqEDuJGqCPbOPzteqqoy6lp+MeWurkfDI9dGJwtk6OaFEhqDgmPmF2xOSycJXxN
+	uYqABzMHnCATbu19fTIVfuCPfkc7WKx9JRP20ckzZl0c87LvgngmsROw8UW32Jt6
+	aj0ZzO+qsCffKynsE8+wRrPabA5P01V2Ci57JturwQJlOs3p4tKm0x8qUyIWJhhm
+	lKRI3t6bnzw7Y1qNieKPWXEYbPCLHa5HjWJU8lfZgeHxOi/U4zf4rn8zYRw1Zn+e
+	D9bK/WglrL8t9pbBNlUj8NvGQa5crf6VDw9GbR6zCUEyKWMZ8V+RF7k7br3VMTMy
+	Rg==
+Received: (qmail 3218725 invoked from network); 3 Jun 2026 11:32:06 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 3 Jun 2026 11:32:06 +0200
+X-UD-Smtp-Session: l3s3148p1@fhrWGVZTzpkujnsK
+Date: Wed, 3 Jun 2026 11:32:05 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Andi Shyti <andi.shyti@kernel.org>, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>
+Subject: Re: [PATCH v3 04/10] i2c: core: fix adapter probe deferral loop
+Message-ID: <ah_0lRElrB_2BK2W@ninjato>
+References: <20260511143715.729714-1-johan@kernel.org>
+ <20260511143715.729714-5-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="sUV7M72RRK93NobD"
+Content-Disposition: inline
+In-Reply-To: <20260511143715.729714-5-johan@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-3.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[sang-engineering.com:s=k1];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260013-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[xiaopeitux@foxmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:shuangpeng.kernel@gmail.com,m:mchehab@kernel.org,m:mchehab+huawei@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-media@vger.kernel.org,m:aha310510@gmail.com,m:hverkuil+cisco@kernel.org,m:xiaopei01@kylinos.cn,m:stable@vger.kernel.org,m:shuangpengkernel@gmail.com,m:hverkuil@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:johan@kernel.org,m:andi.shyti@kernel.org,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:codrin.ciubotariu@microchip.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	DKIM_TRACE(0.00)[foxmail.com:+];
-	FREEMAIL_FROM(0.00)[foxmail.com];
+	DMARC_NA(0.00)[sang-engineering.com];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[wsa@sang-engineering.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[sang-engineering.com:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xiaopeitux@foxmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,kernel.org,kylinos.cn];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable,huawei,cisco];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wsa@sang-engineering.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260014-lists,stable=lfdr.de,renesas];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,foxmail.com:from_mime,foxmail.com:dkim,qq.com:mid,kylinos.cn:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sang-engineering.com:dkim,sang-engineering.com:from_mime,sang-engineering.com:email,vger.kernel.org:from_smtp,ninjato:mid,microchip.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EC8AA63634B
+X-Rspamd-Queue-Id: D038263633E
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
 
-In as102_dvb_register(), if dvb_register_frontend() fails, the error
-path jumps directly to label "efereg", which releases the dmxdev
-resources but does not detach the already allocated frontend
-(in as102_attach kzalloc struct as102_state*).
-This results in a memory leak of the frontend structure.
+--sUV7M72RRK93NobD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fix this by adding a new label "fail_frontend" that calls
-dvb_frontend_detach().
+On Mon, May 11, 2026 at 04:37:09PM +0200, Johan Hovold wrote:
+> Drivers must not probe defer after having registered devices as that
+> will trigger a probe loop if the devices bind to a driver (cf. commit
+> fbc35b45f9f6 ("Add documentation on meaning of -EPROBE_DEFER")).
+>=20
+> Move the recovery initialisation, where the GPIO lookup may fail, before
+> registering the adapter to prevent this.
+>=20
+> Fixes: 75820314de26 ("i2c: core: add generic I2C GPIO recovery")
+> Cc: stable@vger.kernel.org	# 5.9
+> Cc: Codrin Ciubotariu <codrin.ciubotariu@microchip.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-Reported-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-Closes: https://lore.kernel.org/lkml/DAD7161C-A1DA-422E-BBC5-2893ABDC2DD0@gmail.com/
-Fixes: d6317c68f332 ("[media] as102: promote it out of staging")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
----
- drivers/media/usb/as102/as102_drv.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-diff --git a/drivers/media/usb/as102/as102_drv.c b/drivers/media/usb/as102/as102_drv.c
-index 6b1d3528a0a7..b57ae8357a73 100644
---- a/drivers/media/usb/as102/as102_drv.c
-+++ b/drivers/media/usb/as102/as102_drv.c
-@@ -338,7 +338,7 @@ int as102_dvb_register(struct as102_dev_t *as102_dev)
- 	if (ret < 0) {
- 		dev_err(dev, "%s: as102_dvb_register_frontend() failed: %d",
- 		    __func__, ret);
--		goto efereg;
-+		goto fail_frontend;
- 	}
- 
- 	/* init bus mutex for token locking */
-@@ -358,6 +358,8 @@ int as102_dvb_register(struct as102_dev_t *as102_dev)
- 	pr_info("Registered device %s", as102_dev->name);
- 	return 0;
- 
-+fail_frontend:
-+	dvb_frontend_detach(dvb->frontend);
- efereg:
- 	dvb_dmxdev_release(&as102_dev->dvb_dmxdev);
- edmxdinit:
--- 
-2.25.1
 
+--sUV7M72RRK93NobD
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmof9JUACgkQFA3kzBSg
+KbYXPQ/+LzAHG2FLqx1IFf/xIdZzdxtvvs117Em857A5G+dtKE1bF774dVO2U2Gh
+wyjQdSi9Vdp0jBsMgVSUHvxC7YKcxH4ZVx+7TVAVeghDRndwEjqOvrVdw9xhXmgc
+vjJv2cO1Y4FGG7eEwqwEhATLuPTBQ57VWXV58xQFFvsWJn9ao8Z7SFb8yJ5PKww4
+bvnWWHLiP1g8WyOl+gmpqI4txW3FSl7dchJYYSbfwNHvLjk/xS33iKrWnsMwfhu4
+CMz16TwjANU8eO4NSko+nH7fnHUPtzssNRzHXowtV3oReVb+NAz2JrilV6IHpyah
+KoiLOGtQ8S35hB7IoKqFXbwPmwbJ4IdtLTvzr45iFEonhkav0H0dHmVyUMZ0ipjr
+NdxjyrJzdKsRbIbWnAXBl6OQP+2Ns0K9lJjJPVC1tCgOQwRyKEFtbxFhFwrlygK+
+YH6s3Gl85xQykpQpTpqYsXM4MGYG81pevhV5Yjh3xlr0yQbcBzLVOw6BNeXxIqzl
+a4WG2UrrLWUzwfRJjwk7gLbPhzxNxknC4z/RAWvJNwUlZTC9ECYNrneAMhnTHG5s
+aob0Uoo4rRh8cDKpo4CrVaogmLpswP8F7XbQqtGZAvlVvasVesByRMXvvXd30vjJ
+A+TDMHuBTDKmSr9kQznnWERScmq6wLLx5555R0H8rDdF1u8Wchc=
+=26hV
+-----END PGP SIGNATURE-----
+
+--sUV7M72RRK93NobD--
 
