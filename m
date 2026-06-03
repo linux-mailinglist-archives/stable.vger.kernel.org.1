@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-260079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260080-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Qc8iMRAoIGpvxwAAu9opvQ
-	(envelope-from <stable+bounces-260079-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 15:11:44 +0200
+	id EQHlBPEnIGpfxwAAu9opvQ
+	(envelope-from <stable+bounces-260080-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 15:11:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD48637EAC
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 15:11:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3BC637EA4
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 15:11:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=163.com header.s=s110527 header.b=h5z94MxS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260079-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260079-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=163.com header.s=s110527 header.b="n5MGP/SA";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260080-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260080-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=163.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BFA1A304AC00
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 13:05:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0852D3022043
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 13:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060EE48097D;
-	Wed,  3 Jun 2026 13:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F774611EE;
+	Wed,  3 Jun 2026 13:05:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266E0480977;
-	Wed,  3 Jun 2026 13:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3873E47ECD6;
+	Wed,  3 Jun 2026 13:05:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780491904; cv=none; b=WZWgMR49uYey1xmTP+qGa8ucVpUc2sC3WGu14tSNOVwofiRfrKqjZEkq6fskQlmvPgUV2kQ3YBPHxnEy8kse8Stu9bjsmvo9q23baQoDXWL4bEhhPip5ee2PEC0R+k3CuMtR565BoRWzOljIb6P3t4tgL8y1oPnaO9NNMOkk0vg=
+	t=1780491914; cv=none; b=UkWC0OEoKbck0/vWyJJE7MmAIKr38I3NmboJXyzTc+bZNBpGhTtftCaKJjid5y7z/RKmyWUqzwbhZ1rPNh2mh80i/eWeVEz+lACESKG9DwM8My2DUKbhOTVN5XZU/F/PVRoHKeoulyOAFWL0uOpMxBj24G6o69HGbux7LwdMP/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780491904; c=relaxed/simple;
-	bh=LBErQI6nA7dzL7B8ktri5f3krdyfYiDJTLqjkqR04bY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mzAbzMVWNSVLfFDiTbsVSVmUzFB+CmyAqK9Qv0e1T10/Z6y0wfWt95ipthCni33s2aOMnAbB/U5mqV7gE2Xs/XmXU+obP74Bz4qx2SZTmbEPQLbikvB+gEO1U92Fo0BmUjpI2VODURGt+oYuwfZZWIUiFCuNYlsL1i4foMn/wQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=h5z94MxS; arc=none smtp.client-ip=117.135.210.5
+	s=arc-20240116; t=1780491914; c=relaxed/simple;
+	bh=6bvuZId+QHXtI1OBaH2b6nZswD5S7sgg3GTHgV5PfhA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uEGUg81DhdVNUD4NyZiLk1LsxicbE1epxlf+RXFyOy72hk7MqKN1zghSXmMuYZuShf6bKLwFX7wfgnWVtOfLVdMZXByBbZe05AlFQz2wv1g56D8HOal5hr3Sl6+A8eKdyS3xO1drrjbSki0dILOLUj0YIUsAoK/DN8rrtDa66IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=n5MGP/SA; arc=none smtp.client-ip=220.197.31.2
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=OR
-	mKfkx1an3GTIAvXWkc41xaU079Fl80NRrhqmonOHg=; b=h5z94MxS2/xnJ6CJwL
-	AdhgJShigkFyt3+PEU178oFvo/2QCTGaeVp5OmYzPOi7E6pvcP++uOjla3VQxo+W
-	N7uxeVuPCj/NOgzZyuratxB6AIiBh/q4eCz2t6BJWlYqOvcxnTjWuJt5lp2SAJQl
-	goI/KaFt5bmVe2XpaoWSxqhpM=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=fC
+	e+LnD2voXqPdswcbC3PLctRfD4+jtKyh83rTK/dIc=; b=n5MGP/SAdwiGNZjY4k
+	F5Nr5sPizs8I5KZpZOYfPmQvroyiGi3kZ/U4E6iWX68sTTxwRbGPnLRbl34g9X5i
+	OUStOc6BC/TIZjxrO5WRJHm5KNaXbrBtDeRSCxof/hEBKz9tCXdh7TP1LOyH/fYY
+	oTbKyHdAZ/KyGOXfW/KUdP3nA=
 Received: from China-163-team (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wBnoqAAJiBqWd71BA--.49866S2;
-	Wed, 03 Jun 2026 21:03:04 +0800 (CST)
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wBnoqAAJiBqWd71BA--.49866S3;
+	Wed, 03 Jun 2026 21:03:10 +0800 (CST)
 From: Wenshan Lan <jetlan9@163.com>
 To: gregkh@linuxfoundation.org,
 	sashal@kernel.org,
@@ -51,6 +52,7 @@ Cc: linux-kernel@vger.kernel.org,
 	Mimi Zohar <zohar@linux.ibm.com>,
 	Alexander Graf <graf@amazon.com>,
 	Ard Biesheuvel <ardb@kernel.org>,
+	Baoquan He <bhe@redhat.com>,
 	Borislav Betkov <bp@alien8.de>,
 	guoweikang <guoweikang.kernel@gmail.com>,
 	Henry Willard <henry.willard@oracle.com>,
@@ -65,13 +67,14 @@ Cc: linux-kernel@vger.kernel.org,
 	Sourabh Jain <sourabhjain@linux.ibm.com>,
 	Thomas Gleinxer <tglx@linutronix.de>,
 	Yifei Liu <yifei.l.liu@oracle.com>,
-	Baoquan He <bhe@redhat.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.6.y 1/3] ima: verify the previous kernel's IMA buffer lies in addressable RAM
-Date: Wed,  3 Jun 2026 21:02:37 +0800
-Message-ID: <20260603130239.81400-1-jetlan9@163.com>
+Subject: [PATCH 6.6.y 2/3] of/kexec: refactor ima_get_kexec_buffer() to use ima_validate_range()
+Date: Wed,  3 Jun 2026 21:02:38 +0800
+Message-ID: <20260603130239.81400-2-jetlan9@163.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260603130239.81400-1-jetlan9@163.com>
+References: <20260603130239.81400-1-jetlan9@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,12 +82,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBnoqAAJiBqWd71BA--.49866S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGr1fGw13WF13Ar4fCFy3urg_yoWruFy5pa
-	9agr4rGrn7Jr1xCws7u3WakF98Xw4kWFy5Wa9xurn7CFy3Jr1DXrsYvrnaqF17tFW3KFyf
-	trsIg3WSg34UXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zi5ku7UUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbC7Aou9mogJgpqPwAA3N
+X-CM-TRANSID:_____wBnoqAAJiBqWd71BA--.49866S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Aw4fZFy8ZrWDXF17KF4rZrb_yoW8Kw4Dpr
+	Wakr1xAr1xJw10gw18uFyYkFy5X3WDWryUGa9ru34vkF1rAw1UZrnY9FZ3WFy2yFyrKFW5
+	WF4jgw1Sgw40qrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piWCJdUUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbC6w4v92ogJg5haQAA3X
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -93,12 +96,12 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
 	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:harshit.m.mogalapalli@oracle.com,m:zohar@linux.ibm.com,m:graf@amazon.com,m:ardb@kernel.org,m:bp@alien8.de,m:guoweikang.kernel@gmail.com,m:henry.willard@oracle.com,m:hpa@zytor.com,m:mingo@redhat.com,m:jbohac@suse.cz,m:joel.granados@kernel.org,m:noodles@fb.com,m:rppt@kernel.org,m:paul.x.webb@oracle.com,m:sohil.mehta@intel.com,m:sourabhjain@linux.ibm.com,m:tglx@linutronix.de,m:yifei.l.liu@oracle.com,m:bhe@redhat.com,m:akpm@linux-foundation.org,m:jetlan9@163.com,m:guoweikangkernel@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:harshit.m.mogalapalli@oracle.com,m:zohar@linux.ibm.com,m:graf@amazon.com,m:ardb@kernel.org,m:bhe@redhat.com,m:bp@alien8.de,m:guoweikang.kernel@gmail.com,m:henry.willard@oracle.com,m:hpa@zytor.com,m:mingo@redhat.com,m:jbohac@suse.cz,m:joel.granados@kernel.org,m:noodles@fb.com,m:rppt@kernel.org,m:paul.x.webb@oracle.com,m:sohil.mehta@intel.com,m:sourabhjain@linux.ibm.com,m:tglx@linutronix.de,m:yifei.l.liu@oracle.com,m:akpm@linux-foundation.org,m:jetlan9@163.com,m:guoweikangkernel@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[jetlan9@163.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -106,60 +109,36 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_FROM(0.00)[163.com];
 	RCPT_COUNT_TWELVE(0.00)[25];
-	TAGGED_FROM(0.00)[bounces-260079-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,oracle.com,linux.ibm.com,amazon.com,kernel.org,alien8.de,gmail.com,zytor.com,redhat.com,suse.cz,fb.com,intel.com,linutronix.de,linux-foundation.org,163.com];
+	TAGGED_FROM(0.00)[bounces-260080-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,oracle.com,linux.ibm.com,amazon.com,kernel.org,redhat.com,alien8.de,gmail.com,zytor.com,suse.cz,fb.com,intel.com,linutronix.de,linux-foundation.org,163.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DKIM_TRACE(0.00)[163.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4BD48637EAC
+X-Rspamd-Queue-Id: 5E3BC637EA4
 
 From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit 10d1c75ed4382a8e79874379caa2ead8952734f9 ]
+[ Upstream commit 4d02233235ed0450de9c10fcdcf3484e3c9401ce ]
 
-Patch series "Address page fault in ima_restore_measurement_list()", v3.
+Refactor the OF/DT ima_get_kexec_buffer() to use a generic helper to
+validate the address range.  No functional change intended.
 
-When the second-stage kernel is booted via kexec with a limiting command
-line such as "mem=<size>" we observe a pafe fault that happens.
-
-    BUG: unable to handle page fault for address: ffff97793ff47000
-    RIP: ima_restore_measurement_list+0xdc/0x45a
-    #PF: error_code(0x0000)  not-present page
-
-This happens on x86_64 only, as this is already fixed in aarch64 in
-commit: cbf9c4b9617b ("of: check previous kernel's ima-kexec-buffer
-against memory bounds")
-
-
-This patch (of 3):
-
-When the second-stage kernel is booted with a limiting command line (e.g.
-"mem=<size>"), the IMA measurement buffer handed over from the previous
-kernel may fall outside the addressable RAM of the new kernel.  Accessing
-such a buffer can fault during early restore.
-
-Introduce a small generic helper, ima_validate_range(), which verifies
-that a physical [start, end] range for the previous-kernel IMA buffer lies
-within addressable memory:
-	- On x86, use pfn_range_is_mapped().
-	- On OF based architectures, use page_is_ram().
-
-Link: https://lkml.kernel.org/r/20251231061609.907170-1-harshit.m.mogalapalli@oracle.com
-Link: https://lkml.kernel.org/r/20251231061609.907170-2-harshit.m.mogalapalli@oracle.com
+Link: https://lkml.kernel.org/r/20251231061609.907170-3-harshit.m.mogalapalli@oracle.com
 Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
 Cc: Alexander Graf <graf@amazon.com>
 Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
 Cc: Borislav Betkov <bp@alien8.de>
 Cc: guoweikang <guoweikang.kernel@gmail.com>
 Cc: Henry Willard <henry.willard@oracle.com>
@@ -174,77 +153,46 @@ Cc: Sohil Mehta <sohil.mehta@intel.com>
 Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
 Cc: Thomas Gleinxer <tglx@linutronix.de>
 Cc: Yifei Liu <yifei.l.liu@oracle.com>
-Cc: Baoquan He <bhe@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Wenshan Lan <jetlan9@163.com>
 ---
- include/linux/ima.h                |  1 +
- security/integrity/ima/ima_kexec.c | 35 ++++++++++++++++++++++++++++++
- 2 files changed, 36 insertions(+)
+ drivers/of/kexec.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/ima.h b/include/linux/ima.h
-index 86b57757c7b1..1ae8647576ff 100644
---- a/include/linux/ima.h
-+++ b/include/linux/ima.h
-@@ -145,6 +145,7 @@ static inline int ima_measure_critical_data(const char *event_label,
- #ifdef CONFIG_HAVE_IMA_KEXEC
- int __init ima_free_kexec_buffer(void);
- int __init ima_get_kexec_buffer(void **addr, size_t *size);
-+int ima_validate_range(phys_addr_t phys, size_t size);
- #endif
+diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
+index 3b98a57f1f07..23fde2d032e6 100644
+--- a/drivers/of/kexec.c
++++ b/drivers/of/kexec.c
+@@ -128,7 +128,6 @@ int __init ima_get_kexec_buffer(void **addr, size_t *size)
+ {
+ 	int ret, len;
+ 	unsigned long tmp_addr;
+-	unsigned long start_pfn, end_pfn;
+ 	size_t tmp_size;
+ 	const void *prop;
  
- #ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
-diff --git a/security/integrity/ima/ima_kexec.c b/security/integrity/ima/ima_kexec.c
-index ad133fe120db..d7c18d8a3103 100644
---- a/security/integrity/ima/ima_kexec.c
-+++ b/security/integrity/ima/ima_kexec.c
-@@ -12,6 +12,8 @@
- #include <linux/kexec.h>
- #include <linux/of.h>
- #include <linux/ima.h>
-+#include <linux/mm.h>
-+#include <linux/overflow.h>
- #include "ima.h"
+@@ -144,17 +143,9 @@ int __init ima_get_kexec_buffer(void **addr, size_t *size)
+ 	if (!tmp_size)
+ 		return -ENOENT;
  
- #ifdef CONFIG_IMA_KEXEC
-@@ -164,3 +166,36 @@ void __init ima_load_kexec_buffer(void)
- 		pr_debug("Error restoring the measurement list: %d\n", rc);
- 	}
- }
-+
-+/*
-+ * ima_validate_range - verify a physical buffer lies in addressable RAM
-+ * @phys: physical start address of the buffer from previous kernel
-+ * @size: size of the buffer
-+ *
-+ * On success return 0. On failure returns -EINVAL so callers can skip
-+ * restoring.
-+ */
-+int ima_validate_range(phys_addr_t phys, size_t size)
-+{
-+	unsigned long start_pfn, end_pfn;
-+	phys_addr_t end_phys;
-+
-+	if (check_add_overflow(phys, (phys_addr_t)size - 1, &end_phys))
-+		return -EINVAL;
-+
-+	start_pfn = PHYS_PFN(phys);
-+	end_pfn = PHYS_PFN(end_phys);
-+
-+#ifdef CONFIG_X86
-+	if (!pfn_range_is_mapped(start_pfn, end_pfn))
-+#else
-+	if (!page_is_ram(start_pfn) || !page_is_ram(end_pfn))
-+#endif
-+	{
-+		pr_warn("IMA: previous kernel measurement buffer %pa (size 0x%zx) lies outside available memory\n",
-+			&phys, size);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
+-	/*
+-	 * Calculate the PFNs for the buffer and ensure
+-	 * they are with in addressable memory.
+-	 */
+-	start_pfn = PHYS_PFN(tmp_addr);
+-	end_pfn = PHYS_PFN(tmp_addr + tmp_size - 1);
+-	if (!page_is_ram(start_pfn) || !page_is_ram(end_pfn)) {
+-		pr_warn("IMA buffer at 0x%lx, size = 0x%zx beyond memory\n",
+-			tmp_addr, tmp_size);
+-		return -EINVAL;
+-	}
++	ret = ima_validate_range(tmp_addr, tmp_size);
++	if (ret)
++		return ret;
+ 
+ 	*addr = __va(tmp_addr);
+ 	*size = tmp_size;
 -- 
 2.43.0
 
