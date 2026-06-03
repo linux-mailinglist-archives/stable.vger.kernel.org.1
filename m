@@ -1,164 +1,194 @@
-Return-Path: <stable+bounces-259983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259987-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SnwZFX/TH2oJqgAAu9opvQ
-	(envelope-from <stable+bounces-259983-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 09:10:55 +0200
+	id s0qMA+bWH2pBqwAAu9opvQ
+	(envelope-from <stable+bounces-259987-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 09:25:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDB763507E
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 09:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8686352E5
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 09:25:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rp07iUhS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-259983-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259983-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-259987-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259987-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8C0613088BF5
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 07:05:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7DD3C30507E7
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 07:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC0C3FE36C;
-	Wed,  3 Jun 2026 07:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC12399CE6;
+	Wed,  3 Jun 2026 07:18:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07303FC5D0;
-	Wed,  3 Jun 2026 07:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2002D73B8;
+	Wed,  3 Jun 2026 07:17:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780470274; cv=none; b=magQFUwkvYNXaWR8kjM2ttRT5tOrKFbLc9JgmknCEhUJaVxfT8RCD2wBjcYlfYNEUiQ2dA1CZV8bzIDVXgZ2Dpz68VC111RE4FZRNPVc8VNJ3bgA0eFIqqnP9P09eaCYuTVEfyK99fa1yG2pdYSQ6wFZC1BZRUwnyOxrapT/RgU=
+	t=1780471081; cv=none; b=lA1tXNzPcIPl5uwHTfN817jDxgfAoZq4XfCV3I+iF352UgJCXC7N2UV34xaPVf8j9dZibuQmx4iWRCIEZbVDfe47PyX+wQnmg9FTuLJqy/Pnj7TWajWP24tVl92U8emnpz619Poxn0eOJs9wFLQ0ZUimj14V8T8XhEx0gn3+iLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780470274; c=relaxed/simple;
-	bh=/DwvyFrcBfOuFGTiBTM3IeCMqQkQQAbzx1c/0Tqpc+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LJeyNSC44Pucnx5jlNOGAZhqKerIelrVm6TLqFecRq1tQ+mgHcJa5bbscrSgVp8khw/9ypE+Kq+QFQzR4XoIVzW52DGl69eryPUtNkd8bEKQWKsCXHD8dVErx5AqnF9ZogyDE0T/DGggScCckw/ToFC4ftHDrBwuIbYQr2zm96Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rp07iUhS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E121F00893;
-	Wed,  3 Jun 2026 07:04:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780470273;
-	bh=DEcpTemmToYZVKIk8pXtuPF0zFWXNAtbHSkvBvRXIto=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Rp07iUhSLEd1Giy8+s8MRzEgqLR6Wi8EMdvuyTp74OSYL/i/lXzWO3JvFCPtVcMnw
-	 j1Rsqul0GJTFI5u+kVrc7gGEJyxz6rpEqqIi6VqtQomvI36CBRVkMOzf1CQI2bbnl+
-	 uiSg7bzeFIKPZ28wU7FafiUmkPPWELvWDSnAaZR8ceti1Im++bnCfabmTj9CDlc3eY
-	 FN7e7x6GuJ7Lo80jXX3Q2H+r1Y692dkIullgnXzwATxSBYvHxxebkkgv0U98uqU/ik
-	 bimTN9FU36PNsmsEkOVZ4Pv5hi8QHJXAFgYoowOYOKD1Q5gYC4jdO8Hm8bypu2B9wa
-	 Md0/edCOrG2Qw==
-Date: Wed, 3 Jun 2026 09:04:29 +0200
-From: Benjamin Tissoires <bentiss@kernel.org>
-To: Wenshan Lan <jetlan9@163.com>
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Lee Jones <lee@kernel.org>
-Subject: Re: [PATCH 6.12.y] HID: core: Mitigate potential OOB by removing
- bogus memset()
-Message-ID: <ah_RiLcNbfyfDHko@beelink>
-References: <20260603054344.80160-1-jetlan9@163.com>
+	s=arc-20240116; t=1780471081; c=relaxed/simple;
+	bh=eGMA2kfukIoeyI725SFDEiyovjQe2K1z/IFmf/wWKd8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Vfs2/XI88Xjy0IFQpGwL1Cihyat6ZIqx1DxpIdlwJRIqllNz7JQH9EI3+UWV49CfXckZR0sPCJ1u/XUV9iBY4v2Zp7G3I/5fIRsBGbUczKiugZnI0QJCNoM/mkobsoaD0S5O0+4SQRlk0zl4vfqNiJMmc+ewWknZB9BqyGlZzy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Received: from localhost.localdomain (unknown [36.112.3.223])
+	by APP-01 (Coremail) with SMTP id qwCowAC3XNUK1R9q8eqAAA--.1949S2;
+	Wed, 03 Jun 2026 15:17:30 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: skalluru@marvell.com,
+	manishc@marvell.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ariele@broadcom.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] bnx2x: clean up VF PCI resources on probe failure
+Date: Wed,  3 Jun 2026 15:17:29 +0800
+Message-Id: <20260603071729.799370-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260603054344.80160-1-jetlan9@163.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAC3XNUK1R9q8eqAAA--.1949S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxGF13Wry7KF4xAw48tF4xWFg_yoW5Gw1fpa
+	9rXFy5Xr18GrsxAa1UXFWUAFnxA398t34UKayUJ3yavryYyF98JF47Ka47ZrW8GrZ5CF4S
+	qw4jvwn8W3WYvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiCRAHE2ofveVYpAAAsc
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jetlan9@163.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lee@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[163.com];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[bentiss@kernel.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259987-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS(0.00)[m:skalluru@marvell.com,m:manishc@marvell.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:ariele@broadcom.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lihaoxiang@isrc.iscas.ac.cn,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-259983-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bentiss@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER(0.00)[lihaoxiang@isrc.iscas.ac.cn,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lihaoxiang@isrc.iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,iscas.ac.cn:email,isrc.iscas.ac.cn:from_mime,isrc.iscas.ac.cn:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ECDB763507E
+X-Rspamd-Queue-Id: 9B8686352E5
 
-On Jun 03 2026, Wenshan Lan wrote:
-> From: Lee Jones <lee@kernel.org>
-> 
-> [ Upstream commit 0a3fe972a7cb1404f693d6f1711f32bc1d244b1c ]
-> 
-> The memset() in hid_report_raw_event() has the good intention of
-> clearing out bogus data by zeroing the area from the end of the incoming
-> data string to the assumed end of the buffer.  However, as we have
-> previously seen, doing so can easily result in OOB reads and writes in
-> the subsequent thread of execution.
-> 
-> The current suggestion from one of the HID maintainers is to remove the
-> memset() and simply return if the incoming event buffer size is not
-> large enough to fill the associated report.
-> 
-> Suggested-by Benjamin Tissoires <bentiss@kernel.org>
-> 
-> Signed-off-by: Lee Jones <lee@kernel.org>
-> [bentiss: changed the return value]
-> Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-> [ Replace hid_warn_ratelimited() with hid_warn() in v6.12. ]
-> Signed-off-by: Wenshan Lan <jetlan9@163.com>
-> ---
+bnx2x_init_one() allocates VF PCI resources by calling
+bnx2x_vf_pci_alloc(), but later error paths fall through
+the common cleanup path without calling bnx2x_vf_pci_dealloc().
 
-This commit is known for breaking devices. You can't backport this
-without the following 3 fixes:
-4d3a2a466b8d ("HID: core: Fix size_t specifier in hid_report_raw_event()")
-206342541fc8 ("HID: core: introduce hid_safe_input_report()")
-2c85c61d1332 ("HID: pass the buffer size to hid_report_raw_event")
+This can leak the VF PCI resources allocated for the VF
+when probe fails after bnx2x_vf_pci_alloc() succeeds.
 
-Note that this is the same for your 6.6, 6.1 and 5.15 patches.
+Add a VF-specific error label to call bnx2x_vf_pci_dealloc()
+before falling through to the existing common cleanup path.
 
-Cheers,
-Benjamin
+Fixes: 6411280ac94d ("bnx2x: Segregate SR-IOV code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+---
+ drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
->  drivers/hid/hid-core.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-> index 294a25330ed0..6d61bf20ec3f 100644
-> --- a/drivers/hid/hid-core.c
-> +++ b/drivers/hid/hid-core.c
-> @@ -2029,9 +2029,10 @@ int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *
->  		rsize = max_buffer_size;
->  
->  	if (csize < rsize) {
-> -		dbg_hid("report %d is too short, (%d < %d)\n", report->id,
-> -				csize, rsize);
-> -		memset(cdata + csize, 0, rsize - csize);
-> +		hid_warn(hid, "Event data for report %d was too short (%d vs %d)\n",
-> +			 report->id, rsize, csize);
-> +		ret = -EINVAL;
-> +		goto out;
->  	}
->  
->  	if ((hid->claimed & HID_CLAIMED_HIDDEV) && hid->hiddev_report_event)
-> -- 
-> 2.43.0
-> 
-> 
+diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
+index da0f8c353e6a..acb0379d94b9 100644
+--- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
++++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
+@@ -13932,13 +13932,13 @@ static int bnx2x_init_one(struct pci_dev *pdev,
+ 		dev_err(&bp->pdev->dev,
+ 			"Cannot map doorbell space, aborting\n");
+ 		rc = -ENOMEM;
+-		goto init_one_freemem;
++		goto init_one_vf_pci_dealloc;
+ 	}
+ 
+ 	if (IS_VF(bp)) {
+ 		rc = bnx2x_vfpf_acquire(bp, tx_count, rx_count);
+ 		if (rc)
+-			goto init_one_freemem;
++			goto init_one_vf_pci_dealloc;
+ 
+ #ifdef CONFIG_BNX2X_SRIOV
+ 		/* VF with OLD Hypervisor or old PF do not support filtering */
+@@ -13952,7 +13952,7 @@ static int bnx2x_init_one(struct pci_dev *pdev,
+ 	/* Enable SRIOV if capability found in configuration space */
+ 	rc = bnx2x_iov_init_one(bp, int_mode, BNX2X_MAX_NUM_OF_VFS);
+ 	if (rc)
+-		goto init_one_freemem;
++		goto init_one_vf_pci_dealloc;
+ 
+ 	/* calc qm_cid_count */
+ 	bp->qm_cid_count = bnx2x_set_qm_cid_count(bp);
+@@ -13971,7 +13971,7 @@ static int bnx2x_init_one(struct pci_dev *pdev,
+ 	rc = bnx2x_set_int_mode(bp);
+ 	if (rc) {
+ 		dev_err(&pdev->dev, "Cannot set interrupts\n");
+-		goto init_one_freemem;
++		goto init_one_vf_pci_dealloc;
+ 	}
+ 	BNX2X_DEV_INFO("set interrupts successfully\n");
+ 
+@@ -13979,7 +13979,7 @@ static int bnx2x_init_one(struct pci_dev *pdev,
+ 	rc = register_netdev(dev);
+ 	if (rc) {
+ 		dev_err(&pdev->dev, "Cannot register net device\n");
+-		goto init_one_freemem;
++		goto init_one_vf_pci_dealloc;
+ 	}
+ 	BNX2X_DEV_INFO("device name after netdev register %s\n", dev->name);
+ 
+@@ -14001,6 +14001,10 @@ static int bnx2x_init_one(struct pci_dev *pdev,
+ 
+ 	return 0;
+ 
++init_one_vf_pci_dealloc:
++	if (IS_VF(bp))
++		bnx2x_vf_pci_dealloc(bp);
++
+ init_one_freemem:
+ 	bnx2x_free_mem_bp(bp);
+ 
+-- 
+2.25.1
+
 
