@@ -1,134 +1,176 @@
-Return-Path: <stable+bounces-260138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2oV6MDtLIGrR0QAAu9opvQ
-	(envelope-from <stable+bounces-260138-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 17:41:47 +0200
+	id mKoGMxNVIGop1QAAu9opvQ
+	(envelope-from <stable+bounces-260140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 18:23:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE08639514
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 17:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 283EE639AED
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 18:23:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ispras.ru header.s=default header.b=hq6LbCY4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260138-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260138-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=ispras.ru;
+	dkim=pass header.d=xry111.site header.s=default header.b=lsa2IJO8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260140-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260140-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=xry111.site;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6DA96318146B
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 15:27:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFC773109BD1
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 15:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8805D3D891D;
-	Wed,  3 Jun 2026 15:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815093D1709;
+	Wed,  3 Jun 2026 15:40:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from xry111.site (xry111.site [89.208.246.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F073D79E8;
-	Wed,  3 Jun 2026 15:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996C73C768B
+	for <stable@vger.kernel.org>; Wed,  3 Jun 2026 15:40:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780500272; cv=none; b=lRQxb8MEYF45fRavLbudw3T2dIShin/77+54MwOsyOVNgLLgXMZeidxAgvQXrwZjw/uJDNenpQciDJJQjEwvKAXRohnujebBwDKlsphzJ48tqTFR/+gWwO2I0tH2fmieXByGVuaCJgD9+kulu1Hz4d4CvqLAc8WAO6I5OGCL3Y8=
+	t=1780501213; cv=none; b=iswXm1sZKE0uhLiPmgdcaoPyY9Ol6vqUp4UELfJV9y0tVgwrge7Cl7xN1yWEQhWHQZCzKIKAn4IQBHtY+4hNpTF6L/akBSqeHRmslnKrfPzCdRRihXOoNMqtGJUTmRRZVklxS6FUGT1Kcy/rl4UeQP6+bXPtTwgnyCf94gc+T9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780500272; c=relaxed/simple;
-	bh=VYGbKoBU1kgJ8/HqyzVh46Bxs708cg3YePpBv9k6/7w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YUPutO5s5DN9NALlMfSxW/5Z9PfVgb68ns6qn2UIiuQ2/VFQ3pXTy3X4pzWtSn8AUpaQvb2blqGWNwW9fIsFcPDVouGS7miRa7XzEH8UCwmL2lhW83W4aqX18ZmCq8/a0JCTSqwH71/cixaobGteACbLL5TpAaD4EVWE8VFTFCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=hq6LbCY4; arc=none smtp.client-ip=83.149.199.84
-Received: from localhost (unknown [10.10.165.2])
-	by mail.ispras.ru (Postfix) with ESMTPSA id A754B45F7992;
-	Wed,  3 Jun 2026 15:24:28 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru A754B45F7992
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1780500268;
-	bh=dDezscWghLoipjsue1MQr5iD2rpVXv26dElJr8ULXHQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hq6LbCY4N1O+D8J3Nccr51xNzAnl2JGwoqOdtHVAJHdJjsIqLNBlvIuAYVLYcwMj4
-	 Qt73OtQ/c5ktuEHoz1WSsXJA4nhgBvJvE6noFbE3n9bVkyn4qmMDs0wavz6eLNRQFp
-	 jnGgcx3M6r/YOuhFB4DJqezrSBaodTV7D0PXqVxM=
-Date: Wed, 3 Jun 2026 18:24:28 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Vladislav Nikolaev <vlad102nikolaev@gmail.com>
-Cc: stable@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
-	Zhu Yanjun <zyjzyj2000@gmail.com>, Doug Ledford <dledford@redhat.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Haggai Eran <haggaie@mellanox.com>, 
-	Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH 6.1] RDMA/rxe: Complete the rxe_cleanup_task backport
-Message-ID: <20260603180641-95dcfccf487143d39ac329a8-pchelkin@ispras>
-References: <20260603132729.423-1-vlad102nikolaev@gmail.com>
+	s=arc-20240116; t=1780501213; c=relaxed/simple;
+	bh=fZpZvTGEzTcRNf9RRxuWFBVj+guLx9LzrsIHABA9Uuk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VXvn3FQfkKnIJKCfp8eyxQCsz2nP8CE49JkB5EaQD08ylhTSQ64muUnYxfEJT7iSsRVWMQ9DsoXjbWBBcLRZlz/Gqk0gTcOld6LTW+d+zpxbV2NxhKTHWSa6nSbL9dTGW0W2octlTee49q3gLhdyLbmT86gWgBNPXYgkklNnDAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=lsa2IJO8; arc=none smtp.client-ip=89.208.246.23
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1780501204;
+	bh=ZKrR5aUhBaKbID3EWhhs18EUWgAXM/AzlaE4P5/gR78=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lsa2IJO8SDcw7nN5cugAw87ZOnn3CSsS+lxOi+x2pwS1TsLPevGJ7tBU/CteaMO62
+	 eF72ZebqLApbYrl9xB/3o7w7PhThl+w4ec8O762/v3lUdwFTcan8ZRbWWKB+l98AEr
+	 dWpLWDHMuNtVh8c/hNL9MIz0frFcW7DGpDRf2s0c=
+Received: from stargazer (unknown [IPv6:2408:824e:307:6541:546a:40ae:5851:c0ef])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 1B18765987;
+	Wed,  3 Jun 2026 11:40:01 -0400 (EDT)
+From: Xi Ruoyao <xry111@xry111.site>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	amd-gfx@lists.freedesktop.org,
+	Xi Ruoyao <xry111@xry111.site>
+Subject: [PATCH v7.0.y v2 0/8] drm/amd: Backport FPU Guard Move from DML to DC
+Date: Wed,  3 Jun 2026 23:39:12 +0800
+Message-ID: <20260603153920.249671-1-xry111@xry111.site>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260603132729.423-1-vlad102nikolaev@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ispras.ru,none];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
+	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ispras.ru:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:vlad102nikolaev@gmail.com,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:zyjzyj2000@gmail.com,m:dledford@redhat.com,m:jgg@ziepe.ca,m:haggaie@mellanox.com,m:leon@kernel.org,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,s:lists@lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[pchelkin@ispras.ru,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-260140-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashal@kernel.org,m:amd-gfx@lists.freedesktop.org,m:xry111@xry111.site,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-260138-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[ispras.ru:+];
+	FORGED_SENDER(0.00)[xry111@xry111.site,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pchelkin@ispras.ru,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,kernel.org,gmail.com,redhat.com,ziepe.ca,mellanox.com,linuxtesting.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[xry111.site:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ispras:mid,ispras.ru:from_mime,ispras.ru:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xry111.site:mid,xry111.site:from_mime,xry111.site:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1AE08639514
+X-Rspamd-Queue-Id: 283EE639AED
 
-On Wed, 03. Jun 16:27, Vladislav Nikolaev wrote:
-> No upstream commit exists for this patch.
-> 
-> The issue was introduced with backporting upstream commit b2b1ddc45745
-> ("RDMA/rxe: Fix the error "trying to register non-static key in
-> rxe_cleanup_task"") to the 6.1 stable tree as commit 3236221bb8e4
-> ("RDMA/rxe: Fix the error "trying to register non-static key in
-> rxe_cleanup_task"").
+The change from my commit c97a7dccb3ed ("drm/amd/display/dml2: Guard
+dml21_map_dc_state_into_dml_display_cfg with DC_FP_START") was dropped
+in the commit e6a8a000cfe6 ("drm/amd/display: Rename dml2 to dml2_0
+folder") for some reason I don't know, so on 6.19.y and 7.0.y the
+original issue (9070XT fails to work on LoongArch) has regressed.
 
-I may be wrong and then the stable kernel maintainers might correct me,
-but there's been some consensus established in at least recent stable
-patches workflow that if the backport version of the upstream commit is
-incorrect or, in this particular case, incomplete - the corresponding
-patches should be reverted from the affected stable branches and ported
-properly once again.  That would make it easier to follow in future.
+As I've mentioned in my commit message, it was only an incomplete and
+temporary solution.  As the mainline already contains the move of FPU
+guard which should ultimately resolve the issue, it seems better to
+just backport the final fix instead of adding the temporary ad-hoc
+change back.
 
-See [1] or [2] for reference.
+Tested with 9070XT (where the original issue manifested) and 5500XT.
 
-[1]: https://lore.kernel.org/stable/20260402-tavern-keen-2b4fa6b9@mheyne-amazon/T/#u
-[2]: https://lore.kernel.org/stable/ahgiBNbwo7FudH9r@decadent.org.uk/
+Changes since v1: rebase onto 7.0.11.
 
-P.S: consider porting 1c7eec4d5f3b ("RDMA/rxe: Fix "trying to register
-non-static key in rxe_qp_do_cleanup" bug") as well to 6.1/6.6 and other
-relevant stables (if tinkering with this code anyway) ?
+Ovidiu Bunea (1):
+  drm/amd/display: Add min clock init for DML21 mode programming
 
-Thanks.
+Rafal Ostrowski (4):
+  drm/amd/display: Move FPU Guards From DML To DC - Part 1
+  drm/amd/display: Move FPU Guards From DML To DC - Part 2
+  drm/amd/display: Move FPU Guards From DML To DC - Part 3
+  drm/amd/display: Move dml2_destroy to non-FPU compilation unit
+
+Srinivasan Shanmugam (1):
+  drm/amd/display: Fix dc_is_fp_enabled name mismatch
+
+Wayne Lin (1):
+  drm/amd/display: Fix fpu guard warning
+
+Xi Ruoyao (1):
+  drm/amd/display: Backport dml21 DC_RUN_WITH_PREEMPTION_ENABLED
+    addition from DC 3.2.373
+
+ .../gpu/drm/amd/display/amdgpu_dm/dc_fpu.c    |   25 +-
+ .../gpu/drm/amd/display/amdgpu_dm/dc_fpu.h    |   17 +-
+ .../display/dc/clk_mgr/dcn30/dcn30_clk_mgr.c  |    2 -
+ .../display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c  |    2 -
+ drivers/gpu/drm/amd/display/dc/core/dc.c      |    5 +-
+ .../gpu/drm/amd/display/dc/core/dc_state.c    |   75 +-
+ .../gpu/drm/amd/display/dc/core/dc_stream.c   |   15 +-
+ .../drm/amd/display/dc/dml/dcn20/dcn20_fpu.c  |    2 +-
+ .../drm/amd/display/dc/dml/dcn20/dcn20_fpu.h  |    2 +-
+ .../drm/amd/display/dc/dml/dcn31/dcn31_fpu.c  |    6 +-
+ .../drm/amd/display/dc/dml/dcn31/dcn31_fpu.h  |    6 +-
+ .../gpu/drm/amd/display/dc/dml2_0/Makefile    |   72 +-
+ .../dml2_0/dml21/dml21_translation_helper.c   |   25 +
+ .../dml2_0/dml21/dml21_translation_helper.h   |    1 +
+ .../display/dc/dml2_0/dml21/dml21_wrapper.c   |  391 +--
+ .../display/dc/dml2_0/dml21/dml21_wrapper.h   |   30 -
+ .../dc/dml2_0/dml21/dml21_wrapper_fpu.c       |  379 +++
+ .../dc/dml2_0/dml21/dml21_wrapper_fpu.h       |   60 +
+ .../drm/amd/display/dc/dml2_0/dml2_wrapper.c  |   34 +-
+ .../amd/display/dc/dml2_0/dml2_wrapper_fpu.c  |   19 +-
+ .../amd/display/dc/hwss/dcn401/dcn401_hwseq.c |    4 +-
+ .../dc/resource/dcn21/dcn21_resource.c        |    7 +
+ .../dc/resource/dcn31/dcn31_resource.c        |    7 +
+ .../dc/resource/dcn315/dcn315_resource.c      |    7 +
+ .../dc/resource/dcn316/dcn316_resource.c      |    7 +
+ .../dc/resource/dcn35/dcn35_resource.c        |   10 +-
+ .../dc/resource/dcn35/dcn35_resource.h        |    1 +
+ .../dc/resource/dcn351/dcn351_resource.c      |   10 +-
+ .../dc/resource/dcn36/dcn36_resource.c        |    4 +-
+ .../dc/resource/dcn401/dcn401_resource.c      |   30 +-
+ .../dc/resource/dcn42/dcn42_resource.c        | 2355 +++++++++++++++++
+ 31 files changed, 3076 insertions(+), 534 deletions(-)
+ create mode 100644 drivers/gpu/drm/amd/display/dc/dml2_0/dml21/dml21_wrapper_fpu.c
+ create mode 100644 drivers/gpu/drm/amd/display/dc/dml2_0/dml21/dml21_wrapper_fpu.h
+ create mode 100644 drivers/gpu/drm/amd/display/dc/resource/dcn42/dcn42_resource.c
+
+-- 
+2.54.0
+
 
