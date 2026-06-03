@@ -1,156 +1,167 @@
-Return-Path: <stable+bounces-260061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id P36XBd8YIGoAvwAAu9opvQ
-	(envelope-from <stable+bounces-260061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 14:06:55 +0200
+	id 6ZLzKXAcIGoiwAAAu9opvQ
+	(envelope-from <stable+bounces-260067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 14:22:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563BA637505
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 14:06:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17446637714
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 14:22:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260061-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260061-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=intel.com header.s=Intel header.b=S+HyY4tW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260067-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260067-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AC084301BB98
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 12:06:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 69203301DC19
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 12:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA89846AF37;
-	Wed,  3 Jun 2026 12:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9982747A0D1;
+	Wed,  3 Jun 2026 12:14:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8651446AEEA;
-	Wed,  3 Jun 2026 12:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E3647A0C3
+	for <stable@vger.kernel.org>; Wed,  3 Jun 2026 12:14:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780488411; cv=none; b=RQcgWBIwmIAbFwPcBHdUPDH2+VRITCBCQjO847AiOnXGzlBeHl8AuNgR9N8H1jn2omiXIviptavakA2s+u5MN9Enuw9bThd/ELSMv70zKOlwcpAN/BmnbtIEq5vG1GKx/Rma7Odd++zdDGmHC3cSSQRDiKq6ENvnDKBNSluNwLc=
+	t=1780488875; cv=none; b=Vq1n4nOfPbXX6MA76E8zAysji2MmYj94XrKfntkEbtzozv+2JJpm9I27lwvaGhmkC8bF1pwbCvIaz0X1fsRKOBe/l24D4sLs9SETvAXsBXZ75mUQcih9jNbFBlMEYgVtjfL+4MT0ogz2PqpYEOfLPdT6KodApHAqVsFfQKd0GBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780488411; c=relaxed/simple;
-	bh=JizyUJtj9l47MDABYPY2Ol/uBdvkPaKWospKIlUIbw8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hEpJCO+DJYA3CoZzyR8e411vQoKMB4B6fRZnu5g4vZm9ZDyWTHclAIQ/ao7kR0NyHMNY0AYedHDMRqszsfmisxge0KNK1nMTxRjOCpHnqRxMUZtZFwP8dm+zoVsb21eanJdLNPjFo4HTdOujURdVXCqui7vRrEjHKSYZiNB+S1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowACHa+LUGCBq2rWAEw--.4908S2;
-	Wed, 03 Jun 2026 20:06:44 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: corey@minyard.net
-Cc: openipmi-developer@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
+	s=arc-20240116; t=1780488875; c=relaxed/simple;
+	bh=V91GoT1tM9md2KozCeXm5aypOv5ZJavURFlxJQSbmOM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a9YeReN5iGbN557aSD1MUE2X1JaycE6HwlKkdyt/ENipC3Vo0Tb/dN1smKYymzuEq43OuuqVC1YeliX+7EI1LhlnSbxCsDzyvIiXEI0AjIsexY1NKQROgsp1e5tTGe3iP6L7mn1fdYYfjylABBWoPWm/Vd5SG+HHv7Wp1oAwYys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S+HyY4tW; arc=none smtp.client-ip=198.175.65.13
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780488873; x=1812024873;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=V91GoT1tM9md2KozCeXm5aypOv5ZJavURFlxJQSbmOM=;
+  b=S+HyY4tWdqBan90PUEeOW+o/1VyJZlZ9d/GgRZJ5MG97XDQQgCJ6Gn9C
+   c4Ab1eaHQzeZj/AR4Mx8uqCynJBFzMbpCbk5jrnImy62sFsHkbPFimxaJ
+   p/w5Ki8y8H2OptbyXRMvSFTzlFMIaXHHbD2VcLO/4MoAzZ3WsSzJ0iu7P
+   0n6A183VpGGABjOzeXtsDBKIuhpAOS1fGLPuAiPmOMTrQjwGbV51Vn5iY
+   rPyFS77qtLzxVJxibBMmoTvD1i+UW2RBuml+yyS0sG+59HgTUos9jm4tM
+   bCfvNgPjGdoeMejWGNyvl8l9/CaVKR+HeUl7ISm475xMihBPIjgRuqCGM
+   g==;
+X-CSE-ConnectionGUID: us4zkw+mQEeN+ipyVMf2eQ==
+X-CSE-MsgGUID: UA/xNjc7RUuypLH/5OEMyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="92401552"
+X-IronPort-AV: E=Sophos;i="6.24,185,1774335600"; 
+   d="scan'208";a="92401552"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 05:14:32 -0700
+X-CSE-ConnectionGUID: IqpauxNfTm2NjNmmAceq9w==
+X-CSE-MsgGUID: w60EvJPMShKLRvi01WjSiQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,185,1774335600"; 
+   d="scan'208";a="249301240"
+Received: from yadavs-z690i-a-ultra-plus.iind.intel.com ([10.190.216.90])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 05:14:28 -0700
+From: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org,
+	rodrigo.vivi@intel.com,
+	nirmoy.das@intel.com,
+	umesh.nerlige.ramappa@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	matthew.brost@intel.com,
+	niranjana.vishwanathapura@intel.com,
+	thomas.hellstrom@intel.com,
+	fei.yang@intel.com,
+	himal.prasad.ghimiray@intel.com,
+	matthew.d.roper@intel.com,
+	maarten.lankhorst@intel.com,
+	joonas.lahtinen@intel.com,
+	matthew.auld@intel.com,
 	stable@vger.kernel.org
-Subject: [PATCH] ipmi: fix refcount leak in i_ipmi_request()
-Date: Wed,  3 Jun 2026 12:06:34 +0000
-Message-Id: <20260603120634.3758747-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+Subject: [RFC PATCH 2/3] drm/sched: fix drm_sched_tdr_queue_imm to not corrupt timeout value
+Date: Wed,  3 Jun 2026 17:36:41 +0530
+Message-ID: <20260603120641.473434-5-sanjay.kumar.yadav@intel.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260603120641.473434-4-sanjay.kumar.yadav@intel.com>
+References: <20260603120641.473434-4-sanjay.kumar.yadav@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACHa+LUGCBq2rWAEw--.4908S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZFWDWFy3tr1rXFWrKFyDZFb_yoW8Cr17pF
-	43CryYyF4FqF12yasxXry8XF93uayftr98WrWDt3s7Zw1agwna9F10kw1agFy7AFWkXF43
-	XrsxG3y5CF15X37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU5ku4UU
-	UUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwwHA2of-lBevgAAs0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_RECIPIENTS(0.00)[m:corey@minyard.net,m:openipmi-developer@lists.sourceforge.net,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-260061-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260067-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sanjay.kumar.yadav@intel.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:intel-xe@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:rodrigo.vivi@intel.com,m:nirmoy.das@intel.com,m:umesh.nerlige.ramappa@intel.com,m:thomas.hellstrom@linux.intel.com,m:matthew.brost@intel.com,m:niranjana.vishwanathapura@intel.com,m:thomas.hellstrom@intel.com,m:fei.yang@intel.com,m:himal.prasad.ghimiray@intel.com,m:matthew.d.roper@intel.com,m:maarten.lankhorst@intel.com,m:joonas.lahtinen@intel.com,m:matthew.auld@intel.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sanjay.kumar.yadav@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:from_mime,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 563BA637505
+X-Rspamd-Queue-Id: 17446637714
 
-When a caller provides a `supplied_recv` message to i_ipmi_request(),
-the function increments the user's `nr_msgs` reference count. If an
-error occurs later, the out_err cleanup path only frees the recv_msg
-if the function allocated it itself (i.e., !supplied_recv). In the
-supplied_recv case the cleanup is skipped, leaving the reference count
-elevated. The caller ipmi_request_supply_msgs() does not release the
-supplied_recv on error, so the reference is permanently leaked.
+drm_sched_tdr_queue_imm() sets sched->timeout to 0 and never restores
+it. This breaks all future TDR timers — jobs get timed out instantly
+before they even start running on hardware.
 
-Fix this by explicitly reverting the reference count operations when a
-supplied recv_msg with a valid user pointer is present in the error
-path: decrement nr_msgs and drop the user's kref.
+Use mod_delayed_work() directly to fire the TDR worker immediately
+without modifying the timeout field. This preserves the original
+timeout value for subsequent job submissions.
 
-Cc: stable@vger.kernel.org
-Fixes: b52da4054ee0 ("ipmi: Rework user message limit handling")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Fixes: 8ec5a4e5ce97 ("drm/xe: Resume TDR after GT reset")
+Cc: <stable@vger.kernel.org> # v6.13+
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Assisted-by: Claude:claude-opus-4.6
+Suggested-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Signed-off-by: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
 ---
- drivers/char/ipmi/ipmi_msghandler.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/scheduler/sched_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index 869ac87a4b6a..5b9d914cc7a9 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -2347,6 +2347,10 @@ static int i_ipmi_request(struct ipmi_user     *user,
- 		if (smi_msg == NULL) {
- 			if (!supplied_recv)
- 				ipmi_free_recv_msg(recv_msg);
-+			else if (recv_msg->user) {
-+				atomic_dec(&recv_msg->user->nr_msgs);
-+				kref_put(&recv_msg->user->refcount, free_ipmi_user);
-+			}
- 			return -ENOMEM;
- 		}
- 	}
-@@ -2420,6 +2424,10 @@ static int i_ipmi_request(struct ipmi_user     *user,
- 			ipmi_free_smi_msg(smi_msg);
- 		if (!supplied_recv)
- 			ipmi_free_recv_msg(recv_msg);
-+		else if (recv_msg->user) {
-+			atomic_dec(&recv_msg->user->nr_msgs);
-+			kref_put(&recv_msg->user->refcount, free_ipmi_user);
-+		}
- 	}
- 	return rv;
+diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
+index 818d3d4434b5..be144e244745 100644
+--- a/drivers/gpu/drm/scheduler/sched_main.c
++++ b/drivers/gpu/drm/scheduler/sched_main.c
+@@ -212,8 +212,8 @@ static void drm_sched_start_timeout_unlocked(struct drm_gpu_scheduler *sched)
+ void drm_sched_tdr_queue_imm(struct drm_gpu_scheduler *sched)
+ {
+ 	spin_lock(&sched->job_list_lock);
+-	sched->timeout = 0;
+-	drm_sched_start_timeout(sched);
++	if (!list_empty(&sched->pending_list))
++		mod_delayed_work(sched->timeout_wq, &sched->work_tdr, 0);
+ 	spin_unlock(&sched->job_list_lock);
  }
+ EXPORT_SYMBOL(drm_sched_tdr_queue_imm);
 -- 
-2.34.1
+2.52.0
 
 
