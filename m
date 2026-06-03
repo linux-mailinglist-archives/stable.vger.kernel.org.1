@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-260001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VaAWAiTuH2pEsgAAu9opvQ
-	(envelope-from <stable+bounces-260001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:04:36 +0200
+	id rpmCODXuH2pGsgAAu9opvQ
+	(envelope-from <stable+bounces-260002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:04:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F63635FA5
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF25635FAD
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:04:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=CSwxv78H;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260001-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260001-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=dLJJnzFK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260002-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260002-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=bootlin.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EEAB30D1305
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB29030D6748
 	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 09:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8453336AB44;
-	Wed,  3 Jun 2026 09:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6254636A343;
+	Wed,  3 Jun 2026 09:00:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608DA335BBB
-	for <stable@vger.kernel.org>; Wed,  3 Jun 2026 09:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB30134678E;
+	Wed,  3 Jun 2026 09:00:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780477237; cv=none; b=SHfpyjEMiiTzjflUVDvSpyoWkjB/Z6gfnRklkWapSfOlMEd9jelSTg+PiLkQG0qP3ROcpeTvWHjViMqVq5ZDR5brUQ+inc0mFjn67dbBtJ1PHEY8AdNSiF/IAehn8bnQRbs4fFhnw9pvzHvozCxYFmhMl42frAiBVIgzurx06/k=
+	t=1780477238; cv=none; b=mdyyw5NrlMkuwrg3lIGQianK0FG6jr0rDoC389Oc4dUIfOYT16KhEXJbdxQVBYxnc6DYsvZyfQ2NAftZnupofX/jk1ic938jBn5FOzUi57YZESBQUUPdwI9O2xAsiJZSX6SFvwjDhwO84ZJIaE7RC5V+JuhXUlNhPv7270P04O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780477237; c=relaxed/simple;
-	bh=I90kIma1baGqh9XocN4JuQiwZ+33rK0xtVuCfEweGOw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oXXWYjOOHfnZmlsyUd9/bQRwf6d9yKYhzpRjFbf0lPrcs3Tf+EwYU2i3A7Yjv2xCEW1U0e1WOICYM75skuiEfIQJS89efSFRyRihCE353ri17eAupeVE5806wO3JFNyujUfv9ers2qE3e5K8dTMbenfuGeZRmnIzmhvOIlYGv7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CSwxv78H; arc=none smtp.client-ip=185.171.202.116
+	s=arc-20240116; t=1780477238; c=relaxed/simple;
+	bh=vXVCuN6NAVWtC4G/8GUc3Hfrre7cwpZFQ2oHAGj7kRE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=MHD8TT9WOdwFqY0ht7fkFBlrEsF3DK3p2xXwLD69YXz2hItOo8AQdc22ltFkjBDuyBZrH0GPoQ/GI6I41Xp5HCfRhfSlUhMzNHiqiHqT0v+GgWtzY03PJVmFRHNFvBevkH41QWvMp69IAuIWhsWn0I5uV6FY6ovoLkXQdNmVx84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dLJJnzFK; arc=none smtp.client-ip=185.246.84.56
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 6F850C62216;
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 27A701A37D1;
 	Wed,  3 Jun 2026 09:00:35 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8E2B05FD24;
-	Wed,  3 Jun 2026 09:00:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 819EC10888413;
-	Wed,  3 Jun 2026 11:00:22 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EE76D5FD24;
+	Wed,  3 Jun 2026 09:00:34 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 80C8510888CC5;
+	Wed,  3 Jun 2026 11:00:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780477229; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=7Ps8c5Pf/q4KonzIzGtVuavWdKey0/RYtJqxkkHgYGE=;
-	b=CSwxv78HfY6ST3O/alIYSifZe4N40KbAE3LXpQ8APQkvfgfR5BVLlrC38t4B4jPnspJhyu
-	ZWmjvNYZ0991xzLE6T7ZEH3iRx/7FeW1n0vk5dZ0/SQD8C+bXUF6iVVs10bAPG5vKp92/C
-	9YiEhDWbQQm+aKS1vyEiskHx1Of7JEB0F/ge9Qnd3LUZYGHqYi6Dk+uJzdn/2D0torHUP9
-	UFUJiEq+CTvXezu+z1HGsRO9jNjLWAUDKrJ+FX0KAAgCgSGy98xMLaZgn2tHwy29iAWm7E
-	cTDyMhBvO+8+2ggTqEyDQ9ikNQmvkBAwqiFPbWgBEAF0GBNaTmOFTxFOH7tg2g==
+	t=1780477233; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=SWJLbwcw1LfuoUnP65FT41JauKFUhB7nEOh+Gt4WQSE=;
+	b=dLJJnzFK0xuKU5smX78GcLw72hCR9Rf7iBilOH4NL8BPKQekXcEy/YH8lpyX1vFD548KSm
+	NB4YXxMFI/0tFNp9Mo6kP3KtrnJszt9IolCxhPwtf1p5nLwHz6QM/A9CwNc090o/m8X/Nt
+	HhpVHtNIJORCX1y/qs5NwU5Cf2rgdzz6yFGokKruyJ9WWmf5cC9o1jnoQL1kyuzpv2tiPh
+	YOa2q3HlFxmIby9mxm4iyRjTi5AlouOat7vyfEtJuo6g9cj8xVG6dwAMzf5pfA2BQbP1Ir
+	LkzRTp0XTgrgZAJIXs/tRPXQnmmZCqgMQqNHLuWhn6Fx/hPTkQVp/UpltjPk0w==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Subject: [PATCH 0/3] drm/i915: Fix double cleanup in error paths
-Date: Wed, 03 Jun 2026 10:59:51 +0200
-Message-Id: <20260603-fix_i915-v1-0-7479ff64e705@bootlin.com>
+Date: Wed, 03 Jun 2026 10:59:52 +0200
+Subject: [PATCH 1/3] drm/i915/display/intel_sdvo: Fix double connector
+ destroy in error paths
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,11 +62,10 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAftH2oC/yXM3wpAMBQH4FdZ59pqtiy8iqSZg+NitCGlvbvh8
- uv354aAnjBAzW7weFKg1SXkGQM7GzchpyEZpJBaaKH4SFdHVV7wwqqhtKLSWhpI9c1jyr6rpv0
- djn5Bu797iPEBpzmSw2wAAAA=
-X-Change-ID: 20260603-fix_i915-5c3d8c09662a
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260603-fix_i915-v1-1-7479ff64e705@bootlin.com>
+References: <20260603-fix_i915-v1-0-7479ff64e705@bootlin.com>
+In-Reply-To: <20260603-fix_i915-v1-0-7479ff64e705@bootlin.com>
 To: Jani Nikula <jani.nikula@linux.intel.com>, 
  Rodrigo Vivi <rodrigo.vivi@intel.com>, 
  Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
@@ -99,7 +100,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FREEMAIL_TO(0.00)[linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,chris-wilson.co.uk,anholt.net,redhat.com,virtuousgeek.org];
 	FORGED_RECIPIENTS(0.00)[m:jani.nikula@linux.intel.com,m:rodrigo.vivi@intel.com,m:joonas.lahtinen@linux.intel.com,m:tursulin@ursulin.net,m:airlied@gmail.com,m:simona@ffwll.ch,m:chris@chris-wilson.co.uk,m:eric@anholt.net,m:airlied@redhat.com,m:jbarnes@virtuousgeek.org,m:thomas.petazzoni@bootlin.com,m:louis.chauvet@bootlin.com,m:markyacoub@google.com,m:seanpaul@google.com,m:intel-gfx@lists.freedesktop.org,m:intel-xe@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:simona.vetter@ffwll.ch,m:kory.maincent@bootlin.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[kory.maincent@bootlin.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-260001-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260002-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -114,37 +115,82 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:dkim,bootlin.com:mid,bootlin.com:email,bootlin.com:from_mime,bootlin.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:mid,bootlin.com:dkim,bootlin.com:from_mime,bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 58F63635FA5
+X-Rspamd-Queue-Id: 6DF25635FAD
 
-Several error paths in the i915 driver incorrectly invoke cleanup
-functions multiple times, potentially causing double-free errors.
-This series corrects these paths to ensure cleanup is performed
-only once.
+intel_sdvo_connector_funcs registers intel_connector_destroy() as the
+.destroy callback. Once drm_connector_init_with_ddc() succeeds inside
+intel_sdvo_connector_init(), the DRM core takes ownership of the
+connector object and will call .destroy on teardown.
 
-Testing note: Only the DisplayPort fix has been hardware tested due
-to lack of available hardware for the other components.
+The error labels in intel_sdvo_tv_init() and intel_sdvo_lvds_init()
+call intel_connector_destroy() explicitly before returning false,
+causing it to be invoked twice: once in the error path and again by
+the DRM core through the registered .destroy callback.
 
+Remove the manual intel_connector_destroy() calls from the error labels
+and return false directly instead.
+
+Cc: stable@vger.kernel.org
+Fixes: 32aad86fe88e7 ("drm/i915/sdvo: Propagate errors from reading/writing control bus.")
 Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
-Kory Maincent (3):
-      drm/i915/display/intel_sdvo: Fix double connector destroy in error paths
-      drm/i915/display/intel_lvds: Drop redundant manual cleanup on init failure
-      drm/i915/display/intel_dp: Drop redundant intel_dp_aux_fini() on init failure
 
- drivers/gpu/drm/i915/display/intel_dp.c   |  4 +---
- drivers/gpu/drm/i915/display/intel_lvds.c | 14 ++++----------
- drivers/gpu/drm/i915/display/intel_sdvo.c | 16 ++++------------
- 3 files changed, 9 insertions(+), 25 deletions(-)
+Not tested as I don't have such hardware.
 ---
-base-commit: e1696f1fc99dc0ff761a012230587b23dec064fb
-change-id: 20260603-fix_i915-5c3d8c09662a
+ drivers/gpu/drm/i915/display/intel_sdvo.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-Best regards,
---  
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+diff --git a/drivers/gpu/drm/i915/display/intel_sdvo.c b/drivers/gpu/drm/i915/display/intel_sdvo.c
+index d83d350959d88..0f3aa879e39e1 100644
+--- a/drivers/gpu/drm/i915/display/intel_sdvo.c
++++ b/drivers/gpu/drm/i915/display/intel_sdvo.c
+@@ -2878,16 +2878,12 @@ intel_sdvo_tv_init(struct intel_sdvo *intel_sdvo, u16 type)
+ 	}
+ 
+ 	if (!intel_sdvo_tv_create_property(intel_sdvo, intel_sdvo_connector, type))
+-		goto err;
++		return false;
+ 
+ 	if (!intel_sdvo_create_enhance_property(intel_sdvo, intel_sdvo_connector))
+-		goto err;
++		return false;
+ 
+ 	return true;
+-
+-err:
+-	intel_connector_destroy(connector);
+-	return false;
+ }
+ 
+ static bool
+@@ -2950,7 +2946,7 @@ intel_sdvo_lvds_init(struct intel_sdvo *intel_sdvo, u16 type)
+ 	}
+ 
+ 	if (!intel_sdvo_create_enhance_property(intel_sdvo, intel_sdvo_connector))
+-		goto err;
++		return false;
+ 
+ 	intel_bios_init_panel_late(display, &intel_connector->panel, NULL, NULL);
+ 
+@@ -2972,13 +2968,9 @@ intel_sdvo_lvds_init(struct intel_sdvo *intel_sdvo, u16 type)
+ 	intel_panel_init(intel_connector, NULL);
+ 
+ 	if (!intel_panel_preferred_fixed_mode(intel_connector))
+-		goto err;
++		return false;
+ 
+ 	return true;
+-
+-err:
+-	intel_connector_destroy(connector);
+-	return false;
+ }
+ 
+ static u16 intel_sdvo_filter_output_flags(u16 flags)
+
+-- 
+2.43.0
 
 
