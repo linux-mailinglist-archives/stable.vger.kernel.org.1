@@ -1,269 +1,158 @@
-Return-Path: <stable+bounces-259962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HdA+MrrBH2oQpgAAu9opvQ
-	(envelope-from <stable+bounces-259962-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 07:55:06 +0200
+	id nxNuLcvKH2rkpwAAu9opvQ
+	(envelope-from <stable+bounces-259963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 08:33:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C416346E5
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 07:55:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF19634AF2
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 08:33:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=QKj1fGz1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-259962-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259962-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=pm.me;
+	dkim=pass header.d=realtek.com header.s=dkim header.b=vt2Jw+Nm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-259963-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-259963-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=realtek.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2845030829E0
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 05:55:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B4DC7303740B
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 06:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54862314B8F;
-	Wed,  3 Jun 2026 05:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242F53F9A1E;
+	Wed,  3 Jun 2026 06:28:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944393DBD7E
-	for <stable@vger.kernel.org>; Wed,  3 Jun 2026 05:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36FA3F99F6;
+	Wed,  3 Jun 2026 06:28:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780466102; cv=none; b=cBQLtAq6yzI6g9W6MOv5GHUBjWpJ6me1W12P3KyVsqsbqFyLLAR/3iGVzAfNZuNlI011nC17uE3AX/QMzcRF0Z4VyuKQgqRqifoDrw6Bih5D2CQwraRyaOs66aRzTpM1JFamlsc2psp5kAPLgvc5tLu+TYt+poAaIsjUvjWo6JU=
+	t=1780468125; cv=none; b=QXVKQ+TU5ws8QNl/H3nd2gooKlbikg8j3nPt2ATnW6zFdpGZm22N3mdNRcKzLiyzghU0vhZnFebATFz2dT7QlRwLEb3yc4En8xtbf/GjWqMPygQDvw7shPleWbPSJ3Y+EdFfG4+b/OScW+b7Dxs7DVhe0EmYOlHgbpsPP2Y+Hco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780466102; c=relaxed/simple;
-	bh=CWB80huWMPBvCAA6oS3ZrBWMY1RZz1ZR0+OGR4HyqI8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uhy5+oP0TqbTdZ7Xc+Xq8xXVnac/7YZYY/hjn6uDn41FdciP8nvimIpJ8oe0KuV9ZK6zbF4T951Ynwx+U7bHxsF0CQg2bhFN10mHVL3b3p1Wh0PLxs/lZKx0WomzQt3Owi/cp8MLAAj8qYRyCTdfAcmmZACj/Q0ML5GVYhqeU1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=QKj1fGz1; arc=none smtp.client-ip=79.135.106.31
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1780466092; x=1780725292;
-	bh=42GDx+EcOLAVCCoS9tmCFsH8/PBiWa8gmqrFleBsEVw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=QKj1fGz1puRCyp/3DX5HtlQxnL1vaYAapigHAdWDeRkqSSh47vd3TdbUAZW5QAH1F
-	 l49COOfXjsH1aLn58t2W8HawjPV1AhhIHsqEGLrt7tJc1u/Uyr10tahS2snhFF9i1m
-	 mq5wzV2onq9v7Zc9t9P6MUCVa+X6jOxRZfX+9C+rdvFr3Bx/hVdYP0PqpVPL35Cdb6
-	 ctSESCxyL9CtmC3ARnpk7uK8cU/TC1Ia1vLsO/wJTNum58pJCxpzK0GhWzlgpIGFBA
-	 u+fGZJF92OsYhEmkaCnqie9GEPEIkub3n3ZoeB5ooKEPOlaSzxFGiSWxzXswmHGFCH
-	 JD9jKn3kt50wQ==
-Date: Wed, 03 Jun 2026 05:54:47 +0000
-To: "Chen, Xiaogang" <xiaogang.chen@amd.com>, regressions@lists.linux.dev
-From: Gerhard Schwanzer <geschw@pm.me>
-Cc: amd-gfx@lists.freedesktop.org, stable@vger.kernel.org, alexander.deucher@amd.com, Philip.Yang@amd.com
-Subject: Re: [REGRESSION] drm/amdkfd: SVM split-tail remap regression causes SDMA0 permission fault on RX 7600 XT
-Message-ID: <2145b14f-00e7-4565-b1da-9e08d2c89a49@pm.me>
-In-Reply-To: <53c2ad43-091d-46e9-b825-9aaa1d7114e8@amd.com>
-References: <2bfa2f1b-567a-429b-aee2-a8dcf7efd5aa@pm.me> <53c2ad43-091d-46e9-b825-9aaa1d7114e8@amd.com>
-Feedback-ID: 110185885:user:proton
-X-Pm-Message-ID: 0adb7ef1f3a71170ad3d50b79d44d548ca87f578
+	s=arc-20240116; t=1780468125; c=relaxed/simple;
+	bh=WAi8U+3sfBWwUpadzsvWjdyiQFBV9pSSkxACkoPzTxs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=B/1SNagc2WT41tCxnjnZWc+ovJTIXlmF2pviOdmpUPv99KzlEldjjDHmJAHbCzFjq4AMsdqOECGE0QPuZge3LNgdiz4o4aYUQdMSKVpHbI9D/l+GNIG7Bs9S9+Zo0OAQ7hiOWIFh1kPupSvfQBZX69VSF8BIM/OhLPh9X1CUP1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=vt2Jw+Nm; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6536IIJ103626622, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1780467498; bh=TWwBiF+NAdoTfoslkDu2INd/Tmlxm1z80iFJEROktwk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=vt2Jw+NmqA5BLN8q1OfkiPv9cZZhXr3uvwEpnlxnBWiUTNJXwb9wZ8rbOrTkjNhek
+	 6OQXcAACnP23ZhQsiWq6zurYr7DpMZ8/PQmAmwpCg/z8QHc17brZBmWxuu3mpq8Zrq
+	 7822d9G9U6hwmPHuqc1IS6g1MlWsvbDRsECZwIJa5UluLU5/hMuX3hIF1sPwxtlUR4
+	 +n+cP1rFnyLlOS+vBOrcvxQkDWkGKPiQQQ8y6Ogsgd8Eli5l4JRK/0pZZdlwk+BZJ3
+	 +qCL65jFZ6oJnQYLs0C3Hj/8eUqp9NLjFR4x+7yVDX2dxk9mv+c1hxf61N2kmSC7Z7
+	 Hq1mJGFrWOw3Q==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 6536IIJ103626622
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 3 Jun 2026 14:18:18 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Wed, 3 Jun 2026 14:18:18 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Wed, 3 Jun 2026 14:18:18 +0800
+Received: from RTDOMAIN (172.21.42.225) by RTKEXHMBS05.realtek.com.tw
+ (10.21.1.55) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Wed, 3 Jun 2026 14:18:18 +0800
+From: Justin Lai <justinlai0215@realtek.com>
+To: <kuba@kernel.org>
+CC: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+	<andrew+netdev@lunn.ch>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <stable@vger.kernel.org>, <horms@kernel.org>,
+	<aleksander.lobakin@intel.com>, <pkshih@realtek.com>,
+	<larry.chiu@realtek.com>, Justin Lai <justinlai0215@realtek.com>
+Subject: [PATCH net v2] rtase: Avoid sleeping in get_stats64()
+Date: Wed, 3 Jun 2026 14:18:16 +0800
+Message-ID: <20260603061816.31356-1-justinlai0215@realtek.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pm.me,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[pm.me:s=protonmail3];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:xiaogang.chen@amd.com,m:regressions@lists.linux.dev,m:amd-gfx@lists.freedesktop.org,m:stable@vger.kernel.org,m:alexander.deucher@amd.com,m:Philip.Yang@amd.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[geschw@pm.me,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259962-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259963-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[justinlai0215@realtek.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:kuba@kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:andrew+netdev@lunn.ch,m:linux-kernel@vger.kernel.org,m:netdev@vger.kernel.org,m:stable@vger.kernel.org,m:horms@kernel.org,m:aleksander.lobakin@intel.com,m:pkshih@realtek.com,m:larry.chiu@realtek.com,m:justinlai0215@realtek.com,m:andrew@lunn.ch,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[geschw@pm.me,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[pm.me:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[justinlai0215@realtek.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,realtek.com:mid,realtek.com:dkim,realtek.com:from_mime,realtek.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,trace_history_replay.inc:url,lists.freedesktop.org:url,gitlab.freedesktop.org:url]
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 43C416346E5
+X-Rspamd-Queue-Id: 4AF19634AF2
 
-Hi Xiaogang,
+The .ndo_get_stats64 callback must not sleep because it can be
+called when reading /proc/net/dev.
 
-Sorry, you are right. The source I uploaded was not self-contained, it stil=
-l
-referenced trace_history_replay.inc from an older local replay mode.
+rtase_get_stats64() calls rtase_dump_tally_counter(), which polls
+the tally counter dump bit with read_poll_timeout(). This may
+sleep while waiting for the hardware counter dump to complete.
 
-I uploaded a self-contained v2 source to the GitLab report:
+Use read_poll_timeout_atomic() instead to avoid sleeping in the
+get_stats64() path.
 
-https://gitlab.freedesktop.org/-/project/4522/uploads/7395b8985ecd7c54183a7=
-615d479c02c/kfd_svm_split_hsa_copy-v2.c
+Fixes: 079600489960 ("rtase: Implement net_device_ops")
+Cc: stable@vger.kernel.org
+Signed-off-by: Justin Lai <justinlai0215@realtek.com>
+---
+v1 -> v2:
+- Target net tree.
+- Add Fixes tag.
+- Add Cc: stable@vger.kernel.org.
+---
+ drivers/net/ethernet/realtek/rtase/rtase_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-The --upstream-ab path does not use that replay table, but the missing=20
-include
-obviously broke fresh builds. The v2 source embeds the table and otherwise
-preserves the same source.
-
-I re-tested this v2 source before uploading:
-
- =C2=A0 - clean build from only kfd_svm_split_hsa_copy-v2.c: OK
- =C2=A0 - ./kfd_svm_split_hsa_copy --help: OK
- =C2=A0 - good/workaround kernel: --upstream-ab completed 10/10 runs, no ne=
-w
- =C2=A0 =C2=A0 GCVM/SDMA0/protection-fault messages in the test window
- =C2=A0 - broken kernel: --upstream-ab reproduced the SDMA0 permission faul=
-t;
- =C2=A0 =C2=A0 the first kernel fault address matched the planned split-tai=
-l page
-
-Validation summaries:
-
-https://gitlab.freedesktop.org/-/project/4522/uploads/e6d0f31c0fda0df2c9994=
-39411f29dca/good-kernel-validation-summary.md
-https://gitlab.freedesktop.org/-/project/4522/uploads/bdf8a3ac6786ddb88dd42=
-6b59edb32a9/broken-kernel-validation-summary.md
-
-The intended triage command remains:
-
- =C2=A0 ./kfd_svm_split_hsa_copy --upstream-ab
-
-Generic build shape is:
-
- =C2=A0 cc -O2 -g -Wall -Wextra -pthread \
- =C2=A0 =C2=A0 -I/path/to/rocm/include -L/path/to/rocm/lib \
- =C2=A0 =C2=A0 -o kfd_svm_split_hsa_copy kfd_svm_split_hsa_copy-v2.c \
- =C2=A0 =C2=A0 -lhsa-runtime64
-
-If you still prefer a binary, please tell me the target runtime/distro. A
-binary built on my NixOS system is Nix-store linked and likely not=20
-portable to
-your test system.
-
-One more thing that would help me test any replacement fix: do you know wha=
-t
-specific failure or workload 448ee453 was intended to fix? I would like to
-avoid validating only the revert side while accidentally losing the origina=
-l
-fix.
-
-Thanks for catching this, and thanks for taking a look.
-
-Regards,
-Gerhard
-
-
-On 06/03/2026 Chen, Xiaogang wrote:
-
-> I cannot compile kfd_svm_split_hsa_copy.c, there is no
-> "trace_history_replay.inc".
->
-> Or can you=C2=A0 send the test binary?=C2=A0 That should be enough to tri=
-age the
-> issue since it is a regression as you mentioned.
->
-> Regards
->
-> Xiaogang
->
-> On 6/2/2026 5:04 AM, Gerhard Schwanzer wrote:
->> Hi,
->>
->> I would like to make sure this AMDKFD SVM regression is tracked by the
->> Linux regression process.
->>
->> GitLab report:
->>
->>  =C2=A0 https://gitlab.freedesktop.org/drm/amd/-/work_items/4914
->>
->> The regression was originally reported on 2026-01-27. It was bisected
->> to the
->> same functional change that Alex Deucher's revert patch later targeted:
->>
->>  =C2=A0 448ee45353ef9fb1a34f5f26eb3f48923c6f0898
->>  =C2=A0 drm/amdkfd: Use huge page size to check split svm range alignmen=
-t
->>
->> The affected kernel line I tested identifies the same change as:
->>
->>  =C2=A0 bf2084a7b1d75d093b6a79df4c10142d49fbaa0e
->>
->> Alex's revert patch:
->>
->> https://lists.freedesktop.org/archives/amd-gfx/2026-February/138824.html
->>
->> A small C/HSA reproducer is now available in the GitLab report. It
->> does not
->> require PyTorch, ComfyUI, Docker, model files, or the original
->> workload. It
->> uses ROCr/HSA, an anonymous THP-advised host mapping, explicit KFD SVM
->> SET_ATTR ioctls, and an HSA SDMA D2H copy.
->>
->> Single reproducer command, same binary on both kernels:
->>
->>  =C2=A0 ./kfd_svm_split_hsa_copy --upstream-ab
->>
->> Same-machine A/B result on an RX 7600 XT:
->>
->>  =C2=A0 448ee453/bf2084a7 active:
->>  =C2=A0 =C2=A0 1/1 run faults with SDMA0 permission fault
->>  =C2=A0 =C2=A0 GCVM_L2_PROTECTION_FAULT_STATUS=3D0x00841A51
->>
->>  =C2=A0 448ee453/bf2084a7 locally reverted:
->>  =C2=A0 =C2=A0 10/10 runs complete
->>  =C2=A0 =C2=A0 no ROCr memory access fault
->>  =C2=A0 =C2=A0 no new GCVM/SDMA0 permission fault in dmesg
->>
->> The bad fault page is inside the split tail and inside the SDMA copy
->> range:
->>
->>  =C2=A0 critical tail: [0x722429d61..0x722429dff]
->>  =C2=A0 copy pages:=C2=A0 =C2=A0 [0x722429b30..0x722429d70]
->>  =C2=A0 fault page:=C2=A0 =C2=A0 0x722429d65
->>
->> A full ftrace/PTE run with the same C reproducer/SVM sequence also shows=
-:
->>
->>  =C2=A0 split_tail ... current_remap=3D0 old_remap=3D1 missed=3D1
->>  =C2=A0 MISSED_REMAP_CANDIDATE split=3Dtail
->>  =C2=A0 no amdgpu_vm_update_ptes covering the fault page after the marke=
-r
->> before
->>  =C2=A0 the fault-side GET_ATTR
->>
->> The suspected code issue is that the split-tail/head remap predicate
->> introduced
->> by 448ee453/bf2084a7 can miss tails inside the final 512-page block.
->> Since
->> prange->last is inclusive, ALIGN_DOWN(prange->last, 512) is the start
->> of the
->> final block, not an exclusive upper bound.
->>
->> I also sent a short follow-up to amd-gfx with the reproducer/A-B
->> summary and
->> asked what original failure or workload 448ee453/bf2084a7 was intended
->> to fix:
->>
->> https://lists.freedesktop.org/archives/amd-gfx/2026-June/145800.html
->>
->> I can resend the reproducer source and summaries directly on-list if
->> preferred.
->>
->> #regzbot introduced: 448ee45353ef9fb1a34f5f26eb3f48923c6f0898
->> #regzbot monitor:
->> https://gitlab.freedesktop.org/drm/amd/-/work_items/4914
->>
->> Thanks,
->> Gerhard Schwanzer
+diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+index 6ccbefb5acf2..55105d34bc79 100644
+--- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
++++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+@@ -1565,8 +1565,9 @@ static void rtase_dump_tally_counter(const struct rtase_private *tp)
+ 	rtase_w32(tp, RTASE_DTCCR0, cmd);
+ 	rtase_w32(tp, RTASE_DTCCR0, cmd | RTASE_COUNTER_DUMP);
+ 
+-	err = read_poll_timeout(rtase_r32, val, !(val & RTASE_COUNTER_DUMP),
+-				10, 250, false, tp, RTASE_DTCCR0);
++	err = read_poll_timeout_atomic(rtase_r32, val,
++				       !(val & RTASE_COUNTER_DUMP),
++				       10, 250, false, tp, RTASE_DTCCR0);
+ 
+ 	if (err == -ETIMEDOUT)
+ 		netdev_err(tp->dev, "error occurred in dump tally counter\n");
+-- 
+2.40.1
 
 
