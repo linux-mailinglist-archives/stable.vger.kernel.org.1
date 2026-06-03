@@ -1,64 +1,71 @@
-Return-Path: <stable+bounces-260132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OY6UDHFPIGom0wAAu9opvQ
-	(envelope-from <stable+bounces-260132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 17:59:45 +0200
+	id A5TiEIlHIGoO0AAAu9opvQ
+	(envelope-from <stable+bounces-260133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 17:26:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2FD6397E6
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 17:59:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FD5639271
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 17:26:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oqaTe9LR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260132-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260132-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ULgZJjAw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260133-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260133-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9484314083A
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 15:16:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1F96333436BD
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 15:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19E73B38AC;
-	Wed,  3 Jun 2026 15:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0083D1709;
+	Wed,  3 Jun 2026 15:14:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A8B3AD52B
-	for <stable@vger.kernel.org>; Wed,  3 Jun 2026 15:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580EC3AD52B
+	for <stable@vger.kernel.org>; Wed,  3 Jun 2026 15:14:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780499697; cv=none; b=pLsdPBErWk6S63b2vyeGE838FybIt74dMP4wIhjD95haBFPH8h5jlEWqfJ/+Vsd4ZzWEf+yPPEELVrwitcyjbJnMoP6ycc+vwss/DX25HyFZgGhpJNmtorKsG6hCB6NQYd8D5Rx6L8tr9TIsJwXTNrKIUGg5LQXCcmQhYjmTFtw=
+	t=1780499699; cv=none; b=FeynMEBZ2sZEj4j15wGESa2A0aK/SBFHNSSuokmW8YpJ6sKLGDjUBRS5oB8Xf3hXi1tO3V5Y8mrQBnZmiLPD/RMBJF1EaKT+TX1ccebXQRasfDO8gL0MXzFdjlEFof4/Cd5eu+RJbrqzyxGwY7Nh1ctBXiYTEICxidcXoj+6/io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780499697; c=relaxed/simple;
-	bh=KfHgXhbPniMJaBbvlyUkTWGRgQ2rzezoVeU83qmDbrI=;
+	s=arc-20240116; t=1780499699; c=relaxed/simple;
+	bh=rvstaQQOueCrFRpvO4Ln4+OZ1BtNaw56YFgOD9hmKx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNWNogM7H0jswQ3Xynjuu2YKrxlmPcgbUqgZr1vt/bBPD6Y/3ZjN9h+buXi9nTjZPhAYaTDRwMThjgDen8ygjUgTgl8nOABlKFwgWy5F6yougKoZRGzQDDoN4hzfOH9NX97CLt5rOrUfX/EISt89A6jqceZv+xWmAfddsmsbMw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oqaTe9LR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2541F00898;
-	Wed,  3 Jun 2026 15:14:55 +0000 (UTC)
+	 MIME-Version; b=lVUoANM5n2LyNmVYNjiMZ4gdUdWv6kJGY7V5+WLbqzu106IFw1deeCqUnUnqzoM82sn4xNGuc8Nl4SyjhIlW8jNz0xXVXPQK+GumHM9pPUQgQFbM4uZD61X9B5O1W4NIUN2ZcQ+U1vao+FUJ1Yz2oIme/ARbiDWx3Vou+IAQmwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ULgZJjAw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6CE1F0089B;
+	Wed,  3 Jun 2026 15:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780499696;
-	bh=yhNbQwCeczwm1UBqSPhOp+DKXYAnRtGUvgijtL9mFpg=;
+	s=k20260515; t=1780499698;
+	bh=J3ZB5HAccrJz6Q3Rilq0rYBRkXNZxh13pnA2YLERoe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oqaTe9LRINPluBj1nYX3rF+qC+0yH62e6bO6RETvfhelxXfCN8LGDqOvS8KM0nba5
-	 qie+aNpzAQ7ZHh5EFKO7bEzlkKBbF739FQCIgCfja+6p2pNFjGN0OWsrYKuCkLl1Ay
-	 k1lLYV2PGrvvk2KH/S/Z4HqSHPOafWzFeGa/0shjGFcMNK1QER8o0NagoXUw95NkyT
-	 Xbf7IvgECPQwwbEQPZTaFBmeWKfdBT3w8RZ5kLcrS368DDZ3SbFYbjyCHNtc7RZPC8
-	 qdOZYPQrec85nsZXlyfmEALparaAjW8EUXfhYUVx2NxAQGcq9t4ZdeXUxJrQNDcmw0
-	 O4L/z//j9Rncw==
+	b=ULgZJjAwDyvCx1pqv+YRuhrWrwgHzgYRXWcbn5sfnTPx8EA14Pd3LYh8pnu7HSKru
+	 2U1X9FrMVSATDb+l/O5Xv+5vyGnrP3JFr3bBf+02n3MbbeqoxE4csBkuMEf3dEwl7c
+	 Ll/L9WEz0mDB+Cwok9cfl0gtM16Dcc+G4uhR7HDHrimxjaHbmqUCUbxREKl0g8UD7l
+	 qnLKsrt3GQ8iscyHEFdrQ9M3cE4wD5VopG2SvF3kvKTbqts5Rjd1gWq8jaTLbIitce
+	 b1XN9dpvJ4vKTqP4zphMHrQ9VNTTf1TOr98YAkFkPWz6iOVT00KRFFr7RYvaQmZWJu
+	 igB4s/ffL3Gaw==
 From: Sasha Levin <sashal@kernel.org>
-To: Li hongliang <1468888505@139.com>
+To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
-	kuba@kernel.org,
-	patzilla007@gmail.com,
-	stable@vger.kernel.org,
-	willemb@google.com
-Subject: Re: [PATCH 6.1.y] net/packet: fix TOCTOU race on mmap'd vnet_hdr in tpacket_snd()
-Date: Wed,  3 Jun 2026 11:14:22 -0400
-Message-ID: <20260603111500.item068@kernel.org>
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Paul Chaignon <paul.chaignon@gmail.com>
+Subject: Re: [PATCH 6.1.y v2 00/11] Fix BPF selftests
+Date: Wed,  3 Jun 2026 11:14:23 -0400
+Message-ID: <20260603111500.item074@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260601061558.3703791-1-1468888505@139.com>
-References: <20260601061558.3703791-1-1468888505@139.com>
+In-Reply-To: <cover.1780427227.git.paul.chaignon@gmail.com>
+References: <cover.1780427227.git.paul.chaignon@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,47 +74,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260132-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-260133-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:1468888505@139.com,m:sashal@kernel.org,m:kuba@kernel.org,m:patzilla007@gmail.com,m:stable@vger.kernel.org,m:willemb@google.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,google.com];
-	FREEMAIL_TO(0.00)[139.com];
+	FREEMAIL_CC(0.00)[kernel.org,linuxfoundation.org,suse.com,iogearbox.net,gmail.com,fomichev.me,linux.dev];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:shung-hsi.yu@suse.com,m:daniel@iogearbox.net,m:ast@kernel.org,m:eddyz87@gmail.com,m:andrii@kernel.org,m:martin.lau@kernel.org,m:sdf@fomichev.me,m:yonghong.song@linux.dev,m:jolsa@kernel.org,m:paul.chaignon@gmail.com,m:paulchaignon@gmail.com,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	SINGLE_SHORT_PART(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CF2FD6397E6
+X-Rspamd-Queue-Id: F2FD5639271
 
 Queued for 6.1.y, thanks.
-
-5.15.y and 5.10.y need a separate hand-crafted backport - the
-upstream patch doesn't apply cleanly there.
 
 -- 
 Thanks,
