@@ -1,184 +1,188 @@
-Return-Path: <stable+bounces-260088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ss3wN+EvIGpUyQAAu9opvQ
-	(envelope-from <stable+bounces-260088-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 15:45:05 +0200
+	id ljgUBdQvIGpTyQAAu9opvQ
+	(envelope-from <stable+bounces-260089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 15:44:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733E4638334
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 15:45:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 820CD63832C
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 15:44:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=flRmu0qK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260088-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260088-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=K5Pkbg1v;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260089-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260089-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6165F30ED0D9
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 13:32:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8F5F30BCD3B
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 13:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7530930BBAE;
-	Wed,  3 Jun 2026 13:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B797B305676;
+	Wed,  3 Jun 2026 13:32:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3798A2FDC20;
-	Wed,  3 Jun 2026 13:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312CC30B509
+	for <stable@vger.kernel.org>; Wed,  3 Jun 2026 13:32:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780493525; cv=none; b=G4yaFnp76kQ9gvwqiotsOoLmez6r/p1SOEyy8BvmQ4CRB1T3lznta+7nO2QvrPMKABZBvYDwQHuL2lMxnZGJkWc3kjd8snfHsDRPkkVepSOwO5dEUcuF7N4MzkE7prtWrYTdlNHt5021QRi64lBCNwpc/2yS9JKLjURui0AGYWM=
+	t=1780493535; cv=none; b=mGo3S/i6bigYWPrEjgPclcJXQOhrflM2ggN4VA5ToY+W60MCdwLjvuMNcgUrkpIaHjrJRU5ogwqEXVwtxMqXzZc+ACBAaleqfKqRpm3TYT/Uc+WTICk3GFcm+tf3NwODbFWHWnVbr74uPhq8NVX2DBM4/Ri4+NZMSGc2ldh+OSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780493525; c=relaxed/simple;
-	bh=rTzo24Zk76UuxHr/HjUAi0kTmBWzup4CqF0bxxDiUnY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eb3Tf8vkqafkTHHbzrGYFdcmT1w81L9vPgjNPdZEqHI2UY3bc+kgxklQAA8oGE6755BUUQdbMdInLGLtKb6HEMMAhfu8khL6gKKIGz81mmQB9Zuevvjfkk9Fd7pclyrydy5vOcvvxuJs5/0whfFPlcpkOk19gKGBXTRkr61jr+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=flRmu0qK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2571F00893;
-	Wed,  3 Jun 2026 13:31:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780493523;
-	bh=GerNSErSM9cNWQY0CMZxNnigte/XS4geDQjmWKTlK6s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=flRmu0qKW7pTpi1mPXkrtgOMA+wttOp63PRH9vv2hZiJlAuAfAVt9ND6t0M3glNo2
-	 wakD3wOS+Dm6yk7U3pY5RTK4Ov/QgqwKui62HKZ0Z3WYjOAJtCpyd7NZZV8b2UqaTS
-	 EpltJuGGkfG/6nSdIuxbz3Qr9qA3lZ2xX4sDPqgKrs3Lm6/0lcZlPixt/uDbRjwwDm
-	 oBF9VE/s/F+yY2rorwehIgJLUEXvRPTcqFq9R5PDAxp2xOHit84k8b5LKXsD7/BwpI
-	 QO2W6k9GthUobXKzsKwN+xMJ+QlocOKH/r17CfGHZpVqTQ2tFP1yQI3WekWxzLKI/w
-	 uFBC55KY01sZw==
-From: Lee Jones <lee@kernel.org>
-To: lee@kernel.org,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	=?UTF-8?q?Filipe=20La=C3=ADns?= <lains@riseup.net>,
-	Bastien Nocera <hadess@hadess.net>,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Alex Elder <elder@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	greybus-dev@lists.linaro.org,
-	linux-staging@lists.linux.dev,
-	bpf@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [linux-6.6.y 3/3] HID: core: Fix size_t specifier in hid_report_raw_event()
-Date: Wed,  3 Jun 2026 14:31:27 +0100
-Message-ID: <20260603133140.3069226-3-lee@kernel.org>
-X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
-In-Reply-To: <20260603133140.3069226-1-lee@kernel.org>
-References: <20260603133140.3069226-1-lee@kernel.org>
+	s=arc-20240116; t=1780493535; c=relaxed/simple;
+	bh=0XaLpw8wCWCVqO3HuR7IIwW8qzeoCTixBtIKErorbuM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TGxaMhtJUhvu815mzVElnwjNeIZLOJ9NBQzZt+iftpFslCdiLsOQ1hWZnjyAcHNAG4pNi8OIaCV0OfQuLW12RvHQt5PiVEnXylMZaHVRGdUD/HhjsLXM3QFlZ4K28eEU5CkY7i9WVY6gkNHPJZ8sKt8XNCSmfdInsJjRMlmDx0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K5Pkbg1v; arc=none smtp.client-ip=209.85.128.49
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4906869f0cbso123654735e9.1
+        for <stable@vger.kernel.org>; Wed, 03 Jun 2026 06:32:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780493533; x=1781098333; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4TVbfpbXuT0Cc8+UmhjB+WjY3nKUaTcDDEiy2PFK/eY=;
+        b=K5Pkbg1veMtiMn3iRnrbfarln4Qey7dy+cZiKbAKWdXixIno80/sRg1GRpSETsRJ9a
+         UJZuJ0WcOX0IkHnFZHIxgVymDrTEYMAHqsqWio172F2jHdiOni0jzQoz6GlJeGLyU858
+         OeAmEhtPgDSfr2wnSqkM+l/i6qP5GUlMEhtisBEjCtyk+a2qrjamrLHjw7k/yJsQsnaK
+         96lUAQPcLtBNkgp99kccMvzvavbrvgtUdFPNvwXGfHwD76Z9W6zCOVLDG6M/CXpmiZ6D
+         bYdWZM5gP1uzA3H6ILWm1aJeSzN/FPUcew6RcW/PV3hc66srs7qevDprvZWIA3wd/+ey
+         cO/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780493533; x=1781098333;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4TVbfpbXuT0Cc8+UmhjB+WjY3nKUaTcDDEiy2PFK/eY=;
+        b=EJRPjHk8lIiG3RYaoNPHcM56zw2ufsCkJ/8V9cVW2gvWH2Y9ns9/TFxGt0q2QReQNu
+         YDln3l5Q15HS2SiiByz7FBJoXQHctZY/6VrU4keD0QanNRqQjzl5ywVBda+BS1zeGvYG
+         vdrjF7Tl/IIYF6Xip+xD++paNCADfP1CFydxUQnJOnxXOalxdgtbW+E0yUtniFUzKDGu
+         ANHZauzXJ4J/bGkWW+9SSiI09+vEzxw3C71ABXbGBBhKihlIb2uXEXLEELCCBRCW1R3K
+         1hmPdRhDfXEYBwhjBbULUVQq5JQRNZf9Dt9ZN1st5ScW6bbj6afP6hxfr055x/zgjXYJ
+         FzhA==
+X-Forwarded-Encrypted: i=1; AFNElJ8cLRS6r24SfeMJuZAdvtkMGAUbrvQ8mRYeL5CsBXCQTLOnmgXk9S4Bm0YYUwFDYHhdWxL/4Ps=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaumDdfeUJhjrqZhFlWV4ls4W/eChXNl5Cvde8xUjZFDVbNw+1
+	F3Kxbtc9CdtY1Agt9khZws05fiv8BPEjbY2XGEAh5xgsYdp+GPGJiJop
+X-Gm-Gg: Acq92OFtDTBc8O+ffv/i75Fdu4P55/h7UHOWXLiASND3OHK3l5+/d7TthPVG9OjCqHV
+	cuJDnwYR+R8anulYvjnIwEz2eUZXf2X9WcmqNvuygc7P0h7odEYH6aZnrAhSH8sMcwJEj3GLR0Y
+	soZHRJnLul9nMp7C5+IWYZmaGfEtww4MxrzSMnFUjqXJBqUy+X/+Fspx4w8xkBSchzdei65BnRY
+	P5+O+8YY4ar6gdy0AiiKgt/qmdnxGQb0DKqDBsQMd1bPHNI+W7kKYQOjxSGT7tZBz4TLx2qnsLY
+	3M4bFDe9F4W8iAmDZqIcR2B6L5J+LQJuNJNFa3ERlYr9ESVXchk3+kfd4cw4tIR/969H7K5GJjd
+	f+K2Q9NgKbnzkPJbLGjL1kkwgO/PqkDbMk8TpiGH5SZG3s5j0n7E71yQZw9a9IBjUbrueszjzq2
+	a6uY1KpveCxGkLJQ1U4SafqBVcEMW4+UWFu2hVsp+iXDm5L6+FecZGiDoU0A6HWpVFKfZvqUYFo
+	omMSZ7K4mw4OvQxuz4MKg==
+X-Received: by 2002:a05:600c:c48e:b0:490:40f1:5314 with SMTP id 5b1f17b1804b1-490b5eb73aamr51371835e9.1.1780493532528;
+        Wed, 03 Jun 2026 06:32:12 -0700 (PDT)
+Received: from ?IPV6:2a01:4b00:bd1f:f500:f867:fc8a:5174:5755? ([2a01:4b00:bd1f:f500:f867:fc8a:5174:5755])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f351d69sm12355413f8f.29.2026.06.03.06.32.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jun 2026 06:32:11 -0700 (PDT)
+Message-ID: <755aaa06-9f6f-4f49-a3ac-5cf7f3574393@gmail.com>
+Date: Wed, 3 Jun 2026 14:32:11 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] bpf: Restore sysctl new-value from 1 to 0
+To: Dawei Feng <dawei.feng@seu.edu.cn>, martin.lau@linux.dev
+Cc: emil@etsalapatis.com, ast@kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, jolsa@kernel.org, kees@kernel.org,
+ joel.granados@kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, jianhao.xu@seu.edu.cn,
+ stable@vger.kernel.org, Zilin Guan <zilin@seu.edu.cn>
+References: <20260603105317.944304-1-dawei.feng@seu.edu.cn>
+ <20260603105317.944304-4-dawei.feng@seu.edu.cn>
+Content-Language: en-US
+From: Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
+In-Reply-To: <20260603105317.944304-4-dawei.feng@seu.edu.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260088-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:lee@kernel.org,m:jikos@kernel.org,m:benjamin.tissoires@redhat.com,m:lains@riseup.net,m:hadess@hadess.net,m:ping.cheng@wacom.com,m:jason.gerecke@wacom.com,m:vireshk@kernel.org,m:johan@kernel.org,m:elder@kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:linux-input@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:greybus-dev@lists.linaro.org,m:linux-staging@lists.linux.dev,m:bpf@vger.kernel.org,m:stable@vger.kernel.org,m:nathan@kernel.org,m:ojeda@kernel.org,m:torvalds@linux-foundation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-260089-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[lee@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[mykytayatsenko5@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:dawei.feng@seu.edu.cn,m:martin.lau@linux.dev,m:emil@etsalapatis.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:eddyz87@gmail.com,m:memxor@gmail.com,m:song@kernel.org,m:yonghong.song@linux.dev,m:jolsa@kernel.org,m:kees@kernel.org,m:joel.granados@kernel.org,m:bpf@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:stable@vger.kernel.org,m:zilin@seu.edu.cn,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[etsalapatis.com,kernel.org,iogearbox.net,gmail.com,linux.dev,vger.kernel.org,seu.edu.cn];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mykytayatsenko5@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,seu.edu.cn:email,linux.dev:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 733E4638334
+X-Rspamd-Queue-Id: 820CD63832C
 
-From: Nathan Chancellor <nathan@kernel.org>
+On 6/3/26 11:53 AM, Dawei Feng wrote:
+> Commit 4e63acdff864 ("bpf: Introduce bpf_sysctl_{get,set}_new_value
+> helpers") changed the success return value to 0, but failed to update the
+> corresponding check in __cgroup_bpf_run_filter_sysctl(). Since
+> bpf_prog_run_array_cg() now returns 0 on success, the legacy ret == 1
+> condition is never satisfied. As a result, the modified value is ignored,
+> and bpf_sysctl_set_new_value() fails to replace the write buffer.
+> 
+> Fix this by checking for a return value of 0 instead, so cgroup/sysctl
+> programs can correctly replace the pending sysctl buffer.
+> 
+> This bug was discovered during a manual code review. Tested via a
+> cgroup/sysctl BPF reproducer overriding writes to a target sysctl.
+> Pre-fix, bpf_sysctl_set_new_value("foo") was silently ignored: the write
+> returned 8192 and the value remained "600". Post-fix, the BPF replacement
+> buffer properly propagates: the write returns 3 and the value updates to
+> "foo".
 
-[ Upstream commit 4d3a2a466b8d68d852a1f3bbf11204b718428dc4 ]
+I wonder if we can make that reproducer into a selftest, clearly this
+codepath is not tested automatically at all, which is a problem.
 
-When building for 32-bit platforms, for which 'size_t' is
-'unsigned int', there are warnings around using the incorrect format
-specifier to print bsize in hid_report_raw_event():
-
-  drivers/hid/hid-core.c:2054:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
-   2053 |                 hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-        |                                                                                         ~~~
-        |                                                                                         %zu
-   2054 |                                      report->id, csize, bsize);
-        |                                                         ^~~~~
-  drivers/hid/hid-core.c:2076:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
-   2075 |                 hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-        |                                                                                          ~~~
-        |                                                                                          %zu
-   2076 |                                      report->id, rsize, bsize);
-        |                                                         ^~~~~
-
-Use the proper 'size_t' format specifier, '%zu', to clear up the
-warnings.
-
-Cc: stable@vger.kernel.org
-Fixes: 2c85c61d1332 ("HID: pass the buffer size to hid_report_raw_event")
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://lore.kernel.org/20260516020430.110135-1-ojeda@kernel.org/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-(cherry picked from commit 3ab135238832446399614e7a4bb796d620717806)
-Signed-off-by: Lee Jones <lee@kernel.org>
-(cherry picked from commit 76606eed6cb62ec97afcc270948ef8335d02e944)
-Signed-off-by: Lee Jones <lee@kernel.org>
----
- drivers/hid/hid-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index c6d98634b97e..2de4d831c526 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2003,7 +2003,7 @@ int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *
- 		return 0;
- 
- 	if (unlikely(bsize < csize)) {
--		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-+		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %zu)\n",
- 				     report->id, csize, bsize);
- 		return -EINVAL;
- 	}
-@@ -2025,7 +2025,7 @@ int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *
- 		rsize = max_buffer_size;
- 
- 	if (bsize < rsize) {
--		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-+		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %zu)\n",
- 				     report->id, rsize, bsize);
- 		return -EINVAL;
- 	}
--- 
-2.54.0.1032.g2f8565e1d1-goog
+> 
+> Fixes: f10d05966196 ("bpf: Make BPF_PROG_RUN_ARRAY return -err instead of allow boolean")
+> Cc: stable@vger.kernel.org
+> 
+> Acked-by: Yonghong Song <yonghong.song@linux.dev>
+> Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+> Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+> ---
+>  kernel/bpf/cgroup.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+> index a0b5f8cd8b10..3f06e2270f5c 100644
+> --- a/kernel/bpf/cgroup.c
+> +++ b/kernel/bpf/cgroup.c
+> @@ -1935,7 +1935,7 @@ int __cgroup_bpf_run_filter_sysctl(struct ctl_table_header *head,
+>  
+>  	kfree(ctx.cur_val);
+>  
+> -	if (ret == 1 && ctx.new_updated) {
+> +	if (!ret && ctx.new_updated) {
+>  		kvfree(*buf);
+>  		*buf = ctx.new_val;
+>  		*pcount = ctx.new_len;
 
 
