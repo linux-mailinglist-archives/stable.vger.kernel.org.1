@@ -1,155 +1,141 @@
-Return-Path: <stable+bounces-260003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260005-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mq0+MNHtH2o7sgAAu9opvQ
-	(envelope-from <stable+bounces-260003-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:03:13 +0200
+	id lSlSLFTvH2pxsgAAu9opvQ
+	(envelope-from <stable+bounces-260005-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:09:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34391635F83
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:03:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6EE636010
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:09:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=04B6lho+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260003-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260003-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=bootlin.com;
+	dkim=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260005-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260005-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C29003027DA4
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 09:00:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6104B30B7F7B
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 09:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC8A3655CF;
-	Wed,  3 Jun 2026 09:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F59336EA82;
+	Wed,  3 Jun 2026 09:04:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FB9335BBB;
-	Wed,  3 Jun 2026 09:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29E5372EF7;
+	Wed,  3 Jun 2026 09:04:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780477242; cv=none; b=cl/8idrmT/ebHACt0iFMA7QVGuYo+1gDn/NSxUnpbE71j4rtAJGtPYI8tv6Klo85a3t/CPfINZXCBQlOLNb1nSQNor7BsRvIRpFjCGVYc+DmwxD6sV7DBEjIqWTHVASRdNrxoaqG3XQQn7TglFBi2fNnz/GhrwyaWTDkkPvQ+GQ=
+	t=1780477447; cv=none; b=iFcgiSr/A1Wnj4GNe1tmS/uM8SSseBQSNXMb6V7H9xywGm1OnpaJg9HOvILMYPs6nsAby6wSkZWXBMwejZ24PwRx27vYsfScBE6hV/ZdVUB35E9mT8B0QKGxINphbVgOg8QySuTihPmWYeRyOKGsnXV4p0+ojP+e0sksA2eVGhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780477242; c=relaxed/simple;
-	bh=7iaLCBnvkEjWZi6ZwCEL/kKap3F4J5QHzCPV5d8J2kc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=m9IjKltT+7w/5QtenohfgtvzY3ZKUmlWWwe+PxRshJjnIX0NQQNdi31kN7SLJfo0vfUOqy0T3K1TepFNTv2TZBuxjDkYTeIivbQn3w5PefOPrQGI8qPTNhe7kpZ5drIx3Kp84JSleg1V8pwjDli40NKIozhELRULIPglsPm6TnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=04B6lho+; arc=none smtp.client-ip=185.171.202.116
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id E45A0C62216;
-	Wed,  3 Jun 2026 09:00:41 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2072C5FD24;
-	Wed,  3 Jun 2026 09:00:39 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2723110888413;
-	Wed,  3 Jun 2026 11:00:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780477237; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=YQGOVjJ70TJqHQ6t2vTYiGOL39RZYVDa4SJTFCWKyZo=;
-	b=04B6lho+Bh//vim3TDYdAaLB6/BgNYrsH6G8def+gohQ4WgWK2QOntZiy/TTDyjGkLdJM6
-	xT3A2e75f8OvhX4GZJ4pn/xI917zNPAopGnmTAanFRNzstyTO8xdSC/c1dv/kLudqcK2V0
-	IDXHDfRcqjUMJMYJ6W45S/a4TkYWtA1Kb/KVVUSFkkV3yC1WcFtc5LIsLRfPbLj+swReab
-	4gXvU7+o7GdnjYoERGvFoS8i+X+aNvyQfukBvoPX7+3UxpCGHtGKiAtoB9Dwt5pw/P2ZnR
-	e3YRQACR5R/Jo1pgt/HVqLEBQMF4GLybIQ4xNYkTAnN34NT3m0OnVlBSAzZDuA==
-From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Wed, 03 Jun 2026 10:59:54 +0200
-Subject: [PATCH 3/3] drm/i915/display/intel_dp: Drop redundant
- intel_dp_aux_fini() on init failure
+	s=arc-20240116; t=1780477447; c=relaxed/simple;
+	bh=ioMPMLysh+ggKDHwFTdEhoJ38LukBtucYbnRJn8GWPw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=b0E5bLnDVr2pBXgABqkPzRtR2JcOdFqcoDWTpnnD3/v16K/1AokZAb1zN9gpLbDXuJb7oupSM9TagrL1BIzcCAwzSCXL215h/S5Fp0YdnolyFnjM2/wLsz387f/u6frPhhDQi4ohNssyCZ9QBneBAkBBA3O2XDtLpb24R6b1lfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+X-UUID: 287affda5f2b11f1aa26b74ffac11d73-20260603
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:daf01482-828a-48eb-88e8-3667f21292d3,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:e7bac3a,CLOUDID:bad97901ae90cc1345082e806dd50a79,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|850|865|898,TC:nil,Content:0|15|
+	50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0
+	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 287affda5f2b11f1aa26b74ffac11d73-20260603
+X-User: zenghongling@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zenghongling@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1772892839; Wed, 03 Jun 2026 17:03:59 +0800
+From: Hongling Zeng <zenghongling@kylinos.cn>
+To: hare@kernel.org,
+	James.Bottomley@HansenPartnership.com,
+	martin.petersen@oracle.com
+Cc: linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhongling0719@126.com,
+	Hongling Zeng <zenghongling@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] scsi: myrb: Fix off-by-one error in target ID boundary check
+Date: Wed,  3 Jun 2026 17:03:55 +0800
+Message-Id: <20260603090355.196528-1-zenghongling@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260603-fix_i915-v1-3-7479ff64e705@bootlin.com>
-References: <20260603-fix_i915-v1-0-7479ff64e705@bootlin.com>
-In-Reply-To: <20260603-fix_i915-v1-0-7479ff64e705@bootlin.com>
-To: Jani Nikula <jani.nikula@linux.intel.com>, 
- Rodrigo Vivi <rodrigo.vivi@intel.com>, 
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Chris Wilson <chris@chris-wilson.co.uk>, 
- Eric Anholt <eric@anholt.net>, Dave Airlie <airlied@redhat.com>, 
- Jesse Barnes <jbarnes@virtuousgeek.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Louis Chauvet <louis.chauvet@bootlin.com>, 
- Mark Yacoub <markyacoub@google.com>, Sean Paul <seanpaul@google.com>, 
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- Simona Vetter <simona.vetter@ffwll.ch>, 
- Kory Maincent <kory.maincent@bootlin.com>, stable@vger.kernel.org
-X-Mailer: b4 0.15.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[21];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260005-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_TO(0.00)[linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,chris-wilson.co.uk,anholt.net,redhat.com,virtuousgeek.org];
-	FORGED_RECIPIENTS(0.00)[m:jani.nikula@linux.intel.com,m:rodrigo.vivi@intel.com,m:joonas.lahtinen@linux.intel.com,m:tursulin@ursulin.net,m:airlied@gmail.com,m:simona@ffwll.ch,m:chris@chris-wilson.co.uk,m:eric@anholt.net,m:airlied@redhat.com,m:jbarnes@virtuousgeek.org,m:thomas.petazzoni@bootlin.com,m:louis.chauvet@bootlin.com,m:markyacoub@google.com,m:seanpaul@google.com,m:intel-gfx@lists.freedesktop.org,m:intel-xe@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:simona.vetter@ffwll.ch,m:kory.maincent@bootlin.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[kory.maincent@bootlin.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-260003-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kory.maincent@bootlin.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	DMARC_NA(0.00)[kylinos.cn];
+	FREEMAIL_CC(0.00)[vger.kernel.org,126.com,kylinos.cn];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[zenghongling@kylinos.cn,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:hare@kernel.org,m:James.Bottomley@HansenPartnership.com,m:martin.petersen@oracle.com,m:linux-scsi@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:zhongling0719@126.com,m:zenghongling@kylinos.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zenghongling@kylinos.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	R_DKIM_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bootlin.com:mid,bootlin.com:dkim,bootlin.com:from_mime,bootlin.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:mid,kylinos.cn:from_mime,kylinos.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 34391635F83
+X-Rspamd-Queue-Id: 4C6EE636010
 
-intel_dp_aux_fini() is already invoked via intel_dp_encoder_flush_work()
-in the encoder destroy path (intel_dp_encoder_destroy() and
-intel_ddi_encoder_destroy()). Calling it explicitly when
-intel_edp_init_connector() fails before jumping to the fail label
-therefore results in a double invocation. Drop the redundant call.
+Fix off-by-one error where sdev->id is allowed to equal MYRB_MAX_TARGETS
+(16), leading to out-of-bounds array access. When sdev->id is 16 and
+channel is 2, err_table_offset becomes 48, accessing array index 48
+in a 48-element array (indices 0-47).
+
+Change the boundary check from > to >= to properly reject invalid
+target IDs.
 
 Cc: stable@vger.kernel.org
-Fixes: c191eca110a37 ("drm/i915: Move intel_connector->unregister to connector->early_unregister")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Fixes: 081ff398c56c ("scsi: myrb: Add Mylex RAID controller (block interface)")
+Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/scsi/myrb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index f01a6eed38395..f4fab568172f4 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -7310,10 +7310,8 @@ intel_dp_init_connector(struct intel_digital_port *dig_port,
- 		connector->get_hw_state = intel_connector_get_hw_state;
- 	connector->sync_state = intel_dp_connector_sync_state;
+diff --git a/drivers/scsi/myrb.c b/drivers/scsi/myrb.c
+index 591ba70a0579..54d89d1643de 100644
+--- a/drivers/scsi/myrb.c
++++ b/drivers/scsi/myrb.c
+@@ -1669,7 +1669,7 @@ static int myrb_pdev_sdev_init(struct scsi_device *sdev)
+ 	struct myrb_pdev_state *pdev_info;
+ 	unsigned short status;
  
--	if (!intel_edp_init_connector(intel_dp, connector)) {
--		intel_dp_aux_fini(intel_dp);
-+	if (!intel_edp_init_connector(intel_dp, connector))
- 		goto fail;
--	}
+-	if (sdev->id > MYRB_MAX_TARGETS)
++	if (sdev->id >= MYRB_MAX_TARGETS)
+ 		return -ENXIO;
  
- 	intel_dp_set_source_rates(intel_dp);
- 	intel_dp_set_common_rates(intel_dp);
-
+ 	pdev_info = kzalloc_obj(*pdev_info);
 -- 
-2.43.0
+2.25.1
 
 
