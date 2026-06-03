@@ -1,146 +1,162 @@
-Return-Path: <stable+bounces-260191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Rbz9He+NIGoB5AAAu9opvQ
-	(envelope-from <stable+bounces-260191-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 22:26:23 +0200
+	id kjUkJfCUIGqh5QAAu9opvQ
+	(envelope-from <stable+bounces-260196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 22:56:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B883963B185
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 22:26:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F346663B49E
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 22:56:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nabladev.com header.s=dkim header.b=SQ+eQwGO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260191-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260191-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=nabladev.com;
+	dkim=pass header.d=nppct.ru header.s=dkim header.b="Y U2rUNL";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260196-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260196-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E6CC300C036
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 20:22:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 793173005775
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 20:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F753F44F2;
-	Wed,  3 Jun 2026 20:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0B43DF017;
+	Wed,  3 Jun 2026 20:51:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E8218871F;
-	Wed,  3 Jun 2026 20:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B25C3E16B8
+	for <stable@vger.kernel.org>; Wed,  3 Jun 2026 20:51:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780518160; cv=none; b=Ykrzey6rGio4UeK1n+1BlcvkTabux9SM361xS0CecUT7xE9+q3/cm8tzb4kpbpxhMKQHjPKmI2jXzbUFtE/H5NG5TbUJHS9bW+I218AsIfynmB9IqUzstUNnGrBLTAwFqA3BCXj9iwMgHC6hz9+/2y0VKu9rbyWsQ3vYVSxDbA4=
+	t=1780519889; cv=none; b=CzDAhj0iENGpifwLOCZ5Vc49UotLOilLKJvh3ojCAERCqn1J2lVpbCLMCfMG4BNWa6v4FB5aNlDEeBp6h5AWzazWnajJav3sTvxjjIhdp85fqmdPt51+RD8/acC4wOxezvKpVM3Cl0miOIrHV6hkAePTJx/ateAartcndWIbW4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780518160; c=relaxed/simple;
-	bh=k9adqn0wCXAkviCCB4H2B1SXFVaBvXE79KQiJoOTyOQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cZvXK8wIR7arXaUwRNrNA0XeiCM2DaR0M7YjLw6TVAzPYGQ84KsTQCdSQMxzAV723q8l2/78oyTn8Q/n3htVWTMzk5usb2m6sdmxkR689iqN9RQWifYeyiNnpKJ0agklnz/YXRaI7KvEdDogFLXtiuo+c3QqAFrfAaDYc50h8A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=SQ+eQwGO; arc=none smtp.client-ip=178.251.229.89
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D3D4E11681B;
-	Wed,  3 Jun 2026 22:22:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1780518150;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=QWCn+RvJ2hGSRSiKljKAu45ohCbEXtbZ3L2rPOZI8RI=;
-	b=SQ+eQwGO5JwvwC+uNxWbnqIRnvt79Yl71aQPe9p0aLBIn/I26nJ2vzxtNCxprHt3PLkSur
-	mmB+zOm/5+L4B9CwHTYQ5loboSmeR8YawF6iF98lUL+inpKmHeYDQO48Yc7ErUM7FXBmuo
-	LE4Q7n3zncDMmNMFBqjx0eECLRCBPjX0Nilpb9sCqjhE93VK/n857dLwBiJaMpCbQZOwKF
-	TUClNqqpR7lJ7ibUv6+aMJGB7QHQVQtEnw9RlVxDEgOb45pqdl7ZvtywOBxbzqWYwEI96V
-	EnoEc5DeJAt8fGxonAS7E1fwFhxqv9L7Jixdj2wq3G60U6IAmDolUuf7o1edlg==
-Date: Wed, 3 Jun 2026 22:22:26 +0200
-From: Pavel Machek <pavel@nabladev.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>, stable@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea@kernel.org>,
-	Pavel Machek <pavel@nabladev.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Chris.Paterson2@renesas.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] phy: renesas: rcar-gen3-usb2: Fix the use of msleep
- during spinlock
-Message-ID: <aiCNApnB9NKuuw8R@duo.ucw.cz>
-References: <20260501225859.504868-1-nobuhiro.iwamatsu.x90@mail.toshiba>
- <20260602180900.rcar-gen3-usb2-reply@kernel.org>
+	s=arc-20240116; t=1780519889; c=relaxed/simple;
+	bh=9khcxchl3IzPyyfhPI9Yt7yAq7wBv27v9pwnaEpqJLg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Blg5btHtXEeYjtCQqGOr5ebpDpZjIJlEwUFR90MQ81tyAX61ParufFNUmrLb+Pm2JYHGtwBdUUFV4lbXocvpB3WgF8kCu4kHpuILUIs54go53h22MbAIm6didjxZbM7uRZcMH/dRSeTrbsADzDw71gb2PKdHejzzjfRMWSgSoEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=YU2rUNLL; arc=none smtp.client-ip=195.133.245.4
+Received: from mail.nppct.ru (localhost [127.0.0.1])
+	by mail.nppct.ru (Postfix) with ESMTP id A74B21C0F4B
+	for <stable@vger.kernel.org>; Wed,  3 Jun 2026 23:42:12 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:to:from:from; s=dkim; t=1780519331; x=
+	1781383332; bh=9khcxchl3IzPyyfhPI9Yt7yAq7wBv27v9pwnaEpqJLg=; b=Y
+	U2rUNLLo/nramxH3mAadn7+Exh2SD0r8a6O8K5sYSzveHRMKTJHn9+JpxQvpcLZa
+	fZm8UsKcM6txBdAfTVwoBUVHVaCK2A8cPQmoo2JFIbeUVhJjSCBa6XYZIs34buef
+	tttmyPvirjUV8eCq39Ng3G98mhtijcZbAvwEIgHiAQ=
+X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
+Received: from mail.nppct.ru ([127.0.0.1])
+	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 6j03Leh_D1JG for <stable@vger.kernel.org>;
+	Wed,  3 Jun 2026 23:42:11 +0300 (MSK)
+Received: from localhost.localdomain (unknown [87.249.24.51])
+	by mail.nppct.ru (Postfix) with ESMTPSA id 82C4B1C04B5;
+	Wed,  3 Jun 2026 23:42:06 +0300 (MSK)
+From: Alexey Nepomnyashih <sdl@nppct.ru>
+To: Carlos Maiolino <cem@kernel.org>
+Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
+	"Darrick J. Wong" <darrick.wong@oracle.com>,
+	Allison Collins <allison.henderson@oracle.com>,
+	Dave Chinner <dchinner@redhat.com>,
+	linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH] xfs: fix unreachable BIGTIME check in dquot flush validation
+Date: Wed,  3 Jun 2026 20:41:47 +0000
+Message-ID: <20260603204148.232530-1-sdl@nppct.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="NANqtt7thEV32wSe"
-Content-Disposition: inline
-In-Reply-To: <20260602180900.rcar-gen3-usb2-reply@kernel.org>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[nppct.ru:s=dkim];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260191-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260196-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:cem@kernel.org,m:sdl@nppct.ru,m:darrick.wong@oracle.com,m:allison.henderson@oracle.com,m:dchinner@redhat.com,m:linux-xfs@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[sdl@nppct.ru,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:iwamatsu@nigauri.org,m:stable@vger.kernel.org,m:claudiu.beznea@kernel.org,m:pavel@nabladev.com,m:gregkh@linuxfoundation.org,m:Chris.Paterson2@renesas.com,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[nppct.ru];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nabladev.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[nppct.ru:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sdl@nppct.ru,stable@vger.kernel.org];
 	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxtesting.org:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B883963B185
+X-Rspamd-Queue-Id: F346663B49E
 
+The dqp->q_id == 0 check inside the XFS_DQTYPE_BIGTIME block is
+unreachable because root dquots return successfully earlier. Reject root
+dquots with XFS_DQTYPE_BIGTIME before that early return, preserving the
+intended validation and removing the unreachable condition.
 
---NANqtt7thEV32wSe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-On Tue 2026-06-02 14:21:25, Sasha Levin wrote:
-> On Sat, May 02, 2026 at 07:58:59AM +0900, Nobuhiro Iwamatsu wrote:
-> > [PATCH] phy: renesas: rcar-gen3-usb2: Fix the use of msleep during spin=
-lock
->=20
-> Now applied to 5.10.y.
+Fixes: 4ea1ff3b4968 ("xfs: widen ondisk quota expiration timestamps to handle y2038+")
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+---
+ fs/xfs/xfs_dquot.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-That was the
+diff --git a/fs/xfs/xfs_dquot.c b/fs/xfs/xfs_dquot.c
+index 69e9bc588c8b..c311f61d9554 100644
+--- a/fs/xfs/xfs_dquot.c
++++ b/fs/xfs/xfs_dquot.c
+@@ -1216,6 +1216,14 @@ xfs_qm_dqflush_check(
+ 	    type != XFS_DQTYPE_PROJ)
+ 		return __this_address;
+ 
++	/* bigtime flag should never be set on root dquots */
++	if (dqp->q_type & XFS_DQTYPE_BIGTIME) {
++		if (!xfs_has_bigtime(dqp->q_mount))
++			return __this_address;
++		if (dqp->q_id == 0)
++			return __this_address;
++	}
++
+ 	if (dqp->q_id == 0)
+ 		return NULL;
+ 
+@@ -1231,14 +1239,6 @@ xfs_qm_dqflush_check(
+ 	    !dqp->q_rtb.timer)
+ 		return __this_address;
+ 
+-	/* bigtime flag should never be set on root dquots */
+-	if (dqp->q_type & XFS_DQTYPE_BIGTIME) {
+-		if (!xfs_has_bigtime(dqp->q_mount))
+-			return __this_address;
+-		if (dqp->q_id == 0)
+-			return __this_address;
+-	}
+-
+ 	return NULL;
+ }
+ 
+-- 
+2.43.0
 
-- msleep()
-+ mdelay()
-
-one-liner patch, right? Yes, that's indeed best solution for
-5.10.x. Thank you!
-
-Best regards,
-								Pavel
-
-      =20
-
---NANqtt7thEV32wSe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaiCNAgAKCRAw5/Bqldv6
-8r08AKDBOfLTMbP3R9oD2tSWnHNShHmBfQCfWutBq+G5WdgBS3g35MQceQDfZ6o=
-=5y02
------END PGP SIGNATURE-----
-
---NANqtt7thEV32wSe--
 
