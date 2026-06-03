@@ -1,162 +1,164 @@
-Return-Path: <stable+bounces-260196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260192-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kjUkJfCUIGqh5QAAu9opvQ
-	(envelope-from <stable+bounces-260196-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 22:56:16 +0200
+	id fBhnNQSSIGrF5AAAu9opvQ
+	(envelope-from <stable+bounces-260192-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 22:43:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F346663B49E
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 22:56:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7673963B2C7
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 22:43:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nppct.ru header.s=dkim header.b="Y U2rUNL";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260196-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260196-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yBdr+bJ3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260192-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-260192-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 793173005775
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 20:51:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E5B11301417C
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 20:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0B43DF017;
-	Wed,  3 Jun 2026 20:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2103FB075;
+	Wed,  3 Jun 2026 20:43:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B25C3E16B8
-	for <stable@vger.kernel.org>; Wed,  3 Jun 2026 20:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43AE338E8DE;
+	Wed,  3 Jun 2026 20:43:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780519889; cv=none; b=CzDAhj0iENGpifwLOCZ5Vc49UotLOilLKJvh3ojCAERCqn1J2lVpbCLMCfMG4BNWa6v4FB5aNlDEeBp6h5AWzazWnajJav3sTvxjjIhdp85fqmdPt51+RD8/acC4wOxezvKpVM3Cl0miOIrHV6hkAePTJx/ateAartcndWIbW4I=
+	t=1780519424; cv=none; b=Ki6YK9B7CGM6US7Pqt8KaGq05ok4LW/yGDif0RfTI3/4x+qhhjy/1guRhi/frTfJWs/4B9oYF7r0STxVzsYQ7XD/sPA1oRVGv7sy9xnE7b8651agT1SboB+weUv3hVc2/53uy5tU0J2E5w7Dl3gNAniUzlkHUB7nZVS3UjjTCJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780519889; c=relaxed/simple;
-	bh=9khcxchl3IzPyyfhPI9Yt7yAq7wBv27v9pwnaEpqJLg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Blg5btHtXEeYjtCQqGOr5ebpDpZjIJlEwUFR90MQ81tyAX61ParufFNUmrLb+Pm2JYHGtwBdUUFV4lbXocvpB3WgF8kCu4kHpuILUIs54go53h22MbAIm6didjxZbM7uRZcMH/dRSeTrbsADzDw71gb2PKdHejzzjfRMWSgSoEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=YU2rUNLL; arc=none smtp.client-ip=195.133.245.4
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id A74B21C0F4B
-	for <stable@vger.kernel.org>; Wed,  3 Jun 2026 23:42:12 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:to:from:from; s=dkim; t=1780519331; x=
-	1781383332; bh=9khcxchl3IzPyyfhPI9Yt7yAq7wBv27v9pwnaEpqJLg=; b=Y
-	U2rUNLLo/nramxH3mAadn7+Exh2SD0r8a6O8K5sYSzveHRMKTJHn9+JpxQvpcLZa
-	fZm8UsKcM6txBdAfTVwoBUVHVaCK2A8cPQmoo2JFIbeUVhJjSCBa6XYZIs34buef
-	tttmyPvirjUV8eCq39Ng3G98mhtijcZbAvwEIgHiAQ=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 6j03Leh_D1JG for <stable@vger.kernel.org>;
-	Wed,  3 Jun 2026 23:42:11 +0300 (MSK)
-Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id 82C4B1C04B5;
-	Wed,  3 Jun 2026 23:42:06 +0300 (MSK)
-From: Alexey Nepomnyashih <sdl@nppct.ru>
-To: Carlos Maiolino <cem@kernel.org>
-Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
-	"Darrick J. Wong" <darrick.wong@oracle.com>,
-	Allison Collins <allison.henderson@oracle.com>,
-	Dave Chinner <dchinner@redhat.com>,
-	linux-xfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] xfs: fix unreachable BIGTIME check in dquot flush validation
-Date: Wed,  3 Jun 2026 20:41:47 +0000
-Message-ID: <20260603204148.232530-1-sdl@nppct.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1780519424; c=relaxed/simple;
+	bh=YAuE18JhJwvr9gmCxZJUZme2L7djr5e1rC1+AF011+8=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=rFa1iFWVf5oMzOly3rFCBPEvEGIuwy2lEDECtTERj05ZWsFSAQXm2x9j4B7H8DsCSOaMkBU5BIEZ7I0qIz2Tr7o+00v8m27cYhbVzQRA73VFk9MJdGVCqKLbFrzTW1U9PqHMjaNCBiym1WSA4fZIcQJq161IIlHWf0vllToPUlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yBdr+bJ3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 671A01F00893;
+	Wed,  3 Jun 2026 20:43:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1780519422;
+	bh=qXt3HlkGjPjjBzajXWzeASZrNMEoMaOOwTld8L39WrE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=yBdr+bJ3R9u2rDk5PgtPf0n4/DWOgv2ezwhc2Eed/mQYXPKajZ84o56T7yrPi8eYJ
+	 2TOVLzPMil8VxdpdiVWZyV8fEzIsYE8RX+LkC/7urfMv9+aG76CPTgtZvy56WlL+Kh
+	 7zRz0TsvrKJCynL8t4AnIgfZUZivZFMHTgYW+mFA=
+Date: Wed, 3 Jun 2026 13:43:41 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Carlier <devnexen@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ syzbot+deedf22929084640666f@syzkaller.appspotmail.com,
+ stable@vger.kernel.org, Chris Li <chrisl@kernel.org>, Kairui Song
+ <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+ <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song
+ <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>
+Subject: Re: [PATCH] mm, swap: free the cluster extend table on teardown
+Message-Id: <20260603134341.41b8c34935efd448c3a16a1c@linux-foundation.org>
+In-Reply-To: <20260602222358.49061-1-devnexen@gmail.com>
+References: <20260602222358.49061-1-devnexen@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[nppct.ru:s=dkim];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260196-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:devnexen@gmail.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:syzbot+deedf22929084640666f@syzkaller.appspotmail.com,m:stable@vger.kernel.org,m:chrisl@kernel.org,m:kasong@tencent.com,m:shikemeng@huaweicloud.com,m:nphamcs@gmail.com,m:baoquan.he@linux.dev,m:baohua@kernel.org,m:youngjun.park@lge.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:cem@kernel.org,m:sdl@nppct.ru,m:darrick.wong@oracle.com,m:allison.henderson@oracle.com,m:dchinner@redhat.com,m:linux-xfs@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[sdl@nppct.ru,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260192-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[nppct.ru];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nppct.ru:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[sdl@nppct.ru,stable@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kvack.org,vger.kernel.org,syzkaller.appspotmail.com,kernel.org,tencent.com,huaweicloud.com,gmail.com,linux.dev,lge.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,deedf22929084640666f];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxtesting.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,vger.kernel.org:from_smtp,linux-foundation.org:mid,linux-foundation.org:from_mime,linux-foundation.org:dkim,syzkaller.appspot.com:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F346663B49E
+X-Rspamd-Queue-Id: 7673963B2C7
 
-The dqp->q_id == 0 check inside the XFS_DQTYPE_BIGTIME block is
-unreachable because root dquots return successfully earlier. Reject root
-dquots with XFS_DQTYPE_BIGTIME before that early return, preserving the
-intended validation and removing the unreachable condition.
+On Tue,  2 Jun 2026 23:23:57 +0100 David Carlier <devnexen@gmail.com> wrote:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> swap_cluster_free_table() frees every per-cluster side table but
+> ci->extend_table. That table is only released by
+> swap_extend_table_try_free(), which the teardown path never calls, so a
+> cluster can be freed with an extend table still attached.
+> 
+> It can also linger while the cluster is live. swap_dup_entries_cluster()
+> drops the lock to allocate an extend table when a slot reaches
+> SWP_TB_COUNT_MAX - 1, then retries. If the count dropped in the meantime,
+> the retry takes the normal path and leaves the table behind, all entries
+> zero; only the failure path frees it.
+> 
+> Since a swap_cluster_info is reused in place and swap_extend_table_alloc()
+> skips allocation when ci->extend_table is set, the next user of the
+> cluster inherits the stale table and its leftover counts, corrupting the
+> swap count of any slot that overflows. CONFIG_DEBUG_VM catches the
+> dangling table in swap_cluster_assert_empty(); otherwise it is silent.
+> 
+> Free it in swap_cluster_free_table(), and also on the
+> swap_dup_entries_cluster() success path to match the failure path.
 
-Fixes: 4ea1ff3b4968 ("xfs: widen ondisk quota expiration timestamps to handle y2038+")
-Cc: stable@vger.kernel.org # v5.10+
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
----
- fs/xfs/xfs_dquot.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+This all sounds rather horrid.  We have no description of how this all
+manifests for the user, but I assume "badly"?
 
-diff --git a/fs/xfs/xfs_dquot.c b/fs/xfs/xfs_dquot.c
-index 69e9bc588c8b..c311f61d9554 100644
---- a/fs/xfs/xfs_dquot.c
-+++ b/fs/xfs/xfs_dquot.c
-@@ -1216,6 +1216,14 @@ xfs_qm_dqflush_check(
- 	    type != XFS_DQTYPE_PROJ)
- 		return __this_address;
- 
-+	/* bigtime flag should never be set on root dquots */
-+	if (dqp->q_type & XFS_DQTYPE_BIGTIME) {
-+		if (!xfs_has_bigtime(dqp->q_mount))
-+			return __this_address;
-+		if (dqp->q_id == 0)
-+			return __this_address;
-+	}
-+
- 	if (dqp->q_id == 0)
- 		return NULL;
- 
-@@ -1231,14 +1239,6 @@ xfs_qm_dqflush_check(
- 	    !dqp->q_rtb.timer)
- 		return __this_address;
- 
--	/* bigtime flag should never be set on root dquots */
--	if (dqp->q_type & XFS_DQTYPE_BIGTIME) {
--		if (!xfs_has_bigtime(dqp->q_mount))
--			return __this_address;
--		if (dqp->q_id == 0)
--			return __this_address;
--	}
--
- 	return NULL;
- }
- 
--- 
-2.43.0
+> Reported-by: syzbot+deedf22929084640666f@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=deedf22929084640666f
+> Fixes: 0d6af9bcf383 ("mm, swap: use the swap table to track the swap count")
+> Cc: <stable@vger.kernel.org>
+
+First merged in 7.1-rc1 so no cc:stable should be needed, if we upstream a fix
+promptly.
+
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -432,6 +432,9 @@ static void swap_cluster_free_table(struct swap_cluster_info *ci)
+>  	ci->zero_bitmap = NULL;
+>  #endif
+>  
+> +	kfree(ci->extend_table);
+> +	ci->extend_table = NULL;
+> +
+>  	table = (struct swap_table *)rcu_access_pointer(ci->table);
+>  	if (!table)
+>  		return;
+> @@ -1711,6 +1714,7 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
+>  			goto failed;
+>  		}
+>  	} while (++ci_off < ci_end);
+> +	swap_extend_table_try_free(ci);
+>  	swap_cluster_unlock(ci);
+>  	return 0;
+>  failed:
+
+AI reviw flagged a possible issue:
+	https://sashiko.dev/#/patchset/20260602222358.49061-1-devnexen@gmail.com
 
 
