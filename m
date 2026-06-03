@@ -1,149 +1,184 @@
-Return-Path: <stable+bounces-260098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260101-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HTuRGbhEIGphzgAAu9opvQ
-	(envelope-from <stable+bounces-260098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 17:14:00 +0200
+	id W9auEOxBIGpuzQAAu9opvQ
+	(envelope-from <stable+bounces-260101-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 17:02:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE36639002
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 17:13:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7CB7638E4E
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 17:01:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bPBQW5U6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260098-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260098-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=paragon-software.com header.s=mail header.b=pxmSsQ+7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260101-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260101-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=paragon-software.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7D2133A7BF2
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 14:41:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2CB0D31B5292
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 14:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53AD3396EE;
-	Wed,  3 Jun 2026 14:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1EB3C6611;
+	Wed,  3 Jun 2026 14:40:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from relayaws-01.paragon-software.com (relayaws-01.paragon-software.com [35.157.23.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689483A8FF6;
-	Wed,  3 Jun 2026 14:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DA23859D3;
+	Wed,  3 Jun 2026 14:40:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780497450; cv=none; b=sw3Wbr8AAYCzlLO3TZ+JhCbdK/ySVwmdt3uFmQxgEVqsXEO4oHH64uJQlU2HLEljAHL9tJm2/oa8HV4djJ3PTV6N5hcatoU679cl6TqWWXYggpFO+eacSzO2BUt+Y12BHkqGxuBWD4xdqmC081vRNUFv5uQzeoZcvnyXinzFQow=
+	t=1780497628; cv=none; b=QvMmlFMYeUbYgAE9bPTjZF2eozuLq8slQvjd3Pl5SPkLwSvKmtpMRVRrucGQTEEqJEwLqOAKDcezO0JTNnSJN3f5xOtIBqONFSsy8X19Y3d0eFKUKWM4VknPNJ08yjPtlk21txNzYDv8/zLV9OwmULCCkwhJagEfJ3it1aO0PqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780497450; c=relaxed/simple;
-	bh=h3jJ/nP5pLr7CBwRObS7zzhELWONPHjzqZR0+am6cdU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MzoXcUxxE3s0IN9HHnFKD3W1VTix2xu1clUoyDzJBh2bU3PwmJKobvPjAdI9Ni56MsKpJbN6+JKESiTzJfqit02KL4nH0xmSBY7n7vN0JkTYhihw6KjiDZ5iXGZIaVnmoVEIbRZgr4dm2siPOB/TWMZT2qHROQS95oRFb9Mog0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bPBQW5U6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19EDF1F00899;
-	Wed,  3 Jun 2026 14:37:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780497449;
-	bh=YhkoW0rRlfHoFhzX5mfolI/l6SS5hCwW3qRrR7GxDsw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bPBQW5U6C9YC9R1JF9ZIVIIBCvvGeuyNSpEDimbvlkrYB4+GPhYAPP7ZI9zzjFuHN
-	 bhfcKKxtttKTYXnbSu0QkYS3stuyYFSywYdxZwmhTT4L/rihq0yUtjkE8NgSbSTsF0
-	 /tgYG8E8hTsI6/FjOQckUJ4zbNi7Tmg2Snkxk9DFlO5oCqD6KhID2ligSsV/i+RJ7F
-	 NeqeN2SODslxFFIahtfI58Tb+l9mNeR3wwAVijbps2Mylc4M0to1vZLRMt3lmAxr9x
-	 08fPR0UH0gXREVtBRrjvbCqhXbQixhNgmkQMxLXmypHw+2QndEc5xeBgYnqMhsRqub
-	 yeD8DMq0mSlqQ==
-Received: from johan by xi.lan with local (Exim 4.99.3)
-	(envelope-from <johan@kernel.org>)
-	id 1wUmik-0000000AYB4-39Qt;
-	Wed, 03 Jun 2026 16:37:26 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Marcel Holtmann <marcel@holtmann.org>
-Cc: linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	Rajat Jain <rajatja@google.com>
-Subject: [PATCH v3 RESEND 3/5] Bluetooth: btusb: fix wakeup source leak on probe failure
-Date: Wed,  3 Jun 2026 16:36:41 +0200
-Message-ID: <20260603143643.2514595-4-johan@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260603143643.2514595-1-johan@kernel.org>
-References: <20260603143643.2514595-1-johan@kernel.org>
+	s=arc-20240116; t=1780497628; c=relaxed/simple;
+	bh=QCvezOOFem8vSjdh7KRvh9+XQIHIrK1N1KJUb7V0KJE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=R88y/Id27oY87buxkNBa9VAc8IkQLUsl+ATa3VPb24vQf8Dd7RE6ow66JiiNIcT0QX4BdkZhhsGMeRcoAG3Q5q9bK9Wp+z1I4aYtQm9GE159OWHpBZclZqW23jpS+JSKuKA6LgaMuw96E29vVfWer5+5KRACPf00j+/dWdMEu10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=paragon-software.com; spf=pass smtp.mailfrom=paragon-software.com; dkim=pass (1024-bit key) header.d=paragon-software.com header.i=@paragon-software.com header.b=pxmSsQ+7; arc=none smtp.client-ip=35.157.23.187
+Received: from relayfre-01.paragon-software.com (relayfre-01.paragon-software.com [176.12.100.13])
+	by relayaws-01.paragon-software.com (Postfix) with ESMTPS id 1A9DC1D40;
+	Wed,  3 Jun 2026 14:40:21 +0000 (UTC)
+Received: from dlg2.mail.paragon-software.com (vdlg-exch-02.paragon-software.com [172.30.1.105])
+	by relayfre-01.paragon-software.com (Postfix) with ESMTPS id D2EF6223E;
+	Wed,  3 Jun 2026 14:40:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=paragon-software.com; s=mail; t=1780497619;
+	bh=ZvLSfeUx87wEYCxwP7qXNOB4NvHqMJCSpqJa7Jnbzzw=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=pxmSsQ+7RbrgsDuJU87BRjyT7i84Nf7Vq2qIZK9aHmstAsdrJTv2ixPfCt3zrhU8x
+	 g8fKZJ/R19zC9BM8WLDAH+TyIx6vWCqYaI1auinJUjdsfzary3AMT1NyepDyWTalUD
+	 BzOHIB6anXEHXLheVQPcx/C+99C854nLsd0Uot5U=
+Received: from [192.168.95.128] (172.30.20.205) by
+ vdlg-exch-02.paragon-software.com (172.30.1.105) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Wed, 3 Jun 2026 17:40:18 +0300
+Message-ID: <f67c98bc-88de-48e9-a510-1542a76e6c41@paragon-software.com>
+Date: Wed, 3 Jun 2026 16:40:17 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fs/ntfs3: validate lcns_follow in log_replay conversion
+To: Pavitra Jha <jhapavitra98@gmail.com>
+CC: <linux-kernel@vger.kernel.org>, <ntfs3@lists.linux.dev>,
+	<stable@vger.kernel.org>
+References: <20260502154252.164586-1-jhapavitra98@gmail.com>
+Content-Language: en-US
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+In-Reply-To: <20260502154252.164586-1-jhapavitra98@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: vobn-exch-01.paragon-software.com (172.30.72.13) To
+ vdlg-exch-02.paragon-software.com (172.30.1.105)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[paragon-software.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[paragon-software.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:luiz.dentz@gmail.com,m:marcel@holtmann.org,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:johan@kernel.org,m:stable@vger.kernel.org,m:rajatja@google.com,m:luizdentz@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260101-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260098-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,holtmann.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:jhapavitra98@gmail.com,m:linux-kernel@vger.kernel.org,m:ntfs3@lists.linux.dev,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[almaz.alexandrovich@paragon-software.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[paragon-software.com:+];
+	RSPAMD_EMAILBL_FAIL(0.00)[jhapavitra98.gmail.com:query timed out,stable@vger.kernel.org:query timed out];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[almaz.alexandrovich@paragon-software.com,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,paragon-software.com:mid,paragon-software.com:from_mime,paragon-software.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9EE36639002
+X-Rspamd-Queue-Id: D7CB7638E4E
 
-Make sure to disable wakeup on probe failure to avoid leaking the wakeup
-source.
+On 5/2/26 17:42, Pavitra Jha wrote:
 
-Fixes: fd913ef7ce61 ("Bluetooth: btusb: Add out-of-band wakeup support")
-Cc: stable@vger.kernel.org	# 4.11
-Cc: Rajat Jain <rajatja@google.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/bluetooth/btusb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+> log_replay() converts DIR_PAGE_ENTRY_32 records into DIR_PAGE_ENTRY
+> records when replaying version 0 restart tables.
+>
+> During this conversion, the memmove() length is derived directly from
+> the on-disk lcns_follow field:
+>
+> 	memmove(&dp->vcn, &dp0->vcn_low,
+> 		2 * sizeof(u64) +
+> 				le32_to_cpu(dp->lcns_follow) * sizeof(u64));
+>
+> check_rstbl() validates restart table structure, but does not constrain
+> per-entry lcns_follow values relative to the entry size. A malformed
+> filesystem image can provide an oversized lcns_follow value, causing
+> the conversion memmove() to access memory beyond the bounds of the
+> allocated restart table buffer.
+>
+> The same field is later used to bound iteration over page_lcns[],
+> so validating lcns_follow during conversion also prevents downstream
+> out-of-bounds access from the same malformed metadata.
+>
+> Compute the maximum valid lcns_follow from the already-validated
+> restart table entry size and reject entries that exceed this bound.
+> Reuse the existing t16/t32 scratch variables already declared in
+> log_replay() to avoid introducing new declarations.
+>
+> Fixes: b46acd6a6a62 ("fs/ntfs3: Add NTFS journal")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
+> ---
+>   fs/ntfs3/fslog.c | 15 ++++++++++++---
+>   1 file changed, 12 insertions(+), 3 deletions(-)
+>
+> diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
+> index c0237f7d0..91dc2d503 100644
+> --- a/fs/ntfs3/fslog.c
+> +++ b/fs/ntfs3/fslog.c
+> @@ -4215,13 +4215,22 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
+>   	if (rst->major_ver)
+>   		goto end_conv_1; /* reduce tab pressure. */
+>   
+> +	t16 = le16_to_cpu(dptbl->size);
+> +	if (t16 < sizeof(struct DIR_PAGE_ENTRY))
+> +		goto dirty_vol;
+> +
+> +	t32 = (t16 - sizeof(struct DIR_PAGE_ENTRY)) / sizeof(u64);
+> +
+>   	dp = NULL;
+>   	while ((dp = enum_rstbl(dptbl, dp))) {
+>   		struct DIR_PAGE_ENTRY_32 *dp0 = (struct DIR_PAGE_ENTRY_32 *)dp;
+> -		// NOTE: Danger. Check for of boundary.
+> +		u32 lcns = le32_to_cpu(dp->lcns_follow);
+> +
+> +		if (lcns > t32)
+> +			goto dirty_vol;
+> +
+>   		memmove(&dp->vcn, &dp0->vcn_low,
+> -			2 * sizeof(u64) +
+> -				le32_to_cpu(dp->lcns_follow) * sizeof(u64));
+> +			2 * sizeof(u64) + lcns * sizeof(u64));
+>   	}
+>   
+>   end_conv_1:
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index d0a83a1ffdf2..622df2fff497 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4181,7 +4181,7 @@ static int btusb_probe(struct usb_interface *intf,
- 	if (id->driver_info & BTUSB_MARVELL && data->oob_wake_irq) {
- 		err = marvell_config_oob_wake(hdev);
- 		if (err)
--			goto out_free_dev;
-+			goto err_disable_wakeup;
- 	}
- #endif
- 	if (id->driver_info & BTUSB_CW6622)
-@@ -4427,6 +4427,9 @@ static int btusb_probe(struct usb_interface *intf,
- 	}
- err_kill_tx_urbs:
- 	usb_kill_anchored_urbs(&data->tx_anchor);
-+err_disable_wakeup:
-+	if (data->oob_wake_irq)
-+		device_init_wakeup(&data->udev->dev, false);
- out_free_dev:
- 	if (data->reset_gpio)
- 		gpiod_put(data->reset_gpio);
--- 
-2.53.0
+Hello,
+
+Sorry for the delay.
+Your patch was applied, thank you.
+
+Regards,
+Konstantin
 
 
