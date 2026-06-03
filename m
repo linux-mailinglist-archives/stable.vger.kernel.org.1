@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-260099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bxCDEIQ/IGrozAAAu9opvQ
-	(envelope-from <stable+bounces-260099-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 16:51:48 +0200
+	id HTuRGbhEIGphzgAAu9opvQ
+	(envelope-from <stable+bounces-260098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 17:14:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0223638CB5
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 16:51:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE36639002
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 17:13:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fpbhsxjB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260099-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-260099-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bPBQW5U6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260098-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260098-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C1ABD306DACE
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 14:41:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7D2133A7BF2
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 14:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60969481246;
-	Wed,  3 Jun 2026 14:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53AD3396EE;
+	Wed,  3 Jun 2026 14:37:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B6A3AA1B5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689483A8FF6;
 	Wed,  3 Jun 2026 14:37:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780497450; cv=none; b=NuIfk8ZQBsm9Z0CT7iXGqJG4tYVDuXkttV7rkIdTd6n7loKYxoSHU1HILuwS/o+W8kBNoBQQyExhDLsF1JtKiYazd7XafKbLNKHRM4OehFyswtT5EuCaAxplSSynMDbfEkShYDGJRPzf4p6GdIvwO6C71DII8Swzx2Hwz4qGyu8=
+	t=1780497450; cv=none; b=sw3Wbr8AAYCzlLO3TZ+JhCbdK/ySVwmdt3uFmQxgEVqsXEO4oHH64uJQlU2HLEljAHL9tJm2/oa8HV4djJ3PTV6N5hcatoU679cl6TqWWXYggpFO+eacSzO2BUt+Y12BHkqGxuBWD4xdqmC081vRNUFv5uQzeoZcvnyXinzFQow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780497450; c=relaxed/simple;
-	bh=zcn1dK/29EDlDuUjELmkDL4xNInnWxDqRDZS9QfhRPg=;
+	bh=h3jJ/nP5pLr7CBwRObS7zzhELWONPHjzqZR0+am6cdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BRt2jmc35k7xtvTdb3I2lFsby9qaYd8eUDbCUXDVa36FZasejXpZhQ/DrBqpglbZ6ZBQEGDqkt8HAcR/Zt3p1128byVGN2KHkBSxpbCtLrgwJCid6WHUw9qPFZSUOve7d+dHGgK5ITA9eINErzXF5LlQvLiYtX/uGrLhxWqu8uA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fpbhsxjB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F591F00893;
+	 MIME-Version; b=MzoXcUxxE3s0IN9HHnFKD3W1VTix2xu1clUoyDzJBh2bU3PwmJKobvPjAdI9Ni56MsKpJbN6+JKESiTzJfqit02KL4nH0xmSBY7n7vN0JkTYhihw6KjiDZ5iXGZIaVnmoVEIbRZgr4dm2siPOB/TWMZT2qHROQS95oRFb9Mog0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bPBQW5U6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19EDF1F00899;
 	Wed,  3 Jun 2026 14:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1780497449;
-	bh=fqO4LZkLQ5FT3GK1shuzVv/gvIRfqdWBmfuDHOglRjQ=;
+	bh=YhkoW0rRlfHoFhzX5mfolI/l6SS5hCwW3qRrR7GxDsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fpbhsxjBaAq7gaOcNGbE7pCZ+Sa52LF2PKsVNqv99+RTrxWKjQ/UveS+G41+2Vped
-	 HbKF71khqgYCbLJXN4dbnVWMx7Um8XAXJhRSqIefy6VCi6GzqiBnIErKkvok7sNuYW
-	 hJmJLjR0aAFWObLOGA+oIyP8FtVdIUFeLxb2qKVc63tJTGkxsdXuldpkaxsqNNIIDS
-	 hz7ie65Z2mro96ZVoPFXzoI88/nuXV7LCG5K6RuSVHb83qxZVOZ1m74a69aGoVGMuT
-	 j2hn4uolKjeGiggVAi8EqFHPbHRz7AzgIWvYOxhwhbdWC4WfWySJ3x8w+8SofESB10
-	 2yAONO6eX6L9g==
+	b=bPBQW5U6C9YC9R1JF9ZIVIIBCvvGeuyNSpEDimbvlkrYB4+GPhYAPP7ZI9zzjFuHN
+	 bhfcKKxtttKTYXnbSu0QkYS3stuyYFSywYdxZwmhTT4L/rihq0yUtjkE8NgSbSTsF0
+	 /tgYG8E8hTsI6/FjOQckUJ4zbNi7Tmg2Snkxk9DFlO5oCqD6KhID2ligSsV/i+RJ7F
+	 NeqeN2SODslxFFIahtfI58Tb+l9mNeR3wwAVijbps2Mylc4M0to1vZLRMt3lmAxr9x
+	 08fPR0UH0gXREVtBRrjvbCqhXbQixhNgmkQMxLXmypHw+2QndEc5xeBgYnqMhsRqub
+	 yeD8DMq0mSlqQ==
 Received: from johan by xi.lan with local (Exim 4.99.3)
 	(envelope-from <johan@kernel.org>)
-	id 1wUmik-0000000AYB1-373j;
+	id 1wUmik-0000000AYB4-39Qt;
 	Wed, 03 Jun 2026 16:37:26 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
@@ -58,9 +58,9 @@ Cc: linux-bluetooth@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
 	Rajat Jain <rajatja@google.com>
-Subject: [PATCH v3 RESEND 2/5] Bluetooth: btusb: fix use-after-free on marvell probe failure
-Date: Wed,  3 Jun 2026 16:36:40 +0200
-Message-ID: <20260603143643.2514595-3-johan@kernel.org>
+Subject: [PATCH v3 RESEND 3/5] Bluetooth: btusb: fix wakeup source leak on probe failure
+Date: Wed,  3 Jun 2026 16:36:41 +0200
+Message-ID: <20260603143643.2514595-4-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260603143643.2514595-1-johan@kernel.org>
 References: <20260603143643.2514595-1-johan@kernel.org>
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -89,10 +89,10 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FORGED_RECIPIENTS(0.00)[m:luiz.dentz@gmail.com,m:marcel@holtmann.org,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:johan@kernel.org,m:stable@vger.kernel.org,m:rajatja@google.com,m:luizdentz@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[johan@kernel.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260099-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260098-lists,stable=lfdr.de];
 	FREEMAIL_TO(0.00)[gmail.com,holtmann.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -105,63 +105,41 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sashiko.dev:url,btusb_driver.name:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F0223638CB5
+X-Rspamd-Queue-Id: 9EE36639002
 
-Make sure to stop any TX URBs submitted during Marvell OOB wakeup
-configuration on later probe failures to avoid use-after-free in the
-completion callback.
+Make sure to disable wakeup on probe failure to avoid leaking the wakeup
+source.
 
-This issue was reported by Sashiko while reviewing a fix for a wakeup
-source leak in the btusb probe errors paths.
-
-Link: https://sashiko.dev/#/patchset/20260402092704.2346710-1-johan%40kernel.org
-Fixes: a4ccc9e33d2f ("Bluetooth: btusb: Configure Marvell to use one of the pins for oob wakeup")
+Fixes: fd913ef7ce61 ("Bluetooth: btusb: Add out-of-band wakeup support")
 Cc: stable@vger.kernel.org	# 4.11
 Cc: Rajat Jain <rajatja@google.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/bluetooth/btusb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index c8015cee240f..d0a83a1ffdf2 100644
+index d0a83a1ffdf2..622df2fff497 100644
 --- a/drivers/bluetooth/btusb.c
 +++ b/drivers/bluetooth/btusb.c
-@@ -4218,7 +4218,7 @@ static int btusb_probe(struct usb_interface *intf,
- 	if (id->driver_info & BTUSB_INTEL_COMBINED) {
- 		err = btintel_configure_setup(hdev, btusb_driver.name);
+@@ -4181,7 +4181,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 	if (id->driver_info & BTUSB_MARVELL && data->oob_wake_irq) {
+ 		err = marvell_config_oob_wake(hdev);
  		if (err)
 -			goto out_free_dev;
-+			goto err_kill_tx_urbs;
- 
- 		/* Transport specific configuration */
- 		hdev->send = btusb_send_frame_intel;
-@@ -4381,7 +4381,7 @@ static int btusb_probe(struct usb_interface *intf,
- 		err = usb_set_interface(data->udev, 0, 0);
- 		if (err < 0) {
- 			BT_ERR("failed to set interface 0, alt 0 %d", err);
--			goto out_free_dev;
-+			goto err_kill_tx_urbs;
- 		}
++			goto err_disable_wakeup;
  	}
- 
-@@ -4389,7 +4389,7 @@ static int btusb_probe(struct usb_interface *intf,
- 		err = usb_driver_claim_interface(&btusb_driver,
- 						 data->isoc, data);
- 		if (err < 0)
--			goto out_free_dev;
-+			goto err_kill_tx_urbs;
+ #endif
+ 	if (id->driver_info & BTUSB_CW6622)
+@@ -4427,6 +4427,9 @@ static int btusb_probe(struct usb_interface *intf,
  	}
- 
- 	if (IS_ENABLED(CONFIG_BT_HCIBTUSB_BCM) && data->diag) {
-@@ -4425,6 +4425,8 @@ static int btusb_probe(struct usb_interface *intf,
- 		usb_set_intfdata(data->isoc, NULL);
- 		usb_driver_release_interface(&btusb_driver, data->isoc);
- 	}
-+err_kill_tx_urbs:
-+	usb_kill_anchored_urbs(&data->tx_anchor);
+ err_kill_tx_urbs:
+ 	usb_kill_anchored_urbs(&data->tx_anchor);
++err_disable_wakeup:
++	if (data->oob_wake_irq)
++		device_init_wakeup(&data->udev->dev, false);
  out_free_dev:
  	if (data->reset_gpio)
  		gpiod_put(data->reset_gpio);
