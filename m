@@ -1,146 +1,150 @@
-Return-Path: <stable+bounces-260006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id a+DvNcnvH2qLsgAAu9opvQ
-	(envelope-from <stable+bounces-260006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:11:37 +0200
+	id hfc/Er/zH2qNtAAAu9opvQ
+	(envelope-from <stable+bounces-260010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:28:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E53063603C
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:11:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0349C636278
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 11:28:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260006-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-260006-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=sang-engineering.com header.s=k1 header.b=MraICY41;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260010-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260010-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 03FDE3008C05
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 09:11:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 84F643134243
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 09:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BED4379ECD;
-	Wed,  3 Jun 2026 09:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC303A1D01;
+	Wed,  3 Jun 2026 09:23:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650D6379C50;
-	Wed,  3 Jun 2026 09:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9033E421EE8
+	for <stable@vger.kernel.org>; Wed,  3 Jun 2026 09:22:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780477878; cv=none; b=LSFg6bF0V48SeUqtFPb3Y91O76va4BZW+/qkD1fE+k6kmNjX3bJ1UQclXcrVJOZtds00S5XKAoifuLvFyW5cFFKqS9Idg7IWgUDbx7brf+MgbPuNYyVLsNZ0jUL2cPfaR3e26YxNhcS8bedasOZPJ/oJgcHd1o3Qe92KXATB2hI=
+	t=1780478585; cv=none; b=EGC88XVlVKCZMbfYevqekeQMSEP+in4Q3E9rNHrTxMrVx3R9fRoV/Z0gtKFmrGIny7th10AKfpVZ7oeipGmyBCy51QGxE+YV3VS118G5tmih0X4xDw9yv5QPgUXmjPYU72gDgobZztTrryb7vfYCzA7cYDFD/RLMG4uhD3B/fd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780477878; c=relaxed/simple;
-	bh=RVXsuP055otwSc4OAxXajvPq/YxBN44okbGD0CAmTC0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lqrtKhPPHkV5wZvRYvKW2gsZo/ddgsTfrPZ7qdMVEhvHoD7AXdgi88Wqatfj7F5xdVjjwwmYBedhA+FQsKaQkG5Zcd4qr/7lKBDx9cBDrErmbXyABpt+j1P/ZMgTi6twvvrTF0JIB4dmMQKR8yzGM+mO9TUaX5tWgk1SCBqPgDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowABnht2s7x9qcGh8Ew--.7652S2;
-	Wed, 03 Jun 2026 17:11:08 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: koby.elbaz@intel.com,
-	konstantin.sinyuk@intel.com,
-	ogabbay@kernel.org
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	kees@kernel.org,
-	farah.kassabri@intel.com,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] accel/habanalabs: fix refcount leak in hl_direct_io()
-Date: Wed,  3 Jun 2026 09:10:55 +0000
-Message-Id: <20260603091055.3730941-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1780478585; c=relaxed/simple;
+	bh=uxkkZ2PsnRAYAVea7mInodj/ie50m+sZfEqTojMuM28=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=auSnlZb1mRGFqijWYTT/XmOap+29AKA18xGqkHjuT/KSEsLNkpyWH5xQQXMX7t/SApJGWMV/3GQfD/Z8eiUyuXrwrq18roCbmi8y/9sKM7PyjfKt32IgOjSSslXosQTIfwOTQWHEE+64UiHPAwVEi+1iwqO0vy7dWZ0RjEb1kgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=MraICY41; arc=none smtp.client-ip=194.117.254.33
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=oGHf
+	1lkKQSF/OrpmlkLEH+QjracHniURhxyC+c0io9U=; b=MraICY414sni/PMMlxyY
+	1nhIflhB9vlzYclkFiunyOAnwVsV54pG07gRuM4FbSs1JUnmZwcXlxViUdorqOYL
+	SSXfWoApkhYzwc+6ubnE5hqzRPFcLGkpia71hdrZYTHGf7j5Kue6bvFpDj8nJu6d
+	WcV3QbEwrHmiBEvHnIHcHO7I/pyHeZf1AKbI0BraCFv5IuOX0Y6tDDcJ/+HLL+Qo
+	CrJ72yHaPsb6rCSdkWwgtK7mXoKSh1myKcPgwtTbrf78HSd5L5OxnPOqBD0ywPL9
+	Zm2GXwzQ0YVrtVnst7B1gUaogRvMsWfbeM1g1SAzE7kdr6s7Sklzzc3emzIlI6LW
+	Nw==
+Received: (qmail 3213839 invoked from network); 3 Jun 2026 11:16:14 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 3 Jun 2026 11:16:14 +0200
+X-UD-Smtp-Session: l3s3148p1@FfEa4VVTvrYujnsK
+Date: Wed, 3 Jun 2026 11:16:14 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Andi Shyti <andi.shyti@kernel.org>, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: Re: [PATCH v3 01/10] i2c: core: fix irq domain leak on adapter
+ registration failure
+Message-ID: <ah_w3jDv5NljHaJb@ninjato>
+References: <20260511143715.729714-1-johan@kernel.org>
+ <20260511143715.729714-2-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowABnht2s7x9qcGh8Ew--.7652S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AFW5Kr4UKw13Xr4kuFWDCFg_yoW8Jw4rpF
-	47G3WSyry5Gry29ryqkr1kuFyFkanIgry7GF1xu34Y9w1rX34xCry5u3Wqqr98CrZ5W3WD
-	ZF1DGr15uF1UCrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
-	6r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
-	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCI
-	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
-	AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_
-	Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU11rW7
-	UUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCREHA2ofveXJAwAAs7
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cnGjfKB//Jq0VdPU"
+Content-Disposition: inline
+In-Reply-To: <20260511143715.729714-2-johan@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-3.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[sang-engineering.com:s=k1];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260006-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_RECIPIENTS(0.00)[m:koby.elbaz@intel.com,m:konstantin.sinyuk@intel.com,m:ogabbay@kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:kees@kernel.org,m:farah.kassabri@intel.com,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:johan@kernel.org,m:andi.shyti@kernel.org,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:bentiss@kernel.org,s:lists@lfdr.de];
+	DMARC_NA(0.00)[sang-engineering.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[wsa@sang-engineering.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[sang-engineering.com:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wsa@sang-engineering.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260010-lists,stable=lfdr.de,renesas];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,iscas.ac.cn:mid,iscas.ac.cn:from_mime,iscas.ac.cn:email,vger.kernel.org:from_smtp]
+	RCPT_COUNT_FIVE(0.00)[6];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ninjato:mid,vger.kernel.org:from_smtp,sang-engineering.com:dkim,sang-engineering.com:from_mime,sang-engineering.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5E53063603C
+X-Rspamd-Queue-Id: 0349C636278
 
-When hl_dio_get_iopath() succeeds, it calls hl_ctx_get() to acquire a
-reference on the context. If the subsequent vzalloc() fails, the
-function returns -ENOMEM without calling hl_dio_put_iopath(), leaking
-the reference.
 
-Fix this by jumping to the cleanup label on error, which will call
-hl_dio_put_iopath() and safely handle the NULL io->bv.
+--cnGjfKB//Jq0VdPU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Cc: stable@vger.kernel.org
-Fixes: 8cbacc9a2703 ("accel/habanalabs: add NVMe Direct I/O (HLDIO) infrastructure")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/accel/habanalabs/common/hldio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+On Mon, May 11, 2026 at 04:37:06PM +0200, Johan Hovold wrote:
+> Make sure to tear down the host notify irq domain on adapter
+> registration failure to avoid leaking it.
+>=20
+> This issue was flagged by Sashiko when reviewing another adapter
+> registration fix.
+>=20
+> Fixes: 4d5538f5882a ("i2c: use an IRQ to report Host Notify events, not a=
+lert")
+> Cc: stable@vger.kernel.org	# 4.10
+> Cc: Benjamin Tissoires <bentiss@kernel.org>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-diff --git a/drivers/accel/habanalabs/common/hldio.c b/drivers/accel/habanalabs/common/hldio.c
-index c33c817a962a..d7dfa259bede 100644
---- a/drivers/accel/habanalabs/common/hldio.c
-+++ b/drivers/accel/habanalabs/common/hldio.c
-@@ -248,8 +248,10 @@ static ssize_t hl_direct_io(struct hl_device *hdev, struct hl_direct_io *io)
- 	 * closest one.
- 	 */
- 	io->bv = vzalloc(npages * sizeof(struct bio_vec));
--	if (!io->bv)
-+	if (!io->bv) {
-+		hl_dio_put_iopath(io->f.ctx);
- 		return -ENOMEM;
-+	}
- 
- 	for (i = 0, device_va = io->device_va; i < npages ; ++i, device_va += PAGE_SIZE) {
- 		io->bv[i].bv_page = hl_dio_va2page(hdev, io->f.ctx, device_va);
--- 
-2.34.1
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
+
+--cnGjfKB//Jq0VdPU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmof8N4ACgkQFA3kzBSg
+Kbbj6xAAmld0o5WEYz8cN6/Qk94JSxfZNjEX0M9K8trWY10S9UiG7uJuD5B0FUVD
+3UiC7zLeOHkVBRTOykWvlAsMcYt/mLN6UFAyW9+YYjiStOoPqHeMILwmjv0Xwr7/
+vpfE4rVYE8N6PwczadNmSS9YS8fUHv+376Ql3Ib/QJobX9zXig7uSoyhlAiSQFlF
+M5hxaZbiruCWJwQnYhpU2pchVbZFskD0hqZsi9nbFt7PZqgFZlhd+e9ptiMpyzCY
+WYGBMVhWZBs+B1Yw5SZVDf53SAu/YSBbFCXykzLsZc8ZMABjYUq1TaCgZPs+nyy2
+IrJLDQeM+/PGfManbNoqnIzTG0zgE6+hQDdpF55fD3qJ9ypVcB+n3FTuEv5F9fpk
+xUA7RlULJu8uw7mnVwUDXDO2TOna2Dcm7RUj1hPPakg9LtkqMDETVkIGSkXF9Gvl
+05+l9VGt9OSIW0Apy1/cRxuyT57aA1K2lvT54ApnrAwOTI6ZTvTLefY//BlabpkW
+zeXzrASb/lFgmN9DvaoGb9h1leDsK34X/eUvGrtFr21WQaTrCdU3Yk5iSenpiSWu
+CywSnPjSLsQpB6/3s30rMAF+y4dXRSPDSMa3uF0rvtB2OH1nrDYE/WLHEr7rsxYS
+K0Acrq0fqA+KtTi74vX1EGjK8j7V/vh4tpRsWKZ5+97e9OL5wGk=
+=0DX3
+-----END PGP SIGNATURE-----
+
+--cnGjfKB//Jq0VdPU--
 
