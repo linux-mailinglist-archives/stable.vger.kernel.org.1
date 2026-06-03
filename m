@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-259958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259959-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 04GGEU2/H2papQAAu9opvQ
-	(envelope-from <stable+bounces-259958-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 07:44:45 +0200
+	id OgiQIgXAH2qPpQAAu9opvQ
+	(envelope-from <stable+bounces-259959-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 07:47:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9703634562
-	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 07:44:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7676345BD
+	for <lists+stable@lfdr.de>; Wed, 03 Jun 2026 07:47:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=163.com header.s=s110527 header.b=g5CqnB5L;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-259958-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-259958-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=163.com header.s=s110527 header.b=Ls89ALDq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-259959-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-259959-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=163.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1AC6D302E332
-	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 05:44:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 306E630344F5
+	for <lists+stable@lfdr.de>; Wed,  3 Jun 2026 05:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2630E3C8194;
-	Wed,  3 Jun 2026 05:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC8C3E5EF8;
+	Wed,  3 Jun 2026 05:45:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4393E397E66;
-	Wed,  3 Jun 2026 05:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370AD3E1D1A;
+	Wed,  3 Jun 2026 05:45:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780465481; cv=none; b=r+EeKUnWuazMlf7eD6XcYeJzII7q8QPeUhbUuXVQhm08suSmRN0fZhzHXjC/mlvmSW8YfzbQX+ajhngNAWdSV++DW4Dc1UYPn5VoyC+/EZyIrNqzCSSlxHabjfZh0uHUKQ8XVf4XpsqW5pPAQ0zm5yqzmRlqfrcxt4lCi5ZBfNE=
+	t=1780465506; cv=none; b=OtC24iohSanQZezb2urd8TIZOMblt2GyOY+WjuBpWzzRGT6Krjk4FC3I37k90iwa3UevXZtg5gjSoTpOY88AjOH/HqDuLPRyBlmnMvVwvhA+n+rBjlSfrsDHrYtr71NM9PKupJNhGn5hhhx32hhJj3pm9Qh4XrXEY0mvtuomznI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780465481; c=relaxed/simple;
-	bh=vUPL9K3F2KOWZdXcbk6XWgfMCN5CXdC9BgspglKT3EM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PMKJglFDBAJWFD0YvtSOcL0Ocb/0Q4DaF4lv4HhkGVpe1edk2dtxrmk6naaV4+51bvIn0JlmY4Q9rSnb7F5qsLEI/5X+A5I+r73PH/zBIuPfaWMAMF7+qV8yLgoFl4igNxzAexSoMZpFMSsup+4+xYG9NCiS9m2BacRJg9nxCsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=g5CqnB5L; arc=none smtp.client-ip=117.135.210.4
+	s=arc-20240116; t=1780465506; c=relaxed/simple;
+	bh=elxPAkEAucgOKY7uEINE2mpPjgbA8EWVVY2c4V4UJ+c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JBl41APoriLfJIZL/PJkNxN16uoUVKwIa/6R5ZdsGP1ExP/9ZJ//xuUryaWx2ctBw8ZCjHg8aHzOy02mWlWqCpbj6MmD/4cJCxJU1pYSk0pugEGK+hUOOcY7cDDq//XBhVGPT1pqYVqs7hbDwMo8nMze7Lmrm/oVl5HQ68P7yGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Ls89ALDq; arc=none smtp.client-ip=117.135.210.5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=pi
-	hnl6tV+07np2KM1vmM3V8vLITKZD8jA2XkqjVBMIU=; b=g5CqnB5LpCy7yqpFgy
-	GWWCIHVRolVNf6fZhghsD4hvRt4cWtxvvI4h4UdK458ZI064lWAljvyKVrLG2zkt
-	gNjkmaX2cyRG/Id4dy/QP1EklVNo0dQwlt8nQjP6iFxt1UTEaHCGDx5q6Fv7Kook
-	W47zM0vVkMubRqrY11dRjpSdE=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=bt
+	ByK7taRLISgmABeff3Vob+zVf3Tb++FM9bEwKnWHw=; b=Ls89ALDqsJIlJdHkUC
+	N878XpXxcRLkfiWJu7hRonYNjR35TWfKEc0TWfGbgnBPF2elBAP2dof5m/OtQzYP
+	2sdr0Dm+jYpPBdcN4kiFIE7EC98W1wPiOOhQsUWzW5opfk0t8Icova8j05cBAhFD
+	gk1QVxtMvhTHklZy7bTDkAhoQ=
 Received: from China-163-team (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgB3Mv8qvx9qObnJAA--.25958S2;
-	Wed, 03 Jun 2026 13:44:13 +0800 (CST)
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBHHmFDvx9qNYWZBA--.35631S2;
+	Wed, 03 Jun 2026 13:44:40 +0800 (CST)
 From: Wenshan Lan <jetlan9@163.com>
 To: gregkh@linuxfoundation.org,
 	sashal@kernel.org,
@@ -50,9 +50,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Lee Jones <lee@kernel.org>,
 	Benjamin Tissoires <bentiss@kernel.org>,
 	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.12.y] HID: core: Mitigate potential OOB by removing bogus memset()
-Date: Wed,  3 Jun 2026 13:43:44 +0800
-Message-ID: <20260603054344.80160-1-jetlan9@163.com>
+Subject: [PATCH 6.6.y] HID: core: Mitigate potential OOB by removing bogus memset()
+Date: Wed,  3 Jun 2026 13:44:31 +0800
+Message-ID: <20260603054431.80206-1-jetlan9@163.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,12 +61,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgB3Mv8qvx9qObnJAA--.25958S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Ar17ZF43Wr13Xr17ur4xCrg_yoW8Ww13pF
-	ZIyFs0kryqqa4kCw47GF4xZa45tas5JFy2gFW7Gw4rZw1Yka4UJr1Ivayavrs8urWIyr97
-	CF4qyas8GF1jvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEeT59UUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbCxA1dJmofvy0YfgAA3z
+X-CM-TRANSID:_____wBHHmFDvx9qNYWZBA--.35631S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Ar17ZF43Wr13Xr17ur4xCrg_yoW8Ww1xpF
+	Z0yFs0kryqqas7Ca17GF17Za45ta4kJF12grW7Ww1fZr1Yka4DJr1Iva9Ivrs8ZryIyF97
+	CF4Dtwn8A3Wjv3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEzuWJUUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbC7AhkLWofv0gSPAAA3B
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -74,20 +74,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,163.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259958-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259959-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lee@kernel.org,m:bentiss@kernel.org,m:jetlan9@163.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[jetlan9@163.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lee@kernel.org,m:bentiss@kernel.org,m:jetlan9@163.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
@@ -98,11 +98,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C9703634562
+X-Rspamd-Queue-Id: 7F7676345BD
 
 From: Lee Jones <lee@kernel.org>
 
@@ -123,17 +123,17 @@ Suggested-by Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Lee Jones <lee@kernel.org>
 [bentiss: changed the return value]
 Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-[ Replace hid_warn_ratelimited() with hid_warn() in v6.12. ]
+[ Replace hid_warn_ratelimited() with hid_warn() in v6.6. ]
 Signed-off-by: Wenshan Lan <jetlan9@163.com>
 ---
  drivers/hid/hid-core.c | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index 294a25330ed0..6d61bf20ec3f 100644
+index e3d728d67b53..1f32aa933c9e 100644
 --- a/drivers/hid/hid-core.c
 +++ b/drivers/hid/hid-core.c
-@@ -2029,9 +2029,10 @@ int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *
+@@ -2017,9 +2017,10 @@ int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *
  		rsize = max_buffer_size;
  
  	if (csize < rsize) {
