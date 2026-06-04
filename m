@@ -1,165 +1,163 @@
-Return-Path: <stable+bounces-260235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id w+cMHMLZIGri8QAAu9opvQ
-	(envelope-from <stable+bounces-260235-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 03:49:54 +0200
+	id 0P6CIuTbIGo98gAAu9opvQ
+	(envelope-from <stable+bounces-260237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 03:59:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68BC063C45A
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 03:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4674163C515
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 03:58:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Rwvn2McC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260235-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260235-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.dev;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="gN8CmsW/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260237-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260237-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4E4CC300469A
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 01:49:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 947AC300846A
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 01:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F497280035;
-	Thu,  4 Jun 2026 01:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BF014E2F2;
+	Thu,  4 Jun 2026 01:58:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f193.google.com (mail-vk1-f193.google.com [209.85.221.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A28282F18
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 01:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF40222597
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 01:58:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780537787; cv=none; b=HvNK4tuIFSLTUPR+rB6fNf6m9AUkvpPUdVsbbQfxxHPc3YLkYD59xaFDBDdtTH52w0J888nLEBiwxwVd+WGOMVz+LoyR9eik61E2T0iZhiN+QEVXP7y5VodTjNywyaSCcHKDCJ4+lWy+NxNTzac9Pt5RohQfsWmAKLngtqNCKWg=
+	t=1780538325; cv=none; b=JWQKmNpW444oZufjFhFjTK1JWANM4MjVfglrIPG/C6tcoyyz9soP4lzfNXShIw+9/4+MjycBdRdjHINRrEwblvfZVp4Alu4mvpCZ4r7zXCT5KLNAYMo6pOvaHb72BeurHKeT6VM6gKg2NUot8wUfrMlYs17A09BtdCALG20TNTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780537787; c=relaxed/simple;
-	bh=OX4o3VwOCHAm8jFp1kQNUQIxFVl9dHNR7Zh2V2xqjOw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XR11T/zVbBxHjsTmIM8AVCWOoVB4DPDhkV+/5hs53z6apjj4n0RsFNtibkb9JvgqXsaQ0DgAVW634xl6SVtGYaqWflf2Qd5ghz+LrhynsEFii2GbpGUaLWmyHLtxpNlyPou+kXxdWvV5Iq7c47tvsY//Vk2q7BhhDtmpbxDLO8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Rwvn2McC; arc=none smtp.client-ip=95.215.58.173
-Message-ID: <b5d4d726-c32f-45e4-9ea7-28f7b6a1f8d7@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780537783;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+vqCvh2xw2aQFNQtW/09BhvWce5f0QABhvDIVT33PA8=;
-	b=Rwvn2McCO4NKxMfzFd7tpQBFtHMeAedHt/yS9QQNkmviLphWwQf0FGrREacTiTRHwqeLn6
-	uqCLAF3CY403FaSZShF2ysPWqIrVVqtIGUy1I2tSJWLL1vc5mgEeJdZ/RxQ/KBXWyqNq7n
-	CufzrTzb5nYHYM6oWEbWMMHXS0qsT0M=
-Date: Thu, 4 Jun 2026 09:49:21 +0800
+	s=arc-20240116; t=1780538325; c=relaxed/simple;
+	bh=hkZmL/iYek817aCTuWFm67KhXsOFfYP8ByDm0C5xZp4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a5aNIE34RrLHGb+8Pw50/Rc3OrENnyOAO9LOWx8+rSOLLtLcjy/594cl/1uUnjDXkFTYJbjeyiNhWHtOBwqOWnKUM1rN72vuTECa/wL/KeSOEGs+njvyzBYRF+Kf2pcE3evkWLXPX5GaE4Yji3y5PhmRlqaWtVBUjrh7f1VLUV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gN8CmsW/; arc=none smtp.client-ip=209.85.221.193
+Received: by mail-vk1-f193.google.com with SMTP id 71dfb90a1353d-59cfbfe64baso40953e0c.2
+        for <stable@vger.kernel.org>; Wed, 03 Jun 2026 18:58:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780538323; x=1781143123; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gN5MY+IL4XBY0Bh8wFWiSfPnh4J40HsCgGJmRlj6QYA=;
+        b=gN8CmsW/QVVplB9gTQdwq8T8lu384IMgpE2uE3BvsRKdM/w/Uo15ERMDnv9xil54pL
+         ghDhSrGqLMDADVl12lgwkZQSvsicIaKW7KJgsXkzleTBvkBLcQCK236jIJimVoMLN5EL
+         shWyclgGS0cyU7qSUbvAC6Ep2Rx1Hs9oaigiCM+01mu10LLYb+cr52yHa7xENDXxbzLr
+         LNKjl+0kp/XS6eiZxzcqZegVbxaAkbm7PoraefFl//nv1Kvvwl0NFYxjhTl+lwc+VcT0
+         XzwXKoWauKp8K1vc7oGtQtJeH63IZE8B6LF5h5A4ScWSiQC5CaStPrrk5L3JXD8AMnyp
+         txMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780538323; x=1781143123;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gN5MY+IL4XBY0Bh8wFWiSfPnh4J40HsCgGJmRlj6QYA=;
+        b=QNSZV+CkXWbnXSGqQemWufZhu5FsLwh4fGbofQAZbVzUutB7vZ0ZClhmvvJFftACrk
+         K8hPMH7KJcQ51iDI6YlzFnLRXTtVtpm0sPnOUVjnGQyIYsoZ/Todj56Gu3XayoWMpx5Z
+         iwEMYTOEFxz1DVpwZ0jd0YnVgCpZw8WLjjmbGwV4Bi5HO4HcH/CNd1ujxlfy2RZCFX4D
+         xjAeYGT4lOcq/e3pKeW6CIIwAnTr2iEqOvFL4H0APXBsAF+O/1eppl9gY7HUAXBkJ8y8
+         4HbnEZOvTo/wAa9gXc+P/xmOw11ZBqKzzTGtX7WISqikZQubaj8dpR2YWuM68ZCZEAlm
+         v1mg==
+X-Gm-Message-State: AOJu0YwlHo4e/QxJqZgCW5O0GjBmE4NRRojIJIshfsKRWSzyLExxoWck
+	uMcYwxSIJQUoB5YuTrSDH95Jzzpgq026KzuutulZDlZ64Kw/RQlSgreKOQuTsgm/Fj6d
+X-Gm-Gg: Acq92OHeRGgGlJS1+HR7K4NMIPQsQxOJNKjzJnMhIwWzEjJOPpMyfh2/3TPl6WkIU+1
+	dDQDL8EdA9XEjzrfetme4FQImXfNVlecF01NVL7yGqimrEe3kdw6KwIUS1fJu/WjhuQevMUgeVj
+	b6KPSPvCTAkkX77C7xr+SmHr2MYhPaVOfEMENCh/1VgUH0FDCwXbGOO+2Cof0SO/UkNxSFfYSvC
+	j0AYbS0AHXSdFHY13iFmscKKfn4b2MLv8vD0it47xTSOyAlZ7pcW7Z8uV7xTPDGBtcTBMPpu8Qk
+	ZZYl+dy14OQTS6esjKSoAg6tOwcXOjP0BXkixQNGAW+FBlzzQAOcP3wr9oSjwsiVosI7AYmmIxv
+	ERstRLYxnJMu7kOSc46dUwPxllFd8ccNJTXZ9yuKhKR2b+9t2JCdOWss8IGbl3F2kaCo9x/68YI
+	hTJLB97mPvd7QOVG0OPERfqknphiAFn4RWVvgwJEG1+xhWdT/T++lREKsB5SfvPzk9qXrf1AB2U
+	iXdbtaywvFQ3ykIGHzU7milqA==
+X-Received: by 2002:a05:6122:829f:b0:575:44b3:300d with SMTP id 71dfb90a1353d-5a6e8b0d0f6mr3629270e0c.10.1780538322875;
+        Wed, 03 Jun 2026 18:58:42 -0700 (PDT)
+Received: from rainbow (2603-900b-4600-2f85-a2b6-fdfc-263f-5578.inf6.spectrum.com. [2603:900b:4600:2f85:a2b6:fdfc:263f:5578])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5a6dc44d233sm3995088e0c.10.2026.06.03.18.58.41
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2026 18:58:42 -0700 (PDT)
+From: Jordan Walters <jaggyaur@gmail.com>
+To: stable@vger.kernel.org
+Subject: [PATCH 6.1.y] Bluetooth: hci_core: Fix UAF in hci_unregister_dev()
+Date: Wed,  3 Jun 2026 21:56:14 -0400
+Message-ID: <20260604015614.123281-1-jaggyaur@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net v2] udp: clear skb->dev before running a sockmap
- verdict
-To: Sechang Lim <rhkrqnwk98@gmail.com>, willemdebruijn.kernel@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: horms@kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
- jakub@cloudflare.com, aleksander.lobakin@intel.com, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260603162737.697215-1-rhkrqnwk98@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260603162737.697215-1-rhkrqnwk98@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:rhkrqnwk98@gmail.com,m:willemdebruijn.kernel@gmail.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:daniel@iogearbox.net,m:john.fastabend@gmail.com,m:jakub@cloudflare.com,m:aleksander.lobakin@intel.com,m:netdev@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:willemdebruijnkernel@gmail.com,m:johnfastabend@gmail.com,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-260235-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,davemloft.net,google.com,kernel.org,redhat.com];
-	FORGED_SENDER(0.00)[jiayuan.chen@linux.dev,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260237-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jiayuan.chen@linux.dev,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,iogearbox.net,gmail.com,cloudflare.com,intel.com,vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_ONE(0.00)[1];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[jaggyaur@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jaggyaur@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 68BC063C45A
+X-Rspamd-Queue-Id: 4674163C515
 
+commit eec3deaeaafe upstream.
 
-On 6/4/26 12:27 AM, Sechang Lim wrote:
-> On the UDP receive path skb->dev is repurposed as dev_scratch (the
-> truesize/state cache set by udp_set_dev_scratch()), through the
-> union { struct net_device *dev; unsigned long dev_scratch; } in sk_buff.
->
-> When a UDP socket is in a sockmap, sk_data_ready is
-> sk_psock_verdict_data_ready(), which calls udp_read_skb() -> recv_actor()
-> (sk_psock_verdict_recv) to run the attached SK_SKB verdict program in softirq.
-> If that program calls a socket-lookup helper (bpf_sk_lookup_tcp/udp,
-> bpf_skc_lookup_tcp), bpf_skc_lookup() does:
->
-> 	if (skb->dev)
-> 		caller_net = dev_net(skb->dev);
->
-> skb->dev still holds the dev_scratch value (a non-NULL integer), so dev_net()
-> dereferences it as a struct net_device * and the kernel takes a general
-> protection fault on a non-canonical address in softirq:
->
->    Oops: general protection fault, probably for non-canonical address 0x1010000800004a0
->    CPU: 1 UID: 0 PID: 1406 Comm: syz.2.19 Not tainted 7.1.0-rc6 #1 PREEMPT(full)
->    RIP: 0010:bpf_skc_lookup net/core/filter.c:7033 [inline]
->    RIP: 0010:bpf_sk_lookup+0x45/0x160 net/core/filter.c:7047
->    Call Trace:
->     <IRQ>
->     bpf_prog_4675cb904b7071f8+0x12e/0x14e
->     bpf_prog_run_pin_on_cpu+0xc6/0x1f0
->     sk_psock_verdict_recv+0x1ba/0x350
->     udp_read_skb+0x31a/0x370
->     sk_psock_verdict_data_ready+0x2e3/0x600
->     __udp_enqueue_schedule_skb+0x4c8/0x650
->     udpv6_queue_rcv_one_skb+0x3ec/0x740
->     udp6_unicast_rcv_skb+0x11d/0x140
->     ip6_protocol_deliver_rcu+0x61e/0x950
->     ip6_input_finish+0xa9/0x150
->     NF_HOOK+0x286/0x2f0
->     ip6_input+0x117/0x220
->     NF_HOOK+0x286/0x2f0
->     __netif_receive_skb+0x85/0x200
->     process_backlog+0x374/0x9a0
->     __napi_poll+0x4f/0x1c0
->     net_rx_action+0x3b0/0x770
->     handle_softirqs+0x15a/0x460
->     do_softirq+0x57/0x80
->     </IRQ>
->
-> The rmem charge that dev_scratch accounted for is released by skb_recv_udp() on
-> dequeue, just above, so the scratch is dead by the time recv_actor() runs. Clear
-> skb->dev so bpf_skc_lookup() falls back to sock_net(skb->sk), which
-> skb_set_owner_sk_safe() set just above.
->
-> Fixes: 965b57b469a5 ("net: Introduce a new proto_ops ->read_skb()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
+[manual backport: 6.1.y uses cancel_*_work_sync() instead of
+ disable_*_work_sync() which was introduced in a later cycle]
 
+hci_unregister_dev() does not cancel cmd_timer and ncmd_timer
+before the hci_dev structure is freed. If a timeout fires
+during device teardown, the callback dereferences freed memory
+(including the hdev->reset function pointer), leading to a
+use-after-free.
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Add cancel_delayed_work_sync() calls alongside the existing
+cancel_work_sync() calls to ensure both timers are fully
+quiesced before teardown proceeds.
 
+Signed-off-by: Jordan Walters <jaggyaur@gmail.com>
+---
+ net/bluetooth/hci_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index c6dec3c82f7..7ad3168c92d 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -2723,6 +2723,8 @@ void hci_unregister_dev(struct hci_dev *hdev)
+ 	cancel_work_sync(&hdev->tx_work);
+ 	cancel_work_sync(&hdev->power_on);
+ 	cancel_work_sync(&hdev->error_reset);
++	cancel_delayed_work_sync(&hdev->cmd_timer);
++	cancel_delayed_work_sync(&hdev->ncmd_timer);
+ 
+ 	hci_cmd_sync_clear(hdev);
+ 
+-- 
+2.49.0
 
