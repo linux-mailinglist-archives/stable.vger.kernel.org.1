@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-260417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260418-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HXbRN+dXIWqPEQEAu9opvQ
-	(envelope-from <stable+bounces-260417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:48:07 +0200
+	id i/gqIn1aIWp8EwEAu9opvQ
+	(envelope-from <stable+bounces-260418-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:59:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3901063F2E0
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:48:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89BE363F409
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:59:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UQhrZbng;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260417-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260417-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OhuJXYmV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260418-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260418-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 778F33040D99
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 10:46:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5BBA53000B8B
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 10:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B258406272;
-	Thu,  4 Jun 2026 10:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2712ED848;
+	Thu,  4 Jun 2026 10:46:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAD3409104
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 10:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171D2305696
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 10:46:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780570010; cv=none; b=kXY8u3jByyjd51AM0Icx18qDrmmJFoiGY1Wo30N7SI/jOoNaYxfJ0U+rYHmk75MGbWKNkwI+zunTKf5HxIgLkiEdff9f09rU/iwFOKMLYvRrvXJ5Ib/CEj8bs8vVnmoI3gbP0iBi7QXFA5NYLSrwfTd58c2rjh3ShVnlbfO/hPw=
+	t=1780570019; cv=none; b=lzW0RqNBItKXL1xwn2GOVEFTBSSX2bVbouP1M5niF5BbVTgCCwc2FCib8bodJLHEHwevi8kuxClPQjsv07QiK5jtIaNm0PQGo8YYhYdgzXBZFF6cBpmmwduMK0qeiE7EJVufouB0VZWxduGUASb9KGhNANIPga1ELMOgjd11ez8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780570010; c=relaxed/simple;
-	bh=NqEPss3MbCpgFbBG/d4CGw1fFaeHPi/mF0pSWiP0ubo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CD15kqxCebo5OUYRtRLelfMuYaH5FPwe8xq4nmnijjUFM9rKdmisZ5RcW23mQLkkqdukmfTi94S50FQEFCqxc1wNRQVujcRQOUGcs9ss/Q4WEgrPnn1SqY5O5UXf+z+rK0JiNQFOSHvd8+Ck1RJHdQhiUWfpGaeIczuyBBleN1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQhrZbng; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1791F00893;
-	Thu,  4 Jun 2026 10:46:46 +0000 (UTC)
+	s=arc-20240116; t=1780570019; c=relaxed/simple;
+	bh=slr9DtlvK5BLBjdOl9UInj8B35kNtg4hKqmdOj/GBe8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Fo1ArPh6PFNV48nffF3sAVcXLtbf6e69ojVfuzfMtykIs5TfxFD/oycyblb8Eh1NXjametShxnNCsVdcSmPAnKHC5v8o/h+VlCEBUb6uUNpv1m+XXILIxmwJwUcOYkg+A4NhBSRAVCeVMYsa1KxGYo5ezdHTP6eurfQEsIgXWRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OhuJXYmV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303EF1F00893;
+	Thu,  4 Jun 2026 10:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780570007;
-	bh=tsA05LKBEvZr5yxLmZ8tg9SmARpzN0gUuLx1yl0SzMI=;
+	s=korg; t=1780570017;
+	bh=jv18NIQvKdniNW4q+HJK6z6fpD5g9ysLKXk8iF2NhGM=;
 	h=Subject:To:Cc:From:Date;
-	b=UQhrZbngDkVeEraicMCChp/G0VjUaBQtBYGUX9iFefrmrIi9fMuH8su1BJoiTE0DP
-	 QGnMNgtwceyuQlBzBsnwvX8Z0t9IvJt+NUIEXG04To3xiDAcoIVFjppLFEF8YDuH7j
-	 TVw0vucGxIG0/vHpO5b5dZn2y+dMj7au2dXgIm8k=
-Subject: FAILED: patch "[PATCH] USB: serial: digi_acceleport: fix memory corruption with" failed to apply to 5.10-stable tree
+	b=OhuJXYmVMIZ7+t05hwtDBAtfsjNgFXeerQGf2HBfGoU5GFBuz3oceF1Y7bEak7ckX
+	 ZGglvcu+vAoXs4nIvH6G7BM28UZlv2yvv0ckKi+FOLcCVJCEezDmocVgGTFowzUdsg
+	 nfpdBQMKxvKtBQ5uE52oTT9MiiSNAuWvM6vzSRKM=
+Subject: FAILED: patch "[PATCH] USB: serial: mct_u232: fix memory corruption with small" failed to apply to 6.18-stable tree
 To: johan@kernel.org,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 04 Jun 2026 12:45:31 +0200
-Message-ID: <2026060431-mummy-dash-37b1@gregkh>
+Date: Thu, 04 Jun 2026 12:46:00 +0200
+Message-ID: <2026060400-renewal-coagulant-3a75@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,12 +63,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260417-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260418-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -87,25 +87,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MIME_TRACE(0.00)[0:+]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3901063F2E0
+X-Rspamd-Queue-Id: 89BE363F409
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x cb3560e8eab1dfa1cac1ed52631adf8ec6ff2cd5
+git cherry-pick -x 915b36d701950503c4ea0f6e314b10868e59fce3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060431-mummy-dash-37b1@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060400-renewal-coagulant-3a75@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -117,61 +117,76 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From cb3560e8eab1dfa1cac1ed52631adf8ec6ff2cd5 Mon Sep 17 00:00:00 2001
+From 915b36d701950503c4ea0f6e314b10868e59fce3 Mon Sep 17 00:00:00 2001
 From: Johan Hovold <johan@kernel.org>
-Date: Wed, 20 May 2026 16:26:22 +0200
-Subject: [PATCH] USB: serial: digi_acceleport: fix memory corruption with
- small endpoints
+Date: Wed, 20 May 2026 16:27:00 +0200
+Subject: [PATCH] USB: serial: mct_u232: fix memory corruption with small
+ endpoint
 
-Add the missing bulk-out buffer size sanity checks to avoid
-out-of-bounds memory accesses or slab corruption should a malicious
-device report smaller buffers than expected.
+The driver overrides the maximum transfer size for a specific device
+which only accepts 16 byte packets for its 32 byte bulk-out endpoint.
+
+Make sure to never increase the maximum transfer size to prevent slab
+corruption should a malicious device report a smaller endpoint max
+packet size than expected.
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 
-diff --git a/drivers/usb/serial/digi_acceleport.c b/drivers/usb/serial/digi_acceleport.c
-index d515df045c4c..c481208255eb 100644
---- a/drivers/usb/serial/digi_acceleport.c
-+++ b/drivers/usb/serial/digi_acceleport.c
-@@ -1229,15 +1229,34 @@ static int digi_port_init(struct usb_serial_port *port, unsigned port_num)
- static int digi_startup(struct usb_serial *serial)
+diff --git a/drivers/usb/serial/mct_u232.c b/drivers/usb/serial/mct_u232.c
+index 18844b92bd08..ca1530da6e77 100644
+--- a/drivers/usb/serial/mct_u232.c
++++ b/drivers/usb/serial/mct_u232.c
+@@ -378,6 +378,7 @@ static int mct_u232_port_probe(struct usb_serial_port *port)
  {
- 	struct digi_serial *serial_priv;
-+	int oob_port_num;
- 	int ret;
-+	int i;
-+
-+	/*
-+	 * The port bulk-out buffers must be large enough for header and
-+	 * buffered data.
-+	 */
-+	for (i = 0; i < serial->type->num_ports; i++) {
-+		if (serial->port[i]->bulk_out_size < DIGI_OUT_BUF_SIZE + 2)
-+			return -EINVAL;
-+	}
-+
-+	/*
-+	 * The OOB port bulk-out buffer must be large enough for the two
-+	 * commands in digi_set_modem_signals().
-+	 */
-+	oob_port_num = serial->type->num_ports;
-+	if (serial->port[oob_port_num]->bulk_out_size < 8)
-+		return -EINVAL;
+ 	struct usb_serial *serial = port->serial;
+ 	struct mct_u232_private *priv;
++	u16 pid;
  
- 	serial_priv = kzalloc_obj(*serial_priv);
- 	if (!serial_priv)
+ 	/* check first to simplify error handling */
+ 	if (!serial->port[1] || !serial->port[1]->interrupt_in_urb) {
+@@ -385,6 +386,16 @@ static int mct_u232_port_probe(struct usb_serial_port *port)
+ 		return -ENODEV;
+ 	}
+ 
++	/*
++	 * Compensate for a hardware bug: although the Sitecom U232-P25
++	 * device reports a maximum output packet size of 32 bytes,
++	 * it seems to be able to accept only 16 bytes (and that's what
++	 * SniffUSB says too...)
++	 */
++	pid = le16_to_cpu(serial->dev->descriptor.idProduct);
++	if (pid == MCT_U232_SITECOM_PID)
++		port->bulk_out_size = min(16, port->bulk_out_size);
++
+ 	priv = kzalloc_obj(*priv);
+ 	if (!priv)
  		return -ENOMEM;
+@@ -410,7 +421,6 @@ static void mct_u232_port_remove(struct usb_serial_port *port)
  
- 	spin_lock_init(&serial_priv->ds_serial_lock);
--	serial_priv->ds_oob_port_num = serial->type->num_ports;
--	serial_priv->ds_oob_port = serial->port[serial_priv->ds_oob_port_num];
-+	serial_priv->ds_oob_port_num = oob_port_num;
-+	serial_priv->ds_oob_port = serial->port[oob_port_num];
+ static int  mct_u232_open(struct tty_struct *tty, struct usb_serial_port *port)
+ {
+-	struct usb_serial *serial = port->serial;
+ 	struct mct_u232_private *priv = usb_get_serial_port_data(port);
+ 	int retval = 0;
+ 	unsigned int control_state;
+@@ -418,15 +428,6 @@ static int  mct_u232_open(struct tty_struct *tty, struct usb_serial_port *port)
+ 	unsigned char last_lcr;
+ 	unsigned char last_msr;
  
- 	ret = digi_port_init(serial_priv->ds_oob_port,
- 						serial_priv->ds_oob_port_num);
+-	/* Compensate for a hardware bug: although the Sitecom U232-P25
+-	 * device reports a maximum output packet size of 32 bytes,
+-	 * it seems to be able to accept only 16 bytes (and that's what
+-	 * SniffUSB says too...)
+-	 */
+-	if (le16_to_cpu(serial->dev->descriptor.idProduct)
+-						== MCT_U232_SITECOM_PID)
+-		port->bulk_out_size = 16;
+-
+ 	/* Do a defined restart: the normal serial device seems to
+ 	 * always turn on DTR and RTS here, so do the same. I'm not
+ 	 * sure if this is really necessary. But it should not harm
 
 
