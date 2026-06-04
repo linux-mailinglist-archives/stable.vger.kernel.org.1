@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-260376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260377-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hOPhCoxVIWrbDwEAu9opvQ
-	(envelope-from <stable+bounces-260376-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:38:04 +0200
+	id ffOxOHJVIWq+DwEAu9opvQ
+	(envelope-from <stable+bounces-260377-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:37:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 767E763F1B1
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:38:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF4B63F1A1
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:37:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PmbQG151;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260376-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260376-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qC9sSaq3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260377-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260377-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6063030E5B5C
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 10:29:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3F5613178C4C
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 10:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB5D39AD41;
-	Thu,  4 Jun 2026 10:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4AE226ED37;
+	Thu,  4 Jun 2026 10:30:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCCF39DBF4
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 10:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2753F54DA
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 10:30:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780568998; cv=none; b=pVB857jpm8zDSQ7LFxLII2aW+8jpSjPD5+bgxPFX+ZpgaQJijMhwiIB7gZLVL67JHmuwxXy1Nvtv3/NHHR0oYoNi4o7rdzMeCF+Ugh/gzdgBSCjxCPgpUIojXJbwY213Hk+fDot4rcSZVu+Vc9wFdwlcUXrItlqeNi4EnPDxcJs=
+	t=1780569037; cv=none; b=Z3KExKbNSm1PA6bKcHoC/yJcKiKlX6xN7CG4ZzzxUv7aUGy1cRvVI3ONJuDIe5KntHz0juuZVtQyYzeU75GQPW5Zeko0/dDcjg9haanNVqaun+Au35qFzZVFAUBP8u/zUlLf4JthzVEgPCp53xWY4G8URp5aWB1h95lNh+RqRB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780568998; c=relaxed/simple;
-	bh=hRSo43CvPPnpPMLLeDH+O+pTDVU5r+99j032DJRLawE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZOSNtMeWGtpOYJq0ZzHi11OHh+sEDdcT6NcmmXHM2Fsuro+SBPDX75cxGTSbNcZ4eM+G/zDQhZ06HCsFHFBckjInMTEKyr+hVhl/hNMS5qonKMjILVuswrFgbGZkc5jB+UL7CsIkKeYyA9xwurSVS2zxROMjxA8HPhm4vvXWsE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PmbQG151; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D19B1F0089B;
-	Thu,  4 Jun 2026 10:29:56 +0000 (UTC)
+	s=arc-20240116; t=1780569037; c=relaxed/simple;
+	bh=xhsuh5pZK6Nm90fxkhOphFhVANTN4hmopigT5ySs4Lg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CJbDQavFDUHL0MJtdVD99IIggDe38GarorLjutLFVGWLvhmAOtHlrcuaen+4KOJTAeryxA3B7AdIk3xzfnwKuNPCEha8LYAl0bUC0QomSmruNKmJv4pPw9U3aq9mBjy0fQLMtypheoB00wy+oP3eJE0b3GFE8S05UwwKwfzAFCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qC9sSaq3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841751F00893;
+	Thu,  4 Jun 2026 10:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780568997;
-	bh=Ui2Zq7v0FCsTEDgrXbucsB+gQQ7Md7D3JSWH9KYnbQY=;
+	s=korg; t=1780569036;
+	bh=FFjB5MmwdsOUbc4xHzJoBubqrx84G7iHUNMkDl2LDck=;
 	h=Subject:To:Cc:From:Date;
-	b=PmbQG151uTQib3XQ/VtdDeaS65gSjqkm5gp0ahBAzBabRIFH5szQI+0yW1VvhQt6r
-	 lnZ58zE6Hg486DvGa1mSSnDLO7WDqrOtiM3F6HbLaWmcy73DqDHq+IGsSdhREnZEn9
-	 NUD6dd1Wl8IT9ARgv/5Als95Fx/a559+b3tu4TX8=
-Subject: FAILED: patch "[PATCH] xfrm: input: hold netns during deferred transport reinjection" failed to apply to 5.10-stable tree
-To: zcliangcn@gmail.com,bird@lzu.edu.cn,n05ec@lzu.edu.cn,steffen.klassert@secunet.com,tr0jan@lzu.edu.cn,yuantan098@gmail.com
+	b=qC9sSaq3yPe5Nm2bV+/wMSuNyR877Jp3nQ9xnJDEco3zOXAalhJD0dInz1KbFparD
+	 ArGG4bW+R+wGq6u2LZfKkaZR41NhV2MtenEkaAIHYutqwqWkpwQg2YlD2RmrZdOAO6
+	 yhsqgMLIxinJ8ZGoHMP8uA2SyrmBezcobWiS+s1s=
+Subject: FAILED: patch "[PATCH] net: skbuff: fix missing zerocopy reference in pskb_carve" failed to apply to 6.6-stable tree
+To: minhnguyen.080505@gmail.com,pabeni@redhat.com,willemb@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 04 Jun 2026 12:28:59 +0200
-Message-ID: <2026060459-existing-wooing-a148@gregkh>
+Date: Thu, 04 Jun 2026 12:29:39 +0200
+Message-ID: <2026060438-bullring-defrost-cf5a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,56 +57,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260376-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260377-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:n05ec@lzu.edu.cn,m:steffen.klassert@secunet.com,m:tr0jan@lzu.edu.cn,m:yuantan098@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:minhnguyen.080505@gmail.com,m:pabeni@redhat.com,m:willemb@google.com,m:stable@vger.kernel.org,m:minhnguyen080505@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com,lzu.edu.cn,secunet.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NO_DN(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,redhat.com,google.com];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MIME_TRACE(0.00)[0:+]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 767E763F1B1
+X-Rspamd-Queue-Id: 6DF4B63F1A1
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x c16f74dc1d75d0e2e7670076d5375deda110ebeb
+git cherry-pick -x 98d0912e9f841e5529a5b89a972805f34cb1c69d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060459-existing-wooing-a148@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060438-bullring-defrost-cf5a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -118,74 +119,88 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c16f74dc1d75d0e2e7670076d5375deda110ebeb Mon Sep 17 00:00:00 2001
-From: Zhengchuan Liang <zcliangcn@gmail.com>
-Date: Fri, 22 May 2026 17:31:55 +0800
-Subject: [PATCH] xfrm: input: hold netns during deferred transport reinjection
+From 98d0912e9f841e5529a5b89a972805f34cb1c69d Mon Sep 17 00:00:00 2001
+From: Minh Nguyen <minhnguyen.080505@gmail.com>
+Date: Tue, 26 May 2026 11:12:39 +0700
+Subject: [PATCH] net: skbuff: fix missing zerocopy reference in pskb_carve
+ helpers
 
-Transport-mode reinjection stores a struct net pointer in skb->cb and
-uses it later from xfrm_trans_reinject(). That pointer must stay valid
-until the deferred callback runs.
+pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
+the old skb_shared_info header into a new buffer via memcpy(), which
+includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
+Neither function calls net_zcopy_get() for the new shinfo, creating an
+unaccounted holder: every skb_shared_info with destructor_arg set will
+call skb_zcopy_clear() once when freed, but the corresponding
+net_zcopy_get() was never called for the new copy. Repeated calls
+drive uarg->refcnt to zero prematurely, freeing ubuf_info_msgzc while
+TX skbs still hold live destructor_arg pointers.
 
-Take a netns reference when queueing deferred reinjection work and drop
-it after the callback completes. Use maybe_get_net() so the queueing
-path does not revive a namespace that is already being torn down.
+KASAN reports use-after-free on a freed ubuf_info_msgzc:
 
-This keeps the existing workqueue design and fixes the netns lifetime
-handling in one place for all users of xfrm_trans_queue_net().
+  BUG: KASAN: slab-use-after-free in skb_release_data+0x77b/0x810
+  Read of size 8 at addr ffff88801574d3e8 by task poc/220
 
-Fixes: 7b3801927e52 ("xfrm: introduce xfrm_trans_queue_net")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+  Call Trace:
+   skb_release_data+0x77b/0x810
+   kfree_skb_list_reason+0x13e/0x610
+   skb_release_data+0x4cd/0x810
+   sk_skb_reason_drop+0xf3/0x340
+   skb_queue_purge_reason+0x282/0x440
+   rds_tcp_inc_free+0x1e/0x30
+   rds_recvmsg+0x354/0x1780
+   __sys_recvmsg+0xdf/0x180
 
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index f65291eba1f6..e4c2cd24936d 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -797,9 +797,12 @@ static void xfrm_trans_reinject(struct work_struct *work)
- 	spin_unlock_bh(&trans->queue_lock);
+  Allocated by task 219:
+   msg_zerocopy_realloc+0x157/0x7b0
+   tcp_sendmsg_locked+0x2892/0x3ba0
+
+  Freed by task 219:
+   ip_recv_error+0x74a/0xb10
+   tcp_recvmsg+0x475/0x530
+
+The skb consuming the late access still referenced the same uarg via
+shinfo->destructor_arg copied by pskb_carve_inside_nonlinear() without
+a refcount bump. This has been verified to be reliably exploitable: a
+working proof-of-concept achieves full root privilege escalation from
+an unprivileged local user on a default kernel configuration.
+
+The fix follows the pattern of pskb_expand_head() which has the same
+memcpy/cloned structure. For pskb_carve_inside_header(), net_zcopy_get()
+is placed after skb_orphan_frags() succeeds, so the orphan error path
+needs no cleanup. For pskb_carve_inside_nonlinear(), net_zcopy_get() is
+placed after all failure points and just before skb_release_data(), so
+no error path needs cleanup at all -- matching pskb_expand_head() more
+closely and avoiding the need for a balancing net_zcopy_put().
+
+Fixes: 6fa01ccd8830 ("skbuff: Add pskb_extract() helper function")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-sonnet-4-6
+Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260526041240.329462-1-minhnguyen.080505@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index d247acd447e4..0d3cc115f2e7 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -6833,6 +6833,8 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
+ 			skb_kfree_head(data);
+ 			return -ENOMEM;
+ 		}
++		if (skb_zcopy(skb))
++			net_zcopy_get(skb_zcopy(skb));
+ 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
+ 			skb_frag_ref(skb, i);
+ 		if (skb_has_frag_list(skb))
+@@ -6976,6 +6978,8 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
+ 		skb_kfree_head(data);
+ 		return -ENOMEM;
+ 	}
++	if (skb_zcopy(skb))
++		net_zcopy_get(skb_zcopy(skb));
+ 	skb_release_data(skb, SKB_CONSUMED);
  
- 	local_bh_disable();
--	while ((skb = __skb_dequeue(&queue)))
--		XFRM_TRANS_SKB_CB(skb)->finish(XFRM_TRANS_SKB_CB(skb)->net,
--					       NULL, skb);
-+	while ((skb = __skb_dequeue(&queue))) {
-+		struct net *net = XFRM_TRANS_SKB_CB(skb)->net;
-+
-+		XFRM_TRANS_SKB_CB(skb)->finish(net, NULL, skb);
-+		put_net(net);
-+	}
- 	local_bh_enable();
- }
- 
-@@ -808,6 +811,7 @@ int xfrm_trans_queue_net(struct net *net, struct sk_buff *skb,
- 				       struct sk_buff *))
- {
- 	struct xfrm_trans_tasklet *trans;
-+	struct net *hold_net;
- 
- 	trans = this_cpu_ptr(&xfrm_trans_tasklet);
- 
-@@ -816,8 +820,12 @@ int xfrm_trans_queue_net(struct net *net, struct sk_buff *skb,
- 
- 	BUILD_BUG_ON(sizeof(struct xfrm_trans_cb) > sizeof(skb->cb));
- 
-+	hold_net = maybe_get_net(net);
-+	if (!hold_net)
-+		return -ENODEV;
-+
- 	XFRM_TRANS_SKB_CB(skb)->finish = finish;
--	XFRM_TRANS_SKB_CB(skb)->net = net;
-+	XFRM_TRANS_SKB_CB(skb)->net = hold_net;
- 	spin_lock_bh(&trans->queue_lock);
- 	__skb_queue_tail(&trans->queue, skb);
- 	spin_unlock_bh(&trans->queue_lock);
+ 	skb->head = data;
 
 
