@@ -1,215 +1,200 @@
-Return-Path: <stable+bounces-260310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id S5ZoCDw8IWpvBgEAu9opvQ
-	(envelope-from <stable+bounces-260310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 10:50:04 +0200
+	id M5tKFaM8IWqVBgEAu9opvQ
+	(envelope-from <stable+bounces-260304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 10:51:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8652B63E268
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 10:50:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DBEE63E2BE
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 10:51:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yn5AXRgp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260310-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-260310-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=E+Yz6IkC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260304-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260304-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6A29530CD8DC
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 08:44:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BE1430D894A
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 08:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EB33FB7C0;
-	Thu,  4 Jun 2026 08:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063633C9ED6;
+	Thu,  4 Jun 2026 08:41:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481033D6CB5;
-	Thu,  4 Jun 2026 08:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198753E63B5
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 08:40:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780562546; cv=none; b=NJc/FBmFyHoMt1XD+uvv2Iv5DDXD+JYI+HZxDewAJpo7XOPBXi9R96aMZJP7KPsvdimIGLgJPDIBZ4wtry5QvHQYs7rGKg3gW2uauD39QO97WfXtgBeFkuP93IQZqZ95MbNJhyek+WfvttlEXCdSzGsXjX+NMMZoH4ZDUUbFiJ8=
+	t=1780562464; cv=none; b=W6nHHpJ2bicyXVNvC/ufSa9KoA/SgekhZg4B3825iJ4kQhJXgEHk4F6RUQ+UBuMGkeQ0iIKDnkyS9peuUkwX1zvAp4TiAuuNzCtYS2+rAgDSTleh7/1PxIiJ1V8nrY1Ipt+gzM7GH9R0QrF8dEANNp3267vRBDj+kMAMMO7OVPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780562546; c=relaxed/simple;
-	bh=rcg0Q+6+2FAtZMgWgfjQda2Drx/FcFQqdoAZCTdZ9wI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cs4qnHGVVCce5qPlQNe5gZqtI9GiXnAWJC4ZYOBy+vfpVdQQGaDP3tLnWXYHhmm3/ZEPBmpo9M2Ds+/JyTQmraHyaXQH2opYK1pAt+rXr9WZ7ziA+TLhVp0Kkq0nPCQSYNSUG2uL2lf01WKhjcZbBuWUFnXv16zEMK9AKYWF/Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yn5AXRgp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C031F0089A;
-	Thu,  4 Jun 2026 08:42:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780562542;
-	bh=na5iA7JJF5EbHB1DYhHq0zpzWxfHieUed4f5owflzmA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Yn5AXRgpAXhRhafyxaaxRkC67nV6/1y/+hBVV4GhrE+hn6mZ914QVIlT0cp2sEANU
-	 31krwTQNaQEGArg+jE8pLIZkcV3lRKxHmCqg4rcunxn9SFCQnW57tpDUoTy0SNTkgu
-	 ug+9vIb5NLvIr86ZUT042mohsW/DLHJv+3rBczDVcJUdLS7DDks0QbxpRqZE4ibDtC
-	 HMKeGTAd4ndhTvuwabYB5tD3VDr6Dks37RULt/QS8FLqWMEA94m+73lteArVYW9JX2
-	 DrxMbFoSPumqXO6By77oyJZRIcyY7l+Csbe6fG6Z2+SORBo3XY6fEaYwqzhXw5lzKR
-	 xdLBKCIH+4CSQ==
-From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-To: iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Mostafa Saleh <smostafa@google.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	x86@kernel.org,
-	stable@vger.kernel.org,
-	Michael Kelley <mhklinux@outlook.com>
-Subject: [PATCH v6 14/20] dma-direct: return struct page from dma_direct_alloc_from_pool()
-Date: Thu,  4 Jun 2026 14:09:53 +0530
-Message-ID: <20260604083959.1265923-15-aneesh.kumar@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
-References: <20260604083959.1265923-1-aneesh.kumar@kernel.org>
+	s=arc-20240116; t=1780562464; c=relaxed/simple;
+	bh=+FVjQH9ME/3hxzIB23RryAQBjWyQfNOtKe2JIfFCIJM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=W8pI/GIxtk4dzwxa3f5wQNlyOCUMtr7MXdD28CHGIjvSJ6Db6P2kZ9yzPE36MxliPdVl0PYuARZ3i5Hqqq+MQr8XO2ynw5Bheze90PxEk5/RLj/igEbNYktt2b0jLNZPboFVjb17ZAzXcWTY7wKcjbFb0YwsS5XymVknHozGcq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+Yz6IkC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF83F1F0089B;
+	Thu,  4 Jun 2026 08:40:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1780562453;
+	bh=T6322EfmIirXuUsK0zjIC7iaMNRod9GpyLnvlQUbaec=;
+	h=Subject:To:Cc:From:Date;
+	b=E+Yz6IkCa/or3FSWUvoqGO/rLp4Sh/tuWLu5KwO8Ry1VWbyUO299aDzhcM26ZaxMt
+	 8qV3pVCXJ3uyIPq3k9fH6JnPb5O7g7YqM0SVBllxBHst9eHjKKntEblM2pRzGjIK2I
+	 QCJJi+JdUh09rhfKhPPP9Y8843vCk+rwuTMWVp0I=
+Subject: FAILED: patch "[PATCH] KVM: SVM: Flush the current TLB when transitioning from xAVIC" failed to apply to 6.1-stable tree
+To: seanjc@google.com,naveen@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 04 Jun 2026 10:39:56 +0200
+Message-ID: <2026060456-distinct-jockstrap-0b3b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[34];
-	FREEMAIL_CC(0.00)[kernel.org,arm.com,samsung.com,resnulli.us,ziepe.ca,google.com,suse.com,amd.com,intel.com,linux.intel.com,lists.ozlabs.org,vger.kernel.org,linux.ibm.com,ellerman.id.au,gmail.com,outlook.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260310-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260304-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:seanjc@google.com,m:naveen@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[aneesh.kumar@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:iommu@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-coco@lists.linux.dev,m:aneesh.kumar@kernel.org,m:robin.murphy@arm.com,m:m.szyprowski@samsung.com,m:will@kernel.org,m:maz@kernel.org,m:steven.price@arm.com,m:Suzuki.Poulose@arm.com,m:catalin.marinas@arm.com,m:jiri@resnulli.us,m:jgg@ziepe.ca,m:smostafa@google.com,m:ptesarik@suse.com,m:aik@amd.com,m:dan.j.williams@intel.com,m:yilun.xu@linux.intel.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-s390@vger.kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:agordeev@linux.ibm.com,m:gerald.schaefer@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:x86@kernel.org,m:stable@vger.kernel.org,m:mhklinux@outlook.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aneesh.kumar@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,outlook.com:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:mid,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8652B63E268
+X-Rspamd-Queue-Id: 9DBEE63E2BE
 
-Commit 5b138c534fda ("dma-direct: factor out a dma_direct_alloc_from_pool
-helper") changed dma_direct_alloc_from_pool() to return the CPU address
-from dma_alloc_from_pool(). That fits dma_direct_alloc(), but
-dma_direct_alloc_pages() also uses the helper and expects a struct page *.
 
-Fix this by making dma_direct_alloc_from_pool() return the struct page *
-again, and pass the CPU address back through an out-parameter for the
-dma_direct_alloc() caller.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Fixes: 5b138c534fda ("dma-direct: factor out a dma_direct_alloc_from_pool helper")
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x a9e18aa3263f356edae305e29830e5fe63d8597a
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060456-distinct-jockstrap-0b3b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From a9e18aa3263f356edae305e29830e5fe63d8597a Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Fri, 15 May 2026 10:15:36 -0700
+Subject: [PATCH] KVM: SVM: Flush the current TLB when transitioning from xAVIC
+ => x2AVIC
+
+Flush the current TLB when xAVIC *or* x2AVIC is activated, as KVM is
+(apparently) responsible for purging TLB entries when transitioning from
+xAVIC to x2AVIC.  The APM says a whole lot of nothing about TLB flushing
+with respect to (x2)AVIC, but empirical data strongly suggests hardware
+also does a whole lot of nothing.
+
+Failure to flush the TLB when enabling x2AVIC can lead to guest accesses
+to the APIC base address getting incorrectly redirected to the virtual
+APIC page.  The flaw most visibly manifests as failures in KVM-Unit-Test's
+verify_disabled_apic_mmio() testcase when x2APIC is enabled (though for
+reasons unknown, the test only reliably fails with EFI builds).
+
+Fixes: 0ccf3e7cb95a ("KVM: SVM: Flush the "current" TLB when activating AVIC")
+Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
 Cc: stable@vger.kernel.org
+Cc: Naveen N Rao (AMD) <naveen@kernel.org>
+Link: https://patch.msgid.link/20260515171536.1841645-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Mostafa Saleh <smostafa@google.com>
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
----
- kernel/dma/direct.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
-
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 4e446aa4130e..e0ab9ff3f1d6 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -157,24 +157,24 @@ static bool dma_direct_use_pool(struct device *dev, gfp_t gfp)
- 	return !gfpflags_allow_blocking(gfp) && !is_swiotlb_for_alloc(dev);
- }
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index adf211860949..e8bd60156941 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -206,6 +206,35 @@ static void avic_activate_vmcb(struct vcpu_svm *svm)
  
--static void *dma_direct_alloc_from_pool(struct device *dev, size_t size,
--		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
-+static struct page *dma_direct_alloc_from_pool(struct device *dev, size_t size,
-+		dma_addr_t *dma_handle, void **cpu_addr, gfp_t gfp,
-+		unsigned long attrs)
- {
- 	struct page *page;
- 	u64 phys_limit;
--	void *ret;
+ 	svm_clr_intercept(svm, INTERCEPT_CR8_WRITE);
  
- 	if (WARN_ON_ONCE(!IS_ENABLED(CONFIG_DMA_COHERENT_POOL)))
- 		return NULL;
- 
- 	gfp |= dma_direct_optimal_gfp_mask(dev, &phys_limit);
--	page = dma_alloc_from_pool(dev, size, &ret, gfp, attrs,
-+	page = dma_alloc_from_pool(dev, size, cpu_addr, gfp, attrs,
- 				   dma_coherent_ok);
- 	if (!page)
- 		return NULL;
- 	*dma_handle = phys_to_dma_direct(dev, page_to_phys(page),
- 					 !!(attrs & DMA_ATTR_CC_SHARED));
--	return ret;
-+	return page;
- }
- 
- static void *dma_direct_alloc_no_mapping(struct device *dev, size_t size,
-@@ -270,9 +270,12 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 	 * the atomic pools instead if we aren't allowed block.
- 	 */
- 	if ((remap || (attrs & DMA_ATTR_CC_SHARED)) &&
--	    dma_direct_use_pool(dev, gfp))
--		return dma_direct_alloc_from_pool(dev, size, dma_handle,
--						  gfp, attrs);
-+	    dma_direct_use_pool(dev, gfp)) {
-+		page = dma_direct_alloc_from_pool(dev, size,
-+					dma_handle, &cpu_addr,
-+					gfp, attrs);
-+		return page ? cpu_addr : NULL;
-+	}
- 
- 	if (is_swiotlb_for_alloc(dev)) {
- 		page = dma_direct_alloc_swiotlb(dev, size, attrs);
-@@ -445,7 +448,7 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
- 
- 	if ((attrs & DMA_ATTR_CC_SHARED) && dma_direct_use_pool(dev, gfp))
- 		return dma_direct_alloc_from_pool(dev, size, dma_handle,
--						  gfp, attrs);
-+						  &cpu_addr, gfp, attrs);
- 
- 	if (is_swiotlb_for_alloc(dev)) {
- 		page = dma_direct_alloc_swiotlb(dev, size, attrs);
--- 
-2.43.0
++	/*
++	 * Flush the TLB when enabling (x2)AVIC and when transitioning between
++	 * xAVIC and x2AVIC, as the CPU may have inserted a TLB entry for the
++	 * "wrong" mapping.
++	 *
++	 * KVM uses a per-VM "scratch" page to back the APIC memslot, because
++	 * KVM also uses per-VM page tables *and* maintains the page table (NPT
++	 * or shadow page) mappings for said memslot even if one or more vCPUs
++	 * have their local APIC hardware-disabled or are in x2APIC mode, i.e.
++	 * even if one or more vCPUs' APIC MMIO BAR is effectively disabled.
++	 *
++	 * If xAVIC is fully enabled, hardware ignores the physical address in
++	 * KVM's page tables, i.e. in the leaf SPTE for the APIC memslot, and
++	 * instead redirects the access to the AVIC backing page, i.e. to the
++	 * vCPU's virtual APIC page.  If xAVIC is not enabled (APIC is either
++	 * hardware-disabled or in x2APIC mode), then guest accesses will use
++	 * the page table mapping verbatim, i.e. will access the per-VM scratch
++	 * page, as normal memory.
++	 *
++	 * In both cases, the CPU is allowed to cache TLB entries for the APIC
++	 * base GPA.  So, KVM needs to flush the TLB when enabling xAVIC, as
++	 * accesses need to be redirected to the virtual APIC page, but the TLB
++	 * may contain entries pointing at the scratch page.  KVM also needs to
++	 * flush the TLB when enabling x2AVIC, as accesses need to go to the
++	 * scratch page, but the TLB may contain entries tagged as xAVIC, i.e.
++	 * entries pointing to the vCPU's virtual APIC page.
++	 */
++	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
++
+ 	/*
+ 	 * Note: KVM supports hybrid-AVIC mode, where KVM emulates x2APIC MSR
+ 	 * accesses, while interrupt injection to a running vCPU can be
+@@ -219,12 +248,6 @@ static void avic_activate_vmcb(struct vcpu_svm *svm)
+ 		/* Disabling MSR intercept for x2APIC registers */
+ 		avic_set_x2apic_msr_interception(svm, false);
+ 	} else {
+-		/*
+-		 * Flush the TLB, the guest may have inserted a non-APIC
+-		 * mapping into the TLB while AVIC was disabled.
+-		 */
+-		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
+-
+ 		/* Enabling MSR intercept for x2APIC registers */
+ 		avic_set_x2apic_msr_interception(svm, true);
+ 	}
 
 
