@@ -1,270 +1,332 @@
-Return-Path: <stable+bounces-260485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260487-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oTnqJKxzIWqkGgEAu9opvQ
-	(envelope-from <stable+bounces-260485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 14:46:36 +0200
+	id eHpQNIR2IWqVGwEAu9opvQ
+	(envelope-from <stable+bounces-260487-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 14:58:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329CD64005A
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 14:46:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5166401D7
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 14:58:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=olJ8lHLl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260485-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260485-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=google.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hbMaw+lm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260487-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260487-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AB25530976E8
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 12:45:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B88A3059903
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 12:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5AEA47AF6A;
-	Thu,  4 Jun 2026 12:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8455E4219E3;
+	Thu,  4 Jun 2026 12:51:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82ACD47A0B2
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 12:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0586847AF42
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 12:51:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780577125; cv=none; b=hgeARcUXpkhPwWYjjnstiMgnQj0Awq32AXE0JMBgDR6OYTNV9xrZlTtLgbz+I1x7io9MOER04jbQ+p2xDZC6KjIaOz9gfUATgtUTOaFDCDFK58IgyngaQjOIn8QEV85OFxjpHpjNGNbIKIZeQnFVBer4RuoflcfLYAjfCCi+328=
+	t=1780577466; cv=none; b=nzgJXTs2HODLndvZMBSasivFlUh+KzztQBO18a1Wh/FH/gitQR9TJI6JwA7QHNbHy9uTgyQIiTxzKFaWU7ihGcCgi/s13OnaLb0jZFjzAKNLud/hr/qrzRPPEANUkGXteP52KW8Y4i8BqQfepO1pYwB/p97lIfeJPRtWWRhm2rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780577125; c=relaxed/simple;
-	bh=ZvXAkuk7MLe0QcXbu4Nybd8XJ6cOO9jrhq2UI94xiw8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=blF0TRCtiR9PkJrmubDZsGLDISzEnNriLC5ITQuj/H5leEbsvjiIwRnL9CcOMOLnWpKXbKemGDhRAmiy0SL4wHBKZP9fUoB/AF29NUdzDSjf3Fk+sA2s9aJ+dzGzbpITq4XT8ee5vBrNd4BkAQhLPrNMWli2J/RCHCu5MZi5y3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=olJ8lHLl; arc=none smtp.client-ip=209.85.128.52
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-490b43e2b95so5662745e9.0
-        for <stable@vger.kernel.org>; Thu, 04 Jun 2026 05:45:22 -0700 (PDT)
+	s=arc-20240116; t=1780577466; c=relaxed/simple;
+	bh=Ue0t80Atf9FROn1T+Fppzbjlf+qCi8HLopNvvDd8atU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=u7sLXY1qJLqk9UPLlFxHrX7ZtiNVS4rCMEebvgvyL/rOxOB71WhpEXdbfoYFaX90BdOdOapGp6K2JaRb4eFCGDeaUaH8/dC14LHGdLxtjbMhjujzieENfTENgl1dgEOS2zw4niuKjGaB+ra20y+OGMFAbUMIuY1H25x6AqmcDpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hbMaw+lm; arc=none smtp.client-ip=209.85.214.180
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2bf36a6905cso4373015ad.3
+        for <stable@vger.kernel.org>; Thu, 04 Jun 2026 05:51:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780577121; x=1781181921; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gt1BCM4pflnoVuLFX2pdgCZ8sTCZUXmk7JQn92eThmw=;
-        b=olJ8lHLlU5k/hPBwrpHDY0v/WPJFiV+xtmPCCrVVAdGNkNxhY76KsRjAHnEUisy5ag
-         mQifm53WCwERGHpNCHNVHnYE5iCq2sRJ33GS7CeyLsw9Lck5jEA47zPmobLC05279L4m
-         2wYi8BXjN7qa9SA3F4v1gBz5dV3eBhxVE2BN0Qp/kksvE+Y1XQ/udUsZRAz/OcRBxvc5
-         g9lOlwGPijCQr9vQmCTHLybFiI9Nrtj/z7oQSlxHPhfv3tAt2iMMK9QPSZKr4kFaGRNb
-         UZWKE7DJTpDZM1o80J1EUq0OsW1sC/U0wsB/vpJZoC8sdgIdpirF09kWrRDJyFDQeRo7
-         SaaQ==
+        d=gmail.com; s=20251104; t=1780577463; x=1781182263; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=seUz59e0svXloX8vBJn/Xnyh/69QhVVV1JmT7ssvJbs=;
+        b=hbMaw+lmZK8JNCLjk7Mws1+ERpGPqsRK0gZFnPOu0Ix6dSnq2SYLvuW/0GUcnLLZWh
+         /l40EFEUZzdm710dRE8jYQEU4KLHnbvzZoqg7oGMHDkitZA0t+gswDhwaG1lVaK/cLO2
+         DO9lCu+GDV0H+/IBVbVqPgMWrIBaRJalX+IUrPcOn2UiJqn32ud+nh8JwGW3SQOiHg48
+         OvMdo+f3YIu1jntsbZc1NdcaaHk9LQLNWpWyaiwRkdYx4IudPlLZNCzCBKREJYo+O4qU
+         KcJ/MtaVb9dxDobksslXY4JHal8ghsK+GEv03zAQLRXla9Y5WN/TJFxT4kf6By1Z+WUV
+         YWxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780577121; x=1781181921;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1780577463; x=1781182263;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Gt1BCM4pflnoVuLFX2pdgCZ8sTCZUXmk7JQn92eThmw=;
-        b=ipBrHP/HGBGDWcOf7UFoL1bl+LU6T0V3p5XV/Y0insjtqbw489mXn//BOrHISn5Glc
-         SpvbB+zc60N1WpGEH7GUeeiqWa53aXKb4Jba1pnImqfo8Uun6folMZz1+cWDYerSmuBw
-         tfmArRvUUIr83uCFQTu5QXQEhorFK2OG61ykaq+ssEQxs7ico8L25iC4cx0BJJNIxSpT
-         A+j5sKJIh/pMGS7fo4v83QPHj/6XEZUR61YzH5BwJGYdZkAyfWsXQhBx1jO+Sq4x/JO5
-         vQS82ipwevXbJr845mz4jR2qMlfiYHo7+TJrEvU8/L0cYusbdK48yoFLJvbNq54240Xg
-         3P/g==
-X-Forwarded-Encrypted: i=1; AFNElJ+08tLmUm7tQOnNmhAJv49Tmm3/xZ/+/Rnja3QhYDuPJK73jf7qOBI7rrizp93xogDtcw9EISo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwODSwAvmZIKXhiQgDmqSKFChbtO2S+1Fkz86LHH4GrNmEYbsY9
-	GBZPLxggrHrT87n8qtC5Ji7GBt2ZoE9Ixr4+1QXYeSD2O3sltnMlM/4YYJJqekISAQ==
-X-Gm-Gg: Acq92OHQdsGRBNfqWtgjFMJGJDywwrslyOM2wh10vfw0hBz6cve6iiEYSbn0GzEzOtv
-	sfirjq5DpKWc17Ym1UrHV3hnxP0RuhG8g6N0xH8NkKDfcyLfKZabZBF5/HeqiEBu0LdoxDMFvTF
-	wu9wOXhl0JfWVSu+H09vmichRMMviWDyl2sygmyQ4q0atIyItinBI7GN7ND9FoyEsECVFQehymk
-	T7ioDuG8CWjfefStfgM0AO/QuVYfweTl/srhgCwUAN20DmFcctbqSUReXX3HcKocoPIM6hxOLfc
-	BxoEJgZ7YBcXO27HsFroQeXbbFEspVbIpQJyb28jAOkwCzlMRwhWUxqcJjVxzmHmqDX1n+Y2URq
-	XKriysbFn/Z6/hub5DVTGbrtN3G9CMYmLCQDazcYrDXp8RlwcADcdOuK3kTyiOr5cbBHBRL6PQQ
-	ohIXxnI6xzXo4UsDChtHuNYvRaM4VSxsSx5632jOWecNopsEXbDy1tg3/kqASvleSZjWoDb5g=
-X-Received: by 2002:a05:600c:8b48:b0:48f:d612:3c59 with SMTP id 5b1f17b1804b1-490b5ea6ddbmr131122095e9.9.1780577120514;
-        Thu, 04 Jun 2026 05:45:20 -0700 (PDT)
-Received: from elver.google.com ([2a00:79e0:2834:9:108e:a0d3:fede:9c88])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f351d69sm26439752f8f.29.2026.06.04.05.45.18
+        bh=seUz59e0svXloX8vBJn/Xnyh/69QhVVV1JmT7ssvJbs=;
+        b=rC8IBHKXZCGo1s5Y3KuBr5RW9V/wRiqnu/Uh63n8eL5w4t8zDu5vqq2BAxBvICgWXI
+         1AE3XQxOL7Yx6Dhkk7G0M7Kwee0cOv0PwGuCrWyDAPxUztpjyvhiLnJdUbEo8RKEYbYZ
+         JVjfB94Eg56VU2q5eSdKM6E+kVeV7zXdlY9gnnEZeS/JGcOgIGH+zATp1dQFKorBHSZI
+         ZPkcKOVrKi3EhgE9aMULqr4nVP6VxnNdTQHJtqggOWIfGVwVKv8DXU8+kJbJqXbv7kOQ
+         Bn1CvL/LzRDrElX2UlBGlRnF9qABpUb2/FTHkG+Orz4HerCnXiBl4Xi23zaZvGQShVom
+         J4Lg==
+X-Forwarded-Encrypted: i=1; AFNElJ965JNlgnEg8rAs5KcSfnws3V8R/qox4XOwfLWbtAkAfF7dSkG//+qviJk24dui8fS3U1/NWMM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhSFR32hLkXwCraoTQ6HpbdG1hj1AYzgAHv+b1OubdIniXLrIM
+	Hs6ScSB08FdMSfTwY5vo8LpwNY6wSZ9AF/cUaRTBZgJinPKVqJRfmn1w
+X-Gm-Gg: Acq92OGQsz0QI8gD/06CU8XXUquKpJAZ5e86ZLfsU+Qs+SSMx+KYUeTNnE/4EjwlqFV
+	ibLVP4titmJEtOV8Y4e6XYOEe40XP1fwww4k55yQz/Lbud4Q59dAC+Kk+mdEkVeDoPLFCb5ps80
+	HdHt4hacP8Qj1wzcbc7w7LBrYmSZ0ObwUVtKhZtyxDO/fvLRtIaRnapIt+pCFXtolCbPmk27qzM
+	+JKnxfZCyLmhKlOVJvzdSF3ECbgiM0KO1szoKRmoxgAE5AF2O/QAaAUNGwZqwcUrA5ySCfb5tAK
+	8poNMzokmLTTgkfFXurpizyORJ5Tp2CLv/10ioZgq555fWhD7SJrKzUluaXI76c9HCzFiEjgSDI
+	CRFLHBQZ6+A8yzm1Twl2oKsuUBfNXr2A8nINIZbSKVaHepln+7OT0wIjtVP9fUkbEPj+SGanNOH
+	gWH+9zSVgqgDHiWstrfQJmOyEsF30QJjCCUZ9kTVg78HnGzOYK/UUylqyjlPA=
+X-Received: by 2002:a17:903:3b85:b0:2c1:8fea:4dbf with SMTP id d9443c01a7336-2c18fea4df8mr50899115ad.8.1780577463135;
+        Thu, 04 Jun 2026 05:51:03 -0700 (PDT)
+Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f85de1sm57654715ad.20.2026.06.04.05.50.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 05:45:19 -0700 (PDT)
-Date: Thu, 4 Jun 2026 14:45:13 +0200
-From: Marco Elver <elver@google.com>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	stable@vger.kernel.org, Siwei Zhang <oss@fourdim.xyz>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: Re: [PATCH] Bluetooth: L2CAP: Fix UAF in l2cap_chan_timeout
-Message-ID: <aiFzWTYs1ppHhnNS@elver.google.com>
-References: <20260603123111.2334409-1-elver@google.com>
- <CANpmjNPQCx8rynFhOUfqgagP-KBh0pJsXz6PQt6G3LomdzVJYw@mail.gmail.com>
- <CABBYNZL9tH1Tc+jbc6fJ-Y1EtX+_QUk_P3ghDmdOaXY0gdqtnQ@mail.gmail.com>
+        Thu, 04 Jun 2026 05:51:02 -0700 (PDT)
+From: Maoyi Xie <maoyixie.tju@gmail.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com
+Cc: dsahern@kernel.org,
+	kuniyu@google.com,
+	shaw.leon@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Maoyi Xie <maoyixie.tju@gmail.com>
+Subject: [PATCH net v3] net: require CAP_NET_ADMIN in the device netns for tunnel changelink
+Date: Thu,  4 Jun 2026 20:50:55 +0800
+Message-Id: <20260604125055.3254652-1-maoyixie.tju@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABBYNZL9tH1Tc+jbc6fJ-Y1EtX+_QUk_P3ghDmdOaXY0gdqtnQ@mail.gmail.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260485-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:luiz.dentz@gmail.com,m:marcel@holtmann.org,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:kasan-dev@googlegroups.com,m:stable@vger.kernel.org,m:oss@fourdim.xyz,m:luiz.von.dentz@intel.com,m:luizdentz@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[elver@google.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,google.com,gmail.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260487-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:davem@davemloft.net,m:kuba@kernel.org,m:edumazet@google.com,m:pabeni@redhat.com,m:dsahern@kernel.org,m:kuniyu@google.com,m:shaw.leon@gmail.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:maoyixie.tju@gmail.com,m:shawleon@gmail.com,m:maoyixietju@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[elver@google.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,sashiko.dev:url,intel.com:email,elver.google.com:mid,fourdim.xyz:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 329CD64005A
+X-Rspamd-Queue-Id: 2A5166401D7
 
-On Wed, Jun 03, 2026 at 01:31PM -0400, Luiz Augusto von Dentz wrote:
-> Hi Marco,
-> 
-> On Wed, Jun 3, 2026 at 9:16 AM Marco Elver <elver@google.com> wrote:
-> >
-> > On Wed, 3 Jun 2026 at 14:31, Marco Elver <elver@google.com> wrote:
-> > >
-> > > l2cap_chan_timeout() accesses chan->conn without holding a reference to
-> > > the connection object. If l2cap_conn_del() races and tears down the
-> > > connection while the timer is waiting for locks, it can result in a
-> > > use-after-free when the timer wakes up and attempts to acquire
-> > > conn->lock:
-> > >
-> > > | BUG: KASAN: slab-use-after-free in instrument_atomic_read_write include/linux/instrumented.h:112 [inline]
-> > > | BUG: KASAN: slab-use-after-free in atomic_long_try_cmpxchg_acquire include/linux/atomic/atomic-instrumented.h:4456 [inline]
-> > > | BUG: KASAN: slab-use-after-free in __mutex_trylock_fast kernel/locking/mutex.c:161 [inline]
-> > > | BUG: KASAN: slab-use-after-free in mutex_lock+0x4f/0xa0 kernel/locking/mutex.c:318
-> > > | Write of size 8 at addr ffff8881298d9550 by task kworker/2:1/83
-> > > |
-> > > | CPU: 2 UID: 0 PID: 83 Comm: kworker/2:1 Not tainted 7.1.0-rc6-next-20260601-dirty #6 PREEMPT(full)
-> > > | Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-> > > | Workqueue: events l2cap_chan_timeout
-> > > | Call Trace:
-> > > |  <TASK>
-> > > |  instrument_atomic_read_write include/linux/instrumented.h:112 [inline]
-> > > |  atomic_long_try_cmpxchg_acquire include/linux/atomic/atomic-instrumented.h:4456 [inline]
-> > > |  __mutex_trylock_fast kernel/locking/mutex.c:161 [inline]
-> > > |  mutex_lock+0x4f/0xa0 kernel/locking/mutex.c:318
-> > > |  l2cap_chan_timeout+0x5d/0x1b0 net/bluetooth/l2cap_core.c:422
-> > > |  process_one_work kernel/workqueue.c:3326 [inline]
-> > > |  process_scheduled_works+0x7c8/0xfb0 kernel/workqueue.c:3409
-> > > |  worker_thread+0x8a9/0xcf0 kernel/workqueue.c:3490
-> > > |  kthread+0x346/0x430 kernel/kthread.c:436
-> > > |  ret_from_fork+0x1a3/0x470 arch/x86/kernel/process.c:158
-> > > |  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-> > > |  </TASK>
-> > > |
-> > > | Allocated by task 320:
-> > > |  l2cap_conn_add+0xa7/0x820 net/bluetooth/l2cap_core.c:7075
-> > > |  l2cap_connect_cfm+0xdb/0xd70 net/bluetooth/l2cap_core.c:7452
-> > > |  hci_connect_cfm include/net/bluetooth/hci_core.h:2139 [inline]
-> > > |  hci_remote_features_evt+0x52f/0x9f0 net/bluetooth/hci_event.c:3760
-> > > |  hci_event_func net/bluetooth/hci_event.c:7796 [inline]
-> > > |  hci_event_packet+0x561/0xa70 net/bluetooth/hci_event.c:7847
-> > > |  hci_rx_work+0x370/0x890 net/bluetooth/hci_core.c:4040
-> > > |  process_one_work kernel/workqueue.c:3326 [inline]
-> > > |  process_scheduled_works+0x7c8/0xfb0 kernel/workqueue.c:3409
-> > > |  worker_thread+0x8a9/0xcf0 kernel/workqueue.c:3490
-> > > |  kthread+0x346/0x430 kernel/kthread.c:436
-> > > |  ret_from_fork+0x1a3/0x470 arch/x86/kernel/process.c:158
-> > > |  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-> > > |
-> > > | Freed by task 322:
-> > > |  hci_disconn_cfm include/net/bluetooth/hci_core.h:2154 [inline]
-> > > |  hci_conn_hash_flush+0x101/0x1f0 net/bluetooth/hci_conn.c:2736
-> > > |  hci_dev_close_sync+0x889/0xde0 net/bluetooth/hci_sync.c:5405
-> > > |  hci_dev_do_close net/bluetooth/hci_core.c:502 [inline]
-> > > |  hci_unregister_dev+0x1f7/0x370 net/bluetooth/hci_core.c:2679
-> > > |  vhci_release+0x12a/0x180 drivers/bluetooth/hci_vhci.c:690
-> > > |  __fput+0x369/0x890 fs/file_table.c:510
-> > > |  task_work_run+0x160/0x1d0 kernel/task_work.c:233
-> > > |  get_signal+0xf5b/0x1120 kernel/signal.c:2810
-> > > |  arch_do_signal_or_restart+0x4d/0x600 arch/x86/kernel/signal.c:337
-> > > |  __exit_to_user_mode_loop kernel/entry/common.c:64 [inline]
-> > > |  exit_to_user_mode_loop+0x85/0x510 kernel/entry/common.c:98
-> > > |  __exit_to_user_mode_prepare include/linux/irq-entry-common.h:207 [inline]
-> > > |  syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:230 [inline]
-> > > |  syscall_exit_to_user_mode include/linux/entry-common.h:318 [inline]
-> > > |  do_syscall_64+0x263/0x3d0 arch/x86/entry/syscall_64.c:100
-> > > |  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> > > |
-> > > | Last potentially related work creation:
-> > > |  hci_connect_cfm include/net/bluetooth/hci_core.h:2139 [inline]
-> > > |  hci_remote_features_evt+0x52f/0x9f0 net/bluetooth/hci_event.c:3760
-> > > |  hci_event_func net/bluetooth/hci_event.c:7796 [inline]
-> > > |  hci_event_packet+0x561/0xa70 net/bluetooth/hci_event.c:7847
-> > > |  hci_rx_work+0x370/0x890 net/bluetooth/hci_core.c:4040
-> > > |  process_one_work kernel/workqueue.c:3326 [inline]
-> > > |  process_scheduled_works+0x7c8/0xfb0 kernel/workqueue.c:3409
-> > > |  worker_thread+0x8a9/0xcf0 kernel/workqueue.c:3490
-> > > |  kthread+0x346/0x430 kernel/kthread.c:436
-> > > |  ret_from_fork+0x1a3/0x470 arch/x86/kernel/process.c:158
-> > > |  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-> > > |
-> > > | The buggy address belongs to the object at ffff8881298d9400
-> > > |  which belongs to the cache kmalloc-512 of size 512
-> > > | The buggy address is located 336 bytes inside of
-> > > |  freed 512-byte region [ffff8881298d9400, ffff8881298d9600)
-> > >
-> > > Fix it by holding a reference to the connection when the channel timer
-> > > is scheduled, and releasing it when the timer is either canceled or
-> > > executes to completion.
-> > >
-> > > Since l2cap_chan_del() nullifies chan->conn to disassociate the channel
-> > > during teardown, the timer handler might read NULL from chan->conn even
-> > > if it held a reference. To address this, introduce a `timer_conn` field
-> > > to `struct l2cap_chan` to store the connection pointer associated with
-> > > the active timer. The timer handler uses this field to acquire locks and
-> > > release the connection reference, and skips channel closing operations
-> > > if chan->conn has already been nullified by teardown.
-> > >
-> > > Fixes: 75780ca4c6a8 ("Bluetooth: L2CAP: use chan timer to close channels in cleanup_listen()")
-> > > Cc: <stable@vger.kernel.org>
-> > > Cc: Siwei Zhang <oss@fourdim.xyz>
-> > > Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-> > > Assisted-by: Gemini:gemini-3.1-pro-preview
-> > > Reported-by: https://sashiko.dev/#/patchset/20260521021249.3258069-1-oss%40fourdim.xyz
-> > > Signed-off-by: Marco Elver <elver@google.com>
-> >
-> > Sigh, Sashiko points out more problems here:
-> > https://sashiko.dev/#/patchset/20260603123111.2334409-1-elver%40google.com
-> >
-> > > Can this lockless read of chan->timer_conn cause a use-after-free or double
-> > > free if another thread re-arms the timer concurrently?
-> >
-> > I haven't analyzed this further yet, so consider this patch a
-> > bug-report-only. If anyone finds a better fix sooner, please go ahead.
-> 
-> I was thinking or something like the following:
+A tunnel changelink mutates the tunnel state in the device's creation
+netns. After an IFLA_NET_NS_FD migration that creation netns differs
+from the caller's netns. The rtnl changelink path only checks
+CAP_NET_ADMIN against the caller's netns, so a caller with caps only in
+its current netns can rewrite a tunnel that lives in the creation netns.
+They pick the endpoint addresses. Commit 8b484efd5cb4 ("ip6: vti: Use
+ip6_tnl.net in vti6_siocdevprivate().") added the same check on the
+ioctl path. This adds it on the RTM_NEWLINK path.
 
-I tested that and my repro didn't trigger the UAF here, but I still
-think it has the same fundamental issue:
+Gate each tunnel changelink on ns_capable against the creation netns, at
+the top of the op before any attribute is parsed or applied. The ipv4
+types need it there because the parsers can update live tunnel fields
+before ip_tunnel_changelink() runs, for example ipgre_netlink_parms()
+sets t->collect_md. The check is skipped when the creation netns equals
+the device's current netns (net_eq), where the existing CAP_NET_ADMIN
+check already applies and no extra LSM hook is wanted.
 
-If the timer worker is preempted immediately after reading chan->conn
-but before entering l2cap_conn_hold_unless_zero(), l2cap_conn_del() can
-complete concurrently.
+The newlink path has long checked the capability in the link netns. The
+changelink path never did.
 
-When the timer worker resumes, l2cap_conn_hold_unless_zero(conn) will
-attempt to read conn->ref that has already been freed, resulting in
-another UAF.
+Reported-by: Xiao Liang <shaw.leon@gmail.com>
+Closes: https://lore.kernel.org/netdev/CABAhCOSzP1vaThGV35_VnsRCb=87_CPjPVsTHbq905k8A+BuUg@mail.gmail.com/
+Fixes: d0f418516022 ("net, ip_tunnel: fix namespaces move")
+Fixes: 5311a69aaca3 ("net, ip6_tunnel: fix namespaces move")
+Fixes: 690afc165bb3 ("net: ip6_gre: fix moving ip6gre between namespaces")
+Fixes: f203b76d7809 ("xfrm: Add virtual xfrm interfaces")
+Fixes: 11b326fb0a37 ("ip6: vti: Use ip6_tnl.net in vti6_changelink().")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+---
+v3: Per Kuniyuki Iwashima's review. Move the check to the top of each
+    changelink op, before any attribute is parsed, because the ipv4
+    parsers can update live tunnel fields (ipgre_netlink_parms() sets
+    t->collect_md) before ip_tunnel_changelink() runs. v2 placed the
+    ipv4 check in ip_tunnel_changelink(), which is too late. Also skip
+    the check when net_eq(creation netns, dev_net(dev)), to avoid an
+    unnecessary LSM invocation when the netns is unchanged. This also
+    answers Xiao Liang's question on CSUM and SEQ only changes: with the
+    net_eq guard the capability is required only when the device was
+    moved to another netns, and then every changelink writes the
+    creation netns tunnel regardless of which attribute changed.
+v2: Reworked per Kuniyuki's review. v1 gated on
+    dev->rtnl_link_ops->get_link_net in __rtnl_newlink(), which is too
+    broad. For peer types like netkit and veth get_link_net returns the
+    peer netns, which changelink does not mutate. Moved the check into
+    each tunnel changelink against the creation netns.
+
+v1 [PATCH net]:
+https://lore.kernel.org/netdev/20260527070824.2677331-1-maoyixie.tju@gmail.com/
+v2 [PATCH net]:
+https://lore.kernel.org/netdev/20260601034148.1272080-1-maoyixie.tju@gmail.com/
+
+ net/ipv4/ip_gre.c              | 8 ++++++++
+ net/ipv4/ip_vti.c              | 4 ++++
+ net/ipv4/ipip.c                | 4 ++++
+ net/ipv6/ip6_gre.c             | 8 ++++++++
+ net/ipv6/ip6_tunnel.c          | 4 ++++
+ net/ipv6/ip6_vti.c             | 4 ++++
+ net/xfrm/xfrm_interface_core.c | 4 ++++
+ 7 files changed, 36 insertions(+)
+
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 169e2921a851..02328c9a3c07 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -1457,6 +1457,10 @@ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	__u32 fwmark = t->fwmark;
+ 	int err;
+ 
++	if (!net_eq(t->net, dev_net(dev)) &&
++	    !ns_capable(t->net->user_ns, CAP_NET_ADMIN))
++		return -EPERM;
++
+ 	err = ipgre_newlink_encap_setup(dev, data);
+ 	if (err)
+ 		return err;
+@@ -1486,6 +1490,10 @@ static int erspan_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	__u32 fwmark = t->fwmark;
+ 	int err;
+ 
++	if (!net_eq(t->net, dev_net(dev)) &&
++	    !ns_capable(t->net->user_ns, CAP_NET_ADMIN))
++		return -EPERM;
++
+ 	err = ipgre_newlink_encap_setup(dev, data);
+ 	if (err)
+ 		return err;
+diff --git a/net/ipv4/ip_vti.c b/net/ipv4/ip_vti.c
+index 95b6bb78fcd2..91c6b2ed7d30 100644
+--- a/net/ipv4/ip_vti.c
++++ b/net/ipv4/ip_vti.c
+@@ -596,6 +596,10 @@ static int vti_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	struct ip_tunnel_parm_kern p;
+ 	__u32 fwmark = t->fwmark;
+ 
++	if (!net_eq(t->net, dev_net(dev)) &&
++	    !ns_capable(t->net->user_ns, CAP_NET_ADMIN))
++		return -EPERM;
++
+ 	vti_netlink_parms(data, &p, &fwmark);
+ 	return ip_tunnel_changelink(dev, tb, &p, fwmark);
+ }
+diff --git a/net/ipv4/ipip.c b/net/ipv4/ipip.c
+index ff95b1b9908e..95976e551bbf 100644
+--- a/net/ipv4/ipip.c
++++ b/net/ipv4/ipip.c
+@@ -494,6 +494,10 @@ static int ipip_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	bool collect_md;
+ 	__u32 fwmark = t->fwmark;
+ 
++	if (!net_eq(t->net, dev_net(dev)) &&
++	    !ns_capable(t->net->user_ns, CAP_NET_ADMIN))
++		return -EPERM;
++
+ 	if (ip_tunnel_netlink_encap_parms(data, &ipencap)) {
+ 		int err = ip_tunnel_encap_setup(t, &ipencap);
+ 
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index 365b4059eb20..7b86deda7e1d 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -2047,6 +2047,10 @@ static int ip6gre_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	struct ip6gre_net *ign = net_generic(t->net, ip6gre_net_id);
+ 	struct __ip6_tnl_parm p;
+ 
++	if (!net_eq(t->net, dev_net(dev)) &&
++	    !ns_capable(t->net->user_ns, CAP_NET_ADMIN))
++		return -EPERM;
++
+ 	t = ip6gre_changelink_common(dev, tb, data, &p, extack);
+ 	if (IS_ERR(t))
+ 		return PTR_ERR(t);
+@@ -2266,6 +2270,10 @@ static int ip6erspan_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	struct __ip6_tnl_parm p;
+ 	struct ip6gre_net *ign;
+ 
++	if (!net_eq(t->net, dev_net(dev)) &&
++	    !ns_capable(t->net->user_ns, CAP_NET_ADMIN))
++		return -EPERM;
++
+ 	ign = net_generic(t->net, ip6gre_net_id);
+ 	t = ip6gre_changelink_common(dev, tb, data, &p, extack);
+ 	if (IS_ERR(t))
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 9d1037ac082f..dd1458633ec4 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -2102,6 +2102,10 @@ static int ip6_tnl_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	struct ip6_tnl_net *ip6n = net_generic(net, ip6_tnl_net_id);
+ 	struct ip_tunnel_encap ipencap;
+ 
++	if (!net_eq(net, dev_net(dev)) &&
++	    !ns_capable(net->user_ns, CAP_NET_ADMIN))
++		return -EPERM;
++
+ 	if (dev == ip6n->fb_tnl_dev) {
+ 		if (ip_tunnel_netlink_encap_parms(data, &ipencap)) {
+ 			/* iproute2 always sets TUNNEL_ENCAP_FLAG_CSUM6, so
+diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
+index df793c8bfffb..d981ec710f0b 100644
+--- a/net/ipv6/ip6_vti.c
++++ b/net/ipv6/ip6_vti.c
+@@ -1044,6 +1044,10 @@ static int vti6_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	struct __ip6_tnl_parm p;
+ 	struct vti6_net *ip6n;
+ 
++	if (!net_eq(net, dev_net(dev)) &&
++	    !ns_capable(net->user_ns, CAP_NET_ADMIN))
++		return -EPERM;
++
+ 	ip6n = net_generic(net, vti6_net_id);
+ 	if (dev == ip6n->fb_tnl_dev)
+ 		return -EINVAL;
+diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
+index 330a05286a56..f11a22edade9 100644
+--- a/net/xfrm/xfrm_interface_core.c
++++ b/net/xfrm/xfrm_interface_core.c
+@@ -869,6 +869,10 @@ static int xfrmi_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	struct net *net = xi->net;
+ 	struct xfrm_if_parms p = {};
+ 
++	if (!net_eq(net, dev_net(dev)) &&
++	    !ns_capable(net->user_ns, CAP_NET_ADMIN))
++		return -EPERM;
++
+ 	xfrmi_netlink_parms(data, &p);
+ 	if (!p.if_id) {
+ 		NL_SET_ERR_MSG(extack, "if_id must be non zero");
+
+base-commit: 78ef59e7a6459b16f8102e0ee1c718443323d1af
+-- 
+2.34.1
+
 
