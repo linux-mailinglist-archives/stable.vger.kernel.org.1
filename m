@@ -1,162 +1,136 @@
-Return-Path: <stable+bounces-260364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SC45HBtNIWpZCwEAu9opvQ
-	(envelope-from <stable+bounces-260364-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:02:03 +0200
+	id 5b/zDtZKIWq0CgEAu9opvQ
+	(envelope-from <stable+bounces-260361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 11:52:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D2A63EC3D
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:02:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A2863EB2B
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 11:52:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260364-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260364-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d6iP0khd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260361-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-260361-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66BE33006B4D
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 09:55:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1B643307E2E0
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 09:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8813DDDAF;
-	Thu,  4 Jun 2026 09:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C56D3CD8D7;
+	Thu,  4 Jun 2026 09:50:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B28C3D7D63
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 09:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409F43976AD;
+	Thu,  4 Jun 2026 09:50:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780566900; cv=none; b=EHiZn6YqnpO+2G7dvBqhcOm1RJWQrPk/nTtNREdH3i5kfVjqfyZ7QJznBjq206sMjALkp3U6EjvZKeffnGYupleS4WrPQl8BbQ8lI7zwl3cezem8v5+lGQ3ma6JdWjnvyb6EFSbR24UqJbxHFXX+5cjb0N3MBJN9MLi2OH4QDYM=
+	t=1780566607; cv=none; b=MtMJksrts0S7eUHVd/5aNQqSLLF3PIbfL2km3i19fLZ1AswUAEh5yI9DWWKqbR8IjvoNkowUzFwV8JYdLqFw+y9ab6KAJcGfd4rbJeA0ywPfQQxfVuxXMDboPvRSHhDSQmhUEEe2Ah4QOFfHC2MDoy2fZ99PubrWkz1cO7C/4sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780566900; c=relaxed/simple;
-	bh=9ccdKlMLp3ktq3NWcjK3eTgouh7Xi9aiQybPD3Ap1o8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Cmpb9Fzo1nn0OsPotKuKOq1EJYpcKgqXS4uGg0dfyZBvEOpf1PmjKHxjcxFmJAyoBuuN/oN4MFT7xDu75/19Y/7wt8C9J1VRUvPEZFJRvbWuHECWYftEUP3Dy/JYQkfeA/BMkMcvy+q4c1HYCIbgCEHt58DCuaDWDS7h8B7ICXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.173
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-9159f631656so48599485a.1
-        for <stable@vger.kernel.org>; Thu, 04 Jun 2026 02:54:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780566897; x=1781171697;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KPyZKtpWg5qnni2e5fD9GWWB7qem8w+cCv5HCayF8qI=;
-        b=LSU1mwxvQdTepNASGu4WEBV1Kz3K6/E9X4Le/OsyE69PIId8RHuGSUmrzODXkaXs1q
-         KXAFr+18RwWZoXTnjeX2pYOUE4na0X7+GtZzWBcynfvWPKXHiQaxgyJUlJYFlVA/4zCo
-         oA9ch4T4ajvrCdoB0x0+ONkgi6PwRRao38T0XCuHjMk1mAvQKTsw8vwCZsrFYR/SvLw8
-         vWmuG9sLBIGDoDqgU8gdPENonTphrqKseBkSC3GxhfqMIuMKK17/ply8rhhe0+XGJONE
-         u1hzxpCU3ZMLvt5hiwoR49xVxrr8ZQ2u+iLJVrVATR0W4uea6HTl3+DbH+FHLNwojyW5
-         3YfQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/5lmnLcnGzMc2vXrMrLPh6YuAYleiXm97BMyo4BNx49jQ50vA3dVQhQqFY5iXl8H9vNNrqLjg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyR4ASWANuPK4oClweTq2/ncBO7r3BNnSusqFd7zokFzlLSFFeH
-	4h6kAd/HeQOuoku7Vg4OBMBRSGND2P2uAGAmV5F5gOLGKTgb0wsny8fPKcCYvwOUnPg=
-X-Gm-Gg: Acq92OHWcYiN+1jF8UJDE6FaYtVctsOW9pIUQwM07WzOJOikHVM8FnYk/O2vafwOcrw
-	AxPEZtkOSLl9cKpfeT/0oevhjQtXCCnQT1JR/HKInUK+elVhsF+U95FxSsfyG6nrUsxyENigkGB
-	yTcPPmIsvqHW57xw1c3PUgVj/eRtg2L5OjmfGmqekog9fRTzvKlH/idfjYtw/Ck7i50IGBkiXhe
-	6CpsBm33/KTbHE89Gd2Pt4CAgnZ94XhOcveL5Y2gLLDh/fdq+s6Y1fmw04wdWe0Dvv0UIzT5kYv
-	K9iGa6O+NqAT7EPSTV8B6KIDr3Nuhrii+H1vWkJ2oGBKKsJ9n2KG7/kZrtxlTujUZN3gQypBMEb
-	5IgWGxou/KsQ6Mhaq5cjFo/xnDrCSVBQp7KLT2Ul8TdCv/utcVAZhmIpQJmwOX/6r1PzLouNNE5
-	3JFMgfzdEOiEeX8OizY+fK5Uf8XrAp4Mo5SJ/qmFu5dUHwkeTvE5g86p/inZiOPOBkFXzwNH83w
-	9CVgZn5l0mJeA==
-X-Received: by 2002:a05:620a:40d6:b0:915:9931:3a39 with SMTP id af79cd13be357-9159afa478cmr435114985a.34.1780566896959;
-        Thu, 04 Jun 2026 02:54:56 -0700 (PDT)
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com. [209.85.160.177])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ceccd9fa53sm47635936d6.8.2026.06.04.02.54.56
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jun 2026 02:54:56 -0700 (PDT)
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-517907feed0so54571cf.1
-        for <stable@vger.kernel.org>; Thu, 04 Jun 2026 02:54:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/66/pTJ+Sm0iYt1P9NJeMnbAfjKVbjoG6kTHcaJkY5XHSrQzxjq6tL3CqHXIpXi5TFron7zu4=@vger.kernel.org
-X-Received: by 2002:a67:f889:0:b0:6cb:b3db:c31c with SMTP id
- ada2fe7eead31-6f52c84f821mr959856137.0.1780566537239; Thu, 04 Jun 2026
- 02:48:57 -0700 (PDT)
+	s=arc-20240116; t=1780566607; c=relaxed/simple;
+	bh=VjTz8+WeiUzWcBdR1Rs4zqbDM7DUGzeYknM8QM87u7g=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=mk9D2p2Ty/LiBKDR4+g7iqPNEdzYB9t3pR9ZmlUuOd74EYX4L8rOrqgloIfrMZvDDwDeRseJVSjCs6iYmXWCtJy1Fzk34ec1GmlNe69o0H/l+bucNtf48esXcTnjVK/f4kab0X+/wV/ONT/nFCTlM1bfQoNjN26cqRjLV9r9Y+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d6iP0khd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BB01F00893;
+	Thu,  4 Jun 2026 09:50:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780566605;
+	bh=O28jlKo2Rqtk1QypQ4hf3RUWWZ+g2xqi0sDgvdKBjSU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=d6iP0khdSRO9oJ9jhpsJFigjkK4PxYrrDYsCg1mL8By1f9fJYGeHurMK2aXCWMPFX
+	 gp4273JFIdC3YvcQikPPJxtTzLOBXy9nbo7tev87uFvt5qR3iVBXmz5XYRD+gflaK6
+	 fG2zGXApPazkVr/ThpvCnJj8Qxf/oLbv8z01G59MlmuQL2KtpUITO9udQxpIsmJvW9
+	 DYY0Vhh7LnXkGK7ixtlpGs2Ay7T8iN+pRe2xPJwE19DZFdSMkaN0eNRZYESS/DD1En
+	 B41wVeHqSIUEnkiu7tkXluKxeQXTJeoMNyR0MAK5XUakjh0rCPXStR+BcYFKea8j7g
+	 Q6ArEyLWhNd/Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1987F393090A;
+	Thu,  4 Jun 2026 09:50:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260603151642.4075678-1-claudiu.beznea@kernel.org> <20260603151642.4075678-2-claudiu.beznea@kernel.org>
-In-Reply-To: <20260603151642.4075678-2-claudiu.beznea@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 4 Jun 2026 11:48:45 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdU_T=G7os6KBG6xTnphnhQ9pQtd88BUkg61S7286bZmFw@mail.gmail.com>
-X-Gm-Features: AVVi8CdhQoz1FuQPTz5BSOMe5fOJfBS7YW1L8CNma8uYS8HEHOx4e8eahLsemts
-Message-ID: <CAMuHMdU_T=G7os6KBG6xTnphnhQ9pQtd88BUkg61S7286bZmFw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/6] pinctrl: renesas: rzg2l: Use raw_spinlock_irqsave()
- on power source update
-To: Claudiu Beznea <claudiu.beznea@kernel.org>
-Cc: geert+renesas@glider.be, linusw@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, magnus.damm@gmail.com, 
-	prabhakar.mahadev-lad.rj@bp.renesas.com, biju.das.jz@bp.renesas.com, 
-	claudiu.beznea@tuxon.dev, linux-renesas-soc@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: bonding: fix NULL pointer dereference in
+ bond_do_ioctl()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178056660688.2344782.1689826187240652656.git-patchwork-notify@kernel.org>
+Date: Thu, 04 Jun 2026 09:50:06 +0000
+References: <20260601085649.4029067-1-zhaojinming@uniontech.com>
+In-Reply-To: <20260601085649.4029067-1-zhaojinming@uniontech.com>
+To: ZhaoJinming <zhaojinming@uniontech.com>
+Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jarod@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260364-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260361-lists,stable=lfdr.de,netdevbpf];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-m68k.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:claudiu.beznea@kernel.org,m:geert+renesas@glider.be,m:linusw@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:magnus.damm@gmail.com,m:prabhakar.mahadev-lad.rj@bp.renesas.com,m:biju.das.jz@bp.renesas.com,m:claudiu.beznea@tuxon.dev,m:linux-renesas-soc@vger.kernel.org,m:linux-gpio@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:claudiu.beznea.uj@bp.renesas.com,m:stable@vger.kernel.org,m:geert@glider.be,m:krzk@kernel.org,m:conor@kernel.org,m:magnusdamm@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[geert@linux-m68k.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FREEMAIL_CC(0.00)[glider.be,kernel.org,gmail.com,bp.renesas.com,tuxon.dev,vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:zhaojinming@uniontech.com,m:jv@jvosburgh.net,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:jarod@redhat.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,stable@vger.kernel.org];
+	FROM_NO_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas,dt];
-	R_DKIM_NA(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TAGGED_RCPT(0.00)[stable,netdev];
 	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[glider.be:email,mail.gmail.com:mid,vger.kernel.org:from_smtp,linux-m68k.org:from_mime,linux-m68k.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,renesas.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B8D2A63EC3D
+X-Rspamd-Queue-Id: 14A2863EB2B
 
-On Wed, 3 Jun 2026 at 17:17, Claudiu Beznea <claudiu.beznea@kernel.org> wrote:
-> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->
-> The rest of the driver uses
-> raw_spin_lock_irqsave()/raw_spin_unlock_irqrestore() for locking. To
-> avoid concurrency issues or deadlocks, use raw_spinlock_irqsave() via
-> the scoped_guard() helper for power source updates as well.
->
-> Fixes: bbe2277dedbe ("pinctrl: renesas: rzg2l: Add support for selecting power source for {WDT,AWO,ISO}")
-> Cc: stable@vger.kernel.org
+Hello:
 
-No need to CC stable, as the bad commit is not yet upstream.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+On Mon,  1 Jun 2026 16:56:49 +0800 you wrote:
+> In bond_do_ioctl(), slave_dev is obtained via __dev_get_by_name() which
+> can return NULL if the requested interface name does not exist. However,
+> the subsequent slave_dbg() call is placed before the NULL check:
+> 
+>     slave_dev = __dev_get_by_name(net, ifr->ifr_slave);
+>     slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev); //here
+>     if (!slave_dev)
+>         return -ENODEV;
+> 
+> [...]
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-i.e. will queue in renesas-pinctrl for v7.2.
+Here is the summary with links:
+  - net: bonding: fix NULL pointer dereference in bond_do_ioctl()
+    https://git.kernel.org/netdev/net/c/a764b0e8317a
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
+You are awesome, thank you!
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+
 
