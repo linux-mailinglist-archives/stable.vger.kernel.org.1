@@ -1,170 +1,167 @@
-Return-Path: <stable+bounces-260523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260524-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3vFkC7mVIWqHJQEAu9opvQ
-	(envelope-from <stable+bounces-260523-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 17:11:53 +0200
+	id MpH7A2yWIWrIJQEAu9opvQ
+	(envelope-from <stable+bounces-260524-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 17:14:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2553F641441
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 17:11:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78AD96414D8
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 17:14:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=fail ("headers rsa verify failed") header.d=igalia.com header.s=20170329 header.b=qMXD7kD1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260523-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260523-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed)" header.from=igalia.com (policy=none);
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W2mJ4b1s;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260524-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260524-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 19B053096B6E
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 14:58:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC125316966A
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 15:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38992304972;
-	Thu,  4 Jun 2026 14:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE813254BD;
+	Thu,  4 Jun 2026 15:02:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6C32FFDD6
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 14:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6ED31E83E
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 15:02:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780585117; cv=none; b=KbmTUpVF4+fk7eEpYsrUpSwKkr6gdVwvnXX/W5EZicYv9iB0dRk41YhmVVjgefcwOUrTcTs2/Cx+KDdZ+xFbpJaOdYlhlniHcm5NPkoFtqol+6xOYvEqhwgCEIS2zrC4Ls6S/ILc9El/YYNf6rReGkrUFaRsqrbgvkSSK8nLHZo=
+	t=1780585334; cv=none; b=lDXgy4kHvLaQO3qVu8AHG6MZYVA1Qg1b5hnUdNobjx5fSsh4G0r34XN1CCTBQ2lkXrLPaMuvaiLKgTV//51wl5M+/JAGHR0pvBdcFxaF+DpIjn25ojjwLjTPqi9r3HjlK8/gzUHw7Qst+nLon6tA9mrpUI0qi4Q0t8+EUkCxi3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780585117; c=relaxed/simple;
-	bh=ho3mFtENVxPp81Nr4w7HlLYKVzcAggMZjvbU/Fe6ntQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f/smdndEVcS8JZ319sar3+bP5r+fcPe160sp9CijENVa6aP1wyFCIN9EWv9tkn4rrr2jXyFg1SfNdiBr2YoHe59j3Ezj9Wc9RZ9weR9XAjBE3CZTKtsJKhSSBYASZZWC9L0qDErPU8tpyXYdjjq0jef73B8UNMiSZ+5qtSRzy18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=qMXD7kD1; arc=none smtp.client-ip=213.97.179.56
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=j7fxTOrqGGU4wTlAGC+uGWS2Ojx6JI0WmyJBDwJN/xo=; b=qMXD7kD1BEU//9abjjCr3kVJaE
-	xBl9ebUoGRUSUQNdO3OtZavUWfqa6azdHov16ijaTPOYptL/oCcBXWJEafxCdSns9BcLpACB2EDtM
-	88+KyyX7bKKNEMKhFcVw1aCWA+IKtEVd4WXspUZA0OVdMqyzVokWjGSWtvc2clntZ9Ig8jKE1pIR3
-	WH8oVBOzbNvIMHIjSqZMnuhrGvfS275gMtdYHsyGAL8xz0eO2oSGJYG2O8c7qrE0/bSRW+TzVN7uj
-	wdKW0uHYviu+cbjSYI9VZMMPZZ8VkXGE9PojBxEGiE6LFYasGCfhC4jJiLAutmMPnutab3e7mP1Ix
-	8LxitHkg==;
-Received: from [189.7.87.67] (helo=[192.168.0.2])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1wV9Wg-00CgMr-2z; Thu, 04 Jun 2026 16:58:30 +0200
-Message-ID: <f3ed61d4-fcdb-41f4-b64b-ecf81a1ff8d0@igalia.com>
-Date: Thu, 4 Jun 2026 11:58:25 -0300
+	s=arc-20240116; t=1780585334; c=relaxed/simple;
+	bh=1e2GJFeqdg/CIB55MHDX+2o/LWIyElc6EdYijmBzUn8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QO0H2APpWobAHJqa1ROKsiF6SHSBpT6YizdkCfAEXYsKqKzG3eW3QKoTFXBQ2F9MWhvtILAUi6N5ytPp+G2jngZX8yHHyqh+JAfSjxwSrA/X2mA1wtCxb/I7crtHdvzGKqivGumKDdkaVmGYKwq9sQnHaw549ePWdbn0jOQUEIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2mJ4b1s; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73F31F00893;
+	Thu,  4 Jun 2026 15:02:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780585328;
+	bh=gg+6qdiyjUFOwJv1uo5I7LvR2s8Vby78Q/pP4F+Mz5Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=W2mJ4b1s++GbZ79H9fqISh9cyzLJfRUffOwls91Te6solnsFDLqSOcH9Rcn/AY0YL
+	 j3Ru2gtsQT7wpTGsvNsXwUHW1Mkl7AgAGh0t7aVGSbH4sDli2XSIK6JewM5Np932BV
+	 Vm7CTMdMNoFg8taIRPS+Xz9avBtH+n67VI1VwZbOQpuM45OwkMC6vaZ071xuGdRB0f
+	 0c4Omyly55cJ5jJ7H4yo1ajzreAwq7uKC5fEeeYIVrxZ6ksXxqkmNzEhvLliRPtrAS
+	 xFHEjZOkgGuXAdOGJowR/JfNOcR1ENrYi6RlY1NVK0rauMJe1Re06A7O8uwh8TPXtl
+	 syAxE9kKRPE7g==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Rodrigo Alencar <rodrigo.alencar@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] iio: dac: ad5686: acquire lock when doing powerdown control
+Date: Thu,  4 Jun 2026 11:02:04 -0400
+Message-ID: <20260604150204.3692750-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026060458-baked-charter-80ae@gregkh>
+References: <2026060458-baked-charter-80ae@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] drm/v3d: Fix global performance monitor reference
- counting
-To: Melissa Wen <mwen@igalia.com>, Iago Toral <itoral@igalia.com>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: kernel-dev@igalia.com, dri-devel@lists.freedesktop.org,
- stable@vger.kernel.org
-References: <20260531-v3d-perfmon-lifetime-v2-0-60ed4485a203@igalia.com>
- <20260531-v3d-perfmon-lifetime-v2-1-60ed4485a203@igalia.com>
-From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Content-Language: en-US
-Autocrypt: addr=mcanal@igalia.com; keydata=
- xsBNBGcCwywBCADgTji02Sv9zjHo26LXKdCaumcSWglfnJ93rwOCNkHfPIBll85LL9G0J7H8
- /PmEL9y0LPo9/B3fhIpbD8VhSy9Sqz8qVl1oeqSe/rh3M+GceZbFUPpMSk5pNY9wr5raZ63d
- gJc1cs8XBhuj1EzeE8qbP6JAmsL+NMEmtkkNPfjhX14yqzHDVSqmAFEsh4Vmw6oaTMXvwQ40
- SkFjtl3sr20y07cJMDe++tFet2fsfKqQNxwiGBZJsjEMO2T+mW7DuV2pKHr9aifWjABY5EPw
- G7qbrh+hXgfT+njAVg5+BcLz7w9Ju/7iwDMiIY1hx64Ogrpwykj9bXav35GKobicCAwHABEB
- AAHNIE1hw61yYSBDYW5hbCA8bWNhbmFsQGlnYWxpYS5jb20+wsCRBBMBCAA7FiEE+ORdfQEW
- dwcppnfRP/MOinaI+qoFAmcCwywCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQ
- P/MOinaI+qoUBQgAqz2gzUP7K3EBI24+a5FwFlruQGtim85GAJZXToBtzsfGLLVUSCL3aF/5
- O335Bh6ViSBgxmowIwVJlS/e+L95CkTGzIIMHgyUZfNefR2L3aZA6cgc9z8cfow62Wu8eXnq
- GM/+WWvrFQb/dBKKuohfBlpThqDWXxhozazCcJYYHradIuOM8zyMtCLDYwPW7Vqmewa+w994
- 7Lo4CgOhUXVI2jJSBq3sgHEPxiUBOGxvOt1YBg7H9C37BeZYZxFmU8vh7fbOsvhx7Aqu5xV7
- FG+1ZMfDkv+PixCuGtR5yPPaqU2XdjDC/9mlRWWQTPzg74RLEw5sz/tIHQPPm6ROCACFls7A
- TQRnAsMsAQgAxTU8dnqzK6vgODTCW2A6SAzcvKztxae4YjRwN1SuGhJR2isJgQHoOH6oCItW
- Xc1CGAWnci6doh1DJvbbB7uvkQlbeNxeIz0OzHSiB+pb1ssuT31Hz6QZFbX4q+crregPIhr+
- 0xeDi6Mtu+paYprI7USGFFjDUvJUf36kK0yuF2XUOBlF0beCQ7Jhc+UoI9Akmvl4sHUrZJzX
- LMeajARnSBXTcig6h6/NFVkr1mi1uuZfIRNCkxCE8QRYebZLSWxBVr3h7dtOUkq2CzL2kRCK
- T2rKkmYrvBJTqSvfK3Ba7QrDg3szEe+fENpL3gHtH6h/XQF92EOulm5S5o0I+ceREwARAQAB
- wsB2BBgBCAAgFiEE+ORdfQEWdwcppnfRP/MOinaI+qoFAmcCwywCGwwACgkQP/MOinaI+qpI
- zQf+NAcNDBXWHGA3lgvYvOU31+ik9bb30xZ7IqK9MIi6TpZqL7cxNwZ+FAK2GbUWhy+/gPkX
- it2gCAJsjo/QEKJi7Zh8IgHN+jfim942QZOkU+p/YEcvqBvXa0zqW0sYfyAxkrf/OZfTnNNE
- Tr+uBKNaQGO2vkn5AX5l8zMl9LCH3/Ieaboni35qEhoD/aM0Kpf93PhCvJGbD4n1DnRhrxm1
- uEdQ6HUjWghEjC+Jh9xUvJco2tUTepw4OwuPxOvtuPTUa1kgixYyG1Jck/67reJzMigeuYFt
- raV3P8t/6cmtawVjurhnCDuURyhUrjpRhgFp+lW8OGr6pepHol/WFIOQEg==
-In-Reply-To: <20260531-v3d-perfmon-lifetime-v2-1-60ed4485a203@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.36 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260523-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mwen@igalia.com,m:itoral@igalia.com,m:tvrtko.ursulin@igalia.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:kernel-dev@igalia.com,m:dri-devel@lists.freedesktop.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[igalia.com,gmail.com,ffwll.ch];
-	FORGED_SENDER(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[igalia.com:-];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260524-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,igalia.com:mid,igalia.com:from_mime,igalia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,analog.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2553F641441
+X-Rspamd-Queue-Id: 78AD96414D8
 
-On 31/05/26 17:18, Maíra Canal wrote:
-> In the SET_GLOBAL ioctl, v3d_perfmon_find() bumps the reference count on
-> the perfmon it returns, but v3d_perfmon_set_global_ioctl() and
-> v3d_perfmon_delete() fail to release that reference on several paths:
-> 
->    1. v3d_perfmon_set_global_ioctl() leaks the reference on its error
->       paths.
-> 
->    2. CLEAR_GLOBAL leaks both the find reference and the reference
->       previously stashed in v3d->global_perfmon by the SET_GLOBAL ioctl
->       that configured it.
-> 
->    3. Destroying a perfmon that is the current global perfmon leaks the
->       reference stashed by the SET_GLOBAL ioctl.
-> 
-> Release each of these references explicitly.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: c6eabbab359c ("drm/v3d: Add DRM_IOCTL_V3D_PERFMON_SET_GLOBAL")
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
-> ---
->   drivers/gpu/drm/v3d/v3d_perfmon.c | 24 +++++++++++++++++++-----
->   1 file changed, 19 insertions(+), 5 deletions(-)
-> 
+From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-Applied to drm/misc/kernel.git (drm-misc-fixes).
+[ Upstream commit 5237c3175cae5ab05f18878cec3301a04403859e ]
 
-The rest of the patches must to wait for its dependencies to land.
+Protect access of pwr_down_mode and pwr_down_mask fields with existing
+mutex lock. Each channel exposes their own attributes for controlling
+powerdown modes and powerdown state. This fixes potential race conditions
+as those the write functions perform non-atomic read-modify-write
+operations to those pwr_down_* fields. This issue exists since the ad5686
+driver was first introduced.
 
-Thanks for the review, Iago!
+Fixes: c2f37c8dcadc ("iio: dac: New driver for AD5686R, AD5685R, AD5684R Digital to analog converters")
+Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/iio/dac/ad5686.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Best Regards,
-- Maíra
+diff --git a/drivers/iio/dac/ad5686.c b/drivers/iio/dac/ad5686.c
+index be705f8148cc39..b6e239821980bf 100644
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -30,6 +30,8 @@ static int ad5686_get_powerdown_mode(struct iio_dev *indio_dev,
+ {
+ 	struct ad5686_state *st = iio_priv(indio_dev);
+ 
++	guard(mutex)(&st->lock);
++
+ 	return ((st->pwr_down_mode >> (chan->channel * 2)) & 0x3) - 1;
+ }
+ 
+@@ -39,6 +41,8 @@ static int ad5686_set_powerdown_mode(struct iio_dev *indio_dev,
+ {
+ 	struct ad5686_state *st = iio_priv(indio_dev);
+ 
++	guard(mutex)(&st->lock);
++
+ 	st->pwr_down_mode &= ~(0x3 << (chan->channel * 2));
+ 	st->pwr_down_mode |= ((mode + 1) << (chan->channel * 2));
+ 
+@@ -57,6 +61,8 @@ static ssize_t ad5686_read_dac_powerdown(struct iio_dev *indio_dev,
+ {
+ 	struct ad5686_state *st = iio_priv(indio_dev);
+ 
++	guard(mutex)(&st->lock);
++
+ 	return sysfs_emit(buf, "%d\n", !!(st->pwr_down_mask &
+ 				       (0x3 << (chan->channel * 2))));
+ }
+@@ -77,6 +83,8 @@ static ssize_t ad5686_write_dac_powerdown(struct iio_dev *indio_dev,
+ 	if (ret)
+ 		return ret;
+ 
++	guard(mutex)(&st->lock);
++
+ 	if (readin)
+ 		st->pwr_down_mask |= (0x3 << (chan->channel * 2));
+ 	else
+-- 
+2.53.0
 
 
