@@ -1,192 +1,147 @@
-Return-Path: <stable+bounces-260229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EZSgG4XJIGqn7wAAu9opvQ
-	(envelope-from <stable+bounces-260229-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 02:40:37 +0200
+	id 1AyFBzzQIGqG8AAAu9opvQ
+	(envelope-from <stable+bounces-260230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 03:09:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1EA263C12B
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 02:40:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD5663C26F
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 03:09:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=fail ("body hash did not verify") header.d=139.com header.s=dkim header.b=GluCW15X;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260229-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260229-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FVkh6ysq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260230-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260230-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0210C301C6CC
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 00:33:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CDD9F3055E9E
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 01:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9C31A23A4;
-	Thu,  4 Jun 2026 00:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6F6225397;
+	Thu,  4 Jun 2026 01:06:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A86192D8A
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 00:33:50 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9ED2116F4;
+	Thu,  4 Jun 2026 01:06:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780533234; cv=none; b=XL/3SHZzjAqSxu35Y/vVVdEp8ZWT8maPaTK4oXnwsIm38FbV9rZ5sWXrtJHBuH/+zIvkDWwLUUPlmSTKiB3I6BnGcV2GbsGStcgkHzPWsjIfBBtDRHxRiGIJZCRki1l6Rvjg8luRvgyWDJGyLcBFAis6PgGK3mxXR2NXf8gx17M=
+	t=1780535170; cv=none; b=Um8J6jSy+gLQdp8iKmzfbiFH2mqvA5d6u8IkUoKHbfwRgDm0Bf7VyWAkJpW6Te9Tho+ZCTf/GxwLKdsvmfoA25PBJYMpkOguAQZHHaqm4laecDstv473KBaHcmZBaQid9HMAW5oAFC9TLhwrpEFc2sn/yIPhsvuU2q6kcPTrEkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780533234; c=relaxed/simple;
-	bh=n4z9j1CDtoKnK1j7JpbAJbHrI9j3UJh4OPIHKiAqhi8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bAjr+84rmva488riA5dTLU1pc37njmSuzHH8i6buWRikFnlQ5F0VZb7HaSoLCQlYi/gi1nlTgYnd53J/W8gcaRzu8ifno1O4SKzR0QFK4m0xxqJrwScBKRWlfA1S+RfCcs2Dn45x/3zaqEkQ6bLZJsKOBM/sXRlIMCIj3mwEY9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=GluCW15X; arc=none smtp.client-ip=120.232.169.112
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=GluCW15XnXYJz+TvHCOrMaaVDEK86Leav8v9UvqJ0Ly3Q0G8VBG9jdfLZ6Z20Dr0IxniJVP2o0voU
-	 tENu9TEejAadMhklpmPplRaV9zCCtRJyT8783uxNpF+k1uJw1DbiD3KPI22hGxfQrcJjNn4e9Fyypi
-	 IOQS757gc2+Xr3Fo=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[124.64.124.40])
-	by rmsmtp-lg-appmail-19-12022 (RichMail) with SMTP id 2ef66a20c72787b-01898;
-	Thu, 04 Jun 2026 08:30:39 +0800 (CST)
-X-RM-TRANSID:2ef66a20c72787b-01898
-From: Miles Wang <13621186580@139.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: nogikh@google.com,
-	bp@alien8.de,
-	dvyukov@google.com
-Subject: [PATCH 6.6.y] x86/kexec: Disable KCOV instrumentation after load_segments()
-Date: Thu,  4 Jun 2026 08:30:31 +0800
-Message-ID: <20260604003031.561-1-13621186580@139.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1780535170; c=relaxed/simple;
+	bh=f7GQZZnqctJ6cYpR+KuETnFX/Ab3AaJu/tFq2JBNFWM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ONNuTZd6UdFeUbeJA4KHVC0beRRlGcLFhDQLsZ+o15ZJe96BW3oot8YUvCcYRxlEPKffXhyioqi7HkAaNRxz2IwglhinEqPFy1HxeRk0rXAASVoQ7AcvpLEl1cvovuNIa3qqmTScyd5ZxkKdw/IYiYTb4k1gtR0D44NYNhPIy/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVkh6ysq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D921F00899;
+	Thu,  4 Jun 2026 01:06:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780535169;
+	bh=0mxNTo4s9EPA10Hhr8XUSInD4aGmKlfSihvZ8Xl0bsg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=FVkh6ysqFoO2NL8KBR7HU4TLxhqyIU4KGss4bUb9qw4GDACENY+8H8PLASV87lG2F
+	 +XcjWgcc1zXCGTKC/TmrUAbzkWG4++63Ex62tX9qmXXuZXrOxaxPgP7KET+ip81mZ4
+	 ZpRxZDimx8R52mO8J3E7XAf0M/onAyO8ie40nZjOPqZ+XTMTAvX9Cq43Gdc2aaLN3I
+	 Z6e8Af8qRbeYhoaBCFi0uxzJmgQAt1tsYVbqL0hOJ/g1KVOcR/ol2FEYLhQSLc0eK8
+	 +PxXabUJTo5gKF9jBSViz74tcOJb7Am3cbaCglBgi27svB7BQczkvzC0+x2exgFX8b
+	 Aoe63WaDPlH9Q==
+Date: Wed, 3 Jun 2026 18:06:07 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, =?UTF-8?B?QmrDuHJu?=
+ Mork <bjorn@mork.no>, Simon Horman <horms@kernel.org>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net-next v9 1/3] net: sfp: initialize i2c_block_size at
+ adapter configure time
+Message-ID: <20260603180607.353551af@kernel.org>
+In-Reply-To: <20260528205242.971410-2-jelonek.jonas@gmail.com>
+References: <20260528205242.971410-1-jelonek.jonas@gmail.com>
+	<20260528205242.971410-2-jelonek.jonas@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [5.84 / 15.00];
-	SEM_URIBL(3.50)[139.com:mid,139.com:from_mime,139.com:email];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:jelonek.jonas@gmail.com,m:linux@armlinux.org.uk,m:andrew@lunn.ch,m:hkallweit1@gmail.com,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:maxime.chevallier@bootlin.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bjorn@mork.no,m:horms@kernel.org,m:stable@vger.kernel.org,m:jelonekjonas@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260230-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260229-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[139.com];
-	DMARC_NA(0.00)[139.com];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:nogikh@google.com,m:bp@alien8.de,m:dvyukov@google.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[13621186580@139.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	GREYLIST(0.00)[pass,body];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[armlinux.org.uk,lunn.ch,gmail.com,davemloft.net,google.com,redhat.com,bootlin.com,vger.kernel.org,mork.no,kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	TO_DN_NONE(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[13621186580@139.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,139.com:mid,139.com:from_mime,139.com:email,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D1EA263C12B
+X-Rspamd-Queue-Id: 9CD5663C26F
 
-From: Aleksandr Nogikh <nogikh@google.com>
+On Thu, 28 May 2026 20:52:40 +0000 Jonas Jelonek wrote:
+> sfp->i2c_block_size is only assigned in sfp_sm_mod_probe(), which runs
+> from the state machine timer after SFP_F_PRESENT has been set. Between
+> those two points, sfp_module_eeprom() (the ethtool -m callback) gates
+> only on SFP_F_PRESENT and can be entered with i2c_block_size still at
+> its kzalloc'd value of 0.
+> 
+> On a pure-I2C adapter, sfp_i2c_read() then issues an i2c_transfer()
+> with msgs[1].len = 0 inside a loop that subtracts this_len from len
+> each iteration; on adapters that succeed a zero-length read the loop
+> never advances, spinning while holding rtnl_lock.
+> 
+> This was previously addressed by initializing i2c_block_size in
+> sfp_alloc() (commit 813c2dd78618), but the initialization was dropped
+> when i2c_block_size was split from i2c_max_block_size.
+> 
+> Initialize sfp->i2c_block_size from sfp->i2c_max_block_size in
+> sfp_i2c_configure(), so the field is valid as soon as the adapter is
+> known. sfp_sm_mod_probe() still reassigns it on each module insertion
+> to recover from a per-module clamp to 1 (sfp_id_needs_byte_io).
+> 
+> Fixes: 7662abf4db94 ("net: phy: sfp: Add support for SMBus module access")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
 
-[ Upstream commit 917e3ad3321e75ca0223d5ccf26ceda116aa51e1 ]
+Thanks for splitting this out.
+This is a fix it needs to take the net/Linus route rather than the
+net-next route. I'll apply just patch 1 and you'll have to repost
+patches 2 and 3 on Friday.
 
-The load_segments() function changes segment registers, invalidating GS base
-(which KCOV relies on for per-cpu data). When CONFIG_KCOV is enabled, any
-subsequent instrumented C code call (e.g. native_gdt_invalidate()) begins
-crashing the kernel in an endless loop.
+In the meantime - AI seems to also be saying something the cap being
+potentially off by 1 in patch 2? We add 1 to the len? Maybe I'm
+misunderstanding..
 
-To reproduce the problem, it's sufficient to do kexec on a KCOV-instrumented
-kernel:
-
-  $ kexec -l /boot/otherKernel
-  $ kexec -e
-
-The real-world context for this problem is enabling crash dump collection in
-syzkaller. For this, the tool loads a panic kernel before fuzzing and then
-calls makedumpfile after the panic. This workflow requires both CONFIG_KEXEC
-and CONFIG_KCOV to be enabled simultaneously.
-
-Adding safeguards directly to the KCOV fast-path (__sanitizer_cov_trace_pc())
-is also undesirable as it would introduce an extra performance overhead.
-
-Disabling instrumentation for the individual functions would be too fragile,
-so disable KCOV instrumentation for the entire machine_kexec_64.c and
-physaddr.c. If coverage-guided fuzzing ever needs these components in the
-future, other approaches should be considered.
-
-The problem is not relevant for 32 bit kernels as CONFIG_KCOV is not supported
-there.
-
-  [ bp: Space out comment for better readability. ]
-
-Fixes: 0d345996e4cb ("x86/kernel: increase kcov coverage under arch/x86/kernel folder")
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260325154825.551191-1-nogikh@google.com
-Signed-off-by: Miles Wang <13621186580@139.com>
----
- arch/x86/kernel/Makefile | 14 ++++++++++++++
- arch/x86/mm/Makefile     |  2 ++
- 2 files changed, 16 insertions(+)
-
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 0000325ab98f..c1fe6c98d3f6 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -39,6 +39,20 @@ KMSAN_SANITIZE_nmi.o					:= n
- KCOV_INSTRUMENT_head$(BITS).o				:= n
- KCOV_INSTRUMENT_sev.o					:= n
- 
-+# Disable KCOV to prevent crashes during kexec: load_segments() invalidates
-+# the GS base, which KCOV relies on for per-CPU data.
-+#
-+# As KCOV and KEXEC compatibility should be preserved (e.g. syzkaller is
-+# using it to collect crash dumps during kernel fuzzing), disabling
-+# KCOV for KEXEC kernels is not an option. Selectively disabling KCOV
-+# instrumentation for individual affected functions can be fragile, while
-+# adding more checks to KCOV would slow it down.
-+#
-+# As a compromise solution, disable KCOV instrumentation for the whole
-+# source code file. If its coverage is ever needed, other approaches
-+# should be considered.
-+KCOV_INSTRUMENT_machine_kexec_64.o			:= n
-+
- CFLAGS_irq.o := -I $(srctree)/$(src)/../include/asm/trace
- 
- obj-y			+= head_$(BITS).o
-diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-index c80febc44cd2..dd78ec8758f1 100644
---- a/arch/x86/mm/Makefile
-+++ b/arch/x86/mm/Makefile
-@@ -5,6 +5,8 @@ KCOV_INSTRUMENT_mem_encrypt.o		:= n
- KCOV_INSTRUMENT_mem_encrypt_amd.o	:= n
- KCOV_INSTRUMENT_mem_encrypt_identity.o	:= n
- KCOV_INSTRUMENT_pgprot.o		:= n
-+# See the "Disable KCOV" comment in arch/x86/kernel/Makefile.
-+KCOV_INSTRUMENT_physaddr.o		:= n
- 
- KASAN_SANITIZE_mem_encrypt.o		:= n
- KASAN_SANITIZE_mem_encrypt_amd.o	:= n
--- 
-2.43.0
-
-
+https://sashiko.dev/#/patchset/20260528205242.971410-2-jelonek.jonas@gmail.com
 
