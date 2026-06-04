@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-260286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wbrwE5g1IWotBAEAu9opvQ
-	(envelope-from <stable+bounces-260286-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 10:21:44 +0200
+	id znBoEpE1IWomBAEAu9opvQ
+	(envelope-from <stable+bounces-260287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 10:21:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D257163DF6C
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 10:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F7A63DF67
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 10:21:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sk2lco0+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260286-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260286-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="EBCAF6/j";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260287-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260287-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 605C1301DCC6
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 08:12:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36A7B302E426
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 08:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9653932E9;
-	Thu,  4 Jun 2026 08:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCE03C141F;
+	Thu,  4 Jun 2026 08:12:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B015623E25B
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 08:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD292394EBD
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 08:12:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780560762; cv=none; b=Nn5ATOHyf1xprlfGYMNWTpg0LKIBaqTNlRoOm75Yv8HvgbQIUBCme7VAN1zPjQGhFSTgBRa6jNW3SSc9nALj7A0E0ow0WbjHUEPxfTqII4OSRVsF0vufxhC5Gq15Sg1QF0lB8VX04uIk4o0TqdYjxXgS2TrNDOj75spbs+xYQK8=
+	t=1780560766; cv=none; b=oBL7boaJzK4R8W+3WDM0LcaVB2Jgle7ycSEnObMGLyzJEhduzjPGrB7colblskEus0o7A7wFxSut4I1GMFGdfhlq1V+IDKKeEPvV5mhUuTDS46b+ZZjFTFb78dt/IGeTJUqRzK+N9DyRVouaoZbhFUoJB31V7wtuAp37Ahb4h9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780560762; c=relaxed/simple;
-	bh=SHJkP3cohvtzwLQYU355kHnM5F9XEg07/AIwdNp13vA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lEGTa8NZL9g92I3eHPDW1SPzJ4a4UyQtYHdukWNgWiznLWhomSzoUAyrypxN3IzU2IyDOkMGK5EhvHHyzAkPhLvS3xcygGwlVobrl+h/JFysdPfYBTEB+giccF9BI/PHqThY368VP8ul6yCjlLpCxJqJIE7Xxss21art4u3aHj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sk2lco0+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28231F00893;
-	Thu,  4 Jun 2026 08:12:40 +0000 (UTC)
+	s=arc-20240116; t=1780560766; c=relaxed/simple;
+	bh=wvqPURzTd78hNn1L+qwyy3WaqzeLj5hTNpkz7lIjABI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fc6ClH/epbshYFK6rQldM0Bpxxynr15hBlC/Zw+3YZGVvOV8I+AX6qGsvH0HqKeMP/EaBfW9xAhcgf7A8dEKu5mzn2pLQLUk/ZL7Vpcn4u0IPJNpSm0JBxA0WWvsP/46A2d3x4Y7K6Xg95vWXsiY07h5ktkSSnxKEdms8ZOz2zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBCAF6/j; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA601F00893;
+	Thu,  4 Jun 2026 08:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780560761;
-	bh=t950RlGhY8NH1/PuEwhfyrM6mNpIHfFu6My6nDNDumI=;
+	s=korg; t=1780560765;
+	bh=ARs2r3XWaixsA+ISknt+2XGagrQQmnZjU2iuhX+oMvg=;
 	h=Subject:To:Cc:From:Date;
-	b=sk2lco0+TtSTACoBF70ufmchspwHjsVdOZ2m+gT5PpPrTCeXwipzzjwXZCqFPCQ6U
-	 ADFy3NzO59NP5T8OOyitiqvOynWkvmm9eeqPpA39kNscqq2kfvnaHNeMGbgtGaXq/v
-	 cxzVYp5j+gjTK/9Hj/gIWKtkIQ78MEFu/TKJ72GQ=
-Subject: FAILED: patch "[PATCH] USB: serial: cypress_m8: fix memory corruption with small" failed to apply to 6.12-stable tree
+	b=EBCAF6/jUIAP2f8PULSW4JKjiScbAQKQ9I+VQZ2vRVHIcz/TbtkmfIbqhyPPe3uiB
+	 QiLEAuXvn7tSqF+LKdC3tQojuA6/BPJDwEmPA6uIDc4Bem6pNIgq0f3nDC//wSEPe5
+	 PONNA+OuZY0+/RszOJagzOS7fSEuvXN20/5paSfg=
+Subject: FAILED: patch "[PATCH] USB: serial: cypress_m8: fix memory corruption with small" failed to apply to 6.6-stable tree
 To: johan@kernel.org,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 04 Jun 2026 10:11:36 +0200
-Message-ID: <2026060436-tubby-pancreas-41ef@gregkh>
+Date: Thu, 04 Jun 2026 10:11:37 +0200
+Message-ID: <2026060437-pampers-nutrient-e02f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260286-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260287-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS(0.00)[m:johan@kernel.org,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -89,24 +89,24 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,gregkh:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D257163DF6C
+X-Rspamd-Queue-Id: 98F7A63DF67
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x e1a9d791fd66ab2431b9e6f6f835823809869047
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060436-tubby-pancreas-41ef@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060437-pampers-nutrient-e02f@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
