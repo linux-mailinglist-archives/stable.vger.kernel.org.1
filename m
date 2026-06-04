@@ -1,86 +1,79 @@
-Return-Path: <stable+bounces-260556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XvaaGArJIWoCNgEAu9opvQ
-	(envelope-from <stable+bounces-260556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 20:50:50 +0200
+	id gPO/FLfLIWpkNwEAu9opvQ
+	(envelope-from <stable+bounces-260558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 21:02:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AD4642B10
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 20:50:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 434FF642C6F
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 21:02:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nxp.com header.s=selector1 header.b=JvCzaIRU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260556-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-260556-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=nxp.com header.s=selector1 header.b=dI26LU1f;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260558-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260558-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=nxp.com;
 	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1AED730355F7
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 18:49:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4E9653041966
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 18:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7E53BD647;
-	Thu,  4 Jun 2026 18:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754B13C343A;
+	Thu,  4 Jun 2026 18:54:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013034.outbound.protection.outlook.com [40.107.159.34])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013021.outbound.protection.outlook.com [40.107.159.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA71314D06;
-	Thu,  4 Jun 2026 18:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C993A5E6C;
+	Thu,  4 Jun 2026 18:54:41 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780598994; cv=fail; b=Ob+IWYb8/FFRENTEo4ptO0+IuUk50OOV7rokppD2zNemgUy9kioZvuZKFfhjv6oF4HUTd9tueSyvEi5w/Q+K7G4fqmqjqEN0U3K3eJj7tyuMi3/kaaPqeD/GN+jDo4PF1CW/N3yD90Yw2LoZDxjhoAKNxEh/c9nn4O4vtodbA00=
+	t=1780599290; cv=fail; b=GTvupUX3HVDfjozqLGX3vxPrpSU4pDcF6QSN/6CYLqQ9KQVxhB70oPlB7qHLspz1VHMmZGv1SAAYRiCyUGJz0eWlHr2UDNiI1qgkYc5ehTsUBFdAOmjIrEY9Z1daxGPVbQPCZWLgyMQbQgA6oOo+RMvyvTf6os+6vGuV7Of2M10=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780598994; c=relaxed/simple;
-	bh=00drOwvojZ5q1QPetRP5edo8k7rlpA4vCZVqQd3xgNk=;
+	s=arc-20240116; t=1780599290; c=relaxed/simple;
+	bh=Jc2Md2yJk4FtkYFpO3Jp3yAGSfaam18J4NapttbycwI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=NzKDT1+J6cSRm2MWyhNpcT0V9dDhIRWWBobeAeo7sFxPQDOzDKRHHQBPS8mtYmBUBodnvK9jZWTQGQEj+TTuft4vU5Eu0Cz6I+C2u9wgUn8t1em1SM6J3KVXfI9KSlnMvxq525+E7D1FME1YzJggam+MhmQtKly8SBYelyhh4V0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JvCzaIRU; arc=fail smtp.client-ip=40.107.159.34
+	 Content-Disposition:In-Reply-To:MIME-Version; b=fuzgkDvOv3sPozHC1WCWUOYsIeQEJlDA+Nb+dJ8+kfpaqqfo08icqUjx6M8X72Mv9BiUQ/SJORGfKfvnPoyzssxIgH9WnP/z5dODZTndEkd3fo6zxjIOpEBJWMAJMQix+0vUwnVe09EILPbVJ9liKFnIMnRr6BiMW7EFq9oRNpU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dI26LU1f; arc=fail smtp.client-ip=40.107.159.21
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sxa/Idsda/JojUMZu51a7c9eeTX0+eQCW8kQQDEJbNnBGe7QwMgWjuwNlw3hRMqXMVA+MsVYFMHhlPlqGWVmC1ilDNt50FN2WCBfi6hINA/hKBuO9tc5GbJdpE8aitbY6HMeZuhbbGQsfcGMDOc7aq0vZHdkyPX1eCoXNV+4wDit3vgmLovmncCluJwZta4t5k5VooagCTJIF80nPZjNkvK7CW63qFpstSCaRogVD6aYb7Kl8tka1SHUTlJPsnPz5RaQEtwfgTGuQqGIq06istPXCn/P3PpTCkvpEJ3csagnwTSpq8c3Zn31HhoBy1xxOB2Qn/H4Ouo6bDPWBkx27g==
+ b=qk3azYnBDK6DpYJJKyOrp2TmlDpVysOw1vxX9/4zChFbVoQYZ0W2lEVUhDGPE6l0rhHV2w33v+TM3FJzJou1QafIF7d4Lyzn/nEPMedjKQxlv/k/wHTkLWsCdqRGpIZCzGKajANO8PgnXHnMF4lWSMqHC426QuBxcZ78ExiHtxpVZpVMuYBArFhF7X4v2k52WqltXW7lVPtCKZPewcg8i6EG3weLRy4j2PXXWujKrD+otxAokZzJcVvP9fbZKxjiBU5Xo6/HSlpe29GRgafYXXEWfQO9nnSuRgR5skOws04YRzWMvIYAfdolt8rHkmynOED4c+Am0J72mrjt6zWHtg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yYfhCAN8BtURDykXQWKjqqdOajaqp5Rbbrsek1MEc4Y=;
- b=fwiEqTQk08i4nji555vuCj7u+bZMecblAmNLL42WEZ9eV3VrBXQdwjyJbI20PHr/g/AfDPMe6kA+e0c8YT46Hwi5LWEfHl/fKVpRk71ay+IyLyyK72wN998gqkiKMDT6j6reizmWv7ZVXU3afW+g49nWSoyfhq8puKiWK4RjZ2nDOKhgxA8gbtl0W9peMqk4xKhOo3STdKI5DK5YvvMgHHuxGfqCRfdjV6+rkTLV3R2qlqWNO5/Tvo8aBgo2e5tPKcVNHQoJdafpZVGYrRUUNRSbNO0nmdje4nOwnRQKUGEEFmwN401X2JuPikZNaEFwP8CaHP4PzDIm7Aqn6z72NA==
+ bh=dDCWmDXGDjgZwSm73HjxwRS2SAfJPjaDV5Ojg7IhTfY=;
+ b=sILWuUMc1+GH79IOlSuPH24N3L9tRHeR7TyRh/hW9m2NSKFAIJCCmmIevqkS/gJX3Uy80VGjEHw4J/qg3xLkf1dbgt45B1mlDQoKKFWtgaOUm37eTdoVb56ruTivA/qfHo6n2U1/V+wAcDeqZpilzO4zoup4CVxhZScdLA8jssLeyUB/RUPxHFfpiTe1x+PpHtsungDt6ccTu3Blo+I7seav/68+0ZzfDV+6ynvX/13nQ3vCqIHnpaLC3FqPLUVMOPQKLVkH7pmJNGnaZdUwbf8V0CN56KewlnnUh1mpzRlqfFazzUxJUaSGZ5yE+ymnvNlYQU7Y07soSX+w5fr5ZA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yYfhCAN8BtURDykXQWKjqqdOajaqp5Rbbrsek1MEc4Y=;
- b=JvCzaIRU67sMWPKWG9mRNbpZs3FWIvDiz/hGw56ISaKRtY+MJu7MobzPQ7cApZ/4jdu1rx/LA2eiNH6DWzV5DrGSCOJ8R54XWn4m8Y3kpEk3U34I0f+Xx6M44ouKuogCrDgpakHAWb+zKday/s4iJXoX6b89mNjV+PsCLXtN2EfXfeZgOQ+ZrTNRagtArkbWyn+RzepiQieyOvzViIow0uR89AkD4WA1meCA/pRioFMAVtrD/2WzHJz1EAgeqLhEZ6s2FCvymp63rh3Z4TxUKl0aBGI0yKtE3Ztwv1w3ooUzwnfRrG/hb3NYij/cWQZSDYi+42bUWzjB3STxelA6Fg==
+ bh=dDCWmDXGDjgZwSm73HjxwRS2SAfJPjaDV5Ojg7IhTfY=;
+ b=dI26LU1fqQBoXpotwuJQ6tFoNMElJ0s+4iNKScehNY1FavTSWSZKAs9YN6anOxVzVIMWI3oADyGS0t6E94r4fdnJiO2q93QvPGZ6cz42jQQLwyhGllDxfdMgUWgZT+zj9lQwva0wSBMY/8IANjHc2ktdfyck5kAatcdfty6MR06k3LteE08DIu4GUtjB30CaIeooQNHiB8r7kdR8sW8pzsX4RlF5o/IrFdHOqwRK+SkztP6gQV9U9MiXkd3hIDzIp3afusJIRBdPHvDwLrEaegPKPtU/RSsEC6E7AvqyghmQFCdtsBVGy9SyDLTnb8n9pO2JtIKiLAXqezpQrYFkZw==
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
  by VI0PR04MB12055.eurprd04.prod.outlook.com (2603:10a6:800:325::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
- 18:49:48 +0000
+ 18:54:39 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.21.0092.006; Thu, 4 Jun 2026
- 18:49:48 +0000
-Date: Thu, 4 Jun 2026 14:49:41 -0400
+ 18:54:38 +0000
+Date: Thu, 4 Jun 2026 14:54:32 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Claudiu Beznea <claudiu.beznea@kernel.org>,
-	alexandre.belloni@bootlin.com
-Cc: wsa+renesas@sang-engineering.com, tommaso.merciai.xr@bp.renesas.com,
-	alexandre.belloni@bootlin.com, p.zabel@pengutronix.de,
-	claudiu.beznea@tuxon.dev, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
+Cc: aisheng.dong@nxp.com, andi.shyti@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, carlos.song@nxp.com,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2 06/17] i3c: renesas: Perform Dynamic Address
- Assignment on resume
-Message-ID: <aiHIKEKIT_V4RdfP@lizhi-Precision-Tower-5810>
-References: <20260602132824.3541151-1-claudiu.beznea@kernel.org>
- <20260602132824.3541151-7-claudiu.beznea@kernel.org>
- <ah85RaUXmaBVFkYk@lizhi-Precision-Tower-5810>
- <8687d3cb-628a-477b-9dfd-2db8c412b277@kernel.org>
- <aiB_3kneo2Scy5bB@lizhi-Precision-Tower-5810>
- <19754889-0aa9-4a4a-b015-8ddb0a61b678@kernel.org>
+Subject: Re: [PACTH v2] i2c: imx-lpi2c: mark I2C adapter when hardware is
+ powered down
+Message-ID: <aiHJ6EWeXYqGEXE1@lizhi-Precision-Tower-5810>
+References: <20260520090910.2879570-1-carlos.song@oss.nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <19754889-0aa9-4a4a-b015-8ddb0a61b678@kernel.org>
-X-ClientProxiedBy: SA9PR13CA0017.namprd13.prod.outlook.com
- (2603:10b6:806:21::22) To PA4PR04MB9366.eurprd04.prod.outlook.com
+In-Reply-To: <20260520090910.2879570-1-carlos.song@oss.nxp.com>
+X-ClientProxiedBy: SN7PR04CA0044.namprd04.prod.outlook.com
+ (2603:10b6:806:120::19) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -90,156 +83,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|VI0PR04MB12055:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1c41b465-b818-4826-5013-08dec26a0d65
+X-MS-Office365-Filtering-Correlation-Id: 19d6a6c9-2fe4-47c5-fdbf-08dec26aba98
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|366016|7416014|52116014|376014|4143699003|22082099003|18002099003|11063799006|56012099006|38350700014;
+	BCL:0;ARA:13230040|52116014|376014|1800799024|19092799006|366016|38350700014|56012099006|11063799006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	DOOyEpfM4bumSQgvnSHjGu6FYUEhvfegaJvO7nEB8jLW7ddBwF5hSLcyFh7iQmmdN1wM2l1fBLeap/VTScEqoNd2rs9keyfcXEUf1tKz372G9ip+ZKaYhAwrbLm6+NnaKUMUmuAiQ2BIQGn8IsfsVmmKOiDNv+58PQzsShukviMqG2qCp2sVgiUj48irZ8YMzGk4ZV/rWO6LQOFUQ8q2drgiVlCOb0KOZYFTVAA92c23SQmES8hxQlCQf4mRb6hB8tauNtBaMBbzhwwPV3CZ6jWLyWa3F+irNsgj0bc91IQnGkSJOzV3Rk+r/gH+fHUbWRWZlwJ2MveLa0amxa+5hSLay7vEWCVwDxFAuSQbKvaH5YY6g2MR32oi71gfnC21/m8WJ7kvGOBILdGZDAY9QyMy8RtOljGGueGfvjdrz03Zk6+05cTBk+JkTxDHZeBtsv8FcnGSALLHiQLJY9pg0xUxHgG5HfLDheIsJ8VkYVM9xlzEgZPbreDD8mVEFk5naCrFJKd1kwm5ZLmChdDBU4Fz4LCiLcDIxAeNirI2JkHlUTjXmayLtwi7bNUzgNiKShqmMMBavfA+AXZFTJ0AYJtmwZTuNGH8z0YlFmQPig9v0+d/Md2aIwOT7A0IZniXZa+lnMcWOHI2Obu5vmIJKBHG/hz9byvI+VZFPFQc/+9+s0NsM/c+4DE3f/UoVkN1oHX6P/e2YsVNCPtLKuMmMw==
+	vk0hGNFtoLrUY4z0AbzRxoFRsiXefwjKDbZ71shaxBEVgeRaqWE7ju9d05MeR62E4i6pidNWemCVu+6b4zENyUA/CH6TLExGNTeD3bNDY2802GTcersO7vyz8tCydjlSdcub/8XlZKIB6047X+x6KG7kx4G036WOMyTG3fJ43ph/MLPR7HQ/9fokLeoWG39geYA0USaDboBoSiT0WbexGYjE3KfJYPSYBSQamMDdUzZgV00+Md94tqbM/Zi4T5brv9HrVOyZTSs1VGT0aAwoICy0a/Gil+eJ4OH0H0ke4tJxRZ2LC3X8GgsMbkJOhVO7BLWkAh4TEinf/ENtOswWw/vIwRjglF5EpUdF6mYiYatORr4P3rQxdH7urq2Mioc1oLUkO4yPBR+9NqGA/zh2h8i65c/+fQTFJPqbHqfN0vncnYAmhDkOt5cpl/qaOuTUT3zHKTNm5WIO82yp+ENFfXGUZL9T12zu0lN53Het2k5yxsy6raq2ChooKekv7McA1pStah7eMQ8er9lLkdSrIAq15kh+IM/alzQzOv8WCHmE1WGEw9hgEpuYnzipMekXgU4mS32i4+uZ6pslu3JEYG/WXzQZrYJyQkDW0rbtgZE8WrSjTfT5BjSplyUlYh+Fd2uep5KKhcHdT6+ZoiDpA/4lPJa0uRlG1zIOooXJzLDHrsH/ACsBrgOlzrPxgG8AAcktpR6JgAyXHinAwZBT4ZtbMDGyHI85WqQka7KnpySTl8hwin6W6XhGiMeaNGCe
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(7416014)(52116014)(376014)(4143699003)(22082099003)(18002099003)(11063799006)(56012099006)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(19092799006)(366016)(38350700014)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Nf9hOu/rM+0QS8rznR1npkmSmWi0jdWhNo4xUX8sp17SYxHssLIX/0iW/1+o?=
- =?us-ascii?Q?ZGeyQrE/b7F3mT/P2L84/OGC6FXG+mdqg9dAo3/iRMtDfBMM+GRXCecS0JGb?=
- =?us-ascii?Q?K3B8Jq3pcxzoT3XcSAevC56Kqkd6k2iFWYm8imYdMjp26JIYect7FXm5zxkM?=
- =?us-ascii?Q?SGRsAoc3diZX080CECv4l1Kb3CjfAu7dUA+L/+VFDBihGjDaT1B01xP8fqoC?=
- =?us-ascii?Q?Ue3/k8kRox6EOVcbwmZTkfwhgf5ai3zFCvGhNJu5hRRV559jtbRtM0n3FGMm?=
- =?us-ascii?Q?piw65P8Gwgx1zPIz5+3L1OiHAgXBhsaAOZWzBn+wz7tlHXEUGeUacU/0oUEN?=
- =?us-ascii?Q?gzCbxrxr6BEuAP289OvF8VOM1+aqgLnGleNzmGPaB/0YvnMhVafx0XetpYXv?=
- =?us-ascii?Q?gos4VIc/ucCZVZsxMzo+cDz8K6D2gOHhBdl/zQX2vBS+twHHzWldH7OvQurP?=
- =?us-ascii?Q?Y/Ws+hi22begYhBnKX9apOKn5fJ4ZANvZr2G9EP2e+J1gXHHnu4TRKBGWrht?=
- =?us-ascii?Q?9xyy2XSqjeQc6wZaC9GPnUgkGYCpDvhnHs9eT1odwt/QborIJT4Fd9AZFliu?=
- =?us-ascii?Q?aydT37iLUfaDROk3DHpthzenIE0HAgrV8YX33Zhr507S4FMtQmljaLQOvLNw?=
- =?us-ascii?Q?07DOglqVpEOTaVNQ1KbOwt9cGe6T+15qTkJlwe+Xuvgx8fLRDCsa8c7i7wVm?=
- =?us-ascii?Q?7Vlk4WbvSoZ/+ykEyj/vn+geycU/WJQuDpw3ZcG0clf3tZM8gSoDVaWuihPJ?=
- =?us-ascii?Q?+oxX6Maa8LK1nkjUwZJPknChhCFvL1TYrCqMWAV28zkH7FV8mryVvX8NKeBb?=
- =?us-ascii?Q?AogNBsSmHA+h4JrZe6JauC2B/gkAq/QDzxAW3CR6iv1/bkg0UdS2Y0KhDtEq?=
- =?us-ascii?Q?+aCkBYx3uDbjGIQOqQIEOXoU6AaDZLkeozPTcePq1NnOjkgkYk0TFEKMdWgE?=
- =?us-ascii?Q?8rrW8hMxZy9WssA4jhK/HMzImMS1UCW96FA+9VpBLQgVWkgXHUW8MljhxhrS?=
- =?us-ascii?Q?320QT7mh3gxt4Wc2qEGcTeTT56Sd54tLdrW2XYklCfTrZqfi+PFPleg3Ahql?=
- =?us-ascii?Q?zoTAJrmWs+wXAn+/kQXprbyp9snsCaW7RROdLz1OBotRzaSOCvwAu8gTO4KP?=
- =?us-ascii?Q?T5W2iMHdmMFowNW5o3MPn9uqF4wk7WBkYDFUwD8C0tqdFHUY/ruvsEnLjxQB?=
- =?us-ascii?Q?4NdXrlNYblfKs3PR7N6pK/CZu5WXGz0VlyQ1n7d7Oy48AeOsX+Tkr1HP4QKn?=
- =?us-ascii?Q?OV2z8HVmOMUpPFcl8Lw3cA1sTN7JK/I+wAatwB8Z+iN0vNvT93hKRTVP7Ais?=
- =?us-ascii?Q?Q0TfEWYHnpyFA4womL9HsH0RzeQ/1PZc0Pzuum1y6zp2/xmn3M3NPflvRoCc?=
- =?us-ascii?Q?bkBVls4szGQoVR5ahyofcdlMh9j1u4soKVleAAyjdKpanehbwNvDljweQ37v?=
- =?us-ascii?Q?SHEAufk7pKQ8518iIT6VJoWudy7qjvjUfXD7gAvzJ0xoAqitj/1KjQ6vp+Li?=
- =?us-ascii?Q?KCkqLJ4JHCjfInn1MwE7IX2lmT/9y9geKgSj5teKD9b/EE9Do5llUCnCBpim?=
- =?us-ascii?Q?0U8m1EapBjNSGO371mtVRR9LQnc4z8ggIxHS1U2YoaHCWCcQxF4mwVH9ABxG?=
- =?us-ascii?Q?Zz38bzy91oDbQol5zA1uqSoMCgWFOv34FCEyd0aeKlcL3Krkhd3pjIwA6GIG?=
- =?us-ascii?Q?X7dUoOfq9lvhhDpX3SxWACu+xsIcd+3c3S22Cuzg2sMms5FH?=
+	=?us-ascii?Q?UDXy7fWgqeOG1QNt8J5FkIOdnOn0kRXLB85S/QU18ZLAgvQTgKhexntReehT?=
+ =?us-ascii?Q?HkdFs+SmyMDpHq0lcZ5jqtvNSd+lBEHYjWY3zLjud1ii0kBXnSo5O8vnAn1F?=
+ =?us-ascii?Q?2h81v/rH25Y4ljrsJSKhpdzPll8+7D9w0igiJkcUvdWKGhaLmZ3WplFLpCkC?=
+ =?us-ascii?Q?5MdXYUHRg0dA5dTOtKxH6+X03k/L+8SaTHETV3fCRs8ARwPiJcxQQYronw68?=
+ =?us-ascii?Q?hbORPwog1DQC6CYhVNZj4Yt7SoQIINoUqHlWDrqXgLH89I1/8orxXKdK/f36?=
+ =?us-ascii?Q?XtqpJu0NjMRAwKuOQaNIwmT3UEPnbRNhy4PV61Z3Tq21e78J43iICd6dPcsU?=
+ =?us-ascii?Q?5TzgcWo4tU9/EHliY4I5a57o+6dMFHIiemr0f4E7eNxWc0I1aNggyrc74yLe?=
+ =?us-ascii?Q?/QfIHP3um2akGUOdnLgCk2W0oq49pGyi7C9JjL6LSQjYwrI+AyffgfMwCvLd?=
+ =?us-ascii?Q?PGG2reB0nCOAE9lgOtbNS4f5fHxQLyxh7tEOz3wotYrX2ItH0fTkix6K2BZ/?=
+ =?us-ascii?Q?kboqUztRRcH7T9O+YH8AqCcEjngzKHLyHxu3/Fwv4/JnptPDLihhl9DiICTA?=
+ =?us-ascii?Q?QrpjJ02gjYzYzsxLkc2Up2D+jCdyzFlBiW6aKY6Hx0W0T+Bg7qAqihpiC8Ez?=
+ =?us-ascii?Q?5xErm0gGNb2xADd5JgFFwaa1zalOs24bGaJcJhvDwmSqTVJ1OQLJkuIF46m7?=
+ =?us-ascii?Q?QTk667Q5X1ZfUtWgxJVylWg6NbU+9MjkBKffiA3jJS7r0Cl5GHvf+b/tUgA0?=
+ =?us-ascii?Q?iS2YUd6tFtRy7GYC7K5Vq2hvb/C/rtjpij/maWEI3M01CpuOlx5bDRtbWox4?=
+ =?us-ascii?Q?mv4NldtNo0r5oXY8Gdzq50PItafQjWI60Sqoc3QOYiPkPCF0rD0/Q8WUk2ZC?=
+ =?us-ascii?Q?iyfn8xCGfIOI0tvI1+Ig9W69n8zdDMPdffe7ZlyADY1/cYrMcN1oRz+qwPHJ?=
+ =?us-ascii?Q?xPARwnkvOnpShLndJ0zwCqn2QdjvNnk8TzhyYcQjrZmNBRgNQkDSEU5rVwwT?=
+ =?us-ascii?Q?T9gESe9H8GKOpntt+g1FcINTCRlF++BBiQw00IFMKaQsAnP5+bCjC59AbwEq?=
+ =?us-ascii?Q?v6XDsbkq2h5FIhpz96Z00hBx1B5ph1SIa1DRNHhkVI3KQfLFIHt2rtpOuhxj?=
+ =?us-ascii?Q?3U1NOaNWXdChGYHVhqagwlbhjXwV+ZatSkzSCr/qIZJMtH0eGJxnBo1vAJ4y?=
+ =?us-ascii?Q?9esaJc6ERzMjpVcA8LCnu5b5XpCflp+m9cisTC5Jl/RK0Yw9D9CgesTAb4fP?=
+ =?us-ascii?Q?xVO17kkNXP8CaAfAsOQgsw+skM6+YXOn+VEcXmYA4VHSyzr1D32vvgYr/1M9?=
+ =?us-ascii?Q?5v8dNdC77ATbnTn49GEk/riLz2LMHki67q8vu5Y+56Jx8LI8kP3mA10OfVe3?=
+ =?us-ascii?Q?MsajKUM34N4Zv4hwxYVp1BBk5cIkKSyT2f9JWbqHGA7bqMrEq/CPqAyHOcgr?=
+ =?us-ascii?Q?wMK8DU8RexifSSBUWhM0wBmvJZi0Z35jK3HARiZKafsk6Ap01fS3d8tB/s2E?=
+ =?us-ascii?Q?SW9xopn4enqdi8VHOOrLuvHzzaHw6iW0AZ85DTP9uLMrPsX6dzXSRydvS2uv?=
+ =?us-ascii?Q?4UCrNnDRbIXmv+m/w5eqrpYvyzxprufjmvPnh6dWcqFGy9vBy3HpzIPn7qxg?=
+ =?us-ascii?Q?Ci3Ah6ajQX6A3tU8FuR3Mpvyhu5ptU0+arIxJ0QpxpTbvP7ZYDtYeXrI+d5S?=
+ =?us-ascii?Q?zKzqb9v5IEcielHNhJI+O/3LsZXUFd4nZed1RM92XbL7trd/?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1c41b465-b818-4826-5013-08dec26a0d65
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19d6a6c9-2fe4-47c5-fdbf-08dec26aba98
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 18:49:48.1937
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 18:54:38.8233
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wtqKO17vnnWzVgfOqxmTE1d3qGcvPhU8MAvnFeJ0of2GRXgDcW1m66W8K9ljzznvc4QKsuPAqEhZspgGLVjqtQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8OOl1F30J+CeeADabTYAO8Kd/CZLWqWPvAj8Hvg8gVajev7iO3uTutQxlBMpQSspcROZZgdbrfMDuPt9Szvyag==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB12055
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	ARC_REJECT(1.00)[cv is fail on i=2];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:claudiu.beznea@kernel.org,m:alexandre.belloni@bootlin.com,m:wsa+renesas@sang-engineering.com,m:tommaso.merciai.xr@bp.renesas.com,m:p.zabel@pengutronix.de,m:claudiu.beznea@tuxon.dev,m:linux-i3c@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:claudiu.beznea.uj@bp.renesas.com,m:stable@vger.kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-260556-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[Frank.li@nxp.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260558-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[Frank.li@nxp.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS(0.00)[m:carlos.song@oss.nxp.com,m:aisheng.dong@nxp.com,m:andi.shyti@kernel.org,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:carlos.song@nxp.com,m:linux-i2c@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[nxp.com,kernel.org,pengutronix.de,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	DKIM_TRACE(0.00)[nxp.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[Frank.li@nxp.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[nxp.com:+];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,lizhi-Precision-Tower-5810:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:dkim,nxp.com:from_mime,nxp.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lizhi-Precision-Tower-5810:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 15AD4642B10
+X-Rspamd-Queue-Id: 434FF642C6F
 
-On Thu, Jun 04, 2026 at 04:04:52PM +0300, Claudiu Beznea wrote:
-> Hi, Frank,
+On Wed, May 20, 2026 at 05:09:10PM +0800, Carlos Song (OSS) wrote:
+> From: Carlos Song <carlos.song@nxp.com>
 >
-> On 6/3/26 22:26, Frank Li wrote:
-> > On Wed, Jun 03, 2026 at 05:23:06PM +0300, Claudiu Beznea wrote:
-> > > Hi, Frank, I3C maintainers,
-> > >
-...
-> > >
-> > > As I don't have a real setup to test this, would it be OK to restore the
-> > > approach in this patch as proposed in v1?
-> > This case is quite complex, and many people try to resolve simialar
-> > problems, you may want to reattach device because controller lost state.
-> >
-> > hub have similar requirement, which need reattach devices.
-> >
-> > https://lore.kernel.org/linux-i3c/20260525064209.2263045-1-
-> > lakshay.piplani@nxp.com/T/#ma99fa92cb3aac770995350e0fc22c144b974a038
-> >
-> > controller lost state, but may i3c devices still alive and they dynamtic
-> > address during suspend. Does reattach to the old address help your case?
-> Yes, re-attaching works and I also need to update the subsystem data
-> structures. Something like the following works for me:
+> Mark the I2C adapter as suspended during system suspend to block further
+> transfers, and resume it on system resume. This prevents potential hangs
+> when the hardware is powered down but clients still attempt I2C transfers.
 >
-...
-> +                               old_dyn_addr = dev->info.dyn_addr;
-> +                               dev->info.dyn_addr = i3c->addrs[pos].addr;
+> Fixes: 1ee867e465c1 ("i2c: imx-lpi2c: add target mode support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> ---
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+> Change for v2:
+>   - Call i2c_mark_adapter_suspended() before pm_runtime_force_suspend()
+>     to prevent potential deadlock if a transfer is active during suspend.
+>   - Roll back with i2c_mark_adapter_resumed() if pm_runtime_force_suspend()
+>     fails.
+> ---
+>  drivers/i2c/busses/i2c-imx-lpi2c.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+> index a01c23696481..01ee38131ef2 100644
+> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
+> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+> @@ -1635,7 +1635,18 @@ static int __maybe_unused lpi2c_runtime_resume(struct device *dev)
+>
+>  static int __maybe_unused lpi2c_suspend_noirq(struct device *dev)
+>  {
+> -	return pm_runtime_force_suspend(dev);
+> +	struct lpi2c_imx_struct *lpi2c_imx = dev_get_drvdata(dev);
+> +	int ret;
 > +
-> +                               i3c_master_reattach_i3c_dev_locked(dev,
-> old_dyn_addr);
-...
+> +	i2c_mark_adapter_suspended(&lpi2c_imx->adapter);
+> +
+> +	ret = pm_runtime_force_suspend(dev);
+> +	if (ret) {
+> +		i2c_mark_adapter_resumed(&lpi2c_imx->adapter);
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+>  }
 >
-> To me, this looks OK but I don't think it is yet completed. If I'm not
-> wrong, even with this adjustment the problem may still persist when running
-> DAA on a full ocupied bus at runtime (e.g. after devices are
-> removed/inserted). This driver don't support hotplug but I noticed the ones
-> that supports it do DAA on hotplug events.
+>  static int __maybe_unused lpi2c_resume_noirq(struct device *dev)
+> @@ -1655,6 +1666,8 @@ static int __maybe_unused lpi2c_resume_noirq(struct device *dev)
+>  	if (lpi2c_imx->target)
+>  		lpi2c_imx_target_init(lpi2c_imx);
 >
-> Could you please let me know what's the procedure to go forward with this
-> series? The approach proposed in the above diff depends on the series
-> exporting i3c_master_reattach_i3c_dev_locked(), which is in progress.
-
-Two patch already was acked by me. I supposed alex will pick my acked before
-your patch, you can send out update and cover later said depend on first two
-patches of hubs.
-
-Recently there are more people involve i3c work and create some cross
-dependency.
-
-Alex:
-	Do you expect me to temp land these patches to one branch in
-git.kernel.org/pub/scm/linux/kernel/git/i3c/linux.git? so you can double
-check before send pull-request to linus?
-
-Frank
-
->
-> If all good with the rest of the patches in this series, as I don't have a
-> real setup to test this, would it be OK to switch this patch as it was in v1
-> and return with the adjustments in the above diff once the
-> i3c_master_reattach_i3c_dev_locked() is integrated?
+> +	i2c_mark_adapter_resumed(&lpi2c_imx->adapter);
+> +
+>  	return 0;
+>  }
 >
 > --
-> Thank you,
-> Claudiu
+> 2.43.0
+>
 
