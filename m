@@ -1,162 +1,152 @@
-Return-Path: <stable+bounces-260346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260348-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZHcQMGk9IWrgBgEAu9opvQ
-	(envelope-from <stable+bounces-260346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 10:55:05 +0200
+	id woFbHmg/IWqdBwEAu9opvQ
+	(envelope-from <stable+bounces-260348-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 11:03:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC87F63E34B
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 10:55:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7E563E4C0
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 11:03:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pLQOgTu4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260346-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-260346-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=sang-engineering.com header.s=k1 header.b=ioNDaKeY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260348-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260348-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 74F0E303C8F4
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 08:49:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A150630A3FFE
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 08:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1FF3CEBB0;
-	Thu,  4 Jun 2026 08:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EF2383322;
+	Thu,  4 Jun 2026 08:50:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FA63CC7FD
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 08:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C6A3DB301
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 08:50:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780562975; cv=none; b=UyIo1d2Yk5XsOL9Rpq43/ZimavxDjUuDokaOUifu3Ll+cWO0cS321qSqTl9+npWdtzfa8+BvlOkfZCS+eZVy8nCbBWvDBz/bj3ksvucMyE2wEjQHy0mymZFDlPnoMX6MHAg2K/zl/eTCdB+FU1YBcEGNW6V01liKhmvSgVEa+KE=
+	t=1780563023; cv=none; b=lmurHbZFyD2WYAjeZ9gXnxogWEZfFUEPFJr1y9eqTfE1D8jCvm0TrIBYYD2oC0AFYPImIju9fO/3NvH+SLg5hOC0yGHgJ0vIlXE78SgVFy3XaYWT8mEQc6bBb+/VWhvU+/kSlsZpYCjOmwBf2fnSH2DSZEKbgj9qNwbvHGIuviY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780562975; c=relaxed/simple;
-	bh=R1LEbay0gIU2CZe4jdmk5ycUN9j7gOy+nJvDa9d0wz8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HxA1g/89JCCFDdkrYGvBZ93ISvveTpxI5pFkWTjLbq5vWqzgEfo3ODLU5FcY5l1KPOKMR0dVrcTXU243XjRfc6KfRANWwjmJ+wIqZyn5SckiTcMFD4DHttZ0CQOK2SAdvZjLJymOz68MPd5xj5VXesZ2T0GDn+Sa5eIEcZPOXGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLQOgTu4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175181F00893;
-	Thu,  4 Jun 2026 08:49:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780562973;
-	bh=wuY5Hd7EtZmxJjHQ8PnB5wR/s2RphZJivxYMqtq1Bm8=;
-	h=Subject:To:Cc:From:Date;
-	b=pLQOgTu4GIqbR+nmuMgnJGmFbq672I/o8rNW9vg/z83zJALhQ3yZc3zhMQ+vwWKXI
-	 F/Ih2B5XnbKiyF3zKRs/uVYUlGmH0ai4Z5U6rdngUh8E9Ih/m2JtCBHFWJAs5LFk3s
-	 GCnef8kPZoQ/v4k6eb9j9Twd12V7aM5V/m6YEeMk=
-Subject: FAILED: patch "[PATCH] usb: cdns3: plat: fix leaked usb2_phy initialization on" failed to apply to 5.15-stable tree
-To: peter.chen@cixtech.com,gregkh@linuxfoundation.org,sashiko-bot@kernel.org,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 04 Jun 2026 10:48:29 +0200
-Message-ID: <2026060429-trifocals-granddad-3d28@gregkh>
+	s=arc-20240116; t=1780563023; c=relaxed/simple;
+	bh=aCpKIJ+QgbZCXIEODsRAzIR7ljW8BH6eX1Jwet/sqo4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n+Cx01HfYwwxOGRln2w3W7mwqpTPDI2HhpsUaC1qd/2n8mzeqy6yJWT44A8ghe+nzDdbZy8MiqqqR41JQJ9s2FLkzvD/1e1tggbIOabHSwRXrnmsMNtJqhRCdEE+hcbtzcGVTfJD9ja1cDYoO3i8NbuNtsim0oEs/1sEnDczmio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=ioNDaKeY; arc=none smtp.client-ip=194.117.254.33
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=9Hff
+	ekHVo++p5/gZcufC8Kzcfe00IdLKlAV7bvdlcmE=; b=ioNDaKeYz0ocZ/MWTZIH
+	UxbKAKC/GMyLPF4aUL/ej/Eo+V67vNeYCXJvovujiZE1iKg2nzofuSxbMkYSz9nJ
+	yz/9srZMhpoQCpPzU9NrNR+vPsK1msMt+2YLXU/k8wuaq1HCXApwKEKFXOj9AfG9
+	xxFlt7VInK9V7Jc97aE/YFmI7h3AoX5MWRw74uBnb0t4kSQojrZ3+U1B+Ox2ucLf
+	2YUCyjQhwLgOatS2peQpgo3qZa3hhT5Ai7JcZeAHkkZdcY3aU1w9Gj/X3TZU++CP
+	UxmSeDIBj3pdVeMYeZGhTVjyZqt9JOKVXxEJJvp0qekRQLP82HJ3LpCxDGfO5jHL
+	Kg==
+Received: (qmail 3573591 invoked from network); 4 Jun 2026 10:50:16 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 4 Jun 2026 10:50:16 +0200
+X-UD-Smtp-Session: l3s3148p1@JeQVomlTcogujnsi
+Date: Thu, 4 Jun 2026 10:50:16 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Andi Shyti <andi.shyti@kernel.org>, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 07/10] i2c: core: fix adapter registration race
+Message-ID: <aiE8SONCyzX4LW4M@ninjato>
+References: <20260511143715.729714-1-johan@kernel.org>
+ <20260511143715.729714-8-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="iv+Vq4ZBGsfBbAIV"
+Content-Disposition: inline
+In-Reply-To: <20260511143715.729714-8-johan@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-3.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[sang-engineering.com:s=k1];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260346-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:peter.chen@cixtech.com,m:gregkh@linuxfoundation.org,m:sashiko-bot@kernel.org,m:stable@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:johan@kernel.org,m:andi.shyti@kernel.org,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	DMARC_NA(0.00)[sang-engineering.com];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[wsa@sang-engineering.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[sang-engineering.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wsa@sang-engineering.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260348-lists,stable=lfdr.de,renesas];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gregkh:mid,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,cixtech.com:email]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ninjato:mid,sang-engineering.com:dkim,sang-engineering.com:from_mime,sang-engineering.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AC87F63E34B
+X-Rspamd-Queue-Id: 2B7E563E4C0
 
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+--iv+Vq4ZBGsfBbAIV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On Mon, May 11, 2026 at 04:37:12PM +0200, Johan Hovold wrote:
+> Adapters can be looked up based on their id using i2c_get_adapter()
+> which takes a reference to the embedded struct device.
+>=20
+> Make sure that the adapter (including its struct device) has been
+> initialised before adding it to the IDR to avoid accessing uninitialised
+> data which could, for example, lead to NULL-pointer dereferences or
+> use-after-free.
+>=20
+> Note that the i2c-dev chardev, which is registered from a bus notifier,
+> currently uses i2c_get_adapter() so the adapter needs to be added to the
+> IDR before registration.
+>=20
+> Fixes: 6e13e6418418 ("i2c: Add i2c_add_numbered_adapter()")
+> Cc: stable@vger.kernel.org	# 2.6.22
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x e6970cda63fd4b4546aeed9d0e2f53a7c95cd09c
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060429-trifocals-granddad-3d28@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
 
+--iv+Vq4ZBGsfBbAIV
+Content-Type: application/pgp-signature; name="signature.asc"
 
-thanks,
+-----BEGIN PGP SIGNATURE-----
 
-greg k-h
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmohPEQACgkQFA3kzBSg
+KbYVGQ/+LPR+PdrMnjr2Y1GBHQMEvaqRPnJso+tGKhcyqqk3VlRARrqUdxG4M7CT
+0VV/lgUuCcbTzYHv3IQrIrvGzxQ0lrZJoSzhpvEIWSm7jdyPUrxb7FvkwkJuQJ46
+/O4Xn6PkMKqav/iJIkA+i6fJg3/BXvYirwBkF+14HeYmv9rOlq4twcdzHBx00bo7
+c8BY3ICFgI02KgZPROSjwiMIFitQ0tE/G2qbgy1Oi+KuvGMPauN7RPD+LfAXzYjE
+NDyOrFs6EzfO8/lqLdqKQ9rl/12gkUzgplseM2jHyUgqMSuQ8IYdAWZ80hun62Om
+LWtK2SvtpsebcQzeqmUKCMXRa3lf2S/yRopcGal6RJjQHrpeuq9x/5PcIz+6oRAw
+oMAsXgB0j5wUprPP5V+aZIwIGcUNbwl7eAMfVoiAyCf5ycNv7s0feZ6HTSlCCZQK
+6CkmNnepTvEM+wFrlp73hVK1LenCRU1BXnd3/56eNsIa9xSS1lS6fnLrDT8ECNQj
+mVo7PkUpEDbxGKBpFZ7CEYtuBsxMbcOl3L8JMBnP0EF0b41a4BQRxhf4kEzZUMtg
+Xo/jg/8q4Jt5eIQlFgXMi2NG+eJoXrPoGRNN3XAXzZzF6XP+oxADCzT3WrXstFz8
+xm0dMOClMPAOyNzJpKCktM45h+X9Req7Nvty/ugJXhXWjX8fMEo=
+=XyRL
+-----END PGP SIGNATURE-----
 
------------------- original commit in Linus's tree ------------------
-
-From e6970cda63fd4b4546aeed9d0e2f53a7c95cd09c Mon Sep 17 00:00:00 2001
-From: Peter Chen <peter.chen@cixtech.com>
-Date: Wed, 13 May 2026 16:53:09 +0800
-Subject: [PATCH] usb: cdns3: plat: fix leaked usb2_phy initialization on
- usb3_phy acquisition failure
-
-Move usb2_phy initialization after usb3_phy acquisition.
-
-Fixes: f738957277ba ("usb: cdns3: Split core.c into cdns3-plat and core.c file")
-Cc: stable <stable@kernel.org>
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/linux-devicetree/agKaEePSFknhDBg2@nchen-desktop/T/#m21e1d9c1574eb127ce03c0c2a1a49002ce435b52
-Signed-off-by: Peter Chen <peter.chen@cixtech.com>
-Link: https://patch.msgid.link/20260513085310.2217547-2-peter.chen@cixtech.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/cdns3/cdns3-plat.c b/drivers/usb/cdns3/cdns3-plat.c
-index 735df88774e4..d2e8d1e9007b 100644
---- a/drivers/usb/cdns3/cdns3-plat.c
-+++ b/drivers/usb/cdns3/cdns3-plat.c
-@@ -126,15 +126,15 @@ static int cdns3_plat_probe(struct platform_device *pdev)
- 		return dev_err_probe(dev, PTR_ERR(cdns->usb2_phy),
- 				     "Failed to get cdn3,usb2-phy\n");
- 
--	ret = phy_init(cdns->usb2_phy);
--	if (ret)
--		return ret;
--
- 	cdns->usb3_phy = devm_phy_optional_get(dev, "cdns3,usb3-phy");
- 	if (IS_ERR(cdns->usb3_phy))
- 		return dev_err_probe(dev, PTR_ERR(cdns->usb3_phy),
- 				     "Failed to get cdn3,usb3-phy\n");
- 
-+	ret = phy_init(cdns->usb2_phy);
-+	if (ret)
-+		return ret;
-+
- 	ret = phy_init(cdns->usb3_phy);
- 	if (ret)
- 		goto err_phy3_init;
-
+--iv+Vq4ZBGsfBbAIV--
 
