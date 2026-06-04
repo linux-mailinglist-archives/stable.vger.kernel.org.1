@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-260562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260563-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /kvsOXTPIWoIOgEAu9opvQ
-	(envelope-from <stable+bounces-260562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 21:18:12 +0200
+	id HFy/FW7PIWoBOgEAu9opvQ
+	(envelope-from <stable+bounces-260563-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 21:18:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1CD642D70
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 21:18:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFCCF642D68
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 21:18:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BU1LqvQ7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260562-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260562-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dn5ZTrPI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260563-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260563-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B31E30097DB
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 19:18:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 216933017FA3
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 19:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00FE351C34;
-	Thu,  4 Jun 2026 19:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E2E36A356;
+	Thu,  4 Jun 2026 19:18:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D442E1C4E
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 19:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A749A340A6A
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 19:18:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780600680; cv=none; b=uEAEG1HEYnU4cmJnNcOuGd+A8hEdUVJ8T9KVCtrhVMb5ct6fSkTtciEkewE0UhtU8V1rqM13LsLSUQcD2KPLxuw53bWrf3iki3l4+gn7A+uYAGQYacz/YTXi8raFsDXiO6x5h9a+xU+zBIrX2KQ9knB9CdHbeR3T4p+N3LC1OV8=
+	t=1780600681; cv=none; b=YuJ/ZZ1SyJX/lG9O6TxvGshURT0qhFgwsJjZDuVKhJT10XDihyNYc5lzNJTFiweyqDu/3QLnuK7w9xCOsJkGPIjU+uZXTxBXOTbGKwQqvYqsT2iIqjA35AGOrZoA9qfmmUP3nJ/glzRtp/9TSjkXb+XbY4qUo6/OWjZFtMYwm2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780600680; c=relaxed/simple;
-	bh=8+ODXaYGes1crVWUsFFjQ4w5kCdSO7aBuqCewiInp9A=;
+	s=arc-20240116; t=1780600681; c=relaxed/simple;
+	bh=vOade6XS0hShnSn8xyuagOxlUUOnow8Z1tXRpSgyo2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eTBSm9ZRkwPsiTerel2doz55Beq0n5JDBV7D+0z4ZUV+jnXxJHzgz2s5lZL9FksDAW+UkYQrNgHw02DsbeuPEJYDg3tPMrfFqW2IBbblnk36TrWW7LX2wW8gvkfZ61qCBdzy4FomedPUrGIfhMG7L9MfbJnAQ3rwg2edI1v7+gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BU1LqvQ7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5701F00893;
-	Thu,  4 Jun 2026 19:17:58 +0000 (UTC)
+	 MIME-Version; b=W6QBezYRGB8EuEuZ1m4cnUbim16S8B49ql0Bx/+Nw9otKr7fQoZaKRJUvmdTzozCMXJFVYGWqcVIj7CFRjoa5iB6PVE+IpHeSD2XuF19Knh5TE/w5OMQs1O+SiOJ67e9xMGNOd5fNZ9diD94uVEzrrJdoOZbtoJIq8AgoQUThIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dn5ZTrPI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D8A1F00898;
+	Thu,  4 Jun 2026 19:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780600679;
-	bh=G+GgSsVCssvM2JphOmGvihicKpSu8PI4BjzlvLN81Ac=;
+	s=k20260515; t=1780600680;
+	bh=wg+kj/wNGWwdzPS8ADb4654NjHgOPqcww9HruSoFSas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BU1LqvQ7DOgJnGFf9s24o/1X7eo1g7CdGjLs0rvRLVpWU+UQoLQ3mvy0tWmnkA3L5
-	 w/BZxY0nSRfz402mN0KOVMOuQV+3irL/TAB466MAuvv5e+SHeJIEetyiEiJzJy4pU9
-	 EknpWdOPhz+qrd2lm8/9SvdFIbFWNU6gJv5U2USGnZ7Skde76qXiRvydHs6TMN3fBc
-	 GTPK8hmlpUb+nZDvIXj1lR+2pPp4RQTw00qFfYfSFESr0Uoe/IMOWq5Lky4LiN5KjO
-	 eKn2EA9SdNxFm94Kjy2AtQQzN+16fy8Tp0pJ1pfbuMWTGXQqfTRfe/V9o7Y5bTJnVh
-	 DTSxv7wBU6fkA==
+	b=Dn5ZTrPIs0OpRh3lPz/8TtW7pZSaZtoy19OEcHB5K0u3sVFY0Gi//RhqUmgQx0rpC
+	 Xwe6Tpw2s+MDAwh/6lkBfz/c7Nn0dyDZNUMSV/3UkDTsmKBhx1s+/S4NPw3OP8FGUn
+	 DeSAfOMQSM9ze+ncpmcNyiENFVy38ZwC6oIfVoGrKUX0p+BTe9UK+zQ9nM5AffdMvJ
+	 m3BNrkNPhwq1DkkUykNCjBL/RqsuwBYgLxzMAmPzdgQaspKoLywsArolxjiXHZBgUY
+	 +k3WB5t3G5mWRYRxkTkK9Akf3+DpkgBXtdrwU7dXpzscP2u5C+Wn8/RujjBCJALEr4
+	 YdjYyBcNdL7Qg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/2] iio: chemical: scd30: Use guard(mutex) to allow early returns
-Date: Thu,  4 Jun 2026 15:17:49 -0400
-Message-ID: <20260604191751.743012-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/2] iio: chemical: scd30: fix division by zero in write_raw
+Date: Thu,  4 Jun 2026 15:17:50 -0400
+Message-ID: <20260604191751.743012-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026060456-grimacing-crop-73d8@gregkh>
+In-Reply-To: <20260604191751.743012-1-sashal@kernel.org>
 References: <2026060456-grimacing-crop-73d8@gregkh>
+ <20260604191751.743012-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,15 +72,15 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260562-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:Jonathan.Cameron@huawei.com,m:dlechner@baylibre.com,m:tomasz.duszynski@octakon.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260563-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:antoniu.miclaus@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -95,183 +96,43 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[octakon.com:email,huawei.com:email,baylibre.com:email,msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3B1CD642D70
+X-Rspamd-Queue-Id: AFCCF642D68
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-[ Upstream commit 5feb5532870fbced5d6f450b8061a33f461b88ca ]
+[ Upstream commit 5aba4f94b225617a55fed442a70329b2ee19c0a5 ]
 
-Auto cleanup based release of the lock allows for simpler code flow in a
-few functions with large multiplexing style switch statements and no
-common operations following the switch.
+Add a zero check for val2 before using it as a divisor when setting the
+sampling frequency. A user writing a zero fractional part to the
+sampling_frequency sysfs attribute triggers a division by zero in the
+kernel.
 
-Suggested-by: David Lechner <dlechner@baylibre.com>
-Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250209180624.701140-3-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 5aba4f94b225 ("iio: chemical: scd30: fix division by zero in write_raw")
+Fixes: 64b3d8b1b0f5 ("iio: chemical: scd30: add core driver")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/chemical/scd30_core.c | 63 ++++++++++++++-----------------
- 1 file changed, 28 insertions(+), 35 deletions(-)
+ drivers/iio/chemical/scd30_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
-index 682fca39d14d63..180c29bf99cf36 100644
+index 180c29bf99cf36..306ee3e7075d85 100644
 --- a/drivers/iio/chemical/scd30_core.c
 +++ b/drivers/iio/chemical/scd30_core.c
-@@ -5,6 +5,7 @@
-  * Copyright (c) 2020 Tomasz Duszynski <tomasz.duszynski@octakon.com>
-  */
- #include <linux/bits.h>
-+#include <linux/cleanup.h>
- #include <linux/completion.h>
- #include <linux/delay.h>
- #include <linux/device.h>
-@@ -198,112 +199,104 @@ static int scd30_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const
- 			  int *val, int *val2, long mask)
- {
- 	struct scd30_state *state = iio_priv(indio_dev);
--	int ret = -EINVAL;
-+	int ret;
- 	u16 tmp;
- 
--	mutex_lock(&state->lock);
-+	guard(mutex)(&state->lock);
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
- 	case IIO_CHAN_INFO_PROCESSED:
- 		if (chan->output) {
- 			*val = state->pressure_comp;
--			ret = IIO_VAL_INT;
--			break;
-+			return IIO_VAL_INT;
- 		}
- 
- 		ret = iio_device_claim_direct_mode(indio_dev);
- 		if (ret)
--			break;
-+			return ret;
- 
- 		ret = scd30_read(state);
- 		if (ret) {
- 			iio_device_release_direct_mode(indio_dev);
--			break;
-+			return ret;
- 		}
- 
- 		*val = state->meas[chan->address];
- 		iio_device_release_direct_mode(indio_dev);
--		ret = IIO_VAL_INT;
--		break;
-+		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = 0;
- 		*val2 = 1;
--		ret = IIO_VAL_INT_PLUS_MICRO;
--		break;
-+		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		ret = scd30_command_read(state, CMD_MEAS_INTERVAL, &tmp);
- 		if (ret)
--			break;
-+			return ret;
- 
- 		*val = 0;
- 		*val2 = 1000000000 / tmp;
--		ret = IIO_VAL_INT_PLUS_NANO;
--		break;
-+		return IIO_VAL_INT_PLUS_NANO;
- 	case IIO_CHAN_INFO_CALIBBIAS:
- 		ret = scd30_command_read(state, CMD_TEMP_OFFSET, &tmp);
- 		if (ret)
--			break;
-+			return ret;
- 
- 		*val = tmp;
--		ret = IIO_VAL_INT;
--		break;
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
- 	}
--	mutex_unlock(&state->lock);
--
--	return ret;
- }
- 
- static int scd30_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
- 			   int val, int val2, long mask)
- {
- 	struct scd30_state *state = iio_priv(indio_dev);
--	int ret = -EINVAL;
-+	int ret;
- 
--	mutex_lock(&state->lock);
-+	guard(mutex)(&state->lock);
+@@ -257,7 +257,7 @@ static int scd30_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const
+ 	guard(mutex)(&state->lock);
  	switch (mask) {
  	case IIO_CHAN_INFO_SAMP_FREQ:
- 		if (val)
--			break;
-+			return -EINVAL;
+-		if (val)
++		if (val || !val2)
+ 			return -EINVAL;
  
  		val = 1000000000 / val2;
- 		if (val < SCD30_MEAS_INTERVAL_MIN_S || val > SCD30_MEAS_INTERVAL_MAX_S)
--			break;
-+			return -EINVAL;
- 
- 		ret = scd30_command_write(state, CMD_MEAS_INTERVAL, val);
- 		if (ret)
--			break;
-+			return ret;
- 
- 		state->meas_interval = val;
--		break;
-+		return 0;
- 	case IIO_CHAN_INFO_RAW:
- 		switch (chan->type) {
- 		case IIO_PRESSURE:
- 			if (val < SCD30_PRESSURE_COMP_MIN_MBAR ||
- 			    val > SCD30_PRESSURE_COMP_MAX_MBAR)
--				break;
-+				return -EINVAL;
- 
- 			ret = scd30_command_write(state, CMD_START_MEAS, val);
- 			if (ret)
--				break;
-+				return ret;
- 
- 			state->pressure_comp = val;
--			break;
-+			return 0;
- 		default:
--			break;
-+			return -EINVAL;
- 		}
--		break;
- 	case IIO_CHAN_INFO_CALIBBIAS:
- 		if (val < 0 || val > SCD30_TEMP_OFFSET_MAX)
--			break;
-+			return -EINVAL;
- 		/*
- 		 * Manufacturer does not explicitly specify min/max sensible
- 		 * values hence check is omitted for simplicity.
- 		 */
--		ret = scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
-+		return scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
-+	default:
-+		return -EINVAL;
- 	}
--	mutex_unlock(&state->lock);
--
--	return ret;
- }
- 
- static int scd30_write_raw_get_fmt(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
 -- 
 2.53.0
 
