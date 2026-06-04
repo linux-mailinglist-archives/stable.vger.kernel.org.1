@@ -1,337 +1,277 @@
-Return-Path: <stable+bounces-260585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260586-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kQjZAc4HImoLRwEAu9opvQ
-	(envelope-from <stable+bounces-260585-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 01:18:38 +0200
+	id LYzNHVkPImotSAEAu9opvQ
+	(envelope-from <stable+bounces-260586-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 01:50:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90996643ECB
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 01:18:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE85564405D
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 01:50:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=IXImmDNk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260585-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260585-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=proton.me;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TxoNfaE9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260586-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260586-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 35A00305AD03
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 23:17:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E29D30166FF
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 23:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59EF933DEF7;
-	Thu,  4 Jun 2026 23:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8113D2EEE69;
+	Thu,  4 Jun 2026 23:49:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE5F2C187
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 23:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CC227732
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 23:49:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780615040; cv=none; b=d+5efzhbXfjTCEoXiI5ITtu/f3dFklHa6tJFTAVVJFy+YvxLfM9qrRyBRr2BkZLCjLZhQR4UZicK8Iil3HQGQUucR56SisDyGh3RBX2vwoDwsISVuIBTt8fXsGVsMGgXn2LGm9nADs/BykdU6yMDX0ayi++uWYs7JFsY1UyrRw0=
+	t=1780616944; cv=none; b=pSV/u8tTElMQNE5OQG1y44qQfbSzksC9jkCpB8030rKcBgIFUeP8bkGP15yB793RKfdXE06+B219kqkrENkzVnbglrmUhUPKp6TXKMaxhZ44xqx00452TvXg4xsgeyWWnkk1VzyU1Y3DiEMBo310hiq253R7ErbkgxUKW5I1qSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780615040; c=relaxed/simple;
-	bh=9Y9Q3Oq/g2HsbSWx5NVzvzfWZLMDBobgubpbg/JDEYs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dOpRv44qf9fuH9bE65BN9FcNXpcYmx0aGEZsddzpdkWeb4ctyXUPL8fFHP9wLcOHvwf2ZbTFIMUeMjnD/9omIhLFEod/6tKaRCJJN3GZWAGxc9YQMOv1/5ws0/8O8p8VoHyhLUkdMlbV36JqEjFqoSPOuKFFEcBLWbFdqscLZ64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=IXImmDNk; arc=none smtp.client-ip=109.224.244.18
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1780615030; x=1780874230;
-	bh=LXhUaratdOjfuU2bCMULOdZjqvbpqRpbGJZQuxWj6C0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=IXImmDNkVEwpwxQS0+ErAYFnisgPyEz6hXK5p1nfNAqQHQe2Fm83KgewFIS862o8E
-	 geF2kU5zU/GtpBhtWJYAEIj/hM1P/WnSA6dXLoerjKyg1czZwPfQnsirxjIXvoUB4L
-	 jOjfhus8DdU2vI/DQz3qBbqr7lUd3IXl1Pc4B+DyU00X0811tg9OlXMcQoXdg9Axr1
-	 mv9m8V1/V/NuVLX8nOIfij2R+N/DF3LDzta8ayCcHcf4ZKw+t2Lj6L/ovXfsVWAN0f
-	 dOl8bUVkYmtK1F0gpft6KuhhllyCwvhZRP97i3jvfAgahyEFKS0kTMHuXYNyQXm3aW
-	 sX05uWMKg60Pg==
-Date: Thu, 04 Jun 2026 23:17:05 +0000
-To: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>
-From: Bryam Vargas <hexlabsecurity@proton.me>
-Cc: Justin Suess <utilityemal77@gmail.com>, Christian Brauner <brauner@kernel.org>, Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E . Hallyn" <serge@hallyn.com>, linux-security-module@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v5 2/2] selftests/landlock: test SCOPE_SIGNAL on the SIGIO/fowner pgid path
-Message-ID: <43370e89f7a896a583bf33d1cd171d02630e61bf.1780614610.git.hexlabsecurity@proton.me>
-In-Reply-To: <cover.1780614610.git.hexlabsecurity@proton.me>
-References: <cover.1780614610.git.hexlabsecurity@proton.me>
-Feedback-ID: 199661219:user:proton
-X-Pm-Message-ID: 11b9b891da285b59e3bd5d7a4ca76dcedfdc361b
+	s=arc-20240116; t=1780616944; c=relaxed/simple;
+	bh=7dgkQvnYS/prIBRxsxI2x7kpK+Pm1UIrU+k3qWmutP4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qQYS5UuDb38+J3C4+X18WwPiZ6eNJSrTZDUzU/64FAePudO7Ge2bMGlAe46DxkOUk6gZz+SEAMD3DZrzsc2NnwuQfZGZe+472Qc2aqMbSJHwQGoWqrC4BKrhU+7GXSJgGWgyaCKlMrbeCM/qftrzJc20AIkAe8t+OpVCZDZ4sqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TxoNfaE9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503391F00893;
+	Thu,  4 Jun 2026 23:49:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780616942;
+	bh=3yBQQ8ROV+A6IPsnBvTb7q+BtZaSewkkL9HxAuh2WJo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TxoNfaE91QzcY6mWcvxKIUMxJkYUaIX3DyMWgYs6dqsDdQsp6QYHr5doz5EYuXU9z
+	 1dhzjoGCPNo8Ojk9kT+KK+c7pEhQk/Dt3q/QO56PN+Uh8sgyAJ1pJhIYVD0+xJrvC9
+	 3xc7WC28luMcQnnA2fMEZ8vVn4EnP97WtU3wByUG5t62wzTglruovy7SHzszGoRSTU
+	 6DIglgBd77vnpTL5BiNFGJOcTpp64zjp7V8jGzVInXUZzlDuhnMncyiKULrAQu2597
+	 N5OEy5GD/Fx7/PuIBThz7ZA8T3fESYnagCDWhsoU02/NqCgQbaF2zIobxHKSJPc4IA
+	 RMGMtS+cNbAAw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/2] iio: chemical: scd30: Use guard(mutex) to allow early returns
+Date: Thu,  4 Jun 2026 19:48:59 -0400
+Message-ID: <20260604234900.2467781-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026060457-rubdown-rival-345e@gregkh>
+References: <2026060457-rubdown-rival-345e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
-	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260585-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,paul-moore.com,namei.org,hallyn.com,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mic@digikod.net,m:gnoack@google.com,m:utilityemal77@gmail.com,m:brauner@kernel.org,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:linux-security-module@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[hexlabsecurity@proton.me,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260586-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:Jonathan.Cameron@huawei.com,m:dlechner@baylibre.com,m:tomasz.duszynski@octakon.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hexlabsecurity@proton.me,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[proton.me:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 90996643ECB
+X-Rspamd-Queue-Id: BE85564405D
 
-Add regression tests for the LANDLOCK_SCOPE_SIGNAL handling of the
-asynchronous SIGIO delivery path (fcntl(F_SETOWN)) with a process-group
-owner.
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-sigio_to_pgid_members covers the bypass: a sandboxed process at the head
-of its process group's PID hlist (the default after fork()) arms
-F_SETOWN(-pgrp) + O_ASYNC and triggers the fan-out; the in-domain owner
-must be signaled (proving the trigger fired) while the non-sandboxed
-member of the group, outside the domain, must not.
+[ Upstream commit 5feb5532870fbced5d6f450b8061a33f461b88ca ]
 
-sigio_to_pgid_self covers the same-process guarantee: the owner is
-registered from a sandboxed non-leader thread, whose domain differs from
-the thread-group leader the kernel signals for a process-group owner.
-That leader belongs to the owner's own process and must still be signaled.
+Auto cleanup based release of the lock allows for simpler code flow in a
+few functions with large multiplexing style switch statements and no
+common operations following the switch.
 
-Without the fix the first test sees the out-of-domain member signaled and
-the second sees the owner's own leader denied.
-
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+Suggested-by: David Lechner <dlechner@baylibre.com>
+Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250209180624.701140-3-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 5aba4f94b225 ("iio: chemical: scd30: fix division by zero in write_raw")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/landlock/scoped_signal_test.c   | 183 ++++++++++++++++++
- 1 file changed, 183 insertions(+)
+ drivers/iio/chemical/scd30_core.c | 63 ++++++++++++++-----------------
+ 1 file changed, 28 insertions(+), 35 deletions(-)
 
-diff --git a/tools/testing/selftests/landlock/scoped_signal_test.c b/tools/=
-testing/selftests/landlock/scoped_signal_test.c
-index d8bf33417619..4359e0262dcf 100644
---- a/tools/testing/selftests/landlock/scoped_signal_test.c
-+++ b/tools/testing/selftests/landlock/scoped_signal_test.c
-@@ -559,4 +559,187 @@ TEST_F(fown, sigurg_socket)
- =09=09_metadata->exit_code =3D KSFT_FAIL;
+diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
+index 4d0d798c7cd347..10d44a14ac62f8 100644
+--- a/drivers/iio/chemical/scd30_core.c
++++ b/drivers/iio/chemical/scd30_core.c
+@@ -5,6 +5,7 @@
+  * Copyright (c) 2020 Tomasz Duszynski <tomasz.duszynski@octakon.com>
+  */
+ #include <linux/bits.h>
++#include <linux/cleanup.h>
+ #include <linux/completion.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+@@ -198,112 +199,104 @@ static int scd30_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const
+ 			  int *val, int *val2, long mask)
+ {
+ 	struct scd30_state *state = iio_priv(indio_dev);
+-	int ret = -EINVAL;
++	int ret;
+ 	u16 tmp;
+ 
+-	mutex_lock(&state->lock);
++	guard(mutex)(&state->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+ 	case IIO_CHAN_INFO_PROCESSED:
+ 		if (chan->output) {
+ 			*val = state->pressure_comp;
+-			ret = IIO_VAL_INT;
+-			break;
++			return IIO_VAL_INT;
+ 		}
+ 
+ 		ret = iio_device_claim_direct_mode(indio_dev);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		ret = scd30_read(state);
+ 		if (ret) {
+ 			iio_device_release_direct_mode(indio_dev);
+-			break;
++			return ret;
+ 		}
+ 
+ 		*val = state->meas[chan->address];
+ 		iio_device_release_direct_mode(indio_dev);
+-		ret = IIO_VAL_INT;
+-		break;
++		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 0;
+ 		*val2 = 1;
+-		ret = IIO_VAL_INT_PLUS_MICRO;
+-		break;
++		return IIO_VAL_INT_PLUS_MICRO;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		ret = scd30_command_read(state, CMD_MEAS_INTERVAL, &tmp);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		*val = 0;
+ 		*val2 = 1000000000 / tmp;
+-		ret = IIO_VAL_INT_PLUS_NANO;
+-		break;
++		return IIO_VAL_INT_PLUS_NANO;
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+ 		ret = scd30_command_read(state, CMD_TEMP_OFFSET, &tmp);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		*val = tmp;
+-		ret = IIO_VAL_INT;
+-		break;
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
+ 	}
+-	mutex_unlock(&state->lock);
+-
+-	return ret;
  }
-=20
-+/*
-+ * Checks that LANDLOCK_SCOPE_SIGNAL is enforced on the asynchronous SIGIO
-+ * delivery path (fcntl(F_SETOWN)) when the file owner is a process group.
-+ *
-+ * A sandboxed process sitting at the head of its process group's PID hlis=
-t
-+ * (the default position right after fork()) used to escape the
-+ * fcntl(F_SETOWN, -pgrp) domain recording: pid_task(pgrp, PIDTYPE_PGID)
-+ * resolved to the process itself, so the same-thread-group exemption skip=
-ped
-+ * recording its Landlock domain.  At SIGIO time that domain was then unse=
-t and
-+ * the signal fanned out to every group member, including non-sandboxed
-+ * processes outside the domain.
-+ */
-+TEST(sigio_to_pgid_members)
-+{
-+=09int trigger[2], sync_child[2];
-+=09char buf;
-+=09pid_t child;
-+=09int status, i;
-+
-+=09drop_caps(_metadata);
-+
-+=09/*
-+=09 * Isolates the test in its own process group so the SIGIO fan-out stay=
-s
-+=09 * bounded to this parent and the child forked below.
-+=09 */
-+=09ASSERT_EQ(0, setpgid(0, 0));
-+
-+=09/* The non-sandboxed parent is the protected (out-of-domain) target. */
-+=09ASSERT_EQ(0, setup_signal_handler(SIGURG));
-+=09signal_received =3D 0;
-+
-+=09ASSERT_EQ(0, pipe2(trigger, O_CLOEXEC));
-+=09ASSERT_EQ(0, pipe2(sync_child, O_CLOEXEC));
-+
-+=09child =3D fork();
-+=09ASSERT_LE(0, child);
-+=09if (child =3D=3D 0) {
-+=09=09/*
-+=09=09 * The child inherits the parent's new process group and, just
-+=09=09 * attached with hlist_add_head_rcu(), is now the head of the
-+=09=09 * pgid hlist: this is the case that used to skip the recording.
-+=09=09 */
-+=09=09EXPECT_EQ(0, close(sync_child[0]));
-+
-+=09=09/* In-domain positive control: the child must be signaled. */
-+=09=09ASSERT_EQ(0, setup_signal_handler(SIGURG));
-+=09=09signal_received =3D 0;
-+
-+=09=09create_scoped_domain(_metadata, LANDLOCK_SCOPE_SIGNAL);
-+
-+=09=09/* Owns the SIGIO source for the whole process group. */
-+=09=09ASSERT_EQ(0, fcntl(trigger[0], F_SETSIG, SIGURG));
-+=09=09ASSERT_EQ(0, fcntl(trigger[0], F_SETOWN, -getpgrp()));
-+=09=09ASSERT_EQ(0, fcntl(trigger[0], F_SETFL, O_ASYNC));
-+
-+=09=09/* Fans SIGURG out to every member of the process group. */
-+=09=09ASSERT_EQ(1, write(trigger[1], ".", 1));
-+
-+=09=09/*
-+=09=09 * The sandboxed child is in its own domain and must always be
-+=09=09 * signaled: this proves the SIGIO actually fired.
-+=09=09 */
-+=09=09for (i =3D 0; i < 1000 && !signal_received; i++)
-+=09=09=09usleep(1000);
-+=09=09EXPECT_EQ(1, signal_received);
-+
-+=09=09ASSERT_EQ(1, write(sync_child[1], ".", 1));
-+=09=09EXPECT_EQ(0, close(sync_child[1]));
-+
-+=09=09_exit(_metadata->exit_code);
-+=09=09return;
-+=09}
-+=09EXPECT_EQ(0, close(sync_child[1]));
-+=09EXPECT_EQ(0, close(trigger[0]));
-+=09EXPECT_EQ(0, close(trigger[1]));
-+
-+=09/* Waits for the child to generate the SIGIO. */
-+=09ASSERT_EQ(1, read(sync_child[0], &buf, 1));
-+=09EXPECT_EQ(0, close(sync_child[0]));
-+
-+=09/* Lets a delivered-but-pending signal run our handler, if any. */
-+=09for (i =3D 0; i < 100 && !signal_received; i++)
-+=09=09usleep(1000);
-+
-+=09/*
-+=09 * SCOPE_SIGNAL must block the fan-out to this non-sandboxed parent,
-+=09 * which is outside the child's Landlock domain.  Before the fix the
-+=09 * parent was signaled here.
-+=09 */
-+=09EXPECT_EQ(0, signal_received);
-+
-+=09ASSERT_EQ(child, waitpid(child, &status, 0));
-+=09if (WIFSIGNALED(status) || !WIFEXITED(status) ||
-+=09    WEXITSTATUS(status) !=3D EXIT_SUCCESS)
-+=09=09_metadata->exit_code =3D KSFT_FAIL;
-+}
-+
-+static void *thread_setown_scoped(void *arg)
-+{
-+=09const int fd =3D *(int *)arg;
-+=09int ruleset_fd;
-+=09const struct landlock_ruleset_attr ruleset_attr =3D {
-+=09=09.scoped =3D LANDLOCK_SCOPE_SIGNAL,
-+=09};
-+
-+=09/* Sandboxes only this non-leader thread (no thread syncing). */
-+=09ruleset_fd =3D
-+=09=09landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
-+=09if (ruleset_fd < 0)
-+=09=09return (void *)THREAD_ERROR;
-+=09if (prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0) ||
-+=09    landlock_restrict_self(ruleset_fd, 0)) {
-+=09=09close(ruleset_fd);
-+=09=09return (void *)THREAD_ERROR;
-+=09}
-+=09close(ruleset_fd);
-+
-+=09/* Makes this process group own the SIGIO source. */
-+=09if (fcntl(fd, F_SETSIG, SIGURG) || fcntl(fd, F_SETOWN, -getpgrp()) ||
-+=09    fcntl(fd, F_SETFL, O_ASYNC))
-+=09=09return (void *)THREAD_ERROR;
-+
-+=09return (void *)THREAD_SUCCESS;
-+}
-+
-+/*
-+ * Checks that the SIGIO fan-out is still delivered to the file owner's ow=
-n
-+ * process when fcntl(F_SETOWN, -pgrp) was issued from a sandboxed non-lea=
-der
-+ * thread.
-+ *
-+ * The Landlock domain is recorded for a process-group owner (so out-of-do=
-main
-+ * members stay blocked, see sigio_to_pgid_members), but the kernel signal=
-s a
-+ * process group through its members' thread-group leaders.  Here the lead=
-er is
-+ * not sandboxed and thus has a different domain than the registering thre=
-ad, so
-+ * the registration-time check cannot tell that it belongs to the owner's =
-own
-+ * process.  hook_file_send_sigiotask() must recognize it through the reco=
-rded
-+ * thread group and allow the delivery, matching the same-process guarante=
-e of
-+ * commit 18eb75f3af40.  Without that exemption the leader is wrongly deni=
-ed and
-+ * never signaled.
-+ */
-+TEST(sigio_to_pgid_self)
-+{
-+=09int trigger[2];
-+=09pthread_t thread;
-+=09enum thread_return ret =3D THREAD_INVALID;
-+=09int i;
-+
-+=09drop_caps(_metadata);
-+
-+=09/* Bounds the SIGIO fan-out to this process. */
-+=09ASSERT_EQ(0, setpgid(0, 0));
-+
-+=09/* The non-sandboxed thread-group leader is the SIGIO target. */
-+=09ASSERT_EQ(0, setup_signal_handler(SIGURG));
-+=09signal_received =3D 0;
-+
-+=09ASSERT_EQ(0, pipe2(trigger, O_CLOEXEC));
-+
-+=09/*
-+=09 * Registers the process-group fowner from a sibling thread that
-+=09 * sandboxes only itself, so its domain differs from the leader's.
-+=09 */
-+=09ASSERT_EQ(0, pthread_create(&thread, NULL, thread_setown_scoped,
-+=09=09=09=09    &trigger[0]));
-+=09ASSERT_EQ(0, pthread_join(thread, (void **)&ret));
-+=09ASSERT_EQ(THREAD_SUCCESS, ret);
-+
-+=09/* Fans SIGURG out to the process group. */
-+=09ASSERT_EQ(1, write(trigger[1], ".", 1));
-+
-+=09for (i =3D 0; i < 1000 && !signal_received; i++)
-+=09=09usleep(1000);
-+
-+=09/*
-+=09 * Same-process delivery must always be allowed, even though the owner
-+=09 * was registered from a sandboxed sibling thread.
-+=09 */
-+=09EXPECT_EQ(1, signal_received);
-+
-+=09EXPECT_EQ(0, close(trigger[0]));
-+=09EXPECT_EQ(0, close(trigger[1]));
-+}
-+
- TEST_HARNESS_MAIN
---=20
-2.43.0
-
+ 
+ static int scd30_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+ 			   int val, int val2, long mask)
+ {
+ 	struct scd30_state *state = iio_priv(indio_dev);
+-	int ret = -EINVAL;
++	int ret;
+ 
+-	mutex_lock(&state->lock);
++	guard(mutex)(&state->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		if (val)
+-			break;
++			return -EINVAL;
+ 
+ 		val = 1000000000 / val2;
+ 		if (val < SCD30_MEAS_INTERVAL_MIN_S || val > SCD30_MEAS_INTERVAL_MAX_S)
+-			break;
++			return -EINVAL;
+ 
+ 		ret = scd30_command_write(state, CMD_MEAS_INTERVAL, val);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		state->meas_interval = val;
+-		break;
++		return 0;
+ 	case IIO_CHAN_INFO_RAW:
+ 		switch (chan->type) {
+ 		case IIO_PRESSURE:
+ 			if (val < SCD30_PRESSURE_COMP_MIN_MBAR ||
+ 			    val > SCD30_PRESSURE_COMP_MAX_MBAR)
+-				break;
++				return -EINVAL;
+ 
+ 			ret = scd30_command_write(state, CMD_START_MEAS, val);
+ 			if (ret)
+-				break;
++				return ret;
+ 
+ 			state->pressure_comp = val;
+-			break;
++			return 0;
+ 		default:
+-			break;
++			return -EINVAL;
+ 		}
+-		break;
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+ 		if (val < 0 || val > SCD30_TEMP_OFFSET_MAX)
+-			break;
++			return -EINVAL;
+ 		/*
+ 		 * Manufacturer does not explicitly specify min/max sensible
+ 		 * values hence check is omitted for simplicity.
+ 		 */
+-		ret = scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
++		return scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
++	default:
++		return -EINVAL;
+ 	}
+-	mutex_unlock(&state->lock);
+-
+-	return ret;
+ }
+ 
+ static int scd30_write_raw_get_fmt(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+-- 
+2.53.0
 
 
