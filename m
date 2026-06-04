@@ -1,219 +1,205 @@
-Return-Path: <stable+bounces-260372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260374-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ASmLGtRUIWpODwEAu9opvQ
-	(envelope-from <stable+bounces-260372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:35:00 +0200
+	id X+QAKVtVIWqvDwEAu9opvQ
+	(envelope-from <stable+bounces-260374-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:37:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D024F63F157
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1641A63F191
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:37:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=proton.me header.s=protonmail header.b="BLBa/26D";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260372-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260372-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=proton.me;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rX5aqQ8T;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260374-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260374-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2B40130819D4
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 10:27:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CF8DB315F717
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 10:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DDF3BED7A;
-	Thu,  4 Jun 2026 10:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29E13A544F;
+	Thu,  4 Jun 2026 10:29:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C70396D0A;
-	Thu,  4 Jun 2026 10:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939CF20010A
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 10:29:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780568847; cv=none; b=tx93akwsRfAl9dvcGTE0mXSoe6GygUkcgrk2A0aV30+Zf6urMh4fZKUHd00966eSiQlcBoXOWQZS/YqGI1Q3p7Eml7QciNSnATlu3OMQgBKo1EVmnk86sYb0AIthVRYqN3wiyUxVglxQMbAipKpKFCEJWbDdnGlzHJVzW+Zy7SE=
+	t=1780568949; cv=none; b=ZxRjO3BUh7slmocsbeZtcecI9LWkIWn3aorqbWjE88Vl28brawE/p/G2Su8YfP0WBXT/DndtDjDN53jY8nf/UOppT7/kMOR+JBAot/Iv1ggIJjNsMWYWVSrZwC4fHE+zS3ddWmQPUT4meqcsPMRCg7vvyG4GnG5aiV2elK3Qfks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780568847; c=relaxed/simple;
-	bh=8ytD6fh+kb94EYG4EWuFGF4MDorLMGcTZcu0LrxnFk0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ufFoRCJVgfM8xTJkfbe3ciB71WgJtlK1MV/tDgQJMW4SyTpgrjCbwENeuAEiHGM1KkJTa/5h5+SRQvVzDNveGSXVn4lhE8/nMP6Y1clJTiR7rQu+LBOJqNm6ECrFLIgl2K07PV3QLSoaGQudTjN7sJTCDd1AJYo1KQHdxdypNkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=BLBa/26D; arc=none smtp.client-ip=185.70.43.16
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1780568842; x=1780828042;
-	bh=bHw9600ipMORyOji7HH9OSGXMzsw+pVJ13JeBJ8PC5A=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=BLBa/26Dt4wJGlHsTES9WdHQXpK5knUCdM8ctijSwgmlqLrQ9XBP7167kVSWwvCHd
-	 dy3m3pPOGQFjkDXTn7aH/TsYgXsjKVqgn2dVVb3FhhuDTR/jQz/4PIJUD9NUFFTemN
-	 azq5JRAcpZWfDxH9g78O66qOGYsGs97h+kvhxCjyDDv80E0QpM0Y5S4Q7sJa308BAb
-	 a+O1t8fSUaMGvB0uN4Penymke0wVPhxuKx30MJU+L52vf7l8y9tCTy7nWiTX00DJOF
-	 W6mKkUyMMIjiOYJu82vlJ1H+M8FxX5GSLRJtnNd+muSTHSLCHzIxPJT7Cwcp9z5Mpr
-	 s+HIKLel1uNzQ==
-Date: Thu, 04 Jun 2026 10:27:13 +0000
-To: =?utf-8?Q?G=C3=BCnther_Noack?= <gnoack3000@gmail.com>
-From: Bryam Vargas <hexlabsecurity@proton.me>
-Cc: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, Justin Suess <utilityemal77@gmail.com>, Christian Brauner <brauner@kernel.org>, Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E . Hallyn" <serge@hallyn.com>, linux-security-module@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] landlock: fix LANDLOCK_SCOPE_SIGNAL bypass on the SIGIO path
-Message-ID: <20260604102707.133997-1-hexlabsecurity@proton.me>
-In-Reply-To: <20260604.f1cb6ce9cd6b@gnoack.org>
-References: <7rvmLIHR1Zh8RDF1IY1-SYRHzErgw9gPHq0k98RLYVsmHqAejjxcuJi8V3QaSbW-SnNvY5tfM2Xn_S1dEajKV_f7iyitoPwJgOSTZQ0nytc=@proton.me> <20260531.irah0eiM3Chi@digikod.net> <20260602172741.18760-1-hexlabsecurity@proton.me> <20260602172741.18760-2-hexlabsecurity@proton.me> <20260604.f1cb6ce9cd6b@gnoack.org>
-Feedback-ID: 199661219:user:proton
-X-Pm-Message-ID: 3eb54473c11b67113bdd13d08dbd2fcd8b4f1b13
+	s=arc-20240116; t=1780568949; c=relaxed/simple;
+	bh=hkNuJ3HQvZKr2AnCVZjxP+YLz6bgJNfGbbFpgRxqvow=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dy69XFFj/hWIdXlADiwGGkG8jLzht96ksIA8NnCtqUskMXKEadHKAdpFzGpvtdwCAcIC7+ckraAB/14LLKa5pOdQDCiYkfdYkJHitH5+lYGo+O52OLHT6T3AISpnWfVPuy6LHQFOabkZpIpSs0np4gHOAnJiXwSBwakNDXFp1dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rX5aqQ8T; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AC41F00893;
+	Thu,  4 Jun 2026 10:29:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1780568948;
+	bh=Z6BMihPLXQPq5dgv/0DLTp0hwjpO2+HzAIhf7VmDz5o=;
+	h=Subject:To:Cc:From:Date;
+	b=rX5aqQ8TNsiE4WH2p5WfliBBw9db60ChDUs3Z+bjiX7xCb0Xz+TMrQ1kHFkTJkrFc
+	 /+rCjrAl2GA8Wjqd8cGIWWYrRLGltbBRklthEmax4JjBMRo0+cmdrhG8Sn18Ulsa7K
+	 l8h/F+xapu7CqxGaEZ8DrWOMvyeGwnNCWs/sLraU=
+Subject: FAILED: patch "[PATCH] octeontx2-af: validate body pcifunc in" failed to apply to 6.18-stable tree
+To: michael.bommarito@gmail.com,kuba@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 04 Jun 2026 12:28:11 +0200
+Message-ID: <2026060411-target-repeated-e6ae@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260372-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[digikod.net,google.com,gmail.com,kernel.org,paul-moore.com,namei.org,hallyn.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:gnoack3000@gmail.com,m:mic@digikod.net,m:gnoack@google.com,m:utilityemal77@gmail.com,m:brauner@kernel.org,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:linux-security-module@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[hexlabsecurity@proton.me,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hexlabsecurity@proton.me,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[proton.me:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260374-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:michael.bommarito@gmail.com,m:kuba@kernel.org,m:stable@vger.kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[]
+	MIME_TRACE(0.00)[0:+]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D024F63F157
+X-Rspamd-Queue-Id: 1641A63F191
 
-Hi G=C3=BCnther,
 
-> I believe the result after this patch is:
->  - No threads receive the SIGIO at all.
->
-> This is because we have been setting T2.2's Landlock domain as the
-> "sending domain" for the hook_file_sigiotask(), and that hook does on
-> its own not do the "same_thread_group()" check [...]
+The patch below does not apply to the 6.18-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Confirmed -- I traced the delivery path and your analysis holds.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-For a PGID owner the signal is anchored per process on its thread-group
-leader: a task is attached to pid->tasks[PIDTYPE_PGID] only in the
-thread_group_leader() branch of copy_process(), so send_sigio()'s
-do_each_pid_task(pid, PIDTYPE_PGID, p) walk visits exactly T2.1 for P2,
-never the non-leader T2.2.  hook_file_send_sigiotask() then runs
-domain_is_scoped(recorded T2.2 domain, T2.1's live domain, SIGNAL) and,
-having no same_thread_group() exemption of its own (unlike
-hook_task_kill()), denies it -- even though T2.1 and T2.2 share P2's
-signal_struct and 18eb75f3af40 mandates that same-process delivery always
-be allowed.  T2.1 is P2's only entry on the PGID list, so P2 receives
-nothing.  You are right.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git checkout FETCH_HEAD
+git cherry-pick -x 2156a29aecfffa2eb7c558255690084efbe9f3b0
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060411-target-repeated-e6ae@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
-One thing worth putting on the record: this over-block is not introduced
-by the patch.  In unpatched control_current_fowner() the PGID case already
-resolves through pid_task(fown->pid, PIDTYPE_PGID), which returns an
-arbitrary hlist head -- one representative leader.  Whenever that head is
-outside the caller's thread group, the domain is already recorded today and
-the same delivery-time denial of the registrant's own leader already fires.
-The patch only makes domain recording for PGID unconditional, i.e. it turns
-that order-dependent behaviour into a deterministic one while closing the
-order-dependent bypass.  So the corner you describe is a pre-existing gap i=
-n
-the delivery hook, not a regression in v4.
+Possible dependencies:
 
-That points at the real root cause: same_thread_group is a *per-recipient*
-property, but control_current_fowner() approximates it once, at F_SETOWN
-time, against a single pid_task() representative.  hook_task_kill() gets
-this right because it evaluates same_thread_group(p, current) live, per
-actual recipient.  hook_file_send_sigiotask() is the SIGIO analogue but
-delegates the whole thread-group decision to that one registration-time
-check, which a PGID delivery set simply cannot be captured by.
 
-So the fully-correct fix is to move the same-process exemption to delivery
-time, keyed to the *registrant* rather than to current (at SIGIO time
-current is the fd writer, not the task that armed F_SETOWN).  Concretely:
-when hook_file_set_fowner() records the domain, also pin
-get_pid(task_tgid(current)) in struct landlock_file_security; in
-hook_file_send_sigiotask(), before domain_is_scoped(), return 0 when
-task_tgid(tsk) =3D=3D that recorded pid.  PGID owners still record the doma=
-in
-(so P1 stays blocked -- the bypass fix), but the registrant's own process,
-including T2.1, is always allowed -- restoring 18eb75f3af40 exactly.  The
-new pid is taken/put in lockstep with fown_subject.domain under the same
-file->f_owner->lock and freed in hook_file_free_security(); the equality
-test follows neither pid, so there is no extra RCU surface.  Sketch:
 
-    /* struct landlock_file_security */
-    struct pid *fown_tg;   /* registrant's thread group; NULL if no domain =
-*/
+thanks,
 
-    /* hook_file_set_fowner(), where fown_subject is recorded */
-    fown_tg =3D get_pid(task_tgid(current));
-    ...
-    put_pid(landlock_file(file)->fown_tg);     /* release previous */
-    landlock_file(file)->fown_tg =3D fown_tg;
+greg k-h
 
-    /* hook_file_free_security() */
-    put_pid(landlock_file(file)->fown_tg);
+------------------ original commit in Linus's tree ------------------
 
-    /* hook_file_send_sigiotask(), after the !subject->domain quick return =
-*/
-    if (task_tgid(tsk) =3D=3D landlock_file(fown->file)->fown_tg)
-            return 0;   /* same process as the registrant: always allowed *=
-/
+From 2156a29aecfffa2eb7c558255690084efbe9f3b0 Mon Sep 17 00:00:00 2001
+From: Michael Bommarito <michael.bommarito@gmail.com>
+Date: Wed, 20 May 2026 11:41:57 -0400
+Subject: [PATCH] octeontx2-af: validate body pcifunc in
+ rvu_mbox_handler_rep_event_notify
 
-I do not see a correct fix that avoids recording the registrant's identity:
-the registrant task is deliberately discarded after set_fowner (only its
-domain is kept), and exempting on a shared *domain* instead would be
-insecure -- sibling threads can hold different domains, and a different
-process could share one.
+rvu_mbox_handler_rep_event_notify() in drivers/net/ethernet/marvell/
+octeontx2/af/rvu_rep.c queues a sender-controlled REP_EVENT_NOTIFY
+request body verbatim, and rvu_rep_up_notify() then forwards
+event->pcifunc (the nested body field, distinct from the
+AF-normalised header pcifunc) into rvu_get_pfvf(), rvu_get_pf() and
+the AF->PF mailbox device index without any bounds check.
 
-> To be clear, the patch is still obviously an improvement [...] it just
-> seems to block it slightly too broadly in this corner scenario?
-> [...] Micka=C3=ABl, maybe you have some thoughts on the tradeoff?
+A VF attached to a PF that has been put into switchdev
+representor mode reaches this path: the VF mailbox handler
+otx2_pfvf_mbox_handler() forwards every message id including
+MBOX_MSG_REP_EVENT_NOTIFY to AF without an allowlist, and the AF
+dispatcher rewrites only msg->pcifunc, leaving struct
+rep_event::pcifunc attacker-controlled.  The sibling
+rvu_mbox_handler_esw_cfg() refuses requests whose header pcifunc
+is not rvu->rep_pcifunc; this handler has no equivalent gate.
 
-Agreed on both counts.  Micka=C3=ABl -- two ways to land this:
+An out-of-range body pcifunc selects an &rvu->pf[]/&rvu->hwvf[]
+element past the allocated array and, for RVU_EVENT_MAC_ADDR_CHANGE,
+turns into a six-byte attacker-chosen OOB ether_addr_copy() target
+inside the queued worker; KASAN reports a slab-out-of-bounds write
+in rvu_rep_wq_handler.
 
-  (a) keep v4 as is.  It closes the bypass; the residual same-process
-      over-block is pre-existing, deterministic only under the stacked
-      conditions G=C3=BCnther listed (already-multithreaded enforce, no TSY=
-NC,
-      SIGIO to a PGID that includes self, registered from a non-leader
-      thread in a per-thread signal-scoped domain), and arguably tolerable.
+Reject malformed requests at the handler entry by gating on
+is_pf_func_valid(), which is already the canonical PF/VF range check
+in this driver; expose it via rvu.h so callers in rvu_rep.c can use
+it instead of open-coding the same range arithmetic.
 
-  (b) v5 =3D v4 + the delivery-time exemption above.  Strictly more correct=
-:
-      it also closes the pre-existing delivery-hook gap and restores
-      18eb75f3af40's same-process invariant, at the cost of one struct pid*
-      in landlock_file_security.
+Fixes: b8fea84a0468 ("octeontx2-pf: Add support to sync link state between representor and VFs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260520154157.1439319-1-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-I lean (b) -- it fixes the actual root cause rather than the one reachable
-instance -- and I am happy to spin it (with an added selftest covering the
-PGID-includes-self / non-leader-registrant case, A/B verified) or to hold a=
-t
-v4 if you would rather keep the change minimal.  Your call on whether the
-corner warrants the extra state.
-
-> P.S: [...] new patchset versions are posted at the top (no Reply-To
->      header in the cover letter) [...]
-
-Will do -- v5 (whichever option) goes out as a fresh top-level thread, no
-In-Reply-To/Reply-To pointing back at this review.
-
-Bryam
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index e40b79076358..3cf131508ecf 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -436,7 +436,7 @@ struct rvu_pfvf *rvu_get_pfvf(struct rvu *rvu, int pcifunc)
+ 		return &rvu->pf[rvu_get_pf(rvu->pdev, pcifunc)];
+ }
+ 
+-static bool is_pf_func_valid(struct rvu *rvu, u16 pcifunc)
++bool is_pf_func_valid(struct rvu *rvu, u16 pcifunc)
+ {
+ 	int pf, vf, nvfs;
+ 	u64 cfg;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+index a466181cf908..de3fbd3d15d6 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -917,6 +917,7 @@ u16 rvu_get_rsrc_mapcount(struct rvu_pfvf *pfvf, int blkaddr);
+ struct rvu_pfvf *rvu_get_pfvf(struct rvu *rvu, int pcifunc);
+ void rvu_get_pf_numvfs(struct rvu *rvu, int pf, int *numvfs, int *hwvf);
+ bool is_block_implemented(struct rvu_hwinfo *hw, int blkaddr);
++bool is_pf_func_valid(struct rvu *rvu, u16 pcifunc);
+ bool is_pffunc_map_valid(struct rvu *rvu, u16 pcifunc, int blktype);
+ int rvu_get_lf(struct rvu *rvu, struct rvu_block *block, u16 pcifunc, u16 slot);
+ int rvu_lf_reset(struct rvu *rvu, struct rvu_block *block, int lf);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+index 901f6fd40fd4..a2781e0f504e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+@@ -97,6 +97,14 @@ int rvu_mbox_handler_rep_event_notify(struct rvu *rvu, struct rep_event *req,
+ {
+ 	struct rep_evtq_ent *qentry;
+ 
++	/* The mailbox dispatcher normalises only the header pcifunc; the
++	 * nested struct rep_event::pcifunc body field is sender-controlled
++	 * and is later used by rvu_rep_up_notify() to index rvu->pf[] /
++	 * rvu->hwvf[].  Reject out-of-range body selectors before queueing.
++	 */
++	if (!is_pf_func_valid(rvu, req->pcifunc))
++		return -EINVAL;
++
+ 	qentry = kmalloc_obj(*qentry, GFP_ATOMIC);
+ 	if (!qentry)
+ 		return -ENOMEM;
 
 
