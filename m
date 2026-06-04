@@ -1,77 +1,56 @@
-Return-Path: <stable+bounces-260362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hnEFLCdMIWoWCwEAu9opvQ
-	(envelope-from <stable+bounces-260362-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 11:57:59 +0200
+	id vzB7IyRTIWr3DQEAu9opvQ
+	(envelope-from <stable+bounces-260373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:27:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 020F963EBDB
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 11:57:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22BE763F026
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:27:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=a53XU4z1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260362-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260362-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260373-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-260373-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD0C930053D6
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 09:50:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1001E300F5D5
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 10:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626FD37756F;
-	Thu,  4 Jun 2026 09:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4A43D0903;
+	Thu,  4 Jun 2026 10:27:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5CA36BCDD
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 09:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6A03A759C;
+	Thu,  4 Jun 2026 10:27:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780566652; cv=none; b=qtZx/6Ng4W58zm1mAdugcP8RiH7ME+RSxOiYetX9T7mxubtu+pEW1lAtu7ucWSqKZm7SsiPHCoI+l3BODWANyhL3Zem1v0n7xE4XY3f69+LLDe2fe9+tYifTc59hUpGbboWyl/63fPBKMKfMPwkYNnBBTFRV5g8GhpjsRdHGk4s=
+	t=1780568852; cv=none; b=rlNOH3Yp3vrIHAmvG1h1+m/wO2zXn8N2HMKTkSf96ftKXt6hsdurswA4ChvGq6P0N3ZP7SYgduqJU/33GR2jS+SPUqBMwPij/vzE/vL3IYk1GLm7vn/bhYIuPhGlvzisz9Ppq8VwG5TqNb4RdaysDSMJfG2Ywco/75yMi0Pynq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780566652; c=relaxed/simple;
-	bh=Jza6mxy5CFobueQBU5MXCjifhlqHrSL/hJl4KW3I3GE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SPMz8WR5TrNWE89Q1OIOwgkbPQ15Ddzzx1NMlDvf+4J8j6WErDecKbCRz8d/nV69cBlnJjy4di9NCF0O57U5iSvqM0AWDXsWvZ43RBtcHt9SivmJWSPGAoLwH2waXXTZuH04qDihhZFxRJ7HWajUsHRpbwJvR6os7WFscEkfCOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a53XU4z1; arc=none smtp.client-ip=198.175.65.12
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780566651; x=1812102651;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Jza6mxy5CFobueQBU5MXCjifhlqHrSL/hJl4KW3I3GE=;
-  b=a53XU4z1jyPiSGFgfWVVJLDbqxWP65x0gS4RjEJPx1RhViBXSQUT/7Xl
-   LrKqogeuCi5vb58jwV8WvSUr3ObPFBZ5msu+58A4+r0OE52zM5UU1+Sy/
-   bhI6zDQSrUVfPkBxEOQ931wA7yvYGEfqGRCjy256sjj4uI+ne6zvRuPHj
-   FQG5nZ2d7a1kl2uwjkpTOosFADdRQmjY7SyFy8eJQ1/T3TG06jO8aIMOw
-   jcW50PEACUf4CSaczJtkRbC8GTuT6aIrcruCykxzTQw0yMddAIAQ5Ez9+
-   X+LqTrPdYvwfULv8hoGo8y6t1n7lJvOi8p6oqNn4gg18yIDYqWS1ExkX0
-   g==;
-X-CSE-ConnectionGUID: VWZmcW3bRce7ix+iDjuHzA==
-X-CSE-MsgGUID: MRgDzycXT8ev6jpxEI1QLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11806"; a="92876470"
-X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; 
-   d="scan'208";a="92876470"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 02:50:51 -0700
-X-CSE-ConnectionGUID: nbYgU2gvQtKiXV+nwwsq0A==
-X-CSE-MsgGUID: EzyxdFuAR4CpVCD/9AcPXg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; 
-   d="scan'208";a="249423464"
-Received: from nitin-super-server.iind.intel.com ([10.190.238.72])
-  by orviesa005.jf.intel.com with ESMTP; 04 Jun 2026 02:50:49 -0700
-From: Nitin Gote <nitin.r.gote@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: amd-gfx@lists.freedesktop.org,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	stable@vger.kernel.org,
-	Christian Konig <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH] drm/amdgpu: Fix UAF in amdgpu_gem_prime_import() on attach failure
-Date: Thu,  4 Jun 2026 15:56:37 +0530
-Message-ID: <20260604102636.1816829-2-nitin.r.gote@intel.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1780568852; c=relaxed/simple;
+	bh=als/dxOGF3vxwARVfzOa2gkKyEh9l70RPOinUzZ6Wr4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BgLl7d+LNyXgh+SiWjqfBDoFK8o0wD7GvUE4ioL3aF1R8rG33AdtGZqFTMMQltyuvAxatuUxROaDO3mgiVUo9v2Q3h18oFcAF9DJklYGVaU1b464IpwXENFmA3ILMHKbqh7maFOl4oSEC8Lgjf165c1fUB8mAvzhSU2xMpbv8AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-01 (Coremail) with SMTP id qwCowADnh9AEUyFqknqXAA--.107S2;
+	Thu, 04 Jun 2026 18:27:16 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: akhilrajeev@nvidia.com,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	thierry.reding@kernel.org,
+	jonathanh@nvidia.com
+Cc: linux-crypto@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] crypto: tegra: fix refcount leak in tegra_se_host1x_submit()
+Date: Thu,  4 Jun 2026 10:27:06 +0000
+Message-Id: <20260604102706.3787771-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,92 +58,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADnh9AEUyFqknqXAA--.107S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uF4Utw17Ww47Cr4DJr4rAFb_yoW8Jw43pF
+	Z0k3yqyr98Jr4rGFn7JF48CFy093y3ZryDGw4fAa42yrs8JFyUAF43CFWjvay8WrsYgr12
+	qFZrA3y5ur18uaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
+	nIWIevJa73UjIFyTuYvjfUrrWFUUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCREIA2ohQhU22gAAsj
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260362-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:intel-xe@lists.freedesktop.org,m:amd-gfx@lists.freedesktop.org,m:nitin.r.gote@intel.com,m:stable@vger.kernel.org,m:christian.koenig@amd.com,m:alexander.deucher@amd.com,m:matthew.auld@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[nitin.r.gote@intel.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:akhilrajeev@nvidia.com,m:herbert@gondor.apana.org.au,m:davem@davemloft.net,m:thierry.reding@kernel.org,m:jonathanh@nvidia.com,m:linux-crypto@vger.kernel.org,m:linux-tegra@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[nitin.r.gote@intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260373-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_DKIM_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim,intel.com:from_mime,intel.com:email,amd.com:email]
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 020F963EBDB
+X-Rspamd-Queue-Id: 22BE763F026
 
-amdgpu_dma_buf_create_obj() creates the importer BO with obj->resv
-pointing at the exporter's dma_buf->resv. If dma_buf_dynamic_attach()
-fails, no dma_buf reference is held and the exporter can be freed
-before ttm_bo_delayed_delete() runs, causing a UAF on dma_resv_lock().
+The timeout error path in tegra_se_host1x_submit() returns without
+calling host1x_job_put(), while all other paths (success, submit
+error, pin error) properly release the job reference through the
+job_put label.  Since host1x_job_alloc() initializes the reference
+count and host1x_job_put() is required to drop it, omitting it on
+timeout causes a permanent refcount leak.
 
-Switch obj->resv to the BO's private _resv under lru_lock before
-dropping the last reference, mirroring ttm_bo_individualize_resv().
-The BO carries no fences and is not yet visible to other users, so
-the switch is safe.
+Fix this by redirecting the timeout return to the existing job_put
+label, ensuring the job reference and any associated syncpt
+references are consistently released.
 
-This is the amdgpu counterpart to the xe fix:
-  ("drm/xe: Fix UAF in xe_gem_prime_import() on attach failure")
-
-Fixes: d99fbd9aab62 ("drm/ttm: Always take the bo delayed cleanup path for imported bos")
-Cc: stable@vger.kernel.org # v6.8+
-Cc: Christian Konig <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Suggested-by: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
-Hi,
-This is the amdgpu counterpart to the xe fix:
-  ("drm/xe: Fix UAF in xe_gem_prime_import() on attach failure")
-  https://patchwork.freedesktop.org/series/167647/
-- Nitin
+ drivers/crypto/tegra/tegra-se-main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-index b33c300e26e2..6a24cf2e3666 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-@@ -568,6 +568,16 @@ struct drm_gem_object *amdgpu_gem_prime_import(struct drm_device *dev,
- 	attach = dma_buf_dynamic_attach(dma_buf, dev->dev,
- 					&amdgpu_dma_buf_attach_ops, obj);
- 	if (IS_ERR(attach)) {
-+		/*
-+		 * Attach failed with no dma_buf ref held; switch resv to the BO's
-+		 * private _resv under lru_lock before the last put, so
-+		 * ttm_bo_delayed_delete() doesn't dereference the stale exporter
-+		 * resv.
-+		 */
-+		spin_lock(&gem_to_amdgpu_bo(obj)->tbo.bdev->lru_lock);
-+		obj->resv = &obj->_resv;
-+		spin_unlock(&gem_to_amdgpu_bo(obj)->tbo.bdev->lru_lock);
-+
- 		drm_gem_object_put(obj);
- 		return ERR_CAST(attach);
+diff --git a/drivers/crypto/tegra/tegra-se-main.c b/drivers/crypto/tegra/tegra-se-main.c
+index eb71113ed146..e8d8c3a23d7a 100644
+--- a/drivers/crypto/tegra/tegra-se-main.c
++++ b/drivers/crypto/tegra/tegra-se-main.c
+@@ -180,7 +180,7 @@ int tegra_se_host1x_submit(struct tegra_se *se, struct tegra_se_cmdbuf *cmdbuf,
+ 				 MAX_SCHEDULE_TIMEOUT, NULL);
+ 	if (ret) {
+ 		dev_err(se->dev, "host1x job timed out\n");
+-		return ret;
++		goto job_put;
  	}
+ 
+ 	host1x_job_put(job);
 -- 
-2.50.1
+2.34.1
 
 
