@@ -1,139 +1,277 @@
-Return-Path: <stable+bounces-260561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260562-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fvzqJA7MIWqsNwEAu9opvQ
-	(envelope-from <stable+bounces-260561-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 21:03:42 +0200
+	id /kvsOXTPIWoIOgEAu9opvQ
+	(envelope-from <stable+bounces-260562-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 21:18:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09BB9642C85
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 21:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1CD642D70
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 21:18:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H95Qqktn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260561-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260561-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BU1LqvQ7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260562-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260562-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8943A300DE3A
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 18:57:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B31E30097DB
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 19:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCDD3B388E;
-	Thu,  4 Jun 2026 18:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00FE351C34;
+	Thu,  4 Jun 2026 19:18:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0586B37997E
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 18:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D442E1C4E
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 19:17:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780599443; cv=none; b=W2USoP3WhTmWtKTc1IJMcty8De16voU0v5N7IMCyCVl3z+Gjco1uwgrtb/b0c1971onvdJTo8axU2rKtkLoumMhT5TZMhZ6xJYprq3SBUJak3phgTJ1uVZIyRUK1Yg9j/MwaRwBSNwsJwdCEHdbKLf3mElOTmbzujo4iOFY6FzM=
+	t=1780600680; cv=none; b=uEAEG1HEYnU4cmJnNcOuGd+A8hEdUVJ8T9KVCtrhVMb5ct6fSkTtciEkewE0UhtU8V1rqM13LsLSUQcD2KPLxuw53bWrf3iki3l4+gn7A+uYAGQYacz/YTXi8raFsDXiO6x5h9a+xU+zBIrX2KQ9knB9CdHbeR3T4p+N3LC1OV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780599443; c=relaxed/simple;
-	bh=OxLwykBTu8Yd6I47WLYPR1kFp4z+5Tf3ljYPLDgg+ic=;
+	s=arc-20240116; t=1780600680; c=relaxed/simple;
+	bh=8+ODXaYGes1crVWUsFFjQ4w5kCdSO7aBuqCewiInp9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sUawrA/1ZLBBnsZilUznSYS1m40uEaV6r9o0MVzEFS9SX12Me9qAooR0KL4jhgBgjp8xbeYQ6ohsnvon8ZgZRoe1qPWgd1NmyXJ1Bkd6bsFvHGyxRBeYeaOwot/ZRfCbM/SnF9w3QTMrAAULEFn1duhQKsW4h8r51ch8mkSdqbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H95Qqktn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3907F1F00893;
-	Thu,  4 Jun 2026 18:57:22 +0000 (UTC)
+	 MIME-Version; b=eTBSm9ZRkwPsiTerel2doz55Beq0n5JDBV7D+0z4ZUV+jnXxJHzgz2s5lZL9FksDAW+UkYQrNgHw02DsbeuPEJYDg3tPMrfFqW2IBbblnk36TrWW7LX2wW8gvkfZ61qCBdzy4FomedPUrGIfhMG7L9MfbJnAQ3rwg2edI1v7+gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BU1LqvQ7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5701F00893;
+	Thu,  4 Jun 2026 19:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780599442;
-	bh=tytR7LLD0Fth+qmMp3o7yinfG6Mp8k+aw1Iqv6rof5E=;
+	s=k20260515; t=1780600679;
+	bh=G+GgSsVCssvM2JphOmGvihicKpSu8PI4BjzlvLN81Ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H95QqktnsrrBKWHhLGmtZ7T04iqG6+ojv8Mi7k2n6gJ6yD20KRdnGvtSl39lP/Lue
-	 S9PQx6VH9HVgVfiwebVVJdvwh42uID/aAYaB8AEZmP1OfPonZGOqfzHhesiG50kUpy
-	 SsqphqDCIBaEGEBNOV9oaxO5aDDNUTdt0gSad6g/UpP6gpbs1wudbl4QsquZOMFmK5
-	 HuxxIvGJ9jSRQES//39YjpOypKdCDSiWflrLg8BQHMS9ah/DunbfJ66uYtElXcIuFg
-	 kCK14ZMAO/fr2OBmOReEL4wOAD+EDOdv2LR+AY5tFm3KQW2d0uODSZNc8SHhBEoDfY
-	 rVX/YLnb69RBw==
+	b=BU1LqvQ7DOgJnGFf9s24o/1X7eo1g7CdGjLs0rvRLVpWU+UQoLQ3mvy0tWmnkA3L5
+	 w/BZxY0nSRfz402mN0KOVMOuQV+3irL/TAB466MAuvv5e+SHeJIEetyiEiJzJy4pU9
+	 EknpWdOPhz+qrd2lm8/9SvdFIbFWNU6gJv5U2USGnZ7Skde76qXiRvydHs6TMN3fBc
+	 GTPK8hmlpUb+nZDvIXj1lR+2pPp4RQTw00qFfYfSFESr0Uoe/IMOWq5Lky4LiN5KjO
+	 eKn2EA9SdNxFm94Kjy2AtQQzN+16fy8Tp0pJ1pfbuMWTGXQqfTRfe/V9o7Y5bTJnVh
+	 DTSxv7wBU6fkA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Tomasz Duszynski <tomasz.duszynski@octakon.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] iio: gyro: adis16260: fix division by zero in write_raw
-Date: Thu,  4 Jun 2026 14:57:19 -0400
-Message-ID: <20260604185720.605937-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] iio: chemical: scd30: Use guard(mutex) to allow early returns
+Date: Thu,  4 Jun 2026 15:17:49 -0400
+Message-ID: <20260604191751.743012-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026060452-spectrum-purchase-6074@gregkh>
-References: <2026060452-spectrum-purchase-6074@gregkh>
+In-Reply-To: <2026060456-grimacing-crop-73d8@gregkh>
+References: <2026060456-grimacing-crop-73d8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260561-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:antoniu.miclaus@analog.com,m:nuno.sa@analog.com,m:Stable@vger.kernel.org,m:Jonathan.Cameron@huawei.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260562-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:Jonathan.Cameron@huawei.com,m:dlechner@baylibre.com,m:tomasz.duszynski@octakon.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,huawei.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[octakon.com:email,huawei.com:email,baylibre.com:email,msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 09BB9642C85
+X-Rspamd-Queue-Id: 3B1CD642D70
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit 761e8b489e6cf166c574034b70637f8a7eadd0ee ]
+[ Upstream commit 5feb5532870fbced5d6f450b8061a33f461b88ca ]
 
-Add a validation check for the sampling frequency value before using it
-as a divisor. A user writing zero to the sampling_frequency sysfs
-attribute triggers a division by zero in the kernel.
+Auto cleanup based release of the lock allows for simpler code flow in a
+few functions with large multiplexing style switch statements and no
+common operations following the switch.
 
-Fixes: 089a41985c6c ("staging: iio: adis16260 digital gyro driver")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Cc: <Stable@vger.kernel.org>
+Suggested-by: David Lechner <dlechner@baylibre.com>
+Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250209180624.701140-3-jic23@kernel.org
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 5aba4f94b225 ("iio: chemical: scd30: fix division by zero in write_raw")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/gyro/adis16260.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/chemical/scd30_core.c | 63 ++++++++++++++-----------------
+ 1 file changed, 28 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/iio/gyro/adis16260.c b/drivers/iio/gyro/adis16260.c
-index eaf57bd339edd5..36130446c82f2d 100644
---- a/drivers/iio/gyro/adis16260.c
-+++ b/drivers/iio/gyro/adis16260.c
-@@ -288,6 +288,9 @@ static int adis16260_write_raw(struct iio_dev *indio_dev,
- 		addr = adis16260_addresses[chan->scan_index][1];
- 		return adis_write_reg_16(adis, addr, val);
+diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
+index 682fca39d14d63..180c29bf99cf36 100644
+--- a/drivers/iio/chemical/scd30_core.c
++++ b/drivers/iio/chemical/scd30_core.c
+@@ -5,6 +5,7 @@
+  * Copyright (c) 2020 Tomasz Duszynski <tomasz.duszynski@octakon.com>
+  */
+ #include <linux/bits.h>
++#include <linux/cleanup.h>
+ #include <linux/completion.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+@@ -198,112 +199,104 @@ static int scd30_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const
+ 			  int *val, int *val2, long mask)
+ {
+ 	struct scd30_state *state = iio_priv(indio_dev);
+-	int ret = -EINVAL;
++	int ret;
+ 	u16 tmp;
+ 
+-	mutex_lock(&state->lock);
++	guard(mutex)(&state->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+ 	case IIO_CHAN_INFO_PROCESSED:
+ 		if (chan->output) {
+ 			*val = state->pressure_comp;
+-			ret = IIO_VAL_INT;
+-			break;
++			return IIO_VAL_INT;
+ 		}
+ 
+ 		ret = iio_device_claim_direct_mode(indio_dev);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		ret = scd30_read(state);
+ 		if (ret) {
+ 			iio_device_release_direct_mode(indio_dev);
+-			break;
++			return ret;
+ 		}
+ 
+ 		*val = state->meas[chan->address];
+ 		iio_device_release_direct_mode(indio_dev);
+-		ret = IIO_VAL_INT;
+-		break;
++		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 0;
+ 		*val2 = 1;
+-		ret = IIO_VAL_INT_PLUS_MICRO;
+-		break;
++		return IIO_VAL_INT_PLUS_MICRO;
  	case IIO_CHAN_INFO_SAMP_FREQ:
-+		if (val <= 0)
+ 		ret = scd30_command_read(state, CMD_MEAS_INTERVAL, &tmp);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		*val = 0;
+ 		*val2 = 1000000000 / tmp;
+-		ret = IIO_VAL_INT_PLUS_NANO;
+-		break;
++		return IIO_VAL_INT_PLUS_NANO;
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+ 		ret = scd30_command_read(state, CMD_TEMP_OFFSET, &tmp);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		*val = tmp;
+-		ret = IIO_VAL_INT;
+-		break;
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
+ 	}
+-	mutex_unlock(&state->lock);
+-
+-	return ret;
+ }
+ 
+ static int scd30_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+ 			   int val, int val2, long mask)
+ {
+ 	struct scd30_state *state = iio_priv(indio_dev);
+-	int ret = -EINVAL;
++	int ret;
+ 
+-	mutex_lock(&state->lock);
++	guard(mutex)(&state->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		if (val)
+-			break;
 +			return -EINVAL;
-+
- 		adis_dev_lock(adis);
- 		if (spi_get_device_id(adis->spi)->driver_data)
- 			t = 256 / val;
+ 
+ 		val = 1000000000 / val2;
+ 		if (val < SCD30_MEAS_INTERVAL_MIN_S || val > SCD30_MEAS_INTERVAL_MAX_S)
+-			break;
++			return -EINVAL;
+ 
+ 		ret = scd30_command_write(state, CMD_MEAS_INTERVAL, val);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		state->meas_interval = val;
+-		break;
++		return 0;
+ 	case IIO_CHAN_INFO_RAW:
+ 		switch (chan->type) {
+ 		case IIO_PRESSURE:
+ 			if (val < SCD30_PRESSURE_COMP_MIN_MBAR ||
+ 			    val > SCD30_PRESSURE_COMP_MAX_MBAR)
+-				break;
++				return -EINVAL;
+ 
+ 			ret = scd30_command_write(state, CMD_START_MEAS, val);
+ 			if (ret)
+-				break;
++				return ret;
+ 
+ 			state->pressure_comp = val;
+-			break;
++			return 0;
+ 		default:
+-			break;
++			return -EINVAL;
+ 		}
+-		break;
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+ 		if (val < 0 || val > SCD30_TEMP_OFFSET_MAX)
+-			break;
++			return -EINVAL;
+ 		/*
+ 		 * Manufacturer does not explicitly specify min/max sensible
+ 		 * values hence check is omitted for simplicity.
+ 		 */
+-		ret = scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
++		return scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
++	default:
++		return -EINVAL;
+ 	}
+-	mutex_unlock(&state->lock);
+-
+-	return ret;
+ }
+ 
+ static int scd30_write_raw_get_fmt(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
 -- 
 2.53.0
 
