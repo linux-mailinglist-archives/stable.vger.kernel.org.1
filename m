@@ -1,207 +1,220 @@
-Return-Path: <stable+bounces-260457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260713-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cJK0J9RbIWpAFAEAu9opvQ
-	(envelope-from <stable+bounces-260457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 13:04:52 +0200
+	id AJDzN7jlImrAewEAu9opvQ
+	(envelope-from <stable+bounces-260713-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 17:05:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3447863F487
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 13:04:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C56956491BD
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 17:05:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.s=selector1-NXP1-onmicrosoft-com header.b=gJAuX8fS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260457-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260457-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=nxp.com (policy=none);
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pQsoPXbk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260713-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260713-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 89EE2306470A
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 10:59:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9490E309B53F
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 14:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F210F409110;
-	Thu,  4 Jun 2026 10:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415DC3644CE;
+	Fri,  5 Jun 2026 14:49:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013013.outbound.protection.outlook.com [40.107.159.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6184C97;
-	Thu,  4 Jun 2026 10:59:46 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780570787; cv=fail; b=oj52e+ea2lswfKZp6buX0Fii5hLU1BYgYcHDifuYkapSeOtXbaoqeLYHCjR3NPXHYFSrwxowSkyPbfznvZczu4U/hMQz30uyV6ZQLZ/IX7DzoWV/jwd+5ZUqDwpmHOryab9PS2hr9R6jA4WHpEFO0lW6E8eJe59Xh2uc2LzXpug=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780570787; c=relaxed/simple;
-	bh=TbMkSYwdJfj/9Ozkh+EFXkbKnFZa2j+ZfgB3GPhL/bg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=M5lIP/O5vYOyrtaj4cAEzJGSxdUSHiyPYdnZSjWTip/vuIaq/gO59BIzsFh5zMS51Z/cZMl2zTRZ5bWLThfuvZPGlBh9OznLZss5GAWqQ+bmGOPBQWgQdhxlqCkPDk8o2VTgy7d4VSsbDDRhibNtrStcdDZxNxPOsxowV6LA2TE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=gJAuX8fS; arc=fail smtp.client-ip=40.107.159.13
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m+mxofohGUUq0xFUpeJBVA6IX9GjSUZtWgJAtenm7y6A2x7ea1XoHuAAtePVwusabrg7XBPHSpNJczpAMmuJfBQ41rkYkomKcYmi4R08V9An3jPlpgPBMMwtQZA1PjaTe5EaohWR8lCa8tqEPwdh5B1g3UZ7Vrm0UC9uRFC/CAQSOuA6jnVxdF559RDMIh9sl8dp2xSDCZKnVwUf7N7ioyvfNOra9ILgM76M+Ayl+PHCySNV5xtl3FCejuMI9DnORgup+AnX5E2cJzCrTGV/7ds1tr0xIY8/TfBn4HeRlTNlp0HVrmyYHQXI/YuJpLegY5hPRT3xl05zyj4XZyenHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YWZsxl7CXALoPCZLYErcHpAoAvxXkiQ96eyHH8Nx8hI=;
- b=Ss4jQCgqixkJBjbjEe3xUeM1KHtNtRw13mN7oxeAMHjfombpKMuuSmOXdk4eM8hPClMoxgNvpHPi0ZxkfG5u8g43MYx3z3hTPmSW0HvA3bAfmv6gILaY5XKoW8e5gaUV16t8nfgJMFKQjpcrLkc5uhWDJJpnnZleMOP/vWAf6miavuTuMI/FsbrU9OVgwvszmKwFHzgjSgAQPJihqey9ajxeIJnlOy+vl2OcUoD8qaz2VtbLFPQFCOrVYegc6gkHYgThEX0tFkzimvhnNKeFHvfalxiiOTsZuKl340mNeQgKay6PACSk2mxnCU2TuZzN1u3wvH5JipFwHQJfWjt1kw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YWZsxl7CXALoPCZLYErcHpAoAvxXkiQ96eyHH8Nx8hI=;
- b=gJAuX8fS4TrJyD8AfTlH9z2ievdxEf4kXSq4pdbVkI/aOWBmSArfmukQwGwBhI8KS6UifVC8yqvo8M5LoY1cBa8DvrNZn3LFoQPPhU/n7ymQlLcR8V3KWBIVEnYL35cLaVTetH7sDiSY9ZMx3jEFJz61L7VvSosiGt86C9+sfKenHzrKgxnzq5yeyLEeudq1Xww7DRAVU9l1d0Pq0FO6xkxl/RkqXsRAymzCpV2DTs8uASoRIRRYxtiFgySESgMqfTvtl4aTJKqMV4Fvc4B+WEectcVoxZ9XMsoE68WI6aRxZAxnMJl3qyb2x/cNbe6/BIHFf/dTIafTWWLd4JX3/g==
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
- by DB9PR04MB9724.eurprd04.prod.outlook.com (2603:10a6:10:4c2::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
- 10:59:43 +0000
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d%4]) with mapi id 15.21.0092.006; Thu, 4 Jun 2026
- 10:59:43 +0000
-Date: Thu, 4 Jun 2026 18:58:41 +0800
-From: Xu Yang <xu.yang_2@oss.nxp.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bartosz Golaszewski <brgl@kernel.org>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	linux-acpi@vger.kernel.org, driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Xu Yang <xu.yang_2@nxp.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] device property: fix child iteration issues with
- secondary fwnodes
-Message-ID: <6j2yk2x23mmtr2xbwkp3ind76qyy3mu7y23psseqqvbjlqepld@n4nsvswt2euz>
-References: <20260603-fixes_fwnode_iteration-v2-0-0ae381f8b7b9@nxp.com>
- <ah_3KmASlE44X4Xw@ashevche-desk.local>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ah_3KmASlE44X4Xw@ashevche-desk.local>
-X-ClientProxiedBy: FR4P281CA0365.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f8::8) To PAXPR04MB9422.eurprd04.prod.outlook.com
- (2603:10a6:102:2b4::21)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58C53BCD1D
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 14:49:30 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780670972; cv=none; b=uJpb+ZZsU329O03sgbj1DGtGqUUvupJoZU5bxcDFHeDWHnZMCrHeHuumWONmzin9K+LCgwQTSLTaaNSJNBfC71N1e0FQdhdZU6g6YRsn0HJG3I3v2+lLtVtG5rVp8SSKD3THQA+Er78DLtqxo6mx7E5rCWjes7YUbYMNqbvzl+E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780670972; c=relaxed/simple;
+	bh=9uUNe3sCQOur+BhbT8TpstsGDg6thsew4DwnjYo/KfY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IiAKXh/8BzjUB1CseLUqcjSMUKSHtjuFtHIu2iEhn95Goa0x6l12ZDUXdpfamVMQEV18gTdxy8TJJuO4HuuJoAxgWIOoZ9brx30iBKmT1zaQL7N4QU6Jp/iGqTqrZFaS8cqsywA97ZN7o6x2ulhBn2wTuxHm0DffrpOMw2FS74I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQsoPXbk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4805A1F00893;
+	Fri,  5 Jun 2026 14:49:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1780670970;
+	bh=AztbCZuiDhaMMHcNANBWsnMqTFS5QlGtI2n/pvNAEro=;
+	h=Subject:To:Cc:From:Date;
+	b=pQsoPXbkU/QyhulsHZXTrCMK6Jz83fo0uzXrDBskXJ2SWaqGIy+v/zG9DWSLWYVtF
+	 bob6C4r4wcSzNpg+hobxCbdi6nP+0hbRaafeppgxjNlA/coLN5F/7jS23Q2PnmQ7xc
+	 hcnJYHuR66rsi1QAF5boQmgnTjaiTSe2D4nGO9vY=
+Subject: FAILED: patch "[PATCH] x86/ftrace: Relocate %rip-relative percpu refs in dynamic" failed to apply to 6.12-stable tree
+To: alexis.lothore@bootlin.com,bp@alien8.de,peterz@infradead.org,rostedt@goodmis.org,stable@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 04 Jun 2026 13:01:17 +0200
+Message-ID: <2026060417-mounting-subarctic-8502@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|DB9PR04MB9724:EE_
-X-MS-Office365-Filtering-Correlation-Id: abbef28f-c1b0-4539-ac64-08dec22861dc
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|376014|22082099003|18002099003|6133799003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
- g8u5FTPksBCQUMVZHlG0yBQ9h+NX0eHqsYEicsnXdcJbo7BLiCRQIxpO+zLJUx4uRzYtoRZ6HHLBGg2lDjKEGuKf8hbgaqLhUm8EQdT3wf2m7bJPk9WQnNgE7Fa1sPR48gekKenhh8urcWt57RQIqz4oPCYNQ2wFp/82Cp8kFHTJsAKEPJikH80O0HKQ78BvLF7EkocN1fmDgix8y/QdHh+pM3wu5L2xLPsxgiR+C5hf1ADzwIfbjaLc07Dz7AMhABzK4DjW3Hx7+yCv/LHx+BD3oYwpnGQkb4DLxU2hW2J1y/tQCkiY05X6oKrITNal0lOjdEdZ4jw0cBZRfLs6xsbUGCNqKYdqaG9rougPvIM+JI3hT5Txev7dUmmODjQBwHw8BF/qPSGkLBQu4Y2Z8n+xNj6jDRg/ewshr9z/xLP4fNyGJkCMl5plviQINiDKP2pqPdaH/a+5nwOhWus/d1XGHpAKbBc+HC7XVwrpX4NasMAeQaPErbKVbbBxzcmaCjqzBOMchGUj2QPg8Kk8YLz3Eh1VjfG5o6tzcFUjc+8TrWQfb9IJ+9BTQtgJ2IvSdwdpxJYyLzcljl3TnM9yxmAiCBSP34AOTiqnDxUhqm3mF8j6XtZNGjB7nRXbYgAXGS4Sp7mexqIYsMdDhoPpgsrpknRt70FtAZML81xBWnz+ppuueM90ZU2ue9ZP7eyn
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(376014)(22082099003)(18002099003)(6133799003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?jA8EZ80TLTt9YdMPNF4O9KEsx+ZjD8d3V1i+w7AV0lbC+9bJyNoztTIR/kbK?=
- =?us-ascii?Q?dy0XdnFpMFgQi6SWhrkk8GRCshEbnP9xGvb2ZCVPormuRsvwWjDdWSB/ZoaY?=
- =?us-ascii?Q?/IZ9JZJFQAtzDSj43lGyjKK1GC+KbjqL46F4ha347wpzICaufV6xLp+OpNbJ?=
- =?us-ascii?Q?8WRTMwHZduQCdtLhf8m7cki8eDBn9Bk9vqevk5QAACbFdbt0qDIh9pcCx2T0?=
- =?us-ascii?Q?NJxrst7PbGqNUKZuel7Vcw0OCqWyoFLy5H/LBXuFhwBsozflMwupxSifPIIL?=
- =?us-ascii?Q?ecWjUdQa2qm4n5SSghcAGh3ELYii5sySK68/Vm05a65WfaHb7JtFZo9BLlFD?=
- =?us-ascii?Q?gyQGTMglVe6jkVEZ2qvYpJ3OYOlQ6yo9sqjKw7v7BywQ36WTPnZ0A9SVLnlX?=
- =?us-ascii?Q?Bj2+5cJR+VcVmIck4ikQPz9mhjEnDobx8FP7v0hJyu+VD5ifmVPriB3ZY16k?=
- =?us-ascii?Q?xxsna+n9a2Y0+rg+9hQMszN4bXjQv/zEPspf5cuRc4YZI4ud7BuuhOcJyD9l?=
- =?us-ascii?Q?Iz20mOv265QtzNgOxlTv/i212wv5PmS9HqLVhzzTtEsKNeJ5xI3D1RwIzN5Q?=
- =?us-ascii?Q?APJ0qVSAo6aUrU6fFTwBT/wWKx7aq7VjwjbSptr1bjj4Q2/HHizVFL0I/+P8?=
- =?us-ascii?Q?mw9QC91KJw3U3vMZs6cM2vM0kBKLe/jWkKU0X6Fm7aK3sSKbIvKDR25ICBly?=
- =?us-ascii?Q?EGUJaigeUvli4n1Yr4sZziblZYwp2kLfVjeJBqOyQ+liFw37/lTY8QzhrMK7?=
- =?us-ascii?Q?+0jueeVCWABdGOGEoD3M/XfP8ywFEBOCaIMubpEygVdTjSAUdD0IMmqVKDDs?=
- =?us-ascii?Q?csgdxJC0JadzhupBt5joN9UIqxkpBTn/GUnJ61D9M6A3R5lLiNSMze0S4QFI?=
- =?us-ascii?Q?iLK0aPnphruMKvgAJjnwgIHEXkepoy6JqpJwErR2Cn0A3Lvmo5jRGDcwgxkj?=
- =?us-ascii?Q?S6iqOdXz0m250pFUo9ZLhjcXiFOFm1cRJXlsSVIcbN2EkfyO3Du5q5DoZF0k?=
- =?us-ascii?Q?89rUB7aIcVcebSpMIjmgodE60jQweGfOAlLiOS1EcoxNjeSS3zWVVkv+ofiz?=
- =?us-ascii?Q?+19fnxU86jEJEgExlylMUgP1tBsECzv4ppsrMqvStGE9wcGaArADLUDNi9GW?=
- =?us-ascii?Q?10+IEjdpWZzoycNncrHo0CQOKfWtl3LKFhdiwQd5XVMv1LqlTSgVjwP6Hyfr?=
- =?us-ascii?Q?hIymYUclOsNbVoyMdSyvVsQJBmV5za/ZxQratHGmULhdtNGi/uizgOIHAMYg?=
- =?us-ascii?Q?MaPQ/uXAboECo5a4WojshY7v2WRgoBNwjdykuNqkUr874xqsJCJ7qidd0+2g?=
- =?us-ascii?Q?snJfeNEj/rKKRapXF9u42yIUbdHRk8RoozSXdZ9Oz+tcFiRXcigzS+emF8TM?=
- =?us-ascii?Q?O+CHWNwovyC0j/nVQYIvTnF6cJP1d/3/eIuSWWxDOp2/pVOnAaTFF7JZ2cd7?=
- =?us-ascii?Q?yujo0fpoLNfYlKUdJVFYosBHNTbtKl3K4aOUFAF+lR+SGcmLGu+yp/AWMmV0?=
- =?us-ascii?Q?QpGogDwOZ/3AovcxxJWbJFhlTCENIOcXvqlrBYHpuyCTYRNdPGtxWGuNb4xD?=
- =?us-ascii?Q?bo1uTHhpEe2Sn3fri2vSi8TFfCcWpOay0kR67SJQYm1uSt6WQzd1qwVjNUnq?=
- =?us-ascii?Q?xyAWPWsiuN3yLk4DqVdZDlOWh/4wMOsHCc1hB1ncOCjUXOaiVOmj7OcAiZwG?=
- =?us-ascii?Q?yjblWpGcFYjC985Pan/vg5mxny3+uL91ffbPHlDIe+FskzBay9rTRi3yZ7f6?=
- =?us-ascii?Q?eNZDoI2HRGXE6mdX/PO/Ky22KfPhx1xrjIHKcHAWBKO721V0onVO?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: abbef28f-c1b0-4539-ac64-08dec22861dc
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 10:59:43.2244
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L+/qfylh7ZVc5uwMy6jjEjCf6RByMPqGhCTVm3yJQmjn/CEq6eMGFZp676yYW9/1vo69IyES/jRijhEU8DhZjNmZSOPdxDBngdGkOyvSzVfz82jM+oXiAEXE+AJbKsSu
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9724
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.44 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
+X-Spamd-Result: default: False [3.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	DATE_IN_PAST(1.00)[28];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-260713-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:alexis.lothore@bootlin.com,m:bp@alien8.de,m:peterz@infradead.org,m:rostedt@goodmis.org,m:stable@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-260457-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:andriy.shevchenko@linux.intel.com,m:brgl@kernel.org,m:djrscally@gmail.com,m:heikki.krogerus@linux.intel.com,m:sakari.ailus@linux.intel.com,m:gregkh@linuxfoundation.org,m:rafael@kernel.org,m:dakr@kernel.org,m:mchehab+huawei@kernel.org,m:laurent.pinchart@ideasonboard.com,m:linux-acpi@vger.kernel.org,m:driver-core@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:xu.yang_2@nxp.com,m:stable@vger.kernel.org,m:mchehab@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[xu.yang_2@oss.nxp.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xu.yang_2@oss.nxp.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,linux.intel.com,linuxfoundation.org,ideasonboard.com,vger.kernel.org,lists.linux.dev,nxp.com];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,huawei];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3447863F487
+X-Rspamd-Queue-Id: C56956491BD
 
-On Wed, Jun 03, 2026 at 12:43:06PM +0300, Andy Shevchenko wrote:
-> On Wed, Jun 03, 2026 at 04:44:30PM +0800, Xu Yang wrote:
-> > This series fixes two issues in the fwnode child iteration logic when
-> > a secondary fwnode is present.
-> > 
-> > The first patch addresses a refcount imbalance in
-> > software_node_get_next_child(). When a software node is used as a
-> > secondary fwnode, the iteration code may incorrectly decrement the
-> > refcount of child nodes that do not belong to the software node
-> > hierarchy. This results in refcount underflow and possible use-after-free.
-> > 
-> > The second patch fixes an infinite loop in
-> > fwnode_for_each_child_node(), caused by improper handling of iteration
-> > state across primary and secondary fwnodes. When iterating over children
-> > from both primary and secondary fwnodes, the code may incorrectly
-> > resume iteration from the primary fwnode even when the current child
-> > belongs to the secondary, leading to repeated traversal and a loop.
-> > 
-> > Both issues are triggered when mixing different fwnode types through the
-> > secondary mechanism, and stem from incorrect assumptions about ownership
-> > and traversal context of child nodes.
-> 
-> Please, Cc Bart who is heavily working on software nodes these days.
 
-Ah, the Cc list is generated by B4. Will Cc Bart in the future.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Thanks,
-Xu Yang
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x a17dc12bfed8868e6a86f3b45c16065a70641acb
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060417-mounting-subarctic-8502@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From a17dc12bfed8868e6a86f3b45c16065a70641acb Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Alexis=20Lothor=C3=A9=20=28eBPF=20Foundation=29?=
+ <alexis.lothore@bootlin.com>
+Date: Wed, 27 May 2026 21:12:31 +0200
+Subject: [PATCH] x86/ftrace: Relocate %rip-relative percpu refs in dynamic
+ trampolines
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+With CONFIG_CALL_DEPTH_TRACKING enabled on an x86 retbleed-affected platform
+(eg: Skylake), with retbleed=stuff, registering a dynamic ftrace trampoline
+crashes on the first call into the traced function:
+
+  BUG: unable to handle page fault for address: ffff88817ae18880
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  PGD 4b53067 P4D 4b53067 PUD 0
+  Oops: Oops: 0002 [#1] SMP PTI
+  CPU: 3 UID: 0 PID: 187 Comm: usleep Not tainted 7.0.10 #243 PREEMPT(full)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
+  Code: 24 78 00 00 00 00 48 89 ea 48 89 54 24 20 48 8b b4 24 b8 00 00 00 48 8b bc 24 b0 00 00 00 48 89 bc 24 80 00 00 00 48 83 ef 05 <65> 48 c1 3d 1f a8 b6 02 05 48 8b 15 f6 00 00 00 4c 89 3c 24 4c 89
+  Call Trace:
+   <TASK>
+   ? find_held_lock
+   ? exc_page_fault
+   ? lock_release
+   ? __x64_sys_clock_nanosleep
+   ? lockdep_hardirqs_on_prepare
+   ? trace_hardirqs_on
+   __x64_sys_clock_nanosleep
+   do_syscall_64
+   ? exc_page_fault
+   ? call_depth_return_thunk
+   entry_SYSCALL_64_after_hwframe
+  ...
+  Kernel panic - not syncing: Fatal exception
+
+This small reproducer allows to easily trigger the crash:
+
+  # echo 'p __x64_sys_clock_nanosleep' > /sys/kernel/tracing/kprobe_events
+  # echo 1 > /sys/kernel/tracing/events/kprobes/p___x64_sys_clock_nanosleep_0/enable
+  # usleep 1
+
+Monitoring the crash under GDB points to the exact instruction in charge of
+incrementing the call depth:
+
+  sarq $5, %gs:__x86_call_depth(%rip)
+
+This instruction matches the one inserted by the ftrace_regs_caller from
+ftrace_64.S. This emitted code was likely working fine until the introduction
+of
+
+  59bec00ace28 ("x86/percpu: Introduce %rip-relative addressing to PER_CPU_VAR()"):
+
+it has made the call depth accounting addressing relative to $rip, instead of
+being based on an absolute address.
+
+As this code exact location depends on where the trampoline lives in memory,
+the corresponding displacement needs to be adjusted at runtime to actually
+correctly find the per-cpu __x86_call_depth value, otherwise the targeted
+address is wrong, leading to the page fault seen above.
+
+Fix the %rip-relative displacement of the copied CALL_DEPTH_ACCOUNT
+instruction (from ftrace_regs_caller) by calling text_poke_apply_relocation(),
+as it is done for example by the x86 BPF JIT compiler through
+x86_call_depth_emit_accounting(). This corrects both CALL_DEPTH_ACCOUNT slots,
+in ftrace_caller and ftrace_regs_caller.
+
+  [ bp: Massage. ]
+
+Fixes: 59bec00ace28 ("x86/percpu: Introduce %rip-relative addressing to PER_CPU_VAR()")
+Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Steven Rostedt <rostedt@goodmis.org>
+Cc: <stable@kernel.org>
+Link: https://patch.msgid.link/20260527-fix_call_depth_in_trampoline-v1-1-1c1abc8ae310@bootlin.com
+
+diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
+index 0543b57f54ee..17d6edfcb7e0 100644
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -375,6 +375,13 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
+ 			goto fail;
+ 	}
+ 
++	/*
++	 * Generated trampoline may contain rIP-relative addressing which
++	 * displacement needs to be fixed.
++	 */
++	text_poke_apply_relocation(trampoline, trampoline, size,
++				   (void *)start_offset, size);
++
+ 	/*
+ 	 * The address of the ftrace_ops that is used for this trampoline
+ 	 * is stored at the end of the trampoline. This will be used to
+
 
