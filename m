@@ -1,59 +1,86 @@
-Return-Path: <stable+bounces-260234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260236-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nM8eEAjaIGrz8QAAu9opvQ
-	(envelope-from <stable+bounces-260234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 03:51:04 +0200
+	id /vP6A3vaIGoD8gAAu9opvQ
+	(envelope-from <stable+bounces-260236-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 03:52:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A56F63C483
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 03:51:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD1563C4B9
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 03:52:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b=OT4eRrqn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260234-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260234-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=seu.edu.cn;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cYXsOOYJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260236-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260236-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B480307377F
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 01:48:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0903A304929B
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 01:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2476284B3B;
-	Thu,  4 Jun 2026 01:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578FF221FBD;
+	Thu,  4 Jun 2026 01:50:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f194.google.com (mail-vk1-f194.google.com [209.85.221.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF8E27FD4F;
-	Thu,  4 Jun 2026 01:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0A8242D6C
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 01:50:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780537715; cv=none; b=dqR0UPB//v9X3LPvWdWdnuZ0icZL2nxl6oBMuzMcXs4dZBLPMP9pX4oT5pQsFn3ACM/oWStZs90SpU3k1PXSSKY1gY6muW5k4rXMzATrKGN+Pm8wJDfHlVPnHWpG1k0Yuf/pZVIYwEvJx9LbSqxLNUNVEm1xb4cDLSLsXOhu4Pk=
+	t=1780537846; cv=none; b=AiAioNejdze9nCfkvVLyNbW6EMxnj8lnWVyPXx9hIRfiE3w8I/7/yz8QlNJpa+OF/q4ivIIu+VJDCq+HDS5luXSpHaxRcuaDxM9bCqDLZoB6m0Ntr23sh0kPhjnsGVAno6GSDleO+D1En7YFJdurlA2/iBxAN0oQuHAz48JcEcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780537715; c=relaxed/simple;
-	bh=lJdrbZMs5a7H/64iWN8BT2PwUMMVs2CCNXwZzReueH8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Fib39mOyZBLtXAQpzCm7tiLVyt6vtnXLrdPSm1VZCWR26nYeSc8eWslkUuBRu9danAIPUH/K63ikawqp5IT/1BWNZFq38S+tTjqeH6Vy8BCJTlOqodTFIAz2RoKtu4EgjYl3STbJGIHGXd/hg/Kke6yPmWQlbN+q3GIaqTEevQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=OT4eRrqn; arc=none smtp.client-ip=45.254.49.197
-Received: from PC-202605011814.localdomain (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 40fe0c73c;
-	Thu, 4 Jun 2026 09:43:21 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: jic23@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	andy@kernel.org,
-	dlechner@baylibre.com,
-	lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	nuno.sa@analog.com,
-	Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] iio: imu: bmi160: add IRQF_NO_THREAD to data-ready trigger IRQ
-Date: Thu,  4 Jun 2026 09:42:47 +0800
-Message-Id: <20260604014247.124724-3-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260604014247.124724-1-runyu.xiao@seu.edu.cn>
-References: <20260604014247.124724-1-runyu.xiao@seu.edu.cn>
+	s=arc-20240116; t=1780537846; c=relaxed/simple;
+	bh=kBaky05/bWEVwGI5MJ9Md+7nCGhGs2CIFcJwiy5RU+4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=qQGDrnBrOS+iDGxTJmiNU2sFc3y9mwQVsjp0q/iUnBw+wSQiMOS4fJM5IENjNDe01qFjr/OPNyDVQ/Ws+ePJ6q5Fvr+n+RO2ACro/xHS9H5bCovw1dEKzCafTAXSqhFXDWx9vzLkABtVeYsV4hnoxEx2LT94f+eOyyKBp4PdQ7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cYXsOOYJ; arc=none smtp.client-ip=209.85.221.194
+Received: by mail-vk1-f194.google.com with SMTP id 71dfb90a1353d-59ccf81e6feso40396e0c.2
+        for <stable@vger.kernel.org>; Wed, 03 Jun 2026 18:50:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780537844; x=1781142644; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dZjw5LqBCsF6LARZeB6KcPRWHBTEy3/2seNDJkjrDqk=;
+        b=cYXsOOYJaOGQCQCqVC2/0B6Zj0I8qnnTf9ZVsLjqUedyxnfuXxsv6IQK2OgUdGtuMf
+         8wNT/syE2DDugJ+NqkJp1MrSy2HvpUVkxbFL85Kv6PzOvketUiEs/a4SWlaXoIKDnXIZ
+         bh0UGD5wA0cATHPACD9ditmVTPj7LTJOQXP5TREPu51bGndIX4BginFyqi6Cl05iYM1Q
+         6/0k8Ai08fBnl1AE/tQ+3ZU+ZZZxLwiFkzcFBrAw6F26IRV/YS18KHlsSkevaCM2VJNq
+         hSd5+wKg/2VcNvtokZ1foPYiVbmsl0MUJr5hiwRIsq6Tv4jTTl8ahDoU0OUoSzH8wx1k
+         zDfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780537844; x=1781142644;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dZjw5LqBCsF6LARZeB6KcPRWHBTEy3/2seNDJkjrDqk=;
+        b=hiFoSUIvoOcm8ouI6F6vl+3w2jscxTsXy8Ezo1Y7eeZAiFGHSdaHqlZpcv/h8Uu2VO
+         qfbaN9jkCrF14XtR39c+imro2rn7ZlsUT/KtlZfNASONKVFh3JI67+iXLOEoT944Rplu
+         kXxl7Tr/1a6ElHij2dAQ5RZrVg56LKuXFoMLG2bJUFNDDmNvX3tUT4vA0Bgs5O89rXwR
+         aIIO4/Xx7FRNLWpQZUHJ4wjTU7N52wW8joatLwgLxrLlobXMs5TOdpt0wZBHoMnPvoGx
+         tS8splclxFP15BhgB+ezksN9DeU6JuA+L5AyF5mWC4R9B8JUI5A0334lV51yLBJ4mS/h
+         rkkg==
+X-Gm-Message-State: AOJu0Yykh0GmGzRsZ1pDoQeaq1KRjq5IaoPuXq2O9q34XXMsn3vEIE6g
+	aQiT2vO04mKCwsMEBEy+tBUaxe8ryNjY3fuwUjyGpcQacAQcN/slg7+N7P4NOPQe0qvh
+X-Gm-Gg: Acq92OEFr8jaYMk4jGKnC+QOaCKwbda/VCGXmrEd9ZkRaaC4886+tBy10LiS7HP+hKA
+	61FJRLu/bCgRLquRt4XbOH3ziiqxxJNgF1xTDZSvlt2DUC8/JBEuDMfvClC3imN56BZEaAyxznQ
+	PGblo2A+3Zvl3YOZnk+0odJcFemUjEoMVLFkGlv9KGNbWW5h9RqAQGfszVlJ+dECVqAtsWdoPFr
+	DbLBmJytC8laVD/aWnPZSe7FuxXyunaAEmw5NYXXgwW41v6I5yWvanwEEMLUgmdXLaFdyuXUMMP
+	4GMcQx4USaJuvLEOe9xhXq6lHOp83AU0vsCSpQ9cVFR3w0mGwRBErweoEvy4hkMStZZukD0sD6o
+	nhUtmTvxxnXjNQkjJdAuobsKK2ygumW6reKP0EiUTA0NhvB7DF0TfGM1ct5hYWGDifp/e85H4tE
+	KzQMoBKHM7pR0N/6pfCsipU3TgNLyzj7e6kX2KOJO+XcjsQw9CEiaajJG5H91Pzj/ud1CapfCv0
+	NGJmrXgyO7HV911YSnlEtvyDQ==
+X-Received: by 2002:a05:6122:1c8b:b0:59f:4c56:9d0e with SMTP id 71dfb90a1353d-5a6e5417d1cmr3590696e0c.5.1780537843926;
+        Wed, 03 Jun 2026 18:50:43 -0700 (PDT)
+Received: from rainbow (2603-900b-4600-2f85-a2b6-fdfc-263f-5578.inf6.spectrum.com. [2603:900b:4600:2f85:a2b6:fdfc:263f:5578])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5a6dc1696d0sm4045908e0c.12.2026.06.03.18.50.41
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2026 18:50:42 -0700 (PDT)
+From: Jordan Walters <jaggyaur@gmail.com>
+To: stable@vger.kernel.org
+Subject: [PATCH 6.6.y] Bluetooth: hci_core: Fix UAF in hci_unregister_dev()
+Date: Wed,  3 Jun 2026 21:48:09 -0400
+Message-ID: <20260604014809.121934-1-jaggyaur@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,90 +88,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e904c9f8003a1kunme7d1e7a121c91
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDHR4eVkkfSkxJTUxCT0JIQlYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktISk
-	5MTlVKS0tVSkJLS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=OT4eRrqnN7ytiEAduZEH8abv7Gdh8dqo+ZBAnkjiSskwRTk0CSK032RG9h4YHZ9xeik3hox875YI+7zhid4dAmqh9ednGSjHYvxiXBULM0NEqQI94NTXDpSG7vQ0YWktVAWshHJ421UYI47H/m8lS0O38hXR53UhnpEJLvexbzE=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=k07phwEx4r7qVwzFak4xbHes8w4by+sGjuG81FegXS4=;
-	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-260234-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260236-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jic23@kernel.org,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:andy@kernel.org,m:dlechner@baylibre.com,m:lars@metafoo.de,m:Michael.Hennerich@analog.com,m:nuno.sa@analog.com,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[jaggyaur@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_ONE(0.00)[1];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[jaggyaur@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
 	ALIAS_RESOLVED(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:mid,seu.edu.cn:dkim,seu.edu.cn:from_mime,seu.edu.cn:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8A56F63C483
+X-Rspamd-Queue-Id: 7AD1563C4B9
 
-bmi160_probe_trigger() registers iio_trigger_generic_data_rdy_poll()
-through devm_request_irq(), but it passes only irq_type and does not add
-IRQF_NO_THREAD.
+commit eec3deaeaafe upstream.
 
-When the kernel is booted with forced IRQ threading, the parent IRQ can
-otherwise be threaded by the IRQ core and the subsequent IIO trigger
-child IRQ is dispatched from irq/... thread context instead of hardirq
-context. Because the handler immediately pushes the event into
-iio_trigger_poll(), this violates the hardirq-only IIO trigger helper
-contract and can drive downstream trigger consumers through the wrong
-execution context.
+[manual backport: 6.6.y uses cancel_*_work_sync() instead of
+ disable_*_work_sync() which was introduced in a later cycle]
 
-Add IRQF_NO_THREAD on top of irq_type when registering the BMI160 data-
-ready trigger handler.
+hci_unregister_dev() does not cancel cmd_timer and ncmd_timer
+before the hci_dev structure is freed. If a timeout fires
+during device teardown, the callback dereferences freed memory
+(including the hdev->reset function pointer), leading to a
+use-after-free.
 
-Fixes: 895bf81e6bbf ("iio:bmi160: add drdy interrupt support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Add cancel_delayed_work_sync() calls alongside the existing
+cancel_work_sync() calls to ensure both timers are fully
+quiesced before teardown proceeds.
+
+Signed-off-by: Jordan Walters <jaggyaur@gmail.com>
 ---
-v2:
-- move build/runtime validation notes to the cover letter
+ net/bluetooth/hci_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
- drivers/iio/imu/bmi160/bmi160_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/imu/bmi160/bmi160_core.c b/drivers/iio/imu/bmi160/bmi160_core.c
-index 5f47708b4c5d..caee8dfd101e 100644
---- a/drivers/iio/imu/bmi160/bmi160_core.c
-+++ b/drivers/iio/imu/bmi160/bmi160_core.c
-@@ -793,7 +793,8 @@ int bmi160_probe_trigger(struct iio_dev *indio_dev, int irq, u32 irq_type)
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 824208a53c2..b0e0a553892 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -2701,6 +2701,8 @@ void hci_unregister_dev(struct hci_dev *hdev)
+ 	cancel_work_sync(&hdev->tx_work);
+ 	cancel_work_sync(&hdev->power_on);
+ 	cancel_work_sync(&hdev->error_reset);
++	cancel_delayed_work_sync(&hdev->cmd_timer);
++	cancel_delayed_work_sync(&hdev->ncmd_timer);
  
- 	ret = devm_request_irq(&indio_dev->dev, irq,
- 			       &iio_trigger_generic_data_rdy_poll,
--			       irq_type, "bmi160", data->trig);
-+			       irq_type | IRQF_NO_THREAD,
-+			       "bmi160", data->trig);
- 	if (ret)
- 		return ret;
+ 	hci_cmd_sync_clear(hdev);
  
 -- 
-2.34.1
+2.43.0
+
 
