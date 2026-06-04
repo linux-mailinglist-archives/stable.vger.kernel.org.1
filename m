@@ -1,149 +1,170 @@
-Return-Path: <stable+bounces-260492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +NOyC4N8IWogHQEAu9opvQ
-	(envelope-from <stable+bounces-260492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 15:24:19 +0200
+	id amllMJpRIWrzDAEAu9opvQ
+	(envelope-from <stable+bounces-260371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:21:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9EC6404A0
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 15:24:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC1263EF6F
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:21:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n0WGt6dt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260492-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260492-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nzq2rcP1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260371-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260371-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2DF633077039
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 13:17:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1870C3028340
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 10:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B0645BD6F;
-	Thu,  4 Jun 2026 13:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCE4340281;
+	Thu,  4 Jun 2026 10:18:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6AE2749DC;
-	Thu,  4 Jun 2026 13:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70AF405E7;
+	Thu,  4 Jun 2026 10:18:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780579073; cv=none; b=rpGOSu6dKpGT3lHegbmT3KMHqcnNLRfzeBv6R4KWk3GvyZ+vTGLFdTlOYdajSSncZREZzMRa2dhd+36G4jEY0C8GU7qZFWmQwarGMAr/Hh3wPI8x90bIL7NzXnv2GaezOip+/Rfs7G1oCFDVhWTNt+G7mUwcZD0jXrSwN/3HBxY=
+	t=1780568284; cv=none; b=c+d/Tc6kWlBYaLOWu3eNLMta70mH1zopgvCIKDR8VKNsthyIOHRQtVbFhEnH4XFpno28C169u5VP4FeXCZ47fCliTcgnsO5EsPPQllTzwuqSbT6lozgoUtOg2iQjk9C40S2IKc/EuLmOlAiu+R/6X8zGnMpGjJM+BT6iOaCFpeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780579073; c=relaxed/simple;
-	bh=OxNdjiclvt3XWr9lGJv8pywSMILXl1KuxQxrcQ/M3s4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=rBG6ATyt9Cm6VnZNWISnwFiellPzfRrDbUHnlqDBfQ/EaJJG/adt4GbibJJN9laC5FEzNT83aL9xR+g61SeR+UM1Ei4Y/OVY7Wut8ZLHzrTkPo3WSPGcEwsF9f4aZ2HTKZWWjmlVM2NzdZfVXcNyio4TL45n0TjVMewGXhyt+Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n0WGt6dt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18A41F00893;
-	Thu,  4 Jun 2026 13:17:49 +0000 (UTC)
+	s=arc-20240116; t=1780568284; c=relaxed/simple;
+	bh=fHROndg5THUN4wVkBOJsFujH2BeidORwx6fT/hry+FQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TOZfW+wCvwDtC17WxLoz/bkhE7ANBeN6S9Xyy841DE3IMgkHpZVGyIbqNlvfXjOHw3a8ElyQuYS3dn/bLFp8eP6dg/9Gs9Cg6bwuPai7ApzyTWYGR4Xz2fz+GnzamEe4Q4NZJ9vnwH8WP2cbtINaRx81Hp0yNT3jM7UKShEzyn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nzq2rcP1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F121F00893;
+	Thu,  4 Jun 2026 10:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780579071;
-	bh=/5uXpRyUrLn5meNm86Lfod8o8MpRd+piC/cq/gzPePY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=n0WGt6dt1Aqe35I11bb8enolwaDGwbGLDhIumRd3Lo0Z1MO2t/DbqRW5rOMh9nEbo
-	 Hc6eUodQYJQ9ooe5XOpwKJJufujPBahJkw2grthcQ7KtHADU2pyPuXzyi7gNKmCk+O
-	 CfFTDq+3n4rcfkDma77nRJpm/2fKj/9fmZcZegwaRw1vuJU3OGgZo6eVcvSVmx/x+8
-	 7aytA9dEjUNr8EG9fn63hz+0tlK4vE0bRGREnB839IKOHGwh2WG/WKQ5RTn2GbqRoI
-	 fX7jLNEE059aLHHEIHs0xWBnK/Zr4pa75eIjBTfy/oiGaUhQ9pH0B3ap7bpHfgK78i
-	 vqAJHEDTgqnlA==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- chancel.liu@oss.nxp.com
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-sound@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20260601083327.1535185-1-chancel.liu@oss.nxp.com>
-References: <20260601083327.1535185-1-chancel.liu@oss.nxp.com>
-Subject: Re: [PATCH v3] ASoC: fsl_sai: Fix 32 slots TDM broken by integer
- shift UB in xMR write
-Message-Id: <178056822812.53724.11372449372244956668.b4-ty@b4>
-Date: Thu, 04 Jun 2026 11:17:08 +0100
+	s=k20260515; t=1780568283;
+	bh=pUj7m2CDaW3G/ucn/7/SD3wFXRKZCFFvrBjYxGmN+is=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nzq2rcP1fx+yyhPnOyn2Rq5EpciyRCD4vPctNirtOQoDW5WlfuokxEuH+hpss8sJ8
+	 XuqVFpGttKjbEU/tiRl8K/dZMpaX6+5eqh0RHpkkP0+6OweCCTW8vJI5hcXoeSNaSS
+	 5I9q8T17WkGk5zvMZAOhag9Rwd/GiNIWsuOrSO6LSAT8emfcZOug74ZHaNaJ8TLgly
+	 N3IaWugx+FmOnkk2lBV6OQ0A5qrjkWqoT59ET04IjDxUrL0Oy+fbTieF1K+U3SL+Zy
+	 lnUK0I31pZgbfGpDGDQhfDvnYIUeEbJ68F5XgYweaZAUT8TBY31Tz2H7LedkRIo0Dd
+	 wR3AvuQ9yVpMg==
+Date: Thu, 4 Jun 2026 12:18:01 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: ZhaoJinming <zhaojinming@uniontech.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: airoha: Add NULL check for
+ of_reserved_mem_lookup() in airoha_qdma_init_hfwd_queues()
+Message-ID: <aiFQ2cQIHGXiRdBx@lore-desk>
+References: <20260604070352.2603077-1-zhaojinming@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1171; i=broonie@kernel.org;
- h=from:subject:message-id; bh=OxNdjiclvt3XWr9lGJv8pywSMILXl1KuxQxrcQ/M3s4=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqIXr8KlHbpsbVkedXxSZs+2KCwbVlZw6puS5EM
- BwWP/BGFayJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaiF6/AAKCRAk1otyXVSH
- 0L9zB/4/n0blZE1Z6+elV9oWF+udM4vqfGkMnWJ6r7KgA0pJQPK/xU0RuvGhc1HYtvCCLOWA5MB
- AyyPQV9u21xbPrmhusis2cGWvbNNU82MbW0cTYzeKGKVUG1a7kc2/3uP676Jxf/F91WR4+W6LnA
- W//1xv7sGbhK8AUYGsi8ZKuDhnfxSBl0U/R/cyonOkX/16sUvPoiwMdX3SPa9tJStkeDuOQB1zh
- Q3SGed42moVgdD4NH5sRQbrtDB+7HqsQcz3NXnX9EMFEBNJQ8rXZWSl7d+F3++zVHMHGwg8HEn1
- 1OaWzdR6UbDB5ukkqiDb4EpgKakSvtIWAlnYnZD6RLVxtgkP
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="MHS1sKb/1YHuFP2O"
+Content-Disposition: inline
+In-Reply-To: <20260604070352.2603077-1-zhaojinming@uniontech.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-2.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260492-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260371-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:zhaojinming@uniontech.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[lorenzo@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,perex.cz,suse.com,oss.nxp.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:shengjiu.wang@gmail.com,m:Xiubo.Lee@gmail.com,m:festevam@gmail.com,m:nicoleotsuka@gmail.com,m:lgirdwood@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:chancel.liu@oss.nxp.com,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-sound@vger.kernel.org,m:stable@vger.kernel.org,m:shengjiuwang@gmail.com,m:XiuboLee@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,nxp.com:email]
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8B9EC6404A0
+X-Rspamd-Queue-Id: 3DC1263EF6F
 
-On Mon, 01 Jun 2026 17:33:27 +0900, chancel.liu@oss.nxp.com wrote:
-> ASoC: fsl_sai: Fix 32 slots TDM broken by integer shift UB in xMR write
 
-Applied to
+--MHS1sKb/1YHuFP2O
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.1
+> of_reserved_mem_lookup() may return NULL if the reserved memory region
+> referenced by the "memory-region" phandle is not found in the reserved
+> memory table (e.g. due to a misconfigured DTS or a removed
+> memory-region node).  The current code dereferences the returned
+> pointer without checking for NULL, leading to a kernel NULL pointer
+> dereference at the following lines:
+>=20
+>     dma_addr =3D rmem->base;                          // line 1156
+>     num_desc =3D div_u64(rmem->size, buf_size);       // line 1160
+>=20
+> Add a NULL check after of_reserved_mem_lookup() and return -ENODEV if
+> the lookup fails, which is consistent with the existing error handling
+> for of_parse_phandle() failure in the same code block.
+>=20
+> Fixes: 3a1ce9e3d01b ("net: airoha: Add the capability to allocate hwfd bu=
+ffers via reserved-memory")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: ZhaoJinming<zhaojinming@uniontech.com>
 
-Thanks!
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[1/1] ASoC: fsl_sai: Fix 32 slots TDM broken by integer shift UB in xMR write
-      https://git.kernel.org/broonie/sound/c/4790af1cc2e8
+> ---
+>  drivers/net/ethernet/airoha/airoha_eth.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
+net/airoha/airoha_eth.c
+> index cecd66251dba..2444d3275a81 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -1153,6 +1153,9 @@ static int airoha_qdma_init_hfwd_queues(struct airo=
+ha_qdma *qdma)
+> =20
+>  		rmem =3D of_reserved_mem_lookup(np);
+>  		of_node_put(np);
+> +		if (!rmem)
+> +			return -ENODEV;
+> +
+>  		dma_addr =3D rmem->base;
+>  		/* Compute the number of hw descriptors according to the
+>  		 * reserved memory size and the payload buffer size
+> --=20
+> 2.25.1
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+--MHS1sKb/1YHuFP2O
+Content-Type: application/pgp-signature; name=signature.asc
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaiFQ2QAKCRA6cBh0uS2t
+rGQoAP0Y+U3xaU4dH4A4qEA5eXkvOPfKybpxGlsEg1dZFVcKfgD/fEwzNgGlnKUX
+1JLWfHZ0UTnNgp7WgqnMb40Sm39fpgM=
+=v7Zm
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+--MHS1sKb/1YHuFP2O--
 
