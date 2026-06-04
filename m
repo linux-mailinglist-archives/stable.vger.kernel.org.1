@@ -1,64 +1,67 @@
-Return-Path: <stable+bounces-260470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8PTdMTppIWohGAEAu9opvQ
-	(envelope-from <stable+bounces-260470-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 14:02:02 +0200
+	id A0JfF3trIWqdGAEAu9opvQ
+	(envelope-from <stable+bounces-260471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 14:11:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC52963FAC6
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 14:02:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F3B63FBD1
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 14:11:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Qi6jzjaf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260470-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260470-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Wv9LYyop;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260471-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260471-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EAE4C30182CC
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 12:02:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03291312D514
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 12:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E385F421F0F;
-	Thu,  4 Jun 2026 12:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6B442DFF1;
+	Thu,  4 Jun 2026 12:04:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528694028CB
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 12:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873E14266A5;
+	Thu,  4 Jun 2026 12:04:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780574519; cv=none; b=NVeKtUvH+Kkn/IHYDse8h0Swi+63w8Syzbft1Kef+TTGcjkwJrMmbJUT9SbAOTWz+oj8wn5MURfrEVGnFB3nXSAy8Tyi4RZ2Gp6ermrRn+/vCMWyDkrJpT+6tzoQowcxblIDPDY8NCbWnpBkelfHfn1eJLAXZHUrr5P5YMWNXLE=
+	t=1780574643; cv=none; b=ElHaMJaBUSI8/hKXm+923gSAfIp71P4vsgkPMHFKMwwLu2MnNasdVFBeaLDr3RzKkbSDZU8xc1Rg2mBlBsVkHqhGtTQG3P2NZqJpA5sNggMgPu6VNhRORTxe+YXf6dPjZn7MgRqPSyWldkyqnU8UNLQg2iDX6QJMacnkdju+1Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780574519; c=relaxed/simple;
+	s=arc-20240116; t=1780574643; c=relaxed/simple;
 	bh=ZM6f0eCw9JYN0eFB+IzJL2AO5YSNKkge7oh3x0mIL9Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DJXj9AwdSLNdzcNDhMdoVCzH0BHHzvB4UZnnhrZdvZJmxQV13uZSPCcd2a9mWV8tALcahz4Ms77vEQNUy1wwEGFLZDHtE72FQoxVPIa5pXSINcc6YZEwswpUrNXQTPt/WOAIH/+p3dRZubNtVOjidT5WNlMJJHbjOZXstgRajAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=Qi6jzjaf; arc=none smtp.client-ip=54.92.39.34
+	 MIME-Version; b=Y1efq4s5RXBPwhgryp9KmrbRzJqskD7FQQm5w0ThxwzucDpdhrms9EALrVZvTWaFfAhnsIT5t7T2rjAUlj9wOqJd7rJmaQhtx/v4+HQtqIEx5qq2AvfN0tLPWfBzp8rk2IAIcfKUVYQmV2NrwX02NhZhEyL6CHxjHoTUYOmYvXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=Wv9LYyop; arc=none smtp.client-ip=54.204.34.129
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1780574514;
+	s=onoh2408; t=1780574627;
 	bh=s0SOSgnZPxT0aZX+C5VOVu4hhsXwJgTrAroZMlvrXik=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=Qi6jzjafYZNfszgPdeYl4S9ZJT+0zqG0YcUO0kqNVDfWbODv3bEwDz4Es9Ry7TIuH
-	 N/ypIpEg0kRCpv1pPweZ3on6IZLvk3MjJTWMb6DNHatyUHOCfL4Li/lrPlcxxrHoOM
-	 nMhE+Kv0UwOH2+qz7+VlFuUpKBHv/7fHBKUYFmrY=
-X-QQ-mid: esmtpsz17t1780574500tb188a5ec
-X-QQ-Originating-IP: gbR/tJSf6Z6Khf3zDINlDvAlHKDWGkrA1P8sN6AE198=
+	b=Wv9LYyopZfFF+wgWWssw6pTKXYDub7UyjG1yCx4aeDaYHxqTqXM24SuVGVYN9fk+f
+	 Uz07cZEES2ZE0UBjulOy0C/jS12yR8Fg1pRv5uwmg6z0OfpuPfiEnuMyOogPmGPtty
+	 AdAa07fXxHP69oDD9Fp7Hdv8hOCP+B03PUnRAkLQ=
+X-QQ-mid: zesmtpsz4t1780574610tb7f59c05
+X-QQ-Originating-IP: XGao/hgIYMDEWKq8wNOgeLlCI3YyVgRTcKh858Y4tQw=
 Received: from localhost.localdomain ( [123.114.60.34])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 04 Jun 2026 20:01:40 +0800 (CST)
+	id ; Thu, 04 Jun 2026 20:03:29 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 9837222749658445388
-EX-QQ-RecipientCnt: 2
+X-BIZMAIL-ID: 6098904183643236574
+EX-QQ-RecipientCnt: 5
 From: Yingjie Gao <gaoyingjie@uniontech.com>
-To: gaoyingjie@uniontech.com
-Cc: stable@vger.kernel.org
+To: linux-xfs@vger.kernel.org
+Cc: cem@kernel.org,
+	djwong@kernel.org,
+	Yingjie Gao <gaoyingjie@uniontech.com>,
+	stable@vger.kernel.org
 Subject: [PATCH 1/1] xfs: fix exchmaps reservation limit check
-Date: Thu,  4 Jun 2026 20:01:31 +0800
-Message-Id: <20260604120131.930018-2-gaoyingjie@uniontech.com>
+Date: Thu,  4 Jun 2026 20:03:17 +0800
+Message-Id: <20260604120317.930273-2-gaoyingjie@uniontech.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260604120131.930018-1-gaoyingjie@uniontech.com>
-References: <20260604120131.930018-1-gaoyingjie@uniontech.com>
+In-Reply-To: <20260604120317.930273-1-gaoyingjie@uniontech.com>
+References: <20260604120317.930273-1-gaoyingjie@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,59 +70,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: OBCaDO5Vzid5h+xeC1xRxwTluTV5UtlWACQDyM89PP/EWqQPqU0U9vMy
-	cWHHqcTazslJPz1C4pSyDUWvBPnt7tAvMGwnj1pmQfDOuiMKae35JHgKkmtoGwGc211dPmD
-	c343dIXxBGAEw2KVREQAFlUtjjQhfBSv8JIERz40X23XjXPxEiRsxYMjbhiMqJx/L6Py0Lx
-	L+e7poH5Hqqx9lMlA0NsgapiYgqEv0FW7whHIBQ2OJWvoCe1hs3z+VGUt+fDvYCSxtqJKJw
-	NCpSNhvAAU4s+mo2kpVTFuA5ndWwzcSwF3C/TpmsCsn5p5eJEmbA5DFDTM7Pf+nY12Q/NqH
-	V0F0j2pfaVwOxi9F1xYPbcMnNfu2kDbIe/W7I/Mz1Qire/Y0p567SdLVcxhB+KQpyE5GWLT
-	D4JAMr99f4WHHid7m8hyUaLjXnv2hvOPRvBbvkMRCLEYu6oSEOshX9AIYw5Vmj0sFj5Gd3x
-	Q7m8rOgcU1ugZwe1NODLJD508mjacutu3f7JRk5Pf5ZQBJx7nAxcsxCtI5km0mxcocDKTki
-	t6TDQRL1j/GaRJiSJ+1ind/8OUvBkbWuUlN53aejHBgMJmKkpOGvMo9iBX5HmsEMidcO1MR
-	aIlyKaPI8V6PZtS0z13NglSilJNzIXVtWtDeieFnVKbLzBkJ/xzytJUKUK8EpHpK0pX/+qR
-	efj29TKqK1BfDUiJ7gfYmvDv0AP1EOUi6cFduShE0ozZ1TiuXVdtATP84WARCJBJHRGcbjP
-	55pVM4n+TuWo1M1X7cZ541MJlsDJhd8hFtuEaIUUYa2Jrwy00UfxJMgrMClc3mT1xr5gWLH
-	nZ7M1Wo0I0FjeYMQXQ/obK7HmTEfadwqm3Y8NA1ILpufgh0iuJNIvIGkJJwfTm6vt3zKPiE
-	7uxncKyx5IdoSU1zuwLticsQlrvVBO7OGwPAiw3jox9yuXr1X2Sr/unL9Bg4+B3wluq6slC
-	5/CUrsmdI3/3sZG/eWYhx9INAJpOChUayUiKqXl4lQ+luOPgdpD6KuFwIimykBuAcyIu53I
-	NsARf9OZZ3Q86Xrww2vwfXGChXUAg3xOavwkVTDw==
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: MpzYvQLGddWR8DeuEzpwGWw30dg71Z7DY36urENAZOCJyR8XI0vG4iG9
+	aBw4GZY109pHZSJbAV15ZXy1oH5/nOzLnm6hu9iYFYaKzayDIgxixTj+9/b6+uX6n13mNqA
+	rJEuLifjf+3LBoBfws4XRpnWecylcEsEBK5Y+e+JZVs9MbhvHj7ENtDmh9xvyg58AXBdPBS
+	j/dljWdYoLQGVemFRGA8zafgOP6AuSoqWIYFHsiX4ONd3IGx8HCj7vJL0ZzMMBkXEPVDk3I
+	o28DHSz9fB1MeXKGaF8Ex4aVN63ooO6+Zs8eqvm0Uz4gWc5Ax+unAGbquhE84KH7fk2IGWA
+	ZfNwRe7hjkAtGrqU5AKHwQ8+YydQofA+Hr6H8FKKy0BCnjzy9kdK1BFPTXdfvWMn3THKAS4
+	XH5CdtX9oDFjyFOPfteyoqPsNOEI9fR3E2TSXJguNJZQZM4EUOCdYejsmuTG+ll4IQ/Qox3
+	cW5fkzGDeqshILJm6hAi6uWgVaMR4aSagZlyWcSOkkJsrxh3KULE9FxUoDySni7JixsxLsP
+	qeSYfflh8Rb5dwk12MP9z0AInzhk+q9ADUtAXcKhr74djt7PrZrZLULPPmaAQ0d52j4GgDl
+	aDkNr4B51bDZvywQ7aLXEQ15WuF968LJH7IutBuPN7ZY+GfStuIUE/zPTsVCmAEaSP54p0J
+	EYg0TU2GTX1+6PlGr8pMQWBLGmfmfutG7t291BJSa8OoQiKu5KMUg3OWe00Kx6nDaLekOdb
+	2XbOHo8duIhm5B8C2/jy1LtK/IjkNN1t/wtmfyEkkq6IhX3fe9cAwKvVtQ/aARbN5jQe50h
+	gX6BMUYGncvfae2l+OId+4wDn+GmorO5qYCuTXNksGOsu/FA3SKjCQKmDeywX6jc2JTHsQo
+	YAcmXgEkdeh1PPeIyewZKMD1S99+24WeNcfCDZao8Ogkt4NHftIUw1KkNlhMl8E/rlgmKq5
+	EXhS8VmHeCkGFH1Xeh29r8ypp/0aaKRckdy/7cYO/xqbk+i8PFlFLZWq4HmnYa7yAZOAWWL
+	hPZ7GPCj4L3+qCsfVVJJq33mTq15PKyqEA+n2Y+jP4zVtdXG/tU7Csf+FTc9C3kdZL/patV
+	F8Ur2FvbNicG4FgOw++JDajtQ9yUeTYRws9Rarf5lywCg9cRe3KD6iaZyjE0EcjuA==
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
 X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-260470-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gaoyingjie@uniontech.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260471-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linux-xfs@vger.kernel.org,m:cem@kernel.org,m:djwong@kernel.org,m:gaoyingjie@uniontech.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:gaoyingjie@uniontech.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gaoyingjie@uniontech.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gaoyingjie@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[uniontech.com:+];
-	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,uniontech.com:mid,uniontech.com:dkim,uniontech.com:from_mime,uniontech.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,uniontech.com:mid,uniontech.com:dkim,uniontech.com:from_mime,uniontech.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BC52963FAC6
+X-Rspamd-Queue-Id: D0F3B63FBD1
 
 xfs_exchmaps_estimate_overhead() adds the bmbt and rmapbt
 overhead to a local resblks variable, but the final UINT_MAX
