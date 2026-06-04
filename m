@@ -1,147 +1,478 @@
-Return-Path: <stable+bounces-260555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YBhaA2vGIWpPNQEAu9opvQ
-	(envelope-from <stable+bounces-260555-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 20:39:39 +0200
+	id l0I/Bt3KIWrMNgEAu9opvQ
+	(envelope-from <stable+bounces-260557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 20:58:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 666666429D6
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 20:39:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A0A642C2F
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 20:58:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dvg9CaVt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260555-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260555-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=janestreet.com header.s=google header.b=L5epZKPy;
+	dkim=pass header.d=janestreet.com header.s=waixah header.b=2fBWv8gF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260557-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260557-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=janestreet.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 214C430588B0
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 18:38:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A415930055EC
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 18:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB77B3BBA09;
-	Thu,  4 Jun 2026 18:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076C639B482;
+	Thu,  4 Jun 2026 18:52:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mxout1.mail.janestreet.com (mxout1.mail.janestreet.com [38.105.200.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A757A39DBF9;
-	Thu,  4 Jun 2026 18:38:14 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780598296; cv=none; b=Ykh2pq+hFnVj7eUlemZHngBkPXCWsr72x/vF4Jf4NoBwxlMb87D/tL8KEUecLVd5vqHRx1WbH5Lnd3uy88iRtaIiEvC4t1lXfRIO4i+gTegX1ACPac8uZ1disiRpWksKarWIxDjA/h71wAkI1Tw06icZxTVVo+9EH36Emhb0nvQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780598296; c=relaxed/simple;
-	bh=nvYUXkfDK0Y+2JTGS2nXWF1n/TpKuLyIUK0lVQFHunw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nktm0RBPDBv1zvtBwbQeY1N2lINxdnX7VnKzHtB0v00qhwGuxdHdUecXfZGFeer7tSYBZVFMcIl88o/2Jf+E/s+Offmu5hP1AuUJKlfok/G0JCGdUaLPbuNR61zSKp5FudVUwpTtZSbJnePdok9UJXYNa52UvgNDPnnHBiXtqXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dvg9CaVt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D1F1F00893;
-	Thu,  4 Jun 2026 18:38:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780598294;
-	bh=g40q2WcZX+txbiJLhCakWPgHdl3H8ExECh2BVSyQZ6o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Dvg9CaVthlf48311aTtg/33nEoFiSccwVKxZ9vCNOLLP2B/NVYDGrT8S4XUJ0Dt86
-	 /R/Oimr6FThgLrSCZmR7bv4iRHLSzP65da5lEypnLMzKgBzP/z4LfRgUtIQGWGy31y
-	 StE5wTRXOzCDEStDjsTJEkMHwetdG8Ul8qIbRwTk8Jkk5uj8+fcGhLVUQ+YglfGKya
-	 EFi1t7v7tGJr94xz19/HbhiQay0miooKrwD7+OzXdLzaKjsuxVUaUYroJLo2ibQP1w
-	 ATUTvJuom4hlJAt7+Qi/IPeFcuo4FkUBp97hqpnQUt6JGzxUhm7aaxzZZANmOVYuoE
-	 JG8HMadAd36gA==
-Date: Thu, 4 Jun 2026 13:38:13 -0500
-From: Rob Herring <robh@kernel.org>
-To: Hongliang Wang <wanghongliang@loongson.cn>
-Cc: Binbin Zhou <zhoubinbin@loongson.cn>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	loongarch@lists.linux.dev, stable@vger.kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v5 1/2] dt-bindings: i2c: ls2x-i2c: Add clocks and
- clock-frequency properties
-Message-ID: <20260604183813.GA982803-robh@kernel.org>
-References: <20260604015848.18643-1-wanghongliang@loongson.cn>
- <20260604015848.18643-2-wanghongliang@loongson.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E14A3BC68E
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 18:52:28 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780599150; cv=fail; b=Thz29tPYqpBn/hNlIvh8zv+MzUpojRpwmZPYMIqHmxFveTb4voNvqLrbCY7BTpxi4TAnr5mf/gHzxQxxNmQqOZFIKymoXxQycznIK+60OB2ufaXEqHsGwAyIp9Jh2bJ5zBkkZKGgXqPIRAz+5Rl6MamnZJKGzDrhlNdF7XbM9zk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780599150; c=relaxed/simple;
+	bh=8heG/pRYsdnPv2dWN2tSZbVHLmOj332tTquy6KRDXhE=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=TYt1296+XGZaD9A437bATOjJoEgUT6A8HoVflAS4rGzEJMms/XjXq6RPtl4ySpKtbOtCrKW5YDiKSBpoYUqzUO4Qsp//Tcr1cQ/22UQV4+EwD8qTNa6rbyoAqH9tGOr3iLfKYvVGKg60JykRNKHHfWxD4BJXjoyGUQpvgoKmySs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=janestreet.com; spf=pass smtp.mailfrom=janestreet.com; dkim=pass (1024-bit key) header.d=janestreet.com header.i=@janestreet.com header.b=L5epZKPy; dkim=pass (2048-bit key) header.d=janestreet.com header.i=@janestreet.com header.b=2fBWv8gF; arc=fail smtp.client-ip=38.105.200.78
+Received: from mail-lf1-f70.google.com ([209.85.167.70])
+ 	by mxgoog2.mail.janestreet.com with esmtps (TLS1.3:TLS_AES_128_GCM_SHA256:128)
+ 	(Exim 4.99.4)
+ 	id 1wVD61-00000000R2H-2gQW
+ 	for stable@vger.kernel.org;
+ 	Thu, 04 Jun 2026 14:47:13 -0400
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-5aa68d67f20so730327e87.1
+         for <stable@vger.kernel.org>; Thu, 04 Jun 2026 11:47:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780598832; cv=none;
+         d=google.com; s=arc-20240605;
+         b=R66t91slwOcs9dr1+0x1nfxsulVC6c+PxwPi9wg4rG87KFs9crHWPT2A884S6JPLqf
+          e1BJ0b8JyKn2CAfCUhShLd7ga68pw8wnG7lRuxzGYMbmghdQhdf0Mi/VOw38ylDOXLMX
+          /ANqp+qnjILKI4lkEeW060NOk39JKZPo/7ecZWtfB+MLT1C+2ChTAGciedp7fMDZ1rVV
+          T6wFxCou0vJHR0AQ5/2a/FVnEjbYdkaOVLPrUOPHOnYXdW4lQifv1ekxbaBvg5ieYIRI
+          Y9zPRtrIpI/Hi46wT6qs9ZKSNDoT4UwSAjZt+za2sV/WMZ9o966zKoFcISwXigM1h0GQ
+          0Dtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+         h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+         bh=lQCuVGxP/BV7D5/gaSpLO06j/STwXOEP1EwPpL+2jB0=;
+         fh=CPBAQLFIjJXr5lZXvW48+5xlsEFY5QxcATDIozvbYRQ=;
+         b=BUer5d0Y2L4fYdcW63Nmb2q30FtK2IHPZmWjTXOcKaPf1evLqUp1bXlc/EZtRSH7Xy
+          DANOrIGXQX7hWl5wSlmcvNl1UoZ2P7UCykMKjlo+iN3kuyDqUJtpl5Fi2RnZdVY4svdj
+          gbq0NeefRZguwVWUr4tIEuUkkgvM1erGqyyEb7XBl6AzeQhlANFgJh1YG4oMoCAcIhXT
+          Ac6OL2Y40NGqoeKsg7vdb9S/LOKYYIXSGVQPuo4uy/fXul4fKEQXptp+3SU02VddaCNN
+          sQHZztVvzrgUJl3F9EeMcT4bVvzGZfdbbzsEU6r7ksA0HJu9/dtHS2Gzz4IbFlMMP3qn
+          qWtw==;
+         darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+         d=janestreet.com; s=google; t=1780598832; x=1781203632; darn=vger.kernel.org;
+         h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+          :date:message-id:reply-to;
+         bh=lQCuVGxP/BV7D5/gaSpLO06j/STwXOEP1EwPpL+2jB0=;
+         b=L5epZKPyjAyYw9xn6/9PHSY+dShZcNZXBossYKByyvc/tVqKbDA4WI1CticlyWW7N3
+          W1m+T4cHYSS0l77xYEbJSqugkkLsG5JvyPeIoOnjwey6qVyZdacuKXkqGYCj4IhUm7na
+          P6gOsEVvH+3plqfM9qEl7BYVF9vEAV8aYDpLI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=janestreet.com;
+  s=waixah; t=1780598833;
+  bh=lQCuVGxP/BV7D5/gaSpLO06j/STwXOEP1EwPpL+2jB0=;
+  h=From:Date:Subject:To:Cc;
+  b=2fBWv8gFFz4PsLZWziE17Y+D5qFv14ktW6YXx6gJyN9gfpv/n4PHPfVajdS1oRWKw
+  q9kStJqXAItN/CP/v03uSDS4o8OylP90w2pbPkBfVbcn9SgAJX8I47TZzuN5xC21eo
+  JHCT1nRFdCVPz27qPhdQOI7XqzleXFRFVKyuVimcysWmCNlRoQWpIRsrNtKLW+ey37
+  aix2+ZZ0Oix0hhIFKhrCX8i8OFYW3+uU2d2I2Bgdy3y9nyK//pRpkTWeutId059MFm
+  0lRTfbbm44i00GpOy2PmwLDzzYOuw/Y0TYD6HM0IhZ9n42P0oPoLkt26mT0GKI+juD
+  kgmH7m3TfpKnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+         d=1e100.net; s=20251104; t=1780598832; x=1781203632;
+         h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+         bh=lQCuVGxP/BV7D5/gaSpLO06j/STwXOEP1EwPpL+2jB0=;
+         b=tKuBqeOuPfJAjU2O3TZMFiAcoJ746Jk9L71SqSeeYheQv0MYa1okie+dRp2bL/0pF7
+          8UBBi2XAe0YiZXZBP2cFX7fZ4kS7hy49gnPOt5kwfdYdjGY4BF9bJPacI42O7VonMzmk
+          oTb26U24EwyIA5wVrGYq7znSM3t4OaB4pE0zqJ/WgfgXyxU18NEiIipHYWjAjWg/DTKx
+          27jdh97TyVpzeyyA12w15lwe+wsUN9m9jChnKQ9mg6vyoliv+klfisxOYs5g64a6oG1p
+          IDUiooQ+ojh1YcyCwtFE7a2tbuGMrqu5uDCcMgzLTU3mzNX5mdBhfKLzasffdxw339f9
+          GLJw==
+X-Forwarded-Encrypted: i=1; AFNElJ+PwZ8akjCJeB9SDNnvtbcddX4jeLB2bQGkj/DMvo1XkNl/ahg0cUdAf+Jt2D5BPb4m/+mu13I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyS4rnkLOTKANdD3Fg53smIiDeHxI7W7h8cAKk+B2YUXTLaqciH
+ 	oohZb62J41FzP4VZC1CwSKpWyWGK+HAEJkK/xffuOwvkFb7QFPf+9A5zn+vEu835ysD4Pn3R79z
+ 	vvPJoWTZxkNg0EA6IwDeHiXBQ+tgLxOlbP7NDU7iaeX3xhqsYtaHAMHlY7phOHk1dbTDQgol/19
+ 	5TbgLkazR/IK0VZLWqM+23qqMuiTL8pc4=
+X-Gm-Gg: Acq92OEzBKcu3eE35zYuPKQmkYZSpQ3c+8ykXlLk3uRmu6lfufD5z2iBWOuadydNNWy
+ 	7NAomcknWnL1xh0GC038gWN9NeVcq5GYXqQyglaFuMj5A4faWBHtf4kGcxoVFIkpR/se0NPdasp
+ 	Np6m3tuWzLfxKj+HwA9RfzGW4EziUGqbL18NFRvH+fq8RWLTuIYWwJAk1hPLdnvAKoN1LD6trsz
+ 	vJC51n4ipbBEwd4
+X-Received: by 2002:a05:6512:124c:b0:5aa:6df7:4ea9 with SMTP id 2adb3069b0e04-5aa87bcacc8mr10562e87.35.1780598832327;
+         Thu, 04 Jun 2026 11:47:12 -0700 (PDT)
+X-Received: by 2002:a05:6512:124c:b0:5aa:6df7:4ea9 with SMTP id
+  2adb3069b0e04-5aa87bcacc8mr10551e87.35.1780598831837; Thu, 04 Jun 2026
+  11:47:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260604015848.18643-2-wanghongliang@loongson.cn>
+From: Gregg Leventhal <gleventhal@janestreet.com>
+Date: Thu, 4 Jun 2026 14:46:33 -0400
+X-Gm-Features: AVHnY4JX0Q2JrT_P8ExKcbOaAxWCVdhJ719iXGaFfyvnGit06GPdlxX2aHAE0J4
+Message-ID: <CAFN_u7FrgM4Dzie2jjkLwWV8P0dvUG_Wwy3Q9B3-2HnnWiDu8w@mail.gmail.com>
+Subject: [BUG] iomap/io_uring: O_APPEND async buffered write silently
+  re-appends a data chunk (corruption) on XFS, 6.1.y/6.12.y
+To: hch@infradead.org, djwong@kernel.org, bfoster@redhat.com, 
+ 	Eric Hagberg <ehagberg@janestreet.com>
+Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ 	io-uring@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, stable@vger.kernel.org
+Content-Type: multipart/mixed; boundary="000000000000dc1e61065371f8a6"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+X-Spamd-Result: default: False [2.54 / 15.00];
+	MIME_BAD_ATTACHMENT(1.60)[c:text/x-csrc];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[janestreet.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[janestreet.com:s=google,janestreet.com:s=waixah];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
+	MIME_GOOD(-0.10)[multipart/mixed,multipart/alternative,text/plain,text/x-csrc];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260555-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260557-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:wanghongliang@loongson.cn,m:zhoubinbin@loongson.cn,m:andi.shyti@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:wsa+renesas@sang-engineering.com,m:linux-i2c@vger.kernel.org,m:devicetree@vger.kernel.org,m:loongarch@lists.linux.dev,m:stable@vger.kernel.org,m:conor.dooley@microchip.com,m:krzk@kernel.org,m:conor@kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[robh@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[gleventhal@janestreet.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~,4:+];
+	FORGED_RECIPIENTS(0.00)[m:hch@infradead.org,m:djwong@kernel.org,m:bfoster@redhat.com,m:ehagberg@janestreet.com,m:linux-xfs@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:io-uring@vger.kernel.org,m:axboe@kernel.dk,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[janestreet.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robh@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TAGGED_RCPT(0.00)[stable,dt,renesas];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gleventhal@janestreet.com,stable@vger.kernel.org];
+	HAS_ATTACHMENT(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,janestreet.com:dkim,janestreet.com:from_mime,janestreet.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 666666429D6
+X-Rspamd-Queue-Id: 15A0A642C2F
 
-On Thu, Jun 04, 2026 at 09:58:47AM +0800, Hongliang Wang wrote:
-> Add clocks and clock-frequency properties to examples.
-> 
-> Cc: stable@vger.kernel.org
+--000000000000dc1e61065371f8a6
+Content-Type: multipart/alternative; boundary="000000000000dc1e5f065371f8a4"
 
-Not stable material unless there's a warning in the example (and there 
-is not).
+--000000000000dc1e5f065371f8a4
+Content-Type: text/plain; charset="UTF-8"
 
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Signed-off-by: Hongliang Wang <wanghongliang@loongson.cn>
-> ---
->  Documentation/devicetree/bindings/i2c/loongson,ls2x-i2c.yaml | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/i2c/loongson,ls2x-i2c.yaml b/Documentation/devicetree/bindings/i2c/loongson,ls2x-i2c.yaml
-> index ee09c6d9c5f0..0beb7f2515c8 100644
-> --- a/Documentation/devicetree/bindings/i2c/loongson,ls2x-i2c.yaml
-> +++ b/Documentation/devicetree/bindings/i2c/loongson,ls2x-i2c.yaml
-> @@ -37,11 +37,14 @@ unevaluatedProperties: false
->  
->  examples:
->    - |
-> +    #include <dt-bindings/clock/loongson,ls2k-clk.h>
->      #include <dt-bindings/interrupt-controller/irq.h>
->  
->      i2c0: i2c@1fe21000 {
->          compatible = "loongson,ls2k-i2c";
->          reg = <0x1fe21000 0x8>;
-> +        clock-frequency = <100000>;
-> +        clocks = <&clk LOONGSON2_APB_CLK>;
->          interrupt-parent = <&extioiic>;
->          interrupts = <22 IRQ_TYPE_LEVEL_LOW>;
->          #address-cells = <1>;
-> -- 
-> 2.47.2
-> 
+Hi all,
+
+We're seeing silent data corruption -- a chunk of a buffered write being
+silently repeated at a later offset -- when using io_uring async buffered
+writes with O_APPEND on XFS. It reproduces on the longterm stable trees
+6.1.y and 6.12.y under memory pressure, and is fixed in 6.18.y.
+
+Summary
+-------
+On XFS, an io_uring async buffered write to a file opened O_APPEND can
+silently write a chunk of data twice. This is not a harmless in-place
+rewrite: a page-aligned, page-multiple sub-range is re-appended at a later
+offset, so the file grows and ends up containing the same run of bytes
+twice in sequence (and everything after the duplicate is shifted relative
+to what was intended). The CQE reports the full requested byte count
+(userspace sees success), the resulting file is larger than the total
+bytes the kernel reported writing, and there is no error and no dmesg
+warning.
+
+Affected kernels (vanilla stable trees; we run ELRepo builds of userspace)
+  - 6.1.173   (observed as 6.1.173-1.el8.x86_64)
+  - 6.12.85   (observed as 6.12.85-1.el8.x86_64)
+Filesystem: XFS
+
+Unaffected:
+  - 6.18.y
+
+Trigger conditions
+------------------
+  - O_APPEND specific. With an explicit file offset (no O_APPEND) we do
+    not observe the corruption.
+  - Only manifests under memory pressure. The reproducer triggers
+    reliably when the system is under enough memory/paging pressure and
+    does not reproduce on an otherwise idle box.
+
+Root cause (our understanding)
+------------------------------
+Under memory pressure the inline IOCB_NOWAIT attempt commits a partial,
+non-page-aligned amount and returns short at a page boundary. The pre-fix
+iomap_write_iter() reverts the iov_iter by the bytes already written and
+returns -EAGAIN:
+
+    } while (iov_iter_count(i) && length);
+
+    if (status == -EAGAIN) {
+        iov_iter_revert(i, total_written);
+        return -EAGAIN;
+    }
+    return total_written ? total_written : status;
+
+io_uring then reissues the page-aligned remainder on io-wq. Because the
+write is O_APPEND, the offset is re-resolved to the current EOF, which now
+already includes the bytes committed by the inline attempt. The result is
+that a page-aligned sub-range is written a second time, re-appended past
+the new EOF rather than landing where it was originally intended.
+
+What fixes it
+-------------
+We did not bisect. We identified Brian Foster's "iomap: incremental
+per-operation iter advance" series as the likely relevant change,
+backported it to the affected kernel, and confirmed it makes the
+reproducer pass. The series was merged for v6.15:
+
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.18.y&id=30f530096166202cf70e1b7d1de5a8cdfba42af1
+
+It reworks iomap_write_iter() to advance iter->pos/iter->len incrementally
+(iomap_iter_advance) and removes the iov_iter_revert/-EAGAIN handling, so
+retries resume from the correct offset. The buffered-write change is in
+"iomap: advance the iter directly on buffered writes" (d9dc477ff6a2), but
+it depends on the earlier infrastructure patches in the same series.
+
+Detection in the reproducer (both silent)
+-----------------------------------------
+  1) final file size > sum of CQE byte counts the kernel reported.
+  2) the file is filled with a u64 "byte offset / 8" pattern, so on
+     readback element j must equal j; the first mismatch marks the start
+     of the duplicated copy (observed to be page-aligned).
+
+Reproducer
+----------
+Build: gcc -O2 -o repro_uring_dup repro_uring_dup.c -luring
+Run:   ./repro_uring_dup /path/on/xfs/repro [seconds] [file_target_mb]
+Needs the system under memory pressure to trigger; under those conditions
+it reproduces reliably. Source attached (repro_uring_dup.c).
+
+Notes on stable
+---------------
+The fix is a refactor with no Fixes: tag, and the buffered-write commit
+builds on the preceding patches in the series, so a single-commit
+cherry-pick into 6.1.y / 6.12.y doesn't look feasible. We're wondering
+whether a smaller, targeted fix would be more backportable for the active
+LTS trees -- e.g. ensuring the -EAGAIN retry path keeps the append
+position consistent with the reverted iov_iter so the already-committed
+range isn't re-appended -- but we'd defer to your judgment on whether that
+is sound or whether backporting the series as a unit is the better path.
+Given this is silent data corruption present since io_uring async buffered
+write support (~v6.0), we'd appreciate guidance on the right approach.
+
+Happy to test patches and provide any additional detail.
+
+Regards,
+Gregg Leventhal <gleventhal@janestreet.com> and Eric Hagberg <
+ehagberg@janestreet.com>
+
+--000000000000dc1e5f065371f8a4
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi all,<br><br>We&#39;re seeing silent data corruption -- =
+a chunk of a buffered write being<br>silently repeated at a later offset --=
+ when using io_uring async buffered<br>writes with O_APPEND on XFS. It repr=
+oduces on the longterm stable trees<br>6.1.y and 6.12.y under memory pressu=
+re, and is fixed in 6.18.y.<br><br>Summary<br>-------<br>On XFS, an io_urin=
+g async buffered write to a file opened O_APPEND can<br>silently write a ch=
+unk of data twice. This is not a harmless in-place<br>rewrite: a page-align=
+ed, page-multiple sub-range is re-appended at a later<br>offset, so the fil=
+e grows and ends up containing the same run of bytes<br>twice in sequence (=
+and everything after the duplicate is shifted relative<br>to what was inten=
+ded). The CQE reports the full requested byte count<br>(userspace sees succ=
+ess), the resulting file is larger than the total<br>bytes the kernel repor=
+ted writing, and there is no error and no dmesg<br>warning.<br><br>Affected=
+ kernels (vanilla stable trees; we run ELRepo builds of userspace)<br>=C2=
+=A0 - 6.1.173 =C2=A0 (observed as 6.1.173-1.el8.x86_64)<br>=C2=A0 - 6.12.85=
+ =C2=A0 (observed as 6.12.85-1.el8.x86_64)<br>Filesystem: XFS<br><br>Unaffe=
+cted:<br>=C2=A0 - 6.18.y<br><br>Trigger conditions<br>------------------<br=
+>=C2=A0 - O_APPEND specific. With an explicit file offset (no O_APPEND) we =
+do<br>=C2=A0 =C2=A0 not observe the corruption.<br>=C2=A0 - Only manifests =
+under memory pressure. The reproducer triggers<br>=C2=A0 =C2=A0 reliably wh=
+en the system is under enough memory/paging pressure and<br>=C2=A0 =C2=A0 d=
+oes not reproduce on an otherwise idle box.<br><br>Root cause (our understa=
+nding)<br>------------------------------<br>Under memory pressure the inlin=
+e IOCB_NOWAIT attempt commits a partial,<br>non-page-aligned amount and ret=
+urns short at a page boundary. The pre-fix<br>iomap_write_iter() reverts th=
+e iov_iter by the bytes already written and<br>returns -EAGAIN:<br><br>=C2=
+=A0 =C2=A0 } while (iov_iter_count(i) &amp;&amp; length);<br><br>=C2=A0 =C2=
+=A0 if (status =3D=3D -EAGAIN) {<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 iov_iter_re=
+vert(i, total_written);<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -EAGAIN;<br>=
+=C2=A0 =C2=A0 }<br>=C2=A0 =C2=A0 return total_written ? total_written : sta=
+tus;<br><br>io_uring then reissues the page-aligned remainder on io-wq. Bec=
+ause the<br>write is O_APPEND, the offset is re-resolved to the current EOF=
+, which now<br>already includes the bytes committed by the inline attempt. =
+The result is<br>that a page-aligned sub-range is written a second time, re=
+-appended past<br>the new EOF rather than landing where it was originally i=
+ntended.<br><br>What fixes it<br>-------------<br>We did not bisect. We ide=
+ntified Brian Foster&#39;s &quot;iomap: incremental<br>per-operation iter a=
+dvance&quot; series as the likely relevant change,<br>backported it to the =
+affected kernel, and confirmed it makes the<br>reproducer pass. The series =
+was merged for v6.15:<br><br>=C2=A0 <a href=3D"https://git.kernel.org/pub/s=
+cm/linux/kernel/git/stable/linux.git/commit/?h=3Dlinux-6.18.y&amp;id=3D30f5=
+30096166202cf70e1b7d1de5a8cdfba42af1">https://git.kernel.org/pub/scm/linux/=
+kernel/git/stable/linux.git/commit/?h=3Dlinux-6.18.y&amp;id=3D30f5300961662=
+02cf70e1b7d1de5a8cdfba42af1</a><br><br>It reworks iomap_write_iter() to adv=
+ance iter-&gt;pos/iter-&gt;len incrementally<br>(iomap_iter_advance) and re=
+moves the iov_iter_revert/-EAGAIN handling, so<br>retries resume from the c=
+orrect offset. The buffered-write change is in<br>&quot;iomap: advance the =
+iter directly on buffered writes&quot; (d9dc477ff6a2), but<br>it depends on=
+ the earlier infrastructure patches in the same series.<br><br>Detection in=
+ the reproducer (both silent)<br>-----------------------------------------<=
+br>=C2=A0 1) final file size &gt; sum of CQE byte counts the kernel reporte=
+d.<br>=C2=A0 2) the file is filled with a u64 &quot;byte offset / 8&quot; p=
+attern, so on<br>=C2=A0 =C2=A0 =C2=A0readback element j must equal j; the f=
+irst mismatch marks the start<br>=C2=A0 =C2=A0 =C2=A0of the duplicated copy=
+ (observed to be page-aligned).<br><br>Reproducer<br>----------<br>Build: g=
+cc -O2 -o repro_uring_dup repro_uring_dup.c -luring<br>Run: =C2=A0 ./repro_=
+uring_dup /path/on/xfs/repro [seconds] [file_target_mb]<br>Needs the system=
+ under memory pressure to trigger; under those conditions<br>it reproduces =
+reliably. Source attached (repro_uring_dup.c).<br><br>Notes on stable<br>--=
+-------------<br>The fix is a refactor with no Fixes: tag, and the buffered=
+-write commit<br>builds on the preceding patches in the series, so a single=
+-commit<br>cherry-pick into 6.1.y / 6.12.y doesn&#39;t look feasible. We&#3=
+9;re wondering<br>whether a smaller, targeted fix would be more backportabl=
+e for the active<br>LTS trees -- e.g. ensuring the -EAGAIN retry path keeps=
+ the append<br>position consistent with the reverted iov_iter so the alread=
+y-committed<br>range isn&#39;t re-appended -- but we&#39;d defer to your ju=
+dgment on whether that<br>is sound or whether backporting the series as a u=
+nit is the better path.<br>Given this is silent data corruption present sin=
+ce io_uring async buffered<br>write support (~v6.0), we&#39;d appreciate gu=
+idance on the right approach.<br><br>Happy to test patches and provide any =
+additional detail.<br><br>Regards,<br>Gregg Leventhal &lt;<a href=3D"mailto=
+:gleventhal@janestreet.com">gleventhal@janestreet.com</a>&gt; and Eric Hagb=
+erg &lt;<a href=3D"mailto:ehagberg@janestreet.com">ehagberg@janestreet.com<=
+/a>&gt;<br></div>
+
+--000000000000dc1e5f065371f8a4--
+--000000000000dc1e61065371f8a6
+Content-Type: text/x-csrc; charset="US-ASCII"; name="repro_uring_dup.c"
+Content-Disposition: attachment; filename="repro_uring_dup.c"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mpzr6ziv0>
+X-Attachment-Id: f_mpzr6ziv0
+
+LyoKICogcmVwcm9fdXJpbmdfZHVwLmMKICoKICogUmVwcm9kdWNlciBmb3IgaW9fdXJpbmcgYXN5
+bmMgYnVmZmVyZWQtd3JpdGUgZHVwbGljYXRpb24gb24gWEZTLgogKiBJc3N1ZXMgbGFyZ2UsIHZh
+cmlhYmxlLXNpemUsIG5vbi1wYWdlLWFsaWduZWQgYnVmZmVyZWQgd3JpdGV2J3MgYXBwZW5kZWQK
+ICogdG8gYSBmaWxlIHZpYSBpb191cmluZyB3aXRoIG9mZnNldCAtMSAoInVzZSBjdXJyZW50IHBv
+c2l0aW9uIikuCiAqCiAqIEJ1Zzogd2hlbiB0aGUgaW5saW5lIElPQ0JfTk9XQUlUIGF0dGVtcHQg
+ZG9lcyBhIHBhcnRpYWwtcGFnZSBzaG9ydCB3cml0ZQogKiAobGFuZGluZyBvbiBhIHBhZ2UgYm91
+bmRhcnkpIGFuZCB0aGUgcGFnZS1hbGlnbmVkIHJlbWFpbmRlciBpcyByZWlzc3VlZCBvbgogKiBp
+by13cSwgYSBwYWdlLWFsaWduZWQsIHBhZ2UtbXVsdGlwbGUgc3ViLXJhbmdlIG9mIHRoZSByZW1h
+aW5kZXIgaXMgd3JpdHRlbgogKiBUV0lDRSwgd2hpbGUgdGhlIENRRSBzdGlsbCByZXBvcnRzIHRo
+ZSBmdWxsIHJlcXVlc3RlZCBieXRlIGNvdW50LiBSZXN1bHQ6CiAqIHRoZSBmaWxlIGlzIGxhcmdl
+ciB0aGFuIHRoZSBieXRlcyB3ZSB3ZXJlIHRvbGQgc3VjY2VlZGVkLCB3aXRoIGEgcGFnZS1hbGln
+bmVkCiAqIGR1cGxpY2F0ZWQgY2h1bmsuCiAqCiAqIERldGVjdGlvbiAoYm90aCBzaWxlbnQgLSBu
+byBlcnJvciBpcyBldmVyIHJldHVybmVkKToKICogICAxKSBmaW5hbCBmaWxlIHNpemUgPiB0b3Rh
+bCBieXRlcyB0aGUga2VybmVsIHRvbGQgdXMgaXQgd3JvdGUuCiAqICAgMikgZmlsZSBpcyBmaWxs
+ZWQgd2l0aCBhIHU2NCAiYnl0ZSBvZmZzZXQgLyA4IiBwYXR0ZXJuLCBzbyBvbiByZWFkYmFjawog
+KiAgICAgIGVsZW1lbnQgaiBtdXN0IGVxdWFsIGo7IHRoZSBmaXJzdCBqIHdoZXJlIGl0IGRvZXNu
+J3QgaXMgdGhlIHN0YXJ0IG9mIHRoZQogKiAgICAgIGR1cGxpY2F0ZWQgY29weSAoZXhwZWN0ZWQg
+dG8gYmUgcGFnZS1hbGlnbmVkKS4KICoKICogQnVpbGQ6ICBnY2MgLU8yIC1vIHJlcHJvX3VyaW5n
+X2R1cCByZXByb191cmluZ19kdXAuYyAtbHVyaW5nCiAqIFJ1bjogICAgLi9yZXByb191cmluZ19k
+dXAgL3BhdGgvb24veGZzL3JlcHJvIFtzZWNvbmRzXSBbZmlsZV90YXJnZXRfbWJdCiAqLwojZGVm
+aW5lIF9HTlVfU09VUkNFCiNpbmNsdWRlIDxsaWJ1cmluZy5oPgojaW5jbHVkZSA8ZmNudGwuaD4K
+I2luY2x1ZGUgPHN0ZGludC5oPgojaW5jbHVkZSA8c3RkaW8uaD4KI2luY2x1ZGUgPHN0ZGxpYi5o
+PgojaW5jbHVkZSA8c3RyaW5nLmg+CiNpbmNsdWRlIDx0aW1lLmg+CiNpbmNsdWRlIDx1bmlzdGQu
+aD4KI2luY2x1ZGUgPGVycm5vLmg+CiNpbmNsdWRlIDxzeXMvc3RhdC5oPgojaW5jbHVkZSA8c3lz
+L3Vpby5oPgoKI2RlZmluZSBRRCA4CiNkZWZpbmUgTUIgKDEwMjRVTCAqIDEwMjRVTCkKI2RlZmlu
+ZSBNQVhDSFVOSyAoMjRVTCAqIE1CKQojZGVmaW5lIE1JTkNIVU5LICgxVUwgKiBNQikKCi8qIDE6
+IE9fQVBQRU5EIC8gb2Zmc2V0IC0xIHZhcmlhbnQgKGNvcnJ1cHRzKS4KICogMDogbm8gT19BUFBF
+TkQsIGV4cGxpY2l0IG9mZnNldCB2YXJpYW50IChkb2VzIG5vdCBjb3JydXB0KS4gKi8Kc3RhdGlj
+IGludCB1c2VfYXBwZW5kID0gMTsKCnN0YXRpYyB1aW50NjRfdCBub3dfbnModm9pZCkgewogIHN0
+cnVjdCB0aW1lc3BlYyB0czsKICBjbG9ja19nZXR0aW1lKENMT0NLX01PTk9UT05JQywgJnRzKTsK
+ICByZXR1cm4gKHVpbnQ2NF90KXRzLnR2X3NlYyAqIDEwMDAwMDAwMDBVTEwgKyAodWludDY0X3Qp
+dHMudHZfbnNlYzsKfQoKLyogRmlsbCBidWYgc28gdGhlIHU2NCBhdCBnbG9iYWwgYnl0ZSBvZmZz
+ZXQgKGJhc2UrOCppKSBob2xkcyAoYmFzZSs4KmkpLzguICovCnN0YXRpYyB2b2lkIGZpbGxfcGF0
+dGVybih1aW50NjRfdCAqYnVmLCB1aW50NjRfdCBiYXNlX2J5dGVzLCBzaXplX3QgbGVuKSB7CiAg
+dWludDY0X3Qgc3RhcnRfaWR4ID0gYmFzZV9ieXRlcyAvIDg7CiAgc2l6ZV90IG4gPSBsZW4gLyA4
+OwogIGZvciAoc2l6ZV90IGkgPSAwOyBpIDwgbjsgaSsrKQogICAgYnVmW2ldID0gc3RhcnRfaWR4
+ICsgaTsKfQoKLyogT25lIHdyaXRldjsgbG9vcHMgb3ZlciAobGVnaXRpbWF0ZWx5KSBzaG9ydCAq
+cmV0dXJuZWQqIHJlc3VsdHMuICovCnN0YXRpYyB2b2lkIHdyaXRlX2FsbChzdHJ1Y3QgaW9fdXJp
+bmcgKnJpbmcsIGludCBmZCwgdWludDhfdCAqYnVmLCBzaXplX3QgbGVuLAogICAgICAgICAgICAg
+ICAgICAgICAgdWludDY0X3QgZXhwZWN0ZWQpIHsKICBzaXplX3QgZG9uZSA9IDA7CiAgd2hpbGUg
+KGRvbmUgPCBsZW4pIHsKICAgIHN0cnVjdCBpb191cmluZ19zcWUgKnNxZSA9IGlvX3VyaW5nX2dl
+dF9zcWUocmluZyk7CiAgICBzdHJ1Y3QgaW92ZWMgaW92ID0gey5pb3ZfYmFzZSA9IGJ1ZiArIGRv
+bmUsIC5pb3ZfbGVuID0gbGVuIC0gZG9uZX07CiAgICBsb25nIGxvbmcgb2ZmID0gdXNlX2FwcGVu
+ZCA/IC0xTEwgOiAobG9uZyBsb25nKShleHBlY3RlZCArIGRvbmUpOwogICAgaW9fdXJpbmdfcHJl
+cF93cml0ZXYoc3FlLCBmZCwgJmlvdiwgMSwgKHVuc2lnbmVkIGxvbmcgbG9uZylvZmYpOwoKICAg
+IGludCByZXQgPSBpb191cmluZ19zdWJtaXQocmluZyk7CiAgICBpZiAocmV0IDwgMCkgewogICAg
+ICBmcHJpbnRmKHN0ZGVyciwgInN1Ym1pdDogJXNcbiIsIHN0cmVycm9yKC1yZXQpKTsKICAgICAg
+ZXhpdCgxKTsKICAgIH0KCiAgICBzdHJ1Y3QgaW9fdXJpbmdfY3FlICpjcWU7CiAgICByZXQgPSBp
+b191cmluZ193YWl0X2NxZShyaW5nLCAmY3FlKTsKICAgIGlmIChyZXQgPCAwKSB7CiAgICAgIGZw
+cmludGYoc3RkZXJyLCAid2FpdF9jcWU6ICVzXG4iLCBzdHJlcnJvcigtcmV0KSk7CiAgICAgIGV4
+aXQoMSk7CiAgICB9CiAgICBpbnQgcmVzID0gY3FlLT5yZXM7CiAgICBpb191cmluZ19jcWVfc2Vl
+bihyaW5nLCBjcWUpOwoKICAgIGlmIChyZXMgPCAwKSB7CiAgICAgIGZwcmludGYoc3RkZXJyLCAi
+d3JpdGU6ICVzXG4iLCBzdHJlcnJvcigtcmVzKSk7CiAgICAgIGV4aXQoMSk7CiAgICB9CiAgICBp
+ZiAocmVzID09IDApIHsKICAgICAgZnByaW50ZihzdGRlcnIsICJ3cml0ZSByZXR1cm5lZCAwXG4i
+KTsKICAgICAgZXhpdCgxKTsKICAgIH0KICAgIGRvbmUgKz0gKHNpemVfdClyZXM7CiAgfQp9Cgpp
+bnQgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpIHsKICBpZiAoYXJnYyA8IDIpIHsKICAgIGZw
+cmludGYoc3RkZXJyLCAidXNhZ2U6ICVzIDxwYXRoLXByZWZpeC1vbi14ZnM+IFtzZWNvbmRzXSBb
+ZmlsZV90YXJnZXRfbWJdXG4iLAogICAgICAgICAgICBhcmd2WzBdKTsKICAgIHJldHVybiAyOwog
+IH0KICBjb25zdCBjaGFyICpwcmVmaXggPSBhcmd2WzFdOwogIGludCBzZWNvbmRzID0gKGFyZ2Mg
+PiAyKSA/IGF0b2koYXJndlsyXSkgOiA2MDsKICB1aW50NjRfdCBmaWxlX3RhcmdldCA9ICgoYXJn
+YyA+IDMpID8gKHVpbnQ2NF90KWF0b2xsKGFyZ3ZbM10pIDogNDgpICogTUI7CgogIHNyYW5kKCh1
+bnNpZ25lZCkodGltZShOVUxMKSBeIGdldHBpZCgpKSk7CgogIHN0cnVjdCBpb191cmluZyByaW5n
+OwogIGlmIChpb191cmluZ19xdWV1ZV9pbml0KFFELCAmcmluZywgMCkpIHsKICAgIHBlcnJvcigi
+aW9fdXJpbmdfcXVldWVfaW5pdCIpOwogICAgcmV0dXJuIDE7CiAgfQoKICB1aW50OF90ICpidWYg
+PSBhbGlnbmVkX2FsbG9jKDQwOTYsIE1BWENIVU5LKTsKICBpZiAoIWJ1ZikgewogICAgcGVycm9y
+KCJhbGlnbmVkX2FsbG9jIik7CiAgICByZXR1cm4gMTsKICB9CgogIHN0YXRpYyB1aW50NjRfdCBy
+YnVmWzEgPDwgMTZdOwogIHVpbnQ2NF90IGRlYWRsaW5lID0gbm93X25zKCkgKyAodWludDY0X3Qp
+c2Vjb25kcyAqIDEwMDAwMDAwMDBVTEw7CiAgbG9uZyBmaWxlcyA9IDA7CgogIHdoaWxlIChub3df
+bnMoKSA8IGRlYWRsaW5lKSB7CiAgICBjaGFyIGZuWzgxOTJdOwogICAgc25wcmludGYoZm4sIHNp
+emVvZiBmbiwgIiVzLiVsZCIsIHByZWZpeCwgZmlsZXMpOwogICAgaW50IGZsYWdzID0gT19XUk9O
+TFkgfCBPX0NSRUFUIHwgT19UUlVOQyB8ICh1c2VfYXBwZW5kID8gT19BUFBFTkQgOiAwKTsKICAg
+IGludCBmZCA9IG9wZW4oZm4sIGZsYWdzLCAwNjQ0KTsKICAgIGlmIChmZCA8IDApIHsKICAgICAg
+cGVycm9yKCJvcGVuIik7CiAgICAgIHJldHVybiAxOwogICAgfQoKICAgIHVpbnQ2NF90IGV4cGVj
+dGVkID0gMDsKICAgIHdoaWxlIChleHBlY3RlZCA8IGZpbGVfdGFyZ2V0KSB7CiAgICAgIHNpemVf
+dCB3YW50ID0gTUlOQ0hVTksgKyAoKHNpemVfdClyYW5kKCkgJSAoTUFYQ0hVTksgLSBNSU5DSFVO
+SykpOwogICAgICB3YW50ICY9IH4oKHNpemVfdCk3KTsgLyogOC1hbGlnbjsgZGVsaWJlcmF0ZWx5
+IE5PVCBwYWdlLWFsaWduZWQgKi8KICAgICAgZmlsbF9wYXR0ZXJuKCh1aW50NjRfdCAqKWJ1Ziwg
+ZXhwZWN0ZWQsIHdhbnQpOwogICAgICB3cml0ZV9hbGwoJnJpbmcsIGZkLCBidWYsIHdhbnQsIGV4
+cGVjdGVkKTsKICAgICAgZXhwZWN0ZWQgKz0gd2FudDsgLyogQ1FFIHJlcG9ydGVkIGZ1bGwgc3Vj
+Y2VzcyAqLwogICAgfQogICAgY2xvc2UoZmQpOwoKICAgIC8qIC0tLS0gdmVyaWZ5IC0tLS0gKi8K
+ICAgIHN0cnVjdCBzdGF0IHN0OwogICAgaWYgKHN0YXQoZm4sICZzdCkpIHsKICAgICAgcGVycm9y
+KCJzdGF0Iik7CiAgICAgIHJldHVybiAxOwogICAgfQoKICAgIGxvbmcgbG9uZyBmaXJzdF9iYWQg
+PSAtMTsKICAgIHVpbnQ2NF90IGJhZF92YWwgPSAwOwogICAgaW50IHJmZCA9IG9wZW4oZm4sIE9f
+UkRPTkxZKTsKICAgIGlmIChyZmQgPCAwKSB7CiAgICAgIHBlcnJvcigib3BlbiBybyIpOwogICAg
+ICByZXR1cm4gMTsKICAgIH0KICAgIHVpbnQ2NF90IGlkeCA9IDA7CiAgICBzc2l6ZV90IHI7CiAg
+ICB3aGlsZSAoKHIgPSByZWFkKHJmZCwgcmJ1Ziwgc2l6ZW9mIHJidWYpKSA+IDApIHsKICAgICAg
+c2l6ZV90IGNudCA9IChzaXplX3QpciAvIDg7CiAgICAgIGZvciAoc2l6ZV90IGkgPSAwOyBpIDwg
+Y250OyBpKyspIHsKICAgICAgICBpZiAocmJ1ZltpXSAhPSBpZHgpIHsKICAgICAgICAgIGZpcnN0
+X2JhZCA9IChsb25nIGxvbmcpKGlkeCAqIDgpOwogICAgICAgICAgYmFkX3ZhbCA9IHJidWZbaV07
+CiAgICAgICAgICBicmVhazsKICAgICAgICB9CiAgICAgICAgaWR4Kys7CiAgICAgIH0KICAgICAg
+aWYgKGZpcnN0X2JhZCA+PSAwKQogICAgICAgIGJyZWFrOwogICAgfQogICAgY2xvc2UocmZkKTsK
+CiAgICBpbnQgYnVnID0gKCh1aW50NjRfdClzdC5zdF9zaXplICE9IGV4cGVjdGVkKSB8fCAoZmly
+c3RfYmFkID49IDApOwogICAgZmlsZXMrKzsKCiAgICBpZiAoYnVnKSB7CiAgICAgIHByaW50Zigi
+XG4qKiogQ09SUlVQVElPTiBERVRFQ1RFRCBpbiAlcyAqKipcbiIsIGZuKTsKICAgICAgcHJpbnRm
+KCIgIGJ5dGVzIGtlcm5lbCBzYWlkIGl0IHdyb3RlIChzdW0gb2YgQ1FFIHJlc3VsdHMpOiAlbGx1
+XG4iLAogICAgICAgICAgICAgKHVuc2lnbmVkIGxvbmcgbG9uZylleHBlY3RlZCk7CiAgICAgIHBy
+aW50ZigiICBhY3R1YWwgZmlsZSBzaXplOiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+JWxsdVxuIiwKICAgICAgICAgICAgICh1bnNpZ25lZCBsb25nIGxvbmcpc3Quc3Rfc2l6ZSk7CiAg
+ICAgIHByaW50ZigiICBleHRyYSAoZHVwbGljYXRlZCkgYnl0ZXM6ICAgICAgICAgICAgICAgICAg
+ICAgICAgJWxsZFxuIiwKICAgICAgICAgICAgIChsb25nIGxvbmcpc3Quc3Rfc2l6ZSAtIChsb25n
+IGxvbmcpZXhwZWN0ZWQpOwogICAgICBpZiAoZmlyc3RfYmFkID49IDApIHsKICAgICAgICBwcmlu
+dGYoIiAgZmlyc3QgbWlzbWF0Y2hpbmcgb2Zmc2V0OiAlbGxkICgweCVsbHgpICBwYWdlX2FsaWdu
+ZWQ9JXNcbiIsIGZpcnN0X2JhZCwKICAgICAgICAgICAgICAgKHVuc2lnbmVkIGxvbmcgbG9uZylm
+aXJzdF9iYWQsIChmaXJzdF9iYWQgJSA0MDk2ID09IDApID8gIllFUyIgOiAibm8iKTsKICAgICAg
+ICBwcmludGYoIiAgICBleHBlY3RlZCB1NjQgJWxsdSBidXQgZm91bmQgJWxsdSAiCiAgICAgICAg
+ICAgICAgICIoY29udGVudCBmcm9tIGJ5dGUgb2Zmc2V0ICVsbHUgcmVhcHBlYXJlZCBoZXJlKVxu
+IiwKICAgICAgICAgICAgICAgKHVuc2lnbmVkIGxvbmcgbG9uZykoZmlyc3RfYmFkIC8gOCksICh1
+bnNpZ25lZCBsb25nIGxvbmcpYmFkX3ZhbCwKICAgICAgICAgICAgICAgKHVuc2lnbmVkIGxvbmcg
+bG9uZykoYmFkX3ZhbCAqIDgpKTsKICAgICAgfQogICAgICBwcmludGYoIiAgKGZpbGUga2VwdCBm
+b3IgaW5zcGVjdGlvbilcbiIpOwogICAgICBpb191cmluZ19xdWV1ZV9leGl0KCZyaW5nKTsKICAg
+ICAgcmV0dXJuIDA7CiAgICB9CiAgICB1bmxpbmsoZm4pOwogICAgaWYgKGZpbGVzICUgMjAgPT0g
+MCkKICAgICAgZnByaW50ZihzdGRlcnIsICIuLi4lbGQgZmlsZXMgY2xlYW5cbiIsIGZpbGVzKTsK
+ICB9CgogIHByaW50ZigiTm8gY29ycnVwdGlvbiBpbiAlZCBzICglbGQgZmlsZXMpLiBUcnkgbW9y
+ZSB0aW1lLCBwYXJhbGxlbCBpbnN0YW5jZXMsICIKICAgICAgICAgIm9yIG1lbW9yeSBwcmVzc3Vy
+ZS5cbiIsCiAgICAgICAgIHNlY29uZHMsIGZpbGVzKTsKICBpb191cmluZ19xdWV1ZV9leGl0KCZy
+aW5nKTsKICBmcmVlKGJ1Zik7CiAgcmV0dXJuIDA7Cn0K
+--000000000000dc1e61065371f8a6--
 
