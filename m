@@ -1,113 +1,112 @@
-Return-Path: <stable+bounces-260380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260382-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LH0dI75VIWr+DwEAu9opvQ
-	(envelope-from <stable+bounces-260380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:38:54 +0200
+	id WqSaOudVIWoeEAEAu9opvQ
+	(envelope-from <stable+bounces-260382-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:39:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090E363F1CA
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:38:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA2B563F1E5
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:39:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Ot/xzJ/e";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260380-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260380-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="awo/9pLa";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260382-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260382-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36F6D30FFD66
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 10:30:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 36B0A301BA64
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 10:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B643CBE88;
-	Thu,  4 Jun 2026 10:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8397C3D6CDB;
+	Thu,  4 Jun 2026 10:32:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E31D3911BC
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 10:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478E63E5564
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 10:32:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780569048; cv=none; b=DPH66JGBWmIgVv6pGWD45vKsTV22etggGbiN/hSIgyiyRANr3hbTYFWhqq6mVDzRb/zuezR50KVigRq7MhJAtePo1hv2I91MthFEM249AmY/MUCByW5HqHIqVTiOvvCNMr8zIoJQwCV/AF4n3Urs2XGe/CI+iqaCGpMuSYP38wY=
+	t=1780569163; cv=none; b=G/NuhSjsJvOtRJWjGm7PwKl8y0tlPnkNI8QjQ/iZdL1X70kLMe++rOhR840/RJknsgUPNnPFffUV1qx2901NHyyTnqsIzlmJa1IHtHeF4uzMAzwpmkMfRBOw4rFSk8h6JRqkhU0qEzc/EW0lrCVZ7DpN9YSgWygIiXiJRwWsncg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780569048; c=relaxed/simple;
-	bh=Yv5T0FYXOoHL9RCsM/vg38GilOtoqIPPQs79AoW7oAY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=j+P4EiEtgae7fjdsPX6yKYo2TbkYnrcow5roEOCwfDZfviZzMmLzlb9ICIQlGgyPqSN3XFHggwEZ8OAeybGzdJQk23N2ILiVuPf8KdULIn1Aekm4Kgy+DX/ttwBnviXXXshPqTdnr7rMk9wBAKggSERlqZ93MF4qn3AsMX/Zqpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ot/xzJ/e; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544B91F00893;
-	Thu,  4 Jun 2026 10:30:46 +0000 (UTC)
+	s=arc-20240116; t=1780569163; c=relaxed/simple;
+	bh=quBURZ2IU6v/8euO6araAfNcsQUqTQFtp+8F9Y8T2no=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JFCwUlgKI6ECKtJt27zBmp4VX1MjYj1ml7WvsjfebnLR5/VefuwfY/cOyAIQ+TsgNls9asnx9KBrTeuyqaMqWNUFmk0NJWwJ0YT2g5XApfTJibvkwlKFj5LDFHYmkN+Ri3p+A6mFCAjlldS0YEDFvp5yKClGRqo92002q3MnYUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awo/9pLa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6140B1F00893;
+	Thu,  4 Jun 2026 10:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780569046;
-	bh=GGIa4KDrobuRAC4eDgYboQtaXsK8D1Vrxojl96laSJo=;
+	s=korg; t=1780569162;
+	bh=ptyJtz59F656ArjUCxictjLKEC6pHmTiJZzM62Je9ME=;
 	h=Subject:To:Cc:From:Date;
-	b=Ot/xzJ/eL8LcGFWYtH0Jxyhk6ujQhf8v8Nv3cFatGZumOs654ZTMuWNDD4X7x0bhO
-	 XY0NP/93ocs1Na5Xh6IXmWeJ7ZLef8NrTxBeb8dZpyp21qOLVX8HnCmkHGLyT82+lX
-	 1r1SHlQyhUCUDnKqEs3MUgxHsfBgsXmIJvVKayWU=
-Subject: FAILED: patch "[PATCH] net: skbuff: fix missing zerocopy reference in pskb_carve" failed to apply to 5.10-stable tree
-To: minhnguyen.080505@gmail.com,pabeni@redhat.com,willemb@google.com
+	b=awo/9pLal82vM5ghwJRf40TVY3Xiqzu0wZAVYlJzLgy5A3cTmlM3R8XfAmviX9LsN
+	 Bdx685r/hcgI1g58JGMkvNkQs3AOlwVonqrn8w/M1Cj1Trn4CMVSqUVDfN4BRaRu2s
+	 SC/kH8NN+7NdKc2XVo/SSpiefAeBaVQB08eQpiBM=
+Subject: FAILED: patch "[PATCH] ALSA: firewire-motu: Protect register DSP event queue" failed to apply to 6.6-stable tree
+To: cassiogabrielcontato@gmail.com,o-takashi@sakamocchi.jp,tiwai@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 04 Jun 2026 12:29:42 +0200
-Message-ID: <2026060442-premium-area-c1fd@gregkh>
+Date: Thu, 04 Jun 2026 12:31:36 +0200
+Message-ID: <2026060436-askew-mundane-fd77@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260380-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:minhnguyen.080505@gmail.com,m:pabeni@redhat.com,m:willemb@google.com,m:stable@vger.kernel.org,m:minhnguyen080505@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com,redhat.com,google.com];
+	TAGGED_FROM(0.00)[bounces-260382-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:cassiogabrielcontato@gmail.com,m:o-takashi@sakamocchi.jp,m:tiwai@suse.de,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,sakamocchi.jp,suse.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MIME_TRACE(0.00)[0:+]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 090E363F1CA
+X-Rspamd-Queue-Id: AA2B563F1E5
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 98d0912e9f841e5529a5b89a972805f34cb1c69d
+git cherry-pick -x 98fb1c1bb11e29eb609b7200a25e136e05aa4498
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060442-premium-area-c1fd@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060436-askew-mundane-fd77@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -119,88 +118,63 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 98d0912e9f841e5529a5b89a972805f34cb1c69d Mon Sep 17 00:00:00 2001
-From: Minh Nguyen <minhnguyen.080505@gmail.com>
-Date: Tue, 26 May 2026 11:12:39 +0700
-Subject: [PATCH] net: skbuff: fix missing zerocopy reference in pskb_carve
- helpers
+From 98fb1c1bb11e29eb609b7200a25e136e05aa4498 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>
+Date: Thu, 21 May 2026 08:01:23 -0300
+Subject: [PATCH] ALSA: firewire-motu: Protect register DSP event queue
+ positions
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
-the old skb_shared_info header into a new buffer via memcpy(), which
-includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
-Neither function calls net_zcopy_get() for the new shinfo, creating an
-unaccounted holder: every skb_shared_info with destructor_arg set will
-call skb_zcopy_clear() once when freed, but the corresponding
-net_zcopy_get() was never called for the new copy. Repeated calls
-drive uarg->refcnt to zero prematurely, freeing ubuf_info_msgzc while
-TX skbs still hold live destructor_arg pointers.
+The register DSP event queue is updated under parser->lock, but
+snd_motu_register_dsp_message_parser_count_event() reads pull_pos and
+push_pos without the lock.
+snd_motu_register_dsp_message_parser_copy_event() also reads both queue
+positions before taking the lock.
 
-KASAN reports use-after-free on a freed ubuf_info_msgzc:
+Protect these accesses with parser->lock as well. This keeps the hwdep
+poll/read path consistent with the producer side and with the cached
+meter/parameter accessors.
 
-  BUG: KASAN: slab-use-after-free in skb_release_data+0x77b/0x810
-  Read of size 8 at addr ffff88801574d3e8 by task poc/220
-
-  Call Trace:
-   skb_release_data+0x77b/0x810
-   kfree_skb_list_reason+0x13e/0x610
-   skb_release_data+0x4cd/0x810
-   sk_skb_reason_drop+0xf3/0x340
-   skb_queue_purge_reason+0x282/0x440
-   rds_tcp_inc_free+0x1e/0x30
-   rds_recvmsg+0x354/0x1780
-   __sys_recvmsg+0xdf/0x180
-
-  Allocated by task 219:
-   msg_zerocopy_realloc+0x157/0x7b0
-   tcp_sendmsg_locked+0x2892/0x3ba0
-
-  Freed by task 219:
-   ip_recv_error+0x74a/0xb10
-   tcp_recvmsg+0x475/0x530
-
-The skb consuming the late access still referenced the same uarg via
-shinfo->destructor_arg copied by pskb_carve_inside_nonlinear() without
-a refcount bump. This has been verified to be reliably exploitable: a
-working proof-of-concept achieves full root privilege escalation from
-an unprivileged local user on a default kernel configuration.
-
-The fix follows the pattern of pskb_expand_head() which has the same
-memcpy/cloned structure. For pskb_carve_inside_header(), net_zcopy_get()
-is placed after skb_orphan_frags() succeeds, so the orphan error path
-needs no cleanup. For pskb_carve_inside_nonlinear(), net_zcopy_get() is
-placed after all failure points and just before skb_release_data(), so
-no error path needs cleanup at all -- matching pskb_expand_head() more
-closely and avoiding the need for a balancing net_zcopy_put().
-
-Fixes: 6fa01ccd8830 ("skbuff: Add pskb_extract() helper function")
+Fixes: 634ec0b2906e ("ALSA: firewire-motu: notify event for parameter change in register DSP model")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-sonnet-4-6
-Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260526041240.329462-1-minhnguyen.080505@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260521-alsa-firewire-motu-event-locking-v1-1-708e1c2b5e56@gmail.com
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index d247acd447e4..0d3cc115f2e7 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -6833,6 +6833,8 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
- 			skb_kfree_head(data);
- 			return -ENOMEM;
- 		}
-+		if (skb_zcopy(skb))
-+			net_zcopy_get(skb_zcopy(skb));
- 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
- 			skb_frag_ref(skb, i);
- 		if (skb_has_frag_list(skb))
-@@ -6976,6 +6978,8 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
- 		skb_kfree_head(data);
- 		return -ENOMEM;
- 	}
-+	if (skb_zcopy(skb))
-+		net_zcopy_get(skb_zcopy(skb));
- 	skb_release_data(skb, SKB_CONSUMED);
+diff --git a/sound/firewire/motu/motu-register-dsp-message-parser.c b/sound/firewire/motu/motu-register-dsp-message-parser.c
+index a8053e3ef065..4ec23e6880d9 100644
+--- a/sound/firewire/motu/motu-register-dsp-message-parser.c
++++ b/sound/firewire/motu/motu-register-dsp-message-parser.c
+@@ -386,6 +386,8 @@ unsigned int snd_motu_register_dsp_message_parser_count_event(struct snd_motu *m
+ {
+ 	struct msg_parser *parser = motu->message_parser;
  
- 	skb->head = data;
++	guard(spinlock_irqsave)(&parser->lock);
++
+ 	if (parser->pull_pos > parser->push_pos)
+ 		return EVENT_QUEUE_SIZE - parser->pull_pos + parser->push_pos;
+ 	else
+@@ -395,13 +397,14 @@ unsigned int snd_motu_register_dsp_message_parser_count_event(struct snd_motu *m
+ bool snd_motu_register_dsp_message_parser_copy_event(struct snd_motu *motu, u32 *event)
+ {
+ 	struct msg_parser *parser = motu->message_parser;
+-	unsigned int pos = parser->pull_pos;
+-
+-	if (pos == parser->push_pos)
+-		return false;
++	unsigned int pos;
+ 
+ 	guard(spinlock_irqsave)(&parser->lock);
+ 
++	if (parser->pull_pos == parser->push_pos)
++		return false;
++
++	pos = parser->pull_pos;
+ 	*event = parser->event_queue[pos];
+ 
+ 	++pos;
 
 
