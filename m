@@ -1,93 +1,65 @@
-Return-Path: <stable+bounces-260473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kLIYH21sIWruGAEAu9opvQ
-	(envelope-from <stable+bounces-260473-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 14:15:41 +0200
+	id od4WKmVtIWoeGQEAu9opvQ
+	(envelope-from <stable+bounces-260474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 14:19:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D815563FC77
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 14:15:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F7363FCE5
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 14:19:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=BbKwYObF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260473-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260473-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DbVU/Upc";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260474-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260474-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AA479305DA87
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 12:09:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3BBB930086ED
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 12:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001EA42EEA3;
-	Thu,  4 Jun 2026 12:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E950742E01F;
+	Thu,  4 Jun 2026 12:11:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010032.outbound.protection.outlook.com [40.93.198.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF7041C313
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 12:09:43 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780574984; cv=fail; b=ghWZDG6Iv80P/V72n/0Gv6ibNleLgM8UT5FatSmwvRYoEDgGJ5UH/IUAuJVWbYUjqXc2qPycy3TO/3pwp5NFLyJOM/imnB6+ruT/TYQizohNb2Wtf+btxsH6i3cIEsdjMcYJilRLj16fQiWDMs5OYjwa63HAu6dLqADMgKYFl20=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780574984; c=relaxed/simple;
-	bh=OipPT2a8Igt8gJlpMSX+SU5UYWbTTDDepKyKjXwsZ5E=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CgUnLMOM/JQy3/dlBfNTMxJJ9mig9VDO57DAh/FuAtvd4j3jaSZ5FLZw+TqJePWRb7gsD7oZsiS8lkh27oCoPNc0dggMr63vcJokZATUiCjmuZ43df4aH/pja3jmE4GcgdlxtVKJ/fo2EqAHYQ2y5q08NLATyu4EJjcoUHXEfW4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BbKwYObF; arc=fail smtp.client-ip=40.93.198.32
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RqvknCJlrCjXxtW1pKAvQ3WoF8BxqHmc4QL8bbAbvGRkqqtdvtALZPH8jQmRNz9tjWXRrsmeA6PvWZyfzVFJYSAbm2XqHZwNzwc/GE0QXArAF0Aghva2smNYKYCQTExhSkQsayyHcYrzc2JT2m5IKj1xCCSdCwA/rLiKccr9He31gQ47g7ybyTs3w+VqT2e9kUxdoZZxdTMw08bsxObYuVEHcq10/gkNgWvmEh5Cp4TK6RoUKVQYBNsIX381nl7tonV2TEoQCjfjB9KkDe9rN+x9OzQ68EVwhUM/AlrkB13aYH9egfG/qo8qs+jigwqx8dgKEgFn2bHx8WDXDvRthQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CKgt0pRPWrTtFLIY8WlO0Qo5E3Tz1wCQ94dV/iuhWhI=;
- b=wEtJOqrXawV3M7iDEAkdhSINFUwSzW41XKusbALU5kTKddSNBK06xhcN3CJSJUZ5pI51foDb5O5oXIUkeBwMFHFI9PyFnI+pU1Py9E4EaaYIv5whH3Z2G/vA+5JzON3Rbp7CuSbIhkY9BjW87xn4fYE1C6vCTNIcKbe8fQfC/ZBDFjBJrqynPgJXnuE1WAsqpvnA/TisGcJHRUiVqt3+ZwPgtK+93zXPdwprvhx3dPxDLgiwHfq+Or3xX1Z2vjMQzHoO2s9PeJN51OImOmg8ptsn7Y4e85csDHrmdcb+EyyL3z6o5QzWprczSbljOt8PpCfcAPUvlywuAjHdGgepGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CKgt0pRPWrTtFLIY8WlO0Qo5E3Tz1wCQ94dV/iuhWhI=;
- b=BbKwYObF3fonekvdwnDic/xFeUk1T3ZM4R5I6qpu2MNxZ6i3LBPzMuVvtc84+SH6hyg2BnGQSvdUto0bcTLJBeGn1xNKW/x91hcMhi3hORVuC4X6FLqe22AvOM91FvaBGfwRh4Unug/Uqqw+ddhLV1hFrDISbhHJJkO+WU0NdeW8/bXH++Et1OpzfykVCGCPURYBdtfzmCvnmT6arw/fSLvIGL8xntpC9xNCh+GkkRXUn9XE8DdLxh9j/Ne7IgXqS2kIZ99AEpMNUpWWLu3alBVh5IIqksfFhqqkO9vuvLYpCXu4oO5XRIDqkWs2EHwbLrc61+fj9wc/uKa/W+Wp8w==
-Received: from SA1P222CA0064.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:2c1::15)
- by DS7PR12MB5814.namprd12.prod.outlook.com (2603:10b6:8:76::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.7; Thu, 4 Jun 2026 12:09:35 +0000
-Received: from SA2PEPF00001507.namprd04.prod.outlook.com
- (2603:10b6:806:2c1:cafe::5f) by SA1P222CA0064.outlook.office365.com
- (2603:10b6:806:2c1::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.8 via Frontend Transport; Thu, 4
- Jun 2026 12:09:35 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SA2PEPF00001507.mail.protection.outlook.com (10.167.242.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.5 via Frontend Transport; Thu, 4 Jun 2026 12:09:35 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 4 Jun
- 2026 05:09:16 -0700
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 4 Jun
- 2026 05:09:16 -0700
-Received: from 5b171f0-lcelt.nvidia.com (10.127.8.13) by mail.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Thu, 4 Jun 2026 05:09:15 -0700
-From: Wei-Cheng Chen <weichengc@nvidia.com>
-To: <stable@vger.kernel.org>
-Subject: [PATCH 7.0.y] xhci: tegra: Fix ghost USB device on dual-role port unplug
-Date: Thu, 4 Jun 2026 20:09:14 +0800
-Message-ID: <20260604120914.131945-1-weichengc@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2026060430-deluxe-finite-6c5b@gregkh>
-References: <2026060430-deluxe-finite-6c5b@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D163E275F
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 12:11:43 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780575104; cv=none; b=BGmP71/JNoa24AJJHIaq8Z+y5JKW9kejmtXzLEpXurcTA2U1QmDG0Fz8I2ToQmsbof9JVoI1o2xzyNaoFR4uteSSVKB0/Jxwvpvg2SJ8fPhxhI5c0b80+wpYD02HgbDft7wKk9iuQr9CuY8l0bjJuvuP2kIa/WnOr6xrx1Dfh/Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780575104; c=relaxed/simple;
+	bh=MATNYRjbOQHWoQWtTBzRQXdf7Ds7t7sQzUaUTlaSSuA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bENSuPFrCDhv6kVz/xxA1HKO23OV8XU/J8l+sh0+/1WqHGmMK03RfPBhNHJtZdOSnxGVgLj09enGjmh1CbW+RWPnKa2hiYMOnMj3vUEPWXrkGx2mARZAXdzdkTfVlCsjFF1nyY1a0b0RaCFOmwI/rUOomD9/PRsvaM+YSfc3bx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DbVU/Upc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7601F00893;
+	Thu,  4 Jun 2026 12:11:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780575103;
+	bh=y5/Ml3r7ezO5x6yZw9e2cVnqJ2v+OLdac6V7BRUJqAg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=DbVU/UpcgsxEpZEeuD81NKtCy/5e6FJxn+RLKTY72MvEwVOYvSmD5FolO9ZUapgV5
+	 kpFuEzmch7ByQ4nWtHDpy06UbU6OTaytF61+KXPpshhRbyCkga+CCAc1H4v7Ej4xMb
+	 M6dse6XpOP9ljj5V49PUKh0Ncv5pKljh4lbec296FuwSw+l3+sIjDO7whqUA8ts7ZQ
+	 2Fnl1g2jQLydWtdVb8BhQe5fckZDWLHWUcUw+rxZVBOunefyBa9MbJfvXQlRDWytjK
+	 WBrAnrdy2nWEb+9ohzPbKfITzso5/pcgSsVyf9H70Js1YN++1RMXqVtadclgzgADTH
+	 1BCtVBfXUA9qQ==
+Received: from johan by xi.lan with local (Exim 4.99.3)
+	(envelope-from <johan@kernel.org>)
+	id 1wV6vF-0000000Bd4q-1gxQ;
+	Thu, 04 Jun 2026 14:11:41 +0200
+From: Johan Hovold <johan@kernel.org>
+To: stable@vger.kernel.org
+Cc: Johan Hovold <johan@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 6.18.y] USB: serial: mct_u232: fix memory corruption with small endpoint
+Date: Thu,  4 Jun 2026 14:11:33 +0200
+Message-ID: <20260604121133.2771807-1-johan@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026060400-renewal-coagulant-3a75@gregkh>
+References: <2026060400-renewal-coagulant-3a75@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,253 +67,113 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001507:EE_|DS7PR12MB5814:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e34d1fc-752c-4a3c-d2ca-08dec23224f2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|36860700016|1800799024|56012099006|11063799006|22082099003|18002099003|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	diM3ifiQDx43G3MMoQzZJVYNAFZbt+FL3jDPmOuBdHQOmfCfOov5eeeOA4o+jVo6eXmNFw0AN+duHS+JcqcmbsO/aiF/NXUft74mUJYrgakn7dD/fD8w9hzKN/5j4h9PCZQsfpHPD/DXRH/IRDe1u5IOYDnT/Hg4HoTPsw5RMQStvfGerczINMEoXwHpUBqVGkRgK4/EJPHAvOrqVMPlhYksuzOLRMofLp4H3BE/NaWp7FtDt1uHw+ZKyM6K+cXENIgnFMAIY4SwYY5bqvxMUMsy+ekEfjJoGYMSe+JiTG3nu8ayvlebxZMBdddjI1TX2HIHQr1PjO9gCtcpTZzLnTANmb7af7dtKLTS+ZlRG4FS49ip2aOtmpTtKiKY2/DbkrwSymU9YBFx7q8DUneF5yWaGEW+qsuHak5160pbcs/HoV/jgGkXo5yNLYGyC+xxd5cZMCAICwb5cFLfhScaDD/I+rG4Mne9V5kNaehh1LedaDEXoVQcE0NgGwn8lVSXhIFXpKKubAMIAi0zWzCFrAr7LSnoyEbpw/ajFOmvrd/i6qIZi8vkvXW+IC+ER/6GDDJsl/zLtzz6hudlZsL4nR9tcaKF5V4xLp7hPxRi3fTwRLKG+ho8yVUQARWqG8kLdKk6/mydpxnKUZEeNIy1pwpMVXYbG4U+ENjQJJnDFT3SNm5SHAu9Bvrayy2SCVrVoRmLlCBAMrh7BLuDKtq0B63IqUMmxcAMrHMZ9J8SSoI=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(1800799024)(56012099006)(11063799006)(22082099003)(18002099003)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	0mPpTD5kVWfwdto69aDFSSZkCyGsY1vRYrcuY1pGvbTv2hI17cHhanFom5d79zg4GW1r4hjDyucfnjzFSYwycJkroGDalu292WzBMEfxwzLNZgOu1K+vinn7BGJAaMCnNmBeYnv0fKI4914Vq8DgrZdqBScYbE6s5Tg3oQrLeccW6Bs+GYfq3DIyoij+tOvZdIcXQXvH2q0EoaVuHswF7TAorJImNcvT4FNMBzFvpOpAO9XSz2CO8NZQeIxGEWzFRrx2R4edl/0keCpipdHJH4iRPU1D8wj+hxNMCNAsoWGPDSPaQgQrhLydsJS9vocEgbZ03A2y1DZhHI1ZN/w3GcVRoiAhS6PoCtIRnzkHpE6dNOVZEZAwqtfVFSgO7+bp5NFk81keRVYqOjYAy6Vvb8cE/L50WyCcQGmJp+94fVT81KfIenXqVM0cRpYzpDvT
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 12:09:35.5744
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e34d1fc-752c-4a3c-d2ca-08dec23224f2
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00001507.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5814
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[weichengc@nvidia.com,stable@vger.kernel.org];
-	RCPT_COUNT_ONE(0.00)[1];
-	TAGGED_FROM(0.00)[bounces-260473-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260474-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:johan@kernel.org,m:gregkh@linuxfoundation.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[weichengc@nvidia.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:email,nvidia.com:mid,nvidia.com:from_mime,nvidia.com:email,Nvidia.com:dkim];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[9]
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D815563FC77
+X-Rspamd-Queue-Id: E1F7363FCE5
 
-[ Upstream commit 5a4c828b8b29b47534814ade26d9aee09d5101fc ]
+commit 915b36d701950503c4ea0f6e314b10868e59fce3 upstream.
 
-When a USB device is unplugged from the dual-role port, the device-mode
-path in tegra_xhci_id_work() explicitly clears both SS and HS port power
-via direct hub_control ClearPortFeature(POWER) calls. This preempts the
-xHCI controller's normal disconnect processing -- PORT_CSC is never
-generated, the USB core never sees the disconnect, and the device remains
-in its internal tree as a ghost visible in lsusb.
+The driver overrides the maximum transfer size for a specific device
+which only accepts 16 byte packets for its 32 byte bulk-out endpoint.
 
-Add an otg_set_port_power flag to control whether the dual-role switch
-path performs explicit port power management. SoCs that need it
-(Tegra124 / Tegra210 / Tegra186) set the flag; later SoCs (Tegra194 and
-beyond) rely on the PHY mode change to handle disconnect naturally and
-skip all port power calls.
+Make sure to never increase the maximum transfer size to prevent slab
+corruption should a malicious device report a smaller endpoint max
+packet size than expected.
 
-Within the port power path, otg_reset_sspi additionally gates the SSPI
-reset sequence on host-mode entry for SoCs that require it.
-
-Flags set per SoC:
-  Tegra124, Tegra186  -> otg_set_port_power
-  Tegra210            -> otg_set_port_power, otg_reset_sspi
-  Tegra194 and later  -> (none)
-
-[ Backport to 7.0.y: keep the host-mode snapshot in the existing
-  tegra->lock section, preserve str_on_off(), and resolve context around
-  the SoC ops/Tegra234 entries. ]
-
-Fixes: f836e7843036 ("usb: xhci-tegra: Add OTG support")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wei-Cheng Chen <weichengc@nvidia.com>
-Link: https://patch.msgid.link/20260505112630.217704-1-weichengc@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/usb/host/xhci-tegra.c | 77 ++++++++++++++++++++---------------
- 1 file changed, 44 insertions(+), 33 deletions(-)
+ drivers/usb/serial/mct_u232.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-tegra.c b/drivers/usb/host/xhci-tegra.c
-index 3f6aa2440b0..ddc52d1e0ed 100644
---- a/drivers/usb/host/xhci-tegra.c
-+++ b/drivers/usb/host/xhci-tegra.c
-@@ -247,6 +247,7 @@ struct tegra_xusb_soc {
- 	bool has_ipfs;
- 	bool lpm_support;
- 	bool otg_reset_sspi;
-+	bool otg_set_port_power;
+diff --git a/drivers/usb/serial/mct_u232.c b/drivers/usb/serial/mct_u232.c
+index 2bce8cc03aca..b0b299c5e8a3 100644
+--- a/drivers/usb/serial/mct_u232.c
++++ b/drivers/usb/serial/mct_u232.c
+@@ -378,6 +378,7 @@ static int mct_u232_port_probe(struct usb_serial_port *port)
+ {
+ 	struct usb_serial *serial = port->serial;
+ 	struct mct_u232_private *priv;
++	u16 pid;
  
- 	bool has_bar2;
- };
-@@ -1352,14 +1353,17 @@ static void tegra_xhci_id_work(struct work_struct *work)
- 	struct tegra_xusb_mbox_msg msg;
- 	struct phy *phy = tegra_xusb_get_phy(tegra, "usb2",
- 						    tegra->otg_usb2_port);
-+	bool host_mode;
- 	u32 status;
- 	int ret;
- 
--	dev_dbg(tegra->dev, "host mode %s\n", str_on_off(tegra->host_mode));
--
- 	mutex_lock(&tegra->lock);
- 
--	if (tegra->host_mode)
-+	host_mode = tegra->host_mode;
-+
-+	dev_dbg(tegra->dev, "host mode %s\n", str_on_off(host_mode));
-+
-+	if (host_mode)
- 		phy_set_mode_ext(phy, PHY_MODE_USB_OTG, USB_ROLE_HOST);
- 	else
- 		phy_set_mode_ext(phy, PHY_MODE_USB_OTG, USB_ROLE_NONE);
-@@ -1370,41 +1374,43 @@ static void tegra_xhci_id_work(struct work_struct *work)
- 								    tegra->otg_usb2_port);
- 
- 	pm_runtime_get_sync(tegra->dev);
--	if (tegra->host_mode) {
--		/* switch to host mode */
--		if (tegra->otg_usb3_port >= 0) {
--			if (tegra->soc->otg_reset_sspi) {
--				/* set PP=0 */
--				tegra_xhci_hc_driver.hub_control(
--					xhci->shared_hcd, GetPortStatus,
--					0, tegra->otg_usb3_port+1,
--					(char *) &status, sizeof(status));
--				if (status & USB_SS_PORT_STAT_POWER)
--					tegra_xhci_set_port_power(tegra, false,
--								  false);
--
--				/* reset OTG port SSPI */
--				msg.cmd = MBOX_CMD_RESET_SSPI;
--				msg.data = tegra->otg_usb3_port+1;
--
--				ret = tegra_xusb_mbox_send(tegra, &msg);
--				if (ret < 0) {
--					dev_info(tegra->dev,
--						"failed to RESET_SSPI %d\n",
--						ret);
-+	if (tegra->soc->otg_set_port_power) {
-+		if (host_mode) {
-+			/* switch to host mode */
-+			if (tegra->otg_usb3_port >= 0) {
-+				if (tegra->soc->otg_reset_sspi) {
-+					/* set PP=0 */
-+					tegra_xhci_hc_driver.hub_control(
-+						xhci->shared_hcd, GetPortStatus,
-+						0, tegra->otg_usb3_port+1,
-+						(char *) &status, sizeof(status));
-+					if (status & USB_SS_PORT_STAT_POWER)
-+						tegra_xhci_set_port_power(tegra, false,
-+									  false);
-+
-+					/* reset OTG port SSPI */
-+					msg.cmd = MBOX_CMD_RESET_SSPI;
-+					msg.data = tegra->otg_usb3_port+1;
-+
-+					ret = tegra_xusb_mbox_send(tegra, &msg);
-+					if (ret < 0) {
-+						dev_info(tegra->dev,
-+							"failed to RESET_SSPI %d\n",
-+							ret);
-+					}
- 				}
--			}
- 
--			tegra_xhci_set_port_power(tegra, false, true);
--		}
-+				tegra_xhci_set_port_power(tegra, false, true);
-+			}
- 
--		tegra_xhci_set_port_power(tegra, true, true);
-+			tegra_xhci_set_port_power(tegra, true, true);
- 
--	} else {
--		if (tegra->otg_usb3_port >= 0)
--			tegra_xhci_set_port_power(tegra, false, false);
-+		} else {
-+			if (tegra->otg_usb3_port >= 0)
-+				tegra_xhci_set_port_power(tegra, false, false);
- 
--		tegra_xhci_set_port_power(tegra, true, false);
-+			tegra_xhci_set_port_power(tegra, true, false);
-+		}
+ 	/* check first to simplify error handling */
+ 	if (!serial->port[1] || !serial->port[1]->interrupt_in_urb) {
+@@ -385,6 +386,16 @@ static int mct_u232_port_probe(struct usb_serial_port *port)
+ 		return -ENODEV;
  	}
- 	pm_runtime_put_autosuspend(tegra->dev);
- }
-@@ -2557,6 +2563,7 @@ static const struct tegra_xusb_soc tegra124_soc = {
- 	.scale_ss_clock = true,
- 	.has_ipfs = true,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = true,
- 	.ops = &tegra124_ops,
- 	.mbox = {
- 		.cmd = 0xe4,
-@@ -2595,6 +2602,7 @@ static const struct tegra_xusb_soc tegra210_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = true,
- 	.otg_reset_sspi = true,
-+	.otg_set_port_power = true,
- 	.ops = &tegra124_ops,
- 	.mbox = {
- 		.cmd = 0xe4,
-@@ -2638,6 +2646,7 @@ static const struct tegra_xusb_soc tegra186_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = false,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = true,
- 	.ops = &tegra124_ops,
- 	.mbox = {
- 		.cmd = 0xe4,
-@@ -2671,6 +2680,7 @@ static const struct tegra_xusb_soc tegra194_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = false,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = false,
- 	.ops = &tegra124_ops,
- 	.mbox = {
- 		.cmd = 0x68,
-@@ -2704,6 +2714,7 @@ static const struct tegra_xusb_soc tegra234_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = false,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = false,
- 	.ops = &tegra234_ops,
- 	.mbox = {
- 		.cmd = XUSB_BAR2_ARU_MBOX_CMD,
+ 
++	/*
++	 * Compensate for a hardware bug: although the Sitecom U232-P25
++	 * device reports a maximum output packet size of 32 bytes,
++	 * it seems to be able to accept only 16 bytes (and that's what
++	 * SniffUSB says too...)
++	 */
++	pid = le16_to_cpu(serial->dev->descriptor.idProduct);
++	if (pid == MCT_U232_SITECOM_PID)
++		port->bulk_out_size = min(16, port->bulk_out_size);
++
+ 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
+@@ -410,7 +421,6 @@ static void mct_u232_port_remove(struct usb_serial_port *port)
+ 
+ static int  mct_u232_open(struct tty_struct *tty, struct usb_serial_port *port)
+ {
+-	struct usb_serial *serial = port->serial;
+ 	struct mct_u232_private *priv = usb_get_serial_port_data(port);
+ 	int retval = 0;
+ 	unsigned int control_state;
+@@ -418,15 +428,6 @@ static int  mct_u232_open(struct tty_struct *tty, struct usb_serial_port *port)
+ 	unsigned char last_lcr;
+ 	unsigned char last_msr;
+ 
+-	/* Compensate for a hardware bug: although the Sitecom U232-P25
+-	 * device reports a maximum output packet size of 32 bytes,
+-	 * it seems to be able to accept only 16 bytes (and that's what
+-	 * SniffUSB says too...)
+-	 */
+-	if (le16_to_cpu(serial->dev->descriptor.idProduct)
+-						== MCT_U232_SITECOM_PID)
+-		port->bulk_out_size = 16;
+-
+ 	/* Do a defined restart: the normal serial device seems to
+ 	 * always turn on DTR and RTS here, so do the same. I'm not
+ 	 * sure if this is really necessary. But it should not harm
 -- 
-2.43.0
+2.53.0
 
 
