@@ -1,308 +1,177 @@
-Return-Path: <stable+bounces-260406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7LfNAD9XIWoVEQEAu9opvQ
-	(envelope-from <stable+bounces-260406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:45:19 +0200
+	id 7oVJCJ1XIWpbEQEAu9opvQ
+	(envelope-from <stable+bounces-260412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:46:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D5863F282
-	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:45:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C4E63F2AC
+	for <lists+stable@lfdr.de>; Thu, 04 Jun 2026 12:46:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B82TNq9C;
-	dkim=pass header.d=redhat.com header.s=google header.b=RYDH67KF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260406-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-260406-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=L7WMn8+c;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260412-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260412-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4D1E3301572A
-	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 10:45:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F8CC301F9A1
+	for <lists+stable@lfdr.de>; Thu,  4 Jun 2026 10:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101D5407CD2;
-	Thu,  4 Jun 2026 10:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3871F405C42;
+	Thu,  4 Jun 2026 10:46:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F33E405C42
-	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 10:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BEA360EFB
+	for <stable@vger.kernel.org>; Thu,  4 Jun 2026 10:46:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780569911; cv=none; b=N9bEuy5sCSIvy5X0ebJ09M3IOq0g4i2QBuMfXvkry21EijZ8SV5InGtnN2voP24wfK4RB8R3dHQBBIwAGrIUSJqxaMnycmrzvXoX8qvdMa2iRXv/pu5rHJPFarfnvj3Tc/S+CX9Bm77YGhsiM5ZqZF3mgIsbMjF3msHG9GIBwjE=
+	t=1780569987; cv=none; b=siXaPacbytZsSPHfW4m8+nj8CgEicJK29hnTPtcRdGMlXUvjh3AFTim0Vk8dVO/fI6rug74qa5RopzRI/XKh6ShEkcNHf/kvkcLu92huhUyr8oqroAqoRG/Q3FQIUfadiTOl89aB32/VlyxINUlGjrHCkb1b1wDweFTyCZMSJ7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780569911; c=relaxed/simple;
-	bh=pXOC3ieQ42cIu2RuSkFAP20upsmn2zTEUHKrLTllEys=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LGSyC81cOkmk51/Te4DXcr1S9i9Sz8owNCXnEzPGrowhG9peF0l9lXRmSg1BYKjdZC70WPaYdHi5m2euMOuN0dxFz7hnMzPga9SuQ0N/uqO9lWz3oEYD3Uj8RxGcaIyrUJBdAl97eL98mZ+alH1Wp0OyAjnIe4Pb1Q8CdApJZPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B82TNq9C; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=RYDH67KF; arc=none smtp.client-ip=170.10.133.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780569909;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wbsaCU5Vs3pFhS9fw5gs64Im6dVDjZtVePKSfJVpfmE=;
-	b=B82TNq9C7CU9wajSDKTsX9f6HT6Sd8VD3QhviMzJjQhy4tEOM3lgvatP8/cxpvkgzBpB5e
-	I5b5KGewjnC7zpBVEIy54vg8QIP3yNZStLzqKk3UZYZtjHJzs83kWvwvY8mSaVBGMjm4Dp
-	UKdrTLnsblnNee2D/oobRt9y0kIsK1M=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196-_YJl2PvENj6ZmZLn0Z_qjA-1; Thu, 04 Jun 2026 06:45:07 -0400
-X-MC-Unique: _YJl2PvENj6ZmZLn0Z_qjA-1
-X-Mimecast-MFC-AGG-ID: _YJl2PvENj6ZmZLn0Z_qjA_1780569907
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4601daf4c65so363923f8f.2
-        for <stable@vger.kernel.org>; Thu, 04 Jun 2026 03:45:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780569906; x=1781174706; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wbsaCU5Vs3pFhS9fw5gs64Im6dVDjZtVePKSfJVpfmE=;
-        b=RYDH67KFRkeI/Rx5xKDrJSt6mX+ruPR8jRHHwDxrvbsv3zwHhNVS1KF7m5RuupNqqO
-         IBl2YLRfYKYZwMXgy5vKESkAQKOnYVxn46BvsrmkdIIjGykX1vCcXvibSsmLRLcoOIav
-         KfLNzZcQ9q/cb0zc86dOwXtVNseqyiiaHxviFmIv74nZS2MSXdcECSm7kSDD290Oa2d2
-         tuKsuqJUkRC68OOTxZN+QC8Lr2rWzXWvDWyo/ML/Emn+3dX1itBjC/y26ODHNY1gWdiU
-         0rNtx81VP8HILA7XMF8m0MODyPRhdkNfE038/3BofRYgHArZ3rJgyy4mfW/Qp60v7pZW
-         G05A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780569906; x=1781174706;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wbsaCU5Vs3pFhS9fw5gs64Im6dVDjZtVePKSfJVpfmE=;
-        b=D/Du+vajnt6sDoeD53gGwJpeb0b+n2oC8nFvND+xD/KXckWpCSH6t9WbkoJte15DIh
-         P5VyDO7V4K53/gEPB94zupgjuKDlm3cTzC3eRtH6HtU4PMtLS6yMP9xWxtROr/oQOeeO
-         CwC/Y2UNYkOKM+aOPwGgMjbIp6+LmoX6wleKZ9V6KX58hu+PHHLHy7hcXwZqcQaRXTBt
-         tlm/ZqEWrMM/DpbYzZPcWpyDfO5hwA1ziI0h0xQr8GO2cdv6DHrpOXSqWMkEeKHpe74Z
-         BxnYBtkjeHXEz+NpSItAB2euNz43L2rIx8LJn7Fw1esHpnhd3+ng/oH26mRl8suw/x65
-         eJcA==
-X-Forwarded-Encrypted: i=1; AFNElJ8jP6R06AzCcJtXgXpHi7tUhwWTuPAu3cBx0XxellHPNsw8v8dvbagfZ/xzbdIWgS6/BzT91Y4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzehxqpu7gOkmOyUMdCeQY8CqofA8YD0QuBV9kszU1++OMaQi9g
-	iFgX4aLxF87Eo0LJcxeg36NIAr37SA8NEAn3Q6jiLxVdkKjQRIQbKg639wGaiv1J8yVqABMCD+L
-	2ChibpgbEGHc3QZzF12g7tLNLgcy+fATbpPsai9He+qH19gGaE5yYyxWdjw==
-X-Gm-Gg: Acq92OGEtwRZoVimYtoJI8MRnLnTGslekf1hCcQeEZpaCYUwQvfY/oye1HyzYcwfZ2E
-	r9wyudeYopTIEfJIWy70IoovqBS9+Mgv0yeMPKJeaenQcEVe/fPNrndZwJOtrn/SCOnUESLVJ3U
-	O+wrBDrEhMKQZ1uz8zi0fiFrOQGJ7LX7foNi3Gn+FRyq+NasP2Ulrx7+e8lJ3YoQZ7ggAiho0wF
-	Jkie7n2N6kgfLFlCo3W8Ir9nWSMjnBnc7oMAyGm0qhhDNR4MiR7rgVqKDiv2GCF9cMcp3LkQDE1
-	HPVYQVSMD40kd1lebbclQvbnbos6JxGOzhW4nlSpRlpbUKwIDpcgX935m+OtV0AEMwPRcQK/NPn
-	DTZNm8fLsZKW3ymAz1Cqm2pL8iZEduoxApWYDRBnU5xUuHhZ4s9XzHrWlOYrN7d77AwE=
-X-Received: by 2002:a5d:630a:0:b0:45e:e44b:3147 with SMTP id ffacd0b85a97d-4602178318cmr7176624f8f.5.1780569906574;
-        Thu, 04 Jun 2026 03:45:06 -0700 (PDT)
-X-Received: by 2002:a5d:630a:0:b0:45e:e44b:3147 with SMTP id ffacd0b85a97d-4602178318cmr7176572f8f.5.1780569906004;
-        Thu, 04 Jun 2026 03:45:06 -0700 (PDT)
-Received: from [192.168.88.32] ([212.105.155.59])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dcad5sm16588064f8f.5.2026.06.04.03.45.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jun 2026 03:45:05 -0700 (PDT)
-Message-ID: <6d1fa9d9-73c2-48b5-95a1-51710d81b3ed@redhat.com>
-Date: Thu, 4 Jun 2026 12:45:03 +0200
+	s=arc-20240116; t=1780569987; c=relaxed/simple;
+	bh=6uh4YnXpSi1lLwBTO+YVWeDooOQJez8uCGIDahJcoYk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WrjjRt/ngtCX9szYNGTH4vWQRc4F5zmYPB54ioWQH2ZYy38RZa+pzC4d9zSfrrExGzovG6PoItjaQf3z51beO37Ra0riqciQW/8Z3RZXgFfyDEeUGImrIeQoH94KKxQo36JU/FSKlaAjhX/rE3GPI/rpVVqNiL3upRmXPROJlno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7WMn8+c; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666941F00893;
+	Thu,  4 Jun 2026 10:46:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1780569985;
+	bh=K4SvpmJXrJMs889BSfqSATo65dV/WTnyvo4EAI35JLM=;
+	h=Subject:To:Cc:From:Date;
+	b=L7WMn8+cGZANv/EGSAWP8MW8qL2lvxPNGt6+KG9YdX/hsPog8sQh13yt9ohwP+M7e
+	 siZsw7eJs8sAXIrcsIoUuPgRCmUlYGaGCypbBEjyPhl3WrrpUk89ndSbCy0etypLy7
+	 Vji2AOxF9KKyorxznoSRpeaNHcmJ2kv5xfCQQpiA=
+Subject: FAILED: patch "[PATCH] USB: serial: digi_acceleport: fix memory corruption with" failed to apply to 6.18-stable tree
+To: johan@kernel.org,gregkh@linuxfoundation.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 04 Jun 2026 12:45:27 +0200
+Message-ID: <2026060427-gossip-stony-dea7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] net: mana: Optimize irq affinity for low vcpu
- configs
-To: Shradha Gupta <shradhagupta@linux.microsoft.com>,
- Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Haiyang Zhang <haiyangz@microsoft.com>, "K. Y. Srinivasan"
- <kys@microsoft.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Konstantin Taranov <kotaranov@microsoft.com>, Simon Horman
- <horms@kernel.org>, Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
- Dipayaan Roy <dipayanroy@linux.microsoft.com>,
- Shiraz Saleem <shirazsaleem@microsoft.com>,
- Michael Kelley <mhklinux@outlook.com>, Long Li <longli@microsoft.com>,
- Yury Norov <yury.norov@gmail.com>
-Cc: linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
- Shradha Gupta <shradhagupta@microsoft.com>,
- Saurabh Singh Sengar <ssengar@microsoft.com>, stable@vger.kernel.org
-References: <20260601102749.1768304-1-shradhagupta@linux.microsoft.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260601102749.1768304-1-shradhagupta@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260406-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[linux.microsoft.com,microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,outlook.com,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:shradhagupta@linux.microsoft.com,m:decui@microsoft.com,m:wei.liu@kernel.org,m:haiyangz@microsoft.com,m:kys@microsoft.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:kotaranov@microsoft.com,m:horms@kernel.org,m:ernis@linux.microsoft.com,m:dipayanroy@linux.microsoft.com,m:shirazsaleem@microsoft.com,m:mhklinux@outlook.com,m:longli@microsoft.com,m:yury.norov@gmail.com,m:linux-hyperv@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:netdev@vger.kernel.org,m:paulros@microsoft.com,m:shradhagupta@microsoft.com,m:ssengar@microsoft.com,m:stable@vger.kernel.org,m:andrew@lunn.ch,m:yurynorov@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[pabeni@redhat.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pabeni@redhat.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260412-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:johan@kernel.org,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	TO_DN_SOME(0.00)[]
+	TAGGED_RCPT(0.00)[stable];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C0D5863F282
+X-Rspamd-Queue-Id: 72C4E63F2AC
 
-On 6/1/26 12:27 PM, Shradha Gupta wrote:
-> In mana driver, the number of IRQs allocated is capped by the
-> min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
-> than the vcpu count, we want to utilize all the vCPUs, irrespective of
-> their NUMA/core bindings.
-> 
-> This is important, especially in the envs where number of vCPUs are so
-> few that the softIRQ handling overhead on two IRQs on the same vCPU is
-> much more than their overheads if they were spread across sibling vCPUs.
-> 
-> This behaviour is more evident with dynamic IRQ allocation. Since MANA
-> IRQs are assigned at a later stage compared to static allocation, other
-> device IRQs may already be affinitized to the vCPUs. As a result, IRQ
-> weights become imbalanced, causing multiple MANA IRQs to land on the
-> same vCPU, while some vCPUs have none.
-> 
-> In such cases when many parallel TCP connections are tested, the
-> throughput drops significantly.
-> 
-> Test envs:
-> =======================================================
-> Case 1: without this patch
-> =======================================================
-> 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-> 
-> 	TYPE		effective vCPU aff
-> =======================================================
-> IRQ0:	HWC		0
-> IRQ1:	mana_q1		0
-> IRQ2:	mana_q2		2
-> IRQ3:	mana_q3		0
-> IRQ4:	mana_q4		3
-> 
-> %soft on each vCPU(mpstat -P ALL 1) on receiver
-> vCPU		0	1	2	3
-> =======================================================
-> pass 1:		38.85	0.03	24.89	24.65
-> pass 2:		39.15	0.03	24.57	25.28
-> pass 3:		40.36	0.03	23.20	23.17
-> 
-> =======================================================
-> Case 2: with this patch
-> =======================================================
-> 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-> 
->         TYPE            effective vCPU aff
-> =======================================================
-> IRQ0:   HWC             0
-> IRQ1:   mana_q1         0
-> IRQ2:   mana_q2         1
-> IRQ3:   mana_q3         2
-> IRQ4:   mana_q4         3
-> 
-> %soft on each vCPU(mpstat -P ALL 1) on receiver
-> vCPU            0       1       2       3
-> =======================================================
-> pass 1:         15.42	15.85	14.99	14.51
-> pass 2:         15.53	15.94	15.81	15.93
-> pass 3:         16.41	16.35	16.40	16.36
-> 
-> =======================================================
-> Throughput Impact(in Gbps, same env)
-> =======================================================
-> TCP conn	with patch	w/o patch
-> 20480		15.65		7.73
-> 10240		15.63		8.93
-> 8192		15.64		9.69
-> 6144		15.64		13.16
-> 4096		15.69		15.75
-> 2048		15.69		15.83
-> 1024		15.71		15.28
-> 
-> Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-> Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-> Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-> Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-> Reviewed-by: Simon Horman <horms@kernel.org>
 
-Why do you consider this patch a fix? To me is a configuration
-improvement and should land on net-next.
+The patch below does not apply to the 6.18-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> @@ -1717,11 +1719,24 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
->  	return 0;
->  }
->  
-> +/* should be called with cpus_read_lock() held */
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Minor nit: s/should/must/ or just drop the comment, as
-`for_each_online_cpu()` usage implies that.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git checkout FETCH_HEAD
+git cherry-pick -x cb3560e8eab1dfa1cac1ed52631adf8ec6ff2cd5
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060427-gossip-stony-dea7@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
-> +static void irq_setup_linear(unsigned int *irqs, unsigned int len)
-> +{
-> +	int cpu;
-> +
-> +	for_each_online_cpu(cpu) {
-> +		if (len == 0)
-> +			break;
-> +
-> +		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
-> +		len--;
-> +	}
+Possible dependencies:
 
-As this is another heuristic regarding irq spreading, why don't you
-implement that inside irq_setup()?
 
-> @@ -1767,13 +1784,42 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
->  	 * first CPU sibling group since they are already affinitized to HWC IRQ
->  	 */
->  	cpus_read_lock();
-> -	if (gc->num_msix_usable <= num_online_cpus())
-> -		skip_first_cpu = true;
-> +	if (gc->num_msix_usable <= num_online_cpus()) {
-> +		err = irq_setup(irqs, nvec, gc->numa_node, true);
-> +		if (err) {
-> +			cpus_read_unlock();
-> +			goto free_irq;
-> +		}
-> +	} else {
-> +		/*
-> +		 * When num_msix_usable are more than num_online_cpus, our
-> +		 * queue IRQs should be equal to num of online vCPUs.
-> +		 * We try to make sure queue IRQs spread across all vCPUs.
-> +		 * In such a case NUMA or CPU core affinity does not matter.
-> +		 * Note: in this case the total mana IRQ should always be
-> +		 * num_online_cpus + 1. The first HWC IRQ is already handled
-> +		 * in HWC setup calls
-> +		 * However, if CPUs went offline since num_msix_usable was
-> +		 * computed, queue IRQs will be more than num_online_cpus().
-> +		 * In such cases remaining extra IRQs will retain their default
-> +		 * affinity.
-> +		 */
-> +		int first_unassigned = num_online_cpus();
-> +		if (nvec > first_unassigned) {
 
-An empty line is needed between the variable declaration and the code.
+thanks,
 
-/P
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From cb3560e8eab1dfa1cac1ed52631adf8ec6ff2cd5 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Wed, 20 May 2026 16:26:22 +0200
+Subject: [PATCH] USB: serial: digi_acceleport: fix memory corruption with
+ small endpoints
+
+Add the missing bulk-out buffer size sanity checks to avoid
+out-of-bounds memory accesses or slab corruption should a malicious
+device report smaller buffers than expected.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+
+diff --git a/drivers/usb/serial/digi_acceleport.c b/drivers/usb/serial/digi_acceleport.c
+index d515df045c4c..c481208255eb 100644
+--- a/drivers/usb/serial/digi_acceleport.c
++++ b/drivers/usb/serial/digi_acceleport.c
+@@ -1229,15 +1229,34 @@ static int digi_port_init(struct usb_serial_port *port, unsigned port_num)
+ static int digi_startup(struct usb_serial *serial)
+ {
+ 	struct digi_serial *serial_priv;
++	int oob_port_num;
+ 	int ret;
++	int i;
++
++	/*
++	 * The port bulk-out buffers must be large enough for header and
++	 * buffered data.
++	 */
++	for (i = 0; i < serial->type->num_ports; i++) {
++		if (serial->port[i]->bulk_out_size < DIGI_OUT_BUF_SIZE + 2)
++			return -EINVAL;
++	}
++
++	/*
++	 * The OOB port bulk-out buffer must be large enough for the two
++	 * commands in digi_set_modem_signals().
++	 */
++	oob_port_num = serial->type->num_ports;
++	if (serial->port[oob_port_num]->bulk_out_size < 8)
++		return -EINVAL;
+ 
+ 	serial_priv = kzalloc_obj(*serial_priv);
+ 	if (!serial_priv)
+ 		return -ENOMEM;
+ 
+ 	spin_lock_init(&serial_priv->ds_serial_lock);
+-	serial_priv->ds_oob_port_num = serial->type->num_ports;
+-	serial_priv->ds_oob_port = serial->port[serial_priv->ds_oob_port_num];
++	serial_priv->ds_oob_port_num = oob_port_num;
++	serial_priv->ds_oob_port = serial->port[oob_port_num];
+ 
+ 	ret = digi_port_init(serial_priv->ds_oob_port,
+ 						serial_priv->ds_oob_port_num);
 
 
