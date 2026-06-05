@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-260596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oCtkD5AfImriSgEAu9opvQ
-	(envelope-from <stable+bounces-260596-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:00:00 +0200
+	id AbY/MTQiImqwSwEAu9opvQ
+	(envelope-from <stable+bounces-260598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:11:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FB4644309
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 02:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2A3644492
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:11:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JVWakS8b;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260596-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-260596-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nwUUuc8J;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260598-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-260598-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A902230136E6
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 00:59:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 29ABB301C929
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 01:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42B62EA171;
-	Fri,  5 Jun 2026 00:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB02630DD2A;
+	Fri,  5 Jun 2026 01:10:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1CE2F3C0E
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 00:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105F42750E6;
+	Fri,  5 Jun 2026 01:10:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780621178; cv=none; b=HaTCYwpA52otZsQG1EwbF2xySxX1ucx5zRcH20LXp2UDSK7wD++HObDHlVuLV9+g8cV83fjSWS/MWpg0Luf9Ofs79PbxvfErWXTRvTjojFPmtrN+/YhPS2gxlTJZ3wvxMl9CNy41hrK3FZP29ou1MS6lDvBDfq3P6z57jZgyZ7Y=
+	t=1780621808; cv=none; b=IRUp1L25NhYBUdehsWsoccU0/UFqRA7Dj8e+Qbi0TdZ+mwhwAQyugsbthUZz8RHjRXim0qyuWrcaTmcTDR6mQ7GBB8syxG0S4d5w0OKmQvu/SaGf5L00amHZCS0EGFepYEfkeB9hPKphXHeWcErZNt2AquTbtIN682kGM8+Ym4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780621178; c=relaxed/simple;
-	bh=lV+a5utCZbF4T8qfeHbhVsnAqPU5KBsfptgnsg/dAz0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5TyMitsDdL/maatsmGSQ77MDio8ehrrdff/qAG055PkJ5PGFHGp+17Kr8UzS2/GtUgoAFSigm0akqGbTCGaT3iv4gjNNqryOBxo2XkdveFo1r8j/eFCVNzCy4MroWZ6EDCFz7KQo33GCxORjEqvY2630xuQDLCNfwL2chPhML8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JVWakS8b; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B9A1F00898;
-	Fri,  5 Jun 2026 00:59:18 +0000 (UTC)
+	s=arc-20240116; t=1780621808; c=relaxed/simple;
+	bh=9JOmf6KJF9lGSZLL1hN41NuukQHxDbeXKeQ0Wxn4Qso=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=UWMzeRJkE+Dmq4pjr/y/B3zZa5DnmhPM9mdQjMCWR4RIVDUlvTeB1ClhbG93gDoK0neMRNK5aGIa3g4JqgKlpUYibGkpr2aWKtsMcJ5imvm/AO7ROJun4a8hLib6YE31YAYqRsoEdpuvwbYNBT0Eem36Jjn3Vkh5N8IT4lbdJfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nwUUuc8J; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE74C1F00893;
+	Fri,  5 Jun 2026 01:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780621158;
-	bh=1vrxIyOiVV/IEZP+3v3ogpkeWRvZs8QLt1SjDwAHeWE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JVWakS8bknwn24E6YvueMoc4I33DluOcgaaVLCw3dKJr9xYsmM4wiYQzqOikebf0T
-	 6LAi9/5fUhRjLXeSmUVblj0gxQNzzHhZoHLIkj643we/hQ+/QndGfocJjok2uceEtx
-	 dO4VGHV7Tb6BAazIQwb+ZGedQfXPPlBPpXNi8dLvgmQqdU7+quXjtq8UYfFuaQV38t
-	 RB4gTkO+r+VGMrjLQLeA4uesxTpJfAD6MqtHqHEO+H5qm5P2xwUMkGSt+oLwfPTsPn
-	 rP7PEqRTEAnZNhfGApqVHrvfPS0mmd0TEcfcKKNd20QUT7lVjUCivsJdPybrjG6w5D
-	 MOYMES35N03HA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Rodrigo Alencar <rodrigo.alencar@analog.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] iio: dac: ad5686: fix ref bit initialization for single-channel parts
-Date: Thu,  4 Jun 2026 20:59:16 -0400
-Message-ID: <20260605005916.2803184-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026060403-gallon-annually-a48b@gregkh>
-References: <2026060403-gallon-annually-a48b@gregkh>
+	s=k20260515; t=1780621806;
+	bh=bAgGUIuT5Cowg661+H0J7z5VttyhEGD5ilxEI+SIQ2w=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=nwUUuc8JrALZn080+53+lOBCbJj/n3BXPm8Wvu9YA/kTFg2sJcwB3gFnvz55P4UM3
+	 jGzSp0g2R9zIrAhaslurHAAyjS2fuxBceKLiIvvlx+7wb8/z21zoeKI1iGRxx+3A5n
+	 xv2XcHJRZmSAxhWzX6bE4riGOnHoDN/n+LMujC/hZzeLK/JTxQEn0vqSvcPCjcAHAS
+	 UsHdLVzTZJ7A/GChIvX9sABsai/pr6Enx3QUi2uJNFQKagd3yySM9bHbxFjZaXTS9D
+	 tRA6xqjuaVHYfAQfA6efox4mz0GinS5teMVPNnZwwzY1/JG8EiN+cAX+GGWFhU+riA
+	 bIWzQ1Jwz30Yg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939923930A84;
+	Fri,  5 Jun 2026 01:10:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,103 +57,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] inet: frags: fix use-after-free caused by the
+ fqdir_pre_exit() flush
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178062180740.3088134.15315966161183753620.git-patchwork-notify@kernel.org>
+Date: Fri, 05 Jun 2026 01:10:07 +0000
+References: <ah6ukYq5G98LshdA@v4bel>
+In-Reply-To: <ah6ukYq5G98LshdA@v4bel>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ stable@vger.kernel.org, netdev@vger.kernel.org
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260596-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:rodrigo.alencar@analog.com,m:andriy.shevchenko@intel.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-260598-lists,stable=lfdr.de,netdevbpf];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:imv4bel@gmail.com,m:dsahern@kernel.org,m:idosch@nvidia.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:stable@vger.kernel.org,m:netdev@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	FROM_NO_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 40FB4644309
+X-Rspamd-Queue-Id: 0E2A3644492
 
-From: Rodrigo Alencar <rodrigo.alencar@analog.com>
+Hello:
 
-[ Upstream commit ecae2ae606d493cf11457946436335bd0e726663 ]
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-The reference bit position was ignored when writing the register at the
-probe() function (!!val was used). When such bit is 1, internal voltage
-reference is disabled so that an external one can be used. For
-multi-channel devices, bit 0 of the Internal Reference Setup command
-behaves the same way, so AD5686_REF_BIT_MSK is created. The issue exists
-since support for single-channel devices were first introduced.
+On Tue, 2 Jun 2026 19:21:05 +0900 you wrote:
+> On netns teardown, fqdir_pre_exit() walks the fqdir rhashtable and
+> flushes every fragment queue that is not yet complete using
+> inet_frag_queue_flush(). That helper frees all the skbs queued on the
+> fragment queue but does not set INET_FRAG_COMPLETE, and leaves
+> q->fragments_tail and q->last_run_head pointing at the freed skbs.
+> The queue itself stays in the rhashtable.
+> 
+> [...]
 
-Fixes: be1b24d24541 ("iio:dac:ad5686: Add AD5691R/AD5692R/AD5693/AD5693R support")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-[ adapted `has_external_vref` to the in-tree equivalent `voltage_uv` variable in the `val =` computation ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/iio/dac/ad5686.c | 6 +++---
- drivers/iio/dac/ad5686.h | 1 +
- 2 files changed, 4 insertions(+), 3 deletions(-)
+Here is the summary with links:
+  - [net,v2] inet: frags: fix use-after-free caused by the fqdir_pre_exit() flush
+    https://git.kernel.org/netdev/net/c/32594b098549
 
-diff --git a/drivers/iio/dac/ad5686.c b/drivers/iio/dac/ad5686.c
-index 7d1b2b83172de9..b5ea1561a11332 100644
---- a/drivers/iio/dac/ad5686.c
-+++ b/drivers/iio/dac/ad5686.c
-@@ -513,7 +513,7 @@ int ad5686_probe(struct device *dev,
- 		break;
- 	case AD5686_REGMAP:
- 		cmd = AD5686_CMD_INTERNAL_REFER_SETUP;
--		ref_bit_msk = 0;
-+		ref_bit_msk = AD5686_REF_BIT_MSK;
- 		break;
- 	case AD5693_REGMAP:
- 		cmd = AD5686_CMD_CONTROL_REG;
-@@ -525,9 +525,9 @@ int ad5686_probe(struct device *dev,
- 		goto error_disable_reg;
- 	}
- 
--	val = (voltage_uv | ref_bit_msk);
-+	val = voltage_uv ? ref_bit_msk : 0;
- 
--	ret = st->write(st, cmd, 0, !!val);
-+	ret = st->write(st, cmd, 0, val);
- 	if (ret)
- 		goto error_disable_reg;
- 
-diff --git a/drivers/iio/dac/ad5686.h b/drivers/iio/dac/ad5686.h
-index b7ade3a6b9b6c9..3657f45869b628 100644
---- a/drivers/iio/dac/ad5686.h
-+++ b/drivers/iio/dac/ad5686.h
-@@ -46,6 +46,7 @@
- 
- #define AD5310_REF_BIT_MSK			BIT(8)
- #define AD5683_REF_BIT_MSK			BIT(12)
-+#define AD5686_REF_BIT_MSK			BIT(0)
- #define AD5693_REF_BIT_MSK			BIT(12)
- 
- /**
+You are awesome, thank you!
 -- 
-2.53.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
