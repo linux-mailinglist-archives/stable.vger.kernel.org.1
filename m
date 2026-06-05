@@ -1,127 +1,151 @@
-Return-Path: <stable+bounces-260674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ec29JUWoImp4bgEAu9opvQ
-	(envelope-from <stable+bounces-260674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 12:43:17 +0200
+	id GL6bMt6oImqpbgEAu9opvQ
+	(envelope-from <stable+bounces-260675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 12:45:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 230AA64772A
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 12:43:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A13647782
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 12:45:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=Lrz46RsD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260674-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260674-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=apana.org.au;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=EmzbRT9M;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=vIqlNdMd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260675-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-260675-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linutronix.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 757C430684D0
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 10:34:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F029B3084C60
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 10:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10044413631;
-	Fri,  5 Jun 2026 10:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015234183B9;
+	Fri,  5 Jun 2026 10:34:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D86541360A;
-	Fri,  5 Jun 2026 10:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C1641360A;
+	Fri,  5 Jun 2026 10:34:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780655646; cv=none; b=hFMFPsd8HQPmK/RAsKZNm49bhh9AvKTbg2NHK8mxRDykXIhaVb8xx/A7u+JzVveVLinuq6TBSxekz0nVuW/RJJsBqE3P0aygjk4D7hvRti6iF13ycm3bMYRy+9iJIrVsJGlEaFmyXTt+lKAvy6PW1hr3tHsggo6xCsQSf3V5Zts=
+	t=1780655662; cv=none; b=iCB2XDjKtHmJG0et7/0gNrzJFimACyWtsBctQl3sRTrvEGInvk84yYkFvDRhQAT+kLfeYmRgBKLmKa8kVGivSE8HlS/OReq5ncJVyHuUyNpu6Y2A26bVFxZx+XJjMVUiJ/MkeUjWfT43XcTfZg/+y8LhbUkeKeCnE1aoxZz7BIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780655646; c=relaxed/simple;
-	bh=xvA5wf3Ao8VsduA7NUa2F/R5NnI3LTcY1sZ0Vu2ubOI=;
+	s=arc-20240116; t=1780655662; c=relaxed/simple;
+	bh=/QBL8Rrtj3/ANIhn2T/9EgMK8vC9kj8pb5ccU6UveZM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kiiyp9ung53cbjClyBEP4pWcop29fSH/2DRgoIPbtbmNaHZap83lD5xO7VS6CwLAn+8tmeIig2H1nz+87ODL15qL5KqHftMnJ6opawOXp6Inus5wxozkyGCsC3vmaRJdU7eVn6HK6ZAIlAphsXHibyqFtoWPliplZ4vgZKke/FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=Lrz46RsD; arc=none smtp.client-ip=180.181.231.80
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=Y6gLP44YQ8qK+b97Xm/sd4qK53h4THZq96IJSOYwjfU=; 
-	b=Lrz46RsDIgWR1A8xVowh9kCT0EFfLW1O/daSP5c/JkWlFe7MmCCpLXcT73QMmEWAurDvdQ5U5od
-	gmNfk/caiKoXjCfWPBGPx5SiVVfLAg0wq0EUYnEPoRsEZ65FgvfKR4k3A/1LbgDsKt8MqxFbIQWW6
-	FvON/jaewHujrxVVD4cTIXJPdvXU9EhaC4FDGSDw6wn5/0Pclb2CrDD55CVqgTRquil6Oj4u+YCzM
-	chObxsa1xHEDSXzNY7aLkOkBbjz2lxgEJlf+B4vDzP7WlcLJXG1JllP5iqN0SjXq6OijZlMQndi22
-	SDsCgygRBTCunQ5D1d8LAegKuiCJH+umis9Q==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1wVRsC-002nae-30;
-	Fri, 05 Jun 2026 18:33:57 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 05 Jun 2026 18:33:56 +0800
-Date: Fri, 5 Jun 2026 18:33:56 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Ayush Sawal <ayush.sawal@chelsio.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=MBfjxtSLLXPclnkPEx1CqVIDu3zSFyGxXIkAAJ2ME0f/Ro0UetVqFZs+5hoGhTV+DZB004TxtC0Oj7AeOwddmoI0EqTuMXhBvdfvHeC428aoxIdDlzaxgV9wV7f4VM6NDpZjLrSIv5K3YJK+nuVqQ0IH+M1F7OYBuPkk5UtQUjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EmzbRT9M; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vIqlNdMd; arc=none smtp.client-ip=193.142.43.55
+Date: Fri, 5 Jun 2026 12:34:18 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1780655660;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=coz5Aq1MFuTl4CmPGM62Pax2a8nLKkK++EZHbMRVyss=;
+	b=EmzbRT9Mm4e2ql6Oj5DfMtLB+PFBJu0R8GIq2m6z4Fc2zgC5JYViicPLmY5oMGcfBNzvFl
+	F3OWTQs2beg8lC6MCZzzbKpwR3ikf0dI2gXBPqH2m2NWtDuTqaDvjG/qI/b2xIzctc4aAS
+	XUudb6NwQq9l3OKaMRUDKUHpeXjLPgCD68eU456QHUmZII+XUQSLDe7pottJ1XfH3U2SaI
+	wRpfOmJPMgNTsVbk5qOUXtBkXtvbw+QvHA4C8tEj81/cKRtwkcWFfb39ch0LwYppUpT8A8
+	o5zMmY0zVAuGJ+ybqU1Bf3Kdg/jeWSW+0tUYoNg7BRRb1dvB2jpAIslD5h40rQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1780655660;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=coz5Aq1MFuTl4CmPGM62Pax2a8nLKkK++EZHbMRVyss=;
+	b=vIqlNdMdL3j6GgLjDN+1ji+hIacjZZSG6YSKCk30pxhEKI2RR8KTjCx++OUY9IidbNu4RX
+	GDIxG24sNlBqUmBg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@vger.kernel.org, Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] crypto: chelsio: fix inflight counter leak in
- chcr_aes_encrypt()
-Message-ID: <aiKmFF23AbPRzHzw@gondor.apana.org.au>
-References: <20260526155736.2297383-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH] MIPS: smp: report dying CPU to RCU in stop_this_cpu()
+Message-ID: <20260605103418.tH3rlwmO@linutronix.de>
+References: <20260604182407.3109536-1-jelonek.jonas@gmail.com>
+ <20260605064250.q0aRKkon@linutronix.de>
+ <02b1e77e-5b7e-41cb-95b6-731ed00d9e74@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260526155736.2297383-1-vulab@iscas.ac.cn>
+In-Reply-To: <02b1e77e-5b7e-41cb-95b6-731ed00d9e74@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
-	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260674-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:ayush.sawal@chelsio.com,m:davem@davemloft.net,m:linux-crypto@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260675-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:jelonek.jonas@gmail.com,m:tsbogend@alpha.franken.de,m:linux-mips@vger.kernel.org,m:clrkwllms@kernel.org,m:rostedt@goodmis.org,m:tglx@kernel.org,m:jiayuan.chen@linux.dev,m:linux-rt-devel@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:jelonekjonas@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gondor.apana.org.au:mid,gondor.apana.org.au:from_mime,gondor.apana.org.au:dkim,apana.org.au:url,apana.org.au:email,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linutronix.de:mid,linutronix.de:from_mime,linutronix.de:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 230AA64772A
+X-Rspamd-Queue-Id: 00A13647782
 
-On Tue, May 26, 2026 at 03:57:36PM +0000, Wentao Liang wrote:
-> chcr_aes_encrypt() increments dev->inflight via atomic_inc() before
-> submitting the cipher operation. If chcr_start_cipher() subsequently
-> fails, the function returns an error without decrementing dev->inflight,
-> causing the counter to drift and potentially stalling future operations
-> that rely on the counter reaching zero.
+On 2026-06-05 09:12:09 [+0200], Jonas Jelonek wrote:
+> Hi Sebastian,
+Hi,
+
+> >> Call rcutree_report_cpu_dead() once interrupts are disabled, mirroring the
+> >> generic CPU-hotplug offline path (and arm64's stop handling), so RCU stops
+> >> waiting on the parked CPUs and grace periods can still complete.
+> > This is part of cpuhp_report_idle_dead(). Is it now invoked twice? Or is
+> > something else missing/ different? 
 > 
-> Add atomic_dec(&dev->inflight) on the chcr_start_cipher() failure path
-> to restore the counter.
+> Those seem to be two different paths. To be honest I'm not confident
+> under which circumstances which of those paths is used to take down
+> a CPU. In my case, issuing a reboot command reaches smp_send_stop()
+> where the issue explained in the patch message then happens.
 > 
-> Fixes: b8fd1f4170e7 ("crypto: chcr - Add ctr mode and process large sg entries for cipher")
 
-I think it should be 
+Does 
+	echo 0 > /sys/devices/system/cpu/cpu1/online
 
-fef4912b66d6 ("crypto: chelsio - Handle PCI shutdown event")
+lead to the same problem?
 
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+I missed that arm64 has also this but only if the online path fails kind
+of early, see
+	04e613ded8c26 ("arm64: smp: Tell RCU about CPUs that fail to come online")
+
+so this not the "normal" case but an exception. Mips seems to be doing
+something different here. I am not sure if this is the only thing that
+is missing.
+
+> Best,
+> Jonas
+
+Sebastian
 
