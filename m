@@ -1,186 +1,175 @@
-Return-Path: <stable+bounces-260597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id s+C7E7IgImpBSwEAu9opvQ
-	(envelope-from <stable+bounces-260597-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:04:50 +0200
+	id F/RcB5ogImo6SwEAu9opvQ
+	(envelope-from <stable+bounces-260595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:04:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48FC6443D4
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:04:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 658526443BE
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:04:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gOI0GMNJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260597-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260597-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K3vk6yuA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260595-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260595-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 65193304352A
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 01:00:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B07A302F5B5
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 00:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA098302CD5;
-	Fri,  5 Jun 2026 01:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1882EEE8F;
+	Fri,  5 Jun 2026 00:59:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1AB26D4E5
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 00:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827CD277C9D
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 00:59:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780621218; cv=none; b=lQXeEi2aJ0I+D5qo2YxaPRve116b8OhU9UcN43vyv7Q5BL0T6FkdOvAzD+nklu+zhAW4Zq9UZY7UfaYW0q7X+6NDS0agPXbof2OmdChSlDoi9NBBVvJoGWIY+8t3q2OvdiBJDvtVi3TKZfHX6SS3R7jtQKxg8sFdClQlm+hJvW0=
+	t=1780621162; cv=none; b=VUdt9uIPDiRd+qTAiPa5niCb8CtOkBo9eXNqzFZa1SvOWobRX05/331R6YR/KAl90UTHP0qRVVCNyFJU6CjR8e5K1/3IVyeynHWH02TMAnGCk6TFZgs2s7q9Lekj5CX9nWdz8hQz6d+64gy0krOI2GeIk4cyCa5hqpynS07Rks4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780621218; c=relaxed/simple;
-	bh=u0/w00vlK6fi8yvn+h86TeNOxWHIji6kmAtn8Yr+LtY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jrjZ6WB3D1hbMh6j5Bm1u41JhJ0jxTlm6TMhzKwdARMCSYC3r/QXL9aCQsdUFaL6KcsRKIxjoIJ0/TUwqkxnR8dKJjR8jHBs6h9El9NN21jrxsjmj9U1D8ZPdmbrjdAMre/mtapuS9zzv638ga61/paX9V/2g7anTf/KlquKgOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gOI0GMNJ; arc=none smtp.client-ip=209.85.210.180
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-842338c18e0so979499b3a.1
-        for <stable@vger.kernel.org>; Thu, 04 Jun 2026 17:59:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780621198; x=1781225998; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q2yNPrajpmUjXUxkDV8KTQdIiGB5qpjbVC2V+xxbVWk=;
-        b=gOI0GMNJIveWfc4p5kpW6qQu87tDfxWijmyP1iIe3U6z+FvKifDOKWhTkcxsJL8cRR
-         VV/r0iDy5qUBCCBiS44/0NgaKKEA05kDdJPEke8ZZXUIOj5VAKk0L73MRgLatvMoL03e
-         mahDxre9j/fRw91JPo55JnlQxl1kZP+D0oizZonj1+FMp36bFEMcb27JJofg6g+lFMn0
-         GcMfQ30KYCORC/EriKIUm+NGeZtgwsZLcZVZ4SLC9nCx4ymF7rYoyI52gb2CDK476/Pi
-         kTqTakXjglIRn+JxXozM57Q4eRoqrtB74LJp0bh78B9WEHTh0YddmHv5R16Tfgzdk26j
-         YjYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780621198; x=1781225998;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Q2yNPrajpmUjXUxkDV8KTQdIiGB5qpjbVC2V+xxbVWk=;
-        b=HIYIN9nKba168XGXPTVLtxelNQKbNiiSkWdEdJaySkPrm2rhyafYwp3ZcDL3snt+Je
-         UvwY+rxnRWKygceI7xW7SLDYPjTINhwbmhZs0frvHNe0F3cu3fMjv33igtT61Zqf3B3f
-         RVkAn5ukIsukEZWtfgBlAXJ4tSu4y2yiA8czL3WSBaXs+TRS/nzYLziGrsNI7elLwD8J
-         QVD0fcam6ChK/7VMA7U/M3Bkaq2z2ve8yFu/GSb5pyOAl30Z51ejbTdJy4eViQsoMZa3
-         hAnV3SH7VycXYCKk2yx4zHygIH7MJFM2C2/4jkmywsnPYS+wTlFaR+7dyO8bZzp/Esat
-         C/OA==
-X-Forwarded-Encrypted: i=1; AFNElJ/0PtaPYvlHBYivRcy9FFyeqbwwobB7aKYsJr3H28gk+3EEHIBJcNbBjtsUWBwiub46YuigRN4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywh747JGIQWjI4btqgNl6jC5E9Q1CZzytGv0/929u5e4AcfaPPG
-	Qip0TSU32hvg/hcFCFgT6JhwMcm0B3QtjC12N2ssIKbBO7DrY+ju6Gr7
-X-Gm-Gg: Acq92OHpfATiZt8/LAGyW4et/SYo5MLkS/B/4xtJG36oaFo2/MLs0RP4n+oQfWKqdia
-	ktb+bY2mTsHZXN77DbwyS+ndlVyDRe+UXz2w+52yg83ZK6bdt62jCu/BGv9Ds+8m6uLU/QQjAFj
-	YZtN0LVko0kr/Mt4O6jiepbJtswEhwoG6t8I5ySQiHGbW+DCAK52PhM+KFviwIh7tFFp+Lwwhnu
-	L/n1JKceuGGDOtILlt6UQDoP1zZiKulfe8AWLu+/4rBw+EqDXiGNtfMcnLFLiMPkPNJ7Zlx+aYH
-	kifEIJg8SFXbJwQDipDxqub7NbH+II1Qu5jGAByMwBQBIz9+CbDS695vLtgXNiZ/woF9qjgrF7w
-	BPhMGJWgSI1e22BR06PRBpL2Tz+enXVoN1aRpweN6E/u4BNGEhEjJLTUNcNIKAXIOqwYc60q+Ty
-	EBu3pq2TFi5NKFzjXDuGwMie0/jr+qlxRUflqE+/EC3i0aMTDv6j+MPY2M
-X-Received: by 2002:a05:6a00:908e:b0:842:459b:d61b with SMTP id d2e1a72fcca58-842b0f90d88mr1002312b3a.32.1780621198003;
-        Thu, 04 Jun 2026 17:59:58 -0700 (PDT)
-Received: from twhmp6px (mxsmtp211.mxic.com.tw. [211.75.127.162])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8428235006dsm7730884b3a.13.2026.06.04.17.59.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 17:59:57 -0700 (PDT)
-Received: from hqs-appsw-a2o.mp600.macronix.com (unknown [172.17.236.67])
-	by twhmp6px (Postfix) with ESMTPS id 7F6284163B72;
-	Fri,  5 Jun 2026 08:59:55 +0800 (CST)
-From: Cheng Ming Lin <linchengming884@gmail.com>
-To: Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Cc: linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	alvinzhou@mxic.com.tw,
-	Cheng Ming Lin <chengminglin@mxic.com.tw>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] mtd: spi-nor: macronix: Restore fallback parameters for MX25L12805D
-Date: Fri,  5 Jun 2026 08:57:20 +0800
-Message-Id: <20260605005720.1857413-3-linchengming884@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260605005720.1857413-1-linchengming884@gmail.com>
-References: <20260605005720.1857413-1-linchengming884@gmail.com>
+	s=arc-20240116; t=1780621162; c=relaxed/simple;
+	bh=FPtpuHA9u7qJg42Dd31A4iJduMxWGP9qZmd+50RZ0kE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XSAGtJc6zIsmDoLoxcTDtdq6edsN4guvLRDOqtTb1s2tL+pVdzw5JqhNJirf6LsXkMGlB4jAPuIDKzgRer/yo9z9FbOPYPnItALAv5K9medOrCmFrBiTaN5B+Fy9+HU6dy6GU79WdF4ZQjGkaZMpGx+aYjRAi5E6PBsUb9FGaiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K3vk6yuA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2BA1F00893;
+	Fri,  5 Jun 2026 00:59:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780621145;
+	bh=Hgmp+5QsQzeFA4umCjMnwzAkl20i6Uwe7GqXW+1EOpo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=K3vk6yuAJzKm+YVwqP5Svh4R2/vmrjwrYEZSbv5mF3T1A1zZz8Lhw+o71qSa+5zyQ
+	 bJmBSBNCHxDHvXSg1oA26sIqz+4MPMYaL3Zvey8ZMeLxIH7/IX5iCgYF7bhxY0WHj5
+	 zZqXMPuyiIVWQlYi5bC1TWoQyPfvO41bC2/fy7E+wfjDZnN6mgqQnAvDe0gpnybDYO
+	 eDb92EikZit2PNitMQXcH9p/MUo+cZJva19iH9QdAgvGiuntzSoTNr/Xj06leFuQho
+	 2tv0lPNpgmJto+V19C7C1yF/6xd6zsFiqpjVfGuru9swnzPBOQ3P/E8IdgTbvnShAS
+	 EB4kGM85XWBSA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] ALSA: firewire-motu: Protect register DSP event queue positions
+Date: Thu,  4 Jun 2026 20:59:03 -0400
+Message-ID: <20260605005903.2802313-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026060436-lumpish-nemeses-2d25@gregkh>
+References: <2026060436-lumpish-nemeses-2d25@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260597-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:pratyush@kernel.org,m:mwalle@kernel.org,m:takahiro.kuwano@infineon.com,m:miquel.raynal@bootlin.com,m:richard@nod.at,m:vigneshr@ti.com,m:linux-mtd@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:alvinzhou@mxic.com.tw,m:chengminglin@mxic.com.tw,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260595-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:cassiogabrielcontato@gmail.com,m:o-takashi@sakamocchi.jp,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[linchengming884@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[linchengming884@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,sakamocchi.jp,suse.de,kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,mxic.com.tw:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A48FC6443D4
+X-Rspamd-Queue-Id: 658526443BE
 
-From: Cheng Ming Lin <chengminglin@mxic.com.tw>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-In a previous effort to drop flash_info fields and rely on SFDP, the
-static size and no_sfdp_flags were removed from the MX25L12805D entry
-(JEDEC ID 0xc22018).
+[ Upstream commit 98fb1c1bb11e29eb609b7200a25e136e05aa4498 ]
 
-At that time, the legacy MX25L12805D was already EOL and unavailable
-for physical testing. Verification was inadvertently performed using
-the newer MX25L12833F, which shares the same JEDEC ID but supports
-SFDP. As a result, the probe succeeded during testing, leading to
-the mistaken removal of the fallback parameters.
+The register DSP event queue is updated under parser->lock, but
+snd_motu_register_dsp_message_parser_count_event() reads pull_pos and
+push_pos without the lock.
+snd_motu_register_dsp_message_parser_copy_event() also reads both queue
+positions before taking the lock.
 
-Since the actual MX25L12805D lacks SFDP support entirely, it strictly
-requires these static parameters.
+Protect these accesses with parser->lock as well. This keeps the hwdep
+poll/read path consistent with the producer side and with the cached
+meter/parameter accessors.
 
-Restore .size = SZ_16M and .no_sfdp_flags = SECT_4K to this entry
-to fix the probe failure for the legacy part.
-
-Fixes: 947c86e481a0 ("mtd: spi-nor: macronix: Drop the redundant flash info fields")
+Fixes: 634ec0b2906e ("ALSA: firewire-motu: notify event for parameter change in register DSP model")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cheng Ming Lin <chengminglin@mxic.com.tw>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260521-alsa-firewire-motu-event-locking-v1-1-708e1c2b5e56@gmail.com
+[ converted copy_event() from manual spin_lock_irqsave/spin_unlock_irqrestore to guard(spinlock_irqsave) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/macronix.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../motu/motu-register-dsp-message-parser.c        | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/macronix.c b/drivers/mtd/spi-nor/macronix.c
-index febcef6a1..4cb7c1e98 100644
---- a/drivers/mtd/spi-nor/macronix.c
-+++ b/drivers/mtd/spi-nor/macronix.c
-@@ -155,7 +155,9 @@ static const struct flash_info macronix_nor_parts[] = {
- 	}, {
- 		/* MX25L12805D, MX25L12833F, MX25L12845G */
- 		.id = SNOR_ID(0xc2, 0x20, 0x18),
-+		.size = SZ_16M,
- 		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_4BIT_BP,
-+		.no_sfdp_flags = SECT_4K,
- 		.fixups = &mx25l12805d_4pp3b_fixups,
- 	}, {
- 		/* MX25L25635E, MX25L25645G */
+diff --git a/sound/firewire/motu/motu-register-dsp-message-parser.c b/sound/firewire/motu/motu-register-dsp-message-parser.c
+index ef3b0b0f0dab9a..abafae59f365ba 100644
+--- a/sound/firewire/motu/motu-register-dsp-message-parser.c
++++ b/sound/firewire/motu/motu-register-dsp-message-parser.c
+@@ -393,6 +393,8 @@ unsigned int snd_motu_register_dsp_message_parser_count_event(struct snd_motu *m
+ {
+ 	struct msg_parser *parser = motu->message_parser;
+ 
++	guard(spinlock_irqsave)(&parser->lock);
++
+ 	if (parser->pull_pos > parser->push_pos)
+ 		return EVENT_QUEUE_SIZE - parser->pull_pos + parser->push_pos;
+ 	else
+@@ -402,14 +404,14 @@ unsigned int snd_motu_register_dsp_message_parser_count_event(struct snd_motu *m
+ bool snd_motu_register_dsp_message_parser_copy_event(struct snd_motu *motu, u32 *event)
+ {
+ 	struct msg_parser *parser = motu->message_parser;
+-	unsigned int pos = parser->pull_pos;
+-	unsigned long flags;
++	unsigned int pos;
+ 
+-	if (pos == parser->push_pos)
+-		return false;
++	guard(spinlock_irqsave)(&parser->lock);
+ 
+-	spin_lock_irqsave(&parser->lock, flags);
++	if (parser->pull_pos == parser->push_pos)
++		return false;
+ 
++	pos = parser->pull_pos;
+ 	*event = parser->event_queue[pos];
+ 
+ 	++pos;
+@@ -417,7 +419,5 @@ bool snd_motu_register_dsp_message_parser_copy_event(struct snd_motu *motu, u32
+ 		pos = 0;
+ 	parser->pull_pos = pos;
+ 
+-	spin_unlock_irqrestore(&parser->lock, flags);
+-
+ 	return true;
+ }
 -- 
-2.25.1
+2.53.0
 
 
