@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-260809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260810-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id X8reAi4nI2oJjgEAu9opvQ
-	(envelope-from <stable+bounces-260809-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:44:46 +0200
+	id ntwiBfQlI2rMjQEAu9opvQ
+	(envelope-from <stable+bounces-260810-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:39:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6065464B07E
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:44:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B6D64AFFC
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:39:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C8FKuZ4T;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260809-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260809-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RD9fgiQ4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260810-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-260810-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB699309E555
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 19:38:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0455C300C7F0
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 19:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D46404BCE;
-	Fri,  5 Jun 2026 19:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3026357739;
+	Fri,  5 Jun 2026 19:38:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEBA400E02
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 19:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DCE416CF3
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 19:38:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780688311; cv=none; b=Hw03F7cnvdPpD+lEWLcjGT7Dy4pQpcNRR96sc1AeknH0hzji98gHdFgjJa+DqlyjMYfBwzx4J9Xups9AvWsPD637WBKJ5xMTpSXg45xOVzUaS8PeKIyiFmg9ndZJMPzFllncdcraRKqmHAl7YTOc9i75kJeNyhNcyJn05YEutNE=
+	t=1780688312; cv=none; b=UdryxWXzYmvKAf5ztRZ5uT5L0ZQazN5NdgK+OrBi+LS7ZhLGh9ppOdROcd2jm1dDFeSf3fQw9Z5y44e/uiJ3iBRnCCNkiVWXsQTOl1LWHJlT/NBogsVc+DENM//+gL5Ar1PBN33xP6Sa5p3eTyFfRnK+QYhEVK4kFiNZyV7ntoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780688311; c=relaxed/simple;
-	bh=nHncwJOdj9tQYdQ5dilzwheJ3C61+jkS/wcDUt4vfjs=;
+	s=arc-20240116; t=1780688312; c=relaxed/simple;
+	bh=//gu5PY36ZJ8TQ155G9XighH/R5QjEC4QsMW6nlCm+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8YaaNEK08Y+aQ9JgN1wVwDzDLI0ogdqK68xqMuNBo9/shyTe5H1YVSe9jmRA4uyKXtBaVDWrJ2JSaUtYAVO7cX9Fjg7RQx1jUJvlcG7auMTWsLis84rt8gkWgAbJaYJQHM1fMTsQoec0JaAfY4lVn1hp9s9d1ekNcTWPF2E2Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C8FKuZ4T; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A6981F00898;
-	Fri,  5 Jun 2026 19:38:29 +0000 (UTC)
+	 MIME-Version; b=b5JeA1uDKqp8AKJ50PVPg5x719H02YSeY4VFqAmRqiFoZzmNMYWvIc1PXhWjBP2amT2Qai83NCUPRdwYZHaORsKAscli2VXMf82G25txht5eRLgbew3IuBxk6lvIBZ8kC0PTuSno0HvT7wHVpCT/eVfOLMko2nawlWJSbEfr9sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RD9fgiQ4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA3C1F00899;
+	Fri,  5 Jun 2026 19:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780688309;
-	bh=2ATlPSSNy6IjPI4LYiNVtM0nmv8Ya3EZbVr+W08UZM0=;
+	s=k20260515; t=1780688311;
+	bh=wZ/D/Plt5j4MGVW9JmLKYkPw3KML2vS5LDa0+UVTbqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C8FKuZ4TIZb+q5LBDrJh53lQAX5Q7HxOgqFIJPS4rLyOAC1V6m2JcR//6AGESNrR1
-	 p8Bs3040yYh33T1w19FBfozRdhKjaJbI8a5TcNdMOh71OGQ++xmBReprysT4hjw+IC
-	 HDmVIi7iQELGNDG685SdGaiuoYZARR1+fTDTrgT7dHcCOJl/rjFCd5bonhmgzLY3xK
-	 x/4xU53mMU0p1XakM4CrFmezY5ZXRju7cLbLA2F6YXPv83gIzuWTOLsA/5gdD2/aHd
-	 TKg6ulnX+KUX5xYsbD2bgw8TmVDJzLJnrqh9HItzJX9uS5U595vUIXm+FD5SQWgYbU
-	 LLFee3ECs7nHA==
+	b=RD9fgiQ4QvR1h/M2dva8yI9crzGyGTY9+rXRrW+cYECC0Tx3wpUpsPJ7vxmJm/hoV
+	 knFkdkehYP//4Iirov3zIk54KEpeAZX4/UKT9rjfYvuVgGNU1Zgr8olMyYrOfzRt0o
+	 Ppy/cs3ASTOcgcHHuJY63QkTg0K+n4Cqw4cyCpIt9zjJ9mMUObBgG5zdul+3BnTSmp
+	 B8P+1Ggo+G6aplTPXFFEq2E5Yic4eLT5FwgElPWF3HSIVbBiwFwALxtY89vvT/aDs8
+	 rydT8StGQNMicsNWCPJgljn6YTJtvugoKgG9mn//zTXeyTcfCp1B4TOlLacR2fmIpO
+	 Meb7ZaOLe8dog==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+Cc: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
 	stable <stable@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/2] usb: gadget: f_hid: fix device reference leak in hidg_alloc()
-Date: Fri,  5 Jun 2026 15:38:26 -0400
-Message-ID: <20260605193826.2169399-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y] usb: typec: ucsi: Check if power role change actually happened before handling
+Date: Fri,  5 Jun 2026 15:38:29 -0400
+Message-ID: <20260605193829.2169488-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260605193826.2169399-1-sashal@kernel.org>
-References: <2026060453-cape-pavestone-2366@gregkh>
- <20260605193826.2169399-1-sashal@kernel.org>
+In-Reply-To: <2026060418-vanquish-saga-213f@gregkh>
+References: <2026060418-vanquish-saga-213f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,92 +69,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linuxfoundation.org];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260809-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:lgs201920130244@gmail.com,m:stable@kernel.org,m:johan@kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-260810-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:myrrhperiwinkle@qtmlabs.xyz,m:stable@kernel.org,m:senozhatsky@chromium.org,m:heikki.krogerus@linux.intel.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6065464B07E
+X-Rspamd-Queue-Id: 10B6D64AFFC
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-[ Upstream commit 4f88d65def6f3c90121601b4f62a4c967f3063a6 ]
+[ Upstream commit b80e7d34c7ea6a564525119d6138fbb577a23dba ]
 
-hidg_alloc() initializes hidg->dev with device_initialize() before
-calling dev_set_name(). If dev_set_name() fails, the function currently
-jumps to err_unlock and returns without calling put_device().
+The CrOS EC may send a connector status change event with the power
+direction changed flag set even if the power direction hasn't actually
+changed after initiating a SET_PDR command internally [1]. In practice
+this happens on every system suspend due to other changes performed by
+the EC [2][3][4], causing suspend to fail.
 
-This leaves the device reference unbalanced and prevents hidg_release()
-from being called. Calling put_device() here is also safe, since
-hidg_release() only frees resources owned by hidg.
+Fix this by checking if the power role change actually happened before
+handling it.
 
-The issue was identified by a static analysis tool I developed and
-confirmed by manual review.
+[1]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=1689;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+[2]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=3923;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+[3]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=5094;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+[4]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=2229;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
 
-Route the dev_set_name() failure path through err_put_device so the
-device reference is dropped properly.
-
-Fixes: 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs cdev")
 Cc: stable <stable@kernel.org>
-Reviewed-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Johan Hovold johan@kernel.org
-Link: https://patch.msgid.link/20260413142119.2977716-1-lgs201920130244@gmail.com
+Fixes: 7616f006db07 ("usb: typec: ucsi: Update power_supply on power role change")
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20260519-ucsi-fix-2-v1-1-6f1239535187@qtmlabs.xyz
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_hid.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
-index 07c4f7bbdb2719..7b19f8ffa87150 100644
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -1278,7 +1278,7 @@ static struct usb_function *hidg_alloc(struct usb_function_instance *fi)
- 	hidg->dev.devt = MKDEV(major, opts->minor);
- 	ret = dev_set_name(&hidg->dev, "hidg%d", opts->minor);
- 	if (ret)
--		goto err_unlock;
-+		goto err_put_device;
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 5baa48213f1e57..efaf6a8e0cf8ec 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -783,7 +783,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+ 	struct ucsi_connector *con = container_of(work, struct ucsi_connector,
+ 						  work);
+ 	struct ucsi *ucsi = con->ucsi;
+-	enum typec_role role;
++	enum typec_role role, prev_role;
+ 	u64 command;
+ 	int ret;
  
- 	hidg->bInterfaceSubClass = opts->subclass;
- 	hidg->bInterfaceProtocol = opts->protocol;
-@@ -1313,7 +1313,6 @@ static struct usb_function *hidg_alloc(struct usb_function_instance *fi)
+@@ -791,6 +791,8 @@ static void ucsi_handle_connector_change(struct work_struct *work)
  
- err_put_device:
- 	put_device(&hidg->dev);
--err_unlock:
- 	mutex_unlock(&opts->lock);
- 	return ERR_PTR(ret);
- }
+ 	command = UCSI_GET_CONNECTOR_STATUS | UCSI_CONNECTOR_NUMBER(con->num);
+ 
++	prev_role = !!(con->status.flags & UCSI_CONSTAT_PWR_DIR);
++
+ 	ret = ucsi_send_command_common(ucsi, command, &con->status,
+ 				       sizeof(con->status), true);
+ 	if (ret < 0) {
+@@ -804,7 +806,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+ 
+ 	role = !!(con->status.flags & UCSI_CONSTAT_PWR_DIR);
+ 
+-	if (con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
++	if ((con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) && role != prev_role) {
+ 		typec_set_pwr_role(con->port, role);
+ 		ucsi_port_psy_changed(con);
+ 
 -- 
 2.53.0
 
