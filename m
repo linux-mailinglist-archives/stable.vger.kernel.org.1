@@ -1,193 +1,134 @@
-Return-Path: <stable+bounces-260712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260721-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oV//FcvfImqoegEAu9opvQ
-	(envelope-from <stable+bounces-260712-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 16:40:11 +0200
+	id 0rirOfvnImo9fAEAu9opvQ
+	(envelope-from <stable+bounces-260721-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 17:15:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 693FB648EA4
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 16:40:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 821DF649312
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 17:15:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Be9mkyhk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260712-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260712-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QgAgqxeU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260721-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260721-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9C95B300D7B7
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 14:40:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CF691301586F
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 15:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02EF839D6DF;
-	Fri,  5 Jun 2026 14:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4F740960A;
+	Fri,  5 Jun 2026 15:08:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBB5287510
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 14:40:02 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780670403; cv=pass; b=NoqLnVROvapxRZbuoaeF6+4+yEcYgTXuZq/WDQJ1aX9zNSIA0g63T5LKzhl2GDla7SkHtE40cqpD09keZ9jfWrNTFB6XzlFOtikRDEfElXO9IK1bLsbbHHqeADkVIfImT3EPf19TenWC9RYR00ZXyHz29ig9JADI/rAQfK/yZl0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780670403; c=relaxed/simple;
-	bh=NOQZeUgc07KS/OvgX6TK90IWE1VfXavRads+HOY4Du0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JAr28IbSDHw4/19yp/AUIw4xzLi/IE9/Bq0CLQ06ppIGUvP6Q5VZAVrLd4mwF4CHIHPmAqgu9M65oUP5AwqijY2/i97OD3YtoGM+PAivCcT3zifzNJAZqgfV+h4a4FjEZVt1ydh7QtKupWtEIBdDArDOtwiBIIy/nZKvy0fzhSo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Be9mkyhk; arc=pass smtp.client-ip=209.85.208.54
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-68bd7ec2371so9969a12.1
-        for <stable@vger.kernel.org>; Fri, 05 Jun 2026 07:40:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780670401; cv=none;
-        d=google.com; s=arc-20240605;
-        b=F+syhZngQ4dR6jBHXyIINfeJdUWRdT/b7VvJTJalJaLvKuZ9KCrq80TUOtuJ06zrLr
-         /7islYFhkv+fHNjRbObMqEPqANqG9kEw+8PNu2nD4EPzvgBPU0aEXWqRL8zh6cyNfhJA
-         fy8jSAcJ+TdYaOn3R7TBa/bFjDTTwKbXNYCGJjY/GUUayaXrKQoT8xBaqwJTQC8OIXZI
-         MX6z43PDAFm9jvVrgzG1jrvCeeQc7wLtxaVTXxt1NhZJmNfWuulwKCvZZcJEb2cwJugv
-         /oOlKmaNHaf+8o59ag3Nzgw7BJe5JYfSkclYAqxUiU2K5rfoNvrvUlbiPcgmSOOqe6aK
-         tGBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=as1py6QfVQjWXq/H/j8qlkW+Qk+QDS/0K5XkzZmjy6M=;
-        fh=C5BMxG+jT+N2zUI8q5uXYzGKEYMnz1pS3VcH6a1+c4k=;
-        b=WtK+qLftZmFisUjBUrzxl2vmEMPEUVrn3AO01V7X/Z84Xm2d4N44pCgoYeLSCTBB7e
-         XxWbKLKPIhAUaQhjyVActFlyd+1+TwBeZ4h+hC9Zy0tISlRITfP3JUWZYsmElJP0pxM8
-         5dTpwLLUs4Bu0qHrWqnFSQ6V/OFEOwju653MY1Fl7uDC1Gl0Oq+6l3KBnJH6Kx6aKweP
-         vkHZAda96ErZjx+8dS8yQOkUx0s7d4gkXmWBdHJKG0OT4L75m04t9yjXPnGOCn+GPlUw
-         NkI1zvyegmigZ7hxU6kd9O9ZbYwhlDt3Y0TDdOpEK3VEI/Urkx4Cy+ggcvF2s04jMGIT
-         fSsw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780670401; x=1781275201; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=as1py6QfVQjWXq/H/j8qlkW+Qk+QDS/0K5XkzZmjy6M=;
-        b=Be9mkyhkMVD309c+/wHXBrEtGxXhvdbtwfJe/nxjdkovw99MZwmqPux/Z1IFKkvpFf
-         6gxN2EMXD05lcaV6oVNQfivjFi/sJeSIsE+QFuk7gH9h90qqRcdbXExWw2CDyy61ncHw
-         HG6cadsbpx9jAWtEghV+AzYktVMELUZczMzHRQIB423v9yujZ0tRkcCTYMuBK9pLHNvs
-         hluB+a+DczRfGjj2R7tIRuZUwzjYiAJMUUl2SUtCTvFk46z7HeEbcJEEBYSD+Guf4Lg9
-         +LpykZqJlCCORzjao4v7vl8M+5cK8PrHlffVYU5y9fluFnqyXscFFYkzZn5PH8GqiDFC
-         ic3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780670401; x=1781275201;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=as1py6QfVQjWXq/H/j8qlkW+Qk+QDS/0K5XkzZmjy6M=;
-        b=rAY/Rt+03fDX2erKprg3CPOx5UzV/19wZQ3AkvA/cINTTEljDYNxuBf54KBX1hMhUf
-         inUgJj1++gYQMDRHRqVLm4sfblibNSRWVVZ90SdMzR/q0a8KyqhuDjxvZSSiHv369WB9
-         W3+0dr+d68WBfMtgZ05DykT5W9mITNNVdZY/KVvr7fovcEJPSjk8WXBFXs2hNbHs86my
-         wWP9PQ/pfxKFo1109a6fF8iV+WnUCpKWN27iA7y2ra6/yjapvBtPpTPCCYWo0zyNkUMH
-         tMZaGQzTPJC9kAjn4HQRG2+NHpMtOTUoc01b/7WkXbDM0ZuxqooucUiMfF2EJzEYkN0s
-         zvVg==
-X-Forwarded-Encrypted: i=1; AFNElJ941nmmCGP0spDcqHCk7hl8ve3cbnyrLCrxK2GE/ujLKQ4HqYYCrMopPlpxR+2j0YeV/5+DEK8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBP3u6//+phCHa9rX59Rj6wBWdOZgot6las16SCmqUcf4W49QN
-	po1LkUhXHzEMFWFbato9ZAIIYMDDAxd/+xiC5ZEt4WYL3ugIba3eyhzT3GwGngEfF4yu6jTo6un
-	K45wrCGxmHeq4NnjMoIDIb9HoPUQUp/ArN1vvdozT
-X-Gm-Gg: Acq92OGHpfwWeLL+VuJmpSCFXu0xQo3PxqkffvGUM4DPUnVy+2vSp1+bD+hiMnPzxrE
-	ffAMU12cGyuCf5YMOzBUVnUq67xvqjHF+3iyuyz7VO7HGrjEcxS/HwxM1beQaXV2uVXN7dKK6UQ
-	L6XTGebmH7nufxX/jqg/qL6FMdK+XMJ8fOVMmWsZgk40gCM4WYVEureX9M3p/wZklg5+WtTAV4f
-	iTqs5RlMuAqmJGpCSIpBFOMd1mTHENyTyrR9gK2YGAJHfKO7iVIKN0h9SVnrennfOk+tg5U0Kjl
-	8v61CMmjFz+0CwgJIFwF+qHkT2vELkY28viGgg451wK6yoZF
-X-Received: by 2002:a05:6402:52db:10b0:683:33ae:8689 with SMTP id
- 4fb4d7f45d1cf-68fe8b4cf79mr38019a12.4.1780670400617; Fri, 05 Jun 2026
- 07:40:00 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049EA3E5564;
+	Fri,  5 Jun 2026 15:08:50 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780672130; cv=none; b=MTTxJCYwpBeaKYCmmJe5AMOrCwTVTiznIYHWgrkPtmRTJLaytyz8B7qv9NjuoECsEGwdTGMt28zMYRKZOfTSuKpH6fMWG8pbgT/m9Knv2A6xWSn0qAouDWAJYECO1qjsXtJ77Z8oe6I+CTRaafUDWIlbQZCj3T3cGl8ioTLNAo8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780672130; c=relaxed/simple;
+	bh=UJHREpDeIob2u3UyEwalJQx5zfb1tBSJ5dQ/an4MA1w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bBFgmd2LDiqJB67f2wyNEJEXnfNuGLb0R3ISMKWPfsHurqBwcO9yUQlj+ftz+Ibft8lLLbNE3fcBTQx2D1NUPzvu+/IztESwHQzcxrVz/QgPj3VoF9FnKynQXYFUOm9KbZ7I8ITC+jFwAHBsfZte40GFru6i8tbL34FXOkGxZLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgAgqxeU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5597B1F00893;
+	Fri,  5 Jun 2026 15:08:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1780672129;
+	bh=KwnobDycUoeaG1IWloTQkcMfkvmcZSblONxcFsLEbZI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QgAgqxeUL6dLtlMll8pVENTIkHWVKMQXpzFQrw82adMgfO2+VOfMw6rviQVuOm85/
+	 p+uYNu5ceOAtKIIpWrlUgzNRXNdfQqOVcDTIvwVdLAKjKHHHLAeccVXZ26ZbRCo7bI
+	 JevuEq4sTFrqQIgQZmQqg95QV1T8WI/IBm9hVZLo=
+Date: Fri, 5 Jun 2026 16:57:35 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Nguyen Minh Tien <zizuzacker@gmail.com>
+Cc: stable@vger.kernel.org, Woojung Huh <woojung.huh@microchip.com>,
+	UNGLinuxDriver@microchip.com, netdev@vger.kernel.org
+Subject: Re: [PATCH 6.6.y] net: usb: lan78xx: program MAC_CR for LAN7801
+ fixed-PHY link
+Message-ID: <2026060535-subpanel-proven-595a@gregkh>
+References: <20260605121535.51414-1-zizuzacker@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260518-procfs-lockfix-part1-v1-0-5c3d20e0ac33@google.com>
- <20260518-procfs-lockfix-part1-v1-1-5c3d20e0ac33@google.com> <05811fd9-6a33-48d9-a970-281003466c80@sirena.org.uk>
-In-Reply-To: <05811fd9-6a33-48d9-a970-281003466c80@sirena.org.uk>
-From: Jann Horn <jannh@google.com>
-Date: Fri, 5 Jun 2026 16:39:23 +0200
-X-Gm-Features: AVVi8Cf2g5iNAdBBEcbfvUYBHLR4xpYK8oqIRwmCptFF6s_EQcEFjFFXqKVPwDc
-Message-ID: <CAG48ez0V5bgEWgZkYaM2z5qfr0w6PXg6YDU8NS19=ZU6XLxTBw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] proc: protect ptrace_may_access() with
- exec_update_lock (part 1)
-To: Mark Brown <broonie@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Arjan van de Ven <arjan@linux.intel.com>, "Eric W. Biederman" <ebiederm@xmission.com>, Jake Edge <jake@lwn.net>, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260605121535.51414-1-zizuzacker@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260712-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:zizuzacker@gmail.com,m:stable@vger.kernel.org,m:woojung.huh@microchip.com,m:UNGLinuxDriver@microchip.com,m:netdev@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[jannh@google.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:broonie@kernel.org,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:arjan@linux.intel.com,m:ebiederm@xmission.com,m:jake@lwn.net,m:linux-kernel@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jannh@google.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260721-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,mail.gmail.com:mid]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 693FB648EA4
+X-Rspamd-Queue-Id: 821DF649312
 
-On Fri, Jun 5, 2026 at 4:36=E2=80=AFPM Mark Brown <broonie@kernel.org> wrot=
-e:
-> On Mon, May 18, 2026 at 06:35:15PM +0200, Jann Horn wrote:
-> > Fix the easy cases where procfs currently calls ptrace_may_access() wit=
-hout
-> > exec_update_lock protection, where the fix is to simply add the extra l=
-ock
-> > or use mm_access():
->
-> >  - do_task_stat(): grab exec_update_lock
-> >  - proc_pid_wchan(): grab exec_update_lock
-> >  - proc_map_files_lookup(): use mm_access() instead of get_task_mm()
-> >  - proc_map_files_readdir(): use mm_access() instead of get_task_mm()
-> >  - proc_ns_get_link(): grab exec_update_lock
-> >  - proc_ns_readlink(): grab exec_update_lock
->
-> It seems that this patch is triggering a failure in the proc selftests
-> read test:
->
-> # selftests: proc: read
-> [  259.127414] ICMPv6: process `read' is using deprecated sysctl (syscall=
-) net.ipv6.neigh.default.base_reachable_time - use net.ipv6.neigh.default.b=
-ase_reachable_time_ms instead
-> [  259.158773] /proc/cgroups lists only v1 controllers, use cgroup.contro=
-llers of root cgroup for v2 info
-> [  259.177155] sysrq: HELP : loglevel(0-9) reboot(b) crash(c) terminate-a=
-ll-tasks(e) memory-full-oom-kill(f) kill-all-tasks(i) thaw-filesystems(j) s=
-ak(k) show-backtrace-all-active-cpus(l) show-memory-usage(m) nice-all-RT-ta=
-sks(n) poweroff(o) show-registers(p) show-all-timers(q) unraw(r) sync(s) sh=
-ow-task-states(t) unmount(u) force-fb(v) show-blocked-tasks(w) replay-kerne=
-l-logs(R)
-> # read: proc.h:49: xreaddir: Assertion `de || errno =3D=3D 0' failed.
-> # Aborted
-> not ok 19 selftests: proc: read # exit=3D134
+On Fri, Jun 05, 2026 at 07:15:35PM +0700, Nguyen Minh Tien wrote:
+> While bringing up a LAN7801 wired over RGMII to an MDIO-less switch, I
+> hit a link that the fixed PHY reported as "up" but that could not pass a
+> single packet: every frame came out corrupted at the switch and no ARP
+> reply ever made it back.
+> 
+> It turned out the MAC_CR speed/duplex bits are never set on this path.
+> lan7801_phy_init() registers a fixed PHY at SPEED_1000/DUPLEX_FULL, but
+> nothing programs the MAC to match: there is no PHY state machine for a
+> fixed link, and lan78xx_reset() only sets the auto speed/duplex bits for
+> the 7800.  So the 7801 comes up at 10M/half, clocks RGMII TXC at 2.5 MHz
+> instead of 125 MHz, and mangles everything it transmits.
+> 
+> Fix it by programming MAC_CR to 1G/full in the fixed-PHY branch, to match
+> fphy_status.  Only that branch is touched, so boards with a real external
+> PHY (and the 7800/7850) are unaffected.
+> 
+> Mainline fixes this differently via the phylink conversion in v6.16,
+> commit e110bc825897 ("net: usb: lan78xx: Convert to PHYLINK for improved
+> PHY and MAC management"), which is far too large to backport, so this is
+> a small fix for stable only.
 
-Thanks for the report!
+Why is that too large?  If we take this, we then diverge and any future
+fixes will not apply here :(
 
-Yup, https://lore.kernel.org/oe-lkp/202606021924.b6d8a0c2-lkp@intel.com
-reported this too, it should be fixed with
-https://lore.kernel.org/all/20260604155806.1402880-1-jannh@google.com/
-, which has been squashed into the current version of the VFS tree.
+Please backport exactly what is in the mainline tree, otherwise odds
+are, this one-off fix will be found incorrect (we always get it
+wrong...)
+
+thanks,
+
+greg k-h
 
