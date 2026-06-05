@@ -1,292 +1,428 @@
-Return-Path: <stable+bounces-260679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260682-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UTymL0evImqBcAEAu9opvQ
-	(envelope-from <stable+bounces-260679-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 13:13:11 +0200
+	id MpyWOY+vImqNcAEAu9opvQ
+	(envelope-from <stable+bounces-260682-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 13:14:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F1D647A4A
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 13:13:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7D4647A5C
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 13:14:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.s=selector1-NXP1-onmicrosoft-com header.b=JQ5uI+yG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260679-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-260679-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=nxp.com (policy=none);
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=google.com header.s=20251104 header.b=TJcOiDBi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260682-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260682-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 54260300B510
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 11:10:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1132B3025AFE
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 11:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB904C900E;
-	Fri,  5 Jun 2026 11:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755E84D2ECC;
+	Fri,  5 Jun 2026 11:14:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011016.outbound.protection.outlook.com [40.107.130.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1733F9F22;
-	Fri,  5 Jun 2026 11:10:09 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780657810; cv=fail; b=W5IHeNnLjbR5jX2/YCSx2f4hYNCwL/nkvPpEO9/zxmNtHtChH3zafW8FQQx9v7RBpu2D5KaJb3gW0GdkLEigekHg4gnjMobmrr1JiDXiI4AZdgObkgwbCMA65DRdmMm0GOTh+L8AVMss9Yy1hrGd4IY44PRp4rB+7oIYEO2NAJU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780657810; c=relaxed/simple;
-	bh=2ZKIwuazRGW6fe946+oE4oPI14Ov9VJ2ILWsmPPE34I=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=FCzrfRHm0/upWxvXT0MarFhjs74F62RZqveJy4W/BcPdtI2hhB5kahlPhN/iAeokeIDIrYgPtwrNbTU5Ax2bU68sKOddHa//InkIxs2JU4avq2r7UICFTwNr5m5HeXPxzjEyNcZWZCePVPEFaUs2THdxzM1LtXNw0C2wDXjO9so=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=JQ5uI+yG; arc=fail smtp.client-ip=40.107.130.16
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M/czWndQdZNflkuRwD/TZnDyjtzMhmRquWllzkVJDyo3hBhq/3wAD9l4fT3MCjYwOL6iNzFHTB1Gev9Fr+1fLDptqkI3EmIgM8E1FrkgvzczRAuLmIVgnI1Wkf7VZoxWij8CNp01UBj30j0K+fS1bjotL2A3ts/lGDKlElfF7/SrdfeaRAtdYH0I3VK7yAUNSM2NUEF2EkxW0yoKadLXGceKOWgGdS5+OeSXKaxwiPNmhmMh26ZDLzrgawx5PIqcqJJR/9/5ZTfKf69fprzeM3Cd8Dg3nUjyYrr0NGXCN6cYWSj977V8/WRChpWU0Rh5qcQFvU2zVJYGB4oQ4uTXEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k5b6BLz0p6WpWd8+HpT3JO5IaT5Daq3wrXq4NxEWqlk=;
- b=ptmEB8BByTSXItMokM43E+L9fWkFXUFICE2KJVir+9i7nnG2FWFR/mkbexwUZ6xZ1QYZUxswp472bw94qhr4x95JZgLkFHtBJVZY45ReBKPI0jbVZtIdQAdz0iqCn2MbvCyZBx4MmoyUkRtOntLZLheiCvh+EFvWIQuwvmVtDXQWv+E9lDt6bD7XTc8Jh/Ez/lU26X/igRgofk3T84IoIwIP1LiCNeyvNCRNccLFCuwHwl92zEcHUF1ZE8MYsmjcuDXoTtqAohbIVfYDw0DD3oTpS+PHMsDjLBcFAQYXYQ2UCWDr1z2jrf2u2ngUmswalbl8NShKnqwCCHMYmS0lpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k5b6BLz0p6WpWd8+HpT3JO5IaT5Daq3wrXq4NxEWqlk=;
- b=JQ5uI+yGHhnwjEZSCalUJKAKWjbxSw6FUCQTSLVMa65v/mpeO0fC16DtRV9eTtMQjUPbr+D/aHGWevcdLU9h/PQtcj40d3DBiR5flseZf0PUdyujko58gH+bVHEr9keLexAUM6z5jyD3q2zMpniafbzjMsxVJigA2wdvNT/NaQIJKSdutOde5HB/DivsJJPPiyGD4UUgS7CL9x5cl2IgC8K/6HYoEDI+X0W3ZlAiH6QC7Xz+UVjoBxGoM9PUFjGrV8Pv2ADuSKLzzeDStjqkdDnfud0M/xATJ5CNCVc9GaepFf6oPWzJfMqXjxkzA5BpeX8HDTMoOtLo+vpHROBVXQ==
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
- by DUYPR04MB12689.eurprd04.prod.outlook.com (2603:10a6:10:661::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Fri, 5 Jun 2026
- 11:10:07 +0000
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d%4]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
- 11:10:07 +0000
-From: Xu Yang <xu.yang_2@oss.nxp.com>
-Date: Fri, 05 Jun 2026 19:13:02 +0800
-Subject: [PATCH v4 1/5] phy: fsl-imx8mq-usb: fix typec switch leak on probe
- error path
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260605-imx8mp-usb-phy-improvement-v4-1-b2ddf2f3862c@nxp.com>
-References: <20260605-imx8mp-usb-phy-improvement-v4-0-b2ddf2f3862c@nxp.com>
-In-Reply-To: <20260605-imx8mp-usb-phy-improvement-v4-0-b2ddf2f3862c@nxp.com>
-To: Vinod Koul <vkoul@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Jun Li <jun.li@nxp.com>
-Cc: linux-phy@lists.infradead.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Felix Gu <ustc.gu@gmail.com>, stable@vger.kernel.org, 
- Xu Yang <xu.yang_2@nxp.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780657990; l=2922;
- i=xu.yang_2@nxp.com; s=20250815; h=from:subject:message-id;
- bh=qOA3gj0TWYdDeGXgFIXNdtsZjA5h2wt3bcYdtlRjhFM=;
- b=szdXS4V2ttYIWGq+1ZRG7Ytt7knMlZHhGwrrerE2w0YiWcymqSwKEOyt624ZWwngZ9k0YV5W7
- lnZwUF3AvT4DNwkkY5HU66l+xELUKnSJs5dkCfyPz7UyWLf2+N83VZn
-X-Developer-Key: i=xu.yang_2@nxp.com; a=ed25519;
- pk=5c2HwftfKxFlMJboUe40+xawMtfnp5F8iEiv5CiKS+4=
-X-ClientProxiedBy: SI2PR02CA0026.apcprd02.prod.outlook.com
- (2603:1096:4:195::19) To PAXPR04MB9422.eurprd04.prod.outlook.com
- (2603:10a6:102:2b4::21)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA9E3F6C29
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 11:13:59 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780658042; cv=none; b=Hbk0fvViM16slhUVJZQnEZlMescM/mIWe7hH30wU8+HXCnRWXLrxor+aTVbDUdGeMmpoO6w7ZKL5iQxKTyih77YEobPi1qnb7pJLvOp9lluW4//KZZagScSVwj+eDHIqxCuJiWT3JBHn+c0jcoAyfx/ne74dFsLqWKTYFlgBOdI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780658042; c=relaxed/simple;
+	bh=pE3Md5fXo59d3VmXaqKfkEFBwkt/gMYRvtNwlnkDoGw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ImzLt6TYb30FS7DREMmlAIlTuxk6xC525Ff8ttIYoPjYYaTts3sDVxunK0kwDxDee4KNr11FJuE7/9bC27ej1OdHSR2/+XybI5vS/ZZer+paGHuMNgqR+S5Sty+2z1K8O1RS2HpAX1kJaD0qCDPXnZnPg433PKyY/EJHt373YIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TJcOiDBi; arc=none smtp.client-ip=209.85.221.73
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-45efa2f7009so1111240f8f.3
+        for <stable@vger.kernel.org>; Fri, 05 Jun 2026 04:13:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780658038; x=1781262838; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Ae0B3L9J3p8ch5V1iNM9m91ribQPpzMSLrk2/8ZfsoU=;
+        b=TJcOiDBiI7pc4ZXvq3Vxwn0YaBYUcfYybdl6AiTwaWTUrgdmtAgZB0tB4fK1um3CCB
+         nePEMJDIppnFooZ9qL6zKujDlA5E+fI5VXRtFqV9wlzTgiq8us+qnlfIByGN+5G5guGZ
+         eXJpN4fx5uRkkZlQbXK47QU4Up/GmYJQIwK87jvdRYY0g1vmrkNm8xqj4KgTGZkdejgU
+         fSUb1y4xaiHJaZt2SvFA+WNopya6LJIgIVYDwaaL2EcPQ2pYE9d+osK4TOKmcxolmD/R
+         CRJAnM1+DsCAwk3LuzZHrR7Cj0i/lf9Jiiwr2D+7/3tpXzOSl+BAuSaFdlNGIedZ1BUn
+         7X+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780658038; x=1781262838;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ae0B3L9J3p8ch5V1iNM9m91ribQPpzMSLrk2/8ZfsoU=;
+        b=TZTzK1YmjhAN0CHbQh1uG/ywWB3wejIpHTkJAunz3XRFWOno6qOSoeIlyd3lZCjdv5
+         R2k/bt6etFQnpzbRTQQbAAuhqa1OWsAZvcWesljsCdQOkVBGwy7rix53muHXGoB2eUfb
+         bxZs9O5WEO8XNDFtJ4+OZb84rTmLPSCacjc4ZKEKYUm5xOTWi/sfitCa80nsHzQHsr9k
+         7JYsn/0gDB1l7e3V7dF7QeBL5w7hLTkxZXeKekhr2ZQSRH8zbNK/iI4MAfUOT9hmoGkb
+         OxN5hb368NEuhEthRj9Kkf7HbZUSseVp6PDRKIkudwXMk9Uy/0Jg4IeHJK7JfY1CTO93
+         QVQQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9/vb+dw/e/8E61G3KSjKPMQf4E+EbsqAUh1G0FV25vl/8/I9S80WpyCSAkGG2lecQGyDcQlWs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxRGJ1f2i+b3L7XFQJNLvDLlLEdgUaMNswDR0Lm6qIgEcRFgpE
+	95DXPb1zTttvPsXG36nT+5EELn5QR7LDyO8+aAF0VLCiWjmWHQPQfYWeSwCx8dwTOxPvq89dF+g
+	lDd45zfaahI4XkIAJhA==
+X-Received: from wmok21.prod.google.com ([2002:a05:600c:4795:b0:490:bae0:2975])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1f83:b0:490:b724:5085 with SMTP id 5b1f17b1804b1-490c2621a5cmr47158285e9.33.1780658037867;
+ Fri, 05 Jun 2026 04:13:57 -0700 (PDT)
+Date: Fri, 05 Jun 2026 11:13:50 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|DUYPR04MB12689:EE_
-X-MS-Office365-Filtering-Correlation-Id: dd852fa5-b650-4937-98c3-08dec2f30069
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|19092799006|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	gGkyVK0QTgrBCGEk/oX7Y+3K+drc9z2ywnV2JoILG6mHV1PAp7cKzHiDOVW23+DKLf3PCgo64h4gURFnODlrrFDP+/OJgPhUlDV4gvbUFSIh5BRK0K7mfQSJWjt51VAyBBjlxbMv/OE1vcQ0+h+k4HLgcF6HJDrcSgOBRcl8W0gFY87CtnZE1iD2EwWtv++cGAGbP/DwPc0VSrCiC71FE2k54BHt5181BX+thsuN4TQIImEcY8y9NhgEstXbDtYw/90oiuPmpxRUx/qDmLKUb41CFipvDxtKCO54Qzq6LhAiWtC41ZAj3KP4+00xlIcUl2RiT9eRqgDDp91qFoKPK2HOYTQe0RZ4xbEcSs+LGM+dFy3/2TMU3qoiXv+/YrhiKmOaZncbNoCUNEYAwj8eydUJ3J4bw9Ie2kvWKBQcyG6lZRlA9kbsMmjDflUAwmkQRAh7RM29tJnL/HoHpogds08F0xy6QM1n/8fjuXDQb3AysKQcCBWwV/x2l8srvqVViXpidHqmsEKRlk4tyoLKxrBdW6J+QVnr6FPpgEvKGpF86KaPwnaw7654n/UNcJNi2wGt9n1zDTyXzQgTcJpILs5hAJ+5RVju2JEH/frvQf8uaSC4a6JTaq0PS5vYOa+4EQR38wlPwktyhN9jR6ZF4KhRGDdH4qBBsdjuG4LsMvd9I24D8xf31Tegmiy7+sbI
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(19092799006)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?U2ZHd09XcGc1ZERhb3RTdENyY2pWWGtDQnl2N0txY0lkWVFzRS9KZGhjNTZq?=
- =?utf-8?B?RiswMyt0TFJoQm80OXFOdU9jajBDQ2tWRW1SbGphaXZUdDR2KzBCVVhZM0Yz?=
- =?utf-8?B?REwvVXhkNW1DdXNWZ3VQZ0FIbHQ5aExHMmNsRW1iZW5wdXJqTEJSNDcvOFpB?=
- =?utf-8?B?eVY0Y3AreTFnRTFlVDBkS0xsZDArNktUSmVITyt6WGF2ckVxb0loWmU2VlJL?=
- =?utf-8?B?cnJKYTI4dDdySk44Ti9aRUJSdTQrS1hjYlpRdm50OHlSRGc1dEJUZWpLMERp?=
- =?utf-8?B?VFJFN2p6RjUwS3EyTUxUeXlKKzBTMUNUZWFYNFlrZDhoV1VNZmhEbi8vaTho?=
- =?utf-8?B?T1U3RjNFb2QrajlUMVFzT3JzZy96N1VOUEdrNVdta0RhdUVSTTAwUjd1YUV1?=
- =?utf-8?B?WE81dGQzWERQcE12dTdwQit0eTFnRlE3VTFkdTlvNXY0MjZTQ2ROeW41NVRJ?=
- =?utf-8?B?ZHYrckJIbHZ0Yk9IRk0vdHhvN3BFQXR5QzlrOWxkNzNHYjg0ZkY0eUpVc3lU?=
- =?utf-8?B?dXF2NVE3K0U0NVdyZTZlSFd1akZXTkNKVVlyY1c0N2NRb2tvcFFFVHpXMHpu?=
- =?utf-8?B?ZXVuaTZGSUo1QU5OVlc1OTlLaFU4T2FHWWxOaHFkbytVckUrRDBmSVc0RXdE?=
- =?utf-8?B?cTRid2pmS0VPakpUTWpuT1FMaHdvMEt5Sld0dlg4eVZrWTczMWFsUVJGYUNT?=
- =?utf-8?B?Ykp1YUYvLzFFbVZXREdTeWNFWmNBZENoSlBRbGJuZW5FWlhSa3kwZ3hNS0Qw?=
- =?utf-8?B?QlIxWG9RcGplV09DblZlMkVZRDZGZnY1cmtvc1BpeHkrQ3QzalpqZXo5WXpR?=
- =?utf-8?B?YTc0bTQzYUxsYzZZMUJ0UzRXQW50R2cyWkI0WVBHcTNld0VZcWY4d1F6eUp5?=
- =?utf-8?B?UnRYOHVZaWhnb01XbjFVQS91QWRZYm9sd29UT0lhZ2ErcGw0dEkyY1JUaDk5?=
- =?utf-8?B?cnlZYjJkaEI3VkxLZ3NmaHR3TmZuWSticDgweHZzdUFVOEdpSDZyWkJrUWlI?=
- =?utf-8?B?T1VyRExoSkV4RUZlTWtVM0dmaTJkNjFuK2dnYUxPMEhqR1NsZ3lGT2dXUm41?=
- =?utf-8?B?ak1aNCtHcFZFWEtiUzV6d3Rzait5dUtGZVlOYlBwMUl3Q24wZlFsWW8zcTF4?=
- =?utf-8?B?NXhsVjVJU3BPYVFjakhhRVBHakJHRXBNdzR0K1g0WGtjSThZUFh1Y0Q3YXA1?=
- =?utf-8?B?TjFlN25GWFF4M1F1MzJ3ckFpMGNwODYzSHRiTUl3Q1BycVZzd2kzOWdoUTRD?=
- =?utf-8?B?bXpIODVUL3FPeXl4MzdmNmFybHB2VGtFOFBjbksrTkFNU2FRV2l3QytWSFNB?=
- =?utf-8?B?OVRiM3RqcEZwZmFOZGpaaWxNS3F1QlVkendkWjZOUmlURzRlTy9JcGtaYWZB?=
- =?utf-8?B?YTdlUk94OHFpYjhmMzJEL2drQlJsUVdqdFBMQlhVZ3NtNXdicEs4RDVOVXhk?=
- =?utf-8?B?NGJJUElYR0VZaVNsLzdOZExidXI0cTkyOFdFc25kVi9MYWU3eitlaHYwa1ZZ?=
- =?utf-8?B?VGdDL2VIbmF2OG5ZU1IydDdQU1RSRkhMdzRUN2t6QjdRaVF2bEU4ejg1Y21s?=
- =?utf-8?B?SmlDdEliVGdmb0NxazFxTnJGcUI4dThDSG5qTnFzcy91aHJaWVZrODhralE5?=
- =?utf-8?B?Y3pmSVRDRTZoVTB5VDZNM2Y0Skk5UzNtdjJLUkFadWRUNWJVZkRQUno0dXVi?=
- =?utf-8?B?bG4zVDUxWFFTL1pLRHpMWXE3NDFvQisvYkM1RGlScEJXSWJkazZ4NDVkbnA3?=
- =?utf-8?B?MXBUME40bitGL0dBaytOTS8veWVLWTlCbFdmQ09FMnpESlBFQ3ZCSnEwaVVR?=
- =?utf-8?B?QTR0OHJjT2RVTjM2TTBCeG5JUnp4K0RWUEJKWWoxcHhFV1Z2UlhOQ1pjSGJN?=
- =?utf-8?B?MCt5ODQ4K3BDRDJBZGF5TVpPcVl5T3pkMFF5am03b1VHQlR3K29UZ1pneitZ?=
- =?utf-8?B?b0dvM001RGdXNDdoeUxwcEpQK3p6TnpCUm01NktncFNVL3lpdWdhRWwzNHNr?=
- =?utf-8?B?Rm9YQ1lpbzhNRDEzNmZ6RDJEbjBnRHBvVUF0a2JObGUwYlMvSnVON1F4WjRP?=
- =?utf-8?B?NW5sZXFwWDlaOXlkblFERDhTQk9kT2pPYlFLeVNFQU83YWZBTXAxd3lGQmhh?=
- =?utf-8?B?STR6Sk9vM2x6U2x0UHZIWnZzRFN1VEVTMTI5L2tpcEdxMTRzOUJXdHJlTHQ4?=
- =?utf-8?B?b0xtMnI2M1JwK3lVSzZNZzgxRzJYSGY1Mk8yL0NNNkY4TjZOVkhsWmY3dERL?=
- =?utf-8?B?NXdDRE9ZVEFnaWVKOE9VSHQ3dkNlQnJTemhtQm90V05pN1JEdnl4cmMya0wr?=
- =?utf-8?B?c3dkRWQvaXlDZzJJVlZDSlllYy9ORVVMT0tVQUNmbThNc04xUVZyclFQa3FD?=
- =?utf-8?Q?8cJhQDel9t/rCv2c1+sXtKooIZ8xtgWGzZTJS?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd852fa5-b650-4937-98c3-08dec2f30069
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 11:10:07.5624
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i1+GcszuKJ5+uiqAWXQUTwqFf11cDDEDjDlXuP5VzE+ncWHvlsXXfw6jkfyLA8cCILBqkrqdZj1Kr8eLFruAWw5xxp4n7UCnLCxjjcT0zNqkbygt74tHHbROjoBwtB54
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUYPR04MB12689
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAG6vImoC/33NTQrCMBCG4auUrI1M84uuvIe4aJppG9BGJiVUS
+ u9u2o0I4vL9YJ5ZWEIKmNi5WhhhDinEsYQ8VKwdmrFHHnxpJkAY0MLyhBPHecLRo+dIFImjaBt
+ pEczJeFYOn4RdmHf0eis9hDRFeu0/cr2tf7lc85orsE45ZQxIfelj7O94bOODbV4WH8OA+mmIY nQOrJZoG6fll7Gu6xuXk4Qp+QAAAA==
+X-Change-Id: 20260527-set-extended-error-e2ca37e0696d
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11911; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=pE3Md5fXo59d3VmXaqKfkEFBwkt/gMYRvtNwlnkDoGw=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqIq9wU6XpkHkwl3E14lJQ7fDDs3KlybRbe9UYK
+ o9fdlp5/RWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaiKvcAAKCRAEWL7uWMY5
+ RoW2D/93a9/E36XsCLJvlujc9bRkSuTj10LyqNY5CJj6OEe/nRF0x+Rf+46BavmlqvTzTOC7hfZ
+ tqW/VAyp0vuPaRd7NkK3CDsx0zCCh6w2YSPlolFbUSjUKgt8x5whb3TKo6tpxvEeji6ctosMHE1
+ CmI0DwveK44+Nu4t67OiSvleRceTaENQAY0zP28uRHAkAGx3RhYiJnOk0JePCaGP5Fz95Dwkvd6
+ Bj1QgAYD5Rj2UrAckiwKYZss46mxhNuDWmf3tI4kZKzmZ2aSlxH1ZNL96L/BYhRE8/ZfrNqbbCY
+ NjC98shSHP+BpCq1RR3IxHy7idMfdzK3IzaiEkrBw02wyCJt0T3RQ8Gch2PZe8yFlK6ZRcPPwQ7
+ /cXS8uQf2I07yXA8GrZSyq+Vcdck/i0oqqAry4J6a3Z9JwHP8QW6fBs6AlUCP7J9cyimQ49vm9b
+ /0NfSFCfF+Zvd9FyRUW3c0HHyn7XlbVM1shkljfl82s0bFZebEWGSiAr0JCXyO8qFbotQbzwn4f
+ I9YZOGhFrAAM85hr+oLkAAF8erxZfz4TQYS4J4xGIl/9IdnUJIXCfUCVtw7qt/ya+2+9CLp2nf6
+ WoE/OWRatEoc9LbxT88h2MuvH/L3qxL3HJa4D4JjruWfWnNLic8sV04gjYVvJi2dESq1GvTqJRO 6HvZ8MUY5ZRvbbw==
+X-Mailer: b4 0.14.3
+Message-ID: <20260605-set-extended-error-v3-1-d60b69a75f97@google.com>
+Subject: [PATCH v3] rust_binder: fix BINDER_GET_EXTENDED_ERROR
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.94 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260679-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:vkoul@kernel.org,m:neil.armstrong@linaro.org,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:jun.li@nxp.com,m:linux-phy@lists.infradead.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:ustc.gu@gmail.com,m:stable@vger.kernel.org,m:xu.yang_2@nxp.com,m:ustcgu@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[kernel.org,linaro.org,nxp.com,pengutronix.de,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[xu.yang_2@oss.nxp.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
+	TAGGED_FROM(0.00)[bounces-260682-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:cmllamas@google.com,m:ojeda@kernel.org,m:boqun@kernel.org,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:aliceryhl@google.com,m:tmgross@umich.edu,m:dakr@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xu.yang_2@oss.nxp.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[lists.infradead.org,lists.linux.dev,vger.kernel.org,gmail.com,nxp.com];
+	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.nxp.com:from_mime,vger.kernel.org:from_smtp,nxp.com:mid,nxp.com:email,NXP1.onmicrosoft.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B3F1D647A4A
+X-Rspamd-Queue-Id: 6C7D4647A5C
 
-From: Felix Gu <ustc.gu@gmail.com>
+This code currently copies the ExtendedError struct to the stack,
+modifies the copy, and then doesn't modify the original. Thus, fix it.
 
-If probe fails after imx95_usb_phy_get_tca() succeeds, the typec
-switch leaks because the only cleanup path was in .remove, which
-never runs on probe failure.
+Furthermore, errors when replying must be delivered directly to the
+remote thread, so update deliver_reply() to take an extended error
+argument.
 
-Use devm_add_action_or_reset() so the switch is cleaned up on both
-probe failure and driver removal.  The .remove callback and
-imx95_usb_phy_put_tca() are no longer needed.
-
-Fixes: b58f0f86fd61 ("phy: fsl-imx8mq-usb: add tca function driver for imx95")
 Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Xu Yang <xu.yang_2@nxp.com>
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Changes in v4:
- - add my signed-off tag
 Changes in v3:
- - add R-b tag
- - cc statble
- - drop "sw = data" conversion
+- Replace 'orig.debug_id' with 'info.debug_id' for reply EE.
+- Print the integer error code on unknown error.
+- Link to v2: https://lore.kernel.org/r/20260604-set-extended-error-v2-1-fb0753e7ab53@google.com
+
+Changes in v2:
+- Also handle extended error for replies.
+- Link to v1: https://lore.kernel.org/r/20260527-set-extended-error-v1-1-407b4b466035@google.com
 ---
- drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 27 +++++++--------------------
- 1 file changed, 7 insertions(+), 20 deletions(-)
+ drivers/android/binder/error.rs       | 13 +++----
+ drivers/android/binder/thread.rs      | 65 +++++++++++++++++++++++++----------
+ drivers/android/binder/transaction.rs | 15 ++++----
+ 3 files changed, 58 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-index b05d80e849a1..88b804b2c982 100644
---- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-@@ -173,9 +173,9 @@ static struct typec_switch_dev *tca_blk_get_typec_switch(struct platform_device
- 	return sw;
+diff --git a/drivers/android/binder/error.rs b/drivers/android/binder/error.rs
+index 45d85d4c2815..1296072c35d9 100644
+--- a/drivers/android/binder/error.rs
++++ b/drivers/android/binder/error.rs
+@@ -73,20 +73,17 @@ impl fmt::Debug for BinderError {
+     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+         match self.reply {
+             BR_FAILED_REPLY => match self.source.as_ref() {
+-                Some(source) => f
+-                    .debug_struct("BR_FAILED_REPLY")
+-                    .field("source", source)
+-                    .finish(),
++                Some(source) => source.fmt(f),
+                 None => f.pad("BR_FAILED_REPLY"),
+             },
+             BR_DEAD_REPLY => f.pad("BR_DEAD_REPLY"),
+             BR_FROZEN_REPLY => f.pad("BR_FROZEN_REPLY"),
+             BR_TRANSACTION_PENDING_FROZEN => f.pad("BR_TRANSACTION_PENDING_FROZEN"),
+             BR_TRANSACTION_COMPLETE => f.pad("BR_TRANSACTION_COMPLETE"),
+-            _ => f
+-                .debug_struct("BinderError")
+-                .field("reply", &self.reply)
+-                .finish(),
++            _ => match self.source.as_ref() {
++                Some(source) => source.fmt(f),
++                None => self.reply.fmt(f),
++            },
+         }
+     }
+ }
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 97d5f31e8fe3..3b8520813941 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -495,9 +495,16 @@ pub(crate) fn debug_print(self: &Arc<Self>, m: &SeqFile, print_all: bool) -> Res
+         Ok(())
+     }
+ 
++    pub(crate) fn clear_extended_error(&self, debug_id: usize) {
++        self.inner.lock().extended_error = ExtendedError::new(debug_id as u32, BR_OK, 0);
++    }
++
+     pub(crate) fn get_extended_error(&self, data: UserSlice) -> Result {
+         let mut writer = data.writer();
+-        let ee = self.inner.lock().extended_error;
++        let mut inner = self.inner.lock();
++        let ee = inner.extended_error;
++        inner.extended_error = ExtendedError::new(0, BR_OK, 0);
++        drop(inner);
+         writer.write(&ee)?;
+         Ok(())
+     }
+@@ -1109,7 +1116,10 @@ fn unwind_transaction_stack(self: &Arc<Self>) {
+             inner.pop_transaction_to_reply(thread.as_ref())
+         } {
+             let reply = Err(BR_DEAD_REPLY);
+-            if !transaction.from.deliver_single_reply(reply, &transaction) {
++            if !transaction
++                .from
++                .deliver_single_reply(reply, &transaction, None)
++            {
+                 break;
+             }
+ 
+@@ -1121,8 +1131,9 @@ pub(crate) fn deliver_reply(
+         &self,
+         reply: Result<DLArc<Transaction>, u32>,
+         transaction: &DArc<Transaction>,
++        extended_error: Option<ExtendedError>,
+     ) {
+-        if self.deliver_single_reply(reply, transaction) {
++        if self.deliver_single_reply(reply, transaction, extended_error) {
+             transaction.from.unwind_transaction_stack();
+         }
+     }
+@@ -1136,6 +1147,7 @@ fn deliver_single_reply(
+         &self,
+         reply: Result<DLArc<Transaction>, u32>,
+         transaction: &DArc<Transaction>,
++        extended_error: Option<ExtendedError>,
+     ) -> bool {
+         if let Ok(transaction) = &reply {
+             crate::trace::trace_transaction(true, transaction, Some(&self.task));
+@@ -1152,6 +1164,12 @@ fn deliver_single_reply(
+                 return true;
+             }
+ 
++            if let Some(ee) = extended_error {
++                if inner.extended_error.command == BR_OK {
++                    inner.extended_error = ee;
++                }
++            }
++
+             match reply {
+                 Ok(work) => {
+                     inner.push_work(work);
+@@ -1222,6 +1240,9 @@ fn read_transaction_info(
+         info.buffers_size = td.buffers_size as usize;
+         // SAFETY: Above `read` call initializes all bytes, so this union read is ok.
+         info.target_handle = unsafe { td.transaction_data.target.handle };
++
++        info.debug_id = super::next_debug_id();
++
+         Ok(())
+     }
+ 
+@@ -1230,6 +1251,8 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+         let mut info = TransactionInfo::zeroed();
+         self.read_transaction_info(cmd, reader, &mut info)?;
+ 
++        self.clear_extended_error(info.debug_id);
++
+         let ret = if info.is_reply {
+             self.reply_inner(&mut info)
+         } else if info.is_oneway() {
+@@ -1239,23 +1262,21 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+         };
+ 
+         if let Err(err) = ret {
+-            if err.reply != BR_TRANSACTION_COMPLETE {
+-                info.reply = err.reply;
+-            }
+-
+             self.push_return_work(err.reply);
+-            if let Some(source) = &err.source {
+-                info.errno = source.to_errno();
++            if err.reply != BR_TRANSACTION_COMPLETE {
+                 info.reply = err.reply;
++                if let Some(source) = &err.source {
++                    info.errno = source.to_errno();
+ 
+-                {
+-                    let mut ee = self.inner.lock().extended_error;
+-                    ee.command = err.reply;
+-                    ee.param = source.to_errno();
++                    {
++                        let mut inner = self.inner.lock();
++                        inner.extended_error =
++                            ExtendedError::new(info.debug_id as u32, err.reply, source.to_errno());
++                    }
+                 }
+ 
+                 pr_warn!(
+-                    "{}:{} transaction to {} failed: {source:?}",
++                    "{}:{} transaction to {} failed: {err:?}",
+                     info.from_pid,
+                     info.from_tid,
+                     info.to_pid
+@@ -1320,18 +1341,24 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
+             let allow_fds = orig.flags & TF_ACCEPT_FDS != 0;
+             let reply = Transaction::new_reply(self, process, info, allow_fds)?;
+             self.inner.lock().push_work(completion);
+-            orig.from.deliver_reply(Ok(reply), &orig);
++            orig.from.deliver_reply(Ok(reply), &orig, None);
+             Ok(())
+         })()
+         .map_err(|mut err| {
+             // At this point we only return `BR_TRANSACTION_COMPLETE` to the caller, and we must let
+             // the sender know that the transaction has completed (with an error in this case).
++
+             pr_warn!(
+-                "Failure {:?} during reply - delivering BR_FAILED_REPLY to sender.",
+-                err
++                "{}:{} reply to {} failed: {err:?}",
++                info.from_pid,
++                info.from_tid,
++                info.to_pid
+             );
+-            let reply = Err(BR_FAILED_REPLY);
+-            orig.from.deliver_reply(reply, &orig);
++
++            let param = err.source.as_ref().map_or(0, |e| e.to_errno());
++            let ee = ExtendedError::new(info.debug_id as u32, err.reply, param);
++            orig.from
++                .deliver_reply(Err(BR_FAILED_REPLY), &orig, Some(ee));
+             err.reply = BR_TRANSACTION_COMPLETE;
+             err
+         });
+diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
+index 1d9b66920a21..0e5d07b7e6f0 100644
+--- a/drivers/android/binder/transaction.rs
++++ b/drivers/android/binder/transaction.rs
+@@ -42,6 +42,7 @@ pub(crate) struct TransactionInfo {
+     pub(crate) reply: u32,
+     pub(crate) oneway_spam_suspect: bool,
+     pub(crate) is_reply: bool,
++    pub(crate) debug_id: usize,
  }
  
--static void tca_blk_put_typec_switch(struct typec_switch_dev *sw)
-+static void tca_blk_put_typec_switch(void *data)
- {
--	typec_switch_unregister(sw);
-+	typec_switch_unregister(data);
- }
+ impl TransactionInfo {
+@@ -93,7 +94,6 @@ pub(crate) fn new(
+         from: &Arc<Thread>,
+         info: &mut TransactionInfo,
+     ) -> BinderResult<DLArc<Self>> {
+-        let debug_id = super::next_debug_id();
+         let allow_fds = node_ref.node.flags & FLAT_BINDER_FLAG_ACCEPTS_FDS != 0;
+         let txn_security_ctx = node_ref.node.flags & FLAT_BINDER_FLAG_TXN_SECURITY_CTX != 0;
+         let mut txn_security_ctx_off = if txn_security_ctx { Some(0) } else { None };
+@@ -101,7 +101,7 @@ pub(crate) fn new(
+         let mut alloc = match from.copy_transaction_data(
+             to.clone(),
+             info,
+-            debug_id,
++            info.debug_id,
+             allow_fds,
+             txn_security_ctx_off.as_mut(),
+         ) {
+@@ -128,7 +128,7 @@ pub(crate) fn new(
+         let data_address = alloc.ptr;
  
- static void tca_blk_orientation_set(struct tca_blk *tca,
-@@ -248,6 +248,7 @@ static struct tca_blk *imx95_usb_phy_get_tca(struct platform_device *pdev,
- 	struct device *dev = &pdev->dev;
- 	struct resource *res;
- 	struct tca_blk *tca;
-+	int ret;
+         Ok(DTRWrap::arc_pin_init(pin_init!(Transaction {
+-            debug_id,
++            debug_id: info.debug_id,
+             target_node: Some(target_node),
+             from_parent,
+             sender_euid: Kuid::current_euid(),
+@@ -152,9 +152,8 @@ pub(crate) fn new_reply(
+         info: &mut TransactionInfo,
+         allow_fds: bool,
+     ) -> BinderResult<DLArc<Self>> {
+-        let debug_id = super::next_debug_id();
+         let mut alloc =
+-            match from.copy_transaction_data(to.clone(), info, debug_id, allow_fds, None) {
++            match from.copy_transaction_data(to.clone(), info, info.debug_id, allow_fds, None) {
+                 Ok(alloc) => alloc,
+                 Err(err) => {
+                     pr_warn!("Failure in copy_transaction_data: {:?}", err);
+@@ -165,7 +164,7 @@ pub(crate) fn new_reply(
+             alloc.set_info_clear_on_drop();
+         }
+         Ok(DTRWrap::arc_pin_init(pin_init!(Transaction {
+-            debug_id,
++            debug_id: info.debug_id,
+             target_node: None,
+             from_parent: None,
+             sender_euid: Kuid::current_euid(),
+@@ -394,7 +393,7 @@ fn do_work(
+         let send_failed_reply = ScopeGuard::new(|| {
+             if self.target_node.is_some() && self.flags & TF_ONE_WAY == 0 {
+                 let reply = Err(BR_FAILED_REPLY);
+-                self.from.deliver_reply(reply, &self);
++                self.from.deliver_reply(reply, &self, None);
+             }
+             self.drop_outstanding_txn();
+         });
+@@ -478,7 +477,7 @@ fn cancel(self: DArc<Self>) {
+         // If this is not a reply or oneway transaction, then send a dead reply.
+         if self.target_node.is_some() && self.flags & TF_ONE_WAY == 0 {
+             let reply = Err(BR_DEAD_REPLY);
+-            self.from.deliver_reply(reply, &self);
++            self.from.deliver_reply(reply, &self, None);
+         }
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
- 	if (!res)
-@@ -266,17 +267,11 @@ static struct tca_blk *imx95_usb_phy_get_tca(struct platform_device *pdev,
- 	tca->orientation = TYPEC_ORIENTATION_NORMAL;
- 	tca->sw = tca_blk_get_typec_switch(pdev, imx_phy);
- 
--	return tca;
--}
--
--static void imx95_usb_phy_put_tca(struct imx8mq_usb_phy *imx_phy)
--{
--	struct tca_blk *tca = imx_phy->tca;
--
--	if (!tca)
--		return;
-+	ret = devm_add_action_or_reset(&pdev->dev, tca_blk_put_typec_switch, tca->sw);
-+	if (ret)
-+		return ERR_PTR(ret);
- 
--	tca_blk_put_typec_switch(tca->sw);
-+	return tca;
- }
- 
- static u32 phy_tx_vref_tune_from_property(u32 percent)
-@@ -739,16 +734,8 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
- 	return PTR_ERR_OR_ZERO(phy_provider);
- }
- 
--static void imx8mq_usb_phy_remove(struct platform_device *pdev)
--{
--	struct imx8mq_usb_phy *imx_phy = platform_get_drvdata(pdev);
--
--	imx95_usb_phy_put_tca(imx_phy);
--}
--
- static struct platform_driver imx8mq_usb_phy_driver = {
- 	.probe	= imx8mq_usb_phy_probe,
--	.remove = imx8mq_usb_phy_remove,
- 	.driver = {
- 		.name	= "imx8mq-usb-phy",
- 		.of_match_table	= imx8mq_usb_phy_of_match,
+         self.drop_outstanding_txn();
 
+---
+base-commit: da61573f783897ae5a96c8f1c71aad6242344feb
+change-id: 20260527-set-extended-error-e2ca37e0696d
+
+Best regards,
 -- 
-2.34.1
+Alice Ryhl <aliceryhl@google.com>
 
 
