@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-260797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260798-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id F8e+MYkmI2rtjQEAu9opvQ
-	(envelope-from <stable+bounces-260797-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:42:01 +0200
+	id e2LtC48mI2rujQEAu9opvQ
+	(envelope-from <stable+bounces-260798-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:42:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD0664B039
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C8064B03E
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:42:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ng06dZP2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260797-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260797-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FoogILND;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260798-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260798-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FB79305BF9F
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 19:37:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55781305EA59
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 19:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BA143C05A;
-	Fri,  5 Jun 2026 19:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB72416CF3;
+	Fri,  5 Jun 2026 19:37:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764C4416CF3
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 19:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292784071CA
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 19:37:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780688270; cv=none; b=sQZWYKim0GMn7YJ5HtrJE6q9xwPWSNmY7hRv4a8HvU9zhE3j+sbDTfkh27YR5muzEGLkSloBwozlBFY21l05DFdFopsiiosmtJaN/sstKbe7FW4q6Bo3d+G4GjcdC8NdaFlNWUr1pirTL4UuEvJM2D6RWotFgekoeyjtMwybbRE=
+	t=1780688271; cv=none; b=PZhGod/bP4EZkz4Sn3S2PcvFKvMdIoAd3FJOkY/OO/4cC5hS43oa9z5a6UXgP1rgpic+KkaJU6WVGy58wzc64SWBqFBc+bGPhlpg+faJK7sRMowRDn0bTKoDJBGEvSpUl2DBvjRx+2cGSHPcve5laHxEFuRU4Z7ZEbBInV2uztk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780688270; c=relaxed/simple;
-	bh=IoDXSL066FRtEy7ArijmH0nqvEhjtksZvFXy6TyEyT0=;
+	s=arc-20240116; t=1780688271; c=relaxed/simple;
+	bh=FToYJIQ8RdH6JxhRfoWMRJcXrIJD1WNJJYbuN1kj20M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YF7fUshUEVCDksE4UmMA0eTZ9FHHkcpxyiXrbq5nJ9JlN//KslAcqHQfHhhVikW4xemgjzVK/yG+1AX5gB4gP7vWGnBtxrPvZFCNwdCFrnICZ36tqzhNH99TlTfnUy1bvQZAuHal5fV7ZvjuASEMl8OygNDiiTh08oKMZdG+FyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ng06dZP2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5BA1F00893;
-	Fri,  5 Jun 2026 19:37:48 +0000 (UTC)
+	 MIME-Version; b=s6F4Ep7alDs6GDz/jJ+9NYv1c2hregjLUqMAaXmlibRBrHWK5b90zVqVP/M0sGi3J3YVrDGkJyIKeRFbdJbJbQ7asPj4cd/xYlZVnoNIgp+37dUWI9uCZBT3ieKUh5oaT1xwkg71nBId2rhFFvkFGFHdN/3kflGK9MeKH+ortbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FoogILND; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8A01F00899;
+	Fri,  5 Jun 2026 19:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780688269;
-	bh=VNAJWE8Y2MkeM9gkoJtSJUoxPRcdNYQ5Jx1OSEmu3NY=;
+	s=k20260515; t=1780688270;
+	bh=Cn3wo5zAEi7V+MeTEPkCM0Q/ykaUHIqraUi8VT4q5gU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ng06dZP2jBKpOHSPjpBjdA5uocrpYK1oUGlqQooVn4JDZuHMTSjErlsrMPMyGFhH5
-	 t/vgPIHsZLdCsSAcvf1h9G2LsJZQ5TaOx4DZxwtDYbeZ3ruvzdFN4PvMQddu5MGsNk
-	 wXwaPQ6YmpCm1bZ14rLjVeRcOZD3c9173IbezCfz/MAMylSuvxkJ/k7kJ1iSolm030
-	 lJfV9DRzIkqpe0aazB5LywD+qhrqR6YQUEDv7TmxUvKqvD+LIK3UZx06beH9XNAmtj
-	 wiMpTBGYGMs3eKBO0D9h0ZAvUrPgYmfU3zsUGimm4vInlIpvfbGEKSxvKJHxRuVLz4
-	 iPX1rfZrpGWzQ==
+	b=FoogILNDfzfQQxMX4p+8D3Fxch5k2QnAFevGrktL02zH8Jw5K5+00iv40/4PkMueF
+	 MVctQPn8onQ7fnkaEPA3Fk5Sh08MY2GGMxmyV/hGWqm0O8jfEAVg+eqPL+QOeGZdy0
+	 OszK4gyiK75f+K9pvWcOcywKi/gZxpV4skYnoNwz4pEGTncqjAHiVSlKY1i2FeR6bQ
+	 kANQ6ULoMlIlXIeiQSpRrfzZgDr1RbW0BFNMrlPTn+aYzJDKLu8ibOE8H5CAQHBluL
+	 jpxBmHAIp5Qcqo+0sKs3NHOI+ImNfqykeCkINSqnhrelFPhczkIewWJUcEA29FT7O1
+	 ooGwbtrVQc6rQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
 	weichengc@nvidia.com
-Subject: Re: [PATCH 5.15.y] xhci: tegra: Fix ghost USB device on dual-role port unplug
-Date: Fri,  5 Jun 2026 15:37:23 -0400
-Message-ID: <20260605-stable-reply-0016@kernel.org>
+Subject: Re: [PATCH 5.10.y] xhci: tegra: Fix ghost USB device on dual-role port unplug
+Date: Fri,  5 Jun 2026 15:37:24 -0400
+Message-ID: <20260605-stable-reply-0017@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260604121916.150415-1-weichengc@nvidia.com>
-References: <2026060435-suitor-humiliate-81e2@gregkh> <20260604121916.150415-1-weichengc@nvidia.com>
+In-Reply-To: <20260604121918.150487-1-weichengc@nvidia.com>
+References: <2026060435-implicate-henna-b77d@gregkh> <20260604121918.150487-1-weichengc@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260797-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260798-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashal@kernel.org,m:weichengc@nvidia.com,s:lists@lfdr.de];
@@ -97,11 +97,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6FD0664B039
+X-Rspamd-Queue-Id: B1C8064B03E
 
-> [PATCH 5.15.y] xhci: tegra: Fix ghost USB device on dual-role port unplug
+> [PATCH 5.10.y] xhci: tegra: Fix ghost USB device on dual-role port unplug
 
-Queued for 5.15.y, thanks.
+Queued for 5.10.y, thanks.
 
 -- 
 Thanks,
