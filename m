@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-260696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GBxTBjDSImo8eAEAu9opvQ
-	(envelope-from <stable+bounces-260696-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 15:42:08 +0200
+	id 1XzrFsXTImqOeAEAu9opvQ
+	(envelope-from <stable+bounces-260697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 15:48:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4946489AA
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 15:42:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2660648A68
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 15:48:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dzyLFqqE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260696-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260696-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iHVQLolR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260697-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260697-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E29E5301980D
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 13:40:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0406A300B758
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 13:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904AD2EEE9B;
-	Fri,  5 Jun 2026 13:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2602C2EEE7D;
+	Fri,  5 Jun 2026 13:46:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AB82EEE73
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 13:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4F5301704
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 13:46:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780666804; cv=none; b=Xve4VpkNAmuL692DOWjkg1Kcqc9w080I5ydBiJU9bOHF1EkXjA8/xXtXaXCv+cuUetSnLJlmGfG9nPh3Ht0Zk1A/tmoEPAl9x8hCEoihag9jEW3HSbNPZgc2hv+HUlBpdvgGOE10jj8DnEUa1Ce6mb5VQtkclEx9LxgcHA2ytQs=
+	t=1780667202; cv=none; b=P7vKosXwrFsNlIRn8pw2dAZKNie3Zx82rL8uSy6u3KgJldDDjAd5JSClRUaH3SOq+pFdX0JkUQXRAF2mBD4jbm0QA25B6ToNMD5qrRCw4z1+ahZH5ytVfnTHBN9vmZi03I8RVrTpFIwL+coTV0ombWl1uD0FCGMI/Yi8tFv4XcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780666804; c=relaxed/simple;
-	bh=rK577MQMWB+IYQdIg5itb7LOHhaThEqc1QeMbNkq3vQ=;
+	s=arc-20240116; t=1780667202; c=relaxed/simple;
+	bh=ln6dxqH+ZumX18DjcJ8mUDyT5w8iXAAbzJtPv847+LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYPpc0gxnevYNTp3u8eihGPXLHgDMa21WL3x4KfWxR8kePAyMvxCFJ5o5t0kKfS+VIx88fWZVFMciCLU2LC01agw823f6H6Cmap/wcQwdJpU23EtZDHvq9lycD8rTPyfq+HVmxSgVQ9KX/xaobH9epk5JfPUfaxLf+qAiQtG40Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dzyLFqqE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8331F00893;
-	Fri,  5 Jun 2026 13:40:01 +0000 (UTC)
+	 MIME-Version; b=k+KkRpGWsqnmKcgetNc8ZmKH+YJSjTWzlkwe/nkjE900nwE2pxuhf5qBV+I1I6WpF328hHfsjhMIUkpkw4aadFHbS+iNSLg698rqtmxysUrx/hA9dobXvCuuF2aBr/Awvz5DZCla2XebJxvogHucJZArVlzVp1DQ0rvLZfszzZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iHVQLolR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DAC1F00893;
+	Fri,  5 Jun 2026 13:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780666802;
-	bh=isquO3Vi+wC9DfzICXrvCK7s0lhJsmYtwL+CWzNqNY0=;
+	s=k20260515; t=1780667198;
+	bh=sdCydy8cPIukBbQaYw00s755mTb6Y51Kj3Dx/MARaHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dzyLFqqElra8HAWDNYNcNQooj8nGm+93IObQ1t87c0rFC72ml5uQtBXS1w/sqGcQ/
-	 P5rBCtVUgkDEazm2i+O8VY0nmrsfcPyElLfXNfyi69B239H8ZxpBqfuCjmyIKUD35c
-	 eJ3BqtO3B9/2a+BPL/D3OIT8dvxPcuJi/eak/CIaQTjXtq56ZNJeDnFbVUmO65aH5f
-	 EFN3W2YRvg4XhvQdmidtzGH/SC0jO25rg3KROwggDjrwgKkW0w+mu1RF+yuaUx9xyM
-	 yo+Tg+sU5+hIxjVp3j0Jh67qbwqHaMnnaYGI8KGurWv1bZ9KlAWGNQgRGZUjwMTMsB
-	 hDRP7rv17XDlA==
+	b=iHVQLolRtVD8pxPqmySJ+YS6rgGN70YRUVRA9plB0AqWvst6KFyPsRExWhdixsabX
+	 Z58eyWji+SRO7QilieABC/06s7zLxayqKH9LbOaUm65qU6JazKcFEtlJlgvFmdj94M
+	 OihXcQnqCBhkVoSlE5YvN0GRqrNtphcgvozWjmMhTUvCr5eBHU5cHwxFs1NiwC10hv
+	 KHTmC3Pr1/YQxcxwogvcmTCjspP45CmcsZW9bORe9apOo4g6eR0rA/QKhGeJ3HjjRZ
+	 aweBCu+ICZOTPjooAOKEb+bpAGDoyjTobff4b6/Fe3z2Xq7rCwBjtgoF2UIszB3A8/
+	 o1oZFQvIzNoHQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Minh Nguyen <minhnguyen.080505@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] usb: dwc3: xilinx: fix error handling in zynqmp init error paths
-Date: Fri,  5 Jun 2026 09:39:59 -0400
-Message-ID: <20260605133959.760692-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] net: skbuff: fix missing zerocopy reference in pskb_carve helpers
+Date: Fri,  5 Jun 2026 09:46:35 -0400
+Message-ID: <20260605134635.841596-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026060414-tropics-tamer-a0df@gregkh>
-References: <2026060414-tropics-tamer-a0df@gregkh>
+In-Reply-To: <2026060440-cinch-zone-22b5@gregkh>
+References: <2026060440-cinch-zone-22b5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,130 +66,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260697-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260696-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:radhey.shyam.pandey@amd.com,m:Thinh.Nguyen@synopsys.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:minhnguyen.080505@gmail.com,m:willemb@google.com,m:pabeni@redhat.com,m:sashal@kernel.org,m:minhnguyen080505@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,google.com,redhat.com,kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6D4946489AA
+X-Rspamd-Queue-Id: E2660648A68
 
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+From: Minh Nguyen <minhnguyen.080505@gmail.com>
 
-[ Upstream commit c1a0ecbf32c4b397353204e2ec94c5bb9f3300ed ]
+[ Upstream commit 98d0912e9f841e5529a5b89a972805f34cb1c69d ]
 
-Fix error handling and resource cleanup i.e remove invalid
-phy_exit() after failed phy_init(), route failures through
-proper cleanup paths and return 0 explicitly on success.
+pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
+the old skb_shared_info header into a new buffer via memcpy(), which
+includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
+Neither function calls net_zcopy_get() for the new shinfo, creating an
+unaccounted holder: every skb_shared_info with destructor_arg set will
+call skb_zcopy_clear() once when freed, but the corresponding
+net_zcopy_get() was never called for the new copy. Repeated calls
+drive uarg->refcnt to zero prematurely, freeing ubuf_info_msgzc while
+TX skbs still hold live destructor_arg pointers.
 
-Fixes: 84770f028fab ("usb: dwc3: Add driver for Xilinx platforms")
+KASAN reports use-after-free on a freed ubuf_info_msgzc:
+
+  BUG: KASAN: slab-use-after-free in skb_release_data+0x77b/0x810
+  Read of size 8 at addr ffff88801574d3e8 by task poc/220
+
+  Call Trace:
+   skb_release_data+0x77b/0x810
+   kfree_skb_list_reason+0x13e/0x610
+   skb_release_data+0x4cd/0x810
+   sk_skb_reason_drop+0xf3/0x340
+   skb_queue_purge_reason+0x282/0x440
+   rds_tcp_inc_free+0x1e/0x30
+   rds_recvmsg+0x354/0x1780
+   __sys_recvmsg+0xdf/0x180
+
+  Allocated by task 219:
+   msg_zerocopy_realloc+0x157/0x7b0
+   tcp_sendmsg_locked+0x2892/0x3ba0
+
+  Freed by task 219:
+   ip_recv_error+0x74a/0xb10
+   tcp_recvmsg+0x475/0x530
+
+The skb consuming the late access still referenced the same uarg via
+shinfo->destructor_arg copied by pskb_carve_inside_nonlinear() without
+a refcount bump. This has been verified to be reliably exploitable: a
+working proof-of-concept achieves full root privilege escalation from
+an unprivileged local user on a default kernel configuration.
+
+The fix follows the pattern of pskb_expand_head() which has the same
+memcpy/cloned structure. For pskb_carve_inside_header(), net_zcopy_get()
+is placed after skb_orphan_frags() succeeds, so the orphan error path
+needs no cleanup. For pskb_carve_inside_nonlinear(), net_zcopy_get() is
+placed after all failure points and just before skb_release_data(), so
+no error path needs cleanup at all -- matching pskb_expand_head() more
+closely and avoiding the need for a balancing net_zcopy_put().
+
+Fixes: 6fa01ccd8830 ("skbuff: Add pskb_extract() helper function")
 Cc: stable@vger.kernel.org
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://patch.msgid.link/20260519115529.2980421-1-radhey.shyam.pandey@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Assisted-by: Claude:claude-sonnet-4-6
+Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260526041240.329462-1-minhnguyen.080505@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-xilinx.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ net/core/skbuff.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/dwc3/dwc3-xilinx.c b/drivers/usb/dwc3/dwc3-xilinx.c
-index 1e28d6f50ed07a..c2b8573c256770 100644
---- a/drivers/usb/dwc3/dwc3-xilinx.c
-+++ b/drivers/usb/dwc3/dwc3-xilinx.c
-@@ -190,15 +190,13 @@ static int dwc3_xlnx_init_zynqmp(struct dwc3_xlnx *priv_data)
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 8bc4b26de5e538..b91e2e9f1096a0 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -6242,6 +6242,8 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
+ 			kfree(data);
+ 			return -ENOMEM;
+ 		}
++		if (skb_zcopy(skb))
++			net_zcopy_get(skb_zcopy(skb));
+ 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
+ 			skb_frag_ref(skb, i);
+ 		if (skb_has_frag_list(skb))
+@@ -6386,6 +6388,8 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
+ 		kfree(data);
+ 		return -ENOMEM;
  	}
++	if (skb_zcopy(skb))
++		net_zcopy_get(skb_zcopy(skb));
+ 	skb_release_data(skb);
  
- 	ret = phy_init(priv_data->usb3_phy);
--	if (ret < 0) {
--		phy_exit(priv_data->usb3_phy);
-+	if (ret < 0)
- 		goto err;
--	}
- 
- 	ret = reset_control_deassert(apbrst);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to release APB reset\n");
--		goto err;
-+		goto err_phy_exit;
- 	}
- 
- 	/* Set PIPE Power Present signal in FPD Power Present Register*/
-@@ -210,27 +208,25 @@ static int dwc3_xlnx_init_zynqmp(struct dwc3_xlnx *priv_data)
- 	ret = reset_control_deassert(crst);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to release core reset\n");
--		goto err;
-+		goto err_phy_exit;
- 	}
- 
- 	ret = reset_control_deassert(hibrst);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to release hibernation reset\n");
--		goto err;
-+		goto err_phy_exit;
- 	}
- 
- 	ret = phy_power_on(priv_data->usb3_phy);
--	if (ret < 0) {
--		phy_exit(priv_data->usb3_phy);
--		goto err;
--	}
-+	if (ret < 0)
-+		goto err_phy_exit;
- 
- skip_usb3_phy:
- 	/* ulpi reset via gpio-modepin or gpio-framework driver */
- 	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(reset_gpio)) {
--		return dev_err_probe(dev, PTR_ERR(reset_gpio),
--				     "Failed to request reset GPIO\n");
-+		ret = PTR_ERR(reset_gpio);
-+		goto err_phy_power_off;
- 	}
- 
- 	if (reset_gpio) {
-@@ -240,6 +236,13 @@ static int dwc3_xlnx_init_zynqmp(struct dwc3_xlnx *priv_data)
- 	}
- 
- 	dwc3_xlnx_set_coherency(priv_data, XLNX_USB_TRAFFIC_ROUTE_CONFIG);
-+
-+	return 0;
-+
-+err_phy_power_off:
-+	phy_power_off(priv_data->usb3_phy);
-+err_phy_exit:
-+	phy_exit(priv_data->usb3_phy);
- err:
- 	return ret;
- }
+ 	skb->head = data;
 -- 
 2.53.0
 
