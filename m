@@ -1,270 +1,156 @@
-Return-Path: <stable+bounces-260605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5ccAHVMpImpTTQEAu9opvQ
-	(envelope-from <stable+bounces-260605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:41:39 +0200
+	id WK9cD8IqImqeTQEAu9opvQ
+	(envelope-from <stable+bounces-260607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:47:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171AA644792
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:41:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B50644845
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:47:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IszDWLyF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260605-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260605-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260607-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260607-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6E1F03048236
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 01:39:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D07503093A51
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 01:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CEA03D7D9A;
-	Fri,  5 Jun 2026 01:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA1F3B7B98;
+	Fri,  5 Jun 2026 01:44:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216B23D75BF;
-	Fri,  5 Jun 2026 01:38:58 +0000 (UTC)
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E6E37C108;
+	Fri,  5 Jun 2026 01:44:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780623546; cv=none; b=qJrj2uk8mklNB34ydZn5MSOn4nTOUkId101npWuICTQJZOlPbeuLmLbqha71eyQpI40SX/YUs9GyTd+XWVSpN6GstkqWKGEoigExw+3HHfZh7X4yD1ayG/U2gWZ0gZWaZbT6/DNFh2AbJvswWoKUINeCJirN0v6E56QAqpNmp/Y=
+	t=1780623893; cv=none; b=jPwG2qr6c+PFhtfV/K2/iq9ZxFtTr6pltdH7hm3MuuwVpH6E/ypxmNBiPE//jmn6KaBryoQy8AexsY8ESFXcOyj5D9hqvJXRybPz6YTUSDX96tsQBiJYU3cnN67Xy2Oe8WrgYrJtKPj0DmsSUdHE1+lTh6B2OdrNsMiCmo6hNy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780623546; c=relaxed/simple;
-	bh=mBcLU6n7ojT+f9p0l+H/Z7NAPsufzFOyPPPkEgNBFG8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S1hxwLP0NNVhpAQ+ECjyvvasqnzDJjCcEV9UyeWxw3ICUzYpMvSAvYl2fh5vzWIX8zHuKCyOhqPQkFwfBqT9ouhkYeZX6XhDOnXpf0fY1KzHGsnkDfMN+KyfChG33luoYCO1tny+T7/xede0yIGa7QRYyHs6XNCd8qea3gRYOFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IszDWLyF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4288E1F00893;
-	Fri,  5 Jun 2026 01:38:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780623537;
-	bh=3FMzbu3u71nQTcvhV84Inp+2khcRaSZTlpCYSxQCCNM=;
-	h=From:To:Cc:Subject:Date;
-	b=IszDWLyFitkjiWmwl+Kee4Ar/yCCt+rr2vPxubON5Sn5HOqlMHCIUrqBfjdR0v+TI
-	 S1nvsmhv6yxqw7JSKXKNx26PulPRAU2/+sRVyNVePkQdxFb/yHdL6yvTZjmeKrB/jw
-	 tEC57196PqU+PM5l4g4iAtO4uaJUcITvtuF76B3M/fNt4U5ZA88WHatwJWQ06vcYoi
-	 KgUa5ObeT1M0LTVK37OUko46qiJbqdUrKj63jVzY/BTxIakQVHNetitOxwJnM5Ryqo
-	 8+IFVvW6INjYGSyo85+h9YLAsm525Fj9em3MXZE1P3uyPmsplPhmUs6h+CIslCzKDB
-	 zRLqtJGVFfySw==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 11 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/core: always put unsuccessfully committed target pids
-Date: Thu,  4 Jun 2026 18:38:48 -0700
-Message-ID: <20260605013849.83750-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1780623893; c=relaxed/simple;
+	bh=R6w7HRslqNWOn2idpFVjzHryPc8448YIPtHxHthf7R4=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=qx82vsz7csLTCWqQ2LjfSuZfgC5mpP7blXi0UQfW/+x45pPskAVDg+sHYK91Quo0zSc1WCW5q3iA9klTJG3/zFCVZyenq1PX65ljbUMPS4dN07IktFi7PI0yo57mpk+0BpQ8ie1ONz7BUK4mb/FxDuqGJzGVRLBQK0yEECsnK84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8CxncAKKiJqd8gQAA--.22245S3;
+	Fri, 05 Jun 2026 09:44:42 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJCx2+AGKiJq+2ycAA--.34930S3;
+	Fri, 05 Jun 2026 09:44:39 +0800 (CST)
+Subject: Re: [PATCH] LoongArch: KVM: return full old CSR value from
+ kvm_emu_xchg_csr()
+To: Qiang Ma <maqianga@uniontech.com>, zhaotianrui@loongson.cn,
+ chenhuacai@kernel.org, kernel@xen0n.name
+Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260604123433.3182173-1-maqianga@uniontech.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <08d3b817-9de6-746d-2b2c-acc4a578f95a@loongson.cn>
+Date: Fri, 5 Jun 2026 09:41:34 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20260604123433.3182173-1-maqianga@uniontech.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCx2+AGKiJq+2ycAA--.34930S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7WF4kKrW7ZF13Wr1rCF4xZrc_yoW8GFWrp3
+	y3A3WUCw40gr48ta47Wws8Xrs8ArWDGryIgF9FyFyUXrWayFyrXFnYgr98WF1q9w4Sgr1I
+	qrWSg3s2van8t3XCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AK
+	xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+	AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIx
+	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+	wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8zwZ7UU
+	UUU==
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260605-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:sj@kernel.org,m:stable@vger.kernel.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260607-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:maqianga@uniontech.com,m:zhaotianrui@loongson.cn,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:kvm@vger.kernel.org,m:loongarch@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[loongson.cn];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,uniontech.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 171AA644792
+X-Rspamd-Queue-Id: B1B50644845
 
-damon_commit_target() puts and gets the destination and the source
-target pids.  It puts the destination target pid because it will be
-overwritten by the source target pid.  It gets the source pid because
-the caller is supposed to eventually put the pids.  In more detail, the
-caller will call damon_destroy_ctx() after damon_commit_ctx() to destroy
-the entire source context.  And in this case, [f]vaddr operation set's
-cleanup_target() callback will put the pids.
 
-The commit operation is made at the context level.  The operation can
-fail in multiple places including in the middle and after the targets
-commit operations.  For any such failures, immediately the error is
-returned to the damon_commit_ctx() caller.  If some or all of the source
-target pids were committed to the destination during the unsuccessful
-context commit attempt, those pids should be put twice.
 
-The source context will do the put operations using the above explained
-routine.  However, let's suppose the destination context was not
-originally using [f]vaddr operation set and the commit failed before the
-ops of the source context is committed.  The destination does not have
-the cleanup_target() ops callback, so it cannot put the pids via the
-damon_destroy_ctx().
+On 2026/6/4 下午8:34, Qiang Ma wrote:
+> The LoongArch CSRXCHG instruction returns the full old CSR value in rd
+> after applying the masked update. kvm_emu_xchg_csr() currently masks
+> the saved value before returning it to the guest, so rd receives only
+> the bits selected by the write mask.
+> 
+> That breaks the architectural behavior and makes a zero mask return 0
+> instead of the previous CSR value. Keep the masked CSR update, but
+> return the unmodified old CSR value.
+> 
+> Fixes: da50f5a693ff ("LoongArch: KVM: Implement handle csr exception")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qiang Ma <maqianga@uniontech.com>
+> ---
+>   arch/loongarch/kvm/exit.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/loongarch/kvm/exit.c b/arch/loongarch/kvm/exit.c
+> index 3b95cd0f989b..264813d45cbe 100644
+> --- a/arch/loongarch/kvm/exit.c
+> +++ b/arch/loongarch/kvm/exit.c
+> @@ -103,7 +103,6 @@ static unsigned long kvm_emu_xchg_csr(struct kvm_vcpu *vcpu, int csrid,
+>   		old = kvm_read_sw_gcsr(csr, csrid);
+>   		val = (old & ~csr_mask) | (val & csr_mask);
+>   		kvm_write_sw_gcsr(csr, csrid, val);
+> -		old = old & csr_mask;
 
-As a result, the pids are leaked.  The issue in the real world would be
-not very common.  The commit feature is for changing parameters of
-running DAMON context while inheriting internal status like the
-monitoring results.  The monitoring results of a physical address range
-ain't have things that are beneficial to be inherited to a virtual
-address ranges monitoring.  So the problem-causing DAMON control would
-be not very common in the real world.  That said, it is a supported
-feature. And damon_commit_target() failure due to memory allocation is
-relatively realistic [1] if there are a huge number of target regions.
+Hi Qiang Ma
 
-Fix by putting the pids in the commit operation in case of the failures.
+This is correct from the manual. Is there any test case or problem in 
+practice?  I want to evaluate severity about this problem.
 
-The issue was discovered [2] by Sashiko.
+Regards
+Bibo Mao
+>   	} else
+>   		pr_warn_once("Unsupported csrxchg 0x%x with pc %lx\n", csrid, vcpu->arch.pc);
+>   
+> 
 
-[1] https://lore.kernel.org/20260603112306.58490-1-akinobu.mita@gmail.com
-[2] https://lore.kernel.org/20260320020056.835-1-sj@kernel.org
-
-Fixes: 83dc7bbaecae ("mm/damon/sysfs: use damon_commit_ctx()")
-Cc: <stable@vger.kernel.org> # 6.11.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
-Changes from RFC v1.1
-- rfc v1.1: https://lore.kernel.org/20260604143514.84310-1-sj@kernel.org
-- Rebase to latest mm-new.
-- Drop RFC tag.
-Changes from RFC
-- rfc: https://lore.kernel.org/20260604042349.67720-1-sj@kernel.org
-- Check destination cleaanup availability using the cleanup callback.
-- Do the cleanup for all commit failure points in
-  [targets commit, ops commit] scope.
-- Wordsmith the commit message.
-- Add 'Fixes:' and Cc: stable@.
-
- mm/damon/core.c | 55 ++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 47 insertions(+), 8 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 265d51ade25bf..7e4b9affc5b06 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1387,10 +1387,36 @@ static int damon_commit_target(
- 	return 0;
- }
- 
-+/*
-+ * damon_revert_target_commits() - revert unsuccessful target commits.
-+ * @dst:	Commit destination context
-+ * @failed:	Commit failed destination target
-+ * @src:	Commit source context
-+ *
-+ * Revert target states that changed by damon_commit_target(), and cannot be
-+ * cleaned up by the destination context's ops.cleanup_target().
-+ */
-+static void damon_revert_target_commits(struct damon_ctx *dst,
-+		struct damon_target *failed, struct damon_ctx *src)
-+{
-+	struct damon_target *target;
-+
-+	if (!damon_target_has_pid(src))
-+		return;
-+	if (dst->ops.cleanup_target)
-+		return;
-+	damon_for_each_target(target, dst) {
-+		if (target == failed)
-+			return;
-+		put_pid(target->pid);
-+	}
-+}
-+
- static int damon_commit_targets(
- 		struct damon_ctx *dst, struct damon_ctx *src)
- {
- 	struct damon_target *dst_target, *next, *src_target, *new_target;
-+	struct damon_target *failed;
- 	int i = 0, j = 0, err;
- 
- 	damon_for_each_target_safe(dst_target, next, dst) {
-@@ -1404,8 +1430,10 @@ static int damon_commit_targets(
- 					dst_target, damon_target_has_pid(dst),
- 					src_target, damon_target_has_pid(src),
- 					src->min_region_sz);
--			if (err)
--				return err;
-+			if (err) {
-+				failed = dst_target;
-+				goto out;
-+			}
- 		} else {
- 			struct damos *s;
- 
-@@ -1419,25 +1447,34 @@ static int damon_commit_targets(
- 		}
- 	}
- 
-+	failed = NULL;
- 	damon_for_each_target_safe(src_target, next, src) {
- 		if (j++ < i)
- 			continue;
- 		/* target to remove has no matching dst */
--		if (src_target->obsolete)
--			return -EINVAL;
-+		if (src_target->obsolete) {
-+			err = -EINVAL;
-+			goto out;
-+		}
- 		new_target = damon_new_target();
--		if (!new_target)
--			return -ENOMEM;
-+		if (!new_target) {
-+			err = -ENOMEM;
-+			goto out;
-+		}
- 		err = damon_commit_target(new_target, false,
- 				src_target, damon_target_has_pid(src),
- 				src->min_region_sz);
- 		if (err) {
- 			damon_destroy_target(new_target, NULL);
--			return err;
-+			goto out;
- 		}
- 		damon_add_target(dst, new_target);
- 	}
- 	return 0;
-+
-+out:
-+	damon_revert_target_commits(dst, failed, src);
-+	return err;
- }
- 
- static void damon_commit_filter(struct damon_filter *dst,
-@@ -1571,8 +1608,10 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- 	 */
- 	if (!damon_attrs_equals(&dst->attrs, &src->attrs)) {
- 		err = damon_set_attrs(dst, &src->attrs);
--		if (err)
-+		if (err) {
-+			damon_revert_target_commits(dst, NULL, src);
- 			return err;
-+		}
- 	}
- 	dst->pause = src->pause;
- 	dst->ops = src->ops;
-
-base-commit: f499b8d2253d32f4ea1e16198f348e6259cc14ca
--- 
-2.47.3
 
