@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-260804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oSjqIAgnI2oAjgEAu9opvQ
-	(envelope-from <stable+bounces-260804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:44:08 +0200
+	id 5BE3ExsnI2oDjgEAu9opvQ
+	(envelope-from <stable+bounces-260805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:44:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1817C64B06E
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E4BC64B073
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:44:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bjpc0fWV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260804-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260804-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kiCJIP/Y";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260805-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260805-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 507BB3096B4E
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 19:37:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6EB53014D8A
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 19:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B7F43E9C4;
-	Fri,  5 Jun 2026 19:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D8041B355;
+	Fri,  5 Jun 2026 19:38:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865CA404BCE
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 19:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07754357739
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 19:38:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780688278; cv=none; b=EU8J3vthp1NHADIKJPysN73rv6rMwxckGR2apkbV94yk7gU0iRPfDgIfjZfRylU8Qk+5JaBXhej+iOM+uH0+qKS4hcn2K+nx7RUvB21ZbmKckbKkl+T53e4VXbFFrU128H52BhwGnnO8+ia2NhiZqY5NvfrLMuf7K5jVKHYuIoc=
+	t=1780688307; cv=none; b=dhGVG096tutQCHhkH/ley11eOFI40EZffomtMzl6zuKGUAuvl2gj/pH/OexC7s03T0Eea5GdpKdI6cn36SxIIRKAnDBTT3fGX2y3TH3aT0pwnPGdKxhGHEWImJJAvnhqMaR4H/kvu0PtRoAADpogc062yYF8jHyyk6X90KLcO40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780688278; c=relaxed/simple;
-	bh=RsB2D6PxRqvXfiucJQ0rsB7SdrO5hZVKG+osTdli/Rg=;
+	s=arc-20240116; t=1780688307; c=relaxed/simple;
+	bh=KQwtIRmOvB9IrYT5txZfy7gVRW8FPVWgtgcrBWqE/5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N67WR3nFtYdGZNMysQIcqSmQVccc1MkEBGQ8h1K/kspzRQLyik0ciMhO+4/cCglX4wJ/8+2YWKcdrlzwVi8O3tESQMcg/3+V+q0LNdXUBPS41m+e6Cf09h/MeJYgaAD6DQicT/taXsQaM265RS7oeYZoDZzoCoNmHMKJgmHGKo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bjpc0fWV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A701F0089A;
-	Fri,  5 Jun 2026 19:37:56 +0000 (UTC)
+	 MIME-Version; b=s7XvmTV4A6irZLuOXPMPSvkf0yS9So7NTSfDICe9H+QSSnG21+ouDF5vlieW+av/kpZDFZeG0nZkix4shmQBT37XFH9y+gA30wgpqki5y+j4I9wGxruaHiiFNPSId8zsMszHvEpmk6s7sgW4JRJ47yVb4SNp1A2F4SWe1LS9BgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kiCJIP/Y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1761F00893;
+	Fri,  5 Jun 2026 19:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780688277;
-	bh=D8l4osT6iPo6pG/N/mOQl3hQoFF2eVN/rdNPxcBJSds=;
+	s=k20260515; t=1780688305;
+	bh=7bKca2DZGSjYAv88iT+8X7CiFbjADCPURBDKhfYfow0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Bjpc0fWVoytwJuqApJ81sIMXDSqsryhheRZzVYKg5Y9/awB/xRLo4jSathziRSQlH
-	 SFNao9vRpPFMlRrKUzgrB17gvFIVEkJRGIyfFPdy7m0am8DX0AANGtFnvFDAJhE9rt
-	 bPajTAppu8/pVsm1v95/7PD7DuWZ5Df7ndn7DkQPsKDMPFP5AokA6ve1hGi+w9A91i
-	 N62WCOTXVU8n0VBjKvYlhM3lGyUMjbVHBD/onDrBw70hKDz0DlduFHj5gc8eov47xJ
-	 1LvU/88epaok5PzUqOSX+EMSsEj37OJAayASQEf5bGC3byk9Rg1nbScr4P7hSiHKRT
-	 SORsrWyAzTF5g==
+	b=kiCJIP/Y98ewe5HUi+kIJ0b0IhdV0qRREh9uKNe0Z8t+tBa4MWaQ0P5mEUa1xXYxF
+	 8ulRm+xJ0JvUO451mZepRjHqiunGraNyA0ilRAZdosv+XoP1ViapVOm3/vKTrFnpay
+	 wxEeK/0ShzhB7AV/JzRT0EnrmQ0Sur5rbjsDaNt4zWbtcKHnpgJ0mMJuAvUtwA8vUY
+	 tXbYbVwX1yqLBA34JmaIdKz8lmDq/D/FZDGYrT2NvGja1p0nEIC+He3VSm+Te/5bTd
+	 LQqlPbfP6uJi89JwXQS4fVIhfFY899OVewgjaW3acMnYCzlOkdWlTV4YQgUNXoByej
+	 JJDgmLIJ30A4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	Jordan Walters <jaggyaur@gmail.com>
-Subject: Re: [PATCH 6.1.y] Bluetooth: hci_core: Fix UAF in hci_unregister_dev()
-Date: Fri,  5 Jun 2026 15:37:30 -0400
-Message-ID: <20260605-stable-reply-0023@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	John Ogness <john.ogness@linutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/3] serial: samsung_tty: Use port lock wrappers
+Date: Fri,  5 Jun 2026 15:38:21 -0400
+Message-ID: <20260605193823.2169333-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260604015614.123281-1-jaggyaur@gmail.com>
-References: <20260604015614.123281-1-jaggyaur@gmail.com>
+In-Reply-To: <2026060429-earflap-scope-57c7@gregkh>
+References: <2026060429-earflap-scope-57c7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,47 +66,239 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260804-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashal@kernel.org,m:jaggyaur@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260805-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:tglx@linutronix.de,m:john.ogness@linutronix.de,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1817C64B06E
+X-Rspamd-Queue-Id: 9E4BC64B073
 
-> [PATCH 6.1.y] Bluetooth: hci_core: Fix UAF in hci_unregister_dev()
+From: Thomas Gleixner <tglx@linutronix.de>
 
-Same as on the 6.6.y posting -- I can't take this as-is, a v2 is needed.
+[ Upstream commit 97d7a9aeba1d424c2359f1686d02c75d798ad184 ]
 
+When a serial port is used for kernel console output, then all
+modifications to the UART registers which are done from other contexts,
+e.g. getty, termios, are interference points for the kernel console.
+
+So far this has been ignored and the printk output is based on the
+principle of hope. The rework of the console infrastructure which aims to
+support threaded and atomic consoles, requires to mark sections which
+modify the UART registers as unsafe. This allows the atomic write function
+to make informed decisions and eventually to restore operational state. It
+also allows to prevent the regular UART code from modifying UART registers
+while printk output is in progress.
+
+All modifications of UART registers are guarded by the UART port lock,
+which provides an obvious synchronization point with the console
+infrastructure.
+
+To avoid adding this functionality to all UART drivers, wrap the
+spin_[un]lock*() invocations for uart_port::lock into helper functions
+which just contain the spin_[un]lock*() invocations for now. In a
+subsequent step these helpers will gain the console synchronization
+mechanisms.
+
+Converted with coccinelle. No functional change.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Link: https://lore.kernel.org/r/20230914183831.587273-54-john.ogness@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: a3bb136bff5e ("tty: serial: samsung: Remove redundant port lock acquisition in rx helpers")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/tty/serial/samsung_tty.c | 36 ++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/tty/serial/samsung_tty.c b/drivers/tty/serial/samsung_tty.c
+index 5388eb7fa0f472..ceae15967e01be 100644
+--- a/drivers/tty/serial/samsung_tty.c
++++ b/drivers/tty/serial/samsung_tty.c
+@@ -245,7 +245,7 @@ static void s3c24xx_serial_rx_enable(struct uart_port *port)
+ 	unsigned int ucon, ufcon;
+ 	int count = 10000;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	while (--count && !s3c24xx_serial_txempty_nofifo(port))
+ 		udelay(100);
+@@ -259,7 +259,7 @@ static void s3c24xx_serial_rx_enable(struct uart_port *port)
+ 	wr_regl(port, S3C2410_UCON, ucon);
+ 
+ 	ourport->rx_enabled = 1;
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void s3c24xx_serial_rx_disable(struct uart_port *port)
+@@ -268,14 +268,14 @@ static void s3c24xx_serial_rx_disable(struct uart_port *port)
+ 	unsigned long flags;
+ 	unsigned int ucon;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	ucon = rd_regl(port, S3C2410_UCON);
+ 	ucon &= ~S3C2410_UCON_RXIRQMODE;
+ 	wr_regl(port, S3C2410_UCON, ucon);
+ 
+ 	ourport->rx_enabled = 0;
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void s3c24xx_serial_stop_tx(struct uart_port *port)
+@@ -334,7 +334,7 @@ static void s3c24xx_serial_tx_dma_complete(void *args)
+ 	dma_sync_single_for_cpu(ourport->port.dev, dma->tx_transfer_addr,
+ 				dma->tx_size, DMA_TO_DEVICE);
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	xmit->tail = (xmit->tail + count) & (UART_XMIT_SIZE - 1);
+ 	port->icount.tx += count;
+@@ -344,7 +344,7 @@ static void s3c24xx_serial_tx_dma_complete(void *args)
+ 		uart_write_wakeup(port);
+ 
+ 	s3c24xx_serial_start_next_tx(ourport);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void enable_tx_dma(struct s3c24xx_uart_port *ourport)
+@@ -579,7 +579,7 @@ static void s3c24xx_serial_rx_dma_complete(void *args)
+ 	received  = dma->rx_bytes_requested - state.residue;
+ 	async_tx_ack(dma->rx_desc);
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	if (received)
+ 		s3c24xx_uart_copy_rx_to_tty(ourport, t, received);
+@@ -591,7 +591,7 @@ static void s3c24xx_serial_rx_dma_complete(void *args)
+ 
+ 	s3c64xx_start_rx_dma(ourport);
+ 
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void s3c64xx_start_rx_dma(struct s3c24xx_uart_port *ourport)
+@@ -679,7 +679,7 @@ static irqreturn_t s3c24xx_serial_rx_chars_dma(void *dev_id)
+ 	utrstat = rd_regl(port, S3C2410_UTRSTAT);
+ 	rd_regl(port, S3C2410_UFSTAT);
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	if (!(utrstat & S3C2410_UTRSTAT_TIMEOUT)) {
+ 		s3c64xx_start_rx_dma(ourport);
+@@ -708,7 +708,7 @@ static irqreturn_t s3c24xx_serial_rx_chars_dma(void *dev_id)
+ 	wr_regl(port, S3C2410_UTRSTAT, S3C2410_UTRSTAT_TIMEOUT);
+ 
+ finish:
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -806,9 +806,9 @@ static irqreturn_t s3c24xx_serial_rx_chars_pio(void *dev_id)
+ 	struct uart_port *port = &ourport->port;
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 	s3c24xx_serial_rx_drain_fifo(ourport);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -956,7 +956,7 @@ static void s3c24xx_serial_break_ctl(struct uart_port *port, int break_state)
+ 	unsigned long flags;
+ 	unsigned int ucon;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	ucon = rd_regl(port, S3C2410_UCON);
+ 
+@@ -967,7 +967,7 @@ static void s3c24xx_serial_break_ctl(struct uart_port *port, int break_state)
+ 
+ 	wr_regl(port, S3C2410_UCON, ucon);
+ 
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static int s3c24xx_serial_request_dma(struct s3c24xx_uart_port *p)
+@@ -1192,7 +1192,7 @@ static int s3c64xx_serial_startup(struct uart_port *port)
+ 	ourport->tx_enabled = 0;
+ 	ourport->tx_claimed = 1;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	ufcon = rd_regl(port, S3C2410_UFCON);
+ 	ufcon |= S3C2410_UFCON_RESETRX | S5PV210_UFCON_RXTRIG8;
+@@ -1202,7 +1202,7 @@ static int s3c64xx_serial_startup(struct uart_port *port)
+ 
+ 	enable_rx_pio(ourport);
+ 
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ 
+ 	/* Enable Rx Interrupt */
+ 	s3c24xx_clear_bit(port, S3C64XX_UINTM_RXD, S3C64XX_UINTM);
+@@ -1479,7 +1479,7 @@ static void s3c24xx_serial_set_termios(struct uart_port *port,
+ 		ulcon |= S3C2410_LCON_PNONE;
+ 	}
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	dev_dbg(port->dev,
+ 		"setting ulcon to %08x, brddiv to %d, udivslot %08x\n",
+@@ -1537,7 +1537,7 @@ static void s3c24xx_serial_set_termios(struct uart_port *port,
+ 	if ((termios->c_cflag & CREAD) == 0)
+ 		port->ignore_status_mask |= RXSTAT_DUMMY_READ;
+ 
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static const char *s3c24xx_serial_type(struct uart_port *port)
 -- 
-Thanks,
-Sasha
+2.53.0
+
 
