@@ -1,64 +1,102 @@
-Return-Path: <stable+bounces-260594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260597-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 90jgGLgZImr4SQEAu9opvQ
-	(envelope-from <stable+bounces-260594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 02:35:04 +0200
+	id s+C7E7IgImpBSwEAu9opvQ
+	(envelope-from <stable+bounces-260597-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:04:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E4864421A
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 02:35:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A48FC6443D4
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:04:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U46/B2JY";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260594-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260594-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gOI0GMNJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260597-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260597-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 733F03036767
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 00:35:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 65193304352A
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 01:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371401E5B63;
-	Fri,  5 Jun 2026 00:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA098302CD5;
+	Fri,  5 Jun 2026 01:00:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0A7199E89
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 00:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1AB26D4E5
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 00:59:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780619700; cv=none; b=FjyUdDctrPY9GhSCBnisSs7eAB15Wa1DqtHqJUzmXNp2RL/ai2Tj/+XttiZD4ukVRFz6ncZDX+T8zwxWeLXj3TCbsz9y+uHgvvhsN3FwIi+jRfliq9p5EmohhyW/RMt/LwPnXQPmQcrgQPP5eAW92uVFXDdadNU4WUuktQo0PC0=
+	t=1780621218; cv=none; b=lQXeEi2aJ0I+D5qo2YxaPRve116b8OhU9UcN43vyv7Q5BL0T6FkdOvAzD+nklu+zhAW4Zq9UZY7UfaYW0q7X+6NDS0agPXbof2OmdChSlDoi9NBBVvJoGWIY+8t3q2OvdiBJDvtVi3TKZfHX6SS3R7jtQKxg8sFdClQlm+hJvW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780619700; c=relaxed/simple;
-	bh=GE9IIx8uS7AW1tKID2+LZKxFQhfMFM8iAXvdHfrLEB0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGvP9mYYYuxvDLVg1BKfDax21eqM4IUdyCABszq5Yv/Xo+S0ndKl8xv5xzqIVGGBVBomTl5J1GEdZDGnyfrrT/7132P/1Ki93ZOKzyqWm7IyL1hFxc0FkueiOzpvqWcnnG9KixxA5fM+sz5nBdsvqrY+gHNgxdFEtsQ6XsLSwMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U46/B2JY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88B71F00893;
-	Fri,  5 Jun 2026 00:34:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780619698;
-	bh=a69Yp+zgxPyXSycjnPbfBKl+52UZ/8dJTqqGgUSGcgc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U46/B2JYXmRPDYLZyl5m6eDx0da5VdcQmro6NCL8KcghqK6l61Lz5e3dmwbEkvFPz
-	 J/HZj23nkuCOS18A8o3Kh7JUsUE1XETb3Mp/rFubt9hJfd4IdZlTRJNoPLhPOhsMWf
-	 6sJdHUKQ3QErvTxQz+2H1OMQs9M8dH7k3sj0mRQXvoeq7o6tQbel9faDszBBblZlug
-	 jCDhVAWwj2FXx2fFl2tJMa2uVj6mMS/i8MEwtm/SWSow7Y+3VdzhCl81WDrQbx4hBe
-	 eUc+rExpSFrIb2ir2Nme4YL88fjN4yuo/V98U2MWQNy2/jKwVge179QMIv6dze3ALe
-	 5MKsvAVLnuAKQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Peter Chen <peter.chen@cixtech.com>,
-	stable <stable@kernel.org>,
-	sashiko-bot <sashiko-bot@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] usb: cdns3: plat: fix leaked usb2_phy initialization on usb3_phy acquisition failure
-Date: Thu,  4 Jun 2026 20:34:56 -0400
-Message-ID: <20260605003456.2707466-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026060428-repaying-swept-0b59@gregkh>
-References: <2026060428-repaying-swept-0b59@gregkh>
+	s=arc-20240116; t=1780621218; c=relaxed/simple;
+	bh=u0/w00vlK6fi8yvn+h86TeNOxWHIji6kmAtn8Yr+LtY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=jrjZ6WB3D1hbMh6j5Bm1u41JhJ0jxTlm6TMhzKwdARMCSYC3r/QXL9aCQsdUFaL6KcsRKIxjoIJ0/TUwqkxnR8dKJjR8jHBs6h9El9NN21jrxsjmj9U1D8ZPdmbrjdAMre/mtapuS9zzv638ga61/paX9V/2g7anTf/KlquKgOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gOI0GMNJ; arc=none smtp.client-ip=209.85.210.180
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-842338c18e0so979499b3a.1
+        for <stable@vger.kernel.org>; Thu, 04 Jun 2026 17:59:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780621198; x=1781225998; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q2yNPrajpmUjXUxkDV8KTQdIiGB5qpjbVC2V+xxbVWk=;
+        b=gOI0GMNJIveWfc4p5kpW6qQu87tDfxWijmyP1iIe3U6z+FvKifDOKWhTkcxsJL8cRR
+         VV/r0iDy5qUBCCBiS44/0NgaKKEA05kDdJPEke8ZZXUIOj5VAKk0L73MRgLatvMoL03e
+         mahDxre9j/fRw91JPo55JnlQxl1kZP+D0oizZonj1+FMp36bFEMcb27JJofg6g+lFMn0
+         GcMfQ30KYCORC/EriKIUm+NGeZtgwsZLcZVZ4SLC9nCx4ymF7rYoyI52gb2CDK476/Pi
+         kTqTakXjglIRn+JxXozM57Q4eRoqrtB74LJp0bh78B9WEHTh0YddmHv5R16Tfgzdk26j
+         YjYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780621198; x=1781225998;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Q2yNPrajpmUjXUxkDV8KTQdIiGB5qpjbVC2V+xxbVWk=;
+        b=HIYIN9nKba168XGXPTVLtxelNQKbNiiSkWdEdJaySkPrm2rhyafYwp3ZcDL3snt+Je
+         UvwY+rxnRWKygceI7xW7SLDYPjTINhwbmhZs0frvHNe0F3cu3fMjv33igtT61Zqf3B3f
+         RVkAn5ukIsukEZWtfgBlAXJ4tSu4y2yiA8czL3WSBaXs+TRS/nzYLziGrsNI7elLwD8J
+         QVD0fcam6ChK/7VMA7U/M3Bkaq2z2ve8yFu/GSb5pyOAl30Z51ejbTdJy4eViQsoMZa3
+         hAnV3SH7VycXYCKk2yx4zHygIH7MJFM2C2/4jkmywsnPYS+wTlFaR+7dyO8bZzp/Esat
+         C/OA==
+X-Forwarded-Encrypted: i=1; AFNElJ/0PtaPYvlHBYivRcy9FFyeqbwwobB7aKYsJr3H28gk+3EEHIBJcNbBjtsUWBwiub46YuigRN4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywh747JGIQWjI4btqgNl6jC5E9Q1CZzytGv0/929u5e4AcfaPPG
+	Qip0TSU32hvg/hcFCFgT6JhwMcm0B3QtjC12N2ssIKbBO7DrY+ju6Gr7
+X-Gm-Gg: Acq92OHpfATiZt8/LAGyW4et/SYo5MLkS/B/4xtJG36oaFo2/MLs0RP4n+oQfWKqdia
+	ktb+bY2mTsHZXN77DbwyS+ndlVyDRe+UXz2w+52yg83ZK6bdt62jCu/BGv9Ds+8m6uLU/QQjAFj
+	YZtN0LVko0kr/Mt4O6jiepbJtswEhwoG6t8I5ySQiHGbW+DCAK52PhM+KFviwIh7tFFp+Lwwhnu
+	L/n1JKceuGGDOtILlt6UQDoP1zZiKulfe8AWLu+/4rBw+EqDXiGNtfMcnLFLiMPkPNJ7Zlx+aYH
+	kifEIJg8SFXbJwQDipDxqub7NbH+II1Qu5jGAByMwBQBIz9+CbDS695vLtgXNiZ/woF9qjgrF7w
+	BPhMGJWgSI1e22BR06PRBpL2Tz+enXVoN1aRpweN6E/u4BNGEhEjJLTUNcNIKAXIOqwYc60q+Ty
+	EBu3pq2TFi5NKFzjXDuGwMie0/jr+qlxRUflqE+/EC3i0aMTDv6j+MPY2M
+X-Received: by 2002:a05:6a00:908e:b0:842:459b:d61b with SMTP id d2e1a72fcca58-842b0f90d88mr1002312b3a.32.1780621198003;
+        Thu, 04 Jun 2026 17:59:58 -0700 (PDT)
+Received: from twhmp6px (mxsmtp211.mxic.com.tw. [211.75.127.162])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8428235006dsm7730884b3a.13.2026.06.04.17.59.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 17:59:57 -0700 (PDT)
+Received: from hqs-appsw-a2o.mp600.macronix.com (unknown [172.17.236.67])
+	by twhmp6px (Postfix) with ESMTPS id 7F6284163B72;
+	Fri,  5 Jun 2026 08:59:55 +0800 (CST)
+From: Cheng Ming Lin <linchengming884@gmail.com>
+To: Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Cc: linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	alvinzhou@mxic.com.tw,
+	Cheng Ming Lin <chengminglin@mxic.com.tw>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 2/2] mtd: spi-nor: macronix: Restore fallback parameters for MX25L12805D
+Date: Fri,  5 Jun 2026 08:57:20 +0800
+Message-Id: <20260605005720.1857413-3-linchengming884@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260605005720.1857413-1-linchengming884@gmail.com>
+References: <20260605005720.1857413-1-linchengming884@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,82 +106,81 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260594-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:peter.chen@cixtech.com,m:stable@kernel.org,m:sashiko-bot@kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260597-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:pratyush@kernel.org,m:mwalle@kernel.org,m:takahiro.kuwano@infineon.com,m:miquel.raynal@bootlin.com,m:richard@nod.at,m:vigneshr@ti.com,m:linux-mtd@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:alvinzhou@mxic.com.tw,m:chengminglin@mxic.com.tw,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[linchengming884@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[linchengming884@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,mxic.com.tw:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A7E4864421A
+X-Rspamd-Queue-Id: A48FC6443D4
 
-From: Peter Chen <peter.chen@cixtech.com>
+From: Cheng Ming Lin <chengminglin@mxic.com.tw>
 
-[ Upstream commit e6970cda63fd4b4546aeed9d0e2f53a7c95cd09c ]
+In a previous effort to drop flash_info fields and rely on SFDP, the
+static size and no_sfdp_flags were removed from the MX25L12805D entry
+(JEDEC ID 0xc22018).
 
-Move usb2_phy initialization after usb3_phy acquisition.
+At that time, the legacy MX25L12805D was already EOL and unavailable
+for physical testing. Verification was inadvertently performed using
+the newer MX25L12833F, which shares the same JEDEC ID but supports
+SFDP. As a result, the probe succeeded during testing, leading to
+the mistaken removal of the fallback parameters.
 
-Fixes: f738957277ba ("usb: cdns3: Split core.c into cdns3-plat and core.c file")
-Cc: stable <stable@kernel.org>
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/linux-devicetree/agKaEePSFknhDBg2@nchen-desktop/T/#m21e1d9c1574eb127ce03c0c2a1a49002ce435b52
-Signed-off-by: Peter Chen <peter.chen@cixtech.com>
-Link: https://patch.msgid.link/20260513085310.2217547-2-peter.chen@cixtech.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since the actual MX25L12805D lacks SFDP support entirely, it strictly
+requires these static parameters.
+
+Restore .size = SZ_16M and .no_sfdp_flags = SECT_4K to this entry
+to fix the probe failure for the legacy part.
+
+Fixes: 947c86e481a0 ("mtd: spi-nor: macronix: Drop the redundant flash info fields")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cheng Ming Lin <chengminglin@mxic.com.tw>
 ---
- drivers/usb/cdns3/cdns3-plat.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mtd/spi-nor/macronix.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/cdns3/cdns3-plat.c b/drivers/usb/cdns3/cdns3-plat.c
-index 726b2e4f67e4da..0869b75e9a4aed 100644
---- a/drivers/usb/cdns3/cdns3-plat.c
-+++ b/drivers/usb/cdns3/cdns3-plat.c
-@@ -120,14 +120,14 @@ static int cdns3_plat_probe(struct platform_device *pdev)
- 	if (IS_ERR(cdns->usb2_phy))
- 		return PTR_ERR(cdns->usb2_phy);
- 
--	ret = phy_init(cdns->usb2_phy);
--	if (ret)
--		return ret;
--
- 	cdns->usb3_phy = devm_phy_optional_get(dev, "cdns3,usb3-phy");
- 	if (IS_ERR(cdns->usb3_phy))
- 		return PTR_ERR(cdns->usb3_phy);
- 
-+	ret = phy_init(cdns->usb2_phy);
-+	if (ret)
-+		return ret;
-+
- 	ret = phy_init(cdns->usb3_phy);
- 	if (ret)
- 		goto err_phy3_init;
+diff --git a/drivers/mtd/spi-nor/macronix.c b/drivers/mtd/spi-nor/macronix.c
+index febcef6a1..4cb7c1e98 100644
+--- a/drivers/mtd/spi-nor/macronix.c
++++ b/drivers/mtd/spi-nor/macronix.c
+@@ -155,7 +155,9 @@ static const struct flash_info macronix_nor_parts[] = {
+ 	}, {
+ 		/* MX25L12805D, MX25L12833F, MX25L12845G */
+ 		.id = SNOR_ID(0xc2, 0x20, 0x18),
++		.size = SZ_16M,
+ 		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_4BIT_BP,
++		.no_sfdp_flags = SECT_4K,
+ 		.fixups = &mx25l12805d_4pp3b_fixups,
+ 	}, {
+ 		/* MX25L25635E, MX25L25645G */
 -- 
-2.53.0
+2.25.1
 
 
