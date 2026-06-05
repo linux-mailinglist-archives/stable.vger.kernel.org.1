@@ -1,220 +1,111 @@
-Return-Path: <stable+bounces-260632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260719-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VjHrF31uImqFXAEAu9opvQ
-	(envelope-from <stable+bounces-260632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 08:36:45 +0200
+	id l6U3No7oImppfAEAu9opvQ
+	(envelope-from <stable+bounces-260719-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 17:17:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE276458D8
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 08:36:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ACDE649377
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 17:17:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260632-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260632-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HfT4ihdL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260719-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260719-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0DBE43028F13
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 06:31:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83FB63122D29
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 15:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE38A405C46;
-	Fri,  5 Jun 2026 06:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4583FFFA4;
+	Fri,  5 Jun 2026 15:04:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17E745039;
-	Fri,  5 Jun 2026 06:31:12 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9AA3E4C95;
+	Fri,  5 Jun 2026 15:04:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780641075; cv=none; b=PZt9pNqEeBa1sftBFtzQC0j7tiEpLKgfSsxf75mrqITBUoCM4nb/LuQIPmRcIXHuUoTs8p80k1MzpUStDVIn7R2m5FBcyNoAfjl408tBp3F1ZuokqvNF/mwtPogFwLE6zg3dlC7TrXgtJMT4yEfSlMgcNy0yLJ5EbmELS7N7L94=
+	t=1780671859; cv=none; b=mkI8cI16TDnBn69LhZf/F3l/o9KpJ32DuzjxGuC3g/aoV3fRMQGyse/R2iG2uyNsokpI3rJsvQ2L2gHe3ajHD/tc+CJPiy/mxgSHF07Be5PohKIvmyKiOQ+bFp3jxcBxJHzv/7T0o0tPEgxIXnwCIegCUPPwskDUtQETFDCW1Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780641075; c=relaxed/simple;
-	bh=kGmpVHGql2LZGI7p7pJWXq7/ggZJ/cvE5E3yok4Gh+k=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=H2LHnPV8tdSRi+0u0FJwzyEg72amc043HM+sRySHMI5yuZbqUyOebTX3qMmbdZpLyOmCt1xOY6G6hsVVo0hVLRPRiWQfVKsEYgh72aTYHH9E71kkQHKTtKHUhcKL7USCbtt5Pf2jdsu19hKsZ+bPS9uXu5ZVZHi7KTx85qSeXu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8CxncAobSJqbNoQAA--.22338S3;
-	Fri, 05 Jun 2026 14:31:04 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJCxfcImbSJqkKScAA--.32857S3;
-	Fri, 05 Jun 2026 14:31:03 +0800 (CST)
-Subject: Re: [PATCH] LoongArch: KVM: return full old CSR value from
- kvm_emu_xchg_csr()
-To: Qiang Ma <maqianga@uniontech.com>, zhaotianrui@loongson.cn,
- chenhuacai@kernel.org, kernel@xen0n.name
-Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260604123433.3182173-1-maqianga@uniontech.com>
- <08d3b817-9de6-746d-2b2c-acc4a578f95a@loongson.cn>
- <4CD61A5AB07B2388+7fa119a1-af5f-4def-b2c4-6073fc397b10@uniontech.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <519ffada-5f2b-2896-30a8-9546d3795f62@loongson.cn>
-Date: Fri, 5 Jun 2026 14:27:58 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1780671859; c=relaxed/simple;
+	bh=ovoYKAB4bYO0m3MdYKhDhzH0Kl5OSVG7wH1T3RYngcw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GvS1leIj2GiVEQBSoTcAu22PV3Pzg54rm+oIH29wsDQgsrCpVd0aSbvg6QQr0FKVGYFjZGt4Wv9+kZzENe4ElbIuzL9pB9IrVlvaik+55xLeTH7O7VsCoh3rRcpx3JW/kIAQyS1+Bjg1iExPQHujvp+LvOg1jEmcRXmM+WMESs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HfT4ihdL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BF41F00893;
+	Fri,  5 Jun 2026 15:04:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1780671858;
+	bh=ovoYKAB4bYO0m3MdYKhDhzH0Kl5OSVG7wH1T3RYngcw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HfT4ihdLgkO9AHGm8VX+cEqicZhNwchUSNhXCuad2gbNbKmjJ2eKkaBN1iC/mO+c4
+	 wvU79aEULSrvCw7te/tllY4qkYq2mLx+YlyuI7W6Q5HZXPsMHZ48Nir8IFe2+9aqdk
+	 2aRc1++c7EG0NgQzxfJDxaUSLGfPsz9JNEkDrjbs=
+Date: Fri, 5 Jun 2026 08:35:17 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: vishalmimani008@gmail.com
+Cc: linux-usb@vger.kernel.org, linux-tegra@vger.kernel.org,
+	stable@vger.kernel.org, thierry.reding@gmail.com,
+	jonathanh@nvidia.com, digetx@gmail.com
+Subject: Re: [PATCH] usb: gadget: tegra-xudc: drain EP pipeline before DMA
+ unmap
+Message-ID: <2026060510-parsnip-tray-1381@gregkh>
+References: <6a226993.a5745248.34e478.a9cd@mx.google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <4CD61A5AB07B2388+7fa119a1-af5f-4def-b2c4-6073fc397b10@uniontech.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxfcImbSJqkKScAA--.32857S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxAry5XF4DKF1rKryrZr1xCrX_yoWrXr1kpr
-	Z3tF1jkrWvqr18Xry2gwn8JFn8ArsrA3WIqryqqF1UZr4Yk3WIgF1Fqryv9FsFvw4fKryI
-	qrWDJa10vw45AabCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9ab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
-	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE
-	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
-	AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E
-	14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4
-	CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1x
-	MIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
-	4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsG
-	vfC2KfnxnUUI43ZEXa7IU8r9N3UUUUU==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6a226993.a5745248.34e478.a9cd@mx.google.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260632-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,nvidia.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:maqianga@uniontech.com,m:zhaotianrui@loongson.cn,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:kvm@vger.kernel.org,m:loongarch@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[loongson.cn];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-260719-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:vishalmimani008@gmail.com,m:linux-usb@vger.kernel.org,m:linux-tegra@vger.kernel.org,m:stable@vger.kernel.org,m:thierry.reding@gmail.com,m:jonathanh@nvidia.com,m:digetx@gmail.com,m:thierryreding@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,uniontech.com:email,vger.kernel.org:from_smtp,loongson.cn:from_mime,loongson.cn:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EDE276458D8
+X-Rspamd-Queue-Id: 7ACDE649377
 
+On Thu, Jun 04, 2026 at 11:15:47PM -0700, vishalmimani008@gmail.com wrote:
+> RnJvbTogVmlzaGFsIEt1bWFyIDx2aXNoYWxtaW1hbmkwMDhAZ21haWwuY29tPgpEYXRlOiBGcmks
+> IDUgSnVuIDIwMjYgMTQ6MDg6NTQgKzA5MDAKU3ViamVjdDogW1BBVENIXSB1c2I6IGdhZGdldDog
 
+<snip>
 
-On 2026/6/5 下午2:08, Qiang Ma wrote:
-> 
-> 在 2026/6/5 09:41, Bibo Mao 写道:
->>
->>
->> On 2026/6/4 下午8:34, Qiang Ma wrote:
->>> The LoongArch CSRXCHG instruction returns the full old CSR value in rd
->>> after applying the masked update. kvm_emu_xchg_csr() currently masks
->>> the saved value before returning it to the guest, so rd receives only
->>> the bits selected by the write mask.
->>>
->>> That breaks the architectural behavior and makes a zero mask return 0
->>> instead of the previous CSR value. Keep the masked CSR update, but
->>> return the unmodified old CSR value.
->>>
->>> Fixes: da50f5a693ff ("LoongArch: KVM: Implement handle csr exception")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Qiang Ma <maqianga@uniontech.com>
->>> ---
->>>   arch/loongarch/kvm/exit.c | 1 -
->>>   1 file changed, 1 deletion(-)
->>>
->>> diff --git a/arch/loongarch/kvm/exit.c b/arch/loongarch/kvm/exit.c
->>> index 3b95cd0f989b..264813d45cbe 100644
->>> --- a/arch/loongarch/kvm/exit.c
->>> +++ b/arch/loongarch/kvm/exit.c
->>> @@ -103,7 +103,6 @@ static unsigned long kvm_emu_xchg_csr(struct 
->>> kvm_vcpu *vcpu, int csrid,
->>>           old = kvm_read_sw_gcsr(csr, csrid);
->>>           val = (old & ~csr_mask) | (val & csr_mask);
->>>           kvm_write_sw_gcsr(csr, csrid, val);
->>> -        old = old & csr_mask;
->>
->> Hi Qiang Ma
->>
->> This is correct from the manual. Is there any test case or problem in 
->> practice?  I want to evaluate severity about this problem.
-> 
-> Yes, I have written a selftest for this. Below are the test results 
-> comparing without and with the patch.
-> 
-> I have not encountered this problem in an actual operating environment.
-> 
-> without this patch:
-> 
-> [root@node1 loongarch]# ./csrxchg_testRandom seed: 0x6b8b4567Testing 
-> guest mode: PA-bits:47, VA-bits:47, 16K pagesTesting CSR: IMPCTL1 
-> (implementation-specific control 1)Initial guest CSR value: 
-> 0x10000100Checking that CSRXCHG updates the CSR per mask and returnsthe 
-> full old CSR value in rd.
-> 
-> Case: zero-maskwrite value : 0xffffffffffffffffwrite mask : 0returned 
-> old CSR value : 0expected old CSR value : 0x10000100CSR value after 
-> update : 0x10000100expected CSR after update: 0x10000100result : FAIL
-> 
-> Case: partial-maskwrite value : 0write mask : 0x100returned old CSR 
-> value : 0x100expected old CSR value : 0x10000100CSR value after update : 
-> 0x10000000expected CSR after update: 0x10000000result : FAIL
-> 
-> CSRXCHG test FAILED
-> 
-> with this patch:
-> 
-> [root@node1 loongarch]# ./csrxchg_testRandom seed: 0x6b8b4567Testing 
-> guest mode: PA-bits:47, VA-bits:47, 16K pagesTesting CSR: IMPCTL1 
-> (implementation-specific control 1)Initial guest CSR value: 
-> 0x10000100Checking that CSRXCHG updates the CSR per mask and returnsthe 
-> full old CSR value in rd.
-> 
-> Case: zero-maskwrite value : 0xffffffffffffffffwrite mask : 0returned 
-> old CSR value : 0x10000100expected old CSR value : 0x10000100CSR value 
-> after update : 0x10000100expected CSR after update: 0x10000100result : PASS
-> 
-> Case: partial-maskwrite value : 0write mask : 0x100returned old CSR 
-> value : 0x10000100expected old CSR value : 0x10000100CSR value after 
-> update : 0x10000000expected CSR after update: 0x10000000result : PASS
-> 
-> CSRXCHG test PASSED
-> 
-> Should this selftest case be included as a patch and sent along with 
-> version 2?
-No, it is not necessary. I test csrxchg instruction by myself, the 
-manual is right, return value should be the whole old value.
-
-My meaning is that what is the scenery where CSR register is SW emulated 
-in KVM mode, or this problem is found by code browsing.
-
-Regards
-Bibo Mao
-
-> 
->>
->> Regards
->> Bibo Mao
->>>       } else
->>>           pr_warn_once("Unsupported csrxchg 0x%x with pc %lx\n", 
->>> csrid, vcpu->arch.pc);
->>>
->>
->>
-
+Something went wrong :(
 
