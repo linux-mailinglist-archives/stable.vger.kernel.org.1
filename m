@@ -1,170 +1,194 @@
-Return-Path: <stable+bounces-260774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AXdPInIiI2oijQEAu9opvQ
-	(envelope-from <stable+bounces-260774-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:24:34 +0200
+	id jvH2DZIjI2pTjQEAu9opvQ
+	(envelope-from <stable+bounces-260775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:29:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B0564AEBE
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:24:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E0464AF1C
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:29:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h7RhSMFK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260774-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260774-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b=RCwLrvIz;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="M OBUBTL";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260775-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260775-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=shazbot.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E8CDA30D1A9E
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 19:20:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 042FA3011116
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 19:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99AD1406823;
-	Fri,  5 Jun 2026 19:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06A53CF207;
+	Fri,  5 Jun 2026 19:26:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C22738F636
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 19:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27C53A48F6;
+	Fri,  5 Jun 2026 19:26:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780687046; cv=none; b=siPMn7FKGPm7oiEbHwnrvFAiMH7SUd7c/5s+5P7U/QnsoJvgfpHJ+2oEtHAdHW5tISaK50mcxHQTFWDpKCKc7Wr3Uv/VybEbFwT8qYryCmf0MKyuZpRYwVK44CyXLS+704sEGoLUO0naFIAisJXyfPi899Gd2D241gpPppK/Zz8=
+	t=1780687587; cv=none; b=vBNpfOhytxNU1Uzpjd5CAQV59YF19BOLdL0eZ+dBKy9y7oiAuPuUCXYAh/n9CYtLhh26aCc6Af2a1Bz0pcpiEAvo7u7D4+x3hJwXkUUeJwBXfSLixLu3FBo9V9SnwzhdG571dtqnHrIxVDnBDVNYpuo1sQw1dPIZWIZ9srNG0E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780687046; c=relaxed/simple;
-	bh=EM1JgTzzbjxuXKbdMgZx4743pzAHAS8JlY7n9hK0UiI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fwihpUoaQwwefbomd7DZlu6bWjZuUOsDbS4jYjQ4QqMd+ZPAReMOh0JQp+syKuFv1dyjR2umaSuYyP2SEMZ+iJ67aG6AlTy7K+O9vxHFuf7zIK7R1oAjTsO5RxYHWzHSQYTR3H7f1fCzVtNEy59TgQEuOILd2xK272T2GquCKNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h7RhSMFK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E4C1F00899;
-	Fri,  5 Jun 2026 19:17:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780687039;
-	bh=IVziJgLBHc2t0/P97HwCuR9mgEon0lVdIgnisvDBs3o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h7RhSMFKXnVQPxilcCsUpTHTWshI4MhT7ryf4g3faSoaYflHYXW4oICnvRiWWBsi0
-	 C/zUzSUtfw8xL3HlBi+j8ELx5GAzyWlmIpzoEuIEVvR+aK1J99hXp9TI7K1x5iwIc1
-	 bSjoO2tMRXdmZh3YJbKjFUIOXEqbmwiBfUrbixwjOVRty4aS3WW6uFWUDjiP0meDp7
-	 S4k4SpK+/BvKdaDWhfR1inMIFBCYVVoDlDVtypDFFPdKmyZ4DY67uwGd7nOPt8ROxw
-	 G8W9J+X/zvwrEtTt2LFnuvyBch/UraUhWqeXD32jv/dh2y0GY6StnujPSQ3knrSase
-	 5pdKrUETq27Rg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	stable <stable@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] usb: typec: ucsi: Check if power role change actually happened before handling
-Date: Fri,  5 Jun 2026 15:17:16 -0400
-Message-ID: <20260605191716.2134705-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026060417-headless-faceless-e4a9@gregkh>
-References: <2026060417-headless-faceless-e4a9@gregkh>
+	s=arc-20240116; t=1780687587; c=relaxed/simple;
+	bh=HfJkDa57jybui0vuoTt7yhA0z+LitAmFSOiu3rAwRv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=W67xjDRj+7wgPgbDDW4+yezibHyyQqMT928Fo30apP3OEGkPXBWdgMs+6E9bRdYJyDAkuJ4iy2C49zH57e74+KoMt9kfIyxWt9wTy3yPkY753LtqwAETBJMDGKyH5qQU77rppfrmNO4OuZ9p/8yGO+WxqdiSGjEeUdNZnY+kghE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=RCwLrvIz; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MOBUBTLx; arc=none smtp.client-ip=103.168.172.159
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id D72DA1400147;
+	Fri,  5 Jun 2026 15:26:19 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Fri, 05 Jun 2026 15:26:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1780687579;
+	 x=1780773979; bh=yNwqrh+OYmCtybS2nQNRCR8l0aa0V6Qbo/uTwuqkPUM=; b=
+	RCwLrvIztI7ZnC8ChfwnOBunaaFGn9he6fyC8xbAGKnQQ+azTYen9AaxJxcqXEto
+	Znx2dfjR2QRj2VLUjLq4GBEWKxnTySkewNKNtCz/sKqnkH3it3B2sXdaz+L7bYw1
+	ZvJoAWDug5B4IhDgW1g9tdVI57PHAMvkkIAF0r1K3lBgUetEKduh5BktpYiVqMA9
+	ICEi5p3LgCcHH7zVa0JCcEv7z2aWaB1UEpkxOjl9tR8yjkP7S0CBVQp5J07z0+jU
+	h6ggC76aiMnlZTJRtRH1Ufs6zLUuwzYV++P3EtzPmVcupdIonCSxKAYcutnYhbP9
+	wBsA0uknKu82Lw/N9MsqWw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780687579; x=
+	1780773979; bh=yNwqrh+OYmCtybS2nQNRCR8l0aa0V6Qbo/uTwuqkPUM=; b=M
+	OBUBTLxlV4apBjIZvz9xQkQyJa3KI7L16mi+u6WGas/YZrKmhDZrgwJ3IErq9HqO
+	UAnQMVfdCG7bA5C8OQ6AXF6rjc+Q8+TY+gy8fwVCfZTgWo9cAoid4qr4s+x+otGS
+	NswDlVExPhgvco+jHGng7PqzCGf35TvpfgtJOyVuQaD5QSW0CNXo9xoiPsaJ7L/M
+	Yx8gU4gIEVxtNQMIlC9Z3W8966z9dzcmqk4SokeBz7QUlqkCMDl9kuw4Fp97tGb9
+	Lv3f1A7dx4VMC3TEWWfwaQJT3EnaaA5DxcBgn+04GdtfRS+HxJRxhhn4JMYSIsLI
+	fYAEWKU57RGI96DW1wmJg==
+X-ME-Sender: <xms:2yIjaoQcl_VggIN5dN8u057gP3RNmJzvFz-b9vw8bHlZSKVyQcDbnw>
+    <xme:2yIjak_XcOYceqRnGnSPyovCiXzYzd5-VLfZM0TrZ_ggUCvpDE3-xQjmfTRRADmp3
+    kGTFcgCgvHSJ3AUAE4i9xsA6RZgxsy4VE5TKZ0CxSU8UL5zofBg-w>
+X-ME-Received: <xmr:2yIjaogRgjvy5q2v0A2JwUATYYRiQSSVWA31VOGUd4Gh6K14WYdwYA4BfYU>
+X-ME-Proxy-Cause: dmFkZTGjBeY6u5SIxs1YzppehSFeRsay+GdRwvPCEn4/vc0eUxFpfKqKZFqwYAyqaC1o+B
+    GPb4TZpXph0aUskl28CEQbt0C/tEN7ctmO67URz4PavcC29/pQrsc4Sbc47wrz+B4awc+i
+    QHUFQpaNUEErs6ahXT6Dyp0rNMukFxC5hoZDKgU30qHrbzFLnDE6+Uw8575a/A5MHOBrfx
+    7cIL3hoXX8S0PblnWrHLxGTBwbxnnDRALFQc+F5dwPOpzvPfRUXqxg2K1gG7cmIBe04gQW
+    CeMMtNzZR4gbWVI4+7aOn5STIeF51Iv6Bp5BIX4JnTqI+17hReZDSKq8GXOb+CmBcLgSGt
+    JXaDY3uP/OyqxpSnN1zL8e/aSfERtNlhLP0tWOLn5Kv27/lirGfXAVvnpTfkxJJzaDzU9F
+    hs4aIgfC3rwz9Nay9j0bu8n2j4hJEH7zf1dzMtGxR/ZXgUqr1/lF/+7ODOdM+Xu7hgB1bD
+    LI54aiK0J+i3TSBftnd/nKz/oHOvsFe4pVXZZ9MzfhrVvTJUw8J2CYWvUfVMiRzGrcyUmQ
+    diXwHeql5zIhn0HCqs8jYAhPl67UPmha1TdRZ2dMzCRpLP3setnrIgzZLK5kDvGYzotKBO
+    LJw/gZsTN3L/9kCMZKx15btlkKtMFCXkeFaBZskJcIyyrC03HrmvGwW+39zQ
+X-ME-Proxy: <xmx:2yIjalbg0hPx5bnt6P8jFcNWqXCg7b4V8oag_Gl8s-9wGyLhrDtpUA>
+    <xmx:2yIjat8FTXyYvROMNU9ixfmas1GbX0rFStpAEYYYIOwI1CHtP950wQ>
+    <xmx:2yIjanNwMDKdjqRI_lzvvPG6xtsuv6_eKG3lhzj2P0Ly-J1i1ChXuQ>
+    <xmx:2yIjaqEEqnJZuh2HAz_EXMQCjnOvbJv5q9G7CnL-IiuqbNr1P-7D7Q>
+    <xmx:2yIjatjtdD_RCd69jVCi5pI0n2VY0AsgwBgp9U0SRu1GmSfZ6Hb7G2qG>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 5 Jun 2026 15:26:18 -0400 (EDT)
+Date: Fri, 5 Jun 2026 13:26:15 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Junrui Luo <moonafterrain@outlook.com>
+Cc: Shameer Kolothum <skolothumtho@nvidia.com>, Yishai Hadas
+ <yishaih@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Shay Drory
+ <shayd@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
+ stable@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH] vfio: prevent infinite loop in
+ vfio_mig_get_next_state() on blocked arc
+Message-ID: <20260605132615.50a26aae@shazbot.org>
+In-Reply-To: <SYBPR01MB7881290BBDE79B61AE6A017FAF122@SYBPR01MB7881.ausprd01.prod.outlook.com>
+References: <SYBPR01MB7881290BBDE79B61AE6A017FAF122@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[shazbot.org,none];
+	R_DKIM_ALLOW(-0.20)[shazbot.org:s=fm3,messagingengine.com:s=fm1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-260774-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260775-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:myrrhperiwinkle@qtmlabs.xyz,m:stable@kernel.org,m:senozhatsky@chromium.org,m:heikki.krogerus@linux.intel.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[nvidia.com,ziepe.ca,intel.com,vger.kernel.org,gmail.com,shazbot.org];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[outlook.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:moonafterrain@outlook.com,m:skolothumtho@nvidia.com,m:yishaih@nvidia.com,m:jgg@ziepe.ca,m:shayd@nvidia.com,m:kevin.tian@intel.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:danisjiang@gmail.com,m:stable@vger.kernel.org,m:alex@shazbot.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[alex@shazbot.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[shazbot.org:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alex@shazbot.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,shazbot.org:mid,shazbot.org:from_mime,shazbot.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 01B0564AEBE
+X-Rspamd-Queue-Id: B6E0464AF1C
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+On Tue, 02 Jun 2026 16:58:48 +0800
+Junrui Luo <moonafterrain@outlook.com> wrote:
 
-[ Upstream commit b80e7d34c7ea6a564525119d6138fbb577a23dba ]
+> vfio_mig_get_next_state() walks vfio_from_fsm_table[] one step at a time,
+> looping to skip optional states the device does not support until
+> *next_fsm is supported. A blocked transition is encoded as
+> VFIO_DEVICE_STATE_ERROR, which the trailing return reports as -EINVAL.
+> 
+> The skip loop does not account for the ERROR sentinel.
+> state_flags_table[ERROR] is ~0U and vfio_from_fsm_table[ERROR][*] is
+> ERROR, so once *next_fsm becomes ERROR the loop condition stays true and
+> *next_fsm never changes. The blocked arcs STOP_COPY -> PRE_COPY and
+> STOP_COPY -> PRE_COPY_P2P map to ERROR yet pass the support check on a
+> precopy-capable device, causing the loop to spin forever while holding
+> the driver state mutex. This can result in a soft lockup, and a panic
+> with softlockup_panic set.
+> 
+> Terminate the skip loop on the ERROR sentinel so a blocked transition
+> falls through to the existing return and reports -EINVAL.
+> 
+> Fixes: 4db52602a607 ("vfio: Extend the device migration protocol with PRE_COPY")
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+> ---
+>  drivers/vfio/vfio_main.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+> index 6222376ab6ab..5e0422014523 100644
+> --- a/drivers/vfio/vfio_main.c
+> +++ b/drivers/vfio/vfio_main.c
+> @@ -858,7 +858,8 @@ int vfio_mig_get_next_state(struct vfio_device *device,
+>  	 * logical state, as per the above comment.
+>  	 */
+>  	*next_fsm = vfio_from_fsm_table[cur_fsm][new_fsm];
+> -	while ((state_flags_table[*next_fsm] & device->migration_flags) !=
+> +	while (*next_fsm != VFIO_DEVICE_STATE_ERROR &&
+> +	       (state_flags_table[*next_fsm] & device->migration_flags) !=
+>  			state_flags_table[*next_fsm])
+>  		*next_fsm = vfio_from_fsm_table[*next_fsm][new_fsm];
+>  
 
-The CrOS EC may send a connector status change event with the power
-direction changed flag set even if the power direction hasn't actually
-changed after initiating a SET_PDR command internally [1]. In practice
-this happens on every system suspend due to other changes performed by
-the EC [2][3][4], causing suspend to fail.
+Applied to vfio next branch for v7.2.  Thanks,
 
-Fix this by checking if the power role change actually happened before
-handling it.
-
-[1]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=1689;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[2]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=3923;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[3]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=5094;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[4]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=2229;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-
-Cc: stable <stable@kernel.org>
-Fixes: 7616f006db07 ("usb: typec: ucsi: Update power_supply on power role change")
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260519-ucsi-fix-2-v1-1-6f1239535187@qtmlabs.xyz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/typec/ucsi/ucsi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index b88f4e179a7ad8..3060a4a13cfc2e 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -884,7 +884,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
- 	struct ucsi_connector *con = container_of(work, struct ucsi_connector,
- 						  work);
- 	struct ucsi *ucsi = con->ucsi;
--	enum typec_role role;
-+	enum typec_role role, prev_role;
- 	u64 command;
- 	int ret;
- 
-@@ -892,6 +892,8 @@ static void ucsi_handle_connector_change(struct work_struct *work)
- 
- 	command = UCSI_GET_CONNECTOR_STATUS | UCSI_CONNECTOR_NUMBER(con->num);
- 
-+	prev_role = !!(con->status.flags & UCSI_CONSTAT_PWR_DIR);
-+
- 	ret = ucsi_send_command_common(ucsi, command, &con->status,
- 				       sizeof(con->status), true);
- 	if (ret < 0) {
-@@ -908,7 +910,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
- 
- 	role = !!(con->status.flags & UCSI_CONSTAT_PWR_DIR);
- 
--	if (con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
-+	if ((con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) && role != prev_role) {
- 		typec_set_pwr_role(con->port, role);
- 		ucsi_port_psy_changed(con);
- 
--- 
-2.53.0
-
+Alex
 
