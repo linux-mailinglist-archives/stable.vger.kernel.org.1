@@ -1,142 +1,182 @@
-Return-Path: <stable+bounces-260694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260691-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DBrCCrrLImoadwEAu9opvQ
-	(envelope-from <stable+bounces-260694-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 15:14:34 +0200
+	id D5hEHXjLImoVdwEAu9opvQ
+	(envelope-from <stable+bounces-260691-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 15:13:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA846486E5
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 15:14:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C824F6486D1
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 15:13:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=emailprofi.seznam.cz header.s=szn1 header.b=Q13nkptH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260694-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260694-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J9IoPUuV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260691-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260691-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9915C302FB7D
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 13:06:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D6B9302B089
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 13:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC47C3F4835;
-	Fri,  5 Jun 2026 13:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55B23F4822;
+	Fri,  5 Jun 2026 13:05:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mxb.seznam.cz (mxb.seznam.cz [77.75.76.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0B73F4823;
-	Fri,  5 Jun 2026 13:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9723F482D
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 13:05:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780664816; cv=none; b=LsdwV9allOSvYWQ51KTCrjExEnSHXZ+0xqTl7MDHIviob9Wy+KOstlcJgprGJkTeNULlK57uJ++k0TiIMo/2GI3QEWTZs8OvvJP2DSMhOzAfilyWJFVDCEBUoDu+m3zM9uG6wt3sjTTM51csj0l5EmpyWTA/SF+ANQfZ5ExVvSc=
+	t=1780664718; cv=none; b=G8JM/oipF4003TvRL0O0JX6r4N9H1mFc7OWipvbXwfBqyW8O5ZVVIxa+UxKzJ4n0g4p9SwNFstts4CbJG2aO0dnjDaAIhGQHbK9lQq0rH6sIdcD5dIzeQfaBkdLy5rdNkHgVKqGVkZ0qXN+LxXdVe8emNln7S64Idmmx7a7EjA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780664816; c=relaxed/simple;
-	bh=XMajIsvHqpv3hmWWRWZMQiL2sHr6MW5RUNsGsl9FiiA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hM3mlrhx8qvxxiQBVh2x1FPZllBLQxh2iILZ7yHFj4jdvu4CgMnRjAC371+vPLfBPvXCbTIPvHuM3jAVo3Pp8dhVnmppBg8jRWASIarPcZM6cszoB7D8n8yPPolRjaa8sHZSU1GkAuHhfDA9nNnXMUx8UW8SFC9+4u37ai6zAOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loebl.cz; spf=none smtp.mailfrom=loebl.cz; dkim=pass (2048-bit key) header.d=emailprofi.seznam.cz header.i=@emailprofi.seznam.cz header.b=Q13nkptH; arc=none smtp.client-ip=77.75.76.89
-Received: from email.seznam.cz
-	by smtpc-mxb-55bd7c95dc-fndnd
-	(smtpc-mxb-55bd7c95dc-fndnd [2a02:598:96:8a00::1200:50a])
-	id 1b24221e00b6afca1fc19b9c;
-	Fri, 05 Jun 2026 15:06:44 +0200 (CEST)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=emailprofi.seznam.cz; s=szn1; t=1780664804;
-	bh=ogwE3fqSYZJi/QI+DqmGkfHwrGgNJVgIJA9enEY8GNU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	b=Q13nkptHWkaX2bLvPPjf8HP2ozaHgRtbrC/sJjy+Dkip+M93QzblOfqRKJjZw9giS
-	 v2LC8dPzbAYfOKsTS3UWuR1H81vzyTCWLehVce8bIgfqqbZZEtXnc7HO1kZFMeIh55
-	 hBO9kKq3OMiqz47SEYtCIbrTUfB0GNrgt0TiocqSp2JJ880GX4P3rla5XaeZivY1/K
-	 RiXRNMpXk8tgrFQoT2sEN+NNL0bqdX4fufhtwU+o+pqfgaMddrAMq2TyCTZMPDmwn7
-	 plc1H5iEqg0lrTQOXl97os3CiFM7p2vPdVoCsPx9sJyn7wE11+SI1NlXXQ0/qbcrTP
-	 RHInxjZYwTBfg==
-Received: from localhost (109-81-118-220.rct.o2.cz [109.81.118.220])
-	by smtpd-relay-6f9c9f69dc-qpzjn (szn-email-smtpd/2.0.74) with ESMTPA
-	id 1b88d614-33d1-4da9-8dfd-02224292b969;
-	Fri, 05 Jun 2026 15:03:44 +0200
-From: =?UTF-8?q?Pavel=20L=C3=B6bl?= <pavel@loebl.cz>
-To: Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney@redhat.com>,
-	Michal Simek <michal.simek@amd.com>
-Cc: linux-clk@vger.kernel.org,
-	=?UTF-8?q?Pavel=20L=C3=B6bl?= <pavel@loebl.cz>,
-	stable@vger.kernel.org
-Subject: [PATCH] clk: clocking-wizard: fix integer overflow in rate calculation
-Date: Fri,  5 Jun 2026 15:03:40 +0200
-Message-ID: <20260605130340.3549582-1-pavel@loebl.cz>
+	s=arc-20240116; t=1780664718; c=relaxed/simple;
+	bh=7Y0n7QHpVv7Nw0bFsfTstE4MXhPALfEiort5yoWVCxA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CP/I+wj1/6tsZRCFOXp6ZrFv/HH4BTsmLW6CRYSyZHmyh524T2kCFq2JE7whNScSgUTULFveO+byf8TM4VdavsU9KWBIkzDjmRjPiyzhGGefOy5Kh7w5/Aj5orCfT58kIGqcgcUo+utZsRxHmavWjalhQWh8Q1sAYOWgMhyLmc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9IoPUuV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC281F00893;
+	Fri,  5 Jun 2026 13:05:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780664716;
+	bh=IG4GpsUDS/TACICdWeWDVQ9nYDNvKCPI/gDS1qt7NqY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=J9IoPUuVOpF+guiupgwxYmld239ppV9errAgUHKCEbeAj4HU67tONrcquIUGCMADc
+	 GQ7AwWrr0zWKhuMHWVKazlcYv94GG4zupuiMj4Hp0KofUrdCAiue6IW2Vz2cCNrHbZ
+	 XNI/+yJKQPeGA3d3OVDCk4Izv8OVITN31Hw8zUYwdvbrKoQhKJaiyKgiZkwAaWDDAJ
+	 3Q10ihVwohr0JSOTYdWakPP112Wh7cdJWSBQjdB/MPbYQkDx1juDkC3qy5w799YmHE
+	 Tu2ogUXTu06MjifpdMVd46qIdwWKv9mVHEXOnSuzSUMYgHmJIYi6Dg/sgYfq/jQ3J8
+	 9NyjmKdhkUakw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Zhengchuan Liang <zcliangcn@gmail.com>,
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxing Yin <tr0jan@lzu.edu.cn>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] xfrm: input: hold netns during deferred transport reinjection
+Date: Fri,  5 Jun 2026 09:05:13 -0400
+Message-ID: <20260605130513.410471-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026060459-existing-wooing-a148@gregkh>
+References: <2026060459-existing-wooing-a148@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[emailprofi.seznam.cz:s=szn1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-260691-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,lzu.edu.cn,secunet.com];
+	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DMARC_NA(0.00)[loebl.cz];
-	FORGED_RECIPIENTS(0.00)[m:sboyd@kernel.org,m:bmasney@redhat.com,m:michal.simek@amd.com,m:linux-clk@vger.kernel.org,m:pavel@loebl.cz,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[pavel@loebl.cz,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-260694-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:zcliangcn@gmail.com,m:stable@kernel.org,m:yuantan098@gmail.com,m:bird@lzu.edu.cn,m:tr0jan@lzu.edu.cn,m:n05ec@lzu.edu.cn,m:steffen.klassert@secunet.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pavel@loebl.cz,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[emailprofi.seznam.cz:+];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loebl.cz:mid,loebl.cz:from_mime,loebl.cz:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AAA846486E5
+X-Rspamd-Queue-Id: C824F6486D1
 
-When using driver on Zynq-7000 (32-bit) determine_rate calculation
-overflows. For instance requesting 32MHz with 100MHz parent clock
-results in 100000000*(4*1000+0) 32-bit multiplication.
+From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-Replace the expression with mult_frac which is already used in
-clk_wzrd_recalc_ratef.
+[ Upstream commit c16f74dc1d75d0e2e7670076d5375deda110ebeb ]
 
-Cc: stable@vger.kernel.org
-Fixes: 7681f64e6404 ("clk: clocking-wizard: calculate dividers fractional parts")
-Signed-off-by: Pale Löbl <pavel@loebl.cz>
+Transport-mode reinjection stores a struct net pointer in skb->cb and
+uses it later from xfrm_trans_reinject(). That pointer must stay valid
+until the deferred callback runs.
+
+Take a netns reference when queueing deferred reinjection work and drop
+it after the callback completes. Use maybe_get_net() so the queueing
+path does not revive a namespace that is already being torn down.
+
+This keeps the existing workqueue design and fixes the netns lifetime
+handling in one place for all users of xfrm_trans_queue_net().
+
+Fixes: 7b3801927e52 ("xfrm: introduce xfrm_trans_queue_net")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Assisted-by: Codex:gpt-5.4
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/xilinx/clk-xlnx-clock-wizard.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_input.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/xilinx/clk-xlnx-clock-wizard.c b/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
-index 4a0136349f71..dbef983eb425 100644
---- a/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
-+++ b/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
-@@ -663,8 +663,8 @@ static int clk_wzrd_determine_rate_all(struct clk_hw *hw,
- 	d = divider->d;
- 	o = divider->o;
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index 0c3fa01ec67a71..7a2d7048a49112 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -777,9 +777,12 @@ static void xfrm_trans_reinject(unsigned long data)
+ 	__skb_queue_head_init(&queue);
+ 	skb_queue_splice_init(&trans->queue, &queue);
  
--	req->rate = div_u64(req->best_parent_rate * (m * 1000 + divider->m_frac),
--			    d * (o * 1000 + divider->o_frac));
-+	req->rate = mult_frac(req->best_parent_rate, m * 1000 + divider->m_frac,
-+			      d * (o * 1000 + divider->o_frac));
- 	return 0;
+-	while ((skb = __skb_dequeue(&queue)))
+-		XFRM_TRANS_SKB_CB(skb)->finish(XFRM_TRANS_SKB_CB(skb)->net,
+-					       NULL, skb);
++	while ((skb = __skb_dequeue(&queue))) {
++		struct net *net = XFRM_TRANS_SKB_CB(skb)->net;
++
++		XFRM_TRANS_SKB_CB(skb)->finish(net, NULL, skb);
++		put_net(net);
++	}
  }
  
+ int xfrm_trans_queue_net(struct net *net, struct sk_buff *skb,
+@@ -787,6 +790,7 @@ int xfrm_trans_queue_net(struct net *net, struct sk_buff *skb,
+ 				       struct sk_buff *))
+ {
+ 	struct xfrm_trans_tasklet *trans;
++	struct net *hold_net;
+ 
+ 	trans = this_cpu_ptr(&xfrm_trans_tasklet);
+ 
+@@ -795,8 +799,12 @@ int xfrm_trans_queue_net(struct net *net, struct sk_buff *skb,
+ 
+ 	BUILD_BUG_ON(sizeof(struct xfrm_trans_cb) > sizeof(skb->cb));
+ 
++	hold_net = maybe_get_net(net);
++	if (!hold_net)
++		return -ENODEV;
++
+ 	XFRM_TRANS_SKB_CB(skb)->finish = finish;
+-	XFRM_TRANS_SKB_CB(skb)->net = net;
++	XFRM_TRANS_SKB_CB(skb)->net = hold_net;
+ 	__skb_queue_tail(&trans->queue, skb);
+ 	tasklet_schedule(&trans->tasklet);
+ 	return 0;
 -- 
 2.53.0
 
