@@ -1,78 +1,81 @@
-Return-Path: <stable+bounces-260738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DLBIKBkEI2rTgQEAu9opvQ
-	(envelope-from <stable+bounces-260738-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 19:15:05 +0200
+	id aaOSDkoEI2rmgQEAu9opvQ
+	(envelope-from <stable+bounces-260740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 19:15:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6D464A0C0
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 19:15:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 320B464A0E7
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 19:15:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ArWgcvT9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260738-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260738-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=K+c8TiKF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260740-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-260740-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFEA83014107
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 17:04:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2A42A3042F36
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 17:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844B036F43E;
-	Fri,  5 Jun 2026 17:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880613451BA;
+	Fri,  5 Jun 2026 17:04:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16566358D37
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 17:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0AD358D37
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 17:04:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780679048; cv=none; b=O1n2mliMNJfGyB7HlFAnVx1bSkoFt7Y0kb0vUKKvNFk4e5C9UTAJJ1WOi+0OC/bSWMEiS/W8izcI+YDz1obAnzkn7nvCbcYbNs6TCZnaDZqQ2sIQWTSDvM7AJOQmllURzCa+BPJjGhlkDrpVvhv/EoEMuCgYA0oqUYCW0K3D3Js=
+	t=1780679065; cv=none; b=pKHIG/j0ei9bgbTxJlLgFj2nSCWlsUv+kxlBIpTnSCwUMm/x2EDEZRUDeuam3uW5zf8dQz38LVR4pBAX+E4w1t5EdCaoomzZFA+IxQR7x8JzRWFSjMemkoD+TafGEpBwo3mRZDkpCn3BMPNNjLtl60F6KGUyz24XEiGoKYquXdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780679048; c=relaxed/simple;
-	bh=YtZE1xyk23OmFsw35vKQUZbSJ+FESk2hBRqIFSzm6Ms=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GKFvvnZlM4H+Zg8CGD2ugAwOLZwYxD+zUE4KE7D2/COWRZEuSupsf0IGanhJsp0A7TvzmuD6c5f8fXISdkR9vo3A8IhjvpbM2bcXCD7zU4V4vXzaSXJE1TCFUuplmhKWSG9yxRmceMn0k1jSLuwXA48lIkbz2pXwrusw3x5zNMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ArWgcvT9; arc=none smtp.client-ip=209.85.208.178
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3967726bc47so20965671fa.1
-        for <stable@vger.kernel.org>; Fri, 05 Jun 2026 10:04:06 -0700 (PDT)
+	s=arc-20240116; t=1780679065; c=relaxed/simple;
+	bh=qlOqJCumkmHJfJLiXXOXhCO/dxGSCrwCfvho3e9vArQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IDu9zBn/QjDIeuMc9iPDyIl/NDv/dGjAQYyaRQVWAyQ4S4/3ukqEac8UymkJLy4QIW3N/vZOGH2YL2R/0rVQrTTl3vBaHGroE7EZGE1sf24Sf7LuYObHkCZsTo3cF3BHtX1bUXAWd0Qdv3hry9w+z3dcvnEfd2/ghJ90dWpPA1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K+c8TiKF; arc=none smtp.client-ip=209.85.208.178
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-39666ac91a2so32709801fa.1
+        for <stable@vger.kernel.org>; Fri, 05 Jun 2026 10:04:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780679045; x=1781283845; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+9Ork6uYNXL+eeO+phzb3xUI2OLrfdgYyvNm4Wy1uWc=;
-        b=ArWgcvT9KiY9SmhPeAmoxZZwK0uT2Qjkp3pcAoy6Rr5EVe1YDlkH+zVsukaxJhyvZJ
-         TZaukM+Z0ZmIT+mCl67mCVbMQLTmDwh+9kdZq8eqF3Afh6Eedd4tfk3/mHfF6RovH1p2
-         0gLJqz/mYtl9tL73XJFDNSOycwUO/vYq2arcFk4Z6HTabZpaMU+dP6pz0wTB+yJllTqB
-         ysFsRGNtuSIgLvi40pcksrGurAUNRgNyb62/2koQVCl9lVAdYjf16TcuiRRyd8cKUkKe
-         qdtemW6qcISbDAtsfvSPgN0xcSY5tPWOL/47fn+k664aNqJ/Hgsyb0N/iMMPGo9lMntq
-         zeAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780679045; x=1781283845;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1780679062; x=1781283862; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+9Ork6uYNXL+eeO+phzb3xUI2OLrfdgYyvNm4Wy1uWc=;
-        b=ZQRG63877tnSDtVQR0wyA1b1mwv+SGw3Ss8zxs5Ilp58k+Y0I5biL3HtguRfMimXxb
-         JqwRglu/p5i9lv6Wx9QEb2va+XAw7Vs4oh2mj/Z82Pv5PYDOVOch0lsLBE9WNE+OEik8
-         pUe4osYkKkK6wHRC2dcf0kXFTwnIDUj9r2qhT7q2MeUQkrLQTGsGxqS4YdnXe86uhrkq
-         K0Q8bwdgHQjHGycc8pWJYLk0pMl8ae5yYqFziRtPvfeF8hqL98Q9uLc6rpgNx56QoA3U
-         dS6MKZ6fPMaTOaM01wSKsjs3UGBXPhwcwR//ortFfnFzaubs0icv3MHyFGY+9PW78u93
-         RWuQ==
-X-Gm-Message-State: AOJu0Yx49QC5nGxX3/XfvmzKJoWSdxt+L9kUUav6jo4kuAOcc8lXX0wk
-	VAgavSreTkboBWvTFlmtGbI7jRK8VqeDYCyCFAZwcbigTEBzVAqMS86sR2StMamXNEE=
-X-Gm-Gg: Acq92OFLa8LpAsehzk+0euarhfJ2MtHWn2Xc1jS2FXlKBXDXaSWHjHHmjs7jYHtMyR+
-	Z1Xis5pnv/pZOlNCvgvzt52wYJNoeYfGahRiNUBIbpYbETy6OS+QNfsrkqjiCdczDE3apirg68N
-	mvI0FR1Di/BURHDK/Dp6UzNllFlTWJIeXhuPacQmI0VWSZxMIoRyHIhUkID5txaX3zOmlK7nz/1
-	Bp6kJJuopJzxul/3mew1owVcoqGtc846a/BdWrlkZKpR9PQsO/ls0K1Y3IDOpskAPSCk97Co5zT
-	qhxvOkS9Rp5F3ba2lsvD2mQ7GWa+SoBzm2Da9BW5hk+xD51ZgTbDvOO2XPJk7snPfFYRtH7oJIK
-	4GVsm5PCBO7w8zkwvsjOoe8c9fktGfnTIm3Ix4oNiO2DiRi3PUEuAMJlv9NIhv1ewiw4dUTWEmd
-	ZC+Bc97oS58DseVsTife87wdVYPcgI6j5SIgEE+rGFksrTllvrJNz+X0SE8fcGQPdILcxA
-X-Received: by 2002:a05:6512:1056:b0:5a8:8eda:bed5 with SMTP id 2adb3069b0e04-5aa87bc934dmr1434238e87.32.1780679045157;
-        Fri, 05 Jun 2026 10:04:05 -0700 (PDT)
+        bh=EB08X2I3fy3wrkRM6VsdXZolE8SRqefSruMLGUvZ7UY=;
+        b=K+c8TiKFsFhtazVJVRNzywEeWp31xZHpogsefp63IVsiZNG0J3VMXaj5HLrErarTpK
+         melF8isolHsoW2o7ypPKwXLnVbfSbnuSWnwLOdeWc6p9ZY7MZK+pbfLm3maUTHG4zyl5
+         geyZjjPNhZdmbNDDXsnkSFDg5aTBbpiI+dm2S9UtFj8QNkQA00bd08+4S257XstnlFCj
+         RxbP4IdFiNJnU9T0SKkrt9SC+yXfCnUS7E7FDdvU4miqCzQai0qXN9nKqRp5zsJUjQ45
+         sDoZKGc4xMMBLLxtDZFv1HKtpnUaYCKa3iyUPdNz3I9LgvE1W/Ai9lZHh6232m9jklWb
+         4MGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780679062; x=1781283862;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EB08X2I3fy3wrkRM6VsdXZolE8SRqefSruMLGUvZ7UY=;
+        b=cKslB64ipY9MTkI6xIrBYBVaeAfv6IC6C54PZzHyE9l7qQtiCFq+z9eIXyWbY4Y9AM
+         GZvLQlGs/XlgK3d3Tv9lLnrC3LsLFOsy7Kxb/nPvWZsFN2Uv9nrnp+D7uLCEXg7cFJXM
+         ci93sR/3sLEp0rviJ0K56VflGdIIYYmsSVXgCSsipqrX/MFHDHWPXzJ/flWBuhEDLuvz
+         xivIXa8Gham5qfAe79BODqCi50uw5td6LvxuMEu0CufAFOeiIL3U37U2KL+T53gjKcoZ
+         6PRDhLXfI8sIBp8PlTHVZZURkUo8gm1wvbSrDcXusTNuaqJjTbuf7caXsRpI1BFihuq4
+         jiIA==
+X-Gm-Message-State: AOJu0YylbZI8WGP4KiarfNsjeqsv97QxfC6UzRqM6fya442EWrT+Wb4r
+	W5C3Q4jQhKmbgT8BU5mkpNygeF2u1uHHrlqYwJsXwTzKJXFpOBrwKeqZwe3vdqCoNlU=
+X-Gm-Gg: Acq92OHBeQeV7YXl3TO0kCkUxhNnAYacevOSE/EoakSDdBQ7zSJGEorSAeWZgZc/YdL
+	ZaYTgHOjHwf6Yxrdl5Pko20tlx3xX32NPPEtghy/ogvRGGoZfH0+AP6YJo21eLJotPby8Pn0kqE
+	+YhPxje9lzBt7tBx7vLdo7cEXYEKCDpjqddx3/OSMc1Dr/J70/YwCjTcepndJ9EPGQAhyFlE8wh
+	cc/YS4BDKhm2obGm46sjGMHONzFn+Ml7OAxNZ8+/obaqhEDCTdbIBpZuRA+Q5nOkl4PVTYUdXKW
+	JDYuTUZLkYUUJvj0LTD7HGi0hx+QufTWWNQraIN+442sI9GsYECGQQCelNOcPrcyFp92icYVKn1
+	A3emtV/SOplRxwgnfxqxxelLfRu9p+qznWP6eEYiwgkkqsDj6dZ1uU7NZbt+3AAnQz1BNFrjFE1
+	YGEZ1EzocOj28I+dPUgchtY+STmPaUm3Aw8+SQ8Gy5Vy6n6mEHtRV63kEg+cglnXsDgtGpLYQ9K
+	BA2WgA=
+X-Received: by 2002:a2e:a58a:0:b0:394:8fc:8c3d with SMTP id 38308e7fff4ca-396d2892d2fmr10213551fa.4.1780679062303;
+        Fri, 05 Jun 2026 10:04:22 -0700 (PDT)
 Received: from c0624c666cc5.devsec.astralinux.ru ([93.188.205.42])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-396ac07b66asm26931161fa.11.2026.06.05.10.04.03
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-396ac07b66asm26931161fa.11.2026.06.05.10.04.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2026 10:04:04 -0700 (PDT)
+        Fri, 05 Jun 2026 10:04:20 -0700 (PDT)
 From: Vladislav Nikolaev <vlad102nikolaev@gmail.com>
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -90,10 +93,12 @@ Cc: Vladislav Nikolaev <vlad102nikolaev@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Zhu Yanjun <yanjunz@nvidia.com>,
 	lvc-project@linuxtesting.org
-Subject: [PATCH 6.1 0/3] RDMA/rxe: correct cleanup-task backport and timer cleanup
-Date: Fri,  5 Jun 2026 20:03:26 +0300
-Message-ID: <20260605170349.1524-1-vlad102nikolaev@gmail.com>
+Subject: [PATCH 6.1 1/3] Revert "RDMA/rxe: Fix the error "trying to register non-static key in rxe_cleanup_task""
+Date: Fri,  5 Jun 2026 20:03:27 +0300
+Message-ID: <20260605170349.1524-2-vlad102nikolaev@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260605170349.1524-1-vlad102nikolaev@gmail.com>
+References: <20260605170349.1524-1-vlad102nikolaev@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -108,14 +113,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[gmail.com,redhat.com,ziepe.ca,mellanox.com,kernel.org,vger.kernel.org,nvidia.com,linuxtesting.org];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-260738-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260740-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:vlad102nikolaev@gmail.com,m:zyjzyj2000@gmail.com,m:dledford@redhat.com,m:jgg@ziepe.ca,m:haggaie@mellanox.com,m:kamalh@mellanox.com,m:amirv@mellanox.com,m:monis@mellanox.com,m:yonatanc@mellanox.com,m:leon@kernel.org,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:yanjunz@nvidia.com,m:lvc-project@linuxtesting.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
@@ -131,44 +136,46 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1D6D464A0C0
+X-Rspamd-Queue-Id: 320B464A0E7
 
-The linux-6.1.y tree contains commit 3236221bb8e4 ("RDMA/rxe: Fix the
-error "trying to register non-static key in rxe_cleanup_task""), which is
-an incomplete backport of upstream commit b2b1ddc45745 ("RDMA/rxe: Fix
-the error "trying to register non-static key in rxe_cleanup_task"").
+This reverts commit 3236221bb8e4de8e3d0c8385f634064fb26b8e38.
 
-The stable backport added guards for req.task and comp.task, but missed
-the resp.task guard and also left rxe_cleanup_task(&qp->resp.task) above
-the RC timer cleanup.  The upstream fix checks all three tasks and keeps
-resp.task cleanup after the timer cleanup.
+The reverted commit is an incomplete backport of upstream
+commit b2b1ddc45745. It added guards for req.task and comp.task
+cleanup, but missed resp.task cleanup and left it before the RC timer
+cleanup, unlike the upstream fix. Revert it first so the correct
+backport can be applied cleanly in the following patch.
 
-This series first reverts the incomplete stable backport, then applies the
-correct backport, and finally backports commit 1c7eec4d5f3b ("RDMA/rxe:
-Fix "trying to register non-static key in rxe_qp_do_cleanup" bug") to
-avoid deleting uninitialized RC timers during QP cleanup.  The last patch
-keeps del_timer_sync(), because linux-6.1.y has not renamed it to
-timer_delete_sync() yet.
+Signed-off-by: Vladislav Nikolaev <vlad102nikolaev@gmail.com>
+---
+ drivers/infiniband/sw/rxe/rxe_qp.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-Vladislav Nikolaev (1):
-  Revert "RDMA/rxe: Fix the error "trying to register non-static key in
-    rxe_cleanup_task""
-
-Zhu Yanjun (2):
-  RDMA/rxe: Fix the error "trying to register non-static key in
-    rxe_cleanup_task"
-  RDMA/rxe: Fix "trying to register non-static key in rxe_qp_do_cleanup"
-    bug
-
- drivers/infiniband/sw/rxe/rxe_qp.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
+index 709c63e9773c..05e4a270084f 100644
+--- a/drivers/infiniband/sw/rxe/rxe_qp.c
++++ b/drivers/infiniband/sw/rxe/rxe_qp.c
+@@ -788,11 +788,8 @@ static void rxe_qp_do_cleanup(struct work_struct *work)
+ 		del_timer_sync(&qp->rnr_nak_timer);
+ 	}
+ 
+-	if (qp->req.task.func)
+-		rxe_cleanup_task(&qp->req.task);
+-
+-	if (qp->comp.task.func)
+-		rxe_cleanup_task(&qp->comp.task);
++	rxe_cleanup_task(&qp->req.task);
++	rxe_cleanup_task(&qp->comp.task);
+ 
+ 	/* flush out any receive wr's or pending requests */
+ 	if (qp->req.task.func)
 -- 
 2.43.0
+
 
