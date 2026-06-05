@@ -1,186 +1,154 @@
-Return-Path: <stable+bounces-260653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260655-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WBGkJnmPImrZaAEAu9opvQ
-	(envelope-from <stable+bounces-260653-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 10:57:29 +0200
+	id 5M7BKo6XImqOagEAu9opvQ
+	(envelope-from <stable+bounces-260655-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 11:31:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319E1646A09
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 10:57:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD371646DF4
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 11:31:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=I7bmhe+5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260653-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260653-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=onurozkan.dev header.s=protonmail header.b=Oo3fYQnL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260655-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260655-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=onurozkan.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B86413074182
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 08:51:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B42883010DB4
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 09:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0534A3407;
-	Fri,  5 Jun 2026 08:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0314183C3;
+	Fri,  5 Jun 2026 09:16:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E3A4A33F8
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 08:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBFF4183A7;
+	Fri,  5 Jun 2026 09:16:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780649455; cv=none; b=Nt9XOfV5L+6ApQOMMfYYt7urVr3URqBi63Pn/at11pheJ4VPlWR4TzdqJ8BiGkri/ICgLrioKq5+rVwDIBP3hnwkOTes+wYp0SKoyTNYIA3JbgGtBTfF7Ek+kDiKA11yRZARoNY17PyI4K6RcVDkWCvCdaDMK+vHkJD/fRjb3zg=
+	t=1780651008; cv=none; b=CFBjtzaWvv/h3jpud4Zyp27LssAObmrFGUUJX4QvbDq4w3094ICylRS0tMmkarNq0SBg9HecTNijYLumc+Di2lmqVLOgeVVYjocm50F9e/isiOds1AEok1yOpdwhyMnKhF9vQhkKJ3EKQv/NVQQwkkRfCf0onSklPX/KcBftibg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780649455; c=relaxed/simple;
-	bh=rwpz8oRKT2EHd6rvYnp/8VrSAUtSAqZ55UfOX89Ibts=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Gg4rSHEQv4JrGS1yJ6+tPowGPps30py6tEscRYBf9EkH+GqA+2iinkPdO3EdfDAqZavxCO0RZnHNd6/PdGN1M9k7o6W892yFSilUTk4+A7b1eJ1yviJbGGtSSINWwHjZkbYkozrTZZra2ox8NR2AAmwssUjkryDdPCY2rDUz6YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I7bmhe+5; arc=none smtp.client-ip=209.85.214.179
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c0c3315c5dso17512535ad.3
-        for <stable@vger.kernel.org>; Fri, 05 Jun 2026 01:50:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780649453; x=1781254253; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k3OkoXbhs5kLS7ezOvy8weCw2fewKlEBiuSMFva/mlQ=;
-        b=I7bmhe+5tjMagUOc7mwfY1+9qFbJArFILkpZ5O5SCH+dUB6jwxxokJxnAbZAZS5Q8l
-         lPWp52p7200jDaaVfLStjWRaxhPfWDvYPuaTLUfzq20rTPUYKpnAOIbcWR4bd3tQ/Ewb
-         SKHUe/yPdirO7zx1C+O0qIw2qwmE8GphknLXMgrHAVmTtdPF0e813aIEyZplt6Tj2Zo2
-         VHCxp4y/7nx8Y3whF8W0ZJSkKSQ7/pCsao7ORU4FQqMxXzVBhH9fT1ih84pt50zCZD9N
-         bHfi7N8n9G+A9OuSP7GdTEe49+qxWtYIXv6JX/3JE71Wb5I3/5pFkXmofGAvljg7CsS8
-         hs/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780649453; x=1781254253;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=k3OkoXbhs5kLS7ezOvy8weCw2fewKlEBiuSMFva/mlQ=;
-        b=nrETdIQO6aermJ9+qrgmWwwUAp2mbJs31SUhHQsFJPcN8IxabfvP34qMptzKdI6xyE
-         mz60Zfp2Kj/pwhA1g0fIjDMssD1m4bHKfbcE5r81vEYTuGe6KpsUHtlc0ofJ8obijj6p
-         YETdtnztGzAS2XyM8DR5mqMKGxHuYsN0Q6109+Y3vlaTRj7oejuc+jIcpzHRyZY0s32w
-         EY/phW4dya1qQjGV+8v4SFJXufdwrIZFulE6NBGGCgrS0GJVdOWzVTh3CqeQXWmMlb3k
-         T9iCeVzeTBmGbsilqBRBLaY2aa4QDtPOZbmhWZeEjy+InVNWD0NY05zbLVAaSToQotHf
-         6ySA==
-X-Forwarded-Encrypted: i=1; AFNElJ/O7q71Be2Pkwx9UBxjv791D3I+WqYyHCprz5AnoiQ8RygwdntGfKXjPqlep+3MdRhHfesd1NE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxo7DQ7kU4kRWsEXUrsvwzTaRhFXuzA0qJ2y+nexyUDi3DYnJrv
-	UsQXHXaO9Dg9WVVGwAit44u2GO6OIL3xrW2b6830xKCdc3XAsntNZRnN
-X-Gm-Gg: Acq92OF3Vcrt3FHIWlNEKfvdCVrC55e6jDKKL9QyonkPq13Xykg6J2RfyIvVJ9ztf+T
-	WhBmW49DQIUgI4AOIxPyNZHottcsew+WtLiur1p4qhJ+dlQ8IaiIQ4elmghFjWIUXqRWST7cpwU
-	AxYBfHNKRaX1kbMQyEiSXGs936fAspugbJXc17RYXR0osR2fjYUCn/3cBv54j9wf/9NG0EGCx8O
-	EapF17BOUGZNXyxLFAXIEwWCvQynv45+MMLUTF3qkW1y8v/LPRbBHtwlBNFgb5wlcHS7d1r9/B0
-	RWgCrFKEs6JIuWd7jX466LrTTbOKW5DGbcsskc6AMXlT22LEH3euCWcSGm/a4jE5gD/RazEGNYn
-	1MdmR7rzsXFdoVvc7GNiNWtfkdz6VTwoLJEs7Lp+LieR17h7kEsaulV0u15Q4BLR1NTt7XcAwGb
-	7fMuC7JqY/nTtIiJNJn4iQXtlYXEV5LDPiFUYRsC3SS+1CLQazoPltCGAIAFNFvMAPf9k=
-X-Received: by 2002:a17:903:41c7:b0:2c1:77cd:fb0b with SMTP id d9443c01a7336-2c1e85e04bbmr27080835ad.37.1780649452732;
-        Fri, 05 Jun 2026 01:50:52 -0700 (PDT)
-Received: from twhmp6px (mxsmtp211.mxic.com.tw. [211.75.127.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16649fcdfsm108703915ad.78.2026.06.05.01.50.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2026 01:50:51 -0700 (PDT)
-Received: from hqs-appsw-a2o.mp600.macronix.com (unknown [172.17.236.67])
-	by twhmp6px (Postfix) with ESMTPS id B99234163B74;
-	Fri,  5 Jun 2026 16:50:49 +0800 (CST)
-From: Cheng Ming Lin <linchengming884@gmail.com>
-To: Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Cc: linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	alvinzhou@mxic.com.tw,
-	Cheng Ming Lin <chengminglin@mxic.com.tw>,
+	s=arc-20240116; t=1780651008; c=relaxed/simple;
+	bh=AkgUWGZkUVsVf7+t/8M3b6jpxqCom0DmtzVegaSQkXE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Oy38V/8p3sw6ZbmSACBU/lK2CxsYKyH5IJ7fzzpYQJWtMcvaYXXodL8FxDl4F+WUQcrY+RUIK1Zoo6/hBqL++yMbejfZd1VxWAUw6xMSWm6z1wLdWymgNHWKe66ymN3wMF3i3h8uMmwzTv0sCzs3kL3kqHx4yC+oTGebToeP2GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Oo3fYQnL; arc=none smtp.client-ip=79.135.106.113
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1780650997; x=1780910197;
+	bh=/xY5EtVoI/QL1ZLgCsbM6h32E0Qy+9GKKtlzGcWJLAs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=Oo3fYQnLEkd5QO4BE6HYXsxGF2gjwgBMJH/MsLhV+1GDoKwWsRXE+hgqYIPam7m7e
+	 Y2LyJV9RNzBO/Ii5cWZa0dZxa8KfZY5IcvA+ayeYP2CaGcAahdaZVgwQHaNi6/MXWk
+	 LBR4Drn9kvalGgg41JDU+dlTDt+FJiQoOCgVznlRxLTJLUuGIVpctOKKevsLBtwR7v
+	 LIt5ETyT5qNGAlpCd4VpStAHf2Tr7BZp1A1OcrlkL43uyGvu9uoQuxM+MusQkpBttO
+	 G28ZQUVKLzouTMvxzTydXMa4PcJl06qr+fppD3SaNoyV1zOvZagc1XW9ig9lfnT0O6
+	 bbTSs5Avg1uJQ==
+X-Pm-Submission-Id: 4gWwmL44rLz1DF7D
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Gary Guo <gary@garyguo.net>
+Cc: Yuan Tan <ytan089@ucr.edu>,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	zhiyunq@cs.ucr.edu,
+	ardalan@uci.edu,
+	pgovind2@uci.edu,
+	dzueck@uci.edu,
 	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] mtd: spi-nor: macronix: Restore fallback parameters for MX25L12805D
-Date: Fri,  5 Jun 2026 16:48:37 +0800
-Message-Id: <20260605084837.1875896-3-linchengming884@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260605084837.1875896-1-linchengming884@gmail.com>
-References: <20260605084837.1875896-1-linchengming884@gmail.com>
+Subject: Re: [PATCH] rust: firmware: return empty slice for zero-size firmware
+Date: Fri,  5 Jun 2026 12:16:31 +0300
+Message-ID: <20260605091632.313084-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <DJ0YRJ6MHAU7.WVR4P2MQ4HIX@garyguo.net>
+References: <20260605041134.38290-1-ytan089@ucr.edu> <20260605071104.135675-1-work@onurozkan.dev> <DJ0YRJ6MHAU7.WVR4P2MQ4HIX@garyguo.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[onurozkan.dev,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[onurozkan.dev:s=protonmail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-260655-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260653-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:pratyush@kernel.org,m:mwalle@kernel.org,m:takahiro.kuwano@infineon.com,m:miquel.raynal@bootlin.com,m:richard@nod.at,m:vigneshr@ti.com,m:linux-mtd@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:alvinzhou@mxic.com.tw,m:chengminglin@mxic.com.tw,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gary@garyguo.net,m:ytan089@ucr.edu,m:ojeda@kernel.org,m:boqun@kernel.org,m:rust-for-linux@vger.kernel.org,m:zhiyunq@cs.ucr.edu,m:ardalan@uci.edu,m:pgovind2@uci.edu,m:dzueck@uci.edu,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[work@onurozkan.dev,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[linchengming884@gmail.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[linchengming884@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[work@onurozkan.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[onurozkan.dev:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,garyguo.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 319E1646A09
+X-Rspamd-Queue-Id: CD371646DF4
 
-From: Cheng Ming Lin <chengminglin@mxic.com.tw>
-
-In a previous effort to drop flash_info fields and rely on SFDP, the
-static size and no_sfdp_flags were removed from the MX25L12805D entry
-(JEDEC ID 0xc22018).
-
-At that time, the legacy MX25L12805D was already EOL and unavailable
-for physical testing. Verification was inadvertently performed using
-the newer MX25L12833F, which shares the same JEDEC ID but supports
-SFDP. As a result, the probe succeeded during testing, leading to
-the mistaken removal of the fallback parameters.
-
-Since the actual MX25L12805D lacks SFDP support entirely, it strictly
-requires these static parameters.
-
-Restore .size = SZ_16M and .no_sfdp_flags = SECT_4K to this entry
-to fix the probe failure for the legacy part.
-
-Fixes: 947c86e481a0 ("mtd: spi-nor: macronix: Drop the redundant flash info fields")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cheng Ming Lin <chengminglin@mxic.com.tw>
----
- drivers/mtd/spi-nor/macronix.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/mtd/spi-nor/macronix.c b/drivers/mtd/spi-nor/macronix.c
-index 1adb79832..d13ea93b0 100644
---- a/drivers/mtd/spi-nor/macronix.c
-+++ b/drivers/mtd/spi-nor/macronix.c
-@@ -155,7 +155,9 @@ static const struct flash_info macronix_nor_parts[] = {
- 	}, {
- 		/* MX25L12805D, MX25L12833F, MX25L12845G */
- 		.id = SNOR_ID(0xc2, 0x20, 0x18),
-+		.size = SZ_16M,
- 		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_4BIT_BP,
-+		.no_sfdp_flags = SECT_4K,
- 		.fixups = &mx25l12805d_4pp3b_fixups,
- 	}, {
- 		/* MX25L25635E, MX25L25645G */
--- 
-2.25.1
-
+On Fri, 05 Jun 2026 09:13:55 +0100=0D
+Gary Guo <gary@garyguo.net> wrote:=0D
+=0D
+> On Fri Jun 5, 2026 at 8:10 AM BST, Onur =C3=96zkan wrote:=0D
+> > On Thu, 04 Jun 2026 21:11:34 -0700=0D
+> > Yuan Tan <ytan089@ucr.edu> wrote:=0D
+> >=0D
+> >> Firmware::data() builds a Rust slice with core::slice::from_raw_parts(=
+).=0D
+> >> Unlike many C APIs, from_raw_parts() requires its pointer argument to =
+be=0D
+> >> non-NULL even when the length is zero.=0D
+> >> =0D
+> >> The firmware loader can represent an empty firmware image with size =
+=3D=3D 0=0D
+> >=0D
+> >=0D
+> > I haven't checked in detail yet but "empty firmware image with size =3D=
+=3D 0"=0D
+> > sounds like an invalid image. Can such an image actually make it all th=
+e way=0D
+> > to Firmware::data()? I would be surprised if the loader accepted it.=0D
+> =0D
+> `kernel_read_file` will return EINVAL if file is of zero size. But I thin=
+k the=0D
+> decompression path might produce this? The zstd code just does a=0D
+> =0D
+>     out_buf =3D vzalloc(out_size);=0D
+> =0D
+> which will trigger a WARN but still return NULL.=0D
+=0D
+On NULL, it immediately fails with ENOMEM:=0D
+=0D
+	out_buf =3D vzalloc(out_size);=0D
+	if (!out_buf)=0D
+		return -ENOMEM;=0D
+=0D
+Thanks,=0D
+Onur=0D
+=0D
+> =0D
+> That said, I doubt any valid firmware will be just a compressed empty fil=
+e.=0D
+> =0D
+> Best,=0D
+> Gary=0D
 
