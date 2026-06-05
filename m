@@ -1,157 +1,391 @@
-Return-Path: <stable+bounces-260718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3ZZgGKvoImpqfAEAu9opvQ
-	(envelope-from <stable+bounces-260718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 17:18:03 +0200
+	id jC7RHWxqImqOWwEAu9opvQ
+	(envelope-from <stable+bounces-260630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 08:19:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C6A64937A
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 17:18:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13640645750
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 08:19:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rzZZNpCc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260718-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260718-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=ffwll.ch header.s=google header.b=JMGRCE5m;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260630-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260630-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06B90311D59A
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 15:04:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 81307301B248
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 06:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F713F482C;
-	Fri,  5 Jun 2026 15:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442433CF67F;
+	Fri,  5 Jun 2026 06:19:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C51C3FFFB3
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 15:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F813B9DB3
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 06:19:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780671856; cv=none; b=OcoOkIolV52UpgSb+uSOp/8SdhIizgbSGftsa/rAd3tKrOwd49g1k9PiymJPueaJux+Joye4QcmFcA2xWjrK5tx2v8ij2G08sHAiLnpCYnlZ7y8f9riXbxU4VAAiniez+TUDSnUM5MOmof4DzOT66pjU8kR1e2TFgbmdyHQv9Ps=
+	t=1780640360; cv=none; b=btZOQrnAkFL/3PNjos4sI77XcgWtxqKGHubwbZBZWA0ysq2Vnf5t+/LtdIYXD6LP0ib/WZEo0LWpfaqEfSw032D2O2Nbh/pjp44VrRarZJ8AMMvhP1RJ+1SIAUSWuq6YvjoTncBQ9+MLBqN3DgEypOsh243TmicStWOhpeng8W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780671856; c=relaxed/simple;
-	bh=thjbW6MWQGA/Q9zmz25QKsk9yW9ztxXuNCy3yQkda4k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i35qFG44pFD8nXCjgSftl8hWTR93bnfmZen9inNNw0feEqNRA0dFA43YggcvK0iMXT+SYHQ23md98fc8ypOY2CzHvzctku7Zm4tyhgVVowBjEtezrldm++3QT9pn3he9isiGwCY6U9vS7iiOV5onEXCbkWVF0PX71hvoWccmjXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzZZNpCc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9421F00898;
-	Fri,  5 Jun 2026 15:04:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780671855;
-	bh=uj9MQkwzXva8ROXKtROLl92BcgzF1XdWRNHgg3yjJ9A=;
-	h=Subject:To:Cc:From:Date;
-	b=rzZZNpCcRKkBEx0hcL33MU2WHK++cNWtxp6akg2O8eSpKK9kjo5m1l7UHBa/AEW0t
-	 xVgNXpE++ZK77niwXx6+4RfzQSB8GeuQC7feCzAWd2Kcdf+QJEvQExh+2lkVKDQL0j
-	 UUJkXttRjyBDlYLmu1z8XHyQm8cpy+FSiVQCRU/A=
-Subject: FAILED: patch "[PATCH] usb: typec: ucsi: Don't update power_supply on power role" failed to apply to 6.12-stable tree
-To: myrrhperiwinkle@qtmlabs.xyz,gregkh@linuxfoundation.org,senozhatsky@chromium.org,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 05 Jun 2026 08:17:51 +0200
-Message-ID: <2026060551-crazily-gatherer-b40f@gregkh>
+	s=arc-20240116; t=1780640360; c=relaxed/simple;
+	bh=8JnUTTXacKL+iKTJwJJMZd3GepqsRyHwF0kXEWHAQTA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lD/4trr4b4VNsd4CiyrUMuadG1hJAqixu8Tx8/PMa3OYv39QDFnZT0Xf+Pe994+z6Etx6ip2H3jd4y6fcC2BAYDpkbJUO6VIvJ3zw0zG2cQ8X4d5ukjTWfKl5/483AMVvyeBJ91nQmsuHLs9sMShk6qnKt/0wGCR/DZzZXe3euk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=JMGRCE5m; arc=none smtp.client-ip=209.85.128.48
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-490b3637b90so12927685e9.3
+        for <stable@vger.kernel.org>; Thu, 04 Jun 2026 23:19:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1780640356; x=1781245156; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kud96yB4lzvW7WHHFnyfSyasTJ4YMMkn9Qm9IZhFNIs=;
+        b=JMGRCE5mwg770bOu2UNz93Rhd9jyhibvgHrXnOFGMWnHqaJth6ANwt4pROMRy90O/V
+         m9Zd5lQC9Ru5OHn2Ngb7/lMKaNorG33BOXAr3hApkbwuLkVAUhHvmO5WXeNrs00zn7Ez
+         iRJHVxrqm2kMlePVTzUdPmJwMYl+gpBYZpeuQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780640356; x=1781245156;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Kud96yB4lzvW7WHHFnyfSyasTJ4YMMkn9Qm9IZhFNIs=;
+        b=j9Cwnj3U8roQbiIFk7MSMwyBPrJbDnfeizLkrVQjWbLHK9BN5jIPYiMdGgfY7XEzJf
+         I9ZHOXWCH0C2YvqgpPNEi8JHXXPmKynXhwzTVmIIt+/4hfZuT7FnrPUeSEwB5fudkxqM
+         tceThnSYY1qL8JAIuUZnLYA0hhRvhKingjmSw20tuY3nQEIqTE7VSowm3dvvsSrBEd7i
+         nbvmD4GfiqZAUfCm5RbUPfV8m1RkyW1hi23+yIIR/kahLYWs4YHW3HvVP5LFVROmDmCu
+         NkO457RP+AZ9hMsjCyYrE+Xdzzz7f3goLUhCYBqXJ++mSHGYxsBkNMO49hWGQ9HbPih6
+         INeQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8Xy5YLBLhIw2ULhT0ILgmqdMP24nMKeadtqYdXK48Wl+Y24/ilajV+hiyxxwDVrfYl3Po1TpI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0aOXZgFSE5Wgz+w9klJnDMSDDpJOToszzo5oI4VO2ZVZRQV0V
+	+mlk01D9rilHDiFoal2HgFM4LuzjfVw2Fytw+ovnHPaJovC2TLi8lmz4fgCqvEbv+gk=
+X-Gm-Gg: Acq92OGYUgmWzz9ufIzLidX/WHFHF6NYphSbag13o7LK7Gv40meIDslkIOyaDsqhr6c
+	H7VhqvvVY7trQni9doVDMCuP0aeKPjYSwEaDky2vgxgtjRfjdrGGwlmj+pq4YYqlqoXnWjh04bA
+	53mKY+3YKBOasqFCR3MY2q+7hbIa7GzaKI3qkJ+f5hwL9heLzO4WdDqYK9lBoLhjB+RUESy7xJx
+	ELyEsicB8d/NoSHc6YR8J1qnlXbljjUip+AkMZet93hwT4iF71zlA4c8rZcb1mNR4d71wSc6SdP
+	r4g/O82IdMY50lu5dndU9YwE3/FvgY5toFkIEOf/WPA2wqnokKDVsigICTDayxYjwYloBpD+HlG
+	/cEF1ZvfThBDnnxsk3P0ogEeR87qblXmmT6NdPbaadleZlOscF4maovo5FjFJkS1gk+D1kjiPr4
+	8J+c7dTwKze4q5O1quwRV5fpcwcOLfr92G8sCWk3CxM2pbXw==
+X-Received: by 2002:a05:600c:4708:b0:490:b06a:649e with SMTP id 5b1f17b1804b1-490c2602987mr26050765e9.25.1780640356335;
+        Thu, 04 Jun 2026 23:19:16 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3c15cesm133603035e9.5.2026.06.04.23.19.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 23:19:15 -0700 (PDT)
+Date: Fri, 5 Jun 2026 08:19:14 +0200
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>,
+	DRI Development <dri-devel@lists.freedesktop.org>,
+	"DARKNAVY (@DarkNavyOrg)" <vr@darknavy.com>,
+	syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com,
+	stable@vger.kernel.org, Edward Adam Davis <eadavis@qq.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Francis <David.Francis@amd.com>,
+	Puttimet Thammasaeng <pwn8official@gmail.com>,
+	Christian Koenig <Christian.Koenig@amd.com>,
+	Zhenghang Xiao <kipreyyy@gmail.com>
+Subject: Re: [PATCH] drm/gem: Try to fix change_handle ioctl, attempt 4
+Message-ID: <aiJqYgnTekPoXK_q@phenom.ffwll.local>
+References: <20260604191916.1713387-1-simona.vetter@ffwll.ch>
+ <20260604194437.1725314-1-simona.vetter@ffwll.ch>
+ <ab2c8c81-8ab6-4a93-93c9-31445454421a@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ab2c8c81-8ab6-4a93-93c9-31445454421a@linux.intel.com>
+X-Operating-System: Linux phenom 6.19.10+deb14-amd64 
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[ffwll.ch:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260718-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:myrrhperiwinkle@qtmlabs.xyz,m:gregkh@linuxfoundation.org,m:senozhatsky@chromium.org,m:stable@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260630-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:maarten.lankhorst@linux.intel.com,m:simona.vetter@ffwll.ch,m:dri-devel@lists.freedesktop.org,m:vr@darknavy.com,m:syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com,m:stable@vger.kernel.org,m:eadavis@qq.com,m:airlied@redhat.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:David.Francis@amd.com,m:pwn8official@gmail.com,m:Christian.Koenig@amd.com,m:kipreyyy@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[simona.vetter@ffwll.ch,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DMARC_NA(0.00)[ffwll.ch];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[ffwll.ch,lists.freedesktop.org,darknavy.com,syzkaller.appspotmail.com,vger.kernel.org,qq.com,redhat.com,kernel.org,suse.de,amd.com,gmail.com];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[simona.vetter@ffwll.ch,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ffwll.ch:+];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable,d7c9eed171647e421013];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,gregkh:mid,vger.kernel.org:from_smtp,chromium.org:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A6C6A64937A
+X-Rspamd-Queue-Id: 13640645750
 
+On Thu, Jun 04, 2026 at 10:29:45PM +0200, Maarten Lankhorst wrote:
+> Hey,
+> 
+> On 6/4/26 21:44, Simona Vetter wrote:
+> > On-list because the cat is out of the bag and we're clearly not good
+> > enough to figure this out in private. The story thus far:
+> > 
+> > 5e28b7b94408 ("drm: Set old handle to NULL before prime swap in
+> > change_handle") tried to fix a race condition between the gem_close and
+> > gem_change_handle ioctls, but got a few things wrong:
+> > 
+> > - There's a confusion with the local variable handle, which is actually
+> >   the new handle, and so the two-stage trick was actually applied to the
+> >   wrong idr slot. 7164d78559b0 ("drm/gem: fix race between
+> >   change_handle and handle_delete") tried to fix that by adding yet
+> >   another code block, but forgot to add the error handling. Which meant
+> >   we now have two paths, both kinda wrong.
+> > 
+> > - dc366607c41c ("drm: Replace old pointer to new idr") tried to apply
+> >   another fix, but inconsistently, again because of the handle confusion
+> >   - this would be the right fix (kinda, somewhat, it's a mess) if we'd
+> >   do the two-stage approach for the new handle. Except that wasn't the
+> >   intent of the original fix.
+> > 
+> > We also didn't have an igt merged for the original ioctl, which is a big
+> > no-go. This was attempted to address off-list in the original bugfix,
+> > and amd QA people claimed the bug was fixed now. Very clearly that's not
+> > the case. Here's my attempt to sort this out:
+> > 
+> > - Rename the local variable to new_handle, the old aliasing with
+> >   args->handle is just too dangerously confusing.
+> > 
+> > - Merge the gem obj lookup with the two-stage idr_replace so that we
+> >   avoid getting ourselves confused there.
+> > 
+> > - This means we don't have a surplus temporary reference anymore, only
+> >   an inherited from the idr. A concurrent gem_close on the new_handle
+> >   could steal that. Fix that with the same two-stage approach
+> >   create_tail uses. This is a bit overkill as documented in the comment,
+> >   but I also don't trust my ability to understand this all correctly, so
+> >   go with the established pattern we have from other ioctls instead for
+> >   maximum paranoia.
+> > 
+> > - Adjust error paths. I've tried to make the error and success paths
+> >   common, because they are identical except for which handle is removed
+> >   and on which we call idr_replace to (re)install the object again. But
+> >   that made things messier to read, so I've left it at the more verbose
+> >   version, which unfortunately hides the symmetry in the entire code
+> >   flow a bit.
+> > 
+> > - While at it, also replace the 7 space indent with 1 tab.
+> > 
+> > And finally, because I flat out don't trust my abilities here at all
+> > anymore:
+> > 
+> > - Disable the ioctl until we have the igt situation and everything else
+> >   sorted out on-list and with full consensus.
+> > 
+> 
+> Can you push the revert first, and then worry about fixing change_handle
+> parts of the ioctl properly later, so that part can be merged ASAP?
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+I've intentionally combined them, but I've only discussed the reasons with
+Dave in private chat.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+In the original security report discussions off-list almost two months ago
+I've both suggested that we do the full two-stage removal&install, because
+that's the well-tested pattern. AMD folks convinced me that being more
+clever is ok, but they got it wrong.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x d98d413ca65d0790a8f3695d0a5845538958ab84
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060551-crazily-gatherer-b40f@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+I've also suggested that we just outright disable the ioctl since it's so
+new, and sort this all out on-list, least because the igt didn't land yet.
+The igt has still not yet landed.
 
-Possible dependencies:
+Furthermore the igt or AMD's testing seems busted - because of the handle
+confusion (which I didn't spot, because I've assumed that the code was
+tested) the new code actually installed NULL into the new_handle slot,
+which should have broken everything. It also resulted in an obvious leak,
+which syzcaller spotted and which one of the referenced patches fixes.
 
+Which means this is an examplary case of how not to do a new ioctl, plus
+collective embarrassment of how to not fix a security bug. I've figured we
+need one patch which both a) disables this mess and b) puts down the draft
+of what I think it actually should look like.
 
+But really, no re-enabling of any of this until we have an igt that is a)
+actually merged and b) actually tests something. Or maybe the issue was
+with AMD's testing infra, I haven't looked at the igt.
 
-thanks,
+I did tell Dave that he can split it, if he wants to, but for backporting
+it shouldn't cause issues since all the 3 previous attempts at sorting
+this out have also been cc: stable. So should all apply without issues.
 
-greg k-h
+Cheers, Sima
 
------------------- original commit in Linus's tree ------------------
+> ---
+> > v2:
+> > 
+> > Sashiko noticed that I didn't handle the error path for idr_replace
+> > correctly, it must be checked with IS_ERR_OR_NULL like in
+> > gem_handle_delete. So yeah, definitely should just the existing paths
+> > 1:1 because this is endless amounts of tricky.
+> > 
+> > Also add the Fixes: line for the original ioctl, I forgot that too.
+> > 
+> > Reported-by: DARKNAVY (@DarkNavyOrg) <vr@darknavy.com>
+> > Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
+> > Fixes: dc366607c41c ("drm: Replace old pointer to new idr")
+> > Cc: syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com
+> > Cc: stable@vger.kernel.org
+> > Cc: Edward Adam Davis <eadavis@qq.com>
+> > Cc: Dave Airlie <airlied@redhat.com>
+> > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > Cc: Maxime Ripard <mripard@kernel.org>
+> > Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> > Fixes: 5e28b7b94408 ("drm: Set old handle to NULL before prime swap in change_handle")
+> > Cc: David Francis <David.Francis@amd.com>
+> > Cc: Puttimet Thammasaeng <pwn8official@gmail.com>
+> > Cc: Christian Koenig <Christian.Koenig@amd.com>
+> > Fixes: 7164d78559b0 ("drm/gem: fix race between change_handle and handle_delete")
+> > Cc: Zhenghang Xiao <kipreyyy@gmail.com>
+> > Fixes: 5e28b7b94408 ("drm: Set old handle to NULL before prime swap in change_handle")
+> > ---
+> >  drivers/gpu/drm/drm_gem.c   | 62 +++++++++++++------------------------
+> >  drivers/gpu/drm/drm_ioctl.c |  2 +-
+> >  2 files changed, 23 insertions(+), 41 deletions(-)
+> > 
+> > diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+> > index e12cdf91f4dc..f49f1724eda5 100644
+> > --- a/drivers/gpu/drm/drm_gem.c
+> > +++ b/drivers/gpu/drm/drm_gem.c
+> > @@ -1019,8 +1019,8 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
+> >  				struct drm_file *file_priv)
+> >  {
+> >  	struct drm_gem_change_handle *args = data;
+> > -	struct drm_gem_object *obj, *idrobj;
+> > -	int handle, ret;
+> > +	struct drm_gem_object *obj;
+> > +	int new_handle, ret;
+> >  
+> >  	if (!drm_core_check_feature(dev, DRIVER_GEM))
+> >  		return -EOPNOTSUPP;
+> > @@ -1028,52 +1028,36 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
+> >  	/* idr_alloc() limitation. */
+> >  	if (args->new_handle > INT_MAX)
+> >  		return -EINVAL;
+> > -	handle = args->new_handle;
+> > -
+> > -	obj = drm_gem_object_lookup(file_priv, args->handle);
+> > -	if (!obj)
+> > -		return -ENOENT;
+> > +	new_handle = args->new_handle;
+> >  
+> > -	if (args->handle == handle) {
+> > -		ret = 0;
+> > -		goto out;
+> > -	}
+> > +	if (args->handle == new_handle)
+> > +		return 0;
+> >  
+> >  	mutex_lock(&file_priv->prime.lock);
+> > -
+> >  	spin_lock(&file_priv->table_lock);
+> > -
+> > -       /* When create_tail allocs an obj idr, it needs to first alloc as NULL,
+> > -	* then later replace with the correct object. This is not necessary
+> > -	* here, because the only operations that could race are drm_prime
+> > -	* bookkeeping, and we hold the prime lock.
+> > -	*/
+> > -	ret = idr_alloc(&file_priv->object_idr, obj, handle, handle + 1,
+> > +	ret = idr_alloc(&file_priv->object_idr, NULL, new_handle, new_handle + 1,
+> >  			GFP_NOWAIT);
+> >  
+> > -       if (ret < 0) {
+> > -	       spin_unlock(&file_priv->table_lock);
+> > -	       goto out_unlock;
+> > -       }
+> > -
+> > -       idrobj = idr_replace(&file_priv->object_idr, NULL, handle);
+> > -       if (idrobj != obj) {
+> > -	       idr_replace(&file_priv->object_idr, idrobj, handle);
+> > -	       idr_remove(&file_priv->object_idr, args->new_handle);
+> > -	       spin_unlock(&file_priv->table_lock);
+> > -	       ret = -ENOENT;
+> > -	       goto out_unlock;
+> > -       }
+> > -
+> > -	idr_replace(&file_priv->object_idr, NULL, args->handle);
+> > +	if (ret < 0) {
+> > +		spin_unlock(&file_priv->table_lock);
+> > +		goto out_unlock;
+> > +	}
+> > +
+> > +	obj = idr_replace(&file_priv->object_idr, NULL, args->handle);
+> > +	if (IS_ERR_OR_NULL(obj)) {
+> > +		idr_remove(&file_priv->object_idr, new_handle);
+> > +		spin_unlock(&file_priv->table_lock);
+> > +		ret = -ENOENT;
+> > +		goto out_unlock;
+> > +	}
+> >  	spin_unlock(&file_priv->table_lock);
+> >  
+> >  	if (obj->dma_buf) {
+> >  		ret = drm_prime_add_buf_handle(&file_priv->prime, obj->dma_buf,
+> > -					       handle);
+> > +					       new_handle);
+> >  		if (ret < 0) {
+> >  			spin_lock(&file_priv->table_lock);
+> > -			idr_remove(&file_priv->object_idr, handle);
+> > +			idr_remove(&file_priv->object_idr, new_handle);
+> >  			idr_replace(&file_priv->object_idr, obj, args->handle);
+> >  			spin_unlock(&file_priv->table_lock);
+> >  			goto out_unlock;
+> > @@ -1086,14 +1070,12 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
+> >  
+> >  	spin_lock(&file_priv->table_lock);
+> >  	idr_remove(&file_priv->object_idr, args->handle);
+> > -	idrobj = idr_replace(&file_priv->object_idr, obj, handle);
+> > +	obj = idr_replace(&file_priv->object_idr, obj, new_handle);
+> >  	spin_unlock(&file_priv->table_lock);
+> > -	WARN_ON(idrobj != NULL);
+> > +	WARN_ON(obj != NULL);
+> >  
+> >  out_unlock:
+> >  	mutex_unlock(&file_priv->prime.lock);
+> > -out:
+> > -	drm_gem_object_put(obj);
+> >  
+> >  	return ret;
+> >  }
+> > diff --git a/drivers/gpu/drm/drm_ioctl.c b/drivers/gpu/drm/drm_ioctl.c
+> > index ff193155129e..937fc1e2c017 100644
+> > --- a/drivers/gpu/drm/drm_ioctl.c
+> > +++ b/drivers/gpu/drm/drm_ioctl.c
+> > @@ -660,7 +660,7 @@ static const struct drm_ioctl_desc drm_ioctls[] = {
+> >  	DRM_IOCTL_DEF(DRM_IOCTL_GEM_CLOSE, drm_gem_close_ioctl, DRM_RENDER_ALLOW),
+> >  	DRM_IOCTL_DEF(DRM_IOCTL_GEM_FLINK, drm_gem_flink_ioctl, DRM_AUTH),
+> >  	DRM_IOCTL_DEF(DRM_IOCTL_GEM_OPEN, drm_gem_open_ioctl, DRM_AUTH),
+> > -	DRM_IOCTL_DEF(DRM_IOCTL_GEM_CHANGE_HANDLE, drm_gem_change_handle_ioctl, DRM_RENDER_ALLOW),
+> > +	DRM_IOCTL_DEF(DRM_IOCTL_GEM_CHANGE_HANDLE, drm_invalid_op, DRM_RENDER_ALLOW),
+> >  
+> >  	DRM_IOCTL_DEF(DRM_IOCTL_MODE_GETRESOURCES, drm_mode_getresources, 0),
+> >  
+> 
 
-From d98d413ca65d0790a8f3695d0a5845538958ab84 Mon Sep 17 00:00:00 2001
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Date: Tue, 19 May 2026 18:41:40 +0700
-Subject: [PATCH] usb: typec: ucsi: Don't update power_supply on power role
- change if not connected
-
-We only need to update the power_supply on power role change if the port
-is connected, because otherwise the online status should be the same for
-both cases.
-
-Cc: stable <stable@kernel.org>
-Fixes: 7616f006db07 ("usb: typec: ucsi: Update power_supply on power role change")
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Link: https://patch.msgid.link/20260519-ucsi-fix-2-v1-2-6f1239535187@qtmlabs.xyz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index 53c101bd48e2..61cb24ed820f 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1308,7 +1308,12 @@ static void ucsi_handle_connector_change(struct work_struct *work)
- 
- 	if ((change & UCSI_CONSTAT_POWER_DIR_CHANGE) && role != prev_role) {
- 		typec_set_pwr_role(con->port, role);
--		ucsi_port_psy_changed(con);
-+
-+		/* Some power_supply properties vary depending on the power direction when
-+		 * connected
-+		 */
-+		if (UCSI_CONSTAT(con, CONNECTED))
-+			ucsi_port_psy_changed(con);
- 
- 		/* Complete pending power role swap */
- 		if (!completion_done(&con->complete))
-
+-- 
+Simona Vetter
+Software Engineer
+http://blog.ffwll.ch
 
