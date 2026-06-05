@@ -1,167 +1,236 @@
-Return-Path: <stable+bounces-260746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260747-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nElFMaoJI2qqgwEAu9opvQ
-	(envelope-from <stable+bounces-260746-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 19:38:50 +0200
+	id Zig7GRgII2pQgwEAu9opvQ
+	(envelope-from <stable+bounces-260747-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 19:32:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C6764A3D3
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 19:38:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C2B64A2F7
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 19:32:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QqWYucY3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260746-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-260746-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=astralinux.ru header.s=mail header.b=QioEPdcf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260747-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260747-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=astralinux.ru;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 504DE309F415
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 17:25:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ECD093019157
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 17:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FDC37F8D9;
-	Fri,  5 Jun 2026 17:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501DE36EA8C;
+	Fri,  5 Jun 2026 17:26:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70FA31352B;
-	Fri,  5 Jun 2026 17:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DB478F29;
+	Fri,  5 Jun 2026 17:26:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780680336; cv=none; b=RjpxMVlWryekE2Mhwi5+UXqPwQN7FqmxBMV2+O7kxZQwZRAmqYmA5bUDDXGv/WcjgSldMo0YItqLDsrQR8IYWxs1kOoy9KOqX35xMoSyzFo0h/37ByNX7Tuflak0aKo/ACZ+yUb72wFHjOOorn72YVHQnUZ3fvwHQomGMZFCkg4=
+	t=1780680398; cv=none; b=IELCoPJ9wKYX9tPOSMdRqxisNbNhVbDFY2otiCj5W6d1D4n0obRq7+bHc8VjHeGahk/txRw8V7YL3hoGbcYy/3e2nFsc7L55bbgM2JP+gqys+Ed2COCF0q2lVoYgAq0WaHKyjoZDbgAU9qs3XD/Bwl0pZbK7wLbcbN6gJLm27cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780680336; c=relaxed/simple;
-	bh=iSYMWKVU+9IdwKgt1MnMrmYcOt2F3tsxeG+1zwHsRcc=;
-	h=Date:To:From:Subject:Message-Id; b=shMtM6NVSSzwdd8fSSBMOjZmDB7Ta+cXn4b3mtv+dyTvp3m00H2xPPYG8wQqYI1cCZtZ3Z3kb6nA67wOxeEzXrIYfoH7yMdbqn33eTey18LSLYm8EuxpqVbEXOkQlW2iAY3TM1faM7oGrHeOWTSEQ3bw0ScwZTg22qSHcSA6bSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QqWYucY3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F73C1F00893;
-	Fri,  5 Jun 2026 17:25:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780680334;
-	bh=Og1i0ZaVixKJ/DvfHnWEokw7o1IrjaKTQaHWl2XCMX4=;
-	h=Date:To:From:Subject;
-	b=QqWYucY3PFcfkKztiBJRrgCi9vcmpX+FfjtUJ5OPxjbzC7hEVTE2AeV7xNG85QHqA
-	 S5Ee3+YchvQEPTw6GQKibhFS/euCsCRdf+Ss5SqRQQHfVKu4nIn3d1pMuMuvSUaHH/
-	 +ZWm05oGXykZRz+WGsutxc/IpDm44w21Sx4hGLm8=
-Date: Fri, 05 Jun 2026 10:25:34 -0700
-To: mm-commits@vger.kernel.org,yi1.lai@intel.com,stable@vger.kernel.org,rostedt@goodmis.org,qiuxu.zhuo@intel.com,linmiaohe@huawei.com,david@kernel.org,bp@alien8.de,xieyuanbin1@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-memory-failure-trace-change-memory_failure_event-to-ras-subsystem.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260605172534.7F73C1F00893@smtp.kernel.org>
+	s=arc-20240116; t=1780680398; c=relaxed/simple;
+	bh=I1udSyvjJtZNsTU1DKRRMlaA3SuRLgeegsMwVMcxdTI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cDOiryUPTFBLn0/o4tMOoIo8kRr1VHuBiOUdHum1mx0h3imS7dp1FvlYyVrXBHiqPTNpj6aiRTp42aG/ck+aGGZZTHNJj0VfbICn0sfZwUSxXlm5Wbm1ifSOMuyNIlhIN/WQ0BiQX5/SOPhB85B2b5bP5gASu60AcsXqyp2zMZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=QioEPdcf; arc=none smtp.client-ip=93.188.205.243
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1780680389;
+	bh=I1udSyvjJtZNsTU1DKRRMlaA3SuRLgeegsMwVMcxdTI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QioEPdcf+nmDVP4XK23s0EgFOosVQ9Q6bpPnchrXclYBC+KkXCNYEco6QNvPYuO7x
+	 xsbVeyqecQcv5d5PNfKnexqxPKoMFp+7ToItF/8nRlI8SQWXAcIM6Xq1BbB7WIz2cb
+	 oUSJGlYz508QTwgDl9+PfMYHbD1IJXQkI6WaHlhYulLRObwDXT7Rb0Xw2QPj1hWbka
+	 IppiKzq7dcwFoPBpbRAKEIn8aE6prSpDbB0PyT0TDz7a7Ra1lnxU7gUSJA7r/4adEo
+	 BEV2vZacUiu0k/7GcweZgQy5TQ2IArr5+IGV2VTLrAgJ0nuWrb6yMOmzqXIR0/ASof
+	 Xa/zS1BIoe/PQ==
+Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id F39331F9BF;
+	Fri,  5 Jun 2026 20:26:28 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
+	Fri,  5 Jun 2026 20:26:22 +0300 (MSK)
+Received: from rbta-msk-lt-302690.astralinux.ru (unknown [10.198.53.178])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gX7dT3xl6zJpKL;
+	Fri, 05 Jun 2026 20:26:21 +0300 (MSK)
+From: Alexandra Diupina <adiupina@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexandra Diupina <adiupina@astralinux.ru>,
+	David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Luis Chamberalin <mcgrof@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Pankaj Raghav <kernel@pankajraghav.com>
+Subject: [PATCH 6.1] mm/memory_hotplug: fix hwpoisoned large folio handling in do_migrate_range()
+Date: Fri,  5 Jun 2026 20:26:04 +0300
+Message-Id: <20260605172604.16034-1-adiupina@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2026/06/05 16:47:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: adiupina@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 107 0.3.107 575e75fe8e3b9d45c142d144823c5de38605099e, {date_rfc_vio_soft_silent}, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;new-mail.astralinux.ru:7.1.1;lkml.kernel.org:7.1.1;astralinux.ru:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 203696 [Jun 05 2026]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.22
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/06/05 16:27:00 #28217824
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2026/06/05 16:47:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[astralinux.ru,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[astralinux.ru:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-260747-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:yi1.lai@intel.com,m:stable@vger.kernel.org,m:rostedt@goodmis.org,m:qiuxu.zhuo@intel.com,m:linmiaohe@huawei.com,m:david@kernel.org,m:bp@alien8.de,m:xieyuanbin1@huawei.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-260746-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:adiupina@astralinux.ru,m:david@redhat.com,m:osalvador@suse.de,m:akpm@linux-foundation.org,m:mhocko@suse.com,m:n-horiguchi@ah.jp.nec.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,m:tujinjiang@huawei.com,m:ziy@nvidia.com,m:linmiaohe@huawei.com,m:wangkefeng.wang@huawei.com,m:mcgrof@kernel.org,m:willy@infradead.org,m:mhocko@kernel.org,m:kernel@pankajraghav.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FORGED_SENDER(0.00)[adiupina@astralinux.ru,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[astralinux.ru:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[adiupina@astralinux.ru,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,alien8.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:from_mime,linux-foundation.org:email,intel.com:email,smtp.kernel.org:mid,huawei.com:email,goodmis.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C9C6764A3D3
+X-Rspamd-Queue-Id: D0C2B64A2F7
 
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-The patch titled
-     Subject: mm/memory-failure: trace: change memory_failure_event to ras subsystem
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-memory-failure-trace-change-memory_failure_event-to-ras-subsystem.patch
+commit 397f6d14f9c370e4910e6885294c340f39dedbf5 upstream.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory-failure-trace-change-memory_failure_event-to-ras-subsystem.patch
+In do_migrate_range(), the hwpoisoned folio may be large folio, which
+can't be handled by unmap_poisoned_folio().
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+I can reproduce this issue in qemu after adding delay in memory_failure()
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+Workqueue: kacpi_hotplug acpi_hotplug_work_fn
+RIP: 0010:try_to_unmap_one+0x16a/0xfc0
+  <TASK>
+  rmap_walk_anon+0xda/0x1f0
+  try_to_unmap+0x78/0x80
+  ? __pfx_try_to_unmap_one+0x10/0x10
+  ? __pfx_folio_not_mapped+0x10/0x10
+  ? __pfx_folio_lock_anon_vma_read+0x10/0x10
+  unmap_poisoned_folio+0x60/0x140
+  do_migrate_range+0x4d1/0x600
+  ? slab_memory_callback+0x6a/0x190
+  ? notifier_call_chain+0x56/0xb0
+  offline_pages+0x3e6/0x460
+  memory_subsys_offline+0x130/0x1f0
+  device_offline+0xba/0x110
+  acpi_bus_offline+0xb7/0x130
+  acpi_scan_hot_remove+0x77/0x290
+  acpi_device_hotplug+0x1e0/0x240
+  acpi_hotplug_work_fn+0x1a/0x30
+  process_one_work+0x186/0x340
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Besides, do_migrate_range() may be called between memory_failure set
+hwpoison flag and isolate the folio from lru, so remove WARN_ON(). In other
+places, unmap_poisoned_folio() is called when the folio is isolated, obey
+it in do_migrate_range() too.
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-Subject: mm/memory-failure: trace: change memory_failure_event to ras subsystem
-Date: Fri, 5 Jun 2026 16:12:13 +0800
-
-Commit 97f0b1345219 ("tracing: add trace event for memory-failure")
-introduced memory_failure_event in ras subsystem.  commit 31807483d395
-("mm/memory-failure: remove the selection of RAS") changed
-memory_failure_event to memory_failure subsystem.  This breaks the
-backward compatibility, some user programs rely on it.
-
-Change memory_failure_event to ras subsystem to keep backward
-compatibility.
-
-Link: https://lore.kernel.org/20260605081213.154660-1-xieyuanbin1@huawei.com
-Fixes: 31807483d395 ("mm/memory-failure: remove the selection of RAS")
-Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Reported-by: Yi Lai <yi1.lai@intel.com>
-Reported-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Closes: https://lore.kernel.org/linux-mm/CY8PR11MB7134346A3E4BB28ECA28D6E989132@CY8PR11MB7134.namprd11.prod.outlook.com
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: <stable@vger.kernel.org>
+[david@redhat.com: don't abort offlining, fixed typo, add comment]
+Link: https://lkml.kernel.org/r/3c214dff-9649-4015-840f-10de0e03ebe4@redhat.com
+Fixes: b15c87263a69 ("hwpoison, memory_hotplug: allow hwpoisoned pages to be offlined")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Luis Chamberalin <mcgrof@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Pankaj Raghav <kernel@pankajraghav.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Alexandra: replace continue with put_folio label ]
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
 ---
+ mm/memory_hotplug.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
- include/trace/events/memory-failure.h |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
---- a/include/trace/events/memory-failure.h~mm-memory-failure-trace-change-memory_failure_event-to-ras-subsystem
-+++ a/include/trace/events/memory-failure.h
-@@ -1,6 +1,10 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #undef TRACE_SYSTEM
--#define TRACE_SYSTEM memory_failure
-+/*
-+ * For historical versions, memory_failure_event is in ras subsystem,
-+ * some user programs depend on it.
-+ */
-+#define TRACE_SYSTEM ras
- #define TRACE_INCLUDE_FILE memory-failure
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index c8cc2f63c3ea..013db41f6ce2 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1654,15 +1654,21 @@ do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
+ 		 * the unmap as the catch all safety net).
+ 		 */
+ 		if (PageHWPoison(page)) {
+-			if (WARN_ON(folio_test_lru(folio)))
+-				folio_isolate_lru(folio);
++			/*
++			 * unmap_poisoned_folio() cannot handle large folios
++			 * in all cases yet.
++			 */
++			if (folio_test_large(folio) && !folio_test_hugetlb(folio))
++				goto put_folio;
++			if (folio_test_lru(folio) && !folio_isolate_lru(folio))
++				goto put_folio;
+ 			if (folio_mapped(folio)) {
+ 				folio_lock(folio);
+ 				try_to_unmap(folio, TTU_IGNORE_MLOCK);
+ 				folio_unlock(folio);
+ 			}
  
- #if !defined(_TRACE_MEMORY_FAILURE_H) || defined(TRACE_HEADER_MULTI_READ)
-_
-
-Patches currently in -mm which might be from xieyuanbin1@huawei.com are
-
-mm-memory-failure-trace-change-memory_failure_event-to-ras-subsystem.patch
+-			continue;
++			goto put_folio;
+ 		}
+ 
+ 		if (!get_page_unless_zero(page))
+@@ -1687,6 +1693,7 @@ do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
+ 				dump_page(page, "isolation failed");
+ 			}
+ 		}
++put_folio:
+ 		put_page(page);
+ 	}
+ 	if (!list_empty(&source)) {
+-- 
+2.30.2
 
 
