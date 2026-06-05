@@ -1,174 +1,167 @@
-Return-Path: <stable+bounces-260602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260603-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5c/CKggqImpzTQEAu9opvQ
-	(envelope-from <stable+bounces-260602-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:44:40 +0200
+	id yeM1MEYqImqETQEAu9opvQ
+	(envelope-from <stable+bounces-260603-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:45:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 358706447E2
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:44:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EFE1644803
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 03:45:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h0jyMxcZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260602-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260602-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WK9kHhKO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260603-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260603-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D233317F2F6
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 01:31:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF6373180281
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 01:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D209D2BD033;
-	Fri,  5 Jun 2026 01:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8B53655E3;
+	Fri,  5 Jun 2026 01:31:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2290F372B51
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 01:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841493A9852
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 01:31:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780623078; cv=none; b=Zhrhq4F4V0YHGuQBL1JnP6rRbuTLd/qEthqTcob+htcjVB2gZgGpqPSJkMGZCRI6/J1uPq6n7Foux+blyJb73NDrk/v6FbVmIyJIqWwUUn1k287SjXab+sP9SCJzLd/j6Y3C1R113RAmZX6CfRBStXfF7FwgSZEkT0dfPFm6qXY=
+	t=1780623082; cv=none; b=n6kPkIvFGahajgirk8N4JSHAl/5n3qMx9HneDDqeRqlTBB2/lXw5Cy2GDcNLJlMN6YM3HyvrihzEwwVQUumuFDQOJV6PQFiGnW7ZwZS817gJx6BdRTZiHKH75GdFg+Xrfkiw05TytaYMAUQNt0CMtpUvtdoKg3WcY0pRStk/QNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780623078; c=relaxed/simple;
-	bh=FPtpuHA9u7qJg42Dd31A4iJduMxWGP9qZmd+50RZ0kE=;
+	s=arc-20240116; t=1780623082; c=relaxed/simple;
+	bh=Ayjgb4pxuksq2255wr7xwXM15oMJ8ThgKe5kSFE9Re8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i68ESfZY1OaG/jfDaZ28XRKAGdAYLs01oAT9jcrhVie5o7b/0s39ePwWJEcQCANH0Ot8W6hzJ4TZ0UNMAG93JioxrkOxT7iYZDPpgdv1zKqcX/DGfLkybm9r8/GGFq8LkNfVXHfjPXIotyEmqFTKhDV5Z0DMP99pcWHI00l8vM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h0jyMxcZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348911F00893;
-	Fri,  5 Jun 2026 01:31:09 +0000 (UTC)
+	 MIME-Version; b=lKEYDveDlcIcpmUJX8ntzzyRinHVXEkGrtyARvzeC5Y4956UNtXLsg7JxllPIG4isHBbfPHCjU4IOpUDlrRDREH6W7PTAgbrTxDaty6FUb0QS78ZGK/uJY6m5eNkUPyMAEXOj5fLjlUQOB8xAZxfr82TK9Cev2IDQxZ+OJOE0Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WK9kHhKO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D74B1F00898;
+	Fri,  5 Jun 2026 01:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780623069;
-	bh=Hgmp+5QsQzeFA4umCjMnwzAkl20i6Uwe7GqXW+1EOpo=;
+	s=k20260515; t=1780623076;
+	bh=Ze/Rd0X74n0Zs9PgQCb1alJ24HyEr45sooq/Qgt4Jx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h0jyMxcZ8WhETTV+xzEuh9YrYN0D/oUWeNHZkaqgdc3/lIs2uETbDMgNQsC4gZ5EH
-	 lb0lqF6rPNTBK8UpadxaB6I8HPvm2TfZ5Q2AbjCN0EPr7wZxJzpXQvkAp9Pe6bT8q8
-	 7dIAj/v/Z/oTX39zdFRAlNaZyKi5/TVdDkC1G/WaCnDfnTKOw2wFBXePUuarwjd9GM
-	 gGgfkxUsmdUOIemle7ZPWNeL0GKKWudRGd1MgbGr0rWtMwCM5LTFyYkRZsjK26fSjq
-	 3rG8+KqQG0tNxSUIAKuzYMzy0MVWhYrMIYL9xgzlLWmnD54mlPT/5+LgkPtN4pDfUU
-	 8mu2wKqzcLqnQ==
+	b=WK9kHhKOWCI5Dgx9ne7VK8Qo/qnWJizQ45PimWrOh1wPPzKk3BM3eolfPLPrgeNdb
+	 F6eYjR4NhH/5zlN2r7hpHNiSyv3AEm0w5bLwG1q5CEwWQ8Xehb+Kk5ZH7M6M+YuOB1
+	 mQqh6+0p+L0Sw5qzX3iA12ZMMoeicd7avI0KvjqcmKPT5l+jnxteRtDkVLKGRvkE+T
+	 afVTsm7vYsBQzfMYecoDOws/fzhcRqxu/zaFJ1oNPNat47VIaGMJf96NzOAd7wnHA5
+	 2xjDbd9GOZu7LBKAass20xqWI7IfODy3wA9lLF4dyFwqVCH4X3+E3dvupcBbtsbZ2L
+	 eAB5kgECmxXLA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Rodrigo Alencar <rodrigo.alencar@analog.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] ALSA: firewire-motu: Protect register DSP event queue positions
-Date: Thu,  4 Jun 2026 21:31:06 -0400
-Message-ID: <20260605013107.2963134-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] iio: dac: ad5686: fix ref bit initialization for single-channel parts
+Date: Thu,  4 Jun 2026 21:31:12 -0400
+Message-ID: <20260605013113.2963901-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026060436-askew-mundane-fd77@gregkh>
-References: <2026060436-askew-mundane-fd77@gregkh>
+In-Reply-To: <2026060403-trembling-dragster-73ee@gregkh>
+References: <2026060403-trembling-dragster-73ee@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260602-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:cassiogabrielcontato@gmail.com,m:o-takashi@sakamocchi.jp,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260603-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:rodrigo.alencar@analog.com,m:andriy.shevchenko@intel.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,sakamocchi.jp,suse.de,kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sakamocchi.jp:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 358706447E2
+X-Rspamd-Queue-Id: 3EFE1644803
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-[ Upstream commit 98fb1c1bb11e29eb609b7200a25e136e05aa4498 ]
+[ Upstream commit ecae2ae606d493cf11457946436335bd0e726663 ]
 
-The register DSP event queue is updated under parser->lock, but
-snd_motu_register_dsp_message_parser_count_event() reads pull_pos and
-push_pos without the lock.
-snd_motu_register_dsp_message_parser_copy_event() also reads both queue
-positions before taking the lock.
+The reference bit position was ignored when writing the register at the
+probe() function (!!val was used). When such bit is 1, internal voltage
+reference is disabled so that an external one can be used. For
+multi-channel devices, bit 0 of the Internal Reference Setup command
+behaves the same way, so AD5686_REF_BIT_MSK is created. The issue exists
+since support for single-channel devices were first introduced.
 
-Protect these accesses with parser->lock as well. This keeps the hwdep
-poll/read path consistent with the producer side and with the cached
-meter/parameter accessors.
-
-Fixes: 634ec0b2906e ("ALSA: firewire-motu: notify event for parameter change in register DSP model")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260521-alsa-firewire-motu-event-locking-v1-1-708e1c2b5e56@gmail.com
-[ converted copy_event() from manual spin_lock_irqsave/spin_unlock_irqrestore to guard(spinlock_irqsave) ]
+Fixes: be1b24d24541 ("iio:dac:ad5686: Add AD5691R/AD5692R/AD5693/AD5693R support")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+[ adapted `has_external_vref` to the in-tree equivalent `voltage_uv` variable in the `val =` computation ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../motu/motu-register-dsp-message-parser.c        | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/iio/dac/ad5686.c | 6 +++---
+ drivers/iio/dac/ad5686.h | 1 +
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/firewire/motu/motu-register-dsp-message-parser.c b/sound/firewire/motu/motu-register-dsp-message-parser.c
-index ef3b0b0f0dab9a..abafae59f365ba 100644
---- a/sound/firewire/motu/motu-register-dsp-message-parser.c
-+++ b/sound/firewire/motu/motu-register-dsp-message-parser.c
-@@ -393,6 +393,8 @@ unsigned int snd_motu_register_dsp_message_parser_count_event(struct snd_motu *m
- {
- 	struct msg_parser *parser = motu->message_parser;
+diff --git a/drivers/iio/dac/ad5686.c b/drivers/iio/dac/ad5686.c
+index be705f8148cc39..7069f1bc3cf545 100644
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -513,7 +513,7 @@ int ad5686_probe(struct device *dev,
+ 		break;
+ 	case AD5686_REGMAP:
+ 		cmd = AD5686_CMD_INTERNAL_REFER_SETUP;
+-		ref_bit_msk = 0;
++		ref_bit_msk = AD5686_REF_BIT_MSK;
+ 		break;
+ 	case AD5693_REGMAP:
+ 		cmd = AD5686_CMD_CONTROL_REG;
+@@ -525,9 +525,9 @@ int ad5686_probe(struct device *dev,
+ 		goto error_disable_reg;
+ 	}
  
-+	guard(spinlock_irqsave)(&parser->lock);
-+
- 	if (parser->pull_pos > parser->push_pos)
- 		return EVENT_QUEUE_SIZE - parser->pull_pos + parser->push_pos;
- 	else
-@@ -402,14 +404,14 @@ unsigned int snd_motu_register_dsp_message_parser_count_event(struct snd_motu *m
- bool snd_motu_register_dsp_message_parser_copy_event(struct snd_motu *motu, u32 *event)
- {
- 	struct msg_parser *parser = motu->message_parser;
--	unsigned int pos = parser->pull_pos;
--	unsigned long flags;
-+	unsigned int pos;
+-	val = (voltage_uv | ref_bit_msk);
++	val = voltage_uv ? ref_bit_msk : 0;
  
--	if (pos == parser->push_pos)
--		return false;
-+	guard(spinlock_irqsave)(&parser->lock);
+-	ret = st->write(st, cmd, 0, !!val);
++	ret = st->write(st, cmd, 0, val);
+ 	if (ret)
+ 		goto error_disable_reg;
  
--	spin_lock_irqsave(&parser->lock, flags);
-+	if (parser->pull_pos == parser->push_pos)
-+		return false;
+diff --git a/drivers/iio/dac/ad5686.h b/drivers/iio/dac/ad5686.h
+index f89a6f92b42706..62f6c52b0316d0 100644
+--- a/drivers/iio/dac/ad5686.h
++++ b/drivers/iio/dac/ad5686.h
+@@ -44,6 +44,7 @@
  
-+	pos = parser->pull_pos;
- 	*event = parser->event_queue[pos];
+ #define AD5310_REF_BIT_MSK			BIT(8)
+ #define AD5683_REF_BIT_MSK			BIT(12)
++#define AD5686_REF_BIT_MSK			BIT(0)
+ #define AD5693_REF_BIT_MSK			BIT(12)
  
- 	++pos;
-@@ -417,7 +419,5 @@ bool snd_motu_register_dsp_message_parser_copy_event(struct snd_motu *motu, u32
- 		pos = 0;
- 	parser->pull_pos = pos;
- 
--	spin_unlock_irqrestore(&parser->lock, flags);
--
- 	return true;
- }
+ /**
 -- 
 2.53.0
 
