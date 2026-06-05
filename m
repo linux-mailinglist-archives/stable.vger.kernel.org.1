@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-260779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260780-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NWhfAdwjI2pmjQEAu9opvQ
-	(envelope-from <stable+bounces-260779-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:30:36 +0200
+	id brKDAMEkI2qXjQEAu9opvQ
+	(envelope-from <stable+bounces-260780-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:34:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E93B64AF40
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:30:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A9164AF8A
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 21:34:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lvqzMjmN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260779-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260779-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SouhojG0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260780-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260780-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F433300B55B
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 19:30:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA36D3003EB7
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 19:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF5B3B103B;
-	Fri,  5 Jun 2026 19:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856F8409612;
+	Fri,  5 Jun 2026 19:33:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E9143DA4B
-	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 19:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527E91FCF41
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 19:33:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780687833; cv=none; b=DlUfsa8ROLs54l1qrwIm++qQQSmR9ncPqhnRfpmvvKPR+teXaV8v5tlhBbQeH/tb0CCZroUyzzVQjgKS7/2hKjaKWnLZPgcojQZU8r0Ass+7FC3kP926YJB5M9Ef1Ti9cyNTP5HlsXgaQQjytO6MD86y+4SEvbyPZ4rdC51lZCg=
+	t=1780687993; cv=none; b=ghOYa20njzmbVTbtiSSPTbXYpsVCf9SgTcn7bZj1DHGJmB45USKLLmnjhrueVZJthaPcgfM1d98cwp8MOUqsLW5aCuBRtyW9K6yBmZU+vy4lISO2Zmrni4ziU8G1JcduEliNpJfqphK4AUWmz1KTgSuCNry5f2YlepHUDOlFmo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780687833; c=relaxed/simple;
-	bh=0WaT7ymfIuKOLETicyBW4T0wjTqU+TRcXk2ENUj2MpE=;
+	s=arc-20240116; t=1780687993; c=relaxed/simple;
+	bh=eO1D/7HHimVESp06My8yXIZ+NjNeKEhSuAmyH1iNWuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yk6QZLqLGz7dEcoN9qomXqJklmRPHeO0YpjrdeuSRO1DVFE2I2yD2Vygq725JGui+p3IjWC8u5wcZ42Loq4yRHfc0QoVt9TKbSkboLRRgIgItwI0EBMYcXTLfOM/oLHxhuDfkAsDlyltPG8M6iQE7NlPZ+Scra024mhiZL8LC6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lvqzMjmN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029CC1F00898;
-	Fri,  5 Jun 2026 19:30:30 +0000 (UTC)
+	 MIME-Version; b=W6E8htRJLp2MOuzBSbB4Ttd/R86Va2EuAlW1EVqnZqBPGEcQFv+rK3+AsGUNHvy5iNJfpgj07w8h3pVOLmby2i4/yKaGnmqV0e5qEABpn8irKXji8410yRRAb1V/2GVlNb58kCU4ovE3lp+Xt1zeiBdOc10YDlU+IsxwW6+8fwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SouhojG0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B640F1F00893;
+	Fri,  5 Jun 2026 19:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780687831;
-	bh=GfqTUfIVREE4HkId1V3GLzF9qd3zmrokBdUGxaw4Wec=;
+	s=k20260515; t=1780687992;
+	bh=7lohqZ3Pz2MmjOECoBipy5pMiPHypi356NP1fy37EX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lvqzMjmNPJ51W0uZyiAuD8tZ8kx0iCEpngi/twcR1WMiudzXWsCkRk8dQJci54SIX
-	 fjiK0YMZMV2Z45JLF0l3WHn7xqsBD2Mk/2GrbFEBbFzlEk6PLex06pMSm75MT1U34e
-	 JXt6wcxyGNKIhsvwr1a3Vh1rUo8esqtF0JzjreRaVH4ohHa/uo+yoy3VVorDmdeG5V
-	 eGR6teiCPGKoQQRMA21Wrr/9gZ+PLuv0CKN/cJZCBupuuR+ZwQxbPakpMrI3L6aWgT
-	 B15sOFe96JmP39H4UI30LX8+anilJ4VFZD90XaJjhv9tbATu9IeDtjOwtrGrDpSvnT
-	 bNPbQEFLVvCAg==
+	b=SouhojG0MXK0c6KBVgIiaCyal/SEXDnO6AevhkC20SuCChUHBkjbJEoeWcuamF9Gy
+	 eyp77LzsyMzJvV9Wfb+ryQ/vaDGYGzzZy1N2d/3tIUQVrmJ47Q1LOne4BswkFp+u6Q
+	 JklpkpPPEg9gZ2mMrdGhnQwK4UBXKxhDTpRw+gRbFXfkOJ8d6ndWoGI9sYYVlIRV/3
+	 mTcOtaRiWGtaEiRnx04QG2RwRAuWyWddO13/ZC18N7bTLLt7OQxUbfw/QX8Uc8eptd
+	 xfXnPmaeT52czj7m4ogKGWUSnS2z+cEgI5qlmCJXJSS8JW4QEjhdbxNhj8izVTVWnQ
+	 Nt04ftThIjxBg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Michael Bommarito <michael.bommarito@gmail.com>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] thunderbolt: property: Cap recursion depth in __tb_property_parse_dir()
-Date: Fri,  5 Jun 2026 15:30:29 -0400
-Message-ID: <20260605193029.2155718-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] thunderbolt: property: Cap recursion depth in __tb_property_parse_dir()
+Date: Fri,  5 Jun 2026 15:33:10 -0400
+Message-ID: <20260605193310.2159165-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026060405-unbounded-monotone-d6ba@gregkh>
-References: <2026060405-unbounded-monotone-d6ba@gregkh>
+In-Reply-To: <2026060406-submitter-repackage-5f5e@gregkh>
+References: <2026060406-submitter-repackage-5f5e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,13 +71,13 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260779-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260780-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -96,11 +96,11 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6E93B64AF40
+X-Rspamd-Queue-Id: 57A9164AF8A
 
 From: Michael Bommarito <michael.bommarito@gmail.com>
 
@@ -135,7 +135,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/thunderbolt/property.c b/drivers/thunderbolt/property.c
-index 31aa0516932afc..586f9e39bfddbd 100644
+index dc555cda98e680..eaa808f3fbfcd3 100644
 --- a/drivers/thunderbolt/property.c
 +++ b/drivers/thunderbolt/property.c
 @@ -34,10 +34,11 @@ struct tb_property_dir_entry {
@@ -198,7 +198,7 @@ index 31aa0516932afc..586f9e39bfddbd 100644
  		if (!property) {
  			tb_property_free_dir(dir);
  			return NULL;
-@@ -231,7 +237,7 @@ struct tb_property_dir *tb_property_parse_dir(const u32 *block,
+@@ -229,7 +235,7 @@ struct tb_property_dir *tb_property_parse_dir(const u32 *block,
  		return NULL;
  
  	return __tb_property_parse_dir(block, block_len, 0, rootdir->length,
