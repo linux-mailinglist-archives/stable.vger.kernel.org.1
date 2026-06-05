@@ -1,247 +1,193 @@
-Return-Path: <stable+bounces-260711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260712-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id t7CECDPfImqEegEAu9opvQ
-	(envelope-from <stable+bounces-260711-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 16:37:39 +0200
+	id oV//FcvfImqoegEAu9opvQ
+	(envelope-from <stable+bounces-260712-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 16:40:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C50648E44
-	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 16:37:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 693FB648EA4
+	for <lists+stable@lfdr.de>; Fri, 05 Jun 2026 16:40:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K7Yg31cP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260711-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260711-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=google.com header.s=20251104 header.b=Be9mkyhk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260712-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260712-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DC57430309BE
-	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 14:36:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9C95B300D7B7
+	for <lists+stable@lfdr.de>; Fri,  5 Jun 2026 14:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E1430D411;
-	Fri,  5 Jun 2026 14:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02EF839D6DF;
+	Fri,  5 Jun 2026 14:40:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE9333B6C8;
-	Fri,  5 Jun 2026 14:36:46 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780670212; cv=none; b=KA0sAVxLcobeeorss8BUpLtZIQp+056GZot5wuwky2ZjPE9YZ15WVoWDtKkFx7v6YuwCBhwNcq2NYfvDoMZ1oXzgwyypFmCWcUUnCF6eDVR6KySOWCABbcknWmPfdZVOlpIQyGKmP/qyVuNKtoLUFev7Oq9xlNcrMNzAvubwcKk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780670212; c=relaxed/simple;
-	bh=ZVNOL6IeLgZX1OrH9ogFg8js1L8hDqImDTnNxMmnQzo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aDl9UKjU7sqw/I+8e2kzgFllMqw7oY4xe6+t4RDlqafhjSyoQalcrEA+Sgv+5pLiZCXKFqtpugzYGPh23CVu+25I4ry+FRnup4+kwQg4ol/4RIwQx/S8gv3hBXI/oBTHjsaDKG0o1EWLkICvuUGLnwcbZMyoUj0cjyPRieOLyXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K7Yg31cP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D19351F00898;
-	Fri,  5 Jun 2026 14:36:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780670205;
-	bh=i4bpqXmp47f/uGMec9t8TYNtzMw3VhVSFc3G03lSBL0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=K7Yg31cPVl0v+ylFNlqOdaJ9t/gI5tBp3TztlgiHZ/Xbss0MO+PAUs2KN3XnUSRmO
-	 iLDGMsNch5hXnOonglYe5I4nj7yQW9ZH0XSZAXOAPlXozLYvU5arHy2RTxZ1hsQhkG
-	 XwKjKWmDSGPXnu7L9a0WV/ATJ2sWyY1n79xuJCarWV4S4+jqbaWCveXIWXjRyiIN5B
-	 oBwfTdj0WJDW39vdBF3el5gumYGtC/UnltkLwbxAnuwd+kzqgZgZQLlMEqJRnrso0n
-	 rjHHRUNh9Y15+BSTVHV0GLs40Q4OH663DPYSXYMk+0rXiJwh9joOulclVc9BMCpKMq
-	 kxZt/LUOoKRPA==
-Date: Fri, 5 Jun 2026 15:36:41 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Arjan van de Ven <arjan@linux.intel.com>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Jake Edge <jake@lwn.net>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] proc: protect ptrace_may_access() with
- exec_update_lock (part 1)
-Message-ID: <05811fd9-6a33-48d9-a970-281003466c80@sirena.org.uk>
-References: <20260518-procfs-lockfix-part1-v1-0-5c3d20e0ac33@google.com>
- <20260518-procfs-lockfix-part1-v1-1-5c3d20e0ac33@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBB5287510
+	for <stable@vger.kernel.org>; Fri,  5 Jun 2026 14:40:02 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780670403; cv=pass; b=NoqLnVROvapxRZbuoaeF6+4+yEcYgTXuZq/WDQJ1aX9zNSIA0g63T5LKzhl2GDla7SkHtE40cqpD09keZ9jfWrNTFB6XzlFOtikRDEfElXO9IK1bLsbbHHqeADkVIfImT3EPf19TenWC9RYR00ZXyHz29ig9JADI/rAQfK/yZl0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780670403; c=relaxed/simple;
+	bh=NOQZeUgc07KS/OvgX6TK90IWE1VfXavRads+HOY4Du0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JAr28IbSDHw4/19yp/AUIw4xzLi/IE9/Bq0CLQ06ppIGUvP6Q5VZAVrLd4mwF4CHIHPmAqgu9M65oUP5AwqijY2/i97OD3YtoGM+PAivCcT3zifzNJAZqgfV+h4a4FjEZVt1ydh7QtKupWtEIBdDArDOtwiBIIy/nZKvy0fzhSo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Be9mkyhk; arc=pass smtp.client-ip=209.85.208.54
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-68bd7ec2371so9969a12.1
+        for <stable@vger.kernel.org>; Fri, 05 Jun 2026 07:40:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780670401; cv=none;
+        d=google.com; s=arc-20240605;
+        b=F+syhZngQ4dR6jBHXyIINfeJdUWRdT/b7VvJTJalJaLvKuZ9KCrq80TUOtuJ06zrLr
+         /7islYFhkv+fHNjRbObMqEPqANqG9kEw+8PNu2nD4EPzvgBPU0aEXWqRL8zh6cyNfhJA
+         fy8jSAcJ+TdYaOn3R7TBa/bFjDTTwKbXNYCGJjY/GUUayaXrKQoT8xBaqwJTQC8OIXZI
+         MX6z43PDAFm9jvVrgzG1jrvCeeQc7wLtxaVTXxt1NhZJmNfWuulwKCvZZcJEb2cwJugv
+         /oOlKmaNHaf+8o59ag3Nzgw7BJe5JYfSkclYAqxUiU2K5rfoNvrvUlbiPcgmSOOqe6aK
+         tGBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=as1py6QfVQjWXq/H/j8qlkW+Qk+QDS/0K5XkzZmjy6M=;
+        fh=C5BMxG+jT+N2zUI8q5uXYzGKEYMnz1pS3VcH6a1+c4k=;
+        b=WtK+qLftZmFisUjBUrzxl2vmEMPEUVrn3AO01V7X/Z84Xm2d4N44pCgoYeLSCTBB7e
+         XxWbKLKPIhAUaQhjyVActFlyd+1+TwBeZ4h+hC9Zy0tISlRITfP3JUWZYsmElJP0pxM8
+         5dTpwLLUs4Bu0qHrWqnFSQ6V/OFEOwju653MY1Fl7uDC1Gl0Oq+6l3KBnJH6Kx6aKweP
+         vkHZAda96ErZjx+8dS8yQOkUx0s7d4gkXmWBdHJKG0OT4L75m04t9yjXPnGOCn+GPlUw
+         NkI1zvyegmigZ7hxU6kd9O9ZbYwhlDt3Y0TDdOpEK3VEI/Urkx4Cy+ggcvF2s04jMGIT
+         fSsw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780670401; x=1781275201; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=as1py6QfVQjWXq/H/j8qlkW+Qk+QDS/0K5XkzZmjy6M=;
+        b=Be9mkyhkMVD309c+/wHXBrEtGxXhvdbtwfJe/nxjdkovw99MZwmqPux/Z1IFKkvpFf
+         6gxN2EMXD05lcaV6oVNQfivjFi/sJeSIsE+QFuk7gH9h90qqRcdbXExWw2CDyy61ncHw
+         HG6cadsbpx9jAWtEghV+AzYktVMELUZczMzHRQIB423v9yujZ0tRkcCTYMuBK9pLHNvs
+         hluB+a+DczRfGjj2R7tIRuZUwzjYiAJMUUl2SUtCTvFk46z7HeEbcJEEBYSD+Guf4Lg9
+         +LpykZqJlCCORzjao4v7vl8M+5cK8PrHlffVYU5y9fluFnqyXscFFYkzZn5PH8GqiDFC
+         ic3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780670401; x=1781275201;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=as1py6QfVQjWXq/H/j8qlkW+Qk+QDS/0K5XkzZmjy6M=;
+        b=rAY/Rt+03fDX2erKprg3CPOx5UzV/19wZQ3AkvA/cINTTEljDYNxuBf54KBX1hMhUf
+         inUgJj1++gYQMDRHRqVLm4sfblibNSRWVVZ90SdMzR/q0a8KyqhuDjxvZSSiHv369WB9
+         W3+0dr+d68WBfMtgZ05DykT5W9mITNNVdZY/KVvr7fovcEJPSjk8WXBFXs2hNbHs86my
+         wWP9PQ/pfxKFo1109a6fF8iV+WnUCpKWN27iA7y2ra6/yjapvBtPpTPCCYWo0zyNkUMH
+         tMZaGQzTPJC9kAjn4HQRG2+NHpMtOTUoc01b/7WkXbDM0ZuxqooucUiMfF2EJzEYkN0s
+         zvVg==
+X-Forwarded-Encrypted: i=1; AFNElJ941nmmCGP0spDcqHCk7hl8ve3cbnyrLCrxK2GE/ujLKQ4HqYYCrMopPlpxR+2j0YeV/5+DEK8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBP3u6//+phCHa9rX59Rj6wBWdOZgot6las16SCmqUcf4W49QN
+	po1LkUhXHzEMFWFbato9ZAIIYMDDAxd/+xiC5ZEt4WYL3ugIba3eyhzT3GwGngEfF4yu6jTo6un
+	K45wrCGxmHeq4NnjMoIDIb9HoPUQUp/ArN1vvdozT
+X-Gm-Gg: Acq92OGHpfwWeLL+VuJmpSCFXu0xQo3PxqkffvGUM4DPUnVy+2vSp1+bD+hiMnPzxrE
+	ffAMU12cGyuCf5YMOzBUVnUq67xvqjHF+3iyuyz7VO7HGrjEcxS/HwxM1beQaXV2uVXN7dKK6UQ
+	L6XTGebmH7nufxX/jqg/qL6FMdK+XMJ8fOVMmWsZgk40gCM4WYVEureX9M3p/wZklg5+WtTAV4f
+	iTqs5RlMuAqmJGpCSIpBFOMd1mTHENyTyrR9gK2YGAJHfKO7iVIKN0h9SVnrennfOk+tg5U0Kjl
+	8v61CMmjFz+0CwgJIFwF+qHkT2vELkY28viGgg451wK6yoZF
+X-Received: by 2002:a05:6402:52db:10b0:683:33ae:8689 with SMTP id
+ 4fb4d7f45d1cf-68fe8b4cf79mr38019a12.4.1780670400617; Fri, 05 Jun 2026
+ 07:40:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2SFH8rxDrbPV7zxj"
-Content-Disposition: inline
-In-Reply-To: <20260518-procfs-lockfix-part1-v1-1-5c3d20e0ac33@google.com>
-X-Cookie: Wanna buy a duck?
+References: <20260518-procfs-lockfix-part1-v1-0-5c3d20e0ac33@google.com>
+ <20260518-procfs-lockfix-part1-v1-1-5c3d20e0ac33@google.com> <05811fd9-6a33-48d9-a970-281003466c80@sirena.org.uk>
+In-Reply-To: <05811fd9-6a33-48d9-a970-281003466c80@sirena.org.uk>
+From: Jann Horn <jannh@google.com>
+Date: Fri, 5 Jun 2026 16:39:23 +0200
+X-Gm-Features: AVVi8Cf2g5iNAdBBEcbfvUYBHLR4xpYK8oqIRwmCptFF6s_EQcEFjFFXqKVPwDc
+Message-ID: <CAG48ez0V5bgEWgZkYaM2z5qfr0w6PXg6YDU8NS19=ZU6XLxTBw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] proc: protect ptrace_may_access() with
+ exec_update_lock (part 1)
+To: Mark Brown <broonie@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Arjan van de Ven <arjan@linux.intel.com>, "Eric W. Biederman" <ebiederm@xmission.com>, Jake Edge <jake@lwn.net>, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-260712-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260711-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:jannh@google.com,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:arjan@linux.intel.com,m:ebiederm@xmission.com,m:jake@lwn.net,m:linux-kernel@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[jannh@google.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:broonie@kernel.org,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:arjan@linux.intel.com,m:ebiederm@xmission.com,m:jake@lwn.net,m:linux-kernel@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DKIM_TRACE(0.00)[google.com:+];
 	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,sirena.org.uk:mid,sirena.org.uk:url,gitlab.freedesktop.org:url]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jannh@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,mail.gmail.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 89C50648E44
+X-Rspamd-Queue-Id: 693FB648EA4
 
+On Fri, Jun 5, 2026 at 4:36=E2=80=AFPM Mark Brown <broonie@kernel.org> wrot=
+e:
+> On Mon, May 18, 2026 at 06:35:15PM +0200, Jann Horn wrote:
+> > Fix the easy cases where procfs currently calls ptrace_may_access() wit=
+hout
+> > exec_update_lock protection, where the fix is to simply add the extra l=
+ock
+> > or use mm_access():
+>
+> >  - do_task_stat(): grab exec_update_lock
+> >  - proc_pid_wchan(): grab exec_update_lock
+> >  - proc_map_files_lookup(): use mm_access() instead of get_task_mm()
+> >  - proc_map_files_readdir(): use mm_access() instead of get_task_mm()
+> >  - proc_ns_get_link(): grab exec_update_lock
+> >  - proc_ns_readlink(): grab exec_update_lock
+>
+> It seems that this patch is triggering a failure in the proc selftests
+> read test:
+>
+> # selftests: proc: read
+> [  259.127414] ICMPv6: process `read' is using deprecated sysctl (syscall=
+) net.ipv6.neigh.default.base_reachable_time - use net.ipv6.neigh.default.b=
+ase_reachable_time_ms instead
+> [  259.158773] /proc/cgroups lists only v1 controllers, use cgroup.contro=
+llers of root cgroup for v2 info
+> [  259.177155] sysrq: HELP : loglevel(0-9) reboot(b) crash(c) terminate-a=
+ll-tasks(e) memory-full-oom-kill(f) kill-all-tasks(i) thaw-filesystems(j) s=
+ak(k) show-backtrace-all-active-cpus(l) show-memory-usage(m) nice-all-RT-ta=
+sks(n) poweroff(o) show-registers(p) show-all-timers(q) unraw(r) sync(s) sh=
+ow-task-states(t) unmount(u) force-fb(v) show-blocked-tasks(w) replay-kerne=
+l-logs(R)
+> # read: proc.h:49: xreaddir: Assertion `de || errno =3D=3D 0' failed.
+> # Aborted
+> not ok 19 selftests: proc: read # exit=3D134
 
---2SFH8rxDrbPV7zxj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for the report!
 
-On Mon, May 18, 2026 at 06:35:15PM +0200, Jann Horn wrote:
-> Fix the easy cases where procfs currently calls ptrace_may_access() witho=
-ut
-> exec_update_lock protection, where the fix is to simply add the extra lock
-> or use mm_access():
-
->  - do_task_stat(): grab exec_update_lock
->  - proc_pid_wchan(): grab exec_update_lock
->  - proc_map_files_lookup(): use mm_access() instead of get_task_mm()
->  - proc_map_files_readdir(): use mm_access() instead of get_task_mm()
->  - proc_ns_get_link(): grab exec_update_lock
->  - proc_ns_readlink(): grab exec_update_lock
-
-It seems that this patch is triggering a failure in the proc selftests
-read test:
-
-# selftests: proc: read
-[  259.127414] ICMPv6: process `read' is using deprecated sysctl (syscall) =
-net.ipv6.neigh.default.base_reachable_time - use net.ipv6.neigh.default.bas=
-e_reachable_time_ms instead
-[  259.158773] /proc/cgroups lists only v1 controllers, use cgroup.controll=
-ers of root cgroup for v2 info
-[  259.177155] sysrq: HELP : loglevel(0-9) reboot(b) crash(c) terminate-all=
--tasks(e) memory-full-oom-kill(f) kill-all-tasks(i) thaw-filesystems(j) sak=
-(k) show-backtrace-all-active-cpus(l) show-memory-usage(m) nice-all-RT-task=
-s(n) poweroff(o) show-registers(p) show-all-timers(q) unraw(r) sync(s) show=
--task-states(t) unmount(u) force-fb(v) show-blocked-tasks(w) replay-kernel-=
-logs(R)=20
-# read: proc.h:49: xreaddir: Assertion `de || errno =3D=3D 0' failed.
-# Aborted
-not ok 19 selftests: proc: read # exit=3D134
-
-Full log:
-
-   https://lava.sirena.org.uk/scheduler/job/2835194#L12433
-
-Everything except the assertation appears in a successful test:
-
-   https://lava.sirena.org.uk/scheduler/job/2834737#L12287
-
-bisect log:
-
-# bad: [6e845bcb78c95af935094040bd4edc3c2b6dd784] Add linux-next specific f=
-iles for 20260605
-# good: [f9b5aeed37bc9023d700c9c8ff186f1e98692bc8] Merge branch 'for-linux-=
-next-fixes' of https://gitlab.freedesktop.org/drm/misc/kernel.git
-# good: [9582485a65eacfd7245ec7f0a9d7e2c34749d669] device property: fix fwn=
-ode reference leak in fwnode_graph_get_endpoint_by_id()
-# good: [a9c12b783cc711de3ac7f188bed07d529bb818af] device core: make struct=
- device_driver groups members constant arrays
-# good: [34808ac8ddafc3e2c2a59e84eaab0a410e7a0fdc] regmap-i2c: fix sparse w=
-arning in regmap_smbus_word_write_reg16
-# good: [25025253476a64c186592d952c27f24bc3490e42] leds: Adjust documentati=
-on of brightness sysfs node
-# good: [a76640171b29fc91b9777a8e1bdc7e08db697275] Merge patch series "proc=
-: subset=3Dpid: Relax check of mount visibility"
-# good: [78d797520f6a74ed402cb98c6bf74d96b4937965] sysfs: remove trivial sy=
-sfs_get_tree() wrapper
-# good: [c5dffafb426f927db1630140552dc11d6f76e1a6] docs: proc: add document=
-ation about mount restrictions
-git bisect start '6e845bcb78c95af935094040bd4edc3c2b6dd784' 'f9b5aeed37bc90=
-23d700c9c8ff186f1e98692bc8' '9582485a65eacfd7245ec7f0a9d7e2c34749d669' 'a9c=
-12b783cc711de3ac7f188bed07d529bb818af' '34808ac8ddafc3e2c2a59e84eaab0a410e7=
-a0fdc' '25025253476a64c186592d952c27f24bc3490e42' 'a76640171b29fc91b9777a8e=
-1bdc7e08db697275' '78d797520f6a74ed402cb98c6bf74d96b4937965' 'c5dffafb426f9=
-27db1630140552dc11d6f76e1a6'
-# test job: [9582485a65eacfd7245ec7f0a9d7e2c34749d669] https://lava.sirena.=
-org.uk/scheduler/job/2804101
-# test job: [a9c12b783cc711de3ac7f188bed07d529bb818af] https://lava.sirena.=
-org.uk/scheduler/job/2803377
-# test job: [34808ac8ddafc3e2c2a59e84eaab0a410e7a0fdc] https://lava.sirena.=
-org.uk/scheduler/job/2783496
-# test job: [25025253476a64c186592d952c27f24bc3490e42] https://lava.sirena.=
-org.uk/scheduler/job/2803433
-# test job: [a76640171b29fc91b9777a8e1bdc7e08db697275] https://lava.sirena.=
-org.uk/scheduler/job/2827647
-# test job: [78d797520f6a74ed402cb98c6bf74d96b4937965] https://lava.sirena.=
-org.uk/scheduler/job/2827487
-# test job: [c5dffafb426f927db1630140552dc11d6f76e1a6] https://lava.sirena.=
-org.uk/scheduler/job/2827551
-# test job: [6e845bcb78c95af935094040bd4edc3c2b6dd784] https://lava.sirena.=
-org.uk/scheduler/job/2835194
-# bad: [6e845bcb78c95af935094040bd4edc3c2b6dd784] Add linux-next specific f=
-iles for 20260605
-git bisect bad 6e845bcb78c95af935094040bd4edc3c2b6dd784
-# test job: [0ec6945730e17fb8a44283114493b1a54caabf09] https://lava.sirena.=
-org.uk/scheduler/job/2827595
-# bad: [0ec6945730e17fb8a44283114493b1a54caabf09] proc: protect ptrace_may_=
-access() with exec_update_lock (part 1)
-git bisect bad 0ec6945730e17fb8a44283114493b1a54caabf09
-# first bad commit: [0ec6945730e17fb8a44283114493b1a54caabf09] proc: protec=
-t ptrace_may_access() with exec_update_lock (part 1)
-# test job: [f8823fb0641190098790d060a27b89bad4ddd73d] https://lava.sirena.=
-org.uk/scheduler/job/2829222
-# bad: [f8823fb0641190098790d060a27b89bad4ddd73d] proc: protect ptrace_may_=
-access() with exec_update_lock (FD links)
-git bisect bad f8823fb0641190098790d060a27b89bad4ddd73d
-# test job: [abadd84dab07b3f9e79455b467d9ff60d12940b2] https://lava.sirena.=
-org.uk/scheduler/job/2827425
-# bad: [abadd84dab07b3f9e79455b467d9ff60d12940b2] Merge patch series "proc:=
- protect ptrace_may_access() with exec_update_lock"
-git bisect bad abadd84dab07b3f9e79455b467d9ff60d12940b2
-# test job: [f8823fb0641190098790d060a27b89bad4ddd73d] https://lava.sirena.=
-org.uk/scheduler/job/2829222
-# bad: [f8823fb0641190098790d060a27b89bad4ddd73d] proc: protect ptrace_may_=
-access() with exec_update_lock (FD links)
-git bisect bad f8823fb0641190098790d060a27b89bad4ddd73d
-# test job: [0ec6945730e17fb8a44283114493b1a54caabf09] https://lava.sirena.=
-org.uk/scheduler/job/2827595
-# bad: [0ec6945730e17fb8a44283114493b1a54caabf09] proc: protect ptrace_may_=
-access() with exec_update_lock (part 1)
-git bisect bad 0ec6945730e17fb8a44283114493b1a54caabf09
-# first bad commit: [0ec6945730e17fb8a44283114493b1a54caabf09] proc: protec=
-t ptrace_may_access() with exec_update_lock (part 1)
-
---2SFH8rxDrbPV7zxj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoi3vgACgkQJNaLcl1U
-h9A3dQf/SC8NAl6WIr+FLRbl5GwCMDtRS/UhwS7+YPpjC0ZbPRUhanpanaRrwE9B
-71fnXNe+QGBjq90Mu0ejjGt9Z8J2shzF4SMNmmqcPGA5Y14Fh7tUCS7rVEp3Z8Y0
-t8HOhcNgMxveIQxNfERTC05yRUtD3+dS2UMA7QnmtaB4APvwfHqxqExt8+Se1fIR
-+Zxyr6T24hqNzNOu/B1ih2AVKf2pmQ2TV3b45q/3IrRh3jnKVI9667hM7cNofYWz
-n8EqdPYxMGzvQyV45vNW431XYMo0LXTS3Onm3LEQX778kdPQt6thrnT9Qh+I+psn
-cyVt48uyQflFcZN/RatOXLJNkDLklA==
-=qfjM
------END PGP SIGNATURE-----
-
---2SFH8rxDrbPV7zxj--
+Yup, https://lore.kernel.org/oe-lkp/202606021924.b6d8a0c2-lkp@intel.com
+reported this too, it should be fixed with
+https://lore.kernel.org/all/20260604155806.1402880-1-jannh@google.com/
+, which has been squashed into the current version of the VFS tree.
 
