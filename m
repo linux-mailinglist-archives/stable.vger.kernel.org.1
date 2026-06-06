@@ -1,226 +1,147 @@
-Return-Path: <stable+bounces-260848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260850-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1BzxGUGKI2rVvAEAu9opvQ
-	(envelope-from <stable+bounces-260848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 06 Jun 2026 04:47:29 +0200
+	id k+SXAYSSI2qLvgEAu9opvQ
+	(envelope-from <stable+bounces-260850-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 06 Jun 2026 05:22:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0303264C3F9
-	for <lists+stable@lfdr.de>; Sat, 06 Jun 2026 04:47:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2DD64C463
+	for <lists+stable@lfdr.de>; Sat, 06 Jun 2026 05:22:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bClZUiD3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260848-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-260848-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=h51HdRM0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260850-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260850-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 124D23026270
-	for <lists+stable@lfdr.de>; Sat,  6 Jun 2026 02:47:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69D87302496F
+	for <lists+stable@lfdr.de>; Sat,  6 Jun 2026 03:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0475319F11B;
-	Sat,  6 Jun 2026 02:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745AE25B2FA;
+	Sat,  6 Jun 2026 03:22:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBCD7262B
-	for <stable@vger.kernel.org>; Sat,  6 Jun 2026 02:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C63A23815B
+	for <stable@vger.kernel.org>; Sat,  6 Jun 2026 03:22:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780714046; cv=none; b=PLjtHmiGFrVDcC1ho94UAfitBbm1eVbowPM/bJIhI0u6DTmP5GSAMWIUdi03at1+veAZOnZZKpAMysNmpDI8+5+C4CCrTaSmeConntPNq2btMNI2t7A+dHKSP3TL0IgUpOODXCjije3nOxh8eWseJA1I5SYUb4QiA8srUo97KeY=
+	t=1780716158; cv=none; b=jeyyDJN6h6Nq31OJeTcy7h9CeM8M+xqpUTAFnoXzX8NcuJ73IdZsqnuM5LpH3QdpUb4zUBBk798XQ4Qtp5jDlRwsXYwXKmw2v2++E1VK8dngp3De3Z0H8iSVP3utNrhwhkQ5rIAJgvRkkR8Rci0CbFFyjSRphTs/+3dY/WJdvoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780714046; c=relaxed/simple;
-	bh=5GrVzKAgIWD4g/7q5CvWBaIpewOXljuKUByIP/cw3ZA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bo587rhqV5nEM2+7eG4nJRUvocj3GmO6qA6Gox+f9UoxxgDfK8V6D0JOS0L7jYeJyKBaFB8c3yJ2aFsvlcOvPbhNdJNW0aTdsV285f6kPiLncOZ23iALZPbD7YSYtVZNlzu/JSXFvPblvGWRG1tcdna/vtQKfscaD3vtcMyerNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bClZUiD3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A061F00893;
-	Sat,  6 Jun 2026 02:47:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780714045;
-	bh=0MMZVqObAwVwy0mnmFsKTe94sLRQoWMuL0uwauUpC+E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bClZUiD3Qk10qh6ZJHf4qx0QN7JUOCeUglvdhmR984NBhu5LvJ6gtrJeNa/1mItJT
-	 ZWUgC50SSsc16YY2mFOuRdcTiV/yVzIZbWQ0rpB2RdhdSpHhWn7bkpXH7k7lY7ZjKV
-	 dieJ9bDHL7enAj/soPRXzoSHDt2UU/vmHvzPpJGrdkENAIJo1EUJM/2YyrM/FmS20h
-	 zAyG0iXV+NQq/aOnc8qEy4TNteB8JhN3bDl16HOByqMb1hjH9CVmLUW2FqlvOC8Ohv
-	 Cy2QUDd4NfdQhGS4gmTC5iknZWbxh8LOUtlZKRBGQy+ipPvjC45aZfqy2wWWhyoauC
-	 zEOvm4VK3I2NA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Michael Bommarito <michael.bommarito@gmail.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] scsi: target: iscsi: Fix CRC overread and double-free in iscsit_handle_text_cmd()
-Date: Fri,  5 Jun 2026 22:47:23 -0400
-Message-ID: <20260606024723.2515163-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026060456-vengeful-juggle-2bd6@gregkh>
-References: <2026060456-vengeful-juggle-2bd6@gregkh>
+	s=arc-20240116; t=1780716158; c=relaxed/simple;
+	bh=jbPgsrbK1K1b0DlYJTMCLHsCDahXSKwxCMeJ1Uav9D4=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=rz8+wGFuPW88eKDbOhY429w4IZggnl5JeyfzqzhKH91Q/G9EhhFszdZtAUQx72xg35VfqzAzj0iuAd/pe+0I4pUkIkG7/Z4Iyiom6/DJJAeMReIdW5J680nB0splJfUVXbpdGMOPiNiLDWEhQ+Bo1vdQg+LaXGbCEgIOZNztKnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h51HdRM0; arc=none smtp.client-ip=209.85.216.47
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-36b903567fdso2565656a91.1
+        for <stable@vger.kernel.org>; Fri, 05 Jun 2026 20:22:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780716156; x=1781320956; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=jbPgsrbK1K1b0DlYJTMCLHsCDahXSKwxCMeJ1Uav9D4=;
+        b=h51HdRM0t8zZBUN8sbbzxmIlBcc8YB9Ncwx5sDOW5rDhis7HgA1jfqIOVLxWLnhf16
+         OVzZ/cNHuxmu2nP/k7+rcCGKmsSY63o2DvlYZnc5sUgHwH13/nAF6Lrq15lD3Kp1Hk6Z
+         uqThe4ZdHPXuaepunMcm76yV7CSndkWvPmpnQ8ooglwaQtuSM0AupRmh8MBEb3f292fz
+         J9zJ6q1HoQxL017uAavGOXtIjTJ7RQ3dVSt2lI3pTW26sXXXmCKuTS8+F2AYlJz0S2fs
+         ZDzDVGWfPPaysUR8qIsx5DWpymiwydokNPWSJ+iAbeI0cFQ6uU0mQ5k9AN1vkSecDNCA
+         ApXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780716156; x=1781320956;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jbPgsrbK1K1b0DlYJTMCLHsCDahXSKwxCMeJ1Uav9D4=;
+        b=U69S2awquuAmYfmU8KfiBaoJgzYkKD6XWZm3VpjvsQ+OLp3B2aUcR69rGr4iQjZUmb
+         TCwWya0qSAsEQrXjPoxS0lrqMooKUrHAeDilYWfPtnow1bCHiaCAIDGeJVRMzYq90SYA
+         0yHO+StIfsH9LRaXCx/vTfnli/eJNxxJRkBquvQJZKS0UKQeNvw3IMNJ8arMfLNZ2tAM
+         bL8jBYThMsvpTl+F9egT8sUHy6HXoVjiqwDtvzA/YIGKsb7TNER3sgCNI0HQE5rNmrDt
+         uo0mgD2dJGsGsO8uRyG/HT2QEwdTLZs4Ll5rhTlOKjHEqzL/yvoWHtzjQ7I5b6Im/44q
+         umgQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9REfoQuGRLe+Rn6SalrrkPClHp2eaFHjcE5BAwNkHWuHIIgs5fWzLomaBsDgNmLV53ChfoXw4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP6GOn+jl8uVU41RL/TIItv+OpHT2XA7qclz062iUcb5UJfeac
+	Um05ojaKNwFzbyP4b2y6oEqsZ+e5ZW4aOqgQfYDHVC6l1e+cE1cH4zzP
+X-Gm-Gg: Acq92OG3YNaxzW1Ry6Sos1miqIx6Hp/t0jm19JJ/aI5bmenwn82EWyxXEYbjvlXS1Af
+	eEFdE0V44Ku5cz2yqRw5hAuatlP9gqLNMyH1Hg7wW64GRHP1DkuRXX/YUCQxFMSImOrHKi6Fznx
+	s5zLy92slXQ//+AOXysx2QBddaJGrsmyMta1xJ7pdw7x0jk1DR45d4z8cOzkKBaabvsV+T0RkyZ
+	lRb/QnAfNqcnVJrFge2xPrlsQUDxFu6smlToiKVY9B7b5CsOsO2ruoVJSpDu0OLhy040XIY8+By
+	hbzRuMGdjrll6kT526dWhD3vpro1YKl6ixn19znCHGaH4/cpoJmoWXzrLQDBCZ6krsatSbpyqfX
+	f+rCik95pTjwPxk8ydHov3XB2Db1OnpPoQ4DTAGKBv0Ja5zqZJJPAlFcmehg/6PptfjYOHO8j8y
+	JYFWc2tRHG/3PAeZAORRbh0JOJft7utU6x
+X-Received: by 2002:a17:90b:35c1:b0:36b:9daf:1504 with SMTP id 98e67ed59e1d1-370f0772850mr6916406a91.14.1780716156242;
+        Fri, 05 Jun 2026 20:22:36 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-371341170c7sm2319688a91.1.2026.06.05.20.22.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jun 2026 20:22:35 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Gautam Menghani <gautam@linux.ibm.com>, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, harshpb@linux.ibm.com, stable@vger.kernel.org, Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v4] powerpc/pseries/Kconfig: Enable CONFIG_VPA_PMU to be used with KVM
+In-Reply-To: <20260602121706.8423-1-gautam@linux.ibm.com>
+Date: Sat, 06 Jun 2026 08:37:49 +0530
+Message-ID: <o6ho8iyi.ritesh.list@gmail.com>
+References: <20260602121706.8423-1-gautam@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260848-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:michael.bommarito@gmail.com,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260850-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,oracle.com,kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gautam@linux.ibm.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:harshpb@linux.ibm.com,m:stable@vger.kernel.org,m:seanjc@google.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0303264C3F9
+X-Rspamd-Queue-Id: 3B2DD64C463
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+Gautam Menghani <gautam@linux.ibm.com> writes:
 
-[ Upstream commit 778c2ab142c625a8a8afa570e0f9b7873f445d99 ]
+> Currently, CONFIG_VPA_PMU is not enabled by default, and consequently
+> cannot be used for KVM guests at all, unless explicitly enabled on
+> host kernel.
+>
+> Mark CONFIG_VPA_PMU as "default m" to ensure it is available when KVM is
+> being used.
+>
+> Fixes: 176cda0619b6c ("powerpc/perf: Add perf interface to expose vpa counters")
 
-Two latent bugs in the Text-phase handler, both present since the
-original LIO integration in commit e48354ce078c ("iscsi-target: Add
-iSCSI fabric support for target v4.1"):
+Not really a fix per-se. So we need not add this fixes tag.
 
-1) DataDigest CRC buffer overread (4 bytes past text_in).
+> Cc: stable@vger.kernel.org # v6.13+
 
-   text_in is kzalloc()'d at ALIGN(payload_length, 4).  rx_size is then
-   incremented by ISCSI_CRC_LEN to make room for the received DataDigest
-   in the iovec, but the same (now-bumped) rx_size is passed as the
-   buffer length to iscsit_crc_buf():
+I think the stable tag like above is sufficient for stable tree
+maintainers to pick this up.
 
-       if (conn->conn_ops->DataDigest) {
-               ...
-               rx_size += ISCSI_CRC_LEN;
-       }
-       ...
-       if (conn->conn_ops->DataDigest) {
-               data_crc = iscsit_crc_buf(text_in, rx_size, 0, NULL);
-
-   iscsit_crc_buf() walks rx_size bytes of text_in with crc32c(), so
-   when DataDigest is negotiated it reads 4 bytes past the end of the
-   text_in allocation.  KASAN reproduces this directly on the unpatched
-   mainline tree as slab-out-of-bounds in crc32c() called from the Text
-   PDU path.  The OOB bytes feed crc32c() and are then compared against
-   the initiator-supplied checksum, so the value does not flow back to
-   the attacker, but the kernel does read past the buffer on every Text
-   PDU with DataDigest=CRC32C.
-
-   Fix by passing the actual padded payload length
-   (ALIGN(payload_length, 4)) that was used for the kzalloc().
-
-2) Stale cmd->text_in_ptr re-free (double-free) on ERL>0 bad DataDigest
-   drop.
-
-   On DataDigest mismatch with ErrorRecoveryLevel > 0 the handler
-   silently drops the PDU and lets the initiator plug the CmdSN gap:
-
-               kfree(text_in);
-               return 0;
-
-   cmd->text_in_ptr still points at the freed buffer.  The next Text
-   Request on the same ITT re-enters iscsit_setup_text_cmd(), which
-   unconditionally does
-
-       kfree(cmd->text_in_ptr);
-       cmd->text_in_ptr = NULL;
-
-   freeing the same pointer a second time.  Session teardown via
-   iscsit_release_cmd() has the same shape and hits the same double-free
-   if the connection is dropped before a second Text Request arrives.
-
-   On an unmodified mainline tree the bug-1 CRC overread fires first on
-   the initial valid Text Request and perturbs the subsequent state, so
-   #4 was isolated by building a kernel with only the bug-1 hunk of this
-   patch applied plus temporary printk() observability around the three
-   relevant kfree() sites.  The observability prints are not part of
-   this patch.  On that build, a three-PDU Text Request sequence after
-   login produces two back-to-back splats:
-
-       BUG: KASAN: double-free in iscsit_setup_text_cmd+0x??
-       BUG: KASAN: double-free in iscsit_release_cmd+0x??
-
-   showing the same pointer freed in the ERL>0 drop path and again in
-   iscsit_setup_text_cmd() (next Text Request on the same ITT) and once
-   more in iscsit_release_cmd() (session teardown).  On distro kernels
-   with CONFIG_SLAB_FREELIST_HARDENED=y (default) the double-free
-   becomes a remote kernel BUG(); on non-hardened kernels it corrupts
-   the slab freelist.
-
-   Fix by clearing cmd->text_in_ptr after the kfree() in the ERL>0 drop
-   path.  With both hunks applied #4 is directly observable on the stock
-   tree without observability printks; fixing bug-1 alone would mask #4
-   less, not more, so the hunks are submitted together.
-
-Both fixes are one-liners.  The Text PDU state machine is unchanged and
-the wire protocol is unaffected.
-
-Fixes: e48354ce078c ("iscsi-target: Add iSCSI fabric support for target v4.1")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Tested-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/target/iscsi/iscsi_target.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index 68bbdf3ee101db..8a7d308da991ba 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -2329,8 +2329,9 @@ iscsit_handle_text_cmd(struct iscsit_conn *conn, struct iscsit_cmd *cmd,
- 
- 		if (conn->conn_ops->DataDigest) {
- 			iscsit_do_crypto_hash_buf(conn->conn_rx_hash,
--						  text_in, rx_size, 0, NULL,
--						  &data_crc);
-+						  text_in,
-+						  ALIGN(payload_length, 4),
-+						  0, NULL, &data_crc);
- 
- 			if (checksum != data_crc) {
- 				pr_err("Text data CRC32C DataDigest"
-@@ -2350,6 +2351,7 @@ iscsit_handle_text_cmd(struct iscsit_conn *conn, struct iscsit_cmd *cmd,
- 					" Command CmdSN: 0x%08x due to"
- 					" DataCRC error.\n", hdr->cmdsn);
- 					kfree(text_in);
-+					cmd->text_in_ptr = NULL;
- 					return 0;
- 				}
- 			} else {
--- 
-2.53.0
-
+-ritesh
 
