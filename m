@@ -1,225 +1,167 @@
-Return-Path: <stable+bounces-260852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id R1gtKI2mI2pXwQEAu9opvQ
-	(envelope-from <stable+bounces-260852-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 06 Jun 2026 06:48:13 +0200
+	id MpqXMEGnI2qCwQEAu9opvQ
+	(envelope-from <stable+bounces-260855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 06 Jun 2026 06:51:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EA264C604
-	for <lists+stable@lfdr.de>; Sat, 06 Jun 2026 06:48:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB56964C622
+	for <lists+stable@lfdr.de>; Sat, 06 Jun 2026 06:51:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gibson.sh header.s=20260228 header.b=JKCxGiU0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260852-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-260852-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cmkq+X4D;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260855-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260855-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A1778300BD5C
-	for <lists+stable@lfdr.de>; Sat,  6 Jun 2026 04:48:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4C4EE300F612
+	for <lists+stable@lfdr.de>; Sat,  6 Jun 2026 04:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1DC6279DB1;
-	Sat,  6 Jun 2026 04:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE44D2F8EA6;
+	Sat,  6 Jun 2026 04:51:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-190b.mail.infomaniak.ch (smtp-190b.mail.infomaniak.ch [185.125.25.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8FA2BD11
-	for <stable@vger.kernel.org>; Sat,  6 Jun 2026 04:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B025927E049
+	for <stable@vger.kernel.org>; Sat,  6 Jun 2026 04:51:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780721286; cv=none; b=rx+1q6jgCaSEn57dpzAE+JBFoRzcwt054+8FqnrOFO0hr/4ob8QOo5flcpqkPYGYqH0Q7mc/Pa0/Epg4ZirjhwMVKZVM+RYanCEqpZW/AcA6YKbqHz6bhUuSUzassgZ2Mi/xmfSldKf5E/Usqr5nZUg9VxhasS2DHdrJEw96Z94=
+	t=1780721464; cv=none; b=WwsI9ln8WMDr8VpdTdLD3YfTnCYkI2uXvblSQw/o+9++9+VLPnvkEHeFxkU5W2lWukPWKBRwUcs7Q7qocDiuY7zZvvxXFvg2ZlCcwbugp9EaQXfpdTtwE9iFO1FeghW7LZvlpMKMNRIr993EumcngHmgJvcTggYJYduVa/zNfbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780721286; c=relaxed/simple;
-	bh=Najpki1ZcHOMyLm6nlLJYDdfo+4pegQmAATFZ1fPdJA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJe+bzboqPZP5z8lZFAezAxxjsWJ59hm49jcWf7oxqcRO3S8ectanSXRiDBADo7puq1A73Ob+J+wdN5s7llL9PxHaup86uTQAj/4seYHdafgbBTgDxalsNjN2QvRdtpplb9MyY0UuBLENuWyLck+rxv+gNL5f4SVZ2UvYsuggMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.sh; spf=pass smtp.mailfrom=gibson.sh; dkim=pass (2048-bit key) header.d=gibson.sh header.i=@gibson.sh header.b=JKCxGiU0; arc=none smtp.client-ip=185.125.25.11
-Received: from smtp-4-0000.mail.infomaniak.ch (smtp-4-0000.mail.infomaniak.ch [10.7.10.107])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gXQm21S8Lz353
-	for <stable@vger.kernel.org>; Sat,  6 Jun 2026 06:48:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gibson.sh;
-	s=20260228; t=1780721282;
-	bh=4JgcUrF1sbZczkpfNhX8xMy73Iep2kkb6jW8W1MiLyM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JKCxGiU0N6YcnIIe8NOTvLKSAA6CikMhXCfnh3fDLtQT+GrMsBvzB95JGs4N9seHd
-	 cOncvZcb3WxOXAYvOzd8y4/pHEosuP5B5T2iEjMgXaFnvxPt1wavnZK5liWHyM9CED
-	 SvRjRgcsYH6i7+5+4bFgOTGtfxgEUDsDtVwBFBp36Jd5S9R1WjCkOazOKrJO7/DjWc
-	 yHwF6gBnoMuCdmXEZ+lLGxQGK8nUZRiyl4UHSt11yIKl86vMLFOiXtola2VAhXjmfl
-	 9g9OL4Us3PuctTdYy+6xGuVWaJBcEzAIgn+GrLXQPer4QKVpjoKN92LOczD0fm8Sc1
-	 ZQejknObqHx7g==
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4gXQm15GTSzyb
-	for <stable@vger.kernel.org>; Sat,  6 Jun 2026 06:48:01 +0200 (CEST)
-Received: from unknown by spiderdemon.horst.lan (DragonFly Mail Agent v0.13);
-	Sat, 06 Jun 2026 06:48:00 +0200
-From: Daniel Gibson <daniel@gibson.sh>
-To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mario Limonciello <superm1@kernel.org>
-Cc: Daniel Gibson <daniel@gibson.sh>,
-	stable@vger.kernel.org
-Subject: [PATCH v4 3/3] platform/x86/amd/pmc: Don't log during intermediate wakeups
-Date: Sat,  6 Jun 2026 06:47:58 +0200
-Message-ID: <20260606044758.2213401-4-daniel@gibson.sh>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260606044758.2213401-1-daniel@gibson.sh>
-References: <20260606044758.2213401-1-daniel@gibson.sh>
+	s=arc-20240116; t=1780721464; c=relaxed/simple;
+	bh=/u4C1kWYVbZiPw/N/UA7MQei+1M1gBnUoiL6TjXpJMs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nALkkWVTzjGzdscEROWZ9PkgIy8HtmO6lqjvgP1KPFGtmHMpSkcWxgCUjbMLZFoJX8bZTniDoTqKX9V8eila//kNUtgx0t8igV1ihaCeFKOUfgLTfsBkuaiyo5k2QXwNJ8zmiWtVuqeh+qysSJTzd6li7HdTLC62SeEUJEWIulo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cmkq+X4D; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7340C1F0089C
+	for <stable@vger.kernel.org>; Sat,  6 Jun 2026 04:51:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780721462;
+	bh=sKz22jwoXiX77X9+l1832laRA/oVlQe98Ct+8CuxsJ4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=cmkq+X4D7gn5Wy/QtPOGGldw5QYXyKrpGRBzG/OaLIEXmGAiVmTD//4RCGWFZtImp
+	 Tc8PhbvtGDd2EFFczm3JJjxuZKUoec3t5WS0CzV/WH3hEkH22rA36BE7Ed7m+HfdYv
+	 /ivPseYVrpb2rEjTqE07SXwZEVNmYOJZP+reT7oOIVzuI2gkP699oMSngUfsSzoW4b
+	 8ha3jY+Gx02T+kWeR2Z1o3fSIhb+/bPKyU2lXfkP3wcNO0n+Bxu66zBtZ4bY9Uh6eV
+	 dW0Z/rFhgri0YR5rXMnSk+EDCNUFRKykPtecZa+2IlivwtpjI8VAv68W7N9EaUfVlO
+	 4XEKA97P0TFKg==
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-68c08bfe5afso4969883a12.2
+        for <stable@vger.kernel.org>; Fri, 05 Jun 2026 21:51:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8KoHu0umncG1suwQQY1Izy2jtFiDCkMci5KPjUmb7cryntMLh108+GuStIf6W4GfFlwuZMa6U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznauIrpmTksRRh9XRX+q4Fycaej0ZzMtB1hI42CvAhSGkH/rYM
+	A+v1+uLrcynORrEI2mlz8k0Y7wtavKBFRdikZ8izRYcWmQUMvcYvnlx7Hql10jFBvLv3TKZ/SV8
+	huGcNYK+UriGUOR7tF/W3rzm7qohBpow=
+X-Received: by 2002:a05:6402:27ce:b0:687:5157:1d4f with SMTP id
+ 4fb4d7f45d1cf-68fa524d249mr3187355a12.26.1780721461112; Fri, 05 Jun 2026
+ 21:51:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
-X-Rspamd-Action: add header
-X-Spamd-Result: default: False [8.84 / 15.00];
-	URIBL_BLACK(7.50)[gibson.sh:mid,gibson.sh:dkim,gibson.sh:from_mime,gibson.sh:email];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+References: <20260604015848.18643-1-wanghongliang@loongson.cn>
+ <20260604015848.18643-2-wanghongliang@loongson.cn> <20260604183813.GA982803-robh@kernel.org>
+In-Reply-To: <20260604183813.GA982803-robh@kernel.org>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sat, 6 Jun 2026 12:50:49 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H648_nNzR67ZCJ9myUG2PQy5q1EHWo1yRjKTUB+4Q+5+Q@mail.gmail.com>
+X-Gm-Features: AVVi8Cd1pBWQh2AK-e5GGLwTOpjGHeDAqe2xsmKUiF49BygdYoawTYdPqMMbYQk
+Message-ID: <CAAhV-H648_nNzR67ZCJ9myUG2PQy5q1EHWo1yRjKTUB+4Q+5+Q@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] dt-bindings: i2c: ls2x-i2c: Add clocks and
+ clock-frequency properties
+To: Rob Herring <robh@kernel.org>
+Cc: Hongliang Wang <wanghongliang@loongson.cn>, Binbin Zhou <zhoubinbin@loongson.cn>, 
+	Andi Shyti <andi.shyti@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
+	loongarch@lists.linux.dev, stable@vger.kernel.org, 
+	Conor Dooley <conor.dooley@microchip.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-260855-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[gibson.sh:s=20260228];
-	TAGGED_FROM(0.00)[bounces-260852-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:Shyam-sundar.S-k@amd.com,m:hansg@kernel.org,m:ilpo.jarvinen@linux.intel.com,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:superm1@kernel.org,m:daniel@gibson.sh,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	DMARC_NA(0.00)[gibson.sh];
-	FORGED_SENDER(0.00)[daniel@gibson.sh,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS(0.00)[m:robh@kernel.org,m:wanghongliang@loongson.cn,m:zhoubinbin@loongson.cn,m:andi.shyti@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:wsa+renesas@sang-engineering.com,m:linux-i2c@vger.kernel.org,m:devicetree@vger.kernel.org,m:loongarch@lists.linux.dev,m:stable@vger.kernel.org,m:conor.dooley@microchip.com,m:krzk@kernel.org,m:conor@kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	GREYLIST(0.00)[pass,meta];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gibson.sh:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[daniel@gibson.sh,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable,dt,renesas];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,microchip.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 96EA264C604
-X-Spam: Yes
+X-Rspamd-Queue-Id: CB56964C622
 
-The ECs in the IdeaPads that need the delay_suspend quirk send lots
-of messages when charging, which not only causes intermediate wakeups
-when suspended, but also prevents the device from reaching the deepest
-suspend state.
+Hi, Rob,
 
-Because of this amd_pmc_intermediate_wakeup_need_delay() returns false
-during intermediate wakeups and amd_pmc_want_suspend_delay() is called.
-So far it always logged its "Delaying suspend by 2.5s ..." messages
-then, which spams dmesg. This commit makes sure that those messages are
-only logged once per suspend.
+On Fri, Jun 5, 2026 at 2:38=E2=80=AFAM Rob Herring <robh@kernel.org> wrote:
+>
+> On Thu, Jun 04, 2026 at 09:58:47AM +0800, Hongliang Wang wrote:
+> > Add clocks and clock-frequency properties to examples.
+> >
+> > Cc: stable@vger.kernel.org
+>
+> Not stable material unless there's a warning in the example (and there
+> is not).
+It is me who told Hongliang to CC stable because the 2nd patch is
+needed. If the 1st one is unnecessary, then please send a new version.
+And for the whole series:
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221383
-Signed-off-by: Daniel Gibson <daniel@gibson.sh>
-Cc: stable@vger.kernel.org
----
- drivers/platform/x86/amd/pmc/pmc.c | 39 ++++++++++++++++++++++++------
- drivers/platform/x86/amd/pmc/pmc.h |  1 +
- 2 files changed, 32 insertions(+), 8 deletions(-)
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
-index 2d3d180c15d2..7d772ccd17a6 100644
---- a/drivers/platform/x86/amd/pmc/pmc.c
-+++ b/drivers/platform/x86/amd/pmc/pmc.c
-@@ -619,6 +619,20 @@ static bool amd_pmc_intermediate_wakeup_need_delay(struct amd_pmc_dev *pdev)
- 
- static bool amd_pmc_want_suspend_delay(struct amd_pmc_dev *pdev)
- {
-+	/*
-+	 * intermediate_wakeup implies that the machine didn't get to deepest sleep
-+	 * state before - otherwise this function isn't called in amd_pmc_s2idle_check()
-+	 * because amd_pmc_intermediate_wakeup_need_delay() returns true first.
-+	 * On some IdeaPads that happens when charging, because the EC seems
-+	 * to send lots of messages then that wake the machine.
-+	 *
-+	 * But even in that case, the sleep here is necessary (on those IdeaPads),
-+	 * otherwise they wake up completely (resume) after a few seconds.
-+	 * So this variable is only used to avoid spamming dmesg on each
-+	 * intermediate wakeup.
-+	 */
-+	bool intermediate_wakeup = !pdev->is_first_check_after_suspend;
-+
- 	/*
- 	 * Some Lenovo Laptops (like different IdeaPad 3 Slims) need some
- 	 * me-time before sleeping or they get uncooperative after waking
-@@ -637,17 +651,20 @@ static bool amd_pmc_want_suspend_delay(struct amd_pmc_dev *pdev)
- 		 * disabled with disable_workarounds or delay_suspend=0
- 		 */
- 		if (delay_suspend == 1 || (delay_suspend == -1 && !disable_workarounds)) {
--			dev_info(pdev->dev, "Delaying suspend by 2.5s to avoid platform bug\n");
-+			if (!intermediate_wakeup)
-+				dev_info(pdev->dev, "Delaying suspend by 2.5s to avoid platform bug\n");
- 			return true;
- 		}
--		dev_info(pdev->dev, "Not delaying suspend because of module parameter, even though your device is assumed to need it!\n");
-+		if (!intermediate_wakeup)
-+			dev_info(pdev->dev, "Not delaying suspend because of module parameter, even though your device is assumed to need it!\n");
- 	} else if (delay_suspend == 1) {
--		dev_info(pdev->dev, "Delaying suspend by 2.5s because delay_suspend=1. If this solves problems on your machine, please report this whole line to: platform-driver-x86@vger.kernel.org so it can be automatically detected as affected in the future. System Vendor: \"%s\" Product Name: \"%s\" Product Family: \"%s\" Board Vendor: \"%s\" Board Name: \"%s\"\n",
--			 dmi_get_system_info(DMI_SYS_VENDOR),
--			 dmi_get_system_info(DMI_PRODUCT_NAME),
--			 dmi_get_system_info(DMI_PRODUCT_FAMILY),
--			 dmi_get_system_info(DMI_BOARD_VENDOR),
--			 dmi_get_system_info(DMI_BOARD_NAME));
-+		if (!intermediate_wakeup)
-+			dev_info(pdev->dev, "Delaying suspend by 2.5s because delay_suspend=1. If this solves problems on your machine, please report this whole line to: platform-driver-x86@vger.kernel.org so it can be automatically detected as affected in the future. System Vendor: \"%s\" Product Name: \"%s\" Product Family: \"%s\" Board Vendor: \"%s\" Board Name: \"%s\"\n",
-+				 dmi_get_system_info(DMI_SYS_VENDOR),
-+				 dmi_get_system_info(DMI_PRODUCT_NAME),
-+				 dmi_get_system_info(DMI_PRODUCT_FAMILY),
-+				 dmi_get_system_info(DMI_BOARD_VENDOR),
-+				 dmi_get_system_info(DMI_BOARD_NAME));
- 		return true;
- 	}
- 	return false;
-@@ -660,6 +677,9 @@ static void amd_pmc_s2idle_prepare(void)
- 	u8 msg;
- 	u32 arg = 1;
- 
-+	/* Reset this variable because this is a fresh suspend */
-+	pdev->is_first_check_after_suspend = true;
-+
- 	/* Reset and Start SMU logging - to monitor the s0i3 stats */
- 	amd_pmc_setup_smu_logging(pdev);
- 
-@@ -699,6 +719,9 @@ static void amd_pmc_s2idle_check(void)
- 	rc = amd_stb_write(pdev, AMD_PMC_STB_S2IDLE_CHECK);
- 	if (rc)
- 		dev_err(pdev->dev, "error writing to STB: %d\n", rc);
-+
-+	/* remember that first check after suspend is done (until next prepare) */
-+	pdev->is_first_check_after_suspend = false;
- }
- 
- static int amd_pmc_dump_data(struct amd_pmc_dev *pdev)
-diff --git a/drivers/platform/x86/amd/pmc/pmc.h b/drivers/platform/x86/amd/pmc/pmc.h
-index f5257e47b8c4..8aa7073ed09f 100644
---- a/drivers/platform/x86/amd/pmc/pmc.h
-+++ b/drivers/platform/x86/amd/pmc/pmc.h
-@@ -114,6 +114,7 @@ struct amd_pmc_dev {
- 	struct dentry *dbgfs_dir;
- 	struct quirk_entry *quirks;
- 	bool disable_8042_wakeup;
-+	bool is_first_check_after_suspend;
- 	struct amd_mp2_dev *mp2;
- 	struct stb_arg stb_arg;
- };
--- 
-2.48.1
-
+>
+> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> > Signed-off-by: Hongliang Wang <wanghongliang@loongson.cn>
+> > ---
+> >  Documentation/devicetree/bindings/i2c/loongson,ls2x-i2c.yaml | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/i2c/loongson,ls2x-i2c.ya=
+ml b/Documentation/devicetree/bindings/i2c/loongson,ls2x-i2c.yaml
+> > index ee09c6d9c5f0..0beb7f2515c8 100644
+> > --- a/Documentation/devicetree/bindings/i2c/loongson,ls2x-i2c.yaml
+> > +++ b/Documentation/devicetree/bindings/i2c/loongson,ls2x-i2c.yaml
+> > @@ -37,11 +37,14 @@ unevaluatedProperties: false
+> >
+> >  examples:
+> >    - |
+> > +    #include <dt-bindings/clock/loongson,ls2k-clk.h>
+> >      #include <dt-bindings/interrupt-controller/irq.h>
+> >
+> >      i2c0: i2c@1fe21000 {
+> >          compatible =3D "loongson,ls2k-i2c";
+> >          reg =3D <0x1fe21000 0x8>;
+> > +        clock-frequency =3D <100000>;
+> > +        clocks =3D <&clk LOONGSON2_APB_CLK>;
+> >          interrupt-parent =3D <&extioiic>;
+> >          interrupts =3D <22 IRQ_TYPE_LEVEL_LOW>;
+> >          #address-cells =3D <1>;
+> > --
+> > 2.47.2
+> >
+>
 
