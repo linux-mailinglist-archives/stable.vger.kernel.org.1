@@ -1,153 +1,134 @@
-Return-Path: <stable+bounces-260905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260906-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Mn+QADNDJGpv4gEAu9opvQ
-	(envelope-from <stable+bounces-260905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 06 Jun 2026 17:56:35 +0200
+	id JCI5IPdGJGoj4wEAu9opvQ
+	(envelope-from <stable+bounces-260906-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 06 Jun 2026 18:12:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5377764DE06
-	for <lists+stable@lfdr.de>; Sat, 06 Jun 2026 17:56:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15EDC64DE79
+	for <lists+stable@lfdr.de>; Sat, 06 Jun 2026 18:12:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260905-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260905-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LZFx/r/w";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260906-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-260906-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 133023018749
-	for <lists+stable@lfdr.de>; Sat,  6 Jun 2026 15:56:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 844623014173
+	for <lists+stable@lfdr.de>; Sat,  6 Jun 2026 16:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7905C3B4439;
-	Sat,  6 Jun 2026 15:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61A02DFF3F;
+	Sat,  6 Jun 2026 16:12:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA983AFCFE;
-	Sat,  6 Jun 2026 15:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A358D2DF6E6;
+	Sat,  6 Jun 2026 16:12:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780761389; cv=none; b=SobVK1k10N06kDTnm/OrOxoebkN8GjiSdScn3Umqs0Q85CvIuvZvHmd9vwiWG3KOTjEqeeHZH8iYp/QbspGZWH3r4t21qcZSKKIrtMNVWGrvdWudat02PZqmCmK7LSDykI/Z79CFu2SfMvsBC394Jhn2yt4GuHFusvaJr0q2hRw=
+	t=1780762354; cv=none; b=cnGzGFdppYBHHTGoXhrjjZnK9DqJ4yP0LLUeGCnp6SiqhV9fTHaANcLB4klLHfeE+2D0B1Ag0q6LzOUJdnnJWjYVHsmSmPfu4WQovYhhWjw6V8AyrSXiD62Zot38MCFirV4fdPVSfPZv8/9KxFQLjo7BzkFwjZMiUXve8op8hQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780761389; c=relaxed/simple;
-	bh=MEsDFD+1Z/O5zMYKGU2N+EcE6BFk7o2WKQltlsBeVPc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RZ7CBIHUaJtsfGIeLGneB3C0t+JQSzt6QCXN3uP7YeVVBxms6FRBNPi0ivkFWfC4jqtPdFIvZT/Y0l5uonexDdxeZp62z8JZB7V8QB0PIFpkOmHrv/kuftbKah7tGpGH9bvDNE9zBHoBbX7q/pSWOo2wW5PFOtNAg6h81jEFJPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowABXr9IiQyRqIdiEEg--.22962S2;
-	Sat, 06 Jun 2026 23:56:18 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: lyude@redhat.com,
-	dakr@kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/nouveau/acr: fix missing nvkm_done() in error path of nvkm_acr_oneinit()
-Date: Sat,  6 Jun 2026 15:56:06 +0000
-Message-Id: <20260606155606.77593-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1780762354; c=relaxed/simple;
+	bh=at0kC8HDa5m8oXa2UfGcEFy83+96ESzZa8qDEaekvSk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IJLhl+fe1YDEaEu2lzJX6x8iIvQSasePDsTdXdU6U5Fe49KHXUaoSwgoUrp/94btQXRv8m8iLqKmP9ogwbx5nWCgCVHnR6CO/AaQiEJeV/qgMuTJIWBpePTD+GZvOEOWhmr+pscaFPCwYP9iuA0PgljqkQgtqr74C4cRQZZR94I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZFx/r/w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979411F00893;
+	Sat,  6 Jun 2026 16:12:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780762353;
+	bh=3WzyYt48G4RQfAKtt5FczP1+tGEO7Yztn+HsGj1d6x4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LZFx/r/wgFyEh7r0VkW0hzkrLcZCGzQoh7wlrQEcP4oQQ8eH9+FucJGz9h6g5VhtE
+	 wcAX81orLf6vRq3n1wV0WzoH0cWF9nIPYHRrKc5fDPngfDJV50X2EbKi0uYKuJjT+O
+	 /w9HMfhdNCWd3Z1YGQYHtPYnrBetTPo9BKog85Zb5MMIswkLqQmqn664cfQeXR5Wh5
+	 31/bSK6ZuwuqQ+NDO0gCjuKMN3LmfleyH3yMITrCX37TSrF/99MyDbKcucA5uc3Hk9
+	 AhEhWh1LwZu65s9LL8rhoEpP+9ZKImelmzLXOFTfznxyJPSGyjw54Xsg8ZzKQ1lSz4
+	 Y7YlIZY6ogq0w==
+Message-ID: <a0b0bea4-998e-4196-a2b0-9fcaf531d9f3@kernel.org>
+Date: Sat, 6 Jun 2026 18:12:28 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABXr9IiQyRqIdiEEg--.22962S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CF4UCw4xCr4DJw1UCFWrAFb_yoW8Xr1rpF
-	47WFyayr4xJa1ftayktF18CFyruwsYkrWIk34DK3s8ZwnxAryavr4Fya1UZryFyrnxCr13
-	XFsrJa45AryYyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
-	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-	x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
-	1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
-	JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
-	sGvfC2KfnxnUUI43ZEXa7VU1eWlPUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwkKA2okN20QHQAAse
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] nvme-apple: Prevent tag collision across queues even
+ if tag space is shared
+To: Nick Chan <towinchenmi@gmail.com>, Janne Grunau <j@jannau.net>,
+ Neal Gompa <neal@gompa.dev>, Keith Busch <kbusch@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+ Sagi Grimberg <sagi@grimberg.me>
+Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Yuriy Havrylyuk <yhavry@gmail.com>
+References: <20260606-prevent-tag-collision-t8015-v1-0-93ccf4eca550@gmail.com>
+ <20260606-prevent-tag-collision-t8015-v1-2-93ccf4eca550@gmail.com>
+Content-Language: en-US
+From: Sven Peter <sven@kernel.org>
+In-Reply-To: <20260606-prevent-tag-collision-t8015-v1-2-93ccf4eca550@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_RECIPIENTS(0.00)[m:lyude@redhat.com,m:dakr@kernel.org,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:dri-devel@lists.freedesktop.org,m:nouveau@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[redhat.com,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-260905-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-260906-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,jannau.net,gompa.dev,kernel.org,kernel.dk,lst.de,grimberg.me];
+	FORGED_SENDER(0.00)[sven@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_RECIPIENTS(0.00)[m:towinchenmi@gmail.com,m:j@jannau.net,m:neal@gompa.dev,m:kbusch@kernel.org,m:axboe@kernel.dk,m:hch@lst.de,m:sagi@grimberg.me,m:asahi@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-nvme@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:yhavry@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,lists.infradead.org,vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sven@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,iscas.ac.cn:mid,iscas.ac.cn:from_mime,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5377764DE06
+X-Rspamd-Queue-Id: 15EDC64DE79
 
-In nvkm_acr_oneinit(), nvkm_kmap(acr->wpr) is invoked unconditionally
-at line 309 to obtain a mapping reference. Additionally, when both
-acr->wpr_fw and acr->wpr_comp are present, a second nvkm_kmap() is
-called inside the conditional block. Both mappings are expected to be
-released by nvkm_done(acr->wpr) at line 320 before the function returns
-successfully.
+On 06.06.26 15:25, Nick Chan wrote:
+> From: Yuriy Havrylyuk <yhavry@gmail.com>
+> 
+> Apple NVMe controllers require tags of pending commands to not be shared
+> across admin and IO queues. However, on Apple A11 without linear SQ, it is
+> not possible for either queue to skip over some tags and must go from 0 to
+> the configured maximum before wrapping around.
+> 
+> If a pending command tag is duplicated across queues, the firmware
+> crashes with: "duplicate tag error for tag N", with N being the tag.
+> 
+> Instead of partitioning the tag space, which is not possible without
+> linear SQ, 
 
-However, when a mismatch is detected during the loop within the
-conditional block, the function returns -EINVAL at line 318 without
-calling nvkm_done(). This results in a leak of the kmap reference(s)
-acquired earlier.
+Isn't that just what the pci.c driver does with NVME_QUIRK_SHARED_TAGS 
+for the T2 macs or what we do in this driver with
+	if (anv->hw->has_lsq_nvmmu)
+		anv->tagset.reserved_tags = APPLE_NVME_AQ_DEPTH;
+?
 
-Fix the issue by invoking nvkm_done(acr->wpr) prior to the early return
-to ensure proper release of the mapping references.
 
-Fixes: 22dcda45a3d1 ("drm/nouveau/acr: implement new subdev to replace "secure boot"")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/gpu/drm/nouveau/nvkm/subdev/acr/base.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/acr/base.c b/drivers/gpu/drm/nouveau/nvkm/subdev/acr/base.c
-index 4c7745cd6ae5..7fd967a2554f 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/acr/base.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/acr/base.c
-@@ -315,6 +315,7 @@ nvkm_acr_oneinit(struct nvkm_subdev *subdev)
- 					  i, us, fw);
- 			}
- 		}
-+		nvkm_done(acr->wpr);
- 		return -EINVAL;
- 	}
- 	nvkm_done(acr->wpr);
--- 
-2.34.1
+Sven
 
 
