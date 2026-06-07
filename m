@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-261359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KZt9JllIJWr0FwIAu9opvQ
-	(envelope-from <stable+bounces-261359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:49 +0200
+	id M+twLwlIJWrBFwIAu9opvQ
+	(envelope-from <stable+bounces-261320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3695464FBB0
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4EF64FB32
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jz9mfsZ2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261359-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261359-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2Og4bzZw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261320-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261320-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A603A300382C
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:30:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5CA903026228
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4953329E7E;
-	Sun,  7 Jun 2026 10:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975E0327C13;
+	Sun,  7 Jun 2026 10:28:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AC21FE47B;
-	Sun,  7 Jun 2026 10:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F550313E2B;
+	Sun,  7 Jun 2026 10:28:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828245; cv=none; b=T1ZIeJrZCc9XUfWMPVi1WCL+pSwGDmjcBQ4EIPoOlF63Xr2ZQBE0kAGQnHqwsr2PYVFJU+9L579lTm1+RSYe/3GD09CqJ9U/GKFMp2gAWJh3plYSb4wRD4XJ7Xv3ktvlyx19aenJokRzM8csC1mEjQKLo24I9dptZcQkOANINyA=
+	t=1780828099; cv=none; b=Gq0NN/vit9vUetfzRbL4yJyRQLHIl7PGd7p3KT5bi1ELTssy3PuBR9EEz0f95E6vCHfmsXFmfh+fROKUtRhoKidFJEguqhyAABLua0t0inXqaWlaINLyhbJww39IaYggmSbVDQzhPSvz7MmWpqNlIxXDcldM53whqy6ubgQ7lII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828245; c=relaxed/simple;
-	bh=B6hOUfvIr5UivY8JWmucP2bii7LUgIohkTEKDAnu7dw=;
+	s=arc-20240116; t=1780828099; c=relaxed/simple;
+	bh=BO9gxp7iJ3GVSm5Z2VVKf02OElASduTMCXs8wj6UQnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ANSJx1lZaEEiBvRPOJjmQ/xl0a0W6LXdXHIM8ukkK8dmhVW/UiFObCNSOzeN8iZ5euAL5Gbc4LHXWgtD96z5K78voupr5WwDqO4iaGI5/eqEzqk0licNLevJQk3f1z+2bLob/7AAIZ3FMAo2u/mz85m8uwLF/+VbLF+Q98Saufs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jz9mfsZ2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8822A1F00893;
-	Sun,  7 Jun 2026 10:30:43 +0000 (UTC)
+	 MIME-Version; b=BDuTanhwHYjOgNpNdIYNKrTEE3fEdqao8wtWidNvvK0eUeTSUnMDIAjbKaOQKmGHyaxhxCtx9xIVJOd/r/8LwnXFpPDcb7jMj6kBAdFGcQp8X7maSRgW8V6iKZBHkQncHDoTuifTYvaxFoGp3soVgLu5Pq9V65TmUIXOOVdR0MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Og4bzZw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E561F00893;
+	Sun,  7 Jun 2026 10:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828244;
-	bh=0oyTqJrIIr1wsK6w9HRG8BM4jKhtVWDAPnQ+KeCvN+k=;
+	s=korg; t=1780828098;
+	bh=XjcZNSjcnxECox0Yme9ZDVdMom/yL5S5ZuzODDfO+Jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jz9mfsZ2LO+q+GjT8lzTSiJGUVh/c86mDe3kKoJuJ2vCEb5lN0hge0KRTttjthgto
-	 kJz9pKIKAUXiF2/509mGsf5sWh5v2Po6Sz5tcaIG0IjzRJ6uP4rAR1U9tK7GuFSPeq
-	 DxX1CBkTjNM4+/Zv+sjmb0gqDbD6iQMz0zdwlfbU=
+	b=2Og4bzZwu7ErOr+ibDHyG+3ziH2hZyIZTmyEFnfBXMXXDn+loGQF593QkNCkmt85m
+	 JsFEDbZ8UH0SAYYYz5ek6DYn5QrK9iPb85uWpuMkK3EHVgb93q+GONpSnVLVmU6Dws
+	 EoiM9qxbTecB/QrAJmwRo5zATeDmLKFux2KuxZC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zeng Heng <zengheng4@huawei.com>,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Xiangyu Chen <xiangyu.chen@windriver.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 123/307] arm64: io: Extract user memory type in ioremap_prot()
+	Pavitra Jha <jhapavitra98@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 7.0 151/332] Bluetooth: hci_conn: Fix memory leak in hci_le_big_terminate()
 Date: Sun,  7 Jun 2026 11:58:40 +0200
-Message-ID: <20260607095732.277639306@linuxfoundation.org>
+Message-ID: <20260607095733.634634957@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,121 +68,80 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-261320-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jhapavitra98@gmail.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261359-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zengheng4@huawei.com,m:tujinjiang@huawei.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:xiangyu.chen@windriver.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3695464FBB0
+X-Rspamd-Queue-Id: 4B4EF64FB32
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Pavitra Jha <jhapavitra98@gmail.com>
 
-[ Upstream commit 8f098037139b294050053123ab2bc0f819d08932 ]
+commit bfa9d28960ed677d556bdf097073bc3129686229 upstream.
 
-The only caller of ioremap_prot() outside of the generic ioremap()
-implementation is generic_access_phys(), which passes a 'pgprot_t' value
-determined from the user mapping of the target 'pfn' being accessed by
-the kernel. On arm64, the 'pgprot_t' contains all of the non-address
-bits from the pte, including the permission controls, and so we end up
-returning a new user mapping from ioremap_prot() which faults when
-accessed from the kernel on systems with PAN:
+hci_le_big_terminate() allocates iso_list_data via kzalloc_obj but
+returns 0 without freeing it when neither pa_sync_term nor big_sync_term
+flags are set after evaluating the PA and BIG sync connection state.
 
-  | Unable to handle kernel read from unreadable memory at virtual address ffff80008ea89000
-  | ...
-  | Call trace:
-  |   __memcpy_fromio+0x80/0xf8
-  |   generic_access_phys+0x20c/0x2b8
-  |   __access_remote_vm+0x46c/0x5b8
-  |   access_remote_vm+0x18/0x30
-  |   environ_read+0x238/0x3e8
-  |   vfs_read+0xe4/0x2b0
-  |   ksys_read+0xcc/0x178
-  |   __arm64_sys_read+0x4c/0x68
+This early-return path was introduced when hci_le_big_terminate() was
+refactored to take struct hci_conn instead of raw u8 parameters, adding
+PA/BIG flag evaluation logic. The existing kfree() on hci_cmd_sync_queue
+failure does not cover this path.
 
-Extract only the memory type from the user 'pgprot_t' in ioremap_prot()
-and assert that we're being passed a user mapping, to protect us against
-any changes in future that may require additional handling. To avoid
-falsely flagging users of ioremap(), provide our own ioremap() macro
-which simply wraps __ioremap_prot().
-
-Cc: Zeng Heng <zengheng4@huawei.com>
-Cc: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Fixes: 893dea9ccd08 ("arm64: Add HAVE_IOREMAP_PROT support")
-Reported-by: Jinjiang Tu <tujinjiang@huawei.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Modified ioremap_prot() parameter, using "unsigned long user_prot" instead of
-"pgprot_t user_prot" to fix conflict with generic header ]
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a7bcffc673de ("Bluetooth: Add PA_LINK to distinguish BIG sync and PA sync connections")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/io.h | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_conn.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/io.h b/arch/arm64/include/asm/io.h
-index e6ad41131d80b4..46bd37707e080e 100644
---- a/arch/arm64/include/asm/io.h
-+++ b/arch/arm64/include/asm/io.h
-@@ -276,10 +276,23 @@ typedef int (*ioremap_prot_hook_t)(phys_addr_t phys_addr, size_t size,
- int arm64_ioremap_prot_hook_register(const ioremap_prot_hook_t hook);
- void __iomem *__ioremap_prot(phys_addr_t phys, size_t size, pgprot_t prot);
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -803,8 +803,10 @@ static int hci_le_big_terminate(struct h
+ 			d->big_sync_term = true;
+ 	}
  
--#define ioremap_prot ioremap_prot
-+static inline void __iomem *ioremap_prot(phys_addr_t phys, size_t size,
-+					 unsigned long user_prot)
-+{
-+	pgprot_t prot;
-+	pteval_t user_prot_val = pgprot_val(__pgprot(user_prot));
-+
-+	if (WARN_ON_ONCE(!(user_prot_val & PTE_USER)))
-+		return NULL;
+-	if (!d->pa_sync_term && !d->big_sync_term)
++	if (!d->pa_sync_term && !d->big_sync_term) {
++		kfree(d);
+ 		return 0;
++	}
  
--#define _PAGE_IOREMAP PROT_DEVICE_nGnRE
-+	prot = __pgprot_modify(PAGE_KERNEL, PTE_ATTRINDX_MASK,
-+			       user_prot_val & PTE_ATTRINDX_MASK);
-+	return __ioremap_prot(phys, size, prot);
-+}
-+#define ioremap_prot ioremap_prot
- 
-+#define ioremap(addr, size)	\
-+	__ioremap_prot((addr), (size), __pgprot(PROT_DEVICE_nGnRE))
- #define ioremap_wc(addr, size)	\
- 	__ioremap_prot((addr), (size), __pgprot(PROT_NORMAL_NC))
- #define ioremap_np(addr, size)	\
--- 
-2.53.0
-
+ 	ret = hci_cmd_sync_queue(hdev, big_terminate_sync, d,
+ 				 terminate_big_destroy);
 
 
 
