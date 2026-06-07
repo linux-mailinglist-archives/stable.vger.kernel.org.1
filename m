@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261612-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bIzOI7JNJWpUGgIAu9opvQ
-	(envelope-from <stable+bounces-261727-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:38 +0200
+	id zyY8D1tOJWqXGgIAu9opvQ
+	(envelope-from <stable+bounces-261612-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A02650161
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7116E650248
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oCfYzWdX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261727-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261727-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sDWOEDfk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261612-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261612-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E79063004DA2
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:53:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7226D301A73D
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147182EBB9E;
-	Sun,  7 Jun 2026 10:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369402E7376;
+	Sun,  7 Jun 2026 10:46:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95E02E3AF1;
-	Sun,  7 Jun 2026 10:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E84296BCC;
+	Sun,  7 Jun 2026 10:46:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829612; cv=none; b=s5gdvGNZUHkxJu8I5vmAyTz9RpWvSI7kDqPOX2SKPWVDzbYrwhMY3SZ9ZsJsTJj3lHRb6JiM9fjV5/IxeFehV8XdQ1h1q8gGk7osLrgn3bQz8/qmxN1s9YWWn4G4TFSdzUzxImCPH3EoHyDrMbjq1xbIuINaTDVS98EDJWANwSY=
+	t=1780829216; cv=none; b=Phniw0j7YFNdmd4SLzw1ToOpd4KP+UDDU9hVeB3CGYuoA50Y6autGvYYbv+95bjZ9dv8qHpUuaD5vorjSVEutfB5pwmYbzV3z7Nb/F8zMl6iCh2umMb5yXsapiDSUnGUSbpOlSzTE+9mA5Gq4yjQ7hKMkGB51RYGdzKVTVGlOsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829612; c=relaxed/simple;
-	bh=BvWDT9MNpWqQDM1sTh9IbBVL0RRGq4/dmLGYGxeTSfQ=;
+	s=arc-20240116; t=1780829216; c=relaxed/simple;
+	bh=qk0/Qc0bjqkRSQe4rZC3nONr5Kr6gEKRYqmvfXhwDeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OlstIV1lw2k6w64QEW64ui2RAAk66BIZz3pSZm6AXd/tdtS1puVY2QdPuWi5qHHXsV+5O5QAHfOhmaURgZgqmimVQElaCSZVF0veZVeUll7KWB652B3x7WgBFkEQGDuF6kRLYpWY+Mx9ZDaXzFGh5TlekFNE85sCj3DofBM4YdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCfYzWdX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1031F00893;
-	Sun,  7 Jun 2026 10:53:30 +0000 (UTC)
+	 MIME-Version; b=MMKXoVopI0RwbubJcl/fTVOjLU8Xsu6QNzACnSNA66hEv0DCxuqv6n/5RUoqqjNidp1iaeqDF5fAM3FjMiCN9iHU/NeC/futgs4AizHwUsz7OyNbkx07UyOLaISttilSj7IjoErq/jdjn3bs/ahf1DMRPRnrvnTxV/rFyBjThjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDWOEDfk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5592C1F00893;
+	Sun,  7 Jun 2026 10:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829611;
-	bh=D60EMbL2ier4Nvt4qb7c8JxruRUPowEB0yq4SCbJbs8=;
+	s=korg; t=1780829214;
+	bh=88wAtQ4im6RvnYVgKe6LQMPK6qTmcqIjqsWLlfTLudc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oCfYzWdX7z0bBylkJk3lDmXNfXh/4YJCOVjX6ceO9DvQbauh3KcaofUbQdZyijsJv
-	 EJBg5qniU+kjuKS0m9ErK+Yyn2WfVQHIWfRbDyW/uvnrBMNIpFZVCs80bNhypoSmm9
-	 w8IO9Gy50a8ebuAS+yW/232mwU1S8w/gOCE5quQ0=
+	b=sDWOEDfklgCuX0DlZI2lvavZ2QeRHk6aqAM29vsV+jlVLjPeAZrN/bsF7Pa1Rzoil
+	 lZVuqQlEoU5DxAVhc5x/hfOKAERFjWJjRBGO56Q6IptfvwqmVItLL/MgVlNCMbA6bb
+	 i1b0dAopVuIKnVpMqFHrnB6/AG4mp5eUs9iBfze0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Tao Xue <xuetao09@huawei.com>
-Subject: [PATCH 6.12 216/307] usb: core: Fix up Interrupt IN endpoints with bogus wBytesPerInterval
+	Sam Burkels <sam@1a38.nl>,
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.18 226/315] usb: storage: Add quirks for PNY Elite Portable SSD
 Date: Sun,  7 Jun 2026 12:00:13 +0200
-Message-ID: <20260607095735.654318324@linuxfoundation.org>
+Message-ID: <20260607095735.875496016@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,107 +67,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261612-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261727-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michal.pecio@gmail.com,m:xuetao09@huawei.com,m:michalpecio@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sam@1a38.nl,m:oneukum@suse.com,m:stable@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,huawei.com:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,synopsys.com:email,1a38.nl:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B0A02650161
+X-Rspamd-Queue-Id: 7116E650248
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Sam Burkels <sam@1a38.nl>
 
-commit 727d045d064b7c9a24db3bce9c0485a382cb768b upstream.
+commit b53ebb811e00be50a779ce4e7aee604178b4a825 upstream.
 
-Tao Xue found that some common devices violate USB 3.x section 9.6.7
-by reporting wBytesPerInterval lower than the size of packets they
-actually send. I confirmed that AX88179 may set it to 0 and RTL8153
-CDC configuration sets it to 8 but sends both 8 and 16 byte packets:
+The PNY Elite Portable SSD (USB ID 154b:f009) is a sibling of the
+already-quirked PNY Pro Elite SSDs (154b:f00b and 154b:f00d). Like its
+siblings, it uses a Phison-based USB-SATA bridge that exhibits
+firmware bugs when bound to the uas driver.
 
-S Ii:11:007:3 -115:128 16 <
-C Ii:11:007:3 0:128 8 = a1000000 01000000
-S Ii:11:007:3 -115:128 16 <
-C Ii:11:007:3 0:128 16 = a12a0000 01000800 00000000 00000000
+Without quirks, the device fails to complete READ CAPACITY commands
+when accessed over UAS on a SuperSpeed (USB 3) port. The device
+enumerates and reports as a SCSI direct-access device, but reports
+zero logical blocks and never finishes spin-up:
 
-Most xHCI host controllers neglect interrupt bandwidth reservations
-and let such devices exceed theirs, some fail the URB with EOVERFLOW.
+    usb 2-3: new SuperSpeed USB device number 8 using xhci_hcd
+    usb 2-3: New USB device found, idVendor=154b, idProduct=f009
+    usb 2-3: Product: PNY ELITE PSSD
+    usb 2-3: Manufacturer: PNY
+    scsi host0: uas
+    scsi 0:0:0:0: Direct-Access     PNY      PNY ELITE PSSD   0
+    sd 0:0:0:0: [sda] Spinning up disk...
+    [...10+ seconds of polling, no progress...]
+    sd 0:0:0:0: [sda] Read Capacity(16) failed: hostbyte=DID_ERROR
+    sd 0:0:0:0: [sda] Read Capacity(10) failed: hostbyte=DID_ERROR
+    sd 0:0:0:0: [sda] 0 512-byte logical blocks: (0 B/0 B)
 
-Assume that wBytesPerInterval lower than wMaxPacketSize is bogus and
-increase it to the worst case maximum on interrupt IN endpoints. This
-solves xHCI problems and appears to have no other effect. Interrupt
-transfers are not limited to one interval and drivers submit URBs of
-class defined size without looking at wBytesPerInterval. Any multi-
-interval transfer is considered terminated by a packet shorter than
-wMaxPacketSize regardless of wBytesPerInterval - see USB3 8.10.3.
+Tested each individual quirk to find the minimum that fixes this:
+  - US_FL_NO_ATA_1X alone: device hangs on spin-up
+  - US_FL_NO_REPORT_OPCODES alone: works on USB 2.0, hangs on USB 3.0
+  - US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES: works on both
 
-Stay in spec on OUT endpoints and isochronous. No buggy devices are
-known and we don't want to risk sending more data than the device
-is prepared to handle or confusing isoc drivers regarding altsetting
-capacities guaranteed by the device itself. And don't complain when
-wMaxPacketSize <= wBytesPerInterval < wMaxPacketSize * (bMaxBurst+1)
-because enabling this seems to be the exact goal of the spec.
+With both quirks the device enumerates correctly while still using
+the uas driver, and delivers full UAS throughput (~281 MB/s
+sequential read on a USB 3.0 Gen 1 port).
 
-Reported-and-tested-by: Tao Xue <xuetao09@huawei.com>
-Closes: https://lore.kernel.org/linux-usb/20260402021400.28853-1-xuetao09@huawei.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Link: https://patch.msgid.link/20260518073207.5b7d26e7.michal.pecio@gmail.com
+The existing PNY Pro Elite entries (f00b, f00d) only set NO_ATA_1X,
+but this device additionally chokes on REPORT OPCODES under
+SuperSpeed.
+
+Signed-off-by: Sam Burkels <sam@1a38.nl>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260501132346.86572-1-sam@1a38.nl
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/config.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/usb/storage/unusual_uas.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -165,7 +165,14 @@ static void usb_parse_ss_endpoint_compan
- 			(desc->bMaxBurst + 1);
- 	else
- 		max_tx = 999999;
--	if (le16_to_cpu(desc->wBytesPerInterval) > max_tx) {
-+	/*
-+	 * wBytesPerInterval > max_tx is bogus, but USB3 spec doesn't forbid the opposite.
-+	 * Experience shows that wBytesPerInterval < wMaxPacketSize on common interrupt IN
-+	 * endpoints is usually bogus too, and recent HCs enforce interrupt BW limits.
-+	 */
-+	if (le16_to_cpu(desc->wBytesPerInterval) > max_tx ||
-+	    (le16_to_cpu(desc->wBytesPerInterval) < usb_endpoint_maxp(&ep->desc) &&
-+	     usb_endpoint_is_int_in(&ep->desc))) {
- 		dev_notice(ddev, "%s endpoint with wBytesPerInterval of %d in "
- 				"config %d interface %d altsetting %d ep %d: "
- 				"setting to %d\n",
+--- a/drivers/usb/storage/unusual_uas.h
++++ b/drivers/usb/storage/unusual_uas.h
+@@ -132,6 +132,13 @@ UNUSUAL_DEV(0x152d, 0x0583, 0x0000, 0x99
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_NO_REPORT_OPCODES),
+ 
++/* Reported-by: Sam Burkels <sam@1a38.nl> */
++UNUSUAL_DEV(0x154b, 0xf009, 0x0000, 0x9999,
++		"PNY",
++		"PNY ELITE PSSD",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES),
++
+ /* Reported-by: Thinh Nguyen <thinhn@synopsys.com> */
+ UNUSUAL_DEV(0x154b, 0xf00b, 0x0000, 0x9999,
+ 		"PNY",
 
 
 
