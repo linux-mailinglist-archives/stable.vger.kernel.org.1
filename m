@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-261710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261798-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id J/FBD+hNJWpwGgIAu9opvQ
-	(envelope-from <stable+bounces-261710-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:32 +0200
+	id 3fWsNblOJWq0GgIAu9opvQ
+	(envelope-from <stable+bounces-261798-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E894C6501C4
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF826502A9
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="f/LZsetG";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261710-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261710-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zuXDdjUL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261798-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261798-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EE41F3039543
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:52:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E235C3004F2D
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CDE2E7390;
-	Sun,  7 Jun 2026 10:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E8F3264F2;
+	Sun,  7 Jun 2026 10:58:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9834071DD;
-	Sun,  7 Jun 2026 10:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62ABD12CDA5;
+	Sun,  7 Jun 2026 10:57:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829554; cv=none; b=EQDFRdwC1Z9UZ/+3CyvWlzQ4EMpwyduPs4m6RkjGvowvCdx3yI2Q0F1WboeBsmai9jAFl5jd2D5exksRaP9wP3cMdmCdw26KnvQ1daeCcO/2A069V6BhqR/++Eot2WcriVP15M6X2aJ4pf5OcPGwXvvA20HjTgmt/nFcqbpBCcA=
+	t=1780829879; cv=none; b=cgINd3Ru48nkxBVarn59HzzOPVKHQZ8UM/BkhKh1jw1d0SIfdaWDUmEGkEPxfNz18yQgma01ec/8D1Bz+Cn+4hpamUroFp0ArXjeA8no6n/Px+wTMnpnAn21+SAiRfIOFPbSFBY+T7SvTGBk6jw259YDe0YQGkuIbU/qOgfJDvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829554; c=relaxed/simple;
-	bh=81uKm/hS55y6qE2Fxsqy1O4w/k3/B/jcBjyjqDd0cu8=;
+	s=arc-20240116; t=1780829879; c=relaxed/simple;
+	bh=fbfTn/1wUe008iaoX2XBvkaPWaLlqEOOJT2cLbqRlt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fG6Zbj/H6W44UVGIp26Lev8XThe96S1p6vt7ZlajFOeLIGBm0k752NZCWxxjFqYk08L09pzD7ZEPYsQvvWIvsvMXaJOsyrmHD5q0sws4DDqOBI325fGVYPnvYmhtkBZ1afd6tnkxjFC0w6dY5jr8I4uM7WlM2Z03CUoPrHbhd0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/LZsetG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D3B1F00893;
-	Sun,  7 Jun 2026 10:52:32 +0000 (UTC)
+	 MIME-Version; b=GZXbdioLZzyBJ5UOI+VrfjEACfaTVXb+U7JxBob93NhZdH4PKM/U09vr95CgVT+XJ0I4bHIex9CfELsRyscgOhwDURDfk7VDPoj0l4BAFUeULzSPtGU5zL2pFjLdqjpZY94Fyno8w6kO3sCnUZwGv7ZL5mwMDcXaMTo+NOU6hTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuXDdjUL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA1E1F00893;
+	Sun,  7 Jun 2026 10:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829552;
-	bh=B9TxSx+E/dWd3hSMK8jlwCaan0YH+Nrz2KJyM1uCFxA=;
+	s=korg; t=1780829878;
+	bh=vOuHgd6EjX1Slxf/MgompSsHmd6i5wZMIE5TSApg+WQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f/LZsetGMBA/AeG3g+cnWwvqFsWKyMjC4p1BwXWDqa/sHtOrDddVgXgDlXMaRZpLL
-	 wD8BC+i7bi/o6iX9/HgTNZnJIpUQ+lIBvyiUeA1tSCgLtkI/yN3vYDsxWjNlJdK3Ky
-	 t7+FVKyc205yxs139EyADI4aIjx00z96ruOHtkEA=
+	b=zuXDdjULKtGP52ZxUWmgKiabPXUg+IsSV2Od/CgyyC33Je0F3LfvzlfE251XYERIk
+	 Ir4bMmPvhTIP6Ztj5xL2ODz/E6/PnF1EEtESxEemfsCKyiwjXEO8dOQifBqhrSqwJq
+	 quvyeUuO3BDqGLlHMQSShEj/v0QTijDwSy2vXeF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Berkant Koc <me@berkoc.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Subject: [PATCH 7.0 289/332] drm/hyperv: validate VMBus packet size in receive callback
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH 6.12 261/307] serial: zs: Convert to use a platform device
 Date: Sun,  7 Jun 2026 12:00:58 +0200
-Message-ID: <20260607095738.663082217@linuxfoundation.org>
+Message-ID: <20260607095737.284279395@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,222 +70,512 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261710-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:me@berkoc.com,m:mhklinux@outlook.com,m:hamzamahfooz@linux.microsoft.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,berkoc.com,outlook.com,linux.microsoft.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-261798-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,berkoc.com:email,outlook.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,orcam.me.uk:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E894C6501C4
+X-Rspamd-Queue-Id: 7BF826502A9
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berkant Koc <me@berkoc.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 7f87763f47a3c22fb50265a00619ef10f2394b18 upstream.
+commit 7cac59d08a73cb866ec51a483a6f3fe0f531947c upstream.
 
-hyperv_receive_sub() reads msg->vid_hdr.type and dispatches into one
-of four message-type branches without knowing how many bytes the host
-wrote into hv->recv_buf. The completion path then runs
-memcpy(hv->init_buf, msg, VMBUS_MAX_PACKET_SIZE), so the consumer that
-wakes on wait_for_completion_timeout() can read up to 16 KiB of
-residue from a prior message as if it were the response payload.
+Prevent a crash from happening as the first serial port is initialised:
 
-Pass bytes_recvd into hyperv_receive_sub() and reject any packet that
-does not cover the pipe + synthvid header. A single switch on
-msg->vid_hdr.type then computes the type-specific payload size: the
-three completion-driving types (SYNTHVID_VERSION_RESPONSE,
-SYNTHVID_RESOLUTION_RESPONSE, SYNTHVID_VRAM_LOCATION_ACK) fall through
-to a shared exit that requires that size before memcpy/complete, while
-SYNTHVID_FEATURE_CHANGE validates its own payload and returns before
-reading is_dirt_needed. Unknown types are dropped.
+  Console: switching to mono frame buffer device 160x64
+  fb0: PMAG-AA frame buffer device at tc0
+  DECstation Z85C30 serial driver version 0.10
+  CPU 0 Unable to handle kernel paging request at virtual address 0000002c, epc == 803ab00c, ra == 803aafe0
+  Oops[#1]:
+  CPU: 0 PID: 1 Comm: swapper Not tainted 6.4.0-rc3-00031-g84a9582fd203-dirty #57
+  $ 0   : 00000000 10012c00 803aaeb0 00000000
+  $ 4   : 80e12f60 80e12f50 80e12f58 81000030
+  $ 8   : 00000000 805ff37c 00000000 33433538
+  $12   : 65732030 00000006 80c2915d 6c616972
+  $16   : 80e12f00 807b7630 00000000 00000000
+  $20   : 00000004 00000348 000001a0 807623b8
+  $24   : 00000018 00000000
+  $28   : 80c24000 80c25d60 8078b148 803aafe0
+  Hi    : 00000000
+  Lo    : 00000000
+  epc   : 803ab00c serial_base_ctrl_add+0x78/0xf4
+  ra    : 803aafe0 serial_base_ctrl_add+0x4c/0xf4
+  Status: 10012c03	KERNEL EXL IE
+  Cause : 00000008 (ExcCode 02)
+  BadVA : 0000002c
+  PrId  : 00000440 (R4400SC)
+  Modules linked in:
+  Process swapper (pid: 1, threadinfo=(ptrval), task=(ptrval), tls=00000000)
+  Stack : 80760000 00000cc0 00400044 00400040 803aa02c 80d61ab8 00000000 807b7630
+          80760000 807623b8 807b7628 803aa644 80386998 00000000 80e17780 80220f68
+          80e17780 80d61ab8 80c17d80 80e17780 80e17780 8063c798 80e17780 80383fa0
+          00000010 80e17780 00000000 80386998 807a0000 00000000 00400040 8038f848
+          807623b8 80d61ab8 00000004 80e17780 00000000 803a68e4 80c25e2c 803bb884
+          ...
+  Call Trace:
+  [<803ab00c>] serial_base_ctrl_add+0x78/0xf4
+  [<803aa644>] serial_core_register_port+0x174/0x69c
+  [<8077e9ac>] zs_init+0xc8/0xfc
+  [<800404d4>] do_one_initcall+0x40/0x2ac
+  [<8076cecc>] kernel_init_freeable+0x1e4/0x270
+  [<80605bec>] kernel_init+0x20/0x108
+  [<800431e8>] ret_from_kernel_thread+0x14/0x1c
 
-SYNTHVID_RESOLUTION_RESPONSE is variable length: the host fills
-resolution_count entries, not the full SYNTHVID_MAX_RESOLUTION_COUNT
-array. Validate the fixed prefix first so resolution_count can be
-read, bound it against the array, then require only the count-sized
-array, so the shorter responses the host actually sends are accepted.
+  Code: 2442aeb0  ae120024  ae0200d0 <8c67002c> 50e00001  8c670000  3c06806e  3c05806e  afb30010
 
-Only run the sub-handler when vmbus_recvpacket() returned success. The
-memcpy length is bytes_recvd, which is bounded by VMBUS_MAX_PACKET_SIZE
-only on a successful receive; on -ENOBUFS vmbus_recvpacket() instead
-reports the required length, which can exceed hv->recv_buf, so copying
-bytes_recvd would read and write past the 16 KiB buffers. Gating on the
-success return keeps the copy bounded. The nonzero-return path is itself
-a malformed-message case and is now logged rather than silently skipped;
-channel recovery is not attempted.
+  ---[ end trace 0000000000000000 ]---
 
-Rejected packets are reported via drm_err_ratelimited() rather than
-silently dropped, matching the CoCo-hardened pattern in
-hv_kvp_onchannelcallback().
+(report at the offending commit) -- where a pointer is dereferenced that
+has been derived from a null pointer to the port's parent device.
 
-Fixes: 76c56a5affeb ("drm/hyperv: Add DRM driver for hyperv synthetic video device")
-Cc: stable@vger.kernel.org # 5.14+
-Signed-off-by: Berkant Koc <me@berkoc.com>
-Assisted-by: Claude:claude-opus-4-7 berkoc-pipeline
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Link: https://patch.msgid.link/8200dbc199c7a9b75ac7e8af6c748d2189b5ebd5.1779542874.git.me@berkoc.com
+Since no device is available with legacy probing and it's not anymore a
+preferable way to discover devices anyway, switch the driver to using a
+platform device and use it as the port's parent device.  Update resource
+handling accordingly and only request the actual span of addresses used
+within the slot, which will have had its resource already requested by
+generic platform device code.
+
+Use platform_driver_probe() not just because SCC devices are fixed with
+solder on board and not straightforward to remove, but foremost because
+the associated TTY's major device number is the same as used by the dz
+driver and the first driver to claim it will prevent the other one from
+using it.  Either one DZ device or some SCC devices will be present in a
+given system but never both at a time, and therefore we want the major
+device number to be claimed by the first driver to actually successfully
+bind to its device and platform_driver_probe() is a way to fulfil that.
+
+An unfortunate consequence of the switch to a platform device is we now
+hand the console over from the bootconsole much later in the bootstrap.
+The firmware console handler appears good enough though to work so late
+and in particular with interrupts enabled.
+
+Since there is one way only remaining to reach zs_reset() now, remove
+the port initialisation marker as no longer needed and go through the
+channel reset unconditionally.
+
+Fixes: 84a9582fd203 ("serial: core: Start managing serial controllers to enable runtime PM")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # needs to use .remove_new for <= 6.10
+Link: https://patch.msgid.link/alpine.DEB.2.21.2605062328480.46195@angie.orcam.me.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/hyperv/hyperv_drm_proto.c |  100 ++++++++++++++++++++++++++----
- 1 file changed, 87 insertions(+), 13 deletions(-)
+ arch/mips/dec/platform.c |   60 ++++++++++++++
+ drivers/tty/serial/zs.c  |  190 +++++++++++++++++------------------------------
+ drivers/tty/serial/zs.h  |    1 
+ 3 files changed, 128 insertions(+), 123 deletions(-)
 
---- a/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
-+++ b/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
-@@ -420,30 +420,92 @@ static int hyperv_get_supported_resoluti
+--- a/arch/mips/dec/platform.c
++++ b/arch/mips/dec/platform.c
+@@ -13,6 +13,7 @@
+ #include <asm/bootinfo.h>
+ 
+ #include <asm/dec/interrupts.h>
++#include <asm/dec/ioasic_addrs.h>
+ #include <asm/dec/kn01.h>
+ #include <asm/dec/kn02.h>
+ #include <asm/dec/system.h>
+@@ -53,10 +54,37 @@ static struct platform_device *dec_dz_de
+ 	&dec_dz_device,
+ };
+ 
++static struct resource dec_zs_resources[][2] = {
++	{
++		{ .name = "scc0", .flags = IORESOURCE_MEM, },
++		{ .name = "scc0", .flags = IORESOURCE_IRQ, },
++	},
++	{
++		{ .name = "scc1", .flags = IORESOURCE_MEM, },
++		{ .name = "scc1", .flags = IORESOURCE_IRQ, },
++	},
++};
++
++static struct platform_device dec_zs_device[] = {
++	{
++		.name = "zs",
++		.id = 0,
++		.resource = dec_zs_resources[0],
++		.num_resources = ARRAY_SIZE(dec_zs_resources[0]),
++	},
++	{
++		.name = "zs",
++		.id = 1,
++		.resource = dec_zs_resources[1],
++		.num_resources = ARRAY_SIZE(dec_zs_resources[1]),
++	},
++};
++
+ static int __init dec_add_devices(void)
+ {
+-	int ret1, ret2;
+-	int num_dz;
++	struct platform_device *dec_zs_devices[ARRAY_SIZE(dec_zs_device)];
++	int ret1, ret2, ret3;
++	int num_dz, num_zs;
+ 	int irq, i;
+ 
+ 	dec_rtc_resources[0].start = RTC_PORT(0);
+@@ -84,10 +112,36 @@ static int __init dec_add_devices(void)
+ 	}
+ 	num_dz = i;
+ 
++	i = 0;
++	irq = dec_interrupt[DEC_IRQ_SCC0];
++	if (irq >= 0) {
++		resource_size_t base = dec_kn_slot_base + IOASIC_SCC0;
++
++		dec_zs_device[i].resource[0].start = base;
++		dec_zs_device[i].resource[0].end = base + dec_kn_slot_size - 1;
++		dec_zs_device[i].resource[1].start = irq;
++		dec_zs_device[i].resource[1].end = irq;
++		dec_zs_devices[i] = &dec_zs_device[i];
++		i++;
++	}
++	irq = dec_interrupt[DEC_IRQ_SCC1];
++	if (irq >= 0) {
++		resource_size_t base = dec_kn_slot_base + IOASIC_SCC1;
++
++		dec_zs_device[i].resource[0].start = base;
++		dec_zs_device[i].resource[0].end = base + dec_kn_slot_size - 1;
++		dec_zs_device[i].resource[1].start = irq;
++		dec_zs_device[i].resource[1].end = irq;
++		dec_zs_devices[i] = &dec_zs_device[i];
++		i++;
++	}
++	num_zs = i;
++
+ 	ret1 = platform_device_register(&dec_rtc_device);
+ 	ret2 = IS_ENABLED(CONFIG_32BIT) ?
+ 	       platform_add_devices(dec_dz_devices, num_dz) : 0;
+-	return ret1 ? ret1 : ret2;
++	ret3 = platform_add_devices(dec_zs_devices, num_zs);
++	return ret1 ? ret1 : ret2 ? ret2 : ret3;
+ }
+ 
+ device_initcall(dec_add_devices);
+--- a/drivers/tty/serial/zs.c
++++ b/drivers/tty/serial/zs.c
+@@ -56,6 +56,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/major.h>
++#include <linux/platform_device.h>
+ #include <linux/serial.h>
+ #include <linux/serial_core.h>
+ #include <linux/spinlock.h>
+@@ -66,10 +67,6 @@
+ 
+ #include <linux/atomic.h>
+ 
+-#include <asm/dec/interrupts.h>
+-#include <asm/dec/ioasic_addrs.h>
+-#include <asm/dec/system.h>
+-
+ #include "zs.h"
+ 
+ 
+@@ -79,7 +76,7 @@ MODULE_LICENSE("GPL");
+ 
+ 
+ static char zs_name[] __initdata = "DECstation Z85C30 serial driver version ";
+-static char zs_version[] __initdata = "0.10";
++static char zs_version[] __initdata = "0.11";
+ 
+ /*
+  * It would be nice to dynamically allocate everything that
+@@ -98,12 +95,8 @@ static char zs_version[] __initdata = "0
+ 
+ #define to_zport(uport) container_of(uport, struct zs_port, port)
+ 
+-struct zs_parms {
+-	resource_size_t scc[ZS_NUM_SCCS];
+-	int irq[ZS_NUM_SCCS];
+-};
+-
+ static struct zs_scc zs_sccs[ZS_NUM_SCCS];
++static struct uart_driver zs_reg;
+ 
+ /*
+  * Set parameters in WR5, WR12, WR13 such as not to interfere
+@@ -839,16 +832,15 @@ static void zs_reset(struct zs_port *zpo
+ 
+ 	spin_lock_irqsave(&scc->zlock, flags);
+ 	irq = !irqs_disabled_flags(flags);
+-	if (!zport->initialised) {
+-		/* Reset the pointer first, just in case...  */
+-		read_zsreg(zport, R0);
+-		/* And let the current transmission finish.  */
+-		zs_line_drain(zport, irq);
+-		write_zsreg(zport, R9, zport == zport_a ? CHRA : CHRB);
+-		udelay(10);
+-		write_zsreg(zport, R9, 0);
+-		zport->initialised = 1;
+-	}
++
++	/* Reset the pointer first, just in case...  */
++	read_zsreg(zport, R0);
++	/* And let the current transmission finish.  */
++	zs_line_drain(zport, irq);
++	write_zsreg(zport, R9, zport == zport_a ? CHRA : CHRB);
++	udelay(10);
++	write_zsreg(zport, R9, 0);
++
+ 	load_zsregs(zport, zport->regs, irq);
+ 	spin_unlock_irqrestore(&scc->zlock, flags);
+ }
+@@ -1055,63 +1047,62 @@ static const struct uart_ops zs_ops = {
+ /*
+  * Initialize Z85C30 port structures.
+  */
+-static int __init zs_probe_sccs(void)
++static int __init zs_probe(struct platform_device *pdev)
+ {
+-	static int probed;
+-	struct zs_parms zs_parms;
+-	int chip, side, irq;
+-	int n_chips = 0;
++	struct resource *mem_resource, *irq_resource;
++	int chip, side;
+ 	int i;
+ 
+-	if (probed)
+-		return 0;
++	mem_resource = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	irq_resource = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
++	if (!mem_resource || !irq_resource)
++		return -ENODEV;
++
++	chip = pdev->id;
++	spin_lock_init(&zs_sccs[chip].zlock);
++	for (side = 0; side < ZS_NUM_CHAN; side++) {
++		struct zs_port *zport = &zs_sccs[chip].zport[side];
++		struct uart_port *uport = &zport->port;
+ 
+-	irq = dec_interrupt[DEC_IRQ_SCC0];
+-	if (irq >= 0) {
+-		zs_parms.scc[n_chips] = IOASIC_SCC0;
+-		zs_parms.irq[n_chips] = dec_interrupt[DEC_IRQ_SCC0];
+-		n_chips++;
+-	}
+-	irq = dec_interrupt[DEC_IRQ_SCC1];
+-	if (irq >= 0) {
+-		zs_parms.scc[n_chips] = IOASIC_SCC1;
+-		zs_parms.irq[n_chips] = dec_interrupt[DEC_IRQ_SCC1];
+-		n_chips++;
+-	}
+-	if (!n_chips)
+-		return -ENXIO;
+-
+-	probed = 1;
+-
+-	for (chip = 0; chip < n_chips; chip++) {
+-		spin_lock_init(&zs_sccs[chip].zlock);
+-		for (side = 0; side < ZS_NUM_CHAN; side++) {
+-			struct zs_port *zport = &zs_sccs[chip].zport[side];
+-			struct uart_port *uport = &zport->port;
+-
+-			zport->scc	= &zs_sccs[chip];
+-			zport->clk_mode	= 16;
+-
+-			uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_ZS_CONSOLE);
+-			uport->irq	= zs_parms.irq[chip];
+-			uport->uartclk	= ZS_CLOCK;
+-			uport->fifosize	= 1;
+-			uport->iotype	= UPIO_MEM;
+-			uport->flags	= UPF_BOOT_AUTOCONF;
+-			uport->ops	= &zs_ops;
+-			uport->line	= chip * ZS_NUM_CHAN + side;
+-			uport->mapbase	= dec_kn_slot_base +
+-					  zs_parms.scc[chip] +
+-					  (side ^ ZS_CHAN_B) * ZS_CHAN_IO_SIZE;
++		zport->scc	= &zs_sccs[chip];
++		zport->clk_mode	= 16;
+ 
+-			for (i = 0; i < ZS_NUM_REGS; i++)
+-				zport->regs[i] = zs_init_regs[i];
+-		}
++		uport->dev	= &pdev->dev;
++		uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_ZS_CONSOLE);
++		uport->irq	= irq_resource->start;
++		uport->uartclk	= ZS_CLOCK;
++		uport->fifosize	= 1;
++		uport->iotype	= UPIO_MEM;
++		uport->flags	= UPF_BOOT_AUTOCONF;
++		uport->ops	= &zs_ops;
++		uport->line	= chip * ZS_NUM_CHAN + side;
++		uport->mapbase	= mem_resource->start +
++				  (side ^ ZS_CHAN_B) * ZS_CHAN_IO_SIZE;
++
++		for (i = 0; i < ZS_NUM_REGS; i++)
++			zport->regs[i] = zs_init_regs[i];
++
++		if (uart_add_one_port(&zs_reg, uport))
++			uport->dev = NULL;
+ 	}
+ 
  	return 0;
  }
  
--static void hyperv_receive_sub(struct hv_device *hdev)
-+static void hyperv_receive_sub(struct hv_device *hdev, u32 bytes_recvd)
- {
- 	struct hyperv_drm_device *hv = hv_get_drvdata(hdev);
- 	struct synthvid_msg *msg;
-+	size_t hdr_size;
-+	size_t need;
- 
- 	if (!hv)
- 		return;
- 
--	msg = (struct synthvid_msg *)hv->recv_buf;
--
--	/* Complete the wait event */
--	if (msg->vid_hdr.type == SYNTHVID_VERSION_RESPONSE ||
--	    msg->vid_hdr.type == SYNTHVID_RESOLUTION_RESPONSE ||
--	    msg->vid_hdr.type == SYNTHVID_VRAM_LOCATION_ACK) {
--		memcpy(hv->init_buf, msg, VMBUS_MAX_PACKET_SIZE);
--		complete(&hv->wait);
-+	hdr_size = sizeof(struct pipe_msg_hdr) +
-+		   sizeof(struct synthvid_msg_hdr);
-+	if (bytes_recvd < hdr_size) {
-+		drm_err_ratelimited(&hv->dev,
-+				    "synthvid packet too small for header: %u\n",
-+				    bytes_recvd);
- 		return;
- 	}
- 
--	if (msg->vid_hdr.type == SYNTHVID_FEATURE_CHANGE) {
-+	msg = (struct synthvid_msg *)hv->recv_buf;
-+	need = hdr_size;
++static void __exit zs_remove(struct platform_device *pdev)
++{
++	int chip, side;
 +
-+	switch (msg->vid_hdr.type) {
-+	case SYNTHVID_VERSION_RESPONSE:
-+		need += sizeof(struct synthvid_version_resp);
-+		break;
-+	case SYNTHVID_RESOLUTION_RESPONSE:
-+		/*
-+		 * The resolution response is variable length: the host
-+		 * fills resolution_count entries, not the full
-+		 * SYNTHVID_MAX_RESOLUTION_COUNT array. Require the fixed
-+		 * prefix first so resolution_count can be read, then
-+		 * demand exactly the count-sized array.
-+		 */
-+		need += offsetof(struct synthvid_supported_resolution_resp,
-+				 supported_resolution);
-+		if (bytes_recvd < need)
-+			break;
-+		if (msg->resolution_resp.resolution_count >
-+		    SYNTHVID_MAX_RESOLUTION_COUNT) {
-+			drm_err_ratelimited(&hv->dev,
-+					    "synthvid resolution count too large: %u\n",
-+					    msg->resolution_resp.resolution_count);
-+			return;
-+		}
-+		need += msg->resolution_resp.resolution_count *
-+			sizeof(struct hvd_screen_info);
-+		break;
-+	case SYNTHVID_VRAM_LOCATION_ACK:
-+		need += sizeof(struct synthvid_vram_location_ack);
-+		break;
-+	case SYNTHVID_FEATURE_CHANGE:
-+		/*
-+		 * Not a completion-driving message: validate its own payload
-+		 * and consume it here rather than falling through to the
-+		 * memcpy/complete shared by the wait-event responses.
-+		 */
-+		if (bytes_recvd < need +
-+		    sizeof(struct synthvid_feature_change)) {
-+			drm_err_ratelimited(&hv->dev,
-+					    "synthvid feature change packet too small: %u\n",
-+					    bytes_recvd);
-+			return;
-+		}
- 		hv->dirt_needed = msg->feature_chg.is_dirt_needed;
- 		if (hv->dirt_needed)
- 			hyperv_hide_hw_ptr(hv->hdev);
-+		return;
-+	default:
-+		return;
++	chip = pdev->id;
++	for (side = ZS_NUM_CHAN - 1; side >= 0; side--) {
++		struct zs_port *zport = &zs_sccs[chip].zport[side];
++		struct uart_port *uport = &zport->port;
++
++		if (uport->dev)
++			uart_remove_one_port(&zs_reg, uport);
 +	}
++}
 +
-+	/*
-+	 * Shared completion path for the wait-event responses
-+	 * (VERSION_RESPONSE, RESOLUTION_RESPONSE, VRAM_LOCATION_ACK):
-+	 * require the type-specific payload before handing the buffer to
-+	 * the waiter.
-+	 */
-+	if (bytes_recvd < need) {
-+		drm_err_ratelimited(&hv->dev,
-+				    "synthvid packet too small for type %u: %u < %zu\n",
-+				    msg->vid_hdr.type, bytes_recvd, need);
-+		return;
- 	}
-+	memcpy(hv->init_buf, msg, bytes_recvd);
-+	complete(&hv->wait);
+ 
+ #ifdef CONFIG_SERIAL_ZS_CONSOLE
+ static void zs_console_putchar(struct uart_port *uport, unsigned char ch)
+@@ -1192,20 +1183,14 @@ static int __init zs_console_setup(struc
+ 	int bits = 8;
+ 	int parity = 'n';
+ 	int flow = 'n';
+-	int ret;
+-
+-	ret = zs_map_port(uport);
+-	if (ret)
+-		return ret;
+-
+-	zs_reset(zport);
+ 
++	if (!zport->scc)
++		return -ENODEV;
+ 	if (options)
+ 		uart_parse_options(options, &baud, &parity, &bits, &flow);
+ 	return uart_set_options(uport, co, baud, parity, bits, flow);
  }
  
- static void hyperv_receive(void *ctx)
-@@ -464,9 +526,21 @@ static void hyperv_receive(void *ctx)
- 		ret = vmbus_recvpacket(hdev->channel, recv_buf,
- 				       VMBUS_MAX_PACKET_SIZE,
- 				       &bytes_recvd, &req_id);
--		if (bytes_recvd > 0 &&
--		    recv_buf->pipe_hdr.type == PIPE_MSG_DATA)
--			hyperv_receive_sub(hdev);
-+		if (ret) {
-+			/*
-+			 * A nonzero return (e.g. -ENOBUFS for an oversized
-+			 * packet) is itself a malformed message: bytes_recvd
-+			 * then reports the required length rather than a copied
-+			 * payload, so it must not be forwarded to the
-+			 * sub-handler. Channel recovery is not attempted.
-+			 */
-+			drm_err_ratelimited(&hv->dev,
-+					    "vmbus_recvpacket failed: %d (need %u)\n",
-+					    ret, bytes_recvd);
-+		} else if (bytes_recvd > 0 &&
-+			   recv_buf->pipe_hdr.type == PIPE_MSG_DATA) {
-+			hyperv_receive_sub(hdev, bytes_recvd);
-+		}
- 	} while (bytes_recvd > 0 && ret == 0);
+-static struct uart_driver zs_reg;
+ static struct console zs_console = {
+ 	.name	= "ttyS",
+ 	.write	= zs_console_write,
+@@ -1216,23 +1201,6 @@ static struct console zs_console = {
+ 	.data	= &zs_reg,
+ };
+ 
+-/*
+- *	Register console.
+- */
+-static int __init zs_serial_console_init(void)
+-{
+-	int ret;
+-
+-	ret = zs_probe_sccs();
+-	if (ret)
+-		return ret;
+-	register_console(&zs_console);
+-
+-	return 0;
+-}
+-
+-console_initcall(zs_serial_console_init);
+-
+ #define SERIAL_ZS_CONSOLE	&zs_console
+ #else
+ #define SERIAL_ZS_CONSOLE	NULL
+@@ -1248,47 +1216,31 @@ static struct uart_driver zs_reg = {
+ 	.cons			= SERIAL_ZS_CONSOLE,
+ };
+ 
++static struct platform_driver zs_driver = {
++	.remove = __exit_p(zs_remove),
++	.driver = { .name = "zs" },
++};
++
+ /* zs_init inits the driver. */
+ static int __init zs_init(void)
+ {
+-	int i, ret;
++	int ret;
+ 
+ 	pr_info("%s%s\n", zs_name, zs_version);
+ 
+-	/* Find out how many Z85C30 SCCs we have.  */
+-	ret = zs_probe_sccs();
+-	if (ret)
+-		return ret;
+-
+ 	ret = uart_register_driver(&zs_reg);
+ 	if (ret)
+ 		return ret;
++	ret = platform_driver_probe(&zs_driver, zs_probe);
++	if (ret)
++		uart_unregister_driver(&zs_reg);
+ 
+-	for (i = 0; i < ZS_NUM_SCCS * ZS_NUM_CHAN; i++) {
+-		struct zs_scc *scc = &zs_sccs[i / ZS_NUM_CHAN];
+-		struct zs_port *zport = &scc->zport[i % ZS_NUM_CHAN];
+-		struct uart_port *uport = &zport->port;
+-
+-		if (zport->scc)
+-			uart_add_one_port(&zs_reg, uport);
+-	}
+-
+-	return 0;
++	return ret;
  }
+ 
+ static void __exit zs_exit(void)
+ {
+-	int i;
+-
+-	for (i = ZS_NUM_SCCS * ZS_NUM_CHAN - 1; i >= 0; i--) {
+-		struct zs_scc *scc = &zs_sccs[i / ZS_NUM_CHAN];
+-		struct zs_port *zport = &scc->zport[i % ZS_NUM_CHAN];
+-		struct uart_port *uport = &zport->port;
+-
+-		if (zport->scc)
+-			uart_remove_one_port(&zs_reg, uport);
+-	}
+-
++	platform_driver_unregister(&zs_driver);
+ 	uart_unregister_driver(&zs_reg);
+ }
+ 
+--- a/drivers/tty/serial/zs.h
++++ b/drivers/tty/serial/zs.h
+@@ -22,7 +22,6 @@
+ struct zs_port {
+ 	struct zs_scc	*scc;			/* Containing SCC.  */
+ 	struct uart_port port;			/* Underlying UART.  */
+-	int		initialised;		/* For the console port.  */
+ 
+ 	int		clk_mode;		/* May be 1, 16, 32, or 64.  */
  
 
 
