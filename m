@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PaVsJHtGJWr2FgIAu9opvQ
-	(envelope-from <stable+bounces-261129-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:51 +0200
+	id I8nnCe9EJWoFFgIAu9opvQ
+	(envelope-from <stable+bounces-261133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:16:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B85164F989
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4A264F748
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:16:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qDEO+6lK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261129-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261129-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ReQDiSJw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261133-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261133-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78396307771B
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:16:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2DAC23003369
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EE323392F;
-	Sun,  7 Jun 2026 10:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A29523392F;
+	Sun,  7 Jun 2026 10:16:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DD62AD00;
-	Sun,  7 Jun 2026 10:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56B6175A75;
+	Sun,  7 Jun 2026 10:16:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827359; cv=none; b=ArRH2OpCk22Sg0z16oLPkanDJiLxL1Clgs6hiR+jeayNnfw6q9E7FdJUBK/MueRQW4OLIE6kgW2qfkd9iEeRHBscSrCGCj20qsT6bR63L9gSPDbstSmQ8+xlwaqAqA0VD+ecbbRawM3EZExz5PhsYLoE5dnCoVAqQAZ+erWdkjY=
+	t=1780827372; cv=none; b=t2RDhnBKxhPiNYLVjq6oYzJ5ycz0uIBWa88X0MtyKWePCZ//D31iv29zFOT3wWF1GgbKrkY2B0R2L3zGtNuEKZrR9/hWURCDo33Dx6mLLr6yZRpWx4DE6hj1aXYQ2tqqpEo4/yEEkokvwU7d03bN7jh+aHFqsjdvIcyKVq9UQJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827359; c=relaxed/simple;
-	bh=SglHvW/Grpks+DwiApCHTQd5j+oHzlP+ekkiqvSqq98=;
+	s=arc-20240116; t=1780827372; c=relaxed/simple;
+	bh=3XEo4qFqDARvNKWnk/yWX+tSZypywgJNkPOmm8swsBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9anQ1klvFQEnVKjd0t9gcr7pVlLKcBqTYIF6yNnjU76ZcfT0rZfoAFQb8Fjspq1a4S++pA2AuKh5JhpungF6OrYGhjXOYZ1EDQEPKzH+Z15ANPEPeO56AkI6qk4Z72VorUjLxQp53TDhnqJXIw4N434Pa9yin7JmGQSsx5JaD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDEO+6lK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 586031F00893;
-	Sun,  7 Jun 2026 10:15:57 +0000 (UTC)
+	 MIME-Version; b=d4TyaKvkV2Eu/YjjOgACPjv4bPM61r9L8BsQKqeZaKQXT9zJ6VoUA/nm+tfgAee3gbm76rsPjRymoHJE5APbwDuS5EOpmVxLWgLdv4Y7o7WH5VICgBwuA+75pbYIRYrD3rdzHf6cDfpdj5QT9OVNX5v1eDLk0qi1cqq0zYjwHV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReQDiSJw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E7E1F00893;
+	Sun,  7 Jun 2026 10:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827358;
-	bh=YsZw3SLnrSIAXp0meE44gEURI1pqvTP12rnHRw3v9d8=;
+	s=korg; t=1780827371;
+	bh=ilMgWaqN0Y1tZ/Db1VcTyNdprmA1o6XfOM89JxCDlOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qDEO+6lKO3Z50GrOPVsIoXhqfC+2bjSXjCyFRMSo1yDXgu1Nybf8rEHU+6WeGq3s0
-	 lN5Hwuzd+L6j9eP72Q+ku2CHCconKxElE1HursSZKgXcFmAiC43GcU2dSwFrF+U1RN
-	 mdojdBj3nvaAiyauJzW09FgIVwZxQGDqLQiNvF1M=
+	b=ReQDiSJw7S7ag4aXVj/+fQMTjdRGPKlGODajrDF9Bn6cxxjI0ttRAqnk1QGV7Ub7w
+	 GCxdPCNDoOVVStd001/EnQ16DMILcyl2F8tgkJp9pL3qEsJMcGoB1glXnDRSIVDAAR
+	 LrYU6HwU+UQSqaS/WJ3mjQkmuntEaPj9AeH5FzV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 086/332] net: hibmcge: move dma_rmb() after dma_sync_single_for_cpu() in RX path
+Subject: [PATCH 6.18 068/315] ethtool: tsconfig: fix missing ethnl_ops_complete()
 Date: Sun,  7 Jun 2026 11:57:35 +0200
-Message-ID: <20260607095731.305144198@linuxfoundation.org>
+Message-ID: <20260607095730.109739126@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,85 +70,77 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261129-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shaojijie@huawei.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261133-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vadim.fedorenko@linux.dev,m:kory.maincent@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,huawei.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email,bootlin.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2B85164F989
+X-Rspamd-Queue-Id: AE4A264F748
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit b545b6ea1802b32436fa97f1d2918718212cc831 ]
+[ Upstream commit 6386bd772de64e6760306eb91c7e86163af6c22f ]
 
-The dma_rmb() barrier was placed before dma_sync_single_for_cpu(), which
-is incorrect. DMA sync must complete first to make the buffer accessible
-to the CPU, then the rmb barrier ensures subsequent descriptor reads
-observe the latest data written by the hardware.
+tsconfig_prepare_data() calls ethnl_ops_begin(), we need to call
+ethnl_ops_complete() before returning the error.
 
-Reorder the operations so dma_sync_single_for_cpu() is called before
-dma_rmb() to guarantee the driver reads consistent data from the DMA
-buffer.
-
-Fixes: f72e25594061 ("net: hibmcge: Implement rx_poll function to receive packets")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://patch.msgid.link/20260525144525.94884-3-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 6e9e2eed4f39 ("net: ethtool: Add support for tsconfig command to get/set hwtstamp config")
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://patch.msgid.link/20260526153533.2779187-6-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ethtool/tsconfig.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c
-index a4ea92c31c2fea..0ae31499467693 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c
-@@ -452,12 +452,12 @@ static bool hbg_sync_data_from_hw(struct hbg_priv *priv,
- {
- 	struct hbg_rx_desc *rx_desc;
+diff --git a/net/ethtool/tsconfig.c b/net/ethtool/tsconfig.c
+index 041de8687472bd..a121928038b055 100644
+--- a/net/ethtool/tsconfig.c
++++ b/net/ethtool/tsconfig.c
+@@ -69,8 +69,10 @@ static int tsconfig_prepare_data(const struct ethnl_req_info *req_base,
+ 		if (ret)
+ 			goto out;
  
--	/* make sure HW write desc complete */
--	dma_rmb();
--
- 	dma_sync_single_for_cpu(&priv->pdev->dev, buffer->page_dma,
- 				buffer->page_size, DMA_FROM_DEVICE);
+-		if (ts_info.phc_index == -1)
+-			return -ENODEV;
++		if (ts_info.phc_index == -1) {
++			ret = -ENODEV;
++			goto out;
++		}
  
-+	/* make sure HW write desc complete */
-+	dma_rmb();
-+
- 	rx_desc = (struct hbg_rx_desc *)buffer->page_addr;
- 	return FIELD_GET(HBG_RX_DESC_W2_PKT_LEN_M, rx_desc->word2) != 0;
- }
+ 		data->hwprov_desc.index = ts_info.phc_index;
+ 		data->hwprov_desc.qualifier = ts_info.phc_qualifier;
 -- 
 2.53.0
 
