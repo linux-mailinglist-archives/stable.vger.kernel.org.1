@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-261550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id F0ckCo1MJWqeGQIAu9opvQ
-	(envelope-from <stable+bounces-261550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:45 +0200
+	id H094D0lOJWqTGgIAu9opvQ
+	(envelope-from <stable+bounces-261607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1326650048
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D16650237
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kua1nKMO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261550-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261550-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iYMCmsku;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261607-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261607-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52A01303FBB5
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:43:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E906301544A
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CBB31F9AC;
-	Sun,  7 Jun 2026 10:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7860F30C343;
+	Sun,  7 Jun 2026 10:46:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D186C2FB97B;
-	Sun,  7 Jun 2026 10:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41AB72AF1D;
+	Sun,  7 Jun 2026 10:46:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828979; cv=none; b=DJFZ8+O8mA+Q6Q2dohJjoq/ZMtDyohsB3FyzIHGgZaUlDa/cp8G8n9IjUhilO8kWwQKKXWFZbtAdUCOlH8lJK7ZQldDjPZF++YIyW5QReffWLznHiof8mEIJBCfKUTEaNocRycUqkLzgXQ85QkjCQHDqCMmxKldUxvBW0iFSvdk=
+	t=1780829199; cv=none; b=ifneE1zHEiJEm5laZvkWh6DpXUbj8JEzM20ibygxP6CQS/8q7DGPzrxPj8OgpJ+P6cB+McVuNldzgBCFj6sr4MLnXi2B5fp/bfXS7Zx3vsRoY0SQVsIVLFz1v4Nkz3iqM7ReOOYVuuLf+Ml5ZlrTbAzbrTI+vz/Hxynz4TYdQ5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828979; c=relaxed/simple;
-	bh=ZMqy/CkSkVypEgFSFa0Z+9glSvdGSRRfib+1yvF/kiI=;
+	s=arc-20240116; t=1780829199; c=relaxed/simple;
+	bh=ZwO5y7n2o6Lw+8s/diWsvz4xnlDxbxmM1BhFbaH6dUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I48ntoeCZwwxL8/vtMpmmoQQAmUGg5RaaWA6jOqS6qikmh4gypPreIHwzSIht9RDkThFb2j1t4mc7C7EVBIdth8Eiglz5sCScICLmRrYiShdc0mdSNpokSvKnKoRxn+CQB1SnT7ZE1069v9g2qUQfxUQfdHeW6puEuJffGsKUg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kua1nKMO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A49B1F00893;
-	Sun,  7 Jun 2026 10:42:57 +0000 (UTC)
+	 MIME-Version; b=N490++HgEvlc6T4LB0FDzDiS+VnP1bPLlY0MlvWDxUxPz6Pk5l0JUF2qcoXe2cDF8E8NS8b/5LWg+jSc9RMAVCaiBwlcFFWJV9vPAHun9SGxKCqnWaZ+PbrQQ8Lr9GLOQ6SJ7KFHmmn8ujuHpK6vypDVI1Ob7dRx1TBHEDutcIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYMCmsku; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 576471F00893;
+	Sun,  7 Jun 2026 10:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828978;
-	bh=O6jMeNgqdL+Nm1s487mxMviiSQPF65w307WEdUE6U6A=;
+	s=korg; t=1780829198;
+	bh=vreP0gK67MHZ/WkHCwX9mD71L1Y/kc2uT+nXYNzW1jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kua1nKMOiasmbivxYl4L4X83Mfz40wUui5E7kbVBnZigqkXHgQ+N9uKDuLS9vazqc
-	 mM7DKLjPKXOL9JhsgoAv9linGwV8gLZwaUkw8i4v9oicDO1PNluLEI91XhP7Di0MyF
-	 klbxaqAfNZd4B8hpVQxJ3W05ksp6cAqAAAVd1fvg=
+	b=iYMCmskuThJZEm1+X3wkziV4oFBdOXtwFmKW0SsrEf5PUyTf66MTEOAVwcx5Xqj3+
+	 b/vRim35Cyy24lCzZEacUVzua5XHkvAO/KVABDQkbg/EAv1Mh1PsgBkhRQRbGWa/et
+	 AJk397T8RMGe7Xr5qsXP1HeKddawb/EkOPmcyDcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Stable@vger.kernel.org,
 	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 231/332] ASoC: qcom: q6asm-dai: close stream only when running
+Subject: [PATCH 6.12 203/307] ASoC: qcom: q6asm-dai: do not set stream state in event and trigger callbacks
 Date: Sun,  7 Jun 2026 12:00:00 +0200
-Message-ID: <20260607095736.536337478@linuxfoundation.org>
+Message-ID: <20260607095735.177718785@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261550-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261607-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -98,81 +98,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,qualcomm.com:email,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C1326650048
+X-Rspamd-Queue-Id: 91D16650237
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 048c540ee76ded666bda74f9dae1ca3254e0633c upstream.
+commit cee3e63e7106c3c81b2053371fdf14240bfba2fc upstream.
 
-q6asm_dai_close() and q6asm_dai_compr_free() currently issue CMD_CLOSE
-whenever prtd->state is non-zero.
+The q6asm-dai stream state is used by prepare() to decide whether an
+existing stream setup needs to be closed before opening/configuring a new
+one. Updating the state from trigger or asynchronous DSP callbacks can make
+that state stale or incorrect relative to the actual setup lifetime.
 
-After prepare() closes an existing stream, the state is updated to
-Q6ASM_STREAM_STOPPED. Since this state is also non-zero, the close and
-free paths can send CMD_CLOSE again for a stream that has already been
-closed.
+In particular, setting Q6ASM_STREAM_STOPPED on STOP or EOS completion can
+make prepare() believe there is no active setup to close, which can result
+in opening/configuring the same stream more than once.
 
-Restrict CMD_CLOSE to the Q6ASM_STREAM_RUNNING state so the command is
-sent only when the ASM stream is still active.
+Keep stream state updates tied to prepare(), where the stream is actually
+closed and reopened, and stop changing it from trigger and EOS callbacks.
 
-Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
+Fixes: bfbb12dfa144 ("ASoC: qcom: q6asm-dai: perform correct state check before closing")
 Cc: Stable@vger.kernel.org
+Closes: https://lore.kernel.org/all/afS7rTHdc9TyIeLx@rdacayan/
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260518092347.3446946-3-srinivas.kandagatla@oss.qualcomm.com
+Link: https://patch.msgid.link/20260518092347.3446946-2-srinivas.kandagatla@oss.qualcomm.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ sound/soc/qcom/qdsp6/q6asm-dai.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
 --- a/sound/soc/qcom/qdsp6/q6asm-dai.c
 +++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -465,12 +465,12 @@ static int q6asm_dai_close(struct snd_so
- 	struct q6asm_dai_rtd *prtd = runtime->private_data;
+@@ -186,7 +186,6 @@ static void event_handler(uint32_t opcod
+ 				   prtd->pcm_count, 0, 0, 0);
+ 		break;
+ 	case ASM_CLIENT_EVENT_CMD_EOS_DONE:
+-		prtd->state = Q6ASM_STREAM_STOPPED;
+ 		break;
+ 	case ASM_CLIENT_EVENT_DATA_WRITE_DONE: {
+ 		prtd->pcm_irq_pos += prtd->pcm_count;
+@@ -333,7 +332,6 @@ static int q6asm_dai_trigger(struct snd_
+ 				       0, 0, 0);
+ 		break;
+ 	case SNDRV_PCM_TRIGGER_STOP:
+-		prtd->state = Q6ASM_STREAM_STOPPED;
+ 		ret = q6asm_cmd_nowait(prtd->audio_client, prtd->stream_id,
+ 				       CMD_EOS);
+ 		break;
+@@ -544,8 +542,6 @@ static void compress_event_handler(uint3
+ 			snd_compr_drain_notify(prtd->cstream);
+ 			prtd->notify_on_drain = false;
  
- 	if (prtd->audio_client) {
--		if (prtd->state)
-+		if (prtd->state == Q6ASM_STREAM_RUNNING) {
- 			q6asm_cmd(prtd->audio_client, prtd->stream_id,
- 				  CMD_CLOSE);
--
--		q6asm_unmap_memory_regions(substream->stream,
-+			q6asm_unmap_memory_regions(substream->stream,
- 					   prtd->audio_client);
-+		}
- 		q6asm_audio_client_free(prtd->audio_client);
- 		prtd->audio_client = NULL;
- 	}
-@@ -682,7 +682,7 @@ static int q6asm_dai_compr_free(struct s
- 	struct snd_soc_pcm_runtime *rtd = stream->private_data;
- 
- 	if (prtd->audio_client) {
--		if (prtd->state) {
-+		if (prtd->state == Q6ASM_STREAM_RUNNING) {
- 			q6asm_cmd(prtd->audio_client, prtd->stream_id,
- 				  CMD_CLOSE);
- 			if (prtd->next_track_stream_id) {
-@@ -690,11 +690,11 @@ static int q6asm_dai_compr_free(struct s
- 					  prtd->next_track_stream_id,
- 					  CMD_CLOSE);
- 			}
--		}
- 
--		snd_dma_free_pages(&prtd->dma_buffer);
--		q6asm_unmap_memory_regions(stream->direction,
-+			q6asm_unmap_memory_regions(stream->direction,
- 					   prtd->audio_client);
-+		}
-+		snd_dma_free_pages(&prtd->dma_buffer);
- 		q6asm_audio_client_free(prtd->audio_client);
- 		prtd->audio_client = NULL;
- 	}
+-		} else {
+-			prtd->state = Q6ASM_STREAM_STOPPED;
+ 		}
+ 		spin_unlock_irqrestore(&prtd->lock, flags);
+ 		break;
+@@ -1008,7 +1004,6 @@ static int q6asm_dai_compr_trigger(struc
+ 				       0, 0, 0);
+ 		break;
+ 	case SNDRV_PCM_TRIGGER_STOP:
+-		prtd->state = Q6ASM_STREAM_STOPPED;
+ 		ret = q6asm_cmd_nowait(prtd->audio_client, prtd->stream_id,
+ 				       CMD_EOS);
+ 		break;
 
 
 
