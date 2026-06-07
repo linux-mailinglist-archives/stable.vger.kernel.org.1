@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-261075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261037-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3fGCMy5EJWqlFQIAu9opvQ
-	(envelope-from <stable+bounces-261075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:02 +0200
+	id wOIgDm9EJWrMFQIAu9opvQ
+	(envelope-from <stable+bounces-261037-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:14:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF14164F690
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C7364F6EB
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:14:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MF62AZma;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261075-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261075-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZAKMQC2A;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261037-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261037-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0D3A03002F41
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:12:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2894303DD5A
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC3630C157;
-	Sun,  7 Jun 2026 10:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65EB02E1EFC;
+	Sun,  7 Jun 2026 10:10:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6CC1E98EF;
-	Sun,  7 Jun 2026 10:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F691227B94;
+	Sun,  7 Jun 2026 10:10:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827177; cv=none; b=dTpQYKGTYWEBP/6HKf6X6h1Qrpzq5PThUAF8IF+fFPTmW0xH5KXs6WRUJLKMF2P61I9Q3HxuMCeLyvchtdpPS+ctb4UTItX6aE6E4OzK76I3CEDrkq5w9IRD+ZjygB5ONPx1Grme4EI1AdoKPCNG6jiecysd+awURDPTCWv0Zqs=
+	t=1780827052; cv=none; b=ONgKFB2keD+tRn/w2GECFVP7y7T3kPINV26PW1pmMUBy6AIgw5rJILZnI+DGuueFI9xqzWXvShv55tJUKMTdDMRWPaDDPm2hqImmKWVri5Ef7ZKlGmfcHFXmGqmPsamoD4WGOJZlLCUt7kDqQOGU506KVml+QRfCqXgJy7OHuPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827177; c=relaxed/simple;
-	bh=Bi2oaocvpWL3JFXIF//x/Tzl9qFiROYUxntUC5JysGw=;
+	s=arc-20240116; t=1780827052; c=relaxed/simple;
+	bh=IX7l+0ZhW9CkJM7WWqyg4p9pU2U+G+rb7FjG79b2iAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YR5GtxYl1+TA+XQ3QhT6enjQbvHYvXzaAwgenDh2yJc2n+HOro+tZjSLCdWajY7kLeNBRzSo6F0EGpUHBkGKmddmOUYonaqObmQMv1+HYSyJcFXxNJWdS0GsNWbLyCRa7JojYtBnRgyV9Z4d3IlpEjlmGnTFe0uccEtU4J/OWZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MF62AZma; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32A81F00893;
-	Sun,  7 Jun 2026 10:12:55 +0000 (UTC)
+	 MIME-Version; b=nv7g6eNJzMQhNzKRGAq8s4Uk8kPzjSjfOZ40JDmqUh54LxGWbhIQn39xzRL7cVvSF/Xa+beYa941Rqypvmlu8NBqbY2ekcsw3zF2h2FX8NBc/KlNtyd5tF5yNvWkjwjHTZxG7Vyas3HDeKqGc9gL5vAy59iihaUEGHd8vTYn2WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAKMQC2A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE011F00893;
+	Sun,  7 Jun 2026 10:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827176;
-	bh=2pH70HtxF+YgcnZ87zhNzWXfLnKbJMwWZmVLrWqnfek=;
+	s=korg; t=1780827051;
+	bh=rwIk2sAJWSc0Sfyhhsow+Jwq07MJISvE164AFmqxZhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MF62AZmaiGGS3YqRQyeyiXGO+O5xCCIkt/VQSawi6Sja1MffiRpVwUrs+WPmihapX
-	 CtmdKR+7qbk3aSwsS1ME3w6YQcR8ZF+ZoKb09nmJITF4YxcltSJtTb+Z/QnYBSGeOD
-	 6maq79o7Ma79VDKmHwvWnX8cgOkRxxV1EoPXcDmU=
+	b=ZAKMQC2AFr871daAPQx7zVaJC8xZKXm99BQiIlior+IglUNZmFWgnzhQQBztpzjwT
+	 gwWkB2EeBMbHYT0lRcyLa3AskltiaO+wVcfBC0PxhMQImuEQxzuXU+rfRxmwg27KhH
+	 KWkyxYilGzZLOoeS+qmBTEz/c1u/NBwAxZflrvTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Schmaus <florian.schmaus@codasip.com>,
-	Martin Kaiser <martin@kaiser.cx>,
-	David Gow <david@davidgow.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/307] kunit: fix use-after-free in debugfs when using kunit.filter
-Date: Sun,  7 Jun 2026 11:57:06 +0200
-Message-ID: <20260607095728.727040766@linuxfoundation.org>
+Subject: [PATCH 7.0 058/332] tunnels: load network headers after skb_cow() in iptunnel_pmtud_build_icmp[v6]()
+Date: Sun,  7 Jun 2026 11:57:07 +0200
+Message-ID: <20260607095730.260723539@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261075-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261037-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:florian.schmaus@codasip.com,m:martin@kaiser.cx,m:david@davidgow.net,m:skhan@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:sbrivio@redhat.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,119 +96,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[codasip.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kaiser.cx:email,davidgow.net:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CF14164F690
+X-Rspamd-Queue-Id: 86C7364F6EB
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Schmaus <florian.schmaus@codasip.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit fb6988b83b4cafe8db63999c1ddff1b7c66d2ff5 ]
+[ Upstream commit b4bc94353050b1fa7b702bd4c6600710dd926cff ]
 
-When the kernel is booted with a kunit filter (e.g.,
-kunit.filter="speed!=slow"), the kunit executor dynamically allocates
-copies of the filtered test suites using kmalloc/kmemdup.
+Sashiko found that iptunnel_pmtud_build_icmp() and
+iptunnel_pmtud_build_icmpv6() were caching ip_hdr() and ipv6_hdr()
+before an skb_cow() call which can reallocate skb->head.
 
-During the initial boot execution, kunit_debugfs_create_suite() creates
-debugfs files (such as /sys/kernel/debug/kunit/<suite>/run) and
-permanently stores a pointer to the dynamically allocated suite in the
-inode's i_private field.
+Fix this possible UAF by initializing the local variables
+after the skb_cow() call.
 
-Previously, the executor freed this dynamically allocated suite_set
-immediately after executing the boot-time tests. Because the debugfs
-nodes were not destroyed, any subsequent interaction with the debugfs
-`run` file from userspace triggered a use-after-free (UAF). On systems
-with architectural capabilities, like CHERI RISC-V, this resulted in
-an immediate fatal hardware exception due to the invalidation of the
-capability tags on the reclaimed memory. On other architectures, it
-resulted in silent memory corruption.
+Remove skb_reset_network_header() calls which were not needed.
 
-Fix this UAF by properly coupling the lifetime of the filtered suite
-memory allocation to the lifetime of the kunit subsystem and its
-associated VFS nodes. Ownership of the boot-time suite_set is now
-transferred to a global tracker ('kunit_boot_suites'), and the memory
-is cleanly released in kunit_exit() during module teardown.
-
-Link: https://lore.kernel.org/r/20260507084854.233984-1-florian.schmaus@codasip.com
-Fixes: e2219db280e3 ("kunit: add debugfs /sys/kernel/debug/kunit/<suite>/results display")
-Signed-off-by: Florian Schmaus <florian.schmaus@codasip.com>
-Reviewed-by: Martin Kaiser <martin@kaiser.cx>
-Reviewed-by: David Gow <david@davidgow.net>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Link: https://patch.msgid.link/20260525201335.2361845-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/kunit/test.h |  1 +
- lib/kunit/executor.c | 19 ++++++++++++++++---
- lib/kunit/test.c     |  1 +
- 3 files changed, 18 insertions(+), 3 deletions(-)
+ net/ipv4/ip_tunnel_core.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/include/kunit/test.h b/include/kunit/test.h
-index 34b71e42fb107c..6132faa314fcb8 100644
---- a/include/kunit/test.h
-+++ b/include/kunit/test.h
-@@ -547,6 +547,7 @@ unsigned long kunit_vm_mmap(struct kunit *test, struct file *file,
- 			    unsigned long offset);
+diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+index f430d6f0463e7a..a52ba6f671fedf 100644
+--- a/net/ipv4/ip_tunnel_core.c
++++ b/net/ipv4/ip_tunnel_core.c
+@@ -212,7 +212,7 @@ EXPORT_SYMBOL_GPL(iptunnel_handle_offloads);
+  */
+ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
+ {
+-	const struct iphdr *iph = ip_hdr(skb);
++	const struct iphdr *iph;
+ 	struct icmphdr *icmph;
+ 	struct iphdr *niph;
+ 	struct ethhdr eh;
+@@ -226,7 +226,6 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
  
- void kunit_cleanup(struct kunit *test);
-+void kunit_free_boot_suites(void);
+ 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
+ 	pskb_pull(skb, ETH_HLEN);
+-	skb_reset_network_header(skb);
  
- void __printf(2, 3) kunit_log_append(struct string_stream *log, const char *fmt, ...);
+ 	err = pskb_trim(skb, 576 - sizeof(*niph) - sizeof(*icmph));
+ 	if (err)
+@@ -236,7 +235,7 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
+ 	err = skb_cow(skb, sizeof(*niph) + sizeof(*icmph) + ETH_HLEN);
+ 	if (err)
+ 		return err;
+-
++	iph = ip_hdr(skb);
+ 	icmph = skb_push(skb, sizeof(*icmph));
+ 	*icmph = (struct icmphdr) {
+ 		.type			= ICMP_DEST_UNREACH,
+@@ -308,7 +307,7 @@ static int iptunnel_pmtud_check_icmp(struct sk_buff *skb, int mtu)
+  */
+ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
+ {
+-	const struct ipv6hdr *ip6h = ipv6_hdr(skb);
++	const struct ipv6hdr *ip6h;
+ 	struct icmp6hdr *icmp6h;
+ 	struct ipv6hdr *nip6h;
+ 	struct ethhdr eh;
+@@ -323,7 +322,6 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
  
-diff --git a/lib/kunit/executor.c b/lib/kunit/executor.c
-index 34b7b6833df3d5..7cd1c87eb2edfb 100644
---- a/lib/kunit/executor.c
-+++ b/lib/kunit/executor.c
-@@ -15,6 +15,16 @@ extern struct kunit_suite * const __kunit_suites_end[];
- extern struct kunit_suite * const __kunit_init_suites_start[];
- extern struct kunit_suite * const __kunit_init_suites_end[];
+ 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
+ 	pskb_pull(skb, ETH_HLEN);
+-	skb_reset_network_header(skb);
  
-+static struct kunit_suite_set kunit_boot_suites;
-+
-+void kunit_free_boot_suites(void)
-+{
-+	if (kunit_boot_suites.start) {
-+		kunit_free_suite_set(kunit_boot_suites);
-+		kunit_boot_suites = (struct kunit_suite_set){ NULL, NULL };
-+	}
-+}
-+
- static char *action_param;
+ 	err = pskb_trim(skb, IPV6_MIN_MTU - sizeof(*nip6h) - sizeof(*icmp6h));
+ 	if (err)
+@@ -334,6 +332,7 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
+ 	if (err)
+ 		return err;
  
- module_param_named(action, action_param, charp, 0400);
-@@ -392,9 +402,12 @@ int kunit_run_all_tests(void)
- 		pr_err("kunit executor: unknown action '%s'\n", action_param);
- 
- free_out:
--	if (filter_glob_param || filter_param)
--		kunit_free_suite_set(suite_set);
--	else if (init_num_suites > 0)
-+	if (filter_glob_param || filter_param) {
-+		if (err)
-+			kunit_free_suite_set(suite_set);
-+		else
-+			kunit_boot_suites = suite_set;
-+	} else if (init_num_suites > 0)
- 		/* Don't use kunit_free_suite_set because suites aren't individually allocated */
- 		kfree(suite_set.start);
- 
-diff --git a/lib/kunit/test.c b/lib/kunit/test.c
-index 089c832e3cdbd5..b808826e6de2cf 100644
---- a/lib/kunit/test.c
-+++ b/lib/kunit/test.c
-@@ -954,6 +954,7 @@ static void __exit kunit_exit(void)
- 	kunit_bus_shutdown();
- 
- 	kunit_debugfs_cleanup();
-+	kunit_free_boot_suites();
- }
- module_exit(kunit_exit);
- 
++	ip6h = ipv6_hdr(skb);
+ 	icmp6h = skb_push(skb, sizeof(*icmp6h));
+ 	*icmp6h = (struct icmp6hdr) {
+ 		.icmp6_type		= ICMPV6_PKT_TOOBIG,
 -- 
 2.53.0
 
