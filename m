@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-261349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PXoQCzhIJWrlFwIAu9opvQ
-	(envelope-from <stable+bounces-261349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:16 +0200
+	id 9izAASpIJWraFwIAu9opvQ
+	(envelope-from <stable+bounces-261341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2792864FB86
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C1EF64FB67
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=piOVVPYp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261349-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261349-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lpPbYtm8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261341-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261341-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8036F3001F88
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:30:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5CA413004698
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE8731E842;
-	Sun,  7 Jun 2026 10:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E8C2EEE76;
+	Sun,  7 Jun 2026 10:29:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1FE328B56;
-	Sun,  7 Jun 2026 10:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300DA4071E3;
+	Sun,  7 Jun 2026 10:29:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828208; cv=none; b=JIzjF/VIHGaf7Ro63FzCVC6730SoW0tos3+OpeellBLtgi+vJoOmKEas/3/nfyISdh4exUE+EWGKf4FdUBCp8FRRzKbPTup3SeByn7ZXUiGc3PvSN/kYdISVo/NpB3cViqB2xtmWN1mkVLAZCLsXI5pKaWj4yRoh8f8WnTJJ+aE=
+	t=1780828178; cv=none; b=Y1NeOc7HqFkUkNRo6Idbo8tCtmtUpHSv7JMH/SQaQapZW1ocZFVnCU9HaDOW7HQVuJdayB71aJwp15RkVD2Uz0ryPMt98iyUvGNwAJtm/Esik5pibThhA6w7jze5nye4ZzgFgPZbfVBTN7GQZNHeO74LEdsoh141GlhHTPSo2mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828208; c=relaxed/simple;
-	bh=2NNiiAPKeUoo+VlcEtRtIWazth0MHgBbU+g91Q6CT/w=;
+	s=arc-20240116; t=1780828178; c=relaxed/simple;
+	bh=OyqxCUvIM7lqLKg6h0iChMLbaR7O78h7yYopTG1PfGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pe1G07j5njO+ZqhmBUVlHDljT+MHTM/P/A+C7ZsXOs0w8D+ue+TdhzEYNbc72dI18g5ld2a14jD+rFhrQN9Hp9du+m+W5gMqIYJ3TXbr9+wx+79aWWX8ljspp5tgOc2ESPP7oHK6OrRiYMipYCdQknHqh3uFQmaoxY4QzpeUj28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=piOVVPYp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9211F00893;
-	Sun,  7 Jun 2026 10:30:06 +0000 (UTC)
+	 MIME-Version; b=nAJ1+/+X9BDGufCRN5HRXfB3BEeXtB3NU9bS8O4Rq4OJF4sblvIrO1rlrCEsdPnXbP/F7BLdMhMwhwVaMaoJonhDsGAZ0f512cBBO/OBScmeCovSS6Dtn6g0EOWQ926N6cnKnFn9tTRFwxDDwcG0xM81H4qTGAdjYk/JbmE7DHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpPbYtm8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B86E1F00893;
+	Sun,  7 Jun 2026 10:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828207;
-	bh=tFMnrzUnQx57ItrtXcuoqdHLm+hMeHZYPEbauvyzjN8=;
+	s=korg; t=1780828177;
+	bh=hx7AwKF8bQTtZq1lKzzKum8xu0Kl2CV5YXIWpOzeAGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=piOVVPYpa4+kIJCCkH52OiF1/3Ys40EZYKclw63sLKAfZ7EdKn68D852SNAStT/HT
-	 i1ZF9a9TXjgTbriAsI/V12I45Fvx82iu5skUtEnNwBf5/jnP1ip+SN4NKr+YdEt4Ch
-	 9vPPw388tHSkxRvxhugrVu0I68xPbJO5SLWdnDpU=
+	b=lpPbYtm85ZI0vuhnMkxcKJ0j73PCzoAsEgmZnJYQS9/hdOmj0arjTFzSAIWRp3R0n
+	 7UZ1mELktC6BjWjINNmV2SKozTK6WQYzmOYo5BZtl0kAeTUjqXZ8ACrUnsKL8+hTXK
+	 UiKxEk+pAjdrvaaBSIWg6zO8h7ucUhZopKGuJBBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -52,12 +52,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable <stable@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 7.0 156/332] rust_binder: Avoid holding lock when dropping delivered_death
+Subject: [PATCH 6.18 138/315] rust_binder: Avoid holding lock when dropping delivered_death
 Date: Sun,  7 Jun 2026 11:58:45 +0200
-Message-ID: <20260607095733.812569932@linuxfoundation.org>
+Message-ID: <20260607095732.674036613@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,14 +73,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261349-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261341-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stevensd@google.com,m:mmaurer@google.com,m:stable@kernel.org,m:aliceryhl@google.com,m:cmllamas@google.com,s:lists@lfdr.de];
@@ -88,7 +88,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,11 +100,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2792864FB86
+X-Rspamd-Queue-Id: 0C1EF64FB67
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -141,7 +141,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/android/binder/process.rs
 +++ b/drivers/android/binder/process.rs
-@@ -1402,7 +1402,12 @@ impl Process {
+@@ -1366,7 +1366,12 @@ impl Process {
          // Clear delivered_deaths list.
          //
          // Scope ensures that MutexGuard is dropped while executing the body.
