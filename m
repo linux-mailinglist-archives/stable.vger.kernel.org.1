@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-261018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fmQ1ES1EJWqkFQIAu9opvQ
-	(envelope-from <stable+bounces-261018-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:01 +0200
+	id M94VNHtDJWpVFQIAu9opvQ
+	(envelope-from <stable+bounces-260971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA3364F68D
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27DEA64F5E2
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Or2I3UTz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261018-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261018-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Gjb1pHaO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260971-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260971-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BF39302C5CA
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:09:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EFAC23036399
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AE52F8E8E;
-	Sun,  7 Jun 2026 10:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFBB2E3709;
+	Sun,  7 Jun 2026 10:07:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E69E1E98E3;
-	Sun,  7 Jun 2026 10:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783FD78C9C;
+	Sun,  7 Jun 2026 10:07:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826985; cv=none; b=SoRqmOWW+JRML1mv5Y/S0iYWcD0ff6XYENa/57aaPVFLOj4Qtg/2SgjGHfxiZGloPQ7z5Yom7HnUfd1TDkNXMJGO554w2h+Cj76xG8sodPWuYcaR9k056WxaqVvIUHNPb/XEddpf2IXVTYMfnYHslXy//LyfnyLIWBy+FTT72g8=
+	t=1780826824; cv=none; b=ZirGgoDxsRf+OWarHT8nZhUgkMAI5kLx1ybSUPw/OCxbIzhyfKPwhs3UTqviN05ItqyWVl9QFD2i8x7KQNE8+pZNSV2qrapimG4DpmDSf+cQdCU6Rb//ytdVF3gDEwOCB2b7cskQ50s2yn7ncGHBdgQg0RCi0x5UGKzdd3NWPlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826985; c=relaxed/simple;
-	bh=iBiUnP2x21hwy3rOCuyzv2hDYC19xUxXtt58nnd4lNI=;
+	s=arc-20240116; t=1780826824; c=relaxed/simple;
+	bh=XgHvVWaHWQMggL7l2YcGvtUV1naZTNMhPyQnxRwDTOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GcrC5ivKPeinMr3Rz4wG09u9xYcNMEx5UeFCIuUmdJViVDMl45VIFzLp82kXdE0Cts++pmg6z4dcP6V84CYO/dox3bGL/VmPO4/WtpkRQODJHkZwkJzWZypPcKbGmS2ZIL04L4gZOfPalsTlGxLw8i3DFefKrD9m0o6hikVx6bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Or2I3UTz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F021F00893;
-	Sun,  7 Jun 2026 10:09:43 +0000 (UTC)
+	 MIME-Version; b=d24YYGQBfqO+lXLnjXCPgVjGMeBn/I8l4LqE/DeiG/Qr18P4MrWQA9zhGsE3yPl8QEuDnoOPLSl+M6tif4lioQif5VXIeXYigZgMJHfAkWJOKP+ktcnUlm/Bsz2DPQemZMISnqs8bGZo7yutuXTGUzxR1YK5kpNcDUc1vnWM9Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gjb1pHaO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01BE1F00893;
+	Sun,  7 Jun 2026 10:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826984;
-	bh=ol6dp+oi84BRRHqTxyeBdMxOs2ptSiqz4iLdGAx+a9s=;
+	s=korg; t=1780826823;
+	bh=wZoPvcdK8nY5KJvoPKD2N57jLi8/e5910T7S09qmeJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Or2I3UTzjcl/8ei7VeUibVz1s+yYVTDrAZ7b4UsNTO6YyfudPXfOOhPcvOoCLOT3A
-	 gXLkXhhPeBoMvJ4/R2QIJ+6mjS+81+LAuw4c14TGljQKb+g1ze6cxRBj0o9/jm0qXo
-	 uLSmX2SFS8VwYioRsjNLOYVdSs994en7831kx1Uw=
+	b=Gjb1pHaO4e2bbtof3V0ofqVXKs/E6phhM3rssl3jIOVOm+PrIUTIKt6Q6+FnhGjw8
+	 eRsWJXjJerRJLP2ICbNy/VxtXDJ94G7AJF5Qnnn3k/+fhI1ZO8qGkLiwh5VwQATWji
+	 BV9l20s9lrEaFfqsNuK2REiMucxNZ+jNcU+8vroA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Jeffery <djeffery@redhat.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Hongtao Lee <lihongtao@kylinos.cn>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 029/332] scsi: core: Run queues for all non-SDEV_DEL devices from scsi_run_host_queues
+Subject: [PATCH 6.18 011/315] tools/bootconfig: Fix buf leaks in apply_xbc
 Date: Sun,  7 Jun 2026 11:56:38 +0200
-Message-ID: <20260607095729.159355138@linuxfoundation.org>
+Message-ID: <20260607095727.916259717@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,114 +69,75 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261018-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260971-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:djeffery@redhat.com,m:bvanassche@acm.org,m:martin.petersen@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lihongtao@kylinos.cn,m:mhiramat@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8FA3364F68D
+X-Rspamd-Queue-Id: 27DEA64F5E2
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Jeffery <djeffery@redhat.com>
+From: Hongtao Lee <lihongtao@kylinos.cn>
 
-[ Upstream commit 7205b58702273baf21d6ba7992e6ba15852325f7 ]
+[ Upstream commit f42d01aadcedd7bbf4f9a466cabe25c1781dedad ]
 
-While a SCSI host is in a recovery state, scsi_mq_requeue_cmd() will not
-set the requeue list for a requeued command to be kicked in the future.
-The expectation is a call to scsi_run_host_queues() will kick all SCSI
-devices once the recovery state is cleared.
+If data calloc failed, free the buf before return.
 
-However, scsi_run_host_queues() uses shost_for_each_device() which uses
-scsi_device_get() and so will ignore devices in a partially removed
-state like SDEV_CANCEL. But these devices may also have requeued
-requests, leaving their requests stuck from not being kicked and causing
-the removal process of the device to hang.
+Link: https://lore.kernel.org/all/20260520030126.147782-1-lihongtao@kylinos.cn/
 
-scsi_run_host_queues() needs to run against more devices than the macro
-shost_for_each_device() allows. Instead of using the too limiting
-scsi_device_get() state checks, only ignore devices in SDEV_DEL state or
-when unable to acquire a reference. Attempt to run the queues for all
-other devices when scsi_run_host_queues() is called.
-
-Fixes: 8b566edbdbfb ("scsi: core: Only kick the requeue list if necessary")
-Signed-off-by: David Jeffery <djeffery@redhat.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260515180941.9698-1-djeffery@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 950313ebf79c ("tools: bootconfig: Add bootconfig command")
+Signed-off-by: Hongtao Lee <lihongtao@kylinos.cn>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_lib.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ tools/bootconfig/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index d3a8cd4166f92f..1da52f07d299b5 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -574,10 +574,33 @@ void scsi_requeue_run_queue(struct work_struct *work)
+diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
+index 643f707b8f1da1..ddabde20585f21 100644
+--- a/tools/bootconfig/main.c
++++ b/tools/bootconfig/main.c
+@@ -390,8 +390,10 @@ static int apply_xbc(const char *path, const char *xbc_path)
  
- void scsi_run_host_queues(struct Scsi_Host *shost)
- {
--	struct scsi_device *sdev;
-+	struct scsi_device *sdev, *prev = NULL;
-+	unsigned long flags;
- 
--	shost_for_each_device(sdev, shost)
-+	spin_lock_irqsave(shost->host_lock, flags);
-+	__shost_for_each_device(sdev, shost) {
-+		/*
-+		 * Only skip devices so deep into removal they will never need
-+		 * another kick to their queues. Thus scsi_device_get() cannot
-+		 * be used as it would skip devices in SDEV_CANCEL state which
-+		 * may need a queue kick.
-+		 */
-+		if (sdev->sdev_state == SDEV_DEL ||
-+		    !get_device(&sdev->sdev_gendev))
-+			continue;
-+		spin_unlock_irqrestore(shost->host_lock, flags);
-+
-+		if (prev)
-+			put_device(&prev->sdev_gendev);
- 		scsi_run_queue(sdev->request_queue);
-+
-+		prev = sdev;
-+
-+		spin_lock_irqsave(shost->host_lock, flags);
+ 	/* Backup the bootconfig data */
+ 	data = calloc(size + BOOTCONFIG_ALIGN + BOOTCONFIG_FOOTER_SIZE, 1);
+-	if (!data)
++	if (!data) {
++		free(buf);
+ 		return -ENOMEM;
 +	}
-+	spin_unlock_irqrestore(shost->host_lock, flags);
-+	if (prev)
-+		put_device(&prev->sdev_gendev);
- }
+ 	memcpy(data, buf, size);
  
- static void scsi_uninit_cmd(struct scsi_cmnd *cmd)
+ 	/* Check the data format */
 -- 
 2.53.0
 
