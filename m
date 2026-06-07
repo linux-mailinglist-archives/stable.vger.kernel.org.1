@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261543-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hDQpOflLJWpvGQIAu9opvQ
-	(envelope-from <stable+bounces-261600-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:46:17 +0200
+	id nx8fKHZMJWqYGQIAu9opvQ
+	(envelope-from <stable+bounces-261543-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D414564FFAD
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:46:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0073B650030
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=L9pilAw8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261600-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261600-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="bfr9LJ/I";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261543-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261543-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8E9F63004CB6
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:46:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADE12304D5E1
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E285F2D46C0;
-	Sun,  7 Jun 2026 10:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343BD3264F5;
+	Sun,  7 Jun 2026 10:42:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7782D8378;
-	Sun,  7 Jun 2026 10:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D67870808;
+	Sun,  7 Jun 2026 10:42:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829169; cv=none; b=TGzSYO/Gd4e2/HPtiqmBjQ+wheVX82F15BpNTwXFRgbrckbZgH8Hr7y8YgaX8RUXYiWpl6oACk+dvZ+61bPvNG2pEHxKy75dey0psKm+M0jlhbbFZ8SEqvOklIyCIhS90WllK8yoPe332OKlxCQ4+0KBkzmjqG17kjLwg+mOBuU=
+	t=1780828951; cv=none; b=AUlFZ7EkKgsJu6vUnFT36m1iR1Tn9oymSEfueJeWr1Vy2II1enmf+aOmF3rUfD2ICwilrMqIx+mQmD06eXx45e02LlgTZA3YUzCWL6MNxVRoDmqg8z48socUb6OsfDRYN9qwVLOsNZ4tNtgb/sbqE3A0qvIUzUj5YnXXizpWLD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829169; c=relaxed/simple;
-	bh=7FmIjBOeAqoUw0f3MTBqmbvtHbMQJZNQh7+19VBPiAk=;
+	s=arc-20240116; t=1780828951; c=relaxed/simple;
+	bh=eMvw+OFK8YnLQDF4TD+h5FCy6IP7P6puTAZrGbiNCzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3eU+x5SLvCGvAaJW75RLfy+iCYkMZUdMoQgvFC/yDSMg2HQy4sMXWk8jlkU/0XgRvAlLGoJHCaQhXQoKtEpJB2crP7uk2/GFj6+eq6cwPkr2Z4hKlbC27qzCt+W+kNftGUB0ze9nv0JzIsL3DqcaOLvoJ89Fto8Pvna/DBPDW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9pilAw8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7331F00893;
-	Sun,  7 Jun 2026 10:46:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lEQL/2rVCl/b9xtASG3wQkJ7yvSTCwm316KP0avPoDJAz7DnKFxDpkA1DwBcuvxGfiZbXIBJ2pds7jL2aVlP/DXpKrK0cTqidkbfoKgBCpzdHcO02tCi6kkS7FMW9e7ie0VayA7T4HPeYAuq8MwagRBS1kSq1/85d/qBnvDGQCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfr9LJ/I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC431F00893;
+	Sun,  7 Jun 2026 10:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829168;
-	bh=12kB0fJWp7E/IPh3hJUvtLb2bD8vtEUwBPxi3NgSPlQ=;
+	s=korg; t=1780828949;
+	bh=WZ+qRCYTJz3eWJL8OSzVO3BMLzgdyOnH7pdNtnYuNew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=L9pilAw8zxZPee99TOBuC1FBQ7hiUHhdaa7kTXiqe4de7RSNcbHAaAnWwbSHrWxoN
-	 ZuHi20ZscHRXF3IL3I0RQMlUPX/U/U0hn+fkGgdWdstmfpqeSJ/XWmLkAzVAwUgFQS
-	 XsObURlrzHjWB3RqwF859Fb5ETUWQOHaBsWo/UNE=
+	b=bfr9LJ/Ica5akJHS50+wxMFATVpyR9puhrrInHcE1ZTD3bMT5vWiLdf38n62mnAc5
+	 le7eWDToYUEtJrtY8Qf/Pdf1xZicIOECF9kizDpnSP2qylglARNrgizmQE3fT/qUmE
+	 rkr80gHwMMXHXSNvzuKDkNbPmluz/LCSBUJpLNU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	Florian Westphal <fw@strlen.de>
-Subject: [PATCH 6.12 201/307] netfilter: conntrack: tcp: do not force CLOSE on invalid-seq RST without direction check
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 7.0 229/332] ALSA: firewire-motu: Protect register DSP event queue positions
 Date: Sun,  7 Jun 2026 11:59:58 +0200
-Message-ID: <20260607095735.107862699@linuxfoundation.org>
+Message-ID: <20260607095736.467109475@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +65,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261600-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261543-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hamzamahfooz@linux.microsoft.com,m:fw@strlen.de,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cassiogabrielcontato@gmail.com,m:o-takashi@sakamocchi.jp,m:tiwai@suse.de,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,sakamocchi.jp,suse.de];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,strlen.de:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sakamocchi.jp:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D414564FFAD
+X-Rspamd-Queue-Id: 0073B650030
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit bed6e04be8e6b9133d8b16d5a42d0e0ce674fa9a upstream.
+commit 98fb1c1bb11e29eb609b7200a25e136e05aa4498 upstream.
 
-An unintended behavior in the TCP conntrack state machine allows a
-connection to be forced into the CLOSE state using an RST packet with an
-invalid sequence number.
+The register DSP event queue is updated under parser->lock, but
+snd_motu_register_dsp_message_parser_count_event() reads pull_pos and
+push_pos without the lock.
+snd_motu_register_dsp_message_parser_copy_event() also reads both queue
+positions before taking the lock.
 
-Specifically, after a SYN packet is observed, an RST with an invalid SEQ
-can transition the conntrack entry to TCP_CONNTRACK_CLOSE, regardless of
-whether the RST corresponds to the expected reply direction. The relevant
-code path assumes the RST is a response to an outgoing SYN, but does not
-validate packet direction or ensure that a matching SYN was actually sent
-in the opposite direction.
+Protect these accesses with parser->lock as well. This keeps the hwdep
+poll/read path consistent with the producer side and with the cached
+meter/parameter accessors.
 
-As a result, a crafted packet sequence consisting of a SYN followed by an
-invalid-sequence RST can prematurely terminate an active NAT entry. This
-makes connection teardown easier than intended.
-
-So, tighten the state transition logic to ensure that RST-triggered
-CLOSE transitions only occur when the RST is a valid response to a
-previously observed SYN in the correct direction.
-
+Fixes: 634ec0b2906e ("ALSA: firewire-motu: notify event for parameter change in register DSP model")
 Cc: stable@vger.kernel.org
-Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260521-alsa-firewire-motu-event-locking-v1-1-708e1c2b5e56@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_proto_tcp.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/firewire/motu/motu-register-dsp-message-parser.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/net/netfilter/nf_conntrack_proto_tcp.c
-+++ b/net/netfilter/nf_conntrack_proto_tcp.c
-@@ -1221,7 +1221,8 @@ int nf_conntrack_tcp_packet(struct nf_co
- 			new_state = old_state;
- 		}
- 		if (((test_bit(IPS_SEEN_REPLY_BIT, &ct->status)
--			 && ct->proto.tcp.last_index == TCP_SYN_SET)
-+			 && ct->proto.tcp.last_index == TCP_SYN_SET
-+			 && ct->proto.tcp.last_dir != dir)
- 			|| (!test_bit(IPS_ASSURED_BIT, &ct->status)
- 			    && ct->proto.tcp.last_index == TCP_ACK_SET))
- 		    && ntohl(th->ack_seq) == ct->proto.tcp.last_end) {
+--- a/sound/firewire/motu/motu-register-dsp-message-parser.c
++++ b/sound/firewire/motu/motu-register-dsp-message-parser.c
+@@ -386,6 +386,8 @@ unsigned int snd_motu_register_dsp_messa
+ {
+ 	struct msg_parser *parser = motu->message_parser;
+ 
++	guard(spinlock_irqsave)(&parser->lock);
++
+ 	if (parser->pull_pos > parser->push_pos)
+ 		return EVENT_QUEUE_SIZE - parser->pull_pos + parser->push_pos;
+ 	else
+@@ -395,13 +397,14 @@ unsigned int snd_motu_register_dsp_messa
+ bool snd_motu_register_dsp_message_parser_copy_event(struct snd_motu *motu, u32 *event)
+ {
+ 	struct msg_parser *parser = motu->message_parser;
+-	unsigned int pos = parser->pull_pos;
+-
+-	if (pos == parser->push_pos)
+-		return false;
++	unsigned int pos;
+ 
+ 	guard(spinlock_irqsave)(&parser->lock);
+ 
++	if (parser->pull_pos == parser->push_pos)
++		return false;
++
++	pos = parser->pull_pos;
+ 	*event = parser->event_queue[pos];
+ 
+ 	++pos;
 
 
 
