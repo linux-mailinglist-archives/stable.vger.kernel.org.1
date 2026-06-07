@@ -1,62 +1,66 @@
-Return-Path: <stable+bounces-261331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261290-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7pD6NzdIJWrkFwIAu9opvQ
-	(envelope-from <stable+bounces-261331-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:15 +0200
+	id BdPrEldHJWpvFwIAu9opvQ
+	(envelope-from <stable+bounces-261290-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:26:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6981B64FB89
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4537964FA88
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:26:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dRX7UaJX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261331-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261331-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="PSRaes/p";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261290-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261290-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B8CD13020139
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:29:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4CF483001CE2
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CEC32EEE76;
-	Sun,  7 Jun 2026 10:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5253254BD;
+	Sun,  7 Jun 2026 10:26:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D454071E3;
-	Sun,  7 Jun 2026 10:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F9F31E832;
+	Sun,  7 Jun 2026 10:26:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828139; cv=none; b=g1nI/gyKLWrlEZaNrQRC8mU2y3YhS5kIihOyl7vm1jznNl1A+j6OcJegKOg5dKQFYpLGacqTKPsaKgDLf+K4ORe+g9nqStNhejIStl5rCzBUDZBxWSz1oQPNWv6V13AeWmpUGKdJR74sVC2jYf3Dpbsnq6CoxOISBE6No+bpQio=
+	t=1780827986; cv=none; b=Zgmr/I9WDFI5A/9eoiJ8Kh3PT6YKfH4LBezEHD7vanl/WUso0ni0I2eAHiKAle5GJ3G7Zi3Ijja8kcLlfTHwgH3dfVyY5tdtxn6qApKNYdutjHtv3aT01W0Do11k/8Fr69YRVC1aVuNzjKmHG9xnt8cuN8UutGSsYh/7ZfQhLPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828139; c=relaxed/simple;
-	bh=wg5SSOT4KXawW3I8q0BisSXsq72gNbPa+sDsel/KvgY=;
+	s=arc-20240116; t=1780827986; c=relaxed/simple;
+	bh=5GDozbC+t8A2artweLq4ZYP5YkYrx5RSCt99hIxjuaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A8/rqW/ETQFjXGBVNihG4Gb55tzXZyEyifJJYsKbub3ms2pN2MoXIkt91i37alCR+2YXwhtPHjGxjbY5Yc6BVHjY1D07T62E6EpFCj8a0jEsi1CISKovDjCLlAvceU6NcF56K+pe4XNrOCRAn2J+OM0SHfCXukfZe7Tomw5TShw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRX7UaJX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A2741F00893;
-	Sun,  7 Jun 2026 10:28:57 +0000 (UTC)
+	 MIME-Version; b=LtYvaMEuvToNC0bB6gG4EnsWmQRTDPTRSwOPViXm4RnVBGLOEdKIZqFPQsNYsSBxpR06KBLGAXTzS/hG7M3nbqkd0XHPIOgjmeQrNdloWjQkmc96WCKIxIbtoaj96WUdB9pnqnQxwAXWUuVwP4mTTuEZWrac8LrnlyqGUS219Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSRaes/p; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7CF1F00898;
+	Sun,  7 Jun 2026 10:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828138;
-	bh=UX53BFDzq2rJWmeN1eXdl4vUxOeipeFTI8NVrbr2g+c=;
+	s=korg; t=1780827985;
+	bh=qenftwfJ9bIgJoz3Z932psMPza9HC99oak6oeSIRikI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dRX7UaJXwZHuYfJ43YM+TvkYD5hcn0yH491JueVqqzJYboy6TH6n1F/k3EyrBXl6h
-	 1/EWkD9cz5Vx4a7KY5mtopJGIse870GLaEgRk1VhKDBN/YAE16iY2rZkFoxWegQiev
-	 XhwTAAVy5LSAaiINkJlCwkzzqrpaguUhw8o799Ag=
+	b=PSRaes/pwSyEsFsBerfHJjplNB1dJ5xh2vfzvD5HJQAoqqGnHVz8z6AIxHaISvSmr
+	 AxwfE2edqLywqPHRe9X4p6P4vtrz8HvV3Wo3L4FYCusZlwlHlYH1pUvQCaJyB/fwGp
+	 REq7eSV0VbKMABqMHyuYyso03kQH3mEJIAEt312Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 114/307] HID: core: Add printk_ratelimited variants to hid_warn() etc
+	Richard Chang <richardycc@google.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Brian Geffon <bgeffon@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Martin Liu <liumartin@google.com>,
+	wang wei <a929244872@163.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 142/332] zram: fix use-after-free in zram_writeback_endio
 Date: Sun,  7 Jun 2026 11:58:31 +0200
-Message-ID: <20260607095731.961055983@linuxfoundation.org>
+Message-ID: <20260607095733.312280161@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,79 +74,152 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261331-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,chromium.org,kernel.org,kernel.dk,163.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-261290-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vi@endrift.com,m:jkosina@suse.com,m:lee@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:richardycc@google.com,m:senozhatsky@chromium.org,m:minchan@kernel.org,m:bgeffon@google.com,m:axboe@kernel.dk,m:liumartin@google.com,m:a929244872@163.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,endrift.com:email,suse.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,chromium.org:email,kernel.dk:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6981B64FB89
+X-Rspamd-Queue-Id: 4537964FA88
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Richard Chang <richardycc@google.com>
 
-[ Upstream commit 1d64624243af8329b4b219d8c39e28ea448f9929 ]
+commit bf62f69574b19720ae5fbbbcdf24a0c4e3e05e43 upstream.
 
-hid_warn_ratelimited() is needed. Add the others as part of the block.
+A crash was observed in zram_writeback_endio due to a NULL pointer
+dereference in wake_up.  The root cause is a race condition between the
+bio completion handler (zram_writeback_endio) and the writeback task.
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In zram_writeback_endio, wake_up() is called on &wb_ctl->done_wait after
+releasing wb_ctl->done_lock.  This creates a race window where the
+writeback task can see num_inflight become 0, return, and free wb_ctl
+before zram_writeback_endio calls wake_up().
+
+CPU 0 (zram_writeback_endio)     CPU 1 (writeback_store)
+============================     ============================
+                                 zram_writeback_slots
+                                   zram_submit_wb_request
+                                   zram_submit_wb_request
+                                   wait_event(wb_ctl->done_wait)
+spin_lock(&wb_ctl->done_lock);
+list_add(&req->entry, &wb_ctl->done_reqs);
+spin_unlock(&wb_ctl->done_lock);
+wake_up(&wb_ctl->done_wait);
+                                   zram_complete_done_reqs
+spin_lock(&wb_ctl->done_lock);
+list_add(&req->entry, &wb_ctl->done_reqs);
+spin_unlock(&wb_ctl->done_lock);
+                                   while (num_inflight) > 0)
+                                     spin_lock(&wb_ctl->done_lock);
+                                     list_del(&req->entry);
+                                     spin_unlock(&wb_ctl->done_lock);
+                                     // num_inflight becomes 0
+                                     atomic_dec(num_inflight);
+
+                                 // Leave zram_writeback_slots
+                                 // Free wb_ctl
+                                 release_wb_ctl(wb_ctl);
+// UAF crash!
+wake_up(&wb_ctl->done_wait);
+
+This patch fixes this race by using RCU.  By protecting wb_ctl with
+rcu_read_lock() in zram_writeback_endio and using kfree_rcu() to free it,
+we ensure that wb_ctl remains valid during the execution of
+zram_writeback_endio.
+
+Link: https://lore.kernel.org/20260512074918.2606208-1-richardycc@google.com
+Fixes: f405066a1f0d ("zram: introduce writeback bio batching")
+Signed-off-by: Richard Chang <richardycc@google.com>
+Suggested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Suggested-by: Minchan Kim <minchan@kernel.org>
+Acked-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Acked-by: Minchan Kim <minchan@kernel.org>
+Cc: Brian Geffon <bgeffon@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Martin Liu <liumartin@google.com>
+Cc: wang wei <a929244872@163.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/hid.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/block/zram/zram_drv.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 7d8d09318fa91d..bef017d6b44042 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1245,4 +1245,15 @@ void hid_quirks_exit(__u16 bus);
- #define hid_dbg_once(hid, fmt, ...)			\
- 	dev_dbg_once(&(hid)->dev, fmt, ##__VA_ARGS__)
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index aebc710f0d6a..07111455eecf 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -33,6 +33,7 @@
+ #include <linux/cpuhotplug.h>
+ #include <linux/part_stat.h>
+ #include <linux/kernel_read_file.h>
++#include <linux/rcupdate.h>
  
-+#define hid_err_ratelimited(hid, fmt, ...)			\
-+	dev_err_ratelimited(&(hid)->dev, fmt, ##__VA_ARGS__)
-+#define hid_notice_ratelimited(hid, fmt, ...)			\
-+	dev_notice_ratelimited(&(hid)->dev, fmt, ##__VA_ARGS__)
-+#define hid_warn_ratelimited(hid, fmt, ...)			\
-+	dev_warn_ratelimited(&(hid)->dev, fmt, ##__VA_ARGS__)
-+#define hid_info_ratelimited(hid, fmt, ...)			\
-+	dev_info_ratelimited(&(hid)->dev, fmt, ##__VA_ARGS__)
-+#define hid_dbg_ratelimited(hid, fmt, ...)			\
-+	dev_dbg_ratelimited(&(hid)->dev, fmt, ##__VA_ARGS__)
-+
- #endif
+ #include "zram_drv.h"
+ 
+@@ -504,6 +505,7 @@ struct zram_wb_ctl {
+ 	wait_queue_head_t done_wait;
+ 	spinlock_t done_lock;
+ 	atomic_t num_inflight;
++	struct rcu_head rcu;
+ };
+ 
+ struct zram_wb_req {
+@@ -847,7 +849,7 @@ static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
+ 		release_wb_req(req);
+ 	}
+ 
+-	kfree(wb_ctl);
++	kfree_rcu(wb_ctl, rcu);
+ }
+ 
+ static struct zram_wb_ctl *init_wb_ctl(struct zram *zram)
+@@ -964,11 +966,13 @@ static void zram_writeback_endio(struct bio *bio)
+ 	struct zram_wb_ctl *wb_ctl = bio->bi_private;
+ 	unsigned long flags;
+ 
++	rcu_read_lock();
+ 	spin_lock_irqsave(&wb_ctl->done_lock, flags);
+ 	list_add(&req->entry, &wb_ctl->done_reqs);
+ 	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+ 
+ 	wake_up(&wb_ctl->done_wait);
++	rcu_read_unlock();
+ }
+ 
+ static void zram_submit_wb_request(struct zram *zram,
 -- 
-2.53.0
+2.54.0
 
 
 
