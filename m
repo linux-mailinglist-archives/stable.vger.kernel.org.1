@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id CQL/KzZEJWqqFQIAu9opvQ
-	(envelope-from <stable+bounces-261078-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:10 +0200
+	id M6IIImVEJWrHFQIAu9opvQ
+	(envelope-from <stable+bounces-261092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C92B64F69E
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5BAF64F6DE
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AGNf9qmK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261078-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261078-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=W0Or7Dfx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261092-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261092-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1DB47300FFAA
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:13:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E828330104BB
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912D2308F0A;
-	Sun,  7 Jun 2026 10:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215713101A6;
+	Sun,  7 Jun 2026 10:13:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7699E2E7373;
-	Sun,  7 Jun 2026 10:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FFA1E98EF;
+	Sun,  7 Jun 2026 10:13:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827187; cv=none; b=athsAGAkbp+i0cWDQtqUBzhn/UyAjc0VhHAoNApvOru+3KkdbgfV7zKaH6e/rs4nZKZSci80xnA2jfL990TXsgj6tYOvbeeF5P3CWzDJooY2GeCSmdFnIVyTlMcts5P9D04FU44UX+HqDXyhRt9SMOv43h/yM9X4NXv8qYTDanE=
+	t=1780827234; cv=none; b=i8AoMA3vRJXLoz2eOGhIkgdiPCF6A/9qrcys7WeRuM4gCxloqYx/w8Ec/a2lQmQ3v5gazkOEM8rgQ7qP7W8raed0X146FPuyiNc6SQj/P33w9ABWkLkqa13fvxqKeIvWbLJdziiIa2hZr9EZ1oroiC7jygKChVrFtEj6QTdZlU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827187; c=relaxed/simple;
-	bh=1WNqWwe8Zhm+srRLKBXAYkf+oLLHb29Ai8k6coTwLYs=;
+	s=arc-20240116; t=1780827234; c=relaxed/simple;
+	bh=f7iwDK3B9rJmUhryJiS/flJyCyzbm+IDCFEdpOuctyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bifraAIxqn0gi95Gl4sCSm+DBy3ypQbC7QtaXILtaiCbcuNq2KTTA+M8tYS7WTCmL94ZI4qaqEW73uE9kApFxBk45ZneVcD/KL59Os72Oj0/spQRV7Srhlq8Ku1ro4ki8Hws1sMTSj4nGueCdU8nX/jyzy/mpRzB9BAudsam7oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGNf9qmK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0881F00893;
-	Sun,  7 Jun 2026 10:13:05 +0000 (UTC)
+	 MIME-Version; b=ET/rRbnO+Z9HY6iqAFyfL5oPwpQUQfXtXgMlvEh2DisD3d0+lsN/1tWOEf0SqxJMg1SzhqyFdIsGMoYRQyE12cvwQBgaqkuE5Ydf9ItEGLuhG7LswogmOCc3JpeWhR00uFRy3E27Bny3bPv8MDDppxrC3YxOLCC9HfTb4eudUrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0Or7Dfx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538FF1F00893;
+	Sun,  7 Jun 2026 10:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827186;
-	bh=2ox2xva//VEhuN5Chr9Un2MJbKxqutJ+9741A3Msh8g=;
+	s=korg; t=1780827233;
+	bh=Rq5WnarWHoJ34h52TC0XsdW80GOlRNFo5rLDb1BKH1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AGNf9qmKQ3KwVecLfMKQQ8kNnEvstQUsTOStm4Tjy3bTT/Oet7lyF0wL0VVAEru4G
-	 G1M+3xxWIE8MFvjJl55Wp1CaUYBjl+8dRBB3JyQoK3aISX2VWjQHmuuW48CuhSRHRJ
-	 5mAcJJgylhcMoTfSuipDH315MlSUlNZRW5ptmzBI=
+	b=W0Or7DfxVcEWQqxPMbUHfzMafbM6Q3QohIzoAq8/whBtyL3Saopn6yUKk/Jcro54m
+	 GGkduqF3J+Sh9aVR8DcVXPy35ldIAuQtJkWQ5CLbcUzeNlV9fyGb5VeZTNc4BqhyIS
+	 QPWEby+B9CCwbMtPy1StfryRwk3VPRlha8YJ9zQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Danielle Ratson <danieller@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 070/332] ethtool: linkstate: fix unbalanced ethnl_ops_complete() on PHY lookup error
+Subject: [PATCH 6.18 052/315] ethtool: cmis: validate fw->size against start_cmd_payload_size
 Date: Sun,  7 Jun 2026 11:57:19 +0200
-Message-ID: <20260607095730.708243684@linuxfoundation.org>
+Message-ID: <20260607095729.510130377@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,77 +70,83 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261078-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261092-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,bootlin.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0C92B64F69E
+X-Rspamd-Queue-Id: E5BAF64F6DE
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 596c51ed9e125b12c4d85b4530dfd4c7847634b7 ]
+[ Upstream commit d5551f4c1800dc714cec86647bdd651ae0de923e ]
 
-linkstate_prepare_data() calls ethnl_req_get_phydev() before
-ethnl_ops_begin(), but routes its error path through "goto out"
-which calls ethnl_ops_complete().
+cmis_fw_update_start_download() copies start_cmd_payload_size bytes
+from the firmware blob into the CDB LPL vendor_data[] payload without
+validating that the FW has enough data.
 
-Fixes: fe55b1d401c6 ("ethtool: linkstate: migrate linkstate functions to support multi-PHY setups")
+Since the start_cmd_payload_size can only be ~120B an image too short
+is most likely corrupted, so reject it.
+
+Fixes: c4f78134d45c ("ethtool: cmis_fw_update: add a layer for supporting firmware update using CDB")
 Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20260526153533.2779187-4-kuba@kernel.org
+Reviewed-by: Danielle Ratson <danieller@nvidia.com>
+Link: https://patch.msgid.link/20260522231312.1710836-10-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/linkstate.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/ethtool/cmis_fw_update.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/ethtool/linkstate.c b/net/ethtool/linkstate.c
-index 05a5f72c99fab1..3dc52a39d34525 100644
---- a/net/ethtool/linkstate.c
-+++ b/net/ethtool/linkstate.c
-@@ -105,10 +105,8 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
+diff --git a/net/ethtool/cmis_fw_update.c b/net/ethtool/cmis_fw_update.c
+index 16190c97e1f78c..291d04d2776a5c 100644
+--- a/net/ethtool/cmis_fw_update.c
++++ b/net/ethtool/cmis_fw_update.c
+@@ -130,6 +130,14 @@ cmis_fw_update_start_download(struct ethtool_cmis_cdb *cdb,
+ 	u8 lpl_len;
+ 	int err;
  
- 	phydev = ethnl_req_get_phydev(req_base, tb, ETHTOOL_A_LINKSTATE_HEADER,
- 				      info->extack);
--	if (IS_ERR(phydev)) {
--		ret = PTR_ERR(phydev);
--		goto out;
--	}
-+	if (IS_ERR(phydev))
-+		return PTR_ERR(phydev);
++	if (fw_update->fw->size < vendor_data_size) {
++		ethnl_module_fw_flash_ntf_err(fw_update->dev,
++					      &fw_update->ntf_params,
++					      "Firmware image too small for module's start payload",
++					      NULL);
++		return -EINVAL;
++	}
++
+ 	pl.image_size = cpu_to_be32(fw_update->fw->size);
+ 	memcpy(pl.vendor_data, fw_update->fw->data, vendor_data_size);
  
- 	ret = ethnl_ops_begin(dev);
- 	if (ret < 0)
 -- 
 2.53.0
 
