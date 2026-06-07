@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261590-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3PkgETFMJWp+GQIAu9opvQ
-	(envelope-from <stable+bounces-261530-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:13 +0200
+	id R1h6E0ZNJWo1GgIAu9opvQ
+	(envelope-from <stable+bounces-261590-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 927D964FFE2
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0B76500FF
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bZu9SdQW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261530-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261530-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=m7E0lWIC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261590-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261590-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F9A0301ECF0
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:41:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BFD5D300D31B
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE4B32C316;
-	Sun,  7 Jun 2026 10:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F044285CA4;
+	Sun,  7 Jun 2026 10:45:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42723254A9;
-	Sun,  7 Jun 2026 10:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD7E3264C8;
+	Sun,  7 Jun 2026 10:45:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828905; cv=none; b=pVEr2N7qGIjOjuRAeFSfat81LWzigiuPFfwaOfmfYMIeiV7VvbRMlJ8+Y5sSUsVTxNXR17a6UPJY2uLeqkdnjWi933NYPOKfY71OY+lwjCvZYFKeQYZ1k7r0plG1g7rJ2Vhy+abzuXV84GEzhEMITpZt1giXn4XG2Y6XLeHnOqw=
+	t=1780829131; cv=none; b=IeRsE8/CEOACET2bSEwa2RnEnrXK/TDnrt9hLuKmVMh1uf+ADFkEeIcjI1ZiflvsObiavIEf8HfS54xGAQC/NV0r7tGRmkvS4J4ssXF/bqFpg/6JhXk/1QixanEZiWSuJEIyLcCO+ENL2nUjNXwGAkFTT5apUxjKdx++b3NG3mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828905; c=relaxed/simple;
-	bh=jQugXyMZLeGbtCUTlgkWVzgrZ3C2LQndEVT7V867TwE=;
+	s=arc-20240116; t=1780829131; c=relaxed/simple;
+	bh=Zf8jZb4l7/xBGx478+3B95enXSEwPt3Ddv8bxOkcCgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jqx249K7Eypn08weQ8IgmNBZ9SVCHBnkWnaOPbU7IRAYgQzfVU8v8ihnVi3CY2q7I5dW1cqiB8+zudeAYKpjEvb840HfgDC9qpMJGHkBsVxdYdWkcQfru/2ko7Z/ZOnwOh+hUp2mhcDtGcokOd7p1Q79XLHoDUIyqQe4chNKzYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZu9SdQW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE461F00893;
-	Sun,  7 Jun 2026 10:41:42 +0000 (UTC)
+	 MIME-Version; b=F4yVqCtFzZVwuF6uE1C+51cIN4u/sQ+CwSaiHyY16vIGBXRiBJ6vfSKsbISfy7hAj+Mpp+aBXOSTsLa5ZAcyhIvrQPzHp/1bQ82uPVl4hCCFVshPXMA1dFSa8demy25T2L4WqCiCDLw9765nGySK4lXNoedCOGNjMUN8TSv6dJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7E0lWIC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38791F00893;
+	Sun,  7 Jun 2026 10:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828903;
-	bh=DZVKxg1tpmjYcdQ/afC5lJQWaeHJe7Cn1C+u2NGt0zM=;
+	s=korg; t=1780829129;
+	bh=7j1Pziq+ThRl1rDiRVruC774YMde4UGtXAeoaErFzSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bZu9SdQWgBTQvGgG/mFt21kbcpyUH61uqLyKXYx+avofqJ61hL75BWqxeWskXDZEw
-	 r1pbAwQ3QL+xt+AxngUKOVcJn7m5gyIO3Icf1dwKnr1tn86DL0/iFaRvSXZo2qHyms
-	 R0xnS0AUffjSH7ReuUlw0nmbspFx1zr4kwJfVeBk=
+	b=m7E0lWICod+QqlCPuYFpCIkS+wgeuIIyga8BDDzhVKg1bh5X8Q6RIJRgbUGMbJ9O8
+	 5Zpni6zxwyDisphfrp3N7LaBJ5+LH9RmVa+APExamb3V0FJ/9UFQmJs2fnKnuL2M6t
+	 dYaOHFuaVm2WfAUJ2TW6YRtoRWSG1sIQIB/GkEjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
 	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 7.0 225/332] xfrm: route MIGRATE notifications to callers netns
-Date: Sun,  7 Jun 2026 11:59:54 +0200
-Message-ID: <20260607095736.323678676@linuxfoundation.org>
+Subject: [PATCH 6.12 198/307] xfrm: route MIGRATE notifications to callers netns
+Date: Sun,  7 Jun 2026 11:59:55 +0200
+Message-ID: <20260607095734.999204406@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,12 +71,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261530-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261590-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -85,7 +85,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,11 +97,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,secunet.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,ntu.edu.sg:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ntu.edu.sg:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 927D964FFE2
+X-Rspamd-Queue-Id: 9D0B76500FF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -161,7 +161,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/include/net/xfrm.h
 +++ b/include/net/xfrm.h
-@@ -715,6 +715,7 @@ struct xfrm_mgr {
+@@ -650,6 +650,7 @@ struct xfrm_mgr {
  					   const struct xfrm_migrate *m,
  					   int num_bundles,
  					   const struct xfrm_kmaddress *k,
@@ -169,7 +169,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  					   const struct xfrm_encap_tmpl *encap);
  	bool			(*is_alive)(const struct km_event *c);
  };
-@@ -1891,7 +1892,7 @@ int xfrm_sk_policy_insert(struct sock *s
+@@ -1818,7 +1819,7 @@ int xfrm_sk_policy_insert(struct sock *s
  #ifdef CONFIG_XFRM_MIGRATE
  int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
  	       const struct xfrm_migrate *m, int num_bundles,
@@ -209,7 +209,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	return -ENOPROTOOPT;
 --- a/net/xfrm/xfrm_policy.c
 +++ b/net/xfrm/xfrm_policy.c
-@@ -4704,7 +4704,7 @@ int xfrm_migrate(const struct xfrm_selec
+@@ -4690,7 +4690,7 @@ int xfrm_migrate(const struct xfrm_selec
  	}
  
  	/* Stage 5 - announce */
@@ -220,7 +220,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
 --- a/net/xfrm/xfrm_state.c
 +++ b/net/xfrm/xfrm_state.c
-@@ -2837,7 +2837,7 @@ EXPORT_SYMBOL(km_policy_expired);
+@@ -2745,7 +2745,7 @@ EXPORT_SYMBOL(km_policy_expired);
  #ifdef CONFIG_XFRM_MIGRATE
  int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
  	       const struct xfrm_migrate *m, int num_migrate,
@@ -229,7 +229,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	       const struct xfrm_encap_tmpl *encap)
  {
  	int err = -EINVAL;
-@@ -2848,7 +2848,7 @@ int km_migrate(const struct xfrm_selecto
+@@ -2756,7 +2756,7 @@ int km_migrate(const struct xfrm_selecto
  	list_for_each_entry_rcu(km, &xfrm_km_list, list) {
  		if (km->migrate) {
  			ret = km->migrate(sel, dir, type, m, num_migrate, k,
@@ -240,7 +240,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
 --- a/net/xfrm/xfrm_user.c
 +++ b/net/xfrm/xfrm_user.c
-@@ -3271,10 +3271,9 @@ out_cancel:
+@@ -3183,10 +3183,9 @@ out_cancel:
  
  static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
  			     const struct xfrm_migrate *m, int num_migrate,
@@ -252,7 +252,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	struct sk_buff *skb;
  	int err;
  
-@@ -3292,7 +3291,7 @@ static int xfrm_send_migrate(const struc
+@@ -3204,7 +3203,7 @@ static int xfrm_send_migrate(const struc
  #else
  static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
  			     const struct xfrm_migrate *m, int num_migrate,
