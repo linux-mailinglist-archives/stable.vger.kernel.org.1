@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-261236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261239-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sy1jHgtIJWrCFwIAu9opvQ
-	(envelope-from <stable+bounces-261236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:31 +0200
+	id jaZWH49GJWr/FgIAu9opvQ
+	(envelope-from <stable+bounces-261239-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2CBD64FB37
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 131C064F99F
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="uLuvzA/t";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261236-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261236-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rLMbutw6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261239-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261239-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5645303BB0F
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 85A543001FFC
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770F7320CD1;
-	Sun,  7 Jun 2026 10:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D9D31F993;
+	Sun,  7 Jun 2026 10:23:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5C731F9B3;
-	Sun,  7 Jun 2026 10:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E3B32470F;
+	Sun,  7 Jun 2026 10:23:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827774; cv=none; b=svwCtF0H/nvYfjGvFGM1tNZz9c+hqQdsCDsoK7EOm5Qz7iyZnK0ZgmRehUnfTLg6jvoXP1UGcyNJvPtEmG5pVIbMmXbHNWzAHfmKq0ohDCjG0u/+Sk4LjvGxMkg7c6MWgAwRnP4lPyg0LCtz6Rn3otxoSa+asb0O5ANdngZHTT0=
+	t=1780827787; cv=none; b=dFrmWU3xy3MXqRT28TsDLfKqfDWXOofc+K711fKAr/dxcXtoKEk8ZzF3NUtVNCl/tI5IKI71sm+abTPorb6YbF3WA6/1vU/mOeo71gq3MsxPEOSsPIjTm+ryVkCRYMDHXURQNO7zDihQM2lw/1Ik5l3Ta3h5ce6fTnzqMKouRwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827774; c=relaxed/simple;
-	bh=+AlRXEMKGRcVA4OsYAOwguwxKHVOW9MClrxPumbV1C0=;
+	s=arc-20240116; t=1780827787; c=relaxed/simple;
+	bh=ym3YRZqSVlKh/YOe9r9CSovfD43GxTCotNRDa6aWLMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSDUx68WDMHW0p3BlO+b7Fx/bpQ3xQMFLZiXyS4hmBoJYr35nFWPBphSM0TwMU/ATMUSA6rT91EeqqrWQwvLN2ODxIpD5XkFNc6CGztyMca6W4e5Mmw3nBqApS9siFqmmSeBLokNdyh43vod83rwUpAUOdftH6OKJr69fuKgcZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLuvzA/t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2431F00893;
-	Sun,  7 Jun 2026 10:22:52 +0000 (UTC)
+	 MIME-Version; b=oBGOlRsoyYUcJalCZ293bmqIN7/OXnzJq5y+WaPjG7w1DqyDZaozqjodkMJY/PnDTuMTFEHWzVjKIrcQfKy4GMQTz1hAM5NdiBD0rUVnFGDO5bB4/ZJ9kRymljcvPTjpMMeGNrPwerg/4Aa7b2XTtFVxC0kSqcLaozt5r5mu2gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLMbutw6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FDD01F00893;
+	Sun,  7 Jun 2026 10:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827772;
-	bh=ZrMw85aBJaXyVw0zaE0N9ilmSL2VuHMPFUr5yDtHdHM=;
+	s=korg; t=1780827785;
+	bh=8iFKAsEzFB5NJtLn4Kial7embpMziybK0VCBcJuyUZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uLuvzA/tX5Ev+zVxxKGkAzbtOsPa1ELFyKa3/WGq4Xtv9oPLrrTVWtLTWHf2wssy/
-	 otEakGEDCvnGzRro1YjqkWfglqOgbj/EJzoPd3xNVvyGUgsqR94FhpGUW48i66r+LL
-	 fk+6U7RZbLWkofAzGfBzZKvLof6PVRH9/4d6CDuI=
+	b=rLMbutw6B2uO0pSap7laYNq5mZkJOK+73BRydfwCBcTuSz9X4PLQwKF2mWu4aBXi2
+	 oe1GSaACpvT0R+ONg83M7P+J4I3GkN2VsBQ2+STD4hKMX8ua7ai+2xmkKr2DbpW37Y
+	 KASHUn28K3YjRLbR0pAsFImPFta92FbydVN63pGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Hannes Reinecke <hare@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zhenghang Xiao <kipreyyy@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/307] net/handshake: Drain pending requests at net namespace exit
-Date: Sun,  7 Jun 2026 11:58:02 +0200
-Message-ID: <20260607095730.895146349@linuxfoundation.org>
+Subject: [PATCH 6.12 086/307] Bluetooth: l2cap: clear chan->ident on ECRED reconfiguration success
+Date: Sun,  7 Jun 2026 11:58:03 +0200
+Message-ID: <20260607095730.932447808@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
 References: <20260607095727.647295505@linuxfoundation.org>
@@ -70,147 +69,98 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-261239-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kipreyyy@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261236-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chuck.lever@oracle.com,m:hare@kernel.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,oracle.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E2CBD64FB37
+X-Rspamd-Queue-Id: 131C064F99F
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Zhenghang Xiao <kipreyyy@gmail.com>
 
-[ Upstream commit ea5fe6a73ca57e5150b8a38b341aef2636eb72f0 ]
+[ Upstream commit 00e1950716c6ed67d74777b2db286b0fa23b4be9 ]
 
-The arguments to list_splice_init() in handshake_net_exit() are
-reversed. The call moves the local empty "requests" list onto
-hn->hn_requests, leaving the local list empty, so the subsequent
-drain loop runs zero iterations. Pending handshake requests that
-had not yet been accepted are not torn down when the net namespace
-is destroyed; each one keeps a reference on a socket file and on
-the handshake_req allocation.
+l2cap_ecred_reconf_rsp() returns early on success without clearing
+chan->ident. Every other L2CAP response handler (l2cap_ecred_conn_rsp,
+l2cap_le_connect_rsp, l2cap_config_rsp) clears chan->ident after a
+successful transaction to prevent the channel from matching subsequent
+responses with the recycled ident value.
 
-Pass the source and destination in the documented order
-(list_splice_init(list, head) moves list onto head) so the pending
-list is transferred to the local scratch list and drained through
-handshake_complete().
+A remote attacker that completed a reconfiguration as the peer can
+replay a failure response with the stale ident, causing the kernel to
+match and destroy the already-established channel via
+l2cap_chan_del(chan, ECONNRESET).
 
-Fixing the splice direction exposes a list-corruption race. After
-the splice each req->hr_list still has non-empty link pointers,
-threading the stack-local scratch list rather than hn_requests.
-A concurrent handshake_req_cancel() -- for example, from sunrpc's
-TLS timeout on a kernel socket whose netns reference was not
-taken -- finds the request through the rhashtable, calls
-remove_pending(), and sees !list_empty(&req->hr_list).
-__remove_pending_locked() then list_del_init()s an entry off the
-scratch list while the drain iterates, corrupting it. The same
-call arriving after the drain loop has run list_del() on an
-entry hits LIST_POISON instead.
+Clear chan->ident for all matching channels on success, and harden the
+failure path by using l2cap_chan_hold_unless_zero() consistent with
+other L2CAP handlers (l2cap_le_command_rej, __l2cap_get_chan_by_ident).
 
-Have remove_pending() check HANDSHAKE_F_NET_DRAINING under
-hn_lock and report not-found when drain is in progress. The
-drain has already taken ownership; handshake_complete()'s existing
-test_and_set on HANDSHAKE_F_REQ_COMPLETED still arbitrates
-between drain and cancel for who calls the consumer's hp_done. Use
-list_del_init() rather than list_del() in the drain so req->hr_list
-does not carry LIST_POISON after drain releases the entry.
-
-The DRAINING guard in remove_pending() makes cancel return false,
-but cancel still falls through to test_and_set_bit on
-HANDSHAKE_F_REQ_COMPLETED and drops the request's hr_file reference.
-Without another pin, if that is the last reference, sk_destruct frees
-the request while it is still linked on the drain loop's local list.
-Pin each request's hr_file under hn_lock before releasing the list,
-and drop that drain pin after the loop finishes with the request.
-
-Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Hannes Reinecke <hare@kernel.org>
-Link: https://patch.msgid.link/20260525-handshake-file-pin-v3-8-66c616906ead@oracle.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
+Signed-off-by: Zhenghang Xiao <kipreyyy@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/handshake/netlink.c | 10 ++++++++--
- net/handshake/request.c |  5 ++++-
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ net/bluetooth/l2cap_core.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/handshake/netlink.c b/net/handshake/netlink.c
-index 86a12c9125d403..e49041cc0f9d70 100644
---- a/net/handshake/netlink.c
-+++ b/net/handshake/netlink.c
-@@ -205,13 +205,19 @@ static void __net_exit handshake_net_exit(struct net *net)
- 	 */
- 	spin_lock_bh(&hn->hn_lock);
- 	set_bit(HANDSHAKE_F_NET_DRAINING, &hn->hn_flags);
--	list_splice_init(&requests, &hn->hn_requests);
-+	list_splice_init(&hn->hn_requests, &requests);
-+	list_for_each_entry(req, &requests, hr_list)
-+		get_file(req->hr_file);
- 	spin_unlock_bh(&hn->hn_lock);
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index b24e4d8130ddb1..9de5d545966d60 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5392,14 +5392,20 @@ static inline int l2cap_ecred_reconf_rsp(struct l2cap_conn *conn,
  
- 	while (!list_empty(&requests)) {
-+		struct file *file;
-+
- 		req = list_first_entry(&requests, struct handshake_req, hr_list);
--		list_del(&req->hr_list);
-+		file = req->hr_file;
-+		list_del_init(&req->hr_list);
- 		handshake_complete(req, -ETIMEDOUT, NULL);
-+		fput(file);
- 	}
- }
+ 	BT_DBG("result 0x%4.4x", result);
  
-diff --git a/net/handshake/request.c b/net/handshake/request.c
-index 35bc6290e12033..96f80e0df67b50 100644
---- a/net/handshake/request.c
-+++ b/net/handshake/request.c
-@@ -163,13 +163,16 @@ static void __remove_pending_locked(struct handshake_net *hn,
-  * otherwise %false.
-  *
-  * If @req was on a pending list, it has not yet been accepted.
-+ * Returns %false when the net namespace is draining; the drain
-+ * loop has taken ownership of the pending list.
-  */
- static bool remove_pending(struct handshake_net *hn, struct handshake_req *req)
- {
- 	bool ret = false;
+-	if (!result)
++	if (!result) {
++		list_for_each_entry(chan, &conn->chan_l, list) {
++			if (chan->ident == cmd->ident)
++				chan->ident = 0;
++		}
+ 		return 0;
++	}
  
- 	spin_lock_bh(&hn->hn_lock);
--	if (!list_empty(&req->hr_list)) {
-+	if (!test_bit(HANDSHAKE_F_NET_DRAINING, &hn->hn_flags) &&
-+	    !list_empty(&req->hr_list)) {
- 		__remove_pending_locked(hn, req);
- 		ret = true;
- 	}
+ 	list_for_each_entry_safe(chan, tmp, &conn->chan_l, list) {
+ 		if (chan->ident != cmd->ident)
+ 			continue;
+ 
+-		l2cap_chan_hold(chan);
++		if (!l2cap_chan_hold_unless_zero(chan))
++			continue;
+ 		l2cap_chan_lock(chan);
+ 
+ 		l2cap_chan_del(chan, ECONNRESET);
 -- 
 2.53.0
 
