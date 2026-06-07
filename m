@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-261779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261796-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5j4mCndOJWqhGgIAu9opvQ
-	(envelope-from <stable+bounces-261779-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:55 +0200
+	id ImqvHp5UJWo1HAIAu9opvQ
+	(envelope-from <stable+bounces-261796-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:23:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5043650269
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A23650650
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:23:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vqlaoI2j;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261779-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261779-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MGbtiw5p;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261796-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261796-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41F7530041C7
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:56:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C48A3097FF5
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2972F330B22;
-	Sun,  7 Jun 2026 10:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F803264F2;
+	Sun,  7 Jun 2026 10:57:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4544F3242DF;
-	Sun,  7 Jun 2026 10:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5022D12CDA5;
+	Sun,  7 Jun 2026 10:57:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829812; cv=none; b=dn+afx16w+INpNsbi4N6AqhqZ/ZQKGn+cjEEwe3SsMjAr7ogPxAcUqjqOBwn/kdsLPpZxUkwZWH2XrlqiUQesporMBpWcFFxx06wgKBaxOWCZ4UDwrlN/eoH3F5LQ1qnsif4f2B5AECXEPV7lj7Kzt3NkN6Z1j1qmytUNXV/wzA=
+	t=1780829872; cv=none; b=cQUk79psO681srtM7frzXKVmm4Uh+I2bBDy1jYDgP0Ii8GHsmd5YyItp4dMtUMugh8CGVdCKZwaoKZToHW8+EVSygozjvkK/T8Y/Y9xqBBH9GhKqZMWO12OEu3bFdmgqUpugZ5SsLtjh5EKLSEId2wc061KweXYC2iWG+UaMoZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829812; c=relaxed/simple;
-	bh=6qqY0AewLkFknwKTjbUbCJKsTjtY8EZwfYWVG7RDip8=;
+	s=arc-20240116; t=1780829872; c=relaxed/simple;
+	bh=oDZe7xrejT2IDUD0zJyIUKuoaTMYI6qiHwM/uWE8L00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YAUPAtQpAVST1iOvaCeY5jOOVlJCNNEWUtPw/lf1lD0/nZaVvB8EgG48DLvln6AghNzROktFE4xrWO2Reo1JpNLskfVhrXSXY8FnQMNXxDKP09INCxf2MMXLN8jlFOwnpaURfULtQQt1I5/OueVYcXfvmVlneRJVTpPGCTi3KIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqlaoI2j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871AB1F00893;
-	Sun,  7 Jun 2026 10:56:50 +0000 (UTC)
+	 MIME-Version; b=iRXLTMbtZIS5NUoimWUAG+ndjtDZ4KrBk98qUy4i2x0bxQlzmq9ZQAnV0eLHjeOdRZ1NYKLKk8/mSYEhypn5PRoxdhUsxTEJxaZ81xZhMVo2YIZd1GkSR05qRX6nTwFWTMca+ga2FHt/DehOBRwf4MjB35f+tH0De3AkQHw0avo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGbtiw5p; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CD21F00893;
+	Sun,  7 Jun 2026 10:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829811;
-	bh=NDyN2wbk6WsCkjycMhg3/fCgUrXEVC4kMj5l4ary3pk=;
+	s=korg; t=1780829871;
+	bh=raumMo/N3OVuc0f+QTGURJweaKEL3SvpC9l9R4s0gFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vqlaoI2j/qIUOfK0cXzP9HwaS+xwKciIdfaWdyUr0yITuSK9eSwR54bFvTucgKlm9
-	 cXgiiBBeCRT6KliTiQ+Xc4oqGheTHBz6S1TZMqitMAIHUuNIovTcPKL2OR1rq5Z3HW
-	 RH6qAB8q76pZbxYokAvlJ6s+DAocYgkq5TsGQa3o=
+	b=MGbtiw5pFM/mWxrJMogpqtN0Tjr2LJYuVv7k34LcNgA4N3r42aj3MH2/Og3Nv/D6S
+	 jqnTRJq5iMCpY2IdlJI8EEavpdTmG8itk5G11KCrwB4LhaseXqtiQzfutXP2kvXXqf
+	 vLFFvvdtFEZGf3GuRLwkiu9z+CNuldT+cnuUbsbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jacques Nilo <jnilo@free.fr>
-Subject: [PATCH 6.18 280/315] serial: 8250: dispatch SysRq character in serial8250_handle_irq()
-Date: Sun,  7 Jun 2026 12:01:07 +0200
-Message-ID: <20260607095737.873581177@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Hongling Zeng <zenghongling@kylinos.cn>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 7.0 299/332] serial: sh-sci: fix memory region release in error path
+Date: Sun,  7 Jun 2026 12:01:08 +0200
+Message-ID: <20260607095739.041686621@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +67,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261779-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,intel.com,gmail.com,kylinos.cn,glider.be];
+	TAGGED_FROM(0.00)[bounces-261796-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ilpo.jarvinen@linux.intel.com,m:jnilo@free.fr,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:lkp@intel.com,m:error27@gmail.com,m:zenghongling@kylinos.cn,m:geert+renesas@glider.be,m:geert@glider.be,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,free.fr];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,glider.be:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C5043650269
+X-Rspamd-Queue-Id: D0A23650650
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacques Nilo <jnilo@free.fr>
+From: Hongling Zeng <zenghongling@kylinos.cn>
 
-commit 71f42b2149a1307a97165b409493665579462ea0 upstream.
+commit 92b1ea22454b08a39baef3a7290fb3ec50366616 upstream.
 
-serial8250_handle_irq() captures a SysRq character into port->sysrq_ch
-inside serial8250_handle_irq_locked() via uart_prepare_sysrq_char()
-(reached from serial8250_read_char()). Dispatch of that captured
-character to handle_sysrq() is expected to happen at port-unlock time,
-through uart_unlock_and_check_sysrq[_irqrestore]().
+The sci_request_port() function uses request_mem_region() to reserve
+I/O memory, but in the error path when sci_remap_port() fails, it
+incorrectly calls release_resource() instead of release_mem_region().
 
-After commit 8324a54f604d ("serial: 8250: Add
-serial8250_handle_irq_locked()") the function was reduced to a wrapper
-that takes the port lock via guard(uart_port_lock_irqsave) whose
-destructor is plain uart_port_unlock_irqrestore(). The sysrq-aware
-unlock helper is no longer called, so port->sysrq_ch is captured but
-never dispatched: BREAK + SysRq key is consumed silently.
+This mismatch can cause resource accounting issues. Fix it by using
+the correct release function, consistent with sci_release_port().
 
-This was the very condition Johan Hovold's 853a9ae29e978 ("serial:
-8250: fix handle_irq locking", 2021) introduced
-uart_unlock_and_check_sysrq_irqrestore() to address.
-
-Switch to the new guard(uart_port_lock_check_sysrq_irqsave), whose
-destructor is the sysrq-aware unlock helper, restoring the pre-split
-behaviour. Update the Context: comment on serial8250_handle_irq_locked()
-so future HW-specific 8250 wrappers know to use the same guard or the
-explicit sysrq-aware unlock.
-
-Verified on RTL8196E with CONFIG_MAGIC_SYSRQ_SERIAL=y: BREAK + 'h' on
-the console UART produces the SysRq help dump in dmesg and the brk
-counter in /proc/tty/driver/serial increments correctly.
-
-Fixes: 8324a54f604d ("serial: 8250: Add serial8250_handle_irq_locked()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Jacques Nilo <jnilo@free.fr>
-Link: https://patch.msgid.link/52692ae6c3501f7940347cef364ad7fcacaab7e5.1778675349.git.jnilo@free.fr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e2651647080930a1 ("serial: sh-sci: Handle port memory region reservations.")
+Cc: stable <stable@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202604032356.SzEjYkBC-lkp@intel.com/
+Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20260421065737.724187-1-zenghongling@kylinos.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_port.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sh-sci.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index af78cc02f38e..c66ba714caa5 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -1784,7 +1784,10 @@ static bool handle_rx_dma(struct uart_8250_port *up, unsigned int iir)
- }
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3024,7 +3024,7 @@ int sci_request_port(struct uart_port *p
  
- /*
-- * Context: port's lock must be held by the caller.
-+ * Context: port's lock must be held by the caller. The caller must
-+ * release it via guard(uart_port_lock_check_sysrq_irqsave) or
-+ * uart_unlock_and_check_sysrq_irqrestore(), which captures SysRq
-+ * character on unlock.
-  */
- void serial8250_handle_irq_locked(struct uart_port *port, unsigned int iir)
- {
-@@ -1837,7 +1840,7 @@ int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
- 	if (iir & UART_IIR_NO_INT)
- 		return 0;
+ 	ret = sci_remap_port(port);
+ 	if (unlikely(ret != 0)) {
+-		release_resource(res);
++		release_mem_region(port->mapbase, sport->reg_size);
+ 		return ret;
+ 	}
  
--	guard(uart_port_lock_irqsave)(port);
-+	guard(uart_port_lock_check_sysrq_irqsave)(port);
- 	serial8250_handle_irq_locked(port, iir);
- 
- 	return 1;
--- 
-2.54.0
-
 
 
 
