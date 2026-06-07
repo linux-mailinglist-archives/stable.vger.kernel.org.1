@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-261117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HnLRHlNGJWrYFgIAu9opvQ
-	(envelope-from <stable+bounces-261117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:11 +0200
+	id 3eveOUJGJWrOFgIAu9opvQ
+	(envelope-from <stable+bounces-261113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08FD364F948
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C07464F92C
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sQQEWw9a;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261117-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261117-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=d49sloNL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261113-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261113-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F0B13070DD1
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:15:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57EB03052467
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8292DB788;
-	Sun,  7 Jun 2026 10:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA8B31E838;
+	Sun,  7 Jun 2026 10:15:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C250A212564;
-	Sun,  7 Jun 2026 10:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9645224D6;
+	Sun,  7 Jun 2026 10:15:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827318; cv=none; b=BJIWB0uutBvgcXsWUH3MBO5s6MQLcJNDhkXYPHp3Z7hQb/nPFRLbw60SsYCdMYvXIsU7FywM7Fypl9jpeDvhOAPW6dBvGl29Srvrs0FLj+p/0IJlxJMULUbAhDZXKj8kQkyDEg+3jyD7ZB4IJKoptV31yWBQ+oLBazNJ+eMKXXA=
+	t=1780827304; cv=none; b=LL3a/kL2t7tqc3v6cdINQl+bDsWm3UMjyvhB36VcuIkLLMn7rG0wmooVXsTOS6roqjywNhJ52RuXspsjwayBL5O+fzIz7VarSUYqpJjfyTIeOaFNVwNQ00S5Y75B4sm+O86D4cC05Kllfser3NaeDviLzm5YyXQuk1HP2/Mb07Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827318; c=relaxed/simple;
-	bh=6UQfS3GMESgy6YC9ovpkwNXOamNji0H7X1h2lAiwAC4=;
+	s=arc-20240116; t=1780827304; c=relaxed/simple;
+	bh=VNoHrLCtGV5bvX/6jaAQHDITF7Xkqji3X/Jd7QiBBZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4KC9hFmiEh8Z2v5aryAkvicpXnAOYsALcmkEIwvJ+eU/U3AXKB5NDwyVt/sevpYyuoFpy7tSrozI2yv1oCrNxdY96jQa/YI3GKPMHy4qQCWd3r3ITaM1OGBeiYVE17amaguakRe/Hj5+LEEb5pYIG3hx2yZIv0u5/B3QiuwNTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQQEWw9a; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050551F00893;
-	Sun,  7 Jun 2026 10:15:15 +0000 (UTC)
+	 MIME-Version; b=obGk0+gG/xP+exlj4GPMW3/7hHShAgvvbbY7B8wsmNCuK2IDwPnfu2gCCRsf5zwVuymLNb/CVq80N38b5gJS0Ecm7YRycHppRYwgdPkJB7XbMjMbXPuX84sRRIOz6ztLHbxDH4L4ektMOZKiYSIkAlsIYBCXNoud8wwu6HSS0nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d49sloNL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049D41F00893;
+	Sun,  7 Jun 2026 10:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827316;
-	bh=nMnBxdnRROr59+einaZmazmNNRFJ86GX5AWa04Y542A=;
+	s=korg; t=1780827303;
+	bh=s3OPy2QVvKq1/cp9JAso6gio41IDkLV60eNcqYo8j80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sQQEWw9awWlhuO0gw9iL3eYeqbmfmOxEXhniUSq9IdIzSGblaLq7hOgLP8OM6V0s8
-	 H020OeR0axF9wl9dLXkAVj4eIwA//9wWaIJNHQrMDPKCscX78ftVlWsZ6t2x8+zzag
-	 jxnfAZV0vTG94qGfCAYP10P4ii5lbyHlExDPbyC8=
+	b=d49sloNLyL2L8r3a+jdAZOuPikkfTm7SSx3r+HcBYf5gvky7p9xYYcmNAZYi7mOzT
+	 ahjjKIVbB9cNlGKdR9yEIqI7LPnsOKzPvWGWBBbJ8LtRRChcjwzWKW4rQ5Nd6LeSU5
+	 lyPvEYahp0jyApC8/dCclkMIIgfm6qdX9J3++vGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <nikolay@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 063/315] bridge: Fix sleep in atomic context in sysfs path
+Subject: [PATCH 7.0 081/332] net: Introduce skb tc depth field to track packet loops
 Date: Sun,  7 Jun 2026 11:57:30 +0200
-Message-ID: <20260607095729.921695464@linuxfoundation.org>
+Message-ID: <20260607095731.119198498@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261117-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261113-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nikolay@nvidia.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stephen@networkplumber.org,m:jhs@mojatatu.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,164 +99,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,networkplumber.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 08FD364F948
+X-Rspamd-Queue-Id: 5C07464F92C
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit 6d34594cc619d0d4b07d5afcad8b5984f3526dcf ]
+[ Upstream commit 98b34f3e8c3492cfc89ff943c9d92b4d52863d1d ]
 
-Since the start of the git history, brport_store() always acquired the
-bridge lock. Back then this decision made sense: The bridge lock
-protects the STP state of the bridge and its ports and at that time the
-function was only used by two STP related attributes (cost and
-priority).
+Add a 2-bit per-skb tc depth field to track packet loops across the stack.
 
-Nowadays, brport_store() processes a lot more attributes and most of
-them do not need the bridge lock:
+The previous per-CPU loop counters like MIRRED_NEST_LIMIT
+assume a single call stack and lose state in two cases:
+1) When a packet is queued and reprocessed later (e.g., egress->ingress
+   via backlog), the per-cpu state is gone by the time it is dequeued.
+2) With XPS/RPS a packet may arrive on one CPU and be processed on
+   another.
 
-* Bridge flags: Only require RTNL. Read locklessly by the data path.
-  Annotations can be added in net-next.
+A per-skb field solves both by travelling with the packet itself.
 
-* FDB port flushing: Only requires the FDB lock.
+The field fits in existing padding, using 2 bits that were previously a
+hole:
 
-* Multicast attributes: Only require the multicast lock.
+pahole before(-) and after (+) diff looks like:
+   __u8       slow_gro:1;           /*   132: 3  1 */
+   __u8       csum_not_inet:1;      /*   132: 4  1 */
+   __u8       unreadable:1;         /*   132: 5  1 */
+ + __u8       tc_depth:2;           /*   132: 6  1 */
 
-* Group forward mask: Only requires RTNL. Read locklessly by the data
-  path. Annotations can be added in net-next.
+ - /* XXX 2 bits hole, try to pack */
+   /* XXX 1 byte hole, try to pack */
 
-* Backup port: Only requires RTNL. Read locklessly by the data path.
+   __u16      tc_index;             /*   134     2 */
 
-This is a problem as the bridge calls dev_set_promiscuity() when certain
-bridge port flags change and this function can sleep since the commit
-cited below, resulting in a splat such as [1].
+There used to be a ttl field which was removed as part of tc_verd in commit
+aec745e2c520 ("net-tc: remove unused tc_verd fields").  It was already
+unused by that time, due to remove earlier in commit c19ae86a510c ("tc: remove
+unused redirect ttl").
 
-Fix this by reducing the scope of the bridge lock and only take it when
-processing the two STP related attributes that require it. Remove the
-now stale comment from br_switchdev_set_port_flag(). The
-SWITCHDEV_F_DEFER flag can be removed in net-next.
+The first user of this field is netem, which increments tc_depth on
+duplicated packets before re-enqueueing them at the root qdisc.  On
+re-entry, netem skips duplication for any skb with tc_depth already set,
+bounding recursion to a single level regardless of tree topology.
 
-[1]
-BUG: sleeping function called from invalid context at net/core/dev_addr_lists.c:1262
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 372, name: bash
-preempt_count: 201, expected: 0
-RCU nest depth: 0, expected: 0
-5 locks held by bash/372:
-#0: ffff88810c51c3f0 (sb_writers#7){.+.+}-{0:0}, at: ksys_write (fs/read_write.c:740)
-#1: ffff888115ce9480 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter (fs/kernfs/file.c:343)
-#2: ffff88810b9fd330 (kn->active#37){.+.+}-{0:0}, at: kernfs_fop_write_iter (fs/kernfs/file.c:80 fs/kernfs/file.c:344)
-#3: ffffffffa59473a0 (rtnl_mutex){+.+.}-{4:4}, at: brport_store (net/bridge/br_sysfs_if.c:326)
-#4: ffff8881099d2d58 (&br->lock){+...}-{3:3}, at: brport_store (./include/linux/spinlock.h:348 net/bridge/br_sysfs_if.c:345)
-Preemption disabled at:
- 0x0
-Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-Call Trace:
-<TASK>
-dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
-__might_resched.cold (kernel/sched/core.c:9163)
-netif_rx_mode_run (net/core/dev_addr_lists.c:1262)
-netif_rx_mode_sync (net/core/dev_addr_lists.c:1428)
-dev_set_promiscuity (net/core/dev_api.c:289)
-br_manage_promisc (net/bridge/br_if.c:135 net/bridge/br_if.c:172)
-br_port_flags_change (net/bridge/br_if.c:242 net/bridge/br_if.c:747)
-store_learning (net/bridge/br_sysfs_if.c:79 net/bridge/br_sysfs_if.c:235)
-brport_store (net/bridge/br_sysfs_if.c:346)
-kernfs_fop_write_iter (fs/kernfs/file.c:352)
-new_sync_write (fs/read_write.c:595)
-vfs_write (fs/read_write.c:688)
-ksys_write (fs/read_write.c:740)
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+The other user is mirred which increments it on each pass
+and limits to depth to MIRRED_DEFER_LIMIT (3).
 
-Fixes: 78cd408356fe ("net: add missing instance lock to dev_set_promiscuity")
-Reviewed-by: Nikolay Aleksandrov <nikolay@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260526064818.272516-3-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The new field was called ttl in earlier versions of this patch
+but renamed to tc_depth to avoid confusion with IP ttl.
+
+Note (looking at you Sashiko! Dont ignore me and continue bringing this up):
+1. Since both mirred and netem utilize the same 2-bit tc_depth field it is
+   possible when netem and mirred are used together that netem qdisc to skip
+   the duplication step. This is a known trade-off, as a 2-bit field cannot
+   independently track both features' recursion depths and it is not considered
+   sane to have a setup that addresses both features on at the same time.
+
+2. skb_scrub_packet does not clear tc_depth. This means a packet's loop history
+  is preserved even across namespaces. While this might be restrictive for
+  some topologies, it is also design intent to provide robustness against loops
+  across namespaces.
+
+Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260525122556.973584-2-jhs@mojatatu.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: db875221ab08 ("net/sched: Fix ethx:ingress -> ethy:egress -> ethx:ingress mirred loop")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_switchdev.c |  1 -
- net/bridge/br_sysfs_if.c  | 30 ++++++++++++++++++++++--------
- 2 files changed, 22 insertions(+), 9 deletions(-)
+ include/linux/skbuff.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
-index fe3f7bbe86ee62..b5c6e314204f94 100644
---- a/net/bridge/br_switchdev.c
-+++ b/net/bridge/br_switchdev.c
-@@ -99,7 +99,6 @@ int br_switchdev_set_port_flag(struct net_bridge_port *p,
- 	attr.u.brport_flags.val = flags;
- 	attr.u.brport_flags.mask = mask;
- 
--	/* We run from atomic context here */
- 	err = call_switchdev_notifiers(SWITCHDEV_PORT_ATTR_SET, p->dev,
- 				       &info.info, extack);
- 	err = notifier_to_errno(err);
-diff --git a/net/bridge/br_sysfs_if.c b/net/bridge/br_sysfs_if.c
-index 74fdd8105dca9e..3fe664fd1f5b82 100644
---- a/net/bridge/br_sysfs_if.c
-+++ b/net/bridge/br_sysfs_if.c
-@@ -86,16 +86,34 @@ static ssize_t show_path_cost(struct net_bridge_port *p, char *buf)
- 	return sprintf(buf, "%d\n", p->path_cost);
- }
- 
--static BRPORT_ATTR(path_cost, 0644,
--		   show_path_cost, br_stp_set_path_cost);
-+static int store_path_cost(struct net_bridge_port *p, unsigned long v)
-+{
-+	int ret;
-+
-+	spin_lock_bh(&p->br->lock);
-+	ret = br_stp_set_path_cost(p, v);
-+	spin_unlock_bh(&p->br->lock);
-+	return ret;
-+}
-+
-+static BRPORT_ATTR(path_cost, 0644, show_path_cost, store_path_cost);
- 
- static ssize_t show_priority(struct net_bridge_port *p, char *buf)
- {
- 	return sprintf(buf, "%d\n", p->priority);
- }
- 
--static BRPORT_ATTR(priority, 0644,
--			 show_priority, br_stp_set_port_priority);
-+static int store_priority(struct net_bridge_port *p, unsigned long v)
-+{
-+	int ret;
-+
-+	spin_lock_bh(&p->br->lock);
-+	ret = br_stp_set_port_priority(p, v);
-+	spin_unlock_bh(&p->br->lock);
-+	return ret;
-+}
-+
-+static BRPORT_ATTR(priority, 0644, show_priority, store_priority);
- 
- static ssize_t show_designated_root(struct net_bridge_port *p, char *buf)
- {
-@@ -334,17 +352,13 @@ static ssize_t brport_store(struct kobject *kobj,
- 			ret = -ENOMEM;
- 			goto out_unlock;
- 		}
--		spin_lock_bh(&p->br->lock);
- 		ret = brport_attr->store_raw(p, buf_copy);
--		spin_unlock_bh(&p->br->lock);
- 		kfree(buf_copy);
- 	} else if (brport_attr->store) {
- 		val = simple_strtoul(buf, &endp, 0);
- 		if (endp == buf)
- 			goto out_unlock;
--		spin_lock_bh(&p->br->lock);
- 		ret = brport_attr->store(p, val);
--		spin_unlock_bh(&p->br->lock);
- 	}
- 
- 	if (!ret) {
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 2f278ce376b7ed..a58ff8903e536e 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -821,6 +821,7 @@ enum skb_tstamp_type {
+  *	@_sk_redir: socket redirection information for skmsg
+  *	@_nfct: Associated connection, if any (with nfctinfo bits)
+  *	@skb_iif: ifindex of device we arrived on
++ *	@tc_depth: counter for packet duplication
+  *	@tc_index: Traffic control index
+  *	@hash: the packet hash
+  *	@queue_mapping: Queue mapping for multiqueue devices
+@@ -1030,6 +1031,7 @@ struct sk_buff {
+ 	__u8			csum_not_inet:1;
+ #endif
+ 	__u8			unreadable:1;
++	__u8			tc_depth:2;
+ #if defined(CONFIG_NET_SCHED) || defined(CONFIG_NET_XGRESS)
+ 	__u16			tc_index;	/* traffic control index */
+ #endif
 -- 
 2.53.0
 
