@@ -1,165 +1,197 @@
-Return-Path: <stable+bounces-261925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261926-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ei6TAhy8JWp7LAIAu9opvQ
-	(envelope-from <stable+bounces-261925-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 20:44:44 +0200
+	id sxtBFZi9JWrFLAIAu9opvQ
+	(envelope-from <stable+bounces-261926-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 20:51:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF286514CA
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 20:44:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D36E65150A
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 20:51:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vbm9yYaS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261925-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261925-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=huWujLQl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261926-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261926-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 77E573007647
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 18:44:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F45F301186C
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 18:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FE12D8DC2;
-	Sun,  7 Jun 2026 18:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8072EB874;
+	Sun,  7 Jun 2026 18:48:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934B81BD9C9;
-	Sun,  7 Jun 2026 18:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139147083C
+	for <stable@vger.kernel.org>; Sun,  7 Jun 2026 18:48:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780857879; cv=none; b=HT18el/adUd094I0SWiWaomncDYzIpma5G3Kom756DjFvNCDOvhB06b0m1c+8CPxTG1V1NNV47/mwq95MJrHxKxqcFVxm1m7nEEtwEO1pHZqw7bizZOl9hfAFKPYbLF6oaUDyLHvDFbqTnuvqXkaEton+BcXPnhe2AnMht90VRc=
+	t=1780858134; cv=none; b=mkKQ4OgL5qIKGWfCcuXq6dpxJuuv5NAzPIQO2sbpeYrOgznKM8GglTM+WL+bqZK2fFp3mZjYfdmkpr6D0DsyCFqrXDLSJ6MLDGxPgmsartwJrkFXyWwSrQn119P2ED7bcTkwzpaFPqnrxjOKe1vjFFDqQsq4WqHIKzm8BfjioQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780857879; c=relaxed/simple;
-	bh=7yZxF2UMVwXMaKLziKlcZXqPXJCVcrz9+UAwCS1rdFI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cZOyxjodzcPw+XjFgHdcroKSBlzgBat8C9N2gwAxKhL/qJuXCk1gVMz1iD4XTuqx+sF+Wzf6ctTEz+vj1GVdQWwxvxbLH0RykI2aXDEADu4beDibcpluhyAE2O8THudcmJvoXdI5o+9OjwxVC1UhO6GlzTCXSO3si9kdn2p4ED4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vbm9yYaS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101321F00893;
-	Sun,  7 Jun 2026 18:44:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780857878;
-	bh=UQvXkO+DoHYxYwFn5fP55zszm2KanotFEhO1BqL9ktk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Vbm9yYaSrpAL0Ufyn8i6slEAH2rKYnSYG3RnMBgecKuAnVG6yMEoRdZguTpk3PNSV
-	 VZcF2AGFkIM1m0eDL60yzqk2VcZIalOkQyZj+/lN99o5RVxABbojNC5Y0XQCqyJh0V
-	 W24jj1b6ISRv6eVQ13g+K5LBGczvJakjgcwWJLbGep10gOZbrAyztt6GiF+CUY83pu
-	 PoNSSDOVmL0Z1l9tEVBj5jATY2eWg/qE+sFZhGPZRFVtkFpbxeHbfnGQdGphp42hg4
-	 OMcUmQQi32Csx0B2bmAzJIyCd3OMDxBwTMBeMnjZPeHk2xg+knsSz+0qWIdn0ATn54
-	 CwyFO/SHSJQmQ==
-Message-ID: <dd36757c-62b3-476e-bc9f-09231c495ebc@kernel.org>
-Date: Sun, 7 Jun 2026 20:44:35 +0200
+	s=arc-20240116; t=1780858134; c=relaxed/simple;
+	bh=oQ92XxObcIFCSYNEvG4efswflqUUmoHQyr98tzbYdAU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HbPxtTu5k9k+lYFen+aEz/6a7fzr+YIzkuqdK2vv2EBdSNGatKYIranOdogmx9wnDxmc1YqYpI4Dpn81Fac/2j+kxhhVZ5RaBcYKZUeNqQ6/Cz1VrRYQeVdSyDEkK7rfke+7OdwXjqAUc+j7WBdga8k/NLtT9dWlO2sgl0NQQYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=huWujLQl; arc=none smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780858132;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gj0udk3CMmDvhjpN2hmDT/0bExItRn3ZDV7JKW8KquI=;
+	b=huWujLQlXedMNkbd1gIZzzhkx7dC1IlHjnBCyy5PR3V+5jZdh7dDVl8JDYv+faXHXPR8IJ
+	nBFNdScUc3wygKc42iQayATxd92YRPwIPuDY89lIZVpuomFb3SFgS4zRWxQCyQcoqDqKkL
+	N+3A6fiPBu5sLVzX8NvhZNkF46792WE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-264-yLECvyBVNKOPUtNdI4XJgA-1; Sun,
+ 07 Jun 2026 14:48:46 -0400
+X-MC-Unique: yLECvyBVNKOPUtNdI4XJgA-1
+X-Mimecast-MFC-AGG-ID: yLECvyBVNKOPUtNdI4XJgA_1780858123
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4D72318003FC;
+	Sun,  7 Jun 2026 18:48:42 +0000 (UTC)
+Received: from fedora (unknown [10.44.32.36])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 1E1A2180049F;
+	Sun,  7 Jun 2026 18:48:32 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Sun,  7 Jun 2026 20:48:41 +0200 (CEST)
+Date: Sun, 7 Jun 2026 20:48:31 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Deepanshu Kartikey <Kartikey406@gmail.com>,
+	syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com,
+	Michal Hocko <mhocko@suse.com>, Ben Segall <bsegall@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Kees Cook <kees@kernel.org>, Liam Howlett <liam@infradead.org>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Mel Gorman <mgorman@suse.de>, Mike Rapoport <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 7.0 015/332] kernel/fork: validate exit_signal in
+ kernel_clone()
+Message-ID: <aiW8_0Lvx4i4dCot@redhat.com>
+References: <20260607095728.031258202@linuxfoundation.org>
+ <20260607095728.598854921@linuxfoundation.org>
+ <aiVOEKt9QL5cvkwz@redhat.com>
+ <2026060759-anyway-straining-d394@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.0 016/332] esp: fix page frag reference leak on
- skb_to_sgvec failure
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Alessandro Schino <7991aleschino@gmail.com>,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Sasha Levin <sashal@kernel.org>
-References: <20260607095728.031258202@linuxfoundation.org>
- <20260607095728.644422375@linuxfoundation.org>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20260607095728.644422375@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026060759-anyway-straining-d394@gregkh>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261925-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:7991aleschino@gmail.com,m:steffen.klassert@secunet.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[jirislaby@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[lists.linux.dev,gmail.com,secunet.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[26];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261926-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:Kartikey406@gmail.com,m:syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com,m:mhocko@suse.com,m:bsegall@google.com,m:brauner@kernel.org,m:david@kernel.org,m:dietmar.eggemann@arm.com,m:mingo@redhat.com,m:juri.lelli@redhat.com,m:kees@kernel.org,m:liam@infradead.org,m:ljs@kernel.org,m:mgorman@suse.de,m:rppt@kernel.org,m:peterz@infradead.org,m:rostedt@goodmis.org,m:surenb@google.com,m:vschneid@redhat.com,m:vincent.guittot@linaro.org,m:vbabka@kernel.org,m:penguin-kernel@i-love.sakura.ne.jp,m:akpm@linux-foundation.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[oleg@redhat.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,gmail.com,syzkaller.appspotmail.com,suse.com,google.com,kernel.org,arm.com,redhat.com,infradead.org,suse.de,goodmis.org,linaro.org,i-love.sakura.ne.jp,linux-foundation.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jirislaby@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oleg@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sbb.ch:email]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,bbe6b99feefc3a0842de];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6DF286514CA
+X-Rspamd-Queue-Id: 9D36E65150A
 
-On 07. 06. 26, 11:56, Greg Kroah-Hartman wrote:
-> 7.0-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: e521588 <alessandro.schino@sbb.ch>
-> 
-> [ Upstream commit 2982e599fff6faa21c8df147d96fc7af6c1a2f24 ]
+Greg,
 
-This was reverted by 6851161feb01cea41358c9ec304bd2f981fc8505.
+In short: yes I do think this patch should be dropped from all stable
+queues. See below.
 
-thanks,
--- 
-js
-suse labs
+But let me also note that this change + my commit 0f8e38eeb995b caused
+some confusions. And this is only my fault, we should not blame Deepanshu.
+
+On 06/07, Greg Kroah-Hartman wrote:
+>
+> On Sun, Jun 07, 2026 at 12:55:12PM +0200, Oleg Nesterov wrote:
+> > On 06/07, Greg Kroah-Hartman wrote:
+> > >
+> > > 7.0-stable review patch.  If anyone has any objections, please let me know.
+> > >
+> > > ------------------
+> > >
+> > > From: Deepanshu Kartikey <kartikey406@gmail.com>
+> > >
+> > > [ Upstream commit 09e7827e785729f391c8d46dc71becce70d296ab ]
+> >
+> > I don't think this is the -stable material.
+> >
+> > > Note that this is a user-visible change: previously, passing an invalid
+> > > exit_signal to clone() was silently accepted.  The man page for clone()
+> > > does not document any defined behavior for invalid exit_signal values, so
+> > > rejecting them with -EINVAL is the correct behavior.  It is unlikely that
+> > > any sane application relies on passing an invalid exit_signal.
+> >
+> > Yes...
+> >
+> > This patch is the preparation for another commit 0f8e38eeb995b
+> > ("do_notify_parent: sanitize the valid_signal() checks").
+>
+> Then why does it have:
+> 	Fixes: 3f2c788a1314 ("fork: prevent accidental access to clone3 features")
+> in the body of the changelog?
+
+By mistake, my fault.
+
+The 3f2c788a1314 commit above was fine. And it didn't change the behaviour of sys_clone().
+
+I reviewed the patch from Deepanshu, but I didn't notice that even the latest
+version still has this (wrong) tag. Same for the syzbot/syzcaller links in the
+changelog.
+
+> Should it be dropped from all stable queues then?
+
+Yes, see above.
+
+I do think this patch is fine. But. without my commit 0f8e38eeb995b ("do_notify_parent:
+sanitize the valid_signal() checks") which due to another mistake was merged before this
+patch from Deepanshu, we do not need to backport it to -stable.
+
+Oleg.
 
 
