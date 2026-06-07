@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-260937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260968-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id B+oHFfJBJWqzFAIAu9opvQ
-	(envelope-from <stable+bounces-260937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:03:30 +0200
+	id 8sA3H21DJWpNFQIAu9opvQ
+	(envelope-from <stable+bounces-260968-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:09:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A9164F4EA
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:03:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F282264F5CE
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:09:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Mndek38G;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260937-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-260937-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=leI9jeVr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260968-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260968-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E7FC33003487
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:03:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3D6D302F993
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF882FE59C;
-	Sun,  7 Jun 2026 10:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95F5309DAF;
+	Sun,  7 Jun 2026 10:06:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75E529BD91;
-	Sun,  7 Jun 2026 10:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B1230D405;
+	Sun,  7 Jun 2026 10:06:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826600; cv=none; b=I4whRKO69QugbeZXT4zgS2o+FqeiA6nYFwsCEbWPU5LX9eT1WN1AucTiMLCGP0jOnSiVhL4KbiC5hYm3z9T2BQXz2KRTRyO4rAK9i3ptHRSXsVD1DsjY4yPLamrDmzbH87fIIft9bfpEm5tiMwScXXm+ZH/V6uEQFPtlU5yG05E=
+	t=1780826815; cv=none; b=eJoM92q4KPsn+GLGrnRhyJffrml58ornJI349jUSAeWhfmAHKKOZQt3D0lwd5P77VJKagTuPwrif6U0MDhgXOFtQdHbx6/IX5Lk0ILOQcPx4+hR76EaZNi0FE7XA4HAR3fpnh2PT/pn2dBgUwF0P1OixZUQ3tZ68PSioXG7M1Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826600; c=relaxed/simple;
-	bh=r2nCqzOeYJ7UbRC99FR5vWaBMeOp2Gsmi/xHpaEV5Js=;
+	s=arc-20240116; t=1780826815; c=relaxed/simple;
+	bh=tW1Gj1Q5xLIfOFc4ZmQ4O5MdDnYuLAFVFNdjnWUnd5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GaW/DJBHPKfNJga8m/WORQwvBL21pQi74QSVWwPMbiXeLFsChkrKUNdz/8VZOyq/OZ3MN/sFoEIQoZYdJsncA72pJR377xa+VuHxRqfxGL8WjJIXYfKRiZNG8adb9xdE11/1vQ+IVMG3DBX6iRZ3iPBxmxgHwXNdMe8idMQENdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mndek38G; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAEB1F00898;
-	Sun,  7 Jun 2026 10:03:18 +0000 (UTC)
+	 MIME-Version; b=j0G/EBitRdKV/V8EM8TyKnmdVwW8tIipVAC4+gTinNciC/8BNK9ADh009WbwnfWBm8H8gp/qoV7sdEnH6TonubURk6Zu3RCovP4qeYPqAiv0XQaFc1zRBG+hsgZYw8kXjW26XGGYEpGZURUCFyD4tcXVQ25PGYWvujJjQq7VyVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leI9jeVr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668111F00893;
+	Sun,  7 Jun 2026 10:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826599;
-	bh=s+nUD9OvPT5iDgSYs7vfFXDtTydF2W5RXzDGmNmncS0=;
+	s=korg; t=1780826813;
+	bh=SPkRAouXKeI0mG+gxaJlh0I91LVTEm2CdcqSGRVMsQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Mndek38GgBO/pVDlaCBpba8Z+urOtB/wF8iR3nTJrZnGrv5hFgbrRhJP5Pok4yJ9p
-	 99z3i3U/btdL22KV9barG991GnEjoXwaPjp+MGkt0Xz6VLI8rZJBrfXwILedhtwzT7
-	 6KbRmzCau9joS3K2uHq484+9/vqGrIETLrZ+3UTo=
+	b=leI9jeVrxkych1BVoGnq4Qc34JMnT0Iyy1QEVPiij8+QbtSEI817R/e49iPHIZ3Nt
+	 lWLmz7KbSW5FzDJIvrrfhJfA8ICNQJ5eT8ARg7GAL7vMioPwaoxx765T0UJz6fws9a
+	 LaaSYHkfQmQk3P+Qhu1tppfDtf3Q5EQ+5cygR1qM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.12 001/307] Input: usbtouchscreen - clamp NEXIO data_len/x_len to URB buffer size
-Date: Sun,  7 Jun 2026 11:56:38 +0200
-Message-ID: <20260607095727.701691734@linuxfoundation.org>
+	"Ewan D. Milne" <emilne@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 030/332] scsi: scsi_debug: Add missing newline in scsi_debug_device_reset()
+Date: Sun,  7 Jun 2026 11:56:39 +0200
+Message-ID: <20260607095729.196987854@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +67,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260937-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:stable@kernel.org,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-260968-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:emilne@redhat.com,m:bvanassche@acm.org,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,oracle.com:email,acm.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 59A9164F4EA
+X-Rspamd-Queue-Id: F282264F5CE
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ewan D. Milne <emilne@redhat.com>
 
-commit 2905281cbda52ec9df540113b35b835feb5fafd3 upstream.
+[ Upstream commit e4bb73bf3ac11b4a93634660345b9d764a4a80df ]
 
-nexio_read_data() pulls data_len and x_len from a packed __be16 header
-in the device's interrupt packet and then walks packet->data[0..x_len)
-and packet->data[x_len..data_len) comparing each byte against a
-threshold.
+A "\n" at the end of the sdev_printk() string appears to have been
+inadvertently removed.  Add it back for correct log message formatting.
 
-Both fields are 16-bit on the wire (max 65535).  The existing
-adjustments shave at most 0x100 / 0x80 off, so the loop bound can still
-reach roughly 0xfeff.  The URB transfer buffer for NEXIO is rept_size
-(1024) bytes from usb_alloc_coherent(), with the first 7 occupied by the
-packed header — so packet->data[] has 1017 valid bytes.  read_data()
-callbacks are not given urb->actual_length, and nothing else bounds the
-walk.
-
-A device that lies about its length can get a ~64 KiB out-of-bounds read
-past the coherent DMA allocation.  The first index whose byte exceeds
-NEXIO_THRESHOLD lands in begin_x / begin_y and from there into the
-reported touch coordinates, so adjacent kernel memory contents leak to
-userspace as ABS_X / ABS_Y events.  Far enough out, the read can also
-hit an unmapped page and fault.
-
-Fix this all by clamping data_len to the buffer's data[] capacity and
-x_len to data_len.
-
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Fixes: 5197424cdccc ("Input: usbtouchscreen - add NEXIO (or iNexio) support")
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026042026-chlorine-epidermis-fd6d@gregkh
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a743b120227a ("scsi: scsi_debug: Stop printing extra function name in debug logs")
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Ewan D. Milne <emilne@redhat.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Link: https://patch.msgid.link/20260519205356.1040855-1-emilne@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/usbtouchscreen.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/scsi/scsi_debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/touchscreen/usbtouchscreen.c
-+++ b/drivers/input/touchscreen/usbtouchscreen.c
-@@ -1070,6 +1070,11 @@ static int nexio_read_data(struct usbtou
- 	if (x_len > 0xff)
- 		x_len -= 0x80;
+diff --git a/drivers/scsi/scsi_debug.c b/drivers/scsi/scsi_debug.c
+index 1515495fd9ea7e..040c5e1e713a2e 100644
+--- a/drivers/scsi/scsi_debug.c
++++ b/drivers/scsi/scsi_debug.c
+@@ -6953,7 +6953,7 @@ static int scsi_debug_device_reset(struct scsi_cmnd *SCpnt)
+ 	++num_dev_resets;
  
-+	if (data_len > usbtouch->data_size - sizeof(*packet))
-+		data_len = usbtouch->data_size - sizeof(*packet);
-+	if (x_len > data_len)
-+		x_len = data_len;
-+
- 	/* send ACK */
- 	ret = usb_submit_urb(priv->ack, GFP_ATOMIC);
- 	if (ret)
+ 	if (SDEBUG_OPT_ALL_NOISE & sdebug_opts)
+-		sdev_printk(KERN_INFO, sdp, "doing device reset");
++		sdev_printk(KERN_INFO, sdp, "doing device reset\n");
+ 
+ 	scsi_debug_stop_all_queued(sdp);
+ 	if (devip) {
+-- 
+2.53.0
+
 
 
 
