@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-261059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261036-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dvHdITJFJWomFgIAu9opvQ
-	(envelope-from <stable+bounces-261059-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:17:22 +0200
+	id Eu4wLKpDJWpnFQIAu9opvQ
+	(envelope-from <stable+bounces-261036-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04EBB64F79B
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:17:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C43A64F608
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="xmsl/tEj";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261059-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261059-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mDVeUBqz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261036-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261036-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6D69305817D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:12:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 36F35300D151
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B722E2DDD;
-	Sun,  7 Jun 2026 10:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9873E2E1EFC;
+	Sun,  7 Jun 2026 10:10:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6712F1E98EF;
-	Sun,  7 Jun 2026 10:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5561E98E3;
+	Sun,  7 Jun 2026 10:10:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827124; cv=none; b=QwMIbjFoVccpjNz5SknTEzkpL8qH21T8VBtZiAo2CR0A4bgFU8pNQI2CNctp3z451ws3XTj1cSUr8hKfSy/r0y+sU76YoyYaSYvF6Gr5IRbLP8IEP7+8JEFZ1bnBaKpQM8q4pKrTURPwNWKPW5eNhdflh1hcN6QdW0g617YNFHw=
+	t=1780827048; cv=none; b=uMRDUMp+ET3szkyi1EGC4xkPAF2Lz7qMZhUxm9kqXivPzemp/gFyF0Jr5kbecGnARPF/6fQRb2Io+IYgA8WPHUKbClwLnfG5o7mY+mWOMl/VUq1dbyC6Q/eHm0yGl+iDZErhFWzP4wC16oZkVmfL7q7C2luR/L+lMM0b4IifnSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827124; c=relaxed/simple;
-	bh=S8N+u2omnJ4nxX1BEfDRnY2Z2uvEqn0YJAz3JIQgv6g=;
+	s=arc-20240116; t=1780827048; c=relaxed/simple;
+	bh=YZobfAfVzdRap0qfp+Djeip5ggpIQvjHLmL8pkqAFwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWgK8dYkyjWxYCwFiqYW+JL7QwDGFYvxFjP8KCQPbW7KSXLY8nCdM7Vpxi1P+QkpaNpCZ8w/7rjvSZCksmVGkxPpLBlznFormFTln6EbYTxBtQT/K/dWcJQ/s0UqehVdfMCjBvznPp0CeaBv4P0DxR0PBJ3w1VdYgC3cgEUzTiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmsl/tEj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735081F00893;
-	Sun,  7 Jun 2026 10:12:02 +0000 (UTC)
+	 MIME-Version; b=npdawHDpHacU2N5fpo8TZQ1aUCBSbAeSJ0Dkt6i31DwvalEj6/4g2uKhSbMUu1idF6/PSLAx8JjXrgiocL3buNKttLvqZEvWZ5lyT5V6eCpWdieQsMn9Ff/vAZTcTV0UxokMBy7DQz3Uiuoed4Y9AZKYOwy9XGY02RstR36cQPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDVeUBqz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796191F00893;
+	Sun,  7 Jun 2026 10:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827123;
-	bh=M8Xcvhc/IipSzVeD1AatUIqgRyHDtzPN/tow19Mvo0E=;
+	s=korg; t=1780827047;
+	bh=Dvq2j1nW3gBRhbuH2uAKA+oi0pfLMnDiKhy2ALgcqzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xmsl/tEjj/2m89Ogi+Z+7QKpoMIvYmiTwYePlcda0cWhJrxN9QHLLOVvbvcCobxlk
-	 8S53ytBaGtOPBQbrIuwfdBwxa6yE1DLsGJvqlYkJYvsmbMVwJd6vfYdrE2VgwFYkyh
-	 GYxm+g85WhJ/IOYLNZ6rHGtsQKYXvN7fSeg/xyYI=
+	b=mDVeUBqzKEKFFjXmQEQbGJKELMvSd59M2QtA8pFtZ6Ns/IZv2avdRVAMOXgFLSVnW
+	 r7uL4MMCl3MrmsZ6RvLoOPfYgUL7wsBHiYiY46vrUbH25BsJVe7NgCCea+lRUp3sSK
+	 jFS3Wotzdxwum813e363d3+nwOMLyWqbK8k0E50Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Marc Harvey <marcharvey@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/307] arm64: debug: always unmask interrupts in el0_softstp()
-Date: Sun,  7 Jun 2026 11:57:01 +0200
-Message-ID: <20260607095728.518615883@linuxfoundation.org>
+Subject: [PATCH 6.18 035/315] net: team: Rename port_disabled team mode op to port_tx_disabled
+Date: Sun,  7 Jun 2026 11:57:02 +0200
+Message-ID: <20260607095728.821332708@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261059-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261036-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ada.coupriediaz@arm.com,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:bigeasy@linutronix.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiri@nvidia.com,m:marcharvey@google.com,m:kuniyu@google.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,80 +100,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 04EBB64F79B
+X-Rspamd-Queue-Id: 2C43A64F608
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+From: Marc Harvey <marcharvey@google.com>
 
-[ Upstream commit ea0d55ae4b3207c33691a73da3443b1fd379f1d2 ]
+[ Upstream commit cfa477df2cc62ba53cb936669886361152b594a7 ]
 
-We intend that EL0 exception handlers unmask all DAIF exceptions
-before calling exit_to_user_mode().
+This team mode op is only used by the load balance mode, and it only
+uses it in the tx path.
 
-When completing single-step of a suspended breakpoint, we do not call
-local_daif_restore(DAIF_PROCCTX) before calling exit_to_user_mode(),
-leaving all DAIF exceptions masked.
-
-When pseudo-NMIs are not in use this is benign.
-
-When pseudo-NMIs are in use, this is unsound. At this point interrupts
-are masked by both DAIF.IF and PMR_EL1, and subsequent irq flag
-manipulation may not work correctly. For example, a subsequent
-local_irq_enable() within exit_to_user_mode_loop() will only unmask
-interrupts via PMR_EL1 (leaving those masked via DAIF.IF), and
-anything depending on interrupts being unmasked (e.g. delivery of
-signals) will not work correctly.
-
-This was detected by CONFIG_ARM64_DEBUG_PRIORITY_MASKING.
-
-Move the call to `try_step_suspended_breakpoints()` outside of the check
-so that interrupts can be unmasked even if we don't call the step handler.
-
-Fixes: 0ac7584c08ce ("arm64: debug: split single stepping exception entry")
-Cc: <stable@vger.kernel.org> # 6.17
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-[catalin.marinas@arm.com: added Mark's rewritten commit log and some whitespace]
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Marc Harvey <marcharvey@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260409-teaming-driver-internal-v7-3-f47e7589685d@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 25fe708bbc59 ("net: team: fix NULL pointer dereference in team_xmit during mode change")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/entry-common.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/team/team_core.c             | 4 ++--
+ drivers/net/team/team_mode_loadbalance.c | 4 ++--
+ include/linux/if_team.h                  | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
-index b98d6d1a1dfd63..ea3876d99c2ec5 100644
---- a/arch/arm64/kernel/entry-common.c
-+++ b/arch/arm64/kernel/entry-common.c
-@@ -796,6 +796,8 @@ static void noinstr el0_breakpt(struct pt_regs *regs, unsigned long esr)
- 
- static void noinstr el0_softstp(struct pt_regs *regs, unsigned long esr)
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index 712d8043e66e17..11c8e6551dd357 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -969,8 +969,8 @@ static void team_port_disable(struct team *team,
  {
-+	bool step_done;
-+
- 	if (!is_ttbr0_addr(regs->pc))
- 		arm64_apply_bp_hardening();
- 
-@@ -806,10 +808,10 @@ static void noinstr el0_softstp(struct pt_regs *regs, unsigned long esr)
- 	 * If we are stepping a suspended breakpoint there's nothing more to do:
- 	 * the single-step is complete.
- 	 */
--	if (!try_step_suspended_breakpoints(regs)) {
--		local_daif_restore(DAIF_PROCCTX);
-+	step_done = try_step_suspended_breakpoints(regs);
-+	local_daif_restore(DAIF_PROCCTX);
-+	if (!step_done)
- 		do_el0_softstep(esr, regs);
--	}
- 	exit_to_user_mode(regs);
+ 	if (!team_port_enabled(port))
+ 		return;
+-	if (team->ops.port_disabled)
+-		team->ops.port_disabled(team, port);
++	if (team->ops.port_tx_disabled)
++		team->ops.port_tx_disabled(team, port);
+ 	hlist_del_rcu(&port->hlist);
+ 	__reconstruct_port_hlist(team, port->index);
+ 	port->index = -1;
+diff --git a/drivers/net/team/team_mode_loadbalance.c b/drivers/net/team/team_mode_loadbalance.c
+index b14538bde2f824..b27e44a4df5f6e 100644
+--- a/drivers/net/team/team_mode_loadbalance.c
++++ b/drivers/net/team/team_mode_loadbalance.c
+@@ -655,7 +655,7 @@ static void lb_port_leave(struct team *team, struct team_port *port)
+ 	free_percpu(lb_port_priv->pcpu_stats);
  }
  
+-static void lb_port_disabled(struct team *team, struct team_port *port)
++static void lb_port_tx_disabled(struct team *team, struct team_port *port)
+ {
+ 	lb_tx_hash_to_port_mapping_null_port(team, port);
+ }
+@@ -665,7 +665,7 @@ static const struct team_mode_ops lb_mode_ops = {
+ 	.exit			= lb_exit,
+ 	.port_enter		= lb_port_enter,
+ 	.port_leave		= lb_port_leave,
+-	.port_disabled		= lb_port_disabled,
++	.port_tx_disabled	= lb_port_tx_disabled,
+ 	.receive		= lb_receive,
+ 	.transmit		= lb_transmit,
+ };
+diff --git a/include/linux/if_team.h b/include/linux/if_team.h
+index 0d550d44a1c230..cd5acf40040d2e 100644
+--- a/include/linux/if_team.h
++++ b/include/linux/if_team.h
+@@ -121,7 +121,7 @@ struct team_mode_ops {
+ 	int (*port_enter)(struct team *team, struct team_port *port);
+ 	void (*port_leave)(struct team *team, struct team_port *port);
+ 	void (*port_change_dev_addr)(struct team *team, struct team_port *port);
+-	void (*port_disabled)(struct team *team, struct team_port *port);
++	void (*port_tx_disabled)(struct team *team, struct team_port *port);
+ };
+ 
+ extern int team_modeop_port_enter(struct team *team, struct team_port *port);
 -- 
 2.53.0
 
