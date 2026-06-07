@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-261234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id N0N/D6xGJWoMFwIAu9opvQ
-	(envelope-from <stable+bounces-261234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:40 +0200
+	id dASNEFFGJWrXFgIAu9opvQ
+	(envelope-from <stable+bounces-261223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAF364F9B4
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D829164F944
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=doHJ3d4P;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261234-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261234-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cad9Pqwo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261223-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261223-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 06CBB301C90B
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5341A3002B11
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0115832470F;
-	Sun,  7 Jun 2026 10:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1212EC54A;
+	Sun,  7 Jun 2026 10:22:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DBD322C6D;
-	Sun,  7 Jun 2026 10:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4089C25B30D;
+	Sun,  7 Jun 2026 10:22:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827767; cv=none; b=QPTQ2bNW6DELqArvzcTMBvInH0xMx94IP0ccoe8+TfABCHCE3R2/xdzZt9lNfqphXpTplLLT+zfx0MCSiHbiZARgfsgDg1OW/fmaC3wcrDHKzyi3UnG81dAqmNNEOS/b3E+EgVmvl5w6IbZFGBCKzWaxqA4wKnuTbyWogUcsO30=
+	t=1780827725; cv=none; b=qQybx1Cf48mv9MuXlNvEBBkcYfwwM6S/4fJFw3eVzKviFKlvQfyjLuopOPu1uwPqqaVd8+YYm80y1lLys945f6JU3rcZtbes7VkN+pgHTyZhv1Kex8uDk08LbEkEA0qcJ+BvMJp2OZ+UhAar00LdCA5qVtgCdukBOcUp/aMJPHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827767; c=relaxed/simple;
-	bh=J3yUxdPR71OVHYW5xlXjsOPiCHi9+qh2grRRDDb2rCw=;
+	s=arc-20240116; t=1780827725; c=relaxed/simple;
+	bh=Wwc394L2GxXKYQBO0UjuVeV+BvKNI4ZNUR0BdKk/LaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RDiq204SU+Z+4Bw4eMxNgBDlPzJHp1Lpj9on8Dqf2Mw8zIaqplPpEZ2F+FSMUrSqj1bN0Lnn21wNJiZov7bygSGKSdcwwWQf8/GNQnbM/6JPR055qYSqF9cDnJ5kkCSGI5UAQlpOFlYKjQbo1fVRtDKVELewPWW7Uy2QRrGALwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doHJ3d4P; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7FC1F00893;
-	Sun,  7 Jun 2026 10:22:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QKO93hsdekUeeKKThloZNtSWlX6IH26PzwoyOfu69ARpkzuWKQEhjH+BOtKkWJAj8JYcRrw9qXJx8AJuGzHnjMwQsz5F/ByweMXtj9zf8cITrnlUMfsyJ9gAbTmBut3pvPkQnuwwyE5utZ7pPVJRhnxdgUGtiVaqrSFbclpnoSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cad9Pqwo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396BB1F00893;
+	Sun,  7 Jun 2026 10:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827765;
-	bh=0XUF/WPodxmRZc/H0Prtkabf4J2AihA0NaeGBpwPj4Q=;
+	s=korg; t=1780827723;
+	bh=kU3R9UiWKN93omYmbrBgCS3LzZHFxVS3YxCb0izuSj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=doHJ3d4PI6dLMA5osQAWdJx9JVvfKgvf1Qzmmo08IsSFrCnr2HGIzgQtjUW74M3YO
-	 Cf/B51KMpJHbSQ+QueuXb7059lCuVPbI269EvVp92ffCeIT2QkCbpWSQUyKiGePaJH
-	 NZeMbyirC2vu6ITRlxpqaxdfVFj5Uiuz2I+c8WxI=
+	b=cad9PqwoTB1+TMmXzRKXyB6JxrnmcWSiP22x9MVGAONVTRqBceaVUybB+rOB+JrCM
+	 r168El2rOeFSXlq95YpqogLO/wgTvGq7SMi1BNwUlwclDAhFWPQW32MthJs4WoJuZ7
+	 PzQyltUaRHhBBUJVfy6mCR5yYxkYLH6yCpYsVzvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 099/315] s390/cio: Restore GFP_DMA for CHSC allocation
+Subject: [PATCH 7.0 117/332] drm/i915/psr: Apply Intel DPCD workaround when SDP on prior line used
 Date: Sun,  7 Jun 2026 11:58:06 +0200
-Message-ID: <20260607095731.276052931@linuxfoundation.org>
+Message-ID: <20260607095732.407515868@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,191 +66,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261234-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261223-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:oberpar@linux.ibm.com,m:hca@linux.ibm.com,m:agordeev@linux.ibm.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jouni.hogander@intel.com,m:suraj.kandpal@intel.com,m:tursulin@ursulin.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,intel.com:email,ursulin.net:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ABAF364F9B4
+X-Rspamd-Queue-Id: D829164F944
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-[ Upstream commit ea34567db0a6b3a7ce78ba421592344315c8f90e ]
+commit 4703049f768fc1c1caac754134118bee1a3af189 upstream.
 
-Re-add GFP_DMA when allocating memory for CHSC control blocks.
-On some supported machines, CHSC cannot access memory outside
-the DMA zone, causing CHSC command failures.
+There is Intel specific workaround DPCD address containing workaround for
+case where SDP is on prior line. Apply this workaround according to values
+in the offset.
 
-Cc: stable@vger.kernel.org
-Fixes: a3a64a4def8d ("s390/cio: remove unneeded DMA zone allocation")
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-[ adjusted context to account for missing commit bf4afc53b77ae ]
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Fixes: 61e887329e33 ("drm/i915/xelpd: Handle PSR2 SDP indication in the prior scanline")
+Cc: <stable@vger.kernel.org> # v5.15+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260515095756.2799483-4-jouni.hogander@intel.com
+(cherry picked from commit c3fe899fbeac86ea4a5ca9dd845b2cbc0da46249)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/chsc.c     |  4 ++--
- drivers/s390/cio/chsc_sch.c | 20 ++++++++++----------
- drivers/s390/cio/scm.c      |  2 +-
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/i915/display/intel_psr.c | 35 +++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/s390/cio/chsc.c b/drivers/s390/cio/chsc.c
-index 239c92d4ec11e5..b5f6eb18ebadb2 100644
---- a/drivers/s390/cio/chsc.c
-+++ b/drivers/s390/cio/chsc.c
-@@ -1143,8 +1143,8 @@ int __init chsc_init(void)
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index aa2ef49afa67a9..6709c434beb990 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -1357,9 +1357,35 @@ static bool psr2_granularity_check(struct intel_crtc_state *crtc_state,
+ 	return true;
+ }
+ 
+-static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_dp,
+-							struct intel_crtc_state *crtc_state)
++static bool apply_scanline_indication_wa(struct intel_crtc_state *crtc_state,
++					 struct intel_connector *connector)
  {
- 	int ret;
++	struct intel_dp *intel_dp = intel_attached_dp(connector);
++	u8 early_scanline_support = connector->dp.psr_caps.intel_wa_dpcd &
++		INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_EARLYSCANLINE_SDP_SUPPORT_MASK;
++
++	if (intel_dp->edp_dpcd[0] >= DP_EDP_15)
++		return true;
++
++	switch (early_scanline_support)	{
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_FALL_BACK_TO_PSR1:
++		crtc_state->req_psr2_sdp_prior_scanline = false;
++		return false;
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITH_EARLY_SCANLINE:
++		return true;
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITHOUT_EARLY_SCANLINE:
++		crtc_state->req_psr2_sdp_prior_scanline = false;
++		return true;
++	default:
++		MISSING_CASE(early_scanline_support);
++		return false;
++	}
++}
++
++static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_crtc_state *crtc_state,
++							struct intel_connector *connector)
++{
++	struct intel_dp *intel_dp = intel_attached_dp(connector);
+ 	struct intel_display *display = to_intel_display(intel_dp);
+ 	const struct drm_display_mode *adjusted_mode = &crtc_state->uapi.adjusted_mode;
+ 	u32 hblank_total, hblank_ns, req_ns;
+@@ -1378,7 +1404,8 @@ static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_d
+ 		return false;
  
--	sei_page = (void *)get_zeroed_page(GFP_KERNEL);
--	chsc_page = (void *)get_zeroed_page(GFP_KERNEL);
-+	sei_page = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	chsc_page = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sei_page || !chsc_page) {
- 		ret = -ENOMEM;
- 		goto out_err;
-diff --git a/drivers/s390/cio/chsc_sch.c b/drivers/s390/cio/chsc_sch.c
-index 1e58ee3cc87db1..9131ce3af1b8eb 100644
---- a/drivers/s390/cio/chsc_sch.c
-+++ b/drivers/s390/cio/chsc_sch.c
-@@ -293,7 +293,7 @@ static int chsc_ioctl_start(void __user *user_area)
- 	if (!css_general_characteristics.dynio)
- 		/* It makes no sense to try. */
- 		return -EOPNOTSUPP;
--	chsc_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	chsc_area = (void *)get_zeroed_page(GFP_DMA | GFP_KERNEL);
- 	if (!chsc_area)
- 		return -ENOMEM;
- 	request = kzalloc(sizeof(*request), GFP_KERNEL);
-@@ -341,7 +341,7 @@ static int chsc_ioctl_on_close_set(void __user *user_area)
- 		ret = -ENOMEM;
- 		goto out_unlock;
- 	}
--	on_close_chsc_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	on_close_chsc_area = (void *)get_zeroed_page(GFP_DMA | GFP_KERNEL);
- 	if (!on_close_chsc_area) {
- 		ret = -ENOMEM;
- 		goto out_free_request;
-@@ -393,7 +393,7 @@ static int chsc_ioctl_start_sync(void __user *user_area)
- 	struct chsc_sync_area *chsc_area;
- 	int ret, ccode;
+ 	crtc_state->req_psr2_sdp_prior_scanline = true;
+-	return true;
++
++	return apply_scanline_indication_wa(crtc_state, connector);
+ }
  
--	chsc_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	chsc_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!chsc_area)
- 		return -ENOMEM;
- 	if (copy_from_user(chsc_area, user_area, PAGE_SIZE)) {
-@@ -439,7 +439,7 @@ static int chsc_ioctl_info_channel_path(void __user *user_cd)
- 		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *scpcd_area;
+ static int intel_psr_entry_setup_frames(struct intel_dp *intel_dp,
+@@ -1660,7 +1687,7 @@ static bool intel_sel_update_config_valid(struct intel_crtc_state *crtc_state,
+ 								      conn_state))
+ 		goto unsupported;
  
--	scpcd_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	scpcd_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!scpcd_area)
- 		return -ENOMEM;
- 	cd = kzalloc(sizeof(*cd), GFP_KERNEL);
-@@ -501,7 +501,7 @@ static int chsc_ioctl_info_cu(void __user *user_cd)
- 		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *scucd_area;
- 
--	scucd_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	scucd_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!scucd_area)
- 		return -ENOMEM;
- 	cd = kzalloc(sizeof(*cd), GFP_KERNEL);
-@@ -564,7 +564,7 @@ static int chsc_ioctl_info_sch_cu(void __user *user_cud)
- 		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *sscud_area;
- 
--	sscud_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	sscud_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sscud_area)
- 		return -ENOMEM;
- 	cud = kzalloc(sizeof(*cud), GFP_KERNEL);
-@@ -626,7 +626,7 @@ static int chsc_ioctl_conf_info(void __user *user_ci)
- 		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *sci_area;
- 
--	sci_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	sci_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sci_area)
- 		return -ENOMEM;
- 	ci = kzalloc(sizeof(*ci), GFP_KERNEL);
-@@ -697,7 +697,7 @@ static int chsc_ioctl_conf_comp_list(void __user *user_ccl)
- 		u32 res;
- 	} __attribute__ ((packed)) *cssids_parm;
- 
--	sccl_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	sccl_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sccl_area)
- 		return -ENOMEM;
- 	ccl = kzalloc(sizeof(*ccl), GFP_KERNEL);
-@@ -757,7 +757,7 @@ static int chsc_ioctl_chpd(void __user *user_chpd)
- 	int ret;
- 
- 	chpd = kzalloc(sizeof(*chpd), GFP_KERNEL);
--	scpd_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	scpd_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!scpd_area || !chpd) {
- 		ret = -ENOMEM;
- 		goto out_free;
-@@ -797,7 +797,7 @@ static int chsc_ioctl_dcal(void __user *user_dcal)
- 		u8 data[PAGE_SIZE - 36];
- 	} __attribute__ ((packed)) *sdcal_area;
- 
--	sdcal_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	sdcal_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sdcal_area)
- 		return -ENOMEM;
- 	dcal = kzalloc(sizeof(*dcal), GFP_KERNEL);
-diff --git a/drivers/s390/cio/scm.c b/drivers/s390/cio/scm.c
-index 9b4da237a0ed52..f4faa38a4b17ef 100644
---- a/drivers/s390/cio/scm.c
-+++ b/drivers/s390/cio/scm.c
-@@ -229,7 +229,7 @@ int scm_update_information(void)
- 	size_t num;
- 	int ret;
- 
--	scm_info = (void *)__get_free_page(GFP_KERNEL);
-+	scm_info = (void *)__get_free_page(GFP_KERNEL | GFP_DMA);
- 	if (!scm_info)
- 		return -ENOMEM;
- 
+-	if (!_compute_psr2_sdp_prior_scanline_indication(intel_dp, crtc_state)) {
++	if (!_compute_psr2_sdp_prior_scanline_indication(crtc_state, connector)) {
+ 		drm_dbg_kms(display->drm,
+ 			    "Selective update not enabled, SDP indication do not fit in hblank\n");
+ 		goto unsupported;
 -- 
 2.53.0
 
