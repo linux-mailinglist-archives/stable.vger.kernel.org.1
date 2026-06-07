@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-261506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261547-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LNvNGz9LJWo7GQIAu9opvQ
-	(envelope-from <stable+bounces-261506-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:11 +0200
+	id 1tQhBSpLJWo0GQIAu9opvQ
+	(envelope-from <stable+bounces-261547-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:42:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A0B64FF0C
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7192764FEEC
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:42:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uuje+aG0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261506-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261506-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XzLE3wvc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261547-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261547-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E731D3037EC4
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:40:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7CA52301585C
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E41328610;
-	Sun,  7 Jun 2026 10:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8679326D44;
+	Sun,  7 Jun 2026 10:42:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144D32C1595;
-	Sun,  7 Jun 2026 10:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AB11E98EF;
+	Sun,  7 Jun 2026 10:42:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828815; cv=none; b=sbNQwlxq99RqAaDahvnHjECXp+0JsCkMrB3ODZG1QOx2TBanc3BNDWs7o3mF+BTZ6DbV6/mdJ1Anpcve6av8NQo1vfS7QP4ViTNCrOuVrIiw8Zhn1DG4vi75wh/Cqdkz+BRohsEVaPiQc4NWW9Rr/tYJwdPzzFIif3BRu3CkNMU=
+	t=1780828967; cv=none; b=kXCRkDrcuHDmc0xzjzHKUSxosECNiI7nXsQFqMZXvIGzNeBaJ7i1f+EIX0OfPp5L0zA7gjncgGYl1crPsmXZU7B9dNWCVZcGaqinUeE/TgsUiXLVBJ+pK/l5JnyEepaiCbcfehEHTwZTOROLXa2uxzfucG8ws1BmBNTsIct/y30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828815; c=relaxed/simple;
-	bh=LR6Xk/b89tTZZVTPJBX7vlUHWtEpi391mZP/MUVDN6E=;
+	s=arc-20240116; t=1780828967; c=relaxed/simple;
+	bh=h7oJQ/XCm+HoCWyKxM/yKkfIuz4g659D06jOufRPUNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XeUwhMkS+78mxP1bDW6Z7hinM2vTfvlKtMa0Wo85s5W33/uhw/z34YEQimkXH0ydbS/HRNYqkdbZLiuPZo8rCgEHhTUlAjctXRNK4UJZIu+7OiWDwilFZbToLmDl3SKR3pRz3ZB4u4LVisv1mErwvM/zuiD86fURlLK87rQfcWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuje+aG0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD561F00893;
-	Sun,  7 Jun 2026 10:40:13 +0000 (UTC)
+	 MIME-Version; b=jfrId0AZfu49yIOASB9d9hmaEd0C/JsNYUECaahsQE4yuW1hKcnnHGc0S/I/1LE+od60dJomlSfN4Ba0m+40hy9ximUvgxk+jS43Fx7m3IcTHY2Sjof2WekfTNMifd3Zv3lxpIt/tTBQ1dYmvaaZReaEBCYuFikC8/6j+LyYMHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzLE3wvc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE291F00893;
+	Sun,  7 Jun 2026 10:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828814;
-	bh=DFcBprbiiw86PxxBkuMAQjAahDIPF2jsgFVWYjYmqDQ=;
+	s=korg; t=1780828966;
+	bh=zxCTDucRo87qOGLD3HGVaqsFlm4p4Y5XceebMr/0Ci0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uuje+aG0g55nFxTZ0/1GIxfgMNJxttAAwhXzTpLibLUOuqdI9A+VcF/sEh9vj+fQU
-	 C1y41H+BF3o8fB5m6Jst1qoAnak8R4Y4aEOOKeWtt55bmAay7oY9UR9ZIw08gV87lO
-	 p82+jfyL4JEgl0M/VL8Gs2ibHIjbvBpEzCgXL90c=
+	b=XzLE3wvc8/91T9MM5eRgOgiqD4zt7MaTPhdUS8KP4MJIPQL2Ab/FHHK22v2GsLvxF
+	 s2Rx4rvjeVEuz81zTtWFFfgKSInGr/yZIPmBNNNBZig6ZtaWaagBWt19//MdmcXYPE
+	 udyOKIYdT1DhFvEGwfqUd2pk8YCo0X2YZ3U6wbOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	James Chapman <jchapman@katalix.com>,
-	Simon Horman <horms@kernel.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 193/315] l2tp: use refcount_inc_not_zero in l2tp_session_get_by_ifname
+Subject: [PATCH 6.12 183/307] wireguard: send: append trailer after expanding head
 Date: Sun,  7 Jun 2026 11:59:40 +0200
-Message-ID: <20260607095734.660455347@linuxfoundation.org>
+Message-ID: <20260607095734.435516284@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,115 +66,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,katalix.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-261506-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:jchapman@katalix.com,m:horms@kernel.org,m:kuba@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-261547-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Jason@zx2c4.com,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,zx2c4.com:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C3A0B64FF0C
+X-Rspamd-Queue-Id: 7192764FEEC
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-commit 05f95729ca844704d15e49ce14868af4b403b32b upstream.
+commit f75e3eb08fe31d30a9af6ed80cdd22e6772837e2 upstream.
 
-A reader in l2tp_session_get_by_ifname() can return a pointer to a
-session whose refcount has reached zero. The getter takes its
-reference with plain refcount_inc(), but every other session getter
-in the same file (l2tp_v2_session_get, l2tp_v3_session_get, and the
-corresponding _get_next variants) uses refcount_inc_not_zero()
-because the IDR/RCU lookup can race with refcount_dec_and_test() ->
-l2tp_session_free() -> kfree_rcu(). The ifname getter is the only
-outlier; the inconsistency was raised on-list after 979c017803c4
-("l2tp: use list_del_rcu in l2tp_session_unhash").
+With how this is currently written, we add the trailer, zero it out, and
+then add the header space on. If that header space requires a
+reallocation + copy, the zeros in the trailer aren't copied, because the
+skb len hasn't actually been yet expanded to cover that. Instead add the
+padding at the end of the process rather than at the beginning.
 
-A reader inside rcu_read_lock_bh() that matches session->ifname can
-be preempted between the strcmp() and the refcount_inc(). If the
-last reference drops on another CPU in that window, the reader's
-refcount_inc() runs on a counter that has reached zero. refcount_t
-catches the addition-on-zero, prints "refcount_t: addition on 0;
-use-after-free", saturates the counter, and returns the saturated
-pointer to the caller. Session memory is held live by the in-flight
-RCU read section, but the kfree_rcu() callback queued from
-l2tp_session_free() will free it once the grace period closes; a
-caller that dereferences the returned session past that point hits
-a slab-use-after-free. On PREEMPT_RT local_bh_disable() is a per-CPU
-sleeping lock and the preemption window is real; on stock PREEMPT
-kernels local_bh_disable() is a preempt_count increment that closes
-the cross-CPU race in practice (see below).
-
-Use refcount_inc_not_zero() and continue the list walk on failure,
-matching the other session getters in the file. The ifname getter
-is the only session getter in net/l2tp/ that still uses the bare
-refcount_inc() pattern; this change restores file-internal
-consistency. The success path is unchanged.
-
-Fixes: abe7a1a7d0b6 ("l2tp: improve tunnel/session refcount helpers")
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: James Chapman <jchapman@katalix.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260523023423.2568972-1-michael.bommarito@gmail.com
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20260529173134.3080773-2-Jason@zx2c4.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/l2tp/l2tp_core.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/wireguard/send.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -441,12 +441,13 @@ struct l2tp_session *l2tp_session_get_by
- 	idr_for_each_entry_ul(&pn->l2tp_tunnel_idr, tunnel, tmp, tunnel_id) {
- 		if (tunnel) {
- 			list_for_each_entry_rcu(session, &tunnel->session_list, list) {
--				if (!strcmp(session->ifname, ifname)) {
--					refcount_inc(&session->ref_count);
--					rcu_read_unlock_bh();
-+				if (strcmp(session->ifname, ifname))
-+					continue;
-+				if (!refcount_inc_not_zero(&session->ref_count))
-+					continue;
-+				rcu_read_unlock_bh();
+--- a/drivers/net/wireguard/send.c
++++ b/drivers/net/wireguard/send.c
+@@ -177,16 +177,6 @@ static bool encrypt_packet(struct sk_buf
+ 	trailer_len = padding_len + noise_encrypted_len(0);
+ 	plaintext_len = skb->len + padding_len;
  
--					return session;
--				}
-+				return session;
- 			}
- 		}
- 	}
+-	/* Expand data section to have room for padding and auth tag. */
+-	num_frags = skb_cow_data(skb, trailer_len, &trailer);
+-	if (unlikely(num_frags < 0 || num_frags > ARRAY_SIZE(sg)))
+-		return false;
+-
+-	/* Set the padding to zeros, and make sure it and the auth tag are part
+-	 * of the skb.
+-	 */
+-	memset(skb_tail_pointer(trailer), 0, padding_len);
+-
+ 	/* Expand head section to have room for our header and the network
+ 	 * stack's headers.
+ 	 */
+@@ -198,6 +188,16 @@ static bool encrypt_packet(struct sk_buf
+ 		     skb_checksum_help(skb)))
+ 		return false;
+ 
++	/* Expand data section to have room for padding and auth tag. */
++	num_frags = skb_cow_data(skb, trailer_len, &trailer);
++	if (unlikely(num_frags < 0 || num_frags > ARRAY_SIZE(sg)))
++		return false;
++
++	/* Set the padding to zeros, and make sure it and the auth tag are part
++	 * of the skb.
++	 */
++	memset(skb_tail_pointer(trailer), 0, padding_len);
++
+ 	/* Only after checksumming can we safely add on the padding at the end
+ 	 * and the header.
+ 	 */
 
 
 
