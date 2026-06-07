@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-261013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261041-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ECaaDhhEJWqbFQIAu9opvQ
-	(envelope-from <stable+bounces-261013-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:12:40 +0200
+	id 19EFENBDJWp6FQIAu9opvQ
+	(envelope-from <stable+bounces-261041-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851AC64F678
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:12:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6F8164F62C
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=g3tNQ7C2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261013-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261013-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=P3CbsEdi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261041-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261041-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6774930209E2
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:09:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8D2AF3012BF1
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074832E1EFC;
-	Sun,  7 Jun 2026 10:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A79C308F0A;
+	Sun,  7 Jun 2026 10:11:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E286B1E98E3;
-	Sun,  7 Jun 2026 10:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3E028688C;
+	Sun,  7 Jun 2026 10:11:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826967; cv=none; b=CW0CRoOKz3mBeQd1tKD0pbEqMs3ZxSNVYPisRpHR3EfLcOwjTOEUpvTXd6Ts3EqnOiMURo4Jdzxc464uAHyeuJTtnKmSYXqhEkc6WS3QUP0mcMt1a5RrE2oXLqtJaoQDF77PxmfXZcCwYLlxPDQ90kQw9cIKkBGPJprBPy035ko=
+	t=1780827069; cv=none; b=XO7mlW9zDkM6UP+233DSmKJUfWQfjpw+8sGdMaNSi0H0diwfe/UB9W8wVfxJfHAAOPbLcVMRV1DrmTijED0Pp8RsdW1+/xo2Rw5AM2RGw4hfCMLia0mUxtTPPefCXB6STv6Qm4CtCTsEPlvksf1E6c8YZyOY9AfSR+7YWBtHtJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826967; c=relaxed/simple;
-	bh=QnVTGa5kzefUXggIdPs4BXmKP+YgrZPyxw+XIsLPb5g=;
+	s=arc-20240116; t=1780827069; c=relaxed/simple;
+	bh=UoYFbNfnvHs7sqwbN8TI71vdK6EJ7Jtye8QRBoASRyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U4tqDivEIy/1pnAFBSaY243wjDPoCMPzIzAqDXNsI1Vm1WQRW7xu2dwlIkr4XgAHgfjea4MFtPoqDr7Mu6wR66rbxAhhOVUJ6bXhpylaZN20A/GwuDyDOWz+Q2j85imVP4xpcxfyNqpT3d4ynTs13BYc8O6QSZiuiDVFZZVR4gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3tNQ7C2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D7C1F00893;
-	Sun,  7 Jun 2026 10:09:25 +0000 (UTC)
+	 MIME-Version; b=kl+IeifKGLHTbQzAtXjtW1X25mOTv7C//m14XWeWtrewy+ofEVopZtXHZBEEWVWb0gEerGdoUX24+A5l/CtqFGXs4DMzsthj0ks644vKpdXHYBIYKs4OpW0Ps4ubo6rfWlVH3fsTAcF6EFPH5ghYCNtLnFlS7Y0dg1rlqr7RP8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3CbsEdi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34251F00893;
+	Sun,  7 Jun 2026 10:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826966;
-	bh=ggaheT4ihXjNbwRn9yD8uSL9/IOk0z/emSOQYEo/QHw=;
+	s=korg; t=1780827065;
+	bh=ZzJpeaPVQtota33DGOqEBTTxLGn2BEOm9UmWoFG3/FI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g3tNQ7C2QR7n4bm37lGo//zdjIqOpne9Plm9jbQG6bkRwgWkd397/SquA7nVjinTi
-	 WhfBHs0JEbSP2Et+6fZUg/74JwRkels317YkpABhUsIqkpqHJ5HCSqxrtOEztN4X01
-	 cNWeI7x0MqGJhQx73s3Ad+oaLp/FwheIqoh7axg4=
+	b=P3CbsEdiCB3O+oEmO1MxYeDFFhWQ7mRUt/pwnRjaNBQwG1vX1s0o4gvAEbzoZZGPg
+	 uDdfN4cYJgJWb8bTm0Iy+rtfaIjwhvfUvPNZg/Gofu2OVP4B2Vsjjvdg8LFxogJtK6
+	 6337yZWJmkMsL2zY8McngueqmDq84WVq67lCik58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Danielle Ratson <danieller@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 047/332] ethtool: module: call ethnl_ops_complete() on module flash errors
+Subject: [PATCH 6.12 019/307] arm64: debug: split single stepping exception entry
 Date: Sun,  7 Jun 2026 11:56:56 +0200
-Message-ID: <20260607095729.849717670@linuxfoundation.org>
+Message-ID: <20260607095728.332972945@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +74,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261013-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261041-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ada.coupriediaz@arm.com,m:lgoncalv@redhat.com,m:will@kernel.org,m:mark.rutland@arm.com,m:bigeasy@linutronix.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,51 +98,305 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linutronix.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 851AC64F678
+X-Rspamd-Queue-Id: A6F8164F62C
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 
-[ Upstream commit 84371fb58423f997939aacdcbc02d128d76a54e5 ]
+[ Upstream commit 0ac7584c08ceff13fc1e3082a0104548688d6b00 ]
 
-When validate() fails we are skipping over ethnl_ops_complete()
-even tho we already called ethnl_ops_begin().
+Currently all debug exceptions share common entry code and are routed
+to `do_debug_exception()`, which calls dynamically-registered
+handlers for each specific debug exception. This is unfortunate as
+different debug exceptions have different entry handling requirements,
+and it would be better to handle these distinct requirements earlier.
 
-Fixes: 32b4c8b53ee7 ("ethtool: Add ability to flash transceiver modules' firmware")
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Danielle Ratson <danieller@nvidia.com>
-Link: https://patch.msgid.link/20260522231312.1710836-2-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The single stepping exception has the most constraints : it can be
+exploited to train branch predictors and it needs special handling at EL1
+for the Cortex-A76 erratum #1463225. We need to conserve all those
+mitigations.
+However, it does not write an address at FAR_EL1, as only hardware
+watchpoints do so.
+
+The single-step handler does its own signaling if it needs to and only
+returns 0, so we can call it directly from `entry-common.c`.
+
+Split the single stepping exception entry, adjust the function signature,
+keep the security mitigation and erratum handling.
+Further, as the EL0 and EL1 code paths are cleanly separated, we can split
+`do_softstep()` into `do_el0_softstep()` and `do_el1_softstep()` and
+call them directly from the relevant entry paths.
+We can also remove `NOKPROBE_SYMBOL` for the EL0 path, as it cannot
+lead to a kprobe recursion.
+
+Move the call to `arm64_apply_bp_hardening()` to `entry-common.c` so that
+we can do it as early as possible, and only for the exceptions coming
+from EL0, where it is needed.
+This is safe to do as it is `noinstr`, as are all the functions it
+may call. `el0_ia()` and `el0_pc()` already call it this way.
+
+When taking a soft-step exception from EL0, most of the single stepping
+handling is safely preemptible : the only possible handler is
+`uprobe_single_step_handler()`. It only operates on task-local data and
+properly checks its validity, then raises a Thread Information Flag,
+processed before returning to userspace in `do_notify_resume()`, which
+is already preemptible.
+However, the soft-step handler first calls `reinstall_suspended_bps()`
+to check if there is any hardware breakpoint or watchpoint pending
+or already stepped through.
+This cannot be preempted as it manipulates the hardware breakpoint and
+watchpoint registers.
+
+Move the call to `try_step_suspended_breakpoints()` to `entry-common.c`
+and adjust the relevant comments.
+We can now safely unmask interrupts before handling the step itself,
+fixing a PREEMPT_RT issue where the handler could call a sleeping function
+with preemption disabled.
+
+Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Closes: https://lore.kernel.org/linux-arm-kernel/Z6YW_Kx4S2tmj2BP@uudg.org/
+Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
+Reviewed-by: Will Deacon <will@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250707114109.35672-10-ada.coupriediaz@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/module.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/exception.h |  2 +
+ arch/arm64/kernel/debug-monitors.c | 73 +++++++++++-------------------
+ arch/arm64/kernel/entry-common.c   | 43 ++++++++++++++++++
+ arch/arm64/kernel/hw_breakpoint.c  |  2 +-
+ 4 files changed, 73 insertions(+), 47 deletions(-)
 
-diff --git a/net/ethtool/module.c b/net/ethtool/module.c
-index 0a761bf4771e11..8047c14f7ee370 100644
---- a/net/ethtool/module.c
-+++ b/net/ethtool/module.c
-@@ -427,10 +427,11 @@ int ethnl_act_module_fw_flash(struct sk_buff *skb, struct genl_info *info)
+diff --git a/arch/arm64/include/asm/exception.h b/arch/arm64/include/asm/exception.h
+index 94f46e96515160..6d40efc28be401 100644
+--- a/arch/arm64/include/asm/exception.h
++++ b/arch/arm64/include/asm/exception.h
+@@ -64,6 +64,8 @@ void do_breakpoint(unsigned long esr, struct pt_regs *regs);
+ #else
+ static inline void do_breakpoint(unsigned long esr, struct pt_regs *regs) {}
+ #endif /* CONFIG_HAVE_HW_BREAKPOINT */
++void do_el0_softstep(unsigned long esr, struct pt_regs *regs);
++void do_el1_softstep(unsigned long esr, struct pt_regs *regs);
+ void do_fpsimd_acc(unsigned long esr, struct pt_regs *regs);
+ void do_sve_acc(unsigned long esr, struct pt_regs *regs);
+ void do_sme_acc(unsigned long esr, struct pt_regs *regs);
+diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-monitors.c
+index b95a135ef10a99..10d2bc51a32f7c 100644
+--- a/arch/arm64/kernel/debug-monitors.c
++++ b/arch/arm64/kernel/debug-monitors.c
+@@ -21,6 +21,7 @@
+ #include <asm/cputype.h>
+ #include <asm/daifflags.h>
+ #include <asm/debug-monitors.h>
++#include <asm/exception.h>
+ #include <asm/kgdb.h>
+ #include <asm/kprobes.h>
+ #include <asm/system_misc.h>
+@@ -159,21 +160,6 @@ NOKPROBE_SYMBOL(clear_user_regs_spsr_ss);
+ #define set_regs_spsr_ss(r)	set_user_regs_spsr_ss(&(r)->user_regs)
+ #define clear_regs_spsr_ss(r)	clear_user_regs_spsr_ss(&(r)->user_regs)
  
- 	ret = ethnl_module_fw_flash_validate(dev, info->extack);
- 	if (ret < 0)
--		goto out_unlock;
-+		goto out_complete;
+-/*
+- * Call single step handlers
+- * There is no Syndrome info to check for determining the handler.
+- * However, there is only one possible handler for user and kernel modes, so
+- * check and call the appropriate one.
+- */
+-static int call_step_hook(struct pt_regs *regs, unsigned long esr)
+-{
+-	if (user_mode(regs))
+-		return uprobe_single_step_handler(regs, esr);
+-
+-	return kgdb_single_step_handler(regs, esr);
+-}
+-NOKPROBE_SYMBOL(call_step_hook);
+-
+ static void send_user_sigtrap(int si_code)
+ {
+ 	struct pt_regs *regs = current_pt_regs();
+@@ -188,41 +174,38 @@ static void send_user_sigtrap(int si_code)
+ 			      "User debug trap");
+ }
  
- 	ret = module_flash_fw(dev, tb, skb, info);
+-static int single_step_handler(unsigned long unused, unsigned long esr,
+-			       struct pt_regs *regs)
++/*
++ * We have already unmasked interrupts and enabled preemption
++ * when calling do_el0_softstep() from entry-common.c.
++ */
++void do_el0_softstep(unsigned long esr, struct pt_regs *regs)
+ {
++	if (uprobe_single_step_handler(regs, esr) == DBG_HOOK_HANDLED)
++		return;
++
++	send_user_sigtrap(TRAP_TRACE);
+ 	/*
+-	 * If we are stepping a pending breakpoint, call the hw_breakpoint
+-	 * handler first.
++	 * ptrace will disable single step unless explicitly
++	 * asked to re-enable it. For other clients, it makes
++	 * sense to leave it enabled (i.e. rewind the controls
++	 * to the active-not-pending state).
+ 	 */
+-	if (try_step_suspended_breakpoints(regs))
+-		return 0;
+-
+-	if (call_step_hook(regs, esr) == DBG_HOOK_HANDLED)
+-		return 0;
++	user_rewind_single_step(current);
++}
  
-+out_complete:
- 	ethnl_ops_complete(dev);
+-	if (user_mode(regs)) {
+-		send_user_sigtrap(TRAP_TRACE);
+-
+-		/*
+-		 * ptrace will disable single step unless explicitly
+-		 * asked to re-enable it. For other clients, it makes
+-		 * sense to leave it enabled (i.e. rewind the controls
+-		 * to the active-not-pending state).
+-		 */
+-		user_rewind_single_step(current);
+-	} else {
+-		pr_warn("Unexpected kernel single-step exception at EL1\n");
+-		/*
+-		 * Re-enable stepping since we know that we will be
+-		 * returning to regs.
+-		 */
+-		set_regs_spsr_ss(regs);
+-	}
++void do_el1_softstep(unsigned long esr, struct pt_regs *regs)
++{
++	if (kgdb_single_step_handler(regs, esr) == DBG_HOOK_HANDLED)
++		return;
  
- out_unlock:
+-	return 0;
++	pr_warn("Unexpected kernel single-step exception at EL1\n");
++	/*
++	 * Re-enable stepping since we know that we will be
++	 * returning to regs.
++	 */
++	set_regs_spsr_ss(regs);
+ }
+-NOKPROBE_SYMBOL(single_step_handler);
++NOKPROBE_SYMBOL(do_el1_softstep);
+ 
+ static int call_break_hook(struct pt_regs *regs, unsigned long esr)
+ {
+@@ -329,8 +312,6 @@ NOKPROBE_SYMBOL(try_handle_aarch32_break);
+ 
+ void __init debug_traps_init(void)
+ {
+-	hook_debug_fault_code(DBG_ESR_EVT_HWSS, single_step_handler, SIGTRAP,
+-			      TRAP_TRACE, "single-step handler");
+ 	hook_debug_fault_code(DBG_ESR_EVT_BRK, brk_handler, SIGTRAP,
+ 			      TRAP_BRKPT, "BRK handler");
+ }
+diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
+index af0d7575dcfd92..c22cc4d0052d54 100644
+--- a/arch/arm64/kernel/entry-common.c
++++ b/arch/arm64/kernel/entry-common.c
+@@ -517,6 +517,24 @@ static void noinstr el1_breakpt(struct pt_regs *regs, unsigned long esr)
+ 	arm64_exit_el1_dbg(regs);
+ }
+ 
++static void noinstr el1_softstp(struct pt_regs *regs, unsigned long esr)
++{
++	arm64_enter_el1_dbg(regs);
++	if (!cortex_a76_erratum_1463225_debug_handler(regs)) {
++		debug_exception_enter(regs);
++		/*
++		 * After handling a breakpoint, we suspend the breakpoint
++		 * and use single-step to move to the next instruction.
++		 * If we are stepping a suspended breakpoint there's nothing more to do:
++		 * the single-step is complete.
++		 */
++		if (!try_step_suspended_breakpoints(regs))
++			do_el1_softstep(esr, regs);
++		debug_exception_exit(regs);
++	}
++	arm64_exit_el1_dbg(regs);
++}
++
+ static void noinstr el1_dbg(struct pt_regs *regs, unsigned long esr)
+ {
+ 	unsigned long far = read_sysreg(far_el1);
+@@ -563,6 +581,8 @@ asmlinkage void noinstr el1h_64_sync_handler(struct pt_regs *regs)
+ 		el1_breakpt(regs, esr);
+ 		break;
+ 	case ESR_ELx_EC_SOFTSTP_CUR:
++		el1_softstp(regs, esr);
++		break;
+ 	case ESR_ELx_EC_WATCHPT_CUR:
+ 	case ESR_ELx_EC_BRK64:
+ 		el1_dbg(regs, esr);
+@@ -761,6 +781,25 @@ static void noinstr el0_breakpt(struct pt_regs *regs, unsigned long esr)
+ 	exit_to_user_mode(regs);
+ }
+ 
++static void noinstr el0_softstp(struct pt_regs *regs, unsigned long esr)
++{
++	if (!is_ttbr0_addr(regs->pc))
++		arm64_apply_bp_hardening();
++
++	enter_from_user_mode(regs);
++	/*
++	 * After handling a breakpoint, we suspend the breakpoint
++	 * and use single-step to move to the next instruction.
++	 * If we are stepping a suspended breakpoint there's nothing more to do:
++	 * the single-step is complete.
++	 */
++	if (!try_step_suspended_breakpoints(regs)) {
++		local_daif_restore(DAIF_PROCCTX);
++		do_el0_softstep(esr, regs);
++	}
++	exit_to_user_mode(regs);
++}
++
+ static void noinstr el0_dbg(struct pt_regs *regs, unsigned long esr)
+ {
+ 	/* Only watchpoints write FAR_EL1, otherwise its UNKNOWN */
+@@ -840,6 +879,8 @@ asmlinkage void noinstr el0t_64_sync_handler(struct pt_regs *regs)
+ 		el0_breakpt(regs, esr);
+ 		break;
+ 	case ESR_ELx_EC_SOFTSTP_LOW:
++		el0_softstp(regs, esr);
++		break;
+ 	case ESR_ELx_EC_WATCHPT_LOW:
+ 	case ESR_ELx_EC_BRK64:
+ 		el0_dbg(regs, esr);
+@@ -962,6 +1003,8 @@ asmlinkage void noinstr el0t_32_sync_handler(struct pt_regs *regs)
+ 		el0_breakpt(regs, esr);
+ 		break;
+ 	case ESR_ELx_EC_SOFTSTP_LOW:
++		el0_softstp(regs, esr);
++		break;
+ 	case ESR_ELx_EC_WATCHPT_LOW:
+ 	case ESR_ELx_EC_BKPT32:
+ 		el0_dbg(regs, esr);
+diff --git a/arch/arm64/kernel/hw_breakpoint.c b/arch/arm64/kernel/hw_breakpoint.c
+index 309ae24d454805..8a80e13347c88f 100644
+--- a/arch/arm64/kernel/hw_breakpoint.c
++++ b/arch/arm64/kernel/hw_breakpoint.c
+@@ -854,7 +854,7 @@ bool try_step_suspended_breakpoints(struct pt_regs *regs)
+ 	bool handled_exception = false;
+ 
+ 	/*
+-	 * Called from single-step exception handler.
++	 * Called from single-step exception entry.
+ 	 * Return true if we stepped a breakpoint and can resume execution,
+ 	 * false if we need to handle a single-step.
+ 	 */
 -- 
 2.53.0
 
