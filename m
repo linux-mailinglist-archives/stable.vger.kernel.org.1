@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261563-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sfDIIyxNJWooGgIAu9opvQ
-	(envelope-from <stable+bounces-261582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:24 +0200
+	id +QdfLGZLJWpJGQIAu9opvQ
+	(envelope-from <stable+bounces-261563-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB2F46500E4
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 290EB64FF3C
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0uZ1n1tX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261582-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261582-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YNrmH13F;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261563-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261563-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CB453068476
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:45:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 32E033017501
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2172A31F9AC;
-	Sun,  7 Jun 2026 10:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AEAE31E850;
+	Sun,  7 Jun 2026 10:43:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066B61E98EF;
-	Sun,  7 Jun 2026 10:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA38257855;
+	Sun,  7 Jun 2026 10:43:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829099; cv=none; b=dlXD2O/pEGyvH2Q897OR3P9r3ap9DHJpLnSJvEPyRhMCG5MJca0ockxHrbq5vjdk5ONgfHRHE6DYu+ylOmEPqJqcTXKim1XxHUS87T4PpFPoAvfsC2ZcDalXhSkD0DbFOAQkD6yrpShjgtRtorfZnMBvqPJAVYufCGjG1aMuOYM=
+	t=1780829028; cv=none; b=t2AImTr7EmbAO5vYc+h0lQ/CCdmr/i3WjmfcKyYmKQjtbhjR3X+gQzvay9aDQYHH8BtiDEzOwI6wDNSODMs/IZlecBuCwQ5ZVsFcnmQsDRrvWiiT/Y+MhAZVjit4l+t0y49DAIiqOaAbt6tM4nPD0G7oMmvjQlpSoRGaYI0F+Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829099; c=relaxed/simple;
-	bh=j4OpgDqOYjScj46Ux3yDW53tOB72oKczatvyEPIw1jo=;
+	s=arc-20240116; t=1780829028; c=relaxed/simple;
+	bh=MkgXAJeJzeVi+JAy4D/3HzFesXzPjZQ9kZiDma/kVs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qwKAYIJ2cgqgikv514SJBZyHAfetwoypaRlcU1eE8Ui4CfbhiLJkyx8iDqjURLARxPJcnSoT+MCS2fDeaXahx5FsCI/nXmgxSRvJYfwpa//w1KVol4uKMev39nSyrCKOZRtrql1/1KZ4OYsVj2aeKBsV+Leoec1gZQ5MWV3ctzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uZ1n1tX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462CC1F00893;
-	Sun,  7 Jun 2026 10:44:57 +0000 (UTC)
+	 MIME-Version; b=HDdtntRP/8R6FrRxvo/OuDkGclLiwlx4O6SgOhcI/5Bv8ehkpi90A+eIwnnj1hMfSzfzBsQ8gJG3zRvKLHPZOPksb1rXo7Dl5OU+2kKe2xRscBAW8C+rsFzNC490uVLO1MEZS6MsRqAFEGUFkidjZlxz2DdhN5347G/edgBc5Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNrmH13F; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E967F1F00893;
+	Sun,  7 Jun 2026 10:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829098;
-	bh=mvP99nVX3kqVW8FC1q2LN/BUFFtzsCWh/NQp/QQuPag=;
+	s=korg; t=1780829026;
+	bh=1dvdQ9j4uRZFSELeCOxaNVN0qvCxHJ48dxp3LG9527k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0uZ1n1tXdSMbJAUF66wJWUAUazOhvJ/5i8T7xSW2heQQCPPJtkY5p7uoUs6j8glaW
-	 90k3NMgKGNyL9fhf5+aQM/7KC4LhmcXHzOOgUBA38rF3fFokQOohzx4zzfItRMChDP
-	 KNzhdb3x94g1Qb+3a1pEyvHR0VICoIHDl4gw92zU=
+	b=YNrmH13FAce/7eeK2sJddWnOolCMqHqRpW4gfn81tennZ2PXI/097LI/mcPpFHiGX
+	 nqOolkxgZJp0bS/fEbBww75VRDn2LFv9lYNoKbbvIWFd4ItwMVVrfsY/GFKJG5ZA0m
+	 10YFan3J/cOkmvqNf4kQROfCJ4Hkl5e+8inaOL+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.18 217/315] comedi: comedi_test: fix check for valid scan_begin_src in waveform_ai_cmdtest()
+	Shaomin Chen <eeesssooo020@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 7.0 235/332] xfrm: iptfs: reset runtime state when cloning SAs
 Date: Sun,  7 Jun 2026 12:00:04 +0200
-Message-ID: <20260607095735.543633307@linuxfoundation.org>
+Message-ID: <20260607095736.683793230@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,72 +71,127 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261582-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261563-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eeesssooo020@gmail.com,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:abbotti@mev.co.uk,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,mev.co.uk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,secunet.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EB2F46500E4
+X-Rspamd-Queue-Id: 290EB64FF3C
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Shaomin Chen <eeesssooo020@gmail.com>
 
-commit 542f5248cb481073203e0dadab5bcbd28aeae308 upstream.
+commit 7f83d174073234839aea176f265e517e0d50a1d2 upstream.
 
-Commit 783ddaebd397 ("staging: comedi: comedi_test: support
-scan_begin_src == TRIG_FOLLOW") neglected to add a test that
-`scan_begin_src` has only one bit set.  The allowed values are
-`TRIG_FOLLOW` and `TRIG_TIMER`, but the code incorrectly also allows
-`TRIG_FOLLOW | TRIG_TIMER`.  Add a call to
-`comedi_check_trigger_is_unique()` to check that only one trigger source
-bit is set.
+iptfs_clone_state() clones the IPTFS mode data with kmemdup(). This
+copies runtime objects which must not be shared with the original SA,
+including the embedded sk_buff_head, hrtimers, spinlock, and in-flight
+reassembly/reorder state.
 
-Fixes: 783ddaebd397 ("staging: comedi: comedi_test: support scan_begin_src == TRIG_FOLLOW")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260422162138.36003-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If xfrm_state_migrate() fails after clone_state() but before the later
+init_state() call has reinitialized those fields, the cloned state can be
+destroyed by xfrm_state_gc_task() with list and timer state copied from the
+original SA. With queued packets this lets the clone splice and free skbs
+owned by the original IPTFS queue, leading to use-after-free and
+double-free reports in iptfs_destroy_state() and skb release paths.
+
+Reinitialize the clone's runtime state before publishing it through
+x->mode_data. Because clone_state() now publishes a destroyable mode_data
+object before init_state(), take the mode callback module reference there.
+Avoid taking it again from __iptfs_init_state() for the same object.
+
+Fixes: 0e4fbf013fa5 ("xfrm: iptfs: add user packet (tunnel ingress) handling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shaomin Chen <eeesssooo020@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/comedi_test.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/xfrm/xfrm_iptfs.c |   28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
---- a/drivers/comedi/drivers/comedi_test.c
-+++ b/drivers/comedi/drivers/comedi_test.c
-@@ -274,6 +274,7 @@ static int waveform_ai_cmdtest(struct co
- 	/* Step 2a : make sure trigger sources are unique */
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -2650,7 +2650,8 @@ static void __iptfs_init_state(struct xf
+ 	x->props.enc_hdr_len = sizeof(struct ip_iptfs_hdr);
  
- 	err |= comedi_check_trigger_is_unique(cmd->convert_src);
-+	err |= comedi_check_trigger_is_unique(cmd->scan_begin_src);
- 	err |= comedi_check_trigger_is_unique(cmd->stop_src);
+ 	/* Always keep a module reference when x->mode_data is set */
+-	__module_get(x->mode_cbs->owner);
++	if (x->mode_data != xtfs)
++		__module_get(x->mode_cbs->owner);
  
- 	/* Step 2b : and mutually compatible */
+ 	x->mode_data = xtfs;
+ 	xtfs->x = x;
+@@ -2658,22 +2659,39 @@ static void __iptfs_init_state(struct xf
+ 
+ static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
+ {
++	struct skb_wseq *w_saved = NULL;
+ 	struct xfrm_iptfs_data *xtfs;
+ 
+ 	xtfs = kmemdup(orig->mode_data, sizeof(*xtfs), GFP_KERNEL);
+ 	if (!xtfs)
+ 		return -ENOMEM;
+ 
+-	xtfs->ra_newskb = NULL;
+ 	if (xtfs->cfg.reorder_win_size) {
+-		xtfs->w_saved = kzalloc_objs(*xtfs->w_saved,
+-					     xtfs->cfg.reorder_win_size);
+-		if (!xtfs->w_saved) {
++		w_saved = kzalloc_objs(*w_saved, xtfs->cfg.reorder_win_size);
++		if (!w_saved) {
+ 			kfree_sensitive(xtfs);
+ 			return -ENOMEM;
+ 		}
+ 	}
++	xtfs->w_saved = w_saved;
+ 
++	__skb_queue_head_init(&xtfs->queue);
++	xtfs->queue_size = 0;
++	hrtimer_setup(&xtfs->iptfs_timer, iptfs_delay_timer, CLOCK_MONOTONIC,
++		      IPTFS_HRTIMER_MODE);
++
++	spin_lock_init(&xtfs->drop_lock);
++	hrtimer_setup(&xtfs->drop_timer, iptfs_drop_timer, CLOCK_MONOTONIC,
++		      IPTFS_HRTIMER_MODE);
++
++	xtfs->w_seq_set = false;
++	xtfs->w_wantseq = 0;
++	xtfs->w_savedlen = 0;
++	xtfs->ra_newskb = NULL;
++	xtfs->ra_wantseq = 0;
++	xtfs->ra_runtlen = 0;
++
++	__module_get(x->mode_cbs->owner);
+ 	x->mode_data = xtfs;
+ 	xtfs->x = x;
+ 
 
 
 
