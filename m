@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-261099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261065-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id A6SVI31EJWrSFQIAu9opvQ
-	(envelope-from <stable+bounces-261099-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:14:21 +0200
+	id EtNiFWZFJWo/FgIAu9opvQ
+	(envelope-from <stable+bounces-261065-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB56C64F6F4
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:14:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDCEF64F7DF
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=p6UQteVv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261099-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261099-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="f/LQ43nB";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261065-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261065-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1BFFF3012BE3
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:14:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0DA933015E1A
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7B830DD2A;
-	Sun,  7 Jun 2026 10:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82720308F0A;
+	Sun,  7 Jun 2026 10:12:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1BC2E7373;
-	Sun,  7 Jun 2026 10:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9951E98EF;
+	Sun,  7 Jun 2026 10:12:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827258; cv=none; b=fGRY5IshR3y6EWEWRPIMSZN5QskYHra4FPikBNvuYo0WyY92a7B/6DWSjpafoLD2DHDo8BKTULA7S5IneicHhuYULW9yy2AwKyhqRaU2iUFBC9strjGfPBjZx7HuVj89v8hDhUR0ofej2Eq4mF2yiXyjZ6J9W/qW0e2mkFU5a7A=
+	t=1780827144; cv=none; b=qld8EklHrLmcaz+mfdrL/Mn+zb4WFB/FS9Jvoc3Oaozaj/yOW+XW6qWSPgb4DFSu5n4QGjXRXBvRg/BlgIQvBIahb+H3QQ+0vLYQH0swYquyzCHrCklUP45lZmpsYNnDjxYzRi4z+o4DuH5An0O0zggQxEmJ66EULqwdFpA7BxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827258; c=relaxed/simple;
-	bh=KDiqfulrI7AzqYDG5qOhhO3SzLhqgQdx/czQtqEij7c=;
+	s=arc-20240116; t=1780827144; c=relaxed/simple;
+	bh=E2pt966dfcBg/EB6RBc7g7Z0qMQIdWPy/ZU4EjMFwzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aif5N/qHJbr6irlNgjCOBFtgPAS/9Cy56QfcKqJvoOUuhxcO3psM9pINhpFUq5b0covCteYE/cu/OVahYbXDz/bKIelBP+QABsWKDdY0JiwbMO87b1ylJgiqxlWQaGvVO7o9QP3M87UOo6vGl2gihBSIbBiIMUxXuYJ+Jhr1Gvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6UQteVv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4291F00893;
-	Sun,  7 Jun 2026 10:14:16 +0000 (UTC)
+	 MIME-Version; b=EQC3+vdaOb3txhSBESZpu0VOql33YNID0zXkaxy6fCLn5uEqzxpIMceaN4NcmpC2V9uPJ0u3zrTgInfh8w2M/OxztWwDNqIWFMwTQWTaaoUmA7oZviScDh8PjviIRoKUd5+8tTTmUWlYm5eTgR3I1RMWX6MU9n2jZe7T5iZm3kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/LQ43nB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662791F00893;
+	Sun,  7 Jun 2026 10:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827257;
-	bh=YGyxuzZbC4vlPv9xRFI/4Y0j3hAsJSzKnWTLu4IY0pQ=;
+	s=korg; t=1780827143;
+	bh=RIpx/VPr9Y0F2If96+2gZZXAPRAMN1BS+4oW4lUOf7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p6UQteVvnmh9EReAQHHTkQms9EP1krA8R+Ix7JxSnAeunVyeXLmbORDFtmMP8iWKh
-	 TLgSrqPQDA1t1MNlXrE4Wme/9WTfq5DfwDCgzFJL+vmLqiXEXxp2hotDQTxj50ql2x
-	 C2MPiJLK6Ls+3xJS6YvKWm6KJAbOUvwMgHPcGiQ8=
+	b=f/LQ43nB73/oeVwGqvoy8hW21f/AJhTr55jrmT0NARWdAxjlJ3uBuUpeYdaUN5JGy
+	 E/DWZ/z0kuc2njBkb7U7YdQ8vZOdWqFjCnwALmxWTy1MX6DkQmc7C4QZAMRiBISGj2
+	 YVFcGi+momHOfL8KxCo44ZNvaZwfxlVZSBzFdIzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Danielle Ratson <danieller@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	David Heidelberg <david@ixit.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 053/332] ethtool: cmis: fix u16-to-u8 truncation of msleep_pre_rpl
-Date: Sun,  7 Jun 2026 11:57:02 +0200
-Message-ID: <20260607095730.073996594@linuxfoundation.org>
+Subject: [PATCH 6.12 026/307] nfc: llcp: Fix use-after-free race in nfc_llcp_recv_cc()
+Date: Sun,  7 Jun 2026 11:57:03 +0200
+Message-ID: <20260607095728.606331360@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261099-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261065-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:horms@kernel.org,m:david@ixit.cz,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,58 +99,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,bootlin.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ixit.cz:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EB56C64F6F4
+X-Rspamd-Queue-Id: DDCEF64F7DF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit 3e8c3d464c36bb342fe377b026577c7ec27fdbb4 ]
+[ Upstream commit b493ea2765cc17cb8aa7e7544a4b6dcb05b6ed77 ]
 
-ethtool_cmis_cdb_compose_args() accepts msleep_pre_rpl as u16 but stores
-it into the u8 field ethtool_cmis_cdb_cmd_args::msleep_pre_rpl, silently
-truncating values >= 256. Seven of the nine call sites pass 1000 ms
-(it's the third argument from the end).
+A race condition exists in the NFC LLCP connection state machine where
+the connection acceptance packet (CC) can be processed concurrently with
+socket release.  This can lead to a use-after-free of the socket object.
 
-Fixes: a39c84d79625 ("ethtool: cmis_cdb: Add a layer for supporting CDB commands")
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Danielle Ratson <danieller@nvidia.com>
-Link: https://patch.msgid.link/20260522231312.1710836-8-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+When nfc_llcp_recv_cc() moves the socket from the connecting_sockets
+list to the sockets list, it does so without holding the socket lock.
+If llcp_sock_release() is executing concurrently, it might have already
+unlinked the socket and dropped its references, which can result in
+nfc_llcp_recv_cc() linking a freed socket into the live list.
+
+Fix this by holding lock_sock() during the state transition and list
+movement in nfc_llcp_recv_cc().  After acquiring the lock, check if
+the socket is still hashed to ensure it hasn't already been unlinked
+and marked for destruction by the release path.  This aligns the locking
+pattern with recv_hdlc() and recv_disc().
+
+Fixes: a69f32af86e3 ("NFC: Socket linked list")
+Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260429134115.3558604-2-lee@kernel.org
+Signed-off-by: David Heidelberg <david@ixit.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/cmis.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/nfc/llcp_core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/net/ethtool/cmis.h b/net/ethtool/cmis.h
-index 4a9a946cabf05d..778783a0f23c0b 100644
---- a/net/ethtool/cmis.h
-+++ b/net/ethtool/cmis.h
-@@ -63,9 +63,9 @@ struct ethtool_cmis_cdb_request {
-  * struct ethtool_cmis_cdb_cmd_args - CDB commands execution arguments
-  * @req: CDB command fields as described in the CMIS standard.
-  * @max_duration: Maximum duration time for command completion in msec.
-+ * @msleep_pre_rpl: Waiting time before checking reply in msec.
-  * @read_write_len_ext: Allowable additional number of byte octets to the LPL
-  *			in a READ or a WRITE commands.
-- * @msleep_pre_rpl: Waiting time before checking reply in msec.
-  * @rpl_exp_len: Expected reply length in bytes.
-  * @flags: Validation flags for CDB commands.
-  * @err_msg: Error message to be sent to user space.
-@@ -73,8 +73,8 @@ struct ethtool_cmis_cdb_request {
- struct ethtool_cmis_cdb_cmd_args {
- 	struct ethtool_cmis_cdb_request req;
- 	u16				max_duration;
-+	u16				msleep_pre_rpl;
- 	u8				read_write_len_ext;
--	u8				msleep_pre_rpl;
- 	u8                              rpl_exp_len;
- 	u8				flags;
- 	char				*err_msg;
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index d9562840fa180b..62b0f2d6686eb8 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -1216,6 +1216,15 @@ static void nfc_llcp_recv_cc(struct nfc_llcp_local *local,
+ 
+ 	sk = &llcp_sock->sk;
+ 
++	lock_sock(sk);
++
++	/* Check if socket was destroyed whilst waiting for the lock */
++	if (!sk_hashed(sk)) {
++		release_sock(sk);
++		nfc_llcp_sock_put(llcp_sock);
++		return;
++	}
++
+ 	/* Unlink from connecting and link to the client array */
+ 	nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
+ 	nfc_llcp_sock_link(&local->sockets, sk);
+@@ -1227,6 +1236,8 @@ static void nfc_llcp_recv_cc(struct nfc_llcp_local *local,
+ 	sk->sk_state = LLCP_CONNECTED;
+ 	sk->sk_state_change(sk);
+ 
++	release_sock(sk);
++
+ 	nfc_llcp_sock_put(llcp_sock);
+ }
+ 
 -- 
 2.53.0
 
