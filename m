@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-261114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261141-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LannMrBEJWrrFQIAu9opvQ
-	(envelope-from <stable+bounces-261114-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:12 +0200
+	id /h46Ef9GJWo8FwIAu9opvQ
+	(envelope-from <stable+bounces-261141-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF19E64F715
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 904B764FA2A
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sN37Q6m9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261114-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261114-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MnKzEHjo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261141-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261141-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 03D283002F6E
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:15:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9CA2430480FA
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2052831F9AB;
-	Sun,  7 Jun 2026 10:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4F323392F;
+	Sun,  7 Jun 2026 10:16:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA556318BB3;
-	Sun,  7 Jun 2026 10:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8964071DA;
+	Sun,  7 Jun 2026 10:16:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827307; cv=none; b=l63/roBwSywev3/uYK8mxRMfI6i2dUwwTdukhf53SLKwgEIiCde9I2enmK3ATxetdWeuJ2Wbc3GvvsVRnTtkwrqQZvmNjaVkQ5n/KtnZnmTscpefyGoaHY/Z8nZCau2WxxE24JbcgAUMrr7521mPEZVQNDzPT42j/uyAwUEoEnw=
+	t=1780827400; cv=none; b=icka3RHLSIC9BvmbrmNg6YUzF+KNBFcsSeM0kciHil/r3d+25YqU+MZS9LE6B5JUqWMLCp1OGM7erOr48sEdjrXmTejhew54jbOAsZzQLdv0QH7sSmsyd8aIleHL2qjMNs5y1fKmuFSoJMmrMOK8ysPb+8ToYaelDaMJ+Cwk8uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827307; c=relaxed/simple;
-	bh=DYmMbkxT6Gm5TiCAKte1wUImLUhz78bXW8r5L+RRQ4I=;
+	s=arc-20240116; t=1780827400; c=relaxed/simple;
+	bh=6cqMWrKn459iVCmRlk6cynPWt5HKVopIoaW99SsgCg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cyJRQ728B7281NKaP8wR416gpgpbMVtuWYaZRsiPmET7C4V3pO694OuFpkMnoaDEyu9gGQaOCHAqwQxepK/2dWY4k8MQjfkxX64LRKMUf3Or3JwDk5opKxOEOOhQkV237VgkQpEmTuI7TeA6RTgYVETFlAS/jx+0SVRysRcZCe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sN37Q6m9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180081F00893;
-	Sun,  7 Jun 2026 10:15:05 +0000 (UTC)
+	 MIME-Version; b=r3ei4cmr/Y/+luwki77Ah/0snGKP3ut0bX2daBT1PcqKxQA17DqzjsklFLV19OpymjfiodqZVlyajDMh2Xk9Q+Wn25HeqICyk1K/BCXAzg/v7ZFoNuUSZxOUTsNnLjXB+xaHFtJ9O2i8CJQwj4NvxmpkcxZKMOvxSqBEsUA1lhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnKzEHjo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FE31F00893;
+	Sun,  7 Jun 2026 10:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827306;
-	bh=fp1jc6GYO7cJbaKRl9qP7N6WADNF8fCkFpqs/lJQbXU=;
+	s=korg; t=1780827399;
+	bh=/ocu62ECjItGzf94llBQVZiz28roKPVM9pl/l+H8Pv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sN37Q6m9HQKqzMJMBp+GL1pSEPBGNsAwwEkf3Je0Qz6UwvpKbtVbztHeGLTr7bOJE
-	 DruLMXVzMsT0VQ1h+BfrSAPE6jcQfrHkQvwvwVKs8w9i9gJFiZphjO9L3t+axA7MMh
-	 okygfyw+zUnBkXc2DpPkV1u6E6buu76kodqkzomo=
+	b=MnKzEHjoQYY+aEYDTXehBHN6FFcoWZB5Dqba9eL56GdJZG25Uti9YhM4+5Fj2rKjX
+	 zBA+l0aNFPm4CmmQcYkx6HzihUGQqqu51YQgETTM3U0gaULSNkEUABIfirQWpQH7Mx
+	 sJrOigDKCMTt+U3dHuQWsidvBxOZY42xy4uz9FGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <nikolay@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Danielle Ratson <danieller@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 062/315] bridge: Fix sleep in atomic context in netlink path
+Subject: [PATCH 6.12 052/307] ethtool: module: fix cleanup if socket used for flashing multiple devices
 Date: Sun,  7 Jun 2026 11:57:29 +0200
-Message-ID: <20260607095729.882803021@linuxfoundation.org>
+Message-ID: <20260607095729.632104259@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,184 +69,139 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261114-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261141-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nikolay@nvidia.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CF19E64F715
+X-Rspamd-Queue-Id: 904B764FA2A
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 5eec4427b89c2fb2beac54920101e55a2f1c0c21 ]
+[ Upstream commit 760d04ebad5c4304f22c0d2251c9623b87a117c8 ]
 
-Since the introduction of the netlink configuration path for bridge
-ports in commit 25c71c75ac87 ("bridge: bridge port parameters over
-netlink"), br_setport() was always called with the bridge lock held
-around it. Back then this decision made sense: The bridge lock protects
-the STP state of the bridge and its ports and at that time the function
-only processed three STP related netlink attributes (cost, priority and
-state).
+When a single Netlink socket issues MODULE_FW_FLASH_ACT against multiple
+devices, ethnl_sock_priv_set() overwrites sk_priv->dev on each call,
+retaining only the last one. The socket priv is used on socket close,
+to walk the global work list and mark the uncompleted flashing work
+as "orphaned". Otherwise if another socket reuses the PID it will
+unexpectedly receive the flashing notifications.
 
-Nowadays, br_setport() processes a lot more attributes and most of them
-do not need the bridge lock:
+Don't record the device, record net pointer instead. The purpose of
+the dev is to scope the work to a netns, anyway. If we store netns
+the overrides are safe/a nop since all flashed devices must be in
+the same netns as the socket.
 
-* Bridge flags: Only require RTNL. Read locklessly by the data path.
-  Annotations can be added in net-next.
-
-* FDB port flushing: Only requires the FDB lock.
-
-* Multicast attributes: Only require the multicast lock.
-
-* Group forward mask: Only requires RTNL. Read locklessly by the data
-  path. Annotations can be added in net-next.
-
-* Backup port and NHID: Only require RTNL. Read locklessly by the data
-  path.
-
-This is a problem as the bridge calls dev_set_promiscuity() when certain
-bridge port flags change and this function can sleep since the commit
-cited below, resulting in a splat such as [1].
-
-Fix this by reducing the scope of the bridge lock and only take it when
-processing the three STP related attributes that require it. This is
-consistent with the multicast attributes where each attribute acquires
-the multicast lock instead of having one critical section for all
-relevant attributes.
-
-[1]
-BUG: sleeping function called from invalid context at net/core/dev_addr_lists.c:1262
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 356, name: bridge
-preempt_count: 201, expected: 0
-RCU nest depth: 0, expected: 0
-2 locks held by bridge/356:
-#0: ffffffff919473a0 (rtnl_mutex){+.+.}-{4:4}, at: rtnetlink_rcv_msg (net/core/rtnetlink.c:80 net/core/rtnetlink.c:7002)
-#1: ffff888115072d58 (&br->lock){+...}-{3:3}, at: br_setlink (./include/linux/spinlock.h:348 net/bridge/br_netlink.c:1117)
-Preemption disabled at:
- 0x0
-Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-Call Trace:
-<TASK>
-dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
-__might_resched.cold (kernel/sched/core.c:9163)
-netif_rx_mode_run (net/core/dev_addr_lists.c:1262)
-netif_rx_mode_sync (net/core/dev_addr_lists.c:1428)
-dev_set_promiscuity (net/core/dev_api.c:289)
-br_manage_promisc (net/bridge/br_if.c:135 net/bridge/br_if.c:172)
-br_port_flags_change (net/bridge/br_if.c:242 net/bridge/br_if.c:747)
-br_setport (net/bridge/br_netlink.c:1000)
-br_setlink (net/bridge/br_netlink.c:1118)
-rtnl_bridge_setlink (net/core/rtnetlink.c:5572)
-rtnetlink_rcv_msg (net/core/rtnetlink.c:7005)
-netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-netlink_unicast (net/netlink/af_netlink.c:1318 net/netlink/af_netlink.c:1344)
-netlink_sendmsg (net/netlink/af_netlink.c:1894)
-__sock_sendmsg (net/socket.c:787 (discriminator 4) net/socket.c:802 (discriminator 4))
-____sys_sendmsg (net/socket.c:2698)
-___sys_sendmsg (net/socket.c:2752)
-__sys_sendmsg (net/socket.c:2784)
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-
-Fixes: 78cd408356fe ("net: add missing instance lock to dev_set_promiscuity")
-Reviewed-by: Nikolay Aleksandrov <nikolay@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260526064818.272516-2-idosch@nvidia.com
+Fixes: 32b4c8b53ee7 ("ethtool: Add ability to flash transceiver modules' firmware")
+Reviewed-by: Danielle Ratson <danieller@nvidia.com>
+Link: https://patch.msgid.link/20260522231312.1710836-6-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_netlink.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ net/ethtool/module.c  | 9 ++++-----
+ net/ethtool/netlink.c | 4 ++--
+ net/ethtool/netlink.h | 4 ++--
+ 3 files changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index 4e2d53b2722104..6d5b2ef5f18d3d 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -1000,19 +1000,25 @@ static int br_setport(struct net_bridge_port *p, struct nlattr *tb[],
- 	br_port_flags_change(p, changed_mask);
+diff --git a/net/ethtool/module.c b/net/ethtool/module.c
+index ab1e8a83acd0b1..5a08c320b4660d 100644
+--- a/net/ethtool/module.c
++++ b/net/ethtool/module.c
+@@ -282,11 +282,9 @@ void ethnl_module_fw_flash_sock_destroy(struct ethnl_sock_priv *sk_priv)
  
- 	if (tb[IFLA_BRPORT_COST]) {
-+		spin_lock_bh(&p->br->lock);
- 		err = br_stp_set_path_cost(p, nla_get_u32(tb[IFLA_BRPORT_COST]));
-+		spin_unlock_bh(&p->br->lock);
- 		if (err)
- 			return err;
+ 	spin_lock(&module_fw_flash_work_list_lock);
+ 	list_for_each_entry(work, &module_fw_flash_work_list, list) {
+-		if (work->fw_update.dev == sk_priv->dev &&
+-		    work->fw_update.ntf_params.portid == sk_priv->portid) {
++		if (work->fw_update.ntf_params.portid == sk_priv->portid &&
++		    dev_net(work->fw_update.dev) == sk_priv->net)
+ 			work->fw_update.ntf_params.closed_sock = true;
+-			break;
+-		}
  	}
- 
- 	if (tb[IFLA_BRPORT_PRIORITY]) {
-+		spin_lock_bh(&p->br->lock);
- 		err = br_stp_set_port_priority(p, nla_get_u16(tb[IFLA_BRPORT_PRIORITY]));
-+		spin_unlock_bh(&p->br->lock);
- 		if (err)
- 			return err;
- 	}
- 
- 	if (tb[IFLA_BRPORT_STATE]) {
-+		spin_lock_bh(&p->br->lock);
- 		err = br_set_port_state(p, nla_get_u8(tb[IFLA_BRPORT_STATE]));
-+		spin_unlock_bh(&p->br->lock);
- 		if (err)
- 			return err;
- 	}
-@@ -1114,9 +1120,7 @@ int br_setlink(struct net_device *dev, struct nlmsghdr *nlh, u16 flags,
- 			if (err)
- 				return err;
- 
--			spin_lock_bh(&p->br->lock);
- 			err = br_setport(p, tb, extack);
--			spin_unlock_bh(&p->br->lock);
- 		} else {
- 			/* Binary compatibility with old RSTP */
- 			if (nla_len(protinfo) < sizeof(u8))
-@@ -1203,17 +1207,10 @@ static int br_port_slave_changelink(struct net_device *brdev,
- 				    struct nlattr *data[],
- 				    struct netlink_ext_ack *extack)
- {
--	struct net_bridge *br = netdev_priv(brdev);
--	int ret;
--
- 	if (!data)
- 		return 0;
- 
--	spin_lock_bh(&br->lock);
--	ret = br_setport(br_port_get_rtnl(dev), data, extack);
--	spin_unlock_bh(&br->lock);
--
--	return ret;
-+	return br_setport(br_port_get_rtnl(dev), data, extack);
+ 	spin_unlock(&module_fw_flash_work_list_lock);
  }
+@@ -323,7 +321,8 @@ module_flash_fw_schedule(struct net_device *dev, const char *file_name,
+ 	fw_update->ntf_params.seq = info->snd_seq;
+ 	fw_update->ntf_params.closed_sock = false;
  
- static int br_port_fill_slave_info(struct sk_buff *skb,
+-	err = ethnl_sock_priv_set(skb, dev, fw_update->ntf_params.portid,
++	err = ethnl_sock_priv_set(skb, dev_net(dev),
++				  fw_update->ntf_params.portid,
+ 				  ETHTOOL_SOCK_TYPE_MODULE_FW_FLASH);
+ 	if (err < 0)
+ 		goto err_release_firmware;
+diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
+index a52be67139d0ac..409b4109940b7c 100644
+--- a/net/ethtool/netlink.c
++++ b/net/ethtool/netlink.c
+@@ -50,7 +50,7 @@ const struct nla_policy ethnl_header_policy_phy_stats[] = {
+ 	[ETHTOOL_A_HEADER_PHY_INDEX]		= NLA_POLICY_MIN(NLA_U32, 1),
+ };
+ 
+-int ethnl_sock_priv_set(struct sk_buff *skb, struct net_device *dev, u32 portid,
++int ethnl_sock_priv_set(struct sk_buff *skb, struct net *net, u32 portid,
+ 			enum ethnl_sock_type type)
+ {
+ 	struct ethnl_sock_priv *sk_priv;
+@@ -59,7 +59,7 @@ int ethnl_sock_priv_set(struct sk_buff *skb, struct net_device *dev, u32 portid,
+ 	if (IS_ERR(sk_priv))
+ 		return PTR_ERR(sk_priv);
+ 
+-	sk_priv->dev = dev;
++	sk_priv->net = net;
+ 	sk_priv->portid = portid;
+ 	sk_priv->type = type;
+ 
+diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
+index 5e176938d6d228..11843bd10bcade 100644
+--- a/net/ethtool/netlink.h
++++ b/net/ethtool/netlink.h
+@@ -315,12 +315,12 @@ enum ethnl_sock_type {
+ };
+ 
+ struct ethnl_sock_priv {
+-	struct net_device *dev;
++	struct net *net;
+ 	u32 portid;
+ 	enum ethnl_sock_type type;
+ };
+ 
+-int ethnl_sock_priv_set(struct sk_buff *skb, struct net_device *dev, u32 portid,
++int ethnl_sock_priv_set(struct sk_buff *skb, struct net *net, u32 portid,
+ 			enum ethnl_sock_type type);
+ 
+ /**
 -- 
 2.53.0
 
