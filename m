@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-261667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OYViAeZMJWoFGgIAu9opvQ
-	(envelope-from <stable+bounces-261667-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:50:14 +0200
+	id 8iP3F/RNJWp1GgIAu9opvQ
+	(envelope-from <stable+bounces-261714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BFE6500AB
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:50:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 176096501D9
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Kz0SCtZ3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261667-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261667-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lDmV3DWB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261714-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261714-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3D6DD3004D84
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:50:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8E8CC303BDC1
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB842EBB9E;
-	Sun,  7 Jun 2026 10:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3859D2E7390;
+	Sun,  7 Jun 2026 10:52:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176F12DFF04;
-	Sun,  7 Jun 2026 10:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C6F2DFF04;
+	Sun,  7 Jun 2026 10:52:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829408; cv=none; b=jG0+Rs7GG2IIwE7PaBG9PCSr7MqIuJaXIZ+W+ANvSt4IzjtCPQJ9+M1/2FSTNSbl6RPjgiEBjdDyMO9obzCFaHf22NSxee5Q9iRW/v3Uj0W+AIPK7MPQ31Xpjcru5h55L6kO1NW0wATfIxDH26xXCk/hb50F7yT8kX1FTn2yuts=
+	t=1780829568; cv=none; b=EoEfSNzWq5mDvh9nMKVMXf5NulUmnLLMw1jiofY76hLb8tDMiyhipzzGVOC1v3yXvGxozq/GsrfjPB0q+19IzzPbib6VK6+1J9mzZ6RfRmplqS0FFL/oghkQkGkNhkQcReqrctAGoHkVbW5i8nqax3SpKHEUQJPiELZ2V9HpxEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829408; c=relaxed/simple;
-	bh=hCKuciCAC/Z01Zrcbn8NUv/cMr/JdaQqKscBV5VoXyU=;
+	s=arc-20240116; t=1780829568; c=relaxed/simple;
+	bh=pxJX/JsWC5HAeMMfnd20uGzG08+OM0UT+PeeHQvjNh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfOUldnlwEcVROgK9NR5L4gadNrLo4cQGTzi7s87hV2+oNlT3LETn6l4o1imDd8nyje5/0zM47LX+OnU/5odxWDApUiUqJ0y6jCM2pyaJKys8Kqh8dhwwe+E/ahuHwWZ3BPDT+q0cZ8CHmzAFXRYBt/KIb6TsjNGRVTnbm9zXl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kz0SCtZ3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6C11F00893;
-	Sun,  7 Jun 2026 10:50:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TXyHLf12eSbHgtOvtIOa+a/vffRkMB/purN78rL88KYQJRPqccjLs12q2qJf9F8W1SvK4USVcWtd20z4ncpMPuFNde2w2GbsRNpU6tPy3grVGGHY5YQtcT22gXHtzCh1EQ4KtPWjWggtvIkBFHKdhS5znXjlnAxobvZ/Mm+EsfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lDmV3DWB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F441F00893;
+	Sun,  7 Jun 2026 10:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829407;
-	bh=bAhOicAqaaIfymWHcxIg2kPy3YoTWdUwWiGsnPHjwj0=;
+	s=korg; t=1780829566;
+	bh=Rt7tj4qPWZi1wTHopfLFd/sEiUKD/do6s79fYHUQ1cQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Kz0SCtZ3u8YzDIz2AhP6KzXxhkiUt/vxMbTedi6FTekA4N1IgkFF7amsW/azkrlNu
-	 nAMO32N7mWdtPs28YqHmG53y3cGVXUdoI56uDecMsqxsLlv0hazXweTSTAHScRLNlv
-	 yrS3+trFybBx5PwoX9xSrbvH/dDJXKYltHQkzmQY=
+	b=lDmV3DWByYWRaeYsWia0IDs/MA+aLrCK7LZtH1zZEZYukSp4SY5GUSnrzUnc4VAN0
+	 YiRgxuXxEocQif8W2NkRNMGjFkd6iY4NwPMLOv+8hQ6NhgSiYjRWKBwpkVOx5ayqV8
+	 xr16lV0iNvtJIswDhB/wGG/KrKZjeIm7e3En/fBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jeremy Erazo <mendozayt13@gmail.com>
-Subject: [PATCH 7.0 276/332] usb: gadget: composite: fix integer underflow in WebUSB GET_URL handling
-Date: Sun,  7 Jun 2026 12:00:45 +0200
-Message-ID: <20260607095738.184692226@linuxfoundation.org>
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.18 259/315] drm/i915: Fix potential UAF in TTM object purge
+Date: Sun,  7 Jun 2026 12:00:46 +0200
+Message-ID: <20260607095737.078610238@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +69,191 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-261714-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261667-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:mendozayt13@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:janusz.krzysztofik@linux.intel.com,m:matthew.auld@intel.com,m:thomas.hellstrom@linux.intel.com,m:sebastian.brzezinka@intel.com,m:christian.koenig@amd.com,m:andi.shyti@linux.intel.com,m:tursulin@ursulin.net,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ursulin.net:email,intel.com:email,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,decode_stacktrace.sh:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 07BFE6500AB
+X-Rspamd-Queue-Id: 176096501D9
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Erazo <mendozayt13@gmail.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-commit 6c5dbc104dadd79fc2923497c20bae759a18758c upstream.
+commit 5c4063c87a619e4df954c179d24628636f5db15f upstream.
 
-The WebUSB GET_URL handler in composite_setup() narrows
-landing_page_length to fit the host-supplied wLength using
+TLDR: The bo->ttm object might be changed by calling ttm_bo_validate(),
+      move casting it to an i915_tt object later to actually get the right
+      pointer.
 
-	landing_page_length = w_length
-		- WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH + landing_page_offset;
+A user reported hitting the following bug under heavy use on DG2:
 
-If wLength is smaller than WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH the
-unsigned subtraction wraps, and the subsequent
+[26620.095550] Oops: general protection fault, probably for non-canonical address 0xa56b6b6b6b6b6b8b: 0000 1 SMP NOPTI
+[26620.095556] CPU: 2 UID: 0 PID: 631 Comm: Xorg Not tainted 6.18.8 #1 PREEMPT(lazy)
+[26620.095558] Hardware name: ASRock B850M Steel Legend WiFi/B850M Steel Legend WiFi, BIOS 3.50 09/18/2025
+[26620.095559] RIP: 0010:i915_ttm_purge+0x84/0x100 [i915]
+[26620.095604] Code: 00 00 00 48 8d 54 24 10 48 89 e6 48 89 fb e8 83 aa ae ff 85 c0 75 6f 48 83 bb a8 01 00 00 00 74 2c 48 8b 45 78 48 85 c0 74 23 <48> 8b 78 20 48 c7 c2 ff ff ff ff 31 f6 e8 7a 73 e3 e0 48 8b 7d 78
+[26620.095605] RSP: 0018:ffffc90005fd7430 EFLAGS: 00010282
+[26620.095607] RAX: a56b6b6b6b6b6b6b RBX: ffff8881f46c3dc0 RCX: 0000000000000000
+[26620.095608] RDX: 0000000000000000 RSI: 0000000000000246 RDI: 00000000ffffffff
+[26620.095609] RBP: ffff888289610f00 R08: 0000000000000001 R09: ffff88823b022000
+[26620.095609] R10: ffff888103029b28 R11: ffff8881fc7f3800 R12: ffff88810b6150d0
+[26620.095609] R13: ffff888289610f00 R14: 0000000000000000 R15: ffff8881f46c3dc0
+[26620.095610] FS: 00007f1004d86900(0000) GS:ffff88901c858000(0000) knlGS:0000000000000000
+[26620.095611] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[26620.095611] CR2: 00007f0fdf489000 CR3: 000000035b0c1000 CR4: 0000000000750ef0
+[26620.095612] PKRU: 55555554
+[26620.095612] Call Trace:
+[26620.095615] <TASK>
+[26620.095615] i915_ttm_move+0x2b9/0x420 [i915]
+[26620.095642] ? ttm_tt_init+0x65/0x80 [ttm]
+[26620.095644] ? i915_ttm_tt_create+0xc6/0x150 [i915]
+[26620.095667] ttm_bo_handle_move_mem+0xb6/0x160 [ttm]
+[26620.095669] ttm_bo_evict+0x100/0x150 [ttm]
+[26620.095671] ? preempt_count_add+0x64/0xa0
+[26620.095673] ? _raw_spin_lock+0xe/0x30
+[26620.095675] ? _raw_spin_unlock+0xd/0x30
+[26620.095675] ? i915_gem_object_evictable+0xb7/0xd0 [i915]
+[26620.095704] ttm_bo_evict_cb+0x6e/0xd0 [ttm]
+[26620.095705] ttm_lru_walk_for_evict+0xa6/0x200 [ttm]
+[26620.095708] ttm_bo_alloc_resource+0x185/0x4f0 [ttm]
+[26620.095709] ? init_object+0x62/0xd0
+[26620.095712] ttm_bo_validate+0x7a/0x180 [ttm]
+[26620.095713] ? _raw_spin_unlock_irqrestore+0x16/0x30
+[26620.095714] __i915_ttm_get_pages+0xb0/0x170 [i915]
+[26620.095737] i915_ttm_get_pages+0x9f/0x150 [i915]
+[26620.095759] ? i915_gem_do_execbuffer+0xedc/0x2b40 [i915]
+[26620.095786] ? alloc_debug_processing+0xd0/0x100
+[26620.095787] ? _raw_spin_unlock_irqrestore+0x16/0x30
+[26620.095788] ? i915_vma_instance+0xa0/0x4e0 [i915]
+[26620.095822] __i915_gem_object_get_pages+0x2f/0x40 [i915]
+[26620.095848] i915_vma_pin_ww+0x706/0x980 [i915]
+[26620.095875] ? i915_gem_do_execbuffer+0xedc/0x2b40 [i915]
+[26620.095904] eb_validate_vmas+0x170/0xa00 [i915]
+[26620.095930] i915_gem_do_execbuffer+0x1201/0x2b40 [i915]
+[26620.095953] ? alloc_debug_processing+0xd0/0x100
+[26620.095954] ? _raw_spin_unlock_irqrestore+0x16/0x30
+[26620.095955] ? i915_gem_execbuffer2_ioctl+0xc9/0x240 [i915]
+[26620.095977] ? __wake_up_sync_key+0x32/0x50
+[26620.095979] ? i915_gem_execbuffer2_ioctl+0xc9/0x240 [i915]
+[26620.096001] ? __slab_alloc.isra.0+0x67/0xc0
+[26620.096003] i915_gem_execbuffer2_ioctl+0x11a/0x240 [i915]
 
-	memcpy(url_descriptor->URL,
-	       cdev->landing_page + landing_page_offset,
-	       landing_page_length - landing_page_offset);
+Results from decode_stacktrace.sh pointed to dereference of a file pointer
+field of a i915 TTM page vector container associated with an object being
+purged on eviction.  That path is taken when the object is marked as no
+longer needed.
 
-ends up copying close to UINT_MAX bytes from cdev->landing_page into
-cdev->req->buf.  KASAN reports a slab-out-of-bounds in composite_setup
-on the kmalloc-2k gadget_info allocation, and FORTIFY_SOURCE traps the
-memcpy as a 4294967293-byte field-spanning write into
-url_descriptor->URL (size 252).
+Code analysis revealed a possibility of the i915 TTM page vector container
+being replaced with a new instance inside a function that purges content
+of the object, should it be still busy.  That function is called,
+indirectly via a more general function that changes the object's placement
+and caching policy, before the problematic dereference, but still after
+a pointer to the container is captured, rendering the pointer no longer
+valid.
 
-A USB host can reach this from a single SETUP packet against any
-gadget that has webusb/use=1 and a landingPage configured.
+Fix the issue by capturing the pointer to the container only after its
+potential replacement.
 
-Handle the small-wLength case before the math: when the host requested
-fewer bytes than the URL descriptor header, only the header is
-meaningful and no URL bytes need to be copied.  Setting
-landing_page_length to landing_page_offset makes the existing memcpy a
-no-op and leaves the descriptor returned to the host unchanged for all
-larger wLength values.
+v2: Move the container_of() inside the if block (Sebastian),
+  - a simplified version of the commit description that explains briefly
+    why the change is necessary (Christian).
 
-Fixes: 93c473948c58 ("usb: gadget: add WebUSB landing page support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jeremy Erazo <mendozayt13@gmail.com>
-Link: https://patch.msgid.link/20260512160530.352318-1-mendozayt13@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/14882
+Fixes: 7ae034590ceae ("drm/i915/ttm: add tt shmem backend")
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: stable@vger.kernel.org # v5.17+
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Cc: Christian König <christian.koenig@amd.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/20260508122612.469227-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit 4462966a93eb185849b7f174f0d0de53476d00a4)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/composite.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/gem/i915_gem_ttm.c |   28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -2172,7 +2172,10 @@ unknown:
- 				sizeof(url_descriptor->URL)
- 				- WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH + landing_page_offset);
+--- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+@@ -416,8 +416,6 @@ void i915_ttm_free_cached_io_rsgt(struct
+ int i915_ttm_purge(struct drm_i915_gem_object *obj)
+ {
+ 	struct ttm_buffer_object *bo = i915_gem_to_ttm(obj);
+-	struct i915_ttm_tt *i915_tt =
+-		container_of(bo->ttm, typeof(*i915_tt), ttm);
+ 	struct ttm_operation_ctx ctx = {
+ 		.interruptible = true,
+ 		.no_wait_gpu = false,
+@@ -432,16 +430,22 @@ int i915_ttm_purge(struct drm_i915_gem_o
+ 	if (ret)
+ 		return ret;
  
--			if (w_length < WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH + landing_page_length)
-+			if (w_length < WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH)
-+				landing_page_length = landing_page_offset;
-+			else if (w_length <
-+				 WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH + landing_page_length)
- 				landing_page_length = w_length
- 				- WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH + landing_page_offset;
+-	if (bo->ttm && i915_tt->filp) {
+-		/*
+-		 * The below fput(which eventually calls shmem_truncate) might
+-		 * be delayed by worker, so when directly called to purge the
+-		 * pages(like by the shrinker) we should try to be more
+-		 * aggressive and release the pages immediately.
+-		 */
+-		shmem_truncate_range(file_inode(i915_tt->filp),
+-				     0, (loff_t)-1);
+-		fput(fetch_and_zero(&i915_tt->filp));
++	if (bo->ttm) {
++		struct i915_ttm_tt *i915_tt =
++			container_of(bo->ttm, typeof(*i915_tt), ttm);
++
++		if (i915_tt->filp) {
++			/*
++			 * The below fput(which eventually calls shmem_truncate)
++			 * might be delayed by worker, so when directly called
++			 * to purge the pages(like by the shrinker) we should
++			 * try to be more aggressive and release the pages
++			 * immediately.
++			 */
++			shmem_truncate_range(file_inode(i915_tt->filp),
++					     0, (loff_t)-1);
++			fput(fetch_and_zero(&i915_tt->filp));
++		}
+ 	}
  
+ 	obj->write_domain = 0;
 
 
 
