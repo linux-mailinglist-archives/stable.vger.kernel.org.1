@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-261451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +9WPLEVKJWr4GAIAu9opvQ
-	(envelope-from <stable+bounces-261451-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:39:01 +0200
+	id +GM3FMdJJWrLGAIAu9opvQ
+	(envelope-from <stable+bounces-261442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:36:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F07A64FE03
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:39:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D099064FD92
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:36:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=k9CBRNxs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261451-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261451-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WNtmPsHX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261442-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261442-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83D783020A61
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:36:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 08AF8301371E
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA5931E849;
-	Sun,  7 Jun 2026 10:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3963325706;
+	Sun,  7 Jun 2026 10:36:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6133264F5;
-	Sun,  7 Jun 2026 10:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881592D3A69;
+	Sun,  7 Jun 2026 10:36:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828611; cv=none; b=P7eFB9FpTwct89IMuiznL9MaEvc6YoRVpXo1vm7G09YpkuwPjwr9qlcL9RfdFYDdkLejfkQMTKpKqAUXuOvWvhOLKe+nudB9mJ+H24MK3J6/jY3DELXx5jJp5K6C9HE0o+WL+vXRO66NsY5jbe8tSaDBYU+ebqGWuH/J2hEFQDE=
+	t=1780828575; cv=none; b=rvA1G5QAjHj+p9zVCB0QncX/Q4U/+napAFPcVEpwqgLfG3fuICMCAq+o6UiRplbqJeHj1bLbfLcTwMipKUglbFg3D+yAo+SP7DrVdCVJ5tONcVowJFGZmz66lZ4rMNkS5PCe4mE0EBVLugUpZ6JChASSDkmBce7IS4lK52Mod/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828611; c=relaxed/simple;
-	bh=PByhFYFvoaNRhXVFTGX6zOrk1OX/j7Z36k2V+i/ff74=;
+	s=arc-20240116; t=1780828575; c=relaxed/simple;
+	bh=ZKT4kSsdRfDd+Pe7X4wHESU+sIq3YsPTOIthWMIEII0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YyMl2VBovdW7NFfYP8SMPlzf3X1gJKezeFpX9Ft0rbq13E/GeBdy5oXPhm/EN8Ds+Lkz5qhmuwJgSPlqtFl9IprUjfYF9r0nEkUI1g/rjMRXHKeml8Byd+8RVtHJBvSPPxpjUAESnzGl4Gnw+4Z4eE4C0PeFu56tX9DnvDmI08k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9CBRNxs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632091F00893;
-	Sun,  7 Jun 2026 10:36:49 +0000 (UTC)
+	 MIME-Version; b=idRCdPcR02XE4kdEP4hT+la7slEZHu7ENlZOzOEy5po3ogq0WpyzTFwT+U0SFJvsWsdSaipjGyM3oOvgkrEfqHoongHxHGgyoF1KmkJff4cWYaJrZasIiOMYMft8QU/QTv+CkIpaL4hvDmhY0anQo/hyDHT+m5yT9o/eTaAju+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNtmPsHX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C196A1F00893;
+	Sun,  7 Jun 2026 10:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828610;
-	bh=J/XKcNmlIOlDohe7ZWCpRoy0Z8BR5V4avAn8dLz7lZc=;
+	s=korg; t=1780828574;
+	bh=BVcr8vnjU5eklYHUW8VRvKsjqbjULtxYt/D6fs3iOLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=k9CBRNxsKFyIOYmrrPuBM7mFjCHHlP3vGMGjJhHUuNehV+dmruD8sh78azMil422W
-	 /2PBeND7ZUYkAC3JBTeUz5o6ou4gyHYlizLv6s6iYXL2B0MlFdtvmZHVv+ohhKc8Sl
-	 qv36wB6k5eQrv5Og5FbwUeCW/oyuY1kfL3zvOtJE=
+	b=WNtmPsHXHlhRLpq5Dt/oL342NRQy/pDqQFNi6RlrHJNLMvnzI7LvmMZDbyqHSC+7c
+	 QMzFkXfHfLHy/VlHB8mtaNQMShWpV/PPCufHDsKnk1y52ACVtdKs6lHE3vzicqR2Jf
+	 s8ed7mQpbyqzZf/02d8i675Xs611d4XCBlg5VEnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.18 176/315] USB: serial: omninet: fix memory corruption with small endpoint
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 7.0 194/332] iio: Fix iio_multiply_value use in iio_read_channel_processed_scale
 Date: Sun,  7 Jun 2026 11:59:23 +0200
-Message-ID: <20260607095734.049385575@linuxfoundation.org>
+Message-ID: <20260607095735.186250735@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,90 +73,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261451-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,vger.kernel.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-261442-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:clamor95@gmail.com,m:johannes.goede@oss.qualcomm.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,omni.net:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1F07A64FE03
+X-Rspamd-Queue-Id: D099064FD92
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
 
-commit 60df93d30f9bdd27db17c4d80ed80ef718d7226b upstream.
+commit bb21ee31f5753a7972148798fd7dfb841dd33bdb upstream.
 
-Make sure that the bulk-out buffers are at least as large as the
-hardcoded transfer size to avoid user-controlled slab corruption should
-a malicious device report a smaller endpoint max packet size than
-expected.
+The function iio_multiply_value returns IIO_VAL_INT (1) on success or a
+negative error number on failure, while iio_read_channel_processed_scale
+should return an error code or 0. This creates a situation where the
+expected result is treated as an error. Fix this by checking the
+iio_multiply_value result separately, instead of passing it as a return
+value.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 05f958d003c9 ("iio: Improve iio_read_channel_processed_scale() precision")
+Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/omninet.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/iio/inkern.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/omninet.c
-+++ b/drivers/usb/serial/omninet.c
-@@ -30,6 +30,10 @@
- /* This one seems to be a re-branded ZyXEL device */
- #define BT_IGNITIONPRO_ID	0x2000
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -738,7 +738,11 @@ int iio_read_channel_processed_scale(str
+ 		if (ret < 0)
+ 			return ret;
  
-+#define OMNINET_HEADERLEN	4
-+#define OMNINET_BULKOUTSIZE	64
-+#define OMNINET_PAYLOADSIZE	(OMNINET_BULKOUTSIZE - OMNINET_HEADERLEN)
+-		return iio_multiply_value(val, scale, ret, pval, pval2);
++		ret = iio_multiply_value(val, scale, ret, pval, pval2);
++		if (ret < 0)
++			return ret;
 +
- /* function prototypes */
- static void omninet_process_read_urb(struct urb *urb);
- static int omninet_prepare_write_buffer(struct usb_serial_port *port,
-@@ -54,6 +58,7 @@ static struct usb_serial_driver zyxel_om
- 	.description =		"ZyXEL - omni.net usb",
- 	.id_table =		id_table,
- 	.num_bulk_out =		2,
-+	.bulk_out_size =	OMNINET_BULKOUTSIZE,
- 	.calc_num_ports =	omninet_calc_num_ports,
- 	.port_probe =		omninet_port_probe,
- 	.port_remove =		omninet_port_remove,
-@@ -130,10 +135,6 @@ static void omninet_port_remove(struct u
- 	kfree(od);
- }
- 
--#define OMNINET_HEADERLEN	4
--#define OMNINET_BULKOUTSIZE	64
--#define OMNINET_PAYLOADSIZE	(OMNINET_BULKOUTSIZE - OMNINET_HEADERLEN)
--
- static void omninet_process_read_urb(struct urb *urb)
- {
- 	struct usb_serial_port *port = urb->context;
++		return 0;
+ 	} else {
+ 		ret = iio_channel_read(chan, val, NULL, IIO_CHAN_INFO_RAW);
+ 		if (ret < 0)
 
 
 
