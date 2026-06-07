@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-261248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261262-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nLkTNOVGJWolFwIAu9opvQ
-	(envelope-from <stable+bounces-261248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:37 +0200
+	id E/lULO1GJWovFwIAu9opvQ
+	(envelope-from <stable+bounces-261262-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E3664F9F0
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B105E64FA05
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="pRn/W2N8";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261248-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261248-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Mimm2zF4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261262-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261262-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 543423028CA5
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:23:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E187030034A7
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7AAE3264F5;
-	Sun,  7 Jun 2026 10:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7730D3254BD;
+	Sun,  7 Jun 2026 10:24:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2510930F55F;
-	Sun,  7 Jun 2026 10:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C28320A37;
+	Sun,  7 Jun 2026 10:24:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827824; cv=none; b=jVbXlQW1s/I6wnxYjRLiQsCC8qPHWoM/K6szXH+ooY7MYfO2s3o10J0f/ISa6K7r+H+6ARLIZ5NN/1DTJFNrVwZeSb5u3OQiJDAXtKy+BaCD03SgG26nEbrHz2oc0MCqcGHqjoVlNlWDSvdEEoJLfFHVtSTXjxgfJgR2bgSYCW8=
+	t=1780827878; cv=none; b=c2WoP/WLKC2d/c3Q5eHxPnBj/sOEH4ypUa3h0JN6AtwQtC2g+yfRs5Z4aT/ILEB55OxVs/xQPuscU3HA4f3po4rkxoeFKajIdsASGQyZTF9Fy374E9Z2+713LKzyDnj0sCWxifVfVidtcjPOw8GgPzwxrTEkjp7b3Lcs7boSIk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827824; c=relaxed/simple;
-	bh=sn7xeTflO47J1ADu2W3KeYgjiA1f496yVzTBuvYS29c=;
+	s=arc-20240116; t=1780827878; c=relaxed/simple;
+	bh=HJiGGhSMglOaI/yOtL84BMdYF7TZ7eNV/ALXnFhriHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EpTBsZUMujd/aSWK5mCfXYSU8hBntNGlEGUoKqiqNh0RmW2X5PdVIE1/J+VFMgPEN1vGK+pBNsAmSvrhrBRsMWEnA+OqlRcfg1JNnaOMbZgP/SeSgpfIi6Xo3VasUWUF5wvx0HCAzneLb8obWhlVzRw/YRQYcKRe8moBiJtdAIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRn/W2N8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E641F00893;
-	Sun,  7 Jun 2026 10:23:40 +0000 (UTC)
+	 MIME-Version; b=SmjmS/UVzZLiS1CDOZoEBqhIWTYfET0n11Y77X/II69A307qzAaLlG8rwLE9a3FrB2hMLj/+bxLNeF3faYgO/PD2nu7/jyUPNU5MwdeDCzctMHJ+wo5A703/ZfyKgDYRp8If7f47gaXcTmHyb1C6jKhgiNSP81PhnQBarvF4JLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mimm2zF4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9047D1F00893;
+	Sun,  7 Jun 2026 10:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827821;
-	bh=Smtc6whxZCMDLObpQDqiCqMAZGIwj1BgRzxFEUmf2iE=;
+	s=korg; t=1780827877;
+	bh=lYSjjcEmglS12FOwS8jwS+ourZesq7hc+/nztdX/k/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pRn/W2N8nXHfK6gkSggkVv4PJmnBOJsfh84U1Y7dleBfyXWtQ58T6u4L3mSXDjIPU
-	 yw0gZz3GQuirjlCIhQ2hVKNb06ThjV3+h7aSXVjJLXUL9TrZRnd0sxNnl7j7VjveV/
-	 rJrXZ/P07PHC6LOzal2bx5/LFkcytPxEd6uuTys8=
+	b=Mimm2zF4DbxJWZav4bxQ52eWo3qvX9UmxR7GFpc5UzyOHzzUtjmbWmzCuDKx96UId
+	 TPNiTpD1LG53zjvN3XLBOb+lTSVwPr+CND+UQha0/BwCXNnvIvU1/qjNzyjWJRNH6I
+	 pLhA/B3IpVyTh5fd5oMfdr40AjKU4AwQ7/Xg3Irw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Ido Schimmel <idosch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 103/315] phy: mscc: Use PHY_ID_MATCH_EXACT for VSC8584, VSC8582, VSC8575, VSC856X
+Subject: [PATCH 6.12 093/307] ipv6: fix possible infinite loop in rt6_fill_node()
 Date: Sun,  7 Jun 2026 11:58:10 +0200
-Message-ID: <20260607095731.431794862@linuxfoundation.org>
+Message-ID: <20260607095731.193933206@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261248-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261262-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:horatiu.vultur@microchip.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiayuan.chen@linux.dev,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,131 +99,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bootlin.com:email,vger.kernel.org:from_smtp,microchip.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux.dev:email,sashiko.dev:url,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 70E3664F9F0
+X-Rspamd-Queue-Id: B105E64FA05
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 1bc80d673087e5704adbb3ee8e4b785c14899cce ]
+[ Upstream commit 9f72412bcf60144f252b0d6205106abf14344abc ]
 
-As the PHYs VSC8584, VSC8582, VSC8575 and VSC856X exists only as rev B,
-we can use PHY_ID_MATCH_EXACT to match exactly on revision B of the PHY.
-Because of this change then there is not need the check if it is a
-different revision than rev B in the function vsc8584_probe() as we
-already know that this will never happen.
-These changes are a preparation for the next patch because in that patch
-we will make the PHYs VSC8574 and VSC8572 to use vsc8584_probe() and
-these PHYs have multiple revision.
+Sashiko reported this issue [1]. Apply the same fix as
+commit f8d8ce1b515a ("ipv6: fix possible infinite loop in fib6_info_uses_dev()").
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://patch.msgid.link/20251023191350.190940-2-horatiu.vultur@microchip.com
+Writers holding tb6_lock can list_del_rcu(&rt->fib6_siblings)
+without waiting for RCU readers; rt->fib6_siblings.next then still
+points into the old ring and this softirq-side walker never reaches
+&rt->fib6_siblings, causing a CPU stall. fib6_del_route() always
+WRITE_ONCE()s rt->fib6_nsiblings to 0 before list_del_rcu(), so an
+inside-loop check is a reliable detach signal.
+
+[1] https://sashiko.dev/#/patchset/20260526020227.4857-1-jiayuan.chen%40linux.dev
+
+Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260527053133.180695-1-jiayuan.chen@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mscc/mscc.h      |  8 ++++----
- drivers/net/phy/mscc/mscc_main.c | 23 ++++-------------------
- 2 files changed, 8 insertions(+), 23 deletions(-)
+ net/ipv6/route.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
-index 2d8eca54c40a29..2eef5956b9cc59 100644
---- a/drivers/net/phy/mscc/mscc.h
-+++ b/drivers/net/phy/mscc/mscc.h
-@@ -289,12 +289,12 @@ enum rgmii_clock_delay {
- #define PHY_ID_VSC8540			  0x00070760
- #define PHY_ID_VSC8541			  0x00070770
- #define PHY_ID_VSC8552			  0x000704e0
--#define PHY_ID_VSC856X			  0x000707e0
-+#define PHY_ID_VSC856X			  0x000707e1
- #define PHY_ID_VSC8572			  0x000704d0
- #define PHY_ID_VSC8574			  0x000704a0
--#define PHY_ID_VSC8575			  0x000707d0
--#define PHY_ID_VSC8582			  0x000707b0
--#define PHY_ID_VSC8584			  0x000707c0
-+#define PHY_ID_VSC8575			  0x000707d1
-+#define PHY_ID_VSC8582			  0x000707b1
-+#define PHY_ID_VSC8584			  0x000707c1
- #define PHY_VENDOR_MSCC			0x00070400
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 31c9e3b73f2da1..c73218fd82c615 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5812,6 +5812,8 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
  
- #define MSCC_VDDMAC_1500		  1500
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index 48d43f60b8ff8c..8678ebf89cca51 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -1724,12 +1724,6 @@ static int vsc8584_config_init(struct phy_device *phydev)
- 	 * in this pre-init function.
- 	 */
- 	if (phy_package_init_once(phydev)) {
--		/* The following switch statement assumes that the lowest
--		 * nibble of the phy_id_mask is always 0. This works because
--		 * the lowest nibble of the PHY_ID's below are also 0.
--		 */
--		WARN_ON(phydev->drv->phy_id_mask & 0xf);
--
- 		switch (phydev->phy_id & phydev->drv->phy_id_mask) {
- 		case PHY_ID_VSC8504:
- 		case PHY_ID_VSC8552:
-@@ -2290,11 +2284,6 @@ static int vsc8584_probe(struct phy_device *phydev)
- 	   VSC8531_DUPLEX_COLLISION};
- 	int ret;
+ 				goto nla_put_failure;
+ 			}
++			if (!READ_ONCE(rt->fib6_nsiblings))
++				break;
+ 		}
  
--	if ((phydev->phy_id & MSCC_DEV_REV_MASK) != VSC8584_REVB) {
--		dev_err(&phydev->mdio.dev, "Only VSC8584 revB is supported.\n");
--		return -ENOTSUPP;
--	}
--
- 	vsc8531 = devm_kzalloc(&phydev->mdio.dev, sizeof(*vsc8531), GFP_KERNEL);
- 	if (!vsc8531)
- 		return -ENOMEM;
-@@ -2587,9 +2576,8 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_inband  = vsc85xx_config_inband,
- },
- {
--	.phy_id		= PHY_ID_VSC856X,
-+	PHY_ID_MATCH_EXACT(PHY_ID_VSC856X),
- 	.name		= "Microsemi GE VSC856X SyncE",
--	.phy_id_mask	= 0xfffffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.soft_reset	= &genphy_soft_reset,
- 	.config_init    = &vsc8584_config_init,
-@@ -2667,9 +2655,8 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_inband  = vsc85xx_config_inband,
- },
- {
--	.phy_id		= PHY_ID_VSC8575,
-+	PHY_ID_MATCH_EXACT(PHY_ID_VSC8575),
- 	.name		= "Microsemi GE VSC8575 SyncE",
--	.phy_id_mask	= 0xfffffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.soft_reset	= &genphy_soft_reset,
- 	.config_init    = &vsc8584_config_init,
-@@ -2693,9 +2680,8 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_inband  = vsc85xx_config_inband,
- },
- {
--	.phy_id		= PHY_ID_VSC8582,
-+	PHY_ID_MATCH_EXACT(PHY_ID_VSC8582),
- 	.name		= "Microsemi GE VSC8582 SyncE",
--	.phy_id_mask	= 0xfffffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.soft_reset	= &genphy_soft_reset,
- 	.config_init    = &vsc8584_config_init,
-@@ -2719,9 +2705,8 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_inband  = vsc85xx_config_inband,
- },
- {
--	.phy_id		= PHY_ID_VSC8584,
-+	PHY_ID_MATCH_EXACT(PHY_ID_VSC8584),
- 	.name		= "Microsemi GE VSC8584 SyncE",
--	.phy_id_mask	= 0xfffffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.soft_reset	= &genphy_soft_reset,
- 	.config_init    = &vsc8584_config_init,
+ 		rcu_read_unlock();
 -- 
 2.53.0
 
