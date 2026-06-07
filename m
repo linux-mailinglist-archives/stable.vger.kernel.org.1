@@ -1,66 +1,62 @@
-Return-Path: <stable+bounces-261532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261510-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rI4WEDpMJWqBGQIAu9opvQ
-	(envelope-from <stable+bounces-261532-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:22 +0200
+	id pj//J09LJWpBGQIAu9opvQ
+	(envelope-from <stable+bounces-261510-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D54864FFE7
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECEF864FF1C
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RJv8CcEh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261532-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261532-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="kczK35J/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261510-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261510-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED17F3029AED
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:41:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6168E3038AC0
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F3D3195FD;
-	Sun,  7 Jun 2026 10:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB5632AAA3;
+	Sun,  7 Jun 2026 10:40:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14922C1595;
-	Sun,  7 Jun 2026 10:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79ED329E7E;
+	Sun,  7 Jun 2026 10:40:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828911; cv=none; b=Xrnd2zSuoiTIrz+JqeAa7Y/pY2N72IKYamQMRbxV05OjELeBrYscUDHLiPnL3Ui4+XjHA+DDyXd51EsKF3Ixqn9Nx7elv2uPCOGu+7a89v/zYhNY6pttC9KuG9sTHnEophlbIaDAtSKAyJZDCpZG0DNCErkszaORhJdHzSt5G2c=
+	t=1780828830; cv=none; b=Zk4tL58XzKgaDyFGNbM0OaGBzrVYbZp3xtQ4TtJCUtCtbRRmSx4VxWVitzPSL6+KT5vaE9hDivQ7HtcmxJx/SHlWTi6ByOr29+zq82aa/Rog0eFQEf58M0axe9qpQ553QKKGXTAHMK0bzl6jNWqt20W3+RAqE90Z+oozZgHvjYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828911; c=relaxed/simple;
-	bh=8G9+w2rmC7bAVH/TdYobYqqO8tsUTznAnFz9JG4e+Og=;
+	s=arc-20240116; t=1780828830; c=relaxed/simple;
+	bh=FTWJTAwN8viDtDyPvThezmYMJRpF/annLn4MBnchmVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UlNO++R6aUlOjPoO7AzLzsoAB0uNSIM4YILmETrECo9UTAm0UsiAhOjwV+5e0+vTcogWBPOtJXwsE+mE4yCiSpSe4/tacGFUbalsLPZH0mhHfBZLzkLtCfE93oVLzFXy8l78ISNvS9ekocMcqYrT5dV2f+ad3eLat7Kipzfrg+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJv8CcEh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73741F00893;
-	Sun,  7 Jun 2026 10:41:49 +0000 (UTC)
+	 MIME-Version; b=ddv43HmmVMss5TzVGEAgekG8VRjd448bs0LMotai3QRCa2Pzs7iAlgM6oVTFetFsBXcl56qDI8SqFdKHp6nAqY9eQOPSTNgsCUSY29JuZNOZzKI3FwdpiHXgavLcyOjSKHfQ/6lvWL2Bwq9qsYPwhX61Nx6+3TLw3ybG60VOZPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kczK35J/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D93C1F00893;
+	Sun,  7 Jun 2026 10:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828910;
-	bh=DZ9NNUAwvHevjJcvigCq6neJO8kcaI/zPt4i+XNF3P0=;
+	s=korg; t=1780828828;
+	bh=mM2Kr57uc/skvaQkRMXkAgDVOiyM2ofB9asuLglQpE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RJv8CcEhmfUSc67PvWVCoyEhbX29MwijNk99+r6otr+rTlh0/bj2clXIIFgh5BiXq
-	 Htcq+4hfagg8V1tlHK8CFRNFWGfjDuerXnqVt7nggtGrIZvWD32YgNisFKNXNUqGMd
-	 9bEJVo9bH75UjUz/VHIG8P3FND8RdLOm75mc9HKw=
+	b=kczK35J/el4j+HmODb6ehLYGujJMfdOk68G2uBRRJBlfpNx80jeY0+E3sKDf39ipU
+	 d0J7C7lSkJ1LMTihoTGn7gPpAow9HMlP3e1Fn716DoV4TEkBrPjZvqbbXnMuWVzPa9
+	 TfYmg32Agx7eJVR9p6zq+FDjZtg3iHGVJlmRUcG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yilin Zhu <zylzyl2333@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.18 201/315] xfrm: ipcomp: Free destination pages on acomp errors
+	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 7.0 219/332] ip6: vti: Use ip6_tnl.net in vti6_changelink().
 Date: Sun,  7 Jun 2026 11:59:48 +0200
-Message-ID: <20260607095734.955300363@linuxfoundation.org>
+Message-ID: <20260607095736.105028750@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,98 +70,114 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,gondor.apana.org.au,secunet.com];
-	TAGGED_FROM(0.00)[bounces-261532-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:zylzyl2333@gmail.com,m:herbert@gondor.apana.org.au,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261510-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maoyi.xie@ntu.edu.sg,m:edumazet@google.com,m:kuniyu@google.com,m:pabeni@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,secunet.com:email,vger.kernel.org:from_smtp,apana.org.au:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ntu.edu.sg:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7D54864FFE7
+X-Rspamd-Queue-Id: ECEF864FF1C
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 7dbac7680eb629b3b4dc7e98c34f943b8814c0c8 upstream.
+commit 11b326fb0a374f4654f9be22d0f0f7abd9f7d3fe upstream.
 
-Move the out_free_req label up by a couple of lines so that the
-allocated dst SG list gets freed on error as well as success.
+ip netns add ns1
+ip netns add ns2
+ip -n ns1 link add vti6_test type vti6 remote ::1 local ::2 key 7
+ip -n ns1 link set vti6_test netns ns2
+ip -n ns2 link set vti6_test type vti6 remote ::3 local ::4 key 9
+ip netns del ns2
+ip netns del ns1
+[  132.495484] ------------[ cut here ]------------
+[  132.497609] kernel BUG at net/core/dev.c:12376!
 
-Fixes: eb2953d26971 ("xfrm: ipcomp: Use crypto_acomp interface")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reported-by: Yilin Zhu <zylzyl2333@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Commit 61220ab34948 ("vti6: Enable namespace changing") dropped
+NETIF_F_NETNS_LOCAL from vti6 devices. A vti6 tunnel can then
+move through IFLA_NET_NS_FD. After the move dev_net(dev) points
+at the new netns while t->net stays at the creation netns.
+
+vti6_changelink() and vti6_update() still use dev_net(dev) and
+dev_net(t->dev). They unlink from one per netns hash and relink
+into another. The creation netns is left with a stale entry.
+cleanup_net() of that netns later walks freed memory.
+
+Reachable from an unprivileged user namespace (unshare --user
+--map-root-user --net). Cross tenant scope on container hosts.
+
+Fixes: 61220ab34948 ("vti6: Enable namespace changing")
+Reported-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260521130555.3421684-2-maoyixie.tju@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_ipcomp.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/ipv6/ip6_vti.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/net/xfrm/xfrm_ipcomp.c
-+++ b/net/xfrm/xfrm_ipcomp.c
-@@ -51,11 +51,15 @@ static int ipcomp_post_acomp(struct sk_b
- 	struct scatterlist *dsg;
- 	int len, dlen;
+--- a/net/ipv6/ip6_vti.c
++++ b/net/ipv6/ip6_vti.c
+@@ -722,10 +722,11 @@ vti6_tnl_change(struct ip6_tnl *t, const
+ static int vti6_update(struct ip6_tnl *t, struct __ip6_tnl_parm *p,
+ 		       bool keep_mtu)
+ {
+-	struct net *net = dev_net(t->dev);
+-	struct vti6_net *ip6n = net_generic(net, vti6_net_id);
++	struct net *net = t->net;
++	struct vti6_net *ip6n;
+ 	int err;
  
--	if (unlikely(err))
--		goto out_free_req;
-+	if (unlikely(!req))
-+		return err;
++	ip6n = net_generic(net, vti6_net_id);
+ 	vti6_tnl_unlink(ip6n, t);
+ 	synchronize_net();
+ 	err = vti6_tnl_change(t, p, keep_mtu);
+@@ -1038,11 +1039,12 @@ static int vti6_changelink(struct net_de
+ 			   struct nlattr *data[],
+ 			   struct netlink_ext_ack *extack)
+ {
+-	struct ip6_tnl *t;
++	struct ip6_tnl *t = netdev_priv(dev);
++	struct net *net = t->net;
+ 	struct __ip6_tnl_parm p;
+-	struct net *net = dev_net(dev);
+-	struct vti6_net *ip6n = net_generic(net, vti6_net_id);
++	struct vti6_net *ip6n;
  
- 	extra = acomp_request_extra(req);
- 	dsg = extra->sg;
-+
-+	if (unlikely(err))
-+		goto out_free_req;
-+
- 	dlen = req->dlen;
++	ip6n = net_generic(net, vti6_net_id);
+ 	if (dev == ip6n->fb_tnl_dev)
+ 		return -EINVAL;
  
- 	pskb_trim_unique(skb, 0);
-@@ -84,10 +88,10 @@ static int ipcomp_post_acomp(struct sk_b
- 		skb_shinfo(skb)->nr_frags++;
- 	} while ((dlen -= len));
- 
--	for (; dsg; dsg = sg_next(dsg))
-+out_free_req:
-+	for (; dsg && sg_page(dsg); dsg = sg_next(dsg))
- 		__free_page(sg_page(dsg));
- 
--out_free_req:
- 	acomp_request_free(req);
- 	return err;
- }
 
 
 
