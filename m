@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-261647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261535-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id S9DmGJxMJWqnGQIAu9opvQ
-	(envelope-from <stable+bounces-261647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:49:00 +0200
+	id Env/LUNMJWqDGQIAu9opvQ
+	(envelope-from <stable+bounces-261535-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E23650059
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:49:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4327064FFF2
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1nW25rDe;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261647-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261647-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qqtKrK6K;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261535-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261535-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9467B300490F
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:48:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5085030470F2
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99FF2E7390;
-	Sun,  7 Jun 2026 10:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD15F3195FD;
+	Sun,  7 Jun 2026 10:42:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96D22D8378;
-	Sun,  7 Jun 2026 10:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FE870808;
+	Sun,  7 Jun 2026 10:42:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829337; cv=none; b=SsIEsmbd4gRX2pxOYnkTOKxvFi7JLBkZBWK/8NtvvcULR0K/wAvMe5ZgUC3+X2GbCuQvtnWGL21/8GMxsmJKEz9+rI0Y8lAN/3pNQtxL1smuFwCIIQ+qiYjw0sM0YZf+X4qSKhbk3eaSpaewzxDdnsItXmKd4vfjEeo6nywzjc8=
+	t=1780828922; cv=none; b=smAjF41uwkLpWHrqhiKchR4K3mxJKPztcJWseFdyUC8/YxUAVl/WRN2UP+nvJNtFLifYAoo5vIgvzqt//HYz+gwatKveYWxzPfSQj0SeJs9vVmVFOiSGrNjlTl/RIql7HwXXIjdoCGddQYTo4zSFQShO50FnRgZ/nhgncu8tVCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829337; c=relaxed/simple;
-	bh=lK6mgW+fReOoddmQ4NWyAWWGCRLTCWOgPKcJwVeOC7E=;
+	s=arc-20240116; t=1780828922; c=relaxed/simple;
+	bh=9YJIZM4CD3YTrPzFEB315LhCoLHAJ6PwIZE8i5VpmqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1wZx/st8UE7USRH7GP7u30Mqg2LWRVOUPfla3Jud9V2F1E3ro8DivGLz+xo0fcwDvQOf83Fc6/bJdA+ywemYfZK22lLSrkR/oUBw3V3BPsFqy7EVLTEPHWEV0B5zjc0mwPWuh/P1M7Exc7w+s2hFHpMn/1B7JUz59X+vAuOCfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nW25rDe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BE61F00893;
-	Sun,  7 Jun 2026 10:48:55 +0000 (UTC)
+	 MIME-Version; b=icY0ZcjVS6KNwiMrdrTluU4tGgk3YqtGYmjTzEp+r8aE7sAntme/KzQ3O2rediG7Km710yY2jmIrNRzSRuktj7ZWwrDrQ3TJuIUoM0BFE/xIpS2Xv56ZbH3CcNP4X8VtdusW3I3WcPrdIRpKa6rXd/mADwTFAPwa5SRkHU4fCy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqtKrK6K; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1181F00893;
+	Sun,  7 Jun 2026 10:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829336;
-	bh=QNpt8Kg7o/bwJH1bcTH2WxWFeUjNCDhgdIBeOsmRw78=;
+	s=korg; t=1780828921;
+	bh=qUda5WrcgpgOYob5V66b6JuTrIGvC7mEVthh5WoJs5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1nW25rDejM+IWEFiB/FgqWTdKjZVdXbxdf3VUUsntczE1lnpcS+kDtM9wqJ1jkDAJ
-	 Alvz5JOW3XmR9t/nm4iWJYv8ShbNr/9tKFxxlfHTGLt5O8aUwrwkuXUAHkqFybbASY
-	 4YaMLNcM4Jt/Fn8iM+y2U647kq95W6SIbiJ5uvTY=
+	b=qqtKrK6KxVK4HDAUL7ZiYrfVnB7EkO7nX7R93EifCc3Js+FMDsTRSY3z9vwBwsy6d
+	 f4WVs/lEKfD7xylgrKdwBo8G1Z9PelaGrB4g2L7anfrCkXo1Rj9WPh5kXU+hCTv3SH
+	 XLgM05I/CjnUuLtW/EHCtbzvRud5AM3zhVwGVZsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Michael Bommarito <michael.bommarito@gmail.com>,
-	James Chapman <jchapman@katalix.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 192/307] l2tp: use refcount_inc_not_zero in l2tp_session_get_by_ifname
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.18 202/315] xfrm: ah: use skb_to_full_sk in async output callbacks
 Date: Sun,  7 Jun 2026 11:59:49 +0200
-Message-ID: <20260607095734.776054607@linuxfoundation.org>
+Message-ID: <20260607095734.991801580@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,110 +71,123 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,katalix.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-261647-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:jchapman@katalix.com,m:horms@kernel.org,m:kuba@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261535-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:steffen.klassert@secunet.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 25E23650059
+X-Rspamd-Queue-Id: 4327064FFF2
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 05f95729ca844704d15e49ce14868af4b403b32b upstream.
+commit 79d8be262377f7112cfa3088dfc4142d5a2533f3 upstream.
 
-A reader in l2tp_session_get_by_ifname() can return a pointer to a
-session whose refcount has reached zero. The getter takes its
-reference with plain refcount_inc(), but every other session getter
-in the same file (l2tp_v2_session_get, l2tp_v3_session_get, and the
-corresponding _get_next variants) uses refcount_inc_not_zero()
-because the IDR/RCU lookup can race with refcount_dec_and_test() ->
-l2tp_session_free() -> kfree_rcu(). The ifname getter is the only
-outlier; the inconsistency was raised on-list after 979c017803c4
-("l2tp: use list_del_rcu in l2tp_session_unhash").
+When AH output is offloaded to an asynchronous crypto provider
+(hardware accelerators such as AMD CCP, or a forced-async software
+shim used for testing), the digest completion fires
+ah_output_done() / ah6_output_done() on a workqueue.  The egress
+skb at that point may have been originated by a TCP listener
+sending a SYN-ACK, which sets skb->sk to a request_sock via
+skb_set_owner_edemux(); it may also have been originated by an
+inet_timewait_sock retransmit.  Neither is a full struct sock, and
+passing the raw skb->sk to xfrm_output_resume() then forwards a
+non-full socket through the rest of the xfrm output chain.
 
-A reader inside rcu_read_lock_bh() that matches session->ifname can
-be preempted between the strcmp() and the refcount_inc(). If the
-last reference drops on another CPU in that window, the reader's
-refcount_inc() runs on a counter that has reached zero. refcount_t
-catches the addition-on-zero, prints "refcount_t: addition on 0;
-use-after-free", saturates the counter, and returns the saturated
-pointer to the caller. Session memory is held live by the in-flight
-RCU read section, but the kfree_rcu() callback queued from
-l2tp_session_free() will free it once the grace period closes; a
-caller that dereferences the returned session past that point hits
-a slab-use-after-free. On PREEMPT_RT local_bh_disable() is a per-CPU
-sleeping lock and the preemption window is real; on stock PREEMPT
-kernels local_bh_disable() is a preempt_count increment that closes
-the cross-CPU race in practice (see below).
+xfrm_output_resume() and its downstream consumers expect a full
+sk where they dereference at all.  The natural egress path
+through ah_output_done() does not crash today because the
+consumers that read past sock_common are either gated by
+sk_fullsock() or short-circuit on flags that are clear on a fresh
+request_sock; an exhaustive walk of the 50 most plausible
+consumers under sch_fq, dev_queue_xmit, netfilter, tc-egress and
+cgroup-egress BPF found no current unguarded deref.  The bug is
+still a real type confusion that future consumer changes could
+turn into a memory-corruption primitive.
 
-Use refcount_inc_not_zero() and continue the list walk on failure,
-matching the other session getters in the file. The ifname getter
-is the only session getter in net/l2tp/ that still uses the bare
-refcount_inc() pattern; this change restores file-internal
-consistency. The success path is unchanged.
+This is the same bug class fixed for ESP in commit 1620c88887b1
+("xfrm: Fix the usage of skb->sk").  Apply the analogous fix to
+AH: convert skb->sk to a full socket pointer (or NULL) via
+skb_to_full_sk() before handing it to xfrm_output_resume().
 
-Fixes: abe7a1a7d0b6 ("l2tp: improve tunnel/session refcount helpers")
+The same async AH callbacks were touched recently for an
+independent ESN-related ICV layout bug in commit ec54093e6a8f
+("xfrm: ah: account for ESN high bits in async callbacks"); the
+sk type-confusion addressed here is orthogonal.  This patch is
+part of an ongoing audit of the AH callback paths; an ah_output
+ihl-validation hardening series is also currently under review on
+netdev.
+
+Reproduced under UML + KASAN + lockdep with a forced-async
+hmac(sha1) shim that registers at priority 9999 and wraps the
+sync in-tree hmac-sha1-lib.  With the shim loaded, ah_output_done
+runs on every SYN-ACK egress through a transport-mode AH SA and
+skb->sk arrives as a request_sock (TCP_NEW_SYN_RECV); after this
+patch, xfrm_output_resume() receives the listener (the result of
+sk_to_full_sk()) and consumer derefs land on full-sock fields as
+intended.
+
+Fixes: 9ab1265d5231 ("xfrm: Use actual socket sk instead of skb socket for xfrm_output_resume")
 Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
 Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: James Chapman <jchapman@katalix.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260523023423.2568972-1-michael.bommarito@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/l2tp/l2tp_core.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/ipv4/ah4.c |    2 +-
+ net/ipv6/ah6.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -441,12 +441,13 @@ struct l2tp_session *l2tp_session_get_by
- 	idr_for_each_entry_ul(&pn->l2tp_tunnel_idr, tunnel, tmp, tunnel_id) {
- 		if (tunnel) {
- 			list_for_each_entry_rcu(session, &tunnel->session_list, list) {
--				if (!strcmp(session->ifname, ifname)) {
--					refcount_inc(&session->ref_count);
--					rcu_read_unlock_bh();
-+				if (strcmp(session->ifname, ifname))
-+					continue;
-+				if (!refcount_inc_not_zero(&session->ref_count))
-+					continue;
-+				rcu_read_unlock_bh();
- 
--					return session;
--				}
-+				return session;
- 			}
- 		}
+--- a/net/ipv4/ah4.c
++++ b/net/ipv4/ah4.c
+@@ -143,7 +143,7 @@ static void ah_output_done(void *data, i
  	}
+ 
+ 	kfree(AH_SKB_CB(skb)->tmp);
+-	xfrm_output_resume(skb->sk, skb, err);
++	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+ }
+ 
+ static int ah_output(struct xfrm_state *x, struct sk_buff *skb)
+--- a/net/ipv6/ah6.c
++++ b/net/ipv6/ah6.c
+@@ -337,7 +337,7 @@ static void ah6_output_done(void *data,
+ 	ah6_restore_hdrs(top_iph, iph_ext, extlen);
+ 
+ 	kfree(AH_SKB_CB(skb)->tmp);
+-	xfrm_output_resume(skb->sk, skb, err);
++	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+ }
+ 
+ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
 
 
 
