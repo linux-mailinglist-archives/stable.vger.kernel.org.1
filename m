@@ -1,210 +1,188 @@
-Return-Path: <stable+bounces-260920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nqs8BIcSJWrQDAIAu9opvQ
-	(envelope-from <stable+bounces-260920-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 08:41:11 +0200
+	id PLe1Ol8YJWo3DgIAu9opvQ
+	(envelope-from <stable+bounces-260922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 09:06:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC9D64EF4E
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 08:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E34864EFD3
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 09:06:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BYHV6kfe;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260920-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260920-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=google.com header.s=20251104 header.b=Z4LtezML;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260922-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260922-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C28D13010160
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 06:41:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA0853013793
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 07:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D992EAD1C;
-	Sun,  7 Jun 2026 06:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A55D248F57;
+	Sun,  7 Jun 2026 07:06:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f68.google.com (mail-dl1-f68.google.com [74.125.82.68])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD542DECB2
-	for <stable@vger.kernel.org>; Sun,  7 Jun 2026 06:41:04 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780814467; cv=none; b=ffs1kyeMdGMZIxn+fln0MYzDqM/sN0lj4fCf3RgZb7robPG8ZtcJ91GnezjZj21ZenMhRtMatTmrKBceI2vd+Nd4EoitwSqJFyTsr2BE1GZXiGRYqDby2EjF8eaeYAsK7A69wn6quRzKzn9QhfhmcTQF5Dg6DwSekxw+8ouHzrU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780814467; c=relaxed/simple;
-	bh=UN1Ug31Azzv9rf4QmvaFWgW/3REkOEopYBll24EcvV4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r9XAZvqmfzphTEYqNjDCtcMpqyJx8WxllbVSrJYsLkGfzmJp3crFJsqLtFavfBxQhFcs1YQSJBsMPZoGaUkHF0W0a8duIPMmiU4mqo2iUSMk26jSZDlnuX4DiHGoC26ozXHn0Wo2S6OV9RWTCWlZRTmhCTWp4lliEZbaDqKxflE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BYHV6kfe; arc=none smtp.client-ip=74.125.82.68
-Received: by mail-dl1-f68.google.com with SMTP id a92af1059eb24-13809223fd4so2250300c88.1
-        for <stable@vger.kernel.org>; Sat, 06 Jun 2026 23:41:04 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AAC28371
+	for <stable@vger.kernel.org>; Sun,  7 Jun 2026 07:06:03 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780815965; cv=pass; b=gr4WBQhkxdAz3sSJ8kwC+Yi3AFfrecP+1UOpAJgYoJwYR1zEsAE2UgrSLaD6LfX5m2sVI1V8OVfTS8y1HuHhKH3bZiVZeHnEjkd2Ue+b+n9VNWXGJM+T7lcEmJqECpyG2ryItxtNWndR40BL7leIli5/+Omu0aMrvV+zSc0mQ84=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780815965; c=relaxed/simple;
+	bh=mUdV0DhC//w8Ri1SkoNj46XOQCm6jOMYkSM/1+jIZmg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dddj83dMGfvRl5oIb+IBUZMKrAGryIZ4bQldd3iFkQQYrYRUklsWIc061TATeckSUdsRSKOnZFZ0xaRVbzpKQAhrRR07fBEKtPoKIPWVZjzRaWZJD0we6+t994MFJrOOf9HInJ2E6wdfRi4kNxHplrgq4goZbJWPRIMEaCDF6F8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z4LtezML; arc=pass smtp.client-ip=209.85.160.169
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51765531803so1404071cf.0
+        for <stable@vger.kernel.org>; Sun, 07 Jun 2026 00:06:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780815963; cv=none;
+        d=google.com; s=arc-20240605;
+        b=d1eKDXulOkocfmSRBHk4INjyvPhKIxo5grKQJd47j1lD2+kuUmC6kyDm1c0/kboxKS
+         yEn11xKnypVm9sGK7QwFNoaCHVh+vYixMm8oHi7DpypuQ95eulUCJCUsYg/H8YGdO4OG
+         uYr4uy2OaS88glTtgY7DIcq5jhT8KnyCGVRLzcDoj++YKjbXIPqXjFuY6OXbn7HGiMCh
+         uWV8i183GTh0Wpx0LldVSy6+0Quh0pyQjWnRVwltYQgFK8qzmNifOWNAfmjFxA+0EAX1
+         +noV7OqV++pxPEIcsTc/0OdhoyrVGz648XFe1SpRDn0WMj4G3XGYw7PuJNU4N+03QA0B
+         /MDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=uT5ydn+EqJZsAMkKj0fC6IolXW7qV5RfXWPNY69Zc+Y=;
+        fh=SliV3FUdmBdA8EmertLiwM8k9wOnFRToKPOPgMv9EiQ=;
+        b=OhLlf3r+qwULx+AKUp6OuO7Bsga7ZZnOiAO3sM+1e4nEudd3roGJJfBdttvv2Xk0jF
+         gFMcV5SaG3Dv+S0DezAKHjnGbEDMfNIz9ZpaUSYChjlIcmOyRjSo0j4VxPrUsvsr3uHc
+         ROEbXOYCjzsvylmJtignFK3FeAWWU5gNedk70RPIzvle1t+wC/3yE+ZRIjde3sADPaOu
+         8dztVQG9vypUTIW+qO6gv2Tj2KvWSBrR8ZOGL2YHJHuBQOE32Njco9aGtibLia7m752y
+         nBQu5J8GFk6ud1R/QER8qHeqAJ/i7RQNqdfIQtu+a9EKHMncohe+X5llE/1SPUUFeCov
+         uwpA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780814464; x=1781419264; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8HhuuqF5LxBBn4MixHfYOj/pYBiy8lGyW0X7+8esu9E=;
-        b=BYHV6kfeN18F10FCwEpv8l47A2NQO+P6n7cJeQlM9gQDrVv9f5VGmNMzZyn0W4QayP
-         On3SdVpfTVxa6VDG+eCOKxj8eL5uSoyImZU8eluv0siokOUmjHT/X6ENVOI3AAN3BFOn
-         eVL259FNmq67BQhZNYIGZZ9dq8gbG9XxHyXBg2wxSyI/EkJ8PUfdofiKJBSi1xXEQQ+F
-         pG9pcefy920o8r5lDa0C4QqqSUNkuJ21DdZAFBJsIpZorPvyz2iZ9ZyjgUJyZlYniBPg
-         DgTKNHcrpExjSoJopqg3wCXEQzE+Uve2TaceRFkgS2EphtpP5x8mKlcWg1LPMDOYjOAQ
-         pNMg==
+        d=google.com; s=20251104; t=1780815963; x=1781420763; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=uT5ydn+EqJZsAMkKj0fC6IolXW7qV5RfXWPNY69Zc+Y=;
+        b=Z4LtezML//FW7NHenba2NTN1ifrNrNpzMixwF1w/zQwH0hegxvXCIfG1Al8UKhahh+
+         gXwO/XnFjSKd8T1TExmjPjEm54PNIJ6A5f79kar8fZU/RY9f9ouX4ksjlENQlF5cfMZv
+         YG/brjP/qaw1INrhwgU0BLHLvRYkatQIqVIBiMeiphp4eL7HTJYmvE10Hyf0TwQ9V1ga
+         /DW/foU73vx5jbgi3i0/vIfbo8zFVzU52uUbp9DTP4Puzo8X4y9N1R9ohE/Z3hkY1cOY
+         vXLdbQTypT57TRrgRFL7CLHaT8M+/y0RFJ21bvDR681fNa3aG7z217S38pcLniOfU647
+         IMcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780814464; x=1781419264;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1780815963; x=1781420763;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8HhuuqF5LxBBn4MixHfYOj/pYBiy8lGyW0X7+8esu9E=;
-        b=B/7IWXFE3vIFnA/33zCBAx4P296a14AZqWEyB+2RJUnAfjAV9p3MPIdOIWjItTGMwY
-         iuKPWoR6i2jGC1Duk0oGuG48kj/gwOWVD88g9sUkoxi31UNaP3OhAq1DvgjuSkG4fvJE
-         owPBJaH4oxRX60rAYEjlIqs8DlRP/GMnaTgAYEvmo3RUHfoR0NWqAtBYYqCLgnMxiXZ7
-         NEpa7ynOmHOJLPFQvX1jINdiR1RtrCKQOhAL7yQcw2EhSi5YDCB0xhoHxtj9a0ZQptM6
-         AtDu3uGMtNvjjXS1zm7oOroxhhr02hjEzDpNZRfzx+gr6Gm/Bi8Fj+WBiM6bm3q+dfvD
-         hV9g==
-X-Forwarded-Encrypted: i=1; AFNElJ/6Hxi92E1yyuDIE3b057BTPaX2Gsyu63gJlNfhXBxRtRohrR6Z2bUKGepPdVigjir+c3Z9hx8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztKgIM0cttxDvigaBTGM7zTYWoaLsWa2lRlSHypVYvzFF5LgGf
-	w38ZFj0Jm08jPcXdE6nCcXDn4W/rzmqffz7EZ/ba5+UXqJlL95O86exJ
-X-Gm-Gg: Acq92OGphdXfsDAE+U0JF91Gg6kgdWEv55FBc38wpDUigkwCz73uoSkWD3UZzs/aVdg
-	Ixa5v0D5kvp9+YqxdyHUAUxMqi3LspLE5UuJc4hDPi+V+dtDUD2PJFqFUOewTrc4PVmBjLETCDM
-	9+w2sRUKGrz9CuGOljLRMzKKvxm1TJIDZ++jk/CnowYh6THHjbxOZ5uBUJBdlC36Ur916Y1uay+
-	FmOkNtVtL/SN+PXW/8vFoLNy4gRExQXUwVDjgdKcaKFeFHbvzMFOM6xyEd6yyo2gr+N/OaIzpIV
-	MJX8xEe5YJDFLU8QDyVcJUdyGOGEqX4bTYQdnGNTV0AhXMvylHLXVb8vxOixBY3Db3Nxhn2jM03
-	Y03yWAPAO5wqJd2BZ9bq5n6VC1RfuCUnGgqyhZtTyL16CsdKnPHObdOfPzr8O9xavK0/mJpTWHf
-	yPyI0UPw202ZpKNvk2shNsv3g39d6QnklntZ3haWtCOcrvdGn+xGOpyiFwmN0Z7uJuGH5oFqSzM
-	Xo62v7sqaUJ/yzhTfad+qyHXiBBGEmlzYc1plGl/0EMDI3TB38y0A26zafTFTibiF9OxcW3B6IV
-	6XrggFNvB3KvJaBDRIWEJO/I0+1pL5du4EGlXwA=
-X-Received: by 2002:a05:7300:d517:b0:304:de94:1c2c with SMTP id 5a478bee46e88-3077b866467mr6790455eec.34.1780814463977;
-        Sat, 06 Jun 2026 23:41:03 -0700 (PDT)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074dcad34esm18462755eec.11.2026.06.06.23.41.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Jun 2026 23:41:03 -0700 (PDT)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: linux-doc@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	stable@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH] ata: pata_legacy: remove documentation for removed module parameters
-Date: Sat,  6 Jun 2026 23:40:49 -0700
-Message-ID: <20260607064053.195166-1-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=uT5ydn+EqJZsAMkKj0fC6IolXW7qV5RfXWPNY69Zc+Y=;
+        b=V7Pp3RYUa5TMXcrjuSBnalNU8BljUIkyX7FXMxP3uV1vnF8nGwvSwDGdSIz0lrkyVh
+         vALMzObPDyQ5nuCwuGQkvmqyH7UsBwxMYkem2X6eG8RwokSnJi264kd4tuyoMdyhooWy
+         7QAhqzr0iwV/5z4yvCPv7TfwGrvI2lAoiv3u2AWTD+sP8ZgauktMTMIdHoO0ynzsXW3/
+         ykGqmC8oj6sqBD3pMrcIjgrmnRToW9bBCW4NQ2fK/41qatf0Z6OkRVIiNhC6UKNWMZA/
+         3q0Czy00bNnI5x++rbzLDw3bEwgTmebF06ycCdMDkyOlUh/UsheCtQSz9aV+JNyUqMdq
+         Sjtw==
+X-Forwarded-Encrypted: i=1; AFNElJ8HbG+xtpFK3Zwcfs5YiI/UVXzWwbVcb0TkSA2SnN0I/mwiwSASOkxv7yfsMjhevgZ9tNvEoEs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNEbsge8oG1n1mV5Jd3ZzvvbTVxpNfA8ovdG93sUDRydXg0jUt
+	wjppFHFSfIDP2IBQXdi2CElvD9sazLPCARAjzCt7/4GQY1Jy3KGciBrWyrJVCpG5rUpx8WFx44L
+	XOorhxtfvnimYTFOuEw4x3sDkLFLnIDOXz27rDR7L
+X-Gm-Gg: Acq92OEpDEtW4khIPzNONNDpMEKsGnU9txAkLi7PTKLLmdCbjSB9UsAeC8J/xpvGidA
+	Lnkc5wsKvroVqgTCBKp+PyMhYIxhmwEYGRsgtVD61vBYkzUCkasiEBuEL2UyMKFUdVulXxnbO8F
+	l0+7hR7YgoCfDV6Z/6C9kiat8TA0ZU5Skm4IFpp4rUTqEyOFDjiYAj68Y3VvhZzl6gBXsObCs32
+	nkrYqx+V0vy2JvsFaJW7tG8RnYyu5GMV39HfylPKC025C2QAJ2yFVrUw8exJ42xpDw2yhPlhXiX
+	GNV0UQ8Yb1lmat7W1SE=
+X-Received: by 2002:a05:622a:6d01:10b0:50f:b69a:f4a8 with SMTP id
+ d75a77b69052e-5179806b242mr16836941cf.7.1780815962364; Sun, 07 Jun 2026
+ 00:06:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260606175614.83273-1-imv4bel@gmail.com>
+In-Reply-To: <20260606175614.83273-1-imv4bel@gmail.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Sun, 7 Jun 2026 08:05:25 +0100
+X-Gm-Features: AVVi8CdRhmH9BYOsHsmFgRsg2rtea41QIta7Nrzuj5tjiY1ErqsUXnoxLXLi0HA
+Message-ID: <CA+EHjTxSsPvT11WRUJ5hRS7c6xNwmKK2ZbU_mCcBLBqdFM=xNw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] KVM: arm64: Sanitise host vCPU fields copied in flush_hyp_vcpu()
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com, 
+	seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
+	catalin.marinas@arm.com, will@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,lwn.net,linuxfoundation.org,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260920-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:linux-doc@vger.kernel.org,m:enelsonmoore@gmail.com,m:stable@vger.kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:dlemoal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:imv4bel@gmail.com,m:maz@kernel.org,m:oupton@kernel.org,m:joey.gouly@arm.com,m:seiden@linux.ibm.com,m:suzuki.poulose@arm.com,m:yuzenghui@huawei.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:kvmarm@lists.linux.dev,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[tabba@google.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-260922-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5EC9D64EF4E
+X-Rspamd-Queue-Id: 3E34864EFD3
 
-Commit 3c4d783f6922 ("ata: pata_legacy: remove VLB support") removed
-several module parameters from the pata_legacy driver, but neglected to
-remove their documentation. Remove it.
+On Sat, 6 Jun 2026 at 18:57, Hyunwoo Kim <imv4bel@gmail.com> wrote:
+>
+> flush_hyp_vcpu() copies the host vCPU context and vGIC state into the
+> hyp's private vCPU on every run. This series sanitises two fields that
+> it currently copies verbatim (host -> EL2): __hyp_running_vcpu is
+> cleared in the guest context, and used_lrs is bounded by the number of
+> implemented list registers.
 
-Fixes: 3c4d783f6922 ("ata: pata_legacy: remove VLB support")
-Cc: stable@vger.kernel.org # 7.0+
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
----
- .../admin-guide/kernel-parameters.txt         | 37 -------------------
- 1 file changed, 37 deletions(-)
+From my side I think you've addressed Marc's feedback. For the latest series:
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 97007f4f69d4..47bccc148a54 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4935,18 +4935,6 @@ Kernel parameters
- 			Set to non-zero if a chip is present that snoops speed
- 			changes.  Disabled by default.
- 
--	pata_legacy.ht6560a=	[HW,LIBATA]
--			Format: <int>
--			Set to 1, 2, or 3 for HT 6560A on the primary channel,
--			the secondary channel, or both channels respectively.
--			Disabled by default.
--
--	pata_legacy.ht6560b=	[HW,LIBATA]
--			Format: <int>
--			Set to 1, 2, or 3 for HT 6560B on the primary channel,
--			the secondary channel, or both channels respectively.
--			Disabled by default.
--
- 	pata_legacy.iordy_mask=	[HW,LIBATA]
- 			Format: <int>
- 			IORDY enable mask.  Set individual bits to allow IORDY
-@@ -4959,18 +4947,6 @@ Kernel parameters
- 			with the sequence.  By default IORDY is allowed across
- 			all channels.
- 
--	pata_legacy.opti82c46x=	[HW,LIBATA]
--			Format: <int>
--			Set to 1, 2, or 3 for Opti 82c611A on the primary
--			channel, the secondary channel, or both channels
--			respectively.  Disabled by default.
--
--	pata_legacy.opti82c611a=	[HW,LIBATA]
--			Format: <int>
--			Set to 1, 2, or 3 for Opti 82c465MV on the primary
--			channel, the secondary channel, or both channels
--			respectively.  Disabled by default.
--
- 	pata_legacy.pio_mask=	[HW,LIBATA]
- 			Format: <int>
- 			PIO mode mask for autospeed devices.  Set individual
-@@ -4994,19 +4970,6 @@ Kernel parameters
- 			the first port in the list above (0x1f0), and so on.
- 			By default all supported ports are probed.
- 
--	pata_legacy.qdi=	[HW,LIBATA]
--			Format: <int>
--			Set to non-zero to probe QDI controllers.  By default
--			set to 1 if CONFIG_PATA_QDI_MODULE, 0 otherwise.
--
--	pata_legacy.winbond=	[HW,LIBATA]
--			Format: <int>
--			Set to non-zero to probe Winbond controllers.  Use
--			the standard I/O port (0x130) if 1, otherwise the
--			value given is the I/O port to use (typically 0x1b0).
--			By default set to 1 if CONFIG_PATA_WINBOND_VLB_MODULE,
--			0 otherwise.
--
- 	pata_platform.pio_mask=	[HW,LIBATA]
- 			Format: <int>
- 			Supported PIO mode mask.  Set individual bits to allow
--- 
-2.43.0
+Reviewed-by: Fuad Tabba <tabba@google.com>
+Tested-by: Fuad Tabba <tabba@google.com>
 
+Cheers,
+/fuad
+
+>
+> Changes in v3:
+> - 2/2: replicate kvm_vgic_global_state.nr_lr into hyp_gicv3_nr_lr
+>   once at init (guarded by gicv3_cpuif), instead of reading
+>   ICH_VTR_EL2 on every entry behind a gicv3_cpuif gate. (Marc)
+> - v2: https://lore.kernel.org/all/20260604151210.1304051-1-imv4bel@gmail.com/
+>
+> Changes in v2:
+> - split into two patches, one per field, per review.
+> - v1: https://lore.kernel.org/all/aiFe-CXo-XVTFz1g@v4bel/
+>
+> Hyunwoo Kim (2):
+>   KVM: arm64: Clear __hyp_running_vcpu when flushing the pKVM hyp vCPU
+>   KVM: arm64: Bound used_lrs when flushing the pKVM hyp vCPU
+>
+>  arch/arm64/include/asm/kvm_hyp.h   |  1 +
+>  arch/arm64/kvm/arm.c               |  2 ++
+>  arch/arm64/kvm/hyp/nvhe/hyp-main.c | 12 ++++++++++++
+>  3 files changed, 15 insertions(+)
+>
+> --
+> 2.43.0
+>
 
