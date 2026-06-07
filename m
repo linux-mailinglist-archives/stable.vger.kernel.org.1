@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-261868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1c0xCuVPJWpTGwIAu9opvQ
-	(envelope-from <stable+bounces-261868-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:03:01 +0200
+	id JmScF5ZQJWqCGwIAu9opvQ
+	(envelope-from <stable+bounces-261783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FF265041E
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:03:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 024D26504CC
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VEEsbNBn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261868-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261868-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wbKQ61zT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261783-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261783-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B78143004690
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:02:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2AC0308E05E
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBABA328255;
-	Sun,  7 Jun 2026 11:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5523264F2;
+	Sun,  7 Jun 2026 10:57:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECA03164A1;
-	Sun,  7 Jun 2026 11:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEE03242DF;
+	Sun,  7 Jun 2026 10:57:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830164; cv=none; b=DchYSOuOJuzOvCpvC6nENP4sM1GelG3ARXG4S6QWyf/5K5NIDWCaC0S2Z6P5oMyIbHafFXz1rDQF6uXyhiJsY4/Y5CyQaOeftWpAdDhJnmPG1IMkpzuGt2dYUIuR5rcWh6ZS3x7A8DY9ZipsISgHGUNBlWpCHuERs1tXUJXH5Tc=
+	t=1780829826; cv=none; b=tktIa49uJXieI8W/b8XQwzztlVlDmdnTeIWnYwQwh2unC1COm5J2eHPUukVAKFHXHzjl4k8RF5FqA06VxZ6jPZoi+sflVPgnFAaxj5EcR93Ak75rfbVVCpPfx6XjxOWYASJCj2UN0gYeyRxL8o4KKezTN/iGm8zOrm+WbHPUQS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830164; c=relaxed/simple;
-	bh=sF86zZB+/jYcCZBRxfCdDIovnqb4U/fZB9VuxmyJgjs=;
+	s=arc-20240116; t=1780829826; c=relaxed/simple;
+	bh=2Jk+9T+9RdF8ZUFR4cxAiqDTnqPluDRHqw6ipvMwtMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H98KEJuTHLgVaboq2blfgOLiZ3iUFWC1PfXga+033FM/ArqhiFTypZkXk3TXKI72nD6GJcz4EwO93owa/3EuphnStCjUkzT3JHvwj5djViH1UnrES+qteMCmHwYD5Kik/d07RHRkqW8Bu3/n6yt1TYe+BRvGrJOZo4UWjwxWPtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEEsbNBn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4261F00893;
-	Sun,  7 Jun 2026 11:02:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sjzbD98D/4k0hzGMBqPwh41iqbWRmfMWPC82wVchPE44Orm5w8vIxdVfAhtAZdJ0qOmLwV3jrN0tpfJiRo63pjvtBbuBXA/0tlbYigDu3W41iWuBtNd8i6asWPmLHc0yppfKLLnIH1Lc/D1xPQOlVG0x/gzSskt/VxU8X1PotJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbKQ61zT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC7C1F00893;
+	Sun,  7 Jun 2026 10:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830163;
-	bh=PO9fF1KAz86Cz1Ztsbp8KGd15IAngVZz6JDx8GzGdAU=;
+	s=korg; t=1780829825;
+	bh=W3CtLPKBeDu3YqbBOhSNQP9Ljg9fwHWbSGNZ28T0PTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VEEsbNBni0No0zdwwASdzVnE6ZJpiCEC4VS84iLlN53aQs1hDqMM/XU0ft9uRECqq
-	 7qkiDP6Q9uK/FzxY/loRGpLkkRxLraLfNBRhA7qTZgNRfopPTVa1yDggBXmAcmAf0l
-	 BbuJOHHnKh2CHHT2WJZB3xwdeIsjRERvVaSEDhJg=
+	b=wbKQ61zT4KnqrxJub8amu5AA/9SZgd0PFA5XnCYvEqMLsHKEvmfxMHwZeTful54H2
+	 v/g67WsHFtjPMXzQyWJni74yOqXjMpW0/9eIEX0Crs5bLI3ArPkQtGLfNp52sO/hBQ
+	 +0TTF6YkzJXpqTT40XvV14FjI+vSPRnpIXC3OEM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shardul Bankar <shardul.b@mpiricsoftware.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 288/307] mptcp: do not drop partial packets
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jacques Nilo <jnilo@free.fr>
+Subject: [PATCH 7.0 316/332] serial: 8250: dispatch SysRq character in serial8250_handle_irq()
 Date: Sun,  7 Jun 2026 12:01:25 +0200
-Message-ID: <20260607095738.312405525@linuxfoundation.org>
+Message-ID: <20260607095739.726621997@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,117 +64,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261868-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261783-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shardul.b@mpiricsoftware.com,m:pabeni@redhat.com,m:matttbe@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ilpo.jarvinen@linux.intel.com,m:jnilo@free.fr,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,free.fr];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 40FF265041E
+X-Rspamd-Queue-Id: 024D26504CC
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shardul Bankar <shardul.b@mpiricsoftware.com>
+From: Jacques Nilo <jnilo@free.fr>
 
-[ Upstream commit 50c2d91c5dfa0e465826ec1f8dbad9cdc254bd85 ]
+commit 71f42b2149a1307a97165b409493665579462ea0 upstream.
 
-When a packet arrives with map_seq < ack_seq < end_seq, the beginning
-of the packet has already been acknowledged but the end contains new
-data. Currently the entire packet is dropped as "old data," forcing
-the sender to retransmit.
+serial8250_handle_irq() captures a SysRq character into port->sysrq_ch
+inside serial8250_handle_irq_locked() via uart_prepare_sysrq_char()
+(reached from serial8250_read_char()). Dispatch of that captured
+character to handle_sysrq() is expected to happen at port-unlock time,
+through uart_unlock_and_check_sysrq[_irqrestore]().
 
-Instead, skip the already-acked bytes by adjusting the skb offset and
-enqueue only the new portion. Update bytes_received and ack_seq to
-reflect the new data consumed.
+After commit 8324a54f604d ("serial: 8250: Add
+serial8250_handle_irq_locked()") the function was reduced to a wrapper
+that takes the port lock via guard(uart_port_lock_irqsave) whose
+destructor is plain uart_port_unlock_irqrestore(). The sysrq-aware
+unlock helper is no longer called, so port->sysrq_ch is captured but
+never dispatched: BREAK + SysRq key is consumed silently.
 
-A previous attempt at this fix has been sent by Paolo Abeni [1], but had
-issues [2]: it also added a zero-window check and changed rcv_wnd_sent
-initialization, which caused test regressions. This version addresses
-only the partial packet handling without modifying receive window
-accounting.
+This was the very condition Johan Hovold's 853a9ae29e978 ("serial:
+8250: fix handle_irq locking", 2021) introduced
+uart_unlock_and_check_sysrq_irqrestore() to address.
 
-Fixes: ab174ad8ef76 ("mptcp: move ooo skbs into msk out of order queue.")
+Switch to the new guard(uart_port_lock_check_sysrq_irqsave), whose
+destructor is the sysrq-aware unlock helper, restoring the pre-split
+behaviour. Update the Context: comment on serial8250_handle_irq_locked()
+so future HW-specific 8250 wrappers know to use the same guard or the
+explicit sysrq-aware unlock.
+
+Verified on RTL8196E with CONFIG_MAGIC_SYSRQ_SERIAL=y: BREAK + 'h' on
+the console UART produces the SysRq help dump in dmesg and the brk
+counter in /proc/tty/driver/serial increments correctly.
+
+Fixes: 8324a54f604d ("serial: 8250: Add serial8250_handle_irq_locked()")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/c9b426a4e163aa3c4fe8b80c79f1a610f47ae7d8.1763075056.git.pabeni@redhat.com [1]
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/600 [2]
-Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
-[pabeni@redhat.com: update map]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-1-701e96419f2f@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Jacques Nilo <jnilo@free.fr>
+Link: https://patch.msgid.link/52692ae6c3501f7940347cef364ad7fcacaab7e5.1778675349.git.jnilo@free.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/tty/serial/8250/8250_port.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -390,12 +390,26 @@ static bool __mptcp_move_skb(struct sock
- 		return false;
- 	}
- 
--	/* old data, keep it simple and drop the whole pkt, sender
--	 * will retransmit as needed, if needed.
-+	/* Completely old data? */
-+	if (!after64(MPTCP_SKB_CB(skb)->end_seq, msk->ack_seq)) {
-+		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
-+		mptcp_drop(sk, skb);
-+		return false;
-+	}
-+
-+	/* Partial packet: map_seq < ack_seq < end_seq.
-+	 * Skip the already-acked bytes and enqueue the new data.
- 	 */
--	MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
--	mptcp_drop(sk, skb);
--	return false;
-+	copy_len = MPTCP_SKB_CB(skb)->end_seq - msk->ack_seq;
-+	MPTCP_SKB_CB(skb)->offset += msk->ack_seq - MPTCP_SKB_CB(skb)->map_seq;
-+	MPTCP_SKB_CB(skb)->map_seq += msk->ack_seq -
-+				      MPTCP_SKB_CB(skb)->map_seq;
-+	msk->bytes_received += copy_len;
-+	WRITE_ONCE(msk->ack_seq, msk->ack_seq + copy_len);
-+
-+	skb_set_owner_r(skb, sk);
-+	__skb_queue_tail(&sk->sk_receive_queue, skb);
-+	return true;
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -1784,7 +1784,10 @@ static bool handle_rx_dma(struct uart_82
  }
  
- static void mptcp_stop_rtx_timer(struct sock *sk)
+ /*
+- * Context: port's lock must be held by the caller.
++ * Context: port's lock must be held by the caller. The caller must
++ * release it via guard(uart_port_lock_check_sysrq_irqsave) or
++ * uart_unlock_and_check_sysrq_irqrestore(), which captures SysRq
++ * character on unlock.
+  */
+ void serial8250_handle_irq_locked(struct uart_port *port, unsigned int iir)
+ {
+@@ -1837,7 +1840,7 @@ int serial8250_handle_irq(struct uart_po
+ 	if (iir & UART_IIR_NO_INT)
+ 		return 0;
+ 
+-	guard(uart_port_lock_irqsave)(port);
++	guard(uart_port_lock_check_sysrq_irqsave)(port);
+ 	serial8250_handle_irq_locked(port, iir);
+ 
+ 	return 1;
 
 
 
