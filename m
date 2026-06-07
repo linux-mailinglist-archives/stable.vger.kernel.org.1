@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-261027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261042-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IswhDkxEJWq1FQIAu9opvQ
-	(envelope-from <stable+bounces-261027-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:32 +0200
+	id b8hmL7FEJWruFQIAu9opvQ
+	(envelope-from <stable+bounces-261042-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF31F64F6B6
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F9764F71A
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bV7aTo58;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261027-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261027-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sJZZvP51;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261042-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261042-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3AD23037E73
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:10:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94BAA30547F5
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E879227B94;
-	Sun,  7 Jun 2026 10:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8AE2E1EFC;
+	Sun,  7 Jun 2026 10:11:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB864204E;
-	Sun,  7 Jun 2026 10:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B449309DAF;
+	Sun,  7 Jun 2026 10:11:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827017; cv=none; b=Ili9HgCBAvQMDrm/8VkU+4+9pGKjrhlqEZCUGY/kshJnupshH3b/JBezw5wESTUW37EZzItWN0O6Dlu8ZRmx0hVxGF+AzwutIM9hquuFlN3DTM9WhWqKw8Sj7Vg98BdZyLJqvbli/maAT9jrHzdhPrrrYk5n3zMVV3uKoij3MWU=
+	t=1780827070; cv=none; b=h7mTIFLPn6sDgMzYlx7u3kqME0HblOVc+bsheFngOg4qMG3brJ3gcWW2Xx+8XKDHux3BSX4xnrfghiHOsxb9mm6Wz0iNmNga05G2oV7u015qlA8V/O9G2F+wFY3mFA/TFUzEpsyOHkSHPENVIirILJH8y4+qKGmxvtnKRv2jqeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827017; c=relaxed/simple;
-	bh=ruoC+2l5001W8vcL2iUJJF+K/Q7NZvfviqNDakCjMoc=;
+	s=arc-20240116; t=1780827070; c=relaxed/simple;
+	bh=0fH2SXwGv+8tKhFlMrsRog+JyXYWKDN2XAhCieazW/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVhBh41/Nih0y0MtDklsgWxz7ymSLUSxmOlVvq3UQcJPCV65mgKmfbf7GxSSTOIre15eVGLU666kstDr7voIwdaKTolon19y7h9ijMqPjDpUQX5sf9Q+EjcOdyGuqn2BnP9y7HJpCCBcP7tEVeeanatxpNQ44XxUu3tm9W1dAiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bV7aTo58; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95771F00893;
-	Sun,  7 Jun 2026 10:10:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=maqhk+filiRCtSDUy/rTAlD4TzqWrwHk8E10gK5Wd2rfRsj8F6T2JN2mpDeg6ZdSu0nUcZwGT7K1MpLNVaB6O96UzvhE/03aa1ia0CbFvD+B8hHtLc/ctgJXd+H2oY+ntrHj7YYQ42DGE90ZEo01JvEX8r7CssqYKLznPDMFwtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJZZvP51; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737B41F00898;
+	Sun,  7 Jun 2026 10:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827015;
-	bh=pCrkdr76zzEL43WF0QpmYtHWK4skbo1yY77eUEHz6rQ=;
+	s=korg; t=1780827069;
+	bh=/uD2iRGGO8kF9zK3D+yLkW91DMGO2VT+RznF37Hgqpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bV7aTo587kvCGCBh9XIW68rPhOxSozvdZASouNyNN717fhTmpMn0xZSTdyxb85AGi
-	 cfbVElIzDEeaYUFG4/vbe9XbOXGWwJjZqf8b32pDznzDQdpullFCh904uchwHg4Oxe
-	 WWPUAqEWu6XmQ+wDGt89UraqjqeYm6DTVPn9TEGU=
+	b=sJZZvP51iWL8+FV77cZOUjIQX6XJIiLS7SaVIxKWSrYzLHkTDXGzzWaWBEMVcWyfN
+	 9fBIV5ohMEzle50sFcOJ/QNywnueaH7HguRNJK3J8iih8Yq3BdoNOsnWSaqnrNIYSJ
+	 9wLSVcufhZJhd1xkUBSD1d2Brf6wsvjQFixRoW7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Danielle Ratson <danieller@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 055/332] ethtool: cmis: validate fw->size against start_cmd_payload_size
+Subject: [PATCH 6.18 037/315] net: Avoid checksumming unreadable skb tail on trim
 Date: Sun,  7 Jun 2026 11:57:04 +0200
-Message-ID: <20260607095730.148219575@linuxfoundation.org>
+Message-ID: <20260607095728.903365760@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,87 +66,138 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261027-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261042-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bjorn@kernel.org,m:leitao@debian.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AF31F64F6B6
+X-Rspamd-Queue-Id: 14F9764F71A
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Björn Töpel <bjorn@kernel.org>
 
-[ Upstream commit d5551f4c1800dc714cec86647bdd651ae0de923e ]
+[ Upstream commit 2e357f002c61fd76fd8f12468744a06a5ec48eaa ]
 
-cmis_fw_update_start_download() copies start_cmd_payload_size bytes
-from the firmware blob into the CDB LPL vendor_data[] payload without
-validating that the FW has enough data.
+pskb_trim_rcsum_slow() keeps CHECKSUM_COMPLETE valid by subtracting
+the checksum of the bytes removed from the skb tail. That assumes the
+removed bytes can be read.
 
-Since the start_cmd_payload_size can only be ~120B an image too short
-is most likely corrupted, so reject it.
+io_uring zcrx skbs may contain unreadable net_iov frags. With fbnic
+header/data split, small TCP/IPv4 packets can carry Ethernet padding
+in such a frag. ip_rcv_core() trims the skb to iph->tot_len before TCP
+sees it, and the CHECKSUM_COMPLETE adjustment then calls
+skb_checksum() on the padding.
 
-Fixes: c4f78134d45c ("ethtool: cmis_fw_update: add a layer for supporting firmware update using CDB")
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Danielle Ratson <danieller@nvidia.com>
-Link: https://patch.msgid.link/20260522231312.1710836-10-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This is exposed by IPv4 because small TCP/IPv4 frames can be shorter
+than the Ethernet minimum payload. TCP/IPv6 frames are large enough in
+the normal zcrx path, so they do not hit the same padding trim.
+
+Keep the existing checksum adjustment for readable skbs. If the
+remaining packet is fully linear, drop CHECKSUM_COMPLETE and let the
+stack validate the packet after trimming. If unreadable payload would
+remain, fail the trim; the checksum cannot be adjusted without reading
+the trimmed tail.
+
+Also clear skb->unreadable when trimming removes all frags.
+
+Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
+Signed-off-by: Björn Töpel <bjorn@kernel.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20260522120643.242974-1-bjorn@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/cmis_fw_update.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/core/skbuff.c | 31 +++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/net/ethtool/cmis_fw_update.c b/net/ethtool/cmis_fw_update.c
-index 16190c97e1f78c..291d04d2776a5c 100644
---- a/net/ethtool/cmis_fw_update.c
-+++ b/net/ethtool/cmis_fw_update.c
-@@ -130,6 +130,14 @@ cmis_fw_update_start_download(struct ethtool_cmis_cdb *cdb,
- 	u8 lpl_len;
- 	int err;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index a8911f1b90c15d..6618bfa70ca444 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -2739,6 +2739,8 @@ int ___pskb_trim(struct sk_buff *skb, unsigned int len)
+ 		skb->data_len  = 0;
+ 		skb_set_tail_pointer(skb, len);
+ 	}
++	if (!skb_shinfo(skb)->nr_frags && !skb_has_frag_list(skb))
++		skb->unreadable = 0;
  
-+	if (fw_update->fw->size < vendor_data_size) {
-+		ethnl_module_fw_flash_ntf_err(fw_update->dev,
-+					      &fw_update->ntf_params,
-+					      "Firmware image too small for module's start payload",
-+					      NULL);
-+		return -EINVAL;
+ 	if (!skb->sk || skb->destructor == sock_edemux)
+ 		skb_condense(skb);
+@@ -2746,16 +2748,37 @@ int ___pskb_trim(struct sk_buff *skb, unsigned int len)
+ }
+ EXPORT_SYMBOL(___pskb_trim);
+ 
++static int pskb_trim_rcsum_complete(struct sk_buff *skb, unsigned int len)
++{
++	int delta = skb->len - len;
++
++	if (skb_frags_readable(skb)) {
++		skb->csum = csum_block_sub(skb->csum,
++					   skb_checksum(skb, len, delta, 0),
++					   len);
++		return 0;
 +	}
 +
- 	pl.image_size = cpu_to_be32(fw_update->fw->size);
- 	memcpy(pl.vendor_data, fw_update->fw->data, vendor_data_size);
++	if (len > skb_headlen(skb))
++		return -EFAULT;
++
++	/* The trimmed bytes are unreadable, but the remaining packet can be
++	 * checksummed by software after trimming.
++	 */
++	skb->ip_summed = CHECKSUM_NONE;
++	return 0;
++}
++
+ /* Note : use pskb_trim_rcsum() instead of calling this directly
+  */
+ int pskb_trim_rcsum_slow(struct sk_buff *skb, unsigned int len)
+ {
+ 	if (skb->ip_summed == CHECKSUM_COMPLETE) {
+-		int delta = skb->len - len;
++		int err;
  
+-		skb->csum = csum_block_sub(skb->csum,
+-					   skb_checksum(skb, len, delta, 0),
+-					   len);
++		err = pskb_trim_rcsum_complete(skb, len);
++		if (err)
++			return err;
+ 	} else if (skb->ip_summed == CHECKSUM_PARTIAL) {
+ 		int hdlen = (len > skb_headlen(skb)) ? skb_headlen(skb) : len;
+ 		int offset = skb_checksum_start_offset(skb) + skb->csum_offset;
 -- 
 2.53.0
 
