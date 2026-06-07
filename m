@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LsADHOlGJWoqFwIAu9opvQ
-	(envelope-from <stable+bounces-261250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:41 +0200
+	id F4jZFgJIJWq8FwIAu9opvQ
+	(envelope-from <stable+bounces-261314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA4264F9F9
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C43B964FB27
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="WRdrKMK/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261250-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261250-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gJWR0oiA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261314-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261314-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 41F40300D601
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:23:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E3FD430258BA
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7418F326951;
-	Sun,  7 Jun 2026 10:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38EF6326924;
+	Sun,  7 Jun 2026 10:27:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0509328267;
-	Sun,  7 Jun 2026 10:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183F131E832;
+	Sun,  7 Jun 2026 10:27:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827832; cv=none; b=mv9hEH99b1H/+TOVEN7b9irE8SRiXNCbmlxYIigicnDVuqfCzP9nJEIFB1DNCCQEmr0ti2gK9AWc/z4G5MG6hNBrgV8QjADPe1ah8Yqo84VjLUuhQEbjVCjKrsqAjDE7G8wnt3fwSJCGpcX4tYB2Xn+P3ZW1r90PBPRylM931f0=
+	t=1780828076; cv=none; b=jK1CHIoiyiPhA0W+Q2CPcSKxkNdCpFRvNjt4eqNOoZjhOMxCWU22IxBJgK4LOcm2tZPetHjfWlqc2nQS8Yb/r3d/v0xfxCxSU1zcHarVw27QfoGaazpizvYnbtM0IYv6HILIlbedPSv5q9e2r9tUTtWfY+kbfpl3Yzc1WzlF8v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827832; c=relaxed/simple;
-	bh=9Rsuaxusiwxzdy02ZFj1vtpFIKuUIIRr42PNWq7QhZI=;
+	s=arc-20240116; t=1780828076; c=relaxed/simple;
+	bh=4B1TCOht/LJBUnV3/WFBG1s8vagKMLhrsRQg6t7We0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DstD8ZXysbM9g5hGK+xebkP2luXWnpvW/NypsaWZA0dj0OAXxbeN/YYi8VipYc3ovwbFWSkLQuCgINdgDb/jY9mFIwz9pRUf1bYiW28HSVDgOq2Ikw8U8gWhp7bgnzobYBny2pJEgQKVu9R+MNgLoDPHQshZgpxE54UpTPo5IsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRdrKMK/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751A91F00893;
-	Sun,  7 Jun 2026 10:23:48 +0000 (UTC)
+	 MIME-Version; b=FJRGe/c3D/Nq3NnI5F0rbExcz/AZlHlQfYPjI9DsIA65danacMkj005s3yZI5Q9xsGO4S9ucOZfRFWiT9YLfXSot7LIGYbw5Ziorf7otIEOww9cTFhAz7Hzw0tBqaVxBUTrsF3kztzqJ/krqmDHXFB2NBLDFWUMOq+avKxFKYWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJWR0oiA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FDF1F00893;
+	Sun,  7 Jun 2026 10:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827829;
-	bh=5j05GxVZAT1qmlkJL3noMvG0ptAb6/aX9HWhMvv/u3E=;
+	s=korg; t=1780828075;
+	bh=H+2Z5vM/jhsnQu7qrEd3/7Oa/VhAwWu8VA+B5vE059o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WRdrKMK/HJCSJQmhgwrumAjjMX1A8c/pgP63WoDJPN25QzJtte6XES3Wz7gFMnGtS
-	 YNaVoxaZgod4800vHPxQuZDR6tS3G9USy4JgxNy7IgK3JMC8KgLmqIx4fpb7QUvQsC
-	 9X+s0fbi84XDW+UjjFVCge7w13KbQgRLkr2FXCYo=
+	b=gJWR0oiAJ+Pa+HXqyQYAfqx1V1XeWr7MynRbHbD1Y5HGVZe60KN1BmxsiAwwI3hPY
+	 JRp0bnOi8AOkr0quZy5HT7YuXY9yIzM16X69XUyvP8XfeyrpohOyGltKs6Xjlc2P/D
+	 3ebUB+ZGejsTmKtWHKaALhawci348RSzVVz3clT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 7.0 125/332] usb: typec: altmodes/displayport: validate count before reading Status Update VDO
+Subject: [PATCH 6.18 107/315] usb: typec: ucsi: ccg: reject firmware images without a : record header
 Date: Sun,  7 Jun 2026 11:58:14 +0200
-Message-ID: <20260607095732.697414584@linuxfoundation.org>
+Message-ID: <20260607095731.579239928@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261250-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261314-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -97,44 +97,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0AA4264F9F9
+X-Rspamd-Queue-Id: C43B964FB27
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 8a18f896e667df491331371b55d4ad644dc51d60 upstream.
+commit d7486952bf74e546ee3748fb14b2d07881fa6273 upstream.
 
-A broken/malicious device can send the incorrect count for a status
-update VDO, which will cause the kernel to read uninitialized stack data
-and send it off elsewhere.
+do_flash() locates the first .cyacd record with
 
-Fix this up by correctly verifying the count for the update object.
+	p = strnchr(fw->data, fw->size, ':');
+	while (p < eof) {
+		s = strnchr(p + 1, eof - p - 1, ':');
+		...
+	}
+
+If the firmware image contains no ':' byte,  strnchr() returns NULL.
+NULL compares less than the valid kernel pointer eof, so the loop body
+runs and strnchr() is called with p + 1 == (void *)1 and a length of
+roughly (unsigned long)eof, causing a wonderful crash.
+
+The not_signed_fw fallthrough earlier in do_flash() and the chip-state
+branches in ccg_fw_update_needed() allow an unsigned blob to reach this
+loop, so a root user who can place a crafted file under /lib/firmware
+and write the do_flash sysfs attribute can trigger the oops.
+
+Bail out with -EINVAL when the initial strnchr() returns NULL.
 
 Assisted-by: gkh_clanker_t1000
 Cc: stable <stable@kernel.org>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/2026051350-reacquire-sculpture-4244@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026051405-posture-shrill-7884@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/typec/ucsi/ucsi_ccg.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -405,6 +405,8 @@ static int dp_altmode_vdm(struct typec_a
- 				dp->state = DP_STATE_EXIT_PRIME;
- 			break;
- 		case DP_CMD_STATUS_UPDATE:
-+			if (count < 2)
-+				break;
- 			dp->data.status = *vdo;
- 			ret = dp_altmode_status_update(dp);
- 			break;
+--- a/drivers/usb/typec/ucsi/ucsi_ccg.c
++++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+@@ -1242,6 +1242,11 @@ not_signed_fw:
+ 	 *****************************************************************/
+ 
+ 	p = strnchr(fw->data, fw->size, ':');
++	if (!p) {
++		dev_err(dev, "Bad FW format: no ':' record header found\n");
++		err = -EINVAL;
++		goto release_mem;
++	}
+ 	while (p < eof) {
+ 		s = strnchr(p + 1, eof - p - 1, ':');
+ 
 
 
 
