@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-261116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261148-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aPSUHE9GJWrWFgIAu9opvQ
-	(envelope-from <stable+bounces-261116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:07 +0200
+	id LPxFASRFJWofFgIAu9opvQ
+	(envelope-from <stable+bounces-261148-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:17:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D513064F93F
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A6164F78D
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:17:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jsAe7zTP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261116-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261116-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ANBFoCxa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261148-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261148-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12FE33054503
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:15:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5144030128D0
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B0331E850;
-	Sun,  7 Jun 2026 10:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9815B2DB7A3;
+	Sun,  7 Jun 2026 10:17:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67011212564;
-	Sun,  7 Jun 2026 10:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9EE4071DA;
+	Sun,  7 Jun 2026 10:17:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827314; cv=none; b=nUNsfNxBY8HqyfS84z54vMcwa4xgg5Ux8/TDF63sh9jQNXU0T1bf97sNsHo/tzd2is4Du+UBKCWB5/PZp67r70TEpfsQ+RTIn1t7aUtNr2pDeu2DLib1t6+Q6R3B1f9pStk2V1IBuOWjJQVswKSl4gkfOTyg05P9i7oTDqZ0erk=
+	t=1780827424; cv=none; b=UhkfFsS86N7v+wvmrIqQrVuKYNHF/U531p8J9E5E2HjIdLLgpeycyFKvboekZAx1bOWu2RbXAj8zNvFanLU0Ec+AyoH2opMBrNSVc+l9wQqOn/NdY1lsIVqDm2XdW11HEz4yQL6OQPl4TehEyxZRovUoLNUD1aJ0gB9RxWbqMtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827314; c=relaxed/simple;
-	bh=PaeMhnih5z/PMhYxeE2ylzmaLVOEXPhGWa40tNGRj1E=;
+	s=arc-20240116; t=1780827424; c=relaxed/simple;
+	bh=ZWPJKjpWQlllb6X17s1+2AuiY6iR9Mf+IA5BI0BD39g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KB/VHNUf/7FykGFahzIDwEA1VarnHjaJp9vseib25pshYpvimM0aDt4x/4Lavr8uf2S9RXrqWD78x7gVRYMV6CZhqfvd0xun8Ub1EF9/4y71WZkii1TxRlyzR4mUCx2PKxI1UWT8KQAXefVgGJ7Ws4uXUDNvCGTA50XyfMWV4Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsAe7zTP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB1A1F00893;
-	Sun,  7 Jun 2026 10:15:12 +0000 (UTC)
+	 MIME-Version; b=tLZjozRFAbTzfwANjAIn5GIq1figLZ1q8MMIFa/j/zdHxHL0YdPCLvYYxYRrcX+4yK48da5uPvlhxFDEmeSdBHdlVT2o/6S/uLe0lChtmHevvWGYaYgcV7nPzoWbb6GkBW3VFLUZIIAg6IOEOCu9A5ohaNjHHDsHgZmnwdbkmdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANBFoCxa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF151F00893;
+	Sun,  7 Jun 2026 10:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827313;
-	bh=YzSgKDLlXS7dsjBoH9dOzCSPz1PkhhLkdZLRreZ2u3Y=;
+	s=korg; t=1780827423;
+	bh=2QJ4ALtNWjns4tIVkOCM56Sk6dLZyJ2dcEFzCrlrVE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jsAe7zTPHOdbwSPs0Bj4E1UK5vNUCYLbsXVeJJhYRBeh7LICccUENpJlKbBbfX2/j
-	 8DPMlS00bR7CEAWr+3bkuaDZ1MF5iA7JN4OwYnd/DV/KHsQ864bOpz3nB3gM567TJE
-	 eB1D9ks6VOran9dh4ViD6SiGgNcrJs3o8HKBd7aQ=
+	b=ANBFoCxaAKmmYRSAyZFK9Cp67QOifQmtpgg4vUMdx+ukrW41dFuTttp688r8cR2V/
+	 Ut+fYytf42Jjs0MrXfXW5+sMwZ5Uj6XTKpQpvXldZ9sykJ7JBjwN3IS7zDldpu82bQ
+	 EzaFU+r/otDswQCXr3STq3be82FkPX/9We5OFyvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Nogueira <victor@mojatatu.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Danielle Ratson <danieller@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 082/332] net/sched: Fix ethx:ingress -> ethy:egress -> ethx:ingress mirred loop
+Subject: [PATCH 6.12 054/307] ethtool: cmis: fix u16-to-u8 truncation of msleep_pre_rpl
 Date: Sun,  7 Jun 2026 11:57:31 +0200
-Message-ID: <20260607095731.157164846@linuxfoundation.org>
+Message-ID: <20260607095729.710386624@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261116-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261148-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:victor@mojatatu.com,m:stephen@networkplumber.org,m:jhs@mojatatu.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,143 +96,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,networkplumber.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D513064F93F
+X-Rspamd-Queue-Id: 72A6164F78D
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit db875221ab08d213a83bf30196ae8b64d55a3403 ]
+[ Upstream commit 3e8c3d464c36bb342fe377b026577c7ec27fdbb4 ]
 
-When mirred redirects to ingress (from either ingress or egress) the loop
-state from sched_mirred_dev array dev is lost because of 1) the packet
-deferral into the backlog and 2) the fact the sched_mirred_dev array is
-cleared. In such cases, if there was a loop we won't discover it.
+ethtool_cmis_cdb_compose_args() accepts msleep_pre_rpl as u16 but stores
+it into the u8 field ethtool_cmis_cdb_cmd_args::msleep_pre_rpl, silently
+truncating values >= 256. Seven of the nine call sites pass 1000 ms
+(it's the third argument from the end).
 
-Here's a simple test to reproduce:
-ip a add dev port0 10.10.10.11/24
-
-tc qdisc add dev port0 clsact
-tc filter add dev port0 egress protocol ip \
-   prio 10 matchall action mirred ingress redirect dev port1
-
-tc qdisc add dev port1 clsact
-tc filter add dev port1 ingress protocol ip \
-   prio 10 matchall action mirred egress redirect dev port0
-
-ping -c 1 -W0.01 10.10.10.10
-
-Fixes: fe946a751d9b ("net/sched: act_mirred: add loop detection")
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260525122556.973584-6-jhs@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: a39c84d79625 ("ethtool: cmis_cdb: Add a layer for supporting CDB commands")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Danielle Ratson <danieller@nvidia.com>
+Link: https://patch.msgid.link/20260522231312.1710836-8-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_mirred.c | 47 +++++++++++++++++++++++++++---------------
- 1 file changed, 30 insertions(+), 17 deletions(-)
+ net/ethtool/cmis.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-index 2c5a7a321a9438..dd5e7ea7ef2652 100644
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -26,6 +26,10 @@
- #include <net/tc_act/tc_mirred.h>
- #include <net/tc_wrapper.h>
- 
-+#define MIRRED_DEFER_LIMIT 3
-+_Static_assert(MIRRED_DEFER_LIMIT <= 3,
-+	       "MIRRED_DEFER_LIMIT exceeds tc_depth bitfield width");
-+
- static LIST_HEAD(mirred_list);
- static DEFINE_SPINLOCK(mirred_list_lock);
- 
-@@ -234,12 +238,15 @@ tcf_mirred_forward(bool at_ingress, bool want_ingress, struct sk_buff *skb)
- {
- 	int err;
- 
--	if (!want_ingress)
-+	if (!want_ingress) {
- 		err = tcf_dev_queue_xmit(skb, dev_queue_xmit);
--	else if (!at_ingress)
--		err = netif_rx(skb);
--	else
--		err = netif_receive_skb(skb);
-+	} else {
-+		skb->tc_depth++;
-+		if (!at_ingress)
-+			err = netif_rx(skb);
-+		else
-+			err = netif_receive_skb(skb);
-+	}
- 
- 	return err;
- }
-@@ -426,6 +433,7 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- 	struct netdev_xmit *xmit;
- 	bool m_mac_header_xmit;
- 	struct net_device *dev;
-+	bool want_ingress;
- 	int i, m_eaction;
- 	u32 blockid;
- 
-@@ -434,7 +442,8 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- #else
- 	xmit = this_cpu_ptr(&softnet_data.xmit);
- #endif
--	if (unlikely(xmit->sched_mirred_nest >= MIRRED_NEST_LIMIT)) {
-+	if (unlikely(xmit->sched_mirred_nest >= MIRRED_NEST_LIMIT ||
-+		     skb->tc_depth >= MIRRED_DEFER_LIMIT)) {
- 		net_warn_ratelimited("Packet exceeded mirred recursion limit on dev %s\n",
- 				     netdev_name(skb->dev));
- 		return TC_ACT_SHOT;
-@@ -453,23 +462,27 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- 		tcf_action_inc_overlimit_qstats(&m->common);
- 		return retval;
- 	}
--	for (i = 0; i < xmit->sched_mirred_nest; i++) {
--		if (xmit->sched_mirred_dev[i] != dev)
--			continue;
--		pr_notice_once("tc mirred: loop on device %s\n",
--			       netdev_name(dev));
--		tcf_action_inc_overlimit_qstats(&m->common);
--		return retval;
--	}
- 
--	xmit->sched_mirred_dev[xmit->sched_mirred_nest++] = dev;
-+	m_eaction = READ_ONCE(m->tcfm_eaction);
-+	want_ingress = tcf_mirred_act_wants_ingress(m_eaction);
-+	if (!want_ingress) {
-+		for (i = 0; i < xmit->sched_mirred_nest; i++) {
-+			if (xmit->sched_mirred_dev[i] != dev)
-+				continue;
-+			pr_notice_once("tc mirred: loop on device %s\n",
-+				       netdev_name(dev));
-+			tcf_action_inc_overlimit_qstats(&m->common);
-+			return retval;
-+		}
-+		xmit->sched_mirred_dev[xmit->sched_mirred_nest++] = dev;
-+	}
- 
- 	m_mac_header_xmit = READ_ONCE(m->tcfm_mac_header_xmit);
--	m_eaction = READ_ONCE(m->tcfm_eaction);
- 
- 	retval = tcf_mirred_to_dev(skb, m, dev, m_mac_header_xmit, m_eaction,
- 				   retval);
--	xmit->sched_mirred_nest--;
-+	if (!want_ingress)
-+		xmit->sched_mirred_nest--;
- 
- 	return retval;
- }
+diff --git a/net/ethtool/cmis.h b/net/ethtool/cmis.h
+index 3e7c293af78c4d..aa32a675b8f8d2 100644
+--- a/net/ethtool/cmis.h
++++ b/net/ethtool/cmis.h
+@@ -59,9 +59,9 @@ struct ethtool_cmis_cdb_request {
+  * struct ethtool_cmis_cdb_cmd_args - CDB commands execution arguments
+  * @req: CDB command fields as described in the CMIS standard.
+  * @max_duration: Maximum duration time for command completion in msec.
++ * @msleep_pre_rpl: Waiting time before checking reply in msec.
+  * @read_write_len_ext: Allowable additional number of byte octets to the LPL
+  *			in a READ or a WRITE commands.
+- * @msleep_pre_rpl: Waiting time before checking reply in msec.
+  * @rpl_exp_len: Expected reply length in bytes.
+  * @flags: Validation flags for CDB commands.
+  * @err_msg: Error message to be sent to user space.
+@@ -69,8 +69,8 @@ struct ethtool_cmis_cdb_request {
+ struct ethtool_cmis_cdb_cmd_args {
+ 	struct ethtool_cmis_cdb_request req;
+ 	u16				max_duration;
++	u16				msleep_pre_rpl;
+ 	u8				read_write_len_ext;
+-	u8				msleep_pre_rpl;
+ 	u8                              rpl_exp_len;
+ 	u8				flags;
+ 	char				*err_msg;
 -- 
 2.53.0
 
