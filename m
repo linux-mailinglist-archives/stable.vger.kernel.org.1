@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-261543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nx8fKHZMJWqYGQIAu9opvQ
-	(envelope-from <stable+bounces-261543-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:22 +0200
+	id cBkUNG1LJWpOGQIAu9opvQ
+	(envelope-from <stable+bounces-261565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0073B650030
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE0464FF46
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="bfr9LJ/I";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261543-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261543-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RwJgZalW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261565-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261565-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADE12304D5E1
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:42:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 476F730173B3
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343BD3264F5;
-	Sun,  7 Jun 2026 10:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360AF31E850;
+	Sun,  7 Jun 2026 10:43:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D67870808;
-	Sun,  7 Jun 2026 10:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133091E98EF;
+	Sun,  7 Jun 2026 10:43:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828951; cv=none; b=AUlFZ7EkKgsJu6vUnFT36m1iR1Tn9oymSEfueJeWr1Vy2II1enmf+aOmF3rUfD2ICwilrMqIx+mQmD06eXx45e02LlgTZA3YUzCWL6MNxVRoDmqg8z48socUb6OsfDRYN9qwVLOsNZ4tNtgb/sbqE3A0qvIUzUj5YnXXizpWLD0=
+	t=1780829035; cv=none; b=BX28MMIKmZSO0VOosZfqMnCw3rcJ1taxnOSTgEoehnvsVtadG6iv5ytk9srUceoL1G0Iy5wONAbpPiK9fBHOaDZ0EAxYD9s//OhMze9RhlvfyCXYfL8JE7J3mVgbd98xnW2OpXdBVdFm4w5MBsZ1hjeMmi4x9hqvzvbUB4Ij5jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828951; c=relaxed/simple;
-	bh=eMvw+OFK8YnLQDF4TD+h5FCy6IP7P6puTAZrGbiNCzc=;
+	s=arc-20240116; t=1780829035; c=relaxed/simple;
+	bh=cX/oruR2RRnaeqXM+RJg26JqYCgdkKlzUnks4OBJcmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lEQL/2rVCl/b9xtASG3wQkJ7yvSTCwm316KP0avPoDJAz7DnKFxDpkA1DwBcuvxGfiZbXIBJ2pds7jL2aVlP/DXpKrK0cTqidkbfoKgBCpzdHcO02tCi6kkS7FMW9e7ie0VayA7T4HPeYAuq8MwagRBS1kSq1/85d/qBnvDGQCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfr9LJ/I; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC431F00893;
-	Sun,  7 Jun 2026 10:42:29 +0000 (UTC)
+	 MIME-Version; b=s3eGgksQqHCGAmcLx7CKINNQVmzhowHDZu0X6e/ZJSBVCDi50q9B5oJnvsqnk8YMiylifx3iN/ef5TkeCrnyFM6OIoT1nfF1fx6Ip8vvYaNTfdQmuj/kd0oRRdo1BPCTP0O7c9y4TVprq6USQ4n66GTPhaRluOdG6NvQGkfXU5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwJgZalW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8B91F00893;
+	Sun,  7 Jun 2026 10:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828949;
-	bh=WZ+qRCYTJz3eWJL8OSzVO3BMLzgdyOnH7pdNtnYuNew=;
+	s=korg; t=1780829034;
+	bh=Ie4oKlKSQ/tUsrWDEzXHNl5Khp4cgdFhlg5YZNFF1BM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bfr9LJ/Ica5akJHS50+wxMFATVpyR9puhrrInHcE1ZTD3bMT5vWiLdf38n62mnAc5
-	 le7eWDToYUEtJrtY8Qf/Pdf1xZicIOECF9kizDpnSP2qylglARNrgizmQE3fT/qUmE
-	 rkr80gHwMMXHXSNvzuKDkNbPmluz/LCSBUJpLNU4=
+	b=RwJgZalW4tfxSQj6KUQzR5flE8ifL3k3OM7KFhOyVo7U0etomxHD3c7lVgUgUHHg2
+	 S0h6lyX5EqjkiE0LRY0kpOEKQh3pv65H8nxkxxVnt3CZvCl5bgyDXHquLxyuv0RT8j
+	 1r0MipiDVBTW3nkFsCJYYpn7YC2ZFrgUfORHaXVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 7.0 229/332] ALSA: firewire-motu: Protect register DSP event queue positions
+	Dmitriy Zharov <contact@zharov.dev>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.18 211/315] Input: xpad - add support for ASUS ROG RAIKIRI II
 Date: Sun,  7 Jun 2026 11:59:58 +0200
-Message-ID: <20260607095736.467109475@linuxfoundation.org>
+Message-ID: <20260607095735.307021880@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261543-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cassiogabrielcontato@gmail.com,m:o-takashi@sakamocchi.jp,m:tiwai@suse.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,sakamocchi.jp,suse.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261565-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:contact@zharov.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,zharov.dev,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sakamocchi.jp:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0073B650030
+X-Rspamd-Queue-Id: 3DE0464FF46
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Dmitriy Zharov <contact@zharov.dev>
 
-commit 98fb1c1bb11e29eb609b7200a25e136e05aa4498 upstream.
+commit c897cf120696b94f56ed0f3197ba9a77071a59ec upstream.
 
-The register DSP event queue is updated under parser->lock, but
-snd_motu_register_dsp_message_parser_count_event() reads pull_pos and
-push_pos without the lock.
-snd_motu_register_dsp_message_parser_copy_event() also reads both queue
-positions before taking the lock.
+Add the VID/PIDs for the ASUS ROG RAIKIRI II controller to xpad_device
+and the VID to xpad_table. The controller has a physical PC/XBOX toggle
+which switches between XBOX360 and XBOXONE protocols.
 
-Protect these accesses with parser->lock as well. This keeps the hwdep
-poll/read path consistent with the producer side and with the cached
-meter/parameter accessors.
-
-Fixes: 634ec0b2906e ("ALSA: firewire-motu: notify event for parameter change in register DSP model")
+Signed-off-by: Dmitriy Zharov <contact@zharov.dev>
+Link: https://patch.msgid.link/20260430183522.122151-1-contact@zharov.dev
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260521-alsa-firewire-motu-event-locking-v1-1-708e1c2b5e56@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/firewire/motu/motu-register-dsp-message-parser.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/input/joystick/xpad.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/sound/firewire/motu/motu-register-dsp-message-parser.c
-+++ b/sound/firewire/motu/motu-register-dsp-message-parser.c
-@@ -386,6 +386,8 @@ unsigned int snd_motu_register_dsp_messa
- {
- 	struct msg_parser *parser = motu->message_parser;
- 
-+	guard(spinlock_irqsave)(&parser->lock);
-+
- 	if (parser->pull_pos > parser->push_pos)
- 		return EVENT_QUEUE_SIZE - parser->pull_pos + parser->push_pos;
- 	else
-@@ -395,13 +397,14 @@ unsigned int snd_motu_register_dsp_messa
- bool snd_motu_register_dsp_message_parser_copy_event(struct snd_motu *motu, u32 *event)
- {
- 	struct msg_parser *parser = motu->message_parser;
--	unsigned int pos = parser->pull_pos;
--
--	if (pos == parser->push_pos)
--		return false;
-+	unsigned int pos;
- 
- 	guard(spinlock_irqsave)(&parser->lock);
- 
-+	if (parser->pull_pos == parser->push_pos)
-+		return false;
-+
-+	pos = parser->pull_pos;
- 	*event = parser->event_queue[pos];
- 
- 	++pos;
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -220,6 +220,10 @@ static const struct xpad_device {
+ 	{ 0x07ff, 0xffff, "Mad Catz GamePad", 0, XTYPE_XBOX360 },
+ 	{ 0x0b05, 0x1a38, "ASUS ROG RAIKIRI", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
+ 	{ 0x0b05, 0x1abb, "ASUS ROG RAIKIRI PRO", 0, XTYPE_XBOXONE },
++	{ 0x0b05, 0x1c91, "ASUS ROG RAIKIRI II", 0, XTYPE_XBOX360 },
++	{ 0x0b05, 0x1c92, "ASUS ROG RAIKIRI II WIRELESS", 0, XTYPE_XBOX360 },
++	{ 0x0b05, 0x1c96, "ASUS ROG RAIKIRI II XBOX", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
++	{ 0x0b05, 0x1d04, "ASUS ROG RAIKIRI II XBOX WIRELESS", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
+ 	{ 0x0c12, 0x0005, "Intec wireless", 0, XTYPE_XBOX },
+ 	{ 0x0c12, 0x8801, "Nyko Xbox Controller", 0, XTYPE_XBOX },
+ 	{ 0x0c12, 0x8802, "Zeroplus Xbox Controller", 0, XTYPE_XBOX },
+@@ -542,6 +546,7 @@ static const struct usb_device_id xpad_t
+ 	{ USB_DEVICE(0x0738, 0x4540) },		/* Mad Catz Beat Pad */
+ 	XPAD_XBOXONE_VENDOR(0x0738),		/* Mad Catz FightStick TE 2 */
+ 	XPAD_XBOX360_VENDOR(0x07ff),		/* Mad Catz Gamepad */
++	XPAD_XBOX360_VENDOR(0x0b05),		/* ASUS controllers */
+ 	XPAD_XBOXONE_VENDOR(0x0b05),		/* ASUS controllers */
+ 	XPAD_XBOX360_VENDOR(0x0c12),		/* Zeroplus X-Box 360 controllers */
+ 	XPAD_XBOX360_VENDOR(0x0db0),		/* Micro Star International X-Box 360 controllers */
 
 
 
