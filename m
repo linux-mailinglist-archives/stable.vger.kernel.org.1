@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-261152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261191-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4Z3EKjdHJWpYFwIAu9opvQ
-	(envelope-from <stable+bounces-261152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:59 +0200
+	id 4cL4D9hFJWqLFgIAu9opvQ
+	(envelope-from <stable+bounces-261191-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:20:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0948364FA6C
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 024CF64F897
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:20:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PLNxvp7s;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261152-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261152-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=c4CrEAzU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261191-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261191-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B3E3307AE76
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:17:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 35298300383C
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E882DB7A3;
-	Sun,  7 Jun 2026 10:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1546C2E3AF1;
+	Sun,  7 Jun 2026 10:20:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F944071DA;
-	Sun,  7 Jun 2026 10:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FB54071DA;
+	Sun,  7 Jun 2026 10:19:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827438; cv=none; b=q0v8UyVQWW0kagKRewPFfJeneZ6lWqlC0cRF+nn5pYysL7Q+Z9i0tVKo2iLqDerrst1wyLxio49uCq3A5EDHggc5RJXnb757mYfU2jC6iVJ+GUZsFr2RHWFjtVO6qgITxqu2aBenmxtSq2sE5N01jd9Ldu5ZxTDrr1+tKwwNABw=
+	t=1780827600; cv=none; b=HfLqmh0vYTJ/81/f3NN2Oc4G7gtWcmv7obSHs5LfTBkAEW66ADsMUpwaF2zrwX1DQ2f1nubu9b8D+3+KoxWyTEUlqBiXraqvLq6aH2RsDdNBRkLBmxXTzMjfUZK++cEyOruOR1nWbF/NsmNnHqtx5D/ykZ32Bhx6D3swoi3Sx4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827438; c=relaxed/simple;
-	bh=PP3nO/QFg+l1DYB0rfABtXMAzi7BxjS0l15RJWPCPPk=;
+	s=arc-20240116; t=1780827600; c=relaxed/simple;
+	bh=vzoKuirsAhsvS7o6iyYsZ9HXYV5J/qJFDe6d40RmD48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJqIRctpxNBEjwCeEI0x23s+fqF3TiocZQhF3rulS90hBomVlBGS8YmcjlXp5EKq5iBIL6zxN1vw2NBdTdVx0i06cwwgxlsxgv7JbG19JEVnKNOUEXBUSvPg0WRuqyDDPX/lMAyfTwTtGrUb1y98XZPHP1924LhZMF7v6c9N6l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLNxvp7s; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8755C1F00893;
-	Sun,  7 Jun 2026 10:17:16 +0000 (UTC)
+	 MIME-Version; b=aWCCt67KISAWwW/iLn2uhmA4+WDfsLhvCNJvCRSKH9Bho+MXnidPhXxee3uEwcW7oFxcRTXIo7nsF/yF4hC9J6jGuw8xc7sQ5uljVSMEwCVBtGTwghAq+5Amw3hJ1SVw8VGng57OFWCzLDCVDmOzQcMFGY0BjA5yX0J0KNILmzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4CrEAzU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEE81F00893;
+	Sun,  7 Jun 2026 10:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827437;
-	bh=n51MvPGTzNEqFjf+1JtsqpHFE8nAvqdpP2pYlE/ya+4=;
+	s=korg; t=1780827599;
+	bh=n3j4iDJi9sDyJ8Xto0HPNYXhBvvYHsJOTFmpsbmoDMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PLNxvp7sLJet04V4AC6ES/254hqc2TE7lK4W/YR8Zdf6GQ7ZL0hULDFAFuNoWzncp
-	 v/6hOyV2luXnhW2ZFg59iCiQ66u1OuWcd3XJM+s7TZfmNU/sVoGG0tS8q6+/uUImR1
-	 sk56giEKUY9FsqWT6vHACftynExqwMQjZFYoyWCg=
+	b=c4CrEAzUNZHtE2vQBIMC6y/alhUvXyTIKRs30rvcdcBhSf39cq3xWo/WUOf3m22s7
+	 MleLDKRy45VJxVHlQTv8wqJtjNsux52pv/ZzWGkUmi//rWk7zaoVcc5K/zfUjMzWSh
+	 of4ONkFfzmc6wZvxS1DDdkLfXyEtuZfBWbAC1rwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+8ed98cbd0161632bce95@syzkaller.appspotmail.com,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 093/332] dpll: zl3073x: detect DPLL channel count from chip ID at runtime
+Subject: [PATCH 6.12 065/307] bonding: refuse to enslave CAN devices
 Date: Sun,  7 Jun 2026 11:57:42 +0200
-Message-ID: <20260607095731.571473787@linuxfoundation.org>
+Message-ID: <20260607095730.139796857@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,462 +69,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261152-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ivecera@redhat.com,m:horms@kernel.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261191-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+8ed98cbd0161632bce95@syzkaller.appspotmail.com,m:socketcan@hartkopp.net,m:jv@jvosburgh.net,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,8ed98cbd0161632bce95];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,syzkaller.appspot.com:url,appspotmail.com:email,hartkopp.net:email,jvosburgh.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0948364FA6C
+X-Rspamd-Queue-Id: 024CF64F897
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit 4845f2fff730f0cdf8f7fe6401c8b871891cf1cb ]
+[ Upstream commit 8ba68464e4787b6a7ec938826e16124df20fd23d ]
 
-Replace the five per-variant zl3073x_chip_info structures and their
-exported symbol definitions with a single consolidated chip ID lookup
-table. The chip variant is now detected at runtime by reading the chip
-ID register from hardware and looking it up in the table, rather than
-being selected at compile time via the bus driver match data.
+syzbot reported a kernel paging request crash in
+can_rx_unregister() inside net/can/af_can.c. The crash occurs
+because a virtual CAN device (vxcan) is being enslaved to a
+bonding master.
 
-Repurpose struct zl3073x_chip_info to hold a single chip ID, its
-channel count, and a flags field. Introduce enum zl3073x_flags with
-ZL3073X_FLAG_REF_PHASE_COMP_32 to replace the chip_id switch statement
-in zl3073x_dev_is_ref_phase_comp_32bit(). Store a pointer to the
-detected chip_info entry in struct zl3073x_dev for runtime access.
+During the enslavement process, the bonding driver mutates
+and modifies the network device states to fit an Ethernet-like
+aggregation model. However, CAN devices operate on a completely
+different Layer 2 architecture, relying on the CAN mid-layer
+private data structure (can_ml_priv) instead of standard
+Ethernet structures. Since bonding does not initialize or
+maintain these CAN structures, subsequent operations on the
+half-enslaved interface (such as closing associated sockets
+via isotp_release) lead to a null-pointer dereference when
+accessing the CAN receiver lists.
 
-This simplifies the bus drivers by removing per-variant .data and
-.driver_data references from the I2C/SPI match tables, and makes
-adding support for new chip variants a single-line table addition.
+Bonding CAN interfaces is architecturally invalid as CAN lacks
+MAC addresses, ARP capabilities, and standard Ethernet
+link-layer mechanisms. While generic loopback devices are
+blocked globally in net/core/dev.c, virtual CAN devices
+bypass this check because they do not carry the IFF_LOOPBACK
+flag, despite acting as local software-loopbacks.
 
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Link: https://patch.msgid.link/20260227105300.710272-2-ivecera@redhat.com
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: d733f519f644 ("dpll: zl3073x: use __dpll_device_change_ntf() and remove change_work")
+Fix this by explicitly blocking network devices of type
+ARPHRD_CAN from being enslaved at the very beginning of
+bond_enslave(). This prevents illegal state mutations,
+eliminates the resulting KASAN crashes, and avoids potential
+memory leaks from incomplete socket cleanups.
+
+As the CAN support has been added a long time after bonding
+the Fixes-tag points to the introduction of ARPHRD_CAN that
+would have needed a specific handling in bonding_main.c.
+
+Fixes: cd05acfe65ed ("[CAN]: Allocate protocol numbers for PF_CAN")
+Reported-by: syzbot+8ed98cbd0161632bce95@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8ed98cbd0161632bce95
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20260526-bonding-candev-v1-1-ba1df400918a@hartkopp.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dpll/zl3073x/core.c | 118 ++++++++++--------------------------
- drivers/dpll/zl3073x/core.h |  57 +++++++++--------
- drivers/dpll/zl3073x/i2c.c  |  37 ++++-------
- drivers/dpll/zl3073x/spi.c  |  37 ++++-------
- 4 files changed, 82 insertions(+), 167 deletions(-)
+ drivers/net/bonding/bond_main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/dpll/zl3073x/core.c b/drivers/dpll/zl3073x/core.c
-index 37f3c33570eef2..c8af3430104505 100644
---- a/drivers/dpll/zl3073x/core.c
-+++ b/drivers/dpll/zl3073x/core.c
-@@ -20,79 +20,30 @@
- #include "dpll.h"
- #include "regs.h"
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 1b2cd7f870353c..c6b114946d9a5a 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1927,6 +1927,12 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 	int link_reporting;
+ 	int res = 0, i;
  
--/* Chip IDs for zl30731 */
--static const u16 zl30731_ids[] = {
--	0x0E93,
--	0x1E93,
--	0x2E93,
-+#define ZL_CHIP_INFO(_id, _nchannels, _flags)				\
-+	{ .id = (_id), .num_channels = (_nchannels), .flags = (_flags) }
++	if (slave_dev->type == ARPHRD_CAN) {
++		BOND_NL_ERR(bond_dev, extack,
++			    "CAN devices cannot be enslaved");
++		return -EPERM;
++	}
 +
-+static const struct zl3073x_chip_info zl3073x_chip_ids[] = {
-+	ZL_CHIP_INFO(0x0E30, 2, ZL3073X_FLAG_REF_PHASE_COMP_32),
-+	ZL_CHIP_INFO(0x0E93, 1, ZL3073X_FLAG_REF_PHASE_COMP_32),
-+	ZL_CHIP_INFO(0x0E94, 2, ZL3073X_FLAG_REF_PHASE_COMP_32),
-+	ZL_CHIP_INFO(0x0E95, 3, ZL3073X_FLAG_REF_PHASE_COMP_32),
-+	ZL_CHIP_INFO(0x0E96, 4, ZL3073X_FLAG_REF_PHASE_COMP_32),
-+	ZL_CHIP_INFO(0x0E97, 5, ZL3073X_FLAG_REF_PHASE_COMP_32),
-+	ZL_CHIP_INFO(0x1E93, 1, 0),
-+	ZL_CHIP_INFO(0x1E94, 2, 0),
-+	ZL_CHIP_INFO(0x1E95, 3, 0),
-+	ZL_CHIP_INFO(0x1E96, 4, 0),
-+	ZL_CHIP_INFO(0x1E97, 5, 0),
-+	ZL_CHIP_INFO(0x1F60, 2, ZL3073X_FLAG_REF_PHASE_COMP_32),
-+	ZL_CHIP_INFO(0x2E93, 1, 0),
-+	ZL_CHIP_INFO(0x2E94, 2, 0),
-+	ZL_CHIP_INFO(0x2E95, 3, 0),
-+	ZL_CHIP_INFO(0x2E96, 4, 0),
-+	ZL_CHIP_INFO(0x2E97, 5, 0),
-+	ZL_CHIP_INFO(0x3FC4, 2, 0),
- };
- 
--const struct zl3073x_chip_info zl30731_chip_info = {
--	.ids = zl30731_ids,
--	.num_ids = ARRAY_SIZE(zl30731_ids),
--	.num_channels = 1,
--};
--EXPORT_SYMBOL_NS_GPL(zl30731_chip_info, "ZL3073X");
--
--/* Chip IDs for zl30732 */
--static const u16 zl30732_ids[] = {
--	0x0E30,
--	0x0E94,
--	0x1E94,
--	0x1F60,
--	0x2E94,
--	0x3FC4,
--};
--
--const struct zl3073x_chip_info zl30732_chip_info = {
--	.ids = zl30732_ids,
--	.num_ids = ARRAY_SIZE(zl30732_ids),
--	.num_channels = 2,
--};
--EXPORT_SYMBOL_NS_GPL(zl30732_chip_info, "ZL3073X");
--
--/* Chip IDs for zl30733 */
--static const u16 zl30733_ids[] = {
--	0x0E95,
--	0x1E95,
--	0x2E95,
--};
--
--const struct zl3073x_chip_info zl30733_chip_info = {
--	.ids = zl30733_ids,
--	.num_ids = ARRAY_SIZE(zl30733_ids),
--	.num_channels = 3,
--};
--EXPORT_SYMBOL_NS_GPL(zl30733_chip_info, "ZL3073X");
--
--/* Chip IDs for zl30734 */
--static const u16 zl30734_ids[] = {
--	0x0E96,
--	0x1E96,
--	0x2E96,
--};
--
--const struct zl3073x_chip_info zl30734_chip_info = {
--	.ids = zl30734_ids,
--	.num_ids = ARRAY_SIZE(zl30734_ids),
--	.num_channels = 4,
--};
--EXPORT_SYMBOL_NS_GPL(zl30734_chip_info, "ZL3073X");
--
--/* Chip IDs for zl30735 */
--static const u16 zl30735_ids[] = {
--	0x0E97,
--	0x1E97,
--	0x2E97,
--};
--
--const struct zl3073x_chip_info zl30735_chip_info = {
--	.ids = zl30735_ids,
--	.num_ids = ARRAY_SIZE(zl30735_ids),
--	.num_channels = 5,
--};
--EXPORT_SYMBOL_NS_GPL(zl30735_chip_info, "ZL3073X");
--
- #define ZL_RANGE_OFFSET		0x80
- #define ZL_PAGE_SIZE		0x80
- #define ZL_NUM_PAGES		256
-@@ -942,7 +893,7 @@ static void zl3073x_dev_dpll_fini(void *ptr)
- }
- 
- static int
--zl3073x_devm_dpll_init(struct zl3073x_dev *zldev, u8 num_dplls)
-+zl3073x_devm_dpll_init(struct zl3073x_dev *zldev)
- {
- 	struct kthread_worker *kworker;
- 	struct zl3073x_dpll *zldpll;
-@@ -952,7 +903,7 @@ zl3073x_devm_dpll_init(struct zl3073x_dev *zldev, u8 num_dplls)
- 	INIT_LIST_HEAD(&zldev->dplls);
- 
- 	/* Allocate all DPLLs */
--	for (i = 0; i < num_dplls; i++) {
-+	for (i = 0; i < zldev->info->num_channels; i++) {
- 		zldpll = zl3073x_dpll_alloc(zldev, i);
- 		if (IS_ERR(zldpll)) {
- 			dev_err_probe(zldev->dev, PTR_ERR(zldpll),
-@@ -992,14 +943,12 @@ zl3073x_devm_dpll_init(struct zl3073x_dev *zldev, u8 num_dplls)
- /**
-  * zl3073x_dev_probe - initialize zl3073x device
-  * @zldev: pointer to zl3073x device
-- * @chip_info: chip info based on compatible
-  *
-  * Common initialization of zl3073x device structure.
-  *
-  * Returns: 0 on success, <0 on error
-  */
--int zl3073x_dev_probe(struct zl3073x_dev *zldev,
--		      const struct zl3073x_chip_info *chip_info)
-+int zl3073x_dev_probe(struct zl3073x_dev *zldev)
- {
- 	u16 id, revision, fw_ver;
- 	unsigned int i;
-@@ -1011,18 +960,17 @@ int zl3073x_dev_probe(struct zl3073x_dev *zldev,
- 	if (rc)
- 		return rc;
- 
--	/* Check it matches */
--	for (i = 0; i < chip_info->num_ids; i++) {
--		if (id == chip_info->ids[i])
-+	/* Detect chip variant */
-+	for (i = 0; i < ARRAY_SIZE(zl3073x_chip_ids); i++) {
-+		if (zl3073x_chip_ids[i].id == id)
- 			break;
- 	}
- 
--	if (i == chip_info->num_ids) {
-+	if (i == ARRAY_SIZE(zl3073x_chip_ids))
- 		return dev_err_probe(zldev->dev, -ENODEV,
--				     "Unknown or non-match chip ID: 0x%0x\n",
--				     id);
--	}
--	zldev->chip_id = id;
-+				     "Unknown chip ID: 0x%04x\n", id);
-+
-+	zldev->info = &zl3073x_chip_ids[i];
- 
- 	/* Read revision, firmware version and custom config version */
- 	rc = zl3073x_read_u16(zldev, ZL_REG_REVISION, &revision);
-@@ -1061,7 +1009,7 @@ int zl3073x_dev_probe(struct zl3073x_dev *zldev,
- 				     "Failed to initialize mutex\n");
- 
- 	/* Register DPLL channels */
--	rc = zl3073x_devm_dpll_init(zldev, chip_info->num_channels);
-+	rc = zl3073x_devm_dpll_init(zldev);
- 	if (rc)
- 		return rc;
- 
-diff --git a/drivers/dpll/zl3073x/core.h b/drivers/dpll/zl3073x/core.h
-index fd2af3c62a7d5c..fde5c8371fbd28 100644
---- a/drivers/dpll/zl3073x/core.h
-+++ b/drivers/dpll/zl3073x/core.h
-@@ -30,12 +30,32 @@ struct zl3073x_dpll;
- #define ZL3073X_NUM_PINS	(ZL3073X_NUM_INPUT_PINS + \
- 				 ZL3073X_NUM_OUTPUT_PINS)
- 
-+enum zl3073x_flags {
-+	ZL3073X_FLAG_REF_PHASE_COMP_32_BIT,
-+	ZL3073X_FLAGS_NBITS /* must be last */
-+};
-+
-+#define __ZL3073X_FLAG(name)	BIT(ZL3073X_FLAG_ ## name ## _BIT)
-+#define ZL3073X_FLAG_REF_PHASE_COMP_32	__ZL3073X_FLAG(REF_PHASE_COMP_32)
-+
-+/**
-+ * struct zl3073x_chip_info - chip variant identification
-+ * @id: chip ID
-+ * @num_channels: number of DPLL channels supported by this variant
-+ * @flags: chip variant flags
-+ */
-+struct zl3073x_chip_info {
-+	u16		id;
-+	u8		num_channels;
-+	unsigned long	flags;
-+};
-+
- /**
-  * struct zl3073x_dev - zl3073x device
-  * @dev: pointer to device
-  * @regmap: regmap to access device registers
-+ * @info: detected chip info
-  * @multiop_lock: to serialize multiple register operations
-- * @chip_id: chip ID read from hardware
-  * @ref: array of input references' invariants
-  * @out: array of outs' invariants
-  * @synth: array of synths' invariants
-@@ -46,10 +66,10 @@ struct zl3073x_dpll;
-  * @phase_avg_factor: phase offset measurement averaging factor
-  */
- struct zl3073x_dev {
--	struct device		*dev;
--	struct regmap		*regmap;
--	struct mutex		multiop_lock;
--	u16			chip_id;
-+	struct device			*dev;
-+	struct regmap			*regmap;
-+	const struct zl3073x_chip_info	*info;
-+	struct mutex			multiop_lock;
- 
- 	/* Invariants */
- 	struct zl3073x_ref	ref[ZL3073X_NUM_REFS];
-@@ -68,22 +88,10 @@ struct zl3073x_dev {
- 	u8			phase_avg_factor;
- };
- 
--struct zl3073x_chip_info {
--	const u16	*ids;
--	size_t		num_ids;
--	int		num_channels;
--};
--
--extern const struct zl3073x_chip_info zl30731_chip_info;
--extern const struct zl3073x_chip_info zl30732_chip_info;
--extern const struct zl3073x_chip_info zl30733_chip_info;
--extern const struct zl3073x_chip_info zl30734_chip_info;
--extern const struct zl3073x_chip_info zl30735_chip_info;
- extern const struct regmap_config zl3073x_regmap_config;
- 
- struct zl3073x_dev *zl3073x_devm_alloc(struct device *dev);
--int zl3073x_dev_probe(struct zl3073x_dev *zldev,
--		      const struct zl3073x_chip_info *chip_info);
-+int zl3073x_dev_probe(struct zl3073x_dev *zldev);
- 
- int zl3073x_dev_start(struct zl3073x_dev *zldev, bool full);
- void zl3073x_dev_stop(struct zl3073x_dev *zldev);
-@@ -158,18 +166,7 @@ int zl3073x_ref_phase_offsets_update(struct zl3073x_dev *zldev, int channel);
- static inline bool
- zl3073x_dev_is_ref_phase_comp_32bit(struct zl3073x_dev *zldev)
- {
--	switch (zldev->chip_id) {
--	case 0x0E30:
--	case 0x0E93:
--	case 0x0E94:
--	case 0x0E95:
--	case 0x0E96:
--	case 0x0E97:
--	case 0x1F60:
--		return true;
--	default:
--		return false;
--	}
-+	return zldev->info->flags & ZL3073X_FLAG_REF_PHASE_COMP_32;
- }
- 
- static inline bool
-diff --git a/drivers/dpll/zl3073x/i2c.c b/drivers/dpll/zl3073x/i2c.c
-index 7bbfdd4ed8671d..979df85826abcc 100644
---- a/drivers/dpll/zl3073x/i2c.c
-+++ b/drivers/dpll/zl3073x/i2c.c
-@@ -22,40 +22,25 @@ static int zl3073x_i2c_probe(struct i2c_client *client)
- 		return dev_err_probe(dev, PTR_ERR(zldev->regmap),
- 				     "Failed to initialize regmap\n");
- 
--	return zl3073x_dev_probe(zldev, i2c_get_match_data(client));
-+	return zl3073x_dev_probe(zldev);
- }
- 
- static const struct i2c_device_id zl3073x_i2c_id[] = {
--	{
--		.name = "zl30731",
--		.driver_data = (kernel_ulong_t)&zl30731_chip_info,
--	},
--	{
--		.name = "zl30732",
--		.driver_data = (kernel_ulong_t)&zl30732_chip_info,
--	},
--	{
--		.name = "zl30733",
--		.driver_data = (kernel_ulong_t)&zl30733_chip_info,
--	},
--	{
--		.name = "zl30734",
--		.driver_data = (kernel_ulong_t)&zl30734_chip_info,
--	},
--	{
--		.name = "zl30735",
--		.driver_data = (kernel_ulong_t)&zl30735_chip_info,
--	},
-+	{ "zl30731" },
-+	{ "zl30732" },
-+	{ "zl30733" },
-+	{ "zl30734" },
-+	{ "zl30735" },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(i2c, zl3073x_i2c_id);
- 
- static const struct of_device_id zl3073x_i2c_of_match[] = {
--	{ .compatible = "microchip,zl30731", .data = &zl30731_chip_info },
--	{ .compatible = "microchip,zl30732", .data = &zl30732_chip_info },
--	{ .compatible = "microchip,zl30733", .data = &zl30733_chip_info },
--	{ .compatible = "microchip,zl30734", .data = &zl30734_chip_info },
--	{ .compatible = "microchip,zl30735", .data = &zl30735_chip_info },
-+	{ .compatible = "microchip,zl30731" },
-+	{ .compatible = "microchip,zl30732" },
-+	{ .compatible = "microchip,zl30733" },
-+	{ .compatible = "microchip,zl30734" },
-+	{ .compatible = "microchip,zl30735" },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, zl3073x_i2c_of_match);
-diff --git a/drivers/dpll/zl3073x/spi.c b/drivers/dpll/zl3073x/spi.c
-index af901b4d6dda06..f024f42b78d05f 100644
---- a/drivers/dpll/zl3073x/spi.c
-+++ b/drivers/dpll/zl3073x/spi.c
-@@ -22,40 +22,25 @@ static int zl3073x_spi_probe(struct spi_device *spi)
- 		return dev_err_probe(dev, PTR_ERR(zldev->regmap),
- 				     "Failed to initialize regmap\n");
- 
--	return zl3073x_dev_probe(zldev, spi_get_device_match_data(spi));
-+	return zl3073x_dev_probe(zldev);
- }
- 
- static const struct spi_device_id zl3073x_spi_id[] = {
--	{
--		.name = "zl30731",
--		.driver_data = (kernel_ulong_t)&zl30731_chip_info
--	},
--	{
--		.name = "zl30732",
--		.driver_data = (kernel_ulong_t)&zl30732_chip_info,
--	},
--	{
--		.name = "zl30733",
--		.driver_data = (kernel_ulong_t)&zl30733_chip_info,
--	},
--	{
--		.name = "zl30734",
--		.driver_data = (kernel_ulong_t)&zl30734_chip_info,
--	},
--	{
--		.name = "zl30735",
--		.driver_data = (kernel_ulong_t)&zl30735_chip_info,
--	},
-+	{ "zl30731" },
-+	{ "zl30732" },
-+	{ "zl30733" },
-+	{ "zl30734" },
-+	{ "zl30735" },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(spi, zl3073x_spi_id);
- 
- static const struct of_device_id zl3073x_spi_of_match[] = {
--	{ .compatible = "microchip,zl30731", .data = &zl30731_chip_info },
--	{ .compatible = "microchip,zl30732", .data = &zl30732_chip_info },
--	{ .compatible = "microchip,zl30733", .data = &zl30733_chip_info },
--	{ .compatible = "microchip,zl30734", .data = &zl30734_chip_info },
--	{ .compatible = "microchip,zl30735", .data = &zl30735_chip_info },
-+	{ .compatible = "microchip,zl30731" },
-+	{ .compatible = "microchip,zl30732" },
-+	{ .compatible = "microchip,zl30733" },
-+	{ .compatible = "microchip,zl30734" },
-+	{ .compatible = "microchip,zl30735" },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, zl3073x_spi_of_match);
+ 	if (slave_dev->flags & IFF_MASTER &&
+ 	    !netif_is_bond_master(slave_dev)) {
+ 		BOND_NL_ERR(bond_dev, extack,
 -- 
 2.53.0
 
