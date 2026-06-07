@@ -1,340 +1,164 @@
-Return-Path: <stable+bounces-261057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id u1SgIR9FJWodFgIAu9opvQ
-	(envelope-from <stable+bounces-261057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:17:03 +0200
+	id 6VQ7GaxOJWqxGgIAu9opvQ
+	(envelope-from <stable+bounces-261759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:57:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82E564F785
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:17:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD0865029C
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:57:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=1g4.org header.s=protonmail2 header.b=k5CICHh+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261057-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261057-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=1g4.org;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QY4FP97K;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261759-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261759-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9EC7D3056602
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:12:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E62E23008E08
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6862E739E;
-	Sun,  7 Jun 2026 10:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92B5308F38;
+	Sun,  7 Jun 2026 10:55:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-244118.protonmail.ch (mail-244118.protonmail.ch [109.224.244.118])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7B730F52B
-	for <stable@vger.kernel.org>; Sun,  7 Jun 2026 10:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C84318EF4
+	for <stable@vger.kernel.org>; Sun,  7 Jun 2026 10:55:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827120; cv=none; b=SxrIp3bVNwCe2Fn9bsMrY2p/YQ8ktwsNaAhf+vTifao9W9OTKQPPQ02whTYLxwnWnnU4rCnUGbScNO2qNemg3hDsSs3f6UTFycEX3eDBpFXIw3qFowmlqs0+LKvWhiB/F7Z2ZoAn7cXF+Y2zV9+PheOYfkttTj/FybmqxzLKLKI=
+	t=1780829736; cv=none; b=iv2vPXgvdmcTrjhvKmq+vuPoB91dnLo24P8YQ1xXmTwR1cWoTV7fjrdPtcG5YV8GpTiiN2FZ9zk+pJaIoq6BI8V2REH9QjxzxJtiXF2xE4TqulLLfvT29Yo6ef32e5mYHUM9YODVrCjx8eRXqqeF5KsJxKprqXKZlx0RbsruD7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827120; c=relaxed/simple;
-	bh=C54OY5GzuVBuHhF+jYzCcp+gzXQpK2S++b9Bgz6WC3Y=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hKlz4AwCcSAuHGl8F3jfnmpdm6sfsC5KNhGg41Q2o0opnCf3rLEQtzH4N6JetS0+6nlBEQpbaTPkL5xSFH8izQrdx75OomPNL1PbMq9MaoUSeQglKIf5urTbxOWQ1+K8YDLUgEhioBPN3XJ8wq2hhB9+cDAFwZy3Sak7D9XlQWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=k5CICHh+; arc=none smtp.client-ip=109.224.244.118
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1780827108; x=1781086308;
-	bh=i3TYIe8/Ow7zioV2ZC5qSbM5g9az2F76wDh0anX9xpA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=k5CICHh+kGsHHudQ8B1tUK+NLyoxJAze+1Y5JOyPPQgXUD+1l2eWs7O5zv5V4YNab
-	 fH8S079/QNac86qI1Yw7gPYuP0KaVJwsz/X87aioPfjV6OIduqTI/J1KT0u/0tE0dQ
-	 Py9BCzWAX2FHNRDFmhKrS3I00NTCKXtCKUIguXQRNDsohpGR9R/Hhn5jlnUFFMvVqm
-	 3fP1FH9ROxj1RkqbIyjWRIiXpVvE1CkvUnFXI8u0MnM2/3Rakmq9nTnVYpZmBqD2/x
-	 lP9j/E7KM5L4MvTJIbKLlhC6btH1MgTPcMV+poE4VOetWgBHwXnLSQTYAmGn7+UO0h
-	 5bRHWCx+meJjQ==
-Date: Sun, 07 Jun 2026 10:11:42 +0000
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-From: Paul Moses <p@1g4.org>
-Cc: martin.lau@linux.dev, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, bpf@vger.kernel.org, song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org, houtao1@huawei.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH bpf] bpf: Validate BTF repeated field counts before expansion
-Message-ID: <E0xEdilT0Z6figMeDAyw03ex29iX0RfOAUXuh4aTJxUrKHK2Bg5N8lKCHNvQoQQ1UzndFFqDJ_zmAMYHLqSgSfF1menSW7C9VKDSBhYrTT0=@1g4.org>
-In-Reply-To: <DJ2OZSCSEVEI.3APUCE7ML9X4Q@gmail.com>
-References: <20260605234301.1109063-1-p@1g4.org> <DJ2OZSCSEVEI.3APUCE7ML9X4Q@gmail.com>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: f632fae0f54ebee434c0cfe12a0f59654585aeb1
+	s=arc-20240116; t=1780829736; c=relaxed/simple;
+	bh=zDchtkG0SHxwHlkSQPxGEA64pnEyQcwoePej9IajXBk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aMIa5SspfO3W1Q085erPrhSyXjniIdSael89pmcKev6GglVv5iuYW2J6DU5J+Xx4JNcw/PZ/TggfmaNC7qNi6tG5Bq0DMq20rlSQMuj9iQIStB/uEgWEYog+yCvTzAQSpXp4h5y5r7CBLpNlm367o+kQEYwuQVwVpmk2WmMoCYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QY4FP97K; arc=none smtp.client-ip=170.10.129.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780829734;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M529Pw8aQ7DzKV9C1FdjvA3fcDeW8DhgDiOdy61/ANI=;
+	b=QY4FP97KHpPFx7isVtGjd+j16nUnM47z9E33zEs5KzyAbFV8LH6R+1r88HWIef5h6sRi5n
+	rQ6HX+WfcxAdZCeWqtYmQkzEPAJG0YUCFHzHGjoXjRTBoRoGblRWAhegNTXgjgCAMZq9ky
+	1uNPUFB3fY8JOiul5o9xYF/leKI0fBw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-371-4YQwnNpRPiaAzfHiQUe45Q-1; Sun,
+ 07 Jun 2026 06:55:27 -0400
+X-MC-Unique: 4YQwnNpRPiaAzfHiQUe45Q-1
+X-Mimecast-MFC-AGG-ID: 4YQwnNpRPiaAzfHiQUe45Q_1780829725
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A90C918004A9;
+	Sun,  7 Jun 2026 10:55:23 +0000 (UTC)
+Received: from fedora (unknown [10.44.32.36])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 611511800367;
+	Sun,  7 Jun 2026 10:55:14 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Sun,  7 Jun 2026 12:55:23 +0200 (CEST)
+Date: Sun, 7 Jun 2026 12:55:12 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Deepanshu Kartikey <Kartikey406@gmail.com>,
+	syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com,
+	Michal Hocko <mhocko@suse.com>, Ben Segall <bsegall@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Kees Cook <kees@kernel.org>, Liam Howlett <liam@infradead.org>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Mel Gorman <mgorman@suse.de>, Mike Rapoport <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 7.0 015/332] kernel/fork: validate exit_signal in
+ kernel_clone()
+Message-ID: <aiVOEKt9QL5cvkwz@redhat.com>
+References: <20260607095728.031258202@linuxfoundation.org>
+ <20260607095728.598854921@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260607095728.598854921@linuxfoundation.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:memxor@gmail.com,m:martin.lau@linux.dev,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:eddyz87@gmail.com,m:bpf@vger.kernel.org,m:song@kernel.org,m:yonghong.song@linux.dev,m:jolsa@kernel.org,m:houtao1@huawei.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-261057-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[p@1g4.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linux.dev,kernel.org,iogearbox.net,gmail.com,vger.kernel.org,huawei.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[1g4.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[26];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261759-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:Kartikey406@gmail.com,m:syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com,m:mhocko@suse.com,m:bsegall@google.com,m:brauner@kernel.org,m:david@kernel.org,m:dietmar.eggemann@arm.com,m:mingo@redhat.com,m:juri.lelli@redhat.com,m:kees@kernel.org,m:liam@infradead.org,m:ljs@kernel.org,m:mgorman@suse.de,m:rppt@kernel.org,m:peterz@infradead.org,m:rostedt@goodmis.org,m:surenb@google.com,m:vschneid@redhat.com,m:vincent.guittot@linaro.org,m:vbabka@kernel.org,m:penguin-kernel@i-love.sakura.ne.jp,m:akpm@linux-foundation.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[oleg@redhat.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,gmail.com,syzkaller.appspotmail.com,suse.com,google.com,kernel.org,arm.com,redhat.com,infradead.org,suse.de,goodmis.org,linaro.org,i-love.sakura.ne.jp,linux-foundation.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qemu.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,1g4.org:mid,1g4.org:from_mime,1g4.org:dkim,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oleg@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,bbe6b99feefc3a0842de];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D82E564F785
+X-Rspamd-Queue-Id: CCD0865029C
 
->=20
-> Do you have an example where this actually occurred in practice?
->=20
+On 06/07, Greg Kroah-Hartman wrote:
+>
+> 7.0-stable review patch.  If anyone has any objections, please let me know.
+>
+> ------------------
+>
+> From: Deepanshu Kartikey <kartikey406@gmail.com>
+>
+> [ Upstream commit 09e7827e785729f391c8d46dc71becce70d296ab ]
 
-Yes.=20
+I don't think this is the -stable material.
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[   10.633105] BUG: KASAN: vmalloc-out-of-bounds in btf_repeat_fields+0x194=
-/0x3c0 kernel/bpf/btf.c:3697
-[   10.633833] Write of size 240 at addr ffa000000094ffd8 by task runner/86
-[   10.633998]
-[   10.634698] CPU: 1 UID: 0 PID: 86 Comm: runner Not tainted 7.1.0-rc5-g8d=
-9c51eac648 #3 PREEMPT(lazy)
-[   10.634859] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel=
--1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[   10.635067] Call Trace:
-[   10.635143]  <TASK>
-[   10.635240]  __dump_stack+0x21/0x30
-[   10.635389]  dump_stack_lvl+0x77/0xa0
-[   10.635457]  print_address_description+0x7b/0x200
-[   10.635527]  print_report+0x5b/0x70
-[   10.635585]  kasan_report+0x134/0x170
-[   10.635633]  ? btf_repeat_fields+0x194/0x3c0 kernel/bpf/btf.c:3697
-[   10.635691]  kasan_check_range+0x270/0x2d0
-[   10.635735]  ? btf_repeat_fields+0x194/0x3c0 kernel/bpf/btf.c:3697
-[   10.635782]  __asan_memcpy+0x48/0x80
-[   10.635839]  btf_repeat_fields+0x194/0x3c0 kernel/bpf/btf.c:3697
-[   10.635892]  btf_find_field_one+0x101c/0x1200
-[   10.635952]  btf_parse_fields+0x772/0x24e0
-[   10.636168]  </TASK>
-[   10.636271]
-[   10.637213]
-[   10.637291] The buggy address belongs to a vmalloc virtual mapping
-[   10.637573] The buggy address belongs to the physical page:
-[   10.637951] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0=
-x0 pfn:0x105f0f
-[   10.638190] flags: 0x200000000000000(node=3D0|zone=3D2)
-[   10.638912] raw: 0200000000000000 ffd400000417c3c8 ffd400000417c3c8 0000=
-000000000000
-[   10.639076] raw: 0000000000000000 0000000000000000 00000001ffffffff 0000=
-000000000000
-[   10.639256] page dumped because: kasan: bad access detected
-[   10.639361]
-[   10.639443] Memory state around the buggy address:
-[   10.639664]  ffa000000094ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00=
- 00 00
-[   10.639818]  ffa000000094ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00=
- 00 00
-[   10.639963] >ffa0000000950000: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8=
- f8 f8
-[   10.640090]                    ^
-[   10.640252]  ffa0000000950080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8=
- f8 f8
-[   10.640403]  ffa0000000950100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8=
- f8 f8
-[   10.640556] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[   10.640944] Disabling lock debugging due to kernel taint
-[   10.641139] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[   10.641252] BUG: KASAN: vmalloc-out-of-bounds in btf_repeat_fields+0x2dc=
-/0x3c0 kernel/bpf/btf.c:3699
-[   10.641389] Read of size 4 at addr ffa000000095000c by task runner/86
-[   10.641500]
-[   10.641716] CPU: 1 UID: 0 PID: 86 Comm: runner Tainted: G    B          =
-     7.1.0-rc5-g8d9c51eac648 #3 PREEMPT(lazy)
-[   10.641833] Tainted: [B]=3DBAD_PAGE
-[   10.641863] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel=
--1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[   10.641893] Call Trace:
-[   10.641911]  <TASK>
-[   10.641930]  __dump_stack+0x21/0x30
-[   10.642002]  dump_stack_lvl+0x77/0xa0
-[   10.642068]  print_address_description+0x7b/0x200
-[   10.642135]  print_report+0x5b/0x70
-[   10.642196]  kasan_report+0x134/0x170
-[   10.642241]  ? btf_repeat_fields+0x2dc/0x3c0 kernel/bpf/btf.c:3699
-[   10.642299]  __asan_report_load4_noabort+0x18/0x20
-[   10.642356]  btf_repeat_fields+0x2dc/0x3c0 kernel/bpf/btf.c:3699
-[   10.642410]  btf_find_field_one+0x101c/0x1200
-[   10.642470]  btf_parse_fields+0x772/0x24e0
-[   10.642675]  </TASK>
-[   10.642693]
-[   10.643500] The buggy address belongs to a vmalloc virtual mapping
-[   10.643639] Memory state around the buggy address:
-[   10.643736]  ffa000000094ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00=
- 00 00
-[   10.643851]  ffa000000094ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00=
- 00 00
-[   10.643961] >ffa0000000950000: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8=
- f8 f8
-[   10.644064]                       ^
-[   10.644141]  ffa0000000950080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8=
- f8 f8
-[   10.644251]  ffa0000000950100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8=
- f8 f8
-[   10.644355] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[   10.645473] BUG: unable to handle page fault for address: ffa00000009500=
-0c
-[   10.645715] #PF: supervisor read access in kernel mode
-[   10.645828] #PF: error_code(0x0000) - not-present page
-[   10.646124] PGD 100000067 P4D 100229067 PUD 100232067 PMD 104b92067 PTE =
-0
-[   10.646621] Oops: Oops: 0000 [#1] SMP KASAN NOPTI
-[   10.646772] CPU: 1 UID: 0 PID: 86 Comm: runner Tainted: G    B          =
-     7.1.0-rc5-g8d9c51eac648 #3 PREEMPT(lazy)
-[   10.646944] Tainted: [B]=3DBAD_PAGE
-[   10.647016] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel=
--1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[   10.647206] RIP: 0010:btf_repeat_fields+0x230/0x3c0
-[   10.647397] Code: 00 00 44 01 3b 41 8d 45 02 89 c0 48 8d 04 40 49 8d 1c =
-c4 48 83 c3 04 48 89 d8 48 c1 e8 03 0f b6 04 10 84 c0 0f 85 94 00 00 00 <44=
-> 01 3b 41 8d 45 03 89 c0 48 8d 04 40 49 8d 1c c4 48 83 c3 04 48
-[   10.647693] RSP: 0018:ffa000000094f8e8 EFLAGS: 00010296
-[   10.647878] RAX: ff11000105f19901 RBX: ffa000000095000c RCX: ff11000105f=
-199c0
-[   10.648021] RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffffffff868=
-12e20
-[   10.648161] RBP: ffa000000094f940 R08: ffffffff86812e27 R09: 1ffffffff0d=
-025c4
-[   10.648297] R10: dffffc0000000000 R11: fffffbfff0d025c5 R12: ffa00000009=
-4fb28
-[   10.648438] R13: 0000000000000032 R14: 0000000000000004 R15: 00000000000=
-00028
-[   10.648605] FS:  000000000020a2b8(0000) GS:ff110001d3d55000(0000) knlGS:=
-0000000000000000
-[   10.648759] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   10.648879] CR2: ffa000000095000c CR3: 0000000105dc4000 CR4: 00000000007=
-51ef0
-[   10.649050] PKRU: 55555554
-[   10.649197] Call Trace:
-[   10.649337]  <TASK>
-[   10.649419]  btf_find_field_one+0x101c/0x1200
-[   10.649549]  btf_parse_fields+0x772/0x24e0
-[   10.649819]  </TASK>
-[   10.649911] Modules linked in:
-[   10.650186] CR2: ffa000000095000c
-[   10.650727] ---[ end trace 0000000000000000 ]---
-[   10.651049] RIP: 0010:btf_repeat_fields+0x230/0x3c0
-[   10.651179] Code: 00 00 44 01 3b 41 8d 45 02 89 c0 48 8d 04 40 49 8d 1c =
-c4 48 83 c3 04 48 89 d8 48 c1 e8 03 0f b6 04 10 84 c0 0f 85 94 00 00 00 <44=
-> 01 3b 41 8d 45 03 89 c0 48 8d 04 40 49 8d 1c c4 48 83 c3 04 48
-[   10.651376] RSP: 0018:ffa000000094f8e8 EFLAGS: 00010296
-[   10.651493] RAX: ff11000105f19901 RBX: ffa000000095000c RCX: ff11000105f=
-199c0
-[   10.651603] RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffffffff868=
-12e20
-[   10.651712] RBP: ffa000000094f940 R08: ffffffff86812e27 R09: 1ffffffff0d=
-025c4
-[   10.651819] R10: dffffc0000000000 R11: fffffbfff0d025c5 R12: ffa00000009=
-4fb28
-[   10.651925] R13: 0000000000000032 R14: 0000000000000004 R15: 00000000000=
-00028
-[   10.652031] FS:  000000000020a2b8(0000) GS:ff110001d3d55000(0000) knlGS:=
-0000000000000000
-[   10.652151] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   10.652253] CR2: ffa000000095000c CR3: 0000000105dc4000 CR4: 00000000007=
-51ef0
-[   10.652363] PKRU: 55555554
-[   10.652644] Kernel panic - not syncing: Fatal exception
-[   10.653804] Kernel Offset: disabled
-[   10.654081] ---[ end Kernel panic - not syncing: Fatal exception ]---
----------------------------------------------------------------------------=
------------------------------------------
+> Note that this is a user-visible change: previously, passing an invalid
+> exit_signal to clone() was silently accepted.  The man page for clone()
+> does not document any defined behavior for invalid exit_signal values, so
+> rejecting them with -EINVAL is the correct behavior.  It is unlikely that
+> any sane application relies on passing an invalid exit_signal.
 
-Also, I still haven't made the connection between the CI failure and
-my patch. I produced what looks like the tcg variation of the same=20
-failure as a oneoff while testing an (functionally) unpatched kernel.=20
-I'm not even sure it's the kernel at all and not some weirdness
-between clang and qemu. Seems low frequency intermittent from what=20
-I've seen so far. Any ideas appreciated.
+Yes...
 
-[    0.000000] Linux version 7.1.0-rc5-g8d9c51eac648-dirty (me@localhost) (=
-clang version 22.1.7, LLD 22.1.7) #7 SMP PREEMPT_DYNAMIC Sun Jun  7 07:30:5=
-4 UTC 2026
-...
-[    0.002022] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[    0.002117] BUG: KASAN: wild-memory-access in do_raw_spin_lock+0xd4/0x27=
-0
-[    0.002117] Write of size 4 at addr ff110001001164b8 by task swapper/0/0
-[    0.002117]=20
-[    0.002117] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.1.0-rc5-g=
-8d9c51eac648-dirty #7 PREEMPT(full)=20
-[    0.002117] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel=
--1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[    0.002117] Call Trace:
-[    0.002117]  <IRQ>
-[    0.002117]  __dump_stack+0x21/0x30
-[    0.002117]  dump_stack_lvl+0x7a/0xb0
-[    0.002117]  print_report+0x4e/0x70
-[    0.002117]  kasan_report+0x134/0x170
-[    0.002117]  ? do_raw_spin_lock+0xd4/0x270
-[    0.002117]  kasan_check_range+0x270/0x2d0
-[    0.002117]  __kasan_check_write+0x18/0x20
-[    0.002117]  do_raw_spin_lock+0xd4/0x270
-[    0.002117]  _raw_spin_lock+0x3f/0x50
-[    0.002117]  handle_edge_irq+0x3c/0x870
-[    0.002117]  __common_interrupt+0xe0/0x160
-[    0.002117]  common_interrupt+0x8a/0xa0
-[    0.002117]  </IRQ>
-[    0.002117]  <TASK>
-[    0.002117]  asm_common_interrupt+0x2b/0x40
-[    0.002117] RIP: 0010:identify_cpu+0x463/0x3730
-[    0.002117] Code: 48 8b 7d d0 0f 84 f6 00 00 00 41 80 3e 00 74 1a 49 8d =
-bf 80 13 27 86 e8 0b 80 9f 00 48 8b 7d d0 48 be 00 00 00 00 00 fc ff df <49=
-> 8b 9f 80 13 27 86 48 85 db 0f 84 c6 00 00 00 4c 8d 63 08 4c 89
-[    0.002117] RSP: 0000:ffffffff84c07dc8 EFLAGS: 00010246
-[    0.002117] RAX: ffffffff85a2cdd0 RBX: 0000000000000040 RCX: 00000000000=
-00000
-[    0.002117] RDX: 0000000000000000 RSI: dffffc0000000000 RDI: ffffffff85a=
-2ccb8
-[    0.002117] RBP: ffffffff84c07ea8 R08: 0000000000000004 R09: 00000000000=
-00004
-[    0.002117] R10: ffffffff85a2ccc4 R11: fffffbfff0b4599b R12: 00000000000=
-00006
-[    0.002117] R13: ffffffff85a2cdf8 R14: fffffbfff0c4e270 R15: 00000000000=
-00000
-[    0.002117]  ? identify_cpu+0x398/0x3730
-[    0.002117]  identify_boot_cpu+0x11/0xe0
-[    0.002117]  arch_cpu_finalize_init+0x28/0x1f0
-[    0.002117]  start_kernel+0x323/0x3e0
-[    0.002117]  x86_64_start_reservations+0x28/0x30
-[    0.002117]  x86_64_start_kernel+0x105/0x110
-[    0.002117]  common_startup_64+0x12c/0x137
-[    0.002117]  </TASK>
-[    0.002117] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+This patch is the preparation for another commit 0f8e38eeb995b
+("do_notify_parent: sanitize the valid_signal() checks").
+
+Oleg.
+
 
